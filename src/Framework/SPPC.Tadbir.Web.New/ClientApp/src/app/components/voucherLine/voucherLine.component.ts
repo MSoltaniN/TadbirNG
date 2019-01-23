@@ -26,6 +26,7 @@ import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-ang
 import { VoucherLineFormComponent } from '../../components/voucherLine/voucherLine-form.component';
 
 
+
 @Component({
   selector: 'voucherLine',
   templateUrl: './voucherLine.component.html',
@@ -127,7 +128,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
     this.dialogRef.content.instance.setFocus.subscribe((res) => {
       debugger;
-      this.dialogRef.dialog.instance.focus();
+      //this.dialogRef.dialog.instance.focus();
     });
 
   }
@@ -318,7 +319,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
   public showReport()
   {
-      //var url = String.Format(VoucherReportApi.VoucherStdFormReport, this.voucherId);
+     /*
       var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
       this.reporingService.getAll(url).subscribe((res: Response) => {
@@ -343,7 +344,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         
       });
 
-      
+      */
       
   }
 

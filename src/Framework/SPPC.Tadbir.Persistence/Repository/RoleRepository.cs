@@ -197,8 +197,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetRoleCountAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
-            return count;
+            var items = await repository.GetAllAsync();
+            return items
+                .Select(role => Mapper.Map<RoleViewModel>(role))
+                .Apply(gridOptions, false)
+                .Count();
         }
 
         /// <summary>
@@ -330,7 +333,7 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseCompanyContext();
             var relatedRepository = UnitOfWork.GetAsyncRepository<RoleBranch>();
             var roleBranchesModel = relatedRepository.GetByCriteria(
-                rb => rb.RoleId == roleId, null, rb => rb.Branch);
+                rb => rb.RoleId == roleId, rb => rb.Branch);
             var enabledBranches = roleBranchesModel
                 .Select(rb => rb.Branch)
                 .Select(br => Mapper.Map<RelatedItemViewModel>(br))
@@ -452,7 +455,7 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseCompanyContext();
             var relatedRepository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
             var rolePeriodsModel = relatedRepository.GetByCriteria(
-                rfp => rfp.RoleId == roleId, null, rb => rb.FiscalPeriod);
+                rfp => rfp.RoleId == roleId, rb => rb.FiscalPeriod);
             var enabledPeriods = rolePeriodsModel
                 .Select(rfp => rfp.FiscalPeriod)
                 .Select(fp => Mapper.Map<RelatedItemViewModel>(fp))

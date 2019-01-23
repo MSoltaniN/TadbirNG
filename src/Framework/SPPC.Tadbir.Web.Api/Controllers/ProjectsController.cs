@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetEnvironmentProjectsAsync()
         {
             _repository.SetCurrentContext(SecurityContext.User);
-            int itemCount = await _repository.GetCountAsync(GridOptions);
+            int itemCount = await _repository.GetCountAsync<ProjectViewModel>(GridOptions);
             SetItemCount(itemCount);
             var projects = await _repository.GetProjectsAsync(GridOptions);
             return Json(projects);

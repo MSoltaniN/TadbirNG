@@ -27,6 +27,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        /// <param name="repository">امکان اعمال فیلترهای سطری و شعبه را فراهم می کند</param>
         public AccountGroupRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
             ISecureRepository repository)
@@ -105,6 +106,7 @@ namespace SPPC.Tadbir.Persistence
             int count = await _repository
                 .GetAllQuery<Account>(ViewName.Account)
                 .Where(acc => acc.GroupId == groupId)
+                .Select(acc => Mapper.Map<AccountViewModel>(acc))
                 .Apply(gridOptions, false)
                 .CountAsync();
             return count;
@@ -184,6 +186,10 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public override void SetCurrentContext(UserContextViewModel userContext)
         {
             base.SetCurrentContext(userContext);

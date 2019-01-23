@@ -55,8 +55,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var count = await repository.GetCountByCriteriaAsync(c => true, gridOptions);
-            return count;
+            var items = await repository.GetAllAsync();
+            return items
+                .Select(comp => Mapper.Map<CompanyDbViewModel>(comp))
+                .Apply(gridOptions, false)
+                .Count();
         }
 
         /// <summary>

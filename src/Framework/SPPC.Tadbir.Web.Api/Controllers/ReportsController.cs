@@ -10,7 +10,6 @@ using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.ViewModel.Report;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -27,44 +26,49 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
-        // GET: api/reports/{baseId:min(1)}
-        [Route(ReportApi.DefaultSystemReportUrl)]
-        public async Task<IActionResult> GetDefaultSystemReportAsync(int baseId)
-        {
-            var report = await _repository.GetDefaultSystemReportAsync(baseId);
-            Localize(report);
-            return JsonReadResult(report);
-        }
-
-        // GET: api/reports/tree
+        // GET: api/reports/sys/tree
         [Route(ReportApi.ReportsHierarchyUrl)]
         public async Task<IActionResult> GetReportTreeAsync()
         {
-            var tree = await _repository.GetReportTreeAsync();
-            Localize(tree);
+            string localeCode = GetAcceptLanguages().Substring(0, 2);
+            var tree = await _repository.GetReportTreeAsync(localeCode);
             return Json(tree);
         }
 
-        // GET: api/reports/user/{reportId:min(1)}
-        [Route(ReportApi.UserReportUrl)]
-        public async Task<IActionResult> GetUserReportAsync(int reportId)
+        // GET: api/reports/sys/{reportId:min(1)}
+        [Route(ReportApi.ReportUrl)]
+        public async Task<IActionResult> GetReportAsync(int reportId)
         {
             string localeCode = GetAcceptLanguages().Substring(0, 2);
-            var userReport = await _repository.GetUserReportAsync(reportId, localeCode);
-            return JsonReadResult(userReport);
+            var report = await _repository.GetReportAsync(reportId, localeCode);
+            return JsonReadResult(report);
         }
 
-        // POST: api/reports/user
+        // GET: api/reports/sys/{reportId:min(1)}/design
+        [Route(ReportApi.ReportDesignUrl)]
+        public async Task<IActionResult> GetReportDesignAsync(int reportId)
+        {
+            string localeCode = GetAcceptLanguages().Substring(0, 2);
+            var reportDesign = await _repository.GetReportDesignAsync(reportId, localeCode);
+            return JsonReadResult(reportDesign);
+        }
+
+        // POST: api/reports/sys
         [HttpPost]
-        [Route(ReportApi.UserReportsUrl)]
+        [Route(ReportApi.ReportsUrl)]
         public async Task<IActionResult> PostNewUserReportAsync([FromBody] LocalReportViewModel report)
         {
-            if (report != null && report.LocaleId == 0)
+            if (report == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
+            }
+
+            if (report.LocaleId == 0)
             {
                 return BadRequest(_strings.Format(AppStrings.LocaleIsRequired));
             }
 
-            if (report != null && report.ReportId == 0)
+            if (report.ReportId == 0)
             {
                 return BadRequest(_strings.Format(AppStrings.SourceReportIsRequired));
             }
@@ -74,21 +78,86 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // PUT: api/reports/user/{reportId:min(1)}
-        [HttpPost]
-        [Route(ReportApi.UserReportUrl)]
+        // PUT: api/reports/sys/{reportId:min(1)}
+        [HttpPut]
+        [Route(ReportApi.ReportUrl)]
         public async Task<IActionResult> PutModifiedUserReportAsync(
             int reportId, [FromBody] LocalReportViewModel report)
         {
+            if (report == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
+            }
+
+            if (report.ReportId != reportId)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserReport));
+            }
+
+            var summary = await _repository.GetReportSummaryAsync(reportId);
+            if (summary == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
+            }
+
+            if (summary.IsSystem)
+            {
+                return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
+            }
+
+            await _repository.SaveUserReportAsync(report);
             return Ok();
         }
 
-        // DELETE: api/reports/user/{reportId:min(1)}
-        [HttpPost]
-        [Route(ReportApi.UserReportUrl)]
+        // PUT: api/reports/sys/{reportId:min(1)}/caption
+        [HttpPut]
+        [Route(ReportApi.ReportCaptionUrl)]
+        public async Task<IActionResult> PutModifiedUserReportCaptionAsync(
+            int reportId, [FromBody] LocalReportViewModel report)
+        {
+            if (report == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
+            }
+
+            if (report.ReportId != reportId)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserReport));
+            }
+
+            var summary = await _repository.GetReportSummaryAsync(reportId);
+            if (summary == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
+            }
+
+            if (summary.IsSystem)
+            {
+                return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
+            }
+
+            await _repository.SetUserReportCaptionAsync(report);
+            return Ok();
+        }
+
+        // DELETE: api/reports/sys/{reportId:min(1)}
+        [HttpDelete]
+        [Route(ReportApi.ReportUrl)]
         public async Task<IActionResult> DeleteExistingUserReportAsync(int reportId)
         {
-            return Ok();
+            var summary = await _repository.GetReportSummaryAsync(reportId);
+            if (summary == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
+            }
+
+            if (summary.IsSystem)
+            {
+                return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
+            }
+
+            await _repository.DeleteUserReportAsync(reportId);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         // GET: api/reports/voucher/sum-by-date
@@ -122,14 +191,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var formWithDetail = await _repository.GetStandardVoucherFormAsync(GridOptions, true);
             Localize(formWithDetail);
             return JsonReadResult(formWithDetail);
-        }
-
-        private void Localize(IList<TreeItemViewModel> reports)
-        {
-            foreach (var report in reports)
-            {
-                report.Name = _strings[report.Name];
-            }
         }
 
         private void Localize(IList<VoucherSummaryViewModel> report)
@@ -173,9 +234,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (report != null)
             {
-                if (report.BaseResourceKeys != null)
+                if (report.ResourceKeys != null)
                 {
-                    var keys = report.BaseResourceKeys.Split(',');
+                    var keys = report.ResourceKeys.Split(',');
                     Array.ForEach(keys, key => report.ResourceMap.Add(key, _strings[key]));
                 }
             }

@@ -384,67 +384,6 @@
       </Properties>
       <Relations />
     </Entity>
-    <Entity name="CoreReport" area="Reporting" identifier="Id" description="اطلاعات اصلی یک گزارش سیستمی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Properties>
-        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="CoreReportID" type="int" nullable="False" />
-          <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
-        </Property>
-        <Property name="Code" type="String" isValidated="True" description="کد شناسایی گزارش سیستمی در زیرساخت گزارشات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtCode" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Code" type="nvarchar(128)" nullable="False" />
-          <ColumnView name="Code" visible="True" width="120" />
-          <ValidationRule name="Code_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
-        </Property>
-        <Property name="Name" type="String" isValidated="True" description="نام گزارش سیستمی به صورت کلید متن چندزبانه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
-          <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
-        </Property>
-        <Property name="IsGroup" type="Boolean" isValidated="True" description="مشخص می کند که آیا شاخه مورد نظر مربوط به گروه بندی گزارشات است یا نه؟" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="chkIsGroup" format="" type="CheckBox" bindingMember="Checked" />
-          <PropertyStorage name="IsGroup" type="bit" nullable="False" />
-          <ColumnView name="Is Group" visible="True" width="120" />
-          <ValidationRule name="IsGroup_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-        <Property name="Template" type="String" isValidated="True" description="محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان راست به چپ" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtTemplate" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Template" type="nvarchar(MAX)" nullable="True" />
-          <ColumnView name="Template" visible="False" width="120" />
-          <ValidationRule name="Template_Validation" required="False" minimum="" maximum="" format="" type="Length" />
-        </Property>
-        <Property name="TemplateLtr" type="String" isValidated="True" description="محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان چپ به راست" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtTemplateLtr" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="TemplateLtr" type="nvarchar(MAX)" nullable="True" />
-          <ColumnView name="Template Ltr" visible="True" width="120" />
-          <ValidationRule name="TemplateLtr_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
-        </Property>
-        <Property name="ResourceKeys" type="String" isValidated="True" description="مجموعه کلیدهای متن های چند زبانه مورد نیاز در گزارش که با کاراکتر جداکننده از یکدیگر تفکیک شده اند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtResourceKeys" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="ResourceKeys" type="varchar(MAX)" nullable="True" />
-          <ColumnView name="Resource Keys" visible="True" width="120" />
-          <ValidationRule name="ResourceKeys_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
-        </Property>
-        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
-          <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
-          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
-          <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
-        </Property>
-      </Properties>
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Report" hasKey="True" joinTable="" description="گروه بندی اصلی این گزارش در ساختار درختی گزارشات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
-    </Entity>
     <Entity name="CostCenter" area="Finance" identifier="Id" description="اطلاعات یک مرکز هزینه مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -874,6 +813,12 @@
           <PropertyStorage name="LocalName" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Local Name" visible="True" width="120" />
           <ValidationRule name="LocalName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="Code" type="String" isValidated="True" description="کد شناسایی استاندارد زبان که معمولاً دو حرفی یا پنج حرفی است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCode" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Code" type="nvarchar(16)" nullable="False" />
+          <ColumnView name="Code" visible="True" width="120" />
+          <ValidationRule name="Code_Validation" required="True" minimum="" maximum="16" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
@@ -1434,6 +1379,25 @@
           <ColumnView name="Service Url" visible="True" width="120" />
           <ValidationRule name="ServiceUrl_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
         </Property>
+        </Property>
+        <Property name="Code" type="String" isValidated="True" description="کد شناسایی گزارش سیستمی در زیرساخت گزارشات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCode" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Code" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Code" visible="True" width="120" />
+          <ValidationRule name="Code_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="ServiceUrl" type="String" isValidated="True" description="آدرس مورد نیاز برای خواندن اطلاعات گزارش از سرویس وب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtServiceUrl" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ServiceUrl" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Service Url" visible="True" width="120" />
+          <ValidationRule name="ServiceUrl_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="IsGroup" type="Boolean" isValidated="True" description="مشخص می کند که آیا شاخه مورد نظر مربوط به گروه بندی گزارشات است یا نه؟" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkIsGroup" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="IsGroup" type="bit" nullable="False" />
+          <ColumnView name="Is Group" visible="True" width="120" />
+          <ValidationRule name="IsGroup_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
         <Property name="IsSystem" type="Boolean" isValidated="True" description="مشخص می کند که آیا گزارش مورد نظر سیستمی است یا توسط کاربر ذخیره شده است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsSystem" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="IsSystem" type="bit" nullable="False" />
@@ -1445,6 +1409,24 @@
           <PropertyStorage name="IsDefault" type="bit" nullable="False" />
           <ColumnView name="Is Default" visible="True" width="120" />
           <ValidationRule name="IsDefault_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Template" type="String" isValidated="True" description="محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان راست به چپ" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtTemplate" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Template" type="nvarchar(MAX)" nullable="True" />
+          <ColumnView name="Template" visible="False" width="120" />
+          <ValidationRule name="Template_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="TemplateLtr" type="String" isValidated="True" description="محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان چپ به راست" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtTemplateLtr" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="TemplateLtr" type="nvarchar(MAX)" nullable="True" />
+          <ColumnView name="Template Ltr" visible="True" width="120" />
+          <ValidationRule name="TemplateLtr_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="ResourceKeys" type="String" isValidated="True" description="مجموعه کلیدهای متن های چند زبانه مورد نیاز در گزارش که با کاراکتر جداکننده از یکدیگر تفکیک شده اند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtResourceKeys" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ResourceKeys" type="varchar(MAX)" nullable="True" />
+          <ColumnView name="Resource Keys" visible="True" width="120" />
+          <ValidationRule name="ResourceKeys_Validation" required="False" minimum="" maximum="" format="" type="Length" />
         </Property>
         <Property name="SubsystemId" type="Int32" isValidated="True" description="شناسه زیرسیستم گزارش" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnSubsystemId" format="" type="SpinButton" bindingMember="Value" />
@@ -1466,8 +1448,11 @@
         </Property>
       </Properties>
       <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Report" hasKey="True" joinTable="" description="گروه بندی اصلی این گزارش در ساختار درختی گزارشات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="True" joinTable="" description="کاربر ایجادکننده یک گزارش ذخیره شده کاربری" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Base" entityName="CoreReport" hasKey="True" joinTable="" description="گزارش سیستمی مرتبط که ملاک شناسایی این گزارش در زیرساخت گزارشات می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="LocalReport" entityName="LocalReport" hasKey="False" joinTable="" description="مجوعه ای از گزارش های محلی شده برای این گزارش" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Parameter" entityName="Parameter" hasKey="False" joinTable="" description="مجموعه ای از پاراکترهای مورد نیاز برای پیش نمایش یا چاپ گزارش" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Role" area="Auth" identifier="Id" description="Represents a logical authority used in a role-based security subsystem." clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

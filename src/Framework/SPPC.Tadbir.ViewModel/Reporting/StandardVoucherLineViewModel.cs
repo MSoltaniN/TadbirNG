@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.ViewModel.Report
+namespace SPPC.Tadbir.ViewModel.Reporting
 {
     /// <summary>
     /// اطلاعات نمایشی یکی از سطرها را در گزارش فرم مرسوم سند حسابداری را نگهداری می کند

@@ -676,6 +676,10 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک مرکز هزینه را اضافه می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک مرکز هزینه</param>
         public async Task AddCostCenterAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
@@ -728,6 +732,10 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک مرکز هزینه را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک مرکز هزینه</param>
         public async Task RemoveCostCenterAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
@@ -873,6 +881,10 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک پروژه را اضافه می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک پروژه</param>
         public async Task AddProjectAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
@@ -925,6 +937,10 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک پروژه را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک پروژه</param>
         public async Task RemoveProjectAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");

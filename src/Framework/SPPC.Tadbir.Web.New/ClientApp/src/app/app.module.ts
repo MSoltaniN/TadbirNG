@@ -149,6 +149,8 @@ import { ReportBaseService } from './class/report.base.service';
 import { ReportingService } from './service/report/reporting.service';
 import { ReportManagementComponent } from "./components/reportManagement/reportManagement.component";
 import { AccountCollectionComponent } from './components/accountCollection/accountCollection.component';
+import { ReportParametersComponent } from './components/reportParameters/reportParameters.component';
+import { LayoutModule } from '@progress/kendo-angular-layout';
 
 
 
@@ -245,6 +247,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     RelatedAccountsFormComponent,
     DialogComponent,
     AccountCollectionComponent
+    DialogComponent,    
+    ReportParametersComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -303,7 +307,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
-    ])
+    ]),
+    LayoutModule
   ],
   providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
     UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,

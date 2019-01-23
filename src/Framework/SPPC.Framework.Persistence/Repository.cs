@@ -52,27 +52,6 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
-        /// Asynchronously retrieves complete information for all existing entities in data store,
-        /// including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public async Task<IList<TEntity>> GetAllAsync(
-            GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            return await GetEntityQuery(relatedProperties)
-                .Apply(gridOptions)
-                .ToListAsync();
-        }
-
-        /// <summary>
         /// Asynchronously retrieves a single entity instance with the specified unique identifier,
         /// including specified navigation properties, if any.
         /// </summary>
@@ -135,47 +114,18 @@ namespace SPPC.Framework.Persistence
 
         /// <summary>
         /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
-        /// the specified criteria, including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public async Task<IList<TEntity>> GetByCriteriaAsync(
-            Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            return await GetEntityQuery(relatedProperties)
-                .Where(criteria)
-                .Apply(gridOptions)
-                .ToListAsync();
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
         /// the specified criteria.
         /// </summary>
         /// <param name="queryable">A queryable to use as the main source for output records</param>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <returns>Filtered list of entities</returns>
         public async Task<IList<TEntity>> GetByCriteriaAsync(
             IQueryable<TEntity> queryable,
-            Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions)
+            Expression<Func<TEntity, bool>> criteria)
         {
             Verify.ArgumentNotNull(queryable, "queryable");
             return await queryable
                 .Where(criteria)
-                .Apply(gridOptions)
                 .ToListAsync();
         }
 
@@ -225,13 +175,10 @@ namespace SPPC.Framework.Persistence
         /// the specified criteria.
         /// </summary>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <returns></returns>
-        public async Task<int> GetCountByCriteriaAsync(
-            Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions = null)
+        public async Task<int> GetCountByCriteriaAsync(Expression<Func<TEntity, bool>> criteria)
         {
-            var query = GetCountByCriteriaQuery(criteria, gridOptions);
+            var query = GetCountByCriteriaQuery(criteria);
             return await query.CountAsync();
         }
 
@@ -241,18 +188,14 @@ namespace SPPC.Framework.Persistence
         /// </summary>
         /// <param name="queryable">Entity collection to apply other criteria to</param>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <returns></returns>
         public async Task<int> GetCountByCriteriaAsync(
             IQueryable<TEntity> queryable,
-            Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions)
+            Expression<Func<TEntity, bool>> criteria)
         {
             Verify.ArgumentNotNull(queryable, "queryable");
             return await queryable
                 .Where(criteria)
-                .Apply(gridOptions, false)
                 .CountAsync();
         }
 
@@ -341,8 +284,6 @@ namespace SPPC.Framework.Persistence
         /// Retrieves complete information for all existing entities in data store, including specified
         /// navigation properties, if any.
         /// </summary>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <param name="relatedProperties">Variable array of expressions that specify navigation
         /// properties that must be loaded in the main entity</param>
         /// <returns>Collection of all existing entities</returns>
@@ -350,11 +291,9 @@ namespace SPPC.Framework.Persistence
         /// Use this method when you need to retrieve the entity's navigation properties in a single level
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
-        public IList<TEntity> GetAll(
-            GridOptions gridOptions = null, params Expression<Func<TEntity, object>>[] relatedProperties)
+        public IList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] relatedProperties)
         {
             return GetEntityQuery(relatedProperties)
-                .Apply(gridOptions)
                 .ToList();
         }
 
@@ -402,8 +341,6 @@ namespace SPPC.Framework.Persistence
         /// including specified navigation properties, if any.
         /// </summary>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <param name="relatedProperties">Variable array of expressions that specify navigation
         /// properties that must be loaded in the main entity</param>
         /// <returns></returns>
@@ -413,12 +350,10 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public IList<TEntity> GetByCriteria(
             Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
             return GetEntityQuery(relatedProperties)
                 .Where(criteria)
-                .Apply(gridOptions)
                 .ToList();
         }
 
@@ -426,12 +361,10 @@ namespace SPPC.Framework.Persistence
         /// Retrieves record count for a subset of existing entities, as defined by the specified criteria.
         /// </summary>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <returns>Record count for filtered items</returns>
-        public int GetCountByCriteria(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions)
+        public int GetCountByCriteria(Expression<Func<TEntity, bool>> criteria)
         {
-            var query = GetCountByCriteriaQuery(criteria, gridOptions);
+            var query = GetCountByCriteriaQuery(criteria);
             return query.Count();
         }
 
@@ -593,12 +526,10 @@ namespace SPPC.Framework.Persistence
                 : EntityState.Detached;
         }
 
-        private IQueryable<TEntity> GetCountByCriteriaQuery(
-            Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions)
+        private IQueryable<TEntity> GetCountByCriteriaQuery(Expression<Func<TEntity, bool>> criteria)
         {
             return GetEntityQuery()
-                .Where(criteria ?? (entity => true))
-                .Apply(gridOptions, false);
+                .Where(criteria ?? (entity => true));
         }
 
         private DbContext _dataContext;

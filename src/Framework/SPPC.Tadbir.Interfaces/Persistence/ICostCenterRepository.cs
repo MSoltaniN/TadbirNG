@@ -34,9 +34,11 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<int> GetCountAsync(GridOptions gridOptions = null);
+        Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
+            where TViewModel : class, new();
 
         /// <summary>
         /// به روش آسنکرون،مرکز هزینه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

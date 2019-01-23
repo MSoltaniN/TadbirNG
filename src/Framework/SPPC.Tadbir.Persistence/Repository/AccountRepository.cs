@@ -115,11 +115,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
+        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
+            where TViewModel : class, new()
         {
-            return await _repository.GetCountAsync<Account>(ViewName.Account, gridOptions);
+            return await _repository.GetCountAsync<Account, TViewModel>(ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -234,15 +236,15 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsRelatedAccountAsync(int accountId)
         {
-            var accDetailrepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
-            int relatedDetails = await accDetailrepository.GetCountByCriteriaAsync(
-                ada => ada.AccountId == accountId, null);
+            var accDetailRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            int relatedDetails = await accDetailRepository.GetCountByCriteriaAsync(
+                ada => ada.AccountId == accountId);
             var accCenterRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             int relatedCenters = await accCenterRepository.GetCountByCriteriaAsync(
-                ac => ac.AccountId == accountId, null);
+                ac => ac.AccountId == accountId);
             var accProjectRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
             int relatedProjects = await accProjectRepository.GetCountByCriteriaAsync(
-                ap => ap.AccountId == accountId, null);
+                ap => ap.AccountId == accountId);
 
             return (relatedDetails > 0 || relatedCenters > 0 || relatedProjects > 0);
         }

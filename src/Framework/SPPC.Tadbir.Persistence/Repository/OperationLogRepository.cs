@@ -68,8 +68,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetLogCountAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
-            var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
-            return count;
+            var items = await repository.GetAllAsync();
+            return items
+                .Select(log => Mapper.Map<OperationLogViewModel>(log))
+                .Apply(gridOptions, false)
+                .Count();
         }
 
         /// <summary>

@@ -4,7 +4,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Report;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Mapper.Tests
 {

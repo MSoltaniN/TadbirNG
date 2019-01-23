@@ -29,22 +29,6 @@ namespace SPPC.Framework.Persistence
         Task<IList<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
-        /// Asynchronously retrieves complete information for all existing entities in data store,
-        /// including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        Task<IList<TEntity>> GetAllAsync(
-            GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties);
-
-        /// <summary>
         /// Asynchronously retrieves a single entity instance with the specified unique identifier,
         /// including specified navigation properties, if any.
         /// </summary>
@@ -91,36 +75,14 @@ namespace SPPC.Framework.Persistence
 
         /// <summary>
         /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
-        /// the specified criteria, including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        Task<IList<TEntity>> GetByCriteriaAsync(
-            Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions,
-            params Expression<Func<TEntity, object>>[] relatedProperties);
-
-        /// <summary>
-        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
         /// the specified criteria.
         /// </summary>
         /// <param name="queryable">A queryable to use as the main source for output records</param>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <returns>Filtered list of entities</returns>
         Task<IList<TEntity>> GetByCriteriaAsync(
             IQueryable<TEntity> queryable,
-            Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions);
+            Expression<Func<TEntity, bool>> criteria);
 
         /// <summary>
         /// Asynchronously retrieves complete information for the first of existing entities, as defined by
@@ -135,7 +97,8 @@ namespace SPPC.Framework.Persistence
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
         Task<TEntity> GetFirstByCriteriaAsync(
-            Expression<Func<TEntity, bool>> criteria, params Expression<Func<TEntity, object>>[] relatedProperties);
+            Expression<Func<TEntity, bool>> criteria,
+            params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Asynchronously retrieves complete information for a single entity, as defined by
@@ -151,17 +114,16 @@ namespace SPPC.Framework.Persistence
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
         Task<TEntity> GetSingleByCriteriaAsync(
-            Expression<Func<TEntity, bool>> criteria, params Expression<Func<TEntity, object>>[] relatedProperties);
+            Expression<Func<TEntity, bool>> criteria,
+            params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Asynchronously retrieves record count for a subset of existing entities, as defined by
         /// the specified criteria.
         /// </summary>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <returns></returns>
-        Task<int> GetCountByCriteriaAsync(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions = null);
+        Task<int> GetCountByCriteriaAsync(Expression<Func<TEntity, bool>> criteria);
 
         /// <summary>
         /// Asynchronously retrieves record count for a subset of existing entities, as defined by
@@ -169,13 +131,10 @@ namespace SPPC.Framework.Persistence
         /// </summary>
         /// <param name="queryable">Entity collection to apply other criteria to</param>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <returns></returns>
         Task<int> GetCountByCriteriaAsync(
             IQueryable<TEntity> queryable,
-            Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions);
+            Expression<Func<TEntity, bool>> criteria);
 
         /// <summary>
         /// Asynchronously retrieves a single entity instance with the specified row identifier

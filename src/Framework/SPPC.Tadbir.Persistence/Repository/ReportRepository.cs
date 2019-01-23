@@ -11,7 +11,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Report;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -46,27 +45,6 @@ namespace SPPC.Tadbir.Persistence
         {
             _currentContext = userContext;
             _repository.SetCurrentContext(userContext);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات متادیتای گزارش سیستمی پیش فرض مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="baseId">شناسه یکی از گزارش های سیستمی</param>
-        /// <returns>اطلاعات متادیتای گزارش سیستمی مشخص شده</returns>
-        public async Task<ReportViewModel> GetDefaultSystemReportAsync(int baseId)
-        {
-            _unitOfWork.UseSystemContext();
-            var report = default(ReportViewModel);
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
-            var existing = await repository.GetFirstByCriteriaAsync(
-                rpt => rpt.Base.Id == baseId && rpt.IsDefault, rpt => rpt.Base);
-            if (existing != null)
-            {
-                report = _mapper.Map<ReportViewModel>(existing);
-            }
-
-            _unitOfWork.UseCompanyContext();
-            return report;
         }
 
         /// <summary>
@@ -149,41 +127,84 @@ namespace SPPC.Tadbir.Persistence
             return standardForm;
         }
 
-        public async Task<IList<TreeItemViewModel>> GetReportTreeAsync()
+        /// <summary>
+        /// ساختار درختی گزارش های تعریف شده را به زبان جاری برنامه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <returns>ساختار درختی گزارش ها به زبان جاری برنامه</returns>
+        public async Task<IList<TreeItemViewModel>> GetReportTreeAsync(string localeCode)
         {
             _unitOfWork.UseSystemContext();
-            var treeRepository = _unitOfWork.GetAsyncRepository<CoreReport>();
-            var tree = await treeRepository
-                .GetEntityQuery()
-                .Where(rep => rep.IsGroup)
-                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
-                .ToListAsync();
-
             var repository = _unitOfWork.GetAsyncRepository<Report>();
-            var items = await repository
-                .GetEntityQuery(rep => rep.Base)
-                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+            var reports = await repository
+                .GetEntityQuery()
+                .Include(rep => rep.Parent)
+                .Include(rep => rep.LocalReports)
+                    .ThenInclude(rep => rep.Locale)
                 .ToListAsync();
-            tree.AddRange(items);
+            var tree = reports
+                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+                .ToList();
+            Localize(localeCode, reports, tree);
             _unitOfWork.UseCompanyContext();
             return tree;
         }
 
-        public async Task<PrintInfoViewModel> GetUserReportAsync(int reportId, string localeCode)
+        /// <summary>
+        /// اطلاعات مورد نیاز برای پیش نمایش یا چاپ گزارش را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
+        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <returns>اطلاعات مورد نیاز برای پیش نمایش یا چاپ گزارش</returns>
+        public async Task<PrintInfoViewModel> GetReportAsync(int reportId, string localeCode)
         {
-            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
-            throw new NotImplementedException();
-            //var repository = _unitOfWork.GetAsyncRepository<
+            return await GetReportPrintInfo(reportId, localeCode);
         }
 
+        /// <summary>
+        /// اطلاعات مورد نیاز برای طراحی گزارش را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
+        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <returns>اطلاعات مورد نیاز برای طراحی گزارش</returns>
+        public async Task<PrintInfoViewModel> GetReportDesignAsync(int reportId, string localeCode)
+        {
+            return await GetReportPrintInfo(reportId, localeCode, false);
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه گزارش را برای عملیات اعتبارسنجی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
+        /// <returns>اطلاعات خلاصه گزارش موزد نظر</returns>
+        public async Task<ReportSummaryViewModel> GetReportSummaryAsync(int reportId)
+        {
+            _unitOfWork.UseSystemContext();
+            var summary = default(ReportSummaryViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetByIDAsync(reportId);
+            if (report != null)
+            {
+                summary = _mapper.Map<ReportSummaryViewModel>(report);
+            }
+
+            _unitOfWork.UseCompanyContext();
+            return summary;
+        }
+
+        /// <summary>
+        /// اطلاعات یک گزارش ذخیره شده کاربری را ذخیره یا بروزرسانی می کند
+        /// </summary>
+        /// <param name="report">اطلاعات محلی شده گزارش کاربری</param>
         public async Task SaveUserReportAsync(LocalReportViewModel report)
         {
             _unitOfWork.UseSystemContext();
             Verify.ArgumentNotNull(report, nameof(report));
-            if (report.Id == 0)
+            if (String.IsNullOrEmpty(report.Template))
             {
                 var repository = _unitOfWork.GetAsyncRepository<Report>();
-                var existing = await repository.GetByIDAsync(report.ReportId, rep => rep.LocalReports);
+                var existing = await repository.GetByIDAsync(
+                    report.ReportId, rep => rep.LocalReports, rep => rep.Parameters);
                 if (existing != null)
                 {
                     var userReport = _mapper.Map<Report>(existing);
@@ -194,17 +215,81 @@ namespace SPPC.Tadbir.Persistence
                     repository.Insert(userReport);
                     await _unitOfWork.CommitAsync();
 
-                    var localReport = _mapper.Map<LocalReport>(existing.LocalReports
-                        .Where(rep => rep.LocaleId == report.LocaleId)
-                        .Single());
-                    localReport.Id = 0;
-                    localReport.Caption = report.Caption;
-                    localReport.ReportId = 0;
-                    localReport.Locale = null;
-                    userReport.LocalReports.Add(localReport);
-                    repository.Update(userReport, rep => rep.LocalReports);
+                    Array.ForEach(existing.LocalReports.ToArray(), rep =>
+                    {
+                        var clone = _mapper.Map<LocalReport>(rep);
+                        clone.Id = 0;
+                        clone.Caption = (rep.LocaleId == report.LocaleId)
+                            ? report.Caption
+                            : String.Format("Copy of '{0}'", rep.Caption);
+                        clone.ReportId = 0;
+                        clone.Locale = null;
+                        userReport.LocalReports.Add(clone);
+                    });
+                    Array.ForEach(existing.Parameters.ToArray(), param =>
+                    {
+                        var clone = _mapper.Map<Parameter>(param);
+                        clone.Id = 0;
+                        clone.ReportId = 0;
+                        userReport.Parameters.Add(clone);
+                    });
+                    repository.Update(userReport, rep => rep.LocalReports, rep => rep.Parameters);
                     await _unitOfWork.CommitAsync();
                 }
+            }
+            else
+            {
+                var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+                var existing = await repository.GetSingleByCriteriaAsync(
+                    rep => rep.ReportId == report.ReportId && rep.LocaleId == report.LocaleId);
+                if (existing != null)
+                {
+                    existing.Template = report.Template;
+                    repository.Update(existing);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+
+            _unitOfWork.UseCompanyContext();
+        }
+
+        /// <summary>
+        /// عنوان یک گزارش ذخیره شده کاربری را بروزرسانی می کند
+        /// </summary>
+        /// <param name="report">اطلاعات محلی شده گزارش کاربری شامل عنوان جدید مورد نظر</param>
+        public async Task SetUserReportCaptionAsync(LocalReportViewModel report)
+        {
+            _unitOfWork.UseSystemContext();
+            Verify.ArgumentNotNull(report, nameof(report));
+            var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+            var existing = await repository.GetSingleByCriteriaAsync(
+                rep => rep.ReportId == report.ReportId && rep.LocaleId == report.LocaleId);
+            if (existing != null)
+            {
+                existing.Caption = report.Caption;
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+
+            _unitOfWork.UseCompanyContext();
+        }
+
+        /// <summary>
+        /// یک گزارش ذخیر شده کاربری را به همراه کلیه اطلاعات مرتبط حذف می کند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
+        public async Task DeleteUserReportAsync(int reportId)
+        {
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetByIDWithTrackingAsync(
+                reportId, rep => rep.LocalReports, rep => rep.Parameters);
+            if (report != null)
+            {
+                report.LocalReports.Clear();
+                report.Parameters.Clear();
+                repository.Delete(report);
+                await _unitOfWork.CommitAsync();
             }
 
             _unitOfWork.UseCompanyContext();
@@ -301,6 +386,20 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private static void Localize(string localeCode, List<Report> reports, List<TreeItemViewModel> tree)
+        {
+            foreach (var node in tree)
+            {
+                var report = reports
+                    .Where(rep => rep.Id == node.Id)
+                    .Single();
+                var localReport = report.LocalReports
+                    .Where(rep => localeCode == rep.Locale.Code)
+                    .Single();
+                node.Caption = localReport.Caption;
+            }
+        }
+
         private IQueryable<Voucher> GetStandardVoucherFormQuery(bool withDetail = false)
         {
             var repository = _unitOfWork.GetAsyncRepository<Voucher>();
@@ -322,6 +421,37 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return query;
+        }
+
+        private async Task<PrintInfoViewModel> GetReportPrintInfo(
+            int reportId, string localeCode, bool withParams = true)
+        {
+            _unitOfWork.UseSystemContext();
+            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
+            var reportView = default(PrintInfoViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            IQueryable<Report> reportQuery = repository
+                .GetEntityQuery()
+                .Include(rep => rep.LocalReports)
+                    .ThenInclude(rep => rep.Locale);
+            if (withParams)
+            {
+                reportQuery = reportQuery
+                    .Include(rep => rep.Parameters);
+            }
+
+            var report = await reportQuery.SingleOrDefaultAsync(rep => rep.Id == reportId);
+            if (report != null)
+            {
+                reportView = _mapper.Map<PrintInfoViewModel>(report);
+                var localReport = report.LocalReports
+                    .Where(rep => localeCode.StartsWith(rep.Locale.Code))
+                    .FirstOrDefault();
+                reportView.Template = localReport?.Template;
+            }
+
+            _unitOfWork.UseCompanyContext();
+            return reportView;
         }
 
         private readonly IAppUnitOfWork _unitOfWork;

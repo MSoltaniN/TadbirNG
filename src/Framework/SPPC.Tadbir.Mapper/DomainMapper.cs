@@ -26,7 +26,6 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
-using SPPC.Tadbir.ViewModel.Report;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.ViewModel.Workflow;
 
@@ -507,14 +506,12 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Report, ReportViewModel>()
                 .ForMember(dest => dest.ResourceMap, opts => opts.Ignore());
-            mapperConfig.CreateMap<CoreReport, TreeItemViewModel>()
-                .ForMember(dest => dest.Id, opts => opts.UseValue(0))
-                .ForMember(dest => dest.BaseId, opts => opts.MapFrom(src => src.Id))
-                ;
             mapperConfig.CreateMap<Report, TreeItemViewModel>()
-                .ForMember(dest => dest.ParentId, opts => opts.MapFrom(src => src.Base.ParentId))
-                .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Base.Name))
-                ;
+                .ForMember(dest => dest.ParentId, opts => opts.MapFrom(
+                    src => src.Parent != null ? src.Parent.Id : (int?)null));
+            mapperConfig.CreateMap<Report, PrintInfoViewModel>()
+                .ForMember(dest => dest.Template, opts => opts.Ignore());
+            mapperConfig.CreateMap<Report, ReportSummaryViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

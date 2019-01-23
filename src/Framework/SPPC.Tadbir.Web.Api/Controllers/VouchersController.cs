@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetEnvironmentVouchersAsync()
         {
             _repository.SetCurrentContext(SecurityContext.User);
-            int itemCount = await _repository.GetCountAsync(GridOptions);
+            int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
             SetItemCount(itemCount);
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
             Localize(vouchers.ToArray());
@@ -186,7 +186,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetArticlesAsync(int voucherId)
         {
             _lineRepository.SetCurrentContext(SecurityContext.User);
-            int itemCount = await _lineRepository.GetArticleCountAsync(SecurityContext.User, voucherId, GridOptions);
+            int itemCount = await _lineRepository.GetArticleCountAsync<VoucherLineViewModel>(voucherId, GridOptions);
             SetItemCount(itemCount);
             var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
             return Json(articles);
@@ -217,7 +217,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewArticleAsync(
             int voucherId, [FromBody] VoucherLineViewModel article)
         {
-            var result = await VoucherLineValidationResultAsync(article);
+            var result = VoucherLineValidationResultAsync(article);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -248,7 +248,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedArticleAsync(
             int articleId, [FromBody] VoucherLineViewModel article)
         {
-            var result = await VoucherLineValidationResultAsync(article, articleId);
+            var result = VoucherLineValidationResultAsync(article, articleId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -338,7 +338,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> VoucherLineValidationResultAsync(
+        private IActionResult VoucherLineValidationResultAsync(
             VoucherLineViewModel article, int articleId = 0)
         {
             var result = BasicValidationResult(article, AppStrings.VoucherLine, articleId);

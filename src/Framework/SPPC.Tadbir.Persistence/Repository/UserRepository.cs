@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
@@ -44,9 +45,10 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<User>();
             var users = await repository
-                .GetAllAsync(gridOptions, u => u.Person);
+                .GetAllAsync(u => u.Person);
             return users
                 .Select(user => Mapper.Map<UserViewModel>(user))
+                .Apply(gridOptions)
                 .ToList();
         }
 
@@ -211,8 +213,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetUserCountAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<User>();
-            var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
-            return count;
+            var items = await repository.GetAllAsync();
+            return items
+                .Select(usr => Mapper.Map<UserViewModel>(usr))
+                .Apply(gridOptions, false)
+                .Count();
         }
 
         /// <summary>

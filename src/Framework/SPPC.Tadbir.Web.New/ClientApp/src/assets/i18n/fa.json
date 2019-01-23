@@ -67,9 +67,21 @@
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
-    "ReportDesign": "طراحی گزارش",
-    "Reports": "گزارشات",
-    "ReportManagement": "مدیریت گزارشات"
+    "ReportDesign" : "طراحی گزارش",
+    "Reports" : "گزارشات",
+    "ReportManagement" : "مدیریت گزارشات",
+    "ReportParameter" : "پارامترهای گزارش",
+    "Design":"طراحی گزارش",
+    "Preview":"نمایش گزارش",
+    "Delete":"حذف گزارش",
+    "SaveAs":"کپی گزارش",
+    "SaveIsOk":"گزارش با موفقیت ذخیره شد",
+    "SaveAsIsOk":"گزارش با موفقیت کپی شد",
+    "Title" : "نام گزارش",
+    "DeleteReportConfirm": "آیا برای حذف گزارش {0} اطمینان دارید؟",
+    "ReportDeleted":"گزارش با موفقیت حذف شد",
+    "ReportNameIsReq":"نام گزارش اجباری می باشد",
+    "ReportNameTooLong":"نام گزارش طولانی می باشد"
   },
   "Buttons": {
     "Ok": "تایید",

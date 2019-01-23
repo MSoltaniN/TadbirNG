@@ -1,0 +1,31 @@
+.report-toolbar{
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.k-treeview
+{
+    margin-top: 10px!important;
+}
+
+.k-textbox {
+    width: 100%;
+}
+
+.rep-system{
+    font-size: 14px;
+    color: black;
+}
+
+.rep-folder
+{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.rep-user
+{
+    font-size: 14px;
+    color: blue;
+}

@@ -1,7 +1,10 @@
-<kendo-dialog *ngIf="active" [minWidth]="400"   [width]="innerWidth"  (close)="closeForm()" >
+<!-- <kendo-dialog *ngIf="active" [minWidth]="400"   [width]="innerWidth"  (close)="closeForm()" >
     <kendo-dialog-titlebar>
         {{ 'Report.ReportViewer' | translate }}
-    </kendo-dialog-titlebar>
-<div id='viewer' dir="ltr" >
-  </div>  
-</kendo-dialog>
+    </kendo-dialog-titlebar> -->
+<kendo-window title="{{ 'Report.ReportViewer' | translate }}" 
+    *ngIf="active" (close)="closeForm()" state="Maximized">
+    <div id='viewer' dir="ltr" >
+    </div>
+</kendo-window>  
+<!-- </kendo-dialog> -->

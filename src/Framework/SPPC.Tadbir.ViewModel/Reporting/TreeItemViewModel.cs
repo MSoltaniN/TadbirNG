@@ -15,19 +15,14 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public int Id { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی گزارش سیستمی مرجع یا گروه بندی در ساختار درختی
-        /// </summary>
-        public int BaseId { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی شاخه والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
 
         /// <summary>
-        /// کلید متن چندزبانه برای نام گزارش در زبان جاری برنامه که با متن محلی شده جایگزین می شود
+        /// عنوان محلی شده گزارش به صورتی که در نمای درختی گزارشات دیده می شود
         /// </summary>
-        public string Name { get; set; }
+        public string Caption { get; set; }
 
         /// <summary>
         /// آدرس وب مورد نیاز برای خواندن اطلاعات گزارش از سرویس وب

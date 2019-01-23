@@ -32,6 +32,7 @@ import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-ang
 import { VoucherFormComponent } from '../../components/voucher/voucher-form.component';
 
 
+
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
@@ -126,7 +127,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     this.dialogRef.content.instance.setFocus.subscribe((res) => {
       debugger;
-      this.dialogRef.dialog.instance.focus();
+      //this.dialogRef.dialog.instance.focus();
     });
   }
 
@@ -208,7 +209,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
    public showReport() {
-    
+    /*
     var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
     this.reporingService.getAll(url).subscribe((res: Response) => {    
@@ -237,6 +238,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
         });
     });
+
+    */
   }
 
   public showReportManagement()
