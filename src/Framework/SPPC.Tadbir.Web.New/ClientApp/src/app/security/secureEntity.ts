@@ -27,5 +27,6 @@ export const SecureEntity = {
   ProductInventory: 'ProductInventory',
   Requisition: 'RequisitionVoucher',
   Company: 'Company',
-  AccountGroup: "AccountGroup"
+  AccountGroup: "AccountGroup",
+  AccountCollection: "AccountCollection"
 }

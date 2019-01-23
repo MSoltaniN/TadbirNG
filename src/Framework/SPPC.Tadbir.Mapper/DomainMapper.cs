@@ -151,6 +151,17 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
         {
+            mapperConfig.CreateMap<AccountCollectionCategory, AccountCollectionCategoryViewModel>();
+
+            mapperConfig.CreateMap<AccountCollection, AccountCollectionViewModel>();
+
+            mapperConfig.CreateMap<AccountCollectionAccount, AccountCollectionAccountViewModel>();
+            mapperConfig.CreateMap<AccountCollectionAccountViewModel, AccountCollectionAccount>();
+            mapperConfig.CreateMap<AccountCollectionAccount, AccountIdentityViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Account.Children.Count))
+                .AfterMap((model, viewModel) => viewModel.FullCode = model.Account.FullCode)
+                .AfterMap((model, viewModel) => viewModel.Level = model.Account.Level);
+
             mapperConfig.CreateMap<AccountGroup, AccountGroupViewModel>();
             mapperConfig.CreateMap<AccountGroupViewModel, AccountGroup>();
             mapperConfig.CreateMap<AccountGroup, KeyValue>()
@@ -165,6 +176,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+            mapperConfig.CreateMap<Account, AccountIdentityViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
 
             mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));

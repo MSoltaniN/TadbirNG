@@ -6,6 +6,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Persistence.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Web.Api.Extensions;
 
@@ -80,6 +81,9 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IDashboardRepository, DashboardRepository>();
             _services.AddTransient<IAccountGroupRepository, AccountGroupRepository>();
             _services.AddTransient<IReportRepository, ReportRepository>();
+            _services.AddTransient<IAccountCollectionCategoryRepository, AccountCollectionCategoryRepository>();
+            _services.AddTransient<IAccountCollectionRepository, AccountCollectionRepository>();
+            _services.AddTransient<IAccountCollectionAccountRepository, AccountCollectionAccountRepository>();
         }
 
         private void AddServiceTypes()

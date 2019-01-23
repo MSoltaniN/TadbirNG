@@ -1,6 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Parameter } from '../../model/parameter';
 import { FormGroup, FormControl } from '@angular/forms';
+import { PrintInfo } from '../../model/printInfo';
+import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
+import { ParameterInfo } from '../../service/report/reporting.service';
 
 @Component({
   selector: 'report-parameters',
@@ -11,8 +14,10 @@ export class ReportParametersComponent implements OnInit {
 
   @Input() reportId:number;
   @Input() active:boolean;
+  @Output() onOkClick: EventEmitter<any> = new EventEmitter();
+  
 
-  fieldArray: Array<Parameter> = [];
+  fieldArray: Array<ParameterInfo> = [];
   public parameterForm = new FormGroup({});
 
   constructor() { 
@@ -23,62 +28,45 @@ export class ReportParametersComponent implements OnInit {
 
   }
 
-  public showDialog(reportId:number)
+  public showDialog(printInfo : PrintInfo)
   {   
+      this.active = true;
       //add sample parameters
       //TODO: get paramaters from service by reportId
-      this.fieldArray = [];
+      var paramsForm = new FormGroup({});
+      var paramArrays  = new Array<ParameterInfo>();      
+      printInfo.parameters.forEach(function(param){
 
-          var param : Parameter = new ParameterInfo();
-          param.fieldName = "Id";
-          param.controlType = "TextBox";
-          param.id = 1;
-          param.defaultValue = "1";
-          param.captionKey = "کد سند";
-          this.fieldArray.push(param);
-          this.parameterForm.addControl(param.fieldName,new FormControl())
+        var paramInfo : ParameterInfo = new ParameterInfo();
+        paramInfo.fieldName = param.fieldName;
+        paramInfo.controlType = param.controlType;
+        paramInfo.id = param.id;
+        paramInfo.defaultValue = param.defaultValue? param.defaultValue : "";
+        paramInfo.captionKey = param.captionKey;
+        paramInfo.operator = param.operator;
+        paramInfo.dataType = param.dataType;
 
-          var param1: Parameter = new ParameterInfo();
-          param1.fieldName = "IsActive";
-          param1.controlType = "CheckBox";
-          param1.id = 2;
-          param1.defaultValue = "true";
-          param1.captionKey = "فعال";
-          this.fieldArray.push(param1);
 
-          this.parameterForm.addControl(param1.fieldName,new FormControl())
-      //add sample parameters
+        paramArrays.push(paramInfo);
+        paramsForm.addControl(paramInfo.fieldName,new FormControl())
+      });
 
-      //add controls
-     
-      
-
+      this.fieldArray = paramArrays;
+      this.parameterForm = paramsForm;
       //show dialog
-      this.active = true;
+      
   }
 
-  public closeDialog()
+  public cancelDialog()
   {
+      this.active = false;      
+  }
+
+  public okDialog()
+  {      
       this.active = false;
+      this.onOkClick.emit({params : this.fieldArray});
   }
 
 }
 
-export interface ParameterFields {
-  value: string;
-}
-
-export class ParameterInfo implements Parameter,ParameterFields {
-  value: string;
-  id: number;  fieldName: string;
-  operator: string;
-  dataType: string;
-  controlType: string;
-  captionKey: string;
-  defaultValue: string;
-  minValue: string;
-  maxValue: string;
-  descriptionKey: string;
-
-  
-}

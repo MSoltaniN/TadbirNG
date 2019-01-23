@@ -801,6 +801,11 @@
   <data name="SourceReportIsRequired" xml:space="preserve">
     <value>Source report is not specified.</value>
   </data>
+  <data name="AccountCollection" xml:space="preserve">
+    <value>Account Collection</value>
+  </data>
+  <data name="AccountCollections" xml:space="preserve">
+    <value>Account Collections</value>
   <data name="CantModifySystemReport" xml:space="preserve">
     <value>This is a system report and cannot be modified or deleted.</value>
   </data>

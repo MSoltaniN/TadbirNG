@@ -801,6 +801,11 @@
   <data name="SourceReportIsRequired" xml:space="preserve">
     <value>گزارش مبدأ مشخص نشده است.</value>
   </data>
+  <data name="AccountCollection" xml:space="preserve">
+    <value>مجموعه حساب</value>
+  </data>
+  <data name="AccountCollections" xml:space="preserve">
+    <value>مجموعه حساب ها</value>
   <data name="CantModifySystemReport" xml:space="preserve">
     <value>گزارش مورد نظر سیستمی بوده و قابل ویرایش یا حذف نیست.</value>
   </data>

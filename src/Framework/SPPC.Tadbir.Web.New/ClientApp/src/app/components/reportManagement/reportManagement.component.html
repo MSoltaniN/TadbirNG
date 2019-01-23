@@ -3,65 +3,86 @@
         <kendo-dialog-titlebar>
                 {{ 'Report.ReportManagement' | translate }}
         </kendo-dialog-titlebar>
-       
-        <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
-                <kendo-splitter [ngStyle]="{'height.px': innerHeight - 250}" >
-                        <kendo-splitter-pane [collapsible]="true" size="30%">
-                                <div class='form-group'><button kendoButton (click)="showParameterForm()" type="button"
-                                                [icon]="'printer'"></button>
-                                        <button kendoButton (click)="designReport()" type="button" [icon]="'pencil'"></button>
-                                        <button kendoButton (click)="saveAsReport()" type="button" [icon]="'floppy'"></button>
-                                        <button kendoButton (click)="deleteReport()" type="button" [icon]="'trash'"></button>
-                                        <button kendoButton (click)="previewReport()" type="button" [icon]="'eye'"></button>
-                                </div>
-                                <div class='form-group'>
-                                        <div class='col-sm-12 col-md-12 col-xs-12 noprl ' [ngClass]="{'pull-right':this.CurrentLanguage === 'fa' , 'pull-left': this.CurrentLanguage === 'en'}">
-                                                <h4>{{ 'Report.Reports' | translate }}</h4>
-                                                <kendo-treeview [nodes]="treeData" textField="name"
-                                                        kendoTreeViewExpandable 
-                                                        kendoTreeViewSelectable
-                                                        kendoTreeViewFlatDataBinding
-                                                        kendoTreeViewHierarchyBinding 
-                                                        idField="id"
-                                                        [selectBy]="'id'"
-                                                        [expandBy]="'id'"
-                                                        [(selectedKeys)]="selectedKeys"
-                                                        [(expandedKeys)]="expandedKeys" 
-                                                        parentIdField="parentId"      
-                                                        (childrenLoaded)="onchildrenLoaded($event)"                                                  
-                                                         (selectionChange)="onNodeClick($event)">
-                                                </kendo-treeview>
-                                        </div>
-                                </div>
 
+        <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
+                <kendo-splitter [ngStyle]="{'height.px': innerHeight - 210}">
+                        <kendo-splitter-pane [collapsible]="true" size="25%">
+                                <kendo-splitter orientation="vertical" [ngStyle]="{'height.px': innerHeight - 240}">
+                                        <kendo-splitter-pane size="8%" [collapsible]="true" [resizable]="false">
+                                                <div class='report-toolbar'>
+                                                        <button [(disabled)]="disableButtons" kendoButton (click)="designReport()" title="{{ 'Report.Design' | translate }}"
+                                                                type="button" [icon]="'pencil'"></button>
+                                                        <button [(disabled)]="disableButtons" kendoButton (click)="saveAsReport()" title="{{ 'Report.SaveAs' | translate }}"
+                                                                type="button" [icon]="'floppy'"></button>
+                                                        <button [(disabled)]="disableButtons"  kendoButton (click)="showDeleteConfirm()" title="{{ 'Report.Delete' | translate }}"
+                                                                type="button" [icon]="'trash'"></button>
+                                                        <button [(disabled)]="disableButtons" kendoButton (click)="prepareReport()" title="{{ 'Report.Preview' | translate }}"
+                                                                type="button" [icon]="'eye'"></button>
+                                                </div>
+                                        </kendo-splitter-pane>
+                                        <kendo-splitter-pane>
+                                                <div class='form-group'>
+                                                        <div class='col-sm-12 col-md-12 col-xs-12 noprl ' [ngClass]="{'pull-right':this.CurrentLanguage === 'fa' , 'pull-left': this.CurrentLanguage === 'en'}">                                                                
+                                                                <kendo-treeview [nodes]="treeData" textField="caption"
+                                                                        kendoTreeViewExpandable kendoTreeViewSelectable
+                                                                        kendoTreeViewFlatDataBinding
+                                                                        kendoTreeViewHierarchyBinding idField="id"
+                                                                        [selectBy]="'id'" [expandBy]="'id'"
+                                                                        [(selectedKeys)]="selectedKeys"
+                                                                        [(expandedKeys)]="expandedKeys" parentIdField="parentId"
+                                                                        (selectionChange)="onNodeClick($event)">
+                                                                        <ng-template kendoTreeViewNodeTemplate
+                                                                                let-dataItem>
+                                                                                <span class="k-icon" [ngClass]="iconClass(dataItem)"></span>
+                                                                                <span [ngClass]="setClass(dataItem)">{{dataItem.caption}}</span>
+                                                                        </ng-template>
+                                                                </kendo-treeview>
+                                                        </div>
+                                                </div>
+                                        </kendo-splitter-pane>
+                                </kendo-splitter>
                         </kendo-splitter-pane>
                         <kendo-splitter-pane>
-                                <div class='col-lg-9 col-sm-12 col-md-12 col-xs-12 noprl' [ngClass]="{'pull-left':this.CurrentLanguage === 'fa' , 'pull-right': this.CurrentLanguage === 'en'}">
-                                        <h4>{{ 'Report.ReportDesign' | translate }}</h4>
-                                        <div id="designer"></div>
-                                        <report-parameters [reportId]="currentReportId">
+                                <div class='col-lg-12 col-sm-12 col-md-12 col-xs-12 noprl' [ngClass]="{'pull-left':this.CurrentLanguage === 'fa' , 'pull-right': this.CurrentLanguage === 'en'}">
+                                        <div *ngIf='showReportDesigner' id="designer"></div>
+                                        <report-viewer *ngIf='showReportViewer' id='compViewer'></report-viewer>
+                                        <report-parameters (onOkClick)="onOkParams($event)" [reportId]="currentReportId">
                                         </report-parameters>
                                 </div>
                         </kendo-splitter-pane>
                 </kendo-splitter>
 
-
-                <!-- <div class='col-lg-3 col-sm-12 col-md-12 col-xs-12 noprl ' 
-        [ngClass]="{'pull-right':this.CurrentLanguage === 'fa' , 'pull-left': this.CurrentLanguage === 'en'}" >
-        <h4>{{ 'Report.Reports' | translate }}</h4>                                    
-        <kendo-treeview [nodes]="treeData" textField="name"
-                kendoTreeViewExpandable  
-                kendoTreeViewSelectable                        
-                kendoTreeViewFlatDataBinding
-                kendoTreeViewHierarchyBinding
-                idField="id"                    
-                parentIdField="parentId"
-                [(expandedKeys)]="expandedKeys" 
-                (nodeClick)="onNodeClick($event)"                    
-                (selectionChange)="onNodeClick($event)">
-                </kendo-treeview>        
-        </div> -->
-
         </div>
-        
+</kendo-dialog>
+<kendo-dialog [minWidth]="300" [width]="400" [height]="210" *ngIf="showSaveAsDialog" class="permission-dialog"
+        [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (close)="cancelReportForm($event)">
+        <kendo-dialog-titlebar>
+                {{ 'Report.SaveAs' | translate }}
+        </kendo-dialog-titlebar>
+        <form novalidate [formGroup]="reportForm">
+                <div class="form-group">
+                        <label for="txtReportName" class="control-label">{{ 'Report.Title' | translate }}</label>
+                        <input type="text" id="txtReportName" class="k-textbox " formControlName="reportName" />
+                        <div class="k-tooltip k-tooltip-validation" [hidden]="reportForm.controls.reportName.valid || reportForm.controls.reportName.pristine">
+                                <span *ngIf="reportForm.controls.reportName.errors?.required">{{ 'Report.ReportNameIsReq' | translate }}</span>
+                                <span *ngIf="reportForm.controls.reportName.errors?.maxlength">{{ 'Report.ReportNameTooLong' | translate }}</span>
+                        </div>
+                </div>
+        </form>
+        <kendo-dialog-actions>
+                <button class="k-button k-primary" [disabled]="!reportForm.valid" (click)="okSaveAsClick($event)">{{
+                        'Buttons.Ok' |
+                        translate }}</button>
+                <button class="k-button" (click)="cancelReportForm($event)">{{ 'Buttons.Cancel' | translate }}</button>
+        </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="{{'Report.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteReport(false)" [minWidth]="250"
+        [width]="450">
+        <p>
+                {{ this.deleteConfirmMsg }}
+        </p>
+        <kendo-dialog-actions>
+                <button class="k-button" (click)="deleteReport(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+                <button class="k-button" (click)="deleteReport(false)">{{ 'Buttons.No' | translate }}</button>
+        </kendo-dialog-actions>
 </kendo-dialog>

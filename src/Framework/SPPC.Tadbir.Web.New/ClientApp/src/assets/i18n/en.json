@@ -69,7 +69,19 @@
     "ReportViewer": "Report Viewer",
     "ReportDesign": "Report Design",
     "Reports": "Reports",
-    "ReportManagement": "Report Management"
+    "ReportManagement": "Report Management",
+    "ReportParameter" : "Report parameters",
+    "Design":"ِDesign Report",
+    "Preview":"Preview Report",
+    "Delete":"Delete Report",
+    "SaveAs":"SaveAs Report",
+    "SaveIsOk":"Report saved successfully",
+    "SaveAsIsOk":"Report copied successfully",
+    "Title" : "Report title",
+    "DeleteReportConfirm": "are you sure to delete report {0}?",
+    "ReportDeleted":"Report deleted successfully",
+    "ReportNameIsReq":"Report name is required",
+    "ReportNameTooLong":"Report name is too long"
   },
   "Buttons": {
     "Ok": "Ok",
@@ -113,7 +125,8 @@
     "Unsuccessful": "Unsuccessful",
     "Successful": "Successful",
     "ViewTreeConfig": "View Tree Config",
-    "AccountGroup": "Account Group"
+    "AccountGroup": "Account Group",
+    "AccountCollection": "Account Collection"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -139,6 +152,12 @@
     "TafziliToUp": "Floating Account",
     "BranchScope": "Branch Scope",
     "AccountGroup": "Account Group"
+  },
+  "AccountCollection": {
+    "Category": "Account Collection Categories",
+    "Account": "Accounts",
+    "Name": "Name",
+    "FullCode": "Full Code"
   },
   "Settings": {
     "AccountRelation": {

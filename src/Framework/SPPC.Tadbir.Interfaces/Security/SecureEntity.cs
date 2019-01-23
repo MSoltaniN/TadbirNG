@@ -38,6 +38,11 @@ namespace SPPC.Tadbir.Security
         public const string AccountGroup = "AccountGroup";
 
         /// <summary>
+        /// نام موجودیت مجموعه حساب
+        /// </summary>
+        public const string AccountCollection = "AccountCollection";
+
+        /// <summary>
         /// نام موجودیت مجازی ارتباطات بردار حساب
         /// </summary>
         public const string AccountRelations = "AccountRelations";

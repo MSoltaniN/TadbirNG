@@ -50,12 +50,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Parent)
                 .WithMany()
-                .HasForeignKey("ParentID")
+                .HasForeignKey(e => e.ParentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_Report_Reporting_Parent");
             builder.HasOne(e => e.CreatedBy)
                 .WithMany()
-                .HasForeignKey("CreatedByID")
+                .HasForeignKey(e => e.CreatedById)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_Report_Auth_CreatedBy");
         }

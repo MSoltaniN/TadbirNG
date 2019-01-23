@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { Http } from '@angular/http';
 import { DefaultComponent } from '../../class/default.component';
 import { VoucherService, VoucherInfo, FiscalPeriodService, SettingService } from '../../service/index';
@@ -22,7 +22,7 @@ import { MessageType, Layout, Entities, Metadatas, environment } from "../../../
 import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Report } from '../../model/report';
 import { ReportingService } from '../../service/report/reporting.service';
-import { CoreReport } from '../../model/coreReport';
+
 
 
 
@@ -31,7 +31,8 @@ declare var Stimulsoft: any;
 @Component({
   selector: 'report-viewer',
   templateUrl: './reportViewer.component.html',
-  styleUrls: ['./reportViewer.component.css']
+  styleUrls: ['./reportViewer.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
@@ -92,7 +93,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   fillResourceVariables(reportObject:Report,stiReport:any)
   {
 
-    reportObject.baseResourceKeys.split(',').forEach(function(resKey)
+    reportObject.resourceKeys.split(',').forEach(function(resKey)
     {
       var resValue = reportObject.resourceMap[resKey];
       var found = stiReport.dictionary.variables.items.find(x => x.name === resKey)      
@@ -106,10 +107,8 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   }
 
   showVoucherReport(reportObject : Report, reportData: any)
-  {
-   
-    this.active = true;
-    
+  {   
+    this.active = true;    
     
     setTimeout(() => {      
      
@@ -169,6 +168,29 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     },10);
 
    
+  }
+
+
+  showReportViewer(reportTemplate :string, reportData: any)
+  {   
+    this.active = true;
+
+    setTimeout(() => {          
+     
+      console.log('Load report from url');      
+      this.report.load(reportTemplate);
+     
+      this.report.regData("Vouchers", "", reportData.rows);
+      this.report.dictionary.variables.getByName("FDate").valueObject = reportData.fromDate;
+      this.report.dictionary.variables.getByName("TDate").valueObject = reportData.toDate;      
+      //this.fillResourceVariables(reportObject,this.report);
+      this.report.render();
+      this.viewer.report = this.report;
+      
+      console.log('Rendering the viewer to selected element');
+      this.viewer.renderHtml('viewer');
+
+    }, 10);   
   }
 
 }

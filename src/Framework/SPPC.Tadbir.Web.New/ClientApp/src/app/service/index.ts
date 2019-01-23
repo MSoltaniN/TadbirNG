@@ -19,3 +19,4 @@ export * from './fullCode.Service';
 export * from './operationLog.service';
 export * from './dashboard.service';
 export * from './accountGroups.service';
+export * from './accountCollection.service';

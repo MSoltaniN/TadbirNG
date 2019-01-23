@@ -966,6 +966,16 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         public const string AccountGroup = "AccountGroup";
 
         /// <summary>
+        /// Default text : مجموعه حساب
+        /// </summary>
+        public const string AccountCollection = "AccountCollection";
+
+        /// <summary>
+        /// Default text : مجموعه حساب ها
+        /// </summary>
+        public const string AccountCollections = "AccountCollections";
+
+        /// <summary>
         /// Default text : دارایی
         /// </summary>
         public const string CategoryAsset = "CategoryAsset";
