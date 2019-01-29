@@ -44,7 +44,8 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، حساب های یک مجموعه حساب را اضافه میکند
         /// </summary>
         /// <param name="accCollectionsList">اطلاعات حساب های یک مجموعه حساب</param>
+        /// <param name="collectionId">شناسه یکتای مجموعه حساب انتخاب شده</param>
         /// <returns></returns>
-        Task AddAccountCollectionAccountAsync(IList<AccountCollectionAccountViewModel> accCollectionsList);
+        Task AddAccountCollectionAccountAsync(int collectionId, IList<AccountCollectionAccountViewModel> accCollectionsList);
     }
 }

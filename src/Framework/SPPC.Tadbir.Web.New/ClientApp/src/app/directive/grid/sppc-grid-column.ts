@@ -69,8 +69,8 @@ export class SppcGridColumn {
 
     var self = this.hostColumn;
 
-    var items = document.getElementsByTagName('kendo-dropdownlist');
-
+    //var items = document.getElementsByTagName('kendo-dropdownlist');
+    var items = document.getElementsByClassName('k-dropdown-operator');
     if (items.length > 0) {
 
       for (var i = 0; i < items.length; i++) {

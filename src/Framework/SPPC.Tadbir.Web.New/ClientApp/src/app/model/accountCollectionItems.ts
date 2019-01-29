@@ -10,9 +10,9 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-import { AccountIdentity } from "./accountIdentity";
+import { Account } from "./account";
 
 export interface AccountCollectionItems {
-  allAccounts: Array<AccountIdentity>;
-  selectedAccounts: Array<AccountIdentity>;
+  allAccounts: Array<Account>;
+  selectedAccounts: Array<Account>;
 }

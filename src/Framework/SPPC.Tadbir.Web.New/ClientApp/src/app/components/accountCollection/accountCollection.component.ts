@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf, ViewChil
 import { AccountCollectionService, SettingService, AccountCollectionAccountInfo } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent, RowClassArgs } from '@progress/kendo-angular-grid';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
@@ -13,12 +12,10 @@ import { MessageType, Layout, Entities, Metadatas } from "../../../environments/
 import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Response } from '@angular/http';
 import { AccountCollectionApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
-//import { AccountGroupPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
-import { AccountCollectionCategory, AccountCollection, ViewTreeLevelConfig, AccountIdentity, AccountCollectionAccount } from '../../model/index';
+import { AccountCollectionCategory, AccountCollection, ViewTreeLevelConfig, AccountCollectionAccount, Account } from '../../model/index';
 import { TreeItem } from '@progress/kendo-angular-treeview';
 import { SelectableSettings } from '@progress/kendo-angular-grid';
 import { AccountRelationsType } from '../../enum/accountRelationType';
@@ -62,10 +59,12 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   currentFilter: FilterExpression;
   //permission flag
   viewAccess: boolean;
-  public selectedRows: number[] = [];
+  public selectableRows: number[] = [];//شناسه یکتای انتخاب شده گرید اول
+  public selectedRows: number[] = [];//شناسه یکتای انتخاب شده گرید دوم
   public totalRecords: number;
   public rowData: GridDataResult;
-  public selectedRowData: Array<AccountIdentity> = [];
+  public selectedRowData: Array<Account> = [];
+  newSelectedRowData: Array<Account> = [];
   dataloadingMessage: boolean = false;
   selectedDataloadingMessage: boolean = false;
   public selectableSettings: SelectableSettings;
@@ -109,36 +108,28 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   getAccountLevels() {
 
     this.settingService.getViewTreeSettings(AccountRelationsType.Account).subscribe(res => {
-
       this.Accountlevels = res.current.levels.filter(f => f.isEnabled == true);
-
     })
 
   }
 
 
-  handleLevelChange(level: any) {
-    this.reloadGrid();
-  }
-
   /**
-   * 
+   * وقتی مجموعه حساب انتخاب میشود اجرا میشود
    * @param item
    */
   public handleSelection(item: TreeItem): void {
+
     this.selectedCollectionItem = undefined;
     this.selectedRowData = [];
     this.selectedRows = [];
+    this.selectableRows = [];
+    this.rowData = undefined;
+    this.dataloadingMessage = false;
+    this.selectedDataloadingMessage = false;
 
     if (item.dataItem.id > 0 && !item.dataItem.accountCollections) {
       this.selectedCollectionItem = item.dataItem;
-
-      this.selectableSettings = {
-        checkboxOnly: true,
-        mode: this.selectedCollectionItem.multiSelect ? 'multiple' : 'single'
-      };
-
-      this.reloadGrid();
     }
     else
       if (item.dataItem.id > 0) {
@@ -147,15 +138,26 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
       }
   }
 
+  /**
+   *وقتی سطح حساب انتخاب میشود
+   * */
+  public handleLevelChange() {
+    this.selectableRows = [];
+    this.rowData = undefined;
+    this.dataloadingMessage = false;
+  }
+
   reloadGrid() {
-    if (this.selectedCollectionItem && this.ddlLevelSelected > 0) {
+    if (this.selectedCollectionItem) {
 
       //شماره سطح در جدول حساب از صفر شروع میشود ولی در سطوح حساب از یک شروع میشود به همین دلیل یک واحد از شماره سطح انتخاب شده کم میکنیم
 
       if (this.viewAccess) {
         this.grid.loading = true;
-        var filter = this.addFilterToFilterExpression(this.currentFilter,
-          new Filter("Level", (this.ddlLevelSelected - 1).toString(), "== {0}", "System.Int32"), FilterExpressionOperator.And);
+        var filter = this.currentFilter;
+        if (this.ddlLevelSelected > 0)
+          filter = this.addFilterToFilterExpression(this.currentFilter,
+            new Filter("Level", (this.ddlLevelSelected - 1).toString(), "== {0}", "System.Int32"), FilterExpressionOperator.And);
 
         if (this.totalRecords == this.skip && this.totalRecords != 0) {
           this.skip = this.skip - this.pageSize;
@@ -180,7 +182,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
             total: totalCount
           }
 
-          this.selectedRowData = this.selectedRowData.concat(resData.selectedAccounts);
+          this.selectedRowData = resData.selectedAccounts.concat(this.newSelectedRowData);
 
           this.dataloadingMessage = !(resData.allAccounts.length == 0);
           this.selectedDataloadingMessage = !(resData.selectedAccounts.length == 0);
@@ -201,39 +203,32 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
 
   /**
-   * وقتی یکی از سطرهای گرید اول انتخاب میشود
-   * @param checkedState آرایه ای از آیدی های انتخاب شده
-   */
-  onSelectableKeysChange(checkedState: any) {
-    for (let item of checkedState) {
-      if (!this.selectedRowData.find(f => f.id == item)) {
-        var row = this.rowData.data.find(f => f.id == item);
+   *اضافه کردن حساب انتخاب شده از گرید اول به گرید دوم
+   * */
+  addAccount() {
+    if (this.isSelectableAccount()) {
+      if (!this.selectedRowData.find(f => f.id == this.selectableRows[0])) {
+        var row = this.rowData.data.find(f => f.id == this.selectableRows[0]);
         this.selectedRowData.push(row);
+        this.newSelectedRowData.push(row);
       }
     }
-
-    this.onSelectedKeysChange(checkedState);
+    this.selectableRows = [];
   }
 
   /**
-   * وقتی یکی از سطرهای گرید دوم از حالت انتخاب بیرون می آید
-   * @param checkedState آرایه ای از آیدی های انتخاب شده
-   */
-  onSelectedKeysChange(checkedState: any) {
-    if (checkedState.length == 0) {
-      this.selectedRowData = [];
+   *حذف کردن حساب انتخاب شده در گرید دوم
+   * */
+  removeAccount() {
+    var item = this.selectedRowData.find(f => f.id == this.selectedRows[0])
+    var index = this.selectedRowData.indexOf(item);
+    if (index != -1) {
+      this.selectedRowData.splice(index, 1);
     }
-    this.selectedRowData.forEach(item => {
-      if (!checkedState.find(f => f == item.id)) {
-        var index = this.selectedRowData.indexOf(item);
-        if (index != -1) {
-          this.selectedRowData.splice(index, 1);
-        }
-      }
-    })
-
+    this.selectedRows = [];
+    if (this.selectedRowData.length == 0)
+      this.selectedDataloadingMessage = false;
   }
-
 
   filterChange(filter: CompositeFilterDescriptor): void {
     var isReload: boolean = false;
@@ -247,7 +242,6 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-
     this.sort = sort.filter(f => f.dir != undefined);
 
     this.reloadGrid();
@@ -258,8 +252,11 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
     this.reloadGrid();
   }
 
-
+  /**
+   *ارسال حسابهای انتخاب شده به سرویس
+   * */
   saveChanges() {
+    debugger;
     var collectionId = this.selectedCollectionItem.id;
 
     this.accCollectionArray = [];
@@ -275,9 +272,19 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
         })
     })
 
-    this.accountCollectionService.insert<Array<AccountCollectionAccount>>(AccountCollectionApi.AccountCollections, this.accCollectionArray).subscribe(res => {
+    this.accountCollectionService.insert<Array<AccountCollectionAccount>>(String.Format(AccountCollectionApi.AccountCollectionAccount, this.selectedCollectionItem.id), this.accCollectionArray).subscribe(res => {
       this.showMessage(this.updateMsg, MessageType.Succes);
+
       this.accCollectionArray = [];
+      this.selectedRowData = [];
+      this.selectedRows = [];
+      this.selectableRows = [];
+      this.rowData = undefined;
+      this.dataloadingMessage = false;
+      this.selectedDataloadingMessage = false;
+      this.newSelectedRowData = [];
+
+      this.reloadGrid();
     }, (error => {
       this.showMessage(error, MessageType.Warning);
     }));
@@ -285,11 +292,21 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   }
 
   //قابل انتخاب یا غیر قابل انتخاب بودن یک سطر را بررسی میکند
-  public selectionToggleCallback = (context: RowClassArgs) => {
-    var isDisabled = this.selectedCollectionItem.typeLevel == TypeLevel.AllAccounts ||
-      (this.selectedCollectionItem.typeLevel == TypeLevel.LeafAccounts && context.dataItem.childCount == 0) ||
-      (this.selectedCollectionItem.typeLevel == TypeLevel.NonLeafAccounts && context.dataItem.childCount > 0) ? false : true;;
-    return { 'k-disabled': isDisabled };
+  public isSelectableAccount(): boolean {
+    if (!this.selectedCollectionItem.multiSelect && this.selectedRowData.length > 0) {
+      this.toastrService.warning(this.getText('AccountCollection.MultiSelectValidation'));
+      return false;
+    }
+    else {
+      var row = this.rowData.data.find(f => f.id == this.selectableRows[0]);
+      var isDisabled = this.selectedCollectionItem.typeLevel == TypeLevel.AllAccounts ||
+        (this.selectedCollectionItem.typeLevel == TypeLevel.LeafAccounts && row.childCount == 0) ||
+        (this.selectedCollectionItem.typeLevel == TypeLevel.NonLeafAccounts && row.childCount > 0) ? true : false;
+
+      if (!isDisabled)
+        this.toastrService.warning(this.getText('AccountCollection.SelectValidation'));
+      return isDisabled;
+    }
   }
 
   //#endregion

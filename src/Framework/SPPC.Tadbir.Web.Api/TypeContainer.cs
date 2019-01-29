@@ -82,7 +82,6 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IAccountGroupRepository, AccountGroupRepository>();
             _services.AddTransient<IReportRepository, ReportRepository>();
             _services.AddTransient<IAccountCollectionCategoryRepository, AccountCollectionCategoryRepository>();
-            _services.AddTransient<IAccountCollectionRepository, AccountCollectionRepository>();
             _services.AddTransient<IAccountCollectionAccountRepository, AccountCollectionAccountRepository>();
         }
 

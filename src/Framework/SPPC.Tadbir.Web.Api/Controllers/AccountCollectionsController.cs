@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
@@ -6,8 +8,6 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -56,13 +56,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
-        // POST: api/acccollections
+        // POST: api/acccollections/collection/{collectionId:min(1)}
         [HttpPost]
-        [Route(AccountCollectionApi.AccountCollectionsUrl)]
+        [Route(AccountCollectionApi.AccountCollectionAccountUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.Create)]
-        public async Task<IActionResult> PostAccountCollectionAccountAsync([FromBody]List<AccountCollectionAccountViewModel> accCollections)
+        public async Task<IActionResult> PostAccountCollectionAccountAsync(int collectionId, [FromBody]List<AccountCollectionAccountViewModel> accCollections)
         {
-            await _repository.AddAccountCollectionAccountAsync(accCollections);
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _repository.AddAccountCollectionAccountAsync(collectionId, accCollections);
             return Ok();
         }
 

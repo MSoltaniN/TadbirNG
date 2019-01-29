@@ -27,9 +27,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public FiscalPeriod()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            Name = String.Empty;
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now;
+            Description = String.Empty;
+            ModifiedDate = DateTime.Now;
             InitReferences();
         }
 

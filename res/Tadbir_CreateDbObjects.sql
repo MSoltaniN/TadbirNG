@@ -646,3 +646,19 @@ GO
 
 SET QUOTED_IDENTIFIER OFF
 GO
+
+
+CREATE TABLE [Finance].[AccountCollectionAccount] (
+    [AccountCollectionAccountID]   INT              IDENTITY (1, 1) NOT NULL,
+	[CollectionID]                 INT              NOT NULL,
+    [AccountID]                    INT              NOT NULL,
+    [BranchID]                     INT              NOT NULL,
+    [FiscalPeriodID]               INT              NOT NULL,
+    [rowguid]                      UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountCollectionAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]                 DATETIME         CONSTRAINT [DF_Finance_AccountCollectionAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_AccountCollectionAccount] PRIMARY KEY CLUSTERED ([AccountCollectionAccountID] ASC)
+    , CONSTRAINT [FK_Finance_AccountCollectionAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Finance_AccountCollectionAccount_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Finance_AccountCollectionAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+)
+GO
