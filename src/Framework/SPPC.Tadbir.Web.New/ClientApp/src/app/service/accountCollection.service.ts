@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { BaseService } from '../class/base.service';
-import { AccountGroup, AccountCollectionCategory, AccountCollection } from '../model/index';
-import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
+import { AccountCollectionCategory, AccountCollection } from '../model/index';
+import { HttpClient } from '@angular/common/http';
 import { AccountCollectionAccount } from '../model/accountCollectionAccount';
 
 export class AccountCollectionCategoryInfo implements AccountCollectionCategory {
@@ -34,6 +33,5 @@ export class AccountCollectionService extends BaseService {
   constructor(public http: HttpClient) {
     super(http);
   }
-
 
 }

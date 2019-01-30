@@ -67,21 +67,21 @@
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
-    "ReportDesign" : "طراحی گزارش",
-    "Reports" : "گزارشات",
-    "ReportManagement" : "مدیریت گزارشات",
-    "ReportParameter" : "پارامترهای گزارش",
-    "Design":"طراحی گزارش",
-    "Preview":"نمایش گزارش",
-    "Delete":"حذف گزارش",
-    "SaveAs":"کپی گزارش",
-    "SaveIsOk":"گزارش با موفقیت ذخیره شد",
-    "SaveAsIsOk":"گزارش با موفقیت کپی شد",
-    "Title" : "نام گزارش",
+    "ReportDesign": "طراحی گزارش",
+    "Reports": "گزارشات",
+    "ReportManagement": "مدیریت گزارشات",
+    "ReportParameter": "پارامترهای گزارش",
+    "Design": "طراحی گزارش",
+    "Preview": "نمایش گزارش",
+    "Delete": "حذف گزارش",
+    "SaveAs": "کپی گزارش",
+    "SaveIsOk": "گزارش با موفقیت ذخیره شد",
+    "SaveAsIsOk": "گزارش با موفقیت کپی شد",
+    "Title": "نام گزارش",
     "DeleteReportConfirm": "آیا برای حذف گزارش {0} اطمینان دارید؟",
-    "ReportDeleted":"گزارش با موفقیت حذف شد",
-    "ReportNameIsReq":"نام گزارش اجباری می باشد",
-    "ReportNameTooLong":"نام گزارش طولانی می باشد"
+    "ReportDeleted": "گزارش با موفقیت حذف شد",
+    "ReportNameIsReq": "نام گزارش اجباری می باشد",
+    "ReportNameTooLong": "نام گزارش طولانی می باشد"
   },
   "Buttons": {
     "Ok": "تایید",
@@ -155,7 +155,12 @@
     "Category": "مجموعه حساب ها",
     "Account": "حساب ها",
     "Name": "نام حساب",
-    "FullCode": "کد حساب"
+    "FullCode": "کد حساب",
+    "AccountLevel": "سطح حساب",
+    "SelectedAccounts": "حساب های انتخاب شده",
+    "SelectableAccounts": "حساب های قابل انتخاب",
+    "MultiSelectValidation": "برای این مجموعه حساب فقط یک حساب قابل انتخاب است",
+    "SelectValidation": "این حساب قابل انتخاب نیست"
   },
   "Settings": {
     "AccountRelation": {

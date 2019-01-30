@@ -46,14 +46,14 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             var accounts = await _repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
-                .Select(acc => Mapper.Map<AccountIdentityViewModel>(acc))
+                .Select(acc => Mapper.Map<AccountViewModel>(acc))
                 .Apply(gridOptions)
                 .ToListAsync();
 
             var accCollection = await _repository
                 .GetAllOperationQuery<AccountCollectionAccount>(ViewName.AccountCollectionAccount, col => col.Account, col => col.Account.Children)
-                .Where(col => col.CollectionId == collectionId)
-                .Select(col => Mapper.Map<AccountIdentityViewModel>(col))
+                .Where(col => col.CollectionId == collectionId && col.BranchId == _currentContext.BranchId && col.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .Select(col => Mapper.Map<AccountViewModel>(col))
                 .ToListAsync();
 
             return new AccountCollectionItemsViewModel()
@@ -82,7 +82,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetCountAsync<Account, AccountCollectionItemsViewModel>(
+            return await _repository.GetCountAsync<Account, AccountViewModel>(
                 ViewName.Account, gridOptions);
         }
 
@@ -99,59 +99,91 @@ namespace SPPC.Tadbir.Persistence.Repository
         /// به روش آسنکرون، حساب های یک مجموعه حساب را اضافه یا کم میکند
         /// </summary>
         /// <param name="accCollectionsList">اطلاعات حساب های یک مجموعه حساب</param>
+        /// <param name="collectionId">شناسه یکتای مجموعه حساب انتخاب شده</param>
         /// <returns></returns>
-        public async Task AddAccountCollectionAccountAsync(IList<AccountCollectionAccountViewModel> accCollectionsList)
+        public async Task AddAccountCollectionAccountAsync(int collectionId, IList<AccountCollectionAccountViewModel> accCollectionsList)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            var existing = await repository.GetByCriteriaAsync(f => f.CollectionId == accCollectionsList.FirstOrDefault().CollectionId, f => f.Branch);
-            if (AreAccountCollectionModified(existing, accCollectionsList))
-            {
-                if (existing.Count > 0)
-                {
-                    //RemoveInaccessibleBranches(repository, existing, roleBranches);
-                }
+            var existing = await repository.GetByCriteriaAsync(
+                f => f.CollectionId == collectionId &&
+                f.FiscalPeriodId == _currentContext.FiscalPeriodId);
 
-                AddNewAccountCollections(repository, existing, accCollectionsList);
-                await UnitOfWork.CommitAsync();
+            if (existing.Count > 0)
+            {
+                await RemoveInaccessibleAccountCollections(repository, existing, accCollectionsList);
             }
 
-            UnitOfWork.UseSystemContext();
+            await AddNewAccountCollections(repository, existing, accCollectionsList);
+            await UnitOfWork.CommitAsync();
         }
 
-        private static bool AreAccountCollectionModified(IList<AccountCollectionAccount> existing, IList<AccountCollectionAccountViewModel> accCollectionsList)
+        private async Task AddNewAccountCollections(
+            IAsyncRepository<AccountCollectionAccount> repository, IList<AccountCollectionAccount> existing, IList<AccountCollectionAccountViewModel> accCollectionsList)
         {
-            var existingItems = existing
-                .Select(rb => rb.BranchId)
-                .ToArray();
-            var selectedItems = accCollectionsList
-                .Select(item => item.Id)
-                .ToArray();
-            return (!AreEqual(existingItems, selectedItems));
-        }
+            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
 
-        private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
-        {
-            return left.Count() == right.Count()
-                && left.All(value => right.Contains(value));
-        }
-
-        private void AddNewAccountCollections(
-            IRepository<AccountCollectionAccount> repository, IList<AccountCollectionAccount> existing, IList<AccountCollectionAccountViewModel> accCollectionsList)
-        {
-            //var branchRepository = UnitOfWork.GetRepository<Branch>();
-            //var accountRepository = UnitOfWork.GetRepository<Account>();
-            //var fpRepository = UnitOfWork.GetRepository<FiscalPeriod>();
-
-            var currentItems = existing.Select(rb => rb.CollectionId);
+            var branchID = _currentContext.BranchId;
+            var accountItems = existing
+                .Where(item => item.BranchId == branchID)
+                .Select(item => item.AccountId);
             var newItems = accCollectionsList
-                .Where(item => !currentItems.Contains(item.Id));
+                .Where(item => !accountItems.Contains(item.AccountId));
             foreach (var item in newItems)
             {
-                var test = Mapper.Map<AccountCollectionAccount>(item);
-                //test.Branch = branchRepository.GetByID(test.BranchId);
-                //test.Account = accountRepository.GetByID(test.AccountId);
-                //test.FiscalPeriod = fpRepository.GetByID(test.FiscalPeriodId);
-                repository.Insert(test);
+                var accountCollectionAccount = Mapper.Map<AccountCollectionAccount>(item);
+                repository.Insert(accountCollectionAccount);
+                await CascadeNewAccountCollection(repository, branchRepository, item);
+            }
+        }
+
+        private async Task CascadeNewAccountCollection(IAsyncRepository<AccountCollectionAccount> repository,
+            IAsyncRepository<Branch> branchRepository,
+            AccountCollectionAccountViewModel accCollection)
+        {
+            var branches = await branchRepository.GetByCriteriaAsync(br => br.ParentId == accCollection.BranchId);
+            foreach (var item in branches)
+            {
+                var accountCollectionAccount = Mapper.Map<AccountCollectionAccount>(accCollection);
+                accountCollectionAccount.Id = 0;
+                accountCollectionAccount.BranchId = item.Id;
+                repository.Insert(accountCollectionAccount);
+                accCollection.BranchId = item.Id;
+                await CascadeNewAccountCollection(repository, branchRepository, accCollection);
+            }
+        }
+
+        private async Task RemoveInaccessibleAccountCollections(
+            IAsyncRepository<AccountCollectionAccount> repository,
+            IList<AccountCollectionAccount> existing,
+            IList<AccountCollectionAccountViewModel> accCollectionsList)
+        {
+            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+
+            var accountItems = accCollectionsList
+                .Select(item => item.AccountId);
+            var branchID = _currentContext.BranchId;
+            var removedItems = existing
+                .Where(item => item.BranchId == branchID && !accountItems.Contains(item.AccountId))
+                .ToArray();
+            foreach (var item in removedItems)
+            {
+                await CascadeNewAccountCollection(repository, branchRepository, existing, item);
+                repository.Delete(item);
+            }
+        }
+
+        private async Task CascadeNewAccountCollection(
+            IAsyncRepository<AccountCollectionAccount> repository,
+            IAsyncRepository<Branch> branchRepository,
+            IList<AccountCollectionAccount> existing,
+            AccountCollectionAccount removedItem)
+        {
+            var branchChildes = await branchRepository.GetByCriteriaAsync(br => br.ParentId == removedItem.BranchId);
+            foreach (var child in branchChildes)
+            {
+                var removed_Item = existing.Where(col => col.BranchId == child.Id && col.CollectionId == removedItem.CollectionId && col.AccountId == removedItem.AccountId).Single();
+                await CascadeNewAccountCollection(repository, branchRepository, existing, removed_Item);
+                repository.Delete(removed_Item);
             }
         }
 

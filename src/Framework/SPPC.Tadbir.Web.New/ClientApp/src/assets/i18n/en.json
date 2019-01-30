@@ -157,7 +157,12 @@
     "Category": "Account Collection Categories",
     "Account": "Accounts",
     "Name": "Name",
-    "FullCode": "Full Code"
+    "FullCode": "Full Code",
+    "AccountLevel": "Account Level",
+    "SelectedAccounts": "Selected Accounts",
+    "SelectableAccounts": "Selectable Accounts",
+    "MultiSelectValidation": "For this account set only one account can be selected",
+    "SelectValidation": "This account can not be selected"
   },
   "Settings": {
     "AccountRelation": {

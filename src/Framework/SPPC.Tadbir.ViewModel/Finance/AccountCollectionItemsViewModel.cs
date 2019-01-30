@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -12,11 +10,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// تمام حساب های قابل انتخاب در مجموعه حساب ها
         /// </summary>
-        public List<AccountIdentityViewModel> AllAccounts { get; set; }
+        public List<AccountViewModel> AllAccounts { get; set; }
 
         /// <summary>
         /// حساب های انتخاب شده برای یک مجموعه حساب
         /// </summary>
-        public List<AccountIdentityViewModel> SelectedAccounts { get; set; }
+        public List<AccountViewModel> SelectedAccounts { get; set; }
     }
 }

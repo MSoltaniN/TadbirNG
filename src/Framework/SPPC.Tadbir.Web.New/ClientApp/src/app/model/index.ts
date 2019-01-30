@@ -34,5 +34,4 @@ export * from './accountGroup';
 export * from './treeNodeInfo';
 export * from './accountCollectionCategory';
 export * from './accountCollection';
-export * from './accountIdentity';
 export * from './accountCollectionAccount';

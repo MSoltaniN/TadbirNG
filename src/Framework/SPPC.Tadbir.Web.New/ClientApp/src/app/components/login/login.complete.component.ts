@@ -21,321 +21,317 @@ import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 
 export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
+  return layout.getLayout();
+}
+
+interface Item {
+  key: number,
+  value: string
 }
 
 @Component({
-    selector: 'logincomplete',
-    templateUrl: 'login.complete.component.html',
-    styleUrls: ['./login.complete.component.css'],
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    }]
+  selector: 'logincomplete',
+  templateUrl: 'login.complete.component.html',
+  styleUrls: ['./login.complete.component.css'],
+  providers: [{
+    provide: RTL,
+    useFactory: getLayoutModule,
+    deps: [Layout]
+  }]
 
 })
 
 
 export class LoginCompleteComponent extends DefaultComponent implements OnInit {
-    
 
-    
-    //#region Fields
-    model: any = {};
-    loading = false;
-    returnUrl: string;
-    ticket: string = '';
+  //#region Fields
+  model: any = {};
+  loading = false;
+  returnUrl: string;
+  ticket: string = '';
+
+  public disabledBranch: boolean = true;
+  public disabledFiscalPeriod: boolean = true
+  public disabledCompany: boolean = true;
+
+  public compenies: Array<Item> = [];
+  public branches: Array<Item> = [];
+  public fiscalPeriods: Array<Item> = [];
+
+  public companyId: string = '';
+  public branchId: string = '';
+  public fiscalPeriodId: string = '';
+  //#endregion
+
+  //#region Constructor
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    public toastrService: ToastrService,
+    public translate: TranslateService,
+    public renderer: Renderer2,
+    public metadata: MetaDataService,
+    public userService: UserService,
+    public settingService: SettingService) {
+    super(toastrService, translate, renderer, metadata, settingService, '', '');
+
+  }
+
+  //#endregion
+
+  //#region Events
+
+  ngOnInit() {
+
+    this.disabledCompany = true;
+    this.getCompany();
+    //load setting
+    this.loadAllSetting();
+
+    // var currentLang = localStorage.getItem('lang')
+    // if(currentLang == 'fa')
+    //      this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.Rtl.css');
+    // else
+    //      this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.min.css');
+
+    // this.document.getElementById('adminlteSkin').setAttribute('href', 'assets/dist/css/skins/_all-skins.min.css');
 
 
+  }
 
-    public disabledBranch: boolean = true;
-    public disabledFiscalPeriod: boolean = true
-    public disabledCompany: boolean = true;    
+  //#endregion
 
-    public compenies: any = {};
+  //#region Methods
 
-    public branches: any = {};
+  public branchChange(value: any) {
+    this.fiscalPeriodId = '';
+  }
 
-    public fiscalPeriods: any = {};
+  public companyChange(value: any): void {
+    this.disabledBranch = true;
+    this.disabledFiscalPeriod = true;
+
+    this.branches = [];
+    this.branchId = '';
+
+    this.fiscalPeriods = [];
+    this.fiscalPeriodId = '';
+
+    this.getBranch(value);
+    this.getFiscalPeriod(value);
+
+    var lastBranchId = localStorage.getItem(SessionKeys.LastUserBranch + this.UserId + this.companyId);
+    var lastFpId = localStorage.getItem(SessionKeys.LastUserFpId + this.UserId + this.companyId);
+
+    if (lastBranchId)
+      this.branchId = lastBranchId;
+
+    if (lastFpId)
+      this.fiscalPeriodId = lastFpId;
+
+  }
+
+  getCompany() {
+    this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
+      this.compenies = res;
+      this.disabledCompany = false;
+
+      //#region load current setting
+      if (this.CompanyId) {
+        this.companyId = this.CompanyId.toString();
+        this.companyChange(this.companyId);
+      }
+      //#endregion
+    });;
+  }
 
 
-    public companyId: string = '';
-    public branchId: string = '';
-    public fiscalPeriodId: string = '';
-    //#endregion
+  getBranch(companyId: number) {
+    this.authenticationService.getBranches(companyId, this.Ticket).subscribe(res => {
+      this.disabledBranch = false;
+      this.branches = res;
+    });
+  }
 
-    //#region Constructor
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private authenticationService: AuthenticationService,
-        public toastrService: ToastrService,
-        public translate: TranslateService,
-        @Host() parent: LoginContainerComponent,
-        public renderer: Renderer2,
-        public metadata: MetaDataService,
-        public userService: UserService,
-        public settingService : SettingService,@Inject(DOCUMENT) public document) 
-    {
-      super(toastrService, translate, renderer, metadata, settingService,'', '');
-            
+  getFiscalPeriod(companyId: number) {
+
+    this.authenticationService.getFiscalPeriod(companyId, this.Ticket).subscribe(res => {
+      this.disabledFiscalPeriod = false;
+      this.fiscalPeriods = res;
+    });
+  }
+
+  isValidate(): boolean {
+    var isValidate: boolean = true;
+
+    if (this.companyId == '') {
+      this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+      this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+      this.showMessage(this.getText("AllValidations.Login.CompanyIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+
+      isValidate = false;
+      return isValidate;
     }
 
-    //#endregion
-
-    //#region Events
-
-    ngOnInit() {        
-
-        this.disabledCompany = true;
-        this.getCompany();
-        //load setting
-        this.loadAllSetting();
-        
-        // var currentLang = localStorage.getItem('lang')
-        // if(currentLang == 'fa')
-        //      this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.Rtl.css');
-        // else
-        //      this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.min.css');
-        
-        // this.document.getElementById('adminlteSkin').setAttribute('href', 'assets/dist/css/skins/_all-skins.min.css');
-                  
-             
+    if (this.branchId == '') {
+      this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+      isValidate = false;
     }
 
-    //#endregion
-
-    //#region Methods
-
-    public branchChange(value: any) {        
-        this.fiscalPeriodId = '';
+    if (this.fiscalPeriodId == '') {
+      this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+      isValidate = false;
     }
 
-    public companyChange(value: any): void {
-        this.disabledBranch = true;
-        this.disabledFiscalPeriod = true;
+    return isValidate;
+  }
 
-        this.branches = [];
-        this.branchId = '';
+  selectParams() {
 
-        this.fiscalPeriods = [];
-        this.fiscalPeriodId = '';
+    sessionStorage.removeItem("viewTreeConfig");
 
-        this.getBranch(value);
-        this.getFiscalPeriod(value);
+    if (this.isValidate()) {
 
-        var lastBranchId = localStorage.getItem(SessionKeys.LastUserBranch + this.UserId + this.companyId);
-        var lastFpId = localStorage.getItem(SessionKeys.LastUserFpId + this.UserId + this.companyId);
+      if (this.authenticationService.islogin()) {
 
-        if (lastBranchId)
-            this.branchId = lastBranchId;
+        this.getCompanyTicket();
 
-        if (lastFpId)
-            this.fiscalPeriodId = lastFpId;
-
+      }
     }
+  }
 
-    getCompany() {
-        this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
-            this.compenies = res;
-            this.disabledCompany = false;
+  onCancleClick() {
+    if (this.authenticationService.islogin()) {
+      var currentUser = this.authenticationService.getCurrentUser();
+      if (currentUser != null) {
+        this.companyId = currentUser.companyId.toString();
+        this.branchId = currentUser.branchId.toString();
+        this.fiscalPeriodId = currentUser.fpId.toString();
 
-            //#region load current setting
-            if (this.CompanyId) {
-                this.companyId = this.CompanyId.toString();
-                this.companyChange(this.companyId);
-            }
-            //#endregion
-        });;
+        this.loadMenuAndRoute(currentUser);
+      }
     }
+  }
 
 
-    getBranch(companyId: number) {
-        this.authenticationService.getBranches(companyId, this.Ticket).subscribe(res => {
-            this.disabledBranch = false;
-            this.branches = res;
-        });
-    }
+  loadAllSetting() {
 
-    getFiscalPeriod(companyId: number) {
+    var settingList: Array<ListFormViewConfig> = new Array<ListFormViewConfig>();
 
-        this.authenticationService.getFiscalPeriod(companyId, this.Ticket).subscribe(res => {
-            this.disabledFiscalPeriod = false;
-            this.fiscalPeriods = res;
-        });
-    }
+    this.settingService.getListSettingsByUser(this.UserId).subscribe((res: Array<ListFormViewConfig>) => {
 
-    isValidate(): boolean {
-        var isValidate: boolean = true;
+      if (res)
+        localStorage.setItem(SessionKeys.Setting + this.UserId, JSON.stringify(res));
+    });
+  }
 
-        if (this.companyId == '') {
-            this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-            this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-            this.showMessage(this.getText("AllValidations.Login.CompanyIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-                       
-            isValidate = false;
-            return isValidate;
+  loadMenuAndRoute(currentUser: ContextInfo) {
+    //#region load menu
+    var menuList: Array<Command> = new Array<Command>();
+
+    var commands: any;
+
+    this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
+      if (this.authenticationService.isRememberMe())
+        localStorage.setItem('fiscalPeriod', JSON.stringify(res));
+      else
+        sessionStorage.setItem('fiscalPeriod', JSON.stringify(res));
+    })
+
+    this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
+      var list: Array<Command> = res;
+
+      if (this.authenticationService.isRememberMe()) {
+        localStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
+        localStorage.setItem('currentContext', JSON.stringify(currentUser));
+      }
+      else {
+        sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
+        sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
+      }
+
+      if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
+        var url = this.route.snapshot.queryParams['returnUrl'];
+        this.router.navigate([url]);
+      }
+      else {
+
+        var currentRoute = sessionStorage.getItem(SessionKeys.CurrentRoute);
+        if (currentRoute) {
+          this.router.navigate([currentRoute]);
         }
-
-        if (this.branchId == '') {
-            this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-            isValidate = false;
+        else {
+          this.router.navigate(['/dashboard']);
         }
+      }
 
-        if (this.fiscalPeriodId == '') {
-            this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-            isValidate = false;
-        }
+    });
 
-        return isValidate;
-    }
+    this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
+      var list: Array<Command> = res;
 
-    selectParams() {
+      if (this.authenticationService.isRememberMe()) {
+        localStorage.setItem(SessionKeys.Profile, JSON.stringify(res));
+      }
+      else {
+        sessionStorage.setItem(SessionKeys.Profile, JSON.stringify(res));
+      }
 
-      sessionStorage.removeItem("viewTreeConfig");
+    });
 
-        if (this.isValidate()) {
 
-            if (this.authenticationService.islogin()) {
-                
-                this.getCompanyTicket();
-                
-            }
-        }
-    }
 
-    onCancleClick() {
-        if (this.authenticationService.islogin()) {
-            var currentUser = this.authenticationService.getCurrentUser();
-            if (currentUser != null) {
-                this.companyId = currentUser.companyId.toString();
-                this.branchId = currentUser.branchId.toString();
-                this.fiscalPeriodId = currentUser.fpId.toString();
 
-                this.loadMenuAndRoute(currentUser);
-            }
-        }
-    }
-
-    
-    loadAllSetting() {
-
-        var settingList: Array<ListFormViewConfig> = new Array<ListFormViewConfig>();
-
-        this.settingService.getListSettingsByUser(this.UserId).subscribe((res: Array<ListFormViewConfig>) => {
-
-            if (res)
-                localStorage.setItem(SessionKeys.Setting + this.UserId, JSON.stringify(res));
-        });
-    }
-
-    loadMenuAndRoute(currentUser: ContextInfo) {
-        //#region load menu
-        var menuList: Array < Command > = new Array<Command>();
-        
-        var commands: any;
-
-      this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
-        if (this.authenticationService.isRememberMe())
-          localStorage.setItem('fiscalPeriod', JSON.stringify(res));
-        else
-          sessionStorage.setItem('fiscalPeriod', JSON.stringify(res));
-      })
-
-      this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
-            var list: Array<Command> = res;
-            
-            if (this.authenticationService.isRememberMe()) {
-                localStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
-                localStorage.setItem('currentContext', JSON.stringify(currentUser));
-            }
-            else {
-                sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
-                sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
-            }                        
-
-            if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
-                var url = this.route.snapshot.queryParams['returnUrl'];
-                this.router.navigate([url]);
-            }
-            else {
-
-                var currentRoute = sessionStorage.getItem(SessionKeys.CurrentRoute);
-                if (currentRoute) {
-                    this.router.navigate([currentRoute]);
-                }
-                else {
-                    this.router.navigate(['/dashboard']);
-                }
-            }
-
-        });
-
-        this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
-            var list: Array<Command> = res;
-            
-            if (this.authenticationService.isRememberMe()) {
-                localStorage.setItem(SessionKeys.Profile, JSON.stringify(res));                
-            }
-            else {
-                sessionStorage.setItem(SessionKeys.Profile, JSON.stringify(res));                
-            }       
-
-        });
-
-        
-
-        
-
-        //#endregion
-    }
-
-    /**
-     * تیکت امنیتی را مطابق شرکت و شعبه و دوره مالی از سرویس میگیرد و جایگزین تیکت قبلی میکند
-     */
-    getCompanyTicket() {
-
-        var companyLoginModel = new CompanyLoginInfo();
-        companyLoginModel.companyId = parseInt(this.companyId);
-        companyLoginModel.branchId = parseInt(this.branchId);
-        companyLoginModel.fiscalPeriodId = parseInt(this.fiscalPeriodId);
-
-        this.authenticationService.getCompanyTicket(companyLoginModel, this.Ticket).subscribe(res => {
-
-            if (res.headers != null) {
-                let newTicket = res.headers.get('X-Tadbir-AuthTicket');
-
-                var currentUser = this.authenticationService.getCurrentUser();
-                if (currentUser != null) {
-
-                    currentUser.branchId = parseInt(this.branchId);
-                    currentUser.companyId = parseInt(this.companyId);
-                    currentUser.fpId = parseInt(this.fiscalPeriodId);
-                    currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
-
-                    currentUser.ticket = newTicket;
-
-                    if (this.authenticationService.isRememberMe())
-                        localStorage.setItem('currentContext', JSON.stringify(currentUser));
-                    else
-                        sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
-
-                    localStorage.setItem(SessionKeys.LastUserBranch + this.UserId + this.companyId, this.branchId);
-                    localStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
-
-                    this.loadMenuAndRoute(currentUser);
-                }
-
-            }
-
-        })
-    }
 
     //#endregion
+  }
+
+  /**
+   * تیکت امنیتی را مطابق شرکت و شعبه و دوره مالی از سرویس میگیرد و جایگزین تیکت قبلی میکند
+   */
+  getCompanyTicket() {
+
+    var companyLoginModel = new CompanyLoginInfo();
+    companyLoginModel.companyId = parseInt(this.companyId);
+    companyLoginModel.branchId = parseInt(this.branchId);
+    companyLoginModel.fiscalPeriodId = parseInt(this.fiscalPeriodId);
+
+    this.authenticationService.getCompanyTicket(companyLoginModel, this.Ticket).subscribe(res => {
+
+      if (res.headers != null) {
+        let newTicket = res.headers.get('X-Tadbir-AuthTicket');
+
+        var currentUser = this.authenticationService.getCurrentUser();
+        if (currentUser != null) {
+
+          currentUser.branchId = parseInt(this.branchId);
+          currentUser.companyId = parseInt(this.companyId);
+          currentUser.fpId = parseInt(this.fiscalPeriodId);
+          currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
+
+          currentUser.ticket = newTicket;
+
+          if (this.authenticationService.isRememberMe())
+            localStorage.setItem('currentContext', JSON.stringify(currentUser));
+          else
+            sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
+
+          localStorage.setItem(SessionKeys.LastUserBranch + this.UserId + this.companyId, this.branchId);
+          localStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
+
+          this.loadMenuAndRoute(currentUser);
+        }
+
+      }
+
+    })
+  }
+
+  //#endregion
 
 
-   
+
 
 
 }
