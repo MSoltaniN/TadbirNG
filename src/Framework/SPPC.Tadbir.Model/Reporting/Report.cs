@@ -8,11 +8,16 @@ namespace SPPC.Tadbir.Model.Reporting
         /// <summary>
         /// شناسه دیتابیسی کاربر ایجاد کننده گزارش
         /// </summary>
-        public int CreatedById { get; set; }
+        public virtual int CreatedById { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی شاخه والد این گزارش در ساختار درختی گزارشات
         /// </summary>
-        public int? ParentId { get; set; }
+        public virtual int? ParentId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی فرمی که به عنوان منبع داده اصلی این گزارش در برنامه شناخته می شود
+        /// </summary>
+        public virtual int? ViewId { get; set; }
     }
 }

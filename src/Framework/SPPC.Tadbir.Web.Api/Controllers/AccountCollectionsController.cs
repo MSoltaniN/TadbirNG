@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // Get: api/acccollections/collection/{collectionId:min(1)}
         [Route(AccountCollectionApi.AccountCollectionAccountUrl)]
-        [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionAccountAsync(int collectionId)
         {
             _repository.SetCurrentContext(SecurityContext.User);

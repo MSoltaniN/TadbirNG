@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Model.Reporting
 {
@@ -102,6 +103,11 @@ namespace SPPC.Tadbir.Model.Reporting
         public virtual Report Parent { get; set; }
 
         /// <summary>
+        /// فرمی که به عنوان منبع داده اصلی این گزارش در برنامه شناخته می شود
+        /// </summary>
+        public virtual ReportView View { get; set; }
+
+        /// <summary>
         /// کاربر ایجادکننده یک گزارش ذخیره شده کاربری
         /// </summary>
         public virtual User CreatedBy { get; set; }
@@ -118,6 +124,7 @@ namespace SPPC.Tadbir.Model.Reporting
 
         private void InitReferences()
         {
+            View = new ReportView();
             CreatedBy = new User();
             LocalReports = new List<LocalReport>();
             Parameters = new List<Parameter>();
