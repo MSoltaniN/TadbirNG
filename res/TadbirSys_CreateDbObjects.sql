@@ -1,5 +1,5 @@
-﻿--USE [TadbirSysDemo]
---GO
+﻿USE [TadbirSysDemo]
+GO
 
 SET ANSI_NULLS ON
 GO
@@ -228,91 +228,6 @@ CREATE TABLE [Reporting].[LocalReport] (
     , CONSTRAINT [FK_Reporting_LocalReport_Reporting_Report] FOREIGN KEY ([ReportID]) REFERENCES [Reporting].[Report]([ReportID])
 )
 GO
-
-
-SET IDENTITY_INSERT [Reporting].[Report] ON
-INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
-    VALUES (1, NULL, 1, 1, N'Accounting', NULL, 1, 1, 0)
-INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
-    VALUES (2, 1, 1, 1, N'Accnt-Base', NULL, 1, 1, 0)
-INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
-    VALUES (3, 1, 1, 1, N'Accnt-Operation', NULL, 1, 1, 0)
-INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
-    VALUES (4, 3, 1, 1, N'Voucher-Printing', NULL, 1, 1, 0)
-INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [ResourceKeys])
-    VALUES (5, 4, 1, 1, N'Voucher-Sum-By-Date', N'reports/voucher/sum-by-date', 0, 1, 1, 'RowNo,Voucher,Date,DebitSum,CreditSum,Difference,PreparedBy,BalanceLabel,CheckLabel,Origin')
-INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
-    VALUES (6, 4, 1, 1, N'Voucher-Std-Form', N'reports/voucher/std-form', 0, 1, 1)
-INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
-    VALUES (7, 4, 1, 1, N'Voucher-Std-Form-Detail', N'reports/voucher/std-form-detail', 0, 1, 1)
-SET IDENTITY_INSERT [Reporting].[Report] OFF
-
-SET IDENTITY_INSERT [Reporting].[Parameter] ON
-INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey])
-    VALUES (1, 5, N'Date', N'GTE', N'System.DateTime', N'DatePicker', N'FromDate')
-INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey])
-    VALUES (2, 5, N'Date', N'LTE', N'System.DateTime', N'DatePicker', N'ToDate')
-SET IDENTITY_INSERT [Reporting].[Parameter] OFF
-
-SET IDENTITY_INSERT [Reporting].[LocalReport] ON
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (1, 1, 1, N'Accounting', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (2, 2, 1, N'حسابداری', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (3, 3, 1, N'Accounting', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (4, 4, 1, N'Accounting', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (5, 1, 2, N'Base data', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (6, 2, 2, N'اطلاعات پایه', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (7, 3, 2, N'Base data', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (8, 4, 2, N'Base data', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (9, 1, 3, N'Operational data', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (10, 2, 3, N'اطلاعات عملیاتی', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (11, 3, 3, N'Operational data', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (12, 4, 3, N'Operational data', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (13, 1, 4, N'Voucher printing', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (14, 2, 4, N'چاپ سند', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (15, 3, 4, N'Voucher printing', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (16, 4, 4, N'Voucher printing', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (17, 1, 5, N'Voucher summary by date', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (18, 2, 5, N'خلاصه اسناد بر حسب تاریخ', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (19, 3, 5, N'Voucher summary by date', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (20, 4, 5, N'Voucher summary by date', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (21, 1, 6, N'Voucher - Standard form', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (22, 2, 6, N'فرم مرسوم سند', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (23, 3, 6, N'Voucher - Standard form', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (24, 4, 6, N'Voucher - Standard form', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (25, 1, 7, N'Voucher - Standard form with detail', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (26, 2, 7, N'فرم مرسوم سند با سطوح شناور', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (27, 3, 7, N'Voucher - Standard form with detail', NULL)
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
-    VALUES (28, 4, 7, N'Voucher - Standard form with detail', NULL)
-SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
-
 
 CREATE TABLE [Config].[Setting] (
     [SettingID]      INT              IDENTITY (1, 1) NOT NULL,
@@ -676,6 +591,89 @@ SET IDENTITY_INSERT [Auth].[User] OFF
 SET IDENTITY_INSERT [Contact].[Person] ON
 INSERT INTO [Contact].[Person] (PersonID, UserID, FirstName, LastName) VALUES (1, 1, N'راهبر', N'سیستم')
 SET IDENTITY_INSERT [Contact].[Person] OFF
+
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
+    VALUES (1, NULL, 1, 1, N'Accounting', NULL, 1, 1, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
+    VALUES (2, 1, 1, 1, N'Accnt-Base', NULL, 1, 1, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
+    VALUES (3, 1, 1, 1, N'Accnt-Operation', NULL, 1, 1, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
+    VALUES (4, 3, 1, 1, N'Voucher-Printing', NULL, 1, 1, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [ResourceKeys])
+    VALUES (5, 4, 1, 1, N'Voucher-Sum-By-Date', N'reports/voucher/sum-by-date', 0, 1, 1, 'RowNo,Voucher,Date,DebitSum,CreditSum,Difference,PreparedBy,BalanceLabel,CheckLabel,Origin')
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
+    VALUES (6, 4, 1, 1, N'Voucher-Std-Form', N'reports/voucher/std-form', 0, 1, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault])
+    VALUES (7, 4, 1, 1, N'Voucher-Std-Form-Detail', N'reports/voucher/std-form-detail', 0, 1, 1)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[Parameter] ON
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey])
+    VALUES (1, 5, N'Date', N'GTE', N'System.DateTime', N'DatePicker', N'FromDate')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey])
+    VALUES (2, 5, N'Date', N'LTE', N'System.DateTime', N'DatePicker', N'ToDate')
+SET IDENTITY_INSERT [Reporting].[Parameter] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (1, 1, 1, N'Accounting', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (2, 2, 1, N'حسابداری', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (3, 3, 1, N'Accounting', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (4, 4, 1, N'Accounting', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (5, 1, 2, N'Base data', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (6, 2, 2, N'اطلاعات پایه', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (7, 3, 2, N'Base data', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (8, 4, 2, N'Base data', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (9, 1, 3, N'Operational data', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (10, 2, 3, N'اطلاعات عملیاتی', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (11, 3, 3, N'Operational data', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (12, 4, 3, N'Operational data', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (13, 1, 4, N'Voucher printing', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (14, 2, 4, N'چاپ سند', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (15, 3, 4, N'Voucher printing', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (16, 4, 4, N'Voucher printing', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (17, 1, 5, N'Voucher summary by date', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (18, 2, 5, N'خلاصه اسناد بر حسب تاریخ', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (19, 3, 5, N'Voucher summary by date', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (20, 4, 5, N'Voucher summary by date', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (21, 1, 6, N'Voucher - Standard form', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (22, 2, 6, N'فرم مرسوم سند', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (23, 3, 6, N'Voucher - Standard form', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (24, 4, 6, N'Voucher - Standard form', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (25, 1, 7, N'Voucher - Standard form with detail', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (26, 2, 7, N'فرم مرسوم سند با سطوح شناور', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (27, 3, 7, N'Voucher - Standard form with detail', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (28, 4, 7, N'Voucher - Standard form with detail', NULL)
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 -- Sample user settings for UserID = 1 and Account List form (Admin user)...
 SET IDENTITY_INSERT [Config].[UserSetting] ON
