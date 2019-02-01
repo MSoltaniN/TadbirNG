@@ -54,6 +54,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   selectedKeys: any[] = [];
   report: any = new Stimulsoft.Report.StiReport();
   currentReportId : any;
+  currentReportName : string;
   currentPrintInfo : PrintInfo;
   expandedKeys :any[] = [];
   deleteConfirmMsg : string;
@@ -97,6 +98,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     if(!data.isGroup)
     {      
       this.currentReportId = data.id;
+      this.currentReportName = data.caption;
       this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"),data.caption);
       this.disableButtons = false;
     }
@@ -403,15 +405,18 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   }
 
   public iconClass(dataItem: any): any {
-    return {
-        'k-i-ascx': dataItem.isGroup == false,
-        'k-i-folder': dataItem.isGroup == true        
+    return {  
+        'k-i-change-manually' : !dataItem.isGroup && !dataItem.isSystem ,  
+        'k-i-ascx': dataItem.isGroup == false && dataItem.isSystem ,
+        'k-i-folder': dataItem.isGroup == true,
+        
     };
   }
 
   public setClass(dataItem: any): any {
     return {
-        'rep-folder': dataItem.isGroup ,
+        
+        'rep-folder': dataItem.isGroup ,        
         'rep-system': !dataItem.isGroup && dataItem.isSystem,
         'rep-user': !dataItem.isGroup && !dataItem.isSystem        
     };

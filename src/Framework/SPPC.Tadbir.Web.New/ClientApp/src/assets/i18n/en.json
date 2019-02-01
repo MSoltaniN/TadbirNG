@@ -66,8 +66,8 @@
     "DeleteConfirm": "are you sure to delete {0} ?"
   },
   "Report": {
-    "ReportViewer": "Report Viewer",
-    "ReportDesign": "Report Design",
+    "ReportViewer": "View of",
+    "ReportDesign": "Design of",
     "Reports": "Reports",
     "ReportManagement": "Report Management",
     "ReportParameter" : "Report parameters",
