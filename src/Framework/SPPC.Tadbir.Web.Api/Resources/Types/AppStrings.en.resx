@@ -424,7 +424,7 @@
     <value>sales invoice</value>
   </data>
   <data name="SaveEntity" xml:space="preserve">
-    <value>Save {0}</value>
+    <value>Add or edit {0}</value>
   </data>
   <data name="ValuedIssueVoucher" xml:space="preserve">
     <value>valued issue voucher</value>
@@ -818,5 +818,11 @@
   </data>
   <data name="ToDateDescription" xml:space="preserve">
     <value>End of date range used in this report</value>
+  </data>
+  <data name="SetDefault" xml:space="preserve">
+    <value>Set {0} as default</value>
+  </data>
+  <data name="UserReports" xml:space="preserve">
+    <value>User reports</value>
   </data>
 </root>

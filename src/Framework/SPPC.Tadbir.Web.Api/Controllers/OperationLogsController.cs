@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
+using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -22,6 +24,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/system/oplog
         [Route(SystemApi.AllOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetAllOperationLogsAsync()
         {
             int itemCount = await _repository.GetLogCountAsync(GridOptions);
@@ -33,6 +36,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/system/oplog/metadata
         [Route(SystemApi.OperationLogMetadataUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetOperationLogMetadataAsync()
         {
             var metadata = await _repository.GetLogMetadataAsync();
@@ -41,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/system/oplog/company/{companyId:int}
         [Route(SystemApi.CompanyOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetCompanyOperationLogsAsync(int companyId)
         {
             var operationLogs = await _repository.GetLogsAsync(null, companyId, GridOptions);
@@ -49,6 +54,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/system/oplog/user/{userId:int}
         [Route(SystemApi.UserOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetUserOperationLogsAsync(int userId)
         {
             var operationLogs = await _repository.GetLogsAsync(userId, null, GridOptions);
@@ -57,6 +63,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/system/oplog/user/{userId:int}/company/{companyId:int}
         [Route(SystemApi.UserCompanyOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetUserCompanyOperationLogsAsync(int userId, int companyId)
         {
             var operationLogs = await _repository.GetLogsAsync(userId, companyId, GridOptions);
