@@ -49,6 +49,15 @@ namespace SPPC.Tadbir.Persistence
         Task<ReportSummaryViewModel> GetReportSummaryAsync(int reportId);
 
         /// <summary>
+        /// اطلاعات خلاصه گزارش پیش فرض برای یک فرم را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از فرم های قابل چاپ</param>
+        /// <returns>اطلاعات خلاصه گزارش پیش فرض</returns>
+        Task<ReportSummaryViewModel> GetDefaultReportByViewAsync(int viewId);
+
+        Task<int> GetLocaleIdAsync(string localeCode);
+
+        /// <summary>
         /// اطلاعات یک گزارش ذخیره شده کاربری را ذخیره یا بروزرسانی می کند
         /// </summary>
         /// <param name="report">اطلاعات محلی شده گزارش کاربری</param>

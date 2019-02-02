@@ -165,7 +165,6 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((model, viewModel) => viewModel.Level = model.Account.Level)
                 .AfterMap((model, viewModel) => viewModel.Description = model.Account.Description);
 
-
             mapperConfig.CreateMap<AccountGroup, AccountGroupViewModel>();
             mapperConfig.CreateMap<AccountGroupViewModel, AccountGroup>();
             mapperConfig.CreateMap<AccountGroup, KeyValue>()

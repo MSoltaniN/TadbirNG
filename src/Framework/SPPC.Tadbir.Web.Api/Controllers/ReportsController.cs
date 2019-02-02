@@ -54,6 +54,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(reportDesign);
         }
 
+        [Route(ReportApi.ReportsByViewDefaultUrl)]
+        public async Task<IActionResult> GetDefaultReportByViewAsync(int viewId)
+        {
+            var report = await _repository.GetDefaultReportByViewAsync(viewId);
+            return JsonReadResult(report);
+        }
+
         // POST: api/reports/sys
         [HttpPost]
         [Route(ReportApi.ReportsUrl)]
@@ -64,17 +71,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
             }
 
-            if (report.LocaleId == 0)
-            {
-                return BadRequest(_strings.Format(AppStrings.LocaleIsRequired));
-            }
-
             if (report.ReportId == 0)
             {
                 return BadRequest(_strings.Format(AppStrings.SourceReportIsRequired));
             }
 
             _repository.SetCurrentContext(SecurityContext.User);
+            report.LocaleId = await GetCurrentLocaleIdAsync();
             await _repository.SaveUserReportAsync(report);
             return StatusCode(StatusCodes.Status201Created);
         }
@@ -106,6 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
             }
 
+            report.LocaleId = await GetCurrentLocaleIdAsync();
             await _repository.SaveUserReportAsync(report);
             return Ok();
         }
@@ -137,6 +141,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
             }
 
+            report.LocaleId = await GetCurrentLocaleIdAsync();
             await _repository.SetUserReportCaptionAsync(report);
             return Ok();
         }
@@ -192,6 +197,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var formWithDetail = await _repository.GetStandardVoucherFormAsync(GridOptions, true);
             Localize(formWithDetail);
             return JsonReadResult(formWithDetail);
+        }
+
+        private async Task<int> GetCurrentLocaleIdAsync()
+        {
+            var localCode = GetAcceptLanguages().Substring(0, 2);
+            return await _repository.GetLocaleIdAsync(localCode);
         }
 
         private void Localize(IList<VoucherSummaryViewModel> report)

@@ -9,6 +9,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -190,6 +191,31 @@ namespace SPPC.Tadbir.Persistence
 
             _unitOfWork.UseCompanyContext();
             return summary;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه گزارش پیش فرض برای یک فرم را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از فرم های قابل چاپ</param>
+        /// <returns>اطلاعات خلاصه گزارش پیش فرض</returns>
+        public async Task<ReportSummaryViewModel> GetDefaultReportByViewAsync(int viewId)
+        {
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetSingleByCriteriaAsync(
+                rep => rep.ViewId == viewId && rep.IsDefault);
+            _unitOfWork.UseCompanyContext();
+            return _mapper.Map<ReportSummaryViewModel>(report);
+        }
+
+        public async Task<int> GetLocaleIdAsync(string localeCode)
+        {
+            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<Locale>();
+            var locale = await repository.GetSingleByCriteriaAsync(loc => loc.Code == localeCode);
+            _unitOfWork.UseCompanyContext();
+            return (locale != null ? locale.Id : 0);
         }
 
         /// <summary>
