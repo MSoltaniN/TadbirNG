@@ -22,8 +22,11 @@
                                         </kendo-splitter-pane>
                                         <kendo-splitter-pane>
                                                 <div class='form-group'>
-                                                        <div class='col-sm-12 col-md-12 col-xs-12 noprl ' [ngClass]="{'pull-right':this.CurrentLanguage === 'fa' , 'pull-left': this.CurrentLanguage === 'en'}">                                                                
-                                                                <h4 class="tree-title"> {{ 'Report.Reports' | translate }}</h4>
+                                                        <div class='col-sm-12 col-md-12 col-xs-12 noprl ' 
+                                                        [ngClass]="{'pull-right':this.CurrentLanguage === 'fa' , 'pull-left': this.CurrentLanguage === 'en'}">
+                                                                <!-- <span class="k-icon col-lg-12 col-md-12 tree-title">
+                                                                        <strong>{{ 'Report.Reports' | translate }}</strong> 
+                                                                </span>                                         -->
                                                                 <kendo-treeview [nodes]="treeData" textField="caption"
                                                                         kendoTreeViewExpandable kendoTreeViewSelectable
                                                                         kendoTreeViewFlatDataBinding

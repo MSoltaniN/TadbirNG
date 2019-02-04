@@ -4286,7 +4286,7 @@ table.k-block, table.k-widget {
 
     .k-window .k-overlay {
         position: absolute;
-        opacity: 0
+        opacity: 0.5
     }
 
 .k-window-titlebar {

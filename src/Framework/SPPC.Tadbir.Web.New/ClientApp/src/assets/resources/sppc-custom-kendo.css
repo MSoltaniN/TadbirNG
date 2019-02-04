@@ -5253,9 +5253,10 @@ kendo-sortable,
 
     .k-window .k-overlay {
         position: absolute;
-        opacity: 0;
+        opacity: 0.5;
     }
 
+    
 .k-window-titlebar {
     padding: 16px 16px;
     border-width: 0 0 1px;

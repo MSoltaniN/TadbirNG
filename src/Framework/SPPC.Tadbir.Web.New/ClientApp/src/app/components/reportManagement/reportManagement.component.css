@@ -26,7 +26,16 @@
 
 .tree-title::before
 {    
-    content: "\e64f";    
+    content: "\e64f";   
+    font-size: 20px;
+}
+
+.tree-title strong
+{    
+    font-size: 20px;
+    margin-right: 5px;
+    font-family: SPPC!important;
+    font-weight: bold;
 }
 
 .report-title strong
@@ -61,3 +70,8 @@
     font-size: 14px;
     color: blue;
 }
+
+.pdialog .k-overlay 
+    {
+        opacity: .5!important;
+    }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Parameter } from '../../model/parameter';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PrintInfo } from '../../model/printInfo';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ParameterInfo } from '../../service/report/reporting.service';
@@ -39,16 +39,20 @@ export class ReportParametersComponent implements OnInit {
 
         var paramInfo : ParameterInfo = new ParameterInfo();
         paramInfo.fieldName = param.fieldName;
+
         paramInfo.controlType = param.controlType;
         paramInfo.id = param.id;
         paramInfo.defaultValue = param.defaultValue? param.defaultValue : "";
         paramInfo.captionKey = param.captionKey;
         paramInfo.operator = param.operator;
         paramInfo.dataType = param.dataType;
-
+        paramInfo.descriptionKey = param.descriptionKey;
+        paramInfo.name = param.name;
 
         paramArrays.push(paramInfo);
-        paramsForm.addControl(paramInfo.fieldName,new FormControl())
+        //paramsForm.addControl(paramInfo.fieldName,new FormControl())
+        paramsForm.addControl(paramInfo.name,new FormControl('',Validators.required));
+        
       });
 
       this.fieldArray = paramArrays;

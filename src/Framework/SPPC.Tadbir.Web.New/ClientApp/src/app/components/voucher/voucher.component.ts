@@ -30,6 +30,7 @@ import { ReportingService } from '../../service/report/reporting.service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
 import { VoucherFormComponent } from '../../components/voucher/voucher-form.component';
+import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
 
 
 
@@ -54,7 +55,9 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   //#region Fields
   @ViewChild(GridComponent) grid: GridComponent;
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
+  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
+
 
   public rowData: GridDataResult;
   public selectedRows: number[] = [];
@@ -244,7 +247,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   public showReportManagement()
   {
-      this.reportManager.showDialog();
+      var id = this.viewIdentity.ViewID;
+      var params = null;
+      if(this.viewIdentity.params.length > 0)
+        params = this.viewIdentity.params.toArray();
+
+      this.reportManager.showDialog(id,params);
   }
 
   public saveHandler(model: Voucher, isNew: boolean) {
