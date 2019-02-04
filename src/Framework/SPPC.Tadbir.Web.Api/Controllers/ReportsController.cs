@@ -32,8 +32,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(ReportApi.ReportsHierarchyUrl)]
         public async Task<IActionResult> GetReportTreeAsync()
         {
-            string localeCode = GetAcceptLanguages().Substring(0, 2);
-            var tree = await _sysRepository.GetReportTreeAsync(localeCode);
+            int localeId = await GetCurrentLocaleIdAsync();
+            var tree = await _sysRepository.GetReportTreeAsync(localeId);
             return Json(tree);
         }
 
@@ -41,22 +41,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(ReportApi.ReportsByViewUrl)]
         public async Task<IActionResult> GetReportTreeByViewAsync(int viewId)
         {
-            return Ok();
+            int localeId = await GetCurrentLocaleIdAsync();
+            var tree = await _sysRepository.GetReportTreeByViewAsync(localeId, viewId);
+            return Json(tree);
         }
 
         // GET: api/reports/sys/subsys/{subsysId:min(1)}
         [Route(ReportApi.ReportsBySubsystemUrl)]
         public async Task<IActionResult> GetReportTreeBySubsystemAsync(int subsysId)
         {
-            return Ok();
+            int localeId = await GetCurrentLocaleIdAsync();
+            var tree = await _sysRepository.GetReportTreeBySubsystemAsync(localeId, subsysId);
+            return Json(tree);
         }
 
         // GET: api/reports/sys/{reportId:min(1)}
         [Route(ReportApi.ReportUrl)]
         public async Task<IActionResult> GetReportAsync(int reportId)
         {
-            string localeCode = GetAcceptLanguages().Substring(0, 2);
-            var report = await _sysRepository.GetReportAsync(reportId, localeCode);
+            int localeId = await GetCurrentLocaleIdAsync();
+            var report = await _sysRepository.GetReportAsync(reportId, localeId);
             Localize(report);
             return JsonReadResult(report);
         }
@@ -65,8 +69,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(ReportApi.ReportDesignUrl)]
         public async Task<IActionResult> GetReportDesignAsync(int reportId)
         {
-            string localeCode = GetAcceptLanguages().Substring(0, 2);
-            var reportDesign = await _sysRepository.GetReportDesignAsync(reportId, localeCode);
+            int localeId = await GetCurrentLocaleIdAsync();
+            var reportDesign = await _sysRepository.GetReportDesignAsync(reportId, localeId);
             return JsonReadResult(reportDesign);
         }
 
@@ -170,6 +174,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.UserReport, (int)ReportPermissions.SetDefault)]
         public async Task<IActionResult> PutExistingReportAsDefaultAsync(int reportId)
         {
+            await _sysRepository.SetReportAsDefaultAsync(reportId);
             return Ok();
         }
 

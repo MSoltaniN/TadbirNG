@@ -45,6 +45,7 @@ namespace SPPC.Tadbir.Persistence
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());
             ReportMap.BuildMapping(modelBuilder.Entity<Report>());
+            ReportViewMap.BuildMapping(modelBuilder.Entity<ReportView>());
             RoleMap.BuildMapping(modelBuilder.Entity<Role>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());

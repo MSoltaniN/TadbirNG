@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -12,6 +13,9 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    /// عملیات مورد نیاز در زیرساخت مدیریت گزارشات را پیاده سازی می کند
+    /// </summary>
     public class ReportSystemRepository : IReportSystemRepository
     {
         /// <summary>
@@ -39,44 +43,55 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، ساختار درختی گزارش های تعریف شده را به زبان جاری برنامه خوانده و برمی گرداند
         /// </summary>
-        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>
         /// <returns>ساختار درختی گزارش ها به زبان جاری برنامه</returns>
-        public async Task<IList<TreeItemViewModel>> GetReportTreeAsync(string localeCode)
+        public async Task<IList<TreeItemViewModel>> GetReportTreeAsync(int localeId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
-            var reports = await repository
-                .GetEntityQuery()
-                .Include(rep => rep.Parent)
-                .Include(rep => rep.LocalReports)
-                    .ThenInclude(rep => rep.Locale)
-                .ToListAsync();
-            var tree = reports
-                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
-                .ToList();
-            Localize(localeCode, reports, tree);
-            return tree;
+            return await GetReportTreeByCriteriaAsync(localeId, rep => true);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ساختار درختی گزارش های تعریف شده برای یک فرم را به زبان جاری برنامه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>
+        /// <param name="viewId">شناسه دیتابیسی فرم مورد نظر</param>
+        /// <returns>ساختار درختی گزارش ها به زبان جاری برنامه</returns>
+        public async Task<IList<TreeItemViewModel>> GetReportTreeByViewAsync(int localeId, int viewId)
+        {
+            return await GetReportTreeByCriteriaAsync(localeId, rep => rep.ViewId == viewId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ساختار درختی گزارش های تعریف شده در یک زیرسیستم را به زبان جاری برنامه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>
+        /// <param name="subsystemId">شناسه دیتابیسی زیرسیستم مورد نظر</param>
+        /// <returns>ساختار درختی گزارش ها به زبان جاری برنامه</returns>
+        public async Task<IList<TreeItemViewModel>> GetReportTreeBySubsystemAsync(int localeId, int subsystemId)
+        {
+            return await GetReportTreeByCriteriaAsync(localeId, rep => rep.SubsystemId == subsystemId);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز برای پیش نمایش یا چاپ گزارش را خوانده و برمی گرداند
         /// </summary>
         /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
-        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>
         /// <returns>اطلاعات مورد نیاز برای پیش نمایش یا چاپ گزارش</returns>
-        public async Task<PrintInfoViewModel> GetReportAsync(int reportId, string localeCode)
+        public async Task<PrintInfoViewModel> GetReportAsync(int reportId, int localeId)
         {
-            return await GetReportPrintInfo(reportId, localeCode);
+            return await GetReportPrintInfo(reportId, localeId);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز برای طراحی گزارش را خوانده و برمی گرداند
         /// </summary>
         /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
-        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>
         /// <returns>اطلاعات مورد نیاز برای طراحی گزارش</returns>
-        public async Task<PrintInfoViewModel> GetReportDesignAsync(int reportId, string localeCode)
+        public async Task<PrintInfoViewModel> GetReportDesignAsync(int reportId, int localeId)
         {
-            return await GetReportPrintInfo(reportId, localeCode, false);
+            return await GetReportPrintInfo(reportId, localeId, false);
         }
 
         /// <summary>
@@ -110,6 +125,11 @@ namespace SPPC.Tadbir.Persistence
             return _mapper.Map<ReportSummaryViewModel>(report);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شناسه دیتابیسی متناظر با کد دو حرفی استاندارد یک زبان را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeCode">کد دو حرفی استاندارد زبان مورد نظر</param>
+        /// <returns>شناسه دیتابیسی متناظر با کد زبانی داده شده</returns>
         public async Task<int> GetLocaleIdAsync(string localeCode)
         {
             Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
@@ -212,7 +232,28 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static void Localize(string localeCode, List<Report> reports, List<TreeItemViewModel> tree)
+        /// <summary>
+        /// گزارش مشخص شده را به عنوان پیش فرض همه کاربران برای فرم مرتبط تنظیم می کند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
+        public async Task SetReportAsDefaultAsync(int reportId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<ReportView>();
+            var view = await repository.GetSingleByCriteriaAsync(
+                vu => vu.Reports.Select(rep => rep.Id).Contains(reportId), vu => vu.Reports);
+            if (view != null)
+            {
+                foreach (var viewReport in view.Reports)
+                {
+                    viewReport.IsDefault = (viewReport.Id == reportId);
+                }
+
+                repository.Update(view, vu => vu.Reports);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private static void Localize(int localeId, List<Report> reports, List<TreeItemViewModel> tree)
         {
             foreach (var node in tree)
             {
@@ -220,16 +261,29 @@ namespace SPPC.Tadbir.Persistence
                     .Where(rep => rep.Id == node.Id)
                     .Single();
                 var localReport = report.LocalReports
-                    .Where(rep => localeCode == rep.Locale.Code)
+                    .Where(rep => localeId == rep.LocaleId)
                     .Single();
                 node.Caption = localReport.Caption;
             }
         }
 
-        private async Task<PrintInfoViewModel> GetReportPrintInfo(
-            int reportId, string localeCode, bool withParams = true)
+        private async Task<IList<TreeItemViewModel>> GetReportTreeByCriteriaAsync(
+            int localeId, Expression<Func<Report, bool>> criteria)
         {
-            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var reports = await repository.GetByCriteriaAsync(
+                criteria,
+                rep => rep.Parent, rep => rep.LocalReports);
+            var tree = reports
+                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+                .ToList();
+            Localize(localeId, reports.ToList(), tree);
+            return tree;
+        }
+
+        private async Task<PrintInfoViewModel> GetReportPrintInfo(
+            int reportId, int localeId, bool withParams = true)
+        {
             var reportView = default(PrintInfoViewModel);
             var repository = _unitOfWork.GetAsyncRepository<Report>();
             IQueryable<Report> reportQuery = repository
@@ -247,7 +301,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 reportView = _mapper.Map<PrintInfoViewModel>(report);
                 var localReport = report.LocalReports
-                    .Where(rep => localeCode.StartsWith(rep.Locale.Code))
+                    .Where(rep => rep.LocaleId == localeId)
                     .FirstOrDefault();
                 reportView.Template = localReport?.Template;
             }
