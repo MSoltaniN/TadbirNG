@@ -73,6 +73,16 @@ namespace SPPC.Tadbir.Api
         public const string ReportUrl = "reports/sys/{reportId:min(1)}";
 
         /// <summary>
+        /// API client URL for default status of a single report specified by unique identifier
+        /// </summary>
+        public const string ReportDefault = "reports/sys/{0}/default";
+
+        /// <summary>
+        /// API server route URL for default status of a single report specified by unique identifier
+        /// </summary>
+        public const string ReportDefaultUrl = "reports/sys/{reportId:min(1)}/default";
+
+        /// <summary>
         /// API client URL for design data for a single report specified by unique identifier
         /// </summary>
         public const string ReportDesign = "reports/sys/{0}/design";
