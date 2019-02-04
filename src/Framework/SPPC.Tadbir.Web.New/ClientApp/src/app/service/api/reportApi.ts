@@ -50,8 +50,6 @@ export class ReportApi {
     // reports/voucher/std-form-detail
     public static VoucherStandardFormWithDetail = environment.BaseUrl + "/reports/voucher/std-form-detail";
 
-    public static ReportsByView = environment.BaseUrl + "/reports/sys/view/{0}";    
-
-    public static ReportsByViewDefault = environment.BaseUrl + "/reports/sys/view/{0}/default";
+   
     
 }
