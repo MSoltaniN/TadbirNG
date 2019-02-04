@@ -58,7 +58,31 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>ساختار درختی گزارش ها به زبان جاری برنامه</returns>
         public async Task<IList<TreeItemViewModel>> GetReportTreeByViewAsync(int localeId, int viewId)
         {
-            return await GetReportTreeByCriteriaAsync(localeId, rep => rep.ViewId == viewId);
+            var tree = new List<TreeItemViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var reports = await repository
+                .GetEntityWithTrackingQuery(rep => rep.Parent, rep => rep.LocalReports)
+                .Where(rep => rep.ViewId == viewId)
+                .ToListAsync();
+            if (reports.Count > 0)
+            {
+                var first = reports[0];
+                var parent = first.Parent;
+                while (parent != null)
+                {
+                    reports.Add(parent);
+                    await repository.LoadReferenceAsync(parent, rep => rep.Parent);
+                    await repository.LoadCollectionAsync(parent, rep => rep.LocalReports);
+                    parent = parent.Parent;
+                }
+
+                tree = reports
+                    .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+                    .ToList();
+                Localize(localeId, reports, tree);
+            }
+
+            return tree;
         }
 
         /// <summary>
