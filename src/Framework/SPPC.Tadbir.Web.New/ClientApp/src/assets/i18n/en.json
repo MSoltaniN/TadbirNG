@@ -163,7 +163,9 @@
     "SelectedAccounts": "Selected Accounts",
     "SelectableAccounts": "Selectable Accounts",
     "MultiSelectValidation": "For this account set only one account can be selected",
-    "SelectValidation": "This account can not be selected"
+    "SelectValidation": "This account can not be selected",
+    "SelectLevel": "Please select account level",
+    "SelectCollection": "Please select account collection"
   },
   "Settings": {
     "AccountRelation": {

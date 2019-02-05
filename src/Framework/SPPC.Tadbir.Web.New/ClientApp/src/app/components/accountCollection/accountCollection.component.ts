@@ -68,6 +68,9 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   dataloadingMessage: boolean = false;
   selectedDataloadingMessage: boolean = false;
   public selectableSettings: SelectableSettings;
+  isPageChanged: boolean = false;
+  isLevelChanged: boolean = false;
+  isFilterChanged: boolean = false;
 
 
 
@@ -124,9 +127,11 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
     this.selectedRowData = [];
     this.selectedRows = [];
     this.selectableRows = [];
+    this.newSelectedRowData = [];
     this.rowData = undefined;
     this.dataloadingMessage = false;
     this.selectedDataloadingMessage = false;
+    this.pageIndex = 0;
 
     if (item.dataItem.id > 0 && !item.dataItem.accountCollections) {
       this.selectedCollectionItem = item.dataItem;
@@ -143,8 +148,10 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
    * */
   public handleLevelChange() {
     this.selectableRows = [];
+    this.pageIndex = 0;
     this.rowData = undefined;
     this.dataloadingMessage = false;
+    this.isLevelChanged = true;
   }
 
   reloadGrid() {
@@ -153,42 +160,54 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
       //شماره سطح در جدول حساب از صفر شروع میشود ولی در سطوح حساب از یک شروع میشود به همین دلیل یک واحد از شماره سطح انتخاب شده کم میکنیم
 
       if (this.viewAccess) {
-        this.grid.loading = true;
         var filter = this.currentFilter;
-        if (this.ddlLevelSelected > 0)
-          filter = this.addFilterToFilterExpression(this.currentFilter,
-            new Filter("Level", (this.ddlLevelSelected - 1).toString(), "== {0}", "System.Int32"), FilterExpressionOperator.And);
-
-        if (this.totalRecords == this.skip && this.totalRecords != 0) {
-          this.skip = this.skip - this.pageSize;
+        if (this.ddlLevelSelected == undefined || this.ddlLevelSelected == null) {
+          this.toastrService.warning(this.getText('AccountCollection.SelectLevel'));
         }
+        else {
+          if (this.ddlLevelSelected > 0)
+            filter = this.addFilterToFilterExpression(this.currentFilter,
+              new Filter("Level", (this.ddlLevelSelected - 1).toString(), "== {0}", "System.Int32"), FilterExpressionOperator.And);
 
-        this.accountCollectionService.getAll(String.Format(AccountCollectionApi.AccountCollectionAccount, this.selectedCollectionItem.id), this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
-          var resData = res.body;
+          if (this.totalRecords == this.skip && this.totalRecords != 0) {
+            this.skip = this.skip - this.pageSize;
+          }
+          this.grid.loading = true;
 
-          var totalCount = 0;
+          this.accountCollectionService.getAll(String.Format(AccountCollectionApi.AccountCollectionAccount, this.selectedCollectionItem.id), this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
+            var resData = res.body;
 
-          if (res.headers != null) {
-            var headers = res.headers != undefined ? res.headers : null;
-            if (headers != null) {
-              var retheader = headers.get('X-Total-Count');
-              if (retheader != null)
-                totalCount = parseInt(retheader.toString());
+            var totalCount = 0;
+
+            if (res.headers != null) {
+              var headers = res.headers != undefined ? res.headers : null;
+              if (headers != null) {
+                var retheader = headers.get('X-Total-Count');
+                if (retheader != null)
+                  totalCount = parseInt(retheader.toString());
+              }
             }
-          }
 
-          this.rowData = {
-            data: resData.allAccounts,
-            total: totalCount
-          }
+            this.rowData = {
+              data: resData.allAccounts,
+              total: totalCount
+            }
 
-          this.selectedRowData = resData.selectedAccounts.concat(this.newSelectedRowData);
+            debugger;
 
-          this.dataloadingMessage = !(resData.allAccounts.length == 0);
-          this.selectedDataloadingMessage = !(resData.selectedAccounts.length == 0);
-          this.totalRecords = totalCount;
-          this.grid.loading = false;
-        })
+            if (!this.isPageChanged && !this.isLevelChanged && !this.isFilterChanged) {
+              this.selectedRowData = resData.selectedAccounts.concat(this.newSelectedRowData);
+              this.selectedDataloadingMessage = !(this.selectedRowData.length == 0);
+            }
+            this.isPageChanged = false;
+            this.isLevelChanged = false;
+            this.isFilterChanged = false;
+
+            this.dataloadingMessage = !(resData.allAccounts.length == 0);
+            this.totalRecords = totalCount;
+            this.grid.loading = false;
+          })
+        }
       }
       else {
         this.rowData = {
@@ -198,6 +217,9 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
         this.selectedRowData = [];
       }
 
+    }
+    else {
+      this.toastrService.warning(this.getText('AccountCollection.SelectCollection'));
     }
   }
 
@@ -225,6 +247,13 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
     if (index != -1) {
       this.selectedRowData.splice(index, 1);
     }
+
+    var newItem = this.newSelectedRowData.find(f => f.id == this.selectedRows[0])
+    var newIndex = this.newSelectedRowData.indexOf(newItem);
+    if (newIndex != -1) {
+      this.newSelectedRowData.splice(newIndex, 1);
+    }
+
     this.selectedRows = [];
     if (this.selectedRowData.length == 0)
       this.selectedDataloadingMessage = false;
@@ -237,6 +266,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
     this.currentFilter = this.getFilters(filter);
     if (isReload) {
+      this.isFilterChanged = true;
       this.reloadGrid();
     }
   }
@@ -249,6 +279,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
   pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
+    this.isPageChanged = true;
     this.reloadGrid();
   }
 
@@ -256,7 +287,6 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
    *ارسال حسابهای انتخاب شده به سرویس
    * */
   saveChanges() {
-    debugger;
     var collectionId = this.selectedCollectionItem.id;
 
     this.accCollectionArray = [];

@@ -161,7 +161,9 @@
     "SelectedAccounts": "حساب های انتخاب شده",
     "SelectableAccounts": "حساب های قابل انتخاب",
     "MultiSelectValidation": "برای این مجموعه حساب فقط یک حساب قابل انتخاب است",
-    "SelectValidation": "این حساب قابل انتخاب نیست"
+    "SelectValidation": "این حساب قابل انتخاب نیست",
+    "SelectLevel": "لطفا سطح حساب را انتخاب کنید",
+    "SelectCollection": "لطفا مجموعه حساب را انتخاب کنید"
   },
   "Settings": {
     "AccountRelation": {

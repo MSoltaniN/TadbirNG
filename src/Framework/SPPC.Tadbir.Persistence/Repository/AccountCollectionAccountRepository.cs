@@ -181,9 +181,12 @@ namespace SPPC.Tadbir.Persistence.Repository
             var branchChildes = await branchRepository.GetByCriteriaAsync(br => br.ParentId == removedItem.BranchId);
             foreach (var child in branchChildes)
             {
-                var removed_Item = existing.Where(col => col.BranchId == child.Id && col.CollectionId == removedItem.CollectionId && col.AccountId == removedItem.AccountId).Single();
-                await CascadeNewAccountCollection(repository, branchRepository, existing, removed_Item);
-                repository.Delete(removed_Item);
+                var removed_Item = existing.SingleOrDefault(col => col.BranchId == child.Id && col.CollectionId == removedItem.CollectionId && col.AccountId == removedItem.AccountId);
+                if (removed_Item != null)
+                {
+                    await CascadeNewAccountCollection(repository, branchRepository, existing, removed_Item);
+                    repository.Delete(removed_Item);
+                }
             }
         }
 
