@@ -56,7 +56,7 @@ export class ParameterInfo implements Parameter,ParameterFields {
     minValue: string;
     maxValue: string;
     descriptionKey: string;
-
+    name:string;
 
 }
 

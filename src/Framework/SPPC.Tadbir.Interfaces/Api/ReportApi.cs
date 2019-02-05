@@ -33,6 +33,36 @@ namespace SPPC.Tadbir.Api
         public const string ReportsUrl = "reports/sys";
 
         /// <summary>
+        /// API client URL for all reports associated with a view specified by unique identifier
+        /// </summary>
+        public const string ReportsByView = "reports/sys/view/{0}";
+
+        /// <summary>
+        /// API server route URL for all reports associated with a view specified by unique identifier
+        /// </summary>
+        public const string ReportsByViewUrl = "reports/sys/view/{viewId:min(1)}";
+
+        /// <summary>
+        /// API client URL for default report associated with a view specified by unique identifier
+        /// </summary>
+        public const string ReportsByViewDefault = "reports/sys/view/{0}/default";
+
+        /// <summary>
+        /// API server route URL for default report associated with a view specified by unique identifier
+        /// </summary>
+        public const string ReportsByViewDefaultUrl = "reports/sys/view/{viewId:min(1)}/default";
+
+        /// <summary>
+        /// API client URL for all reports associated with a subsystem specified by unique identifier
+        /// </summary>
+        public const string ReportsBySubsystem = "reports/sys/subsys/{0}";
+
+        /// <summary>
+        /// API server route URL for all reports associated with a subsystem specified by unique identifier
+        /// </summary>
+        public const string ReportsBySubsystemUrl = "reports/sys/subsys/{subsysId:min(1)}";
+
+        /// <summary>
         /// API client URL for a single report specified by unique identifier
         /// </summary>
         public const string Report = "reports/sys/{0}";
@@ -41,6 +71,16 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a single report specified by unique identifier
         /// </summary>
         public const string ReportUrl = "reports/sys/{reportId:min(1)}";
+
+        /// <summary>
+        /// API client URL for default status of a single report specified by unique identifier
+        /// </summary>
+        public const string ReportDefault = "reports/sys/{0}/default";
+
+        /// <summary>
+        /// API server route URL for default status of a single report specified by unique identifier
+        /// </summary>
+        public const string ReportDefaultUrl = "reports/sys/{reportId:min(1)}/default";
 
         /// <summary>
         /// API client URL for design data for a single report specified by unique identifier

@@ -21,8 +21,8 @@ import { DocumentStatusValue } from '../../enum/documentStatusValue';
 import { MessageType, Layout, Entities, Metadatas, environment } from "../../../environments/environment";
 import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Report } from '../../model/report';
-import { ReportingService } from '../../service/report/reporting.service';
-
+import { ReportingService, ParameterInfo } from '../../service/report/reporting.service';
+import * as moment from 'jalali-moment';
 
 
 
@@ -181,8 +181,28 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       this.report.load(reportTemplate);
      
       this.report.regData("Vouchers", "", reportData.rows);
-      this.report.dictionary.variables.getByName("FDate").valueObject = reportData.fromDate;
-      this.report.dictionary.variables.getByName("TDate").valueObject = reportData.toDate;      
+
+      var parameters : Array<ParameterInfo>  = reportData.parameters;
+      var localReport = this.report;
+      var lang = this.CurrentLanguage;
+
+      parameters.forEach(function(param){
+
+        var value = param.value;
+        
+        if(param.dataType == "System.DateTime")
+        {
+          var fdate = moment(param.value, 'YYYY-M-D HH:mm:ss')
+          .locale(lang)
+          .format('YYYY/M/D');
+        
+          value = fdate;
+        }
+
+        localReport.dictionary.variables.getByName(param.name).valueObject = value;        
+      });
+
+      this.report = localReport;
       //this.fillResourceVariables(reportObject,this.report);
       this.report.render();
       this.viewer.report = this.report;

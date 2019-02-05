@@ -424,7 +424,7 @@
     <value>فاکتور فروش</value>
   </data>
   <data name="SaveEntity" xml:space="preserve">
-    <value>ثبت {0}</value>
+    <value>ایجاد یا اصلاح {0}</value>
   </data>
   <data name="ValuedIssueVoucher" xml:space="preserve">
     <value>حواله مقداری</value>
@@ -818,5 +818,11 @@
   </data>
   <data name="ToDateDescription" xml:space="preserve">
     <value>پایان محدوده تاریخی مورد استفاده در این گزارش</value>
+  </data>
+  <data name="SetDefault" xml:space="preserve">
+    <value>تعیین {0} به عنوان پیش فرض</value>
+  </data>
+  <data name="UserReports" xml:space="preserve">
+    <value>گزارشات کاربری</value>
   </data>
 </root>

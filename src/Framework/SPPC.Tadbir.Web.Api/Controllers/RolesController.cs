@@ -43,6 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/roles/new
         [Route(RoleApi.NewRoleUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Create)]
         public async Task<IActionResult> GetNewRoleAsync()
         {
             var newRole = await _repository.GetNewRoleAsync();

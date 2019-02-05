@@ -91,5 +91,15 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت تنظیمات
         /// </summary>
         public const string Setting = "Setting";
+
+        /// <summary>
+        /// نام موجودیت لاگ عملیاتی
+        /// </summary>
+        public const string OperationLog = "OperationLog";
+
+        /// <summary>
+        /// نام موجودیت گزارش کاربری
+        /// </summary>
+        public const string UserReport = "UserReport";
     }
 }

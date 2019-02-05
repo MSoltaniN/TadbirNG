@@ -153,6 +153,8 @@ import { ReportManagementComponent } from "./components/reportManagement/reportM
 import { AccountCollectionComponent } from './components/accountCollection/accountCollection.component';
 import { ReportParametersComponent } from './components/reportParameters/reportParameters.component';
 import { LayoutModule } from '@progress/kendo-angular-layout';
+import { ViewIdentifierComponent } from './components/viewIdentifier/view-identifier.component';
+import { ReportParamComponent } from './components/viewIdentifier/reportParam.component';
 
 
 
@@ -250,9 +252,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     DialogComponent,
     AccountCollectionComponent,
     DialogComponent,    
-    ReportParametersComponent,
     AccountTestComponent,
-    AccountTestFormComponent
+    AccountTestFormComponent,
+    ReportParametersComponent,
+    ViewIdentifierComponent,
+    ReportParamComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

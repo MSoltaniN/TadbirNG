@@ -1,4 +1,7 @@
-
+<view-identifier [ViewID]="2">
+    <report-param ParamName='FromDate' [(ParamValue)]="FiscalPeriodStartDate"></report-param>
+    <report-param ParamName='ToDate' [(ParamValue)]="FiscalPeriodEndDate"></report-param>
+</view-identifier>
 <app-bread-cumb></app-bread-cumb>
 <div SppcCheckAccess="View" class="panel-body">
   <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"

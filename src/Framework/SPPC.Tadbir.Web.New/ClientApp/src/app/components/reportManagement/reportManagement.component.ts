@@ -24,6 +24,8 @@ import { FilterExpressionBuilder } from "../../class/filterExpressionBuilder";
 import * as moment from 'jalali-moment';
 import { ReportViewerComponent } from "../reportViewer/reportViewer.component";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { ReportSummary } from "../../model/reportSummary";
+import { ReportParamComponent } from "../viewIdentifier/reportParam.component";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -107,7 +109,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
   }
 
-  public showDialog()
+  public showDialog(viewId:string,formParams:Array<ReportParamComponent>)
   {
       this.active = true;
       
@@ -116,21 +118,22 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           //var i = res;
           this.treeData = <Array<TreeItem>>res.body;       
           //expand treeview base on baseid
-        //   if(this.baseId)
-        //   {
-        //     this.expandAndSelectDefault(this.baseId);                      
-        //   }
+           if(viewId)
+           {
+             this.expandAndSelectDefault(viewId,formParams);  
+             
+           }
       });       
   }
 
   //select and expand tree node baseon report baseId
-    /*public expandAndSelectDefault(baseId: string) {
+  public expandAndSelectDefault(viewId: string,formParams:Array<ReportParamComponent>) {
         var expandKeysArray: string[];
 
-        var defaltReportUrl = String.Format(ReportApi.DefaultSystemReport, this.baseId);
+        var defaltReportUrl = String.Format(ReportApi.ReportsByViewDefault, viewId);
         this.reportingService.getAll(defaltReportUrl)
             .subscribe((res: any) => {
-                var report = <Report>res.body;
+                var report = <ReportSummary>res.body;
 
                 expandKeysArray = new Array<any>();
                 this.selectedKeys = new Array<any>();
@@ -145,9 +148,13 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
                 }
 
                 this.expandedKeys = expandKeysArray;
+                this.disableButtons = false;
+                this.currentReportId = report.id;
+
+                this.prepareReport(formParams);
             });
 
-    }*/
+    }
 
   public showParameterForm(printInfo : PrintInfo)
   {
@@ -264,7 +271,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.showSaveAsDialog = false;
   }
 
-  public prepareReport()
+  public prepareReport(formParams:Array<ReportParamComponent>)
   {
       var url = String.Format(ReportApi.Report, this.currentReportId);
       this.reportingService.getAll(url).subscribe((res: Response) => {    
@@ -273,9 +280,42 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         if(printInfo.parameters.length > 0)
         {
           this.currentPrintInfo = printInfo;
-          this.showParameterForm(printInfo);  
+          if(formParams.length == 0)
+            this.showParameterForm(printInfo);  
+          else
+          {
+             var formPrameters = this.setParamterFromForm(formParams);
+             this.previewReport(formPrameters);
+          }
+
         }
       });
+  }
+
+  setParamterFromForm(formParams:Array<ReportParamComponent>) : Array<ParameterInfo>
+  {
+    var paramArrays  = new Array<ParameterInfo>();  
+
+    this.currentPrintInfo.parameters.forEach(function(param){
+        var fparam = formParams.filter(f=>f.ParamName == param.name);
+        
+        var paramInfo : ParameterInfo = new ParameterInfo();
+        paramInfo.fieldName = param.fieldName;
+
+        paramInfo.controlType = param.controlType;
+        paramInfo.id = param.id;
+        paramInfo.defaultValue = param.defaultValue? param.defaultValue : "";
+        paramInfo.captionKey = param.captionKey;
+        paramInfo.operator = param.operator;
+        paramInfo.dataType = param.dataType;
+        paramInfo.descriptionKey = param.descriptionKey;
+        paramInfo.name = param.name;
+        paramInfo.value = fparam[0].ParamValue;
+
+        paramArrays.push(paramInfo);
+    });
+
+    return paramArrays;
   }
 
   public previewReport(params : ParameterInfo[])
@@ -300,8 +340,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
         var reportData = {
           rows: response.body, 
-          fromDate: fdate,
-          toDate: tdate
+          // fromDate: fdate,
+          // toDate: tdate
+          parameters : params
         };  
 
         this.reportViewer.showReportViewer(this.currentPrintInfo.template, reportData);  

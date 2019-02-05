@@ -398,6 +398,50 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به لاگ های عملیاتی را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum OperationLogPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به لاگ های عملیاتی
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لاگ های عملیاتی
+        /// </summary>
+        View = 0x1,
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به بخش مدیریت گزارشات را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum ReportPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به مدیریت گزارشات
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی ایجاد یا اصلاح گزارش ذخیره شده
+        /// </summary>
+        Save = 0x1,
+
+        /// <summary>
+        /// دسترسی حذف گزارش ذخیره شده
+        /// </summary>
+        Delete = 0x2,
+
+        /// <summary>
+        /// دسترسی تعیین گزارش پیش فرض
+        /// </summary>
+        SetDefault = 0x4
+    }
+
+    /// <summary>
     /// Provides flag values for permissions currently defined for managing a financial voucher.
     /// </summary>
     [Flags]
