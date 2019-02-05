@@ -35,7 +35,6 @@ export class EditorFormTitleComponent {
   }
 
   ngOnInit(): void {
-
     if (this.parentModel && this.parentModel.level >= 0 && this.entityType) {
       var config = this.defultComponent.getViewTreeSettings(this.entityType);
 

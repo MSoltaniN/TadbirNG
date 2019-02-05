@@ -61,6 +61,8 @@ import { AccountGroupsFormComponent } from './components/accountGroups/accountGr
 //import { InlineTestComponent } from './components/inlineTest/inlineTest.component';
 import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAccounts.component';
 import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
+import { AccountTestComponent } from './components/accountTest/accountTest.component';
+import { AccountTestFormComponent } from './components/accountTest/accountTest-form.component';
 import { DialogComponent } from './class/dialog.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
@@ -248,7 +250,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     DialogComponent,
     AccountCollectionComponent,
     DialogComponent,    
-    ReportParametersComponent
+    ReportParametersComponent,
+    AccountTestComponent,
+    AccountTestFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -305,6 +309,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
       { path: 'accounts/group/:groupid', component: RelatedAccountsComponent, canActivate: [AuthGuard] },
       { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
+      { path: 'account-test', component: AccountTestComponent, canActivate: [AuthGuard] },
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ]),
@@ -338,7 +343,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
     SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherFormComponent,
-    VoucherLineFormComponent
+    VoucherLineFormComponent, AccountTestFormComponent
   ],
   bootstrap: [AppComponent]
 })

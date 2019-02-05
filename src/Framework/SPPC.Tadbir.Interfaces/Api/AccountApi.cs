@@ -28,9 +28,19 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentAccountsLookup = "accounts/lookup";
 
         /// <summary>
-        /// API server route URL for accounts lookup defined in current environment
+        /// API client URL for accounts ledger defined in current environment
         /// </summary>
         public const string EnvironmentAccountsLookupUrl = "accounts/lookup";
+
+        /// <summary>
+        /// API client URL for account full code
+        /// </summary>
+        public const string EnvironmentAccountsLedger = "accounts/ledger";
+
+        /// <summary>
+        /// API server route URL for accounts ledger defined in current environment
+        /// </summary>
+        public const string EnvironmentAccountsLedgerUrl = "accounts/ledger";
 
         /// <summary>
         /// API client URL for a single account specified by identifier

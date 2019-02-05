@@ -40,6 +40,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int ChildCount { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی والد این بخش
+        /// </summary>
+        public int? ParentId { get; set; }
+
+        /// <summary>
         /// مشخص می کند که آیا وضعیت این بخش انتخاب شده است یا نه؟
         /// </summary>
         public bool IsSelected { get; set; }

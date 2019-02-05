@@ -86,6 +86,16 @@ export class BaseService extends EnviromentComponent{
   }
 
   /**
+   * لیستی از اطلاعات را از سرویس میگیرد
+   * @param apiUrl آدرس کامل api
+   */
+  public getModels(apiUrl: string) {
+    var options = { headers: this.httpHeaders };
+    return this.http.get(apiUrl, options)
+      .map(response => <any>(<Response>response));
+  }
+
+  /**
    * گرفتن رکورد با استفاده از id رکورد
    * @param apiUrl آدرس کامل api
    * @param modelId شماره id رکورد

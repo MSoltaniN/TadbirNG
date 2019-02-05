@@ -22,6 +22,7 @@ export class AccountItemBriefInfo implements AccountItemBrief {
   fullCode: string;
   isSelected: boolean;
   childCount: number;
+  parentId?: number;
   code: string;
   level: number;
 }
