@@ -150,7 +150,8 @@
     "Kol": "حساب کل",
     "TafziliToUp": "حساب تفصیلی سطح",
     "BranchScope": "دسترسی شعبه",
-    "AccountGroup": "گروه حساب"
+    "AccountGroup": "گروه حساب",
+    "AccountBranchName": "نام شعبه حساب"
   },
   "AccountCollection": {
     "Category": "مجموعه حساب ها",

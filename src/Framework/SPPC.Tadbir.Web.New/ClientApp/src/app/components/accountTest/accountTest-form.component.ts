@@ -1,21 +1,18 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit, Host, Inject } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService, LookupService } from '../../service/index';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+import { AccountService, LookupService } from '../../service/index';
 import { Account } from '../../model/index';
-import { Property } from "../../class/metadata/property"
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { AccountApi } from '../../service/api/accountApi';
-import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
-import { DetailAccountFormComponent } from '../detailAccount/detailAccount-form.component';
+import { String } from '../../class/source';
+import { BranchApi } from '../../service/api/index';
+
+
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -29,7 +26,19 @@ interface Item {
 
 @Component({
   selector: 'accountTest-form-component',
-  styles: ["input[type=text],textarea,.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}"],
+  styles: [`
+input[type=text],.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}
+/deep/ .dialog-body .k-tabstrip > .k-content { padding:0; }
+.dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
+@media screen and (max-width:800px) {
+  .dialog-body{
+    width: 90%;
+    min-width: 250px;
+  }
+}
+/deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }
+/deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }
+`],
   templateUrl: './accountTest-form.component.html',
   providers: [{
     provide: RTL,
@@ -48,6 +57,8 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
   accGroupList: Array<Item> = [];
   accGroupSelected: string;
   level: number = 0;
+  branch_Id: number;
+  branchName: string;
 
   @Input() public parent: Account;
   @Input() public model: Account;
@@ -97,6 +108,8 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
 
     this.editForm.reset();
 
+    this.getBranchName();
+
     this.parentScopeValue = 0;
 
     if (this.parent) {
@@ -114,6 +127,9 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
       this.model.fullCode = this.parentFullCode + this.model.code;
     else
       this.model.fullCode = this.parentFullCode;
+
+    
+
 
     setTimeout(() => {
       this.editForm.reset(this.model);
@@ -137,4 +153,16 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
     })
   }
 
+
+  getBranchName() {
+    if (this.model && this.model.branchId)
+      this.branch_Id = this.model.branchId;
+    else
+      this.branch_Id = this.BranchId;
+
+    this.accountService.getById(String.Format(BranchApi.Branch, this.branch_Id)).subscribe(res => {
+      this.branchName = res.name;
+    })
+
+  }
 }

@@ -25,6 +25,8 @@ var environment_1 = require("../../../environments/environment");
 var kendo_angular_l10n_1 = require("@progress/kendo-angular-l10n");
 var detail_component_1 = require("../../class/detail.component");
 var viewName_1 = require("../../security/viewName");
+var source_1 = require("../../class/source");
+var index_1 = require("../../service/api/index");
 function getLayoutModule(layout) {
     return layout.getLayout();
 }
@@ -83,6 +85,7 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
         var _this = this;
         this.viewId = viewName_1.ViewName.Account;
         this.editForm.reset();
+        this.getBranchName();
         this.parentScopeValue = 0;
         if (this.parent) {
             this.parentFullCode = this.parent.fullCode;
@@ -111,6 +114,16 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
             }
         });
     };
+    AccountTestFormComponent.prototype.getBranchName = function () {
+        var _this = this;
+        if (this.model && this.model.branchId)
+            this.branch_Id = this.model.branchId;
+        else
+            this.branch_Id = this.BranchId;
+        this.accountService.getById(source_1.String.Format(index_1.BranchApi.Branch, this.branch_Id)).subscribe(function (res) {
+            _this.branchName = res.name;
+        });
+    };
     __decorate([
         core_1.Input()
     ], AccountTestFormComponent.prototype, "parent", void 0);
@@ -132,7 +145,7 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
     AccountTestFormComponent = __decorate([
         core_1.Component({
             selector: 'accountTest-form-component',
-            styles: ["input[type=text],textarea,.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}"],
+            styles: ["\ninput[type=text],.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}\n/deep/ .dialog-body .k-tabstrip > .k-content { padding:0; }\n.dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }\n@media screen and (max-width:800px) {\n  .dialog-body{\n    width: 90%;\n    min-width: 250px;\n  }\n}\n/deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }\n/deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }\n"],
             templateUrl: './accountTest-form.component.html',
             providers: [{
                     provide: kendo_angular_l10n_1.RTL,
