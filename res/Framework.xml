@@ -9,12 +9,6 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
-        <Property name="GroupId" type="Int32" isValidated="True" description="شناسه دیتابیسی گروه مرتبط با حساب کل" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnGroupId" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="GroupID" type="int" nullable="True" />
-          <ColumnView name="Group Id" visible="True" width="120" />
-          <ValidationRule name="GroupId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
-        </Property>
         <Property name="BranchScope" type="Int16" isValidated="True" description="محدوده دسترسی به حساب را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل &quot;کلیه شعبه ها&quot; (مقدار 0)، &quot;شعبه جاری و زیرمجموعه ها&quot; (مقدار 1) و &quot;شعبه جاری&quot; (مقدار 2) می شود." clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnBranchScope" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="BranchScope" type="smallint" nullable="False" />
@@ -37,7 +31,7 @@
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(512)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="512" format="" type="Length" />
         </Property>
         <Property name="Level" type="Int16" isValidated="True" description="شماره سطح که عمق این سرفصل حسابداری را در ساختار درختی مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnLevel" format="" type="SpinButton" bindingMember="Value" />
@@ -45,11 +39,29 @@
           <ColumnView name="Level" visible="True" width="120" />
           <ValidationRule name="Level_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
+        <Property name="IsActive" type="Boolean" isValidated="True" description="مشخص می کند که آیا حساب مورد نظر فعال است یا نه؟" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkIsActive" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="IsActive" type="bit" nullable="False" />
+          <ColumnView name="Is Active" visible="True" width="120" />
+          <ValidationRule name="IsActive_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="IsCurrencyAdjustable" type="Boolean" isValidated="True" description="مشخص می کند که آیا تسعیر ارزی برای حساب مورد نظر قابل انجام است یا نه؟" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkIsCurrencyAdjustable" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="IsCurrencyAdjustable" type="bit" nullable="False" />
+          <ColumnView name="Is Currency Adjustable" visible="True" width="120" />
+          <ValidationRule name="IsCurrencyAdjustable_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="TurnoverMode" type="Int16" isValidated="True" description="محدودیت ثبت های مالی حساب را مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnTurnoverMode" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TurnoverMode" type="smallint" nullable="False" />
+          <ColumnView name="Turnover Mode" visible="True" width="120" />
+          <ValidationRule name="TurnoverMode_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
         <Property name="Description" type="String" isValidated="True" description="شرحی که اطلاعات تکمیلی برای این سرفصل حسابداری را مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
@@ -72,6 +84,120 @@
         <Relation multiplicity="ManyToMany" endpointName="CostCenter" entityName="CostCenter" hasKey="False" joinTable="AccountCostCenter" description="مجموعه ای از مراکز هزینه مرتبط با این حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToMany" endpointName="Project" entityName="Project" hasKey="False" joinTable="AccountProject" description="مجموعه ای از پروژه های مرتبط با این حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Group" entityName="AccountGroup" hasKey="True" joinTable="" description="گروه حساب مرتبط با حساب کل" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" joinTable="" description="ارز پیش فرض حساب برای پیشنهاد در آرتیکل های ارزی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="AccountCollection" area="Finance" identifier="Id" description="اطلاعات مجموعه حساب را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="AccountCollectionID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="نام مجموعه حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="MultiSelect" type="Boolean" isValidated="True" description="حالت انتخاب یک حساب یا چندین حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkMultiSelect" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="MultiSelect" type="bit" nullable="False" />
+          <ColumnView name="Multi Select" visible="True" width="120" />
+          <ValidationRule name="MultiSelect_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="TypeLevel" type="Int16" isValidated="True" description="سطح حساب انتخابی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnTypeLevel" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TypeLevel" type="smallint" nullable="False" />
+          <ColumnView name="Type Level" visible="True" width="120" />
+          <ValidationRule name="TypeLevel_Validation" required="True" minimum="0" maximum="32767" format="" type="Value" />
+        </Property>
+        <Property name="InventoryMode" type="Int16" isValidated="True" description="حالت ادواری یا دوره ای دوره مالی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnInventoryMode" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="InventoryMode" type="smallint" nullable="False" />
+          <ColumnView name="Inventory Mode" visible="True" width="120" />
+          <ValidationRule name="InventoryMode_Validation" required="True" minimum="0" maximum="32767" format="" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Category" entityName="AccountCollectionCategory" hasKey="True" joinTable="" description="Main account collection category that contains this account collection" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="AccountCollectionCategory" area="Finance" identifier="Id" description="اطلاعات گروه مجموعه حساب را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="AccountCollectionCategoryID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="نام گروه مجموعه حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="OneToMany" endpointName="AccountCollection" entityName="AccountCollection" hasKey="False" joinTable="" description="مجموعه حساب های مرتبط با این گروه " clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="AccountCollectionAccount" area="Finance" identifier="Id" description="اطلاعات حساب های زیرمجموعه مجموعه حساب را نگهداری میکند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="AccountCollectionAccountID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
+        </Property>
+        <Property name="CollectionID" type="Int32" isValidated="True" description="مجموعه حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCollectionID" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CollectionID" type="int" nullable="False" />
+          <ColumnView name="Collection I D" visible="True" width="120" />
+          <ValidationRule name="CollectionID_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" joinTable="" description="حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="دوره مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="AccountGroup" area="Finance" identifier="Id" description="اطلاعات یکی از گروه های حساب را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -2202,119 +2328,6 @@
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="کاربر ایجاد کننده کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="False" joinTable="" description="نقش اقدام کننده روی کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
-    </Entity>
-    <Entity name="AccountCollection" area="Finance" identifier="Id" description="اطلاعات مجموعه حساب را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Properties>
-        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="AccountCollectionID" type="int" nullable="False" />
-          <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
-        </Property>
-        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
-          <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
-          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
-          <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
-        </Property>
-        <Property name="Name" type="String" isValidated="True" description="نام مجموعه حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
-          <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
-        </Property>
-        <Property name="MultiSelect" type="Boolean" isValidated="True" description="حالت انتخاب یک حساب یا چندین حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="chkMultiSelect" format="" type="CheckBox" bindingMember="Checked" />
-          <PropertyStorage name="MultiSelect" type="bit" nullable="False" />
-          <ColumnView name="Multi Select" visible="True" width="120" />
-          <ValidationRule name="MultiSelect_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-        <Property name="TypeLevel" type="Int16" isValidated="True" description="سطح حساب انتخابی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnTypeLevel" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="TypeLevel" type="smallint" nullable="False" />
-          <ColumnView name="Type Level" visible="True" width="120" />
-          <ValidationRule name="TypeLevel_Validation" required="True" minimum="0" maximum="32767" format="" type="Value" />
-        </Property>
-        <Property name="InventoryMode" type="Int16" isValidated="True" description="حالت ادواری یا دوره ای دوره مالی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnInventoryMode" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="InventoryMode" type="smallint" nullable="False" />
-          <ColumnView name="Inventory Mode" visible="True" width="120" />
-          <ValidationRule name="InventoryMode_Validation" required="True" minimum="0" maximum="32767" format="" type="Value" />
-        </Property>
-      </Properties>
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Category" entityName="AccountCollectionCategory" hasKey="True" joinTable="" description="Main account collection category that contains this account collection" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
-    </Entity>
-    <Entity name="AccountCollectionCategory" area="Finance" identifier="Id" description="اطلاعات گروه مجموعه حساب را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Properties>
-        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="AccountCollectionCategoryID" type="int" nullable="False" />
-          <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
-        </Property>
-        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
-          <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
-          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
-          <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
-        </Property>
-        <Property name="Name" type="String" isValidated="True" description="نام گروه مجموعه حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
-          <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
-        </Property>
-      </Properties>
-      <Relations>
-        <Relation multiplicity="OneToMany" endpointName="AccountCollection" entityName="AccountCollection" hasKey="False" joinTable="" description="مجموعه حساب های مرتبط با این گروه " clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
-    </Entity>
-    <Entity name="AccountCollectionAccount" area="Finance" identifier="Id" description="اطلاعات حساب های زیرمجموعه مجموعه حساب را نگهداری میکند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Properties>
-        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="AccountCollectionAccountID" type="int" nullable="False" />
-          <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
-        </Property>
-        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
-          <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
-          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
-          <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
-        </Property>
-        <Property name="CollectionID" type="Int32" isValidated="True" description="مجموعه حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnCollectionID" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="CollectionID" type="int" nullable="False" />
-          <ColumnView name="Collection I D" visible="True" width="120" />
-          <ValidationRule name="CollectionID_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-      </Properties>
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" joinTable="" description="حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="دوره مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
   </Entities>

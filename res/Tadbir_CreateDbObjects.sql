@@ -150,24 +150,29 @@ CREATE TABLE [Auth].[RoleFiscalPeriod] (
 GO
 
 CREATE TABLE [Finance].[Account] (
-    [AccountID]      INT              IDENTITY (1, 1) NOT NULL,
-	[ParentID]       INT              NULL,
-	[GroupID]        INT              NOT NULL,
-	[FiscalPeriodID] INT              NOT NULL,
-	[BranchID]       INT              NOT NULL,
-	[BranchScope]    SMALLINT         CONSTRAINT [DF_Finance_Account_BranchScope] DEFAULT (0) NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [FullCode]       NVARCHAR(256)    NOT NULL,
-    [Name]           NVARCHAR(512)    NOT NULL,
-    [Level]          SMALLINT         CONSTRAINT [DF_Finance_Account_Level] DEFAULT (0) NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Account_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Account_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [AccountID]              INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]               INT              NOT NULL,
+    [FiscalPeriodID]         INT              NOT NULL,
+    [BranchID]               INT              NOT NULL,
+    [GroupID]                INT              NOT NULL,
+    [CurrencyID]             INT              NOT NULL,
+    [BranchScope]            SMALLINT         NOT NULL,
+    [Code]                   NVARCHAR(16)     NOT NULL,
+    [FullCode]               NVARCHAR(256)    NOT NULL,
+    [Name]                   NVARCHAR(512)    NOT NULL,
+    [Level]                  SMALLINT         NOT NULL,
+    [IsActive]               BIT              CONSTRAINT [DF_Finance_Account_IsActive] DEFAULT (1) NOT NULL,
+    [IsCurrencyAdjustable]   BIT              CONSTRAINT [DF_Finance_Account_IsCurrencyAdjustable] DEFAULT (1) NOT NULL,
+    [TurnoverMode]           SMALLINT         CONSTRAINT [DF_Finance_Account_TurnoverMode] DEFAULT (-1) NOT NULL,
+    [Description]            NVARCHAR(512)    NULL,
+    [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Account_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]           DATETIME         CONSTRAINT [DF_Finance_Account_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Account] PRIMARY KEY CLUSTERED ([AccountID] ASC)
     , CONSTRAINT [FK_Finance_Account_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Account]([AccountID])
-    , CONSTRAINT [FK_Finance_Account_Finance_AccountGroup] FOREIGN KEY ([GroupID]) REFERENCES [Finance].[AccountGroup]([GroupID])
-    , CONSTRAINT [FK_Finance_Account_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_Account_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_Account_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_Account_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Finance_Account_Finance_Group] FOREIGN KEY ([GroupID]) REFERENCES [Finance].[AccountGroup]([GroupID])
+    , CONSTRAINT [FK_Finance_Account_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
 )
 GO
 
