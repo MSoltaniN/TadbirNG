@@ -10,6 +10,11 @@ namespace SPPC.Tadbir.Model.Finance
         public int AccountId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی مجموعه حساب در این ارتباط
+        /// </summary>
+        public virtual int CollectionId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی دوره مالی در این ارتباط
         /// </summary>
         public int FiscalPeriodId { get; set; }

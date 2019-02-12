@@ -14,12 +14,13 @@ using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
-namespace SPPC.Tadbir.Persistence.Repository
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت مجموعه حساب را تعریف می کند.
     /// </summary>
-    public class AccountCollectionAccountRepository : LoggingRepository<AccountCollectionAccount, AccountCollectionAccountViewModel>, IAccountCollectionAccountRepository
+    public class AccountCollectionRepository
+        : LoggingRepository<AccountCollectionAccount, AccountCollectionAccountViewModel>, IAccountCollectionRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -28,7 +29,8 @@ namespace SPPC.Tadbir.Persistence.Repository
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public AccountCollectionAccountRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        public AccountCollectionRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
             IOperationLogRepository log, ISecureRepository repository)
             : base(unitOfWork, mapper, metadata, log)
         {
@@ -37,12 +39,26 @@ namespace SPPC.Tadbir.Persistence.Repository
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی کلیه مجموعه های حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از اطلاعات نمایشی مجموعه های حساب</returns>
+        public async Task<IList<AccountCollectionCategoryViewModel>> GetAccountCollectionCategoriesAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionCategory>();
+            var accCollectionCat = await repository
+                .GetAllAsync(f => f.Collections);
+
+            return accCollectionCat.Select(a => Mapper.Map<AccountCollectionCategoryViewModel>(a)).ToList();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، حساب های یک مجموعه حساب و حساب های قابل انتخاب را خوانده و برمی گرداند
         /// </summary>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های یک سطح و حساب های انتخاب شده در یک مجموعه حساب</returns>
-        public async Task<AccountCollectionItemsViewModel> GetAccountCollectionAccountAsync(int collectionId, GridOptions gridOptions = null)
+        public async Task<AccountCollectionItemsViewModel> GetCollectionAccountsAsync(
+            int collectionId, GridOptions gridOptions = null)
         {
             var accounts = await _repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
@@ -101,7 +117,8 @@ namespace SPPC.Tadbir.Persistence.Repository
         /// <param name="accCollectionsList">اطلاعات حساب های یک مجموعه حساب</param>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب انتخاب شده</param>
         /// <returns></returns>
-        public async Task AddAccountCollectionAccountAsync(int collectionId, IList<AccountCollectionAccountViewModel> accCollectionsList)
+        public async Task AddCollectionAccountsAsync(
+            int collectionId, IList<AccountCollectionAccountViewModel> accCollectionsList)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             var existing = await repository.GetByCriteriaAsync(
@@ -117,8 +134,30 @@ namespace SPPC.Tadbir.Persistence.Repository
             await UnitOfWork.CommitAsync();
         }
 
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(AccountCollectionAccount entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="accountViewModel">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="account">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(
+            AccountCollectionAccountViewModel accountViewModel, AccountCollectionAccount account)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task AddNewAccountCollections(
-            IAsyncRepository<AccountCollectionAccount> repository, IList<AccountCollectionAccount> existing, IList<AccountCollectionAccountViewModel> accCollectionsList)
+            IAsyncRepository<AccountCollectionAccount> repository,
+            IList<AccountCollectionAccount> existing, IList<AccountCollectionAccountViewModel> accCollectionsList)
         {
             var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
 
@@ -188,16 +227,6 @@ namespace SPPC.Tadbir.Persistence.Repository
                     repository.Delete(removed_Item);
                 }
             }
-        }
-
-        protected override string GetState(AccountCollectionAccount entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void UpdateExisting(AccountCollectionAccountViewModel entityView, AccountCollectionAccount entity)
-        {
-            throw new NotImplementedException();
         }
 
         private readonly ISecureRepository _repository;

@@ -14,11 +14,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class AccountCollectionsController : ValidatingController<AccountCollectionAccountViewModel>
     {
-        public AccountCollectionsController(IAccountCollectionAccountRepository repository, IAccountCollectionCategoryRepository accCollectionCatRepository, IStringLocalizer<AppStrings> strings = null)
+        public AccountCollectionsController(
+            IAccountCollectionRepository repository, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
-            _accCollectionCatRepository = accCollectionCatRepository;
         }
 
         protected override string EntityNameKey
@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionCategoriesAsync()
         {
-            var accCollection = await _accCollectionCatRepository.GetAccountCollectionCategoriesAsync();
+            var accCollection = await _repository.GetAccountCollectionCategoriesAsync();
             return Json(accCollection);
         }
 
@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var accounts = await _repository.GetAccountCollectionAccountAsync(collectionId, GridOptions);
+            var accounts = await _repository.GetCollectionAccountsAsync(collectionId, GridOptions);
             return Json(accounts);
         }
 
@@ -60,14 +60,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPost]
         [Route(AccountCollectionApi.AccountCollectionAccountUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.Create)]
-        public async Task<IActionResult> PostAccountCollectionAccountAsync(int collectionId, [FromBody]List<AccountCollectionAccountViewModel> accCollections)
+        public async Task<IActionResult> PostAccountCollectionAccountAsync(
+            int collectionId, [FromBody]List<AccountCollectionAccountViewModel> accCollections)
         {
             _repository.SetCurrentContext(SecurityContext.User);
-            await _repository.AddAccountCollectionAccountAsync(collectionId, accCollections);
+            await _repository.AddCollectionAccountsAsync(collectionId, accCollections);
             return Ok();
         }
 
-        private readonly IAccountCollectionAccountRepository _repository;
-        private readonly IAccountCollectionCategoryRepository _accCollectionCatRepository;
+        private readonly IAccountCollectionRepository _repository;
     }
 }

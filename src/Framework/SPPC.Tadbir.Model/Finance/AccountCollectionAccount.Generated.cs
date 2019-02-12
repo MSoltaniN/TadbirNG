@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه حساب
         /// </summary>
-        public virtual int CollectionId { get; set; }
+        public virtual AccountCollection Collection { get; set; }
 
         /// <summary>
         /// حساب
@@ -69,6 +69,7 @@ namespace SPPC.Tadbir.Model.Finance
 
         private void InitReferences()
         {
+            Collection = new AccountCollection();
             Account = new Account();
             Branch = new Branch();
             FiscalPeriod = new FiscalPeriod();

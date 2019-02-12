@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual short InventoryMode { get; set; }
 
         /// <summary>
-        /// Main account collection category that contains this account collection
+        /// طبقه بندی اصلی دربرگیرنده این مجموعه حساب
         /// </summary>
         public virtual AccountCollectionCategory Category { get; set; }
 

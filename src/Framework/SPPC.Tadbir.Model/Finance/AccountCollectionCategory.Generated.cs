@@ -54,11 +54,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه حساب های مرتبط با این گروه 
         /// </summary>
-        public virtual IList<AccountCollection> AccountCollections { get; protected set; }
+        public virtual IList<AccountCollection> Collections { get; protected set; }
 
         private void InitReferences()
         {
-            AccountCollections = new List<AccountCollection>();
+            Collections = new List<AccountCollection>();
         }
     }
 }

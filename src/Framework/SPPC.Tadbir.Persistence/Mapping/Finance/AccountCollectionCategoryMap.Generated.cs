@@ -17,18 +17,14 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class AccountCollectionCategoryMap
+    internal static class AccountCollectionCategoryMap
     {
-        private AccountCollectionCategoryMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<AccountCollectionCategory> builder)
         {
             builder.ToTable("AccountCollectionCategory", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("AccountCollectionCategoryID");
+                .HasColumnName("CategoryID");
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(128);
