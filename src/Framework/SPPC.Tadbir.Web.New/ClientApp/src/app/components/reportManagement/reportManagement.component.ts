@@ -1,6 +1,6 @@
 import { Layout, environment } from "../../../environments/environment";
 import { TreeNode } from '../../model/index';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ContentChildren } from '@angular/core';
 import { DetailComponent } from '../../class/detail.component';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeNodeInfo } from '../../model/index';
@@ -14,7 +14,7 @@ import { of } from "rxjs/observable/of";
 import { Report } from "../../model/report";
 import { String } from '../../class/source';
 
-import { ReportParametersComponent } from "../reportParameters/reportParameters.component";
+import { ReportParametersComponent, TabInfo } from "../reportParameters/reportParameters.component";
 import { TreeViewComponent } from "@progress/kendo-angular-treeview";
 import { TreeItem } from "../../model/treeItem";
 import { PrintInfo } from "../../model/printInfo";
@@ -26,6 +26,7 @@ import { ReportViewerComponent } from "../reportViewer/reportViewer.component";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { ReportSummary } from "../../model/reportSummary";
 import { ReportParamComponent } from "../viewIdentifier/reportParam.component";
+import { TabsComponent } from "../../controls/tabs/tabs.component";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -46,6 +47,7 @@ declare var Stimulsoft: any;
 export class ReportManagementComponent extends DetailComponent implements OnInit {
   
   @Input() public baseId: string;
+  
   treeData: any[];
   active: boolean = false;
   showReportDesigner:boolean = false;
@@ -55,9 +57,14 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   innerHeight : number;
   selectedKeys: any[] = [];
   report: any = new Stimulsoft.Report.StiReport();
+  
   currentReportId : any;
+  currentViewId : any;
   currentReportName : string;
   currentPrintInfo : PrintInfo;
+  currentFormParams:Array<ReportParamComponent>;
+  currentDefaultReportId:any;
+
   expandedKeys :any[] = [];
   deleteConfirmMsg : string;
   deleteConfirm:boolean = false;
@@ -69,10 +76,17 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     reportName: new FormControl("", [Validators.required, Validators.maxLength(256)]),    
   });
 
-  @ViewChild(ReportViewerComponent) reportViewer: ReportViewerComponent;  
+  //@ViewChild(ReportViewerComponent) reportViewer: ReportViewerComponent;  
   @ViewChild(ReportParametersComponent) reportParameter: ReportParametersComponent;
   @ViewChild(TreeViewComponent) treeView: TreeViewComponent;
- 
+  @ViewChild(TabsComponent) tabsComponent : TabsComponent;  
+  //@ViewChild('viewer') reportViewer: ReportViewerComponent;  
+
+  @ContentChildren(ReportViewerComponent) reportViewer: ReportViewerComponent;  
+  @ViewChildren(ReportViewerComponent) viewers : QueryList<ReportViewerComponent>;
+  
+  reportTabs : Array<TabInfo>;
+  
   constructor(public toastrService: ToastrService,
      public translate: TranslateService,
       public renderer: Renderer2, 
@@ -113,7 +127,15 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   {
       this.active = true;
       
-      this.reportingService.getAll(ReportApi.ReportsHierarchy)
+      var url = ReportApi.ReportsHierarchy;
+      if(viewId)
+      {
+          this.currentViewId = viewId;
+          url = String.Format(ReportApi.ReportsByView, viewId);
+      }
+      
+
+      this.reportingService.getAll(url)
       .subscribe((res: any) => {
           //var i = res;
           this.treeData = <Array<TreeItem>>res.body;       
@@ -121,7 +143,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
            if(viewId)
            {
              this.expandAndSelectDefault(viewId,formParams);  
-             
+             this.currentFormParams = formParams;
            }
       });       
   }
@@ -140,6 +162,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
                 var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
                 this.selectedKeys.push(nodeData.id);
+                this.currentReportName = nodeData.caption;
 
                 while (nodeData.parentId != null) {
                     expandKeysArray.push(nodeData.parentId);
@@ -150,11 +173,39 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
                 this.expandedKeys = expandKeysArray;
                 this.disableButtons = false;
                 this.currentReportId = report.id;
+                this.currentDefaultReportId = report.id;
 
                 this.prepareReport(formParams);
             });
 
-    }
+  }
+
+  public showReport()
+  {
+      if(this.currentDefaultReportId == this.currentReportId)
+      {
+        this.prepareReport(this.currentFormParams);
+      }
+      else
+      {
+        var formParams = new Array<ReportParamComponent>();
+        this.prepareReport(formParams);
+      }
+  }
+
+  public setDefaultForAll()
+  {
+      var defaltReportUrl = String.Format(ReportApi.ReportDefault, this.currentReportId);
+      this.reportingService.setDefaultForAll(defaltReportUrl)
+        .subscribe((res: any) => {            
+        },
+        (error) => {          
+        },
+        () => {
+          this.showMessage(this.getText('Report.ReportSetDefaultForAll'));
+        });
+
+  }
 
   public showParameterForm(printInfo : PrintInfo)
   {
@@ -256,10 +307,19 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.reportingService.saveAsReport(url,localReport).subscribe((response: any) => {
       this.showMessage(this.getText('Report.SaveAsIsOk'));
 
-      this.reportingService.getAll(ReportApi.ReportsHierarchy)
+      //reload treeview
+      var url = ReportApi.ReportsHierarchy;
+      if(this.currentViewId)
+      {
+          url = String.Format(ReportApi.ReportsByView, this.currentViewId);
+      }
+
+      this.reportingService.getAll(url)
       .subscribe((res: any) => {          
           this.treeData = <Array<TreeItem>>res.body;                 
-      });   
+      });
+      //reload treeview
+
       this.showSaveAsDialog = false; 
     }, (error => {
       this.showMessage(error);
@@ -280,7 +340,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         if(printInfo.parameters.length > 0)
         {
           this.currentPrintInfo = printInfo;
-          if(formParams.length == 0)
+          if(formParams == undefined || formParams.length == 0)
             this.showParameterForm(printInfo);  
           else
           {
@@ -323,7 +383,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.showReportViewer = true;
     this.showReportDesigner = false;    
 
-    var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;    
+    var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;  
+    
     var filterExpression = this.createFilters(params);
     var sort = "";
 
@@ -345,12 +406,32 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           parameters : params
         };  
 
-        this.reportViewer.showReportViewer(this.currentPrintInfo.template, reportData);  
+ 
+
+        this.tabsComponent.openTab(this.currentReportName,this.currentPrintInfo.template,
+          reportData,true,true,false,this.currentReportId);
+
+        
+        // view.showReportViewer(this.currentPrintInfo.template, reportData,
+        //   this.tabsComponent,null);         
+
+      
+        //var viewerComponents = this.viewers.filter(f=>f.Id == tab.index.toString());        
+
+        
+        
       });      
   } 
 
+ 
   designReport()
   {
+
+    var tabIsOpen = this.tabsComponent.openTab(this.currentReportName,null,null,
+      true,false,true,this.currentReportId);
+
+    if(!tabIsOpen) return;
+
     var url = String.Format(ReportApi.ReportDesign, this.currentReportId);
     this.showReportViewer = false;
     this.showReportDesigner = true;
@@ -380,7 +461,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         
         designer.report = rpt;
 
-        designer.renderHtml('designer');
+        designer.renderHtml('designerTab' + this.currentReportId);
 
       
         var currentId = this.currentReportId;
@@ -425,7 +506,15 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             this.showMessage(this.getText('Report.ReportDeleted'));
             this.currentReportId = null;
             this.disableButtons = true;
-            this.reportingService.getAll(ReportApi.ReportsHierarchy)
+            
+            //reload treeview
+            var url = ReportApi.ReportsHierarchy;
+            if(this.currentViewId)
+            {
+                url = String.Format(ReportApi.ReportsByView, this.currentViewId);
+            }        
+            
+            this.reportingService.getAll(url)
             .subscribe((res: any) => {          
                 this.treeData = <Array<TreeItem>>res.body;                 
             });               
@@ -463,3 +552,5 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     };
   }
 }
+
+

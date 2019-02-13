@@ -155,6 +155,9 @@ import { ReportParametersComponent } from './components/reportParameters/reportP
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { ViewIdentifierComponent } from './components/viewIdentifier/view-identifier.component';
 import { ReportParamComponent } from './components/viewIdentifier/reportParam.component';
+import { TabComponent } from './controls/tabs/tab.component';
+import { TabsComponent } from './controls/tabs/tabs.component';
+import { DynamicTabsDirective } from './controls/tabs/dynamic-tabs.directive';
 
 
 
@@ -256,7 +259,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     AccountTestFormComponent,
     ReportParametersComponent,
     ViewIdentifierComponent,
-    ReportParamComponent
+    ReportParamComponent,
+    TabComponent,
+    TabsComponent,
+    DynamicTabsDirective
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -347,7 +353,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
     SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherFormComponent,
-    VoucherLineFormComponent, AccountTestFormComponent
+    VoucherLineFormComponent, AccountTestFormComponent,TabComponent
   ],
   bootstrap: [AppComponent]
 })

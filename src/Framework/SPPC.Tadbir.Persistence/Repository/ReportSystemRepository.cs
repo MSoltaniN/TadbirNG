@@ -180,7 +180,7 @@ namespace SPPC.Tadbir.Persistence
                     userReport.Id = 0;
                     userReport.IsSystem = false;
                     userReport.IsDefault = false;
-                    userReport.CreatedById = _currentContext.Id;
+                    userReport.CreatedById = 1; //_currentContext.Id;
                     repository.Insert(userReport);
                     await _unitOfWork.CommitAsync();
 

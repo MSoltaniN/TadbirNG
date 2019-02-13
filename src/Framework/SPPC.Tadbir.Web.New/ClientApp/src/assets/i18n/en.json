@@ -82,7 +82,10 @@
     "DeleteReportConfirm": "are you sure to delete report {0}?",
     "ReportDeleted":"Report deleted successfully",
     "ReportNameIsReq":"Report name is required",
-    "ReportNameTooLong":"Report name is too long"
+    "ReportNameTooLong":"Report name is too long",
+    "ReportSetDefaultForAll": "The report was set to default for all users",
+    "DefaultForAll":"Default for everyone"
+
   },
   "Buttons": {
     "Ok": "Ok",

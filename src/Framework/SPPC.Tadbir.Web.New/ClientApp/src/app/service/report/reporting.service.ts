@@ -32,6 +32,13 @@ export class ReportingService extends ReportBaseService {
           .catch(this.handleError);
     }
 
+    public setDefaultForAll(apiUrl: string): Observable<string> {        
+        return this.http.put(apiUrl,null, this.option)
+          .map(res => res)
+          .catch(this.handleError);
+          
+    }
+
     public deleteReport(apiUrl: string): Observable<string> {        
         return this.http.delete(apiUrl, this.option)
           .map(res => res)

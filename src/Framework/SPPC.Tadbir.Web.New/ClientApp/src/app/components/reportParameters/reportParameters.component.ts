@@ -74,3 +74,10 @@ export class ReportParametersComponent implements OnInit {
 
 }
 
+export class TabInfo {
+  index: number; 
+  showReportViewer: boolean;
+  reportId: string;
+  title: string;
+  
+}

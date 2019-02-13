@@ -14,9 +14,11 @@
                                                                 type="button" [icon]="'pencil'"></button>
                                                         <button [(disabled)]="disableButtons" kendoButton (click)="saveAsReport()" title="{{ 'Report.SaveAs' | translate }}"
                                                                 type="button" [icon]="'floppy'"></button>
+                                                        <button [(disabled)]="disableButtons" kendoButton (click)="setDefaultForAll()" title="{{ 'Report.DefaultForAll' | translate }}"
+                                                                type="button" [icon]="'connector'"></button>
                                                         <button [(disabled)]="disableButtons"  kendoButton (click)="showDeleteConfirm()" title="{{ 'Report.Delete' | translate }}"
                                                                 type="button" [icon]="'trash'"></button>
-                                                        <button [(disabled)]="disableButtons" kendoButton (click)="prepareReport()" title="{{ 'Report.Preview' | translate }}"
+                                                        <button [(disabled)]="disableButtons" kendoButton (click)="showReport()" title="{{ 'Report.Preview' | translate }}"
                                                                 type="button" [icon]="'eye'"></button>
                                                 </div>
                                         </kendo-splitter-pane>
@@ -48,18 +50,29 @@
                         </kendo-splitter-pane>
                         <kendo-splitter-pane>
                                 <div class='col-lg-12 col-sm-12 col-md-12 col-xs-12 noprl' [ngClass]="{'pull-left':this.CurrentLanguage === 'fa' , 'pull-right': this.CurrentLanguage === 'en'}">
-                                        <div class='row report-header'>                                                                                                                                     
-                                                <!-- <span class="k-icon k-i-change-manually" *ngIf='showReportDesigner' ></span> -->
+                                        <my-tabs>
+                                                <my-tab [tabTitle]="'میز کار'">                                                        
+                                                </my-tab> 
+                                                <!-- <my-tab *ngFor="let tab of reportTabs; let i = index" [tabTitle]="'viewer'">                                                        
+                                                        <report-viewer #viewer *ngIf='showReportViewer' [Id]='tab.index'>                                                                
+                                                        </report-viewer>                                                               
+                                                </my-tab>  -->
+                                                                                             
+                                        </my-tabs>    
+                                        <!-- <div class='row report-header'>                                                                                                                                     
                                                 <span class="k-icon col-lg-12 col-md-12 report-title viewer" 
                                                 *ngIf='showReportViewer'><strong >{{ 'Report.ReportViewer' | translate }} {{currentReportName}}</strong> </span>                                        
                                                 <span class="k-icon col-lg-12 col-md-12 report-title design" 
                                                 *ngIf='showReportDesigner'> <strong>{{ 'Report.ReportDesign' | translate }} {{currentReportName}}</strong></span>                                                                                                
-                                        </div>
-                                        
-                                        <div *ngIf='showReportDesigner' id="designer"></div>
-                                        <report-viewer *ngIf='showReportViewer' id='compViewer'></report-viewer>
+                                        </div>                                                                                                                                                     -->
+                                        <!-- <div *ngIf='showReportDesigner' id="designer"></div>                                         -->
+                                        <!-- <ng-template #viewerTemplate>
+                                                <ng-container #vc></ng-container>
+                                                <report-viewer #viewer *ngIf='showReportViewer' id='compViewer'></report-viewer>                                                               
+                                        </ng-template>
+                                         -->
                                         <report-parameters (onOkClick)="onOkParams($event)" [reportId]="currentReportId">
-                                        </report-parameters>
+                                        </report-parameters>                                                                       
                                 </div>
                         </kendo-splitter-pane>
                 </kendo-splitter>

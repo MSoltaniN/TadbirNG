@@ -2,9 +2,11 @@
     <kendo-dialog-titlebar>
         {{ 'Report.ReportViewer' | translate }}
     </kendo-dialog-titlebar> -->
-<kendo-window title="{{ 'Report.ReportViewer' | translate }}" 
-    *ngIf="active" (close)="closeForm()" state="Maximized">    
-    <div id='viewer' dir="ltr" >
-    </div>
-</kendo-window>  
+
+    <kendo-window title="{{ 'Report.ReportViewer' | translate }}" 
+        *ngIf="active" (close)="closeForm()" state="Maximized">    
+        <div id='{{Id}}' dir="ltr" >
+        </div>
+    </kendo-window>  
+
 <!-- </kendo-dialog> -->

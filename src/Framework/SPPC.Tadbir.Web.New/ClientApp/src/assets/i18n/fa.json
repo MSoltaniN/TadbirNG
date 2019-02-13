@@ -82,7 +82,10 @@
     "DeleteReportConfirm": "آیا برای حذف گزارش {0} اطمینان دارید؟",
     "ReportDeleted": "گزارش با موفقیت حذف شد",
     "ReportNameIsReq": "نام گزارش اجباری می باشد",
-    "ReportNameTooLong": "نام گزارش طولانی می باشد"
+    "ReportNameTooLong": "نام گزارش طولانی می باشد",
+    "ReportSetDefaultForAll": "گزارش برای همه کاربران به صورت پیش فرض شد",
+    "DefaultForAll":"پیش فرض برای همه"
+
   },
   "Buttons": {
     "Ok": "تایید",

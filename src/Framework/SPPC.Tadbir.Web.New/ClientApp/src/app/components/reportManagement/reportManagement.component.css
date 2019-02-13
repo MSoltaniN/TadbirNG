@@ -72,6 +72,11 @@
 }
 
 .pdialog .k-overlay 
-    {
-        opacity: .5!important;
-    }
+{
+    opacity: .5!important;
+}
+
+
+body.tRtl .nav-tabs>li {
+    float: right!important;
+}

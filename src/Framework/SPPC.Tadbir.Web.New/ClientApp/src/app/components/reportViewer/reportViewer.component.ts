@@ -23,6 +23,8 @@ import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angul
 import { Report } from '../../model/report';
 import { ReportingService, ParameterInfo } from '../../service/report/reporting.service';
 import * as moment from 'jalali-moment';
+import { TabComponent } from '../../controls/tabs/tab.component';
+import { TabsComponent } from '../../controls/tabs/tabs.component';
 
 
 
@@ -42,6 +44,8 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
   @Input() public baseId: number;
   @Input() public showViewer: boolean = false;
+  @Input() public Id: string;
+  
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
@@ -163,7 +167,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       this.viewer.report = this.report;
       
       console.log('Rendering the viewer to selected element');
-      this.viewer.renderHtml('viewer');
+      this.viewer.renderHtml('viewer' );
 
     },10);
 
@@ -174,7 +178,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   showReportViewer(reportTemplate :string, reportData: any)
   {   
     this.active = true;
-
+  
     setTimeout(() => {          
      
       console.log('Load report from url');      
@@ -208,8 +212,9 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       this.viewer.report = this.report;
       
       console.log('Rendering the viewer to selected element');
-      this.viewer.renderHtml('viewer');
+      this.viewer.renderHtml(this.Id);
 
+      
     }, 10);   
   }
 
