@@ -10,15 +10,22 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت مجموعه حساب را تعریف می کند.
     /// </summary>
-    public interface IAccountCollectionAccountRepository
+    public interface IAccountCollectionRepository
     {
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی کلیه مجموعه های حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از اطلاعات نمایشی مجموعه های حساب</returns>
+        Task<IList<AccountCollectionCategoryViewModel>> GetAccountCollectionCategoriesAsync();
+
         /// <summary>
         /// به روش آسنکرون، حساب های یک مجموعه حساب و حساب های قابل انتخاب را خوانده و برمی گرداند
         /// </summary>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های یک سطح و حساب های انتخاب شده در یک مجموعه حساب</returns>
-        Task<AccountCollectionItemsViewModel> GetAccountCollectionAccountAsync(int collectionId, GridOptions gridOptions = null);
+        Task<AccountCollectionItemsViewModel> GetCollectionAccountsAsync(
+            int collectionId, GridOptions gridOptions = null);
 
         /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
@@ -46,6 +53,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accCollectionsList">اطلاعات حساب های یک مجموعه حساب</param>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب انتخاب شده</param>
         /// <returns></returns>
-        Task AddAccountCollectionAccountAsync(int collectionId, IList<AccountCollectionAccountViewModel> accCollectionsList);
+        Task AddCollectionAccountsAsync(int collectionId, IList<AccountCollectionAccountViewModel> accCollectionsList);
     }
 }

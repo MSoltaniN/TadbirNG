@@ -17,18 +17,14 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class AccountCollectionMap
+    internal static class AccountCollectionMap
     {
-        private AccountCollectionMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<AccountCollection> builder)
         {
             builder.ToTable("AccountCollection", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("AccountCollectionID");
+                .HasColumnName("CollectionID");
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(128);
@@ -46,7 +42,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Category)
-                .WithMany(d => d.AccountCollections)
+                .WithMany(d => d.Collections)
                 .HasForeignKey("CategoryID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_AccountCollection_Finance_Category");
