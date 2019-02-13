@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Category)
-                .WithMany(d => d.Collections)
+                .WithMany(d => d.AccountCollections)
                 .HasForeignKey("CategoryID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_AccountCollection_Finance_Category");
