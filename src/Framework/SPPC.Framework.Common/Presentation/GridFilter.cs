@@ -48,7 +48,7 @@ namespace SPPC.Framework.Presentation
         {
             string op = OperatorFromFieldType();
             string toString = !String.IsNullOrEmpty(Value)
-                ? String.Format("{0}{1}", FieldName, String.Format(op, Value))
+                ? String.Format("{0}{1}", FieldName, String.Format(op, Value.Replace(@"\", @"\\")))
                 : String.Format("{0}{1}", FieldName, Operator);
             return toString;
         }
