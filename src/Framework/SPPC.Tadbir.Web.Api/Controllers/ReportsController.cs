@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.SourceReportIsRequired));
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
+            _sysRepository.SetCurrentContext(SecurityContext.User);
             report.LocaleId = await GetCurrentLocaleIdAsync();
             await _sysRepository.SaveUserReportAsync(report);
             return StatusCode(StatusCodes.Status201Created);
