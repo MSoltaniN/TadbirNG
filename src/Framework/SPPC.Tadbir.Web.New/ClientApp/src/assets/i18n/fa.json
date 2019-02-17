@@ -84,7 +84,8 @@
     "ReportNameIsReq": "نام گزارش اجباری می باشد",
     "ReportNameTooLong": "نام گزارش طولانی می باشد",
     "ReportSetDefaultForAll": "گزارش برای همه کاربران به صورت پیش فرض شد",
-    "DefaultForAll":"پیش فرض برای همه"
+    "DefaultForAll":"پیش فرض برای همه",
+    "ReportDesktop" : "میز کار"
 
   },
   "Buttons": {

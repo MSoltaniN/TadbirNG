@@ -51,7 +51,7 @@
                         <kendo-splitter-pane>
                                 <div class='col-lg-12 col-sm-12 col-md-12 col-xs-12 noprl' [ngClass]="{'pull-left':this.CurrentLanguage === 'fa' , 'pull-right': this.CurrentLanguage === 'en'}">
                                         <my-tabs>
-                                                <my-tab [tabTitle]="'میز کار'">                                                        
+                                                <my-tab tabTitle="{{ 'Report.ReportDesktop' | translate }}">                                                        
                                                 </my-tab> 
                                                 <!-- <my-tab *ngFor="let tab of reportTabs; let i = index" [tabTitle]="'viewer'">                                                        
                                                         <report-viewer #viewer *ngIf='showReportViewer' [Id]='tab.index'>                                                                

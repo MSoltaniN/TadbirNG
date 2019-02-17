@@ -84,7 +84,8 @@
     "ReportNameIsReq":"Report name is required",
     "ReportNameTooLong":"Report name is too long",
     "ReportSetDefaultForAll": "The report was set to default for all users",
-    "DefaultForAll":"Default for everyone"
+    "DefaultForAll":"Default for everyone",
+    "ReportDesktop" : "ِDesktop"
 
   },
   "Buttons": {
