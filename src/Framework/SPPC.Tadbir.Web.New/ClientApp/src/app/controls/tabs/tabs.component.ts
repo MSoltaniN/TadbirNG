@@ -20,7 +20,7 @@ import { DynamicTabsDirective } from './dynamic-tabs.directive';
 @Component({
   selector: 'my-tabs',
   template: `
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs reportTab">
       <li *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
         <a class='tablTitle'>{{tab.title}}
         <span class="tab-close" *ngIf="tab.isCloseable" (click)="closeTab(tab)">x</span>
@@ -47,6 +47,7 @@ import { DynamicTabsDirective } from './dynamic-tabs.directive';
       cursor: pointer;
     }
 
+    
     
     `
   ]
@@ -118,6 +119,7 @@ export class TabsComponent implements AfterContentInit {
     instance.isDesigner = isDesigner;
     
     instance.Id = prefix + id;
+    instance.reportViewer.Id = prefix + id;
     // remember the dynamic component for rendering the
     // tab navigation headers
     this.dynamicTabs.push(componentRef.instance as TabComponent);

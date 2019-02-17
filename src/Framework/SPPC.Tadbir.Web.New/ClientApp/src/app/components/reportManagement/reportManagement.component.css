@@ -80,3 +80,8 @@
 body.tRtl .nav-tabs>li {
     float: right!important;
 }
+
+body.tRtl .reportTab li
+{
+     float: right!important;
+}

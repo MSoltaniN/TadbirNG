@@ -38,7 +38,7 @@ declare var Stimulsoft: any;
 })
 export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
-  viewer: any = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer', false);
+  viewer: any = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer' , false);
   report: any = new Stimulsoft.Report.StiReport();
   active: boolean = false;
 
@@ -178,6 +178,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   showReportViewer(reportTemplate :string, reportData: any)
   {   
     this.active = true;
+    this.viewer =  new Stimulsoft.Viewer.StiViewer(null, 'StiViewer'  + this.Id, false);
   
     setTimeout(() => {          
      

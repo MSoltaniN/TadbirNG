@@ -450,7 +450,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         options.components.showCheckBox = false;
         options.components.showSubReport = false;
          
-        var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner", false);        
+        var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + this.currentReportId, false);        
         
         var rpt = new Stimulsoft.Report.StiReport();
         var reportTemplate : string;
