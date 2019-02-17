@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionCategory>();
             var accCollectionCat = await repository
-                .GetAllAsync(f => f.Collections);
+                .GetAllAsync(f => f.AccountCollections);
 
             return accCollectionCat.Select(a => Mapper.Map<AccountCollectionCategoryViewModel>(a)).ToList();
         }

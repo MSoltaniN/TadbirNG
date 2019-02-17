@@ -41,5 +41,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات گزارش فرم مرسوم سند</returns>
         Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
             GridOptions gridOptions, bool withDetail = false);
+
+        Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(GridOptions gridOptions);
     }
 }

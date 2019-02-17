@@ -256,6 +256,7 @@ namespace SPPC.Tadbir.Mapper
                         src => String.Join("|",
                             new[] { "VoucherLineDisplay", src.Debit.ToString("C0"), src.Credit.ToString("C0"), src.Description })));
             mapperConfig.CreateMap<VoucherLine, VoucherLineAmountsViewModel>();
+            mapperConfig.CreateMap<VoucherLine, JournalViewModel>();
 
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))

@@ -128,6 +128,18 @@ namespace SPPC.Tadbir.Persistence
             return standardForm;
         }
 
+        public async Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(GridOptions gridOptions)
+        {
+            var journal = await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .OrderBy(art => art.Voucher.Date)
+                    .ThenBy(art => art.Voucher.No)
+                .Select(art => _mapper.Map<JournalViewModel>(art))
+                .Apply(gridOptions)
+                .ToListAsync();
+            return journal;
+        }
+
         private static void AddGeneralStandardLineItems(
             VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
         {

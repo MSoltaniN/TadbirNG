@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -27,6 +28,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
             _sysRepository = sysRepository;
         }
+
+        #region Report Management API
 
         // GET: api/reports/sys/tree
         [Route(ReportApi.ReportsHierarchyUrl)]
@@ -97,7 +100,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.SourceReportIsRequired));
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
+            _sysRepository.SetCurrentContext(SecurityContext.User);
             report.LocaleId = await GetCurrentLocaleIdAsync();
             await _sysRepository.SaveUserReportAsync(report);
             return StatusCode(StatusCodes.Status201Created);
@@ -199,6 +202,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        #endregion
+
+        #region Business Reports API
+
         // GET: api/reports/voucher/sum-by-date
         [Route(ReportApi.EnvironmentVoucherSummaryByDateUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
@@ -231,6 +238,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Localize(formWithDetail);
             return JsonReadResult(formWithDetail);
         }
+
+        // GET: api/reports/journal/by-date/by-row
+        [Route(ReportApi.JournalByDateByRowUrl)]
+        public async Task<IActionResult> GetJournalByDateByRowAsync()
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateByRowAsync(gridOptions);
+            return Json(journal);
+        }
+
+        #endregion
 
         private async Task<int> GetCurrentLocaleIdAsync()
         {
