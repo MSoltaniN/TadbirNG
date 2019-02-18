@@ -245,6 +245,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
+            int count = await _repository.GetJournalByDateByRowCountAsync(gridOptions);
+            SetItemCount(count);
             var journal = await _repository.GetJournalByDateByRowAsync(gridOptions);
             return Json(journal);
         }

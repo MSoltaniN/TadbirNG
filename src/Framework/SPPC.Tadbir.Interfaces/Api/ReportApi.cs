@@ -132,8 +132,14 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string VoucherStandardFormWithDetailUrl = "reports/voucher/std-form-detail";
 
+        /// <summary>
+        /// API client URL for Journal-By Date-By Row report
+        /// </summary>
         public const string JournalByDateByRow = "reports/journal/by-date/by-row";
 
+        /// <summary>
+        /// API server route URL for Journal-By Date-By Row report
+        /// </summary>
         public const string JournalByDateByRowUrl = "reports/journal/by-date/by-row";
     }
 }

@@ -128,16 +128,36 @@ namespace SPPC.Tadbir.Persistence
             return standardForm;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         public async Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(GridOptions gridOptions)
         {
-            var journal = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
-                .OrderBy(art => art.Voucher.Date)
-                    .ThenBy(art => art.Voucher.No)
-                .Select(art => _mapper.Map<JournalViewModel>(art))
-                .Apply(gridOptions)
+            var journalQuery = GetJournalByDateByRowQuery();
+            var journal = await journalQuery
                 .ToListAsync();
-            return journal;
+            return journal
+                .Apply(gridOptions)
+                .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه</returns>
+        public async Task<int> GetJournalByDateByRowCountAsync(GridOptions gridOptions)
+        {
+            var journalQuery = GetJournalByDateByRowQuery();
+            var journal = await journalQuery
+                .ToListAsync();
+            return journal
+                .Apply(gridOptions, false)
+                .Count();
         }
 
         private static void AddGeneralStandardLineItems(
@@ -252,6 +272,16 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return query;
+        }
+
+        private IQueryable<JournalViewModel> GetJournalByDateByRowQuery()
+        {
+            var journalQuery = _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .OrderBy(art => art.Voucher.Date)
+                    .ThenBy(art => art.Voucher.No)
+                .Select(art => _mapper.Map<JournalViewModel>(art));
+            return journalQuery;
         }
 
         private readonly IAppUnitOfWork _unitOfWork;

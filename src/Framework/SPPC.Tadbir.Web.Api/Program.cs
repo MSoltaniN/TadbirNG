@@ -15,11 +15,15 @@ namespace SPPC.Tadbir.Web.Api
         {
             var builder = new FilterExpressionBuilder();
             var gridOptions = new GridOptions();
+            var branch = new GridFilter() { FieldName = "BranchId", FieldTypeName = "System.Int32", Operator = GridFilterOperator.IsEqualTo, Value = "1" };
+            var status = new GridFilter() { FieldName = "VoucherStatusId", FieldTypeName = "System.Int32", Operator = GridFilterOperator.IsEqualTo, Value = "2" };
             var dateFrom = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsGreaterOrEqualTo, Value = "2018-03-21" };
-            var dateTo = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsLessOrEqualTo, Value = "2019-03-21" };
+            var dateTo = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsLessOrEqualTo, Value = "2018-05-21" };
             gridOptions.Filter = builder
-                .New(dateFrom)
-                .And(dateTo)
+                .New(branch)
+                .And(status)
+                ////.New(dateFrom)
+                ////.And(dateTo)
                 .Build();
             ////gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Id", Direction = "DESC" });
             var json = JsonHelper.From(gridOptions, false);
