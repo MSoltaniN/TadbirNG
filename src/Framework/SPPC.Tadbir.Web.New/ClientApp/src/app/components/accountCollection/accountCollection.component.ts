@@ -122,7 +122,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
    * @param item
    */
   public handleSelection(item: TreeItem): void {
-
+    debugger;
     this.selectedCollectionItem = undefined;
     this.selectedRowData = [];
     this.selectedRows = [];
@@ -138,6 +138,9 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
     }
     else
       if (item.dataItem.id > 0) {
+
+        this.showMessage(this.getText('AccountCollection.SelectCollection'), MessageType.Warning);
+
         this.expandedKeys = [];
         this.expandedKeys.push(item.dataItem.id);
       }
@@ -162,7 +165,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
       if (this.viewAccess) {
         var filter = this.currentFilter;
         if (this.ddlLevelSelected == undefined || this.ddlLevelSelected == null) {
-          this.toastrService.warning(this.getText('AccountCollection.SelectLevel'));
+          this.showMessage(this.getText('AccountCollection.SelectLevel'), MessageType.Warning);
         }
         else {
           if (this.ddlLevelSelected > 0)
@@ -219,7 +222,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
     }
     else {
-      this.toastrService.warning(this.getText('AccountCollection.SelectCollection'));
+      this.showMessage(this.getText('AccountCollection.SelectCollection'), MessageType.Warning);
     }
   }
 
@@ -233,6 +236,9 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
         var row = this.rowData.data.find(f => f.id == this.selectableRows[0]);
         this.selectedRowData.push(row);
         this.newSelectedRowData.push(row);
+      }
+      else {
+        this.showMessage(this.getText('AccountCollection.SelectedAccount'), MessageType.Info);
       }
     }
     this.selectableRows = [];
@@ -324,7 +330,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   //قابل انتخاب یا غیر قابل انتخاب بودن یک سطر را بررسی میکند
   public isSelectableAccount(): boolean {
     if (!this.selectedCollectionItem.multiSelect && this.selectedRowData.length > 0) {
-      this.toastrService.warning(this.getText('AccountCollection.MultiSelectValidation'));
+      this.showMessage(this.getText('AccountCollection.MultiSelectValidation'), MessageType.Warning);
       return false;
     }
     else {
@@ -334,7 +340,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
         (this.selectedCollectionItem.typeLevel == TypeLevel.NonLeafAccounts && row.childCount > 0) ? true : false;
 
       if (!isDisabled)
-        this.toastrService.warning(this.getText('AccountCollection.SelectValidation'));
+        this.showMessage(this.getText('AccountCollection.SelectValidation'), MessageType.Warning);
       return isDisabled;
     }
   }

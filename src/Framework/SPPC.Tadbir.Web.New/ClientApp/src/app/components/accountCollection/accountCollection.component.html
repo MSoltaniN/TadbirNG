@@ -35,112 +35,113 @@
       </div>
       <div class="section-body" style="height: 980px;">
 
-        <div>
-          <label class="control-label">{{ 'AccountCollection.AccountLevel' | translate }}</label>
-          <kendo-dropdownlist [data]="Accountlevels" class="input-frm"
-                              [textField]="'name'"
-                              [valueField]="'no'"
-                              [(ngModel)]="ddlLevelSelected"
-                              [value]="ddlLevelSelected"
-                              [valuePrimitive]="true"
-                              (valueChange)="handleLevelChange()"
-                              [defaultItem]="{ no : 0, name : 'تمام سطوح', codeLength : 0, isEnabled : true, isUsed : true }">
-          </kendo-dropdownlist>
-        </div>
-
-
-
-        <div SppcCheckAccess="View" class='panel-body'>
-          <div class="grid-title">
-            <span>{{ 'AccountCollection.SelectableAccounts' | translate }}</span>
+        <div [hidden]="!selectedCollectionItem">
+          <div *ngIf="selectedCollectionItem">
+            <label class="control-label">{{ 'AccountCollection.AccountLevel' | translate }}</label>
+            <kendo-dropdownlist [data]="Accountlevels" class="input-frm"
+                                [textField]="'name'"
+                                [valueField]="'no'"
+                                [(ngModel)]="ddlLevelSelected"
+                                [value]="ddlLevelSelected"
+                                [valuePrimitive]="true"
+                                (valueChange)="handleLevelChange()"
+                                [defaultItem]="{ no : 0, name : 'تمام سطوح', codeLength : 0, isEnabled : true, isUsed : true }">
+            </kendo-dropdownlist>
           </div>
 
-          <kendo-grid id="14" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID
-                      [data]="rowData"
-                      [sortable]="{ allowUnsort: true, mode: 'multiple' }"
-                      [sort]="sort"
-                      [pageSize]="pageSize"
-                      [skip]="skip"
-                      [filter]="state.filter"
-                      [pageable]="true"
-                      [resizable]="true"
-                      [filterable]="true"
-                      [height]="400"
-                      (pageChange)="pageChange($event)"
-                      (sortChange)="sortChange($event)"
-                      [selectable]="{ checkboxOnly: true, mode:'single' }"
-                      [selectedKeys]="selectableRows"
-                      [kendoGridSelectBy]="'id'"
-                      (filterChange)="filterChange($event)"
-                      sppc-grid-reorder sppc-grid-resize>
-            <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                                 pagerOf="{{ 'Paging.Of' | translate }}"
-                                 pagerItems="{{ 'Paging.Record' | translate }}">
-            </kendo-grid-messages>
-            <ng-template kendoGridNoRecordsTemplate>
-              {{ dataloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
-            </ng-template>
+          <div SppcCheckAccess="View" class='panel-body'>
+            <div class="grid-title">
+              <span>{{ 'AccountCollection.SelectableAccounts' | translate }}</span>
+            </div>
 
-            <ng-template kendoGridToolbarTemplate let-company>
-              <grid-setting entityTypeName="AccountCollection"></grid-setting>
-              <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-            </ng-template>
-
-            <kendo-grid-checkbox-column showSelectAll="false" width="20"></kendo-grid-checkbox-column>
-
-            <kendo-grid-column width="150" sppc-grid-column="AccountCollection.fullCode">
-              <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                <sppc-grid-filter [metaData]="getMeta('fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            <kendo-grid id="14" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID
+                        [data]="rowData"
+                        [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+                        [sort]="sort"
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        [filter]="state.filter"
+                        [pageable]="true"
+                        [resizable]="true"
+                        [filterable]="true"
+                        [height]="400"
+                        (pageChange)="pageChange($event)"
+                        (sortChange)="sortChange($event)"
+                        [selectable]="{ checkboxOnly: true, mode:'single' }"
+                        [selectedKeys]="selectableRows"
+                        [kendoGridSelectBy]="'id'"
+                        (filterChange)="filterChange($event)"
+                        sppc-grid-reorder sppc-grid-resize>
+              <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                   pagerOf="{{ 'Paging.Of' | translate }}"
+                                   pagerItems="{{ 'Paging.Record' | translate }}">
+              </kendo-grid-messages>
+              <ng-template kendoGridNoRecordsTemplate>
+                {{ dataloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
               </ng-template>
-            </kendo-grid-column>
 
-            <kendo-grid-column width="150" sppc-grid-column="AccountCollection.name">
-              <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+              <ng-template kendoGridToolbarTemplate let-company>
+                <grid-setting entityTypeName="AccountCollection"></grid-setting>
+                <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
               </ng-template>
-            </kendo-grid-column>
 
-          </kendo-grid>
+              <kendo-grid-checkbox-column showSelectAll="false" width="20"></kendo-grid-checkbox-column>
 
-          <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}" style="margin-top: 20px;">
-            <button [primary]="true" kendoButton [icon]="'arrow-down'" [disabled]="selectableRows.length == 0" (click)="addAccount()"></button>
-            <button [primary]="true" kendoButton [icon]="'arrow-up'" [disabled]="selectedRows.length == 0" (click)="removeAccount()"></button>
-          </div>
+              <kendo-grid-column width="150" sppc-grid-column="AccountCollection.fullCode">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                  <sppc-grid-filter [metaData]="getMeta('fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+              </kendo-grid-column>
 
-          <div class="clearfix"></div>
+              <kendo-grid-column width="150" sppc-grid-column="AccountCollection.name">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                  <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+              </kendo-grid-column>
 
-          <div class="grid-title" style="margin-top:20px">
-            <span>{{ 'AccountCollection.SelectedAccounts' | translate }}</span>
-          </div>
-          <kendo-grid id="14" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID
-                      [data]="selectedRowData"
-                      [height]="300"
-                      [selectable]="{ checkboxOnly: true, mode: 'single' }"
-                      [selectedKeys]="selectedRows"
-                      [kendoGridSelectBy]="'id'"
-                      (filterChange)="filterChange($event)">
+            </kendo-grid>
 
-            <ng-template kendoGridNoRecordsTemplate>
-              {{ selectedDataloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
-            </ng-template>
+            <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}" style="margin-top: 20px;">
+              <button [primary]="true" kendoButton [icon]="'arrow-down'" [disabled]="selectableRows.length == 0" (click)="addAccount()"></button>
+              <button [primary]="true" kendoButton [icon]="'arrow-up'" [disabled]="selectedRows.length == 0" (click)="removeAccount()"></button>
+            </div>
 
-            <kendo-grid-checkbox-column showSelectAll="false" width="50"></kendo-grid-checkbox-column>
+            <div class="clearfix"></div>
 
-            <kendo-grid-column field="fullCode" title="{{ 'AccountCollection.FullCode' | translate }}">
-            </kendo-grid-column>
+            <div class="grid-title" style="margin-top:20px">
+              <span>{{ 'AccountCollection.SelectedAccounts' | translate }}</span>
+            </div>
+            <kendo-grid id="14" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID
+                        [data]="selectedRowData"
+                        [height]="300"
+                        [selectable]="{ checkboxOnly: true, mode: 'single' }"
+                        [selectedKeys]="selectedRows"
+                        [kendoGridSelectBy]="'id'"
+                        (filterChange)="filterChange($event)">
 
-            <kendo-grid-column field="name" title="{{ 'AccountCollection.Name' | translate }}">
-            </kendo-grid-column>
+              <ng-template kendoGridNoRecordsTemplate>
+                {{ selectedDataloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+              </ng-template>
 
-          </kendo-grid>
+              <kendo-grid-checkbox-column showSelectAll="false" width="50"></kendo-grid-checkbox-column>
+
+              <kendo-grid-column field="fullCode" title="{{ 'AccountCollection.FullCode' | translate }}">
+              </kendo-grid-column>
+
+              <kendo-grid-column field="name" title="{{ 'AccountCollection.Name' | translate }}">
+              </kendo-grid-column>
+
+            </kendo-grid>
 
 
-          <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}" style="margin-top: 20px;">
-            <button class="k-button k-primary" [disabled]="!(selectedCollectionItem && rowData && rowData.data.length > 0)" (click)="saveChanges()">{{ 'Buttons.Ok' | translate }}</button>
+            <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}" style="margin-top: 20px;">
+              <button class="k-button k-primary" [disabled]="!(selectedCollectionItem && rowData && rowData.data.length > 0)" (click)="saveChanges()">{{ 'Buttons.Ok' | translate }}</button>
+            </div>
+
           </div>
 
         </div>
-
+       
       </div>
     </div>
 
