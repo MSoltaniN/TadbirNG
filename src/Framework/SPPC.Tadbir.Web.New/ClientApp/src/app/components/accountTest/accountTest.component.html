@@ -10,21 +10,7 @@
 
         <div style="height:100px">
           <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" style="margin-top:15px;">
-            <!--<kendo-treeview [nodes]="firstLevelNodes"
-                            [textField]="['name']"
-                            kendoTreeViewSelectable
-                            kendoTreeViewExpandable
-                            [hasChildren]="hasChildren"
-                            [children]="fetchChildren">
-            </kendo-treeview>-->
-            <!--kendoTreeViewExpandable
-            [kendoTreeViewSelectable]
-            kendoTreeViewFlatDataBinding
-            idField="id"
-            parentIdField="parentId"
-            (selectionChange)="handleSelection($event)"
-            [expandBy]="'idField'"
-            [(expandedKeys)]="expandedKeys"-->
+
             <kendo-treeview [nodes]="firstTreeNode"
                             textField="name"
                             kendoTreeViewExpandable
@@ -35,8 +21,11 @@
                             [(expandedKeys)]="expandedKeys"
                             [selectBy]="'id'"
                             [(selectedKeys)]="selectedKeys"
-                            (selectionChange)="handleSelection($event)">
+                            (selectionChange)="handleSelection($event)"
+                            (nodeClick)="onNodeClick($event)">
             </kendo-treeview>
+            <kendo-contextmenu #treemenu [items]="contextmenuItems" (select)="onSelectContextmenu($event)">
+            </kendo-contextmenu>
 
           </div>
         </div>
@@ -46,14 +35,8 @@
       <kendo-splitter-pane>
 
 
-
-
-
-
-
         <div>
 
-          <!--<app-bread-cumb></app-bread-cumb>-->
           <div SppcCheckAccess="View">
             <kendo-grid id="1" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
                         [sortable]="{ allowUnsort: true, mode: 'multiple' }"
@@ -67,14 +50,16 @@
                         [scrollable]="'none'"
                         (pageChange)="pageChange($event)"
                         (sortChange)="sortChange($event)"
-                        (edit)="editHandler($event)"
-                        (remove)="removeHandler($event)"
+                        (edit)="editHandler()"
+                        (remove)="removeHandler()"
                         [loading]="true"
                         [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                         [selectedKeys]="selectedRows"
                         [kendoGridSelectBy]="selectionKey"
                         (filterChange)="filterChange($event)"
                         (selectedKeysChange)="onSelectedKeysChange($event)"
+                        (cellClick)="onCellClick($event)"
+                        (dblclick)="rowDoubleClickHandler()"
                         sppc-grid-reorder sppc-grid-resize>
 
               <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
@@ -85,10 +70,15 @@
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
               </ng-template>
               <ng-template kendoGridToolbarTemplate let-account>
+
+
+                <h4>{{ parent ? parent.name : '' }}</h4>
+
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Account.New' | translate }}"></button>
 
                 <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
                 <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+                <button (click)="subsetHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="زیر مجموعه"><span class="k-icon k-i-filter-add-expression"></span></button>
 
                 <grid-setting entityTypeName="Account"></grid-setting>
                 <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
@@ -158,13 +148,6 @@
           </kendo-dialog>
 
         </div>
-
-
-
-
-
-
-
 
       </kendo-splitter-pane>
 

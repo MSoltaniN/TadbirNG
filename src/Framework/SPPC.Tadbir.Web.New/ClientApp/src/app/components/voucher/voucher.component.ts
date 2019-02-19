@@ -271,6 +271,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
           this.reloadGrid();
         }, (error => {
+          this.grid.loading = false;
           this.editDataItem = model;
           this.dialogModel.errorMessage = error;
         }));
@@ -291,6 +292,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
           this.reloadGrid(insertedModel);
         }, (error => {
+          this.grid.loading = false;
           this.dialogModel.errorMessage = error;
         }));
     }

@@ -37,6 +37,7 @@ var filterExpressionBuilder_1 = require("../../class/filterExpressionBuilder");
 var moment = require("jalali-moment");
 var reportViewer_component_1 = require("../reportViewer/reportViewer.component");
 var forms_1 = require("@angular/forms");
+var tabs_component_1 = require("../../controls/tabs/tabs.component");
 function getLayoutModule(layout) {
     return layout.getLayout();
 }
@@ -77,51 +78,76 @@ var ReportManagementComponent = /** @class */ (function (_super) {
         var data = e.dataItem;
         if (!data.isGroup) {
             this.currentReportId = data.id;
+            this.currentReportName = data.caption;
             this.deleteConfirmMsg = source_1.String.Format(this.getText("Report.DeleteReportConfirm"), data.caption);
             this.disableButtons = false;
         }
         else
             this.disableButtons = true;
     };
-    ReportManagementComponent.prototype.showDialog = function () {
+    ReportManagementComponent.prototype.showDialog = function (viewId, formParams) {
         var _this = this;
         this.active = true;
-        this.reportingService.getAll(reportApi_1.ReportApi.ReportsHierarchy)
+        var url = reportApi_1.ReportApi.ReportsHierarchy;
+        if (viewId) {
+            this.currentViewId = viewId;
+            url = source_1.String.Format(reportApi_1.ReportApi.ReportsByView, viewId);
+        }
+        this.reportingService.getAll(url)
             .subscribe(function (res) {
             //var i = res;
             _this.treeData = res.body;
             //expand treeview base on baseid
-            //   if(this.baseId)
-            //   {
-            //     this.expandAndSelectDefault(this.baseId);                      
-            //   }
+            if (viewId) {
+                _this.expandAndSelectDefault(viewId, formParams);
+                _this.currentFormParams = formParams;
+            }
         });
     };
     //select and expand tree node baseon report baseId
-    /*public expandAndSelectDefault(baseId: string) {
-        var expandKeysArray: string[];
-
-        var defaltReportUrl = String.Format(ReportApi.DefaultSystemReport, this.baseId);
+    ReportManagementComponent.prototype.expandAndSelectDefault = function (viewId, formParams) {
+        var _this = this;
+        var expandKeysArray;
+        var defaltReportUrl = source_1.String.Format(reportApi_1.ReportApi.ReportsByViewDefault, viewId);
         this.reportingService.getAll(defaltReportUrl)
-            .subscribe((res: any) => {
-                var report = <Report>res.body;
-
-                expandKeysArray = new Array<any>();
-                this.selectedKeys = new Array<any>();
-
-                var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
-                this.selectedKeys.push(nodeData.id);
-
-                while (nodeData.parentId != null) {
-                    expandKeysArray.push(nodeData.parentId);
-                    var parentNode = this.treeData.filter((p: any) => p.id == nodeData.parentId);
-                    nodeData = parentNode[0];
-                }
-
-                this.expandedKeys = expandKeysArray;
-            });
-
-    }*/
+            .subscribe(function (res) {
+            var report = res.body;
+            expandKeysArray = new Array();
+            _this.selectedKeys = new Array();
+            var nodeData = _this.treeData.filter(function (p) { return p.id == report.id; })[0];
+            _this.selectedKeys.push(nodeData.id);
+            _this.currentReportName = nodeData.caption;
+            while (nodeData.parentId != null) {
+                expandKeysArray.push(nodeData.parentId);
+                var parentNode = _this.treeData.filter(function (p) { return p.id == nodeData.parentId; });
+                nodeData = parentNode[0];
+            }
+            _this.expandedKeys = expandKeysArray;
+            _this.disableButtons = false;
+            _this.currentReportId = report.id;
+            _this.currentDefaultReportId = report.id;
+            _this.prepareReport(formParams);
+        });
+    };
+    ReportManagementComponent.prototype.showReport = function () {
+        if (this.currentDefaultReportId == this.currentReportId) {
+            this.prepareReport(this.currentFormParams);
+        }
+        else {
+            var formParams = new Array();
+            this.prepareReport(formParams);
+        }
+    };
+    ReportManagementComponent.prototype.setDefaultForAll = function () {
+        var _this = this;
+        var defaltReportUrl = source_1.String.Format(reportApi_1.ReportApi.ReportDefault, this.currentReportId);
+        this.reportingService.setDefaultForAll(defaltReportUrl)
+            .subscribe(function (res) {
+        }, function (error) {
+        }, function () {
+            _this.showMessage(_this.getText('Report.ReportSetDefaultForAll'));
+        });
+    };
     ReportManagementComponent.prototype.showParameterForm = function (printInfo) {
         this.reportParameter.showDialog(printInfo);
     };
@@ -200,10 +226,16 @@ var ReportManagementComponent = /** @class */ (function (_super) {
         var url = reportApi_1.ReportApi.Reports;
         this.reportingService.saveAsReport(url, localReport).subscribe(function (response) {
             _this.showMessage(_this.getText('Report.SaveAsIsOk'));
-            _this.reportingService.getAll(reportApi_1.ReportApi.ReportsHierarchy)
+            //reload treeview
+            var url = reportApi_1.ReportApi.ReportsHierarchy;
+            if (_this.currentViewId) {
+                url = source_1.String.Format(reportApi_1.ReportApi.ReportsByView, _this.currentViewId);
+            }
+            _this.reportingService.getAll(url)
                 .subscribe(function (res) {
                 _this.treeData = res.body;
             });
+            //reload treeview
             _this.showSaveAsDialog = false;
         }, (function (error) {
             _this.showMessage(error);
@@ -212,16 +244,40 @@ var ReportManagementComponent = /** @class */ (function (_super) {
     ReportManagementComponent.prototype.cancelReportForm = function () {
         this.showSaveAsDialog = false;
     };
-    ReportManagementComponent.prototype.prepareReport = function () {
+    ReportManagementComponent.prototype.prepareReport = function (formParams) {
         var _this = this;
         var url = source_1.String.Format(reportApi_1.ReportApi.Report, this.currentReportId);
         this.reportingService.getAll(url).subscribe(function (res) {
             var printInfo = res.body;
             if (printInfo.parameters.length > 0) {
                 _this.currentPrintInfo = printInfo;
-                _this.showParameterForm(printInfo);
+                if (formParams == undefined || formParams.length == 0)
+                    _this.showParameterForm(printInfo);
+                else {
+                    var formPrameters = _this.setParamterFromForm(formParams);
+                    _this.previewReport(formPrameters);
+                }
             }
         });
+    };
+    ReportManagementComponent.prototype.setParamterFromForm = function (formParams) {
+        var paramArrays = new Array();
+        this.currentPrintInfo.parameters.forEach(function (param) {
+            var fparam = formParams.filter(function (f) { return f.ParamName == param.name; });
+            var paramInfo = new reporting_service_1.ParameterInfo();
+            paramInfo.fieldName = param.fieldName;
+            paramInfo.controlType = param.controlType;
+            paramInfo.id = param.id;
+            paramInfo.defaultValue = param.defaultValue ? param.defaultValue : "";
+            paramInfo.captionKey = param.captionKey;
+            paramInfo.operator = param.operator;
+            paramInfo.dataType = param.dataType;
+            paramInfo.descriptionKey = param.descriptionKey;
+            paramInfo.name = param.name;
+            paramInfo.value = fparam[0].ParamValue;
+            paramArrays.push(paramInfo);
+        });
+        return paramArrays;
     };
     ReportManagementComponent.prototype.previewReport = function (params) {
         var _this = this;
@@ -239,14 +295,21 @@ var ReportManagementComponent = /** @class */ (function (_super) {
                 .format('YYYY/M/D');
             var reportData = {
                 rows: response.body,
-                fromDate: fdate,
-                toDate: tdate
+                // fromDate: fdate,
+                // toDate: tdate
+                parameters: params
             };
-            _this.reportViewer.showReportViewer(_this.currentPrintInfo.template, reportData);
+            _this.tabsComponent.openTab(_this.currentReportName, _this.currentPrintInfo.template, reportData, true, true, false, _this.currentReportId);
+            // view.showReportViewer(this.currentPrintInfo.template, reportData,
+            //   this.tabsComponent,null);         
+            //var viewerComponents = this.viewers.filter(f=>f.Id == tab.index.toString());        
         });
     };
     ReportManagementComponent.prototype.designReport = function () {
         var _this = this;
+        var tabIsOpen = this.tabsComponent.openTab(this.currentReportName, null, null, true, false, true, this.currentReportId);
+        if (!tabIsOpen)
+            return;
         var url = source_1.String.Format(reportApi_1.ReportApi.ReportDesign, this.currentReportId);
         this.showReportViewer = false;
         this.showReportDesigner = true;
@@ -261,13 +324,13 @@ var ReportManagementComponent = /** @class */ (function (_super) {
             options.components.showPanel = false;
             options.components.showCheckBox = false;
             options.components.showSubReport = false;
-            var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner", false);
+            var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + _this.currentReportId, false);
             var rpt = new Stimulsoft.Report.StiReport();
             var reportTemplate;
             reportTemplate = printInfo.template;
             rpt.load(reportTemplate);
             designer.report = rpt;
-            designer.renderHtml('designer');
+            designer.renderHtml('designerTab' + _this.currentReportId);
             var currentId = _this.currentReportId;
             var service = _this.reportingService;
             var localId = _this.CurrentLanguage == 'fa' ? 2 : 1;
@@ -298,7 +361,12 @@ var ReportManagementComponent = /** @class */ (function (_super) {
                 _this.showMessage(_this.getText('Report.ReportDeleted'));
                 _this.currentReportId = null;
                 _this.disableButtons = true;
-                _this.reportingService.getAll(reportApi_1.ReportApi.ReportsHierarchy)
+                //reload treeview
+                var url = reportApi_1.ReportApi.ReportsHierarchy;
+                if (_this.currentViewId) {
+                    url = source_1.String.Format(reportApi_1.ReportApi.ReportsByView, _this.currentViewId);
+                }
+                _this.reportingService.getAll(url)
                     .subscribe(function (res) {
                     _this.treeData = res.body;
                 });
@@ -315,8 +383,9 @@ var ReportManagementComponent = /** @class */ (function (_super) {
     };
     ReportManagementComponent.prototype.iconClass = function (dataItem) {
         return {
-            'k-i-ascx': dataItem.isGroup == false,
-            'k-i-folder': dataItem.isGroup == true
+            'k-i-change-manually': !dataItem.isGroup && !dataItem.isSystem,
+            'k-i-ascx': dataItem.isGroup == false && dataItem.isSystem,
+            'k-i-folder': dataItem.isGroup == true,
         };
     };
     ReportManagementComponent.prototype.setClass = function (dataItem) {
@@ -330,14 +399,20 @@ var ReportManagementComponent = /** @class */ (function (_super) {
         core_1.Input()
     ], ReportManagementComponent.prototype, "baseId", void 0);
     __decorate([
-        core_1.ViewChild(reportViewer_component_1.ReportViewerComponent)
-    ], ReportManagementComponent.prototype, "reportViewer", void 0);
-    __decorate([
         core_1.ViewChild(reportParameters_component_1.ReportParametersComponent)
     ], ReportManagementComponent.prototype, "reportParameter", void 0);
     __decorate([
         core_1.ViewChild(kendo_angular_treeview_1.TreeViewComponent)
     ], ReportManagementComponent.prototype, "treeView", void 0);
+    __decorate([
+        core_1.ViewChild(tabs_component_1.TabsComponent)
+    ], ReportManagementComponent.prototype, "tabsComponent", void 0);
+    __decorate([
+        core_1.ContentChildren(reportViewer_component_1.ReportViewerComponent)
+    ], ReportManagementComponent.prototype, "reportViewer", void 0);
+    __decorate([
+        core_1.ViewChildren(reportViewer_component_1.ReportViewerComponent)
+    ], ReportManagementComponent.prototype, "viewers", void 0);
     ReportManagementComponent = __decorate([
         core_1.Component({
             selector: 'report-management',

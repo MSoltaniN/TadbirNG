@@ -32,6 +32,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int CompanyId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی پول یا ارز مورد استفاده در این سرفصل حسابداری
+        /// </summary>
+        public int CurrencyId { get; set; }
+
+        /// <summary>
         /// تعداد حساب های زیرمجموعه این حساب در ساختار درختی
         /// </summary>
         public int ChildCount { get; set; }

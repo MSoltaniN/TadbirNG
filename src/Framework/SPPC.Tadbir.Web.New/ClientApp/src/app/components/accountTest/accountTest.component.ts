@@ -21,6 +21,7 @@ import { of } from 'rxjs/observable/of';
 import { TreeItem } from '@progress/kendo-angular-treeview';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { AccountTestFormComponent } from './accountTest-form.component';
+import { ContextMenuComponent } from '@progress/kendo-angular-menu';
 
 //#endregion
 
@@ -51,6 +52,11 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
   public selectedKeys: number[] = [-1];
   public selectedItem: AccountItemBrief;
 
+  @ViewChild('treemenu')
+  public gridContextMenu: ContextMenuComponent;
+  public contextmenuItems: any[] = [{ text: 'ویرایش نام', icon: 'edit', mode: 'Edit' }, { text: 'حذف', icon: 'close', mode: 'Remove' }];
+  selectedContextmenu: any;
+
   //#region grid
   @ViewChild(GridComponent) grid: GridComponent;
   viewAccess: boolean;
@@ -65,6 +71,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
   showloadingMessage: boolean = true;
   deleteConfirm: boolean;
   deleteModelId: number;
+  clickedRowItem: Account = undefined;
 
   private dialogRef: DialogRef;
   private dialogModel: any;
@@ -127,11 +134,71 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
     this.currentFilter = undefined;
     this.selectedRows = [];
     this.pageIndex = 0;
+    this.expandedKeys.push(item.dataItem.id);
     this.getParent();
     this.reloadGrid();
   }
 
+  public onNodeClick(e: any): void {
+    if (e.type === 'contextmenu') {
+      const originalEvent = e.originalEvent;
 
+      originalEvent.preventDefault();
+
+      this.selectedContextmenu = e.item.dataItem;
+      var leftPosition = this.CurrentLanguage == 'fa' ? originalEvent.pageX - 135 : originalEvent.pageX;
+
+      this.gridContextMenu.show({ left: leftPosition, top: originalEvent.pageY });
+    }
+  }
+
+  public onSelectContextmenu({ item }): void {
+    if (item.mode === 'Remove') {
+      this.contextMenuRemoveHandler();
+    }
+  }
+
+  contextMenuRemoveHandler() {
+    this.deleteConfirm = true;
+    this.prepareDeleteConfirm(this.selectedContextmenu.name);
+    this.deleteModelId = this.selectedContextmenu.id;
+  }
+
+  removeFromContextmenu() {
+    this.grid.loading = true;
+    this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
+      this.showMessage(this.deleteMsg, MessageType.Info);
+
+
+      if (this.selectedItem.id == this.deleteModelId) {
+        var parent = this.treeNodes.find(f => f.id == this.selectedContextmenu.parentId);
+        this.handleSelection({ dataItem: parent, index: "0" });
+        this.selectedItem = parent ? parent : this.firstTreeNode[0];
+        this.selectedKeys = [];
+        this.selectedKeys.push(this.selectedItem.id);
+      }
+      else {
+        if (this.selectedItem.id == this.selectedContextmenu.parentId) {
+          if (this.rowData.data.length == 1 && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+          this.reloadGrid();
+        }
+        else {
+          this.parentId = this.selectedContextmenu.parentId;
+        }
+      }
+
+      this.refreshTreeNodes();
+
+      this.deleteModelId = 0;
+      this.selectedContextmenu = undefined;
+      this.grid.loading = false;
+    }, (error => {
+      this.grid.loading = false;
+      var message = error.message ? error.message : error;
+      this.showMessage(message, MessageType.Warning);
+    }));
+  }
   //#region grid
 
   reloadGrid(insertedModel?: Account) {
@@ -198,7 +265,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
     this.reloadGrid();
   }
 
-  public sortChange(sort: SortDescriptor[]): void {
+  sortChange(sort: SortDescriptor[]): void {
     this.sort = sort.filter(f => f.dir != undefined);
     this.reloadGrid();
   }
@@ -253,12 +320,12 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
   }
 
 
-  public addNew() {
+  addNew() {
     this.editDataItem = new AccountInfo();
     this.openEditorDialog(true);
   }
 
-  public editHandler(arg: any) {
+  editHandler() {
     var recordId = this.selectedRows[0];
 
     this.grid.loading = true;
@@ -271,7 +338,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
     })
   }
 
-  removeHandler(arg: any) {
+  removeHandler() {
     this.deleteConfirm = true;
     if (!this.groupDelete) {
       var recordId = this.selectedRows[0];
@@ -285,7 +352,13 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  public saveHandler(model: Account, isNew: boolean) {
+  subsetHandler() {
+    var recordId = this.selectedRows[0];
+    this.clickedRowItem = this.rowData.data.find(f => f.id == recordId);
+    this.rowDoubleClickHandler();
+  }
+
+  saveHandler(model: Account, isNew: boolean) {
     this.grid.loading = true;
     if (!isNew) {
       this.accountService.edit<Account>(String.Format(AccountApi.Account, model.id), model)
@@ -333,8 +406,9 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
   }
 
   deleteModel(confirm: boolean) {
+
     if (confirm) {
-      if (this.groupDelete) {
+      if (this.groupDelete && !this.selectedContextmenu) {
 
         this.grid.loading = true;
         this.accountService.groupDelete(AccountApi.EnvironmentAccounts, this.selectedRows).subscribe(res => {
@@ -357,29 +431,71 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
       }
       else {
 
-        this.grid.loading = true;
-        this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
-          this.deleteModelId = 0;
-          this.showMessage(this.deleteMsg, MessageType.Info);
-          if (this.rowData.data.length == 1 && this.pageIndex > 1)
-            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+        if (!this.selectedContextmenu) {
+          this.grid.loading = true;
+          this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
+            this.deleteModelId = 0;
+            this.showMessage(this.deleteMsg, MessageType.Info);
+            if (this.rowData.data.length == 1 && this.pageIndex > 1)
+              this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
 
-          this.selectedRows = [];
-          this.reloadGrid();
+            this.selectedRows = [];
+            this.reloadGrid();
 
-          this.refreshTreeNodes();
+            this.refreshTreeNodes();
 
-        }, (error => {
-          this.grid.loading = false;
-          var message = error.message ? error.message : error;
-          this.showMessage(message, MessageType.Warning);
-        }));
+          }, (error => {
+            this.grid.loading = false;
+            var message = error.message ? error.message : error;
+            this.showMessage(message, MessageType.Warning);
+          }));
+        }
+        else {
+          this.removeFromContextmenu();
+        }
 
       }
     }
 
     //hide confirm dialog
     this.deleteConfirm = false;
+  }
+
+  onCellClick(e) {
+    this.clickedRowItem = e.dataItem;
+  }
+
+  rowDoubleClickHandler() {
+    this.selectedKeys = [];
+    this.selectedKeys.push(this.clickedRowItem.id);
+
+    if (this.clickedRowItem.childCount > 0) {
+      var nodes = this.treeNodes.filter(f => f.parentId == this.clickedRowItem.id);
+      if (nodes.length > 0) {
+        this.expandedKeys.push(this.clickedRowItem.id);
+
+        this.handleSelection({ dataItem: this.clickedRowItem, index: "0" });
+      }
+      else {
+
+        this.accountService.getModels(String.Format(AccountApi.AccountChildren, this.clickedRowItem.id)).subscribe(res => {
+          this.treeNodes = [...this.treeNodes, ...res];
+
+          this.expandedKeys.push(this.clickedRowItem.id);
+          var items = this.expandedKeys;
+          this.expandedKeys = [];
+          setTimeout(() => {
+            this.expandedKeys = items;
+          })
+
+          this.handleSelection({ dataItem: this.clickedRowItem, index: "0" });
+        })
+      }
+    }
+    else {
+      this.handleSelection({ dataItem: this.clickedRowItem, index: "0" });
+    }
+
   }
   //#endregion
 
@@ -388,7 +504,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
    * یک ایتم به آرایه نودهای درخت اضافه یا  ویرایش یا حذف میکند و درخت را رفرش میکند
    * @param model 
    */
-  refreshTreeNodes(model?: Account) {
+  refreshTreeNodes(model?: any) {
     if (model) {
       var item = this.treeNodes.filter(f => f.id == model.id);
       if (item.length > 0) {
@@ -425,12 +541,10 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
       this.treeNodes = this.treeNodes.filter(f => f.parentId != this.parentId);
       var url = this.parentId ? String.Format(AccountApi.AccountChildren, this.parentId) : AccountApi.EnvironmentAccountsLedger;
       this.accountService.getModels(url).subscribe(res => {
-        debugger;
         this.treeNodes = [...this.treeNodes, ...res];
         var parent = this.treeNodes.filter(f => f.id == this.parentId);
         if (this.parentId)
           parent[0].childCount = res.length;
-        debugger;
         var items = this.expandedKeys;
         this.expandedKeys = [];
         setTimeout(() => {

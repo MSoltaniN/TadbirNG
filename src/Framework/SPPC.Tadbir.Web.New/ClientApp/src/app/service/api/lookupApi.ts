@@ -64,4 +64,7 @@ export class LookupApi {
 
   // lookup/accgroups
   public static AccountGroups = environment.BaseUrl + "/lookup/accgroups";
+
+  // lookup/accturnovermodes
+  public static AccountTurnovers = environment.BaseUrl + "/lookup/accturnovermodes";
 }

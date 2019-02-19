@@ -25,6 +25,10 @@ var source_1 = require("../class/source");
 var accountApi_1 = require("./api/accountApi");
 var AccountInfo = /** @class */ (function () {
     function AccountInfo() {
+        this.currencyId = 1;
+        this.isActive = true;
+        this.isCurrencyAdjustable = true;
+        this.turnoverMode = -1;
         this.id = 0;
         this.fullCode = "";
         this.level = 0;

@@ -135,6 +135,15 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string AccountGroupsUrl = "lookup/accgroups";
 
+        /// <summary>
+        /// API client URL for lookup collection of all account turnover modes
+        /// </summary>
+        public const string AccountTurnovers = "lookup/accturnovermodes";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all account turnover modes
+        /// </summary>
+        public const string AccountTurnoversUrl = "lookup/accturnovermodes";
         #endregion
     }
 }

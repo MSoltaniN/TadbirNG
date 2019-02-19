@@ -324,6 +324,10 @@ namespace SPPC.Tadbir.Persistence
             account.Name = accountViewModel.Name;
             account.Level = accountViewModel.Level;
             account.Description = accountViewModel.Description;
+            account.CurrencyId = accountViewModel.CurrencyId;
+            account.IsActive = accountViewModel.IsActive;
+            account.IsCurrencyAdjustable = accountViewModel.IsCurrencyAdjustable;
+            account.TurnoverMode = accountViewModel.TurnoverMode;
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ import { TreeViewModule } from '@progress/kendo-angular-treeview';
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PopupModule } from '@progress/kendo-angular-popup';
+import { ContextMenuModule } from '@progress/kendo-angular-menu';
  
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -273,6 +274,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     PopupModule,
+    ContextMenuModule,
     ToastrModule.forRoot({ preventDuplicates: true }),
     HotkeyModule.forRoot(),
     DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,

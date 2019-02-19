@@ -1,22 +1,25 @@
 
 <div class="dialog-body">
 
-  <kendo-tabstrip>
+  <div (keydown.esc)="escPress()">
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
 
-    <kendo-tabstrip-tab [title]="'اطلاعات حساب'" [selected]="true">
-      <ng-template kendoTabContent>
+      <kendo-tabstrip>
 
-        <div style="padding:15px;" (keydown.esc)="escPress()">
-          <div *ngIf="errorMessage">
-            <div class="alert alert-danger">
-              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-              {{ errorMessage }}
+        <kendo-tabstrip-tab [title]="'اطلاعات حساب'" [selected]="true">
+          <ng-template kendoTabContent>
+
+
+            <div *ngIf="errorMessage">
+              <div class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorMessage }}
+              </div>
             </div>
-          </div>
 
-          <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
+            <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
 
-          <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+
 
             <div class="row">
               <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
@@ -36,7 +39,7 @@
                 <div class="form-group">
                   <label for="groupId" class="control-label">{{ 'Account.AccountGroup' | translate }}</label>
 
-                  <kendo-dropdownlist class="ddl-accGroup"
+                  <kendo-dropdownlist class="ddl-acc"
                                       [data]="accGroupList"
                                       [textField]="'value'"
                                       [valueField]="'key'"
@@ -94,7 +97,7 @@
               <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
                 <label class="control-label">{{ 'Account.AccountBranchName' | translate }}</label>
 
-                <input type="text" class="k-textbox" value="{{ branchName }}" [disabled]="true"/>
+                <input type="text" class="k-textbox" value="{{ branchName }}" [disabled]="true" />
               </div>
 
               <div class="col-sm-6">
@@ -107,37 +110,73 @@
             </div>
 
 
+          </ng-template>
+        </kendo-tabstrip-tab>
+
+        <kendo-tabstrip-tab [title]="'سایر مشخصات حساب'">
+          <ng-template kendoTabContent>
+
+            <div class="row">
+              <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+                <div class="form-group">
+                  <label for="currencyId" class="control-label">ارز پیش فرض</label>
+
+                  <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-acc"
+                                      [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'">
+                  </kendo-dropdownlist>
+
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="turnoverMode" class="control-label">محدودیت ثبت</label>
+
+                  <kendo-dropdownlist [data]="turnovermodes" [valuePrimitive]="true" formControlName="turnoverMode" class="ddl-acc"
+                                      [textField]="'value'" [value]="selectedTurnoverModeValue" [(ngModel)]="selectedTurnoverModeValue" [valueField]="'key'">
+                  </kendo-dropdownlist>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+                <div class="form-group">
+                  <label for="isActive" class="control-label">فعال/غیرفعال</label>
+
+                  <kendo-switch formControlName="isActive"
+                                [onLabel]="'فعال'"
+                                [offLabel]="'غیرفعال'">
+                  </kendo-switch>
+
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="isCurrencyAdjustable" class="control-label">وضعیت تسعیر حساب</label>
+
+                  <kendo-switch formControlName="isCurrencyAdjustable"
+                                [onLabel]="'فعال'"
+                                [offLabel]="'غیرفعال'">
+                  </kendo-switch>
+
+                </div>
+              </div>
+            </div>
+
+          </ng-template>
+        </kendo-tabstrip-tab>
 
 
+      </kendo-tabstrip>
 
+    </form>
 
+  </div>
 
-
-
-
-
-
-          </form>
-
-        </div>
-
-        <kendo-dialog-actions>
-          <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
-          <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
-        </kendo-dialog-actions>
-
-      </ng-template>
-    </kendo-tabstrip-tab>
-
-    <kendo-tabstrip-tab [title]="'سایر مشخصات حساب'">
-      <ng-template kendoTabContent>
-
-        hghghg
-
-      </ng-template>
-    </kendo-tabstrip-tab>
-
-  </kendo-tabstrip>
-
-
+  <kendo-dialog-actions>
+    <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
 </div>

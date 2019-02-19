@@ -825,4 +825,19 @@
   <data name="UserReports" xml:space="preserve">
     <value>گزارشات کاربری</value>
   </data>
+  <data name="CreditorDuringPeriod" xml:space="preserve">
+    <value>بستانکار طی دوره</value>
+  </data>
+  <data name="CreditorEndPeriod" xml:space="preserve">
+    <value>بستانکار در پایان دوره</value>
+  </data>
+  <data name="DebtorDuringPeriod" xml:space="preserve">
+    <value>بدهکار طی دوره</value>
+  </data>
+  <data name="DebtorEndPeriod" xml:space="preserve">
+    <value>بدهکار در پایان دوره</value>
+  </data>
+  <data name="Unlimited" xml:space="preserve">
+    <value>بدون محدودیت</value>
+  </data>
 </root>

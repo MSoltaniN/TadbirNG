@@ -15,5 +15,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی حساب والد این حساب در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی پول یا ارز مورد استفاده در این سرفصل حسابداری
+        /// </summary>
+        public int CurrencyId { get; set; }
     }
 }

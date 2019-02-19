@@ -825,4 +825,19 @@
   <data name="UserReports" xml:space="preserve">
     <value>User reports</value>
   </data>
+  <data name="CreditorDuringPeriod" xml:space="preserve">
+    <value>Creditor during the period</value>
+  </data>
+  <data name="CreditorEndPeriod" xml:space="preserve">
+    <value>Creditor at the end of the period</value>
+  </data>
+  <data name="DebtorDuringPeriod" xml:space="preserve">
+    <value>Debtor during the period</value>
+  </data>
+  <data name="DebtorEndPeriod" xml:space="preserve">
+    <value>Debtor at the end of the period</value>
+  </data>
+  <data name="Unlimited" xml:space="preserve">
+    <value>Unlimited</value>
+  </data>
 </root>

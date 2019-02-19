@@ -40,6 +40,11 @@ var ReportingService = /** @class */ (function (_super) {
             .map(function (res) { return res; })
             .catch(this.handleError);
     };
+    ReportingService.prototype.setDefaultForAll = function (apiUrl) {
+        return this.http.put(apiUrl, null, this.option)
+            .map(function (res) { return res; })
+            .catch(this.handleError);
+    };
     ReportingService.prototype.deleteReport = function (apiUrl) {
         return this.http.delete(apiUrl, this.option)
             .map(function (res) { return res; })
