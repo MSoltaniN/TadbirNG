@@ -60,12 +60,36 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;
 
+    //this.registerFunctions();
     this.initViewer();
   }
 
   closeForm()
   {
       this.active = false;
+  }
+
+  
+
+  registerFunctions()
+  {
+
+    var function1 = function (checklist, state) {
+      var result = "";
+      
+      return result;
+    }
+
+    
+    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", 
+      "this is a test function", "", typeof(String), "", [typeof(String)], [""], [""], function(value) {
+        var result : string = value;
+        
+        return result.toUpperCase();
+      });
+
+
+ 
   }
 
   private initViewer()
@@ -206,6 +230,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
         localReport.dictionary.variables.getByName(param.name).valueObject = value;        
       });
+     
 
       this.report = localReport;
       //this.fillResourceVariables(reportObject,this.report);

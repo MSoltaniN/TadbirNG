@@ -32,6 +32,14 @@ export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
+
+
+//  public TestFunction  = function(value) {
+//     var result : string = value;
+    
+//     return result.toUpperCase();
+//   }
+
 declare var Stimulsoft: any;
 
 @Component({
@@ -106,6 +114,38 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.innerHeight = window.screen.height;//window.innerHeight
     this.initViewer();
     this.disableButtons = true;
+
+    this.registerFunctions();
+  }
+
+ 
+
+
+  registerFunctions()
+  {
+
+    var function1 = function (checklist, state) {
+      var result = "";
+      
+      return result;
+    }
+
+    // var TestFunction  = function(value) {
+    //   var result : string = value;
+      
+    //   return result.toUpperCase();
+    // }
+
+    
+    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", 
+      "this is a test function", "", typeof(String), "", [typeof(String)], [""], [""], function(value) {
+        var result : string = value;
+        
+        return result.toUpperCase();
+      });
+
+
+ 
   }
 
   onNodeClick(e :any)
@@ -424,8 +464,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   } 
 
  
+ 
   designReport()
-  {
+  {   
 
     var tabIsOpen = this.tabsComponent.openTab(this.currentReportName,null,null,
       true,false,true,this.currentReportId);
@@ -457,10 +498,10 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         
         reportTemplate = printInfo.template;
         
-        rpt.load(reportTemplate);
+         rpt.load(reportTemplate);
         
-        designer.report = rpt;
-
+         designer.report = rpt;        
+      
         designer.renderHtml('designerTab' + this.currentReportId);
 
       
