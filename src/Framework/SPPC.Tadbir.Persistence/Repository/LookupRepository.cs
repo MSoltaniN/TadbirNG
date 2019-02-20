@@ -319,6 +319,24 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// محدودیت های ثبت قابل استفاده در تعریف حساب را به صورت مجموعه ای از متن های چندزبانه برمی گرداند
+        /// </summary>
+        /// <returns>محدودیت های ثبت قابل استفاده در تعریف حساب</returns>
+        public IList<KeyValue> GetAccountTurnoverModes()
+        {
+            var turnovers = new List<KeyValue>()
+            {
+                new KeyValue { Key = "-1", Value = "Unlimited" },
+                new KeyValue { Key = "0", Value = "DebtorDuringPeriod" },
+                new KeyValue { Key = "1", Value = "CreditorDuringPeriod" },
+                new KeyValue { Key = "2", Value = "DebtorEndPeriod" },
+                new KeyValue { Key = "3", Value = "CreditorEndPeriod" },
+            };
+
+            return turnovers;
+        }
+
         #endregion
 
         #region Security Subsystem lookup

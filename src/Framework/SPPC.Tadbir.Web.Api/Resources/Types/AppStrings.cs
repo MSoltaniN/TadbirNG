@@ -1199,5 +1199,30 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         /// Default text : گزارشات کاربری
         /// </summary>
         public const string UserReports = "UserReports";
+
+        /// <summary>
+        /// Default text : بدون محدودیت
+        /// </summary>
+        public const string Unlimited = "Unlimited";
+
+        /// <summary>
+        /// Default text : بدهکار طی دوره
+        /// </summary>
+        public const string DebtorDuringPeriod = "DebtorDuringPeriod";
+
+        /// <summary>
+        /// Default text : بستانکار طی دوره 
+        /// </summary>
+        public const string CreditorDuringPeriod = "CreditorDuringPeriod";
+
+        /// <summary>
+        /// Default text : بدهکار در پایان دوره 
+        /// </summary>
+        public const string DebtorEndPeriod = "DebtorEndPeriod";
+
+        /// <summary>
+        /// Default text : بستانکار در پایان دوره 
+        /// </summary>
+        public const string CreditorEndPeriod = "CreditorEndPeriod";
     }
 }

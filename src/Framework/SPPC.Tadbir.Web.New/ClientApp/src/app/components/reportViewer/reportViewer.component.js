@@ -23,6 +23,7 @@ var core_1 = require("@angular/core");
 var default_component_1 = require("../../class/default.component");
 require("rxjs/Rx");
 var environment_1 = require("../../../environments/environment");
+var moment = require("jalali-moment");
 var ReportViewerComponent = /** @class */ (function (_super) {
     __extends(ReportViewerComponent, _super);
     function ReportViewerComponent(toastrService, translate, sppcLoading, cdref, voucherService, renderer, metadata, settingService, http, reporingService) {
@@ -118,17 +119,30 @@ var ReportViewerComponent = /** @class */ (function (_super) {
     ReportViewerComponent.prototype.showReportViewer = function (reportTemplate, reportData) {
         var _this = this;
         this.active = true;
+        this.viewer = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer' + this.Id, false);
         setTimeout(function () {
             console.log('Load report from url');
             _this.report.load(reportTemplate);
             _this.report.regData("Vouchers", "", reportData.rows);
-            _this.report.dictionary.variables.getByName("FDate").valueObject = reportData.fromDate;
-            _this.report.dictionary.variables.getByName("TDate").valueObject = reportData.toDate;
+            var parameters = reportData.parameters;
+            var localReport = _this.report;
+            var lang = _this.CurrentLanguage;
+            parameters.forEach(function (param) {
+                var value = param.value;
+                if (param.dataType == "System.DateTime") {
+                    var fdate = moment(param.value, 'YYYY-M-D HH:mm:ss')
+                        .locale(lang)
+                        .format('YYYY/M/D');
+                    value = fdate;
+                }
+                localReport.dictionary.variables.getByName(param.name).valueObject = value;
+            });
+            _this.report = localReport;
             //this.fillResourceVariables(reportObject,this.report);
             _this.report.render();
             _this.viewer.report = _this.report;
             console.log('Rendering the viewer to selected element');
-            _this.viewer.renderHtml('viewer');
+            _this.viewer.renderHtml(_this.Id);
         }, 10);
     };
     __decorate([
@@ -137,6 +151,9 @@ var ReportViewerComponent = /** @class */ (function (_super) {
     __decorate([
         core_1.Input()
     ], ReportViewerComponent.prototype, "showViewer", void 0);
+    __decorate([
+        core_1.Input()
+    ], ReportViewerComponent.prototype, "Id", void 0);
     ReportViewerComponent = __decorate([
         core_1.Component({
             selector: 'report-viewer',

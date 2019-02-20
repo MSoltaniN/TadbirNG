@@ -10,7 +10,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
 import { String } from '../../class/source';
-import { BranchApi } from '../../service/api/index';
+import { BranchApi, LookupApi } from '../../service/api/index';
 
 
 
@@ -27,8 +27,8 @@ interface Item {
 @Component({
   selector: 'accountTest-form-component',
   styles: [`
-input[type=text],.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}
-/deep/ .dialog-body .k-tabstrip > .k-content { padding:0; }
+input[type=text],.ddl-acc { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}
+/deep/ .dialog-body .k-tabstrip > .k-content { padding:15px; }
 .dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
 @media screen and (max-width:800px) {
   .dialog-body{
@@ -38,6 +38,12 @@ input[type=text],.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {bo
 }
 /deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }
 /deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }
+
+/deep/ .k-switch-on .k-switch-handle { left: -8px !important; }
+/deep/ .k-switch-off .k-switch-handle { left: -4px !important; }
+/deep/ .k-switch[dir="rtl"] .k-switch-label-on { right: -22px; }
+/deep/ .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
+/deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }
 `],
   templateUrl: './accountTest-form.component.html',
   providers: [{
@@ -59,6 +65,12 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
   level: number = 0;
   branch_Id: number;
   branchName: string;
+
+  selectedCurrencyValue: string = "1";
+  currenciesRows: Array<Item>;
+
+  selectedTurnoverModeValue: string = "-1";
+  turnovermodes: Array<Item>;
 
   @Input() public parent: Account;
   @Input() public model: Account;
@@ -110,11 +122,15 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
 
     this.getBranchName();
 
+    this.GetCurrencies();
+
+    this.GetTurnoverModes();
+
     this.parentScopeValue = 0;
 
     if (this.parent) {
       this.parentFullCode = this.parent.fullCode;
-      this.model.fullCode = this.parentFullCode;      
+      this.model.fullCode = this.parentFullCode;
       this.parentScopeValue = this.parent.branchScope;
       this.level = this.parent.level + 1;
     }
@@ -128,9 +144,6 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
     else
       this.model.fullCode = this.parentFullCode;
 
-    
-
-
     setTimeout(() => {
       this.editForm.reset(this.model);
     })
@@ -140,7 +153,6 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
     public renderer: Renderer2, public metadata: MetaDataService) {
     super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
-
   }
 
   getAccountGroups() {
@@ -153,7 +165,6 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
     })
   }
 
-
   getBranchName() {
     if (this.model && this.model.branchId)
       this.branch_Id = this.model.branchId;
@@ -164,5 +175,23 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
       this.branchName = res.name;
     })
 
+  }
+
+  GetCurrencies() {
+    this.lookupService.GetCurrenciesLookup().subscribe(res => {
+      this.currenciesRows = res;
+      if (this.model != undefined && this.model.currencyId != undefined) {
+        this.selectedCurrencyValue = this.model.currencyId.toString();
+      }
+    })
+  }
+
+  GetTurnoverModes() {
+    this.lookupService.GetLookup(LookupApi.AccountTurnovers).subscribe(res => {
+      this.turnovermodes = res;
+      if (this.model != undefined && this.model.turnoverMode != undefined) {
+        this.selectedTurnoverModeValue = this.model.turnoverMode.toString();
+      }
+    })
   }
 }

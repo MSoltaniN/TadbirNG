@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import {  Response } from '@angular/http';
 import "rxjs/Rx";
-import { String } from '../class/source';
-import { Filter } from "../class/filter";
-import { HttpParams, HttpClient } from "@angular/common/http";
-import { Context } from "../model/context";
-
-import { BaseComponent } from "../class/base.component"
-import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from "@angular/common/http";
 import { BaseService } from '../class/base.service';
-import { LookupApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi, AccountRelationApi } from './api/index';
+import { LookupApi, AccountRelationApi } from './api/index';
 
 
 
@@ -19,6 +12,12 @@ export class LookupService extends BaseService {
 
   constructor(public http: HttpClient) {
     super(http);
+  }
+
+  GetLookup(url: string) {
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
   }
 
   GetAccountsLookup() {

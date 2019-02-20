@@ -114,6 +114,7 @@ namespace SPPC.Tadbir.Model.Finance
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
             Children = new List<Account>();
+            //Currency = new Currency();
         }
     }
 }

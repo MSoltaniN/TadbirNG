@@ -153,6 +153,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accGroupLookup);
         }
 
+        // GET: api/lookup/accturnovermodes
+        [Route(LookupApi.AccountTurnoversUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public IActionResult GetAccountTurnoverModeslookup()
+        {
+            var turnoverLookup = _repository.GetAccountTurnoverModes();
+            var localizedTurnoversLookup = Localize(turnoverLookup);
+            return Json(localizedTurnoversLookup);
+        }
         #endregion
 
         #region Security Subsystem API
@@ -197,7 +206,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             for (int i = 0; i < keyValues.Count; i++)
             {
-                keyValues[i].Value = _strings[keyValues[i].Key];
+                keyValues[i].Value = _strings[keyValues[i].Value];
             }
 
             return keyValues

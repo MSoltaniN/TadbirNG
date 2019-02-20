@@ -45,6 +45,8 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
         _this.parentFullCode = '';
         _this.accGroupList = [];
         _this.level = 0;
+        _this.selectedCurrencyValue = "1";
+        _this.selectedTurnoverModeValue = "-1";
         _this.isNew = false;
         _this.errorMessage = '';
         _this.save = new core_1.EventEmitter();
@@ -86,6 +88,8 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
         this.viewId = viewName_1.ViewName.Account;
         this.editForm.reset();
         this.getBranchName();
+        this.GetCurrencies();
+        this.GetTurnoverModes();
         this.parentScopeValue = 0;
         if (this.parent) {
             this.parentFullCode = this.parent.fullCode;
@@ -124,6 +128,24 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
             _this.branchName = res.name;
         });
     };
+    AccountTestFormComponent.prototype.GetCurrencies = function () {
+        var _this = this;
+        this.lookupService.GetCurrenciesLookup().subscribe(function (res) {
+            _this.currenciesRows = res;
+            if (_this.model != undefined && _this.model.currencyId != undefined) {
+                _this.selectedCurrencyValue = _this.model.currencyId.toString();
+            }
+        });
+    };
+    AccountTestFormComponent.prototype.GetTurnoverModes = function () {
+        var _this = this;
+        this.lookupService.GetLookup(index_1.LookupApi.AccountTurnovers).subscribe(function (res) {
+            _this.turnovermodes = res;
+            if (_this.model != undefined && _this.model.turnoverMode != undefined) {
+                _this.selectedTurnoverModeValue = _this.model.turnoverMode.toString();
+            }
+        });
+    };
     __decorate([
         core_1.Input()
     ], AccountTestFormComponent.prototype, "parent", void 0);
@@ -145,7 +167,7 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
     AccountTestFormComponent = __decorate([
         core_1.Component({
             selector: 'accountTest-form-component',
-            styles: ["\ninput[type=text],.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}\n/deep/ .dialog-body .k-tabstrip > .k-content { padding:0; }\n.dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }\n@media screen and (max-width:800px) {\n  .dialog-body{\n    width: 90%;\n    min-width: 250px;\n  }\n}\n/deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }\n/deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }\n"],
+            styles: ["\ninput[type=text],.ddl-acc { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}\n/deep/ .dialog-body .k-tabstrip > .k-content { padding:15px; }\n.dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }\n@media screen and (max-width:800px) {\n  .dialog-body{\n    width: 90%;\n    min-width: 250px;\n  }\n}\n/deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }\n/deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }\n\n/deep/ .k-switch-on .k-switch-handle { left: -8px !important; }\n/deep/ .k-switch-off .k-switch-handle { left: -4px !important; }\n/deep/ .k-switch[dir=\"rtl\"] .k-switch-label-on { right: -22px; }\n/deep/ .k-switch[dir=\"rtl\"] .k-switch-label-off { left: 0; }\n/deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }\n"],
             templateUrl: './accountTest-form.component.html',
             providers: [{
                     provide: kendo_angular_l10n_1.RTL,

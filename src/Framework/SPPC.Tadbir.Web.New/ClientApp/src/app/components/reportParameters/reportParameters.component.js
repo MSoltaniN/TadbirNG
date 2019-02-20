@@ -32,8 +32,11 @@ var ReportParametersComponent = /** @class */ (function () {
             paramInfo.captionKey = param.captionKey;
             paramInfo.operator = param.operator;
             paramInfo.dataType = param.dataType;
+            paramInfo.descriptionKey = param.descriptionKey;
+            paramInfo.name = param.name;
             paramArrays.push(paramInfo);
-            paramsForm.addControl(paramInfo.fieldName, new forms_1.FormControl());
+            //paramsForm.addControl(paramInfo.fieldName,new FormControl())
+            paramsForm.addControl(paramInfo.name, new forms_1.FormControl('', forms_1.Validators.required));
         });
         this.fieldArray = paramArrays;
         this.parameterForm = paramsForm;
@@ -65,4 +68,10 @@ var ReportParametersComponent = /** @class */ (function () {
     return ReportParametersComponent;
 }());
 exports.ReportParametersComponent = ReportParametersComponent;
+var TabInfo = /** @class */ (function () {
+    function TabInfo() {
+    }
+    return TabInfo;
+}());
+exports.TabInfo = TabInfo;
 //# sourceMappingURL=reportParameters.component.js.map

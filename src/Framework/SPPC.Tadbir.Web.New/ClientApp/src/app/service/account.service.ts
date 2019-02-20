@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { BaseService } from '../class/base.service';
 import { Account } from '../model/index';
-import { FiscalPeriodApi } from './api/index';
 import { String } from '../class/source';
 import { AccountApi } from './api/accountApi';
-import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
-import { EnviromentComponent } from '../class/enviroment.component';
-import { FilterExpression } from '../class/filterExpression';
-import { GridOrderBy } from '../class/grid.orderby';
-import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 
 export class AccountInfo implements Account {
+  currencyId: number = 1;
+  isActive: boolean = true;
+  isCurrencyAdjustable: boolean = true;
+  turnoverMode: number = -1;
   parentId?: number;
   groupId?: number;
   fiscalPeriodId: number;

@@ -42,6 +42,20 @@ namespace SPPC.Tadbir.Persistence
         Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
             GridOptions gridOptions, bool withDetail = false);
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(GridOptions gridOptions);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه</returns>
+        Task<int> GetJournalByDateByRowCountAsync(GridOptions gridOptions);
     }
 }

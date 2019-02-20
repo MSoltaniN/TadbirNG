@@ -47,5 +47,15 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// مبلغ بستانکار در آرتیکل مالی
         /// </summary>
         public decimal Credit { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی شعبه ای که آرتیکل برای آن ایجاد شده است
+        /// </summary>
+        public int BranchId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی وضعیت ثبتی سند مالی
+        /// </summary>
+        public int VoucherStatusId { get; set; }
     }
 }
