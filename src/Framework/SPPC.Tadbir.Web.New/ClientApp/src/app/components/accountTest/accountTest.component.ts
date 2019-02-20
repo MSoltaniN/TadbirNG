@@ -169,16 +169,22 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
     this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
       this.showMessage(this.deleteMsg, MessageType.Info);
 
+      debugger;
 
       if (this.selectedItem.id == this.deleteModelId) {
-        var parent = this.treeNodes.find(f => f.id == this.selectedContextmenu.parentId);
-        this.handleSelection({ dataItem: parent, index: "0" });
-        this.selectedItem = parent ? parent : this.firstTreeNode[0];
+
+        if (this.selectedContextmenu.parentId == null) {
+          this.selectedItem = this.firstTreeNode[0]
+        }
+        else {
+          this.selectedItem = this.treeNodes.find(f => f.id == this.selectedContextmenu.parentId);
+        }
+        this.handleSelection({ dataItem: this.selectedItem, index: "0" });
         this.selectedKeys = [];
         this.selectedKeys.push(this.selectedItem.id);
       }
       else {
-        if (this.selectedItem.id == this.selectedContextmenu.parentId) {
+        if (this.selectedItem.id == this.selectedContextmenu.parentId || (this.selectedContextmenu.parentId == null && this.selectedItem.id == -1)) {
           if (this.rowData.data.length == 1 && this.pageIndex > 1)
             this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
           this.reloadGrid();
