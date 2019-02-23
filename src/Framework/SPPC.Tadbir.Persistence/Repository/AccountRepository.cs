@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
@@ -77,10 +78,11 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId);
+            var account = await repository.GetByIDWithTrackingAsync(accountId);
             if (account != null)
             {
                 item = Mapper.Map<AccountViewModel>(account);
+                item.GroupId = GetAccountGroupId(repository, account);
             }
 
             return item;
@@ -397,6 +399,19 @@ namespace SPPC.Tadbir.Persistence
                     await CascadeUpdateFullCodeAsync(child.Id);
                 }
             }
+        }
+
+        private int GetAccountGroupId(IRepository<Account> repository, Account account)
+        {
+            repository.LoadReference(account, acc => acc.Parent);
+            var parent = account;
+            while (parent.ParentId != null)
+            {
+                repository.LoadReference(parent, acc => acc.Parent);
+                parent = parent.Parent;
+            }
+
+            return parent.GroupId ?? 0;
         }
 
         private readonly ISecureRepository _repository;
