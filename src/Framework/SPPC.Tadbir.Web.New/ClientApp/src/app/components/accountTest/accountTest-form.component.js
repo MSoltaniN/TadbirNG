@@ -56,12 +56,15 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
     ////Events
     AccountTestFormComponent.prototype.onSave = function (e) {
         e.preventDefault();
+        debugger;
         if (this.editForm.valid) {
             if (this.model.id > 0) {
                 var model = this.editForm.value;
                 model.branchId = this.model.branchId;
                 model.fiscalPeriodId = this.model.fiscalPeriodId;
                 model.companyId = this.model.companyId;
+                if (this.parent)
+                    model.groupId = undefined;
                 this.save.emit(model);
             }
             else {
@@ -87,6 +90,7 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
         var _this = this;
         this.viewId = viewName_1.ViewName.Account;
         this.editForm.reset();
+        this.getAccountGroups();
         this.getBranchName();
         this.GetCurrencies();
         this.GetTurnoverModes();
@@ -99,7 +103,6 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
         }
         else {
             this.level = 0;
-            this.getAccountGroups();
         }
         if (this.model && this.model.code)
             this.model.fullCode = this.parentFullCode + this.model.code;
@@ -115,6 +118,9 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
             _this.accGroupList = res;
             if (_this.model && _this.model.groupId) {
                 _this.accGroupSelected = _this.model.groupId.toString();
+            }
+            else if (_this.parent) {
+                _this.accGroupSelected = _this.parent.groupId.toString();
             }
         });
     };

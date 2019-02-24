@@ -181,7 +181,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId);
+            var account = await repository.GetByIDWithTrackingAsync(accountId);
             if (account != null)
             {
                 await DeleteAsync(repository, account);
@@ -199,7 +199,7 @@ namespace SPPC.Tadbir.Persistence
             int level = 0;
             foreach (int accountId in accountIds)
             {
-                var account = await repository.GetByIDAsync(accountId);
+                var account = await repository.GetByIDWithTrackingAsync(accountId);
                 if (account != null)
                 {
                     level = Math.Max(level, account.Level);

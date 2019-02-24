@@ -24,7 +24,17 @@
                             (selectionChange)="handleSelection($event)"
                             (nodeClick)="onNodeClick($event)">
             </kendo-treeview>
+            <kendo-contextmenu #treemenulimited [items]="contextmenuLimitedItems" (select)="onSelectContextmenu($event)">
+              <ng-template kendoMenuItemTemplate let-item="item">
+                <span [ngClass]="item.icon"></span>
+                {{ item.text | translate }}
+              </ng-template>
+            </kendo-contextmenu>
             <kendo-contextmenu #treemenu [items]="contextmenuItems" (select)="onSelectContextmenu($event)">
+              <ng-template kendoMenuItemTemplate let-item="item">
+                <span [ngClass]="item.icon"></span>
+                {{ item.text | translate }}
+              </ng-template>
             </kendo-contextmenu>
 
           </div>
@@ -34,9 +44,7 @@
 
       <kendo-splitter-pane>
 
-
         <div>
-
           <div SppcCheckAccess="View">
             <kendo-grid id="1" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
                         [sortable]="{ allowUnsort: true, mode: 'multiple' }"
@@ -71,8 +79,12 @@
               </ng-template>
               <ng-template kendoGridToolbarTemplate let-account>
 
-
-                <h4>{{ parent ? parent.name : '' }}</h4>
+                <section class="content-header" style="padding-top:0;">
+                  <h4>{{ parent ? parent.name : 'حساب های کل' }}</h4>
+                  <ol class="breadcrumb" style="top:0;" *ngIf="breadCrumbList.length > 1">
+                    <li *ngFor="let item of breadCrumbList"><a href="javascript:;" (click)="selectBreadCrumb(item)">{{ item.name }}</a></li>
+                  </ol>
+                </section>
 
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Account.New' | translate }}"></button>
 

@@ -84,8 +84,8 @@
     "ReportNameIsReq": "نام گزارش اجباری می باشد",
     "ReportNameTooLong": "نام گزارش طولانی می باشد",
     "ReportSetDefaultForAll": "گزارش برای همه کاربران به صورت پیش فرض شد",
-    "DefaultForAll":"پیش فرض برای همه",
-    "ReportDesktop" : "میز کار"
+    "DefaultForAll": "پیش فرض برای همه",
+    "ReportDesktop": "میز کار"
 
   },
   "Buttons": {
@@ -133,7 +133,7 @@
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
-    "CurrentBranchAndSubsets": "شعبه جاری و زیر مجموعه هایش",
+    "CurrentBranchAndSubsets": "شعبه جاری و زیر مجموعه ها",
     "CurrentBranch": "شعبه جاری"
   },
   "Account": {
@@ -155,7 +155,9 @@
     "TafziliToUp": "حساب تفصیلی سطح",
     "BranchScope": "دسترسی شعبه",
     "AccountGroup": "گروه حساب",
-    "AccountBranchName": "نام شعبه حساب"
+    "AccountBranchName": "نام شعبه حساب",
+    "EditorTitleEdit": "ویرایش حساب در سطح {0}",
+    "EditorTitleNew": "حساب جدید در سطح {0}"
   },
   "AccountCollection": {
     "Category": "مجموعه حساب ها",

@@ -22,6 +22,7 @@ import { TreeItem } from '@progress/kendo-angular-treeview';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { AccountTestFormComponent } from './accountTest-form.component';
 import { ContextMenuComponent } from '@progress/kendo-angular-menu';
+import { ViewName } from '../../security/viewName';
 
 //#endregion
 
@@ -51,10 +52,16 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
   public expandedKeys: any[] = [-1];
   public selectedKeys: number[] = [-1];
   public selectedItem: AccountItemBrief;
+  breadCrumbList: Array<AccountItemBrief> = [];
 
-  @ViewChild('treemenu')
-  public gridContextMenu: ContextMenuComponent;
-  public contextmenuItems: any[] = [{ text: 'ویرایش نام', icon: 'edit', mode: 'Edit' }, { text: 'حذف', icon: 'close', mode: 'Remove' }];
+  @ViewChild('treemenu') public treeContextMenu: ContextMenuComponent;
+  public contextmenuItems: any[] = [
+    { text: 'Account.New', icon: 'file-add', mode: 'New' },
+    { text: 'Buttons.Edit', icon: 'edit', mode: 'Edit' },
+    { text: 'Buttons.Delete', icon: 'delete', mode: 'Remove' }];
+  @ViewChild('treemenulimited') public treeContextMenuLimited: ContextMenuComponent;
+  public contextmenuLimitedItems: any[] = [
+    { text: 'Account.New', icon: 'file-add', mode: 'New' }];
   selectedContextmenu: any;
 
   //#region grid
@@ -81,10 +88,8 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
   ngOnInit() {
     this.viewAccess = this.isAccess(SecureEntity.Account, AccountPermissions.View);
     this.getTreeNode();
-
     this.reloadGrid();
   }
-
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private accountService: AccountService, public dialogService: DialogService,
@@ -95,9 +100,10 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
 
   getTreeNode() {
     this.accountService.getModels(AccountApi.EnvironmentAccountsLedger).subscribe(res => {
-      this.firstTreeNode = [{ id: -1, name: 'حسابهای کل', code: '', fullCode: '', level: 0, childCount: 1, parentId: -1, isSelected: true }];
+      this.firstTreeNode = [{ id: -1, name: 'حساب های کل', code: '', fullCode: '', level: 0, childCount: 1, parentId: -1, isSelected: true }];
       this.selectedItem = this.firstTreeNode[0];
       this.treeNodes = res;
+      this.breadCrumbList.push(this.firstTreeNode[0]);
     })
   }
 
@@ -137,6 +143,8 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
     this.expandedKeys.push(item.dataItem.id);
     this.getParent();
     this.reloadGrid();
+
+    this.getBreadCrumbItems();
   }
 
   public onNodeClick(e: any): void {
@@ -148,14 +156,90 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
       this.selectedContextmenu = e.item.dataItem;
       var leftPosition = this.CurrentLanguage == 'fa' ? originalEvent.pageX - 135 : originalEvent.pageX;
 
-      this.gridContextMenu.show({ left: leftPosition, top: originalEvent.pageY });
+      if (this.selectedContextmenu.id == -1) {
+        this.treeContextMenuLimited.show({ left: leftPosition, top: originalEvent.pageY });
+      }
+      else {
+        this.treeContextMenu.show({ left: leftPosition, top: originalEvent.pageY });
+      }
     }
   }
 
   public onSelectContextmenu({ item }): void {
-    if (item.mode === 'Remove') {
-      this.contextMenuRemoveHandler();
+    switch (item.mode) {
+      case 'Remove': {
+        this.contextMenuRemoveHandler();
+        break;
+      }
+      case 'Edit': {
+        this.contextMenuEditHandler();
+        break;
+      }
+      case 'New': {
+        this.contextMenuAddNewHandler();
+        break;
+      }
+      default:
     }
+  }
+
+  contextMenuAddNewHandler() {
+    this.selectedItem = this.selectedContextmenu;
+    this.parentId = this.selectedItem && this.selectedItem.id > 0 ? this.selectedItem.id : undefined;
+    this.currentFilter = undefined;
+    this.selectedRows = [];
+    this.pageIndex = 0;
+    this.expandedKeys.push(this.selectedContextmenu.id);
+    this.selectedKeys = [];
+    this.selectedKeys.push(this.selectedItem.id);
+    this.reloadGrid();
+
+    this.getBreadCrumbItems();
+
+    if (this.parentId) {
+      this.accountService.getAccountById(this.parentId).subscribe(res => {
+        this.parent = res;
+        this.addNew();
+      })
+    }
+    else {
+      this.parent = undefined;
+      this.addNew();
+    }
+
+  }
+
+  contextMenuEditHandler() {
+    var parent = this.selectedContextmenu.parentId ? this.treeNodes.filter(f => f.id == this.selectedContextmenu.parentId) : this.firstTreeNode;
+    this.selectedItem = parent[0];
+    this.parentId = this.selectedItem && this.selectedItem.id > 0 ? this.selectedItem.id : undefined;
+    this.currentFilter = undefined;
+    this.selectedRows = [];
+    this.pageIndex = 0;
+    this.expandedKeys.push(this.selectedContextmenu.id);
+    this.selectedKeys = [];
+    this.selectedKeys.push(this.selectedItem.id);
+    this.reloadGrid();
+
+    this.getBreadCrumbItems();
+
+    this.selectedRows.push(this.selectedContextmenu.id);
+
+    if (this.parentId) {
+      this.accountService.getAccountById(this.parentId).subscribe(res => {
+        this.parent = res;
+
+        this.editHandler();
+
+        this.selectedRows = [];
+      })
+    }
+    else {
+      this.parent = undefined;
+      this.editHandler();
+      this.selectedRows = [];
+    }
+
   }
 
   contextMenuRemoveHandler() {
@@ -168,8 +252,6 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
     this.grid.loading = true;
     this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
       this.showMessage(this.deleteMsg, MessageType.Info);
-
-      debugger;
 
       if (this.selectedItem.id == this.deleteModelId) {
 
@@ -192,6 +274,8 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
         else {
           this.parentId = this.selectedContextmenu.parentId;
         }
+
+        this.getBreadCrumbItems();
       }
 
       this.refreshTreeNodes();
@@ -205,8 +289,32 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
       this.showMessage(message, MessageType.Warning);
     }));
   }
-  //#region grid
 
+  getBreadCrumbItems() {
+    this.breadCrumbList = [];
+    this.getBreadCrumbRecursiveItems(this.selectedItem);
+  }
+
+  getBreadCrumbRecursiveItems(item: AccountItemBrief) {
+
+    if (item.parentId != null) {
+      var parent = this.treeNodes.filter(f => f.id == item.parentId);
+      if (parent.length > 0)
+        this.getBreadCrumbRecursiveItems(parent[0]);
+    }
+    else {
+      this.getBreadCrumbRecursiveItems(this.firstTreeNode[0]);
+    }
+    this.breadCrumbList.push(item);
+  }
+
+  selectBreadCrumb(item: AccountItemBrief) {
+    this.handleSelection({ dataItem: item, index: "0" });
+    this.selectedKeys = [];
+    this.selectedKeys.push(this.selectedItem.id);
+  }
+
+  //#region grid
   reloadGrid(insertedModel?: Account) {
     if (this.viewAccess) {
       this.grid.loading = true;
@@ -305,7 +413,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
   openEditorDialog(isNew: boolean) {
 
     this.dialogRef = this.dialogService.open({
-      title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
+      title: this.getEditorTitle(isNew),
       content: AccountTestFormComponent,
     });
 
@@ -325,6 +433,21 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
     });
   }
 
+  getEditorTitle(isNew: boolean): string {
+    var editorTitle = '';
+
+    var config = this.getViewTreeSettings(ViewName.Account);
+
+    if (config) {
+      var level = this.parent ? this.parent.level + 2 : 1;
+      var viewConfig = config.levels.find(f => f != null && f.no == level);
+
+      if (viewConfig)
+        editorTitle = viewConfig.name;
+    }
+
+    return String.Format(this.getText(isNew ? 'Account.EditorTitleNew' : 'Account.EditorTitleEdit'), editorTitle);
+  }
 
   addNew() {
     this.editDataItem = new AccountInfo();
@@ -398,6 +521,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
           this.dialogModel.errorMessage = undefined;
           this.dialogModel.model = undefined;
 
+          this.selectedRows = [];
           this.reloadGrid(insertedModel);
 
           this.refreshTreeNodes(insertedModel);
