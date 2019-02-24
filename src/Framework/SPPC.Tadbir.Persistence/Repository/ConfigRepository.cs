@@ -205,6 +205,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
         /// <returns>تنظیمات موجود برای ساختار نمای درختی مشخص شده</returns>
+        /// <remarks>بنا بر آخرین تحلیل انجام شده، این متد حداکثر 8 سطح درختی را در دسترس قرار می دهد</remarks>
         public async Task<ViewTreeFullConfig> GetViewTreeConfigByViewAsync(int viewId)
         {
             var viewConfig = default(ViewTreeFullConfig);
@@ -215,6 +216,7 @@ namespace SPPC.Tadbir.Persistence
             if (config != null)
             {
                 viewConfig = _mapper.Map<ViewTreeFullConfig>(config);
+                ClipUsableTreeLevels(viewConfig);
             }
 
             return viewConfig;
@@ -254,6 +256,19 @@ namespace SPPC.Tadbir.Persistence
             config.Current.Levels[level].IsUsed = itemCount > 0;
             var configItems = new List<ViewTreeFullConfig> { config };
             await SaveViewTreeConfigAsync(configItems);
+        }
+
+        private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
+        {
+            while (fullConfig.Default.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
+            {
+                fullConfig.Default.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
+            }
+
+            while (fullConfig.Current.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
+            {
+                fullConfig.Current.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
+            }
         }
 
         private async Task InitDefaultColumnSettingsAsync()

@@ -14,6 +14,11 @@ namespace SPPC.Tadbir.Configuration
         public const short MaxTreeDepth = 16;
 
         /// <summary>
+        /// مقدار تعریف شده در سیستم برای حداکثر عمق قابل استفاده برای ساختارهای اطلاعاتی درختی
+        /// </summary>
+        public const short MaxUsableTreeDepth = 8;
+
+        /// <summary>
         /// حداکثر عمق پیش فرض که توسط برنامه برای یک ساختار درختی پیشنهاد می شود.
         /// </summary>
         public const short DefaultTreeDepth = 4;

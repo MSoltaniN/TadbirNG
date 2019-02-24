@@ -346,6 +346,19 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        private static int GetAccountGroupId(IRepository<Account> repository, Account account)
+        {
+            repository.LoadReference(account, acc => acc.Parent);
+            var parent = account;
+            while (parent.ParentId != null)
+            {
+                repository.LoadReference(parent, acc => acc.Parent);
+                parent = parent.Parent;
+            }
+
+            return parent.GroupId ?? 0;
+        }
+
         /// <summary>
         /// به روش آسنکرون، وضعیت استفاده از یکی از سطوح درختی حساب را در دیتابیس بروزرسانی می کند
         /// </summary>
@@ -399,19 +412,6 @@ namespace SPPC.Tadbir.Persistence
                     await CascadeUpdateFullCodeAsync(child.Id);
                 }
             }
-        }
-
-        private int GetAccountGroupId(IRepository<Account> repository, Account account)
-        {
-            repository.LoadReference(account, acc => acc.Parent);
-            var parent = account;
-            while (parent.ParentId != null)
-            {
-                repository.LoadReference(parent, acc => acc.Parent);
-                parent = parent.Parent;
-            }
-
-            return parent.GroupId ?? 0;
         }
 
         private readonly ISecureRepository _repository;
