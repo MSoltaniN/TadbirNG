@@ -84,13 +84,14 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
   ////Events
   public onSave(e: any): void {
     e.preventDefault();
-
     if (this.editForm.valid) {
       if (this.model.id > 0) {
         let model: Account = this.editForm.value;
         model.branchId = this.model.branchId;
         model.fiscalPeriodId = this.model.fiscalPeriodId;
         model.companyId = this.model.companyId;
+        if (this.parent)
+          model.groupId = undefined;
         this.save.emit(model);
       }
       else {
@@ -119,15 +120,12 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
     this.viewId = ViewName.Account;
 
     this.editForm.reset();
-
+    this.getAccountGroups();
     this.getBranchName();
-
     this.GetCurrencies();
-
     this.GetTurnoverModes();
 
     this.parentScopeValue = 0;
-
     if (this.parent) {
       this.parentFullCode = this.parent.fullCode;
       this.model.fullCode = this.parentFullCode;
@@ -136,7 +134,6 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
     }
     else {
       this.level = 0;
-      this.getAccountGroups();
     }
 
     if (this.model && this.model.code)
@@ -162,6 +159,11 @@ export class AccountTestFormComponent extends DetailComponent implements OnInit 
       if (this.model && this.model.groupId) {
         this.accGroupSelected = this.model.groupId.toString();
       }
+      else
+        if (this.parent) {
+          this.accGroupSelected = this.parent.groupId.toString();
+        }
+
     })
   }
 

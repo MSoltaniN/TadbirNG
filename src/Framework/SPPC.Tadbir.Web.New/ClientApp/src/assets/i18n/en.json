@@ -157,7 +157,9 @@
     "TafziliToUp": "Floating Account",
     "BranchScope": "Branch Scope",
     "AccountGroup": "Account Group",
-    "AccountBranchName": "Account Branch Name"
+    "AccountBranchName": "Account Branch Name",
+    "EditorTitleEdit": "Edit account in level {0}",
+    "EditorTitleNew": "New account in level {0}"
   },
   "AccountCollection": {
     "Category": "Account Collection Categories",

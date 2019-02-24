@@ -13817,7 +13817,7 @@ fieldset {
 }
 
 .k-switch-label-on {
-    color: #337ab7;
+    /*color: #337ab7;*/
     background-color: transparent;
 }
 

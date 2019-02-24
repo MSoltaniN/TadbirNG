@@ -9,6 +9,7 @@
         <kendo-tabstrip-tab [title]="'اطلاعات حساب'" [selected]="true">
           <ng-template kendoTabContent>
 
+            <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
 
             <div *ngIf="errorMessage">
               <div class="alert alert-danger">
@@ -16,9 +17,6 @@
                 {{ errorMessage }}
               </div>
             </div>
-
-            <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
-
 
 
             <div class="row">
@@ -35,11 +33,11 @@
                 </div>
               </div>
 
-              <div class="col-xs-12 col-sm-6" [hidden]="parent">
+              <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label for="groupId" class="control-label">{{ 'Account.AccountGroup' | translate }}</label>
 
-                  <kendo-dropdownlist class="ddl-acc"
+                  <kendo-dropdownlist class="ddl-acc" [disabled]="parent"
                                       [data]="accGroupList"
                                       [textField]="'value'"
                                       [valueField]="'key'"
@@ -115,6 +113,15 @@
 
         <kendo-tabstrip-tab [title]="'سایر مشخصات حساب'">
           <ng-template kendoTabContent>
+
+            <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
+
+            <div *ngIf="errorMessage">
+              <div class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorMessage }}
+              </div>
+            </div>
 
             <div class="row">
               <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
