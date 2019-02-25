@@ -141,5 +141,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for Journal-By Date-By Row report
         /// </summary>
         public const string JournalByDateByRowUrl = "reports/journal/by-date/by-row";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-By Row With Detail report
+        /// </summary>
+        public const string JournalByDateByRowDetail = "reports/journal/by-date/by-row-detail";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-By Row With Detail report
+        /// </summary>
+        public const string JournalByDateByRowDetailUrl = "reports/journal/by-date/by-row-detail";
     }
 }

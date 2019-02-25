@@ -251,6 +251,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(journal);
         }
 
+        // GET: api/reports/journal/by-date/by-row-detail
+        [Route(ReportApi.JournalByDateByRowDetailUrl)]
+        public async Task<IActionResult> GetJournalByDateByRowWithDetailAsync()
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            int count = await _repository.GetJournalByDateByRowCountAsync(gridOptions);
+            SetItemCount(count);
+            var journal = await _repository.GetJournalByDateByRowWithDetailAsync(gridOptions);
+            return Json(journal);
+        }
+
         #endregion
 
         private async Task<int> GetCurrentLocaleIdAsync()

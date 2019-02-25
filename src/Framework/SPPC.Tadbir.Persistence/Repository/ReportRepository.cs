@@ -145,6 +145,23 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند با سطوح شناور
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<IList<JournalWithDetailViewModel>> GetJournalByDateByRowWithDetailAsync(
+            GridOptions gridOptions)
+        {
+            var journalQuery = GetJournalByDateByRowDetailQuery();
+            var journal = await journalQuery
+                .ToListAsync();
+            return journal
+                .Apply(gridOptions)
+                .ToList();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند
         /// را خوانده و برمی گرداند
         /// </summary>
@@ -281,6 +298,18 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
                 .Select(art => _mapper.Map<JournalViewModel>(art));
+            return journalQuery;
+        }
+
+        private IQueryable<JournalWithDetailViewModel> GetJournalByDateByRowDetailQuery()
+        {
+            var journalQuery = _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.DetailAccount,
+                    art => art.CostCenter, art => art.Project)
+                .OrderBy(art => art.Voucher.Date)
+                    .ThenBy(art => art.Voucher.No)
+                .Select(art => _mapper.Map<JournalWithDetailViewModel>(art));
             return journalQuery;
         }
 

@@ -840,4 +840,10 @@
   <data name="Unlimited" xml:space="preserve">
     <value>Unlimited</value>
   </data>
+  <data name="AccountNo" xml:space="preserve">
+    <value>Account no</value>
+  </data>
+  <data name="AccountTitle" xml:space="preserve">
+    <value>Account title</value>
+  </data>
 </root>

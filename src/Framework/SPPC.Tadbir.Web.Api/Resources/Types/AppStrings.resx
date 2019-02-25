@@ -840,4 +840,10 @@
   <data name="Unlimited" xml:space="preserve">
     <value>بدون محدودیت</value>
   </data>
+  <data name="AccountNo" xml:space="preserve">
+    <value>شماره حساب</value>
+  </data>
+  <data name="AccountTitle" xml:space="preserve">
+    <value>عنوان حساب</value>
+  </data>
 </root>

@@ -6,7 +6,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// <summary>
     /// اطلاعاتی نمایشی یک آرتیکل مالی را جهت استفاده در گزارش دفتر روزنامه نگهداری می کند
     /// </summary>
-    public class JournalViewModel
+    public class JournalWithDetailViewModel
     {
         /// <summary>
         /// شناسه دیتابیسی آرتیکل مالی
@@ -37,6 +37,36 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام سرفصل حسابداری مورد استفاده در ردیف سند، ستون عنوان حساب در نمای لیستی
         /// </summary>
         public string AccountName { get; set; }
+
+        /// <summary>
+        /// کد کامل تفصیلی شناور مورد استفاده در ردیف سند
+        /// </summary>
+        public string DetailAccountFullCode { get; set; }
+
+        /// <summary>
+        /// نام تفصیلی شناور مورد استفاده در ردیف سند
+        /// </summary>
+        public string DetailAccountName { get; set; }
+
+        /// <summary>
+        /// کد کامل مرکز هزینه مورد استفاده در ردیف سند
+        /// </summary>
+        public string CostCenterFullCode { get; set; }
+
+        /// <summary>
+        /// نام مرکز هزینه مورد استفاده در ردیف سند
+        /// </summary>
+        public string CostCenterName { get; set; }
+
+        /// <summary>
+        /// کد کامل پروژه مورد استفاده در ردیف سند
+        /// </summary>
+        public string ProjectFullCode { get; set; }
+
+        /// <summary>
+        /// نام پروژه مورد استفاده در ردیف سند
+        /// </summary>
+        public string ProjectName { get; set; }
 
         /// <summary>
         /// شرح آرتیکل مالی

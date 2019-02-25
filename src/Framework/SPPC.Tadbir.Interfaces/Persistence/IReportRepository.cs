@@ -51,6 +51,15 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(GridOptions gridOptions);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند با سطوح شناور
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        Task<IList<JournalWithDetailViewModel>> GetJournalByDateByRowWithDetailAsync(
+            GridOptions gridOptions);
+
+        /// <summary>
         /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند
         /// را خوانده و برمی گرداند
         /// </summary>

@@ -218,23 +218,6 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Value,
                     opts => opts.MapFrom(
                         src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
-            mapperConfig.CreateMap<Voucher, VoucherSummaryViewModel>()
-                .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
-                .ForMember(dest => dest.DebitSum, opts => opts.MapFrom(src => VoucherHelper.GetDebitSum(src)))
-                .ForMember(dest => dest.CreditSum, opts => opts.MapFrom(src => VoucherHelper.GetCreditSum(src)))
-                .ForMember(
-                    dest => dest.Difference,
-                    opts => opts.MapFrom(
-                        src => Math.Abs(VoucherHelper.GetDebitSum(src) - VoucherHelper.GetCreditSum(src))))
-                .ForMember(
-                    dest => dest.BalanceStatus,
-                    opts => opts.MapFrom(src => VoucherHelper.GetBalanceStatus(src)))
-                .ForMember(dest => dest.CheckStatus, opts => opts.MapFrom(src => src.Status.Name))
-                .ForMember(dest => dest.Origin, opts => opts.UseValue("UserVoucher"))
-                .ForMember(dest => dest.PreparedById, opts => opts.MapFrom(src => src.ModifiedById));
-            mapperConfig.CreateMap<Voucher, StandardVoucherViewModel>()
-                .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
-                .ForMember(dest => dest.Lines, opts => opts.Ignore());
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(
@@ -256,7 +239,6 @@ namespace SPPC.Tadbir.Mapper
                         src => String.Join("|",
                             new[] { "VoucherLineDisplay", src.Debit.ToString("C0"), src.Credit.ToString("C0"), src.Description })));
             mapperConfig.CreateMap<VoucherLine, VoucherLineAmountsViewModel>();
-            mapperConfig.CreateMap<VoucherLine, JournalViewModel>();
 
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
@@ -515,6 +497,27 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Report, PrintInfoViewModel>()
                 .ForMember(dest => dest.Template, opts => opts.Ignore());
             mapperConfig.CreateMap<Report, ReportSummaryViewModel>();
+
+            mapperConfig.CreateMap<Voucher, VoucherSummaryViewModel>()
+                .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
+                .ForMember(dest => dest.DebitSum, opts => opts.MapFrom(src => VoucherHelper.GetDebitSum(src)))
+                .ForMember(dest => dest.CreditSum, opts => opts.MapFrom(src => VoucherHelper.GetCreditSum(src)))
+                .ForMember(
+                    dest => dest.Difference,
+                    opts => opts.MapFrom(
+                        src => Math.Abs(VoucherHelper.GetDebitSum(src) - VoucherHelper.GetCreditSum(src))))
+                .ForMember(
+                    dest => dest.BalanceStatus,
+                    opts => opts.MapFrom(src => VoucherHelper.GetBalanceStatus(src)))
+                .ForMember(dest => dest.CheckStatus, opts => opts.MapFrom(src => src.Status.Name))
+                .ForMember(dest => dest.Origin, opts => opts.UseValue("UserVoucher"))
+                .ForMember(dest => dest.PreparedById, opts => opts.MapFrom(src => src.ModifiedById));
+            mapperConfig.CreateMap<Voucher, StandardVoucherViewModel>()
+                .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
+                .ForMember(dest => dest.Lines, opts => opts.Ignore());
+
+            mapperConfig.CreateMap<VoucherLine, JournalViewModel>();
+            mapperConfig.CreateMap<VoucherLine, JournalWithDetailViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

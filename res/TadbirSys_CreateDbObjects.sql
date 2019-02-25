@@ -472,6 +472,7 @@ INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, 
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (12, 'AccountGroup', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (13, 'OperationLog', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (14, N'AccountCollectionAccount', 0, 0, N'')
+INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (15, N'JournalByDateByRow', 0, 0, N'')
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
@@ -571,6 +572,30 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [Storage
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (86, 1, N'IsActive', N'System.Boolean', N'bit', N'boolean', 0, 0, 0, 1, 1, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (87, 1, N'IsCurrencyAdjustable', N'System.Boolean', N'bit', N'boolean', 0, 0, 0, 1, 1, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (88, 1, N'TurnoverMode', N'System.Int16', N'smallint', N'number', 0, 0, 0, 1, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (89, 15, N'RowNo', N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (90, 15, N'VoucherDate', N'System.Datetime', N'datetime', N'Date', 0, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (91, 15, N'VoucherNo', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (92, 15, N'AccountFullCode', N'System.String', N'nvarchar', N'string', 512, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (93, 15, N'AccountName', N'System.String', N'nvarchar', N'string', 512, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (94, 15, N'Description', N'System.String', N'nvarchar', N'string', 512, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (95, 15, N'Debit', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (96, 15, N'Credit', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
