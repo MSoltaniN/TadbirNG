@@ -19,13 +19,11 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<AccountCollectionCategoryViewModel>> GetAccountCollectionCategoriesAsync();
 
         /// <summary>
-        /// به روش آسنکرون، حساب های یک مجموعه حساب و حساب های قابل انتخاب را خوانده و برمی گرداند
+        /// به روش آسنکرون، حساب های انتخاب شده برای یک مجموعه حساب را خوانده و برمی گرداند
         /// </summary>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از حساب های یک سطح و حساب های انتخاب شده در یک مجموعه حساب</returns>
-        Task<AccountCollectionItemsViewModel> GetCollectionAccountsAsync(
-            int collectionId, GridOptions gridOptions = null);
+        /// <returns>مجموعه ای از حساب های انتخاب شده در یک مجموعه حساب</returns>
+        Task<IList<AccountViewModel>> GetCollectionAccountsAsync(int collectionId);
 
         /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند

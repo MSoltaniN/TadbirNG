@@ -104,7 +104,8 @@
     "OkAndNew": "تایید و ایجاد",
     "Help": "راهنما",
     "FilterForm": "فرم فیلتر",
-    "Tools": "ابزارها"
+    "Tools": "ابزارها",
+    "Save": "ذخیره"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -169,9 +170,12 @@
     "SelectableAccounts": "حساب های قابل انتخاب",
     "MultiSelectValidation": "برای این مجموعه حساب فقط یک حساب قابل انتخاب است",
     "SelectValidation": "این حساب قابل انتخاب نیست",
+    "LeafAccountsValidation": "لطفا حساب در سطح آخر انتخاب کنید",
+    "NonLeafAccountsValidation": "لطفا حساب به جزء سطح آخر را انتخاب کنید",
     "SelectLevel": "لطفا سطح حساب را انتخاب کنید",
     "SelectCollection": "لطفا مجموعه حساب را انتخاب کنید",
-    "SelectedAccount": "این حساب انتخاب شده است"
+    "SelectedAccount": "این حساب انتخاب شده است",
+    "AccountViewAccess": "شما دسترسی دیدن حساب های انتخاب شده را ندارید"
   },
   "Settings": {
     "AccountRelation": {

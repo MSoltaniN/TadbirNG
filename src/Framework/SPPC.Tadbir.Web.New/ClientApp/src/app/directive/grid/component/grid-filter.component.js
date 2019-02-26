@@ -48,6 +48,7 @@ var GridFilterComponent = /** @class */ (function (_super) {
     GridFilterComponent.prototype.ngOnDestroy = function () {
     };
     GridFilterComponent.prototype.ngOnInit = function () {
+        debugger;
         if (this.CurrentLanguage == 'fa')
             this.rtl = true;
         else

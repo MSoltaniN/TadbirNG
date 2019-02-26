@@ -104,7 +104,8 @@
     "OkAndNew": "Save And New",
     "Help": "Help",
     "FilterForm": "Filter Form",
-    "Tools": "Tools"
+    "Tools": "Tools",
+    "Save": "Save"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -171,9 +172,12 @@
     "SelectableAccounts": "Selectable Accounts",
     "MultiSelectValidation": "For this account set only one account can be selected",
     "SelectValidation": "This account can not be selected",
+    "LeafAccountsValidation": "Please choose the last level account",
+    "NonLeafAccountsValidation": "Please select an account except the last level",
     "SelectLevel": "Please select account level",
     "SelectCollection": "Please select account collection",
-    "SelectedAccount": "This account is selected"
+    "SelectedAccount": "This account is selected",
+    "AccountViewAccess": "You do not have access to viewing selected accounts"
   },
   "Settings": {
     "AccountRelation": {

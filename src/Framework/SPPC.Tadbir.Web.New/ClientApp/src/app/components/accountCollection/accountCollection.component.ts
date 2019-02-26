@@ -1,25 +1,24 @@
-import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AccountCollectionService, SettingService, AccountCollectionAccountInfo } from '../../service/index';
+import { Component, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AccountCollectionService, SettingService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent, RowClassArgs } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, GridComponent } from '@progress/kendo-angular-grid';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
-import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { AccountCollectionApi } from '../../service/api/index';
+import { AccountCollectionApi, AccountApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { FilterExpression } from '../../class/filterExpression';
 import { AccountCollectionCategory, AccountCollection, ViewTreeLevelConfig, AccountCollectionAccount, Account } from '../../model/index';
 import { TreeItem } from '@progress/kendo-angular-treeview';
-import { SelectableSettings } from '@progress/kendo-angular-grid';
 import { AccountRelationsType } from '../../enum/accountRelationType';
-import { AccountCollectionPermissions } from '../../security/permissions';
+import { AccountCollectionPermissions, AccountPermissions } from '../../security/permissions';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { TypeLevel } from '../../enum/TypeLevel';
 
@@ -47,7 +46,9 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   //#region Fields
   @ViewChild(GridComponent) grid: GridComponent;
 
-
+  /**
+   *مجموعه حساب انتخاب شده از درخت
+   */
   public selectedCollectionItem: AccountCollection;
   public expandedKeys: any[] = [];
   collectionCategory: Array<AccountCollectionCategory> = [];
@@ -57,29 +58,37 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
 
   currentFilter: FilterExpression;
-  //permission flag
   viewAccess: boolean;
-  public selectableRows: number[] = [];//شناسه یکتای انتخاب شده گرید اول
-  public selectedRows: number[] = [];//شناسه یکتای انتخاب شده گرید دوم
+  collectionViewAccess: boolean;
+  /**
+  *شناسه سطرهای انتخاب شده از گرید حسابهای قابل انتخاب
+  */
+  public selectableRowsKey: number[] = [];
+  /**
+  *شناسه سطرهای انتخاب شده از گرید حساب های انتخاب شده
+  */
+  public selectedRowsKey: number[] = [];
   public totalRecords: number;
+  /**
+  *اطلاعات گرید حساب های قابل انتخاب
+  */
   public rowData: GridDataResult;
+  /**
+  *سطرهای گرید حساب های انتخاب شده
+  */
   public selectedRowData: Array<Account> = [];
-  newSelectedRowData: Array<Account> = [];
+
   dataloadingMessage: boolean = false;
   selectedDataloadingMessage: boolean = false;
-  public selectableSettings: SelectableSettings;
-  isPageChanged: boolean = false;
-  isLevelChanged: boolean = false;
-  isFilterChanged: boolean = false;
-
-
+  isChangedList: boolean = false;
 
 
   //#endregion
 
   //#region Events
   ngOnInit() {
-    this.viewAccess = this.isAccess(SecureEntity.AccountCollection, AccountCollectionPermissions.View);
+    this.viewAccess = this.isAccess(SecureEntity.AccountCollection, AccountPermissions.View);
+    this.collectionViewAccess = this.isAccess(SecureEntity.AccountCollection, AccountCollectionPermissions.View)
     this.getAccountCollectionCategory();
     this.getAccountLevels();
   }
@@ -122,19 +131,20 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
    * @param item
    */
   public handleSelection(item: TreeItem): void {
-    debugger;
+
     this.selectedCollectionItem = undefined;
     this.selectedRowData = [];
-    this.selectedRows = [];
-    this.selectableRows = [];
-    this.newSelectedRowData = [];
+    this.selectedRowsKey = [];
+    this.selectableRowsKey = [];
     this.rowData = undefined;
     this.dataloadingMessage = false;
     this.selectedDataloadingMessage = false;
     this.pageIndex = 0;
+    this.isChangedList = false;
 
     if (item.dataItem.id > 0 && !item.dataItem.accountCollections) {
       this.selectedCollectionItem = item.dataItem;
+      this.getSelectedAccount();
     }
     else
       if (item.dataItem.id > 0) {
@@ -150,12 +160,12 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
    *وقتی سطح حساب انتخاب میشود
    * */
   public handleLevelChange() {
-    this.selectableRows = [];
+    this.selectableRowsKey = [];
     this.pageIndex = 0;
     this.rowData = undefined;
     this.dataloadingMessage = false;
-    this.isLevelChanged = true;
   }
+
 
   reloadGrid() {
     if (this.selectedCollectionItem) {
@@ -177,7 +187,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
           }
           this.grid.loading = true;
 
-          this.accountCollectionService.getAll(String.Format(AccountCollectionApi.AccountCollectionAccount, this.selectedCollectionItem.id), this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
+          this.accountCollectionService.getAll(AccountApi.EnvironmentAccounts, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
             var resData = res.body;
 
             var totalCount = 0;
@@ -190,23 +200,12 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
                   totalCount = parseInt(retheader.toString());
               }
             }
-
             this.rowData = {
-              data: resData.allAccounts,
+              data: resData,
               total: totalCount
             }
 
-            debugger;
-
-            if (!this.isPageChanged && !this.isLevelChanged && !this.isFilterChanged) {
-              this.selectedRowData = resData.selectedAccounts.concat(this.newSelectedRowData);
-              this.selectedDataloadingMessage = !(this.selectedRowData.length == 0);
-            }
-            this.isPageChanged = false;
-            this.isLevelChanged = false;
-            this.isFilterChanged = false;
-
-            this.dataloadingMessage = !(resData.allAccounts.length == 0);
+            this.dataloadingMessage = !(resData.length == 0);
             this.totalRecords = totalCount;
             this.grid.loading = false;
           })
@@ -226,41 +225,52 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
     }
   }
 
+  /**
+   *حساب های انتخاب شده برای یک مجموعه حساب را از سرویس میگیرد
+   * */
+  getSelectedAccount() {
+    if (this.collectionViewAccess) {
+      this.accountCollectionService.getAll(String.Format(AccountCollectionApi.AccountCollectionAccount, this.selectedCollectionItem.id)).subscribe((res) => {
+        var resData = res.body;
+        this.selectedRowData = resData;
+        this.selectedDataloadingMessage = !(resData.length == 0);
+      })
+    }
+    else {
+      this.selectedRowData = [];
+      this.showMessage(this.getText('AccountCollection.AccountViewAccess'), MessageType.Warning);
+    }
+  }
 
   /**
-   *اضافه کردن حساب انتخاب شده از گرید اول به گرید دوم
+   *اضافه کردن حساب 
    * */
   addAccount() {
     if (this.isSelectableAccount()) {
-      if (!this.selectedRowData.find(f => f.id == this.selectableRows[0])) {
-        var row = this.rowData.data.find(f => f.id == this.selectableRows[0]);
+      if (!this.selectedRowData.find(f => f.id == this.selectableRowsKey[0])) {
+        var row = this.rowData.data.find(f => f.id == this.selectableRowsKey[0]);
         this.selectedRowData.push(row);
-        this.newSelectedRowData.push(row);
+        this.isChangedList = true;
       }
       else {
         this.showMessage(this.getText('AccountCollection.SelectedAccount'), MessageType.Info);
       }
     }
-    this.selectableRows = [];
+    this.selectableRowsKey = [];
   }
 
   /**
-   *حذف کردن حساب انتخاب شده در گرید دوم
+   *حذف کردن حساب 
    * */
   removeAccount() {
-    var item = this.selectedRowData.find(f => f.id == this.selectedRows[0])
+    var item = this.selectedRowData.find(f => f.id == this.selectedRowsKey[0])
     var index = this.selectedRowData.indexOf(item);
     if (index != -1) {
       this.selectedRowData.splice(index, 1);
+      this.isChangedList = true;
     }
 
-    var newItem = this.newSelectedRowData.find(f => f.id == this.selectedRows[0])
-    var newIndex = this.newSelectedRowData.indexOf(newItem);
-    if (newIndex != -1) {
-      this.newSelectedRowData.splice(newIndex, 1);
-    }
-
-    this.selectedRows = [];
+    this.selectedRowsKey = [];
     if (this.selectedRowData.length == 0)
       this.selectedDataloadingMessage = false;
   }
@@ -272,20 +282,18 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
     this.currentFilter = this.getFilters(filter);
     if (isReload) {
-      this.isFilterChanged = true;
       this.reloadGrid();
     }
   }
 
-  public sortChange(sort: SortDescriptor[]): void {
+  sortChange(sort: SortDescriptor[]): void {
     this.sort = sort.filter(f => f.dir != undefined);
-
     this.reloadGrid();
   }
 
   pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-    this.isPageChanged = true;
+    this.selectableRowsKey = [];
     this.reloadGrid();
   }
 
@@ -294,7 +302,6 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
    * */
   saveChanges() {
     var collectionId = this.selectedCollectionItem.id;
-
     this.accCollectionArray = [];
 
     this.selectedRowData.forEach(item => {
@@ -313,36 +320,38 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
       this.accCollectionArray = [];
       this.selectedRowData = [];
-      this.selectedRows = [];
-      this.selectableRows = [];
-      this.rowData = undefined;
-      this.dataloadingMessage = false;
+      this.selectedRowsKey = [];
+      this.selectableRowsKey = [];
       this.selectedDataloadingMessage = false;
-      this.newSelectedRowData = [];
+      this.isChangedList = false;
 
-      this.reloadGrid();
+      this.getSelectedAccount();
     }, (error => {
       this.showMessage(error, MessageType.Warning);
     }));
 
   }
 
-  //قابل انتخاب یا غیر قابل انتخاب بودن یک سطر را بررسی میکند
-  public isSelectableAccount(): boolean {
+  //قابل انتخاب یا غیر قابل انتخاب بودن یک حساب را بررسی میکند
+  isSelectableAccount(): boolean {
     if (!this.selectedCollectionItem.multiSelect && this.selectedRowData.length > 0) {
       this.showMessage(this.getText('AccountCollection.MultiSelectValidation'), MessageType.Warning);
       return false;
     }
-    else {
-      var row = this.rowData.data.find(f => f.id == this.selectableRows[0]);
-      var isDisabled = this.selectedCollectionItem.typeLevel == TypeLevel.AllAccounts ||
-        (this.selectedCollectionItem.typeLevel == TypeLevel.LeafAccounts && row.childCount == 0) ||
-        (this.selectedCollectionItem.typeLevel == TypeLevel.NonLeafAccounts && row.childCount > 0) ? true : false;
 
-      if (!isDisabled)
-        this.showMessage(this.getText('AccountCollection.SelectValidation'), MessageType.Warning);
-      return isDisabled;
+    var row = this.rowData.data.find(f => f.id == this.selectableRowsKey[0]);
+
+    if (this.selectedCollectionItem.typeLevel == TypeLevel.LeafAccounts && row.childCount > 0) {
+      this.showMessage(this.getText('AccountCollection.LeafAccountsValidation'), MessageType.Warning);
+      return false;
     }
+
+    if (this.selectedCollectionItem.typeLevel == TypeLevel.NonLeafAccounts && row.childCount == 0) {
+      this.showMessage(this.getText('AccountCollection.NonLeafAccountsValidation'), MessageType.Warning);
+      return false;
+    }
+
+    return true;
   }
 
   //#endregion

@@ -69,10 +69,10 @@ namespace SPPC.Tadbir.Model.Finance
 
         private void InitReferences()
         {
-            Collection = new AccountCollection();
-            Account = new Account();
-            Branch = new Branch();
-            FiscalPeriod = new FiscalPeriod();
+            //Collection = new AccountCollection();
+            //Account = new Account();
+            //Branch = new Branch();
+            //FiscalPeriod = new FiscalPeriod();
         }
     }
 }
