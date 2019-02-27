@@ -160,7 +160,16 @@
     "AccountGroup": "Account Group",
     "AccountBranchName": "Account Branch Name",
     "EditorTitleEdit": "Edit account in level {0}",
-    "EditorTitleNew": "New account in level {0}"
+    "EditorTitleNew": "New account in level {0}",
+    "AccountInfoTabTitle": "Account Information",
+    "OtherAccountInfoTabTitle": "Other Account Details",
+    "DefaultCurrency": "Default Currency",
+    "EntryLimitation": "Entry Limitation",
+    "Status": "Active/Inactive",
+    "Active": "Active",
+    "Inactive": "Inactive",
+    "AdjustStatus": "Can adjust with currency rate",
+    "LedgerAccount": "Ledger Accounts"
   },
   "AccountCollection": {
     "Category": "Account Collection Categories",

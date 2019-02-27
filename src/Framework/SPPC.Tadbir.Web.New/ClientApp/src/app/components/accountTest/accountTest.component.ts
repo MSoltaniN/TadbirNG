@@ -100,7 +100,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
 
   getTreeNode() {
     this.accountService.getModels(AccountApi.EnvironmentAccountsLedger).subscribe(res => {
-      this.firstTreeNode = [{ id: -1, name: 'حساب های کل', code: '', fullCode: '', level: 0, childCount: 1, parentId: -1, isSelected: true }];
+      this.firstTreeNode = [{ id: -1, name: this.getText('Account.LedgerAccount'), code: '', fullCode: '', level: 0, childCount: 1, parentId: -1, isSelected: true }];
       this.selectedItem = this.firstTreeNode[0];
       this.treeNodes = res;
       this.breadCrumbList.push(this.firstTreeNode[0]);
@@ -181,6 +181,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
       }
       default:
     }
+    this.selectedContextmenu = undefined;
   }
 
   contextMenuAddNewHandler() {
@@ -536,7 +537,6 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
   }
 
   deleteModel(confirm: boolean) {
-
     if (confirm) {
       if (this.groupDelete && !this.selectedContextmenu) {
 
@@ -564,6 +564,7 @@ export class AccountTestComponent extends DefaultComponent implements OnInit {
         if (!this.selectedContextmenu) {
           this.grid.loading = true;
           this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
+
             this.deleteModelId = 0;
             this.showMessage(this.deleteMsg, MessageType.Info);
             if (this.rowData.data.length == 1 && this.pageIndex > 1)

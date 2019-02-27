@@ -95,6 +95,14 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsDuplicateAccountAsync(AccountViewModel accountViewModel);
 
         /// <summary>
+        /// به روش آسنکرون، با توجه به مجموعه حساب پدر حساب، مشخص میکند که حساب قابلیت اضافه شدن دارد یا نه
+        /// </summary>
+        /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>
+        /// <returns>اگر حساب شرایط اضافه شدن با توجه به مجموعه حساب والد را داشته باشد مقدار"درست"
+        /// و در غیر این صورت مقدار "نادرست" را برمیگرداند</returns>
+        Task<bool> IsAccountCollectionValidAsync(AccountViewModel accountViewModel);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده توسط رکوردهای اطلاعاتی دیگر
         /// در حال استفاده است یا نه
         /// </summary>
@@ -119,6 +127,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که حساب مشخص شده دارای حساب زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool?> HasChildrenAsync(int accountId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص میکند که آیا حساب انتخاب شده در مجموعه حسابی وجود دارد یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده در کجکوعه حسابی باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> IsUsedInAccountCollectionAsync(int accountId);
 
         /// <summary>
         /// به روش آسنکرون، مقدار فیلد FullCode والد هر حساب را برمیگرداند

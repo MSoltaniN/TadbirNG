@@ -158,7 +158,16 @@
     "AccountGroup": "گروه حساب",
     "AccountBranchName": "نام شعبه حساب",
     "EditorTitleEdit": "ویرایش حساب در سطح {0}",
-    "EditorTitleNew": "حساب جدید در سطح {0}"
+    "EditorTitleNew": "حساب جدید در سطح {0}",
+    "AccountInfoTabTitle": "اطلاعات حساب",
+    "OtherAccountInfoTabTitle": "سایر مشخصات حساب",
+    "DefaultCurrency": "ارز پیش فرض",
+    "EntryLimitation": "محدودیت ثبت",
+    "Status": "فعال/غیرفعال",
+    "Active": "فعال",
+    "Inactive": "غیرفعال",
+    "AdjustStatus": "وضعیت تسعیر حساب",
+    "LedgerAccount": "حساب های کل"
   },
   "AccountCollection": {
     "Category": "مجموعه حساب ها",

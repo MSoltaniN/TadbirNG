@@ -70,6 +70,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
   ddlEntitySelected: number = 0;
   maxDepthValue: number;
+  maxDepth: number;
 
   viewTreeConfig: ViewTreeConfig;
   viewTreeDefaultConfig: ViewTreeConfig;
@@ -120,8 +121,8 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
         var formValue = formGroup.value;
 
-        if (formValue.codeLength > 16)
-          formValue.codeLength = 16;
+        if (formValue.codeLength > this.maxDepth)
+          formValue.codeLength = this.maxDepth;
         if (formValue.codeLength < 1)
           formValue.codeLength = 1;
 
@@ -186,7 +187,6 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   handleEntityChange(item: any) {
 
     this.settingService.getViewTreeSettings(item).subscribe(res => {
-
       let result: any = res;
       var config = result.current;
 
@@ -200,6 +200,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
       this.viewTreeLevels = this.viewTreeConfig.levels;
 
       this.viewTreeDefaultConfig = result.default;
+      this.maxDepth = this.viewTreeDefaultConfig.levels.length;
       this.maxDepthValue = this.viewTreeConfig.maxDepth;
 
     })
@@ -220,7 +221,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    */
   onChangeDepth() {
 
-    if (this.maxDepthValue >= 1 && this.maxDepthValue <= 16) {
+    if (this.maxDepthValue >= 1 && this.maxDepthValue <= this.maxDepth) {
       var levelsCount = this.viewTreeConfig.levels.filter(f => f.isEnabled).length;
       if (this.maxDepthValue < levelsCount) {
         while (this.maxDepthValue < levelsCount) {
