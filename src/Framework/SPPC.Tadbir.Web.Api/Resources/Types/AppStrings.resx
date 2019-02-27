@@ -852,4 +852,7 @@
   <data name="CannotInsertLeafAccount" xml:space="preserve">
     <value>با توجه به عضویت والد حساب در یک مجموعه حساب، افزودن حساب در سطح آخر امکانپذیر نیست.</value>
   </data>
+  <data name="AsQuotedInVoucherLines" xml:space="preserve">
+    <value>به شرح ردیف های سند</value>
+  </data>
 </root>

@@ -852,4 +852,7 @@
   <data name="CannotInsertLeafAccount" xml:space="preserve">
     <value>Parent account is used in an account collection at leaf level and a child account cannot be created for it.</value>
   </data>
+  <data name="AsQuotedInVoucherLines" xml:space="preserve">
+    <value>As quoted in voucher lines</value>
+  </data>
 </root>
