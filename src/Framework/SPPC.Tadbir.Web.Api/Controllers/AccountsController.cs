@@ -207,6 +207,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
             }
 
+            if (account.ParentId != null && await _repository.IsAccountCollectionValidAsync(account))
+            {
+                return BadRequest(_strings.Format(AppStrings.CannotInsertLeafAccount));
+            }
+
             result = BranchValidationResult(account);
             if (result is BadRequestObjectResult)
             {
@@ -266,6 +271,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteRelatedItem], _strings[AppStrings.Account], accountInfo);
+            }
+            else if (await _repository.IsUsedInAccountCollectionAsync(item))
+            {
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteUsedInAccountCollection], accountInfo);
             }
 
             return message;

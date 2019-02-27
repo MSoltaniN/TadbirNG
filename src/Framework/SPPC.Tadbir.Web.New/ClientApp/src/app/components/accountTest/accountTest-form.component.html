@@ -6,7 +6,7 @@
 
       <kendo-tabstrip>
 
-        <kendo-tabstrip-tab [title]="'اطلاعات حساب'" [selected]="true">
+        <kendo-tabstrip-tab [title]="getText('Account.AccountInfoTabTitle')" [selected]="true">
           <ng-template kendoTabContent>
 
             <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
@@ -111,7 +111,7 @@
           </ng-template>
         </kendo-tabstrip-tab>
 
-        <kendo-tabstrip-tab [title]="'سایر مشخصات حساب'">
+        <kendo-tabstrip-tab [title]="getText('Account.OtherAccountInfoTabTitle')">
           <ng-template kendoTabContent>
 
             <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
@@ -126,7 +126,7 @@
             <div class="row">
               <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
                 <div class="form-group">
-                  <label for="currencyId" class="control-label">ارز پیش فرض</label>
+                  <label for="currencyId" class="control-label">{{ 'Account.DefaultCurrency' | translate }}</label>
 
                   <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-acc"
                                       [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'">
@@ -137,7 +137,7 @@
 
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="turnoverMode" class="control-label">محدودیت ثبت</label>
+                  <label for="turnoverMode" class="control-label">{{ 'Account.EntryLimitation' | translate }}</label>
 
                   <kendo-dropdownlist [data]="turnovermodes" [valuePrimitive]="true" formControlName="turnoverMode" class="ddl-acc"
                                       [textField]="'value'" [value]="selectedTurnoverModeValue" [(ngModel)]="selectedTurnoverModeValue" [valueField]="'key'">
@@ -149,11 +149,11 @@
             <div class="row">
               <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
                 <div class="form-group">
-                  <label for="isActive" class="control-label">فعال/غیرفعال</label>
+                  <label for="isActive" class="control-label">{{ 'Account.Status' | translate }}</label>
 
                   <kendo-switch formControlName="isActive"
-                                [onLabel]="'فعال'"
-                                [offLabel]="'غیرفعال'">
+                                [onLabel]="getText('Account.Active')"
+                                [offLabel]="getText('Account.Inactive')">
                   </kendo-switch>
 
                 </div>
@@ -161,11 +161,11 @@
 
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="isCurrencyAdjustable" class="control-label">وضعیت تسعیر حساب</label>
+                  <label for="isCurrencyAdjustable" class="control-label">{{ 'Account.AdjustStatus' | translate }}</label>
 
                   <kendo-switch formControlName="isCurrencyAdjustable"
-                                [onLabel]="'فعال'"
-                                [offLabel]="'غیرفعال'">
+                                [onLabel]="getText('Account.Active')"
+                                [offLabel]="getText('Account.Inactive')">
                   </kendo-switch>
 
                 </div>

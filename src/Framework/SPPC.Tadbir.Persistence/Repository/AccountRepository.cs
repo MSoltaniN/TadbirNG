@@ -11,6 +11,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -230,6 +231,30 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، با توجه به مجموعه حساب پدر حساب، مشخص میکند که حساب قابلیت اضافه شدن دارد یا نه
+        /// </summary>
+        /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>
+        /// <returns>اگر حساب شرایط اضافه شدن با توجه به مجموعه حساب والد را داشته باشد مقدار"درست"
+        /// و در غیر این صورت مقدار "نادرست" را برمیگرداند</returns>
+        public async Task<bool> IsAccountCollectionValidAsync(AccountViewModel accountViewModel)
+        {
+            Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
+            var accCollectionRepository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var accCollectionAccounts = await accCollectionRepository
+                .GetByCriteriaAsync(col => col.AccountId == accountViewModel.ParentId, ac => ac.Collection);
+
+            if (accCollectionAccounts.Count() == 0)
+            {
+                return false;
+            }
+            else
+            {
+                var accCollections = accCollectionAccounts.Select(ac => ac.Collection).Distinct();
+                return accCollections.Where(f => f.TypeLevel == (int)TypeLevel.LeafAccounts).Count() > 0;
+            }
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده توسط رکوردهای اطلاعاتی دیگر
         /// در حال استفاده است یا نه
         /// </summary>
@@ -283,6 +308,20 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return hasChildren;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص میکند که آیا حساب انتخاب شده در مجموعه حسابی وجود دارد یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده در کجکوعه حسابی باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsUsedInAccountCollectionAsync(int accountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var accountCount = await repository
+                .GetCountByCriteriaAsync(ac => ac.Account.Id == accountId);
+            return (accountCount > 0);
         }
 
         /// <summary>

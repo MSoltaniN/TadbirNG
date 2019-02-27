@@ -140,4 +140,25 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         CurrentBranch = 2
     }
+
+    /// <summary>
+    /// نوع انتخاب حساب برای اضافه کردن در مجموعه حساب
+    /// </summary>
+    public enum TypeLevel
+    {
+        /// <summary>
+        /// تمام حساب ها
+        /// </summary>
+        AllAccounts = 0,
+
+        /// <summary>
+        /// حساب های در سطح آخر
+        /// </summary>
+        LeafAccounts = 1,
+
+        /// <summary>
+        /// حساب های غیر از سطح آخر
+        /// </summary>
+        NonLeafAccounts = 2
+    }
 }
