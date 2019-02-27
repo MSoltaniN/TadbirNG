@@ -263,6 +263,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(journal);
         }
 
+        // GET: api/reports/journal/by-date/by-ledger
+        [Route(ReportApi.JournalByDateByLedgerUrl)]
+        public async Task<IActionResult> GetJournalByDateByLedgerAsync()
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            int count = await _repository.GetJournalByDateByLedgerCountAsync(gridOptions);
+            SetItemCount(count);
+            var journal = await _repository.GetJournalByDateByLedgerAsync(gridOptions);
+            Localize(journal);
+            return Json(journal);
+        }
+
         #endregion
 
         private async Task<int> GetCurrentLocaleIdAsync()
@@ -305,6 +318,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 standardVoucher.Date = JalaliDateTime
                     .FromDateTime(now.Parse(standardVoucher.Date, false))
                     .ToShortDateString();
+            }
+        }
+
+        private void Localize(IList<JournalViewModel> journal)
+        {
+            foreach (var journalItem in journal)
+            {
+                journalItem.Description = _strings[AppStrings.AsQuotedInVoucherLines];
             }
         }
 

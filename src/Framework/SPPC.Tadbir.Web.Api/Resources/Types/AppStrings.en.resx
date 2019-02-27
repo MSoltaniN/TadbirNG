@@ -583,13 +583,13 @@
     <value>Code length for {0} in level '{1}' must be exactly {2} characters.</value>
   </data>
   <data name="LevelAuxiliary" xml:space="preserve">
-    <value>Auxiliary</value>
+    <value>Subsidiary</value>
   </data>
   <data name="LevelDetail" xml:space="preserve">
     <value>Detail</value>
   </data>
   <data name="LevelGeneral" xml:space="preserve">
-    <value>General</value>
+    <value>Ledger</value>
   </data>
   <data name="CantCheckUnbalancedDocument" xml:space="preserve">
     <value>This {0} is either unbalanced or empty and cannot be checked.</value>
@@ -845,5 +845,8 @@
   </data>
   <data name="AccountTitle" xml:space="preserve">
     <value>Account title</value>
+  </data>
+  <data name="AsQuotedInVoucherLines" xml:space="preserve">
+    <value>As quoted in voucher lines</value>
   </data>
 </root>

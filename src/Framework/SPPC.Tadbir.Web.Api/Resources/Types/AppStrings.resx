@@ -846,4 +846,7 @@
   <data name="AccountTitle" xml:space="preserve">
     <value>عنوان حساب</value>
   </data>
+  <data name="AsQuotedInVoucherLines" xml:space="preserve">
+    <value>به شرح ردیف های سند</value>
+  </data>
 </root>

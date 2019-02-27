@@ -177,6 +177,84 @@ namespace SPPC.Tadbir.Persistence
                 .Count();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و حسابهای کل
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<IList<JournalViewModel>> GetJournalByDateByLedgerAsync(GridOptions gridOptions)
+        {
+            var journal = new List<JournalViewModel>();
+            int rowNo = 1;
+            var lines = await GetJournalByDateByLedgerQuery().ToListAsync();
+            foreach (var byNo in lines.GroupBy(art => art.Voucher.No))
+            {
+                foreach (var byLedger in byNo.Where(art => art.Debit > 0).OrderBy(art => Int32.Parse(art.Account.FullCode)).GroupBy(art => art.Account.FullCode.Substring(0, 3)))
+                {
+                    var first = byLedger.First();
+                    var journalItem = _mapper.Map<JournalViewModel>(first);
+                    journalItem.Id = 0;
+                    journalItem.Description = null;
+                    journalItem.RowNo = rowNo++;
+                    journalItem.AccountFullCode = byLedger.Key.Substring(0, 3);
+                    journalItem.AccountName = "TBA";    // New method : Fetch Ledger account from account in any level
+                    journalItem.Debit = byLedger.Sum(art => art.Debit);
+                    journalItem.Credit = 0.0M;
+                    journal.Add(journalItem);
+                }
+
+                foreach (var byLedger in byNo.Where(art => art.Credit > 0).OrderBy(art => Int32.Parse(art.Account.FullCode)).GroupBy(art => art.Account.FullCode.Substring(0, 3)))
+                {
+                    var first = byLedger.First();
+                    var journalItem = _mapper.Map<JournalViewModel>(first);
+                    journalItem.Id = 0;
+                    journalItem.Description = null;
+                    journalItem.RowNo = rowNo++;
+                    journalItem.AccountFullCode = byLedger.Key.Substring(0, 3);
+                    journalItem.AccountName = "TBA";    // New method : Fetch Ledger account from account in any level
+                    journalItem.Credit = byLedger.Sum(art => art.Credit);
+                    journalItem.Debit = 0.0M;
+                    journal.Add(journalItem);
+                }
+            }
+
+            return journal;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و حسابهای کل
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه</returns>
+        public async Task<int> GetJournalByDateByLedgerCountAsync(GridOptions gridOptions)
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و حسابهای معین
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<IList<JournalViewModel>> GetJournalByDateBySubsidiaryAsync(GridOptions gridOptions)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و حسابهای معین
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه</returns>
+        public async Task<int> GetJournalByDateBySubsidiaryCountAsync(GridOptions gridOptions)
+        {
+            return 0;
+        }
+
         private static void AddGeneralStandardLineItems(
             VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
         {
@@ -310,6 +388,16 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
                 .Select(art => _mapper.Map<JournalWithDetailViewModel>(art));
+            return journalQuery;
+        }
+
+        private IQueryable<VoucherLine> GetJournalByDateByLedgerQuery()
+        {
+            var journalQuery = _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account);
+                //.OrderBy(art => art.Voucher.No)
+                //    .ThenBy(art => art.Credit)
+                //        .ThenBy(art => art.Account.FullCode);
             return journalQuery;
         }
 
