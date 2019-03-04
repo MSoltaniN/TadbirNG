@@ -269,9 +269,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            int count = await _repository.GetJournalByDateByLedgerCountAsync(gridOptions);
-            SetItemCount(count);
-            var journal = await _repository.GetJournalByDateByLedgerAsync(gridOptions);
+            var journal = await _repository.GetJournalByDateByLedgerAsync();
+            SetItemCount(journal
+                .Apply(gridOptions, false)
+                .Count());
+            journal = journal
+                .Apply(gridOptions)
+                .ToList();
+            Localize(journal);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-date/by-subsid
+        [Route(ReportApi.JournalByDateBySubsidiaryUrl)]
+        public async Task<IActionResult> GetJournalByDateBySubsidiaryAsync()
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateBySubsidiaryAsync();
+            SetItemCount(journal
+                .Apply(gridOptions, false)
+                .Count());
+            journal = journal
+                .Apply(gridOptions)
+                .ToList();
             Localize(journal);
             return Json(journal);
         }
