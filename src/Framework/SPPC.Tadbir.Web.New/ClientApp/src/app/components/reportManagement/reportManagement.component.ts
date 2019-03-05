@@ -27,6 +27,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { ReportSummary } from "../../model/reportSummary";
 import { ReportParamComponent } from "../viewIdentifier/reportParam.component";
 import { TabsComponent } from "../../controls/tabs/tabs.component";
+import { SortDescriptor } from "@progress/kendo-data-query";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -72,14 +73,16 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   currentPrintInfo : PrintInfo;
   currentFormParams:Array<ReportParamComponent>;
   currentDefaultReportId:any;
+  showDesktopTab:boolean = false;
+  currentFilter:FilterExpression;
+  currentSort:SortDescriptor[];
 
   expandedKeys :any[] = [];
   deleteConfirmMsg : string;
   deleteConfirm:boolean = false;
   deleteMsg :string;
   disableButtons:boolean = false;
-  viewer: any = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer', false);
-   
+  
   private reportForm = new FormGroup({    
     reportName: new FormControl("", [Validators.required, Validators.maxLength(256)]),    
   });
@@ -131,7 +134,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     }
 
     // var TestFunction  = function(value) {
-    //   var result : string = value;
+    //   var result : string = value;ng ss
       
     //   return result.toUpperCase();
     // }
@@ -163,7 +166,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
   }
 
-  public showDialog(viewId:string,formParams:Array<ReportParamComponent>)
+  public showDialog(viewId:string,formParams:Array<ReportParamComponent>,
+    filter:FilterExpression = null,sort:SortDescriptor[] = null)
   {
       this.active = true;
       
@@ -172,8 +176,15 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       {
           this.currentViewId = viewId;
           url = String.Format(ReportApi.ReportsByView, viewId);
+          this.showDesktopTab = false;
+          this.currentFilter = filter;
+          this.currentSort = sort;
       }
-      
+      else      
+      {
+          this.showDesktopTab = true;
+          this.currentViewId = undefined;
+      }
 
       this.reportingService.getAll(url)
       .subscribe((res: any) => {
@@ -222,7 +233,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
   public showReport()
   {
-      if(this.currentDefaultReportId == this.currentReportId)
+      if(this.currentDefaultReportId == this.currentReportId || this.currentViewId)
       {
         this.prepareReport(this.currentFormParams);
       }
@@ -268,9 +279,10 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
      Stimulsoft.Base.StiLicense.key = "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";      
   }
 
-  public createFilters(params:ParameterInfo[])
+  public createFilters(params:ParameterInfo[],cfilter?:FilterExpression)
   {
-      var currentFilter:FilterExpression
+
+      //var currentFilter = filter ? filter : new FilterExpression();
       var filters:Filter[] = new Array<Filter>();
 
       params.forEach(function(param){
@@ -315,6 +327,21 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         var filter = new Filter(param.fieldName,value,operator,param.dataType); 
         filters.push(filter);
       });
+
+
+      
+      if(cfilter)
+      {
+
+        if(filters.findIndex(f=>f.FieldName.toLowerCase() == cfilter.filter.FieldName.toLowerCase()) == -1)
+            filters.push(cfilter.filter);
+        
+        cfilter.children.forEach(function(f)
+        {
+          if(filters.findIndex(f=>f.FieldName.toLowerCase() == f.FieldName.toLowerCase()) == -1)
+              filters.push(f.filter);
+        });
+      }
 
 
       var filterExpBuilder = new FilterExpressionBuilder();
@@ -425,8 +452,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
     var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;  
     
-    var filterExpression = this.createFilters(params);
-    var sort = "";
+    
+    var filterExpression = this.createFilters(params,this.currentFilter);
+    var sort = this.currentSort;
 
     this.reportingService.getAll(serviceUrl,
       sort, filterExpression).subscribe((response: any) => {
@@ -446,10 +474,12 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           parameters : params
         };  
 
- 
+        var viewerIsCloseable : boolean = false;
+        if(this.currentReportId != this.currentDefaultReportId)
+          viewerIsCloseable = true;
 
         this.tabsComponent.openTab(this.currentReportName,this.currentPrintInfo.template,
-          reportData,true,true,false,this.currentReportId);
+          reportData,viewerIsCloseable,true,false,this.currentReportId,this);
 
         
         // view.showReportViewer(this.currentPrintInfo.template, reportData,
@@ -463,15 +493,21 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       });      
   } 
 
+  saveDesignOfReport(id:string)
+  {
+      var designer = new Stimulsoft.Designer.StiDesigner(null,"StiDesigner" + id.replace('designerTab',''), false);        
+      designer.invokeSaveReport();
+  }
  
  
   designReport()
   {   
-
+    var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + this.currentReportId, false);                
+    
     var tabIsOpen = this.tabsComponent.openTab(this.currentReportName,null,null,
-      true,false,true,this.currentReportId);
-
-    if(!tabIsOpen) return;
+      true,false,true,this.currentReportId,designer);
+    
+     if(!tabIsOpen) return;
 
     var url = String.Format(ReportApi.ReportDesign, this.currentReportId);
     this.showReportViewer = false;
@@ -491,8 +527,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         options.components.showCheckBox = false;
         options.components.showSubReport = false;
          
-        var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + this.currentReportId, false);        
-        
+
         var rpt = new Stimulsoft.Report.StiReport();
         var reportTemplate : string;
         

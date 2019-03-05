@@ -7,6 +7,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ReportViewerComponent } from '../../components/reportViewer/reportViewer.component';
 
+
 @Component({
   selector: 'my-tab',
   styles: [
@@ -33,8 +34,10 @@ export class TabComponent {
   @Input() isViewer : boolean;
   @Input() isDesigner : boolean;
   @Input() Id:string;
+  @Input() Manager:any;
 
   @ViewChild(ReportViewerComponent) reportViewer: ReportViewerComponent;  
+    
 
   public callViewer()
   {      
