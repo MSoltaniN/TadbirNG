@@ -158,8 +158,18 @@ namespace SPPC.Tadbir.Api
         public const string JournalByDateByLedger = "reports/journal/by-date/by-ledger";
 
         /// <summary>
-        /// API server route URL for Journal-By Date-By Ledger With Detail report
+        /// API server route URL for Journal-By Date-By Ledger report
         /// </summary>
         public const string JournalByDateByLedgerUrl = "reports/journal/by-date/by-ledger";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-By Subsidiary report
+        /// </summary>
+        public const string JournalByDateBySubsidiary = "reports/journal/by-date/by-subsid";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-By Subsidiary report
+        /// </summary>
+        public const string JournalByDateBySubsidiaryUrl = "reports/journal/by-date/by-subsid";
     }
 }

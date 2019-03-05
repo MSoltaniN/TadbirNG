@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
@@ -28,14 +29,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
         /// <param name="lookupRepository">امکان خواندن اطلاعات موجود را به صورت لوکاپ فراهم می کند</param>
+        /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         public ReportRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecureRepository repository,
-            ILookupRepository lookupRepository)
+            ILookupRepository lookupRepository, IConfigRepository configRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _repository = repository;
             _lookupRepository = lookupRepository;
+            _configRepository = configRepository;
         }
 
         /// <summary>
@@ -181,40 +184,37 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و حسابهای کل
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateByLedgerAsync(GridOptions gridOptions)
+        public async Task<IList<JournalViewModel>> GetJournalByDateByLedgerAsync()
         {
             var journal = new List<JournalViewModel>();
             int rowNo = 1;
-            var lines = await GetJournalByDateByLedgerQuery().ToListAsync();
-            foreach (var byNo in lines.GroupBy(art => art.Voucher.No))
+            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.Account);
+            int ledgerCodeLength = fullConfig.Current.Levels[0].CodeLength;
+            var lines = await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .ToListAsync();
+            foreach (var byNo in lines
+                .OrderBy(art => Int32.Parse(art.Voucher.No))
+                .GroupBy(art => art.Voucher.No))
             {
-                foreach (var byLedger in byNo.Where(art => art.Debit > 0).OrderBy(art => Int32.Parse(art.Account.FullCode)).GroupBy(art => art.Account.FullCode.Substring(0, 3)))
+                foreach (var byLedger in byNo
+                    .Where(art => art.Debit > 0)
+                    .OrderBy(art => Int32.Parse(art.Account.FullCode))
+                    .GroupBy(art => art.Account.FullCode.Substring(0, ledgerCodeLength)))
                 {
-                    var first = byLedger.First();
-                    var journalItem = _mapper.Map<JournalViewModel>(first);
-                    journalItem.Id = 0;
-                    journalItem.Description = null;
-                    journalItem.RowNo = rowNo++;
-                    journalItem.AccountFullCode = byLedger.Key.Substring(0, 3);
-                    journalItem.AccountName = "TBA";    // New method : Fetch Ledger account from account in any level
+                    var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
                     journalItem.Debit = byLedger.Sum(art => art.Debit);
-                    journalItem.Credit = 0.0M;
                     journal.Add(journalItem);
                 }
 
-                foreach (var byLedger in byNo.Where(art => art.Credit > 0).OrderBy(art => Int32.Parse(art.Account.FullCode)).GroupBy(art => art.Account.FullCode.Substring(0, 3)))
+                foreach (var byLedger in byNo
+                    .Where(art => art.Credit > 0)
+                    .OrderBy(art => Int32.Parse(art.Account.FullCode))
+                    .GroupBy(art => art.Account.FullCode.Substring(0, ledgerCodeLength)))
                 {
-                    var first = byLedger.First();
-                    var journalItem = _mapper.Map<JournalViewModel>(first);
-                    journalItem.Id = 0;
-                    journalItem.Description = null;
-                    journalItem.RowNo = rowNo++;
-                    journalItem.AccountFullCode = byLedger.Key.Substring(0, 3);
-                    journalItem.AccountName = "TBA";    // New method : Fetch Ledger account from account in any level
+                    var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
                     journalItem.Credit = byLedger.Sum(art => art.Credit);
-                    journalItem.Debit = 0.0M;
                     journal.Add(journalItem);
                 }
             }
@@ -223,36 +223,59 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و حسابهای کل
-        /// را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه</returns>
-        public async Task<int> GetJournalByDateByLedgerCountAsync(GridOptions gridOptions)
-        {
-            return 0;
-        }
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و حسابهای معین
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateBySubsidiaryAsync(GridOptions gridOptions)
+        public async Task<IList<JournalViewModel>> GetJournalByDateBySubsidiaryAsync()
         {
-            return null;
-        }
+            var journal = new List<JournalViewModel>();
+            int rowNo = 1;
+            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.Account);
+            _treeConfig = fullConfig.Current;
+            var lines = await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .ToListAsync();
+            foreach (var byNo in lines
+                .OrderBy(art => Int32.Parse(art.Voucher.No))
+                .GroupBy(art => art.Voucher.No))
+            {
+                var debitLines = new List<JournalViewModel>();
+                foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, true, true))
+                {
+                    var journalItem = await GetNewJournalItem(bySubsidiary.First(), rowNo++, bySubsidiary.Key);
+                    journalItem.Debit = bySubsidiary.Sum(art => art.Debit);
+                    debitLines.Add(journalItem);
+                }
 
-        /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و حسابهای معین
-        /// را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه</returns>
-        public async Task<int> GetJournalByDateBySubsidiaryCountAsync(GridOptions gridOptions)
-        {
-            return 0;
+                foreach (var byLedger in GetAccountTurnoverGroups(byNo, true, false))
+                {
+                    var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
+                    journalItem.Debit = byLedger.Sum(art => art.Debit);
+                    debitLines.Add(journalItem);
+                }
+
+                journal.AddRange(debitLines.OrderBy(item => item.AccountFullCode));
+
+                var creditLines = new List<JournalViewModel>();
+                foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, false, true))
+                {
+                    var journalItem = await GetNewJournalItem(bySubsidiary.First(), rowNo++, bySubsidiary.Key);
+                    journalItem.Credit = bySubsidiary.Sum(art => art.Credit);
+                    creditLines.Add(journalItem);
+                }
+
+                foreach (var byLedger in GetAccountTurnoverGroups(byNo, false, false))
+                {
+                    var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
+                    journalItem.Credit = byLedger.Sum(art => art.Credit);
+                    creditLines.Add(journalItem);
+                }
+
+                journal.AddRange(creditLines.OrderBy(item => item.AccountFullCode));
+            }
+
+            return journal;
         }
 
         private static void AddGeneralStandardLineItems(
@@ -391,20 +414,54 @@ namespace SPPC.Tadbir.Persistence
             return journalQuery;
         }
 
-        private IQueryable<VoucherLine> GetJournalByDateByLedgerQuery()
+        private IEnumerable<IGrouping<string, VoucherLine>> GetAccountTurnoverGroups(
+            IEnumerable<VoucherLine> lines, bool isDebit, bool isSubsidiary)
         {
-            var journalQuery = _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account);
-                //.OrderBy(art => art.Voucher.No)
-                //    .ThenBy(art => art.Credit)
-                //        .ThenBy(art => art.Account.FullCode);
-            return journalQuery;
+            int codeLength = isSubsidiary
+                ? _treeConfig.Levels[0].CodeLength + _treeConfig.Levels[1].CodeLength
+                : _treeConfig.Levels[0].CodeLength;
+            Func<VoucherLine, bool> turnoverCriteria = art => art.Credit > 0;
+            if (isDebit)
+            {
+                turnoverCriteria = art => art.Debit > 0;
+            }
+
+            Func<VoucherLine, bool> levelCriteria = art => art.Account.Level == 0;
+            if (isSubsidiary)
+            {
+                levelCriteria = art => art.Account.Level >= 1;
+            }
+
+            var turnoverGroups = lines
+                .Where(turnoverCriteria)
+                .Where(levelCriteria)
+                .OrderBy(art => art.Account.FullCode)
+                .GroupBy(art => art.Account.FullCode.Substring(0, codeLength));
+            return turnoverGroups;
+        }
+
+        private async Task<JournalViewModel> GetNewJournalItem(
+            VoucherLine voucherLine, int rowNo, string fullCode)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
+            var journalItem = _mapper.Map<JournalViewModel>(voucherLine);
+            journalItem.Id = 0;
+            journalItem.Description = null;
+            journalItem.RowNo = rowNo;
+            journalItem.AccountFullCode = fullCode;
+            journalItem.AccountName = account.Name;
+            journalItem.Credit = 0.0M;
+            journalItem.Debit = 0.0M;
+            return journalItem;
         }
 
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;
         private readonly ILookupRepository _lookupRepository;
+        private readonly IConfigRepository _configRepository;
         private UserContextViewModel _currentContext;
+        private ViewTreeConfig _treeConfig;
     }
 }
