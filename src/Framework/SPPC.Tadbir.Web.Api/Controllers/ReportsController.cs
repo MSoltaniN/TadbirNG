@@ -241,35 +241,43 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-row
         [Route(ReportApi.JournalByDateByRowUrl)]
-        public async Task<IActionResult> GetJournalByDateByRowAsync()
+        public async Task<IActionResult> GetJournalByDateByRowAsync(DateTime from, DateTime to)
         {
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            int count = await _repository.GetJournalByDateByRowCountAsync(gridOptions);
-            SetItemCount(count);
-            var journal = await _repository.GetJournalByDateByRowAsync(gridOptions);
+            var journal = await _repository.GetJournalByDateByRowAsync(from, to);
+            SetItemCount(journal
+                .Apply(gridOptions, false)
+                .Count());
+            journal = journal
+                .Apply(gridOptions)
+                .ToList();
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-date/by-row-detail
         [Route(ReportApi.JournalByDateByRowDetailUrl)]
-        public async Task<IActionResult> GetJournalByDateByRowWithDetailAsync()
+        public async Task<IActionResult> GetJournalByDateByRowWithDetailAsync(DateTime from, DateTime to)
         {
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            int count = await _repository.GetJournalByDateByRowCountAsync(gridOptions);
-            SetItemCount(count);
-            var journal = await _repository.GetJournalByDateByRowWithDetailAsync(gridOptions);
+            var journal = await _repository.GetJournalByDateByRowWithDetailAsync(from, to);
+            SetItemCount(journal
+                .Apply(gridOptions, false)
+                .Count());
+            journal = journal
+                .Apply(gridOptions)
+                .ToList();
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-date/by-ledger
         [Route(ReportApi.JournalByDateByLedgerUrl)]
-        public async Task<IActionResult> GetJournalByDateByLedgerAsync()
+        public async Task<IActionResult> GetJournalByDateByLedgerAsync(DateTime from, DateTime to)
         {
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateByLedgerAsync();
+            var journal = await _repository.GetJournalByDateByLedgerAsync(from, to);
             SetItemCount(journal
                 .Apply(gridOptions, false)
                 .Count());
@@ -282,11 +290,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-subsid
         [Route(ReportApi.JournalByDateBySubsidiaryUrl)]
-        public async Task<IActionResult> GetJournalByDateBySubsidiaryAsync()
+        public async Task<IActionResult> GetJournalByDateBySubsidiaryAsync(DateTime from, DateTime to)
         {
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateBySubsidiaryAsync();
+            var journal = await _repository.GetJournalByDateBySubsidiaryAsync(from, to);
             SetItemCount(journal
                 .Apply(gridOptions, false)
                 .Count());
@@ -294,6 +302,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Apply(gridOptions)
                 .ToList();
             Localize(journal);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-date/summary
+        [Route(ReportApi.JournalByDateLedgerSummaryUrl)]
+        public async Task<IActionResult> GetJournalByDateLedgerSummaryAsync(DateTime from, DateTime to)
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateLedgerSummaryAsync(from, to);
+            SetItemCount(journal
+                .Apply(gridOptions, false)
+                .Count());
+            journal = journal
+                .Apply(gridOptions)
+                .ToList();
             return Json(journal);
         }
 

@@ -135,83 +135,60 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(GridOptions gridOptions)
+        public async Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(DateTime from, DateTime to)
         {
-            var journalQuery = GetJournalByDateByRowQuery();
-            var journal = await journalQuery
+            var journalQuery = GetJournalByDateByRowQuery(from, to);
+            return await journalQuery
                 .ToListAsync();
-            return journal
-                .Apply(gridOptions)
-                .ToList();
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند با سطوح شناور
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         public async Task<IList<JournalWithDetailViewModel>> GetJournalByDateByRowWithDetailAsync(
-            GridOptions gridOptions)
+            DateTime from, DateTime to)
         {
-            var journalQuery = GetJournalByDateByRowDetailQuery();
-            var journal = await journalQuery
+            var journalQuery = GetJournalByDateByRowDetailQuery(from, to);
+            return await journalQuery
                 .ToListAsync();
-            return journal
-                .Apply(gridOptions)
-                .ToList();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند
-        /// را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>تعداد سطرهای اطلاعاتی گزارش دفتر روزنامه</returns>
-        public async Task<int> GetJournalByDateByRowCountAsync(GridOptions gridOptions)
-        {
-            var journalQuery = GetJournalByDateByRowQuery();
-            var journal = await journalQuery
-                .ToListAsync();
-            return journal
-                .Apply(gridOptions, false)
-                .Count();
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و حسابهای کل
         /// را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateByLedgerAsync()
+        public async Task<IList<JournalViewModel>> GetJournalByDateByLedgerAsync(
+            DateTime from, DateTime to)
         {
             var journal = new List<JournalViewModel>();
             int rowNo = 1;
-            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.Account);
-            int ledgerCodeLength = fullConfig.Current.Levels[0].CodeLength;
+            Func<VoucherLine, bool> allFilter = art => true;
             var lines = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
             foreach (var byNo in lines
                 .OrderBy(art => Int32.Parse(art.Voucher.No))
                 .GroupBy(art => art.Voucher.No))
             {
-                foreach (var byLedger in byNo
-                    .Where(art => art.Debit > 0)
-                    .OrderBy(art => Int32.Parse(art.Account.FullCode))
-                    .GroupBy(art => art.Account.FullCode.Substring(0, ledgerCodeLength)))
+                foreach (var byLedger in GetAccountTurnoverGroups(byNo, true, 0, allFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
                     journalItem.Debit = byLedger.Sum(art => art.Debit);
                     journal.Add(journalItem);
                 }
 
-                foreach (var byLedger in byNo
-                    .Where(art => art.Credit > 0)
-                    .OrderBy(art => Int32.Parse(art.Account.FullCode))
-                    .GroupBy(art => art.Account.FullCode.Substring(0, ledgerCodeLength)))
+                foreach (var byLedger in GetAccountTurnoverGroups(byNo, false, 0, allFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
                     journalItem.Credit = byLedger.Sum(art => art.Credit);
@@ -226,29 +203,33 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و حسابهای معین
         /// را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateBySubsidiaryAsync()
+        public async Task<IList<JournalViewModel>> GetJournalByDateBySubsidiaryAsync(
+            DateTime from, DateTime to)
         {
             var journal = new List<JournalViewModel>();
             int rowNo = 1;
-            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.Account);
-            _treeConfig = fullConfig.Current;
+            Func<VoucherLine, bool> ledgerFilter = art => art.Account.Level == 0;
+            Func<VoucherLine, bool> subsidiaryFilter = art => art.Account.Level >= 1;
             var lines = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
             foreach (var byNo in lines
                 .OrderBy(art => Int32.Parse(art.Voucher.No))
                 .GroupBy(art => art.Voucher.No))
             {
                 var debitLines = new List<JournalViewModel>();
-                foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, true, true))
+                foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, true, 1, subsidiaryFilter))
                 {
                     var journalItem = await GetNewJournalItem(bySubsidiary.First(), rowNo++, bySubsidiary.Key);
                     journalItem.Debit = bySubsidiary.Sum(art => art.Debit);
                     debitLines.Add(journalItem);
                 }
 
-                foreach (var byLedger in GetAccountTurnoverGroups(byNo, true, false))
+                foreach (var byLedger in GetAccountTurnoverGroups(byNo, true, 0, ledgerFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
                     journalItem.Debit = byLedger.Sum(art => art.Debit);
@@ -258,14 +239,14 @@ namespace SPPC.Tadbir.Persistence
                 journal.AddRange(debitLines.OrderBy(item => item.AccountFullCode));
 
                 var creditLines = new List<JournalViewModel>();
-                foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, false, true))
+                foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, false, 1, subsidiaryFilter))
                 {
                     var journalItem = await GetNewJournalItem(bySubsidiary.First(), rowNo++, bySubsidiary.Key);
                     journalItem.Credit = bySubsidiary.Sum(art => art.Credit);
                     creditLines.Add(journalItem);
                 }
 
-                foreach (var byLedger in GetAccountTurnoverGroups(byNo, false, false))
+                foreach (var byLedger in GetAccountTurnoverGroups(byNo, false, 0, ledgerFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
                     journalItem.Credit = byLedger.Sum(art => art.Credit);
@@ -273,6 +254,42 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 journal.AddRange(creditLines.OrderBy(item => item.AccountFullCode));
+            }
+
+            return journal;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه ماهیانه
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<IList<JournalViewModel>> GetJournalByDateLedgerSummaryAsync(
+            DateTime from, DateTime to)
+        {
+            var journal = new List<JournalViewModel>();
+            int rowNo = 1;
+            Func<VoucherLine, bool> allFilter = art => true;
+            var lines = await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Account)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .ToListAsync();
+            foreach (var byLedger in GetAccountTurnoverGroups(lines, true, 0, allFilter))
+            {
+                var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
+                journalItem.Description = journalItem.AccountName;
+                journalItem.Debit = byLedger.Sum(art => art.Debit);
+                journal.Add(journalItem);
+            }
+
+            foreach (var byLedger in GetAccountTurnoverGroups(lines, false, 0, allFilter))
+            {
+                var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
+                journalItem.Description = journalItem.AccountName;
+                journalItem.Credit = byLedger.Sum(art => art.Credit);
+                journal.Add(journalItem);
             }
 
             return journal;
@@ -392,22 +409,24 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private IQueryable<JournalViewModel> GetJournalByDateByRowQuery()
+        private IQueryable<JournalViewModel> GetJournalByDateByRowQuery(DateTime from, DateTime to)
         {
             var journalQuery = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
                 .Select(art => _mapper.Map<JournalViewModel>(art));
             return journalQuery;
         }
 
-        private IQueryable<JournalWithDetailViewModel> GetJournalByDateByRowDetailQuery()
+        private IQueryable<JournalWithDetailViewModel> GetJournalByDateByRowDetailQuery(DateTime from, DateTime to)
         {
             var journalQuery = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
                 .Select(art => _mapper.Map<JournalWithDetailViewModel>(art));
@@ -415,26 +434,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IEnumerable<IGrouping<string, VoucherLine>> GetAccountTurnoverGroups(
-            IEnumerable<VoucherLine> lines, bool isDebit, bool isSubsidiary)
+            IEnumerable<VoucherLine> lines, bool isDebit, int groupLevel, Func<VoucherLine, bool> lineFilter)
         {
-            int codeLength = isSubsidiary
-                ? _treeConfig.Levels[0].CodeLength + _treeConfig.Levels[1].CodeLength
-                : _treeConfig.Levels[0].CodeLength;
+            var fullConfig = _configRepository
+                .GetViewTreeConfigByViewAsync(ViewName.Account)
+                .Result;
+            var treeConfig = fullConfig.Current;
+            int codeLength = treeConfig.Levels
+                .Where(level => level.No <= groupLevel + 1)
+                .Select(level => (int)level.CodeLength)
+                .Sum();
             Func<VoucherLine, bool> turnoverCriteria = art => art.Credit > 0;
             if (isDebit)
             {
                 turnoverCriteria = art => art.Debit > 0;
             }
 
-            Func<VoucherLine, bool> levelCriteria = art => art.Account.Level == 0;
-            if (isSubsidiary)
-            {
-                levelCriteria = art => art.Account.Level >= 1;
-            }
-
             var turnoverGroups = lines
                 .Where(turnoverCriteria)
-                .Where(levelCriteria)
+                .Where(lineFilter)
                 .OrderBy(art => art.Account.FullCode)
                 .GroupBy(art => art.Account.FullCode.Substring(0, codeLength));
             return turnoverGroups;
@@ -462,6 +480,5 @@ namespace SPPC.Tadbir.Persistence
         private readonly ILookupRepository _lookupRepository;
         private readonly IConfigRepository _configRepository;
         private UserContextViewModel _currentContext;
-        private ViewTreeConfig _treeConfig;
     }
 }
