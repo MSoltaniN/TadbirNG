@@ -260,7 +260,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه ماهیانه
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه
         /// را خوانده و برمی گرداند
         /// </summary>
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
@@ -290,6 +290,45 @@ namespace SPPC.Tadbir.Persistence
                 journalItem.Description = journalItem.AccountName;
                 journalItem.Credit = byLedger.Sum(art => art.Credit);
                 journal.Add(journalItem);
+            }
+
+            return journal;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک تاریخ
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<IList<JournalViewModel>> GetJournalByDateLedgerSummaryByDateAsync(
+            DateTime from, DateTime to)
+        {
+            var journal = new List<JournalViewModel>();
+            int rowNo = 1;
+            Func<VoucherLine, bool> allFilter = art => true;
+            var lines = await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .ToListAsync();
+            foreach (var byDate in lines
+                .OrderBy(art => art.Voucher.Date)
+                .GroupBy(art => art.Voucher.Date))
+            {
+                foreach (var byLedger in GetAccountTurnoverGroups(byDate, true, 0, allFilter))
+                {
+                    var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
+                    journalItem.Debit = byLedger.Sum(art => art.Debit);
+                    journal.Add(journalItem);
+                }
+
+                foreach (var byLedger in GetAccountTurnoverGroups(byDate, false, 0, allFilter))
+                {
+                    var journalItem = await GetNewJournalItem(byLedger.First(), rowNo++, byLedger.Key);
+                    journalItem.Credit = byLedger.Sum(art => art.Credit);
+                    journal.Add(journalItem);
+                }
             }
 
             return journal;

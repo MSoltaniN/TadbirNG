@@ -181,5 +181,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for Journal-By Date-Ledger Summary report
         /// </summary>
         public const string JournalByDateLedgerSummaryUrl = "reports/journal/by-date/summary";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-Ledger Summary By Date report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryByDate = "reports/journal/by-date/sum-by-date";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-Ledger Summary By Date report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryByDateUrl = "reports/journal/by-date/sum-by-date";
     }
 }

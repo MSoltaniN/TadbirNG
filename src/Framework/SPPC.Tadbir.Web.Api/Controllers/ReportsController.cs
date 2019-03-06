@@ -321,6 +321,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(journal);
         }
 
+        // GET: api/reports/journal/by-date/sum-by-date
+        [Route(ReportApi.JournalByDateLedgerSummaryByDateUrl)]
+        public async Task<IActionResult> GetJournalByDateLedgerSummaryByDateAsync(DateTime from, DateTime to)
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateLedgerSummaryByDateAsync(from, to);
+            SetItemCount(journal
+                .Apply(gridOptions, false)
+                .Count());
+            journal = journal
+                .Apply(gridOptions)
+                .ToList();
+            return Json(journal);
+        }
+
         #endregion
 
         private async Task<int> GetCurrentLocaleIdAsync()

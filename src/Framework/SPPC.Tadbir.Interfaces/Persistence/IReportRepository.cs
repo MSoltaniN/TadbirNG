@@ -80,12 +80,21 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<JournalViewModel>> GetJournalByDateBySubsidiaryAsync(DateTime from, DateTime to);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه ماهیانه
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه
         /// را خوانده و برمی گرداند
         /// </summary>
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         Task<IList<JournalViewModel>> GetJournalByDateLedgerSummaryAsync(DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک تاریخ
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        Task<IList<JournalViewModel>> GetJournalByDateLedgerSummaryByDateAsync(DateTime from, DateTime to);
     }
 }
