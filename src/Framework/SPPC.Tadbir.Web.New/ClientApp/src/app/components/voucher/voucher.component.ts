@@ -70,6 +70,9 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   deleteConfirm: boolean;
   deleteModelId: number;
 
+  startDate:any;
+  endDate:any;
+
   currentFilter: FilterExpression;
 
   showloadingMessage: boolean = true;
@@ -245,6 +248,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     */
   }
 
+  dateValueChange(event : any)
+  {
+      this.startDate = event.fromDate;
+      this.endDate = event.toDate;
+  }
+
   public showReportManagement()
   {
       var id = this.viewIdentity.ViewID;
@@ -252,7 +261,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
       if(this.viewIdentity.params.length > 0)
         params = this.viewIdentity.params.toArray();
 
-      this.reportManager.showDialog(id,params);
+      this.reportManager.showDialog(id,params,this.currentFilter,this.sort);
   }
 
   public saveHandler(model: Voucher, isNew: boolean) {

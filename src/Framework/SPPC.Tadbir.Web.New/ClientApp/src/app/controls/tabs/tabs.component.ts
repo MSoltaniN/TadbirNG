@@ -17,22 +17,38 @@ import {
 import { TabComponent } from './tab.component';
 import { DynamicTabsDirective } from './dynamic-tabs.directive';
 
+
 @Component({
   selector: 'my-tabs',
   template: `
     <ul class="nav nav-tabs reportTab">
-      <li *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
+      <li *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">        
         <a class='tablTitle'>{{tab.title}}
         <span class="tab-close" *ngIf="tab.isCloseable" (click)="closeTab(tab)">x</span>
         </a>
       </li>
       <!-- dynamic tabs -->
-      <li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" [class.active]="tab.active">
-        <a class='tablTitle'>{{tab.title}} <span class="tab-close" *ngIf="tab.isCloseable" (click)="closeTab(tab)">x</span></a>
+      <li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" [class.active]="tab.active">        
+        <a class='tablTitle'>
+        <span *ngIf="tab.isDesigner" class="k-icon k-i-pencil"></span>
+        <span *ngIf="tab.isViewer" class="k-icon k-i-eye"></span>
+        {{tab.title}} <span class="tab-close" *ngIf="tab.isCloseable" 
+        (click)="showCloseConfirm(tab)">x</span></a>
       </li>
     </ul>
     <ng-content></ng-content>
     <ng-template dynamic-tabs #container></ng-template>
+    <kendo-dialog title="{{'Report.Close' | translate}}" *ngIf="CloseConfirm" (close)="close(false)" [minWidth]="250"
+        [width]="450">
+        <p>
+          {{'Report.ConfirmMsg' | translate}}
+        </p>
+        <kendo-dialog-actions>
+                <button class="k-button" (click)="save()" primary="true">{{ 'Buttons.Save' | translate }}</button>
+                <button class="k-button" (click)="close(true)" primary="true">{{ 'Buttons.Close' | translate }}</button>
+                <button class="k-button" (click)="close(false)">{{ 'Buttons.Cancel' | translate }}</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
   `,
   styles: [
     `
@@ -54,7 +70,8 @@ import { DynamicTabsDirective } from './dynamic-tabs.directive';
 })
 export class TabsComponent implements AfterContentInit {
   dynamicTabs: TabComponent[] = [];
-
+  CloseConfirm : boolean = false;
+  currentTab : TabComponent;
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
   @ViewChild(DynamicTabsDirective) dynamicTabPlaceholder: DynamicTabsDirective;
@@ -65,6 +82,7 @@ export class TabsComponent implements AfterContentInit {
     as follows
   */
   // @ViewChild('container', {read: ViewContainerRef}) dynamicTabPlaceholder;
+
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver) {}
 
@@ -79,8 +97,21 @@ export class TabsComponent implements AfterContentInit {
     }
   }
 
+  close(flag : boolean)
+  {
+     if(flag) this.closeTab(this.currentTab); 
+     this.CloseConfirm = false;
+  }
+
+  save()
+  {
+    this.currentTab.Manager.invokeSaveReport();
+    this.closeTab(this.currentTab); 
+    this.CloseConfirm = false;
+  }
+
   openTab(title: string, template, data, isCloseable = false,
-    isViewer:boolean = false,isDesigner:boolean = false,id:string):boolean {
+    isViewer:boolean = false,isDesigner:boolean = false,id:string,manager:any):boolean {
 
     var prefix : string;
     if(isViewer)
@@ -117,6 +148,7 @@ export class TabsComponent implements AfterContentInit {
     instance.active = true;
     instance.isViewer = isViewer;
     instance.isDesigner = isDesigner;
+    instance.Manager = manager;
     
     instance.Id = prefix + id;
     instance.reportViewer.Id = prefix + id;
@@ -138,7 +170,21 @@ export class TabsComponent implements AfterContentInit {
     this.dynamicTabs.forEach(tab => (tab.active = false));
 
     // activate the tab the user has clicked on.
-    tab.active = true;
+    if(tab)
+      tab.active = true;
+  }
+
+  showCloseConfirm(tab: TabComponent)
+  {
+    if(tab.isDesigner)
+    {
+      this.currentTab = tab;
+      this.CloseConfirm = true;
+    }
+    else if(tab.isViewer)
+    {
+      this.closeTab(tab);
+    }
   }
 
   closeTab(tab: TabComponent) {

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, Host, ElementRef } from '@angular/core';
+﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, Host, ElementRef, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, FormBuilder, FormGroup } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 import { BaseFilterCellComponent, FilterService } from '@progress/kendo-angular-grid';
@@ -30,6 +30,8 @@ export class SppcDateRangeSelector extends BaseFilterCellComponent implements On
     @Input() displayFromDate: any;
     @Input() displayToDate: any;
 
+    @Output() valueChange = new EventEmitter();
+   
     constructor(filterService: FilterService, private formBuilder: FormBuilder) {
         super(filterService);
     }
@@ -64,7 +66,8 @@ export class SppcDateRangeSelector extends BaseFilterCellComponent implements On
         this.setFilter(this.displayFromDate, this.displayToDate);
 
         this.myForm.valueChanges.subscribe(val => {
-            this.setFilter(val.fromDate, val.toDate);
+            this.valueChange.emit({fromDate : val.fromDate, toDate : val.toDate});
+            this.setFilter(val.fromDate, val.toDate);            
         });
     }
 

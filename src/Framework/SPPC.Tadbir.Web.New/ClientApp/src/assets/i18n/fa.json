@@ -85,8 +85,9 @@
     "ReportNameTooLong": "نام گزارش طولانی می باشد",
     "ReportSetDefaultForAll": "گزارش برای همه کاربران به صورت پیش فرض شد",
     "DefaultForAll": "پیش فرض برای همه",
-    "ReportDesktop": "میز کار"
-
+    "ReportDesktop": "میز کار",
+    "Close":"بستن",
+    "ConfirmMsg" : "آیا برای بستن محیط طراحی مطمئن هستید؟"
   },
   "Buttons": {
     "Ok": "تایید",
@@ -105,7 +106,8 @@
     "Help": "راهنما",
     "FilterForm": "فرم فیلتر",
     "Tools": "ابزارها",
-    "Save": "ذخیره"
+    "Save": "ذخیره",
+    "Close":"بستن"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",

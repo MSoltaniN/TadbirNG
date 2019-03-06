@@ -1,5 +1,5 @@
 <kendo-dialog [minWidth]="300"  [width]="400"  *ngIf="active" class="permission-dialog pdialog"
-  [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (close)="closeDialog()">
+  [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (close)="cancelDialog($event)">
   <kendo-dialog-titlebar>
     {{ 'Report.ReportParameter' | translate }}
   </kendo-dialog-titlebar>

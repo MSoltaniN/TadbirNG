@@ -105,7 +105,8 @@
     "Help": "Help",
     "FilterForm": "Filter Form",
     "Tools": "Tools",
-    "Save": "Save"
+    "Save": "Save",
+    "Close":"Close"
   },
   "GridSetting": {
     "Visibility": "Visibility",
