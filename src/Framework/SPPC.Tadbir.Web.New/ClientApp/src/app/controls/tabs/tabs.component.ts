@@ -63,7 +63,7 @@ import { DynamicTabsDirective } from './dynamic-tabs.directive';
       cursor: pointer;
     }
 
-    
+    .k-window .k-overlay { opacity: .6 !important; }
     
     `
   ]
@@ -72,6 +72,8 @@ export class TabsComponent implements AfterContentInit {
   dynamicTabs: TabComponent[] = [];
   CloseConfirm : boolean = false;
   currentTab : TabComponent;
+  showHint:boolean = false;
+
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
   @ViewChild(DynamicTabsDirective) dynamicTabPlaceholder: DynamicTabsDirective;
@@ -98,13 +100,13 @@ export class TabsComponent implements AfterContentInit {
   }
 
   close(flag : boolean)
-  {
+  {        
      if(flag) this.closeTab(this.currentTab); 
      this.CloseConfirm = false;
   }
 
   save()
-  {
+  {    
     this.currentTab.Manager.invokeSaveReport();
     this.closeTab(this.currentTab); 
     this.CloseConfirm = false;
@@ -122,7 +124,7 @@ export class TabsComponent implements AfterContentInit {
     if(this.dynamicTabs.filter(p=>p.Id == prefix + id).length > 0)
     {
       this.selectTab(this.dynamicTabs.filter(p=>p.Id == prefix + id)[0]);
-      return false;
+      if(isDesigner) return false;
     }
 
     // get a component factory for our TabComponent
@@ -179,7 +181,15 @@ export class TabsComponent implements AfterContentInit {
     if(tab.isDesigner)
     {
       this.currentTab = tab;
-      this.CloseConfirm = true;
+      //this.CloseConfirm = true;
+      if(this.currentTab.template != this.currentTab.Manager.report.saveToJsonString())
+      {
+        this.CloseConfirm = true;
+      }
+      else
+      {
+        this.closeTab(tab);
+      }
     }
     else if(tab.isViewer)
     {

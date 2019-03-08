@@ -28,6 +28,7 @@ import { ReportSummary } from "../../model/reportSummary";
 import { ReportParamComponent } from "../viewIdentifier/reportParam.component";
 import { TabsComponent } from "../../controls/tabs/tabs.component";
 import { SortDescriptor } from "@progress/kendo-data-query";
+import { TabComponent } from "../../controls/tabs/tab.component";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -35,11 +36,10 @@ export function getLayoutModule(layout: Layout) {
 
 
 
-//  public TestFunction  = function(value) {
-//     var result : string = value;
-    
-//     return result.toUpperCase();
-//   }
+export function TestFunction(value) {
+  return "test";
+}
+
 
 declare var Stimulsoft: any;
 
@@ -110,6 +110,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     public metaDataName: string,
     public reportingService:ReportingService) {
     super(toastrService, translate, renderer, metaDataService, entityType, metaDataName);
+
+    this.registerFunctions();
   }
 
   ngOnInit() {
@@ -118,26 +120,17 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.initViewer();
     this.disableButtons = true;
 
-    this.registerFunctions();
+    
   }
 
- 
+  
 
 
   registerFunctions()
   {
 
-    var function1 = function (checklist, state) {
-      var result = "";
-      
-      return result;
-    }
-
-    // var TestFunction  = function(value) {
-    //   var result : string = value;ng ss
-      
-    //   return result.toUpperCase();
-    // }
+    //  Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", 
+    //   "this is a test function", "", typeof(String), "", [typeof(String)], [""], [""],(value)=> {return "aaadddd"});
 
     
     Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", 
@@ -160,6 +153,25 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       this.currentReportName = data.caption;
       this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"),data.caption);
       this.disableButtons = false;
+    }
+    else
+      this.disableButtons = true;
+
+  }
+
+  
+
+
+  onNodeDblClick(dataItem :any)
+  {
+    var data = dataItem;
+    if(!data.isGroup)
+    {      
+      this.currentReportId = data.id;
+      this.currentReportName = data.caption;
+      this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"),data.caption);
+      this.disableButtons = false;
+      this.showReport();
     }
     else
       this.disableButtons = true;
@@ -327,12 +339,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         var filter = new Filter(param.fieldName,value,operator,param.dataType); 
         filters.push(filter);
       });
-
-
       
       if(cfilter)
       {
-
         if(filters.findIndex(f=>f.FieldName.toLowerCase() == cfilter.filter.FieldName.toLowerCase()) == -1)
             filters.push(cfilter.filter);
         
@@ -449,10 +458,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   {
     this.showReportViewer = true;
     this.showReportDesigner = false;    
-
-    var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;  
-    
-    
+    var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;        
     var filterExpression = this.createFilters(params,this.currentFilter);
     var sort = this.currentSort;
 
@@ -468,9 +474,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           .format('YYYY/M/D');  
 
         var reportData = {
-          rows: response.body, 
-          // fromDate: fdate,
-          // toDate: tdate
+          rows: response.body,           
           parameters : params
         };  
 
@@ -481,15 +485,6 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         this.tabsComponent.openTab(this.currentReportName,this.currentPrintInfo.template,
           reportData,viewerIsCloseable,true,false,this.currentReportId,this);
 
-        
-        // view.showReportViewer(this.currentPrintInfo.template, reportData,
-        //   this.tabsComponent,null);         
-
-      
-        //var viewerComponents = this.viewers.filter(f=>f.Id == tab.index.toString());        
-
-        
-        
       });      
   } 
 
@@ -499,15 +494,21 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       designer.invokeSaveReport();
   }
  
+  updateTemplateInTab(designer:any)
+  {
+      var tab = this.tabsComponent.dynamicTabs.find(t=>t.Id == "designerTab" + this.currentReportId);
+      var designData = designer.report.saveToJsonString();
+      tab.template = designData;
+  }
  
   designReport()
   {   
     var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + this.currentReportId, false);                
     
     var tabIsOpen = this.tabsComponent.openTab(this.currentReportName,null,null,
-      true,false,true,this.currentReportId,designer);
-    
-     if(!tabIsOpen) return;
+      true,false,true,this.currentReportId,designer);   
+
+     if(!tabIsOpen) return;     
 
     var url = String.Format(ReportApi.ReportDesign, this.currentReportId);
     this.showReportViewer = false;
@@ -533,13 +534,14 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         
         reportTemplate = printInfo.template;
         
-         rpt.load(reportTemplate);
-        
+         rpt.load(reportTemplate);        
+
          designer.report = rpt;        
       
-        designer.renderHtml('designerTab' + this.currentReportId);
+        designer.renderHtml('designerTab' + this.currentReportId);       
 
-      
+        this.updateTemplateInTab(designer);
+
         var currentId = this.currentReportId;
         var service = this.reportingService;
         var localId = this.CurrentLanguage == 'fa' ? 2 : 1;
@@ -553,9 +555,11 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           localReport.template = jsonStr;
           localReport.reportId = currentId;
           localReport.localeId = localId;
+          thisComponent.updateTemplateInTab(designer);
 
           var url = String.Format(ReportApi.Report, currentId);
           service.saveReport(url,localReport).subscribe((response: any) => {
+            
             thisComponent.showMessage(thisComponent.getText('Report.SaveIsOk'));
           }, (error => {
             thisComponent.showMessage(error);
