@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, ViewContainerRef } from "@angular/core";
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { TranslateService } from "@ngx-translate/core";
 
 @Component({
@@ -10,12 +8,36 @@ import { TranslateService } from "@ngx-translate/core";
 })
 export class BreadCumbComponent implements OnInit {
 
+  @Input() public set entityTypeName(name: string) {
+    if (name) {
+      this.getEntityFromParent = false;
+      this.getEntityTitle(name);
+    }
+
+  }
+
+  getEntityFromParent: boolean = true;
   title: string;
 
-  constructor(public parentComponet: ViewContainerRef, public translate: TranslateService) {
+  constructor(public parentComponet: ViewContainerRef, public translate: TranslateService) { }
 
-    var entityType = (<any>this.parentComponet)._view.component.entityType
-    switch (entityType.toString().toLowerCase()) {
+  ngOnInit() {
+    if (this.getEntityFromParent) {
+      var entityType = (<any>this.parentComponet)._view.component.entityType;
+      if (entityType)
+        this.getEntityTitle(entityType.toString());
+    }
+  }
+
+  getText(key: string): void {
+    this.translate.get(key).subscribe((msg: string) => {
+      this.title = msg;
+    });
+  }
+
+
+  getEntityTitle(entityType: string) {
+    switch (entityType.toLowerCase()) {
       case "account":
         this.getText("Entity.Account");
         break;
@@ -68,18 +90,5 @@ export class BreadCumbComponent implements OnInit {
         this.getText("Entity.AccountCollection");
         break;
     }
-
   }
-
-  ngOnInit() {
-  }
-
-  getText(key: string): void {
-    var result: string;
-    this.translate.get(key).subscribe((msg: string) => {
-      this.title = msg;
-    });
-
-  }
-
 }

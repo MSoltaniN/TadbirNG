@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, Renderer2, Host, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, Renderer2, Host, ElementRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
@@ -24,6 +24,8 @@ import { KeyCode } from '../../enum/KeyCode';
 /deep/ dp-time-select{ display:none;}
 /deep/ dp-day-time-calendar { position: fixed; } /deep/ dp-day-time-calendar > dp-day-calendar{position:initial}
 /deep/ dp-day-time-calendar >  dp-time-select { display:block;}
+/deep/ sppc-grid-datepicker{ width:100% }
+/deep/ sppc-grid-datepicker input{ border-color: rgba(0, 0, 0, 0.08); }
        `],
     providers: [
         {

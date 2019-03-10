@@ -70,7 +70,8 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
   ddlEntitySelected: number = 0;
   maxDepthValue: number;
-  maxDepth: number;
+  maxDepth: number = 8;
+  minDepth: number = 1;
 
   viewTreeConfig: ViewTreeConfig;
   viewTreeDefaultConfig: ViewTreeConfig;
@@ -81,7 +82,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
 
   public ngOnInit(): void {
-    this.loadEntity();    
+    this.loadEntity();
   }
 
 
@@ -150,7 +151,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   }
 
   /**
-   * ستون هایی که غیر قابل تغییر هتند را مشخص میکند
+   * ستون هایی که غیر قابل تغییر هستند را مشخص میکند
    * @param field
    */
   private isReadOnly(field: string): boolean {
@@ -187,6 +188,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   handleEntityChange(item: any) {
 
     this.settingService.getViewTreeSettings(item).subscribe(res => {
+
       let result: any = res;
       var config = result.current;
 
@@ -201,8 +203,14 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
       this.viewTreeDefaultConfig = result.default;
       this.maxDepth = this.viewTreeDefaultConfig.levels.length;
+      var minDepth = result.current.levels.filter(f => f.isUsed).length;
+
       this.maxDepthValue = this.viewTreeConfig.maxDepth;
 
+      if (this.viewTreeConfig.viewId == 1 && minDepth < 3)
+        this.minDepth = 3;
+      else
+        this.minDepth = minDepth > 0 ? minDepth : 1;
     })
 
   }

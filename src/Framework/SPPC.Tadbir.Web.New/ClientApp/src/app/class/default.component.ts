@@ -148,6 +148,41 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
+  public getAllMetaData(metaDataName: string): Array<Property> | undefined {
+    //this.metadataService.getMetaData(entityName).subscribe(res => {
+
+    //  debugger;
+    //  let result: any = res;
+    //  return result.columns;
+    //})
+
+    if (metaDataName) {
+      if (!localStorage.getItem(metaDataName)) {
+        this.metadataService.getMetaData(metaDataName).finally(() => {
+          if (!this.properties.get(metaDataName)) return undefined;
+          var result = this.properties.get(metaDataName);
+          return result;
+        }).subscribe((res1: any) => {
+          this.properties.set(metaDataName, res1.columns);
+          localStorage.setItem(metaDataName, JSON.stringify(res1.columns))
+          var result = this.properties.get(metaDataName);
+          return result;
+        });
+      }
+      else {
+        var item: string | null;
+        item = localStorage.getItem(metaDataName);
+        if (!this.properties) this.properties = new Map<string, Array<Property>>();
+        var arr = JSON.parse(item != null ? item.toString() : "");
+        this.properties.set(metaDataName, arr);
+        if (!this.properties.get(metaDataName)) return undefined;
+        var result = this.properties.get(metaDataName);
+        return result;
+      }
+
+    }
+  }
+
   //public treeConfig: Array<{ name: string, viewTree: any }> = [];
 
   public getViewTreeSettings(viewId: number): ViewTreeConfig {
