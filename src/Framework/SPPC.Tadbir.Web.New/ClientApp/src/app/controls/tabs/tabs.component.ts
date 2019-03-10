@@ -123,8 +123,16 @@ export class TabsComponent implements AfterContentInit {
 
     if(this.dynamicTabs.filter(p=>p.Id == prefix + id).length > 0)
     {
-      this.selectTab(this.dynamicTabs.filter(p=>p.Id == prefix + id)[0]);
+      var tab = this.dynamicTabs.filter(p=>p.Id == prefix + id)[0];
+
+      this.selectTab(tab);
       if(isDesigner) return false;
+      if(isViewer) 
+      {
+        tab.template = template;
+        tab.callViewer();
+        return false;
+      }
     }
 
     // get a component factory for our TabComponent

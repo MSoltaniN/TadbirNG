@@ -34,13 +34,6 @@ export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
-
-
-export function TestFunction(value) {
-  return "test";
-}
-
-
 declare var Stimulsoft: any;
 
 @Component({
@@ -53,6 +46,7 @@ declare var Stimulsoft: any;
     deps: [Layout]
   }]
 })
+
 export class ReportManagementComponent extends DetailComponent implements OnInit {
   
   @Input() public baseId: string;
@@ -110,8 +104,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     public metaDataName: string,
     public reportingService:ReportingService) {
     super(toastrService, translate, renderer, metaDataService, entityType, metaDataName);
-
-    this.registerFunctions();
+    
   }
 
   ngOnInit() {
@@ -119,31 +112,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.innerHeight = window.screen.height;//window.innerHeight
     this.initViewer();
     this.disableButtons = true;
-
     
   }
-
   
-
-
-  registerFunctions()
-  {
-
-    //  Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", 
-    //   "this is a test function", "", typeof(String), "", [typeof(String)], [""], [""],(value)=> {return "aaadddd"});
-
-    
-    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", 
-      "this is a test function", "", typeof(String), "", [typeof(String)], [""], [""], function(value) {
-        var result : string = value;
-        
-        return result.toUpperCase();
-      });
-
-
- 
-  }
-
   onNodeClick(e :any)
   {
     var data = e.dataItem;
@@ -156,12 +127,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     }
     else
       this.disableButtons = true;
-
   }
-
   
-
-
   onNodeDblClick(dataItem :any)
   {
     var data = dataItem;
