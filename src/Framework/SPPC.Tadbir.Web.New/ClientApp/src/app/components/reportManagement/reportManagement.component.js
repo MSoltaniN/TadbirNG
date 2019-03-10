@@ -73,6 +73,21 @@ var ReportManagementComponent = /** @class */ (function (_super) {
         this.innerHeight = window.screen.height; //window.innerHeight
         this.initViewer();
         this.disableButtons = true;
+        this.registerFunctions();
+    };
+    ReportManagementComponent.prototype.registerFunctions = function () {
+        var function1 = function (checklist, state) {
+            var result = "";
+            return result;
+        };
+        // var TestFunction  = function(value) {
+        //   var result : string = value;
+        //   return result.toUpperCase();
+        // }
+        Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", "this is a test function", "", typeof (source_1.String), "", [typeof (source_1.String)], [""], [""], function (value) {
+            var result = value;
+            return result.toUpperCase();
+        });
     };
     ReportManagementComponent.prototype.onNodeClick = function (e) {
         var data = e.dataItem;

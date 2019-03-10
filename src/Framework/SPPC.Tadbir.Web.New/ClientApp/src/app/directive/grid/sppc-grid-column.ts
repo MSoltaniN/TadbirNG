@@ -1,11 +1,9 @@
 
 import { Directive, Host, Input, ElementRef, Renderer2 } from "@angular/core";
-import { ColumnComponent, FilterMenuTemplateDirective } from "@progress/kendo-angular-grid";
+import { ColumnComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
 import { DefaultComponent } from "../../class/default.component";
 import { String } from '../../class/source';
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs";
 import { GridFilterComponent } from "./component/grid-filter.component";
 //import { Component } from '@angular/core'
 
@@ -18,9 +16,8 @@ import { GridFilterComponent } from "./component/grid-filter.component";
 })
 
 export class SppcGridColumn {
-  constructor( @Host() private hostColumn: ColumnComponent,
-    @Host() public hostColumn1: DefaultComponent, private elementRef: ElementRef,
-    private renderer: Renderer2, private translate: TranslateService, @Host() private gridSetting: GridFilterComponent) {
+  constructor(@Host() private hostColumn: ColumnComponent, private elementRef: ElementRef,
+    private translate: TranslateService, @Host() private gridSetting: GridFilterComponent) {
     //var props = def.properties;
   }
 
@@ -28,8 +25,6 @@ export class SppcGridColumn {
   @Input('sppc-grid-column') value: string;
 
   ngOnInit() {
-    var item = this.hostColumn1;
-
   }
 
 
@@ -44,7 +39,7 @@ export class SppcGridColumn {
 
     //var key = parts[0] + "." + parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
 
-    this.hostColumn.field = parts.slice(1).join('.');
+    //this.hostColumn.field = parts.slice(1).join('.');
 
     for (var i = 0; i < parts.length; i++) {
       parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
@@ -56,6 +51,12 @@ export class SppcGridColumn {
       this.hostColumn.title = msg;
     });
 
+    var secondParts = parts.slice(1);
+    for (var i = 0; i < secondParts.length; i++) {
+      secondParts[i] = secondParts[i].charAt(0).toLowerCase() + secondParts[i].slice(1);
+    }
+
+    this.hostColumn.field = secondParts.join('.');
   }
 
   ngAfterContentInit(): void {
