@@ -1,4 +1,5 @@
 import { PermissionBrief } from "../model/index";
+import { ColumnViewConfig } from "../model/columnViewConfig";
 
 
 export class EnviromentComponent {
@@ -276,5 +277,37 @@ export class EnviromentComponent {
 
     }
 
+  public get screenSize(): string {
 
+    var size: string;
+
+    switch (this.media) {
+      case "xs":
+        {
+          size = 'extraSmall';
+          break;
+        }
+      case "sm":
+        {
+          size = 'small';
+          break;
+        }
+      case "md":
+        {
+          size = 'medium';
+          break;
+        }
+      case "l":
+        {
+          size = 'large';
+          break;
+        }
+      case "el":
+        {
+          size = 'extraLarge';
+          break;
+        }
+    }
+    return size;
+  }
 }

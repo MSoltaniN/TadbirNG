@@ -5253,7 +5253,7 @@ kendo-sortable,
 
     .k-window .k-overlay {
         position: absolute;
-        opacity: 0.5;
+        opacity: 0.5!important;
     }
 
     

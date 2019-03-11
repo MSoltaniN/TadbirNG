@@ -1,0 +1,19 @@
+<button *ngIf="displayBtnSetting" class="hidden-xs"  (click)="showSetting()" kendoButton  [icon]="'gear'" [ngClass]="{'pull-left' : rtl ,'pull-right' : !rtl}" type="button" title="{{ 'Buttons.Setting' | translate }}" ></button>
+<kendo-dialog *ngIf="show" (close)="closeSetting()" title="{{'Buttons.Setting' | translate}}" [minWidth]="250" [width]="450">
+    <kendo-grid id="grdColumns" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"                
+                [data]="gridRowData"
+                [pageable]="false"
+                [scrollable]="'none'"
+                [selectable]="{enabled: true, checkboxOnly: true}">
+        <!-- template for mid-size devices -->
+        <kendo-grid-checkbox-column width="80" media="(min-width: 450px) and (max-width: 2048px)" title="{{ 'GridSetting.Visibility' | translate }}">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <input type="checkbox"
+                       [checked]="dataItem.visibility"
+                       [disabled]="dataItem.disabled"  (change)="changeVisibility(dataItem,$event)" />
+            </ng-template>
+        </kendo-grid-checkbox-column>
+        <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 2048px)" field="title" title="{{ 'GridSetting.FieldName' | translate }}" >            
+        </kendo-grid-column>
+    </kendo-grid>
+</kendo-dialog>

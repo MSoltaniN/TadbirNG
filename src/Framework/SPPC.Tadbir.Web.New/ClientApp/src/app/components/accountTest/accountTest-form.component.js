@@ -56,7 +56,6 @@ var AccountTestFormComponent = /** @class */ (function (_super) {
     ////Events
     AccountTestFormComponent.prototype.onSave = function (e) {
         e.preventDefault();
-        debugger;
         if (this.editForm.valid) {
             if (this.model.id > 0) {
                 var model = this.editForm.value;

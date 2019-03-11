@@ -30,6 +30,11 @@ var LookupService = /** @class */ (function (_super) {
         _this.http = http;
         return _this;
     }
+    LookupService.prototype.GetLookup = function (url) {
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(function (response) { return response; });
+    };
     LookupService.prototype.GetAccountsLookup = function () {
         var url = index_1.AccountRelationApi.EnvironmentAccountsLookup;
         var options = { headers: this.httpHeaders };

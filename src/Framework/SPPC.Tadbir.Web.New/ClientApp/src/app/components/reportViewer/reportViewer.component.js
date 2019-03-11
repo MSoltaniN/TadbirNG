@@ -22,6 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var default_component_1 = require("../../class/default.component");
 require("rxjs/Rx");
+var source_1 = require("../../class/source");
 var environment_1 = require("../../../environments/environment");
 var moment = require("jalali-moment");
 var ReportViewerComponent = /** @class */ (function (_super) {
@@ -46,10 +47,21 @@ var ReportViewerComponent = /** @class */ (function (_super) {
     }
     ReportViewerComponent.prototype.ngOnInit = function () {
         this.innerWidth = window.innerWidth;
+        //this.registerFunctions();
         this.initViewer();
     };
     ReportViewerComponent.prototype.closeForm = function () {
         this.active = false;
+    };
+    ReportViewerComponent.prototype.registerFunctions = function () {
+        var function1 = function (checklist, state) {
+            var result = "";
+            return result;
+        };
+        Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", "this is a test function", "", typeof (source_1.String), "", [typeof (source_1.String)], [""], [""], function (value) {
+            var result = value;
+            return result.toUpperCase();
+        });
     };
     ReportViewerComponent.prototype.initViewer = function () {
         //create header

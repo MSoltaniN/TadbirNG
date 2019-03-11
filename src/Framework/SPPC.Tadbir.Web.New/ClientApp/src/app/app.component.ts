@@ -10,13 +10,16 @@ import { SessionKeys } from '../environments/environment';
 import { Command } from './model/command';
 
 declare var $:any;
+declare var Stimulsoft: any;
 
 @Component({
   selector: 'app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit  {
+
+export class AppComponent implements AfterViewInit,OnInit  {
+ 
 
   options = {
     min: 8,
@@ -53,6 +56,21 @@ export class AppComponent implements AfterViewInit  {
   public branches: any = {};
 
   public fiscalPeriods: any = {};
+
+  ngOnInit() {
+
+    this.registerFunctions();
+  }
+
+  registerFunctions()
+  {   
+    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", 
+      "this is a test function", "", typeof(String), "", [typeof(String)], [""], [""], function(value) {
+        var result : string = value;        
+        return result.toUpperCase();
+      }); 
+  }
+
 
   constructor(location: Location,
      public router: Router, 
@@ -249,6 +267,8 @@ export class AppComponent implements AfterViewInit  {
   }
 
   cssUrl : string;
+
+ 
 
   ngAfterViewInit() {
     $.fn.bindTree(); 

@@ -60,7 +60,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;
 
-    //this.registerFunctions();
+    this.registerFunctions();
     this.initViewer();
   }
 

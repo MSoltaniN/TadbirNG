@@ -39,8 +39,8 @@
                                                                         (selectionChange)="onNodeClick($event)">
                                                                         <ng-template kendoTreeViewNodeTemplate
                                                                                 let-dataItem>
-                                                                                <span class="k-icon" [ngClass]="iconClass(dataItem)"></span>
-                                                                                <span [ngClass]="setClass(dataItem)">{{dataItem.caption}}</span>
+                                                                                <span (dblclick)="onNodeDblClick(dataItem)" class="k-icon" [ngClass]="iconClass(dataItem)"></span>
+                                                                                <span (dblclick)="onNodeDblClick(dataItem)" [ngClass]="setClass(dataItem)">{{dataItem.caption}}</span>
                                                                         </ng-template>
                                                                 </kendo-treeview>
                                                         </div>
