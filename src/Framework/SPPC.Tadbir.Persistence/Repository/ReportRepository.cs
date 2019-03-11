@@ -13,6 +13,7 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -27,15 +28,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
+        /// <param name="metadata">امکان خواندن متادیتا برای نماهای اطلاعاتی گزارشی را فراهم می کند</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
         /// <param name="lookupRepository">امکان خواندن اطلاعات موجود را به صورت لوکاپ فراهم می کند</param>
         /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         public ReportRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecureRepository repository,
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository,
             ILookupRepository lookupRepository, IConfigRepository configRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _metadata = metadata;
             _repository = repository;
             _lookupRepository = lookupRepository;
             _configRepository = configRepository;
@@ -49,6 +52,16 @@ namespace SPPC.Tadbir.Persistence
         {
             _currentContext = userContext;
             _repository.SetCurrentContext(userContext);
+        }
+
+        /// <summary>
+        /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر</param>
+        /// <returns>اطلاعات فراداده ای نمای گزارشی</returns>
+        public async Task<ViewViewModel> GetReportMetadataByViewAsync(int viewId)
+        {
+            return await _metadata.GetViewMetadataByIdAsync(viewId);
         }
 
         /// <summary>
@@ -515,6 +528,7 @@ namespace SPPC.Tadbir.Persistence
 
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
+        private readonly IMetadataRepository _metadata;
         private readonly ISecureRepository _repository;
         private readonly ILookupRepository _lookupRepository;
         private readonly IConfigRepository _configRepository;
