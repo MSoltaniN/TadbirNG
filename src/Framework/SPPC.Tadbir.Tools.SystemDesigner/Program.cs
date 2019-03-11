@@ -30,7 +30,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
                 var repo = new XferRepository(src, target);
                 //repo.XferFiscalPeriods();
                 //repo.XferAccountGroups();
-                repo.XferAccounts();
+                //repo.XferAccounts();
+                repo.XferDetailAccounts();
+                repo.XferCostCenters();
+                repo.XferProjects();
                 MessageBox.Show("Transfer completed successfully!", "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)

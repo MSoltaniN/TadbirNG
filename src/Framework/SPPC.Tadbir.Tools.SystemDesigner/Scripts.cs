@@ -54,5 +54,47 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Level])
      VALUES
            ('{0}',{1},{2},'{3}','1','1','0','{4}','{5}',N'{6}','{7}')";
+
+        public const string InsertDetailAccount =
+            @"INSERT INTO [Finance].[DetailAccount]
+           ([DetailID]
+		   ,[ParentID]
+           ,[FiscalPeriodID]
+           ,[BranchID]
+           ,[BranchScope]
+           ,[Code]
+           ,[FullCode]
+           ,[Name]
+           ,[Level])
+     VALUES
+           ('{0}', {1}, '{2}', 1, 0, '{3}', '{4}', '{5}', {6})";
+
+        public const string InsertCostCenter =
+            @"INSERT INTO [Finance].[CostCenter]
+           ([CostCenterID]
+		   ,[ParentID]
+           ,[FiscalPeriodID]
+           ,[BranchID]
+           ,[BranchScope]
+           ,[Code]
+           ,[FullCode]
+           ,[Name]
+           ,[Level])
+     VALUES
+           ('{0}', NULL, '{1}', 1, 0, '{2}', '{3}', '{4}', 0)";
+
+        public const string InsertProject =
+            @"INSERT INTO [Finance].[Project]
+           ([ProjectID]
+		   ,[ParentID]
+           ,[FiscalPeriodID]
+           ,[BranchID]
+           ,[BranchScope]
+           ,[Code]
+           ,[FullCode]
+           ,[Name]
+           ,[Level])
+     VALUES
+           ('{0}', NULL, '{1}', 1, 0, '{2}', '{3}', '{4}', 0)";
     }
 }

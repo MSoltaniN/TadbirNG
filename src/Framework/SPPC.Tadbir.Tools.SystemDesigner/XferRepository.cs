@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using BabakSoft.Platform.Data;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -54,6 +55,56 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
+        public void XferDetailAccounts()
+        {
+            var detailAccounts = _dalFrom.Query("SELECT * FROM __DetailAcc__ WHERE Id > 0");
+            var vms = detailAccounts.Rows
+                .Cast<DataRow>()
+                .Select(row => GetViewModel(row))
+                .ToList();
+            foreach (DataRow row in detailAccounts.Rows)
+            {
+                var vm = GetViewModel(row);
+                if (vm.Level > 0)
+                {
+                    var parent = vms
+                        .Where(item => item.FullCode == vm.FullCode.Substring(0, vm.FullCode.Length - vm.Code.Length))
+                        .First();
+                    vm.ParentId = parent.Id;
+                }
+
+                string insertQuery = String.Format(Scripts.InsertDetailAccount,
+                    vm.Id,
+                    vm.ParentId.HasValue ? vm.ParentId.Value.ToString() : "NULL",
+                    vm.FiscalPeriodId, vm.Code, vm.FullCode, vm.Name, vm.Level);
+                _dalTo.ExecuteNonQuery(insertQuery);
+            }
+        }
+
+        public void XferCostCenters()
+        {
+            var centers = _dalFrom.Query("SELECT * FROM __CostCenter__ WHERE Id > 0");
+            foreach (DataRow row in centers.Rows)
+            {
+                string insertQuery = String.Format(Scripts.InsertCostCenter,
+                    row["Id"].ToString(), row["FPId"].ToString(), row["CCCode"].ToString(),
+                    row["CCCode"].ToString(), row["Name"].ToString());
+                _dalTo.ExecuteNonQuery(insertQuery);
+            }
+        }
+
+        public void XferProjects()
+        {
+            var projects = _dalFrom.Query("SELECT * FROM __Project__ WHERE Id > 0");
+            foreach (DataRow row in projects.Rows)
+            {
+                string insertQuery = String.Format(Scripts.InsertProject,
+                    row["Id"].ToString(), row["FPId"].ToString(), row["PCode"].ToString(),
+                    row["PCode"].ToString(), row["Name"].ToString());
+                _dalTo.ExecuteNonQuery(insertQuery);
+            }
+        }
+
         // WARNING: For this logic to work properly, source database MUST have ONLY ONE fiscal period.
         private Dictionary<string, int> BuildAccountMap(DataTable accounts)
         {
@@ -98,6 +149,29 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
 
             return account;
+        }
+
+        private DetailAccountViewModel GetViewModel(DataRow row)
+        {
+            var viewModel = new DetailAccountViewModel()
+            {
+                FiscalPeriodId = Int32.Parse(row["FPId"].ToString()),
+                Id = Int32.Parse(row["Id"].ToString()),
+                Level = (short)(Int32.Parse(row["AccLevel"].ToString()) - 4),
+                Name = row["Name"].ToString()
+            };
+
+            string code = String.Empty, fullCode = String.Empty;
+            for (int i = 0; i <= viewModel.Level; i++)
+            {
+                string fieldName = String.Format("T{0}", i + 1);
+                code = row[fieldName].ToString();
+                fullCode += code;
+            }
+
+            viewModel.Code = code;
+            viewModel.FullCode = fullCode;
+            return viewModel;
         }
 
         private SqlDataLayer _dalFrom;
