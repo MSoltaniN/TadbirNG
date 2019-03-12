@@ -61,6 +61,7 @@
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
     <None Remove="ClientApp\src\app\components\gridTest\gridTest.component.ts" />
     <None Remove="ClientApp\src\app\components\inlineTest\inlineTest.component.ts" />
+    <None Remove="ClientApp\src\app\components\journal\journal.component.ts" />
     <None Remove="ClientApp\src\app\components\login\index.ts" />
     <None Remove="ClientApp\src\app\components\login\login.complete.component.ts" />
     <None Remove="ClientApp\src\app\components\login\login.component.ts" />
@@ -112,6 +113,8 @@
     <None Remove="ClientApp\src\app\directive\onlyNumber\sppc.onlyNumber.ts" />
     <None Remove="ClientApp\src\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\src\app\directive\Validator\Sppc-code-length-validator.ts" />
+    <None Remove="ClientApp\src\app\enum\journalDisplayType.ts" />
+    <None Remove="ClientApp\src\app\enum\journalType.ts" />
     <None Remove="ClientApp\src\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\src\app\enum\TypeLevel.ts" />
     <None Remove="ClientApp\src\app\model\account.ts" />
@@ -909,6 +912,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\gridTest\gridTest.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\inlineTest\inlineTest.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\journal\journal.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\login.complete.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\login.component.ts" />
@@ -960,6 +964,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\directive\onlyNumber\sppc.onlyNumber.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\Validator\Sppc-code-length-validator.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\enum\journalDisplayType.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\enum\journalType.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\typeLevel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\account.ts" />

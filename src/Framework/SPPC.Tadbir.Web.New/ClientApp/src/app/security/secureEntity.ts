@@ -28,5 +28,6 @@ export const SecureEntity = {
   Requisition: 'RequisitionVoucher',
   Company: 'Company',
   AccountGroup: "AccountGroup",
-  AccountCollection: "AccountCollection"
+  AccountCollection: "AccountCollection",
+  JournalByDateByRow: "JournalByDateByRow"
 }

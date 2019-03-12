@@ -21,43 +21,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_service_1 = require("../class/base.service");
-var source_1 = require("../class/source");
-var index_1 = require("./api/index");
-var BranchInfo = /** @class */ (function () {
-    function BranchInfo() {
-        this.companyId = 0;
-        this.childCount = 0;
-        this.id = 0;
-        this.level = 0;
-    }
-    return BranchInfo;
-}());
-exports.BranchInfo = BranchInfo;
-var BranchService = /** @class */ (function (_super) {
-    __extends(BranchService, _super);
-    function BranchService(http) {
+var GridService = /** @class */ (function (_super) {
+    __extends(GridService, _super);
+    function GridService(http) {
         var _this = _super.call(this, http) || this;
         _this.http = http;
         return _this;
     }
-    BranchService.prototype.getBranchRoles = function (branchId) {
-        var url = source_1.String.Format(index_1.BranchApi.BranchRoles, branchId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(function (response) { return response; });
-    };
-    BranchService.prototype.modifiedBranchRoles = function (branchRoles) {
-        var body = JSON.stringify(branchRoles);
-        var options = { headers: this.httpHeaders };
-        var url = source_1.String.Format(index_1.BranchApi.BranchRoles, branchRoles.id);
-        return this.http.put(url, body, options)
-            .map(function (res) { return res; })
-            .catch(this.handleError);
-    };
-    BranchService = __decorate([
+    GridService = __decorate([
         core_1.Injectable()
-    ], BranchService);
-    return BranchService;
+    ], GridService);
+    return GridService;
 }(base_service_1.BaseService));
-exports.BranchService = BranchService;
-//# sourceMappingURL=branch.service.js.map
+exports.GridService = GridService;
+//# sourceMappingURL=grid.service.js.map

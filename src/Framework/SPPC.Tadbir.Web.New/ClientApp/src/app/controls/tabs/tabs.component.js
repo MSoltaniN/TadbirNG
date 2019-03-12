@@ -23,6 +23,8 @@ var TabsComponent = /** @class */ (function () {
     function TabsComponent(_componentFactoryResolver) {
         this._componentFactoryResolver = _componentFactoryResolver;
         this.dynamicTabs = [];
+        this.CloseConfirm = false;
+        this.showHint = false;
     }
     // contentChildren are set
     TabsComponent.prototype.ngAfterContentInit = function () {
@@ -33,7 +35,17 @@ var TabsComponent = /** @class */ (function () {
             this.selectTab(this.tabs.first);
         }
     };
-    TabsComponent.prototype.openTab = function (title, template, data, isCloseable, isViewer, isDesigner, id) {
+    TabsComponent.prototype.close = function (flag) {
+        if (flag)
+            this.closeTab(this.currentTab);
+        this.CloseConfirm = false;
+    };
+    TabsComponent.prototype.save = function () {
+        this.currentTab.Manager.invokeSaveReport();
+        this.closeTab(this.currentTab);
+        this.CloseConfirm = false;
+    };
+    TabsComponent.prototype.openTab = function (title, template, data, isCloseable, isViewer, isDesigner, id, manager) {
         if (isCloseable === void 0) { isCloseable = false; }
         if (isViewer === void 0) { isViewer = false; }
         if (isDesigner === void 0) { isDesigner = false; }
@@ -43,8 +55,15 @@ var TabsComponent = /** @class */ (function () {
         if (isDesigner)
             prefix = 'designerTab';
         if (this.dynamicTabs.filter(function (p) { return p.Id == prefix + id; }).length > 0) {
-            this.selectTab(this.dynamicTabs.filter(function (p) { return p.Id == prefix + id; })[0]);
-            return false;
+            var tab = this.dynamicTabs.filter(function (p) { return p.Id == prefix + id; })[0];
+            this.selectTab(tab);
+            if (isDesigner)
+                return false;
+            if (isViewer) {
+                tab.template = template;
+                tab.callViewer();
+                return false;
+            }
         }
         // get a component factory for our TabComponent
         var componentFactory = this._componentFactoryResolver.resolveComponentFactory(tab_component_1.TabComponent);
@@ -63,6 +82,7 @@ var TabsComponent = /** @class */ (function () {
         instance.active = true;
         instance.isViewer = isViewer;
         instance.isDesigner = isDesigner;
+        instance.Manager = manager;
         instance.Id = prefix + id;
         instance.reportViewer.Id = prefix + id;
         // remember the dynamic component for rendering the
@@ -79,7 +99,23 @@ var TabsComponent = /** @class */ (function () {
         this.tabs.toArray().forEach(function (tab) { return (tab.active = false); });
         this.dynamicTabs.forEach(function (tab) { return (tab.active = false); });
         // activate the tab the user has clicked on.
-        tab.active = true;
+        if (tab)
+            tab.active = true;
+    };
+    TabsComponent.prototype.showCloseConfirm = function (tab) {
+        if (tab.isDesigner) {
+            this.currentTab = tab;
+            //this.CloseConfirm = true;
+            if (this.currentTab.template != this.currentTab.Manager.report.saveToJsonString()) {
+                this.CloseConfirm = true;
+            }
+            else {
+                this.closeTab(tab);
+            }
+        }
+        else if (tab.isViewer) {
+            this.closeTab(tab);
+        }
     };
     TabsComponent.prototype.closeTab = function (tab) {
         for (var i = 0; i < this.dynamicTabs.length; i++) {
@@ -112,9 +148,9 @@ var TabsComponent = /** @class */ (function () {
     TabsComponent = __decorate([
         core_1.Component({
             selector: 'my-tabs',
-            template: "\n    <ul class=\"nav nav-tabs reportTab\">\n      <li *ngFor=\"let tab of tabs\" (click)=\"selectTab(tab)\" [class.active]=\"tab.active\">\n        <a class='tablTitle'>{{tab.title}}\n        <span class=\"tab-close\" *ngIf=\"tab.isCloseable\" (click)=\"closeTab(tab)\">x</span>\n        </a>\n      </li>\n      <!-- dynamic tabs -->\n      <li *ngFor=\"let tab of dynamicTabs\" (click)=\"selectTab(tab)\" [class.active]=\"tab.active\">\n        <a class='tablTitle'>{{tab.title}} <span class=\"tab-close\" *ngIf=\"tab.isCloseable\" (click)=\"closeTab(tab)\">x</span></a>\n      </li>\n    </ul>\n    <ng-content></ng-content>\n    <ng-template dynamic-tabs #container></ng-template>\n  ",
+            template: "\n    <ul class=\"nav nav-tabs reportTab\">\n      <li *ngFor=\"let tab of tabs\" (click)=\"selectTab(tab)\" [class.active]=\"tab.active\">        \n        <a class='tablTitle'>{{tab.title}}\n        <span class=\"tab-close\" *ngIf=\"tab.isCloseable\" (click)=\"closeTab(tab)\">x</span>\n        </a>\n      </li>\n      <!-- dynamic tabs -->\n      <li *ngFor=\"let tab of dynamicTabs\" (click)=\"selectTab(tab)\" [class.active]=\"tab.active\">        \n        <a class='tablTitle'>\n        <span *ngIf=\"tab.isDesigner\" class=\"k-icon k-i-pencil\"></span>\n        <span *ngIf=\"tab.isViewer\" class=\"k-icon k-i-eye\"></span>\n        {{tab.title}} <span class=\"tab-close\" *ngIf=\"tab.isCloseable\" \n        (click)=\"showCloseConfirm(tab)\">x</span></a>\n      </li>\n    </ul>\n    <ng-content></ng-content>\n    <ng-template dynamic-tabs #container></ng-template>\n    <kendo-dialog title=\"{{'Report.Close' | translate}}\" *ngIf=\"CloseConfirm\" (close)=\"close(false)\" [minWidth]=\"250\"\n        [width]=\"450\">\n        <p>\n          {{'Report.ConfirmMsg' | translate}}\n        </p>\n        <kendo-dialog-actions>\n                <button class=\"k-button\" (click)=\"save()\" primary=\"true\">{{ 'Buttons.Save' | translate }}</button>\n                <button class=\"k-button\" (click)=\"close(true)\" primary=\"true\">{{ 'Buttons.Close' | translate }}</button>\n                <button class=\"k-button\" (click)=\"close(false)\">{{ 'Buttons.Cancel' | translate }}</button>\n        </kendo-dialog-actions>\n    </kendo-dialog>\n  ",
             styles: [
-                "\n    .tab-close {\n      color: gray;\n      text-align: right;\n      cursor: pointer;\n    }\n\n    .tablTitle {      \n      text-decoration: underline;\n      cursor: pointer;\n    }\n\n    \n    \n    "
+                "\n    .tab-close {\n      color: gray;\n      text-align: right;\n      cursor: pointer;\n    }\n\n    .tablTitle {      \n      text-decoration: underline;\n      cursor: pointer;\n    }\n\n    .k-window .k-overlay { opacity: .6 !important; }\n    \n    "
             ]
         })
     ], TabsComponent);
