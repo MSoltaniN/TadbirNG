@@ -14,5 +14,6 @@ export enum ViewName {
   Company = 11,
   AccountGroup = 12,
   OperationLog = 13,
-  AccountCollection = 14
+  AccountCollection = 14,
+  JournalByDateByRow = 15
 }

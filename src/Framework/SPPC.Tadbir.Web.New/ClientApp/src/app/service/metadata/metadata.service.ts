@@ -11,6 +11,7 @@ import { Context } from "../../model/context";
 import { BaseService } from '../../class/base.service';
 import { Property } from '../../class/metadata/property';
 import { MetadataApi } from '../api/index';
+import { ReportApi } from '../api/reportApi';
 
 @Injectable()
 export class MetaDataService extends BaseService {
@@ -65,5 +66,19 @@ export class MetaDataService extends BaseService {
             .map(response => (<Response>response));
     }
 
+
+  getReportMetaDataById(viewId: number) {
+    var header = this.httpHeaders;
+    header = header.delete('Content-Type');
+    header = header.delete('X-Tadbir-AuthTicket');
+    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    header = header.append('X-Tadbir-AuthTicket', this.Ticket);
+
+    var options = { headers: header };
+
+    var url = String.Format(ReportApi.ReportMetadataByView, viewId);
+    return this.http.get(url, options)
+      .map(response => (<Response>response));
+  }
 
 }

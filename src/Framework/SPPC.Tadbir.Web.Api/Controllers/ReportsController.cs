@@ -206,6 +206,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Business Reports API
 
+        // GET: api/reports/metadata/{viewId:min(1)}
+        [Route(ReportApi.ReportMetadataByViewUrl)]
+        public async Task<IActionResult> GetReportMetadataByViewAsync(int viewId)
+        {
+            var metadata = await _repository.GetReportMetadataByViewAsync(viewId);
+            return JsonReadResult(metadata);
+        }
+
         // GET: api/reports/voucher/sum-by-date
         [Route(ReportApi.EnvironmentVoucherSummaryByDateUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]

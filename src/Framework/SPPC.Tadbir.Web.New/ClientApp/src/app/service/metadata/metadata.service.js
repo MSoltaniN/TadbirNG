@@ -24,6 +24,7 @@ require("rxjs/Rx");
 var source_1 = require("../../class/source");
 var base_service_1 = require("../../class/base.service");
 var index_1 = require("../api/index");
+var reportApi_1 = require("../api/reportApi");
 var MetaDataService = /** @class */ (function (_super) {
     __extends(MetaDataService, _super);
     function MetaDataService(http) {
@@ -60,6 +61,17 @@ var MetaDataService = /** @class */ (function (_super) {
         //headers.append('X-Tadbir-AuthTicket', this.Ticket);
         var options = { headers: header };
         var url = source_1.String.Format(index_1.MetadataApi.EntityMetadataById, entityId);
+        return this.http.get(url, options)
+            .map(function (response) { return response; });
+    };
+    MetaDataService.prototype.getReportMetaDataById = function (viewId) {
+        var header = this.httpHeaders;
+        header = header.delete('Content-Type');
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.append('Content-Type', 'application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', this.Ticket);
+        var options = { headers: header };
+        var url = source_1.String.Format(reportApi_1.ReportApi.ReportMetadataByView, viewId);
         return this.http.get(url, options)
             .map(function (response) { return response; });
     };

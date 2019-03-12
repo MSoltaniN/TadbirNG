@@ -64,7 +64,7 @@ import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAc
 import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
 import { AccountTestComponent } from './components/accountTest/accountTest.component';
 import { AccountTestFormComponent } from './components/accountTest/accountTest-form.component';
-
+import { JournalComponent } from './components/journal/journal.component';
 import { GridTestComponent } from './components/gridTest/gridTest.component';
 
 import { DialogComponent } from './class/dialog.component';
@@ -265,6 +265,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DialogComponent,    
     AccountTestComponent,
     GridTestComponent,
+    JournalComponent,
     AccountTestFormComponent,
     ReportParametersComponent,
     ViewIdentifierComponent,
@@ -331,6 +332,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
       { path: 'account-test', component: AccountTestComponent, canActivate: [AuthGuard] },
       { path: 'grid-test', component: GridTestComponent, canActivate: [AuthGuard] },
+      { path: 'journal', component: JournalComponent, canActivate: [AuthGuard] },
 
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }

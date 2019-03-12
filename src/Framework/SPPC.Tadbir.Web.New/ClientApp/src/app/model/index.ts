@@ -35,3 +35,4 @@ export * from './treeNodeInfo';
 export * from './accountCollectionCategory';
 export * from './accountCollection';
 export * from './accountCollectionAccount';
+export * from './item';
