@@ -102,6 +102,8 @@ export class TabsComponent implements AfterContentInit {
   close(flag : boolean)
   {        
      if(flag) this.closeTab(this.currentTab); 
+     if(this.dynamicTabs.length > 0)
+        this.selectTab(this.dynamicTabs[0]);
      this.CloseConfirm = false;
   }
 
@@ -109,6 +111,8 @@ export class TabsComponent implements AfterContentInit {
   {    
     this.currentTab.Manager.invokeSaveReport();
     this.closeTab(this.currentTab); 
+    if(this.dynamicTabs.length > 0)
+        this.selectTab(this.dynamicTabs[0]);
     this.CloseConfirm = false;
   }
 
@@ -121,7 +125,9 @@ export class TabsComponent implements AfterContentInit {
     if(this.dynamicTabs.filter(p=>p.Id == prefix + id).length > 0)
     {
       var viewerTab = this.dynamicTabs.filter(p=>p.Id == prefix + id)[0];
-      this.closeTab(viewerTab);      
+      this.closeTab(viewerTab); 
+      if(this.dynamicTabs.length > 0)
+        this.selectTab(this.dynamicTabs[0]);
     }
 
     prefix = 'designerTab';
@@ -129,7 +135,9 @@ export class TabsComponent implements AfterContentInit {
     if(this.dynamicTabs.filter(p=>p.Id == prefix + id).length > 0)
     {
       var designerTab = this.dynamicTabs.filter(p=>p.Id == prefix + id)[0];
-      this.closeTab(designerTab);      
+      this.closeTab(designerTab);  
+      if(this.dynamicTabs.length > 0)
+        this.selectTab(this.dynamicTabs[0]);  
     }
   }
 
@@ -218,11 +226,15 @@ export class TabsComponent implements AfterContentInit {
       else
       {
         this.closeTab(tab);
+        if(this.dynamicTabs.length > 0)
+          this.selectTab(this.dynamicTabs[0]);
       }
     }
     else if(tab.isViewer)
     {
       this.closeTab(tab);
+      if(this.dynamicTabs.length > 0)
+          this.selectTab(this.dynamicTabs[0]);
     }
   }
 

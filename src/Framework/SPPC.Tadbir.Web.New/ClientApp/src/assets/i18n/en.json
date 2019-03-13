@@ -71,22 +71,23 @@
     "ReportDesign": "Design of",
     "Reports": "Reports",
     "ReportManagement": "Report Management",
-    "ReportParameter": "Report parameters",
-    "Design": "ِDesign Report",
-    "Preview": "Preview Report",
-    "Delete": "Delete Report",
-    "SaveAs": "SaveAs Report",
-    "SaveIsOk": "Report saved successfully",
-    "SaveAsIsOk": "Report copied successfully",
-    "Title": "Report title",
+    "ReportParameter" : "Report parameters",
+    "Design":"ِDesign Report",
+    "Preview":"Preview Report",
+    "Delete":"Delete Report",
+    "SaveAs":"SaveAs Report",
+    "SaveIsOk":"Report saved successfully",
+    "SaveAsIsOk":"Report copied successfully",
+    "Title" : "Report title",
     "DeleteReportConfirm": "are you sure to delete report {0}?",
-    "ReportDeleted": "Report deleted successfully",
-    "ReportNameIsReq": "Report name is required",
-    "ReportNameTooLong": "Report name is too long",
+    "ReportDeleted":"Report deleted successfully",
+    "ReportNameIsReq":"Report name is required",
+    "ReportNameTooLong":"Report name is too long",
     "ReportSetDefaultForAll": "The report was set to default for all users",
-    "DefaultForAll": "Default for everyone",
-    "ReportDesktop": "ِDesktop"
-
+    "DefaultForAll":"Default for everyone",
+    "ReportDesktop" : "ِDesktop",
+    "Close":"Save Design",
+    "ConfirmMsg" : "The design environment of the report has changed or you wish to save the report ?"
   },
   "Buttons": {
     "Ok": "Ok",
@@ -106,7 +107,7 @@
     "FilterForm": "Filter Form",
     "Tools": "Tools",
     "Save": "Save",
-    "Close": "Close"
+    "Close":"Close"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -133,39 +134,12 @@
     "Successful": "Successful",
     "ViewTreeConfig": "View Tree Config",
     "AccountGroup": "Account Group",
-    "AccountCollection": "Account Collection",
-    "JournalByDateByRow": "Journal By Date By Row"
+    "AccountCollection": "Account Collection"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
     "CurrentBranchAndSubsets": "Current Branch And Subsets",
     "CurrentBranch": "Current Branch"
-  },
-  "Journal": {
-    "ByDate": "By Date",
-    "ByVoucher": "By Voucher",
-    "FromDate": "From Date",
-    "ToDate": "To Date",
-    "FromVoucher": "From Voucher",
-    "ToVoucher": "To Voucher",
-    "DisplayType": "Display Type",
-    "SelectBranch": "Select Branch",
-    "BranchSeparation": "Branch Separation",
-    "VoucherStatus": "Voucher Status",
-    "ArticleType": "Article Type",
-    "Computing": "Computing",
-    "OnLabel": "Yes",
-    "OffLabel": "No"
-  },
-  "JournalByDateByRow": {
-    "RowNo": "Row No",
-    "VoucherDate": "Voucher Date",
-    "VoucherNo": "Voucher No",
-    "AccountFullCode": "Account Full Code",
-    "AccountName": "Account Name",
-    "Description": "Description",
-    "Debit": "Debit",
-    "Credit": "Credit"
   },
   "Account": {
     "NewSubAccount": "New sub account",

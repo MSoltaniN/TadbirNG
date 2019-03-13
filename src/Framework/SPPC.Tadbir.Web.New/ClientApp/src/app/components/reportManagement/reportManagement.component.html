@@ -79,7 +79,7 @@
 
         </div>
 </kendo-dialog>
-<kendo-dialog [minWidth]="300" [width]="400" [height]="210" *ngIf="showSaveAsDialog" class="permission-dialog"
+<kendo-dialog [minWidth]="300" [width]="400" [height]="220" *ngIf="showSaveAsDialog" class="permission-dialog"
         [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (close)="cancelReportForm($event)">
         <kendo-dialog-titlebar>
                 {{ 'Report.SaveAs' | translate }}
