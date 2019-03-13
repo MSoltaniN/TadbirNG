@@ -85,3 +85,9 @@ body.tRtl .reportTab li
 {
      float: right!important;
 }
+
+.def
+{
+    font-weight: bold;
+    text-decoration: underline;
+}

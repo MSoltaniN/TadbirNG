@@ -47,7 +47,7 @@ var ReportViewerComponent = /** @class */ (function (_super) {
     }
     ReportViewerComponent.prototype.ngOnInit = function () {
         this.innerWidth = window.innerWidth;
-        //this.registerFunctions();
+        this.registerFunctions();
         this.initViewer();
     };
     ReportViewerComponent.prototype.closeForm = function () {

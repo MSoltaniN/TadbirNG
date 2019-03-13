@@ -86,8 +86,8 @@
     "ReportSetDefaultForAll": "گزارش برای همه کاربران به صورت پیش فرض شد",
     "DefaultForAll": "پیش فرض برای همه",
     "ReportDesktop": "میز کار",
-    "Close":"بستن",
-    "ConfirmMsg" : "محیط طراحی گزارش تغییر کرده است ایا مایل به ذخیره گزارش هستید؟"
+    "Close": "بستن",
+    "ConfirmMsg": "محیط طراحی گزارش تغییر کرده است ایا مایل به ذخیره گزارش هستید؟"
   },
   "Buttons": {
     "Ok": "تایید",
@@ -107,7 +107,7 @@
     "FilterForm": "فرم فیلتر",
     "Tools": "ابزارها",
     "Save": "ذخیره",
-    "Close":"بستن"
+    "Close": "بستن"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -132,12 +132,39 @@
     "OperationLog": "لاگ های عملیاتی",
     "ViewTreeConfig": "تنظیمات ساختار درختی",
     "AccountGroup": "گروه حساب",
-    "AccountCollection": "مجموعه حساب"
+    "AccountCollection": "مجموعه حساب",
+    "JournalByDateByRow": "دفتر روزنامه"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
     "CurrentBranchAndSubsets": "شعبه جاری و زیر مجموعه ها",
     "CurrentBranch": "شعبه جاری"
+  },
+  "Journal": {
+    "ByDate": "بر اساس تاریخ",
+    "ByVoucher": "بر اساس سند",
+    "FromDate": "از تاریخ",
+    "ToDate": "تا تاریخ",
+    "FromVoucher": "از سند",
+    "ToVoucher": "تا سند",
+    "DisplayType": "نوع نمایش",
+    "SelectBranch": "انتخاب شعبه",
+    "BranchSeparation": "به تفکیک شعبه",
+    "VoucherStatus": "وضعیت سند",
+    "ArticleType": "نوع آرتیکل ها",
+    "Computing": "محاسبه",
+    "OnLabel": "بله",
+    "OffLabel": "خیر"
+  },
+  "JournalByDateByRow": {
+    "RowNo": "شماره سطر",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد کامل حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار"
   },
   "Account": {
     "New": "حساب جدید",

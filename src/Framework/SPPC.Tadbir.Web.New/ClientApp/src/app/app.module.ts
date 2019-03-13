@@ -62,9 +62,7 @@ import { AccountGroupsFormComponent } from './components/accountGroups/accountGr
 //import { InlineTestComponent } from './components/inlineTest/inlineTest.component';
 import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAccounts.component';
 import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
-import { AccountTestComponent } from './components/accountTest/accountTest.component';
-import { AccountTestFormComponent } from './components/accountTest/accountTest-form.component';
-
+import { JournalComponent } from './components/journal/journal.component';
 import { GridTestComponent } from './components/gridTest/gridTest.component';
 
 import { DialogComponent } from './class/dialog.component';
@@ -263,9 +261,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     DialogComponent,
     AccountCollectionComponent,
     DialogComponent,    
-    AccountTestComponent,
     GridTestComponent,
-    AccountTestFormComponent,
+    JournalComponent,
     ReportParametersComponent,
     ViewIdentifierComponent,
     ReportParamComponent,
@@ -329,8 +326,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
       { path: 'accounts/group/:groupid', component: RelatedAccountsComponent, canActivate: [AuthGuard] },
       { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
-      { path: 'account-test', component: AccountTestComponent, canActivate: [AuthGuard] },
       { path: 'grid-test', component: GridTestComponent, canActivate: [AuthGuard] },
+      { path: 'journal', component: JournalComponent, canActivate: [AuthGuard] },
 
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
@@ -366,7 +363,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
     SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherFormComponent,
-    VoucherLineFormComponent, AccountTestFormComponent,TabComponent
+    VoucherLineFormComponent, TabComponent
   ],
   bootstrap: [AppComponent]
 })

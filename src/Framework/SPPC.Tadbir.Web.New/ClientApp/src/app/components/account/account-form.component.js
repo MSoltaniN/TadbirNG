@@ -25,6 +25,8 @@ var environment_1 = require("../../../environments/environment");
 var kendo_angular_l10n_1 = require("@progress/kendo-angular-l10n");
 var detail_component_1 = require("../../class/detail.component");
 var viewName_1 = require("../../security/viewName");
+var source_1 = require("../../class/source");
+var index_1 = require("../../service/api/index");
 function getLayoutModule(layout) {
     return layout.getLayout();
 }
@@ -43,6 +45,8 @@ var AccountFormComponent = /** @class */ (function (_super) {
         _this.parentFullCode = '';
         _this.accGroupList = [];
         _this.level = 0;
+        _this.selectedCurrencyValue = "1";
+        _this.selectedTurnoverModeValue = "-1";
         _this.isNew = false;
         _this.errorMessage = '';
         _this.save = new core_1.EventEmitter();
@@ -58,6 +62,8 @@ var AccountFormComponent = /** @class */ (function (_super) {
                 model.branchId = this.model.branchId;
                 model.fiscalPeriodId = this.model.fiscalPeriodId;
                 model.companyId = this.model.companyId;
+                if (this.parent)
+                    model.groupId = undefined;
                 this.save.emit(model);
             }
             else {
@@ -83,6 +89,10 @@ var AccountFormComponent = /** @class */ (function (_super) {
         var _this = this;
         this.viewId = viewName_1.ViewName.Account;
         this.editForm.reset();
+        this.getAccountGroups();
+        this.getBranchName();
+        this.GetCurrencies();
+        this.GetTurnoverModes();
         this.parentScopeValue = 0;
         if (this.parent) {
             this.parentFullCode = this.parent.fullCode;
@@ -92,10 +102,11 @@ var AccountFormComponent = /** @class */ (function (_super) {
         }
         else {
             this.level = 0;
-            this.getAccountGroups();
         }
         if (this.model && this.model.code)
             this.model.fullCode = this.parentFullCode + this.model.code;
+        else
+            this.model.fullCode = this.parentFullCode;
         setTimeout(function () {
             _this.editForm.reset(_this.model);
         });
@@ -106,6 +117,37 @@ var AccountFormComponent = /** @class */ (function (_super) {
             _this.accGroupList = res;
             if (_this.model && _this.model.groupId) {
                 _this.accGroupSelected = _this.model.groupId.toString();
+            }
+            else if (_this.parent) {
+                _this.accGroupSelected = _this.parent.groupId.toString();
+            }
+        });
+    };
+    AccountFormComponent.prototype.getBranchName = function () {
+        var _this = this;
+        if (this.model && this.model.branchId)
+            this.branch_Id = this.model.branchId;
+        else
+            this.branch_Id = this.BranchId;
+        this.accountService.getById(source_1.String.Format(index_1.BranchApi.Branch, this.branch_Id)).subscribe(function (res) {
+            _this.branchName = res.name;
+        });
+    };
+    AccountFormComponent.prototype.GetCurrencies = function () {
+        var _this = this;
+        this.lookupService.GetCurrenciesLookup().subscribe(function (res) {
+            _this.currenciesRows = res;
+            if (_this.model != undefined && _this.model.currencyId != undefined) {
+                _this.selectedCurrencyValue = _this.model.currencyId.toString();
+            }
+        });
+    };
+    AccountFormComponent.prototype.GetTurnoverModes = function () {
+        var _this = this;
+        this.lookupService.GetLookup(index_1.LookupApi.AccountTurnovers).subscribe(function (res) {
+            _this.turnovermodes = res;
+            if (_this.model != undefined && _this.model.turnoverMode != undefined) {
+                _this.selectedTurnoverModeValue = _this.model.turnoverMode.toString();
             }
         });
     };
@@ -130,7 +172,7 @@ var AccountFormComponent = /** @class */ (function (_super) {
     AccountFormComponent = __decorate([
         core_1.Component({
             selector: 'account-form-component',
-            styles: ["input[type=text],textarea,.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}"],
+            styles: ["\ninput[type=text],.ddl-acc { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}\n/deep/ .dialog-body .k-tabstrip > .k-content { padding:15px; }\n.dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }\n@media screen and (max-width:800px) {\n  .dialog-body{\n    width: 90%;\n    min-width: 250px;\n  }\n}\n/deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }\n/deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }\n\n/deep/ .k-switch-on .k-switch-handle { left: -8px !important; }\n/deep/ .k-switch-off .k-switch-handle { left: -4px !important; }\n/deep/ .k-switch[dir=\"rtl\"] .k-switch-label-on { right: -22px; }\n/deep/ .k-switch[dir=\"rtl\"] .k-switch-label-off { left: 0; }\n/deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }\n"],
             templateUrl: './account-form.component.html',
             providers: [{
                     provide: kendo_angular_l10n_1.RTL,

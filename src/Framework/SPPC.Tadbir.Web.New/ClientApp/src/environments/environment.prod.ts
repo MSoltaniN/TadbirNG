@@ -22,7 +22,8 @@ export const Metadatas = {
   Company: 'companies',
   OperationLog: 'system/oplog',
   AccountGroup: "accgroups",
-  AccountCollection: "acccollections"
+  AccountCollection: "acccollections",
+  JournalByDateByRow: "journalbydatebyrow"
 }
 
 
@@ -44,17 +45,18 @@ export const Entities = {
   ViewRowPermission: "ViewRowPermission",
   OperationLog: "OperationLog",
   AccountGroup: "AccountGroup",
-  AccountCollection: "AccountCollection"
+  AccountCollection: "AccountCollection",
+  JournalByDateByRow: "JournalByDateByRow"
 }
 
 export const ColumnVisibility =
-  {
-    Default: "Default",
-    AlwaysVisible: "AlwaysVisible",
-    AlwaysHidden: "AlwaysHidden",
-    Visible: "Visible",
-    Hidden: "Hidden"
-  }
+{
+  Default: "Default",
+  AlwaysVisible: "AlwaysVisible",
+  AlwaysHidden: "AlwaysHidden",
+  Visible: "Visible",
+  Hidden: "Hidden"
+}
 
 
 export const SessionKeys = {
@@ -64,7 +66,7 @@ export const SessionKeys = {
   LastUserBranch: 'lastUserBranch',
   LastUserFpId: 'lastUserFpId',
   CurrentRoute: 'currentRoute',
-  CurrentSkin:'currentSkin'
+  CurrentSkin: 'currentSkin'
 
 }
 

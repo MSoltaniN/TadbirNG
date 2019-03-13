@@ -25,4 +25,5 @@ __export(require("./operationLog.service"));
 __export(require("./dashboard.service"));
 __export(require("./accountGroups.service"));
 __export(require("./accountCollection.service"));
+__export(require("./grid.service"));
 //# sourceMappingURL=index.js.map

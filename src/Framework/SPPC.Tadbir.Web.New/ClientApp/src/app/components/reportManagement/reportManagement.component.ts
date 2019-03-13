@@ -475,7 +475,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     var tabIsOpen = this.tabsComponent.openTab(this.currentReportName,null,null,
       true,false,true,this.currentReportId,designer);   
 
-     if(!tabIsOpen) return;     
+    if(!tabIsOpen) return;     
 
     var url = String.Format(ReportApi.ReportDesign, this.currentReportId);
     this.showReportViewer = false;
@@ -533,12 +533,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           }));
 
         }
-
-    });
-
-      
-
-    
+    });  
   }
 
   deleteReport(deleteFlag : boolean)
@@ -551,6 +546,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
           this.reportingService.deleteReport(url).subscribe((response: any) => {
             this.showMessage(this.getText('Report.ReportDeleted'));
+            this.tabsComponent.closeTabByReportId(this.currentReportId);
             this.currentReportId = null;
             this.disableButtons = true;
             
@@ -591,12 +587,19 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   }
 
   public setClass(dataItem: any): any {
-    return {
-        
-        'rep-folder': dataItem.isGroup ,        
-        'rep-system': !dataItem.isGroup && dataItem.isSystem,
-        'rep-user': !dataItem.isGroup && !dataItem.isSystem        
-    };
+    
+    var cssClass = '';
+    if(dataItem.isGroup)
+        cssClass = 'rep-folder';
+    if(!dataItem.isGroup && dataItem.isSystem)
+       cssClass = 'rep-system';
+    if(!dataItem.isGroup && !dataItem.isSystem)
+       cssClass = 'rep-user';
+
+    if(dataItem.id == this.currentDefaultReportId)
+       cssClass += ' def';
+
+    return cssClass;
   }
 }
 

@@ -46,6 +46,9 @@ var TabComponent = /** @class */ (function () {
         core_1.Input()
     ], TabComponent.prototype, "Id", void 0);
     __decorate([
+        core_1.Input()
+    ], TabComponent.prototype, "Manager", void 0);
+    __decorate([
         core_1.ViewChild(reportViewer_component_1.ReportViewerComponent)
     ], TabComponent.prototype, "reportViewer", void 0);
     TabComponent = __decorate([

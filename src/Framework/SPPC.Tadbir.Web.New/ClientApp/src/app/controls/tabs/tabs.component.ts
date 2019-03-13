@@ -112,6 +112,27 @@ export class TabsComponent implements AfterContentInit {
     this.CloseConfirm = false;
   }
 
+  closeTabByReportId(id:number)
+  {
+    var prefix : string;
+    
+    prefix = 'viewerTab';
+ 
+    if(this.dynamicTabs.filter(p=>p.Id == prefix + id).length > 0)
+    {
+      var viewerTab = this.dynamicTabs.filter(p=>p.Id == prefix + id)[0];
+      this.closeTab(viewerTab);      
+    }
+
+    prefix = 'designerTab';
+
+    if(this.dynamicTabs.filter(p=>p.Id == prefix + id).length > 0)
+    {
+      var designerTab = this.dynamicTabs.filter(p=>p.Id == prefix + id)[0];
+      this.closeTab(designerTab);      
+    }
+  }
+
   openTab(title: string, template, data, isCloseable = false,
     isViewer:boolean = false,isDesigner:boolean = false,id:string,manager:any):boolean {
 
