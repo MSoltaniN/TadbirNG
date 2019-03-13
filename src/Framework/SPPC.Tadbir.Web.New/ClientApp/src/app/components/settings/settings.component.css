@@ -4,14 +4,14 @@
     margin:0;
 }
 
-    #setting-form > .col-sm-6 {
-        padding: 0;
-    }
+  #setting-form > .col-sm-3, #setting-form > .col-sm-9 {
+    padding: 0;
+  }
 
 @media screen and (max-width:768px) {
-    #setting-form > .col-sm-6 {
-        float: unset !important;
-    }
+  #setting-form > .col-sm-3, #setting-form > .col-sm-9 {
+    float: unset !important;
+  }
 }
 
 .section-header {

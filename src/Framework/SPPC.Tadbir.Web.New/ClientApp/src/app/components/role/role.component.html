@@ -37,7 +37,7 @@
       <grid-setting entityTypeName="Role"></grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
     </ng-template>
-    <kendo-grid-checkbox-column showSelectAll="true" width="10"></kendo-grid-checkbox-column>
+    <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
 
     <!-- template for mobile -->
     <kendo-grid-column media="(max-width: 450px)" title="">
@@ -66,13 +66,13 @@
         <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column media="(min-width: 450px)" width="350" sppc-grid-column="Role.description">
+    <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="Role.description">
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
         <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
       </ng-template>
     </kendo-grid-column>
 
-    <kendo-grid-command-column media="(min-width: 450px)" width="320">
+    <kendo-grid-command-column media="(min-width: 450px)">
       <ng-template kendoGridCellTemplate let-role>
         <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
         <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
