@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using BabakSoft.Platform.Data;
+using SPPC.Framework.Extensions;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner
@@ -43,10 +44,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         public void XferAccounts()
         {
             var accounts = _dalFrom.Query("SELECT * FROM __Account__ WHERE Id > 0");
-            Dictionary<string, int> accountMap = BuildAccountMap(accounts);
+            _accountMap = BuildAccountMap(accounts);
             foreach (DataRow row in accounts.Rows)
             {
-                var vm = GetViewModel(row, accountMap);
+                var vm = GetViewModel(row, _accountMap);
                 string insertQuery = String.Format(Scripts.InsertAccount,
                     vm.Id, vm.ParentId.HasValue ? vm.ParentId.Value.ToString() : "NULL",
                     vm.GroupId.HasValue ? vm.GroupId.Value.ToString() : "NULL", vm.FiscalPeriodId,
@@ -101,6 +102,42 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
                 string insertQuery = String.Format(Scripts.InsertProject,
                     row["Id"].ToString(), row["FPId"].ToString(), row["PCode"].ToString(),
                     row["PCode"].ToString(), row["Name"].ToString());
+                _dalTo.ExecuteNonQuery(insertQuery);
+            }
+        }
+
+        public void XferVouchers()
+        {
+            var vouchers = _dalFrom.Query("SELECT * FROM __Transaction__ WHERE Id > 0");
+            foreach (DataRow row in vouchers.Rows)
+            {
+                string date = DateTime.Now.Parse(row["TDate"].ToString(), true).ToShortDateString(false);
+                string insertQuery = String.Format(Scripts.InsertVoucher,
+                    row["Id"].ToString(), row["FPId"].ToString(), row["SanadNo"].ToString(),
+                    date, row["TRes"].ToString(), row["TDesc"].ToString());
+                _dalTo.ExecuteNonQuery(insertQuery);
+            }
+        }
+
+        public void XferVoucherLines()
+        {
+            int id = 1;
+            var vouchers = _dalFrom.Query("SELECT * FROM __Article__ WHERE Id > 0 ORDER BY TransId, Id");
+            foreach (DataRow row in vouchers.Rows)
+            {
+                if (row["AccountId"].ToString() == "0")
+                {
+                    continue;
+                }
+
+                string accountId = _accountMap[row["AccountId"].ToString()].ToString();
+                string detailId = row["FAccId"].ToString() == "0" ? "NULL" : row["FAccId"].ToString();
+                string centerId = row["CostCenter"].ToString() == "0" ? "NULL" : row["CostCenter"].ToString();
+                string projectId = row["Project"].ToString() == "0" ? "NULL" : row["Project"].ToString();
+                string insertQuery = String.Format(Scripts.InsertVoucherLine,
+                    id++, row["TransId"].ToString(), row["FPId"].ToString(),
+                    accountId, detailId, centerId, projectId,
+                    row["ADesc"].ToString(), row["Debit"].ToString(), row["Credit"].ToString());
                 _dalTo.ExecuteNonQuery(insertQuery);
             }
         }
@@ -176,5 +213,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
 
         private SqlDataLayer _dalFrom;
         private SqlDataLayer _dalTo;
+        private Dictionary<string, int> _accountMap;
     }
 }

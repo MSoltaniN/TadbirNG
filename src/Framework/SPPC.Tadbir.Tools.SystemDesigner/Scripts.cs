@@ -53,7 +53,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Name]
            ,[Level])
      VALUES
-           ('{0}',{1},{2},'{3}','1','1','0','{4}','{5}',N'{6}','{7}')";
+           ('{0}',{1},{2},'{3}','1','1','0', N'{4}', N'{5}',N'{6}','{7}')";
 
         public const string InsertDetailAccount =
             @"INSERT INTO [Finance].[DetailAccount]
@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Name]
            ,[Level])
      VALUES
-           ('{0}', {1}, '{2}', 1, 0, '{3}', '{4}', '{5}', {6})";
+           ('{0}', {1}, '{2}', 1, 0, N'{3}', N'{4}', N'{5}', {6})";
 
         public const string InsertCostCenter =
             @"INSERT INTO [Finance].[CostCenter]
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Name]
            ,[Level])
      VALUES
-           ('{0}', NULL, '{1}', 1, 0, '{2}', '{3}', '{4}', 0)";
+           ('{0}', NULL, '{1}', 1, 0, N'{2}', N'{3}', N'{4}', 0)";
 
         public const string InsertProject =
             @"INSERT INTO [Finance].[Project]
@@ -95,6 +95,39 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Name]
            ,[Level])
      VALUES
-           ('{0}', NULL, '{1}', 1, 0, '{2}', '{3}', '{4}', 0)";
+           ('{0}', NULL, '{1}', 1, 0, N'{2}', N'{3}', N'{4}', 0)";
+
+        public const string InsertVoucher =
+            @"INSERT INTO [Finance].[Voucher]
+           ([VoucherID]
+		   ,[FiscalPeriodID]
+           ,[BranchID]
+           ,[DocumentID]
+           ,[StatusID]
+           ,[CreatedByID]
+           ,[ModifiedByID]
+           ,[No]
+           ,[Date]
+           ,[Reference]
+           ,[Description])
+     VALUES
+           ('{0}', '{1}', 1, NULL, 1, 1, 1, '{2}', '{3}', N'{4}', N'{5}')";
+
+        public const string InsertVoucherLine =
+            @"INSERT INTO [Finance].[VoucherLine]
+           ([LineID]
+		   ,[VoucherID]
+           ,[FiscalPeriodID]
+           ,[BranchID]
+           ,[AccountID]
+           ,[DetailID]
+           ,[CostCenterID]
+           ,[ProjectID]
+           ,[CurrencyID]
+           ,[Description]
+           ,[Debit]
+           ,[Credit])
+     VALUES
+           ('{0}', '{1}', '{2}', 1, '{3}', {4}, {5}, {6}, 1, N'{7}', '{8}', '{9}')";
     }
 }
