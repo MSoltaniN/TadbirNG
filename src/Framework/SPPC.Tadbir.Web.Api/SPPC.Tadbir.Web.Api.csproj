@@ -65,6 +65,18 @@
     <ProjectReference Include="..\SPPC.Tadbir.Service\SPPC.Tadbir.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Stimulsoft.Base">
+      <HintPath>..\..\..\lib\Stimulsoft.Web\Stimulsoft.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Stimulsoft.Report">
+      <HintPath>..\..\..\lib\Stimulsoft.Web\Stimulsoft.Report.dll</HintPath>
+    </Reference>
+    <Reference Include="Stimulsoft.Report.Web">
+      <HintPath>..\..\..\lib\Stimulsoft.Web\Stimulsoft.Report.Web.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ProjectCLI.exe -cmd:reskey -res:$(ProjectDir)Resources\Types\AppStrings.resx -ns:$(ProjectName).Resources.Types" />
   </Target>

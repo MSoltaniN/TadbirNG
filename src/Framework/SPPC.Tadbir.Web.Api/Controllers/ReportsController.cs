@@ -10,6 +10,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Reporting;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Extensions;
@@ -200,6 +201,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _sysRepository.DeleteUserReportAsync(reportId);
             return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // PUT: api/reports/sys/quickreport
+        [HttpPut]
+        [Route(ReportApi.EnvironmentQuickReportUrl)]
+        public async Task<IActionResult> PutEnvironmentUserQuickReport([FromBody] IList<IQuickReportColumn> columns)
+        {
+            return Ok();
         }
 
         #endregion

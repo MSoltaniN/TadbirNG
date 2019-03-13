@@ -154,8 +154,16 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(DateTime from, DateTime to)
         {
             var journalQuery = GetJournalByDateByRowQuery(from, to);
-            return await journalQuery
+            var journal = await journalQuery
                 .ToListAsync();
+
+            int rowNo = 1;
+            foreach (var journalItem in journal)
+            {
+                journalItem.RowNo = rowNo++;
+            }
+
+            return journal;
         }
 
         /// <summary>
@@ -169,8 +177,16 @@ namespace SPPC.Tadbir.Persistence
             DateTime from, DateTime to)
         {
             var journalQuery = GetJournalByDateByRowDetailQuery(from, to);
-            return await journalQuery
+            var journal = await journalQuery
                 .ToListAsync();
+
+            int rowNo = 1;
+            foreach (var journalItem in journal)
+            {
+                journalItem.RowNo = rowNo++;
+            }
+
+            return journal;
         }
 
         /// <summary>

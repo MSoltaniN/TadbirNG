@@ -41,6 +41,9 @@ export class ReportApi {
     // reports/sys/{reportId:min(1)}/caption
     public static ReportCaption = environment.BaseUrl + "/reports/sys/{0}/caption";
 
+    // reports/sys/quickreport
+    public static EnvironmentQuickReport = environment.BaseUrl + "/reports/sys/quickreport";
+
     // reports/voucher/sum-by-date
     public static EnvironmentVoucherSummaryByDate = environment.BaseUrl + "/reports/voucher/sum-by-date";
 

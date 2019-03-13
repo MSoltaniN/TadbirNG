@@ -12,6 +12,8 @@ namespace SPPC.Tadbir.Api
         {
         }
 
+        #region Report System API
+
         /// <summary>
         /// API client URL for report hierarchy for Report Manager UI
         /// </summary>
@@ -103,6 +105,30 @@ namespace SPPC.Tadbir.Api
         public const string ReportCaptionUrl = "reports/sys/{reportId:min(1)}/caption";
 
         /// <summary>
+        /// API client URL for report metadata for a view specified by unique identifier
+        /// </summary>
+        public const string ReportMetadataByView = "reports/metadata/{0}";
+
+        /// <summary>
+        /// API server route URL for report metadata for a view specified by unique identifier
+        /// </summary>
+        public const string ReportMetadataByViewUrl = "reports/metadata/{viewId:min(1)}";
+
+        /// <summary>
+        /// API client URL for a quick report invoked by environment user
+        /// </summary>
+        public const string EnvironmentQuickReport = "reports/sys/quickreport";
+
+        /// <summary>
+        /// API server route URL for a quick report invoked by environment user
+        /// </summary>
+        public const string EnvironmentQuickReportUrl = "reports/sys/quickreport";
+
+        #endregion
+
+        #region Business Reports API
+
+        /// <summary>
         /// API client URL for Voucher Summary by Date report
         /// </summary>
         public const string EnvironmentVoucherSummaryByDate = "reports/voucher/sum-by-date";
@@ -192,14 +218,6 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string JournalByDateLedgerSummaryByDateUrl = "reports/journal/by-date/sum-by-date";
 
-        /// <summary>
-        /// API client URL for report metadata for a view specified by unique identifier
-        /// </summary>
-        public const string ReportMetadataByView = "reports/metadata/{0}";
-
-        /// <summary>
-        /// API server route URL for report metadata for a view specified by unique identifier
-        /// </summary>
-        public const string ReportMetadataByViewUrl = "reports/metadata/{viewId:min(1)}";
+        #endregion
     }
 }
