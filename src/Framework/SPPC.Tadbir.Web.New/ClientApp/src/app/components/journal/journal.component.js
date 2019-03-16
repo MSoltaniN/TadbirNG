@@ -28,7 +28,6 @@ var filter_1 = require("../../class/filter");
 var reportApi_1 = require("../../service/api/reportApi");
 var journalType_1 = require("../../enum/journalType");
 var journalDisplayType_1 = require("../../enum/journalDisplayType");
-var filterExpressionBuilder_1 = require("../../class/filterExpressionBuilder");
 function getLayoutModule(layout) {
     return layout.getLayout();
 }
@@ -83,12 +82,9 @@ var JournalComponent = /** @class */ (function (_super) {
         this.cdref.detectChanges();
     };
     JournalComponent.prototype.getReportData = function () {
-        debugger;
         if (this.journalType) {
-            var filterExpBuilder = new filterExpressionBuilder_1.FilterExpressionBuilder();
-            this.currentFilter = filterExpBuilder.New(new filter_1.Filter("VoucherStatusId", this.voucherStatusSelected, "== {0}", "System.Int32"))
-                //.And(new Filter("", , ".Contains({0})", "System.String"))
-                .Build();
+            this.defaultFilter.push(new filter_1.Filter("VoucherStatusId", this.voucherStatusSelected, "== {0}", "System.Int32"));
+            this.pageIndex = 0;
             if (this.journalType == journalType_1.JournalType.ByDate && this.fromDate && this.toDate) {
                 switch (parseInt(this.displayTypeSelected)) {
                     case journalDisplayType_1.JournalDisplayType.ByDateByRow:
