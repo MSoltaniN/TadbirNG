@@ -17,7 +17,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class SettingsController : Controller
+    public class SettingsController : ApiControllerBase
     {
         public SettingsController(IConfigRepository repository, IStringLocalizer<AppStrings> strings)
         {
@@ -52,6 +52,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.SaveConfigAsync(settings);
             return Ok();
+        }
+
+        [Route(SettingsApi.DateRangeSettingsUrl)]
+        public async Task<IActionResult> GetDateRangeSettingsAsync()
+        {
+            var setting = await _repository.GetConfigByTypeAsync<DateRangeConfig>();
+            return Json(setting);
+        }
+
+        [Route(SettingsApi.NumberDisplaySettingsUrl)]
+        public async Task<IActionResult> GetNumberDisplaySettingsAsync()
+        {
+            var setting = await _repository.GetConfigByTypeAsync<NumberDisplayConfig>();
+            return Json(setting);
         }
 
         // GET: api/settings/list/users/{userId:min(1)}

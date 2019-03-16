@@ -23,6 +23,26 @@ namespace SPPC.Tadbir.Api
         public const string AllSettingsUrl = "settings";
 
         /// <summary>
+        /// API client URL for default date range settings
+        /// </summary>
+        public const string DateRangeSettings = "settings/date-range";
+
+        /// <summary>
+        /// API server route URL for default date range settings
+        /// </summary>
+        public const string DateRangeSettingsUrl = "settings/date-range";
+
+        /// <summary>
+        /// API client URL for number display settings
+        /// </summary>
+        public const string NumberDisplaySettings = "settings/num-display";
+
+        /// <summary>
+        /// API server route URL for default date range settings
+        /// </summary>
+        public const string NumberDisplaySettingsUrl = "settings/num-display";
+
+        /// <summary>
         /// API client URL for all list form view settings for a user specified by unique identifier
         /// </summary>
         public const string ListSettingsByUser = "settings/list/users/{0}";
