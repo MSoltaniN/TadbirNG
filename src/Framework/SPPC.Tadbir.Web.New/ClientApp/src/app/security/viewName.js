@@ -17,5 +17,11 @@ var ViewName;
     ViewName[ViewName["OperationLog"] = 13] = "OperationLog";
     ViewName[ViewName["AccountCollection"] = 14] = "AccountCollection";
     ViewName[ViewName["JournalByDateByRow"] = 15] = "JournalByDateByRow";
+    ViewName[ViewName["JournalByDateByRowDetail"] = 16] = "JournalByDateByRowDetail";
+    ViewName[ViewName["JournalByDateByLedger"] = 17] = "JournalByDateByLedger";
+    ViewName[ViewName["JournalByDateBySubsidiary"] = 18] = "JournalByDateBySubsidiary";
+    ViewName[ViewName["JournalByDateSummary"] = 19] = "JournalByDateSummary";
+    ViewName[ViewName["JournalByDateSummaryByDate"] = 20] = "JournalByDateSummaryByDate";
+    ViewName[ViewName["JournalByDateSummaryByMonth"] = 21] = "JournalByDateSummaryByMonth";
 })(ViewName = exports.ViewName || (exports.ViewName = {}));
 //# sourceMappingURL=viewName.js.map

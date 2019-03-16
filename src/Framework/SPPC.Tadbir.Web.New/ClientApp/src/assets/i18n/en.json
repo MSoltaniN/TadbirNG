@@ -7,22 +7,7 @@
     "Name": "Tadbir Accounting System",
     "SummaryName": "Tadbir",
     "NotViewAccess": "You do not have access to view information",
-    "Level": "Level",
-    "Menu": {
-      "Account": "Account",
-      "Voucher": "Voucher",
-      "Users": "Users",
-      "Roles": "Roles",
-      "DetailAccount": "Detail Account",
-      "CostCenter": "Cost Center",
-      "Project": "Project",
-      "FiscalPeriod": "Fiscal Period",
-      "Branch": "Branches",
-      "Company": "Company",
-      "AccountRelations": "Account Relations",
-      "ChangePassword": "Change Password",
-      "Exit": "Exit"
-    }
+    "Level": "Level"
   },
   "Enviroment": {
     "FiscalPeriod": "Fiscal Period",
@@ -71,23 +56,23 @@
     "ReportDesign": "Design of",
     "Reports": "Reports",
     "ReportManagement": "Report Management",
-    "ReportParameter" : "Report parameters",
-    "Design":"ِDesign Report",
-    "Preview":"Preview Report",
-    "Delete":"Delete Report",
-    "SaveAs":"SaveAs Report",
-    "SaveIsOk":"Report saved successfully",
-    "SaveAsIsOk":"Report copied successfully",
-    "Title" : "Report title",
+    "ReportParameter": "Report parameters",
+    "Design": "ِDesign Report",
+    "Preview": "Preview Report",
+    "Delete": "Delete Report",
+    "SaveAs": "SaveAs Report",
+    "SaveIsOk": "Report saved successfully",
+    "SaveAsIsOk": "Report copied successfully",
+    "Title": "Report title",
     "DeleteReportConfirm": "are you sure to delete report {0}?",
-    "ReportDeleted":"Report deleted successfully",
-    "ReportNameIsReq":"Report name is required",
-    "ReportNameTooLong":"Report name is too long",
+    "ReportDeleted": "Report deleted successfully",
+    "ReportNameIsReq": "Report name is required",
+    "ReportNameTooLong": "Report name is too long",
     "ReportSetDefaultForAll": "The report was set to default for all users",
-    "DefaultForAll":"Default for everyone",
-    "ReportDesktop" : "ِDesktop",
-    "Close":"Save Design",
-    "ConfirmMsg" : "The design environment of the report has changed or you wish to save the report ?"
+    "DefaultForAll": "Default for everyone",
+    "ReportDesktop": "ِDesktop",
+    "Close": "Save Design",
+    "ConfirmMsg": "The design environment of the report has changed or you wish to save the report ?"
   },
   "Buttons": {
     "Ok": "Ok",
@@ -107,7 +92,7 @@
     "FilterForm": "Filter Form",
     "Tools": "Tools",
     "Save": "Save",
-    "Close":"Close"
+    "Close": "Close"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -134,12 +119,96 @@
     "Successful": "Successful",
     "ViewTreeConfig": "View Tree Config",
     "AccountGroup": "Account Group",
-    "AccountCollection": "Account Collection"
+    "AccountCollection": "Account Collection",
+    "Journal": "Journal",
+    "JournalByDateByRow": "Journal By Date By Row",
+    "JournalByDateByRowDetail": "Journal By Date By Row Detail",
+    "JournalByDateByLedger": "Journal By Date By Ledger",
+    "JournalByDateBySubsidiary": "Journal By Date By Subsidiary",
+    "JournalByDateSummary": "Journal By Date Summary",
+    "JournalByDateSummaryByDate": "Journal By Date Summary By Date"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
     "CurrentBranchAndSubsets": "Current Branch And Subsets",
     "CurrentBranch": "Current Branch"
+  },
+  "Journal": {
+    "ByDate": "By Date",
+    "ByVoucher": "By Voucher",
+    "FromDate": "From Date",
+    "ToDate": "To Date",
+    "FromVoucher": "From Voucher",
+    "ToVoucher": "To Voucher",
+    "DisplayType": "Display Type",
+    "SelectBranch": "Select Branch",
+    "BranchSeparation": "Branch Separation",
+    "VoucherStatus": "Voucher Status",
+    "ArticleType": "Article Type",
+    "Computing": "Computing",
+    "OnLabel": "Yes",
+    "OffLabel": "No"
+  },
+  "JournalByDateByRow": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "AccountFullCode": "Account Full Code",
+    "AccountName": "Account Name",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit"
+  },
+  "JournalByDateByRowDetail": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "AccountFullCode": "Account Full Code",
+    "AccountName": "Account Name",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "DetailAccountFullCode": "Detail Account Full Code",
+    "DetailAccountName": "Detail Account Name",
+    "CostCenterFullCode": "Cost Center Full Code",
+    "CostCenterName": "Cost Center Name",
+    "ProjectFullCode": "Project Full Code",
+    "ProjectName": "Project Name"
+  },
+  "JournalByDateByLedger": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "AccountFullCode": "Account Full Code",
+    "AccountName": "Account Name",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit"
+  },
+  "JournalByDateBySubsidiary": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "AccountFullCode": "Account Full Code",
+    "AccountName": "Account Name",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit"
+  },
+  "JournalByDateSummary": {
+    "RowNo": "Row No",
+    "AccountFullCode": "Account Full Code",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit"
+  },
+  "JournalByDateSummaryByDate": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "AccountFullCode": "Account Full Code",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit"
   },
   "Account": {
     "NewSubAccount": "New sub account",

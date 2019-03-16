@@ -1,4 +1,4 @@
-<app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
+<app-bread-cumb [entityTypeName]="'Journal'"></app-bread-cumb>
 <div class="panel-body">
   <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
@@ -86,7 +86,6 @@
           </ng-template>
         </dl>
 
-        <button kendoGridAddCommand (click)="addNew(account.id)" type="button">{{ 'Buttons.New' | translate }}</button>
       </ng-template>
     </kendo-grid-column>
 
