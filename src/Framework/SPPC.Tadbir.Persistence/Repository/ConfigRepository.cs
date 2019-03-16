@@ -72,6 +72,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// اطلاعات تنظیمات مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="settingId">شناسه دیتابیسی تنظیمات مورد نظر</param>
+        /// <returns>اطلاعات نمایشی برای تنظیمات مورد نظر</returns>
+        public async Task<SettingBriefViewModel> GetConfigByIdAsync(int settingId)
+        {
+            var config = default(SettingBriefViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Setting>();
+            var configById = await repository.GetByIDAsync(settingId);
+            if (configById != null)
+            {
+                config = _mapper.Map<SettingBriefViewModel>(configById);
+            }
+
+            return config;
+        }
+
+        /// <summary>
         /// تنظیمات موجود برای کلاس تنظیمات مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TConfig">نوع تنظیمات مورد نیاز</typeparam>

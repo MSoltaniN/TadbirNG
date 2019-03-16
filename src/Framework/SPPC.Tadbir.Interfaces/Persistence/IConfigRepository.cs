@@ -24,6 +24,13 @@ namespace SPPC.Tadbir.Persistence
         Task SaveConfigAsync(IList<SettingBriefViewModel> configItems);
 
         /// <summary>
+        /// اطلاعات تنظیمات مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="settingId">شناسه دیتابیسی تنظیمات مورد نظر</param>
+        /// <returns>اطلاعات نمایشی برای تنظیمات مورد نظر</returns>
+        Task<SettingBriefViewModel> GetConfigByIdAsync(int settingId);
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای کلاس تنظیمات مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TConfig">نوع تنظیمات مورد نیاز</typeparam>

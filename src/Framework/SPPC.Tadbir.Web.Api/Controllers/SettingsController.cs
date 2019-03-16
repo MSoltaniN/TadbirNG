@@ -20,9 +20,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class SettingsController : ApiControllerBase
     {
         public SettingsController(IConfigRepository repository, IStringLocalizer<AppStrings> strings)
+            : base(strings)
         {
             _repository = repository;
-            _strings = strings;
         }
 
         // GET: api/settings
@@ -54,18 +54,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        [Route(SettingsApi.DateRangeSettingsUrl)]
-        public async Task<IActionResult> GetDateRangeSettingsAsync()
+        // GET: api/settings/{settingId:min(1)}
+        [Route(SettingsApi.SettingUrl)]
+        public async Task<IActionResult> GetSettingByIdAsync(int settingId)
         {
-            var setting = await _repository.GetConfigByTypeAsync<DateRangeConfig>();
-            return Json(setting);
-        }
+            var setting = await _repository.GetConfigByIdAsync(settingId);
+            if (setting != null)
+            {
+                setting.Title = _strings[setting.Title];
+                setting.Description = _strings[setting.Description];
+            }
 
-        [Route(SettingsApi.NumberDisplaySettingsUrl)]
-        public async Task<IActionResult> GetNumberDisplaySettingsAsync()
-        {
-            var setting = await _repository.GetConfigByTypeAsync<NumberDisplayConfig>();
-            return Json(setting);
+            return JsonReadResult(setting);
         }
 
         // GET: api/settings/list/users/{userId:min(1)}
@@ -157,6 +157,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IConfigRepository _repository;
-        private readonly IStringLocalizer<AppStrings> _strings;
     }
 }
