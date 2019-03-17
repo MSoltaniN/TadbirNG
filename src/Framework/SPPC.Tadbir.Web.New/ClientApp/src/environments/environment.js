@@ -38,7 +38,12 @@ exports.Metadatas = {
     OperationLog: 'system/oplog',
     AccountGroup: "accgroups",
     AccountCollection: "acccollections",
-    JournalByDateByRow: "journalbydatebyrow"
+    JournalByDateByRow: "journalbydatebyrow",
+    JournalByDateByRowDetail: "journalbydatebyrowdetail",
+    JournalByDateByLedger: "journalbydatebyledger",
+    JournalByDateBySubsidiary: "journalbydatebysubsidiary",
+    JournalByDateSummary: "journalbydatesummary",
+    JournalByDateSummaryByDate: "journalbydatesummarybydate"
 };
 exports.Entities = {
     Voucher: 'Voucher',
@@ -59,7 +64,12 @@ exports.Entities = {
     OperationLog: "OperationLog",
     AccountGroup: "AccountGroup",
     AccountCollection: "AccountCollection",
-    JournalByDateByRow: "JournalByDateByRow"
+    JournalByDateByRow: "JournalByDateByRow",
+    JournalByDateByRowDetail: "JournalByDateByRowDetail",
+    JournalByDateByLedger: "JournalByDateByLedger",
+    JournalByDateBySubsidiary: "JournalByDateBySubsidiary",
+    JournalByDateSummary: "JournalByDateSummary",
+    JournalByDateSummaryByDate: "JournalByDateSummaryByDate"
 };
 exports.ColumnVisibility = {
     Default: "Default",
@@ -75,7 +85,8 @@ exports.SessionKeys = {
     LastUserBranch: 'lastUserBranch',
     LastUserFpId: 'lastUserFpId',
     CurrentRoute: 'currentRoute',
-    CurrentSkin: 'currentSkin'
+    CurrentSkin: 'currentSkin',
+    NumberConfige: 'numberConfig'
 };
 var MessagePosition;
 (function (MessagePosition) {

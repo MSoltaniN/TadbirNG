@@ -76,8 +76,8 @@ export const SessionKeys = {
   LastUserBranch: 'lastUserBranch',
   LastUserFpId: 'lastUserFpId',
   CurrentRoute: 'currentRoute',
-  CurrentSkin: 'currentSkin'
-
+  CurrentSkin: 'currentSkin',
+  NumberConfige: 'numberConfig'
 }
 
 

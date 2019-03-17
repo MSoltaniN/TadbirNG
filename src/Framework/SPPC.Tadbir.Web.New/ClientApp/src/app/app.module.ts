@@ -118,7 +118,7 @@ import { LogoutComponent } from "./components/login/logout.component";
 
 import { AuthenticationService, AuthGuard } from "./service/login/index";
 
-import { SppcDatePipe } from "./pipes/index"
+import { SppcDatePipe, SppcNumConfigPipe } from "./pipes/index"
 import { ReplaceLineBreaksPipe } from './pipes/sppc.replaceLineBreaks.pipe';
 import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
@@ -229,6 +229,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CompanyComponent,
     CompanyFormComponent,
     SppcDatePipe,
+    SppcNumConfigPipe,
     ReplaceLineBreaksPipe,
     SppcCheckAccess,
     SppcViewTreeConfig,

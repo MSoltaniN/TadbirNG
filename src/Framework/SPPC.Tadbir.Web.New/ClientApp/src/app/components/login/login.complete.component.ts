@@ -19,6 +19,7 @@ import { ListFormViewConfig } from '../../model/listFormViewConfig';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
+import { SettingKey } from '../../enum/settingsKey';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -224,6 +225,11 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
       if (res)
         localStorage.setItem(SessionKeys.Setting + this.UserId, JSON.stringify(res));
     });
+
+    this.settingService.getSettingById(SettingKey.NumberDisplayConfig).subscribe(res => {
+      if (res)
+        localStorage.setItem(SessionKeys.NumberConfige, JSON.stringify(res.values));
+    })
   }
 
   loadMenuAndRoute(currentUser: ContextInfo) {

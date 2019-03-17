@@ -24,6 +24,7 @@ var index_1 = require("../../service/login/index");
 var default_component_1 = require("../../class/default.component");
 var environment_1 = require("../../../environments/environment");
 var kendo_angular_l10n_1 = require("@progress/kendo-angular-l10n");
+var settingsKey_1 = require("../../enum/settingsKey");
 function getLayoutModule(layout) {
     return layout.getLayout();
 }
@@ -165,6 +166,10 @@ var LoginCompleteComponent = /** @class */ (function (_super) {
         this.settingService.getListSettingsByUser(this.UserId).subscribe(function (res) {
             if (res)
                 localStorage.setItem(environment_1.SessionKeys.Setting + _this.UserId, JSON.stringify(res));
+        });
+        this.settingService.getSettingById(settingsKey_1.SettingKey.NumberDisplayConfig).subscribe(function (res) {
+            if (res)
+                localStorage.setItem(environment_1.SessionKeys.NumberConfige, JSON.stringify(res.values));
         });
     };
     LoginCompleteComponent.prototype.loadMenuAndRoute = function (currentUser) {
