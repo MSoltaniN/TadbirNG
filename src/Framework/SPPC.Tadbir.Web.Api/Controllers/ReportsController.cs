@@ -269,6 +269,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal = journal
                 .Apply(gridOptions)
                 .ToList();
+            SetJournalRowNumbers(journal);
             return Json(journal);
         }
 
@@ -285,6 +286,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal = journal
                 .Apply(gridOptions)
                 .ToList();
+            SetJournalRowNumbers(journal);
             return Json(journal);
         }
 
@@ -302,6 +304,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Apply(gridOptions)
                 .ToList();
             Localize(journal);
+            SetJournalRowNumbers(journal);
             return Json(journal);
         }
 
@@ -319,6 +322,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Apply(gridOptions)
                 .ToList();
             Localize(journal);
+            SetJournalRowNumbers(journal);
             return Json(journal);
         }
 
@@ -335,6 +339,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal = journal
                 .Apply(gridOptions)
                 .ToList();
+            SetJournalRowNumbers(journal);
             return Json(journal);
         }
 
@@ -351,6 +356,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal = journal
                 .Apply(gridOptions)
                 .ToList();
+            SetJournalRowNumbers(journal);
             return Json(journal);
         }
 
@@ -428,6 +434,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     param.CaptionKey = _strings[param.CaptionKey];
                     param.DescriptionKey = _strings[param.DescriptionKey];
                 }
+            }
+        }
+
+        private void SetJournalRowNumbers(IList<JournalViewModel> journal)
+        {
+            int rowNo = 1;
+            foreach (var journalItem in journal)
+            {
+                journalItem.RowNo = rowNo++;
+            }
+        }
+
+        private void SetJournalRowNumbers(IList<JournalWithDetailViewModel> journal)
+        {
+            int rowNo = 1;
+            foreach (var journalItem in journal)
+            {
+                journalItem.RowNo = rowNo++;
             }
         }
 
