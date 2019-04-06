@@ -269,7 +269,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal = journal
                 .Apply(gridOptions)
                 .ToList();
-            SetJournalRowNumbers(journal);
+            SetJournalRowNumbers(journal, gridOptions);
             return Json(journal);
         }
 
@@ -286,7 +286,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal = journal
                 .Apply(gridOptions)
                 .ToList();
-            SetJournalRowNumbers(journal);
+            SetJournalRowNumbers(journal, gridOptions);
             return Json(journal);
         }
 
@@ -304,7 +304,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Apply(gridOptions)
                 .ToList();
             Localize(journal);
-            SetJournalRowNumbers(journal);
+            SetJournalRowNumbers(journal, gridOptions);
             return Json(journal);
         }
 
@@ -322,7 +322,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Apply(gridOptions)
                 .ToList();
             Localize(journal);
-            SetJournalRowNumbers(journal);
+            SetJournalRowNumbers(journal, gridOptions);
             return Json(journal);
         }
 
@@ -339,7 +339,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal = journal
                 .Apply(gridOptions)
                 .ToList();
-            SetJournalRowNumbers(journal);
+            SetJournalRowNumbers(journal, gridOptions);
             return Json(journal);
         }
 
@@ -356,7 +356,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal = journal
                 .Apply(gridOptions)
                 .ToList();
-            SetJournalRowNumbers(journal);
+            SetJournalRowNumbers(journal, gridOptions);
             return Json(journal);
         }
 
@@ -437,18 +437,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private void SetJournalRowNumbers(IList<JournalViewModel> journal)
+        private void SetJournalRowNumbers(IList<JournalViewModel> journal, GridOptions gridOptions)
         {
-            int rowNo = 1;
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
             foreach (var journalItem in journal)
             {
                 journalItem.RowNo = rowNo++;
             }
         }
 
-        private void SetJournalRowNumbers(IList<JournalWithDetailViewModel> journal)
+        private void SetJournalRowNumbers(IList<JournalWithDetailViewModel> journal, GridOptions gridOptions)
         {
-            int rowNo = 1;
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
             foreach (var journalItem in journal)
             {
                 journalItem.RowNo = rowNo++;

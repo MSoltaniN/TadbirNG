@@ -283,7 +283,7 @@ namespace SPPC.Tadbir.Persistence
             var journal = new List<JournalViewModel>();
             Func<VoucherLine, bool> allFilter = art => true;
             var lines = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Account)
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
             foreach (var byLedger in GetAccountTurnoverGroups(lines, true, 0, allFilter))
