@@ -6,8 +6,8 @@
   <kendo-splitter-pane>
     <kendo-splitter>
 
-      <kendo-splitter-pane [collapsible]="true" size="20%">
-
+      <kendo-splitter-pane [collapsible]="true" size="20%" #treeContent [scrollTop]="treeScrollTop">
+        <button (click)="testScroll()">test</button>
         <div style="height:100px">
           <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" style="margin-top:15px;">
 
@@ -23,7 +23,13 @@
                             [(selectedKeys)]="selectedKeys"
                             (selectionChange)="handleSelection($event)"
                             (nodeClick)="onNodeClick($event)">
+              <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                <div id="node-{{dataItem.id}}">
+                  {{dataItem.name}}
+                </div>
+              </ng-template>
             </kendo-treeview>
+            
             <kendo-contextmenu #treemenulimited [items]="contextmenuLimitedItems" (select)="onSelectContextmenu($event)">
               <ng-template kendoMenuItemTemplate let-item="item">
                 <span [ngClass]="item.icon"></span>
