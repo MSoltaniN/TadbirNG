@@ -11,16 +11,23 @@ var SppcNumConfigPipe = /** @class */ (function () {
     function SppcNumConfigPipe(settingService) {
         this.settingService = settingService;
     }
-    SppcNumConfigPipe.prototype.transform = function (value) {
+    SppcNumConfigPipe.prototype.transform = function (value, withDecimal) {
         if (value == null || value == undefined)
             return "";
         var result = value;
         var config;
+        var hasDecimal = true;
+        if (withDecimal != null) {
+            hasDecimal = withDecimal;
+        }
         config = this.settingService.getNumberConfigBySettingId();
         if (config) {
             if (config.useSeparator) {
                 result = this.setSeperator(value, config.separatorSymbol);
             }
+        }
+        if (parseInt(value) > 0 && hasDecimal) {
+            result = this.setDecimalPrecision(result, config);
         }
         return result;
     };
@@ -28,6 +35,36 @@ var SppcNumConfigPipe = /** @class */ (function () {
         var parts = num.toString().split(".");
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, char);
         return parts.join(".");
+    };
+    SppcNumConfigPipe.prototype.setDecimalPrecision = function (num, config) {
+        if (config.decimalPrecision > 0) {
+            var parts = num.toString().split(".");
+            var number = num;
+            var decimalPrecisionDigit = config.maxPrecision < config.decimalPrecision ? config.maxPrecision : config.decimalPrecision;
+            if (parts.length > 1) {
+                number = parts[1];
+                if (number.length != decimalPrecisionDigit) {
+                    if (number.length < decimalPrecisionDigit) {
+                        for (var i = 0; i <= decimalPrecisionDigit - number.length; i++) {
+                            number += "0";
+                        }
+                    }
+                    else {
+                        number = number.substring(0, decimalPrecisionDigit);
+                    }
+                }
+                parts[1] = number;
+            }
+            else {
+                var decimalNum = "";
+                for (var i = 0; i < decimalPrecisionDigit; i++) {
+                    decimalNum += "0";
+                }
+                parts.push(decimalNum);
+            }
+            return parts.join(".");
+        }
+        return num;
     };
     SppcNumConfigPipe = __decorate([
         core_1.Pipe({
