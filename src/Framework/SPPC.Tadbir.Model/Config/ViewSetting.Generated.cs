@@ -73,20 +73,8 @@ namespace SPPC.Tadbir.Model.Config
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-        /// <summary>
-        /// اطلاعات عمومی تنظیمات
-        /// </summary>
-        public virtual Setting Setting { get; set; }
-
-        /// <summary>
-        /// اطلاعات متادیتای نمای اطلاعاتی مرتبط با این تنظیمات
-        /// </summary>
-        public virtual View View { get; set; }
-
         private void InitReferences()
         {
-            Setting = new Setting();
-            View = new View();
         }
     }
 }

@@ -42,17 +42,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
-
-            builder.HasOne(e => e.Setting)
-                .WithMany()
-                .HasForeignKey(e => e.SettingId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Config_ViewSetting_Config_Setting");
-            builder.HasOne(e => e.View)
-                .WithMany()
-                .HasForeignKey(e => e.ViewId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Config_ViewSetting_Config_View");
         }
     }
 }

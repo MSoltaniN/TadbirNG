@@ -227,6 +227,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ViewTreeFullConfig> GetViewTreeConfigByViewAsync(int viewId)
         {
             var viewConfig = default(ViewTreeFullConfig);
+            _unitOfWork.UseCompanyContext();
             var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
             var config = await repository
                 .GetSingleByCriteriaAsync(cfg => cfg.ViewId == viewId
@@ -237,6 +238,7 @@ namespace SPPC.Tadbir.Persistence
                 ClipUsableTreeLevels(viewConfig);
             }
 
+            _unitOfWork.UseSystemContext();
             return viewConfig;
         }
 
@@ -247,6 +249,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveViewTreeConfigAsync(List<ViewTreeFullConfig> configItems)
         {
             Verify.ArgumentNotNull(configItems, "configItems");
+            _unitOfWork.UseCompanyContext();
             var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
             foreach (var configItem in configItems)
             {
@@ -260,6 +263,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await _unitOfWork.CommitAsync();
+            _unitOfWork.UseSystemContext();
         }
 
         /// <summary>
