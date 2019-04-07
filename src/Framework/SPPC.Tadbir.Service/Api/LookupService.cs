@@ -21,54 +21,42 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// حساب های موجود در یک دوره مالی و یک شعبه را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// حساب های موجود در محیط جاری را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب سازمانی موجود</param>
-        /// <returns>مجموعه حساب های یک دوره مالی و یک شعبه سازمانی</returns>
-        public IEnumerable<KeyValue> LookupAccounts(int fpId, int branchId)
+        /// <returns>مجموعه حساب های محیط جاری</returns>
+        public IEnumerable<KeyValue> LookupAccounts()
         {
-            var accountLookup = _apiClient.Get<IEnumerable<KeyValue>>(
-                LookupApi.FiscalPeriodBranchAccounts, fpId, branchId);
+            var accountLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.EnvironmentAccounts);
             return accountLookup;
         }
 
         /// <summary>
-        /// تفصیلی های شناور موجود در یک دوره مالی و یک شعبه را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// تفصیلی های شناور موجود در محیط جاری را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب سازمانی موجود</param>
-        /// <returns>مجموعه تفصیلی های شناور یک دوره مالی و یک شعبه سازمانی</returns>
-        public IEnumerable<KeyValue> LookupDetailAccounts(int fpId, int branchId)
+        /// <returns>مجموعه تفصیلی های شناور محیط جاری</returns>
+        public IEnumerable<KeyValue> LookupDetailAccounts()
         {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(
-                LookupApi.FiscalPeriodBranchDetailAccounts, fpId, branchId);
+            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.EnvironmentDetailAccounts);
             return lookup;
         }
 
         /// <summary>
-        /// مراکز هزینه موجود در یک دوره مالی و یک شعبه را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// مراکز هزینه موجود در محیط جاری را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب سازمانی موجود</param>
-        /// <returns>مجموعه مراکز هزینه یک دوره مالی و یک شعبه سازمانی</returns>
-        public IEnumerable<KeyValue> LookupCostCenters(int fpId, int branchId)
+        /// <returns>مجموعه مراکز هزینه محیط جاری</returns>
+        public IEnumerable<KeyValue> LookupCostCenters()
         {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(
-                LookupApi.FiscalPeriodBranchCostCenters, fpId, branchId);
+            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.EnvironmentCostCenters);
             return lookup;
         }
 
         /// <summary>
-        /// پروژه های موجود در یک دوره مالی و یک شعبه را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// پروژه های موجود در محیط جاری را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب سازمانی موجود</param>
-        /// <returns>مجموعه پروژه های یک دوره مالی و یک شعبه سازمانی</returns>
-        public IEnumerable<KeyValue> LookupProjects(int fpId, int branchId)
+        /// <returns>مجموعه پروژه های محیط جاری</returns>
+        public IEnumerable<KeyValue> LookupProjects()
         {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(
-                LookupApi.FiscalPeriodBranchProjects, fpId, branchId);
+            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.EnvironmentProjects);
             return lookup;
         }
 
@@ -79,7 +67,8 @@ namespace SPPC.Tadbir.Service
         /// <returns>مجموعه دوره های مالی موجود در یک شرکت</returns>
         public IEnumerable<KeyValue> LookupFiscalPeriods(int companyId)
         {
-            var fiscalperiodLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId);
+            var fiscalperiodLookup = _apiClient.Get<IEnumerable<KeyValue>>(
+                LookupApi.UserAccessibleCompanyFiscalPeriods, companyId);
             return fiscalperiodLookup;
         }
 

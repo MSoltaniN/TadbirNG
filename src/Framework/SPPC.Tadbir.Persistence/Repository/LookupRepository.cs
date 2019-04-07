@@ -13,6 +13,7 @@ using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -33,18 +34,27 @@ namespace SPPC.Tadbir.Persistence
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را تنظیم می کند
+        /// </summary>
+        /// <param name="currentContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
+        public void SetCurrentContext(UserContextViewModel currentContext)
+        {
+            _currentContext = currentContext;
+        }
+
         #region Finance Subsystem Lookup
 
         /// <summary>
         /// به روش آسنکرون، سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را
         /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetAccountsAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetAccountsAsync(GridOptions gridOptions = null)
         {
+            int fpId = _currentContext.FiscalPeriodId;
+            int branchId = _currentContext.BranchId;
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
                 .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id <= fpId
@@ -58,12 +68,12 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را
         /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(GridOptions gridOptions = null)
         {
+            int fpId = _currentContext.FiscalPeriodId;
+            int branchId = _currentContext.BranchId;
             var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccounts = await repository
                 .GetByCriteriaAsync(det => det.FiscalPeriod.Id <= fpId
@@ -77,12 +87,12 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را
         /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetCostCentersAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetCostCentersAsync(GridOptions gridOptions = null)
         {
+            int fpId = _currentContext.FiscalPeriodId;
+            int branchId = _currentContext.BranchId;
             var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
             var costCenters = await repository
                 .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id <= fpId
@@ -96,12 +106,12 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetProjectsAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetProjectsAsync(GridOptions gridOptions = null)
         {
+            int fpId = _currentContext.FiscalPeriodId;
+            int branchId = _currentContext.BranchId;
             var repository = _unitOfWork.GetAsyncRepository<Project>();
             var projects = await repository
                 .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id <= fpId
@@ -115,12 +125,12 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
         /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه اسناد مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetVouchersAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetVouchersAsync(GridOptions gridOptions = null)
         {
+            int fpId = _currentContext.FiscalPeriodId;
+            int branchId = _currentContext.BranchId;
             var repository = _unitOfWork.GetAsyncRepository<Voucher>();
             var vouchers = await repository
                 .GetByCriteriaAsync(voucher => voucher.FiscalPeriod.Id == fpId
@@ -134,12 +144,12 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، آرتیکل های مالی تعریف شده در دوره مالی و شعبه مشخص شده را
         /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه آرتیکل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(GridOptions gridOptions = null)
         {
+            int fpId = _currentContext.FiscalPeriodId;
+            int branchId = _currentContext.BranchId;
             var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             var lines = await repository
                 .GetByCriteriaAsync(line => line.FiscalPeriod.Id == fpId
@@ -393,7 +403,9 @@ namespace SPPC.Tadbir.Persistence
             _unitOfWork.UseSystemContext();
             var repository = _unitOfWork.GetAsyncRepository<View>();
             var views = await repository
-                .GetAllAsync();
+                .GetEntityQuery()
+                .Where(view => !String.IsNullOrEmpty(view.FetchUrl))
+                .ToListAsync();
             var lookup = views
                 .Select(view => _mapper.Map<KeyValue>(view))
                 .Apply(gridOptions)
@@ -435,5 +447,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IAppUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
+        private UserContextViewModel _currentContext;
     }
 }

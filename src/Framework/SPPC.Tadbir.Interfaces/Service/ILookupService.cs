@@ -10,36 +10,28 @@ namespace SPPC.Tadbir.Service
     public interface ILookupService
     {
         /// <summary>
-        /// حساب های موجود در یک دوره مالی و یک شعبه را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// حساب های موجود در محیط جاری را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب سازمانی موجود</param>
-        /// <returns>مجموعه حساب های یک دوره مالی و یک شعبه سازمانی</returns>
-        IEnumerable<KeyValue> LookupAccounts(int fpId, int branchId);
+        /// <returns>مجموعه حساب های محیط جاری</returns>
+        IEnumerable<KeyValue> LookupAccounts();
 
         /// <summary>
-        /// تفصیلی های شناور موجود در یک دوره مالی و یک شعبه را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// تفصیلی های شناور موجود در محیط جاری را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب سازمانی موجود</param>
-        /// <returns>مجموعه تفصیلی های شناور یک دوره مالی و یک شعبه سازمانی</returns>
-        IEnumerable<KeyValue> LookupDetailAccounts(int fpId, int branchId);
+        /// <returns>مجموعه تفصیلی های شناور محیط جاری</returns>
+        IEnumerable<KeyValue> LookupDetailAccounts();
 
         /// <summary>
-        /// مراکز هزینه موجود در یک دوره مالی و یک شعبه را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// مراکز هزینه موجود در محیط جاری را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب سازمانی موجود</param>
-        /// <returns>مجموعه مراکز هزینه یک دوره مالی و یک شعبه سازمانی</returns>
-        IEnumerable<KeyValue> LookupCostCenters(int fpId, int branchId);
+        /// <returns>مجموعه مراکز هزینه محیط جاری</returns>
+        IEnumerable<KeyValue> LookupCostCenters();
 
         /// <summary>
-        /// پروژه های موجود در یک دوره مالی و یک شعبه را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// پروژه های موجود در محیط جاری را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب سازمانی موجود</param>
-        /// <returns>مجموعه پروژه های یک دوره مالی و یک شعبه سازمانی</returns>
-        IEnumerable<KeyValue> LookupProjects(int fpId, int branchId);
+        /// <returns>مجموعه پروژه های محیط جاری</returns>
+        IEnumerable<KeyValue> LookupProjects();
 
         /// <summary>
         /// دوره های مالی موجود در یک شرکت را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
