@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentAccountsLookupUrl = "accounts/lookup";
 
         /// <summary>
-        /// API client URL for account full code
+        /// API client URL for account ledger defined in current environment
         /// </summary>
         public const string EnvironmentAccountsLedger = "accounts/ledger";
 

@@ -38,12 +38,33 @@ var TabsComponent = /** @class */ (function () {
     TabsComponent.prototype.close = function (flag) {
         if (flag)
             this.closeTab(this.currentTab);
+        if (this.dynamicTabs.length > 0)
+            this.selectTab(this.dynamicTabs[0]);
         this.CloseConfirm = false;
     };
     TabsComponent.prototype.save = function () {
         this.currentTab.Manager.invokeSaveReport();
         this.closeTab(this.currentTab);
+        if (this.dynamicTabs.length > 0)
+            this.selectTab(this.dynamicTabs[0]);
         this.CloseConfirm = false;
+    };
+    TabsComponent.prototype.closeTabByReportId = function (id) {
+        var prefix;
+        prefix = 'viewerTab';
+        if (this.dynamicTabs.filter(function (p) { return p.Id == prefix + id; }).length > 0) {
+            var viewerTab = this.dynamicTabs.filter(function (p) { return p.Id == prefix + id; })[0];
+            this.closeTab(viewerTab);
+            if (this.dynamicTabs.length > 0)
+                this.selectTab(this.dynamicTabs[0]);
+        }
+        prefix = 'designerTab';
+        if (this.dynamicTabs.filter(function (p) { return p.Id == prefix + id; }).length > 0) {
+            var designerTab = this.dynamicTabs.filter(function (p) { return p.Id == prefix + id; })[0];
+            this.closeTab(designerTab);
+            if (this.dynamicTabs.length > 0)
+                this.selectTab(this.dynamicTabs[0]);
+        }
     };
     TabsComponent.prototype.openTab = function (title, template, data, isCloseable, isViewer, isDesigner, id, manager) {
         if (isCloseable === void 0) { isCloseable = false; }
@@ -111,10 +132,14 @@ var TabsComponent = /** @class */ (function () {
             }
             else {
                 this.closeTab(tab);
+                if (this.dynamicTabs.length > 0)
+                    this.selectTab(this.dynamicTabs[0]);
             }
         }
         else if (tab.isViewer) {
             this.closeTab(tab);
+            if (this.dynamicTabs.length > 0)
+                this.selectTab(this.dynamicTabs[0]);
         }
     };
     TabsComponent.prototype.closeTab = function (tab) {

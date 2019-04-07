@@ -6,8 +6,8 @@
   <kendo-splitter-pane>
     <kendo-splitter>
 
-      <kendo-splitter-pane [collapsible]="true" size="20%" #treeContent [scrollTop]="treeScrollTop">
-        <button (click)="testScroll()">test</button>
+      <kendo-splitter-pane [collapsible]="true" size="20%" #treeContent [scrollTop]="treeScrollTop" class="hidden-xs">
+
         <div style="height:100px">
           <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" style="margin-top:15px;">
 

@@ -488,7 +488,10 @@
     "Level": "Level",
     "Description": "Description",
     "Delete": "Delete Detail Account",
-    "BranchScope": "Branch Scope"
+    "BranchScope": "Branch Scope",
+    "LedgerDetailAccount": "First Level Detail Account",
+    "EditorTitleEdit": "Edit detail account in level {0}",
+    "EditorTitleNew": "New detail account in level {0}"
   },
   "CostCenter": {
     "New": "New Cost Center",

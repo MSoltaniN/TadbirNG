@@ -68,6 +68,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(detailAccount);
         }
 
+        // GET: api/faccounts/ledger
+        [Route(DetailAccountApi.EnvironmentDetailAccountsLedgerUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
+        public async Task<IActionResult> GetEnvironmentDetailAccountsLedgerAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var detailAccounts = await _repository.GetDetailAccountsLedgerAsync();
+            return JsonReadResult(detailAccounts);
+        }
+
         // GET: api/faccounts/{faccountId:min(1)}/children
         [Route(DetailAccountApi.DetailAccountChildrenUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
