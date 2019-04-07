@@ -515,7 +515,10 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف پروژه",
-    "BranchScope": "دسترسی شعبه"
+    "BranchScope": "دسترسی شعبه",
+    "LedgerProject": "پروژه های سطح اول",
+    "EditorTitleEdit": "ویرایش پروژه در سطح {0}",
+    "EditorTitleNew": "پروژه جدید در سطح {0}"
   },
   "AccountRelations": {
     "MainComponent": "مولفه اصلی",

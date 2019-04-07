@@ -30,30 +30,13 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class CostCenterComponent extends GridExplorerComponent<CostCenter> implements OnInit {
+export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.CostCenter, Metadatas.CostCenter)
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.CostCenter, Metadatas.CostCenter, "CostCenter.LedgerCostCenter",
+      CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren)
   }
-
-
-  ngOnInit() {
-
-    setTimeout(() => {
-      this.treeParentTitle = this.getText('CostCenter.LedgerCostCenter');
-    })
-
-    this.environmentModelsUrl = CostCenterApi.EnvironmentCostCenters;
-    this.environmentModelsLedgerUrl = CostCenterApi.EnvironmentCostCentersLedger;
-    this.modelUrl = CostCenterApi.CostCenter;
-    this.modelChildrenUrl = CostCenterApi.CostCenterChildren;
-
-    this.getTreeNode();
-    this.reloadGrid();
-  }
-
-
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {

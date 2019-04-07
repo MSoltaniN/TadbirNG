@@ -490,7 +490,7 @@
     "Description": "Description",
     "Delete": "Delete Detail Account",
     "BranchScope": "Branch Scope",
-    "LedgerDetailAccount": "First Level Detail Account",
+    "LedgerDetailAccount": "First Level Detail Accounts",
     "EditorTitleEdit": "Edit detail account in level {0}",
     "EditorTitleNew": "New detail account in level {0}"
   },
@@ -504,7 +504,7 @@
     "Description": "Description",
     "Delete": "Delete Cost Center",
     "BranchScope": "Branch Scope",
-    "LedgerCostCenter": "First Level Cost Center",
+    "LedgerCostCenter": "First Level Cost Centers",
     "EditorTitleEdit": "Edit cost center in level {0}",
     "EditorTitleNew": "New cost center in level {0}"
   },
@@ -517,7 +517,10 @@
     "Level": "Level",
     "Description": "Description",
     "Delete": "Delete Project",
-    "BranchScope": "Branch Scope"
+    "BranchScope": "Branch Scope",
+    "LedgerProject": "First Level Projects",
+    "EditorTitleEdit": "Edit project in level {0}",
+    "EditorTitleNew": "New project in level {0}"
   },
   "AccountRelations": {
     "MainComponent": "Main Component",

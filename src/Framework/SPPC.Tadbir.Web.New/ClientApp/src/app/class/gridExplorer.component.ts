@@ -23,14 +23,9 @@ import { MessageType } from "../../environments/environment";
 
 
 @Injectable()
-export class GridExplorerComponent<T> extends DefaultComponent {
+export class GridExplorerComponent<T> extends DefaultComponent implements OnInit{
 
-  environmentModelsUrl: string;
-  environmentModelsLedgerUrl: string;
-  modelUrl: string;
-  modelChildrenUrl: string;
   treeParentTitle: string;
-
 
   firstTreeNode: Array<AccountItemBrief> = [];
   treeNodes: Array<AccountItemBrief> = [];
@@ -72,14 +67,21 @@ export class GridExplorerComponent<T> extends DefaultComponent {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
-    @Optional() @Inject('empty') public entityName: string, @Optional() @Inject('empty') public metadataType: string) {
+    @Optional() @Inject('empty') public entityName: string, @Optional() @Inject('empty') public metadataType: string, @Optional() @Inject('empty') public parentTitlekey: string,
+    @Optional() @Inject('empty') public environmentModelsUrl: string, @Optional() @Inject('empty') public environmentModelsLedgerUrl: string,
+    @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string) {
     super(toastrService, translate, renderer, metadata, settingService, entityName, metadataType);
   }
 
+  ngOnInit() {
+    this.getTreeNode();
+    this.reloadGrid();
+  }
 
   getTreeNode() {
     this.service.getModels(this.environmentModelsLedgerUrl).subscribe(res => {
-      this.firstTreeNode = [{ id: -1, name: this.treeParentTitle, code: '', fullCode: '', level: 0, childCount: 1, parentId: -1, isSelected: true }];
+      this.treeParentTitle = this.getText(this.parentTitlekey);
+      this.firstTreeNode = [{ id: -1, name: this.getText(this.parentTitlekey), code: '', fullCode: '', level: 0, childCount: 1, parentId: -1, isSelected: true }];
       this.selectedItem = this.firstTreeNode[0];
       this.treeNodes = res;
       this.breadCrumbList.push(this.firstTreeNode[0]);

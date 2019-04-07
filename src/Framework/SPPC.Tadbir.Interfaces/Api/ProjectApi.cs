@@ -33,6 +33,16 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentProjectsLookupUrl = "projects/lookup";
 
         /// <summary>
+        /// API client URL for projects ledger defined in current environment
+        /// </summary>
+        public const string EnvironmentProjectsLedger = "projects/ledger";
+
+        /// <summary>
+        /// API server route URL for projects ledger defined in current environment
+        /// </summary>
+        public const string EnvironmentProjectsLedgerUrl = "projects/ledger";
+
+        /// <summary>
         /// API client URL for a project item specified by unique identifier
         /// </summary>
         public const string Project = "projects/{0}";

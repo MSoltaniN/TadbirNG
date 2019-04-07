@@ -32,32 +32,16 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class AccountComponent extends GridExplorerComponent<Account> implements OnInit {
+export class AccountComponent extends GridExplorerComponent<Account> {
 
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Account, Metadatas.Account)
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Account, Metadatas.Account, "Account.LedgerAccount",
+      AccountApi.EnvironmentAccounts, AccountApi.EnvironmentAccountsLedger, AccountApi.Account, AccountApi.AccountChildren)
   }
 
- 
-  ngOnInit() {
-
-    setTimeout(() => {
-      this.treeParentTitle = this.getText('Account.LedgerAccount');
-    })
-
-    this.environmentModelsUrl = AccountApi.EnvironmentAccounts;
-    this.environmentModelsLedgerUrl = AccountApi.EnvironmentAccountsLedger;
-    this.modelUrl = AccountApi.Account;
-    this.modelChildrenUrl = AccountApi.AccountChildren; 
-
-    this.getTreeNode();
-    this.reloadGrid();
-  }
-
-  
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
@@ -104,7 +88,5 @@ export class AccountComponent extends GridExplorerComponent<Account> implements 
     this.openEditorDialog(true);
   }
   
-
- 
 }
 

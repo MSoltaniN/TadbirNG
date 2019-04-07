@@ -30,31 +30,14 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class DetailAccountComponent extends GridExplorerComponent<DetailAccount> implements OnInit {
+export class DetailAccountComponent extends GridExplorerComponent<DetailAccount> {
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.DetailAccount, Metadatas.DetailAccount)
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.DetailAccount, Metadatas.DetailAccount, "DetailAccount.LedgerDetailAccount",
+      DetailAccountApi.EnvironmentDetailAccounts, DetailAccountApi.EnvironmentDetailAccountsLedger, DetailAccountApi.DetailAccount, DetailAccountApi.DetailAccountChildren)
   }
-
-
-  ngOnInit() {
-
-    setTimeout(() => {
-      this.treeParentTitle = this.getText('DetailAccount.LedgerDetailAccount');
-    })
-
-    this.environmentModelsUrl = DetailAccountApi.EnvironmentDetailAccounts;
-    this.environmentModelsLedgerUrl = DetailAccountApi.EnvironmentDetailAccountsLedger;
-    this.modelUrl = DetailAccountApi.DetailAccount;
-    this.modelChildrenUrl = DetailAccountApi.DetailAccountChildren;
-
-    this.getTreeNode();
-    this.reloadGrid();
-  }
-
-
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
