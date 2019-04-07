@@ -295,7 +295,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
     this.settingService.putViewTreeConfig(SettingsApi.ViewTreeSettings, myList).subscribe(res => {
       this.maxDepthValue = undefined;
-      this.ddlEntitySelected = 0;
+      this.ddlEntitySelected = undefined;
       this.viewTreeConfig = undefined;
       this.viewTreeLevels = [];
       this.finalViewTreeConfig = [];
@@ -313,17 +313,21 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   /**
    * اعمال تنظیمات پیش فرض
    */
-  setDefaultConfig(levelNo: number) {
+  setDefaultConfig(item: ViewTreeLevelConfig) {
+    if (item.isUsed) {
+      this.showMessage(this.getText("ViewTreeConfig.LevelIsUsedMsg"), MessageType.Warning);
+    }
+    else {
+      var defaultItem = this.viewTreeDefaultConfig.levels.find(f => f.no == item.no);
+      var level = this.viewTreeLevels.find(f => f.no == item.no);
+      var index = this.viewTreeLevels.indexOf(level);
 
-    var defaultItem = this.viewTreeDefaultConfig.levels.find(f => f.no == levelNo);
-    var level = this.viewTreeLevels.find(f => f.no == levelNo);
-    var index = this.viewTreeLevels.indexOf(level);
+      defaultItem.isEnabled = true;
+      this.viewTreeLevels[index] = defaultItem;
+      this.viewTreeConfig.levels = this.viewTreeLevels;
 
-    defaultItem.isEnabled = true;
-    this.viewTreeLevels[index] = defaultItem;
-    this.viewTreeConfig.levels = this.viewTreeLevels;
-
-    this.saveLocalChengesView();
+      this.saveLocalChengesView();
+    }
   }
 
 

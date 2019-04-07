@@ -326,7 +326,8 @@
     "CodeLength": "Code Length",
     "Save": "Save",
     "DefaultSettings": "Default",
-    "SelectEntity": "Please Select Entity"
+    "SelectEntity": "Please Select Entity",
+    "LevelIsUsedMsg": "The level is used and can not be changed."
   },
   "VoucherLine": {
     "Debit": "Debit",

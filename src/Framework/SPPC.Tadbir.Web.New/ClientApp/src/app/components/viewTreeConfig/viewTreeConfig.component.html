@@ -59,7 +59,7 @@
 
         <kendo-grid-command-column>
           <ng-template kendoGridCellTemplate let-level>
-            <button class="k-button k-primary" [disabled]="!level.isEnabled || level.isUsed" (click)="setDefaultConfig(level.no)">{{ 'ViewTreeConfig.DefaultSettings' | translate }}</button>
+            <button class="k-button k-primary" [disabled]="!level.isEnabled" (click)="setDefaultConfig(level)">{{ 'ViewTreeConfig.DefaultSettings' | translate }}</button>
           </ng-template>
         </kendo-grid-command-column>
 

@@ -1,5 +1,5 @@
 
-<div *ngIf="selectedItemType == 'RelationsConfig'" class="settings-form">
+<div *ngIf="selectedItemType == 'RelationsConfig'" class="settings-form col-md-5" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <form novalidate [formGroup]="accountRelationsForm">
         <!--<div class="form-group">
             <label for="useLeafAccounts" class="control-label">
@@ -32,7 +32,7 @@
     </form>
 </div>
 
-<div *ngIf="selectedItemType == 'DateRangeConfig'" class="settings-form">
+<div *ngIf="selectedItemType == 'DateRangeConfig'" class="settings-form col-md-5" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <form novalidate [formGroup]="dateRangesForm">
         <div class="form-group">
             <label for="defaultDateRange" class="control-label">{{ 'Settings.DateRanges.DefaultDateRanges' | translate }}</label>
@@ -51,7 +51,7 @@
     </form>
 </div>
 
-<div *ngIf="selectedItemType == 'NumberDisplayConfig'" class="settings-form">
+<div *ngIf="selectedItemType == 'NumberDisplayConfig'" class="settings-form col-md-5" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <form novalidate [formGroup]="numberDisplayForm">
 
         <div class="form-group">
