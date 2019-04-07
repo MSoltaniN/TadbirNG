@@ -34,6 +34,16 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentDetailAccountsLookupUrl = "faccounts/lookup";
 
         /// <summary>
+        /// API client URL for detail accounts ledger defined in current environment
+        /// </summary>
+        public const string EnvironmentDetailAccountsLedger = "faccounts/ledger";
+
+        /// <summary>
+        /// API server route URL for detail accounts ledger defined in current environment
+        /// </summary>
+        public const string EnvironmentDetailAccountsLedgerUrl = "faccounts/ledger";
+
+        /// <summary>
         /// API client URL for a detail account item specified by unique identifier
         /// </summary>
         public const string DetailAccount = "faccounts/{0}";

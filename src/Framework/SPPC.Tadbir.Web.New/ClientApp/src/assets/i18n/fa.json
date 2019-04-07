@@ -486,7 +486,10 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف تفصیلی شناور",
-    "BranchScope": "دسترسی شعبه"
+    "BranchScope": "دسترسی شعبه",
+    "LedgerDetailAccount": "تفصیلی های شناور سطح اول",
+    "EditorTitleEdit": "ویرایش تفصیلی شناور در سطح {0}",
+    "EditorTitleNew": "تفصیلی شناور جدید در سطح {0}"
   },
   "CostCenter": {
     "New": "مرکز هزینه جدید",
