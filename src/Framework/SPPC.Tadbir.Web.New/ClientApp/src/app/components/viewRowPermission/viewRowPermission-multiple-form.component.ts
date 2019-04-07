@@ -175,9 +175,7 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
           .Build();
       }
 
-      //this.sppcLoading.show();
-
-      this.viewRowPermissionService.getRowList(environment.BaseUrl + String.Format(this.fetchUrl, this.FiscalPeriodId, this.BranchId), filterExp).subscribe(res => {
+      this.viewRowPermissionService.getRowList(environment.BaseUrl + this.fetchUrl, filterExp).subscribe(res => {
         this.rowList = res;
         for (let item of this.rowList) {
           if (this.rowPermission.items && this.rowPermission.items.find(f => f == item.key) && !this.rowCheckedKeys.find(f => f == item.key)) {
@@ -187,7 +185,7 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
           }
 
         }
-        //this.sppcLoading.hide();
+
       })
 
     }
