@@ -855,4 +855,10 @@
   <data name="AsQuotedInVoucherLines" xml:space="preserve">
     <value>به شرح ردیف های سند</value>
   </data>
+  <data name="AccountingLedgers" xml:space="preserve">
+    <value>دفاتر حسابداری</value>
+  </data>
+  <data name="JournalLedger" xml:space="preserve">
+    <value>دفتر روزنامه</value>
+  </data>
 </root>

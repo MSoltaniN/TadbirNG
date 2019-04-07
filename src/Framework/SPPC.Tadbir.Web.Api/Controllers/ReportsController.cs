@@ -362,6 +362,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        private static void SetJournalRowNumbers(IList<JournalViewModel> journal, GridOptions gridOptions)
+        {
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
+            foreach (var journalItem in journal)
+            {
+                journalItem.RowNo = rowNo++;
+            }
+        }
+
+        private static void SetJournalRowNumbers(IList<JournalWithDetailViewModel> journal, GridOptions gridOptions)
+        {
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
+            foreach (var journalItem in journal)
+            {
+                journalItem.RowNo = rowNo++;
+            }
+        }
+
         private async Task<int> GetCurrentLocaleIdAsync()
         {
             var localCode = GetAcceptLanguages().Substring(0, 2);
@@ -434,24 +452,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     param.CaptionKey = _strings[param.CaptionKey];
                     param.DescriptionKey = _strings[param.DescriptionKey];
                 }
-            }
-        }
-
-        private void SetJournalRowNumbers(IList<JournalViewModel> journal, GridOptions gridOptions)
-        {
-            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
-            foreach (var journalItem in journal)
-            {
-                journalItem.RowNo = rowNo++;
-            }
-        }
-
-        private void SetJournalRowNumbers(IList<JournalWithDetailViewModel> journal, GridOptions gridOptions)
-        {
-            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
-            foreach (var journalItem in journal)
-            {
-                journalItem.RowNo = rowNo++;
             }
         }
 

@@ -855,4 +855,10 @@
   <data name="AsQuotedInVoucherLines" xml:space="preserve">
     <value>As quoted in voucher lines</value>
   </data>
+  <data name="AccountingLedgers" xml:space="preserve">
+    <value>Accounting ledgers</value>
+  </data>
+  <data name="JournalLedger" xml:space="preserve">
+    <value>Journal ledger</value>
+  </data>
 </root>
