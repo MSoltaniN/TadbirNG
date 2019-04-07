@@ -92,7 +92,8 @@
     "FilterForm": "فرم فیلتر",
     "Tools": "ابزارها",
     "Save": "ذخیره",
-    "Close": "بستن"
+    "Close": "بستن",
+    "Subset": "زیر مجموعه"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -500,7 +501,10 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف مرکز هزینه",
-    "BranchScope": "دسترسی شعبه"
+    "BranchScope": "دسترسی شعبه",
+    "LedgerCostCenter": "مراکز هزینه سطح اول",
+    "EditorTitleEdit": "ویرایش مرکز هزینه در سطح {0}",
+    "EditorTitleNew": "مرکز هزینه جدید در سطح {0}"
   },
   "Project": {
     "New": "پروژه جدید",

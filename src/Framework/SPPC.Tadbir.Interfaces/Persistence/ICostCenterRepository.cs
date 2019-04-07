@@ -31,6 +31,12 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<KeyValue>> GetCostCentersLookupAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ای از مراکز هزینه در سطح اول را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه مراکز هزینه در سطح اول</returns>
+        Task<IList<AccountItemBriefViewModel>> GetCostCentersLedgerAsync();
+
+        /// <summary>
         /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>

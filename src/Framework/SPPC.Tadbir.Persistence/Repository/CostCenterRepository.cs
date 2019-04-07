@@ -70,6 +70,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ای از مراکز هزینه در سطح اول را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه مراکز هزینه در سطح اول</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetCostCentersLedgerAsync()
+        {
+            var costCenters = await _repository
+                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
+                .Where(cc => cc.ParentId == null)
+                .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
+                .ToListAsync();
+            await FilterGrandchildrenAsync(costCenters);
+            return costCenters;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>

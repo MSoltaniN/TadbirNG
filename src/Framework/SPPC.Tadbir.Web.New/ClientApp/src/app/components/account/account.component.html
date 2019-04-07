@@ -86,7 +86,7 @@
               <ng-template kendoGridToolbarTemplate let-account>
 
                 <section class="content-header" style="padding-top:0;">
-                  <h4>{{ parent ? parent.name : 'حساب های کل' }}</h4>
+                  <h4>{{ parent ? parent.name : this.treeParentTitle }}</h4>
                   <ol class="breadcrumb" style="top:0;" *ngIf="breadCrumbList.length > 1">
                     <li *ngFor="let item of breadCrumbList"><a href="javascript:;" (click)="selectBreadCrumb(item)">{{ item.name }}</a></li>
                   </ol>
@@ -96,7 +96,7 @@
 
                 <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
                 <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
-                <button (click)="subsetHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="زیر مجموعه"><span class="k-icon k-i-filter-add-expression"></span></button>
+                <button (click)="subsetHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Subset' | translate }}"><span class="k-icon k-i-filter-add-expression"></span></button>
 
                 <grid-setting entityTypeName="Account"></grid-setting>
                 <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>

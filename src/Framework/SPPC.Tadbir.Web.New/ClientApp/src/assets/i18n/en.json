@@ -92,7 +92,8 @@
     "FilterForm": "Filter Form",
     "Tools": "Tools",
     "Save": "Save",
-    "Close": "Close"
+    "Close": "Close",
+    "Subset": "subset"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -502,7 +503,10 @@
     "Level": "Level",
     "Description": "Description",
     "Delete": "Delete Cost Center",
-    "BranchScope": "Branch Scope"
+    "BranchScope": "Branch Scope",
+    "LedgerCostCenter": "First Level Cost Center",
+    "EditorTitleEdit": "Edit cost center in level {0}",
+    "EditorTitleNew": "New cost center in level {0}"
   },
   "Project": {
     "New": "New Project",

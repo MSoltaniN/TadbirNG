@@ -33,6 +33,16 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentCostCentersLookupUrl = "ccenters/lookup";
 
         /// <summary>
+        /// API client URL for cost center ledger defined in current environment
+        /// </summary>
+        public const string EnvironmentCostCentersLedger = "ccenters/ledger";
+
+        /// <summary>
+        /// API server route URL for cost center ledger defined in current environment
+        /// </summary>
+        public const string EnvironmentCostCentersLedgerUrl = "ccenters/ledger";
+
+        /// <summary>
         /// API client URL for a cost center item specified by unique identifier
         /// </summary>
         public const string CostCenter = "ccenters/{0}";

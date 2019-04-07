@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در سطح اول را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>مجموعه ای از تفصیلی های شناور در سطح اول</returns>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه تفصیلی های شناور در سطح اول</returns>
         Task<IList<AccountItemBriefViewModel>> GetDetailAccountsLedgerAsync();
 
         /// <summary>
