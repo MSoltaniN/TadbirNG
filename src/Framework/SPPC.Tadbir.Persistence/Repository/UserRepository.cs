@@ -471,6 +471,7 @@ namespace SPPC.Tadbir.Persistence
                     int index = commands.IndexOf(command);
                     commands.RemoveAt(index);
                     count--;
+                    i--;
                 }
 
                 if (IsTopLevelCommand(command) && command.Children.Count == 0)
@@ -478,6 +479,7 @@ namespace SPPC.Tadbir.Persistence
                     int index = commands.IndexOf(command);
                     commands.RemoveAt(index);
                     count--;
+                    i--;
                 }
             }
         }
