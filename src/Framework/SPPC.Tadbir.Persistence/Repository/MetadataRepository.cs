@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Metadata;
@@ -75,8 +76,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<CommandViewModel>> GetTopLevelCommandsAsync()
         {
             var repository = _unitOfWork.GetAsyncRepository<Command>();
-            var topCommands = await repository.GetByCriteriaAsync(
-                cmd => cmd.Parent == null && cmd.TitleKey != "Profile", cmd => cmd.Children);
+            var topCommands = await repository
+                .GetEntityQuery()
+                .Include(cmd => cmd.Children)
+                    .ThenInclude(cmd => cmd.Children)
+                        .ThenInclude(cmd => cmd.Children)
+                .Where(cmd => cmd.Parent == null && cmd.TitleKey != "Profile")
+                .ToListAsync();
             return topCommands
                 .Select(cmd => _mapper.Map<CommandViewModel>(cmd))
                 .ToList();

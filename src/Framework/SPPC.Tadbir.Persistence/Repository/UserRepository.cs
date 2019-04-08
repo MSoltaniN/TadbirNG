@@ -174,26 +174,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId)
         {
             var topCommands = await Metadata.GetTopLevelCommandsAsync();
-            var userCommands = new List<CommandViewModel>(topCommands.Count);
             var userPermissions = await GetUserPermissionIdsAsync(userId);
-            foreach (var command in topCommands)
-            {
-                var topCommand = new CommandViewModel() { Id = command.Id, Title = command.Title, IconName = command.IconName };
-                foreach (var child in command.Children)
-                {
-                    if (child.PermissionId == null || userPermissions.Contains(child.PermissionId.Value))
-                    {
-                        topCommand.Children.Add(child);
-                    }
-                }
-
-                if (topCommand.Children.Count > 0)
-                {
-                    userCommands.Add(topCommand);
-                }
-            }
-
-            return userCommands;
+            FilterInaccessibleCommands(userPermissions, topCommands);
+            return topCommands;
         }
 
         /// <summary>
@@ -471,6 +454,44 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return builder.ToString();
+        }
+
+        private static void FilterInaccessibleCommands(IList<int> permissions, IList<CommandViewModel> commands)
+        {
+            int count = commands.Count;
+            for (int i = 0; i < count; i++)
+            {
+                var command = commands[i];
+                if (IsTopLevelCommand(command))
+                {
+                    FilterInaccessibleCommands(permissions, command.Children);
+                }
+                else if (IsInaccessibleCommand(command, permissions))
+                {
+                    int index = commands.IndexOf(command);
+                    commands.RemoveAt(index);
+                    count--;
+                }
+
+                if (IsTopLevelCommand(command) && command.Children.Count == 0)
+                {
+                    int index = commands.IndexOf(command);
+                    commands.RemoveAt(index);
+                    count--;
+                }
+            }
+        }
+
+        private static bool IsTopLevelCommand(CommandViewModel command)
+        {
+            return command.PermissionId == null
+                && String.IsNullOrEmpty(command.RouteUrl);
+        }
+
+        private static bool IsInaccessibleCommand(CommandViewModel command, IList<int> permissions)
+        {
+            return command.PermissionId != null
+                && !permissions.Contains(command.PermissionId.Value);
         }
 
         private void AddNewRoles(User existing, RelatedItemsViewModel roleItems)

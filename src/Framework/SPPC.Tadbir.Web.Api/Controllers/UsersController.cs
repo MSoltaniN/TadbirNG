@@ -92,7 +92,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Array.ForEach(commands.ToArray(), cmd =>
                 {
                     cmd.Title = _strings[cmd.Title];
-                    Array.ForEach(cmd.Children.ToArray(), child => child.Title = _strings[child.Title]);
+                    Array.ForEach(cmd.Children.ToArray(), child =>
+                    {
+                        child.Title = _strings[child.Title];
+                        Array.ForEach(child.Children.ToArray(),
+                            grandChild => grandChild.Title = _strings[grandChild.Title]);
+                    });
                 });
             return JsonReadResult(commands);
         }
