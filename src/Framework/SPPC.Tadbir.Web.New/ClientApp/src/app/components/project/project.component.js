@@ -19,25 +19,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//#region Imports
 var core_1 = require("@angular/core");
 var environment_1 = require("../../../environments/environment");
 var kendo_angular_l10n_1 = require("@progress/kendo-angular-l10n");
 var service_1 = require("../../service");
 var api_1 = require("../../service/api");
 var source_1 = require("../../class/source");
-var account_form_component_1 = require("./account-form.component");
 var viewName_1 = require("../../security/viewName");
 var gridExplorer_component_1 = require("../../class/gridExplorer.component");
-//#endregion
+var project_form_component_1 = require("./project-form.component");
 function getLayoutModule(layout) {
     return layout.getLayout();
 }
 exports.getLayoutModule = getLayoutModule;
-var AccountComponent = /** @class */ (function (_super) {
-    __extends(AccountComponent, _super);
-    function AccountComponent(toastrService, translate, service, dialogService, renderer, metadata, settingService) {
-        var _this = _super.call(this, toastrService, translate, service, dialogService, renderer, metadata, settingService, environment_1.Entities.Account, environment_1.Metadatas.Account, "Account.LedgerAccount", "Account.EditorTitleNew", "Account.EditorTitleEdit", api_1.AccountApi.EnvironmentAccounts, api_1.AccountApi.EnvironmentAccountsLedger, api_1.AccountApi.Account, api_1.AccountApi.AccountChildren, viewName_1.ViewName.Account) || this;
+var ProjectComponent = /** @class */ (function (_super) {
+    __extends(ProjectComponent, _super);
+    function ProjectComponent(toastrService, translate, service, dialogService, renderer, metadata, settingService) {
+        var _this = _super.call(this, toastrService, translate, service, dialogService, renderer, metadata, settingService, environment_1.Entities.Project, environment_1.Metadatas.Project, "Project.LedgerProject", "Project.EditorTitleNew", "Project.EditorTitleEdit", api_1.ProjectApi.EnvironmentProjects, api_1.ProjectApi.EnvironmentProjectsLedger, api_1.ProjectApi.Project, api_1.ProjectApi.ProjectChildren, viewName_1.ViewName.Project) || this;
         _this.toastrService = toastrService;
         _this.translate = translate;
         _this.service = service;
@@ -48,7 +46,7 @@ var AccountComponent = /** @class */ (function (_super) {
         return _this;
     }
     /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
-    AccountComponent.prototype.openEditorDialog = function (isNew) {
+    ProjectComponent.prototype.openEditorDialog = function (isNew) {
         var _this = this;
         var errorMsg = this.getText('Messages.TreeLevelsAreTooDeep');
         var editorTitle = this.getEditorTitle(isNew);
@@ -56,7 +54,7 @@ var AccountComponent = /** @class */ (function (_super) {
             if (this.levelConfig.isEnabled) {
                 this.dialogRef = this.dialogService.open({
                     title: editorTitle,
-                    content: account_form_component_1.AccountFormComponent,
+                    content: project_form_component_1.ProjectFormComponent,
                 });
                 this.dialogModel = this.dialogRef.content.instance;
                 this.dialogModel.parent = this.parent;
@@ -74,22 +72,22 @@ var AccountComponent = /** @class */ (function (_super) {
                 this.showMessage(source_1.String.Format(errorMsg, (this.levelConfig.no - 1).toString()), environment_1.MessageType.Warning);
             }
     };
-    AccountComponent.prototype.addNew = function () {
-        this.editDataItem = new service_1.AccountInfo();
+    ProjectComponent.prototype.addNew = function () {
+        this.editDataItem = new service_1.ProjectInfo();
         this.openEditorDialog(true);
     };
-    AccountComponent = __decorate([
+    ProjectComponent = __decorate([
         core_1.Component({
-            selector: 'account',
-            templateUrl: './account.component.html',
+            selector: 'project',
+            templateUrl: './project.component.html',
             providers: [{
                     provide: kendo_angular_l10n_1.RTL,
                     useFactory: getLayoutModule,
                     deps: [environment_1.Layout]
                 }]
         })
-    ], AccountComponent);
-    return AccountComponent;
+    ], ProjectComponent);
+    return ProjectComponent;
 }(gridExplorer_component_1.GridExplorerComponent));
-exports.AccountComponent = AccountComponent;
-//# sourceMappingURL=account.component.js.map
+exports.ProjectComponent = ProjectComponent;
+//# sourceMappingURL=project.component.js.map

@@ -13,17 +13,18 @@ import { Filter } from "./filter";
 import { FilterExpressionOperator } from "./filterExpressionOperator";
 import { DialogService, DialogRef } from "@progress/kendo-angular-dialog";
 import { ContextMenuComponent } from "@progress/kendo-angular-menu";
-import { AccountItemBrief } from "../model";
+import { AccountItemBrief, ViewTreeConfig, ViewTreeLevelConfig } from "../model";
 import { of } from 'rxjs/observable/of';
 import { TreeItem } from "@progress/kendo-angular-treeview";
 import { MessageType } from "../../environments/environment";
+import { ViewName } from "../security/viewName";
 
 
 
 
 
 @Injectable()
-export class GridExplorerComponent<T> extends DefaultComponent implements OnInit{
+export class GridExplorerComponent<T> extends DefaultComponent implements OnInit {
 
   treeParentTitle: string;
 
@@ -33,8 +34,12 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
   public selectedKeys: number[] = [-1];
   public selectedItem: AccountItemBrief;
   breadCrumbList: Array<AccountItemBrief> = [];
+  treeConfig: ViewTreeConfig;
+  levelConfig: ViewTreeLevelConfig;
 
   treeScrollTop: number
+
+
 
   @ViewChild('treemenu') public treeContextMenu: ContextMenuComponent;
   public contextmenuItems: any[] = [
@@ -68,12 +73,14 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
     @Optional() @Inject('empty') public entityName: string, @Optional() @Inject('empty') public metadataType: string, @Optional() @Inject('empty') public parentTitlekey: string,
+    @Optional() @Inject('empty') public editorNewTitlePattern: string, @Optional() @Inject('empty') public editorEditTitlePattern: string,
     @Optional() @Inject('empty') public environmentModelsUrl: string, @Optional() @Inject('empty') public environmentModelsLedgerUrl: string,
-    @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string) {
+    @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string, @Optional() @Inject('empty') public viewId: number) {
     super(toastrService, translate, renderer, metadata, settingService, entityName, metadataType);
   }
 
   ngOnInit() {
+    this.treeConfig = this.getViewTreeSettings(this.viewId);
     this.getTreeNode();
     this.reloadGrid();
   }
@@ -477,20 +484,20 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
   }
 
   getEditorTitle(isNew: boolean): string {
-    //var editorTitle = '';
+    var editorTitle = '';
 
-    //var config = this.getViewTreeSettings(ViewName.Account);
+    this.treeConfig = this.getViewTreeSettings(this.viewId);
+    if (this.treeConfig) {
+      var level = this.parent ? this.parent.level + 2 : 1;
+      var viewConfig = this.treeConfig.levels.find(f => f != null && f.no == level);
 
-    //if (config) {
-    //  var level = this.parent ? this.parent.level + 2 : 1;
-    //  var viewConfig = config.levels.find(f => f != null && f.no == level);
+      this.levelConfig = viewConfig;
 
-    //  if (viewConfig)
-    //    editorTitle = viewConfig.name;
-    //}
+      if (viewConfig)
+        editorTitle = viewConfig.name;
+    }
 
-    //return String.Format(this.getText(isNew ? 'Account.EditorTitleNew' : 'Account.EditorTitleEdit'), editorTitle);
-    return "";
+    return String.Format(this.getText(isNew ? this.editorNewTitlePattern : this.editorEditTitlePattern), editorTitle);
   }
 
   addNew() {

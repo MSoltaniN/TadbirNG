@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
+import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -34,48 +34,43 @@ export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.CostCenter, Metadatas.CostCenter, "CostCenter.LedgerCostCenter",
-      CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren)
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.CostCenter, Metadatas.CostCenter,
+      "CostCenter.LedgerCostCenter", "CostCenter.EditorTitleNew", "CostCenter.EditorTitleEdit",
+      CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren, ViewName.CostCenter)
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
 
-    this.dialogRef = this.dialogService.open({
-      title: this.getEditorTitle(isNew),
-      content: CostCenterFormComponent,
-    });
+    var errorMsg = this.getText('Messages.TreeLevelsAreTooDeep');
+    var editorTitle = this.getEditorTitle(isNew);
 
-    this.dialogModel = this.dialogRef.content.instance;
-    this.dialogModel.parent = this.parent;
-    this.dialogModel.model = this.editDataItem;
-    this.dialogModel.isNew = isNew;
-    this.dialogModel.errorMessage = undefined;
+    if (this.levelConfig)
+      if (this.levelConfig.isEnabled) {
+        this.dialogRef = this.dialogService.open({
+          title: editorTitle,
+          content: CostCenterFormComponent,
+        });
+
+        this.dialogModel = this.dialogRef.content.instance;
+        this.dialogModel.parent = this.parent;
+        this.dialogModel.model = this.editDataItem;
+        this.dialogModel.isNew = isNew;
+        this.dialogModel.errorMessage = undefined;
 
 
-    this.dialogRef.content.instance.save.subscribe((res) => {
-      this.saveHandler(res, isNew);
-    });
+        this.dialogRef.content.instance.save.subscribe((res) => {
+          this.saveHandler(res, isNew);
+        });
 
-    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
-      this.dialogRef.close();
-    });
-  }
+        const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+          this.dialogRef.close();
+        });
 
-  getEditorTitle(isNew: boolean): string {
-    var editorTitle = '';
-
-    var config = this.getViewTreeSettings(ViewName.CostCenter);
-
-    if (config) {
-      var level = this.parent ? this.parent.level + 2 : 1;
-      var viewConfig = config.levels.find(f => f != null && f.no == level);
-
-      if (viewConfig)
-        editorTitle = viewConfig.name;
-    }
-
-    return String.Format(this.getText(isNew ? 'CostCenter.EditorTitleNew' : 'CostCenter.EditorTitleEdit'), editorTitle);
+      }
+      else {
+        this.showMessage(String.Format(errorMsg, (this.levelConfig.no - 1).toString()), MessageType.Warning);
+      }
   }
 
   addNew() {

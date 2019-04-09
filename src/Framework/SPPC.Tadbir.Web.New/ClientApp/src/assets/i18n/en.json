@@ -49,7 +49,8 @@
     "Updated": "{0} updated successfully",
     "Deleted": "{0} deleted successfully",
     "DeleteConfirm": "are you sure to delete {0} ?",
-    "SelectedItems": "selected items"
+    "SelectedItems": "selected items",
+    "TreeLevelsAreTooDeep": "Tree levels deeper than {0} is not allowed."
   },
   "Report": {
     "ReportViewer": "View of",

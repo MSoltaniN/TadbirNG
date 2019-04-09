@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
+import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,49 +35,44 @@ export class ProjectComponent extends GridExplorerComponent<Project> {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Account, Metadatas.Account, "Project.LedgerProject", ProjectApi.EnvironmentProjects,
-      ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren)
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Project, Metadatas.Project,
+      "Project.LedgerProject", "Project.EditorTitleNew", "Project.EditorTitleEdit",
+      ProjectApi.EnvironmentProjects, ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren, ViewName.Project)
   }
 
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
 
-    this.dialogRef = this.dialogService.open({
-      title: this.getEditorTitle(isNew),
-      content: ProjectFormComponent,
-    });
+    var errorMsg = this.getText('Messages.TreeLevelsAreTooDeep');
+    var editorTitle = this.getEditorTitle(isNew);
 
-    this.dialogModel = this.dialogRef.content.instance;
-    this.dialogModel.parent = this.parent;
-    this.dialogModel.model = this.editDataItem;
-    this.dialogModel.isNew = isNew;
-    this.dialogModel.errorMessage = undefined;
+    if (this.levelConfig)
+      if (this.levelConfig.isEnabled) {
+        this.dialogRef = this.dialogService.open({
+          title: editorTitle,
+          content: ProjectFormComponent,
+        });
+
+        this.dialogModel = this.dialogRef.content.instance;
+        this.dialogModel.parent = this.parent;
+        this.dialogModel.model = this.editDataItem;
+        this.dialogModel.isNew = isNew;
+        this.dialogModel.errorMessage = undefined;
 
 
-    this.dialogRef.content.instance.save.subscribe((res) => {
-      this.saveHandler(res, isNew);
-    });
+        this.dialogRef.content.instance.save.subscribe((res) => {
+          this.saveHandler(res, isNew);
+        });
 
-    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
-      this.dialogRef.close();
-    });
-  }
+        const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+          this.dialogRef.close();
+        });
 
-  getEditorTitle(isNew: boolean): string {
-    var editorTitle = '';
-
-    var config = this.getViewTreeSettings(ViewName.Project);
-
-    if (config) {
-      var level = this.parent ? this.parent.level + 2 : 1;
-      var viewConfig = config.levels.find(f => f != null && f.no == level);
-
-      if (viewConfig)
-        editorTitle = viewConfig.name;
-    }
-
-    return String.Format(this.getText(isNew ? 'Project.EditorTitleNew' : 'Project.EditorTitleEdit'), editorTitle);
+      }
+      else {
+        this.showMessage(String.Format(errorMsg, (this.levelConfig.no - 1).toString()), MessageType.Warning);
+      }
   }
 
   addNew() {
