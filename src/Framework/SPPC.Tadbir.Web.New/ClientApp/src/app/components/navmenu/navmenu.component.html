@@ -1,5 +1,5 @@
 <aside class="main-sidebar">
-  <section class="sidebar">    
+  <section class="sidebar">
     <ul class="sidebar-menu tree" id='main-menu' data-widget="tree">
       <!--(window:keypress)="doSomething($event)"-->
       <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'active menu-open':this.expandedSubMenuId === cmd.id}">
@@ -13,15 +13,41 @@
         </a>
 
         <ul class="treeview-menu" id='menu{{cmd.id}}'>
-          <li [routerLinkActive]="['link-active']" *ngFor="let innerCmd of cmd.children;">
-            <a *ngIf="innerCmd.routeUrl != null" routerLink="/{{innerCmd.routeUrl}}">
+          <li *ngFor="let innerCmd of cmd.children;" [ngClass]="{'treeview' : innerCmd.routeUrl == null}">
+            <a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : []">
               <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
               <span class="menuitem child">
                 {{
                   innerCmd.title
                 }}
               </span>
+              <span class="pull-right-container" *ngIf="innerCmd.children.length > 0">
+                <i class="fa pull-left angle" [ngClass]="{'fa-angle-left':this.currentlang === 'fa' , 'fa-angle-right': this.currentlang === 'en'}"></i>
+              </span>
             </a>
+            <ul class="treeview-menu" *ngIf="innerCmd.children.length > 0">
+              <li *ngFor="let cmd3 of innerCmd.children;">
+                <a [routerLink]="cmd3.routeUrl ? [cmd3.routeUrl] : []">
+                  <span class="glyphicon glyphicon-{{cmd3.iconName}}"></span>
+                  <span class="menuitem child">
+                    {{ cmd3.title }}
+                  </span>
+                  <span class="pull-right-container" *ngIf="cmd3.children.length > 0">
+                    <i class="fa pull-left angle" [ngClass]="{'fa-angle-left':this.currentlang === 'fa' , 'fa-angle-right': this.currentlang === 'en'}"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu" *ngIf="cmd3.children.length > 0">
+                  <li *ngFor="let cmd4 of innerCmd.children;">
+                    <a [routerLink]="cmd4.routeUrl ? [cmd4.routeUrl] : []">
+                      <span class="glyphicon glyphicon-{{cmd4.iconName}}"></span>
+                      <span class="menuitem child">
+                        {{ cmd4.title }}
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
           </li>
 
         </ul>
@@ -31,6 +57,6 @@
 
     </ul>
   </section>
-  
+
 </aside>
 
