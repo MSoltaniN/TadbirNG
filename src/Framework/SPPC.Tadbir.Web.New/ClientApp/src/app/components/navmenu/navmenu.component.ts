@@ -27,11 +27,8 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     throw new Error("Method not implemented.");
   }
 
-
   menuList: Array<Command> = new Array<Command>();
   public icons: { [id: string]: string; } = {};
-
-
 
   constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService,
     public translate: TranslateService, public renderer2: Renderer2,
@@ -49,8 +46,6 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
     if (menus)
       this.menuList = JSON.parse(menus);
-
-
   }
 
   public expandedSubMenuId: number = -1;
@@ -63,18 +58,17 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   }
 
   ngOnInit() {
-
-
     if (this.CurrentLanguage == 'fa')
       this.rightAlign = false;
 
-    var subMenuId = -1;
     for (let parent of this.menuList) {
-      if (parent.children.findIndex(p => p.routeUrl.toLowerCase() == this.location.path().toLowerCase()) > -1) {
+      if (parent.children.findIndex(p => p.routeUrl != null && p.routeUrl.toLowerCase() == this.location.path().toLowerCase()) > -1) {
         this.expandedSubMenuId = parent.id;
         break;
       }
     }
+
+
 
     for (let parent of this.menuList) {
       if (parent.id == 15) {
@@ -84,6 +78,10 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
         }
       }
     }
+
+
+
+    this.getParent(1);
 
   }
 
@@ -144,6 +142,5 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
 
   isCollapsed: boolean = true;
-
 
 }
