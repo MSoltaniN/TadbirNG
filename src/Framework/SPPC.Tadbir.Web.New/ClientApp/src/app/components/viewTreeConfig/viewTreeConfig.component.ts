@@ -1,21 +1,19 @@
-import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { SettingService } from '../../service/index';
 import { ViewName } from '../../security/viewName';
 import { ViewTreeConfig, ViewTreeLevelConfig } from '../../model/index';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { SettingsApi, LookupApi } from '../../service/api/index';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { GridDataResult, GridComponent, RowClassArgs } from '@progress/kendo-angular-grid';
+import { RowClassArgs } from '@progress/kendo-angular-grid';
 
 
 
@@ -59,8 +57,8 @@ export function getLayoutModule(layout: Layout) {
 export class ViewTreeConfigComponent extends DefaultComponent implements OnInit {
 
   //@ViewChild(GridComponent) private grid: GridComponent;
-  private editedRowIndex: number;
-  private docClickSubscription: any;
+  //private editedRowIndex: number;
+  //private docClickSubscription: any;
 
   public formGroup: FormGroup;
 
@@ -300,7 +298,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
       this.viewTreeLevels = [];
       this.finalViewTreeConfig = [];
 
-      sessionStorage.removeItem("viewTreeConfig");
+      localStorage.removeItem("viewTreeConfig");
 
       this.showMessage(this.updateMsg, MessageType.Succes);
 
