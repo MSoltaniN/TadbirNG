@@ -22,6 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 require("rxjs/Rx");
 var base_service_1 = require("../class/base.service");
+var index_1 = require("./api/index");
 var FullAccountInfo = /** @class */ (function () {
     function FullAccountInfo() {
     }
@@ -36,31 +37,23 @@ var FullAccountService = /** @class */ (function (_super) {
         return _this;
     }
     FullAccountService.prototype.GetAccountsLookup = function () {
-        //var url = String.Format(LookupApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
-        var url = "";
         var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
+        return this.http.get(index_1.LookupApi.EnvironmentAccounts, options)
             .map(function (response) { return response; });
     };
     FullAccountService.prototype.GetDetailAccountsLookup = function () {
-        //var url = String.Format(LookupApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
-        var url = "";
         var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
+        return this.http.get(index_1.LookupApi.EnvironmentDetailAccounts, options)
             .map(function (response) { return response; });
     };
     FullAccountService.prototype.GetCostCentersLookup = function () {
-        //var url = String.Format(LookupApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
-        var url = "";
         var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
+        return this.http.get(index_1.LookupApi.EnvironmentCostCenters, options)
             .map(function (response) { return response; });
     };
     FullAccountService.prototype.GetProjectsLookup = function () {
-        //var url = String.Format(LookupApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
-        var url = "";
         var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
+        return this.http.get(index_1.LookupApi.EnvironmentProjects, options)
             .map(function (response) { return response; });
     };
     FullAccountService.prototype.getFullAccountItemList = function (apiUrl, filter) {

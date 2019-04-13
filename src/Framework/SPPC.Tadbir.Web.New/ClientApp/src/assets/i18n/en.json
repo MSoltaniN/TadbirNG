@@ -94,7 +94,8 @@
     "Tools": "Tools",
     "Save": "Save",
     "Close": "Close",
-    "Subset": "subset"
+    "Subset": "subset",
+    "Comput": "Comput"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -147,7 +148,6 @@
     "BranchSeparation": "Branch Separation",
     "VoucherStatus": "Voucher Status",
     "ArticleType": "Article Type",
-    "Computing": "Computing",
     "OnLabel": "Yes",
     "OffLabel": "No"
   },

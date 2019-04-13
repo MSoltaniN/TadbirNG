@@ -104,7 +104,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     }
 
 
-    //#region بروزرسانی تنظیمات ذخیره شده برای فرمت اعداد
+    //#region بروزرسانی تنظیمات ذخیره شده 
     if (localStorage.getItem(SessionKeys.NumberConfige))
       localStorage.removeItem(SessionKeys.NumberConfige);
 
@@ -112,6 +112,15 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     if (numConfig) {
       localStorage.setItem(SessionKeys.NumberConfige, JSON.stringify(numConfig.values));
     }
+
+    if (localStorage.getItem(SessionKeys.DateRangeConfig))
+      localStorage.removeItem(SessionKeys.DateRangeConfig);
+
+    var dateConfig = this.settingsCategories.find(f => f.id == SettingKey.DateRangeConfig);
+    if (dateConfig) {
+      localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(dateConfig.values));
+    }
+
     //#endregion
 
 
