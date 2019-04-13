@@ -143,7 +143,6 @@ var SppcDatepicker = /** @class */ (function () {
         var allowKey = false;
         switch (event) {
             case KeyCode_1.KeyCode.Space: {
-                debugger;
                 this.dateObject = moment();
                 this.LimitationDate(new Date());
                 break;
@@ -152,44 +151,22 @@ var SppcDatepicker = /** @class */ (function () {
                 var newDate = this.dateObject != null ? this.dateObject.add(1, 'months') : moment();
                 this.LimitationDate(newDate, true);
                 break;
-                //var newDate = this.dateObject != null ? this.dateObject.add(1, 'years') : moment();
-                //this.LimitationDate(newDate, true);
-                //break;
             }
             case KeyCode_1.KeyCode.Page_Down: {
                 var newDate = this.dateObject != null ? this.dateObject.add(-1, 'months') : moment();
                 this.LimitationDate(newDate, false);
                 break;
-                //var newDate = this.dateObject != null ? this.dateObject.add(-1, 'years') : moment();
-                //this.LimitationDate(newDate, false);
-                //break;
             }
             case KeyCode_1.KeyCode.Down_Arrow: {
                 var newDate = this.dateObject != null ? this.dateObject.add(-1, 'days') : moment();
                 this.LimitationDate(newDate, false);
                 break;
-                //var newDate = this.dateObject != null ? this.dateObject.add(-1, 'months') : moment();
-                //this.LimitationDate(newDate, false);
-                //break;
             }
             case KeyCode_1.KeyCode.Up_Arrow: {
                 var newDate = this.dateObject != null ? this.dateObject.add(1, 'days') : moment();
                 this.LimitationDate(newDate, true);
                 break;
-                //var newDate = this.dateObject != null ? this.dateObject.add(1, 'months') : moment();
-                //this.LimitationDate(newDate, true);
-                //break;
             }
-            //case KeyCode.Left_Arrow: {
-            //  var newDate = this.dateObject != null ? this.dateObject.add(-1, 'days') : moment();
-            //  this.LimitationDate(newDate, false);
-            //  break;
-            //}
-            //case KeyCode.Right_Arrow: {
-            //  var newDate = this.dateObject != null ? this.dateObject.add(1, 'days') : moment();
-            //  this.LimitationDate(newDate, true);
-            //  break;
-            //}
             default: {
                 if ((event >= 48 && event <= 57) || (event >= 96 && event <= 105) || (event == 191) || (event == 111) || (event == 8)) {
                     allowKey = true;
