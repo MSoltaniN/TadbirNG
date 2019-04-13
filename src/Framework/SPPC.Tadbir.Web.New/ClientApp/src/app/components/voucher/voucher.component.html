@@ -38,14 +38,14 @@
     <ng-template kendoGridToolbarTemplate>
 
       <sppc-dateRangeSelector [Field]="'date'"
-                              [minDate]="FiscalPeriodStartDate"
-                              [maxDate]="FiscalPeriodEndDate"
                               [isDisplayFromDate]="true"
                               [isDisplayToDate]="true"
-                              [displayFromDate]="FiscalPeriodStartDate"
-                              [displayToDate]="FiscalPeriodEndDate"
                               (valueChange)="dateValueChange($event)">
       </sppc-dateRangeSelector>
+      <!--[minDate]="FiscalPeriodStartDate"
+      [maxDate]="FiscalPeriodEndDate"-->
+      <!--[displayFromDate]="FiscalPeriodStartDate"
+      [displayToDate]="FiscalPeriodEndDate"-->
 
       <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Voucher.New' | translate }}"></button>
 
@@ -134,11 +134,13 @@
     <!-- additional columns on large devices -->
 
   </kendo-grid>
-  <!--<voucher-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
-                          (save)="saveHandler($event)"
-                          (cancel)="cancelHandler()"
-                          (changeMode)="changeMode($event)">
-  </voucher-form-component>-->
+
+  <div class="col-xs-12 col-sm-4 form-group">
+    <button class="k-button k-primary" (click)="getVouchers()" [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en'}" style="margin-top: 25px;">
+      {{ 'Buttons.Comput' | translate }}
+    </button>
+  </div>
+
   <report-viewer id='compviewer' baseId='5'></report-viewer>
   <report-management baseId='5'></report-management>
 </div>

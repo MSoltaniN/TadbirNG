@@ -1,11 +1,9 @@
-import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, SimpleChanges, Optional, Host, SkipSelf } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, OnDestroy, Optional, Host, SkipSelf } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, ControlContainer, AbstractControl } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
 import * as moment from 'jalali-moment';
-import { DatePickerDirective, DatePickerComponent } from 'ng2-jalali-date-picker';
 import { KeyCode } from '../../enum/KeyCode';
-import { AuthenticationService } from '../../service/login/index';
 
 @Component({
   selector: 'sppc-datepicker',
@@ -231,7 +229,6 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
     switch (event) {
       case KeyCode.Space: {
-        debugger;
         this.dateObject = moment();
         this.LimitationDate(new Date());
         break;
@@ -240,44 +237,22 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
         var newDate = this.dateObject != null ? this.dateObject.add(1, 'months') : moment();
         this.LimitationDate(newDate, true);
         break;
-        //var newDate = this.dateObject != null ? this.dateObject.add(1, 'years') : moment();
-        //this.LimitationDate(newDate, true);
-        //break;
       }
       case KeyCode.Page_Down: {
         var newDate = this.dateObject != null ? this.dateObject.add(-1, 'months') : moment();
         this.LimitationDate(newDate, false);
         break;
-        //var newDate = this.dateObject != null ? this.dateObject.add(-1, 'years') : moment();
-        //this.LimitationDate(newDate, false);
-        //break;
       }
       case KeyCode.Down_Arrow: {
         var newDate = this.dateObject != null ? this.dateObject.add(-1, 'days') : moment();
         this.LimitationDate(newDate, false);
         break;
-        //var newDate = this.dateObject != null ? this.dateObject.add(-1, 'months') : moment();
-        //this.LimitationDate(newDate, false);
-        //break;
       }
       case KeyCode.Up_Arrow: {
         var newDate = this.dateObject != null ? this.dateObject.add(1, 'days') : moment();
         this.LimitationDate(newDate, true);
         break;
-        //var newDate = this.dateObject != null ? this.dateObject.add(1, 'months') : moment();
-        //this.LimitationDate(newDate, true);
-        //break;
       }
-      //case KeyCode.Left_Arrow: {
-      //  var newDate = this.dateObject != null ? this.dateObject.add(-1, 'days') : moment();
-      //  this.LimitationDate(newDate, false);
-      //  break;
-      //}
-      //case KeyCode.Right_Arrow: {
-      //  var newDate = this.dateObject != null ? this.dateObject.add(1, 'days') : moment();
-      //  this.LimitationDate(newDate, true);
-      //  break;
-      //}
       default: {
         if ((event >= 48 && event <= 57) || (event >= 96 && event <= 105) || (event == 191) || (event == 111) || (event == 8)) {
           allowKey = true;

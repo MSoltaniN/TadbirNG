@@ -94,7 +94,8 @@
     "Tools": "ابزارها",
     "Save": "ذخیره",
     "Close": "بستن",
-    "Subset": "زیر مجموعه"
+    "Subset": "زیر مجموعه",
+    "Comput": "محاسبه"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -145,7 +146,6 @@
     "BranchSeparation": "به تفکیک شعبه",
     "VoucherStatus": "وضعیت سند",
     "ArticleType": "نوع آرتیکل ها",
-    "Computing": "محاسبه",
     "OnLabel": "بله",
     "OffLabel": "خیر"
   },

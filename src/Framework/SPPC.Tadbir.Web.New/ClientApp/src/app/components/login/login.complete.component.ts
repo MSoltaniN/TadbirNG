@@ -230,6 +230,11 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
       if (res)
         localStorage.setItem(SessionKeys.NumberConfige, JSON.stringify(res.values));
     })
+
+    this.settingService.getSettingById(SettingKey.DateRangeConfig).subscribe(res => {
+      if (res)
+        localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(res.values));
+    })
   }
 
   loadMenuAndRoute(currentUser: ContextInfo) {

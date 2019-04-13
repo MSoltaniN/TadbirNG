@@ -62,6 +62,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   public rowData: GridDataResult;
   public selectedRows: number[] = [];
   public totalRecords: number;
+  firstLoad: boolean = true;
 
   //permission flag
   viewAccess: boolean;
@@ -70,8 +71,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   deleteConfirm: boolean;
   deleteModelId: number;
 
-  startDate:any;
-  endDate:any;
+  startDate: any;
+  endDate: any;
 
   currentFilter: FilterExpression;
 
@@ -90,7 +91,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   //#region Events
   ngOnInit() {
     this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
-    this.reloadGrid();
+    //this.reloadGrid();
   }
 
   /**
@@ -214,7 +215,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     })
   }
 
-   public showReport() {
+  public showReport() {
     /*
     var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
@@ -248,20 +249,26 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     */
   }
 
-  dateValueChange(event : any)
-  {
-      this.startDate = event.fromDate;
-      this.endDate = event.toDate;
+  dateValueChange(event: any) {
+    this.startDate = event.fromDate;
+    this.endDate = event.toDate;
+
+    if (this.firstLoad)
+      this.reloadGrid();
+    this.firstLoad = false;
   }
 
-  public showReportManagement()
-  {
-      var id = this.viewIdentity.ViewID;
-      var params = null;
-      if(this.viewIdentity.params.length > 0)
-        params = this.viewIdentity.params.toArray();
+  getVouchers() {
+    this.reloadGrid();
+  }
 
-      this.reportManager.showDialog(id,params,this.currentFilter,this.sort);
+  public showReportManagement() {
+    var id = this.viewIdentity.ViewID;
+    var params = null;
+    if (this.viewIdentity.params.length > 0)
+      params = this.viewIdentity.params.toArray();
+
+    this.reportManager.showDialog(id, params, this.currentFilter, this.sort);
   }
 
   public saveHandler(model: Voucher, isNew: boolean) {
@@ -308,39 +315,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   }
 
-  //public checkHandler(voucherId: number, statusId: DocumentStatusValue) {
-  //  debugger;
-  //  if (statusId == DocumentStatusValue.Draft) {
-  //    //check
-  //    this.grid.loading = true;
-  //    this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, voucherId)).subscribe(res => {
-
-  //      this.showMessage(this.updateMsg, MessageType.Succes);
-  //      this.reloadGrid();
-
-  //    }, (error => {
-  //      this.grid.loading = false;
-  //      var message = error.message ? error.message : error;
-  //      this.showMessage(message, MessageType.Warning);
-  //    }));
-
-  //  }
-  //  else {
-  //    //uncheck
-  //    this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, voucherId)).subscribe(res => {
-
-  //      this.showMessage(this.updateMsg, MessageType.Succes);
-  //      this.reloadGrid();
-
-  //    }, (error => {
-  //      this.grid.loading = false;
-  //      var message = error.message ? error.message : error;
-  //      this.showMessage(message, MessageType.Warning);
-  //    }));
-  //  }
-
-
-  //}
 
   //#endregion
 
@@ -361,6 +335,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   reloadGrid(insertedModel?: Voucher) {
+    debugger;
     if (this.viewAccess) {
       this.grid.loading = true;
       var filter = this.currentFilter;

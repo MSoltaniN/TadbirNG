@@ -171,6 +171,10 @@ var LoginCompleteComponent = /** @class */ (function (_super) {
             if (res)
                 localStorage.setItem(environment_1.SessionKeys.NumberConfige, JSON.stringify(res.values));
         });
+        this.settingService.getSettingById(settingsKey_1.SettingKey.DateRangeConfig).subscribe(function (res) {
+            if (res)
+                localStorage.setItem(environment_1.SessionKeys.DateRangeConfig, JSON.stringify(res.values));
+        });
     };
     LoginCompleteComponent.prototype.loadMenuAndRoute = function (currentUser) {
         var _this = this;

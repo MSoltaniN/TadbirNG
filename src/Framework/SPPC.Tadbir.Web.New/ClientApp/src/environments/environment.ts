@@ -88,7 +88,8 @@ export const SessionKeys = {
   LastUserFpId: 'lastUserFpId',
   CurrentRoute: 'currentRoute',
   CurrentSkin: 'currentSkin',
-  NumberConfige: 'numberConfig'
+  NumberConfige: 'numberConfig',
+  DateRangeConfig:'DateRangeConfig'
 }
 
 
