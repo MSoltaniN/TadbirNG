@@ -263,13 +263,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = await _repository.GetJournalByDateByRowAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
-            SetJournalRowNumbers(journal, gridOptions);
+            PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
@@ -280,13 +274,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = await _repository.GetJournalByDateByRowWithDetailAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
-            SetJournalRowNumbers(journal, gridOptions);
+            PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
@@ -297,14 +285,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = await _repository.GetJournalByDateByLedgerAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
+            PrepareJournal(journal, gridOptions);
             Localize(journal);
-            SetJournalRowNumbers(journal, gridOptions);
             return Json(journal);
         }
 
@@ -315,14 +297,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = await _repository.GetJournalByDateBySubsidiaryAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
+            PrepareJournal(journal, gridOptions);
             Localize(journal);
-            SetJournalRowNumbers(journal, gridOptions);
             return Json(journal);
         }
 
@@ -333,13 +309,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = await _repository.GetJournalByDateLedgerSummaryAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
-            SetJournalRowNumbers(journal, gridOptions);
+            PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
@@ -350,31 +320,35 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = await _repository.GetJournalByDateLedgerSummaryByDateAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
-            SetJournalRowNumbers(journal, gridOptions);
+            PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
         #endregion
 
-        private static void SetJournalRowNumbers(IList<JournalViewModel> journal, GridOptions gridOptions)
+        private void PrepareJournal(JournalWithDetailViewModel journal, GridOptions gridOptions)
         {
+            var userItems = journal.Items.Apply(gridOptions, false);
+            journal.DebitSum = userItems.Select(item => item.Debit).Sum();
+            journal.CreditSum = userItems.Select(item => item.Credit).Sum();
+            SetItemCount(userItems.Count());
+            journal.SetItems(journal.Items.Apply(gridOptions));
             int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
-            foreach (var journalItem in journal)
+            foreach (var journalItem in journal.Items)
             {
                 journalItem.RowNo = rowNo++;
             }
         }
 
-        private static void SetJournalRowNumbers(IList<JournalWithDetailViewModel> journal, GridOptions gridOptions)
+        private void PrepareJournal(JournalViewModel journal, GridOptions gridOptions)
         {
+            var userItems = journal.Items.Apply(gridOptions, false);
+            journal.DebitSum = userItems.Select(item => item.Debit).Sum();
+            journal.CreditSum = userItems.Select(item => item.Credit).Sum();
+            SetItemCount(userItems.Count());
+            journal.SetItems(journal.Items.Apply(gridOptions).ToList());
             int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
-            foreach (var journalItem in journal)
+            foreach (var journalItem in journal.Items)
             {
                 journalItem.RowNo = rowNo++;
             }
@@ -423,9 +397,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private void Localize(IList<JournalViewModel> journal)
+        private void Localize(JournalViewModel journal)
         {
-            foreach (var journalItem in journal)
+            foreach (var journalItem in journal.Items)
             {
                 journalItem.Description = _strings[AppStrings.AsQuotedInVoucherLines];
             }

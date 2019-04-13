@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByDateByRowAsync(DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و مطابق با ردیف های سند با سطوح شناور
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<IList<JournalWithDetailViewModel>> GetJournalByDateByRowWithDetailAsync(
+        Task<JournalWithDetailViewModel> GetJournalByDateByRowWithDetailAsync(
             DateTime from, DateTime to);
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<IList<JournalViewModel>> GetJournalByDateByLedgerAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByDateByLedgerAsync(DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و حسابهای معین
@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<IList<JournalViewModel>> GetJournalByDateBySubsidiaryAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByDateBySubsidiaryAsync(DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه
@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<IList<JournalViewModel>> GetJournalByDateLedgerSummaryAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByDateLedgerSummaryAsync(DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک تاریخ
@@ -103,6 +103,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<IList<JournalViewModel>> GetJournalByDateLedgerSummaryByDateAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateAsync(DateTime from, DateTime to);
     }
 }

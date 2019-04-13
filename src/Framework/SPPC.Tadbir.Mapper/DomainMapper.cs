@@ -516,8 +516,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
                 .ForMember(dest => dest.Lines, opts => opts.Ignore());
 
-            mapperConfig.CreateMap<VoucherLine, JournalViewModel>();
-            mapperConfig.CreateMap<VoucherLine, JournalWithDetailViewModel>();
+            mapperConfig.CreateMap<VoucherLine, JournalItemViewModel>();
+            mapperConfig.CreateMap<VoucherLine, JournalWithDetailItemViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

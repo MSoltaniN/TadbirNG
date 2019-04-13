@@ -151,11 +151,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateByRowAsync(DateTime from, DateTime to)
+        public async Task<JournalViewModel> GetJournalByDateByRowAsync(DateTime from, DateTime to)
         {
-            var journalQuery = GetJournalByDateByRowQuery(from, to);
-            return await journalQuery
-                .ToListAsync();
+            var itemsQuery = GetJournalByDateByRowQuery(from, to);
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(await itemsQuery.ToListAsync());
+            return journal;
         }
 
         /// <summary>
@@ -165,12 +166,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalWithDetailViewModel>> GetJournalByDateByRowWithDetailAsync(
+        public async Task<JournalWithDetailViewModel> GetJournalByDateByRowWithDetailAsync(
             DateTime from, DateTime to)
         {
-            var journalQuery = GetJournalByDateByRowDetailQuery(from, to);
-            return await journalQuery
-                .ToListAsync();
+            var itemsQuery = GetJournalByDateByRowDetailQuery(from, to);
+            var journal = new JournalWithDetailViewModel();
+            journal.Items.AddRange(await itemsQuery.ToListAsync());
+            return journal;
         }
 
         /// <summary>
@@ -180,10 +182,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateByLedgerAsync(
+        public async Task<JournalViewModel> GetJournalByDateByLedgerAsync(
             DateTime from, DateTime to)
         {
-            var journal = new List<JournalViewModel>();
+            var journalItems = new List<JournalItemViewModel>();
             Func<VoucherLine, bool> allFilter = art => true;
             var lines = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
@@ -197,17 +199,19 @@ namespace SPPC.Tadbir.Persistence
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                     journalItem.Debit = byLedger.Sum(art => art.Debit);
-                    journal.Add(journalItem);
+                    journalItems.Add(journalItem);
                 }
 
                 foreach (var byLedger in GetAccountTurnoverGroups(byNo, false, 0, allFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                     journalItem.Credit = byLedger.Sum(art => art.Credit);
-                    journal.Add(journalItem);
+                    journalItems.Add(journalItem);
                 }
             }
 
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
             return journal;
         }
 
@@ -218,10 +222,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateBySubsidiaryAsync(
+        public async Task<JournalViewModel> GetJournalByDateBySubsidiaryAsync(
             DateTime from, DateTime to)
         {
-            var journal = new List<JournalViewModel>();
+            var journalItems = new List<JournalItemViewModel>();
             Func<VoucherLine, bool> ledgerFilter = art => art.Account.Level == 0;
             Func<VoucherLine, bool> subsidiaryFilter = art => art.Account.Level >= 1;
             var lines = await _repository
@@ -232,7 +236,7 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(art => Int32.Parse(art.Voucher.No))
                 .GroupBy(art => art.Voucher.No))
             {
-                var debitLines = new List<JournalViewModel>();
+                var debitLines = new List<JournalItemViewModel>();
                 foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, true, 1, subsidiaryFilter))
                 {
                     var journalItem = await GetNewJournalItem(bySubsidiary.First(), bySubsidiary.Key);
@@ -247,9 +251,9 @@ namespace SPPC.Tadbir.Persistence
                     debitLines.Add(journalItem);
                 }
 
-                journal.AddRange(debitLines.OrderBy(item => item.AccountFullCode));
+                journalItems.AddRange(debitLines.OrderBy(item => item.AccountFullCode));
 
-                var creditLines = new List<JournalViewModel>();
+                var creditLines = new List<JournalItemViewModel>();
                 foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, false, 1, subsidiaryFilter))
                 {
                     var journalItem = await GetNewJournalItem(bySubsidiary.First(), bySubsidiary.Key);
@@ -264,9 +268,11 @@ namespace SPPC.Tadbir.Persistence
                     creditLines.Add(journalItem);
                 }
 
-                journal.AddRange(creditLines.OrderBy(item => item.AccountFullCode));
+                journalItems.AddRange(creditLines.OrderBy(item => item.AccountFullCode));
             }
 
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
             return journal;
         }
 
@@ -277,10 +283,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateLedgerSummaryAsync(
+        public async Task<JournalViewModel> GetJournalByDateLedgerSummaryAsync(
             DateTime from, DateTime to)
         {
-            var journal = new List<JournalViewModel>();
+            var journalItems = new List<JournalItemViewModel>();
             Func<VoucherLine, bool> allFilter = art => true;
             var lines = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
@@ -291,7 +297,7 @@ namespace SPPC.Tadbir.Persistence
                 var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                 journalItem.Description = journalItem.AccountName;
                 journalItem.Debit = byLedger.Sum(art => art.Debit);
-                journal.Add(journalItem);
+                journalItems.Add(journalItem);
             }
 
             foreach (var byLedger in GetAccountTurnoverGroups(lines, false, 0, allFilter))
@@ -299,9 +305,11 @@ namespace SPPC.Tadbir.Persistence
                 var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                 journalItem.Description = journalItem.AccountName;
                 journalItem.Credit = byLedger.Sum(art => art.Credit);
-                journal.Add(journalItem);
+                journalItems.Add(journalItem);
             }
 
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
             return journal;
         }
 
@@ -312,10 +320,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<IList<JournalViewModel>> GetJournalByDateLedgerSummaryByDateAsync(
+        public async Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateAsync(
             DateTime from, DateTime to)
         {
-            var journal = new List<JournalViewModel>();
+            var journalItems = new List<JournalItemViewModel>();
             Func<VoucherLine, bool> allFilter = art => true;
             var lines = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
@@ -329,17 +337,19 @@ namespace SPPC.Tadbir.Persistence
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                     journalItem.Debit = byLedger.Sum(art => art.Debit);
-                    journal.Add(journalItem);
+                    journalItems.Add(journalItem);
                 }
 
                 foreach (var byLedger in GetAccountTurnoverGroups(byDate, false, 0, allFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                     journalItem.Credit = byLedger.Sum(art => art.Credit);
-                    journal.Add(journalItem);
+                    journalItems.Add(journalItem);
                 }
             }
 
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
             return journal;
         }
 
@@ -457,18 +467,18 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private IQueryable<JournalViewModel> GetJournalByDateByRowQuery(DateTime from, DateTime to)
+        private IQueryable<JournalItemViewModel> GetJournalByDateByRowQuery(DateTime from, DateTime to)
         {
             var journalQuery = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
-                .Select(art => _mapper.Map<JournalViewModel>(art));
+                .Select(art => _mapper.Map<JournalItemViewModel>(art));
             return journalQuery;
         }
 
-        private IQueryable<JournalWithDetailViewModel> GetJournalByDateByRowDetailQuery(DateTime from, DateTime to)
+        private IQueryable<JournalWithDetailItemViewModel> GetJournalByDateByRowDetailQuery(DateTime from, DateTime to)
         {
             var journalQuery = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
@@ -477,7 +487,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
-                .Select(art => _mapper.Map<JournalWithDetailViewModel>(art));
+                .Select(art => _mapper.Map<JournalWithDetailItemViewModel>(art));
             return journalQuery;
         }
 
@@ -506,11 +516,11 @@ namespace SPPC.Tadbir.Persistence
             return turnoverGroups;
         }
 
-        private async Task<JournalViewModel> GetNewJournalItem(VoucherLine voucherLine, string fullCode)
+        private async Task<JournalItemViewModel> GetNewJournalItem(VoucherLine voucherLine, string fullCode)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
-            var journalItem = _mapper.Map<JournalViewModel>(voucherLine);
+            var journalItem = _mapper.Map<JournalItemViewModel>(voucherLine);
             journalItem.Id = 0;
             journalItem.Description = null;
             journalItem.AccountFullCode = fullCode;
