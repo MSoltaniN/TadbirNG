@@ -11,6 +11,7 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -25,10 +26,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public ConfigRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
+        /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
+        /// <remarks>برای استفاده از اطلاعات دوره مالی جاری لازم است اطلاعات محیطی از طریق متد زیر تنظیم شده باشد :
+        /// SetCurrentContext</remarks>
+        public ConfigRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IFiscalPeriodRepository fiscalRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _fiscalRepository = fiscalRepository;
             _unitOfWork.UseSystemContext();
         }
 
@@ -107,6 +112,30 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return configByType;
+        }
+
+        /// <summary>
+        /// محدوده تاریخی پیش فرض را با توجه به دوره مالی جاری برنامه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="start">پارامتر خروجی برای تنظیم تاریخ ابتدا در محدوده تاریخی پیش فرض</param>
+        /// <param name="end">پارامتر خروجی برای تنظیم تاریخ انتها در محدوده تاریخی پیش فرض</param>
+        public void GetCurrentFiscalDateRange(out DateTime start, out DateTime end)
+        {
+            var config = GetConfigByTypeAsync<DateRangeConfig>().Result;
+            Verify.ArgumentNotNull(_currentContext);
+            if (config.DefaultDateRange == DateRangeOptions.CurrentToCurrent)
+            {
+                start = DateTime.Now;
+                end = DateTime.Now;
+            }
+            else
+            {
+                var fp = _fiscalRepository.GetFiscalPeriodAsync(_currentContext.FiscalPeriodId).Result;
+                start = fp.StartDate;
+                end = (config.DefaultDateRange == DateRangeOptions.FiscalStartToCurrent)
+                    ? DateTime.Now
+                    : fp.EndDate;
+            }
         }
 
         /// <summary>
@@ -280,6 +309,15 @@ namespace SPPC.Tadbir.Persistence
             await SaveViewTreeConfigAsync(configItems);
         }
 
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات محیطی کاربر جاری برنامه</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
+        {
+            _currentContext = userContext;
+        }
+
         private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
         {
             while (fullConfig.Default.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
@@ -404,6 +442,8 @@ namespace SPPC.Tadbir.Persistence
 
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
+        private readonly IFiscalPeriodRepository _fiscalRepository;
+        private UserContextViewModel _currentContext;
 
         private ColumnViewConfig _idColumn;
         private ColumnViewConfig _nameColumn;
