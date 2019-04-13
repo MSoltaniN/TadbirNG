@@ -55,15 +55,17 @@
               <settings-form-component [model]="itemSelectedModel" (updateList)="updateListHandler($event)"></settings-form-component>
 
             </div>
+
+            <div *ngIf="lastSelectedType && lastSelectedType != 'ViewTreeConfig'" id="btn-section" class="btn-setting" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
+              <button class="k-button k-primary" (click)="onDefaultSettings()">{{ 'Settings.DefaultBtn' | translate }}</button>
+              <button class="k-button k-primary" (click)="onSaveSettingsList()">{{ 'ViewTreeConfig.Save' | translate }}</button>
+            </div>
+
           </div>
         </div>
         <div class="clearfix"></div>
       </div>
 
-      <div *ngIf="lastSelectedType && lastSelectedType != 'ViewTreeConfig'" id="btn-section" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
-        <button class="k-button k-primary" (click)="onDefaultSettings()">{{ 'Settings.DefaultBtn' | translate }}</button>
-        <button class="k-button k-primary" (click)="onSaveSettingsList()">{{ 'Buttons.Ok' | translate }}</button>
-      </div>
     </div>        
 </div>
 <div class="clearfix"></div>

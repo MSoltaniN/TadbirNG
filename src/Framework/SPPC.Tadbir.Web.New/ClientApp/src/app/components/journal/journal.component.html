@@ -73,7 +73,11 @@
 
     </ng-template>
 
-    <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
+    <kendo-grid-checkbox-column showSelectAll="true" width="66">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
+        {{ 'Journal.Sum' | translate }}
+      </ng-template>
+    </kendo-grid-checkbox-column>
 
 
     <kendo-grid-column media="(max-width: 450px)" title="">
@@ -87,6 +91,18 @@
           </ng-template>
         </dl>
 
+      </ng-template>
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
+        <table>
+          <tr>
+            <td>{{ 'Journal.DebitSum' | translate }}</td>
+            <td>{{ debitSum | SppcNumConfig }}</td>
+          </tr>
+          <tr>
+            <td>{{ 'Journal.CreditSum' | translate }}</td>
+            <td>{{ creditSum | SppcNumConfig }}</td>
+          </tr>
+        </table>
       </ng-template>
     </kendo-grid-column>
 
@@ -104,6 +120,14 @@
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
         {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig }}
+      </ng-template>
+
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Credit'">
+        {{ creditSum | SppcNumConfig }}
+      </ng-template>
+
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Debit'">
+        {{ debitSum | SppcNumConfig }}
       </ng-template>
 
     </kendo-grid-column>

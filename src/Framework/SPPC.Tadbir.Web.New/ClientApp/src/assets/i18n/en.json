@@ -149,7 +149,10 @@
     "VoucherStatus": "Voucher Status",
     "ArticleType": "Article Type",
     "OnLabel": "Yes",
-    "OffLabel": "No"
+    "OffLabel": "No",
+    "Sum": "Sum",
+    "DebitSum": "Debit Sum",
+    "CreditSum": "Credit Sum"
   },
   "JournalByDateByRow": {
     "RowNo": "Row No",

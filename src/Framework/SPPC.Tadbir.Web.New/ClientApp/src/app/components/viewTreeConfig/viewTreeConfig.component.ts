@@ -46,6 +46,14 @@ export function getLayoutModule(layout: Layout) {
 #level-list > li.enable{ cursor: pointer; } #level-list > li.enable:hover{ background-color: #8ab8e0;}
 #level-list > li.disable{ background-color: #fdfdfd; } #level-list > li.selected{ background-color: #337ab7; }
 /deep/.k-grid tr.notEnabled { color: #cac4c4; }
+
+.btn-setting {
+    position: absolute;
+    bottom: 15px;
+    left: 28px;
+    right: 0;
+    text-align: justify;
+}
 `],
   providers: [{
     provide: RTL,

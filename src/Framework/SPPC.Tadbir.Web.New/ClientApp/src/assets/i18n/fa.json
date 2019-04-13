@@ -147,7 +147,10 @@
     "VoucherStatus": "وضعیت سند",
     "ArticleType": "نوع آرتیکل ها",
     "OnLabel": "بله",
-    "OffLabel": "خیر"
+    "OffLabel": "خیر",
+    "Sum": "مجموع",
+    "DebitSum": "جمع بدهکار",
+    "CreditSum": "جمع بستانکار"
   },
   "JournalByDateByRow": {
     "RowNo": "ردیف",

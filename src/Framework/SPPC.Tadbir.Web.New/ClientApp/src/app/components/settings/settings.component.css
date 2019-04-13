@@ -23,7 +23,7 @@
     padding: 10px;
     border-right: solid 1px #337ab7;
     border-left: solid 1px #337ab7;
-    height: 500px;
+    height: 600px;
     overflow-y: scroll;
 }
 
@@ -61,4 +61,10 @@
 
 /deep/#setting-form .k-dropdown, /deep/ #setting-form .k-textbox {
     width: 100%;
+}
+
+.btn-setting {
+  position: absolute;
+  bottom: 15px;
+  left: 28px;
 }
