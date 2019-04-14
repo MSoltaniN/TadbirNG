@@ -152,7 +152,28 @@
     "OffLabel": "No",
     "Sum": "Sum",
     "DebitSum": "Debit Sum",
-    "CreditSum": "Credit Sum"
+    "CreditSum": "Credit Sum",
+    "DisplayTypes": {
+      "VoucherRows": "According To Voucher Rows",
+      "VoucherRowsWithFloatingAccounts": "According To Voucher Rows With Floating Accounts",
+      "LedgerLevel": "Ledger Level",
+      "SubsidiaryLevel": "Subsidiary Level",
+      "BriefVoucher": "Brief Voucher",
+      "BriefVoucherByDate": "Brief Voucher Grouped By Date",
+      "BriefVoucherByMonth": "Brief Voucher Grouped By Month"
+    },
+    "VoucherStatuses": {
+      "Committed": "Committed",
+      "Finalized": "Finalized",
+      "Accepted": "Accepted",
+      "Approved": "Approved",
+      "AllVouchers": "AllVouchers"
+    },
+    "ArticleTypes": {
+      "AllVoucherLines": "All Voucher Lines",
+      "MarkedVoucherLines": "Marked Voucher Lines",
+      "UncheckedVoucherLines": "Unchecked Voucher Lines"
+    }
   },
   "JournalByDateByRow": {
     "RowNo": "Row No",

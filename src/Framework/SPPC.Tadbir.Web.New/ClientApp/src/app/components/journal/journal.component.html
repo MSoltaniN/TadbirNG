@@ -146,6 +146,12 @@
                             [valuePrimitive]="true"
                             [value]="displayTypeSelected"
                             [(ngModel)]="displayTypeSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
@@ -157,6 +163,12 @@
                             [valuePrimitive]="true"
                             [value]="voucherStatusSelected"
                             [(ngModel)]="voucherStatusSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-4 form-group">
@@ -168,6 +180,12 @@
                             [valuePrimitive]="true"
                             [value]="articleTypeSelected"
                             [(ngModel)]="articleTypeSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
       </div>
     </div>
@@ -181,6 +199,12 @@
                             [valuePrimitive]="true"
                             [value]="branchScopeSelected"
                             [(ngModel)]="branchScopeSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">

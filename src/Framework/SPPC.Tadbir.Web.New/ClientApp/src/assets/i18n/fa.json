@@ -150,7 +150,28 @@
     "OffLabel": "خیر",
     "Sum": "مجموع",
     "DebitSum": "جمع بدهکار",
-    "CreditSum": "جمع بستانکار"
+    "CreditSum": "جمع بستانکار",
+    "DisplayTypes": {
+      "VoucherRows": "مطابق ردیف های سند",
+      "VoucherRowsWithFloatingAccounts": "مطابق ردیف های سند با سطوح شناور",
+      "LedgerLevel": "در سطح کل",
+      "SubsidiaryLevel": "در سطح معین",
+      "BriefVoucher": "سند خلاصه",
+      "BriefVoucherByDate": "سند خلاصه به تفکیک تاریخ",
+      "BriefVoucherByMonth": "سند خلاصه به تفکیک ماه"
+    },
+    "VoucherStatuses": {
+      "Committed": "ثبت شده",
+      "Finalized": "ثبت قطعی شده",
+      "Accepted": "تایید شده",
+      "Approved": "تصویب شده",
+      "AllVouchers": "کلیه اسناد"
+    },
+    "ArticleTypes": {
+      "AllVoucherLines": "کلیه آرتیکل ها",
+      "MarkedVoucherLines": "آرتیکل های علامت گذاری شده",
+      "UncheckedVoucherLines": "آرتیکل های علامت گذاری نشده"
+    }
   },
   "JournalByDateByRow": {
     "RowNo": "ردیف",
