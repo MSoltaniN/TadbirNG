@@ -7,22 +7,7 @@
     "Name": "سیستم جامع تدبیر",
     "SummaryName": "تدبیر",
     "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
-    "Level": "سطح",
-    "Menu": {
-      "Account": "حساب",
-      "Voucher": "اسناد",
-      "Users": "کاربران",
-      "Roles": "نقش ها",
-      "DetailAccount": "تفصیلی شناور",
-      "CostCenter": "مرکز هزینه",
-      "Project": "پروژه",
-      "FiscalPeriod": "دوره مالی",
-      "Branch": "شعب",
-      "Company": "شرکت",
-      "AccountRelations": "ارتباطات حساب",
-      "ChangePassword": "تغییر کلمه عبور",
-      "Exit": "خروج"
-    }
+    "Level": "سطح"
   },
   "Enviroment": {
     "FiscalPeriod": "دوره مالی",
@@ -64,7 +49,8 @@
     "Updated": "{0} با موفقیت ویرایش شد",
     "Deleted": "{0} با موفقیت حذف شد",
     "DeleteConfirm": "آیا برای حذف {0} اطمینان دارید؟",
-    "SelectedItems": "موارد انتخاب شده"
+    "SelectedItems": "موارد انتخاب شده",
+    "TreeLevelsAreTooDeep": "تعداد سطوح بیشتر از {0} مجاز نیست"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -86,8 +72,8 @@
     "ReportSetDefaultForAll": "گزارش برای همه کاربران به صورت پیش فرض شد",
     "DefaultForAll": "پیش فرض برای همه",
     "ReportDesktop": "میز کار",
-    "Close":"ذخیره گزارش",
-    "ConfirmMsg" : "محیط طراحی گزارش تغییر کرده است آیا مایل به ذخیره گزارش هستید؟"
+    "Close": "ذخیره گزارش",
+    "ConfirmMsg": "محیط طراحی گزارش تغییر کرده است آیا مایل به ذخیره گزارش هستید؟"
   },
   "Buttons": {
     "Ok": "تایید",
@@ -107,7 +93,9 @@
     "FilterForm": "فرم فیلتر",
     "Tools": "ابزارها",
     "Save": "ذخیره",
-    "Close":"بستن"
+    "Close": "بستن",
+    "Subset": "زیر مجموعه",
+    "Comput": "محاسبه"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -132,12 +120,119 @@
     "OperationLog": "لاگ های عملیاتی",
     "ViewTreeConfig": "تنظیمات ساختار درختی",
     "AccountGroup": "گروه حساب",
-    "AccountCollection": "مجموعه حساب"
+    "AccountCollection": "مجموعه حساب",
+    "Journal": "دفتر روزنامه",
+    "JournalByDateByRow": "مطابق ردیف های سند",
+    "JournalByDateByRowDetail": "مطابق ردیف های سند با سطوح شناور",
+    "JournalByDateByLedger": "در سطح کل",
+    "JournalByDateBySubsidiary": "در سطح معین",
+    "JournalByDateSummary": "سند خلاصه",
+    "JournalByDateSummaryByDate": "سند خلاصه به تفکیک تاریخ"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
     "CurrentBranchAndSubsets": "شعبه جاری و زیر مجموعه ها",
     "CurrentBranch": "شعبه جاری"
+  },
+  "Journal": {
+    "ByDate": "بر اساس تاریخ",
+    "ByVoucher": "بر اساس سند",
+    "FromDate": "از تاریخ",
+    "ToDate": "تا تاریخ",
+    "FromVoucher": "از سند",
+    "ToVoucher": "تا سند",
+    "DisplayType": "نوع نمایش",
+    "SelectBranch": "انتخاب شعبه",
+    "BranchSeparation": "به تفکیک شعبه",
+    "VoucherStatus": "وضعیت سند",
+    "ArticleType": "نوع آرتیکل ها",
+    "OnLabel": "بله",
+    "OffLabel": "خیر",
+    "Sum": "مجموع",
+    "DebitSum": "جمع بدهکار",
+    "CreditSum": "جمع بستانکار",
+    "DisplayTypes": {
+      "VoucherRows": "مطابق ردیف های سند",
+      "VoucherRowsWithFloatingAccounts": "مطابق ردیف های سند با سطوح شناور",
+      "LedgerLevel": "در سطح کل",
+      "SubsidiaryLevel": "در سطح معین",
+      "BriefVoucher": "سند خلاصه",
+      "BriefVoucherByDate": "سند خلاصه به تفکیک تاریخ",
+      "BriefVoucherByMonth": "سند خلاصه به تفکیک ماه"
+    },
+    "VoucherStatuses": {
+      "Committed": "ثبت شده",
+      "Finalized": "ثبت قطعی شده",
+      "Accepted": "تایید شده",
+      "Approved": "تصویب شده",
+      "AllVouchers": "کلیه اسناد"
+    },
+    "ArticleTypes": {
+      "AllVoucherLines": "کلیه آرتیکل ها",
+      "MarkedVoucherLines": "آرتیکل های علامت گذاری شده",
+      "UncheckedVoucherLines": "آرتیکل های علامت گذاری نشده"
+    }
+  },
+  "JournalByDateByRow": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار"
+  },
+  "JournalByDateByRowDetail": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "DetailAccountFullCode": "کد تفصیلی شناور",
+    "DetailAccountName": "نام تفصیلی شناور",
+    "CostCenterFullCode": "کد مرکز هزینه",
+    "CostCenterName": "نام مرکز هزینه",
+    "ProjectFullCode": "کد پروژه",
+    "ProjectName": "نام پروژه"
+  },
+  "JournalByDateByLedger": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار"
+  },
+  "JournalByDateBySubsidiary": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار"
+  },
+  "JournalByDateSummary": {
+    "RowNo": "ردیف",
+    "AccountFullCode": "کد حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار"
+  },
+  "JournalByDateSummaryByDate": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "AccountFullCode": "کد حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار"
   },
   "Account": {
     "New": "حساب جدید",
@@ -254,7 +349,8 @@
     "CodeLength": "طول کد",
     "Save": "ذخیره تنظیمات",
     "DefaultSettings": "پیش فرض",
-    "SelectEntity": "موجودیت را انتخاب کنید"
+    "SelectEntity": "موجودیت را انتخاب کنید",
+    "LevelIsUsedMsg": "سطح مورد نظر استفاده شده و قابل تغییر نمیباشد"
   },
   "VoucherLine": {
     "Debit": "بدهکار",
@@ -417,7 +513,10 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف تفصیلی شناور",
-    "BranchScope": "دسترسی شعبه"
+    "BranchScope": "دسترسی شعبه",
+    "LedgerDetailAccount": "تفصیلی های شناور سطح اول",
+    "EditorTitleEdit": "ویرایش تفصیلی شناور در سطح {0}",
+    "EditorTitleNew": "تفصیلی شناور جدید در سطح {0}"
   },
   "CostCenter": {
     "New": "مرکز هزینه جدید",
@@ -428,7 +527,10 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف مرکز هزینه",
-    "BranchScope": "دسترسی شعبه"
+    "BranchScope": "دسترسی شعبه",
+    "LedgerCostCenter": "مراکز هزینه سطح اول",
+    "EditorTitleEdit": "ویرایش مرکز هزینه در سطح {0}",
+    "EditorTitleNew": "مرکز هزینه جدید در سطح {0}"
   },
   "Project": {
     "New": "پروژه جدید",
@@ -439,7 +541,10 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف پروژه",
-    "BranchScope": "دسترسی شعبه"
+    "BranchScope": "دسترسی شعبه",
+    "LedgerProject": "پروژه های سطح اول",
+    "EditorTitleEdit": "ویرایش پروژه در سطح {0}",
+    "EditorTitleNew": "پروژه جدید در سطح {0}"
   },
   "AccountRelations": {
     "MainComponent": "مولفه اصلی",

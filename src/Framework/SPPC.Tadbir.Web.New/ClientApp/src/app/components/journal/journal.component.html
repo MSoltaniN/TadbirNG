@@ -1,4 +1,4 @@
-<app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
+<app-bread-cumb [entityTypeName]="'Journal'"></app-bread-cumb>
 <div class="panel-body">
   <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
@@ -31,7 +31,7 @@
     </ng-template>
     <ng-template kendoGridToolbarTemplate>
 
-      <div class="journal-type" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+      <div class="journal-type" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa','pull-left':this.CurrentLanguage === 'en'}">
         <input type="radio" name="rdbJournalType" [(ngModel)]="journalType" id="radio1" class="k-radio" value="1" />
         <label class="k-radio-label" for="radio1">{{ 'Journal.ByDate' | translate }}</label>
         <br />
@@ -39,25 +39,25 @@
         <label class="k-radio-label" for="radio2">{{ 'Journal.ByVoucher' | translate }}</label>
       </div>
 
-      <div [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+      <div [ngClass]="{'pull-right':this.CurrentLanguage === 'fa','pull-left':this.CurrentLanguage === 'en'}">
 
         <div *ngIf="journalType == '1'">
-          <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+          <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
             <label class="control-label">{{ 'Journal.FromDate' | translate }}</label>
-            <sppc-datepicker [(ngModel)]="fromDate" [displayDate]="FiscalPeriodStartDate"></sppc-datepicker>
+            <sppc-datepicker [(ngModel)]="fromDate" [displayDate]="getDateConfig('start')"></sppc-datepicker>
           </div>
-          <div class="col-sm-6">
+          <div class="col-xs-12 col-sm-6">
             <label class="control-label">{{ 'Journal.ToDate' | translate }}</label>
-            <sppc-datepicker [(ngModel)]="toDate"></sppc-datepicker>
+            <sppc-datepicker [(ngModel)]="toDate" [displayDate]="getDateConfig('end')"></sppc-datepicker>
           </div>
         </div>
 
         <div *ngIf="journalType == '2'">
-          <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+          <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
             <label class="control-label">{{ 'Journal.FromVoucher' | translate }}</label>
             <input type="text" class="k-textbox" />
           </div>
-          <div class="col-sm-6">
+          <div class="col-xs-12 col-sm-6">
             <label class="control-label">{{ 'Journal.ToVoucher' | translate }}</label>
             <input type="text" class="k-textbox" />
           </div>
@@ -73,7 +73,11 @@
 
     </ng-template>
 
-    <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
+    <kendo-grid-checkbox-column showSelectAll="true" width="66">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
+        {{ 'Journal.Sum' | translate }}
+      </ng-template>
+    </kendo-grid-checkbox-column>
 
 
     <kendo-grid-column media="(max-width: 450px)" title="">
@@ -81,12 +85,24 @@
         <dl>
           <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
             <dt>{{ getColumnTitle(item.name) }}:</dt>
-            <dd *ngIf="item.scriptType != 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType)  }}</dd>
+            <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig }}</dd>
+            <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
             <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate }}</dd>
           </ng-template>
         </dl>
 
-        <button kendoGridAddCommand (click)="addNew(account.id)" type="button">{{ 'Buttons.New' | translate }}</button>
+      </ng-template>
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
+        <table>
+          <tr>
+            <td>{{ 'Journal.DebitSum' | translate }}</td>
+            <td>{{ debitSum | SppcNumConfig }}</td>
+          </tr>
+          <tr>
+            <td>{{ 'Journal.CreditSum' | translate }}</td>
+            <td>{{ creditSum | SppcNumConfig }}</td>
+          </tr>
+        </table>
       </ng-template>
     </kendo-grid-column>
 
@@ -101,6 +117,19 @@
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean'">
         {{ getRowValue(item.name,dataItem,item.scriptType)  }}
       </ng-template>
+
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
+        {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig }}
+      </ng-template>
+
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Credit'">
+        {{ creditSum | SppcNumConfig }}
+      </ng-template>
+
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Debit'">
+        {{ debitSum | SppcNumConfig }}
+      </ng-template>
+
     </kendo-grid-column>
 
 
@@ -117,6 +146,12 @@
                             [valuePrimitive]="true"
                             [value]="displayTypeSelected"
                             [(ngModel)]="displayTypeSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
@@ -128,6 +163,12 @@
                             [valuePrimitive]="true"
                             [value]="voucherStatusSelected"
                             [(ngModel)]="voucherStatusSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-4 form-group">
@@ -139,6 +180,12 @@
                             [valuePrimitive]="true"
                             [value]="articleTypeSelected"
                             [(ngModel)]="articleTypeSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
       </div>
     </div>
@@ -152,6 +199,12 @@
                             [valuePrimitive]="true"
                             [value]="branchScopeSelected"
                             [(ngModel)]="branchScopeSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
@@ -162,12 +215,12 @@
         </kendo-switch>
       </div>
       <div class="col-xs-12 col-sm-4 form-group">
-        <button class="k-button k-primary" (click)="getReportData()" [ngClass]="{'pull-left':this.CurrentLanguage === 'fa'}" style="margin-top: 25px;">
-        {{ 'Journal.Computing' | translate }}
+        <button class="k-button k-primary" (click)="getReportData()" [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en'}" style="margin-top: 25px;">
+          {{ 'Buttons.Comput' | translate }}
         </button>
       </div>
     </div>
-    
+
     <div class="clearfix"></div>
   </div>
 

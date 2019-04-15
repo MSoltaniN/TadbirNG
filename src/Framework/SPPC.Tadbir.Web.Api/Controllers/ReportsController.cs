@@ -29,11 +29,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class ReportsController : ApiControllerBase
     {
         public ReportsController(IReportRepository repository, IReportSystemRepository sysRepository,
-            IStringLocalizer<AppStrings> strings)
+            IConfigRepository config, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
             _sysRepository = sysRepository;
+            _configRepository = config;
         }
 
         #region Report Management API
@@ -546,103 +547,107 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-row
         [Route(ReportApi.JournalByDateByRowUrl)]
-        public async Task<IActionResult> GetJournalByDateByRowAsync(DateTime from, DateTime to)
+        public async Task<IActionResult> GetJournalByDateByRowAsync(DateTime? from, DateTime? to)
         {
+            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateByRowAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
+            var journal = await _repository.GetJournalByDateByRowAsync(from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-date/by-row-detail
         [Route(ReportApi.JournalByDateByRowDetailUrl)]
-        public async Task<IActionResult> GetJournalByDateByRowWithDetailAsync(DateTime from, DateTime to)
+        public async Task<IActionResult> GetJournalByDateByRowWithDetailAsync(DateTime? from, DateTime? to)
         {
+            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateByRowWithDetailAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
+            var journal = await _repository.GetJournalByDateByRowWithDetailAsync(from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-date/by-ledger
         [Route(ReportApi.JournalByDateByLedgerUrl)]
-        public async Task<IActionResult> GetJournalByDateByLedgerAsync(DateTime from, DateTime to)
+        public async Task<IActionResult> GetJournalByDateByLedgerAsync(DateTime? from, DateTime? to)
         {
+            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateByLedgerAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
+            var journal = await _repository.GetJournalByDateByLedgerAsync(from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
             Localize(journal);
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-date/by-subsid
         [Route(ReportApi.JournalByDateBySubsidiaryUrl)]
-        public async Task<IActionResult> GetJournalByDateBySubsidiaryAsync(DateTime from, DateTime to)
+        public async Task<IActionResult> GetJournalByDateBySubsidiaryAsync(DateTime? from, DateTime? to)
         {
+            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateBySubsidiaryAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
+            var journal = await _repository.GetJournalByDateBySubsidiaryAsync(from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
             Localize(journal);
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-date/summary
         [Route(ReportApi.JournalByDateLedgerSummaryUrl)]
-        public async Task<IActionResult> GetJournalByDateLedgerSummaryAsync(DateTime from, DateTime to)
+        public async Task<IActionResult> GetJournalByDateLedgerSummaryAsync(DateTime? from, DateTime? to)
         {
+            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateLedgerSummaryAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
+            var journal = await _repository.GetJournalByDateLedgerSummaryAsync(from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-date/sum-by-date
         [Route(ReportApi.JournalByDateLedgerSummaryByDateUrl)]
-        public async Task<IActionResult> GetJournalByDateLedgerSummaryByDateAsync(DateTime from, DateTime to)
+        public async Task<IActionResult> GetJournalByDateLedgerSummaryByDateAsync(DateTime? from, DateTime? to)
         {
+            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateLedgerSummaryByDateAsync(from, to);
-            SetItemCount(journal
-                .Apply(gridOptions, false)
-                .Count());
-            journal = journal
-                .Apply(gridOptions)
-                .ToList();
+            var journal = await _repository.GetJournalByDateLedgerSummaryByDateAsync(from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
         #endregion
+
+        private void PrepareJournal(JournalWithDetailViewModel journal, GridOptions gridOptions)
+        {
+            var userItems = journal.Items.Apply(gridOptions, false);
+            journal.DebitSum = userItems.Select(item => item.Debit).Sum();
+            journal.CreditSum = userItems.Select(item => item.Credit).Sum();
+            SetItemCount(userItems.Count());
+            journal.SetItems(journal.Items.Apply(gridOptions).ToList());
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
+            foreach (var journalItem in journal.Items)
+            {
+                journalItem.RowNo = rowNo++;
+            }
+        }
+
+        private void PrepareJournal(JournalViewModel journal, GridOptions gridOptions)
+        {
+            var userItems = journal.Items.Apply(gridOptions, false);
+            journal.DebitSum = userItems.Select(item => item.Debit).Sum();
+            journal.CreditSum = userItems.Select(item => item.Credit).Sum();
+            SetItemCount(userItems.Count());
+            journal.SetItems(journal.Items.Apply(gridOptions).ToList());
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
+            foreach (var journalItem in journal.Items)
+            {
+                journalItem.RowNo = rowNo++;
+            }
+        }
 
         private async Task<int> GetCurrentLocaleIdAsync()
         {
@@ -687,9 +692,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private void Localize(IList<JournalViewModel> journal)
+        private void Localize(JournalViewModel journal)
         {
-            foreach (var journalItem in journal)
+            foreach (var journalItem in journal.Items)
             {
                 journalItem.Description = _strings[AppStrings.AsQuotedInVoucherLines];
             }
@@ -719,7 +724,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
+        private void Sanitize(ref DateTime? from, ref DateTime? to)
+        {
+            if (from == null || to == null)
+            {
+                DateTime rangeFrom, rangeTo;
+                _configRepository.SetCurrentContext(SecurityContext.User);
+                _configRepository.GetCurrentFiscalDateRange(out rangeFrom, out rangeTo);
+                from = from ?? rangeFrom;
+                to = to ?? rangeTo;
+            }
+        }
+
         private readonly IReportRepository _repository;
         private readonly IReportSystemRepository _sysRepository;
+        private readonly IConfigRepository _configRepository;
     }
 }

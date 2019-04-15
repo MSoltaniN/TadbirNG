@@ -71,13 +71,13 @@ export const Entities = {
 }
 
 export const ColumnVisibility =
-  {
-    Default: "Default",
-    AlwaysVisible: "AlwaysVisible",
-    AlwaysHidden: "AlwaysHidden",
-    Visible: "Visible",
-    Hidden: "Hidden"
-  }
+{
+  Default: "Default",
+  AlwaysVisible: "AlwaysVisible",
+  AlwaysHidden: "AlwaysHidden",
+  Visible: "Visible",
+  Hidden: "Hidden"
+}
 
 
 export const SessionKeys = {
@@ -87,7 +87,9 @@ export const SessionKeys = {
   LastUserBranch: 'lastUserBranch',
   LastUserFpId: 'lastUserFpId',
   CurrentRoute: 'currentRoute',
-  CurrentSkin: 'currentSkin'
+  CurrentSkin: 'currentSkin',
+  NumberConfige: 'numberConfig',
+  DateRangeConfig:'DateRangeConfig'
 }
 
 

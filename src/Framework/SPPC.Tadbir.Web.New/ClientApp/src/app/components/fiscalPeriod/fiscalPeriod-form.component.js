@@ -45,6 +45,12 @@ var FiscalPeriodFormComponent = /** @class */ (function (_super) {
     }
     Object.defineProperty(FiscalPeriodFormComponent.prototype, "model", {
         set: function (fiscalPeriod) {
+            debugger;
+            if (fiscalPeriod && this.isNew) {
+                fiscalPeriod.startDate = this.getStartDate();
+                fiscalPeriod.endDate = this.getEndDate();
+                new Date();
+            }
             this.editForm.reset(fiscalPeriod);
             this.active = fiscalPeriod !== undefined || this.isNew;
             if (fiscalPeriod != undefined) {
@@ -55,6 +61,22 @@ var FiscalPeriodFormComponent = /** @class */ (function (_super) {
         configurable: true
     });
     //create properties
+    FiscalPeriodFormComponent.prototype.getStartDate = function () {
+        if (this.CurrentLanguage == "fa") {
+            return new Date(new Date().getFullYear(), 2, 21, 0, 0, 0);
+        }
+        else {
+            return new Date(new Date().getFullYear(), 0, 1, 0, 0, 0);
+        }
+    };
+    FiscalPeriodFormComponent.prototype.getEndDate = function () {
+        if (this.CurrentLanguage == "fa") {
+            return new Date(new Date().getFullYear() + 1, 2, 19, 0, 0, 0);
+        }
+        else {
+            return new Date(new Date().getFullYear(), 11, 31, 0, 0, 0);
+        }
+    };
     //Events
     FiscalPeriodFormComponent.prototype.onSave = function (e) {
         e.preventDefault();

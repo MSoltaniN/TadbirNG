@@ -23,7 +23,7 @@
     padding: 10px;
     border-right: solid 1px #337ab7;
     border-left: solid 1px #337ab7;
-    height: 500px;
+    height: 600px;
     overflow-y: scroll;
 }
 
@@ -38,9 +38,12 @@
 #setting-description {
     position: absolute;
     bottom: 0;
+    left:0;
+    right:0;
     text-align: justify;
     color: #4a4a4a;
     font-size: 13px;
+    padding:0 20px;
 }
 
 /deep/.k-treeview .k-item{
@@ -57,5 +60,11 @@
 
 
 /deep/#setting-form .k-dropdown, /deep/ #setting-form .k-textbox {
-    width: 250px;
+    width: 100%;
+}
+
+.btn-setting {
+  position: absolute;
+  bottom: 15px;
+  left: 28px;
 }

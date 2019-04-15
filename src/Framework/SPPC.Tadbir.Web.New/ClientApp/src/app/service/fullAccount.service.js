@@ -21,7 +21,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 require("rxjs/Rx");
-var source_1 = require("../class/source");
 var base_service_1 = require("../class/base.service");
 var index_1 = require("./api/index");
 var FullAccountInfo = /** @class */ (function () {
@@ -38,27 +37,23 @@ var FullAccountService = /** @class */ (function (_super) {
         return _this;
     }
     FullAccountService.prototype.GetAccountsLookup = function () {
-        var url = source_1.String.Format(index_1.LookupApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
         var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
+        return this.http.get(index_1.LookupApi.EnvironmentAccounts, options)
             .map(function (response) { return response; });
     };
     FullAccountService.prototype.GetDetailAccountsLookup = function () {
-        var url = source_1.String.Format(index_1.LookupApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
         var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
+        return this.http.get(index_1.LookupApi.EnvironmentDetailAccounts, options)
             .map(function (response) { return response; });
     };
     FullAccountService.prototype.GetCostCentersLookup = function () {
-        var url = source_1.String.Format(index_1.LookupApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
         var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
+        return this.http.get(index_1.LookupApi.EnvironmentCostCenters, options)
             .map(function (response) { return response; });
     };
     FullAccountService.prototype.GetProjectsLookup = function () {
-        var url = source_1.String.Format(index_1.LookupApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
         var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
+        return this.http.get(index_1.LookupApi.EnvironmentProjects, options)
             .map(function (response) { return response; });
     };
     FullAccountService.prototype.getFullAccountItemList = function (apiUrl, filter) {

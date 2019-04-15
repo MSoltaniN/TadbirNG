@@ -25,50 +25,55 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Finance Subsystem API
 
-        // GET: api/lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchAccountsUrl)]
+        // GET: api/lookup/accounts
+        [Route(LookupApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountsLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetAccountsLookupAsync()
         {
-            var accountLookup = await _repository.GetAccountsAsync(fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var accountLookup = await _repository.GetAccountsAsync(GridOptions);
             return Json(accountLookup);
         }
 
-        // GET: api/lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchDetailAccountsUrl)]
+        // GET: api/lookup/faccounts
+        [Route(LookupApi.EnvironmentDetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
-        public async Task<IActionResult> GetDetailAccountsLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetDetailAccountsLookupAsync()
         {
-            var lookup = await _repository.GetDetailAccountsAsync(fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var lookup = await _repository.GetDetailAccountsAsync(GridOptions);
             return Json(lookup);
         }
 
-        // GET: api/lookup/costcenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchCostCentersUrl)]
+        // GET: api/lookup/costcenters
+        [Route(LookupApi.EnvironmentCostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public async Task<IActionResult> GetCostCentersLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetCostCentersLookupAsync()
         {
-            var lookup = await _repository.GetCostCentersAsync(fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var lookup = await _repository.GetCostCentersAsync(GridOptions);
             return Json(lookup);
         }
 
-        // GET: api/lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchProjectsUrl)]
+        // GET: api/lookup/projects
+        [Route(LookupApi.EnvironmentProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
-        public async Task<IActionResult> GetProjectsLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetProjectsLookupAsync()
         {
-            var lookup = await _repository.GetProjectsAsync(fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var lookup = await _repository.GetProjectsAsync(GridOptions);
             return Json(lookup);
         }
 
-        // GET: api/lookup/vouchers/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchVouchersUrl)]
+        // GET: api/lookup/vouchers
+        [Route(LookupApi.EnvironmentVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
-        public async Task<IActionResult> GetVouchersLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetVouchersLookupAsync()
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var lang = Request.Headers["Accept-Language"].ToString();
             lang = lang ?? "fa";
-            var items = await _repository.GetVouchersAsync(fpId, branchId, GridOptions);
+            var items = await _repository.GetVouchersAsync(GridOptions);
             var lookup = items.ToList();
             foreach (var kv in lookup)
             {
@@ -83,12 +88,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
-        // GET: api/lookup/vouchers/lines/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchVoucherLinesUrl)]
+        // GET: api/lookup/vouchers/lines
+        [Route(LookupApi.EnvironmentVoucherLinesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
-        public async Task<IActionResult> GetVoucherLinesLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetVoucherLinesLookupAsync()
         {
-            var items = await _repository.GetVoucherLinesAsync(fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var items = await _repository.GetVoucherLinesAsync(GridOptions);
             var lookup = items.ToList();
             foreach (var kv in lookup)
             {

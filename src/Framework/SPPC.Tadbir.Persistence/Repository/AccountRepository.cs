@@ -92,7 +92,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در سطح کل را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>مجموعه ای از سرفصل های حسابداری در سطح کل</returns>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه سرفصل های حسابداری در سطح کل</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetAccountsLedgerAsync()
         {
             var accounts = await _repository

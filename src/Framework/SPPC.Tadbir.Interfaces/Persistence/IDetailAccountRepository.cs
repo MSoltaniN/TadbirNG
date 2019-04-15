@@ -48,6 +48,12 @@ namespace SPPC.Tadbir.Persistence
         Task<DetailAccountViewModel> GetDetailAccountAsync(int faccountId);
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در سطح اول را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه تفصیلی های شناور در سطح اول</returns>
+        Task<IList<AccountItemBriefViewModel>> GetDetailAccountsLedgerAsync();
+
+        /// <summary>
         /// به روش آسنکرون، شناورهای زیرمجموعه را برای تفصیلی شناور مشخص شده خوانده و برمی گرداند
         /// </summary>
         /// <param name="detailId">شناسه یکی از تفصیلی های شناور موجود</param>

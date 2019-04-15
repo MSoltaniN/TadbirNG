@@ -1,21 +1,19 @@
-import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { SettingService } from '../../service/index';
 import { ViewName } from '../../security/viewName';
 import { ViewTreeConfig, ViewTreeLevelConfig } from '../../model/index';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { SettingsApi, LookupApi } from '../../service/api/index';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { GridDataResult, GridComponent, RowClassArgs } from '@progress/kendo-angular-grid';
+import { RowClassArgs } from '@progress/kendo-angular-grid';
 
 
 
@@ -48,6 +46,14 @@ export function getLayoutModule(layout: Layout) {
 #level-list > li.enable{ cursor: pointer; } #level-list > li.enable:hover{ background-color: #8ab8e0;}
 #level-list > li.disable{ background-color: #fdfdfd; } #level-list > li.selected{ background-color: #337ab7; }
 /deep/.k-grid tr.notEnabled { color: #cac4c4; }
+
+.btn-setting {
+    position: absolute;
+    bottom: 15px;
+    left: 28px;
+    right: 0;
+    text-align: justify;
+}
 `],
   providers: [{
     provide: RTL,
@@ -59,8 +65,8 @@ export function getLayoutModule(layout: Layout) {
 export class ViewTreeConfigComponent extends DefaultComponent implements OnInit {
 
   //@ViewChild(GridComponent) private grid: GridComponent;
-  private editedRowIndex: number;
-  private docClickSubscription: any;
+  //private editedRowIndex: number;
+  //private docClickSubscription: any;
 
   public formGroup: FormGroup;
 
@@ -295,12 +301,12 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
     this.settingService.putViewTreeConfig(SettingsApi.ViewTreeSettings, myList).subscribe(res => {
       this.maxDepthValue = undefined;
-      this.ddlEntitySelected = 0;
+      this.ddlEntitySelected = undefined;
       this.viewTreeConfig = undefined;
       this.viewTreeLevels = [];
       this.finalViewTreeConfig = [];
 
-      sessionStorage.removeItem("viewTreeConfig");
+      localStorage.removeItem("viewTreeConfig");
 
       this.showMessage(this.updateMsg, MessageType.Succes);
 
@@ -313,17 +319,21 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   /**
    * اعمال تنظیمات پیش فرض
    */
-  setDefaultConfig(levelNo: number) {
+  setDefaultConfig(item: ViewTreeLevelConfig) {
+    if (item.isUsed) {
+      this.showMessage(this.getText("ViewTreeConfig.LevelIsUsedMsg"), MessageType.Warning);
+    }
+    else {
+      var defaultItem = this.viewTreeDefaultConfig.levels.find(f => f.no == item.no);
+      var level = this.viewTreeLevels.find(f => f.no == item.no);
+      var index = this.viewTreeLevels.indexOf(level);
 
-    var defaultItem = this.viewTreeDefaultConfig.levels.find(f => f.no == levelNo);
-    var level = this.viewTreeLevels.find(f => f.no == levelNo);
-    var index = this.viewTreeLevels.indexOf(level);
+      defaultItem.isEnabled = true;
+      this.viewTreeLevels[index] = defaultItem;
+      this.viewTreeConfig.levels = this.viewTreeLevels;
 
-    defaultItem.isEnabled = true;
-    this.viewTreeLevels[index] = defaultItem;
-    this.viewTreeConfig.levels = this.viewTreeLevels;
-
-    this.saveLocalChengesView();
+      this.saveLocalChengesView();
+    }
   }
 
 

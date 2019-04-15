@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -24,11 +25,25 @@ namespace SPPC.Tadbir.Persistence
         Task SaveConfigAsync(IList<SettingBriefViewModel> configItems);
 
         /// <summary>
+        /// اطلاعات تنظیمات مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="settingId">شناسه دیتابیسی تنظیمات مورد نظر</param>
+        /// <returns>اطلاعات نمایشی برای تنظیمات مورد نظر</returns>
+        Task<SettingBriefViewModel> GetConfigByIdAsync(int settingId);
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای کلاس تنظیمات مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TConfig">نوع تنظیمات مورد نیاز</typeparam>
         /// <returns>تنظیمات موجود برای کلاس تنظیمات مشخص شده</returns>
         Task<TConfig> GetConfigByTypeAsync<TConfig>();
+
+        /// <summary>
+        /// محدوده تاریخی پیش فرض را با توجه به دوره مالی جاری برنامه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="start">پارامتر خروجی برای تنظیم تاریخ ابتدا در محدوده تاریخی پیش فرض</param>
+        /// <param name="end">پارامتر خروجی برای تنظیم تاریخ انتها در محدوده تاریخی پیش فرض</param>
+        void GetCurrentFiscalDateRange(out DateTime start, out DateTime end);
 
         /// <summary>
         /// به روش آسنکرون، تمام تنظیمات کاربری موجود برای فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
@@ -72,5 +87,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="level">شماره سطحی که وضعیت استفاده از آن باید تغییر کند</param>
         /// <param name="itemCount">تعداد سطرهای اطلاعاتی موجود در سطح مورد نظر</param>
         Task SaveTreeLevelUsageAsync(int viewId, int level, int itemCount);
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات محیطی کاربر جاری برنامه</param>
+        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

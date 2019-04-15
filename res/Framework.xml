@@ -1982,8 +1982,6 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Setting" entityName="Setting" hasKey="True" joinTable="" description="اطلاعات عمومی تنظیمات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="View" entityName="View" hasKey="True" joinTable="" description="اطلاعات متادیتای نمای اطلاعاتی مرتبط با این تنظیمات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Voucher" area="Finance" identifier="Id" description="سند مالی که اطلاعات پولی مرتبط با یک پیشامد مالی را در سازمان نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

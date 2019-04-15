@@ -102,6 +102,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ای از پروژه های سطح اول را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه پروژه های سطح اول</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetProjectsLedgerAsync()
+        {
+            var projects = await _repository
+                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
+                .Where(prj => prj.ParentId == null)
+                .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
+                .ToListAsync();
+            await FilterGrandchildrenAsync(projects);
+            return projects;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، پروژه های زیرمجموعه را برای پروژه مشخص شده خوانده و برمی گرداند
         /// </summary>
         /// <param name="projectId">شناسه یکی از پروژه های موجود</param>

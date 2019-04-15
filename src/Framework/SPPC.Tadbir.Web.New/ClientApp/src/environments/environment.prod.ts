@@ -23,7 +23,12 @@ export const Metadatas = {
   OperationLog: 'system/oplog',
   AccountGroup: "accgroups",
   AccountCollection: "acccollections",
-  JournalByDateByRow: "journalbydatebyrow"
+  JournalByDateByRow: "journalbydatebyrow",
+  JournalByDateByRowDetail: "journalbydatebyrowdetail",
+  JournalByDateByLedger: "journalbydatebyledger",
+  JournalByDateBySubsidiary: "journalbydatebysubsidiary",
+  JournalByDateSummary: "journalbydatesummary",
+  JournalByDateSummaryByDate: "journalbydatesummarybydate"
 }
 
 
@@ -46,7 +51,12 @@ export const Entities = {
   OperationLog: "OperationLog",
   AccountGroup: "AccountGroup",
   AccountCollection: "AccountCollection",
-  JournalByDateByRow: "JournalByDateByRow"
+  JournalByDateByRow: "JournalByDateByRow",
+  JournalByDateByRowDetail: "JournalByDateByRowDetail",
+  JournalByDateByLedger: "JournalByDateByLedger",
+  JournalByDateBySubsidiary: "JournalByDateBySubsidiary",
+  JournalByDateSummary: "JournalByDateSummary",
+  JournalByDateSummaryByDate: "JournalByDateSummaryByDate"
 }
 
 export const ColumnVisibility =
@@ -66,8 +76,9 @@ export const SessionKeys = {
   LastUserBranch: 'lastUserBranch',
   LastUserFpId: 'lastUserFpId',
   CurrentRoute: 'currentRoute',
-  CurrentSkin: 'currentSkin'
-
+  CurrentSkin: 'currentSkin',
+  NumberConfige: 'numberConfig',
+  DateRangeConfig:'DateRangeConfig'
 }
 
 

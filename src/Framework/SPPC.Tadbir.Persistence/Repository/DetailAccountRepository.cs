@@ -101,6 +101,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در سطح اول را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه تفصیلی های شناور در سطح اول</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountsLedgerAsync()
+        {
+            var detailAccounts = await _repository
+                .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
+                .Where(facc => facc.ParentId == null)
+                .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
+                .ToListAsync();
+            await FilterGrandchildrenAsync(detailAccounts);
+            return detailAccounts;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، شناورهای زیرمجموعه را برای تفصیلی شناور مشخص شده خوانده و برمی گرداند
         /// </summary>
         /// <param name="detailId">شناسه یکی از تفصیلی های شناور موجود</param>

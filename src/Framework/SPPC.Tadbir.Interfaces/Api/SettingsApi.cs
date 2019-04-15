@@ -23,6 +23,16 @@ namespace SPPC.Tadbir.Api
         public const string AllSettingsUrl = "settings";
 
         /// <summary>
+        /// API client URL for a single application settings specified by unique identifier
+        /// </summary>
+        public const string Setting = "settings/{0}";
+
+        /// <summary>
+        /// API server route URL for a single application settings specified by unique identifier
+        /// </summary>
+        public const string SettingUrl = "settings/{settingId:min(1)}";
+
+        /// <summary>
         /// API client URL for all list form view settings for a user specified by unique identifier
         /// </summary>
         public const string ListSettingsByUser = "settings/list/users/{0}";

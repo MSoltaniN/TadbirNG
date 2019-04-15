@@ -1,66 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
     /// <summary>
-    /// اطلاعاتی نمایشی یک آرتیکل مالی را جهت استفاده در گزارش دفتر روزنامه نگهداری می کند
+    /// اطلاعات نمایشی گزارش مالی دفتر روزنامه را نگهداری می کند
     /// </summary>
     public class JournalViewModel
     {
         /// <summary>
-        /// شناسه دیتابیسی آرتیکل مالی
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        public int Id { get; set; }
+        public JournalViewModel()
+        {
+            Items = new List<JournalItemViewModel>();
+        }
 
         /// <summary>
-        /// شماره ردیف سطر اطلاعاتی در گزارش با مرتب سازی پیش فرض گزارش
+        /// مجموعه سطرهای اطلاعاتی گزارش
         /// </summary>
-        public int RowNo { get; set; }
+        public List<JournalItemViewModel> Items { get; }
 
         /// <summary>
-        /// تاریخ سند مالی
+        /// جمع مبالغ بدهکار در تمام سطرهای گزارش
         /// </summary>
-        public DateTime VoucherDate { get; set; }
+        public decimal DebitSum { get; set; }
 
         /// <summary>
-        /// شماره سند مالی، ستون شماره در نمای لیستی
+        /// جمع مبالغ بستانکار در تمام سطرهای گزارش
         /// </summary>
-        public string VoucherNo { get; set; }
+        public decimal CreditSum { get; set; }
 
         /// <summary>
-        /// کد کامل سرفصل حسابداری مورد استفاده در ردیف سند، ستون شماره حساب در نمای لیستی
+        /// سطرهای اطلاعاتی گزارش را با مجوعه سطرهای اطلاعاتی داده شده جایگزین می کند
         /// </summary>
-        public string AccountFullCode { get; set; }
-
-        /// <summary>
-        /// نام سرفصل حسابداری مورد استفاده در ردیف سند، ستون عنوان حساب در نمای لیستی
-        /// </summary>
-        public string AccountName { get; set; }
-
-        /// <summary>
-        /// شرح آرتیکل مالی
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// مبلغ بدهکار در آرتیکل مالی
-        /// </summary>
-        public decimal Debit { get; set; }
-
-        /// <summary>
-        /// مبلغ بستانکار در آرتیکل مالی
-        /// </summary>
-        public decimal Credit { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی شعبه ای که آرتیکل برای آن ایجاد شده است
-        /// </summary>
-        public int BranchId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی وضعیت ثبتی سند مالی
-        /// </summary>
-        public int VoucherStatusId { get; set; }
+        /// <param name="items">سطرهای اطلاعاتی مورد نظر برای جایگزینی در مدل نمایشی</param>
+        public void SetItems(IEnumerable<JournalItemViewModel> items)
+        {
+            Items.Clear();
+            Items.AddRange(items);
+        }
     }
 }

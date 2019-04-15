@@ -90,10 +90,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var commands = await _repository.GetUserCommandsAsync(SecurityContext.User.Id);
             Array.ForEach(commands.ToArray(), cmd =>
+            {
+                cmd.Title = _strings[cmd.Title];
+                Array.ForEach(cmd.Children.ToArray(), child =>
                 {
-                    cmd.Title = _strings[cmd.Title];
-                    Array.ForEach(cmd.Children.ToArray(), child => child.Title = _strings[child.Title]);
+                    child.Title = _strings[child.Title];
+                    Array.ForEach(child.Children.ToArray(), grandChild =>
+                    {
+                        grandChild.Title = _strings[grandChild.Title];
+                        Array.ForEach(grandChild.Children.ToArray(),
+                            grGrandChild => grGrandChild.Title = _strings[grGrandChild.Title]);
+                    });
                 });
+            });
             return JsonReadResult(commands);
         }
 

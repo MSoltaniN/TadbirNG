@@ -36,4 +36,5 @@ export * from './accountCollectionCategory';
 export * from './accountCollection';
 export * from './accountCollectionAccount';
 export * from './item';
+export * from './numberConfig';
 export * from './quickReportColumn';

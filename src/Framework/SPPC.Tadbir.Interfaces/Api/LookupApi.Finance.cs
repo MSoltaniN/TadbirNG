@@ -8,70 +8,64 @@ namespace SPPC.Tadbir.Api
         #region Finance Subsystem Resources
 
         /// <summary>
-        /// API client URL for lookup collection of all accounts in a fiscal period and a corporate branch
+        /// API client URL for lookup collection of all accounts in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchAccounts = "lookup/accounts/fp/{0}/branch/{1}";
+        public const string EnvironmentAccounts = "lookup/accounts";
 
         /// <summary>
-        /// API server route URL for lookup collection of all accounts in a fiscal period and a corporate branch
+        /// API server route URL for lookup collection of all accounts in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchAccountsUrl =
-            "lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentAccountsUrl = "lookup/accounts";
 
         /// <summary>
-        /// API client URL for lookup collection of all detail accounts in a fiscal period and a corporate branch
+        /// API client URL for lookup collection of all detail accounts in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchDetailAccounts = "lookup/faccounts/fp/{0}/branch/{1}";
+        public const string EnvironmentDetailAccounts = "lookup/faccounts";
 
         /// <summary>
-        /// API server route URL for lookup collection of all detail accounts in a fiscal period and a corporate branch
+        /// API server route URL for lookup collection of all detail accounts in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchDetailAccountsUrl =
-            "lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentDetailAccountsUrl = "lookup/faccounts";
 
         /// <summary>
-        /// API client URL for lookup collection of all cost centers in a fiscal period and a corporate branch
+        /// API client URL for lookup collection of all cost centers in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchCostCenters = "lookup/ccenters/fp/{0}/branch/{1}";
+        public const string EnvironmentCostCenters = "lookup/ccenters";
 
         /// <summary>
-        /// API server route URL for lookup collection of all cost centers in a fiscal period and a corporate branch
+        /// API server route URL for lookup collection of all cost centers in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchCostCentersUrl =
-            "lookup/ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentCostCentersUrl = "lookup/ccenters";
 
         /// <summary>
-        /// API client URL for lookup collection of all projects in a fiscal period and a corporate branch
+        /// API client URL for lookup collection of all projects in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchProjects = "lookup/projects/fp/{0}/branch/{1}";
+        public const string EnvironmentProjects = "lookup/projects";
 
         /// <summary>
-        /// API server route URL for lookup collection of all projects in a fiscal period and a corporate branch
+        /// API server route URL for lookup collection of all projects in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchProjectsUrl =
-            "lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentProjectsUrl = "lookup/projects";
 
         /// <summary>
-        /// API client URL for lookup collection of all vouchers in a fiscal period and a corporate branch
+        /// API client URL for lookup collection of all vouchers in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchVouchers = "lookup/vouchers/fp/{0}/branch/{1}";
+        public const string EnvironmentVouchers = "lookup/vouchers";
 
         /// <summary>
-        /// API server route URL for lookup collection of all vouchers in a fiscal period and a corporate branch
+        /// API server route URL for lookup collection of all vouchers in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchVouchersUrl =
-            "lookup/vouchers/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentVouchersUrl = "lookup/vouchers";
 
         /// <summary>
-        /// API client URL for lookup collection of all voucher lines in a fiscal period and a corporate branch
+        /// API client URL for lookup collection of all voucher lines in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchVoucherLines = "lookup/vouchers/lines/fp/{0}/branch/{1}";
+        public const string EnvironmentVoucherLines = "lookup/vouchers/lines";
 
         /// <summary>
-        /// API server route URL for lookup collection of all voucher lines in a fiscal period and a corporate branch
+        /// API server route URL for lookup collection of all voucher lines in current application environment
         /// </summary>
-        public const string FiscalPeriodBranchVoucherLinesUrl =
-            "lookup/vouchers/lines/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentVoucherLinesUrl = "lookup/vouchers/lines";
 
         /// <summary>
         /// API client URL for all companies accessible to a user specified by identifier.
@@ -144,6 +138,7 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for lookup collection of all account turnover modes
         /// </summary>
         public const string AccountTurnoversUrl = "lookup/accturnovermodes";
+
         #endregion
     }
 }

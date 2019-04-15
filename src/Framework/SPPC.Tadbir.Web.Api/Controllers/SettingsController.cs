@@ -17,12 +17,12 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class SettingsController : Controller
+    public class SettingsController : ApiControllerBase
     {
         public SettingsController(IConfigRepository repository, IStringLocalizer<AppStrings> strings)
+            : base(strings)
         {
             _repository = repository;
-            _strings = strings;
         }
 
         // GET: api/settings
@@ -52,6 +52,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.SaveConfigAsync(settings);
             return Ok();
+        }
+
+        // GET: api/settings/{settingId:min(1)}
+        [Route(SettingsApi.SettingUrl)]
+        public async Task<IActionResult> GetSettingByIdAsync(int settingId)
+        {
+            var setting = await _repository.GetConfigByIdAsync(settingId);
+            if (setting != null)
+            {
+                setting.Title = _strings[setting.Title];
+                setting.Description = _strings[setting.Description];
+            }
+
+            return JsonReadResult(setting);
         }
 
         // GET: api/settings/list/users/{userId:min(1)}
@@ -143,6 +157,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IConfigRepository _repository;
-        private readonly IStringLocalizer<AppStrings> _strings;
     }
 }

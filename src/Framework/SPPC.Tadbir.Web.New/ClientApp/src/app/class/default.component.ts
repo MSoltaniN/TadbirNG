@@ -21,6 +21,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Account, ViewTreeConfig } from '../model/index';
 import { IEntity } from '../model/IEntity';
 import { SettingService } from '../service/index';
+import { async } from '@angular/core/testing';
 
 
 @Injectable()
@@ -205,24 +206,18 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
-  //public treeConfig: Array<{ name: string, viewTree: any }> = [];
-
   public getViewTreeSettings(viewId: number): ViewTreeConfig {
 
     let treeConfig: Array<{ name: string, viewTree: any }> = [];
-
-    treeConfig = JSON.parse(sessionStorage.getItem("viewTreeConfig"));
+    treeConfig = JSON.parse(localStorage.getItem("viewTreeConfig"));
     var viewName = "view-" + viewId;
 
     if (treeConfig == undefined || treeConfig.length == 0) {
       treeConfig = [];
       this.settingService.getViewTreeSettings(viewId).subscribe(res => {
-
         let result: any = res;
-
         treeConfig.push({ name: viewName, viewTree: result.current });
-        sessionStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
-
+        localStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
         return JSON.parse(JSON.stringify(result.current));
       })
     }
@@ -233,19 +228,70 @@ export class DefaultComponent extends BaseComponent {
       }
       else {
         this.settingService.getViewTreeSettings(viewId).subscribe(res => {
-
           let result: any = res;
-
           treeConfig.push({ name: viewName, viewTree: result.current });
-
-          sessionStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
-
+          localStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
           return JSON.parse(JSON.stringify(result.current));
-
         })
       }
     }
   }
+
+  //public treeConfig: Array<{ name: string, viewTree: any }> = [];
+
+  //public getViewTreeSettings(viewId: number): ViewTreeConfig {
+
+  //  let treeConfig: Array<{ name: string, viewTree: any }> = [];
+
+  //  treeConfig = JSON.parse(sessionStorage.getItem("viewTreeConfig"));
+  //  var viewName = "view-" + viewId;
+
+  //  console.log(viewName);
+  //  console.log(treeConfig);
+
+
+  //  if (treeConfig == undefined || treeConfig.length == 0) {
+  //    console.log("1");
+  //    treeConfig = [];
+  //    this.settingService.getViewTreeSettings(viewId).subscribe(res => {
+  //      console.log("2");
+
+  //      let result: any = res;
+
+  //      treeConfig.push({ name: viewName, viewTree: result.current });
+  //      sessionStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
+
+  //      return JSON.parse(JSON.stringify(result.current));
+  //    })
+  //  }
+  //  else {
+  //    console.log("3");
+
+  //    var config = treeConfig.find(f => f.name == viewName);
+  //    if (config) {
+  //      console.log("4");
+
+  //      return config.viewTree;
+  //    }
+  //    else {
+  //      console.log("5");
+
+  //      this.settingService.getViewTreeSettings(viewId).subscribe(res => {
+  //        console.log("6");
+
+  //        let result: any = res;
+
+  //        treeConfig.push({ name: viewName, viewTree: result.current });
+
+  //        sessionStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
+
+  //        return JSON.parse(JSON.stringify(result.current));
+
+  //      })
+  //    }
+  //  }
+  //}
+
 
 
   /** return the current language */

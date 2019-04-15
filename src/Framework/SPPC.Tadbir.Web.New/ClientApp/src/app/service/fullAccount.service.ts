@@ -32,39 +32,28 @@ export class FullAccountService extends BaseService {
   }
 
   GetAccountsLookup() {
-
-    var url = String.Format(LookupApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
+    return this.http.get(LookupApi.EnvironmentAccounts, options)
       .map(response => <any>(<Response>response));
 
   }
 
   GetDetailAccountsLookup() {
-
-    var url = String.Format(LookupApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
+    return this.http.get(LookupApi.EnvironmentDetailAccounts, options)
       .map(response => <any>(<Response>response));
-
   }
 
   GetCostCentersLookup() {
-
-    var url = String.Format(LookupApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
+    return this.http.get(LookupApi.EnvironmentCostCenters, options)
       .map(response => <any>(<Response>response));
-
   }
 
   GetProjectsLookup() {
-
-    var url = String.Format(LookupApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
+    return this.http.get(LookupApi.EnvironmentProjects, options)
       .map(response => <any>(<Response>response));
-
   }
 
   public getFullAccountItemList(apiUrl: string, filter?: FilterExpression) {

@@ -546,13 +546,14 @@
    right: 10px;
    margin-top: -8px;
  }
- body.tLtr .sidebar-menu .menu-open > a > .fa-angle-left,
- body.tLtr .sidebar-menu .menu-open > a > .pull-right-container > .fa-angle-left {
-   -webkit-transform: rotate(-90deg);
-   -ms-transform: rotate(-90deg);
-   -o-transform: rotate(-90deg);
-   transform: rotate(-90deg);
- }
+
+body.tLtr .sidebar-menu .menu-open > a > .fa-angle-right,
+body.tLtr .sidebar-menu .menu-open > a > .pull-right-container > .fa-angle-right {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
  body.tLtr .sidebar-menu .active > .treeview-menu {
    display: block;
  }
@@ -3094,12 +3095,12 @@
  body.tLtr .treeview-menu > li > a > .ion {
    width: 20px;
  }
- body.tLtr .treeview-menu > li > a > .pull-right-container > .fa-angle-left,
- body.tLtr .treeview-menu > li > a > .pull-right-container > .fa-angle-down,
- body.tLtr .treeview-menu > li > a > .fa-angle-left,
- body.tLtr .treeview-menu > li > a > .fa-angle-down {
-   width: auto;
- }
+  body.tLtr .treeview-menu > li > a > .pull-right-container > .fa-angle-right,
+  body.tLtr .treeview-menu > li > a > .pull-right-container > .fa-angle-down,
+  body.tLtr .treeview-menu > li > a > .fa-angle-right,
+  body.tLtr .treeview-menu > li > a > .fa-angle-down {
+    width: auto;
+  }
  /*
   * Page: Mailbox
   * -------------
