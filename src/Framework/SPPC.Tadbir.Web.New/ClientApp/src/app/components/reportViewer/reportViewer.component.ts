@@ -202,7 +202,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   showReportViewer(reportTemplate :string, reportData: any)
   {   
     this.active = true;
-    this.viewer =  new Stimulsoft.Viewer.StiViewer(null, 'StiViewer'  + this.Id, false);
+    this.viewer =  new Stimulsoft.Viewer.StiViewer(null, this.Id, false);
   
     setTimeout(() => {          
      
@@ -227,8 +227,9 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         
           value = fdate;
         }
-
-        localReport.dictionary.variables.getByName(param.name).valueObject = value;        
+        
+        if(localReport.dictionary.variables.getByName(param.name) != null)
+          localReport.dictionary.variables.getByName(param.name).valueObject = value;        
       });
      
 

@@ -63,4 +63,12 @@ namespace SPPC.Tadbir.Reporting
         /// </summary>
         bool Visible { get; set; }
     }
+
+    [Serializable]
+    public class QuickReportInfo
+    {
+        public int ReportId { get; set; }
+
+        public IQuickReportColumn[] QuickReportColumn { get; set; }
+    }
 }
