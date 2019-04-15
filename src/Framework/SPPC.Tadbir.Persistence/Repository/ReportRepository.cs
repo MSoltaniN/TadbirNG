@@ -191,18 +191,18 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
-            foreach (var byNo in lines
-                .OrderBy(art => Int32.Parse(art.Voucher.No))
-                .GroupBy(art => art.Voucher.No))
+            foreach (var byDate in lines
+                .OrderBy(art => art.Voucher.Date)
+                .GroupBy(art => art.Voucher.Date))
             {
-                foreach (var byLedger in GetAccountTurnoverGroups(byNo, true, 0, allFilter))
+                foreach (var byLedger in GetAccountTurnoverGroups(byDate, true, 0, allFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                     journalItem.Debit = byLedger.Sum(art => art.Debit);
                     journalItems.Add(journalItem);
                 }
 
-                foreach (var byLedger in GetAccountTurnoverGroups(byNo, false, 0, allFilter))
+                foreach (var byLedger in GetAccountTurnoverGroups(byDate, false, 0, allFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                     journalItem.Credit = byLedger.Sum(art => art.Credit);
@@ -232,19 +232,19 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
-            foreach (var byNo in lines
-                .OrderBy(art => Int32.Parse(art.Voucher.No))
-                .GroupBy(art => art.Voucher.No))
+            foreach (var byDate in lines
+                .OrderBy(art => art.Voucher.Date)
+                .GroupBy(art => art.Voucher.Date))
             {
                 var debitLines = new List<JournalItemViewModel>();
-                foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, true, 1, subsidiaryFilter))
+                foreach (var bySubsidiary in GetAccountTurnoverGroups(byDate, true, 1, subsidiaryFilter))
                 {
                     var journalItem = await GetNewJournalItem(bySubsidiary.First(), bySubsidiary.Key);
                     journalItem.Debit = bySubsidiary.Sum(art => art.Debit);
                     debitLines.Add(journalItem);
                 }
 
-                foreach (var byLedger in GetAccountTurnoverGroups(byNo, true, 0, ledgerFilter))
+                foreach (var byLedger in GetAccountTurnoverGroups(byDate, true, 0, ledgerFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                     journalItem.Debit = byLedger.Sum(art => art.Debit);
@@ -254,14 +254,14 @@ namespace SPPC.Tadbir.Persistence
                 journalItems.AddRange(debitLines.OrderBy(item => item.AccountFullCode));
 
                 var creditLines = new List<JournalItemViewModel>();
-                foreach (var bySubsidiary in GetAccountTurnoverGroups(byNo, false, 1, subsidiaryFilter))
+                foreach (var bySubsidiary in GetAccountTurnoverGroups(byDate, false, 1, subsidiaryFilter))
                 {
                     var journalItem = await GetNewJournalItem(bySubsidiary.First(), bySubsidiary.Key);
                     journalItem.Credit = bySubsidiary.Sum(art => art.Credit);
                     creditLines.Add(journalItem);
                 }
 
-                foreach (var byLedger in GetAccountTurnoverGroups(byNo, false, 0, ledgerFilter))
+                foreach (var byLedger in GetAccountTurnoverGroups(byDate, false, 0, ledgerFilter))
                 {
                     var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
                     journalItem.Credit = byLedger.Sum(art => art.Credit);
@@ -284,14 +284,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         public async Task<JournalViewModel> GetJournalByDateLedgerSummaryAsync(
-            DateTime from, DateTime to)
+            DateTime from, DateTime to, GridOptions gridOptions)
         {
             var journalItems = new List<JournalItemViewModel>();
-            Func<VoucherLine, bool> allFilter = art => true;
+            Func<JournalItemViewModel, bool> allFilter = art => true;
             var lines = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Select(art => _mapper.Map<JournalItemViewModel>(art))
                 .ToListAsync();
+            lines = lines
+                .Apply(gridOptions, false)
+                .ToList();
             foreach (var byLedger in GetAccountTurnoverGroups(lines, true, 0, allFilter))
             {
                 var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
@@ -492,7 +496,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IEnumerable<IGrouping<string, VoucherLine>> GetAccountTurnoverGroups(
-            IEnumerable<VoucherLine> lines, bool isDebit, int groupLevel, Func<VoucherLine, bool> lineFilter)
+            IEnumerable<VoucherLine> lines, bool isDebit, int groupLevel,
+            Func<VoucherLine, bool> lineFilter)
         {
             var fullConfig = _configRepository
                 .GetViewTreeConfigByViewAsync(ViewName.Account)
@@ -514,6 +519,50 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(art => art.Account.FullCode)
                 .GroupBy(art => art.Account.FullCode.Substring(0, codeLength));
             return turnoverGroups;
+        }
+
+        private IEnumerable<IGrouping<string, JournalItemViewModel>> GetAccountTurnoverGroups(
+            IEnumerable<JournalItemViewModel> lines, bool isDebit, int groupLevel,
+            Func<JournalItemViewModel, bool> lineFilter)
+        {
+            var fullConfig = _configRepository
+                .GetViewTreeConfigByViewAsync(ViewName.Account)
+                .Result;
+            var treeConfig = fullConfig.Current;
+            int codeLength = treeConfig.Levels
+                .Where(level => level.No <= groupLevel + 1)
+                .Select(level => (int)level.CodeLength)
+                .Sum();
+            Func<JournalItemViewModel, bool> turnoverCriteria = art => art.Credit > 0;
+            if (isDebit)
+            {
+                turnoverCriteria = art => art.Debit > 0;
+            }
+
+            var turnoverGroups = lines
+                .Where(turnoverCriteria)
+                .Where(lineFilter)
+                .OrderBy(art => art.AccountFullCode)
+                .GroupBy(art => art.AccountFullCode.Substring(0, codeLength));
+            var mapped = lines
+                .Select(line => String.Format("Code = {0}, Debit = {1}, Credit = {2}", line.AccountFullCode, line.Debit, line.Credit))
+                .ToArray();
+            return turnoverGroups;
+        }
+
+        private async Task<JournalItemViewModel> GetNewJournalItem(JournalItemViewModel voucherLine, string fullCode)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
+            var journalItem = new JournalItemViewModel()
+            {
+                AccountFullCode = fullCode,
+                AccountName = account.Name,
+                BranchId = voucherLine.BranchId,
+                VoucherStatusId = voucherLine.VoucherStatusId
+            };
+
+            return journalItem;
         }
 
         private async Task<JournalItemViewModel> GetNewJournalItem(VoucherLine voucherLine, string fullCode)

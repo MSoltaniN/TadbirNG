@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<JournalViewModel> GetJournalByDateLedgerSummaryAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByDateLedgerSummaryAsync(DateTime from, DateTime to, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک تاریخ

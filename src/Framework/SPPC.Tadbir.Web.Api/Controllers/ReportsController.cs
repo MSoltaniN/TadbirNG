@@ -314,8 +314,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateLedgerSummaryAsync(from.Value, to.Value);
-            PrepareJournal(journal, gridOptions);
+            var journal = await _repository.GetJournalByDateLedgerSummaryAsync(from.Value, to.Value, gridOptions);
+            PrepareSummaryJournal(journal, gridOptions);
             return Json(journal);
         }
 
@@ -353,6 +353,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             journal.DebitSum = userItems.Select(item => item.Debit).Sum();
             journal.CreditSum = userItems.Select(item => item.Credit).Sum();
             SetItemCount(userItems.Count());
+            journal.SetItems(journal.Items.Apply(gridOptions).ToList());
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
+            foreach (var journalItem in journal.Items)
+            {
+                journalItem.RowNo = rowNo++;
+            }
+        }
+
+        private void PrepareSummaryJournal(JournalViewModel journal, GridOptions gridOptions)
+        {
+            journal.DebitSum = journal.Items.Select(item => item.Debit).Sum();
+            journal.CreditSum = journal.Items.Select(item => item.Credit).Sum();
+            SetItemCount(journal.Items.Count());
             journal.SetItems(journal.Items.Apply(gridOptions).ToList());
             int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
             foreach (var journalItem in journal.Items)
