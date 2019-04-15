@@ -147,10 +147,10 @@
                             [value]="displayTypeSelected"
                             [(ngModel)]="displayTypeSelected">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
-            {{ dataItem.value | translate }}
+            {{ dataItem?.value | translate }}
           </ng-template>
           <ng-template kendoDropDownListItemTemplate let-dataItem>
-            {{ dataItem.value | translate }}
+            {{ dataItem?.value | translate }}
           </ng-template>
         </kendo-dropdownlist>
       </div>
@@ -164,10 +164,10 @@
                             [value]="voucherStatusSelected"
                             [(ngModel)]="voucherStatusSelected">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
-            {{ dataItem.value | translate }}
+            {{ dataItem?.value | translate }}
           </ng-template>
           <ng-template kendoDropDownListItemTemplate let-dataItem>
-            {{ dataItem.value | translate }}
+            {{ dataItem?.value | translate }}
           </ng-template>
         </kendo-dropdownlist>
       </div>
@@ -181,10 +181,10 @@
                             [value]="articleTypeSelected"
                             [(ngModel)]="articleTypeSelected">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
-            {{ dataItem.value | translate }}
+            {{ dataItem?.value | translate }}
           </ng-template>
           <ng-template kendoDropDownListItemTemplate let-dataItem>
-            {{ dataItem.value | translate }}
+            {{ dataItem?.value | translate }}
           </ng-template>
         </kendo-dropdownlist>
       </div>
@@ -200,10 +200,10 @@
                             [value]="branchScopeSelected"
                             [(ngModel)]="branchScopeSelected">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
-            {{ dataItem.value | translate }}
+            {{ dataItem?.value | translate }}
           </ng-template>
           <ng-template kendoDropDownListItemTemplate let-dataItem>
-            {{ dataItem.value | translate }}
+            {{ dataItem?.value | translate }}
           </ng-template>
         </kendo-dropdownlist>
       </div>

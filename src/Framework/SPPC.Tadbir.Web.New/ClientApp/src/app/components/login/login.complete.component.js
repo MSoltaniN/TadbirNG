@@ -62,6 +62,8 @@ var LoginCompleteComponent = /** @class */ (function (_super) {
     //#endregion
     //#region Events
     LoginCompleteComponent.prototype.ngOnInit = function () {
+        debugger;
+        this.currentRoute = sessionStorage.getItem(environment_1.SessionKeys.CurrentRoute);
         this.disabledCompany = true;
         this.getCompany();
         //load setting
@@ -142,7 +144,7 @@ var LoginCompleteComponent = /** @class */ (function (_super) {
         return isValidate;
     };
     LoginCompleteComponent.prototype.selectParams = function () {
-        sessionStorage.removeItem("viewTreeConfig");
+        //sessionStorage.removeItem("viewTreeConfig");
         if (this.isValidate()) {
             if (this.authenticationService.islogin()) {
                 this.getCompanyTicket();
@@ -202,8 +204,10 @@ var LoginCompleteComponent = /** @class */ (function (_super) {
                 _this.router.navigate([url]);
             }
             else {
+                debugger;
                 var currentRoute = sessionStorage.getItem(environment_1.SessionKeys.CurrentRoute);
                 if (currentRoute) {
+                    sessionStorage.removeItem(environment_1.SessionKeys.CurrentRoute);
                     _this.router.navigate([currentRoute]);
                 }
                 else {
