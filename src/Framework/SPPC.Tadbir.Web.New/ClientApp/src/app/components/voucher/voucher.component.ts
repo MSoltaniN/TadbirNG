@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewChild, Comp
 import { VoucherService, VoucherInfo, SettingService } from '../../service/index';
 import { Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent, ColumnComponent } from '@progress/kendo-angular-grid';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
@@ -18,7 +18,8 @@ import { SecureEntity } from '../../security/secureEntity';
 import { VoucherPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
-import { ReportingService } from '../../service/report/reporting.service';
+import { ReportApi } from '../../service/api/reportApi';
+import { ReportingService, QuickReportColumnInfo, QuickReportViewInfo } from '../../service/report/reporting.service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { VoucherFormComponent } from '../../components/voucher/voucher-form.component';
@@ -254,11 +255,79 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.reloadGrid();
   }
 
-  public showReportManagement() {
-    var id = this.viewIdentity.ViewID;
-    var params = null;
-    if (this.viewIdentity.params.length > 0)
-      params = this.viewIdentity.params.toArray();
+
+  gridColumnResize(event:any)
+  {
+      
+  }
+
+  showQReport()
+  {
+    var columns : Array<QuickReportColumnInfo> = new Array<QuickReportColumnInfo>();
+    this.grid.leafColumns.forEach(function(item)
+    {
+        //item.width
+        var qr : QuickReportColumnInfo = new QuickReportColumnInfo();
+        var column = item as ColumnComponent;
+        if(column.field)
+        {
+          qr.name = column.field;
+          qr.index = column.orderIndex;
+          qr.visible = true;
+          qr.width = column.width;
+          qr.userText = column.displayTitle;   
+          qr.sortOrder = 0;
+          qr.sortMode = 0;
+          qr.dataType = 1;
+          qr.defaultText = column.displayTitle;
+          qr.enabled = true;
+          qr.order = column.orderIndex;
+                
+
+          columns.push(qr)
+        }
+    });    
+
+    var dpi_x = document.getElementById('dpi').offsetWidth;    
+
+    var viewInfo  = new QuickReportViewInfo();
+    viewInfo.columns = columns;
+    viewInfo.inchValue = dpi_x;
+    viewInfo.reportTitle = "گزارش فوری";
+    viewInfo.row = this.rowData.data[0];
+
+    this.reporingService.putEnvironmentUserQuickReport(ReportApi.EnvironmentQuickReport,viewInfo)
+    .subscribe((response : any) => {
+      
+      var design = response.designJson;
+      var id = this.viewIdentity.ViewID;
+      var params = null;
+      if(this.viewIdentity.params.length > 0)
+        params = this.viewIdentity.params.toArray();
+
+      var rows = this.rowData.data;
+      // var rows =
+      //    [
+      //      {
+      //         no:"1",         
+      //         statusName : "ss",         
+      //         description : ""
+      //     }
+      //   ]
+      
+
+      this.reportManager.showQuickReport(id,params,this.currentFilter,this.sort,design,rows);
+
+    });
+    
+  }
+
+  public showReportManagement()
+  {
+      var id = this.viewIdentity.ViewID;
+      var params = null;
+      if(this.viewIdentity.params.length > 0)
+        params = this.viewIdentity.params.toArray();
 
     this.reportManager.showDialog(id, params, this.currentFilter, this.sort);
   }

@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.Web.Api
             var json = JsonHelper.From(gridOptions, false);
             var urlEncoded = WebUtility.UrlEncode(json);
             var base64 = Transform.ToBase64String(Encoding.UTF8.GetBytes(urlEncoded));
-            BuildWebHost(args).Run();
+           BuildWebHost(args).Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

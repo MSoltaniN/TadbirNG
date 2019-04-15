@@ -27,6 +27,7 @@
               (selectedKeysChange)="onSelectedKeysChange($event)"
               (cellClick)="onCellClick($event)"
               (dblclick)="rowDoubleClickHandler()"
+              (columnResize)="gridColumnResize()"
               sppc-grid-reorder sppc-grid-resize>
     <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                          pagerOf="{{ 'Paging.Of' | translate }}"
@@ -56,6 +57,7 @@
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
       <!-- <button kendoButton (click)="showReport()" disabled="disabled" type="button" [icon]="'printer'"></button> -->
       <button kendoButton (click)="showReportManagement()" type="button" [icon]="'printer'"></button>
+      <button kendoButton (click)="showQReport()" type="button" [icon]="'printer'"></button>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="35"></kendo-grid-checkbox-column>
