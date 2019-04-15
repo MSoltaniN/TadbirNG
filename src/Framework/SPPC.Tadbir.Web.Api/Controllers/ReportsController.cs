@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json.Linq;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
@@ -16,6 +18,10 @@ using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Components;
+using Stimulsoft.Report.Dictionary;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -207,9 +213,291 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/reports/sys/quickreport
         [HttpPut]
         [Route(ReportApi.EnvironmentQuickReportUrl)]
-        public async Task<IActionResult> PutEnvironmentUserQuickReport([FromBody] IList<IQuickReportColumn> columns)
+        public async Task<IActionResult> PutEnvironmentUserQuickReport([FromBody] QuickReportViewModel qr)
         {
-            return Ok();
+            Stimulsoft.Report.StiReport quickReport = new Stimulsoft.Report.StiReport();
+            //StiSqlSource dataSource = new StiSqlSource("Vouchers", "Vouchers", "Vouchers");
+            StiJsonDatabase database = new StiJsonDatabase("Vouchers","");
+            database.Alias = "Vouchers";
+            StiDataTableSource dataSource = new StiDataTableSource("Vouchers", "Vouchers", "Vouchers");
+
+            var jrow = (JObject)qr.row;
+            
+
+            foreach (JProperty q in jrow.Children().ToList())
+            {
+                dataSource.Columns.Add(new StiDataColumn(q.Name, q.Name, typeof(string)));
+            }
+            
+            quickReport.DataSources.Clear();
+            quickReport.DataSources.Add(dataSource);
+            quickReport.Dictionary.Databases.Add(database);
+
+            quickReport = CreateReportFooterBand(quickReport);
+            quickReport = CreateReportHeaderBand(quickReport);
+            quickReport = CreatePageHeaderBand(quickReport,qr.ReportTitle);
+            quickReport = CreatePageFooterBand(quickReport);
+            quickReport = CreateHeaderBand(quickReport, qr.Columns, qr.InchValue, dataSource.Name);
+            quickReport = CreateDataBand(quickReport,qr.Columns,qr.InchValue,dataSource.Name);
+
+            var jsonData = quickReport.SaveToString();
+
+            return Ok(new { designJson = jsonData });
+
+            //return Ok();
+        }
+
+        #endregion
+
+        #region Quick Report Methods
+
+        private StiReport CreateReportHeaderBand(StiReport report)
+        {
+            StiReportTitleBand reportHeader = new StiReportTitleBand();            
+            
+            report.Pages[0].Components.Add(reportHeader);            
+
+            return report;
+        }
+
+        private StiReport CreateReportFooterBand(StiReport report)
+        {
+            StiReportSummaryBand reportFooter = new StiReportSummaryBand();
+            report.Pages[0].Components.Add(reportFooter);
+
+            return report;
+        }
+
+        private StiReport CreatePageHeaderBand(StiReport report,string header)
+        {
+            StiPageHeaderBand pageHeader = new StiPageHeaderBand();
+
+            var txtPageHeaderText = new StiText();
+            double maxHeight = pageHeader.Height;
+            txtPageHeaderText.Width = 2;
+            txtPageHeaderText.Name = "txtPageHeaderText";
+            txtPageHeaderText.Left = (report.Pages[0].Width / 2) - (txtPageHeaderText.Width / 2);
+            txtPageHeaderText.Linked = true;
+            txtPageHeaderText.Text = header;
+            txtPageHeaderText.Height = 0.8;
+            txtPageHeaderText.HorAlignment = StiTextHorAlignment.Center;
+            if (txtPageHeaderText.Height + txtPageHeaderText.Top > maxHeight)
+            {
+                maxHeight = txtPageHeaderText.Height + txtPageHeaderText.Top;
+            }
+            pageHeader.Height = maxHeight;
+            pageHeader.Components.Add(txtPageHeaderText);
+            report.Pages[0].Components.Add(pageHeader);
+
+            return report;
+        }
+
+        private StiReport CreatePageFooterBand(StiReport report)
+        {
+            StiPageFooterBand reportFooter = new StiPageFooterBand();
+            report.Pages[0].Components.Add(reportFooter);
+            return report;
+        }
+
+        private StiReport CreateHeaderBand(StiReport report, IList<QuickReportColumnModel> columns, int oneInchInPixels, string dataSourceName)
+        {
+            int visibleColumnCount = columns.Count(c => c.Enabled);
+            if (visibleColumnCount == 0)
+                return null;
+
+            var orderdColumns = columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
+            string name = "HeaderBand" + dataSourceName;
+            StiColumnHeaderBand headerBand = null;
+
+            double height = double.Parse("0.25", System.Globalization.CultureInfo.InvariantCulture);
+            if (headerBand == null)
+            {
+                headerBand = new StiColumnHeaderBand();
+                headerBand.Name = name;
+            }
+
+            int dataCellIndex = visibleColumnCount;
+            double pageWidth = report.Pages[0].Width;
+            int gridWidth = columns.Sum(c => c.Width);
+            double tableWidth = GetSizeInInch(gridWidth, oneInchInPixels);
+            double left = (pageWidth / (double)2) - (tableWidth / (double)2);
+            double top = 0;
+            double maxHeight = headerBand.Height;
+
+            for (int i = columns.Count - 1; i >= 0; i--)
+            {
+                QuickReportColumnModel column = columns[i];
+
+                #region Change HeaderCells
+                StiText txtHeaderCell = null;
+                string ctrlName = "txtTitle_";
+                ctrlName += column.Name + column.Index;
+                double width = GetSizeInInch(column.Width, oneInchInPixels);
+                if (txtHeaderCell == null)
+                {
+                    txtHeaderCell = new StiText();
+                    txtHeaderCell.Name = ctrlName;
+                    txtHeaderCell.Left = left; 
+                    txtHeaderCell.Width = width;
+                    txtHeaderCell.Page = report.Pages[0];
+                    txtHeaderCell.Parent = headerBand;
+                }
+
+                txtHeaderCell.Linked = true;
+                txtHeaderCell.Text.Value = !string.IsNullOrEmpty(column.UserText) ? column.UserText : column.DefaultText;
+                txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
+                txtHeaderCell.Height = 0.8;
+                left = txtHeaderCell.Left + width;
+
+                System.Drawing.FontStyle fontStyle = System.Drawing.FontStyle.Regular;
+
+                StiBorder border = new StiBorder();
+
+                border.Side = border.Side | StiBorderSides.Left;
+                border.Side = border.Side | StiBorderSides.Right;
+                border.Side = border.Side | StiBorderSides.Top;
+                border.Side = border.Side | StiBorderSides.Bottom;
+                border.Color = Color.FromName("Black");
+                
+                txtHeaderCell.CanShrink = true;
+                txtHeaderCell.CanGrow = true;
+                txtHeaderCell.GrowToHeight = true;
+
+                #region Assign Alignment
+
+                txtHeaderCell.HorAlignment = StiTextHorAlignment.Center;
+                txtHeaderCell.VertAlignment = StiVertAlignment.Center;
+
+                #endregion
+
+                #region Assign Font                       
+
+                txtHeaderCell.Font = new System.Drawing.Font("B Zar", 8, FontStyle.Regular);
+
+                #endregion
+
+                txtHeaderCell.Border = border;
+
+                if (txtHeaderCell.Height > maxHeight)
+                {
+                    headerBand.Height = txtHeaderCell.Height;
+                }
+
+                headerBand.Components.Add(txtHeaderCell);
+                #endregion
+            }
+            report.Pages[0].Components.Add(headerBand);
+            return report;
+        }
+
+
+        private StiReport CreateDataBand(StiReport report, IList<QuickReportColumnModel> columns, int oneInchInPixels, string dataSourceName)
+        {
+            string ctrlName = "dataBand" + dataSourceName;
+
+            List<QuickReportColumnModel> orderedColumns = columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
+
+            double pageWidth = report.Pages[0].Width;
+            int gridWidth = columns.Sum(c => c.Width);
+            double tableWidth = GetSizeInInch(gridWidth, oneInchInPixels);
+
+            double left = (pageWidth / (double)2) - (tableWidth / (double)2);
+            double top = 0;
+
+            StiDataBand dataBand = new StiDataBand();
+            dataBand = new StiDataBand();
+            dataBand.Name = ctrlName;
+            dataBand.DataSourceName = dataSourceName;
+
+            double maxHeight = dataBand.Height;
+
+            for (int i = columns.Count-1 ; i >= 0 ; i--)
+            {
+                double width = GetSizeInInch(columns[i].Width, oneInchInPixels);
+                StiText txtDataCell = null;
+                string name = "txtDataCell_" + columns[i].Name;
+
+                if (txtDataCell == null)
+                {
+                    txtDataCell = new StiText();
+
+                    txtDataCell.Name = name;
+                    txtDataCell.Left = left;
+                    txtDataCell.Parent = dataBand;
+                    txtDataCell.Page = report.Pages[0];
+                }
+                txtDataCell.Height = 0.8;
+                txtDataCell.HorAlignment = StiTextHorAlignment.Center;
+                
+                txtDataCell.Linked = true;
+                txtDataCell.Width = width;
+                txtDataCell.Text.Value = GetColumnValue(columns[i], dataSourceName);
+                txtDataCell.ClientRectangle = new RectangleD(left, top, width, txtDataCell.Height);
+                left = txtDataCell.Left + width;
+
+                if (txtDataCell.Height > maxHeight)
+                {
+                    dataBand.Height = txtDataCell.Height;
+                }
+
+                System.Drawing.FontStyle fontStyle = System.Drawing.FontStyle.Regular;
+                
+
+                StiBorder border = new StiBorder();
+                
+                border.Side = border.Side | StiBorderSides.Left;                
+                border.Side = border.Side | StiBorderSides.Right;                
+                border.Side = border.Side | StiBorderSides.Top;                
+                border.Side = border.Side | StiBorderSides.Bottom;                
+                border.Color = Color.FromName("Black");               
+                StiBrush brush = null;
+
+
+                txtDataCell.CanShrink = true;
+                txtDataCell.CanGrow = true;
+                txtDataCell.GrowToHeight = true;
+
+                #region Assign Alignment
+
+                txtDataCell.HorAlignment = StiTextHorAlignment.Center;
+                txtDataCell.VertAlignment = StiVertAlignment.Center;
+
+                #endregion
+
+                #region Assign Font                       
+
+                txtDataCell.Font = new System.Drawing.Font("B Zar", 8, FontStyle.Regular);
+
+                #endregion
+
+                txtDataCell.Border = border;
+
+                if (brush != null)
+                    txtDataCell.Brush = brush;                
+                
+                txtDataCell.TextOptions.RightToLeft = true;
+
+                dataBand.Components.Add(txtDataCell);
+            }
+
+            report.Pages[0].Components.Add(dataBand);
+            return report;
+
+        }
+
+        private string GetColumnValue(QuickReportColumnModel column, string dataSourceName)
+        {
+            string fullColumnName = "{" + dataSourceName + "." + Stimulsoft.Report.CodeDom.StiCodeDomSerializator.ReplaceSymbols(column.Name) + "}";
+            return fullColumnName;
+        }
+
+        private double GetSizeInInch(int Pixel, int OneInchInPixel)
+        {
+            if (OneInchInPixel == 0) return 0;
+
+            double inchValue = (double)Pixel / (double)OneInchInPixel;
+
+            return inchValue;
         }
 
         #endregion

@@ -63,6 +63,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   
   currentReportId : any;
   currentViewId : any;
+  qReport : boolean;
   currentReportName : string;
   currentPrintInfo : PrintInfo;
   currentFormParams:Array<ReportParamComponent>;
@@ -70,6 +71,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   showDesktopTab:boolean = false;
   currentFilter:FilterExpression;
   currentSort:SortDescriptor[];
+  
+  quickReportJsonDesign : string;
+  quickReportRowData : any;
 
   expandedKeys :any[] = [];
   deleteConfirmMsg : string;
@@ -118,9 +122,13 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   onNodeClick(e :any)
   {
     var data = e.dataItem;
+    this.qReport = false;
+    if(data.id == -100) 
+      this.qReport = true;
     if(!data.isGroup)
     {      
-      this.currentReportId = data.id;
+      if(data.id > -100)
+        this.currentReportId = data.id;
       this.currentReportName = data.caption;
       this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"),data.caption);
       this.disableButtons = false;
@@ -143,6 +151,41 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     else
       this.disableButtons = true;
 
+  }
+
+  public showQuickReport(viewId:string,formParams:Array<ReportParamComponent>,
+    filter:FilterExpression = null,sort:SortDescriptor[] = null,designJson:string,qrRowData:any)
+  {
+      this.active = true;
+      
+      var url = ReportApi.ReportsHierarchy;
+      if(viewId)
+      {
+          this.currentViewId = viewId;
+          url = String.Format(ReportApi.ReportsByView, viewId);
+          this.showDesktopTab = false;
+          this.currentFilter = filter;
+          this.currentSort = sort;
+      }
+      else      
+      {
+          this.showDesktopTab = true;
+          this.currentViewId = undefined;
+      }
+
+      this.reportingService.getAll(url)
+      .subscribe((res: any) => {
+          //var i = res;
+          this.treeData = <Array<TreeItem>>res.body;       
+          //expand treeview base on baseid
+           if(viewId)
+           {
+             this.quickReportJsonDesign = designJson;
+             this.quickReportRowData = qrRowData;
+             this.addQReportToDefaultFolder(viewId,formParams);  
+             this.currentFormParams = formParams;
+           }
+      });
   }
 
   public showDialog(viewId:string,formParams:Array<ReportParamComponent>,
@@ -179,6 +222,53 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   }
 
   //select and expand tree node baseon report baseId
+  public addQReportToDefaultFolder(viewId: string,formParams:Array<ReportParamComponent>) {
+    var expandKeysArray: string[];
+
+    var defaltReportUrl = String.Format(ReportApi.ReportsByViewDefault, viewId);
+    this.reportingService.getAll(defaltReportUrl)
+        .subscribe((res: any) => {
+            var report = <ReportSummary>res.body;
+
+            expandKeysArray = new Array<any>();
+            this.selectedKeys = new Array<any>();
+
+            var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
+            //this.selectedKeys.push(nodeData.id);
+            this.currentReportName = "گزارش فوری";
+            
+            var qReportNode = 
+                {
+                  caption: "گزارش فوری",
+                  id: -100,
+                  isDefault: false,
+                  isGroup: false,
+                  isSystem: false,
+                  parentId: nodeData.parentId,
+                  serviceUrl: null
+                }                
+                
+            this.treeData.push(qReportNode);           
+            this.selectedKeys.push(-100);
+            
+            while (nodeData.parentId != null) {
+                expandKeysArray.push(nodeData.parentId);                
+                var parentNode = this.treeData.filter((p: any) => p.id == nodeData.parentId);
+                nodeData = parentNode[0];
+            }
+
+            this.qReport = true;
+            this.expandedKeys = expandKeysArray;
+            this.disableButtons = false;
+            this.currentReportId = report.id;
+            this.currentDefaultReportId = report.id;
+
+            this.prepareReport(formParams);
+        });
+
+  }
+
+  //select and expand tree node baseon report baseId
   public expandAndSelectDefault(viewId: string,formParams:Array<ReportParamComponent>) {
         var expandKeysArray: string[];
 
@@ -200,6 +290,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
                     nodeData = parentNode[0];
                 }
 
+                this.qReport = false;
                 this.expandedKeys = expandKeysArray;
                 this.disableButtons = false;
                 this.currentReportId = report.id;
@@ -440,16 +531,27 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           .locale(this.CurrentLanguage)
           .format('YYYY/M/D');  
 
+        
+
         var reportData = {
           rows: response.body,           
           parameters : params
-        };  
+        };
+        
+        if(this.qReport)
+          reportData.rows = this.quickReportRowData;
 
         var viewerIsCloseable : boolean = false;
         if(this.currentReportId != this.currentDefaultReportId)
           viewerIsCloseable = true;
 
-        this.tabsComponent.openTab(this.currentReportName,this.currentPrintInfo.template,
+        var reportTemplate : string;
+        if(this.qReport)
+          reportTemplate = this.quickReportJsonDesign;
+        else
+          reportTemplate = this.currentPrintInfo.template;
+
+        this.tabsComponent.openTab(this.currentReportName,reportTemplate,
           reportData,viewerIsCloseable,true,false,this.currentReportId,this);
 
       });      
@@ -470,7 +572,11 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
  
   designReport()
   {   
-    var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + this.currentReportId, false);                
+    var current = this.currentReportId;
+    if(this.qReport) 
+      current = -100;
+
+    var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + current, false);                
     
     var tabIsOpen = this.tabsComponent.openTab(this.currentReportName,null,null,
       true,false,true,this.currentReportId,designer);   
@@ -501,11 +607,18 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         
         reportTemplate = printInfo.template;
         
-         rpt.load(reportTemplate);        
 
-         designer.report = rpt;        
+        if(this.qReport)
+         {
+           reportTemplate = this.quickReportJsonDesign;
+           current = -100;
+        } 
+
+        rpt.load(reportTemplate);        
+
+        designer.report = rpt;        
       
-        designer.renderHtml('designerTab' + this.currentReportId);       
+        designer.renderHtml('designerTab' + current);       
 
         this.updateTemplateInTab(designer);
 

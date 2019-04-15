@@ -7,7 +7,7 @@ import { PermissionBrief, CompanyLogin } from '../../model/index';
 import { String } from '../../class/source';
 import { LookupApi, FiscalPeriodApi, UserApi } from '../api/index';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment, SessionKeys } from '../../../environments/environment';
 
 export class ContextInfo implements Context {
     userName: string = "";
@@ -118,7 +118,9 @@ export class AuthenticationService {
             localStorage.removeItem('fiscalPeriod');
 
         if (sessionStorage.getItem('fiscalPeriod'))
-            sessionStorage.removeItem('fiscalPeriod');
+        sessionStorage.removeItem('fiscalPeriod');
+
+      sessionStorage.removeItem(SessionKeys.CurrentRoute);
     }
 
     getCompanies(userName: string, ticket: string): Observable<any> {

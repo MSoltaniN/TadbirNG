@@ -62,6 +62,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   public companyId: string = '';
   public branchId: string = '';
   public fiscalPeriodId: string = '';
+
+  currentRoute: string;
+
   //#endregion
 
   //#region Constructor
@@ -84,7 +87,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   //#region Events
 
   ngOnInit() {
-
+    this.currentRoute = sessionStorage.getItem(SessionKeys.CurrentRoute);
     this.disabledCompany = true;
     this.getCompany();
     //load setting
@@ -190,7 +193,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   selectParams() {
 
-    sessionStorage.removeItem("viewTreeConfig");
+    //sessionStorage.removeItem("viewTreeConfig");
 
     if (this.isValidate()) {
 
@@ -237,6 +240,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     })
   }
 
+
   loadMenuAndRoute(currentUser: ContextInfo) {
     //#region load menu
     var menuList: Array<Command> = new Array<Command>();
@@ -267,9 +271,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.router.navigate([url]);
       }
       else {
-
         var currentRoute = sessionStorage.getItem(SessionKeys.CurrentRoute);
         if (currentRoute) {
+          sessionStorage.removeItem(SessionKeys.CurrentRoute);
           this.router.navigate([currentRoute]);
         }
         else {

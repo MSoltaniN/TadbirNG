@@ -106,6 +106,7 @@ var AuthenticationService = /** @class */ (function () {
             localStorage.removeItem('fiscalPeriod');
         if (sessionStorage.getItem('fiscalPeriod'))
             sessionStorage.removeItem('fiscalPeriod');
+        sessionStorage.removeItem(environment_1.SessionKeys.CurrentRoute);
     };
     AuthenticationService.prototype.getCompanies = function (userName, ticket) {
         var header = new http_1.HttpHeaders();
