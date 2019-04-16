@@ -92,6 +92,9 @@ var JournalComponent = /** @class */ (function (_super) {
             if (this.voucherStatusSelected != "0") {
                 this.defaultFilter.push(new filter_1.Filter("VoucherStatusId", this.voucherStatusSelected, "== {0}", "System.Int32"));
             }
+            if (this.branchScopeSelected == "1") {
+                this.defaultFilter.push(new filter_1.Filter("BranchId", this.BranchId.toString(), "== {0}", "System.Int32"));
+            }
             this.pageIndex = 0;
             if (this.journalType == journal_1.JournalType.ByDate && this.fromDate && this.toDate) {
                 switch (parseInt(this.displayTypeSelected)) {
@@ -185,10 +188,11 @@ var JournalComponent = /** @class */ (function (_super) {
             }
             if (insertedModel)
                 this.goToLastPage(this.totalRecords);
-            var filter = this.currentFilter;
+            var currentFilter = this.currentFilter;
             this.defaultFilter.forEach(function (item) {
-                filter = _this.addFilterToFilterExpression(_this.currentFilter, item, filterExpressionOperator_1.FilterExpressionOperator.And);
+                currentFilter = _this.addFilterToFilterExpression(currentFilter, item, filterExpressionOperator_1.FilterExpressionOperator.And);
             });
+            var filter = currentFilter;
             this.gridService.getAll(this.getDataUrl, this.pageIndex, this.pageSize, this.sort, filter).subscribe(function (res) {
                 var resData = res.body;
                 var totalCount = 0;
@@ -224,7 +228,7 @@ var JournalComponent = /** @class */ (function (_super) {
         core_1.Component({
             selector: 'spps-journal',
             templateUrl: './journal.component.html',
-            styles: ["\n.section-option { margin-top: 15px; background-color: #f6f6f6; border: solid 1px #dadde2; padding: 15px 15px 0; }\n.section-option label,input[type=text] { width:100% } /deep/.section-option kendo-dropdownlist { width:100% }\n/deep/ .k-switch-on .k-switch-handle { left: -8px !important; }\n/deep/ .k-switch-off .k-switch-handle { left: -4px !important; }\n/deep/ .k-switch[dir=\"rtl\"] .k-switch-label-on { right: -22px; }\n/deep/ .k-switch[dir=\"rtl\"] .k-switch-label-off { left: 0; }\n/deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }\n.journal-type { margin:0 15px 10px; } .journal-type label { margin-top:10px; }\n/deep/.k-footer-template { background-color: #b3b3b3; }\n"],
+            styles: ["\n.section-option { margin-top: 15px; background-color: #f6f6f6; border: solid 1px #dadde2; padding: 15px 15px 0; }\n.section-option label,input[type=text] { width:100% } /deep/.section-option kendo-dropdownlist { width:100% }\n/deep/ .k-switch-on .k-switch-handle { left: -8px !important; }\n/deep/ .k-switch-off .k-switch-handle { left: -4px !important; }\n/deep/ .k-switch[dir=\"rtl\"] .k-switch-label-on { right: -22px; }\n/deep/ .k-switch[dir=\"rtl\"] .k-switch-label-off { left: 0; }\n/deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }\n.journal-type { margin:0 15px 10px; } .journal-type label { margin-top:10px; }\n/deep/.k-footer-template { background-color: #b3b3b3; color: #000;}\n"],
             providers: [{
                     provide: kendo_angular_l10n_1.RTL,
                     useFactory: getLayoutModule,

@@ -315,15 +315,16 @@ export class EnviromentComponent {
 
   public getDateConfig(type: string): Date {
 
-    let dateRange: any;
+    let dateRange: any = DateRangeType.CurrentToCurrent;
     let fromDate: Date;
     let toDate: Date;
 
     if (localStorage.getItem(SessionKeys.DateRangeConfig) != null) {
-      dateRange = JSON.parse(localStorage.getItem(SessionKeys.DateRangeConfig));
+      var range = JSON.parse(localStorage.getItem(SessionKeys.DateRangeConfig));
+      dateRange = range ? range.defaultDateRange : DateRangeType.CurrentToCurrent;
     }
 
-    switch (dateRange.defaultDateRange) {
+    switch (dateRange) {
       case DateRangeType.CurrentToCurrent: {
         fromDate = new Date();
         toDate = new Date();

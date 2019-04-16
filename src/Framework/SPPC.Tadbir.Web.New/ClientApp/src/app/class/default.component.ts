@@ -177,20 +177,15 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
-
-  public getAllMetaDataByViewId(viewId: number, metaDataName: string): Array<Property> | undefined {
+  async getAllMetaDataAsync(metaDataName: string): Promise<Array<Property>> {
     if (metaDataName) {
-      if (!localStorage.getItem(metaDataName)) {
-        this.metadataService.getReportMetaDataById(viewId).finally(() => {
-          if (!this.properties.get(metaDataName)) return undefined;
-          var result = this.properties.get(metaDataName);
-          return result;
-        }).subscribe((res1: any) => {
-          this.properties.set(metaDataName, res1.columns);
-          localStorage.setItem(metaDataName, JSON.stringify(res1.columns))
-          var result = this.properties.get(metaDataName);
-          return result;
-        });
+      if (!localStorage.getItem(metaDataName)) {        
+        const response = await this.metadataService.getMetaData(metaDataName).toPromise();
+        let res: any = response;
+        this.properties.set(metaDataName, res.columns);
+        localStorage.setItem(metaDataName, JSON.stringify(res.columns))
+        var result = this.properties.get(metaDataName);
+        return result;
       }
       else {
         var item: string | null;
@@ -205,6 +200,59 @@ export class DefaultComponent extends BaseComponent {
 
     }
   }
+
+  async getAllMetaDataByViewIdAsync(viewId: number, metaDataName: string): Promise<Array<Property>> {
+
+    if (metaDataName) {
+      if (!localStorage.getItem(metaDataName)) {
+        const response = await this.metadataService.getReportMetaDataById(viewId).toPromise();
+        let res: any = response;
+        this.properties.set(metaDataName, res.columns);
+        localStorage.setItem(metaDataName, JSON.stringify(res.columns))
+        var result = this.properties.get(metaDataName);
+        return result;
+      }
+      else {
+        var item: string | null;
+        item = localStorage.getItem(metaDataName);
+        if (!this.properties) this.properties = new Map<string, Array<Property>>();
+        var arr = JSON.parse(item != null ? item.toString() : "");
+        this.properties.set(metaDataName, arr);
+        if (!this.properties.get(metaDataName)) return undefined;
+        var result = this.properties.get(metaDataName);
+        return result;
+      }
+    }
+
+  }
+
+  //public getAllMetaDataByViewId(viewId: number, metaDataName: string): Array<Property> | undefined {
+  //  if (metaDataName) {
+  //    if (!localStorage.getItem(metaDataName)) {
+  //      this.metadataService.getReportMetaDataById(viewId).finally(() => {
+  //        if (!this.properties.get(metaDataName)) return undefined;
+  //        var result = this.properties.get(metaDataName);
+  //        return result;
+  //      }).subscribe((res1: any) => {
+  //        this.properties.set(metaDataName, res1.columns);
+  //        localStorage.setItem(metaDataName, JSON.stringify(res1.columns))
+  //        var result = this.properties.get(metaDataName);
+  //        return result;
+  //      });
+  //    }
+  //    else {
+  //      var item: string | null;
+  //      item = localStorage.getItem(metaDataName);
+  //      if (!this.properties) this.properties = new Map<string, Array<Property>>();
+  //      var arr = JSON.parse(item != null ? item.toString() : "");
+  //      this.properties.set(metaDataName, arr);
+  //      if (!this.properties.get(metaDataName)) return undefined;
+  //      var result = this.properties.get(metaDataName);
+  //      return result;
+  //    }
+
+  //  }
+  //}
 
   public getViewTreeSettings(viewId: number): ViewTreeConfig {
 

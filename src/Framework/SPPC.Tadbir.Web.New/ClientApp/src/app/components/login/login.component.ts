@@ -129,10 +129,10 @@ export class LoginComponent extends DefaultComponent implements OnInit {
                 
                    
 
-                    //type Activity = typeof Metadatas;
-                    Object.values(Metadatas).map(val => {
-                      //this.saveMetadataInCache(val);
-                    });
+                    ////type Activity = typeof Metadatas;
+                    //Object.values(Metadatas).map(val => {
+                    //  //this.saveMetadataInCache(val);
+                    //});
                 }
             },
             error => {

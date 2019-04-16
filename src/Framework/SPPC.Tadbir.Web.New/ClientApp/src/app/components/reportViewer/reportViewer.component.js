@@ -131,7 +131,7 @@ var ReportViewerComponent = /** @class */ (function (_super) {
     ReportViewerComponent.prototype.showReportViewer = function (reportTemplate, reportData) {
         var _this = this;
         this.active = true;
-        this.viewer = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer' + this.Id, false);
+        this.viewer = new Stimulsoft.Viewer.StiViewer(null, this.Id, false);
         setTimeout(function () {
             console.log('Load report from url');
             _this.report.load(reportTemplate);
@@ -147,7 +147,8 @@ var ReportViewerComponent = /** @class */ (function (_super) {
                         .format('YYYY/M/D');
                     value = fdate;
                 }
-                localReport.dictionary.variables.getByName(param.name).valueObject = value;
+                if (localReport.dictionary.variables.getByName(param.name) != null)
+                    localReport.dictionary.variables.getByName(param.name).valueObject = value;
             });
             _this.report = localReport;
             //this.fillResourceVariables(reportObject,this.report);

@@ -45,7 +45,7 @@ export class SppcNumConfigPipe implements PipeTransform {
   }
 
   setDecimalPrecision(num: string, config: NumberConfig): string {
-    if (config.decimalPrecision > 0) {
+    if (config && config.decimalPrecision > 0) {
 
       var parts = num.toString().split(".");
       var number = num;

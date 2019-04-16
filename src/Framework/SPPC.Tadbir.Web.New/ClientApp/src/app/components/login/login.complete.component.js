@@ -62,7 +62,6 @@ var LoginCompleteComponent = /** @class */ (function (_super) {
     //#endregion
     //#region Events
     LoginCompleteComponent.prototype.ngOnInit = function () {
-        debugger;
         this.currentRoute = sessionStorage.getItem(environment_1.SessionKeys.CurrentRoute);
         this.disabledCompany = true;
         this.getCompany();
@@ -204,7 +203,6 @@ var LoginCompleteComponent = /** @class */ (function (_super) {
                 _this.router.navigate([url]);
             }
             else {
-                debugger;
                 var currentRoute = sessionStorage.getItem(environment_1.SessionKeys.CurrentRoute);
                 if (currentRoute) {
                     sessionStorage.removeItem(environment_1.SessionKeys.CurrentRoute);

@@ -27,7 +27,7 @@
               (selectedKeysChange)="onSelectedKeysChange($event)"
               (cellClick)="onCellClick($event)"
               (dblclick)="rowDoubleClickHandler()"
-              (columnResize)="gridColumnResize()"
+              (columnResize)="gridColumnResize($event)"
               sppc-grid-reorder sppc-grid-resize>
     <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                          pagerOf="{{ 'Paging.Of' | translate }}"
