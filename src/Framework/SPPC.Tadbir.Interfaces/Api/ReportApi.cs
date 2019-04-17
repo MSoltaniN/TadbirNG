@@ -258,6 +258,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string JournalByNoBySubsidiaryUrl = "reports/journal/by-no/by-subsid";
 
+        /// <summary>
+        /// API client URL for Journal-By No-Ledger Summary report
+        /// </summary>
+        public const string JournalByNoLedgerSummary = "reports/journal/by-no/summary";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-Ledger Summary report
+        /// </summary>
+        public const string JournalByNoLedgerSummaryUrl = "reports/journal/by-no/summary";
+
         #endregion
     }
 }

@@ -410,6 +410,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(journal);
         }
 
+        // GET: api/reports/journal/by-no/summary
+        [Route(ReportApi.JournalByNoLedgerSummaryUrl)]
+        public async Task<IActionResult> GetJournalByNoLedgerSummaryAsync(int from, int to)
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByNoLedgerSummaryAsync(from, to, gridOptions);
+            PrepareSummaryJournal(journal, gridOptions);
+            return Json(journal);
+        }
+
         #endregion
 
         #region Quick Report Methods

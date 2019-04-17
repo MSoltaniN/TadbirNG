@@ -141,5 +141,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         Task<JournalViewModel> GetJournalByNoBySubsidiaryAsync(int from, int to);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و سند خلاصه
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        Task<JournalViewModel> GetJournalByNoLedgerSummaryAsync(int from, int to, GridOptions gridOptions);
     }
 }

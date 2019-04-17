@@ -497,6 +497,49 @@ namespace SPPC.Tadbir.Persistence
             return journal;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<JournalViewModel> GetJournalByNoLedgerSummaryAsync(
+            int from, int to, GridOptions gridOptions)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            Func<JournalItemViewModel, bool> allFilter = art => true;
+            var lines = await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
+                .Where(art => Int32.Parse(art.Voucher.No) >= from && Int32.Parse(art.Voucher.No) <= to)
+                .Select(art => _mapper.Map<JournalItemViewModel>(art))
+                .ToListAsync();
+            lines = lines
+                .Apply(gridOptions, false)
+                .ToList();
+            foreach (var byLedger in GetAccountTurnoverGroups(lines, true, 0, allFilter))
+            {
+                var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
+                journalItem.Description = journalItem.AccountName;
+                journalItem.Debit = byLedger.Sum(art => art.Debit);
+                journalItems.Add(journalItem);
+            }
+
+            foreach (var byLedger in GetAccountTurnoverGroups(lines, false, 0, allFilter))
+            {
+                var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
+                journalItem.Description = journalItem.AccountName;
+                journalItem.Credit = byLedger.Sum(art => art.Credit);
+                journalItems.Add(journalItem);
+            }
+
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
+            return journal;
+        }
+
         private static void AddGeneralStandardLineItems(
             VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
         {
