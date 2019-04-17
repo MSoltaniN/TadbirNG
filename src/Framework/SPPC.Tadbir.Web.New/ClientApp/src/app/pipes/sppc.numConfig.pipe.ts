@@ -11,20 +11,21 @@ export class SppcNumConfigPipe implements PipeTransform {
 
   constructor(public settingService: SettingService) { }
 
-  transform(value: any, withDecimal: boolean) {
+  async transform(value: any, withDecimal: boolean) {
+
     if (value == null || value == undefined)
       return "";
 
     let result: string = value;
     let config: NumberConfig;
-
     let hasDecimal: boolean = true;
 
     if (withDecimal != null) {
       hasDecimal = withDecimal;
     }
 
-    config = this.settingService.getNumberConfigBySettingId();
+    config = await this.settingService.getNumberConfigBySettingIdAsync();
+
     if (config) {
       if (config.useSeparator) {
         result = this.setSeperator(value, config.separatorSymbol);

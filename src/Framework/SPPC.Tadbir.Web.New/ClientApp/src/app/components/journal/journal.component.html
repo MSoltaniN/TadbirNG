@@ -78,7 +78,7 @@
         <dl>
           <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
             <dt>{{ getColumnTitle(item.name) }}:</dt>
-            <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig }}</dd>
+            <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
             <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
             <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate }}</dd>
           </ng-template>
@@ -89,11 +89,11 @@
         <table>
           <tr>
             <td>{{ 'Journal.DebitSum' | translate }}</td>
-            <td>{{ debitSum | SppcNumConfig }}</td>
+            <td>{{ debitSum | SppcNumConfig | async }}</td>
           </tr>
           <tr>
             <td>{{ 'Journal.CreditSum' | translate }}</td>
-            <td>{{ creditSum | SppcNumConfig }}</td>
+            <td>{{ creditSum | SppcNumConfig | async }}</td>
           </tr>
         </table>
       </ng-template>
@@ -114,15 +114,15 @@
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
-        {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig }}
+        {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
       </ng-template>
 
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Credit'">
-        {{ creditSum | SppcNumConfig }}
+        {{ creditSum | SppcNumConfig | async }}
       </ng-template>
 
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Debit'">
-        {{ debitSum | SppcNumConfig }}
+        {{ debitSum | SppcNumConfig | async }}
       </ng-template>
 
     </kendo-grid-column>
