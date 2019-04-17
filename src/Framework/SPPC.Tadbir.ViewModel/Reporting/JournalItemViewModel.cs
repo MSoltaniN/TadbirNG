@@ -54,6 +54,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public decimal Credit { get; set; }
 
         /// <summary>
+        /// نام شعبه ایجادکننده آرتیکل
+        /// </summary>
+        public string BranchName { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی شعبه ای که آرتیکل برای آن ایجاد شده است
         /// </summary>
         public int BranchId { get; set; }

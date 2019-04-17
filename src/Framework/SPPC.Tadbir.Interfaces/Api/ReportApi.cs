@@ -218,6 +218,46 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string JournalByDateLedgerSummaryByDateUrl = "reports/journal/by-date/sum-by-date";
 
+        /// <summary>
+        /// API client URL for Journal-By No-By Row report
+        /// </summary>
+        public const string JournalByNoByRow = "reports/journal/by-no/by-row";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Row report
+        /// </summary>
+        public const string JournalByNoByRowUrl = "reports/journal/by-no/by-row";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Row With Detail report
+        /// </summary>
+        public const string JournalByNoByRowDetail = "reports/journal/by-no/by-row-detail";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Row With Detail report
+        /// </summary>
+        public const string JournalByNoByRowDetailUrl = "reports/journal/by-no/by-row-detail";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Ledger report
+        /// </summary>
+        public const string JournalByNoByLedger = "reports/journal/by-no/by-ledger";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Ledger report
+        /// </summary>
+        public const string JournalByNoByLedgerUrl = "reports/journal/by-no/by-ledger";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Subsidiary report
+        /// </summary>
+        public const string JournalByNoBySubsidiary = "reports/journal/by-no/by-subsid";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Subsidiary report
+        /// </summary>
+        public const string JournalByNoBySubsidiaryUrl = "reports/journal/by-no/by-subsid";
+
         #endregion
     }
 }

@@ -9,6 +9,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
@@ -188,7 +189,8 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             Func<VoucherLine, bool> allFilter = art => true;
             var lines = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
             foreach (var byDate in lines
@@ -229,7 +231,8 @@ namespace SPPC.Tadbir.Persistence
             Func<VoucherLine, bool> ledgerFilter = art => art.Account.Level == 0;
             Func<VoucherLine, bool> subsidiaryFilter = art => art.Account.Level >= 1;
             var lines = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
             foreach (var byDate in lines
@@ -282,6 +285,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         public async Task<JournalViewModel> GetJournalByDateLedgerSummaryAsync(
             DateTime from, DateTime to, GridOptions gridOptions)
@@ -289,7 +293,8 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             Func<JournalItemViewModel, bool> allFilter = art => true;
             var lines = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .Select(art => _mapper.Map<JournalItemViewModel>(art))
                 .ToListAsync();
@@ -330,7 +335,8 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             Func<VoucherLine, bool> allFilter = art => true;
             var lines = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
             foreach (var byDate in lines
@@ -350,6 +356,140 @@ namespace SPPC.Tadbir.Persistence
                     journalItem.Credit = byLedger.Sum(art => art.Credit);
                     journalItems.Add(journalItem);
                 }
+            }
+
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
+            return journal;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و مطابق با ردیف های سند
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<JournalViewModel> GetJournalByNoByRowAsync(DateTime from, DateTime to)
+        {
+            var itemsQuery = GetJournalByNoByRowQuery(from, to);
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(await itemsQuery.ToListAsync());
+            return journal;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و مطابق با ردیف های سند با سطوح شناور
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<JournalWithDetailViewModel> GetJournalByNoByRowWithDetailAsync(
+            DateTime from, DateTime to)
+        {
+            var itemsQuery = GetJournalByNoByRowDetailQuery(from, to);
+            var journal = new JournalWithDetailViewModel();
+            journal.Items.AddRange(await itemsQuery.ToListAsync());
+            return journal;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و حسابهای کل
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<JournalViewModel> GetJournalByNoByLedgerAsync(
+            DateTime from, DateTime to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            Func<VoucherLine, bool> allFilter = art => true;
+            var lines = await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .ToListAsync();
+            foreach (var byNo in lines
+                .OrderBy(art => Int32.Parse(art.Voucher.No))
+                .GroupBy(art => Int32.Parse(art.Voucher.No)))
+            {
+                foreach (var byLedger in GetAccountTurnoverGroups(byNo, true, 0, allFilter))
+                {
+                    var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
+                    journalItem.Debit = byLedger.Sum(art => art.Debit);
+                    journalItems.Add(journalItem);
+                }
+
+                foreach (var byLedger in GetAccountTurnoverGroups(byNo, false, 0, allFilter))
+                {
+                    var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
+                    journalItem.Credit = byLedger.Sum(art => art.Credit);
+                    journalItems.Add(journalItem);
+                }
+            }
+
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
+            return journal;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و حسابهای معین
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<JournalViewModel> GetJournalByNoBySubsidiaryAsync(
+            DateTime from, DateTime to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            Func<VoucherLine, bool> ledgerFilter = art => art.Account.Level == 0;
+            Func<VoucherLine, bool> subsidiaryFilter = art => art.Account.Level >= 1;
+            var lines = await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .ToListAsync();
+            foreach (var byDate in lines
+                .OrderBy(art => Int32.Parse(art.Voucher.No))
+                .GroupBy(art => Int32.Parse(art.Voucher.No)))
+            {
+                var debitLines = new List<JournalItemViewModel>();
+                foreach (var bySubsidiary in GetAccountTurnoverGroups(byDate, true, 1, subsidiaryFilter))
+                {
+                    var journalItem = await GetNewJournalItem(bySubsidiary.First(), bySubsidiary.Key);
+                    journalItem.Debit = bySubsidiary.Sum(art => art.Debit);
+                    debitLines.Add(journalItem);
+                }
+
+                foreach (var byLedger in GetAccountTurnoverGroups(byDate, true, 0, ledgerFilter))
+                {
+                    var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
+                    journalItem.Debit = byLedger.Sum(art => art.Debit);
+                    debitLines.Add(journalItem);
+                }
+
+                journalItems.AddRange(debitLines.OrderBy(item => item.AccountFullCode));
+
+                var creditLines = new List<JournalItemViewModel>();
+                foreach (var bySubsidiary in GetAccountTurnoverGroups(byDate, false, 1, subsidiaryFilter))
+                {
+                    var journalItem = await GetNewJournalItem(bySubsidiary.First(), bySubsidiary.Key);
+                    journalItem.Credit = bySubsidiary.Sum(art => art.Credit);
+                    creditLines.Add(journalItem);
+                }
+
+                foreach (var byLedger in GetAccountTurnoverGroups(byDate, false, 0, ledgerFilter))
+                {
+                    var journalItem = await GetNewJournalItem(byLedger.First(), byLedger.Key);
+                    journalItem.Credit = byLedger.Sum(art => art.Credit);
+                    creditLines.Add(journalItem);
+                }
+
+                journalItems.AddRange(creditLines.OrderBy(item => item.AccountFullCode));
             }
 
             var journal = new JournalViewModel();
@@ -474,10 +614,11 @@ namespace SPPC.Tadbir.Persistence
         private IQueryable<JournalItemViewModel> GetJournalByDateByRowQuery(DateTime from, DateTime to)
         {
             var journalQuery = _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, art => art.Voucher, art => art.Account)
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .OrderBy(art => art.Voucher.Date)
-                    .ThenBy(art => art.Voucher.No)
+                    .ThenBy(art => Int32.Parse(art.Voucher.No))
                 .Select(art => _mapper.Map<JournalItemViewModel>(art));
             return journalQuery;
         }
@@ -487,10 +628,10 @@ namespace SPPC.Tadbir.Persistence
             var journalQuery = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
-                    art => art.CostCenter, art => art.Project)
+                    art => art.CostCenter, art => art.Project, art => art.Branch)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .OrderBy(art => art.Voucher.Date)
-                    .ThenBy(art => art.Voucher.No)
+                    .ThenBy(art => Int32.Parse(art.Voucher.No))
                 .Select(art => _mapper.Map<JournalWithDetailItemViewModel>(art));
             return journalQuery;
         }
@@ -544,9 +685,6 @@ namespace SPPC.Tadbir.Persistence
                 .Where(lineFilter)
                 .OrderBy(art => art.AccountFullCode)
                 .GroupBy(art => art.AccountFullCode.Substring(0, codeLength));
-            var mapped = lines
-                .Select(line => String.Format("Code = {0}, Debit = {1}, Credit = {2}", line.AccountFullCode, line.Debit, line.Credit))
-                .ToArray();
             return turnoverGroups;
         }
 
@@ -559,6 +697,7 @@ namespace SPPC.Tadbir.Persistence
                 AccountFullCode = fullCode,
                 AccountName = account.Name,
                 BranchId = voucherLine.BranchId,
+                BranchName = voucherLine.BranchName,
                 VoucherStatusId = voucherLine.VoucherStatusId
             };
 
@@ -577,6 +716,30 @@ namespace SPPC.Tadbir.Persistence
             journalItem.Credit = 0.0M;
             journalItem.Debit = 0.0M;
             return journalItem;
+        }
+
+        private IQueryable<JournalItemViewModel> GetJournalByNoByRowQuery(DateTime from, DateTime to)
+        {
+            var journalQuery = _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.Branch)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .OrderBy(art => Int32.Parse(art.Voucher.No))
+                .Select(art => _mapper.Map<JournalItemViewModel>(art));
+            return journalQuery;
+        }
+
+        private IQueryable<JournalWithDetailItemViewModel> GetJournalByNoByRowDetailQuery(
+            DateTime from, DateTime to)
+        {
+            var journalQuery = _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.DetailAccount,
+                    art => art.CostCenter, art => art.Project, art => art.Branch)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .OrderBy(art => Int32.Parse(art.Voucher.No))
+                .Select(art => _mapper.Map<JournalWithDetailItemViewModel>(art));
+            return journalQuery;
         }
 
         private readonly IAppUnitOfWork _unitOfWork;
