@@ -1,5 +1,3 @@
-import { SessionKeys } from "../../environments/environment";
-import { DateRangeType } from "../enum/dateRangeType";
 export class EnviromentComponent {
     constructor() {
     }
@@ -223,40 +221,6 @@ export class EnviromentComponent {
                 }
         }
         return size;
-    }
-    getDateConfig(type) {
-        let dateRange = DateRangeType.CurrentToCurrent;
-        let fromDate;
-        let toDate;
-        if (localStorage.getItem(SessionKeys.DateRangeConfig) != null) {
-            var range = JSON.parse(localStorage.getItem(SessionKeys.DateRangeConfig));
-            dateRange = range ? range.defaultDateRange : DateRangeType.CurrentToCurrent;
-        }
-        switch (dateRange) {
-            case DateRangeType.CurrentToCurrent: {
-                fromDate = new Date();
-                toDate = new Date();
-                break;
-            }
-            case DateRangeType.FiscalStartToCurrent: {
-                fromDate = this.FiscalPeriodStartDate;
-                toDate = new Date();
-                break;
-            }
-            case DateRangeType.FiscalStartToFiscalEnd: {
-                fromDate = this.FiscalPeriodStartDate;
-                toDate = this.FiscalPeriodEndDate;
-                break;
-            }
-            default:
-        }
-        if (type == "start") {
-            return fromDate;
-        }
-        else if (type == "end") {
-            return toDate;
-        }
-        return undefined;
     }
 }
 //# sourceMappingURL=enviroment.component.js.map

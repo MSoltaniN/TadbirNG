@@ -24,6 +24,8 @@ import { ReportManagementComponent } from '../reportManagement/reportManagement.
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { VoucherFormComponent } from '../../components/voucher/voucher-form.component';
 import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
+import { Filter } from '../../class/filter';
+import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 
 
 
@@ -56,6 +58,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   public selectedRows: number[] = [];
   public totalRecords: number;
   firstLoad: boolean = true;
+  dateFilter: Array<Filter> = [];
 
   //permission flag
   viewAccess: boolean;
@@ -137,16 +140,17 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public rowDoubleClickHandler() {
+    if (this.clickedRowItem) {
+      this.grid.loading = true;
+      this.voucherService.getById(String.Format(VoucherApi.Voucher, this.clickedRowItem.id)).subscribe(res => {
+        this.editDataItem = res;
 
-    var recordId = this.selectedRows[0];
-    this.grid.loading = true;
-    this.voucherService.getById(String.Format(VoucherApi.Voucher, this.clickedRowItem.id)).subscribe(res => {
-      this.editDataItem = res;
+        this.openEditorDialog(false);
 
-      this.openEditorDialog(false);
-
-      this.grid.loading = false;
-    })
+        this.grid.loading = false;
+      })
+    }
+    
   }
 
 
@@ -246,9 +250,13 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.startDate = event.fromDate;
     this.endDate = event.toDate;
 
-    this.grid.loading = false;
-    if (this.firstLoad && this.startDate && this.endDate)
+    this.dateFilter = [];
+    this.dateFilter.push(new Filter("Date", this.startDate, " >= {0} ", "System.DateTime"),
+      new Filter("Date", this.endDate, " <= {0} ", "System.DateTime"));
+
+    if (this.firstLoad && this.startDate && this.endDate) {
       this.reloadGrid();
+    }
   }
 
   getVouchers() {
@@ -256,78 +264,73 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
 
-  gridColumnResize(event:any)
-  {
-      
+  gridColumnResize(event: any) {
+
   }
 
-  showQReport()
-  {
-    var columns : Array<QuickReportColumnInfo> = new Array<QuickReportColumnInfo>();
-    this.grid.leafColumns.forEach(function(item)
-    {
-        //item.width
-        var qr : QuickReportColumnInfo = new QuickReportColumnInfo();
-        var column = item as ColumnComponent;
-        if(column.field)
-        {
-          qr.name = column.field;
-          qr.index = column.orderIndex;
-          qr.visible = true;
-          qr.width = column.width;
-          qr.userText = column.displayTitle;   
-          qr.sortOrder = 0;
-          qr.sortMode = 0;
-          qr.dataType = 1;
-          qr.defaultText = column.displayTitle;
-          qr.enabled = true;
-          qr.order = column.orderIndex;
-                
+  showQReport() {
+    var columns: Array<QuickReportColumnInfo> = new Array<QuickReportColumnInfo>();
+    this.grid.leafColumns.forEach(function (item) {
+      //item.width
+      var qr: QuickReportColumnInfo = new QuickReportColumnInfo();
+      var column = item as ColumnComponent;
+      if (column.field) {
+        qr.name = column.field;
+        qr.index = column.orderIndex;
+        qr.visible = true;
+        qr.width = column.width;
+        qr.userText = column.displayTitle;
+        qr.sortOrder = 0;
+        qr.sortMode = 0;
+        qr.dataType = 1;
+        qr.defaultText = column.displayTitle;
+        qr.enabled = true;
+        qr.order = column.orderIndex;
 
-          columns.push(qr)
-        }
-    });    
 
-    var dpi_x = document.getElementById('dpi').offsetWidth;    
+        columns.push(qr)
+      }
+    });
 
-    var viewInfo  = new QuickReportViewInfo();
+    var dpi_x = document.getElementById('dpi').offsetWidth;
+
+    var viewInfo = new QuickReportViewInfo();
     viewInfo.columns = columns;
     viewInfo.inchValue = dpi_x;
     viewInfo.reportTitle = "گزارش فوری";
     viewInfo.row = this.rowData.data[0];
 
-    this.reporingService.putEnvironmentUserQuickReport(ReportApi.EnvironmentQuickReport,viewInfo)
-    .subscribe((response : any) => {
-      
-      var design = response.designJson;
-      var id = this.viewIdentity.ViewID;
-      var params = null;
-      if(this.viewIdentity.params.length > 0)
-        params = this.viewIdentity.params.toArray();
+    this.reporingService.putEnvironmentUserQuickReport(ReportApi.EnvironmentQuickReport, viewInfo)
+      .subscribe((response: any) => {
 
-      var rows = this.rowData.data;
-      // var rows =
-      //    [
-      //      {
-      //         no:"1",         
-      //         statusName : "ss",         
-      //         description : ""
-      //     }
-      //   ]
-      
+        var design = response.designJson;
+        var id = this.viewIdentity.ViewID;
+        var params = null;
+        if (this.viewIdentity.params.length > 0)
+          params = this.viewIdentity.params.toArray();
 
-      this.reportManager.showQuickReport(id,params,this.currentFilter,this.sort,design,rows);
+        var rows = this.rowData.data;
+        // var rows =
+        //    [
+        //      {
+        //         no:"1",         
+        //         statusName : "ss",         
+        //         description : ""
+        //     }
+        //   ]
 
-    });
-    
+
+        this.reportManager.showQuickReport(id, params, this.currentFilter, this.sort, design, rows);
+
+      });
+
   }
 
-  public showReportManagement()
-  {
-      var id = this.viewIdentity.ViewID;
-      var params = null;
-      if(this.viewIdentity.params.length > 0)
-        params = this.viewIdentity.params.toArray();
+  public showReportManagement() {
+    var id = this.viewIdentity.ViewID;
+    var params = null;
+    if (this.viewIdentity.params.length > 0)
+      params = this.viewIdentity.params.toArray();
 
     this.reportManager.showDialog(id, params, this.currentFilter, this.sort);
   }
@@ -400,13 +403,20 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     if (this.viewAccess) {
       this.grid.loading = true;
+
       var filter = this.currentFilter;
+      this.dateFilter.forEach(item => {
+        filter = this.addFilterToFilterExpression(filter,
+          item, FilterExpressionOperator.And);
+      })
+
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
         this.skip = this.skip - this.pageSize;
       }
 
       if (insertedModel)
         this.goToLastPage(this.totalRecords);
+
 
       this.voucherService.getAll(VoucherApi.EnvironmentVouchers, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
         var resData = res.body;

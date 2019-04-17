@@ -41,8 +41,6 @@ export class MetaDataService extends BaseService {
         var options = { headers: header };
 
 
-      debugger;
-
         var url = String.Format(MetadataApi.EntityMetadata, entityName);
         return this.http.get(url, options)
             .map(response => (<Response>response));

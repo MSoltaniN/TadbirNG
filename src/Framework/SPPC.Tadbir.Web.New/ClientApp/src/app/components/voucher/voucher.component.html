@@ -38,15 +38,7 @@
     </ng-template>
     <ng-template kendoGridToolbarTemplate>
 
-      <sppc-dateRangeSelector [Field]="'date'"
-                              [isDisplayFromDate]="true"
-                              [isDisplayToDate]="true"
-                              (valueChange)="dateValueChange($event)">
-      </sppc-dateRangeSelector>
-      <!--[minDate]="FiscalPeriodStartDate"
-      [maxDate]="FiscalPeriodEndDate"-->
-      <!--[displayFromDate]="FiscalPeriodStartDate"
-      [displayToDate]="FiscalPeriodEndDate"-->
+      <sppc-dateRangeSelector (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
 
       <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Voucher.New' | translate }}"></button>
 

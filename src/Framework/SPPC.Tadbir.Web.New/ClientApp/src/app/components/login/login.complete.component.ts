@@ -1,24 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-
 import { AuthenticationService, CompanyLoginInfo } from '../../service/login/index';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
-
-import { LoginContainerComponent } from "./login.container.component";
-import { Host, Renderer2 } from '@angular/core';
+import { Renderer2 } from '@angular/core';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { MessageType, Layout, MessagePosition, SessionKeys } from "../../../environments/environment";
-
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService, SettingService } from '../../service/index';
 import { Command } from '../../model/command';
 import { ListFormViewConfig } from '../../model/listFormViewConfig';
-import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
 import { SettingKey } from '../../enum/settingsKey';
 
 export function getLayoutModule(layout: Layout) {
