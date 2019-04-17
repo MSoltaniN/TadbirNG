@@ -1,27 +1,17 @@
 
 import { ToastrService } from 'ngx-toastr';
-
 import { TranslateService } from '@ngx-translate/core';
-
 import { String } from './source';
-import { State, CompositeFilterDescriptor, SortDescriptor } from "@progress/kendo-data-query";
+import { State, SortDescriptor } from "@progress/kendo-data-query";
 import { BaseComponent } from "./base.component"
 import { Property } from "./metadata/property"
-
 import { Filter } from './filter';
-import { Renderer2, Injectable, Inject, Injector, forwardRef, Optional } from "@angular/core";
+import { Renderer2, Injectable, Inject, Optional } from "@angular/core";
 import { MetaDataService } from '../service/metadata/metadata.service';
-import { Http } from '@angular/http';
-import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
-
-import * as moment from 'jalali-moment';
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
-import { HttpResponse } from '@angular/common/http';
-import { Account, ViewTreeConfig } from '../model/index';
-import { IEntity } from '../model/IEntity';
+import { ViewTreeConfig } from '../model/index';
 import { SettingService } from '../service/index';
-import { async } from '@angular/core/testing';
 
 
 @Injectable()
@@ -177,20 +167,15 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
-
-  public getAllMetaDataByViewId(viewId: number, metaDataName: string): Array<Property> | undefined {
+  async getAllMetaDataAsync(metaDataName: string): Promise<Array<Property>> {
     if (metaDataName) {
-      if (!localStorage.getItem(metaDataName)) {
-        this.metadataService.getReportMetaDataById(viewId).finally(() => {
-          if (!this.properties.get(metaDataName)) return undefined;
-          var result = this.properties.get(metaDataName);
-          return result;
-        }).subscribe((res1: any) => {
-          this.properties.set(metaDataName, res1.columns);
-          localStorage.setItem(metaDataName, JSON.stringify(res1.columns))
-          var result = this.properties.get(metaDataName);
-          return result;
-        });
+      if (!localStorage.getItem(metaDataName)) {        
+        const response = await this.metadataService.getMetaData(metaDataName).toPromise();
+        let res: any = response;
+        this.properties.set(metaDataName, res.columns);
+        localStorage.setItem(metaDataName, JSON.stringify(res.columns))
+        var result = this.properties.get(metaDataName);
+        return result;
       }
       else {
         var item: string | null;
@@ -205,6 +190,59 @@ export class DefaultComponent extends BaseComponent {
 
     }
   }
+
+  async getAllMetaDataByViewIdAsync(viewId: number, metaDataName: string): Promise<Array<Property>> {
+
+    if (metaDataName) {
+      if (!localStorage.getItem(metaDataName)) {
+        const response = await this.metadataService.getReportMetaDataById(viewId).toPromise();
+        let res: any = response;
+        this.properties.set(metaDataName, res.columns);
+        localStorage.setItem(metaDataName, JSON.stringify(res.columns))
+        var result = this.properties.get(metaDataName);
+        return result;
+      }
+      else {
+        var item: string | null;
+        item = localStorage.getItem(metaDataName);
+        if (!this.properties) this.properties = new Map<string, Array<Property>>();
+        var arr = JSON.parse(item != null ? item.toString() : "");
+        this.properties.set(metaDataName, arr);
+        if (!this.properties.get(metaDataName)) return undefined;
+        var result = this.properties.get(metaDataName);
+        return result;
+      }
+    }
+
+  }
+
+  //public getAllMetaDataByViewId(viewId: number, metaDataName: string): Array<Property> | undefined {
+  //  if (metaDataName) {
+  //    if (!localStorage.getItem(metaDataName)) {
+  //      this.metadataService.getReportMetaDataById(viewId).finally(() => {
+  //        if (!this.properties.get(metaDataName)) return undefined;
+  //        var result = this.properties.get(metaDataName);
+  //        return result;
+  //      }).subscribe((res1: any) => {
+  //        this.properties.set(metaDataName, res1.columns);
+  //        localStorage.setItem(metaDataName, JSON.stringify(res1.columns))
+  //        var result = this.properties.get(metaDataName);
+  //        return result;
+  //      });
+  //    }
+  //    else {
+  //      var item: string | null;
+  //      item = localStorage.getItem(metaDataName);
+  //      if (!this.properties) this.properties = new Map<string, Array<Property>>();
+  //      var arr = JSON.parse(item != null ? item.toString() : "");
+  //      this.properties.set(metaDataName, arr);
+  //      if (!this.properties.get(metaDataName)) return undefined;
+  //      var result = this.properties.get(metaDataName);
+  //      return result;
+  //    }
+
+  //  }
+  //}
 
   public getViewTreeSettings(viewId: number): ViewTreeConfig {
 

@@ -14,6 +14,7 @@ import { Observable } from "rxjs/Observable";
 import { SettingKey } from "../enum/settingsKey";
 import { Config } from "protractor";
 import { async } from "q";
+import { DateRangeType } from "../enum/dateRangeType";
 
 
 export class SettingBriefInfo implements SettingBrief {
@@ -256,6 +257,55 @@ export class SettingService extends BaseService {
     return this.http.get(url, options)
     .map(res => res)
     .catch(this.handleError);
+  }
+
+  async getDateConfig(type: string): Promise<Date> {
+
+    let dateRange: any;
+    let fromDate: Date;
+    let toDate: Date;
+
+    if (localStorage.getItem(SessionKeys.DateRangeConfig) != null) {
+      var range = JSON.parse(localStorage.getItem(SessionKeys.DateRangeConfig));
+      dateRange = range ? range.defaultDateRange : DateRangeType.CurrentToCurrent;
+    }
+    else {
+      const response = await this.getSettingById(SettingKey.DateRangeConfig).toPromise();
+      if (response) {
+        var res = response.values;
+        localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(response.values));
+        dateRange = res.defaultDateRange;
+      }
+    }
+
+    switch (dateRange) {
+      case DateRangeType.CurrentToCurrent: {
+        fromDate = new Date();
+        toDate = new Date();
+        break;
+      }
+      case DateRangeType.FiscalStartToCurrent: {
+        fromDate = this.FiscalPeriodStartDate;
+        toDate = new Date();
+        break;
+      }
+      case DateRangeType.FiscalStartToFiscalEnd: {
+        fromDate = this.FiscalPeriodStartDate;
+        toDate = this.FiscalPeriodEndDate;
+        break;
+      }
+      default:
+    }
+
+    if (type == "start") {
+      return fromDate;
+    }
+    else
+      if (type == "end") {
+        return toDate;
+      }
+
+    return undefined;
   }
 
   //#endregion

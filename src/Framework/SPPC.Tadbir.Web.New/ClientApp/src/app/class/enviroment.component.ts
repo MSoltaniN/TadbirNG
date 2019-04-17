@@ -1,12 +1,7 @@
 import { PermissionBrief } from "../model/index";
-import { ColumnViewConfig } from "../model/columnViewConfig";
-import { SessionKeys } from "../../environments/environment";
-import { DateRangeType } from "../enum/dateRangeType";
 
 
 export class EnviromentComponent {
-
-
 
   constructor() {
 
@@ -313,43 +308,4 @@ export class EnviromentComponent {
     return size;
   }
 
-  public getDateConfig(type: string): Date {
-
-    let dateRange: any;
-    let fromDate: Date;
-    let toDate: Date;
-
-    if (localStorage.getItem(SessionKeys.DateRangeConfig) != null) {
-      dateRange = JSON.parse(localStorage.getItem(SessionKeys.DateRangeConfig));
-    }
-
-    switch (dateRange.defaultDateRange) {
-      case DateRangeType.CurrentToCurrent: {
-        fromDate = new Date();
-        toDate = new Date();
-        break;
-      }
-      case DateRangeType.FiscalStartToCurrent: {
-        fromDate = this.FiscalPeriodStartDate;
-        toDate = new Date();
-        break;
-      }
-      case DateRangeType.FiscalStartToFiscalEnd: {
-        fromDate = this.FiscalPeriodStartDate;
-        toDate = this.FiscalPeriodEndDate;
-        break;
-      }
-      default:
-    }
-
-    if (type == "start") {
-      return fromDate;
-    }
-    else
-      if (type == "end") {
-        return toDate;
-      }
-
-    return undefined;
-  }
 }

@@ -75,7 +75,6 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
   }
 
   public handleSelection(item: TreeItem): void {
-    debugger;
     this.itemSelectedModel = this.settingsCategories.find(f => f.id == item.dataItem.id);
 
     if (this.lastSelectedType && this.lastSelectedType != 'ViewTreeConfig') {
