@@ -237,14 +237,24 @@ export class SettingService extends BaseService {
    * تنظیمات مربوط به فرمت اعداد را برمیگرداند
    */
 
-  public getNumberConfigBySettingId(): NumberConfig {
-
+  async getNumberConfigBySettingIdAsync(): Promise<NumberConfig> {
     let config: NumberConfig;
-    var numConfig = localStorage.getItem(SessionKeys.NumberConfige);
-    if (numConfig) {
-      config = JSON.parse(numConfig);
-      return config;
-    }   
+    if (localStorage.getItem(SessionKeys.NumberConfige) != null) {
+      var numConfig = localStorage.getItem(SessionKeys.NumberConfige);
+      if (numConfig) {
+        config = JSON.parse(numConfig);
+        return config;
+      }
+    }
+    else {
+      const response = await this.getSettingById(SettingKey.NumberDisplayConfig).toPromise();
+      if (response) {
+        var res = response.values;
+        localStorage.setItem(SessionKeys.NumberConfige, JSON.stringify(response.values));
+        return res;
+      }
+    }
+
   }
   
   /**
@@ -259,18 +269,21 @@ export class SettingService extends BaseService {
     .catch(this.handleError);
   }
 
-  async getDateConfig(type: string): Promise<Date> {
+  async getDateConfigAsync(type: string): Promise<Date> {
 
     let dateRange: any;
     let fromDate: Date;
     let toDate: Date;
 
     if (localStorage.getItem(SessionKeys.DateRangeConfig) != null) {
+      debugger;
       var range = JSON.parse(localStorage.getItem(SessionKeys.DateRangeConfig));
       dateRange = range ? range.defaultDateRange : DateRangeType.CurrentToCurrent;
     }
     else {
+      debugger;
       const response = await this.getSettingById(SettingKey.DateRangeConfig).toPromise();
+      debugger;
       if (response) {
         var res = response.values;
         localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(response.values));

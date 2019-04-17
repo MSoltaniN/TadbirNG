@@ -38,8 +38,8 @@ export class SppcDateRangeSelector implements OnInit {
 
   async ngOnInit() {
 
-    this.displayFromDate = await this.settingService.getDateConfig("start");
-    this.displayToDate = await this.settingService.getDateConfig("end");
+    this.displayFromDate = await this.settingService.getDateConfigAsync("start");
+    this.displayToDate = await this.settingService.getDateConfigAsync("end");
     
     //this.minDate = this.displayFromDate;
     //this.maxDate = this.displayToDate;
