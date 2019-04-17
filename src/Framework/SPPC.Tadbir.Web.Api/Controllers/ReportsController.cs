@@ -366,36 +366,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-row
         [Route(ReportApi.JournalByNoByRowUrl)]
-        public async Task<IActionResult> GetJournalByNoByRowAsync(DateTime? from, DateTime? to)
+        public async Task<IActionResult> GetJournalByNoByRowAsync(int from, int to)
         {
-            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByNoByRowAsync(from.Value, to.Value);
+            var journal = await _repository.GetJournalByNoByRowAsync(from, to);
             PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-no/by-row-detail
         [Route(ReportApi.JournalByNoByRowDetailUrl)]
-        public async Task<IActionResult> GetJournalByNoByRowWithDetailAsync(DateTime? from, DateTime? to)
+        public async Task<IActionResult> GetJournalByNoByRowWithDetailAsync(int from, int to)
         {
-            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByNoByRowWithDetailAsync(from.Value, to.Value);
+            var journal = await _repository.GetJournalByNoByRowWithDetailAsync(from, to);
             PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
 
         // GET: api/reports/journal/by-no/by-ledger
         [Route(ReportApi.JournalByNoByLedgerUrl)]
-        public async Task<IActionResult> GetJournalByNoByLedgerAsync(DateTime? from, DateTime? to)
+        public async Task<IActionResult> GetJournalByNoByLedgerAsync(int from, int to)
         {
-            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByNoByLedgerAsync(from.Value, to.Value);
+            var journal = await _repository.GetJournalByNoByLedgerAsync(from, to);
             PrepareJournal(journal, gridOptions);
             Localize(journal);
             return Json(journal);
@@ -403,12 +400,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-subsid
         [Route(ReportApi.JournalByNoBySubsidiaryUrl)]
-        public async Task<IActionResult> GetJournalByNoBySubsidiaryAsync(DateTime? from, DateTime? to)
+        public async Task<IActionResult> GetJournalByNoBySubsidiaryAsync(int from, int to)
         {
-            Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByNoBySubsidiaryAsync(from.Value, to.Value);
+            var journal = await _repository.GetJournalByNoBySubsidiaryAsync(from, to);
             PrepareJournal(journal, gridOptions);
             Localize(journal);
             return Json(journal);

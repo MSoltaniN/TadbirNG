@@ -367,10 +367,10 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و مطابق با ردیف های سند
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        public async Task<JournalViewModel> GetJournalByNoByRowAsync(DateTime from, DateTime to)
+        public async Task<JournalViewModel> GetJournalByNoByRowAsync(int from, int to)
         {
             var itemsQuery = GetJournalByNoByRowQuery(from, to);
             var journal = new JournalViewModel();
@@ -382,11 +382,11 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و مطابق با ردیف های سند با سطوح شناور
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         public async Task<JournalWithDetailViewModel> GetJournalByNoByRowWithDetailAsync(
-            DateTime from, DateTime to)
+            int from, int to)
         {
             var itemsQuery = GetJournalByNoByRowDetailQuery(from, to);
             var journal = new JournalWithDetailViewModel();
@@ -398,18 +398,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و حسابهای کل
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         public async Task<JournalViewModel> GetJournalByNoByLedgerAsync(
-            DateTime from, DateTime to)
+            int from, int to)
         {
             var journalItems = new List<JournalItemViewModel>();
             Func<VoucherLine, bool> allFilter = art => true;
             var lines = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
-                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Where(art => Int32.Parse(art.Voucher.No) >= from && Int32.Parse(art.Voucher.No) <= to)
                 .ToListAsync();
             foreach (var byNo in lines
                 .OrderBy(art => Int32.Parse(art.Voucher.No))
@@ -439,11 +439,11 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و حسابهای معین
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         public async Task<JournalViewModel> GetJournalByNoBySubsidiaryAsync(
-            DateTime from, DateTime to)
+            int from, int to)
         {
             var journalItems = new List<JournalItemViewModel>();
             Func<VoucherLine, bool> ledgerFilter = art => art.Account.Level == 0;
@@ -451,7 +451,7 @@ namespace SPPC.Tadbir.Persistence
             var lines = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
-                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Where(art => Int32.Parse(art.Voucher.No) >= from && Int32.Parse(art.Voucher.No) <= to)
                 .ToListAsync();
             foreach (var byDate in lines
                 .OrderBy(art => Int32.Parse(art.Voucher.No))
@@ -718,25 +718,25 @@ namespace SPPC.Tadbir.Persistence
             return journalItem;
         }
 
-        private IQueryable<JournalItemViewModel> GetJournalByNoByRowQuery(DateTime from, DateTime to)
+        private IQueryable<JournalItemViewModel> GetJournalByNoByRowQuery(int from, int to)
         {
             var journalQuery = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
-                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Where(art => Int32.Parse(art.Voucher.No) >= from && Int32.Parse(art.Voucher.No) <= to)
                 .OrderBy(art => Int32.Parse(art.Voucher.No))
                 .Select(art => _mapper.Map<JournalItemViewModel>(art));
             return journalQuery;
         }
 
         private IQueryable<JournalWithDetailItemViewModel> GetJournalByNoByRowDetailQuery(
-            DateTime from, DateTime to)
+            int from, int to)
         {
             var journalQuery = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
-                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Where(art => Int32.Parse(art.Voucher.No) >= from && Int32.Parse(art.Voucher.No) <= to)
                 .OrderBy(art => Int32.Parse(art.Voucher.No))
                 .Select(art => _mapper.Map<JournalWithDetailItemViewModel>(art));
             return journalQuery;

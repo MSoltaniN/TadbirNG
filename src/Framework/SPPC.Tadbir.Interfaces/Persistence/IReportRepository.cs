@@ -110,37 +110,36 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و مطابق با ردیف های سند
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<JournalViewModel> GetJournalByNoByRowAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByNoByRowAsync(int from, int to);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و مطابق با ردیف های سند با سطوح شناور
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<JournalWithDetailViewModel> GetJournalByNoByRowWithDetailAsync(
-            DateTime from, DateTime to);
+        Task<JournalWithDetailViewModel> GetJournalByNoByRowWithDetailAsync(int from, int to);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و حسابهای کل
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<JournalViewModel> GetJournalByNoByLedgerAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByNoByLedgerAsync(int from, int to);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و حسابهای معین
         /// را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
-        Task<JournalViewModel> GetJournalByNoBySubsidiaryAsync(DateTime from, DateTime to);
+        Task<JournalViewModel> GetJournalByNoBySubsidiaryAsync(int from, int to);
     }
 }
