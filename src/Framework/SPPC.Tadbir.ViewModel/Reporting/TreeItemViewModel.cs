@@ -43,5 +43,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// مشخص می کند که آیا گزارش مورد نظر به عنوان پیش فرض تعیین شده یا نه
         /// </summary>
         public bool IsDefault { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا گزارش مورد نظر طراحی شده است یا فوری
+        /// </summary>
+        public bool IsDynamic { get; set; }
     }
 }

@@ -12,7 +12,6 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
-using SPPC.Tadbir.Reporting;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Extensions;
