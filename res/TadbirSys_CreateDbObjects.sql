@@ -468,6 +468,7 @@ INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, 
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (23, N'JournalByNoByRowDetail', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (24, N'JournalByNoByLedger', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (25, N'JournalByNoBySubsidiary', 0, 0, N'')
+INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (26, N'JournalByNoSummary', 0, 0, N'')
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
@@ -858,6 +859,24 @@ INSERT [Metadata].[Column]
 INSERT [Metadata].[Column]
     ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
 	VALUES (185, 25, N'BranchName',NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'{"name":"BranchName","large":{"width":100,"index":8,"designIndex":8,"visibility":"Visible","title":"شعبه"},"medium":{"width":100,"index":8,"designIndex":8,"visibility":"Visible","title":"شعبه"},"small":{"width":100,"index":8,"designIndex":8,"visibility":"Visible","title":"شعبه"},"extraSmall":{"width":100,"index":8,"designIndex":8,"visibility":"Visible","title":"شعبه"},"extraLarge":{"width":100,"index":8,"designIndex":8,"visibility":"Visible","title":"شعبه"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (186, 26, N'RowNo', N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, N'{"name":"RowNo","large":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"},"medium":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"},"small":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"},"extraSmall":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"},"extraLarge":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (187, 26, N'AccountFullCode', N'System.String', N'nvarchar', N'string', 512, 0, 0, 0, 1, 1, N'{"name":"AccountFullCode","large":{"width":100,"index":1,"designIndex":1,"visibility":"Visible","title":"شماره حساب"},"medium":{"width":100,"index":1,"designIndex":1,"visibility":"Visible","title":"شماره حساب"},"small":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"شماره حساب"},"extraSmall":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"شماره حساب"},"extraLarge":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"شماره حساب"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (188, 26, N'Description', N'System.String', N'nvarchar', N'string', 512, 0, 0, 0, 1, 1, N'{"name":"Description","large":{"width":100,"index":2,"designIndex":2,"visibility":"Visible","title":"شرح"},"medium":{"width":100,"index":2,"designIndex":2,"visibility":"Visible","title":"شرح"},"small":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شرح"},"extraSmall":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شرح"},"extraLarge":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شرح"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (189, 26, N'Debit',N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, N'{"name":"Debit","large":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"بدهکار"},"medium":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"بدهکار"},"small":{"width":100,"index":6,"designIndex":6,"visibility":"Visible","title":"بدهکار"},"extraSmall":{"width":100,"index":6,"designIndex":6,"visibility":"Visible","title":"بدهکار"},"extraLarge":{"width":100,"index":6,"designIndex":6,"visibility":"Visible","title":"بدهکار"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (190, 26, N'Credit',N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, N'{"name":"Credit","large":{"width":100,"index":4,"designIndex":4,"visibility":"Visible","title":"بستانکار"},"medium":{"width":100,"index":4,"designIndex":4,"visibility":"Visible","title":"بستانکار"},"small":{"width":100,"index":7,"designIndex":7,"visibility":"Visible","title":"بستانکار"},"extraSmall":{"width":100,"index":7,"designIndex":7,"visibility":"Visible","title":"بستانکار"},"extraLarge":{"width":100,"index":7,"designIndex":7,"visibility":"Visible","title":"بستانکار"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (191, 26, N'BranchName',NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'{"name":"BranchName","large":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شعبه"},"medium":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شعبه"},"small":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شعبه"},"extraSmall":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شعبه"},"extraLarge":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شعبه"}}')
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
