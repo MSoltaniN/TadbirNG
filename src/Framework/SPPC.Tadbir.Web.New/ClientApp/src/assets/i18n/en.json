@@ -95,7 +95,7 @@
     "Save": "Save",
     "Close": "Close",
     "Subset": "subset",
-    "Comput": "Comput"
+    "Compute": "Compute"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -153,6 +153,8 @@
     "Sum": "Sum",
     "DebitSum": "Debit Sum",
     "CreditSum": "Credit Sum",
+    "FinalVoucherShouldLarger": "The final voucher number for the reporting period should be larger than the voucher number of the beginning of the period",
+    "ChooseByDate": "For the report {0}, the choice must be based on the date, not the voucher number",
     "DisplayTypes": {
       "VoucherRows": "According To Voucher Rows",
       "VoucherRowsWithFloatingAccounts": "According To Voucher Rows With Floating Accounts",
@@ -183,7 +185,8 @@
     "AccountName": "Account Name",
     "Description": "Description",
     "Debit": "Debit",
-    "Credit": "Credit"
+    "Credit": "Credit",
+    "BranchName": "Branch"
   },
   "JournalByDateByRowDetail": {
     "RowNo": "Row No",
@@ -199,7 +202,8 @@
     "CostCenterFullCode": "Cost Center Code",
     "CostCenterName": "Cost Center Name",
     "ProjectFullCode": "Project Code",
-    "ProjectName": "Project Name"
+    "ProjectName": "Project Name",
+    "BranchName": "Branch"
   },
   "JournalByDateByLedger": {
     "RowNo": "Row No",
@@ -209,7 +213,8 @@
     "AccountName": "Account Name",
     "Description": "Description",
     "Debit": "Debit",
-    "Credit": "Credit"
+    "Credit": "Credit",
+    "BranchName": "Branch"
   },
   "JournalByDateBySubsidiary": {
     "RowNo": "Row No",
@@ -219,14 +224,16 @@
     "AccountName": "Account Name",
     "Description": "Description",
     "Debit": "Debit",
-    "Credit": "Credit"
+    "Credit": "Credit",
+    "BranchName": "Branch"
   },
   "JournalByDateSummary": {
     "RowNo": "Row No",
     "AccountFullCode": "Account Code",
     "Description": "Description",
     "Debit": "Debit",
-    "Credit": "Credit"
+    "Credit": "Credit",
+    "BranchName": "Branch"
   },
   "JournalByDateSummaryByDate": {
     "RowNo": "Row No",
@@ -234,7 +241,66 @@
     "AccountFullCode": "Account Code",
     "Description": "Description",
     "Debit": "Debit",
-    "Credit": "Credit"
+    "Credit": "Credit",
+    "BranchName": "Branch"
+  },
+  "JournalByNoByRow": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "AccountFullCode": "Account Full Code",
+    "AccountName": "Account Name",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "BranchName": "Branch"
+  },
+  "JournalByNoByRowDetail": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "AccountFullCode": "Account Code",
+    "AccountName": "Account Name",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "DetailAccountFullCode": "Detail Account Code",
+    "DetailAccountName": "Detail Account Name",
+    "CostCenterFullCode": "Cost Center Code",
+    "CostCenterName": "Cost Center Name",
+    "ProjectFullCode": "Project Code",
+    "ProjectName": "Project Name",
+    "BranchName": "Branch"
+  },
+  "JournalByNoByLedger": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "AccountFullCode": "Account Code",
+    "AccountName": "Account Name",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "BranchName": "Branch"
+  },
+  "JournalByNoBySubsidiary": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "AccountFullCode": "Account Code",
+    "AccountName": "Account Name",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "BranchName": "Branch"
+  },
+  "JournalByNoSummary": {
+    "RowNo": "Row No",
+    "AccountFullCode": "Account Code",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "BranchName": "Branch"
   },
   "Account": {
     "NewSubAccount": "New sub account",

@@ -28,7 +28,12 @@ export const Metadatas = {
   JournalByDateByLedger: "journalbydatebyledger",
   JournalByDateBySubsidiary: "journalbydatebysubsidiary",
   JournalByDateSummary: "journalbydatesummary",
-  JournalByDateSummaryByDate: "journalbydatesummarybydate"
+  JournalByDateSummaryByDate: "journalbydatesummarybydate",
+  JournalByNoByRow: "journalbynobyrow",
+  JournalByNoByRowDetail: "journalbynobyrowdetail",
+  JournalByNoByLedger: "journalbynobyledger",
+  JournalByNoBySubsidiary: "journalbynobysubsidiary",
+  JournalByNoSummary: "journalbynosummary"
 }
 
 
@@ -56,7 +61,12 @@ export const Entities = {
   JournalByDateByLedger: "JournalByDateByLedger",
   JournalByDateBySubsidiary: "JournalByDateBySubsidiary",
   JournalByDateSummary: "JournalByDateSummary",
-  JournalByDateSummaryByDate: "JournalByDateSummaryByDate"
+  JournalByDateSummaryByDate: "JournalByDateSummaryByDate",
+  JournalByNoByRow: "JournalByNoByRow",
+  JournalByNoByRowDetail: "JournalByNoByRowDetail",
+  JournalByNoByLedger: "JournalByNoByLedger",
+  JournalByNoBySubsidiary: "JournalByNoBySubsidiary",
+  JournalByNoSummary: "JournalByNoSummary"
 }
 
 export const ColumnVisibility =

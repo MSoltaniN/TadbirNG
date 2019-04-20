@@ -67,7 +67,7 @@
       <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.CurrentLanguage === 'fa' && !isNew}">
         <label for="no" class="control-label">{{ 'Voucher.No' | translate }}</label>
 
-        <input type="text" class="k-textbox" formControlName="no" />
+        <input type="text" class="k-textbox" formControlName="no" [OnlyNumber]/>
 
         <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.no.valid || editForm.controls.no.pristine">
           <span *ngIf="editForm.controls.no.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>

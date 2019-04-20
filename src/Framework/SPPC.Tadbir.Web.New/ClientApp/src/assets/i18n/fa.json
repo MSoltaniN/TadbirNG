@@ -95,7 +95,7 @@
     "Save": "ذخیره",
     "Close": "بستن",
     "Subset": "زیر مجموعه",
-    "Comput": "محاسبه"
+    "Compute": "محاسبه"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -151,6 +151,8 @@
     "Sum": "مجموع",
     "DebitSum": "جمع بدهکار",
     "CreditSum": "جمع بستانکار",
+    "FinalVoucherShouldLarger": "شماره سند پایانی دوره گزارشگیری باید بزرگتر از شماره سند آغاز دوره باشد",
+    "ChooseByDate": "برای تهیه گزارش {0}، باید گزینش بر اساس تاریخ باشد نه شماره سند",
     "DisplayTypes": {
       "VoucherRows": "مطابق ردیف های سند",
       "VoucherRowsWithFloatingAccounts": "مطابق ردیف های سند با سطوح شناور",
@@ -181,7 +183,8 @@
     "AccountName": "نام حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
-    "Credit": "بستانکار"
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
   },
   "JournalByDateByRowDetail": {
     "RowNo": "ردیف",
@@ -197,7 +200,8 @@
     "CostCenterFullCode": "کد مرکز هزینه",
     "CostCenterName": "نام مرکز هزینه",
     "ProjectFullCode": "کد پروژه",
-    "ProjectName": "نام پروژه"
+    "ProjectName": "نام پروژه",
+    "BranchName": "شعبه"
   },
   "JournalByDateByLedger": {
     "RowNo": "ردیف",
@@ -207,7 +211,8 @@
     "AccountName": "نام حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
-    "Credit": "بستانکار"
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
   },
   "JournalByDateBySubsidiary": {
     "RowNo": "ردیف",
@@ -217,14 +222,16 @@
     "AccountName": "نام حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
-    "Credit": "بستانکار"
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
   },
   "JournalByDateSummary": {
     "RowNo": "ردیف",
     "AccountFullCode": "کد حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
-    "Credit": "بستانکار"
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
   },
   "JournalByDateSummaryByDate": {
     "RowNo": "ردیف",
@@ -232,7 +239,66 @@
     "AccountFullCode": "کد حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
-    "Credit": "بستانکار"
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
+  },
+  "JournalByNoByRow": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
+  },
+  "JournalByNoByRowDetail": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "DetailAccountFullCode": "کد تفصیلی شناور",
+    "DetailAccountName": "نام تفصیلی شناور",
+    "CostCenterFullCode": "کد مرکز هزینه",
+    "CostCenterName": "نام مرکز هزینه",
+    "ProjectFullCode": "کد پروژه",
+    "ProjectName": "نام پروژه",
+    "BranchName": "شعبه"
+  },
+  "JournalByNoByLedger": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
+  },
+  "JournalByNoBySubsidiary": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "VoucherNo": "شماره سند",
+    "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
+  },
+  "JournalByNoSummary": {
+    "RowNo": "ردیف",
+    "AccountFullCode": "کد حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
   },
   "Account": {
     "New": "حساب جدید",

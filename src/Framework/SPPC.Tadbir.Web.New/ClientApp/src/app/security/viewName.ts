@@ -21,5 +21,10 @@ export enum ViewName {
   JournalByDateBySubsidiary = 18,
   JournalByDateSummary = 19,
   JournalByDateSummaryByDate = 20,
-  JournalByDateSummaryByMonth = 21
+  JournalByDateSummaryByMonth = 21,
+  JournalByNoByRow = 22,
+  JournalByNoByRowDetail = 23,
+  JournalByNoByLedger = 24,
+  JournalByNoBySubsidiary = 25,
+  JournalByNoSummary = 26
 }

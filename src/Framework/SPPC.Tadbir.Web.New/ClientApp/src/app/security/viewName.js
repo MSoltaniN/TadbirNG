@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var ViewName;
+export var ViewName;
 (function (ViewName) {
     ViewName[ViewName["Account"] = 1] = "Account";
     ViewName[ViewName["Voucher"] = 2] = "Voucher";
@@ -23,5 +21,10 @@ var ViewName;
     ViewName[ViewName["JournalByDateSummary"] = 19] = "JournalByDateSummary";
     ViewName[ViewName["JournalByDateSummaryByDate"] = 20] = "JournalByDateSummaryByDate";
     ViewName[ViewName["JournalByDateSummaryByMonth"] = 21] = "JournalByDateSummaryByMonth";
-})(ViewName = exports.ViewName || (exports.ViewName = {}));
+    ViewName[ViewName["JournalByNoByRow"] = 22] = "JournalByNoByRow";
+    ViewName[ViewName["JournalByNoByRowDetail"] = 23] = "JournalByNoByRowDetail";
+    ViewName[ViewName["JournalByNoByLedger"] = 24] = "JournalByNoByLedger";
+    ViewName[ViewName["JournalByNoBySubsidiary"] = 25] = "JournalByNoBySubsidiary";
+    ViewName[ViewName["JournalByNoSummary"] = 26] = "JournalByNoSummary";
+})(ViewName || (ViewName = {}));
 //# sourceMappingURL=viewName.js.map

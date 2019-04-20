@@ -276,14 +276,11 @@ export class SettingService extends BaseService {
     let toDate: Date;
 
     if (localStorage.getItem(SessionKeys.DateRangeConfig) != null) {
-      debugger;
       var range = JSON.parse(localStorage.getItem(SessionKeys.DateRangeConfig));
       dateRange = range ? range.defaultDateRange : DateRangeType.CurrentToCurrent;
     }
     else {
-      debugger;
       const response = await this.getSettingById(SettingKey.DateRangeConfig).toPromise();
-      debugger;
       if (response) {
         var res = response.values;
         localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(response.values));
