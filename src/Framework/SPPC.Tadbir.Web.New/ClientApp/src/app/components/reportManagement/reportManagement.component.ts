@@ -153,6 +153,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
   }
 
+  //متد نمایش گزارش فوری
   public showQuickReport(viewId:string,formParams:Array<ReportParamComponent>,
     filter:FilterExpression = null,sort:SortDescriptor[] = null,designJson:string,qrRowData:any)
   {
@@ -517,21 +518,21 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.showReportViewer = true;
     this.showReportDesigner = false;    
     var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;        
+
     var filterExpression = this.createFilters(params,this.currentFilter);
+    serviceUrl = this.changeServiceUrl(serviceUrl,params);
     var sort = this.currentSort;
 
     this.reportingService.getAll(serviceUrl,
       sort, filterExpression).subscribe((response: any) => {
 
-        var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
-          .locale(this.CurrentLanguage)
-          .format('YYYY/M/D');
+        // var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
+        //   .locale(this.CurrentLanguage)
+        //   .format('YYYY/M/D');
 
-        var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
-          .locale(this.CurrentLanguage)
-          .format('YYYY/M/D');  
-
-        
+        // var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
+        //   .locale(this.CurrentLanguage)
+        //   .format('YYYY/M/D');          
 
         var reportData = {
           rows: response.body,           
@@ -539,7 +540,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         };
         
         if(this.qReport)
-          reportData.rows = this.quickReportRowData;
+          reportData.rows = reportData.rows; //this.quickReportRowData;
 
         var viewerIsCloseable : boolean = false;
         if(this.currentReportId != this.currentDefaultReportId)
@@ -556,6 +557,14 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
       });      
   } 
+
+  changeServiceUrl(url:string,params : ParameterInfo[])
+  {      
+      params.forEach(function(item){        
+        url = url.replace('{' + item.name + '}',item.value);
+      });      
+      return url;
+  }
 
   saveDesignOfReport(id:string)
   {

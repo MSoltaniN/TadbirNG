@@ -7,8 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ReportParamComponent implements OnInit {
 
   @Input() public ParamName: string;
-
-  @Input() public ParamValue: string;
+  @Input() public ParamValue: string;  
 
   constructor() { }
 
