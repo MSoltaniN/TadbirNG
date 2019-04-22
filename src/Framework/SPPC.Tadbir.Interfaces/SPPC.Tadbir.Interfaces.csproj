@@ -69,4 +69,8 @@
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Reporting\" />
+  </ItemGroup>
+
 </Project>
