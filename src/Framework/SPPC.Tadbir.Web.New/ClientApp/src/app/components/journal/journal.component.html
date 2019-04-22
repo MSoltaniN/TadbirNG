@@ -1,6 +1,6 @@
 <app-bread-cumb [entityTypeName]="'Journal'"></app-bread-cumb>
 <div class="panel-body">
-  <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+  <kendo-grid id="{{viewId}}" data-metadataType="{{this.metadataType}}" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
               [sortable]="{ allowUnsort: true, mode: 'multiple' }"
               [sort]="sort"
@@ -21,7 +21,7 @@
               [kendoGridSelectBy]="selectionKey"
               (filterChange)="filterChange($event)"
               (selectedKeysChange)="onSelectedKeysChange($event)"
-              sppc-grid-reorder sppc-grid-resize>
+              sppc-auto-generated-grid-reorder sppc-grid-resize>
     <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                          pagerOf="{{ 'Paging.Of' | translate }}"
                          pagerItems="{{ 'Paging.Record' | translate }}">
