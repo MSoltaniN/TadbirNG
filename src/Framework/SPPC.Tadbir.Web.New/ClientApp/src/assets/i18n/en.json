@@ -155,6 +155,7 @@
     "CreditSum": "Credit Sum",
     "FinalVoucherShouldLarger": "The final voucher number for the reporting period should be larger than the voucher number of the beginning of the period",
     "ChooseByDate": "For the report {0}, the choice must be based on the date, not the voucher number",
+    "RequiredVoucherNumber": "To prepare a report, the start and end voucher number is required",
     "DisplayTypes": {
       "VoucherRows": "According To Voucher Rows",
       "VoucherRowsWithFloatingAccounts": "According To Voucher Rows With Floating Accounts",
