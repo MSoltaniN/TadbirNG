@@ -32,17 +32,17 @@
     <ng-template kendoGridToolbarTemplate>
 
       <div class="journal-type" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa','pull-left':this.CurrentLanguage === 'en'}">
-        <input type="radio" name="rdbJournalType" [(ngModel)]="journalType" (change)="changeParam()" id="radio1" class="k-radio" value="1" />
+        <input type="radio" name="rdbJournalType" [(ngModel)]="journalType" (change)="changeType()" id="radio1" class="k-radio" value="1" />
         <label class="k-radio-label" for="radio1">{{ 'Journal.ByDate' | translate }}</label>
         <br />
-        <input type="radio" name="rdbJournalType" [(ngModel)]="journalType" (change)="changeParam()" class="k-radio" id="radio2" value="2" />
+        <input type="radio" name="rdbJournalType" [(ngModel)]="journalType" (change)="changeType()" class="k-radio" id="radio2" value="2" />
         <label class="k-radio-label" for="radio2">{{ 'Journal.ByVoucher' | translate }}</label>
       </div>
 
       <div [ngClass]="{'pull-right':this.CurrentLanguage === 'fa','pull-left':this.CurrentLanguage === 'en'}">
 
         <div *ngIf="journalType == '1'">
-          <sppc-dateRangeSelector (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+          <sppc-dateRangeSelector [viewName]="'journal'" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
         </div>
 
         <div *ngIf="journalType == '2'">
@@ -140,7 +140,7 @@
                             [valuePrimitive]="true"
                             [value]="displayTypeSelected"
                             [(ngModel)]="displayTypeSelected"
-                            (ngModelChange)="changeParam()">
+                            (ngModelChange)="changeType()">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>

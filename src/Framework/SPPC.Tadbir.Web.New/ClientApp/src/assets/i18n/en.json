@@ -670,7 +670,10 @@
   },
   "Sppc-DateRange": {
     "FromDate": "From Date",
-    "ToDate": "To Date"
+    "ToDate": "To Date",
+    "FromDateSmallerFpStart": "The date is initially smaller than the beginning of the financial period. The system automatically updates history",
+    "ToDateGreaterFpEnd": "The end date is greater than the end of the financial period. The system automatically updates history",
+    "InvalidDate": "The historical historical range is not valid"
   },
   "OperationLog": {
     "UserName": "User Name",
