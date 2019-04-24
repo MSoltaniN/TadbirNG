@@ -68,13 +68,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(account);
         }
 
+        // GET: api/accounts/{accountId:int}/children/new
+        [Route(AccountApi.EnvironmentNewChildAccountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
+        public async Task<IActionResult> GetEnvironmentNewAccountAsync(int accountId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var newAccount = await _repository.GetNewChildAccountAsync(accountId > 0 ? accountId : (int?)null);
+            if (newAccount == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Account));
+            }
+
+            if (newAccount.Level == -1)
+            {
+                return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Account));
+            }
+
+            if (Int32.Parse(newAccount.Code) == 0)
+            {
+                return BadRequest(_strings.Format(AppStrings.ChildItemsAreComplete, AppStrings.Account));
+            }
+
+            return Json(newAccount);
+        }
+
         // GET: api/accounts/ledger
         [Route(AccountApi.EnvironmentAccountsLedgerUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentAccountsLedgerAsync()
+        public async Task<IActionResult> GetEnvironmentLedgerAccountsAsync()
         {
             _repository.SetCurrentContext(SecurityContext.User);
-            var accounts = await _repository.GetAccountsLedgerAsync();
+            var accounts = await _repository.GetLedgerAccountsAsync();
             return JsonReadResult(accounts);
         }
 

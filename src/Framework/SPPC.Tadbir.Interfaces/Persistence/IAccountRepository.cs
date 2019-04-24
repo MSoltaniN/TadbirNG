@@ -38,10 +38,18 @@ namespace SPPC.Tadbir.Persistence
         Task<AccountViewModel> GetAccountAsync(int accountId);
 
         /// <summary>
+        /// به روش آسنکرون، برای حساب والد مشخص شده حساب زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی حساب والد - اگر مقدار نداشته باشد حساب جدید
+        /// در سطح کل پیشنهاد می شود</param>
+        /// <returns>مدل نمایشی حساب پیشنهادی</returns>
+        Task<AccountViewModel> GetNewChildAccountAsync(int? parentId);
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در سطح کل را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه سرفصل های حسابداری در سطح کل</returns>
-        Task<IList<AccountItemBriefViewModel>> GetAccountsLedgerAsync();
+        Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsAsync();
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری زیرمجموعه یک سرفصل حسابداری مشخص را خوانده و برمی گرداند

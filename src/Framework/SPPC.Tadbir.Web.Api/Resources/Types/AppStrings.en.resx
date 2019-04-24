@@ -861,4 +861,13 @@
   <data name="JournalLedger" xml:space="preserve">
     <value>Journal ledger</value>
   </data>
+  <data name="ChildItemsAreComplete" xml:space="preserve">
+    <value>No more {0} items can be created for this parent. Please specify a different parent.</value>
+  </data>
+  <data name="ChildItemsNotAllowed" xml:space="preserve">
+    <value>Parent {0} is already at maximum allowable tree level and cannot have any chidren.</value>
+  </data>
+  <data name="ParentItemNotFound" xml:space="preserve">
+    <value>Parent {0} could not be found.</value>
+  </data>
 </root>

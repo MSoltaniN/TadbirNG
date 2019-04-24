@@ -861,4 +861,13 @@
   <data name="JournalLedger" xml:space="preserve">
     <value>دفتر روزنامه</value>
   </data>
+  <data name="ChildItemsAreComplete" xml:space="preserve">
+    <value>زیرمجموعه های این {0} والد کامل شده است. لطفاً مورد دیگری را انتخاب کنید.</value>
+  </data>
+  <data name="ChildItemsNotAllowed" xml:space="preserve">
+    <value>{0} والد در آخرین سطح مجاز در ساختار درختی قرار دارد و نمی توان برای آن زیرمجموعه تعریف کرد.</value>
+  </data>
+  <data name="ParentItemNotFound" xml:space="preserve">
+    <value>{0} والد یافت نشد.</value>
+  </data>
 </root>

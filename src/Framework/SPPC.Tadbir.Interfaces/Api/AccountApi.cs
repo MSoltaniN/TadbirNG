@@ -33,12 +33,12 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentAccountsLookupUrl = "accounts/lookup";
 
         /// <summary>
-        /// API client URL for account ledger defined in current environment
+        /// API client URL for ledger accounts defined in current environment
         /// </summary>
-        public const string EnvironmentAccountsLedger = "accounts/ledger";
+        public const string EnvironmentLedgerAccounts = "accounts/ledger";
 
         /// <summary>
-        /// API server route URL for accounts ledger defined in current environment
+        /// API server route URL for ledger accounts defined in current environment
         /// </summary>
         public const string EnvironmentAccountsLedgerUrl = "accounts/ledger";
 
@@ -61,6 +61,16 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all child accounts under a specific account in hierarchy
         /// </summary>
         public const string AccountChildrenUrl = "accounts/{accountId:min(1)}/children";
+
+        /// <summary>
+        /// API client URL for a new child for a parent account specified by unique identifier
+        /// </summary>
+        public const string EnvironmentNewChildAccount = "accounts/{0}/children/new";
+
+        /// <summary>
+        /// API server route URL for a new child for a parent account specified by unique identifier
+        /// </summary>
+        public const string EnvironmentNewChildAccountUrl = "accounts/{accountId:int}/children/new";
 
         /// <summary>
         /// API client URL for account metadata

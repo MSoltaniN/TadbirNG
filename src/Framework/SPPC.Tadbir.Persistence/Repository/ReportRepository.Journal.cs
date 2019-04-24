@@ -96,7 +96,12 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(art => art.Voucher.Date)
                 .GroupBy(art => art.Voucher.Date))
             {
-                await AddJournalBySubsidiaryItemsAsync(byDate, journalItems);
+                foreach (var byDateByNo in byDate
+                    .OrderBy(art => art.Voucher.No)
+                    .GroupBy(art => art.Voucher.No))
+                {
+                    await AddJournalBySubsidiaryItemsAsync(byDateByNo, journalItems);
+                }
             }
 
             var journal = new JournalViewModel();

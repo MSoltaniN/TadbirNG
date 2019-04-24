@@ -31,6 +31,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
             FullCode = String.Empty;
             Name = String.Empty;
             Description = String.Empty;
+            IsActive = true;
+            IsCurrencyAdjustable = true;
+            TurnoverMode = -1;
         }
 
         /// <summary>

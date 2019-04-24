@@ -9,6 +9,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
@@ -90,10 +91,37 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، برای حساب والد مشخص شده حساب زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی حساب والد - اگر مقدار نداشته باشد حساب جدید
+        /// در سطح کل پیشنهاد می شود</param>
+        /// <returns>مدل نمایشی حساب پیشنهادی</returns>
+        public async Task<AccountViewModel> GetNewChildAccountAsync(int? parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            var parent = await repository.GetByIDAsync(parentId ?? 0);
+            if (parentId > 0 && parent == null)
+            {
+                return null;
+            }
+
+            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.Account);
+            var treeConfig = fullConfig.Current;
+            if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
+            {
+                return new AccountViewModel() { Level = -1 };
+            }
+
+            var childrenCodes = await GetChildrenCodesAsync(parentId);
+            string newCode = GetNewAccountCode(parent, childrenCodes, treeConfig);
+            return GetNewChildAccount(parent, newCode, treeConfig);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در سطح کل را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه سرفصل های حسابداری در سطح کل</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetAccountsLedgerAsync()
+        public async Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsAsync()
         {
             var accounts = await _repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
@@ -451,6 +479,52 @@ namespace SPPC.Tadbir.Persistence
                     await CascadeUpdateFullCodeAsync(child.Id);
                 }
             }
+        }
+
+        private async Task<IList<string>> GetChildrenCodesAsync(int? parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            return await repository
+                .GetEntityQuery()
+                .Where(acc => acc.ParentId == parentId)
+                .Select(acc => acc.Code)
+                .ToListAsync();
+        }
+
+        private string GetNewAccountCode(
+            Account parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
+        {
+            int childLevel = (parent != null) ? parent.Level + 1 : 0;
+            int codeLength = treeConfig.Levels[childLevel].CodeLength;
+            string format = String.Format("D{0}", codeLength);
+            int maxCode = (int)(Math.Pow(10, codeLength) - 1);
+            int lastCode = (existingCodes.Count() > 0) ? Int32.Parse(existingCodes.Max()) : 0;
+            int newCode = (lastCode < maxCode) ? lastCode + 1 : 0;
+            return newCode.ToString(format);
+        }
+
+        private AccountViewModel GetNewChildAccount(
+            Account parent, string newCode, ViewTreeConfig treeConfig)
+        {
+            var childAccount = new AccountViewModel()
+            {
+                Code = newCode,
+                ParentId = parent?.Id,
+                FiscalPeriodId = _currentContext.FiscalPeriodId,
+                BranchId = _currentContext.BranchId,
+                CurrencyId = 1
+            };
+            childAccount.FullCode = (parent != null)
+                ? parent.FullCode + childAccount.Code
+                : childAccount.Code;
+            if (parent != null)
+            {
+                childAccount.Level = (short)((parent.Level + 1 < treeConfig.MaxDepth)
+                    ? parent.Level + 1
+                    : -1);
+            }
+
+            return childAccount;
         }
 
         private readonly ISecureRepository _repository;
