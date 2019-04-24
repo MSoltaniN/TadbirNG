@@ -68,6 +68,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(project);
         }
 
+        // GET: api/projects/{projectId:int}/children/new
+        [Route(ProjectApi.EnvironmentNewChildProjectUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create)]
+        public async Task<IActionResult> GetEnvironmentNewProjectAsync(int projectId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var newProject = await _repository.GetNewChildProjectAsync(
+                projectId > 0 ? projectId : (int?)null);
+            if (newProject == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Project));
+            }
+
+            if (newProject.Level == -1)
+            {
+                return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Project));
+            }
+
+            if (Int32.Parse(newProject.Code) == 0)
+            {
+                return BadRequest(_strings.Format(AppStrings.ChildItemsAreComplete, AppStrings.Project));
+            }
+
+            return Json(newProject);
+        }
+
         // GET: api/projects/ledger
         [Route(ProjectApi.EnvironmentProjectsLedgerUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]

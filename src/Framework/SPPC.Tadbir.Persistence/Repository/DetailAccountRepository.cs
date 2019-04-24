@@ -8,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -98,6 +99,33 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return item;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، برای تفصیلی شناور والد مشخص شده شناور زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی تفصیلی شناور والد - اگر مقدار نداشته باشد شناور جدید
+        /// در سطح اول پیشنهاد می شود</param>
+        /// <returns>مدل نمایشی تفصیلی شناور پیشنهادی</returns>
+        public async Task<DetailAccountViewModel> GetNewChildDetailAccountAsync(int? parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
+            var parent = await repository.GetByIDAsync(parentId ?? 0);
+            if (parentId > 0 && parent == null)
+            {
+                return null;
+            }
+
+            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.DetailAccount);
+            var treeConfig = fullConfig.Current;
+            if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
+            {
+                return new DetailAccountViewModel() { Level = -1 };
+            }
+
+            var childrenCodes = await GetChildrenCodesAsync(parentId);
+            string newCode = GetNewDetailAccountCode(parent, childrenCodes, treeConfig);
+            return GetNewChildDetailAccount(parent, newCode, treeConfig);
         }
 
         /// <summary>
@@ -379,6 +407,51 @@ namespace SPPC.Tadbir.Persistence
                     await CascadeUpdateFullCodeAsync(child.Id);
                 }
             }
+        }
+
+        private async Task<IList<string>> GetChildrenCodesAsync(int? parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
+            return await repository
+                .GetEntityQuery()
+                .Where(facc => facc.ParentId == parentId)
+                .Select(facc => facc.Code)
+                .ToListAsync();
+        }
+
+        private string GetNewDetailAccountCode(
+            DetailAccount parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
+        {
+            int childLevel = (parent != null) ? parent.Level + 1 : 0;
+            int codeLength = treeConfig.Levels[childLevel].CodeLength;
+            string format = String.Format("D{0}", codeLength);
+            int maxCode = (int)(Math.Pow(10, codeLength) - 1);
+            int lastCode = (existingCodes.Count() > 0) ? Int32.Parse(existingCodes.Max()) : 0;
+            int newCode = (lastCode < maxCode) ? lastCode + 1 : 0;
+            return newCode.ToString(format);
+        }
+
+        private DetailAccountViewModel GetNewChildDetailAccount(
+            DetailAccount parent, string newCode, ViewTreeConfig treeConfig)
+        {
+            var childDetail = new DetailAccountViewModel()
+            {
+                Code = newCode,
+                ParentId = parent?.Id,
+                FiscalPeriodId = _currentContext.FiscalPeriodId,
+                BranchId = _currentContext.BranchId
+            };
+            childDetail.FullCode = (parent != null)
+                ? parent.FullCode + childDetail.Code
+                : childDetail.Code;
+            if (parent != null)
+            {
+                childDetail.Level = (short)((parent.Level + 1 < treeConfig.MaxDepth)
+                    ? parent.Level + 1
+                    : -1);
+            }
+
+            return childDetail;
         }
 
         private readonly ISecureRepository _repository;

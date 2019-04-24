@@ -48,6 +48,14 @@ namespace SPPC.Tadbir.Persistence
         Task<DetailAccountViewModel> GetDetailAccountAsync(int faccountId);
 
         /// <summary>
+        /// به روش آسنکرون، برای تفصیلی شناور والد مشخص شده شناور زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی تفصیلی شناور والد - اگر مقدار نداشته باشد شناور جدید
+        /// در سطح اول پیشنهاد می شود</param>
+        /// <returns>مدل نمایشی تفصیلی شناور پیشنهادی</returns>
+        Task<DetailAccountViewModel> GetNewChildDetailAccountAsync(int? parentId);
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در سطح اول را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه تفصیلی های شناور در سطح اول</returns>

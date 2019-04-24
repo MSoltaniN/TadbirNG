@@ -88,6 +88,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(children);
         }
 
+        // GET: api/faccounts/{faccountId:int}/children/new
+        [Route(DetailAccountApi.EnvironmentNewChildDetailAccountUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Create)]
+        public async Task<IActionResult> GetEnvironmentNewDetailAccountAsync(int faccountId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var newDetail = await _repository.GetNewChildDetailAccountAsync(
+                faccountId > 0 ? faccountId : (int?)null);
+            if (newDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.DetailAccount));
+            }
+
+            if (newDetail.Level == -1)
+            {
+                return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.DetailAccount));
+            }
+
+            if (Int32.Parse(newDetail.Code) == 0)
+            {
+                return BadRequest(_strings.Format(AppStrings.ChildItemsAreComplete, AppStrings.DetailAccount));
+            }
+
+            return Json(newDetail);
+        }
+
         // GET: api/faccounts/metadata
         [Route(DetailAccountApi.DetailAccountMetadataUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]

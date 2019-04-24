@@ -8,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -99,6 +100,33 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return item;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، برای پروژه والد مشخص شده پروژه زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی پروژه والد - اگر مقدار نداشته باشد پروژه جدید
+        /// در سطح کل پیشنهاد می شود</param>
+        /// <returns>مدل نمایشی پروژه پیشنهادی</returns>
+        public async Task<ProjectViewModel> GetNewChildProjectAsync(int? parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            var parent = await repository.GetByIDAsync(parentId ?? 0);
+            if (parentId > 0 && parent == null)
+            {
+                return null;
+            }
+
+            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.Project);
+            var treeConfig = fullConfig.Current;
+            if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
+            {
+                return new ProjectViewModel() { Level = -1 };
+            }
+
+            var childrenCodes = await GetChildrenCodesAsync(parentId);
+            string newCode = GetNewProjectCode(parent, childrenCodes, treeConfig);
+            return GetNewChildProject(parent, newCode, treeConfig);
         }
 
         /// <summary>
@@ -380,6 +408,51 @@ namespace SPPC.Tadbir.Persistence
                     await CascadeUpdateFullCodeAsync(child.Id);
                 }
             }
+        }
+
+        private async Task<IList<string>> GetChildrenCodesAsync(int? parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            return await repository
+                .GetEntityQuery()
+                .Where(prj => prj.ParentId == parentId)
+                .Select(prj => prj.Code)
+                .ToListAsync();
+        }
+
+        private string GetNewProjectCode(
+            Project parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
+        {
+            int childLevel = (parent != null) ? parent.Level + 1 : 0;
+            int codeLength = treeConfig.Levels[childLevel].CodeLength;
+            string format = String.Format("D{0}", codeLength);
+            int maxCode = (int)(Math.Pow(10, codeLength) - 1);
+            int lastCode = (existingCodes.Count() > 0) ? Int32.Parse(existingCodes.Max()) : 0;
+            int newCode = (lastCode < maxCode) ? lastCode + 1 : 0;
+            return newCode.ToString(format);
+        }
+
+        private ProjectViewModel GetNewChildProject(
+            Project parent, string newCode, ViewTreeConfig treeConfig)
+        {
+            var childProject = new ProjectViewModel()
+            {
+                Code = newCode,
+                ParentId = parent?.Id,
+                FiscalPeriodId = _currentContext.FiscalPeriodId,
+                BranchId = _currentContext.BranchId
+            };
+            childProject.FullCode = (parent != null)
+                ? parent.FullCode + childProject.Code
+                : childProject.Code;
+            if (parent != null)
+            {
+                childProject.Level = (short)((parent.Level + 1 < treeConfig.MaxDepth)
+                    ? parent.Level + 1
+                    : -1);
+            }
+
+            return childProject;
         }
 
         private readonly ISecureRepository _repository;

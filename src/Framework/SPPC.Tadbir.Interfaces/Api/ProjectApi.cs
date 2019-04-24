@@ -63,6 +63,16 @@ namespace SPPC.Tadbir.Api
         public const string ProjectChildrenUrl = "projects/{projectId:min(1)}/children";
 
         /// <summary>
+        /// API client URL for a new child for a parent project specified by unique identifier
+        /// </summary>
+        public const string EnvironmentNewChildProject = "projects/{0}/children/new";
+
+        /// <summary>
+        /// API server route URL for a new child for a parent project specified by unique identifier
+        /// </summary>
+        public const string EnvironmentNewChildProjectUrl = "projects/{projectId:int}/children/new";
+
+        /// <summary>
         /// API client URL for project metadata
         /// </summary>
         public const string ProjectMetadata = "projects/metadata";

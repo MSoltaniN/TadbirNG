@@ -68,6 +68,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(costCenter);
         }
 
+        // GET: api/ccenters/{ccenterId:int}/children/new
+        [Route(CostCenterApi.EnvironmentNewChildCostCenterUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create)]
+        public async Task<IActionResult> GetEnvironmentNewCostCenterAsync(int ccenterId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var newCenter = await _repository.GetNewChildCostCenterAsync(
+                ccenterId > 0 ? ccenterId : (int?)null);
+            if (newCenter == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.CostCenter));
+            }
+
+            if (newCenter.Level == -1)
+            {
+                return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.CostCenter));
+            }
+
+            if (Int32.Parse(newCenter.Code) == 0)
+            {
+                return BadRequest(_strings.Format(AppStrings.ChildItemsAreComplete, AppStrings.CostCenter));
+            }
+
+            return Json(newCenter);
+        }
+
         // GET: api/ccenters/ledger
         [Route(CostCenterApi.EnvironmentCostCentersLedgerUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]

@@ -54,6 +54,14 @@ namespace SPPC.Tadbir.Persistence
         Task<CostCenterViewModel> GetCostCenterAsync(int costCenterId);
 
         /// <summary>
+        /// به روش آسنکرون، برای مرکز هزینه والد مشخص شده مرکز زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی مرکز هزینه والد - اگر مقدار نداشته باشد مرکز جدید
+        /// در سطح اول پیشنهاد می شود</param>
+        /// <returns>مدل نمایشی مرکز هزینه پیشنهادی</returns>
+        Task<CostCenterViewModel> GetNewChildCostCenterAsync(int? parentId);
+
+        /// <summary>
         /// به روش آسنکرون، مراکز هزینه زیرمجموعه را برای مرکز هزینه مشخص شده خوانده و برمی گرداند
         /// </summary>
         /// <param name="costCenterId">شناسه یکی از مراکز هزینه موجود</param>

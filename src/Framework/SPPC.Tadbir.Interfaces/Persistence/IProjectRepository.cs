@@ -48,6 +48,14 @@ namespace SPPC.Tadbir.Persistence
         Task<ProjectViewModel> GetProjectAsync(int projectId);
 
         /// <summary>
+        /// به روش آسنکرون، برای پروژه والد مشخص شده پروژه زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی پروژه والد - اگر مقدار نداشته باشد پروژه جدید
+        /// در سطح کل پیشنهاد می شود</param>
+        /// <returns>مدل نمایشی پروژه پیشنهادی</returns>
+        Task<ProjectViewModel> GetNewChildProjectAsync(int? parentId);
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از پروژه های سطح اول را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه پروژه های سطح اول</returns>

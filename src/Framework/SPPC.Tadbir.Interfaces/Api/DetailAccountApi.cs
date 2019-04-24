@@ -64,6 +64,16 @@ namespace SPPC.Tadbir.Api
         public const string DetailAccountChildrenUrl = "faccounts/{faccountId:min(1)}/children";
 
         /// <summary>
+        /// API client URL for a new child for a parent detail account specified by unique identifier
+        /// </summary>
+        public const string EnvironmentNewChildDetailAccount = "faccounts/{0}/children/new";
+
+        /// <summary>
+        /// API server route URL for a new child for a parent detail account specified by unique identifier
+        /// </summary>
+        public const string EnvironmentNewChildDetailAccountUrl = "faccounts/{faccountId:int}/children/new";
+
+        /// <summary>
         /// API client URL for detail account metadata
         /// </summary>
         public const string DetailAccountMetadata = "faccounts/metadata";
