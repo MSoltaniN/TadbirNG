@@ -363,6 +363,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(journal);
         }
 
+        // GET: api/reports/journal/by-date/sum-by-month
+        [Route(ReportApi.JournalByDateMonthlyLedgerSummaryUrl)]
+        public async Task<IActionResult> GetJournalByDateMonthlyLedgerSummaryAsync(DateTime? from, DateTime? to)
+        {
+            Sanitize(ref from, ref to);
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateMonthlyLedgerSummaryAsync(from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
+            return Json(journal);
+        }
+
         // GET: api/reports/journal/by-no/by-row
         [Route(ReportApi.JournalByNoByRowUrl)]
         public async Task<IActionResult> GetJournalByNoByRowAsync(int from, int to)

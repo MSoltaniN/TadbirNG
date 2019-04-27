@@ -107,6 +107,15 @@ namespace SPPC.Tadbir.Persistence
         Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateAsync(DateTime from, DateTime to);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک ماه
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryAsync(DateTime from, DateTime to);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و مطابق با ردیف های سند
         /// را خوانده و برمی گرداند
         /// </summary>

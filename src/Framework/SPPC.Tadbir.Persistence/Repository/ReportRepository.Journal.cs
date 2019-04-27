@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -146,6 +148,36 @@ namespace SPPC.Tadbir.Persistence
                 .GroupBy(art => art.Voucher.Date))
             {
                 await AddJournalByLedgerItemsAsync(byDate, journalItems);
+            }
+
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
+            return journal;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک ماه
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryAsync(
+            DateTime from, DateTime to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var monthJournal = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
+            foreach (var month in monthEnum.GetMonths())
+            {
+                var monthLines = lines
+                    .Where(art => art.Voucher.Date >= month.Start
+                        && art.Voucher.Date <= month.End);
+                await AddJournalByLedgerItemsAsync(monthLines, monthJournal);
+                Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
+                journalItems.AddRange(monthJournal);
+                monthJournal.Clear();
             }
 
             var journal = new JournalViewModel();

@@ -88,7 +88,8 @@ export const SessionKeys = {
   CurrentRoute: 'currentRoute',
   CurrentSkin: 'currentSkin',
   NumberConfige: 'numberConfig',
-  DateRangeConfig:'DateRangeConfig'
+  DateRangeConfig:'DateRangeConfig',
+  DateRangeSelected:'DateRangeSelected'
 }
 
 

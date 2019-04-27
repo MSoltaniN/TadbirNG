@@ -354,6 +354,18 @@ namespace SPPC.Tadbir.Persistence
                : null;
         }
 
+        private static string GetNewCostCenterCode(
+            CostCenter parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
+        {
+            int childLevel = (parent != null) ? parent.Level + 1 : 0;
+            int codeLength = treeConfig.Levels[childLevel].CodeLength;
+            string format = String.Format("D{0}", codeLength);
+            var maxCode = (long)Math.Pow(10, codeLength) - 1;
+            var lastCode = (existingCodes.Count() > 0) ? Int64.Parse(existingCodes.Max()) : 0;
+            var newCode = (lastCode < maxCode) ? lastCode + 1 : 0;
+            return newCode.ToString(format);
+        }
+
         /// <summary>
         /// به روش آسنکرون، وضعیت استفاده از یکی از سطوح درختی مرکز هزینه را در دیتابیس بروزرسانی می کند
         /// </summary>
@@ -417,18 +429,6 @@ namespace SPPC.Tadbir.Persistence
                 .Where(cc => cc.ParentId == parentId)
                 .Select(cc => cc.Code)
                 .ToListAsync();
-        }
-
-        private string GetNewCostCenterCode(
-            CostCenter parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
-        {
-            int childLevel = (parent != null) ? parent.Level + 1 : 0;
-            int codeLength = treeConfig.Levels[childLevel].CodeLength;
-            string format = String.Format("D{0}", codeLength);
-            int maxCode = (int)(Math.Pow(10, codeLength) - 1);
-            int lastCode = (existingCodes.Count() > 0) ? Int32.Parse(existingCodes.Max()) : 0;
-            int newCode = (lastCode < maxCode) ? lastCode + 1 : 0;
-            return newCode.ToString(format);
         }
 
         private CostCenterViewModel GetNewChildCostCenter(
