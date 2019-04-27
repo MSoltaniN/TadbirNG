@@ -221,6 +221,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
       if (res)
         localStorage.setItem(SessionKeys.Setting + this.UserId, JSON.stringify(res));
     });
+
+    if (sessionStorage.getItem(SessionKeys.DateRangeSelected))
+      sessionStorage.removeItem(SessionKeys.DateRangeSelected);
   }
 
 
