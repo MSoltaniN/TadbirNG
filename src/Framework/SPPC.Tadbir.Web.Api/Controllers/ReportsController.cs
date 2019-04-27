@@ -221,11 +221,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             database.Alias = "Vouchers";
             StiDataTableSource dataSource = new StiDataTableSource("Vouchers", "Vouchers", "Vouchers");
 
-            var jrow = (JObject)qr.Row;
+            //var jrow = (JObject)qr.Row;
 
-            foreach (JProperty q in jrow.Children().ToList())
+            foreach (var q in qr.Columns)
             {
-                dataSource.Columns.Add(new StiDataColumn(q.Name, q.Name, typeof(string)));
+                dataSource.Columns.Add(new StiDataColumn(q.Name, q.Name, Type.GetType(q.DataType)));
             }
 
             quickReport.DataSources.Clear();

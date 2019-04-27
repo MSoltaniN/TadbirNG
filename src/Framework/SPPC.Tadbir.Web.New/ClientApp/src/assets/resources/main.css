@@ -366,3 +366,13 @@ table thead tr th span.ui-column-title {
     height: 5px !important;
     background-color: #4189C7 !important;
 }
+
+ body.tRtl  kendo-grid-toolbar > report-mg > button
+{
+    float: left!important;
+}
+
+body.tLtr  kendo-grid-toolbar > report-mg > button
+{
+    float: right!important;
+} 

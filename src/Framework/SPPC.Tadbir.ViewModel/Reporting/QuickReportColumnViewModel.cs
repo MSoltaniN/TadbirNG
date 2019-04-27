@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         ///
         /// </summary>
-        public int DataType { get; set; }
+        public string DataType { get; set; }
 
         /// <summary>
         ///

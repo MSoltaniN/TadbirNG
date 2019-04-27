@@ -21,6 +21,6 @@ export interface QuickReportColumnModel
     enabled : boolean;    
     order : number;
     userText : string;    
-    dataType : number;    
+    dataType : string;    
     visible : boolean;
 }

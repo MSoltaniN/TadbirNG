@@ -99,7 +99,7 @@ export class QuickReportColumnInfo implements QuickReportColumnModel
     enabled : boolean;    
     order : number;
     userText : string;    
-    dataType : number;    
+    dataType : string;    
     visible : boolean;
 }
 

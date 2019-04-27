@@ -8,7 +8,7 @@ import { Renderer2, Optional, Inject } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 import { MetaDataService } from "../../service/metadata/metadata.service";
-import { ReportingService, LocalReportInfo, ParameterInfo } from "../../service/report/reporting.service";
+import { ReportingService, LocalReportInfo, ParameterInfo, QuickReportColumnInfo, QuickReportViewInfo } from "../../service/report/reporting.service";
 import { ReportApi } from "../../service/api/reportApi";
 import { of } from "rxjs/observable/of";
 import { Report } from "../../model/report";
@@ -29,6 +29,8 @@ import { ReportParamComponent } from "../viewIdentifier/reportParam.component";
 import { TabsComponent } from "../../controls/tabs/tabs.component";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import { TabComponent } from "../../controls/tabs/tab.component";
+import { GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
+import { ViewIdentifierComponent } from "../viewIdentifier/view-identifier.component";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -115,8 +117,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.screen.height;//window.innerHeight
     this.initViewer();
-    this.disableButtons = true;
-    
+    this.disableButtons = true;    
   }
   
   onNodeClick(e :any)
@@ -150,8 +151,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     }
     else
       this.disableButtons = true;
-
-  }
+  } 
 
   //متد نمایش گزارش فوری
   public showQuickReport(viewId:string,formParams:Array<ReportParamComponent>,
@@ -234,26 +234,36 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             expandKeysArray = new Array<any>();
             this.selectedKeys = new Array<any>();
 
-            var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
-            //this.selectedKeys.push(nodeData.id);
-            this.currentReportName = "گزارش فوری";
+            // var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
             
-            var qReportNode = 
-                {
-                  caption: "گزارش فوری",
-                  id: -100,
-                  isDefault: false,
-                  isGroup: false,
-                  isSystem: false,
-                  parentId: nodeData.parentId,
-                  serviceUrl: null
-                }                
+            // this.currentReportName = "گزارش فوری";
+            
+            // var qReportNode = 
+            //     {
+            //       caption: "گزارش فوری",
+            //       id: -100,
+            //       isDefault: false,
+            //       isGroup: false,
+            //       isSystem: false,
+            //       parentId: nodeData.parentId,
+            //       serviceUrl: null
+            //     }                
                 
-            this.treeData.push(qReportNode);           
-            this.selectedKeys.push(-100);
+            // this.treeData.push(qReportNode);           
+            // this.selectedKeys.push(-100);
             
+            // while (nodeData.parentId != null) {
+            //     expandKeysArray.push(nodeData.parentId);                
+            //     var parentNode = this.treeData.filter((p: any) => p.id == nodeData.parentId);
+            //     nodeData = parentNode[0];
+            // }
+
+            var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
+            this.selectedKeys.push(nodeData.id);
+            this.currentReportName = nodeData.caption;
+
             while (nodeData.parentId != null) {
-                expandKeysArray.push(nodeData.parentId);                
+                expandKeysArray.push(nodeData.parentId);
                 var parentNode = this.treeData.filter((p: any) => p.id == nodeData.parentId);
                 nodeData = parentNode[0];
             }
@@ -558,11 +568,19 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       });      
   } 
 
-  changeServiceUrl(url:string,params : ParameterInfo[])
+  changeServiceUrl(url:string,params : ParameterInfo[]) : string
   {      
-      params.forEach(function(item){        
-        url = url.replace('{' + item.name + '}',item.value);
-      });      
+      var queryStringParams = params.filter(p=>p.controlType === 'QueryString');
+      if(queryStringParams.length > 0)
+        url += '?';
+      else
+        return url;
+      var itemCount = 0;
+        queryStringParams.forEach(function(item){          
+          url += item.name + '=' + item.value;
+          if(itemCount > 0) url += '&';
+          itemCount++;
+        });      
       return url;
   }
 

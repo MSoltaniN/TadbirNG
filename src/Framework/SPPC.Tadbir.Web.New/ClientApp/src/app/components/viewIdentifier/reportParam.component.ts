@@ -8,6 +8,7 @@ export class ReportParamComponent implements OnInit {
 
   @Input() public ParamName: string;
   @Input() public ParamValue: string;  
+  @Input() public ParamDataType: string;
 
   constructor() { }
 

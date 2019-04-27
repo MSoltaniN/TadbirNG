@@ -1,6 +1,14 @@
+<view-identifier [ViewID]="viewId">
+  <report-param ParamName='fromDate' [ParamValue]="fromDate"></report-param>
+  <report-param ParamName='toDate' [ParamValue]="toDate"></report-param>
+  <report-param ParamName='fromNo' [ParamValue]="fromVoucher"></report-param>
+  <report-param ParamName='toDate' [ParamValue]="toVoucher"></report-param>
+</view-identifier>
 <app-bread-cumb [entityTypeName]="'Journal'"></app-bread-cumb>
 <div class="panel-body">
-  <kendo-grid id="{{viewId}}" data-metadataType="{{this.metadataType}}" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+  <kendo-grid id="{{viewId}}" data-metadataType="{{this.metadataType}}" 
+  style="width:100%;"
+  #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
               [sortable]="{ allowUnsort: true, mode: 'multiple' }"
               [sort]="sort"
@@ -10,7 +18,7 @@
               [pageable]="true"
               [resizable]="true"
               [filterable]="true"
-              [scrollable]="'none'"
+              [scrollable]="'scrollable'"
               (pageChange)="pageChange($event)"
               (sortChange)="sortChange($event)"
               (edit)="editHandler($event)"
@@ -21,6 +29,7 @@
               [kendoGridSelectBy]="selectionKey"
               (filterChange)="filterChange($event)"
               (selectedKeysChange)="onSelectedKeysChange($event)"
+              (dataStateChange)="onDataStateChange($event)"
               sppc-auto-generated-grid-reorder sppc-grid-resize>
     <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                          pagerOf="{{ 'Paging.Of' | translate }}"
@@ -63,7 +72,8 @@
                                    (columnsList)="getColumns($event)">
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-
+      <report-mg [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+       [Filter]="currentFilter" [RowData]="rowData" [MetadataType]="metadataType"></report-mg>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="66">

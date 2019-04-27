@@ -269,61 +269,9 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   showQReport() {
-    var columns: Array<QuickReportColumnInfo> = new Array<QuickReportColumnInfo>();
-    this.grid.leafColumns.forEach(function (item) {
-      //item.width
-      var qr: QuickReportColumnInfo = new QuickReportColumnInfo();
-      var column = item as ColumnComponent;
-      if (column.field) {
-        qr.name = column.field;
-        qr.index = column.orderIndex;
-        qr.visible = true;
-        qr.width = column.width;
-        qr.userText = column.displayTitle;
-        qr.sortOrder = 0;
-        qr.sortMode = 0;
-        qr.dataType = 1;
-        qr.defaultText = column.displayTitle;
-        qr.enabled = true;
-        qr.order = column.orderIndex;
-
-
-        columns.push(qr)
-      }
-    });
-
-    var dpi_x = document.getElementById('dpi').offsetWidth;
-
-    var viewInfo = new QuickReportViewInfo();
-    viewInfo.columns = columns;
-    viewInfo.inchValue = dpi_x;
-    viewInfo.reportTitle = "گزارش فوری";
-    viewInfo.row = this.rowData.data[0];
-
-    this.reporingService.putEnvironmentUserQuickReport(ReportApi.EnvironmentQuickReport, viewInfo)
-      .subscribe((response: any) => {
-
-        var design = response.designJson;
-        var id = this.viewIdentity.ViewID;
-        var params = null;
-        if (this.viewIdentity.params.length > 0)
-          params = this.viewIdentity.params.toArray();
-
-        var rows = this.rowData.data;
-        // var rows =
-        //    [
-        //      {
-        //         no:"1",         
-        //         statusName : "ss",         
-        //         description : ""
-        //     }
-        //   ]
-
-
-        this.reportManager.showQuickReport(id, params, this.currentFilter, this.sort, design, rows);
-
-      });
-
+    
+    // this.reportManager.showReportManager(this.grid,this.viewIdentity,
+    //   this.currentFilter,this.sort,this.rowData.data[0]);
   }
 
   public showReportManagement() {

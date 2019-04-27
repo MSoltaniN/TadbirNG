@@ -165,6 +165,7 @@ import { TabComponent } from './controls/tabs/tab.component';
 import { TabsComponent } from './controls/tabs/tabs.component';
 import { DynamicTabsDirective } from './controls/tabs/dynamic-tabs.directive';
 import { from } from 'rxjs/observable/from';
+import { ReportMGComponent } from './components/viewIdentifier/report.mg.component';
 
 
 
@@ -272,7 +273,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReportParamComponent,
     TabComponent,
     TabsComponent,
-    DynamicTabsDirective
+    DynamicTabsDirective,
+    ReportMGComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
