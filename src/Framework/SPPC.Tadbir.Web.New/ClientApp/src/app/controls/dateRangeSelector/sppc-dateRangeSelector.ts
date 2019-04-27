@@ -3,7 +3,8 @@ import { FormGroup, FormControl } from '@angular/forms'
 import { SettingService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from '../../class/base.component';
-import { MessageType } from '../../../environments/environment';
+import { MessageType, SessionKeys } from '../../../environments/environment';
+import { stringify } from 'querystring';
 
 
 
@@ -81,7 +82,6 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     this.myForm.valueChanges.subscribe(val => {
 
       if (val.fromDate && val.toDate) {
-        debugger;
         if (this.compareDate(val.fromDate, val.toDate) != 1) {
           if (this.compareDate(val.fromDate, this.fpStartDate) == -1) {
             this.showMessage("تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد", MessageType.Warning);
@@ -166,35 +166,54 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       var sessionFromDate = "fromDate" + this.viewName;
       var sessionToDate = "toDate" + this.viewName;
 
-      sessionStorage.removeItem(sessionFromDate);
-      sessionStorage.removeItem(sessionToDate);
+      sessionStorage.removeItem(SessionKeys.DateRangeSelected);
+
+      let sessionDateRangeArray: any[] = [];
 
       if (fromDate)
-        sessionStorage.setItem(sessionFromDate, fromDate.toString());
+        sessionDateRangeArray.push({ key: sessionFromDate, value: fromDate.toString() });
+
       if (toDate)
-        sessionStorage.setItem(sessionToDate, toDate.toString());
+        sessionDateRangeArray.push({ key: sessionToDate, value: toDate.toString() });
+
+      if (sessionDateRangeArray.length > 0)
+        sessionStorage.setItem(SessionKeys.DateRangeSelected, JSON.stringify(sessionDateRangeArray));
     }
   }
 
   /**گرفتن تاریخ ابتدا از حافظه موقت */
   getTemporarilyFromDate(): Date {
-  if (this.viewName) {
-    var sessionFromDate = "fromDate" + this.viewName;
-    var value = sessionStorage.getItem(sessionFromDate);
-    if (value) {
-      return new Date(value);
+    if (this.viewName) {
+      var sessionFromDate = "fromDate" + this.viewName;
+
+      let sessionDateRangeArray: any[] = [];
+
+      var dateStorage = sessionStorage.getItem(SessionKeys.DateRangeSelected);
+      if (dateStorage) {
+        sessionDateRangeArray = JSON.parse(dateStorage);
+        var dateItem = sessionDateRangeArray.find(f => f.key.toLowerCase() == sessionFromDate.toLowerCase());
+        if (dateItem) {
+          return new Date(dateItem.value);
+        }
+      }
     }
-  }
   }
 
   /**گرفتن تاریخ انتها از حافظه موقت */
   getTemporarilyToDate(): Date {
-  if (this.viewName) {
-    var sessionToDate = "toDate" + this.viewName;
-    var value = sessionStorage.getItem(sessionToDate);
-    if (value) {
-      return new Date(value);
+    if (this.viewName) {
+      var sessionToDate = "toDate" + this.viewName;
+
+      let sessionDateRangeArray: any[] = [];
+
+      var dateStorage = sessionStorage.getItem(SessionKeys.DateRangeSelected);
+      if (dateStorage) {
+        sessionDateRangeArray = JSON.parse(dateStorage);
+        var dateItem = sessionDateRangeArray.find(f => f.key.toLowerCase() == sessionToDate.toLowerCase());
+        if (dateItem) {
+          return new Date(dateItem.value);
+        }
+      }
     }
-  }
   }
 }

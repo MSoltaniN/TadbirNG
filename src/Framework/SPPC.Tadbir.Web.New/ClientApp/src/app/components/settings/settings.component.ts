@@ -121,6 +121,8 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
       localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(dateConfig.values));
     }
 
+    if (sessionStorage.getItem(SessionKeys.DateRangeSelected))
+      sessionStorage.removeItem(SessionKeys.DateRangeSelected);
     //#endregion
 
 
