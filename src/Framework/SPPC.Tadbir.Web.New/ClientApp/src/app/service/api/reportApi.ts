@@ -74,6 +74,9 @@ export class ReportApi {
     // reports/journal/by-date/sum-by-date
     public static JournalByDateLedgerSummaryByDate = environment.BaseUrl + "/reports/journal/by-date/sum-by-date";
 
+    // reports/journal/by-date/sum-by-month
+    public static JournalByDateMonthlyLedgerSummary = environment.BaseUrl + "/reports/journal/by-date/sum-by-month";
+
     // reports/journal/by-no/by-row
     public static JournalByNoByRow = environment.BaseUrl + "/reports/journal/by-no/by-row";
 
