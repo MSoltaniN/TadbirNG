@@ -75,7 +75,8 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
     @Optional() @Inject('empty') public entityName: string, @Optional() @Inject('empty') public metadataType: string, @Optional() @Inject('empty') public parentTitlekey: string,
     @Optional() @Inject('empty') public editorNewTitlePattern: string, @Optional() @Inject('empty') public editorEditTitlePattern: string,
     @Optional() @Inject('empty') public environmentModelsUrl: string, @Optional() @Inject('empty') public environmentModelsLedgerUrl: string,
-    @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string, @Optional() @Inject('empty') public viewId: number) {
+    @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string, @Optional() @Inject('empty') public modelNewChildUrl: string
+    @Optional() @Inject('empty') public viewId: number) {
     super(toastrService, translate, renderer, metadata, settingService, entityName, metadataType);
   }
 
@@ -501,8 +502,17 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
   }
 
   addNew() {
-    //this.editDataItem = new AccountInfo();
-    //this.openEditorDialog(true);
+    this.grid.loading = true;
+    this.service.getById(String.Format(this.modelNewChildUrl, this.parent ? this.parent.id : "0")).subscribe(res => {
+
+      this.editDataItem = res;
+      this.openEditorDialog(true);
+
+      this.grid.loading = false;
+    }, (error => {
+      this.grid.loading = false;
+      this.showMessage(error.error, MessageType.Warning);
+    }));
   }
 
   editHandler() {

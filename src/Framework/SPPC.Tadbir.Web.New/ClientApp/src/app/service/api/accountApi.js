@@ -18,6 +18,8 @@ AccountApi.EnvironmentAccounts = environment.BaseUrl + "/accounts";
 AccountApi.EnvironmentAccountsLookup = environment.BaseUrl + "/accounts/lookup";
 // accounts/ledger
 AccountApi.EnvironmentAccountsLedger = environment.BaseUrl + "/accounts/ledger";
+// accounts/{accountId:int}/children/new
+AccountApi.EnvironmentNewChildAccount = environment.BaseUrl + "/accounts/{0}/children/new";
 // accounts/{accountId:min(1)}
 AccountApi.Account = environment.BaseUrl + "/accounts/{0}";
 // accounts/{accountId:min(1)}/children
