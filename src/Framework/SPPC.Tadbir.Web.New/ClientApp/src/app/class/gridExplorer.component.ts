@@ -75,7 +75,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
     @Optional() @Inject('empty') public entityName: string, @Optional() @Inject('empty') public metadataType: string, @Optional() @Inject('empty') public parentTitlekey: string,
     @Optional() @Inject('empty') public editorNewTitlePattern: string, @Optional() @Inject('empty') public editorEditTitlePattern: string,
     @Optional() @Inject('empty') public environmentModelsUrl: string, @Optional() @Inject('empty') public environmentModelsLedgerUrl: string,
-    @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string, @Optional() @Inject('empty') public modelNewChildUrl: string
+    @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string, @Optional() @Inject('empty') public modelNewChildUrl: string,
     @Optional() @Inject('empty') public viewId: number) {
     super(toastrService, translate, renderer, metadata, settingService, entityName, metadataType);
   }
