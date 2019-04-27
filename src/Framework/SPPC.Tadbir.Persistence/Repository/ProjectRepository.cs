@@ -361,8 +361,8 @@ namespace SPPC.Tadbir.Persistence
             int childLevel = (parent != null) ? parent.Level + 1 : 0;
             int codeLength = treeConfig.Levels[childLevel].CodeLength;
             string format = String.Format("D{0}", codeLength);
-            var maxCode = Math.Pow(10, codeLength) - 1;
-            var lastCode = (existingCodes.Count() > 0) ? Double.Parse(existingCodes.Max()) : 0;
+            var maxCode = (long)Math.Pow(10, codeLength) - 1;
+            var lastCode = (existingCodes.Count() > 0) ? Int64.Parse(existingCodes.Max()) : 0;
             var newCode = (lastCode < maxCode) ? lastCode + 1 : 0;
             return newCode.ToString(format);
         }
