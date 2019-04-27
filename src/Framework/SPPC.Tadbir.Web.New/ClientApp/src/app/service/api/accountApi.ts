@@ -23,6 +23,9 @@ export class AccountApi {
     // accounts/ledger
     public static EnvironmentAccountsLedger = environment.BaseUrl + "/accounts/ledger";
 
+    // accounts/{accountId:int}/children/new
+    public static EnvironmentNewChildAccount = environment.BaseUrl + "/accounts/{0}/children/new";
+
     // accounts/{accountId:min(1)}
     public static Account = environment.BaseUrl + "/accounts/{0}";
 

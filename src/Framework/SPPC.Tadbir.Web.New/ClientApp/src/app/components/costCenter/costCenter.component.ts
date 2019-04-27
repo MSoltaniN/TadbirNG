@@ -36,7 +36,8 @@ export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.CostCenter, Metadatas.CostCenter,
       "CostCenter.LedgerCostCenter", "CostCenter.EditorTitleNew", "CostCenter.EditorTitleEdit",
-      CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren, ViewName.CostCenter)
+      CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren, CostCenterApi.EnvironmentNewChildCostCenter,
+      ViewName.CostCenter)
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
@@ -73,10 +74,6 @@ export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
       }
   }
 
-  addNew() {
-    this.editDataItem = new CostCenterInfo();
-    this.openEditorDialog(true);
-  }
 }
 
 

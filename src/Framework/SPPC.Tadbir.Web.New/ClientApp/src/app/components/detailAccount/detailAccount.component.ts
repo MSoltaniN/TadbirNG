@@ -37,7 +37,8 @@ export class DetailAccountComponent extends GridExplorerComponent<DetailAccount>
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.DetailAccount, Metadatas.DetailAccount,
       "DetailAccount.LedgerDetailAccount", "DetailAccount.EditorTitleNew", "DetailAccount.EditorTitleEdit",
-      DetailAccountApi.EnvironmentDetailAccounts, DetailAccountApi.EnvironmentDetailAccountsLedger, DetailAccountApi.DetailAccount, DetailAccountApi.DetailAccountChildren, ViewName.DetailAccount)
+      DetailAccountApi.EnvironmentDetailAccounts, DetailAccountApi.EnvironmentDetailAccountsLedger, DetailAccountApi.DetailAccount, DetailAccountApi.DetailAccountChildren,
+      DetailAccountApi.EnvironmentNewChildDetailAccount,ViewName.DetailAccount)
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
@@ -72,11 +73,6 @@ export class DetailAccountComponent extends GridExplorerComponent<DetailAccount>
       else {
         this.showMessage(String.Format(errorMsg, (this.levelConfig.no - 1).toString()), MessageType.Warning);
       }
-  }
-
-  addNew() {
-    this.editDataItem = new DetailAccountInfo();
-    this.openEditorDialog(true);
   }
 
 }

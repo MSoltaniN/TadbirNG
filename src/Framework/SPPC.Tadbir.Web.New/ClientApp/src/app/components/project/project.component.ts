@@ -37,7 +37,7 @@ export class ProjectComponent extends GridExplorerComponent<Project> {
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Project, Metadatas.Project,
       "Project.LedgerProject", "Project.EditorTitleNew", "Project.EditorTitleEdit",
-      ProjectApi.EnvironmentProjects, ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren, ViewName.Project)
+      ProjectApi.EnvironmentProjects, ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren, ProjectApi.EnvironmentNewChildProject, ViewName.Project)
   }
 
 
@@ -73,11 +73,6 @@ export class ProjectComponent extends GridExplorerComponent<Project> {
       else {
         this.showMessage(String.Format(errorMsg, (this.levelConfig.no - 1).toString()), MessageType.Warning);
       }
-  }
-
-  addNew() {
-    this.editDataItem = new ProjectInfo();
-    this.openEditorDialog(true);
   }
 
 }

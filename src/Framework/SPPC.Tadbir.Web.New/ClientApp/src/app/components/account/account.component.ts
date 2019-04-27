@@ -40,7 +40,7 @@ export class AccountComponent extends GridExplorerComponent<Account> {
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Account, Metadatas.Account,
       "Account.LedgerAccount", "Account.EditorTitleNew", "Account.EditorTitleEdit",
-      AccountApi.EnvironmentAccounts, AccountApi.EnvironmentAccountsLedger, AccountApi.Account, AccountApi.AccountChildren, ViewName.Account)
+      AccountApi.EnvironmentAccounts, AccountApi.EnvironmentAccountsLedger, AccountApi.Account, AccountApi.AccountChildren,AccountApi.EnvironmentNewChildAccount, ViewName.Account)
   }
 
 
@@ -77,10 +77,7 @@ export class AccountComponent extends GridExplorerComponent<Account> {
       }
   }
 
-  addNew() {
-    this.editDataItem = new AccountInfo();
-    this.openEditorDialog(true);
-  }
+  
 
 }
 
