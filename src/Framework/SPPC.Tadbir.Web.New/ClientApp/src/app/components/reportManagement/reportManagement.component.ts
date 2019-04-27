@@ -157,13 +157,11 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   public showQuickReport(viewId:string,formParams:Array<ReportParamComponent>,
     filter:FilterExpression = null,sort:SortDescriptor[] = null,designJson:string,qrRowData:any)
   {
-      this.active = true;
+      this.active = true;      
       
-      var url = ReportApi.ReportsHierarchy;
       if(viewId)
       {
-          this.currentViewId = viewId;
-          url = String.Format(ReportApi.ReportsByView, viewId);
+          this.currentViewId = viewId;          
           this.showDesktopTab = false;
           this.currentFilter = filter;
           this.currentSort = sort;
@@ -172,21 +170,13 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       {
           this.showDesktopTab = true;
           this.currentViewId = undefined;
-      }
+      }     
 
-      this.reportingService.getAll(url)
-      .subscribe((res: any) => {
-          //var i = res;
-          this.treeData = <Array<TreeItem>>res.body;       
-          //expand treeview base on baseid
-           if(viewId)
-           {
-             this.quickReportJsonDesign = designJson;
-             this.quickReportRowData = qrRowData;
-             this.addQReportToDefaultFolder(viewId,formParams);  
-             this.currentFormParams = formParams;
-           }
-      });
+      this.quickReportJsonDesign = designJson;
+      //this.quickReportRowData = qrRowData;
+      this.treeData = qrRowData; //دیتا ساختار درختی
+      this.addQReportToDefaultFolder(viewId,formParams);  
+      this.currentFormParams = formParams;        
   }
 
   public showDialog(viewId:string,formParams:Array<ReportParamComponent>,
@@ -366,7 +356,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       //var currentFilter = filter ? filter : new FilterExpression();
       var filters:Filter[] = new Array<Filter>();
 
-      params.forEach(function(param){
+      params.filter(p=>p.controlType.toLowerCase() != 'querystring').forEach(function(param){
         
         var operator = "";
           switch (param.operator.toLowerCase()) {
@@ -577,8 +567,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         return url;
       var itemCount = 0;
         queryStringParams.forEach(function(item){          
-          url += item.name + '=' + item.value;
-          if(itemCount > 0) url += '&';
+          if(itemCount > 0 && itemCount < queryStringParams.length) url += '&';
+          url += item.fieldName + '=' + item.value;          
           itemCount++;
         });      
       return url;

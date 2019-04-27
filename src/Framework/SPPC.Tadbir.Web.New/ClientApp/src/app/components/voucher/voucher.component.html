@@ -1,5 +1,5 @@
 <view-identifier [ViewID]="2">
-    <report-param ParamName='FromDate' [ParamValue]="startDate"></report-param>
+     <report-param ParamName='FromDate' [ParamValue]="startDate"></report-param>
     <report-param ParamName='ToDate' [ParamValue]="endDate"></report-param>
 </view-identifier>
 <app-bread-cumb></app-bread-cumb>
@@ -46,10 +46,11 @@
       <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
       <grid-setting entityTypeName="Voucher"></grid-setting>
-      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-      <!-- <button kendoButton (click)="showReport()" disabled="disabled" type="button" [icon]="'printer'"></button> -->
-      <button kendoButton (click)="showReportManagement()" type="button" [icon]="'printer'"></button>
-      <button kendoButton (click)="showQReport()" type="button" [icon]="'printer'"></button>
+      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>      
+      <!-- <button kendoButton (click)="showReportManagement()" type="button" [icon]="'printer'"></button>
+      <button kendoButton (click)="showQReport()" type="button" [icon]="'printer'"></button> -->
+      <report-mg [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+       [Filter]="currentFilter" [RowData]="rowData" [MetadataType]="metadataType"></report-mg>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="35"></kendo-grid-checkbox-column>

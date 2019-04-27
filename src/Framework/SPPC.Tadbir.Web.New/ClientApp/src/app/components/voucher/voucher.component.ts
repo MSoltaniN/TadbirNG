@@ -59,7 +59,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   public totalRecords: number;
   firstLoad: boolean = true;
   dateFilter: Array<Filter> = [];
-
+  metadataType : string = Metadatas.Voucher;
   //permission flag
   viewAccess: boolean;
 
