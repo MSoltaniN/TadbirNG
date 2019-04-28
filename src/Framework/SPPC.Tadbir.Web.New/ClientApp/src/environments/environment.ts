@@ -40,6 +40,7 @@ export const Metadatas = {
   JournalByDateBySubsidiary: "journalbydatebysubsidiary",
   JournalByDateSummary: "journalbydatesummary",
   JournalByDateSummaryByDate: "journalbydatesummarybydate",
+  JournalByDateSummaryByMonth: "journalbydatesummarybymonth",
   JournalByNoByRow: "journalbynobyrow",
   JournalByNoByRowDetail: "journalbynobyrowdetail",
   JournalByNoByLedger: "journalbynobyledger",
@@ -73,6 +74,7 @@ export const Entities = {
   JournalByDateBySubsidiary: "JournalByDateBySubsidiary",
   JournalByDateSummary: "JournalByDateSummary",
   JournalByDateSummaryByDate: "JournalByDateSummaryByDate",
+  JournalByDateSummaryByMonth: "JournalByDateSummaryByMonth",
   JournalByNoByRow: "JournalByNoByRow",
   JournalByNoByRowDetail: "JournalByNoByRowDetail",
   JournalByNoByLedger: "JournalByNoByLedger",
@@ -100,7 +102,7 @@ export const SessionKeys = {
   CurrentSkin: 'currentSkin',
   NumberConfige: 'numberConfig',
   DateRangeConfig: 'DateRangeConfig',
-  DateRangeSelected:'DateRangeSelected'
+  DateRangeSelected: 'DateRangeSelected'
 }
 
 

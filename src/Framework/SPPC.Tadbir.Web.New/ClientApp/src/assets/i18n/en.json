@@ -245,6 +245,15 @@
     "Credit": "Credit",
     "BranchName": "Branch"
   },
+  "JournalByDateSummaryByMonth": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "AccountFullCode": "Account Code",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "BranchName": "Branch"
+  },
   "JournalByNoByRow": {
     "RowNo": "Row No",
     "VoucherDate": "Voucher Date",
