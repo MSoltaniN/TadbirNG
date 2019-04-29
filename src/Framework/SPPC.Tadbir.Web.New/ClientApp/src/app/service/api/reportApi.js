@@ -52,6 +52,8 @@ ReportApi.JournalByDateBySubsidiary = environment.BaseUrl + "/reports/journal/by
 ReportApi.JournalByDateLedgerSummary = environment.BaseUrl + "/reports/journal/by-date/summary";
 // reports/journal/by-date/sum-by-date
 ReportApi.JournalByDateLedgerSummaryByDate = environment.BaseUrl + "/reports/journal/by-date/sum-by-date";
+// reports/journal/by-date/sum-by-month
+ReportApi.JournalByDateMonthlyLedgerSummary = environment.BaseUrl + "/reports/journal/by-date/sum-by-month";
 // reports/journal/by-no/by-row
 ReportApi.JournalByNoByRow = environment.BaseUrl + "/reports/journal/by-no/by-row";
 // reports/journal/by-no/by-row-detail

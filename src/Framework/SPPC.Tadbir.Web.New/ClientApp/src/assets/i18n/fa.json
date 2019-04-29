@@ -243,6 +243,15 @@
     "Credit": "بستانکار",
     "BranchName": "شعبه"
   },
+  "JournalByDateSummaryByMonth": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ سند",
+    "AccountFullCode": "کد حساب",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "BranchName": "شعبه"
+  },
   "JournalByNoByRow": {
     "RowNo": "ردیف",
     "VoucherDate": "تاریخ سند",

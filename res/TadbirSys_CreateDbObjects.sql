@@ -879,6 +879,27 @@ INSERT [Metadata].[Column]
 INSERT [Metadata].[Column]
     ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
 	VALUES (191, 26, N'BranchName',NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'{"name":"BranchName","large":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"},"medium":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"},"small":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"},"extraSmall":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"},"extraLarge":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (192, 21, N'RowNo', N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, N'{"name":"RowNo","large":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"},"medium":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"},"small":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"},"extraSmall":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"},"extraLarge":{"width":100,"index":0,"designIndex":0,"visibility":"AlwaysVisible","title":"ردیف"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (193, 21, N'VoucherDate', N'System.Datetime', N'datetime', N'Date', 0, 0, 0, 0, 1, 1, N'{"name":"VoucherDate","large":{"width":100,"index":1,"designIndex":1,"visibility":"Visible","title":"تاریخ"},"medium":{"width":100,"index":1,"designIndex":1,"visibility":"Visible","title":"تاریخ"},"small":{"width":100,"index":1,"designIndex":1,"visibility":"Visible","title":"تاریخ"},"extraSmall":{"width":100,"index":1,"designIndex":1,"visibility":"Visible","title":"تاریخ"},"extraLarge":{"width":100,"index":1,"designIndex":1,"visibility":"Visible","title":"تاریخ"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (194, 21, N'AccountFullCode', N'System.String', N'nvarchar', N'string', 512, 0, 0, 0, 1, 1, N'{"name":"AccountFullCode","large":{"width":100,"index":2,"designIndex":2,"visibility":"Visible","title":"شماره حساب"},"medium":{"width":100,"index":2,"designIndex":2,"visibility":"Visible","title":"شماره حساب"},"small":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"شماره حساب"},"extraSmall":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"شماره حساب"},"extraLarge":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"شماره حساب"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (195, 21, N'Description', N'System.String', N'nvarchar', N'string', 512, 0, 0, 0, 1, 1, N'{"name":"Description","large":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"شرح"},"medium":{"width":100,"index":3,"designIndex":3,"visibility":"Visible","title":"شرح"},"small":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شرح"},"extraSmall":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شرح"},"extraLarge":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"شرح"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (196, 21, N'Debit',N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, N'{"name":"Debit","large":{"width":100,"index":4,"designIndex":4,"visibility":"Visible","title":"بدهکار"},"medium":{"width":100,"index":4,"designIndex":4,"visibility":"Visible","title":"بدهکار"},"small":{"width":100,"index":6,"designIndex":6,"visibility":"Visible","title":"بدهکار"},"extraSmall":{"width":100,"index":6,"designIndex":6,"visibility":"Visible","title":"بدهکار"},"extraLarge":{"width":100,"index":6,"designIndex":6,"visibility":"Visible","title":"بدهکار"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (197, 21, N'Credit',N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, N'{"name":"Credit","large":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"بستانکار"},"medium":{"width":100,"index":5,"designIndex":5,"visibility":"Visible","title":"بستانکار"},"small":{"width":100,"index":7,"designIndex":7,"visibility":"Visible","title":"بستانکار"},"extraSmall":{"width":100,"index":7,"designIndex":7,"visibility":"Visible","title":"بستانکار"},"extraLarge":{"width":100,"index":7,"designIndex":7,"visibility":"Visible","title":"بستانکار"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (198, 21, N'BranchName',NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'{"name":"BranchName","large":{"width":100,"index":6,"designIndex":6,"visibility":"AlwaysVisible","title":"شعبه"},"medium":{"width":100,"index":6,"designIndex":6,"visibility":"AlwaysVisible","title":"شعبه"},"small":{"width":100,"index":6,"designIndex":6,"visibility":"AlwaysVisible","title":"شعبه"},"extraSmall":{"width":100,"index":6,"designIndex":6,"visibility":"AlwaysVisible","title":"شعبه"},"extraLarge":{"width":100,"index":8,"designIndex":8,"visibility":"AlwaysVisible","title":"شعبه"}}')
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
@@ -975,6 +996,9 @@ INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID
     VALUES (34, 8, 1, 1, 1, N'Voucher-Std-Form', N'reports/voucher/std-form', 0, 1, 0, 0, NULL)
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (35, 8, 1, 1, 1, N'Voucher-Std-Form-Detail', N'reports/voucher/std-form-detail', 0, 1, 1, 0, NULL)
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (36, 7, 1, 1, 21, N'Journal-ByDate-LedgerSummary-ByMonth', N'reports/journal/by-date/sum-by-month', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[Parameter] ON
@@ -1026,6 +1050,11 @@ INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName],
     VALUES (23, 33, N'from', N'from', N'GTE', N'System.DateTime', N'DatePicker', N'FromDate')
 INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey])
     VALUES (24, 33, N'to', N'to', N'LTE', N'System.DateTime', N'DatePicker', N'ToDate')
+SET IDENTITY_INSERT [Reporting].[Parameter] ON
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey])
+    VALUES (25, 36, N'from', N'from', N'GTE', N'System.DateTime', N'DatePicker', N'FromDate')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey])
+    VALUES (26, 36, N'to', N'to', N'LTE', N'System.DateTime', N'DatePicker', N'ToDate')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -1293,6 +1322,15 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
     VALUES (131, 3, 35, N'Voucher, standard format, with detail')
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (132, 4, 35, N'Voucher, standard format, with detail')
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (133, 1, 36, N'Journal, by date, summary by month')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (134, 2, 36, N'دفتر روزنامه، بر حسب تاریخ، سند خلاصه به تفکیک ماه')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (135, 3, 36, N'Journal, by date, summary by month')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (136, 4, 36, N'Journal, by date, summary by month')
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 -- Sample user settings for UserID = 1 and Account List form (Admin user)...

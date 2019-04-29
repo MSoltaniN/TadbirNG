@@ -33,7 +33,8 @@
               (filterChange)="filterChange($event)"
               (selectedKeysChange)="onSelectedKeysChange($event)"
               (dataStateChange)="onDataStateChange($event)"
-              sppc-auto-generated-grid-reorder sppc-grid-resize>
+              sppc-auto-generated-grid-reorder
+              sppc-auto-generated-grid-resize>
     <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                          pagerOf="{{ 'Paging.Of' | translate }}"
                          pagerItems="{{ 'Paging.Record' | translate }}">
@@ -112,7 +113,7 @@
       </ng-template>
     </kendo-grid-column>
 
-    <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumnsRow" sppc-grid-column="{{ entityTypeName }}.{{ item.name }}">
+    <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumnsRow" width="{{getColumnWidth(item)}}" sppc-grid-column="{{ entityTypeName }}.{{ item.name }}">
 
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
         <sppc-grid-filter [metaData]="getMetaData(item.name)" [column]="column" [filter]="filter"></sppc-grid-filter>
