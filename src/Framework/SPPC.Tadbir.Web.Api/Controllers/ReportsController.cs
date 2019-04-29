@@ -370,8 +370,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateMonthlyLedgerSummaryAsync(from.Value, to.Value);
-            PrepareJournal(journal, gridOptions);
+            var journal = await _repository.GetJournalByDateMonthlyLedgerSummaryAsync(from.Value, to.Value, gridOptions);
+            PrepareSummaryJournal(journal, gridOptions);
             return Json(journal);
         }
 

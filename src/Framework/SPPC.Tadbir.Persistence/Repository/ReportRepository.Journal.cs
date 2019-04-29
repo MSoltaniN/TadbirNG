@@ -161,9 +161,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         public async Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryAsync(
-            DateTime from, DateTime to)
+            DateTime from, DateTime to, GridOptions gridOptions)
         {
             var journalItems = new List<JournalItemViewModel>();
             var monthJournal = new List<JournalItemViewModel>();
@@ -174,7 +175,7 @@ namespace SPPC.Tadbir.Persistence
                 var monthLines = lines
                     .Where(art => art.Voucher.Date >= month.Start
                         && art.Voucher.Date <= month.End);
-                await AddJournalByLedgerItemsAsync(monthLines, monthJournal);
+                await AddJournalLedgerSummaryItemsAsync(monthLines, monthJournal, gridOptions);
                 Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
                 journalItems.AddRange(monthJournal);
                 monthJournal.Clear();
