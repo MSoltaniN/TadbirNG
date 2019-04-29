@@ -52,7 +52,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
   @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
-
+  
 
   public rowData: GridDataResult;
   public selectedRows: number[] = [];
@@ -153,6 +153,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     
   }
 
+  
+
 
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
@@ -244,6 +246,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     });
 
     */
+
+    this.reportManager.DecisionMakingForReport();
   }
 
   dateValueChange(event: any) {

@@ -10,13 +10,13 @@
                                 <kendo-splitter orientation="vertical" [ngStyle]="{'height.px': innerHeight - 240}">
                                         <kendo-splitter-pane size="8%" [collapsible]="true" [resizable]="false">
                                                 <div class='report-toolbar'>
-                                                        <button [(disabled)]="disableButtons" kendoButton (click)="designReport()" title="{{ 'Report.Design' | translate }}"
+                                                        <button *ngIf="!qReport" [(disabled)]="disableButtons" kendoButton (click)="designReport()" title="{{ 'Report.Design' | translate }}"
                                                                 type="button" [icon]="'pencil'"></button>
-                                                        <button [(disabled)]="disableButtons" kendoButton (click)="saveAsReport()" title="{{ 'Report.SaveAs' | translate }}"
+                                                        <button *ngIf="!qReport" [(disabled)]="disableButtons" kendoButton (click)="saveAsReport()" title="{{ 'Report.SaveAs' | translate }}"
                                                                 type="button" [icon]="'floppy'"></button>
-                                                        <button [(disabled)]="disableButtons" kendoButton (click)="setDefaultForAll()" title="{{ 'Report.DefaultForAll' | translate }}"
+                                                        <button *ngIf="!qReport" [(disabled)]="disableButtons" kendoButton (click)="setDefaultForAll()" title="{{ 'Report.DefaultForAll' | translate }}"
                                                                 type="button" [icon]="'connector'"></button>
-                                                        <button [(disabled)]="disableButtons"  kendoButton (click)="showDeleteConfirm()" title="{{ 'Report.Delete' | translate }}"
+                                                        <button *ngIf="!qReport" [(disabled)]="disableButtons"  kendoButton (click)="showDeleteConfirm()" title="{{ 'Report.Delete' | translate }}"
                                                                 type="button" [icon]="'trash'"></button>
                                                         <button [(disabled)]="disableButtons" kendoButton (click)="showReport()" title="{{ 'Report.Preview' | translate }}"
                                                                 type="button" [icon]="'eye'"></button>

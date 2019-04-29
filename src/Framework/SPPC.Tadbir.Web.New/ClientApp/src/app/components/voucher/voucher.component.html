@@ -3,6 +3,9 @@
     <report-param ParamName='ToDate' [ParamValue]="endDate"></report-param>
 </view-identifier>
 <app-bread-cumb></app-bread-cumb>
+<report-viewer id='compviewer'></report-viewer>
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+[Filter]="currentFilter" [RowData]="rowData" [MetadataType]="metadataType"></report-management>
 <div SppcCheckAccess="View" class="panel-body">
   <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
@@ -49,8 +52,9 @@
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>      
       <!-- <button kendoButton (click)="showReportManagement()" type="button" [icon]="'printer'"></button>
       <button kendoButton (click)="showQReport()" type="button" [icon]="'printer'"></button> -->
-      <report-mg [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-       [Filter]="currentFilter" [RowData]="rowData" [MetadataType]="metadataType"></report-mg>
+     
+       <button kendoButton class="hidden-xs reportMargin" (click)="showReport()"
+        [icon]="'printer'" type="button" ></button>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="35"></kendo-grid-checkbox-column>
@@ -136,8 +140,6 @@
     </button>
   </div>
 
-  <report-viewer id='compviewer' baseId='5'></report-viewer>
-  <report-management baseId='5'></report-management>
 </div>
 <kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
   <p>

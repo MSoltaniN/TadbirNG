@@ -216,30 +216,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             Stimulsoft.Report.StiReport quickReport = new Stimulsoft.Report.StiReport();
 
-            // StiSqlSource dataSource = new StiSqlSource("Vouchers", "Vouchers", "Vouchers");
-            StiJsonDatabase database = new StiJsonDatabase("Vouchers", String.Empty);
-            database.Alias = "Vouchers";
-            StiDataTableSource dataSource = new StiDataTableSource("Vouchers", "Vouchers", "Vouchers");
+            var dataSourceName = "root";
+            //StiJsonDatabase database = new StiJsonDatabase("dataset", String.Empty);
+            //database.Alias = "dataset";
+            //StiDataTableSource dataSource = new StiDataTableSource("Vouchers", "Vouchers", "Vouchers");                        
+            //foreach (var q in qr.Columns)
+            //{
+            //    dataSource.Columns.Add(new StiDataColumn(q.Name, q.Name, Type.GetType(q.DataType)));
+            //}
 
-            //var jrow = (JObject)qr.Row;
-
-            foreach (var q in qr.Columns)
-            {
-                dataSource.Columns.Add(new StiDataColumn(q.Name, q.Name, Type.GetType(q.DataType)));
-            }
-
-            quickReport.DataSources.Clear();
-            quickReport.DataSources.Add(dataSource);
-            quickReport.Dictionary.Databases.Add(database);
+            //quickReport.DataSources.Clear();
+            //quickReport.DataSources.Add(dataSource);
+            //quickReport.Dictionary.Databases.Add(database);
 
             quickReport = CreateReportFooterBand(quickReport);
             quickReport = CreateReportHeaderBand(quickReport);
             quickReport = CreatePageHeaderBand(quickReport, qr.ReportTitle);
             quickReport = CreatePageFooterBand(quickReport);
-            quickReport = CreateHeaderBand(quickReport, qr.Columns, qr.InchValue, dataSource.Name);
-            quickReport = CreateDataBand(quickReport, qr.Columns, qr.InchValue, dataSource.Name);
+            quickReport = CreateHeaderBand(quickReport, qr.Columns, qr.InchValue, dataSourceName);
+            quickReport = CreateDataBand(quickReport, qr.Columns, qr.InchValue, dataSourceName);
 
-            var jsonData = quickReport.SaveToString();
+            var jsonData = quickReport.SaveToJsonString();
 
             return Ok(new { designJson = jsonData });
         }
@@ -466,6 +463,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             txtPageHeaderText.Text = header;
             txtPageHeaderText.Height = 0.8;
             txtPageHeaderText.HorAlignment = StiTextHorAlignment.Center;
+            txtPageHeaderText.AutoWidth = true;
             if (txtPageHeaderText.Height + txtPageHeaderText.Top > maxHeight)
             {
                 maxHeight = txtPageHeaderText.Height + txtPageHeaderText.Top;
