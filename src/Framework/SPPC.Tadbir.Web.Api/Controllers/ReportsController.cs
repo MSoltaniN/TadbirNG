@@ -215,7 +215,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult PutEnvironmentUserQuickReport([FromBody] QuickReportViewModel qr)
         {
             Stimulsoft.Report.StiReport quickReport = new Stimulsoft.Report.StiReport();
-
+            quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
             //StiJsonDatabase database = new StiJsonDatabase("dataset", String.Empty);
             //database.Alias = "dataset";
