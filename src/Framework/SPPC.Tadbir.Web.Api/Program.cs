@@ -20,8 +20,8 @@ namespace SPPC.Tadbir.Web.Api
             var dateFrom = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsGreaterOrEqualTo, Value = "2018-03-21" };
             var dateTo = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsLessOrEqualTo, Value = "2018-05-21" };
             gridOptions.Filter = builder
-                .New(branch)
-                .And(status)
+                .New(status)
+                ////.And(status)
                 ////.New(dateFrom)
                 ////.And(dateTo)
                 .Build();

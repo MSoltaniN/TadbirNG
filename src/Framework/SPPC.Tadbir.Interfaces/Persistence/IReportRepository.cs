@@ -98,6 +98,17 @@ namespace SPPC.Tadbir.Persistence
         Task<JournalViewModel> GetJournalByDateLedgerSummaryAsync(DateTime from, DateTime to, GridOptions gridOptions);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه را با تفکیک شعبه
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        Task<JournalViewModel> GetJournalByDateLedgerSummaryByBranchAsync(
+            DateTime from, DateTime to, GridOptions gridOptions);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک تاریخ
         /// را خوانده و برمی گرداند
         /// </summary>

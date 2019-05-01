@@ -131,6 +131,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه را با تفکیک شعبه
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        public async Task<JournalViewModel> GetJournalByDateLedgerSummaryByBranchAsync(
+            DateTime from, DateTime to, GridOptions gridOptions)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            await AddJournalLedgerSummaryByBranchItemsAsync(lines, journalItems, gridOptions);
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
+            return journal;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک تاریخ
         /// را خوانده و برمی گرداند
         /// </summary>
@@ -422,6 +441,44 @@ namespace SPPC.Tadbir.Persistence
                 journalItem.Description = journalItem.AccountName;
                 journalItem.Credit = byLedger.Sum(art => art.Credit);
                 journalItems.Add(journalItem);
+            }
+        }
+
+        private async Task AddJournalLedgerSummaryByBranchItemsAsync(
+            IEnumerable<VoucherLine> lines, List<JournalItemViewModel> journalItems,
+            GridOptions gridOptions)
+        {
+            Func<JournalItemViewModel, bool> allFilter = art => true;
+            var items = lines
+                .Select(art => _mapper.Map<JournalItemViewModel>(art))
+                .Apply(gridOptions, false)
+                .ToList();
+            foreach (var byLedger in GetAccountTurnoverGroups(items, true, 0, allFilter))
+            {
+                string ledgerCode = byLedger.Key;
+                foreach (var byBranch in byLedger
+                    .OrderBy(item => item.BranchId)
+                    .GroupBy(item => item.BranchId))
+                {
+                    var journalItem = await GetNewJournalItem(byBranch.First(), ledgerCode);
+                    journalItem.Description = journalItem.AccountName;
+                    journalItem.Debit = byBranch.Sum(art => art.Debit);
+                    journalItems.Add(journalItem);
+                }
+            }
+
+            foreach (var byLedger in GetAccountTurnoverGroups(items, false, 0, allFilter))
+            {
+                string ledgerCode = byLedger.Key;
+                foreach (var byBranch in byLedger
+                    .OrderBy(item => item.BranchId)
+                    .GroupBy(item => item.BranchId))
+                {
+                    var journalItem = await GetNewJournalItem(byBranch.First(), ledgerCode);
+                    journalItem.Description = journalItem.AccountName;
+                    journalItem.Credit = byBranch.Sum(art => art.Credit);
+                    journalItems.Add(journalItem);
+                }
             }
         }
 
