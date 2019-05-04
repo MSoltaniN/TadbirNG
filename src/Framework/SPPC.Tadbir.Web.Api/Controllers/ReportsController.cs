@@ -279,7 +279,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/journal/by-date/by-row
-        [Route(ReportApi.JournalByDateByRowUrl)]
+        ////[Route(ReportApi.JournalByDateByRowUrl)]
         public async Task<IActionResult> GetJournalByDateByRowAsync(DateTime? from, DateTime? to)
         {
             Sanitize(ref from, ref to);
@@ -336,6 +336,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = await _repository.GetJournalByDateLedgerSummaryAsync(from.Value, to.Value, gridOptions);
+            PrepareSummaryJournal(journal, gridOptions);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-date/summary/by-branch
+        [Route(ReportApi.JournalByDateLedgerSummaryByBranchUrl)]
+        public async Task<IActionResult> GetJournalByDateLedgerSummaryByBranchAsync(DateTime? from, DateTime? to)
+        {
+            Sanitize(ref from, ref to);
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateLedgerSummaryByBranchAsync(
+                from.Value, to.Value, gridOptions);
             PrepareSummaryJournal(journal, gridOptions);
             return Json(journal);
         }
