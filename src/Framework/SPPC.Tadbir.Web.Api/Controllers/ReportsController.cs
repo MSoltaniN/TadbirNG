@@ -215,26 +215,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult PutEnvironmentUserQuickReport([FromBody] QuickReportViewModel qr)
         {
             Stimulsoft.Report.StiReport quickReport = new Stimulsoft.Report.StiReport();
+            bool outOfPage = false;
             quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
-            //StiJsonDatabase database = new StiJsonDatabase("dataset", String.Empty);
-            //database.Alias = "dataset";
-            //StiDataTableSource dataSource = new StiDataTableSource("Vouchers", "Vouchers", "Vouchers");                        
-            //foreach (var q in qr.Columns)
-            //{
-            //    dataSource.Columns.Add(new StiDataColumn(q.Name, q.Name, Type.GetType(q.DataType)));
-            //}
+            quickReport.Script = _strings.Format(AppStrings.ReportScript);
 
-            //quickReport.DataSources.Clear();
-            //quickReport.DataSources.Add(dataSource);
-            //quickReport.Dictionary.Databases.Add(database);
-
+            quickReport = SetPageWidth(quickReport, qr,out outOfPage);
             quickReport = CreateReportFooterBand(quickReport);
             quickReport = CreateReportHeaderBand(quickReport);
             quickReport = CreatePageHeaderBand(quickReport, qr.ReportTitle);
             quickReport = CreatePageFooterBand(quickReport);
             quickReport = CreateHeaderBand(quickReport, qr.Columns, qr.InchValue, dataSourceName);
-            quickReport = CreateDataBand(quickReport, qr.Columns, qr.InchValue, dataSourceName);
+            quickReport = CreateDataBand(quickReport, qr, dataSourceName);
 
             var jsonData = quickReport.SaveToJsonString();
 
@@ -450,6 +442,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return report;
         }
 
+        private static StiReport SetPageWidth(StiReport report, QuickReportViewModel quickReportViewModel, out bool outOfPage)
+        {
+            double width = report.Pages[0].Width;
+            outOfPage = false;
+            int gridWidth = quickReportViewModel.Columns.Sum(c => c.Width);
+            double tableWidth = GetSizeInInch(gridWidth, quickReportViewModel.InchValue);
+
+            // check page width in portrait
+            if (tableWidth > report.Pages[0].Width)
+            {
+                report.Pages[0].Orientation = StiPageOrientation.Landscape;
+            }
+
+            // check page width in landescape
+            if (tableWidth > report.Pages[0].Width)
+            {
+                outOfPage = true;
+            }
+
+            return report;
+        }
+
         private static StiReport CreatePageHeaderBand(StiReport report, string header)
         {
             StiPageHeaderBand pageHeader = new StiPageHeaderBand();
@@ -495,7 +509,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string name = "HeaderBand" + dataSourceName;
             StiColumnHeaderBand headerBand = null;
 
-            double height = double.Parse("0.25", System.Globalization.CultureInfo.InvariantCulture);
+            double height = double.Parse("0.4", System.Globalization.CultureInfo.InvariantCulture);
             if (headerBand == null)
             {
                 headerBand = new StiColumnHeaderBand();
@@ -530,7 +544,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 txtHeaderCell.Linked = true;
                 txtHeaderCell.Text.Value = !string.IsNullOrEmpty(column.UserText) ? column.UserText : column.DefaultText;
                 txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
-                txtHeaderCell.Height = 0.8;
+                txtHeaderCell.Height = 0.4;
                 left = txtHeaderCell.Left + width;
 
                 StiBorder border = new StiBorder();
@@ -560,15 +574,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return report;
         }
 
-        private static StiReport CreateDataBand(StiReport report, IList<QuickReportColumnViewModel> columns, int oneInchInPixels, string dataSourceName)
+        private static StiReport CreateDataBand(StiReport report, QuickReportViewModel quickReportViewModel, string dataSourceName)
         {
             string ctrlName = "dataBand" + dataSourceName;
 
-            List<QuickReportColumnViewModel> orderedColumns = columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
+            List<QuickReportColumnViewModel> orderedColumns = quickReportViewModel.Columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
 
             double pageWidth = report.Pages[0].Width;
-            int gridWidth = columns.Sum(c => c.Width);
-            double tableWidth = GetSizeInInch(gridWidth, oneInchInPixels);
+            int gridWidth = quickReportViewModel.Columns.Sum(c => c.Width);
+            double tableWidth = GetSizeInInch(gridWidth, quickReportViewModel.InchValue);
 
             double left = (pageWidth / (double)2) - (tableWidth / (double)2);
             double top = 0;
@@ -580,11 +594,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             double maxHeight = dataBand.Height;
 
-            for (int i = columns.Count - 1; i >= 0; i--)
+            for (int i = quickReportViewModel.Columns.Count - 1; i >= 0; i--)
             {
-                double width = GetSizeInInch(columns[i].Width, oneInchInPixels);
+                double width = GetSizeInInch(quickReportViewModel.Columns[i].Width, quickReportViewModel.InchValue);
                 StiText txtDataCell = null;
-                string name = "txtDataCell_" + columns[i].Name;
+                string name = "txtDataCell_" + quickReportViewModel.Columns[i].Name;
 
                 if (txtDataCell == null)
                 {
@@ -596,12 +610,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     txtDataCell.Page = report.Pages[0];
                 }
 
-                txtDataCell.Height = 0.8;
+                txtDataCell.Height = 0.4;
                 txtDataCell.HorAlignment = StiTextHorAlignment.Center;
 
                 txtDataCell.Linked = true;
                 txtDataCell.Width = width;
-                txtDataCell.Text.Value = GetColumnValue(columns[i], dataSourceName);
+                string functionName = string.Empty;
+                if (quickReportViewModel.Columns[i].DataType == "System.DateTime" && quickReportViewModel.ReportLang == "fa")
+                {
+                    // functionName = "ToShamsi({0})";
+                }
+
+                txtDataCell.Text.Value = GetColumnValue(quickReportViewModel.Columns[i], dataSourceName, functionName);
                 txtDataCell.ClientRectangle = new RectangleD(left, top, width, txtDataCell.Height);
                 left = txtDataCell.Left + width;
 
@@ -633,7 +653,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
 
                 txtDataCell.TextOptions.RightToLeft = true;
-
                 dataBand.Components.Add(txtDataCell);
             }
 
@@ -641,9 +660,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return report;
         }
 
-        private static string GetColumnValue(QuickReportColumnViewModel column, string dataSourceName)
+        private static string GetColumnValue(QuickReportColumnViewModel column, string dataSourceName, string functionTamplate)
         {
-            string fullColumnName = "{" + dataSourceName + "." + Stimulsoft.Report.CodeDom.StiCodeDomSerializator.ReplaceSymbols(column.Name) + "}";
+            string fullColumnName = "{0}";
+            if (!string.IsNullOrEmpty(functionTamplate))
+            {
+                fullColumnName = functionTamplate;
+            }
+
+            fullColumnName = "{" + string.Format(fullColumnName, dataSourceName + "." + Stimulsoft.Report.CodeDom.StiCodeDomSerializator.ReplaceSymbols(column.Name)) + "}";
             return fullColumnName;
         }
 

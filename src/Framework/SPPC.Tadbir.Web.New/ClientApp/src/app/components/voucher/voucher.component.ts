@@ -279,12 +279,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public showReportManagement() {
-    var id = this.viewIdentity.ViewID;
-    var params = null;
-    if (this.viewIdentity.params.length > 0)
-      params = this.viewIdentity.params.toArray();
-
-    this.reportManager.showDialog(id, params, this.currentFilter, this.sort);
+    //var id = this.viewIdentity.ViewID;
+    //var params = null;
+    //if (this.viewIdentity.params.length > 0)
+      //params = this.viewIdentity.params.toArray();
+    //this.reportManager.showDialog(id, params, this.currentFilter, this.sort,);
   }
 
   public saveHandler(model: Voucher, isNew: boolean) {

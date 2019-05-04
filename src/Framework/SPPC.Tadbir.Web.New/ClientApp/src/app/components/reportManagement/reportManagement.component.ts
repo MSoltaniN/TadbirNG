@@ -190,15 +190,12 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   }
 
   public showDialog(viewId:string,formParams:Array<ReportParamComponent>,
-    filter:FilterExpression = null,sort:SortDescriptor[] = null)
+    filter:FilterExpression = null,sort:SortDescriptor[] = null,treeMenuData:any)
   {
-      this.active = true;
-      
-      var url = ReportApi.ReportsHierarchy;
+      this.active = true;     
       if(viewId)
       {
           this.currentViewId = viewId;
-          url = String.Format(ReportApi.ReportsByView, viewId);
           this.showDesktopTab = false;
           this.currentFilter = filter;
           this.currentSort = sort;
@@ -208,21 +205,22 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           this.showDesktopTab = true;
           this.currentViewId = undefined;
       }
-
-      this.reportingService.getAll(url)
-      .subscribe((res: any) => {
-          //var i = res;
-          this.treeData = <Array<TreeItem>>res.body;       
-          //expand treeview base on baseid
-           if(viewId)
-           {
-             this.expandAndSelectDefault(viewId,formParams);  
-             this.currentFormParams = formParams;
-           }
-      });       
+         
+      this.treeData = treeMenuData;       
+      //expand treeview base on baseid
+      if(viewId)
+      {
+        this.expandAndSelectDefault(viewId,formParams);  
+        this.currentFormParams = formParams;
+      }
+      //});       
   }
 
-  //select and expand tree node baseon report baseId
+  /**
+   * این متد نود مربوط به گزارش فوری را به درخت اضافه میکند
+   * @param viewId
+   * @param formParams
+   */
   public addQReportToDefaultFolder(viewId: string,formParams:Array<ReportParamComponent>) {
     var expandKeysArray: string[];
 
@@ -232,31 +230,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             var report = <ReportSummary>res.body;
 
             expandKeysArray = new Array<any>();
-            this.selectedKeys = new Array<any>();
-
-            // var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
-            
-            // this.currentReportName = "گزارش فوری";
-            
-            // var qReportNode = 
-            //     {
-            //       caption: "گزارش فوری",
-            //       id: -100,
-            //       isDefault: false,
-            //       isGroup: false,
-            //       isSystem: false,
-            //       parentId: nodeData.parentId,
-            //       serviceUrl: null
-            //     }                
-                
-            // this.treeData.push(qReportNode);           
-            // this.selectedKeys.push(-100);
-            
-            // while (nodeData.parentId != null) {
-            //     expandKeysArray.push(nodeData.parentId);                
-            //     var parentNode = this.treeData.filter((p: any) => p.id == nodeData.parentId);
-            //     nodeData = parentNode[0];
-            // }
+            this.selectedKeys = new Array<any>();            
 
             var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
             this.selectedKeys.push(nodeData.id);
@@ -476,6 +450,10 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.showSaveAsDialog = false;
   }
 
+  /**
+   * آماده سازی گزارش برای نمایش در نمایشگر یا نمایش فرم پارامترها
+   * @param formParams
+   */
   public prepareReport(formParams:Array<ReportParamComponent>)
   {
       var url = String.Format(ReportApi.Report, this.currentReportId);
@@ -535,14 +513,6 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
     this.reportingService.getAll(serviceUrl,
       sort, filterExpression).subscribe((response: any) => {
-
-        // var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
-        //   .locale(this.CurrentLanguage)
-        //   .format('YYYY/M/D');
-
-        // var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
-        //   .locale(this.CurrentLanguage)
-        //   .format('YYYY/M/D');          
 
         var reportData = {
           rows: response.body,           
@@ -753,9 +723,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       this.reportingService.getAll(url)
       .subscribe((res: any) => {        
         treeData = <Array<TreeItem>>res.body; 
-        if(treeData.filter((t : any) => t.isDynamic == true).length > 0) 
+        if(treeData.filter((t : any) => t.isDynamic === true).length > 0) 
           showQReport = true;  
-        var defaultReport = treeData.filter((t : any) => t.isDynamic == true)[0];
+        var defaultReport = treeData.filter((t : any) => t.isDefault === true)[0];
         this.switchReport(showQReport,treeData,defaultReport);          
       });
     }
@@ -804,6 +774,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         viewInfo.columns = columns;
         viewInfo.inchValue = dpi_x;        
         viewInfo.reportTitle = defReport.caption;
+        viewInfo.reportLang = this.CurrentLanguage;
         //viewInfo.row = this.RowData.data[0];
         
         this.reportingService.putEnvironmentUserQuickReport(ReportApi.EnvironmentQuickReport, viewInfo)
@@ -821,7 +792,10 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       }
       else
       {
-        
+        var params = null;
+        if (this.ViewIdentity.params.length > 0)
+          params = this.ViewIdentity.params.toArray();
+        this.showDialog(this.ViewIdentity.ViewID,params,this.Filter,this.Sort,treeData);
       }
     }
 

@@ -1274,5 +1274,10 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         /// Default text : {0} والد یافت نشد.
         /// </summary>
         public const string ParentItemNotFound = "ParentItemNotFound";
+
+        /// <summary>
+        /// ReportScript
+        /// </summary>
+        public const string ReportScript = "ReportScript";
     }
 }
