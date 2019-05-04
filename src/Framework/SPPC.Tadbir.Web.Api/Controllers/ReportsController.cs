@@ -217,17 +217,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Stimulsoft.Report.StiReport quickReport = new Stimulsoft.Report.StiReport();
             quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
-            //StiJsonDatabase database = new StiJsonDatabase("dataset", String.Empty);
-            //database.Alias = "dataset";
-            //StiDataTableSource dataSource = new StiDataTableSource("Vouchers", "Vouchers", "Vouchers");                        
-            //foreach (var q in qr.Columns)
-            //{
-            //    dataSource.Columns.Add(new StiDataColumn(q.Name, q.Name, Type.GetType(q.DataType)));
-            //}
+            ////StiJsonDatabase database = new StiJsonDatabase("dataset", String.Empty);
+            ////database.Alias = "dataset";
+            ////StiDataTableSource dataSource = new StiDataTableSource("Vouchers", "Vouchers", "Vouchers");
+            ////foreach (var q in qr.Columns)
+            ////{
+            ////    dataSource.Columns.Add(new StiDataColumn(q.Name, q.Name, Type.GetType(q.DataType)));
+            ////}
 
-            //quickReport.DataSources.Clear();
-            //quickReport.DataSources.Add(dataSource);
-            //quickReport.Dictionary.Databases.Add(database);
+            ////quickReport.DataSources.Clear();
+            ////quickReport.DataSources.Add(dataSource);
+            ////quickReport.Dictionary.Databases.Add(database);
 
             quickReport = CreateReportFooterBand(quickReport);
             quickReport = CreateReportHeaderBand(quickReport);
@@ -287,7 +287,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/journal/by-date/by-row
-        [Route(ReportApi.JournalByDateByRowUrl)]
+        ////[Route(ReportApi.JournalByDateByRowUrl)]
         public async Task<IActionResult> GetJournalByDateByRowAsync(DateTime? from, DateTime? to)
         {
             Sanitize(ref from, ref to);

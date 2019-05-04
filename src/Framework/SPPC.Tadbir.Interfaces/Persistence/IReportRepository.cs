@@ -118,6 +118,15 @@ namespace SPPC.Tadbir.Persistence
         Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateAsync(DateTime from, DateTime to);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک تاریخ و شعبه
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateByBranchAsync(DateTime from, DateTime to);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک ماه
         /// را خوانده و برمی گرداند
         /// </summary>
@@ -126,6 +135,17 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryAsync(DateTime from, DateTime to, GridOptions gridOptions);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و سند خلاصه به تفکیک ماه و شعبه
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
+        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryByBranchAsync(
+            DateTime from, DateTime to, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و مطابق با ردیف های سند
@@ -172,5 +192,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
         Task<JournalViewModel> GetJournalByNoLedgerSummaryAsync(int from, int to, GridOptions gridOptions);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و سند خلاصه به تفکیک شعبه
+        /// را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="from">شماره اولین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="to">شماره آخرین سند مورد نظر برای گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش دفتر روزنامه</returns>
+        Task<JournalViewModel> GetJournalByNoLedgerSummaryByBranchAsync(int from, int to, GridOptions gridOptions);
     }
 }
