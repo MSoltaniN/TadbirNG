@@ -46,7 +46,6 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   @Input() public showViewer: boolean = false;
   @Input() public Id: string;
   
-
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
    private voucherService: VoucherService, public renderer: Renderer2,
@@ -187,10 +186,13 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       console.log('Load report from url');      
       this.report.load(reportTemplate);
       var dataSet = new Stimulsoft.System.Data.DataSet('dataset');
-      if(reportData.rows instanceof Array)
+      if (reportData.rows instanceof Array)
         dataSet.readJson(reportData.rows);
-      else
-        dataSet.readJson(reportData.rows.items);
+      else {
+        //TODO : fire an event in report viewer component for invoke readjson method
+        //dataSet.readJson(reportData.rows.items)
+        dataSet.readJson(reportData.rows.lines);
+      }
 
       var data = dataSet.tables.getByIndex(0);
       
