@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +12,9 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { ViewName } from '../../security/viewName';
 import { GridExplorerComponent } from '../../class/gridExplorer.component';
 import { CostCenterFormComponent } from './costCenter-form.component';
+import { GridComponent } from '@progress/kendo-angular-grid';
+import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
+import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -31,6 +34,10 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
+
+  @ViewChild(GridComponent) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;  
+  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
@@ -73,6 +80,11 @@ export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
         this.showMessage(String.Format(errorMsg, (this.levelConfig.no - 1).toString()), MessageType.Warning);
       }
   }
+
+  public showReport() { 
+    this.reportManager.DecisionMakingForShowReport();
+  }
+
 
 }
 

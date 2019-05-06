@@ -497,6 +497,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             txtPageHeaderText.Height = 0.8;
             txtPageHeaderText.HorAlignment = StiTextHorAlignment.Center;
             txtPageHeaderText.AutoWidth = true;
+            txtPageHeaderText.Font = new Font("Arial",12);
             if (txtPageHeaderText.Height + txtPageHeaderText.Top > maxHeight)
             {
                 maxHeight = txtPageHeaderText.Height + txtPageHeaderText.Top;
@@ -578,7 +579,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 txtHeaderCell.GrowToHeight = true;
                 txtHeaderCell.HorAlignment = StiTextHorAlignment.Center;
                 txtHeaderCell.VertAlignment = StiVertAlignment.Center;
-                txtHeaderCell.Font = new System.Drawing.Font("B Zar", 8, FontStyle.Regular);
+                txtHeaderCell.Font = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
                 txtHeaderCell.Border = border;
 
                 if (txtHeaderCell.Height > maxHeight)

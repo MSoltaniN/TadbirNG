@@ -393,6 +393,8 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
     filter = this.addFilterToFilterExpression(this.currentFilter,
       new Filter("ParentId", parent_Id, "== {0}", "System.Int32"), FilterExpressionOperator.And);
 
+    this.currentFilter = filter;
+
     this.service.getAll(this.environmentModelsUrl, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
 
       var resData = res.body;

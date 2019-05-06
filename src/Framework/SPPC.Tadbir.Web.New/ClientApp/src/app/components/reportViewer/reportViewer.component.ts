@@ -215,7 +215,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
           moment.locale('en');
           let MomentDate = moment(value).locale('fa').format("YYYY/MM/DD");
           return MomentDate;*/
-          return "saeed";
+          return "this is a test function";
 
         }); 
 
@@ -252,32 +252,32 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         var localReport = this.report;
         var lang = this.CurrentLanguage;
 
-        parameters.forEach(function (param) {
+        if (parameters) {
+          parameters.forEach(function (param) {
 
-          var value = param.value;
+            var value = param.value;
 
-          if (param.dataType == "System.DateTime") {
-            var fdate = moment(param.value, 'YYYY-M-D HH:mm:ss')
-              .locale(lang)
-              .format('YYYY/M/D');
+            if (param.dataType == "System.DateTime") {
+              var fdate = moment(param.value, 'YYYY-M-D HH:mm:ss')
+                .locale(lang)
+                .format('YYYY/M/D');
 
-            value = fdate;
-          }
+              value = fdate;
+            }
 
-          if (localReport.dictionary.variables.getByName(param.name) != null)
-            localReport.dictionary.variables.getByName(param.name).valueObject = value;
-          else {
-            var parameter = new Stimulsoft.Report.Dictionary.StiVariable();
-            parameter.name = param.name;
-            parameter.alias = param.captionKey;
-            parameter.value = param.value;
+            if (localReport.dictionary.variables.getByName(param.name) != null)
+              localReport.dictionary.variables.getByName(param.name).valueObject = value;
+            else {
+              var parameter = new Stimulsoft.Report.Dictionary.StiVariable();
+              parameter.name = param.name;
+              parameter.alias = param.captionKey;
+              parameter.value = param.value;
 
-            localReport.dictionary.variables.add(parameter);
-          }
-          
+              localReport.dictionary.variables.add(parameter);
+            }
 
-        });
-
+          });
+        }
 
         this.report = localReport;
         //this.fillResourceVariables(reportObject,this.report);

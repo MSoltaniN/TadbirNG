@@ -332,70 +332,69 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   }
 
   public createFilters(params:ParameterInfo[],cfilter?:FilterExpression)
-  {
+  { 
+    var filters:Filter[] = new Array<Filter>();
+    if (params) {
+      params.filter(p => p.controlType.toLowerCase() != 'querystring').forEach(function (param) {
 
-      //var currentFilter = filter ? filter : new FilterExpression();
-      var filters:Filter[] = new Array<Filter>();
-
-      params.filter(p=>p.controlType.toLowerCase() != 'querystring').forEach(function(param){
-        
         var operator = "";
-          switch (param.operator.toLowerCase()) {
-            case "eq":
-              operator = " == {0}";
-              break;
-            case "neq":
-              operator = " != {0}";
-              break;
-            case "lte":
-              operator = " <= {0}";
-              break;
-            case "gte":
-              operator = " >= {0}";
-              break;
-            case "lt":
-              operator = " < {0}";
-              break;
-            case "gt":
-              operator = " > {0}";
-              break;
-            case "contains":
-              operator = ".Contains({0})";
-              break;
-            case "doesnotcontain":
-              operator = ".IndexOf({0}) == -1";
-              break;
-            case "startswith":
-              operator = ".StartsWith({0})";
-              break;
-            case "endswith":
-              operator = ".EndsWith({0})";
-              break;
-            default:
-              operator = " == {0}";
-          }
+        switch (param.operator.toLowerCase()) {
+          case "eq":
+            operator = " == {0}";
+            break;
+          case "neq":
+            operator = " != {0}";
+            break;
+          case "lte":
+            operator = " <= {0}";
+            break;
+          case "gte":
+            operator = " >= {0}";
+            break;
+          case "lt":
+            operator = " < {0}";
+            break;
+          case "gt":
+            operator = " > {0}";
+            break;
+          case "contains":
+            operator = ".Contains({0})";
+            break;
+          case "doesnotcontain":
+            operator = ".IndexOf({0}) == -1";
+            break;
+          case "startswith":
+            operator = ".StartsWith({0})";
+            break;
+          case "endswith":
+            operator = ".EndsWith({0})";
+            break;
+          default:
+            operator = " == {0}";
+        }
 
         var value = param.value ? param.value : "";
-        var filter = new Filter(param.fieldName,value,operator,param.dataType); 
+        var filter = new Filter(param.fieldName, value, operator, param.dataType);
         filters.push(filter);
       });
+    }
       
-      if(cfilter)
-      {
-        if(filters.findIndex(f=>f.FieldName.toLowerCase() == cfilter.filter.FieldName.toLowerCase()) == -1)
-            filters.push(cfilter.filter);
+      
+    if(cfilter)
+    {
+      if(filters.findIndex(f=>f.FieldName.toLowerCase() == cfilter.filter.FieldName.toLowerCase()) == -1)
+          filters.push(cfilter.filter);
         
-        cfilter.children.forEach(function(f)
-        {
-          if(filters.findIndex(f=>f.FieldName.toLowerCase() == f.FieldName.toLowerCase()) == -1)
-              filters.push(f.filter);
-        });
-      }
+      cfilter.children.forEach(function(f)
+      {
+        if(filters.findIndex(f=>f.FieldName.toLowerCase() == f.FieldName.toLowerCase()) == -1)
+            filters.push(f.filter);
+      });
+    }
 
-
-      var filterExpBuilder = new FilterExpressionBuilder();
-      var filterExp = filterExpBuilder.And(filters)
-      .Build();
+    var filterExpBuilder = new FilterExpressionBuilder();
+    var filterExp = filterExpBuilder.And(filters)
+    .Build();
 
     return filterExp;
 
@@ -506,8 +505,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;        
     var filterExpression: FilterExpression;
 
-    if (params) {
-      filterExpression = this.createFilters(params, this.currentFilter);
+    filterExpression = this.createFilters(params, this.currentFilter);
+
+    if (params) {      
       serviceUrl = this.changeServiceUrl(serviceUrl, params);
     }
     var sort = this.currentSort;
