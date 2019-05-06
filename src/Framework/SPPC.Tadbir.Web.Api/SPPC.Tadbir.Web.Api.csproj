@@ -22,6 +22,7 @@
     <Compile Remove="Controllers\LookupController.Finance.cs" />
     <Compile Remove="Controllers\RequisitionsController.cs" />
     <Compile Remove="Controllers\ValuesController.cs" />
+    <Compile Remove="Report.cs" />
     <Compile Remove="Resources\Types\EntityNames.cs" />
     <Compile Remove="Resources\Types\Messages.cs" />
     <Compile Remove="Resources\Types\Strings.cs" />
@@ -54,6 +55,10 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Report.cs" />
   </ItemGroup>
 
   <ItemGroup>

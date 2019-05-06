@@ -57,11 +57,16 @@ namespace SPPC.Tadbir.Persistence
                 case JournalMode.ByRows:
                     journal = await GetJournalByDateByRowAsync(from, to);
                     break;
+                case JournalMode.ByRowsWithDetail:
+                    journal = await GetJournalByDateByRowWithDetailAsync(from, to);
+                    break;
                 case JournalMode.ByLedger:
                     journal = await GetJournalByDateByLedgerAsync(from, to);
                     break;
                 case JournalMode.BySubsidiary:
                     journal = await GetJournalByDateBySubsidiaryAsync(from, to);
+                    break;
+                default:
                     break;
             }
 
@@ -83,6 +88,9 @@ namespace SPPC.Tadbir.Persistence
             {
                 case JournalMode.ByRows:
                     journal = await GetJournalByDateByRowByBranchAsync(from, to);
+                    break;
+                case JournalMode.ByRowsWithDetail:
+                    journal = await GetJournalByDateByRowDetailByBranchAsync(from, to);
                     break;
                 case JournalMode.ByLedger:
                     journal = await GetJournalByDateByLedgerByBranchAsync(from, to);
@@ -106,9 +114,20 @@ namespace SPPC.Tadbir.Persistence
             JournalMode journalMode, int from, int to)
         {
             var journal = default(JournalViewModel);
-            if (journalMode == JournalMode.ByRows)
+            switch (journalMode)
             {
-                journal = await GetJournalByNoByRowAsync(from, to);
+                case JournalMode.ByRows:
+                    journal = await GetJournalByNoByRowAsync(from, to);
+                    break;
+                case JournalMode.ByRowsWithDetail:
+                    journal = await GetJournalByNoByRowDetailAsync(from, to);
+                    break;
+                case JournalMode.ByLedger:
+                    journal = await GetJournalByNoByLedgerAsync(from, to);
+                    break;
+                case JournalMode.BySubsidiary:
+                    journal = await GetJournalByNoBySubsidiaryAsync(from, to);
+                    break;
             }
 
             return journal;
@@ -125,9 +144,20 @@ namespace SPPC.Tadbir.Persistence
             JournalMode journalMode, int from, int to)
         {
             var journal = default(JournalViewModel);
-            if (journalMode == JournalMode.ByRows)
+            switch (journalMode)
             {
-                journal = await GetJournalByNoByRowByBranchAsync(from, to);
+                case JournalMode.ByRows:
+                    journal = await GetJournalByNoByRowByBranchAsync(from, to);
+                    break;
+                case JournalMode.ByRowsWithDetail:
+                    journal = await GetJournalByNoByRowDetailByBranchAsync(from, to);
+                    break;
+                case JournalMode.ByLedger:
+                    journal = await GetJournalByNoByLedgerByBranchAsync(from, to);
+                    break;
+                case JournalMode.BySubsidiary:
+                    journal = await GetJournalByNoBySubsidiaryByBranchAsync(from, to);
+                    break;
             }
 
             return journal;
@@ -141,6 +171,14 @@ namespace SPPC.Tadbir.Persistence
             DateTime from, DateTime to)
         {
             var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var journalItems = GetJournalByDateByRowItems(lines);
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByDateByRowWithDetailAsync(
+            DateTime from, DateTime to)
+        {
+            var lines = await GetRawJournalByDateWithDetailLinesAsync(from, to);
             var journalItems = GetJournalByDateByRowItems(lines);
             return BuildJournal(journalItems);
         }
@@ -179,6 +217,17 @@ namespace SPPC.Tadbir.Persistence
             return await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
+                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .ToListAsync();
+        }
+
+        private async Task<IList<VoucherLine>> GetRawJournalByDateWithDetailLinesAsync(
+            DateTime from, DateTime to)
+        {
+            return await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.DetailAccount,
+                    art => art.CostCenter, art => art.Project, art => art.Branch)
                 .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
                 .ToListAsync();
         }
@@ -297,16 +346,42 @@ namespace SPPC.Tadbir.Persistence
             return BuildJournal(journalItems);
         }
 
-        private Task<JournalViewModel> GetJournalByDateByLedgerByBranchAsync(
+        private async Task<JournalViewModel> GetJournalByDateByRowDetailByBranchAsync(
             DateTime from, DateTime to)
         {
-            throw new NotImplementedException();
+            var lines = await GetRawJournalByDateWithDetailLinesAsync(from, to);
+            var journalItems = GetJournalByDateByRowByBranchItems(lines);
+            return BuildJournal(journalItems);
         }
 
-        private Task<JournalViewModel> GetJournalByDateBySubsidiaryByBranchAsync(
+        private async Task<JournalViewModel> GetJournalByDateByLedgerByBranchAsync(
             DateTime from, DateTime to)
         {
-            throw new NotImplementedException();
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            foreach (var byDateByNoByBranch in GetGroupByThenByItems(
+                lines, art => art.Voucher.Date, art => Int32.Parse(art.Voucher.No),
+                art => art.BranchId))
+            {
+                journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNoByBranch));
+            }
+
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByDateBySubsidiaryByBranchAsync(
+            DateTime from, DateTime to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            foreach (var byDateByNoByBranch in GetGroupByThenByItems(
+                lines, art => art.Voucher.Date, art => Int32.Parse(art.Voucher.No),
+                art => art.BranchId))
+            {
+                journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byDateByNoByBranch));
+            }
+
+            return BuildJournal(journalItems);
         }
 
         private IEnumerable<JournalItemViewModel> GetJournalByDateByRowByBranchItems(
@@ -330,6 +405,41 @@ namespace SPPC.Tadbir.Persistence
             return BuildJournal(journalItems);
         }
 
+        private async Task<JournalViewModel> GetJournalByNoByRowDetailAsync(int from, int to)
+        {
+            var lines = await GetRawJournalByNoWithDetailLinesAsync(from, to);
+            var journalItems = GetJournalByNoByRowItems(lines);
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByNoByLedgerAsync(
+            int from, int to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            foreach (var byNo in GetGroupByThenByItems(
+                lines, art => Int32.Parse(art.Voucher.No)))
+            {
+                journalItems.AddRange(await GetJournalByLedgerItemsAsync(byNo));
+            }
+
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByNoBySubsidiaryAsync(
+            int from, int to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            foreach (var byNo in GetGroupByThenByItems(
+                lines, art => Int32.Parse(art.Voucher.No)))
+            {
+                journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byNo));
+            }
+
+            return BuildJournal(journalItems);
+        }
+
         private async Task<IList<VoucherLine>> GetRawJournalByNoLinesAsync(int from, int to)
         {
             return await _repository
@@ -337,6 +447,16 @@ namespace SPPC.Tadbir.Persistence
                     art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => Int32.Parse(art.Voucher.No) >= from
                     && Int32.Parse(art.Voucher.No) <= to)
+                .ToListAsync();
+        }
+
+        private async Task<IList<VoucherLine>> GetRawJournalByNoWithDetailLinesAsync(int from, int to)
+        {
+            return await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                    art => art.Voucher, art => art.Account, art => art.DetailAccount,
+                    art => art.CostCenter, art => art.Project, art => art.Branch)
+                .Where(art => Int32.Parse(art.Voucher.No) >= from && Int32.Parse(art.Voucher.No) <= to)
                 .ToListAsync();
         }
 
@@ -359,6 +479,41 @@ namespace SPPC.Tadbir.Persistence
             return BuildJournal(journalItems);
         }
 
+        private async Task<JournalViewModel> GetJournalByNoByRowDetailByBranchAsync(int from, int to)
+        {
+            var lines = await GetRawJournalByNoWithDetailLinesAsync(from, to);
+            var journalItems = GetJournalByNoByRowByBranchItems(lines);
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByNoByLedgerByBranchAsync(
+            int from, int to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            foreach (var byNo in GetGroupByThenByItems(
+                lines, art => Int32.Parse(art.Voucher.No), art => art.BranchId))
+            {
+                journalItems.AddRange(await GetJournalByLedgerItemsAsync(byNo));
+            }
+
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByNoBySubsidiaryByBranchAsync(
+            int from, int to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            foreach (var byNo in GetGroupByThenByItems(
+                lines, art => Int32.Parse(art.Voucher.No), art => art.BranchId))
+            {
+                journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byNo));
+            }
+
+            return BuildJournal(journalItems);
+        }
+
         private IEnumerable<JournalItemViewModel> GetJournalByNoByRowByBranchItems(
             IEnumerable<VoucherLine> voucherLines)
         {
@@ -377,6 +532,17 @@ namespace SPPC.Tadbir.Persistence
             return journal;
         }
 
+        private IEnumerable<IEnumerable<VoucherLine>> GetGroupByThenByItems<TKey1>(
+            IEnumerable<VoucherLine> lines, Func<VoucherLine, TKey1> firstSelector)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(firstSelector)
+                .GroupBy(firstSelector))
+            {
+                yield return byFirst;
+            }
+        }
+
         private IEnumerable<IEnumerable<VoucherLine>> GetGroupByThenByItems<TKey1, TKey2>(
             IEnumerable<VoucherLine> lines, Func<VoucherLine, TKey1> firstSelector,
             Func<VoucherLine, TKey2> secondSelector)
@@ -390,6 +556,28 @@ namespace SPPC.Tadbir.Persistence
                     .GroupBy(secondSelector))
                 {
                     yield return bySecond;
+                }
+            }
+        }
+
+        private IEnumerable<IEnumerable<VoucherLine>> GetGroupByThenByItems<TKey1, TKey2, TKey3>(
+            IEnumerable<VoucherLine> lines, Func<VoucherLine, TKey1> firstSelector,
+            Func<VoucherLine, TKey2> secondSelector, Func<VoucherLine, TKey3> thirdSelector)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(firstSelector)
+                .GroupBy(firstSelector))
+            {
+                foreach (var bySecond in byFirst
+                    .OrderBy(secondSelector)
+                    .GroupBy(secondSelector))
+                {
+                    foreach (var byThird in bySecond
+                        .OrderBy(thirdSelector)
+                        .GroupBy(thirdSelector))
+                    {
+                        yield return byThird;
+                    }
                 }
             }
         }

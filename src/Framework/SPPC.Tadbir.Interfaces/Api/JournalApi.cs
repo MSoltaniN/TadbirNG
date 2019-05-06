@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SPPC.Tadbir.Api
 {
@@ -9,6 +8,8 @@ namespace SPPC.Tadbir.Api
         private JournalApi()
         {
         }
+
+        #region Journal By Date API
 
         /// <summary>
         /// API client URL for Journal-By Date-By Row report
@@ -21,34 +22,14 @@ namespace SPPC.Tadbir.Api
         public const string JournalByDateByRowUrl = "reports/journal/by-date/by-row";
 
         /// <summary>
-        /// API client URL for Journal-By Date-By Row-By Branch report
+        /// API client URL for Journal-By Date-By Row Detail report
         /// </summary>
-        public const string JournalByDateByRowByBranch = "reports/journal/by-date/by-row/by-branch";
+        public const string JournalByDateByRowDetail = "reports/journal/by-date/by-row-detail";
 
         /// <summary>
-        /// API server route URL for Journal-By Date-By Row-By Branch report
+        /// API server route URL for Journal-By Date-By Row Detail report
         /// </summary>
-        public const string JournalByDateByRowByBranchUrl = "reports/journal/by-date/by-row/by-branch";
-
-        /// <summary>
-        /// API client URL for Journal-By No-By Row report
-        /// </summary>
-        public const string JournalByNoByRow = "reports/journal/by-no/by-row";
-
-        /// <summary>
-        /// API server route URL for Journal-By No-By Row report
-        /// </summary>
-        public const string JournalByNoByRowUrl = "reports/journal/by-no/by-row";
-
-        /// <summary>
-        /// API client URL for Journal-By No-By Row-By Branch report
-        /// </summary>
-        public const string JournalByNoByRowByBranch = "reports/journal/by-no/by-row/by-branch";
-
-        /// <summary>
-        /// API server route URL for Journal-By No-By Row-By Branch report
-        /// </summary>
-        public const string JournalByNoByRowByBranchUrl = "reports/journal/by-no/by-row/by-branch";
+        public const string JournalByDateByRowDetailUrl = "reports/journal/by-date/by-row-detail";
 
         /// <summary>
         /// API client URL for Journal-By Date-By Ledger report
@@ -61,6 +42,40 @@ namespace SPPC.Tadbir.Api
         public const string JournalByDateByLedgerUrl = "reports/journal/by-date/by-ledger";
 
         /// <summary>
+        /// API client URL for Journal-By Date-By Subsidiary report
+        /// </summary>
+        public const string JournalByDateBySubsidiary = "reports/journal/by-date/by-subsid";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-By Subsidiary report
+        /// </summary>
+        public const string JournalByDateBySubsidiaryUrl = "reports/journal/by-date/by-subsid";
+
+        #endregion
+
+        #region Journal By Date By Branch API
+
+        /// <summary>
+        /// API client URL for Journal-By Date-By Row-By Branch report
+        /// </summary>
+        public const string JournalByDateByRowByBranch = "reports/journal/by-date/by-row/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-By Row-By Branch report
+        /// </summary>
+        public const string JournalByDateByRowByBranchUrl = "reports/journal/by-date/by-row/by-branch";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-By Row Detail-By Branch report
+        /// </summary>
+        public const string JournalByDateByRowDetailByBranch = "reports/journal/by-date/by-row-detail/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-By Row Detail-By Branch report
+        /// </summary>
+        public const string JournalByDateByRowDetailByBranchUrl = "reports/journal/by-date/by-row-detail/by-branch";
+
+        /// <summary>
         /// API client URL for Journal-By Date-By Ledger-By Branch report
         /// </summary>
         public const string JournalByDateByLedgerByBranch = "reports/journal/by-date/by-ledger/by-branch";
@@ -71,16 +86,6 @@ namespace SPPC.Tadbir.Api
         public const string JournalByDateByLedgerByBranchUrl = "reports/journal/by-date/by-ledger/by-branch";
 
         /// <summary>
-        /// API client URL for Journal-By Date-By Subsidiary report
-        /// </summary>
-        public const string JournalByDateBySubsidiary = "reports/journal/by-date/by-subsid";
-
-        /// <summary>
-        /// API server route URL for Journal-By Date-By Subsidiary report
-        /// </summary>
-        public const string JournalByDateBySubsidiaryUrl = "reports/journal/by-date/by-subsid";
-
-        /// <summary>
         /// API client URL for Journal-By Date-By Subsidiary-By Branch report
         /// </summary>
         public const string JournalByDateBySubsidiaryByBranch = "reports/journal/by-date/by-subsid/by-branch";
@@ -89,5 +94,95 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for Journal-By Date-By Subsidiary-By Branch report
         /// </summary>
         public const string JournalByDateBySubsidiaryByBranchUrl = "reports/journal/by-date/by-subsid/by-branch";
+
+        #endregion
+
+        #region Journal By No API
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Row report
+        /// </summary>
+        public const string JournalByNoByRow = "reports/journal/by-no/by-row";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Row report
+        /// </summary>
+        public const string JournalByNoByRowUrl = "reports/journal/by-no/by-row";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Row Detail report
+        /// </summary>
+        public const string JournalByNoByRowDetail = "reports/journal/by-no/by-row-detail";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Row Detail report
+        /// </summary>
+        public const string JournalByNoByRowDetailUrl = "reports/journal/by-no/by-row-detail";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Ledger report
+        /// </summary>
+        public const string JournalByNoByLedger = "reports/journal/by-no/by-ledger";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Ledger report
+        /// </summary>
+        public const string JournalByNoByLedgerUrl = "reports/journal/by-no/by-ledger";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Subsidiary report
+        /// </summary>
+        public const string JournalByNoBySubsidiary = "reports/journal/by-no/by-subsid";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Subsidiary report
+        /// </summary>
+        public const string JournalByNoBySubsidiaryUrl = "reports/journal/by-no/by-subsid";
+
+        #endregion
+
+        #region Journal By No By Branch API
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Row-By Branch report
+        /// </summary>
+        public const string JournalByNoByRowByBranch = "reports/journal/by-no/by-row/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Row-By Branch report
+        /// </summary>
+        public const string JournalByNoByRowByBranchUrl = "reports/journal/by-no/by-row/by-branch";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Row Detail-By Branch report
+        /// </summary>
+        public const string JournalByNoByRowDetailByBranch = "reports/journal/by-no/by-row-detail/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Row Detail-By Branch report
+        /// </summary>
+        public const string JournalByNoByRowDetailByBranchUrl = "reports/journal/by-no/by-row-detail/by-branch";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Ledger-By Branch report
+        /// </summary>
+        public const string JournalByNoByLedgerByBranch = "reports/journal/by-no/by-ledger/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Ledger-By Branch report
+        /// </summary>
+        public const string JournalByNoByLedgerByBranchUrl = "reports/journal/by-no/by-ledger/by-branch";
+
+        /// <summary>
+        /// API client URL for Journal-By No-By Subsidiary-By Branch report
+        /// </summary>
+        public const string JournalByNoBySubsidiaryByBranch = "reports/journal/by-no/by-subsid/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-By Subsidiary-By Branch report
+        /// </summary>
+        public const string JournalByNoBySubsidiaryByBranchUrl = "reports/journal/by-no/by-subsid/by-branch";
+
+        #endregion
     }
 }

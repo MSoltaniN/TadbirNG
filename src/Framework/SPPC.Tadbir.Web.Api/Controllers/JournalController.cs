@@ -30,13 +30,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByDateByRowAsync(
             DateTime? from, DateTime? to)
         {
-            Sanitize(ref from, ref to);
-            var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateAsync(
-                JournalMode.ByRows, from.Value, to.Value);
-            PrepareJournal(journal, gridOptions);
-            return Json(journal);
+            var mode = JournalMode.ByRows;
+            return await JournalByDateResult(from, to, mode, false, false);
         }
 
         // GET: api/reports/journal/by-date/by-row/by-branch
@@ -49,6 +44,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = await _repository.GetJournalByDateByBranchAsync(
                 JournalMode.ByRows, from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-date/by-row-detail
+        ////[Route(JournalApi.JournalByDateByRowDetailUrl)]
+        public async Task<IActionResult> GetJournalByDateByRowDetailAsync(
+            DateTime? from, DateTime? to)
+        {
+            Sanitize(ref from, ref to);
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateAsync(
+                JournalMode.ByRowsWithDetail, from.Value, to.Value);
             PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
@@ -103,6 +112,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(journal);
         }
 
+        private async Task<IActionResult> JournalByDateResult(
+            DateTime? from, DateTime? to, JournalMode journalMode, bool isByBranch, bool isLocalized)
+        {
+            Sanitize(ref from, ref to);
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = isByBranch
+                ? await _repository.GetJournalByDateByBranchAsync(journalMode, from.Value, to.Value)
+                : await _repository.GetJournalByDateAsync(journalMode, from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
+            if (isLocalized)
+            {
+                Localize(journal);
+            }
+
+            return Json(journal);
+        }
+
         private void Sanitize(ref DateTime? from, ref DateTime? to)
         {
             if (from == null || to == null)
@@ -136,6 +163,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 journalItem.RowNo = rowNo++;
             }
         }
+
+        private delegate Task<JournalViewModel> JournalByDateDelegate(
+            JournalMode mode, DateTime from, DateTime to);
+        private delegate Task<JournalViewModel> JournalByNumberDelegate(
+            JournalMode mode, int from, int to);
 
         private readonly IJournalRepository _repository;
         private readonly IConfigRepository _configRepository;

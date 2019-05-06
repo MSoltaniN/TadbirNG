@@ -218,7 +218,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool outOfPage = false;
             quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
-            quickReport.Script = _strings.Format(AppStrings.ReportScript);
+            // در ریسورس های چند زبانه فقط باید متن چند زبانه قرار داده شود نه سورس سی شارپ.
+            ////quickReport.Script = _strings.Format(AppStrings.ReportScript);
 
             quickReport = SetPageWidth(quickReport, qr,out outOfPage);
             quickReport = CreateReportFooterBand(quickReport);
