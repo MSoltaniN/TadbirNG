@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -218,8 +219,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool outOfPage = false;
             quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
-            // در ریسورس های چند زبانه فقط باید متن چند زبانه قرار داده شود نه سورس سی شارپ.
-            ////quickReport.Script = _strings.Format(AppStrings.ReportScript);
+
+            using (StreamReader reader = new StreamReader(typeof(Program).Assembly.GetManifestResourceStream("SPPC.Tadbir.Web.Api.Report.cs")))
+            {
+                string reportScript = reader.ReadToEnd();
+                quickReport.Script = reportScript;
+            }
 
             quickReport = SetPageWidth(quickReport, qr,out outOfPage);
             quickReport = CreateReportFooterBand(quickReport);
