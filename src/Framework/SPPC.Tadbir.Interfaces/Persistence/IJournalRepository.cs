@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ</returns>
         Task<JournalViewModel> GetJournalByDateAsync(
-            JournalMode journalMode, DateTime from, DateTime to);
+            JournalMode journalMode, DateTime from, DateTime to, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و به تفکیک شعبه را خوانده و برمی گرداند
@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ و به تفکیک شعبه</returns>
         Task<JournalViewModel> GetJournalByDateByBranchAsync(
-            JournalMode journalMode, DateTime from, DateTime to);
+            JournalMode journalMode, DateTime from, DateTime to, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند را خوانده و برمی گرداند
@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="to">شماره انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند</returns>
         Task<JournalViewModel> GetJournalByNoAsync(
-            JournalMode journalMode, int from, int to);
+            JournalMode journalMode, int from, int to, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و به تفکیک شعبه را خوانده و برمی گرداند
@@ -54,6 +54,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="to">شماره انتها در دوره گزارشگیری مورد نظر</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند و به تفکیک شعبه</returns>
         Task<JournalViewModel> GetJournalByNoByBranchAsync(
-            JournalMode journalMode, int from, int to);
+            JournalMode journalMode, int from, int to, GridOptions gridOptions = null);
     }
 }

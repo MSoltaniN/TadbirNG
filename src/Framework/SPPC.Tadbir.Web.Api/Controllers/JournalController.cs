@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -25,27 +24,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _configRepository = config;
         }
 
+        #region Journal By Date
+
         // GET: api/reports/journal/by-date/by-row
         ////[Route(JournalApi.JournalByDateByRowUrl)]
         public async Task<IActionResult> GetJournalByDateByRowAsync(
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.ByRows;
-            return await JournalByDateResult(from, to, mode, false, false);
-        }
-
-        // GET: api/reports/journal/by-date/by-row/by-branch
-        [Route(JournalApi.JournalByDateByRowByBranchUrl)]
-        public async Task<IActionResult> GetJournalByDateByRowByBranchAsync(
-            DateTime? from, DateTime? to)
-        {
-            Sanitize(ref from, ref to);
-            var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateByBranchAsync(
-                JournalMode.ByRows, from.Value, to.Value);
-            PrepareJournal(journal, gridOptions);
-            return Json(journal);
+            return await JournalByDateResultAsync(from, to, mode, false, false);
         }
 
         // GET: api/reports/journal/by-date/by-row-detail
@@ -53,66 +40,139 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByDateByRowDetailAsync(
             DateTime? from, DateTime? to)
         {
-            Sanitize(ref from, ref to);
-            var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateAsync(
-                JournalMode.ByRowsWithDetail, from.Value, to.Value);
-            PrepareJournal(journal, gridOptions);
-            return Json(journal);
+            var mode = JournalMode.ByRowsWithDetail;
+            return await JournalByDateResultAsync(from, to, mode, false, false);
         }
 
         // GET: api/reports/journal/by-date/by-ledger
         ////[Route(JournalApi.JournalByDateByLedgerUrl)]
         public async Task<IActionResult> GetJournalByDateByLedgerAsync(DateTime? from, DateTime? to)
         {
-            Sanitize(ref from, ref to);
-            var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateAsync(
-                JournalMode.ByLedger, from.Value, to.Value);
-            PrepareJournal(journal, gridOptions);
-            Localize(journal);
-            return Json(journal);
+            var mode = JournalMode.ByLedger;
+            return await JournalByDateResultAsync(from, to, mode, false, true);
         }
 
         // GET: api/reports/journal/by-date/by-subsid
         ////[Route(JournalApi.JournalByDateBySubsidiaryUrl)]
         public async Task<IActionResult> GetJournalByDateBySubsidiaryAsync(DateTime? from, DateTime? to)
         {
-            Sanitize(ref from, ref to);
-            var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateAsync(
-                JournalMode.BySubsidiary, from.Value, to.Value);
-            PrepareJournal(journal, gridOptions);
-            Localize(journal);
-            return Json(journal);
+            var mode = JournalMode.BySubsidiary;
+            return await JournalByDateResultAsync(from, to, mode, false, true);
         }
+
+        #endregion
+
+        #region Journal By Date By Branch
+
+        // GET: api/reports/journal/by-date/by-row/by-branch
+        [Route(JournalApi.JournalByDateByRowByBranchUrl)]
+        public async Task<IActionResult> GetJournalByDateByRowByBranchAsync(
+            DateTime? from, DateTime? to)
+        {
+            var mode = JournalMode.ByRows;
+            return await JournalByDateResultAsync(from, to, mode, true, false);
+        }
+
+        // GET: api/reports/journal/by-date/by-row-detail/by-branch
+        ////[Route(JournalApi.JournalByDateByRowDetailByBranchUrl)]
+        public async Task<IActionResult> GetJournalByDateByRowDetailByBranchAsync(
+            DateTime? from, DateTime? to)
+        {
+            var mode = JournalMode.ByRowsWithDetail;
+            return await JournalByDateResultAsync(from, to, mode, true, false);
+        }
+
+        // GET: api/reports/journal/by-date/by-ledger/by-branch
+        ////[Route(JournalApi.JournalByDateByLedgerByBranchUrl)]
+        public async Task<IActionResult> GetJournalByDateByLedgerByBranchAsync(DateTime? from, DateTime? to)
+        {
+            var mode = JournalMode.ByLedger;
+            return await JournalByDateResultAsync(from, to, mode, true, true);
+        }
+
+        // GET: api/reports/journal/by-date/by-subsid/by-branch
+        ////[Route(JournalApi.JournalByDateBySubsidiaryByBranchUrl)]
+        public async Task<IActionResult> GetJournalByDateBySubsidiaryByBranchAsync(DateTime? from, DateTime? to)
+        {
+            var mode = JournalMode.BySubsidiary;
+            return await JournalByDateResultAsync(from, to, mode, true, true);
+        }
+
+        #endregion
+
+        #region Journal By No
 
         // GET: api/reports/journal/by-no/by-row
         ////[Route(JournalApi.JournalByNoByRowUrl)]
         public async Task<IActionResult> GetJournalByNoByRowAsync(int from, int to)
         {
-            var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByNoAsync(JournalMode.ByRows, from, to);
-            PrepareJournal(journal, gridOptions);
-            return Json(journal);
+            var mode = JournalMode.ByRows;
+            return await JournalByNumberResultAsync(from, to, mode, false, false);
         }
+
+        // GET: api/reports/journal/by-no/by-row-detail
+        ////[Route(JournalApi.JournalByNoByRowDetailUrl)]
+        public async Task<IActionResult> GetJournalByNoByRowDetailAsync(int from, int to)
+        {
+            var mode = JournalMode.ByRowsWithDetail;
+            return await JournalByNumberResultAsync(from, to, mode, false, false);
+        }
+
+        // GET: api/reports/journal/by-no/by-ledger
+        ////[Route(JournalApi.JournalByNoByLedgerUrl)]
+        public async Task<IActionResult> GetJournalByNoByLedgerAsync(int from, int to)
+        {
+            var mode = JournalMode.ByLedger;
+            return await JournalByNumberResultAsync(from, to, mode, false, true);
+        }
+
+        // GET: api/reports/journal/by-no/by-subsid
+        ////[Route(JournalApi.JournalByNoBySubsidiaryUrl)]
+        public async Task<IActionResult> GetJournalByNoBySubsidiaryAsync(int from, int to)
+        {
+            var mode = JournalMode.BySubsidiary;
+            return await JournalByNumberResultAsync(from, to, mode, false, true);
+        }
+
+        #endregion
+
+        #region Journal By No By Branch
 
         // GET: api/reports/journal/by-no/by-row/by-branch
         [Route(JournalApi.JournalByNoByRowByBranchUrl)]
         public async Task<IActionResult> GetJournalByNoByRowByBranchAsync(int from, int to)
         {
-            var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByNoByBranchAsync(JournalMode.ByRows, from, to);
-            PrepareJournal(journal, gridOptions);
-            return Json(journal);
+            var mode = JournalMode.ByRows;
+            return await JournalByNumberResultAsync(from, to, mode, true, false);
         }
 
-        private async Task<IActionResult> JournalByDateResult(
+        // GET: api/reports/journal/by-no/by-row-detail/by-branch
+        ////[Route(JournalApi.JournalByNoByRowDetailByBranchUrl)]
+        public async Task<IActionResult> GetJournalByNoByRowDetailByBranchAsync(int from, int to)
+        {
+            var mode = JournalMode.ByRowsWithDetail;
+            return await JournalByNumberResultAsync(from, to, mode, true, false);
+        }
+
+        // GET: api/reports/journal/by-no/by-ledger/by-branch
+        ////[Route(JournalApi.JournalByNoByLedgerByBranchUrl)]
+        public async Task<IActionResult> GetJournalByNoByLedgerByBranchAsync(int from, int to)
+        {
+            var mode = JournalMode.ByLedger;
+            return await JournalByNumberResultAsync(from, to, mode, true, true);
+        }
+
+        // GET: api/reports/journal/by-no/by-subsid/by-branch
+        ////[Route(JournalApi.JournalByNoBySubsidiaryByBranchUrl)]
+        public async Task<IActionResult> GetJournalByNoBySubsidiaryByBranchAsync(int from, int to)
+        {
+            var mode = JournalMode.BySubsidiary;
+            return await JournalByNumberResultAsync(from, to, mode, true, true);
+        }
+
+        #endregion
+
+        private async Task<IActionResult> JournalByDateResultAsync(
             DateTime? from, DateTime? to, JournalMode journalMode, bool isByBranch, bool isLocalized)
         {
             Sanitize(ref from, ref to);
@@ -121,6 +181,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var journal = isByBranch
                 ? await _repository.GetJournalByDateByBranchAsync(journalMode, from.Value, to.Value)
                 : await _repository.GetJournalByDateAsync(journalMode, from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
+            if (isLocalized)
+            {
+                Localize(journal);
+            }
+
+            return Json(journal);
+        }
+
+        private async Task<IActionResult> JournalByNumberResultAsync(
+            int from, int to, JournalMode journalMode, bool isByBranch, bool isLocalized)
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = isByBranch
+                ? await _repository.GetJournalByNoByBranchAsync(journalMode, from, to)
+                : await _repository.GetJournalByNoAsync(journalMode, from, to);
             PrepareJournal(journal, gridOptions);
             if (isLocalized)
             {
