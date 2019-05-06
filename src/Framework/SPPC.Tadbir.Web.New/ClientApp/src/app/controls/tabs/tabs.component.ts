@@ -142,7 +142,7 @@ export class TabsComponent implements AfterContentInit {
   }
 
   openTab(title: string, template, data, isCloseable = false,
-    isViewer:boolean = false,isDesigner:boolean = false,id:string,manager:any):boolean {
+    isViewer:boolean = false,isDesigner:boolean = false,id:string,manager:any,isQuickReport:boolean = false):boolean {
 
     var prefix : string;
     if(isViewer)
@@ -188,7 +188,7 @@ export class TabsComponent implements AfterContentInit {
     instance.isViewer = isViewer;
     instance.isDesigner = isDesigner;
     instance.Manager = manager;
-    
+    instance.IsQuickReport = isQuickReport;
     instance.Id = prefix + id;
     instance.reportViewer.Id = prefix + id;
     // remember the dynamic component for rendering the

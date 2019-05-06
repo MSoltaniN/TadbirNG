@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewEncapsulation} from '@angular/core';
 import { Http } from '@angular/http';
 import { DefaultComponent } from '../../class/default.component';
 import { VoucherService, VoucherInfo, FiscalPeriodService, SettingService } from '../../service/index';
@@ -23,7 +23,7 @@ import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angul
 import { Report } from '../../model/report';
 import { ReportingService, ParameterInfo } from '../../service/report/reporting.service';
 import * as moment from 'jalali-moment';
-import { TabComponent } from '../../controls/tabs/tab.component';
+import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { TabsComponent } from '../../controls/tabs/tabs.component';
 
 
@@ -41,10 +41,14 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   viewer: any = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer' , false);
   report: any = new Stimulsoft.Report.StiReport();
   active: boolean = false;
+  quickReport: boolean = false;
+  reportManager: ReportManagementComponent;
 
   @Input() public baseId: number;
   @Input() public showViewer: boolean = false;
   @Input() public Id: string;
+
+ 
   
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
@@ -163,12 +167,44 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
    
   }
 
+  showDesginedReportViewer(data: any, report: any) {
 
-  showReportViewer(reportTemplate :string, reportData: any)
+    var parameters: Array<ParameterInfo> = data.parameters;
+    var localReport = this.report;
+    var lang = this.CurrentLanguage;
+
+    parameters.forEach(function (param) {
+
+      var value = param.value;
+
+      if (param.dataType == "System.DateTime") {
+        var fdate = moment(param.value, 'YYYY-M-D HH:mm:ss')
+          .locale(lang)
+          .format('YYYY/M/D');
+
+        value = fdate;
+      }
+
+      if (localReport.dictionary.variables.getByName(param.name) != null)
+        localReport.dictionary.variables.getByName(param.name).valueObject = value;
+    });
+
+
+    this.report = report;    
+    this.report.render();
+    this.viewer.report = this.report;
+
+    console.log('Rendering the viewer to selected element');
+    this.viewer.renderHtml(this.Id);
+  }
+
+  showReportViewer(reportTemplate :string, reportData: any,manager : any, isQuickReport:boolean)
   {      
     this.active = true;
     this.viewer =  new Stimulsoft.Viewer.StiViewer(null, this.Id, false);
-  
+    this.quickReport = isQuickReport;
+    this.reportManager = manager;
+
     setTimeout(() => {          
 
       Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "ToShamsi",
@@ -186,61 +222,77 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       console.log('Load report from url');      
       this.report.load(reportTemplate);
       var dataSet = new Stimulsoft.System.Data.DataSet('dataset');
-      if (reportData.rows instanceof Array)
-        dataSet.readJson(reportData.rows);
-      else {
-        //TODO : fire an event in report viewer component for invoke readjson method
-        //dataSet.readJson(reportData.rows.items)
-        dataSet.readJson(reportData.rows.lines);
-      }
 
-      var data = dataSet.tables.getByIndex(0);
-      
-      //Add data to datastore
-      this.report.regData("data", "data", dataSet);
-      
-      //Fill dictionary
-      var dataSource = new Stimulsoft.Report.Dictionary.StiDataTableSource(data.tableName, data.tableName, data.tableName);
-      data.columns.list.forEach(element => {
-        var dataType = element.dataType.jsNamespace + "." + element.dataType.jsTypeName;
-        dataSource.columns.add(new Stimulsoft.Report.Dictionary.StiDataColumn(element.columnName, element.columnName, 
-          element.columnName,dataType));
-      });
-      
-      
-      this.report.dictionary.dataSources.add(dataSource);     
+      //report is quick report
+      if (this.quickReport) {
 
-      var parameters : Array<ParameterInfo>  = reportData.parameters;
-      var localReport = this.report;
-      var lang = this.CurrentLanguage;
-
-      parameters.forEach(function(param){
-
-        var value = param.value;
-        
-        if(param.dataType == "System.DateTime")
-        {
-          var fdate = moment(param.value, 'YYYY-M-D HH:mm:ss')
-          .locale(lang)
-          .format('YYYY/M/D');
-        
-          value = fdate;
+        if (reportData.rows instanceof Array)
+          dataSet.readJson(reportData.rows);
+        else {
+          //TODO : fire an event in report viewer component for invoke readjson method
+          dataSet.readJson(reportData.rows.items)          
         }
-        
-        if(localReport.dictionary.variables.getByName(param.name) != null)
-          localReport.dictionary.variables.getByName(param.name).valueObject = value;        
-      });
-     
 
-      this.report = localReport;
-      //this.fillResourceVariables(reportObject,this.report);
-      this.report.render();
-      this.viewer.report = this.report;
-      
-      console.log('Rendering the viewer to selected element');
-      this.viewer.renderHtml(this.Id);
+        var data = dataSet.tables.getByIndex(0);
 
-      
+        //Add data to datastore
+        this.report.regData("data", "data", dataSet);
+
+        //Fill dictionary
+        var dataSource = new Stimulsoft.Report.Dictionary.StiDataTableSource(data.tableName, data.tableName, data.tableName);
+        data.columns.list.forEach(element => {
+          var dataType = element.dataType.jsNamespace + "." + element.dataType.jsTypeName;
+          dataSource.columns.add(new Stimulsoft.Report.Dictionary.StiDataColumn(element.columnName, element.columnName,
+            element.columnName, dataType));
+        });
+
+        this.report.dictionary.dataSources.add(dataSource);
+
+        var parameters: Array<ParameterInfo> = reportData.parameters;
+        var localReport = this.report;
+        var lang = this.CurrentLanguage;
+
+        parameters.forEach(function (param) {
+
+          var value = param.value;
+
+          if (param.dataType == "System.DateTime") {
+            var fdate = moment(param.value, 'YYYY-M-D HH:mm:ss')
+              .locale(lang)
+              .format('YYYY/M/D');
+
+            value = fdate;
+          }
+
+          if (localReport.dictionary.variables.getByName(param.name) != null)
+            localReport.dictionary.variables.getByName(param.name).valueObject = value;
+          else {
+            var parameter = new Stimulsoft.Report.Dictionary.StiVariable();
+            parameter.name = param.name;
+            parameter.alias = param.captionKey;
+            parameter.value = param.value;
+
+            localReport.dictionary.variables.add(parameter);
+          }
+          
+
+        });
+
+
+        this.report = localReport;
+        //this.fillResourceVariables(reportObject,this.report);
+        this.report.render();
+        this.viewer.report = this.report;
+
+        console.log('Rendering the viewer to selected element');
+        this.viewer.renderHtml(this.Id);
+
+      }
+      else {
+        //when report in not quick reports
+        var arg = { report : this.report, data : reportData , viewer : this };
+        this.reportManager.onDataBind.emit(arg);
+      }         
     }, 10);   
   }
 

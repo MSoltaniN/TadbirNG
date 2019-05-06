@@ -323,11 +323,32 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     })
   }
 
+  //report methods
   public showReport()
   {  
     this.reportManager.DecisionMakingForReport();
   }
 
+  onReportDataBind(arg: any) {
+    var reportData = arg.data;
+    var report = arg.report;
+
+    //set data in report
+    report.regData("Vouchers", "VouchersStdForm", reportData.rows.lines);
+
+    moment.locale('en');
+    var momentDate = moment(new Date()).locale('fa').format("YYYY/MM/DD");    
+
+    //set parameters in report
+    report.dictionary.variables.getByName("currentDate").valueObject = momentDate;
+    report.dictionary.variables.getByName("date").valueObject = reportData.rows.date;
+    report.dictionary.variables.getByName("id").valueObject = reportData.rows.id;
+    report.dictionary.variables.getByName("description").valueObject = reportData.rows.description;
+    report.dictionary.variables.getByName("no").valueObject = reportData.rows.no;
+
+    arg.viewer.showDesginedReportViewer(arg.data, report);
+  }
+  //report methods
   getVoucher() {
     this.voucherLineService.getById(String.Format(VoucherApi.Voucher, this.voucherId)).subscribe(res => {
 

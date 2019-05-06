@@ -29,9 +29,5 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// </summary>
         public IList<QuickReportColumnViewModel> Columns { get; set; }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public dynamic Row { get; set; }
     }
 }

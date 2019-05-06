@@ -1,9 +1,9 @@
 <view-identifier [ViewID]="3">
   <report-param ParamName='VoucherId' [ParamValue]="voucherId"></report-param>
 </view-identifier>
-<report-viewer id='compviewer'></report-viewer>
+<report-viewer id='compviewer' ></report-viewer>
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-                   [Filter]="currentFilter" [RowData]="rowData" [MetadataType]="metaDataName"></report-management>
+                   [Filter]="currentFilter" [RowData]="rowData" [MetadataType]="metaDataName" (onDataBind)="onReportDataBind($event)"></report-management>
 <div class="panel panel-primary voucher-line">
   <div class="panel-body">
     <kendo-grid id="3" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"

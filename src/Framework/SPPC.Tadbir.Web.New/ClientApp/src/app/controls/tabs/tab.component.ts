@@ -34,13 +34,14 @@ export class TabComponent {
   @Input() isViewer : boolean;
   @Input() isDesigner : boolean;
   @Input() Id:string;
-  @Input() Manager:any;
+  @Input() Manager: any;
+  @Input() IsQuickReport: boolean;
 
   @ViewChild(ReportViewerComponent) reportViewer: ReportViewerComponent;  
     
 
   public callViewer()
   {      
-      this.reportViewer.showReportViewer(this.template,this.dataContext)
+      this.reportViewer.showReportViewer(this.template,this.dataContext,this.Manager,this.IsQuickReport)
   }
 }

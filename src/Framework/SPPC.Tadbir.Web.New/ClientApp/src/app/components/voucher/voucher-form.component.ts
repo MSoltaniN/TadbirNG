@@ -32,7 +32,7 @@ interface Item {
   styles: [`
     input[type=text],textarea { width: 100%; } /deep/ .new-dialog .k-dialog {width: 450px !important; min-width: 250px !important;}
     /deep/ .edit-dialog .k-dialog {width: 100% !important; min-width: 250px !important; height:100%}
-    /deep/ .edit-dialog .k-window-titlebar{ padding: 5px 16px !important;}
+    /deep/ .edit-dialog .k-window-titlebar{ padding: 10px 16px !important;}
     /deep/ .edit-dialog .edit-form-body { background: #f6f6f6; border: solid 1px #989898; border-radius: 4px;}
     .form-toolbar{border-bottom: solid 1px #e3e3e3; margin-bottom: 10px; padding: 10px;} .form-toolbar button{padding: 5px 6px;}
     /deep/ .voucher-dialog .k-window .k-overlay { opacity: .6 !important; }
