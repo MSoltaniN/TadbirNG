@@ -1,61 +1,60 @@
-<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
-              (close)="closeForm()" [minWidth]="250" [width]="450">
-  <kendo-dialog-titlebar>
-    {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
-  </kendo-dialog-titlebar>
 
-  <div *ngIf="errorMessage != ''">
-    <div class="alert alert-danger">
-      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-      {{ errorMessage }}
+<div class="dialog-body">
+
+  <div style="padding:15px;" (keydown.esc)="escPress()">
+    <div *ngIf="errorMessage">
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ errorMessage }}
+      </div>
     </div>
+
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+      <div class="form-group">
+        <label for="name" class="control-label">{{ 'AccountGroup.Name' | translate }}</label>
+
+        <input type="text" class="k-textbox" formControlName="name" />
+
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+          <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.AccountGroup.NameIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.AccountGroup.NameIsTooLong' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="category" class="control-label">{{ 'AccountGroup.Category' | translate }}</label>
+
+        <kendo-dropdownlist class="ddl-category"
+                            [data]="categoriesList"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="categorySelected"
+                            [(ngModel)]="categorySelected"
+                            formControlName="category">
+        </kendo-dropdownlist>
+
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.category.valid || editForm.controls.category.pristine">
+          <span *ngIf="editForm.controls.category.errors?.required">{{ 'AllValidations.AccountGroup.CategoryIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.category.errors?.maxlength">{{ 'AllValidations.AccountGroup.CategoryIsTooLong' | translate }}</span>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="description" class="control-label">{{ 'AccountGroup.Description' | translate }}</label>
+
+        <textarea class="k-textarea" formControlName="description"></textarea>
+
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+          {{ 'AllValidations.AccountGroup.DescriptionIsTooLong' | translate }}
+        </div>
+      </div>
+    </form>
   </div>
-
-  <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
-    <div class="form-group">
-      <label for="name" class="control-label">{{ 'AccountGroup.Name' | translate }}</label>
-
-      <input type="text" class="k-textbox" formControlName="name" />
-
-      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-        <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.AccountGroup.NameIsRequired' | translate }}</span>
-        <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.AccountGroup.NameIsTooLong' | translate }}</span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="category" class="control-label">{{ 'AccountGroup.Category' | translate }}</label>
-
-      <kendo-dropdownlist class="ddl-category"
-                          [data]="categoriesList"
-                          [textField]="'value'"
-                          [valueField]="'key'"
-                          [valuePrimitive]="true"
-                          [value]="categorySelected"
-                          [(ngModel)]="categorySelected"
-                          formControlName="category">
-      </kendo-dropdownlist>
-
-      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.category.valid || editForm.controls.category.pristine">
-        <span *ngIf="editForm.controls.category.errors?.required">{{ 'AllValidations.AccountGroup.CategoryIsRequired' | translate }}</span>
-        <span *ngIf="editForm.controls.category.errors?.maxlength">{{ 'AllValidations.AccountGroup.CategoryIsTooLong' | translate }}</span>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <label for="description" class="control-label">{{ 'AccountGroup.Description' | translate }}</label>
-
-      <textarea class="k-textarea" formControlName="description"></textarea>
-
-      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-        {{ 'AllValidations.AccountGroup.DescriptionIsTooLong' | translate }}
-      </div>
-    </div>
-  </form>
 
   <kendo-dialog-actions>
     <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
     <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
   </kendo-dialog-actions>
-</kendo-dialog>
+</div>

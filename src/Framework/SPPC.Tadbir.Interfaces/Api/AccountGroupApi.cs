@@ -52,5 +52,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for ledger-level accounts for an account group specified by unique identifier
         /// </summary>
         public const string GroupLedgerAccountsUrl = "accgroups/{groupId:min(1)}/accounts";
+
+        /// <summary>
+        /// API client URL for account group brief
+        /// </summary>
+        public const string AccountGroupBrief = "accgroups/brief";
+
+        /// <summary>
+        /// API server route URL for account group brief
+        /// </summary>
+        public const string AccountGroupBriefUrl = "accgroups/brief";
     }
 }

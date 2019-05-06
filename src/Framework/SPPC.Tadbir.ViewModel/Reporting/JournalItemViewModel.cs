@@ -39,6 +39,36 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string AccountName { get; set; }
 
         /// <summary>
+        /// کد کامل تفصیلی شناور مورد استفاده در ردیف سند
+        /// </summary>
+        public string DetailAccountFullCode { get; set; }
+
+        /// <summary>
+        /// نام تفصیلی شناور مورد استفاده در ردیف سند
+        /// </summary>
+        public string DetailAccountName { get; set; }
+
+        /// <summary>
+        /// کد کامل مرکز هزینه مورد استفاده در ردیف سند
+        /// </summary>
+        public string CostCenterFullCode { get; set; }
+
+        /// <summary>
+        /// نام مرکز هزینه مورد استفاده در ردیف سند
+        /// </summary>
+        public string CostCenterName { get; set; }
+
+        /// <summary>
+        /// کد کامل پروژه مورد استفاده در ردیف سند
+        /// </summary>
+        public string ProjectFullCode { get; set; }
+
+        /// <summary>
+        /// نام پروژه مورد استفاده در ردیف سند
+        /// </summary>
+        public string ProjectName { get; set; }
+
+        /// <summary>
         /// شرح آرتیکل مالی
         /// </summary>
         public string Description { get; set; }

@@ -336,10 +336,10 @@
     "OtherAccountInfoTabTitle": "سایر مشخصات حساب",
     "DefaultCurrency": "ارز پیش فرض",
     "EntryLimitation": "محدودیت ثبت",
-    "Status": "فعال/غیرفعال",
+    "IsActive": "فعال/غیرفعال",
     "Active": "فعال",
     "Inactive": "غیرفعال",
-    "AdjustStatus": "وضعیت تسعیر حساب",
+    "IsCurrencyAdjustable": "وضعیت تسعیر حساب",
     "LedgerAccount": "حساب های کل"
   },
   "AccountCollection": {
@@ -493,7 +493,13 @@
     "Category": "ماهیت",
     "Description": "شرح",
     "RelatedAccounts": "حساب های مرتبط",
-    "RelatedAccountsWith": "حساب های زیر مجموعه"
+    "RelatedAccountsWith": "حساب های زیر مجموعه",
+    "NewAccount": "حساب جدید",
+    "NewLedgerAccount": "حساب کل جدید",
+    "EditAccount": "ویرایش حساب",
+    "EditAccountGroup": "ویرایش گروه حساب",
+    "DeleteAccount": "حذف حساب",
+    "TreeTitle": "گروه های حساب"
   },
   "Branch": {
     "BranchName": "شعبه",

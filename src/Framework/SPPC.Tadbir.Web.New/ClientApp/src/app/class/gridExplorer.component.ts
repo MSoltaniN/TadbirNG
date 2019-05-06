@@ -89,7 +89,17 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
   getTreeNode() {
     this.service.getModels(this.environmentModelsLedgerUrl).subscribe(res => {
       this.treeParentTitle = this.getText(this.parentTitlekey);
-      this.firstTreeNode = [{ id: -1, name: this.getText(this.parentTitlekey), code: '', fullCode: '', level: 0, childCount: 1, parentId: -1, isSelected: true }];
+
+      this.firstTreeNode = [{
+        id: -1,
+        name: this.getText(this.parentTitlekey),
+        code: '',
+        fullCode: '',
+        level: 0,
+        childCount: 1,
+        parentId: -1,
+        isSelected: true
+      }];
       this.selectedItem = this.firstTreeNode[0];
       this.treeNodes = res;
       this.breadCrumbList.push(this.firstTreeNode[0]);

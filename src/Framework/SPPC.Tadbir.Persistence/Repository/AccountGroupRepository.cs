@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -194,6 +195,32 @@ namespace SPPC.Tadbir.Persistence
         {
             base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تمام گروه های حساب را خوانده و برمیگرداند
+        /// </summary>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه گروه های حساب</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetAccountGroupsBriefAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
+            var accGroups = await repository
+                .GetEntityQuery()
+                .Select(grp => Mapper.Map<AccountItemBriefViewModel>(grp))
+                .ToListAsync();
+
+            var accRepository = UnitOfWork.GetAsyncRepository<Account>();
+
+            foreach (var item in accGroups)
+            {
+                var accounts = _repository
+                    .GetAllQuery<Account>(ViewName.Account)
+                    .Where(acc => acc.ParentId == null && acc.GroupId == item.Id);
+
+                item.ChildCount = accounts.Count();
+            }
+
+            return accGroups;
         }
 
         /// <summary>

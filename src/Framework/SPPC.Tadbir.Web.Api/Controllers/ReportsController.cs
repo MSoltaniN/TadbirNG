@@ -218,7 +218,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool outOfPage = false;
             quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
-            quickReport.Script = _strings.Format(AppStrings.ReportScript);
+            // در ریسورس های چند زبانه فقط باید متن چند زبانه قرار داده شود نه سورس سی شارپ.
+            ////quickReport.Script = _strings.Format(AppStrings.ReportScript);
 
             quickReport = SetPageWidth(quickReport, qr,out outOfPage);
             quickReport = CreateReportFooterBand(quickReport);
@@ -279,7 +280,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/journal/by-date/by-row
-        ////[Route(ReportApi.JournalByDateByRowUrl)]
+        [Route(ReportApi.JournalByDateByRowUrl)]
         public async Task<IActionResult> GetJournalByDateByRowAsync(DateTime? from, DateTime? to)
         {
             Sanitize(ref from, ref to);
