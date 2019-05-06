@@ -247,7 +247,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     */
 
-    this.reportManager.DecisionMakingForReport();
+    this.reportManager.DecisionMakingForShowReport();
   }
 
   dateValueChange(event: any) {

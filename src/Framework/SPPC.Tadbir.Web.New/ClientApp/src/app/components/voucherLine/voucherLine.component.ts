@@ -326,7 +326,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   //report methods
   public showReport()
   {  
-    this.reportManager.DecisionMakingForReport();
+    this.reportManager.DecisionMakingForShowReport();
   }
 
   onReportDataBind(arg: any) {
