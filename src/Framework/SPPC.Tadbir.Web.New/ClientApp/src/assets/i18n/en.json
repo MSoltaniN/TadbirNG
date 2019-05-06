@@ -338,10 +338,10 @@
     "OtherAccountInfoTabTitle": "Other Account Details",
     "DefaultCurrency": "Default Currency",
     "EntryLimitation": "Entry Limitation",
-    "Status": "Active/Inactive",
+    "IsActive": "Active/Inactive",
     "Active": "Active",
     "Inactive": "Inactive",
-    "AdjustStatus": "Can adjust with currency rate",
+    "IsCurrencyAdjustable": "Can adjust with currency rate",
     "LedgerAccount": "Ledger Accounts"
   },
   "AccountCollection": {
@@ -495,7 +495,13 @@
     "Category": "Category",
     "Description": "Description",
     "RelatedAccounts": "Related Accounts",
-    "RelatedAccountsWith": "Sub-accounts"
+    "RelatedAccountsWith": "Sub-accounts",
+    "NewAccount": "New Account",
+    "NewLedgerAccount": "New Ledger Account",
+    "EditAccount": "Edit Account",
+    "EditAccountGroup": "Edit Account Group",
+    "DeleteAccount": "Delete Account",
+    "TreeTitle": "Account Groups"
   },
   "Branch": {
     "BranchName": "Branch",

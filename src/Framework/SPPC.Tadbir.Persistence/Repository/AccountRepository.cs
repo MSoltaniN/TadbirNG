@@ -133,6 +133,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری یک گروه حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="groupId">شناسه یکتای دیتابیسی گروه حساب</param>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه سرفصل های حسابداری یک گروه حساب</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsByGroupIdAsync(int groupId)
+        {
+            var accounts = await _repository
+                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .Where(acc => acc.ParentId == null && acc.GroupId == groupId)
+                .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
+                .ToListAsync();
+            await FilterGrandchildrenAsync(accounts);
+            return accounts;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری زیرمجموعه یک سرفصل حسابداری مشخص را خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه یکی از سرفصل های حسابداری موجود</param>

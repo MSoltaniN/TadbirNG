@@ -83,5 +83,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده
         /// مانند نقش ها، دوره های مالی و شعبه ها</param>
         void SetCurrentContext(UserContextViewModel userContext);
+
+        /// <summary>
+        /// به روش آسنکرون، تمام گروه های حساب را خوانده و برمیگرداند
+        /// </summary>
+        /// <returns>مجموعه ای از مدل نمایشی خلاصه گروه های حساب</returns>
+        Task<IList<AccountItemBriefViewModel>> GetAccountGroupsBriefAsync();
     }
 }
