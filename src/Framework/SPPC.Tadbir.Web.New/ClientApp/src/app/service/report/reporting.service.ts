@@ -107,6 +107,7 @@ export class QuickReportViewInfo implements QuickReportViewModel
 {
   reportTitle: string;
   inchValue: number;
+  reportLang: string;
   columns: QuickReportColumnModel[];
   row: any;
 }

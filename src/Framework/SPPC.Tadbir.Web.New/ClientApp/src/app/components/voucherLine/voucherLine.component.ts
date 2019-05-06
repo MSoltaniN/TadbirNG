@@ -24,6 +24,8 @@ import { ReportApi } from '../../service/api/reportApi';
 import { Report } from '../../model/report';
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
 import { VoucherLineFormComponent } from '../../components/voucherLine/voucherLine-form.component';
+import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
+import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 
 
 
@@ -45,7 +47,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
   //#region Fields
   @ViewChild(GridComponent) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
 
   public rowData: GridDataResult;
   public selectedRows: string[] = [];
@@ -256,7 +260,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
      public renderer: Renderer2,
      public metadata: MetaDataService,
       public settingService: SettingService,
-      public reporingService:ReportingService) {
+    public reporingService: ReportingService) {
+
+    //this.metadataType = Metadatas.VoucherArticles;    
     super(toastrService, translate, renderer, metadata, settingService, Entities.VoucherLine, Metadatas.VoucherArticles);
   }
   //#endregion
@@ -318,34 +324,8 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   }
 
   public showReport()
-  {
-     /*
-      var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
-
-      this.reporingService.getAll(url).subscribe((res: Response) => {
-          
-        var report :Report = <any>res.body;
-        var serviceUrl = environment.BaseUrl + "/" + report.serviceUrl;
-        //add voucher filter to filters
-        var filter = this.addFilter(this.currentFilter,"Id",this.voucherId.toString(),"=={0}")
-
-        this.reporingService.getAll(serviceUrl,
-          this.sort, filter).subscribe((response: any) => {
-  
-             const m = moment();
-             var dateStr : string;
-             m.locale('fa'); 
-             if (m.isValid())
-                dateStr = m.format('jYYYY/jMM/jDD');  
-  
-            var reportData = {rows : response.body , currentDate: dateStr};
-            this.viewer.showVoucherStdFormReport(report ,reportData);
-          });
-        
-      });
-
-      */
-      
+  {  
+    this.reportManager.DecisionMakingForReport();
   }
 
   getVoucher() {

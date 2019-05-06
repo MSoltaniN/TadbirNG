@@ -8,6 +8,8 @@ import { UserService } from './service/user.service';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { SessionKeys } from '../environments/environment';
 import { Command } from './model/command';
+import { format } from 'url';
+import * as moment from 'jalali-moment';
 
 declare var $:any;
 declare var Stimulsoft: any;
@@ -68,6 +70,18 @@ export class AppComponent implements AfterViewInit,OnInit  {
       "this is a test function", "", typeof(String), "", [typeof(String)], [""], [""], function(value) {
         var result : string = value;        
         return result.toUpperCase();
+      });
+
+    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "ToShamsi",
+      "Convert miladi date to shamsi", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {    
+        /*if (value == null || value == undefined)
+          return "";
+        
+        moment.locale('en');
+        let MomentDate = moment(value).locale('fa').format("YYYY/MM/DD");
+        return MomentDate;*/
+        return "saeed";
+
       }); 
   }
 
