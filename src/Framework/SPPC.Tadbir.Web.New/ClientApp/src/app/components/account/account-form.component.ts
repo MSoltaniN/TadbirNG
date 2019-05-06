@@ -90,7 +90,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
         model.branchId = this.model.branchId;
         model.fiscalPeriodId = this.model.fiscalPeriodId;
         model.companyId = this.model.companyId;
-        if (this.parent)
+        if (model.level > 0)
           model.groupId = undefined;
         this.save.emit(model);
       }
@@ -101,6 +101,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
         model.companyId = this.CompanyId;
         model.parentId = this.parent ? this.parent.id : undefined;
         model.level = this.level;
+        if (model.level > 0)
+          model.groupId = undefined;
         this.save.emit(model);
       }
     }

@@ -40,7 +40,17 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for ledger accounts defined in current environment
         /// </summary>
-        public const string EnvironmentAccountsLedgerUrl = "accounts/ledger";
+        public const string EnvironmentLedgerAccountsUrl = "accounts/ledger";
+
+        /// <summary>
+        /// API client URL for ledger accounts by group id defined in current environment
+        /// </summary>
+        public const string EnvironmentLedgerAccountsByGroupId = "accounts/ledger/{0}";
+
+        /// <summary>
+        /// API server route URL for ledger accounts by group id defined in current environment
+        /// </summary>
+        public const string EnvironmentLedgerAccountsByGroupIdUrl = "accounts/ledger/{groupId:min(1)}";
 
         /// <summary>
         /// API client URL for a single account specified by identifier

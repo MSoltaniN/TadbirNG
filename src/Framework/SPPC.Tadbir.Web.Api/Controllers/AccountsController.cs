@@ -94,12 +94,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/ledger
-        [Route(AccountApi.EnvironmentAccountsLedgerUrl)]
+        [Route(AccountApi.EnvironmentLedgerAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentLedgerAccountsAsync()
         {
             _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetLedgerAccountsAsync();
+            return JsonReadResult(accounts);
+        }
+
+        // GET: api/accounts/ledger/{groupId:min(1)}
+        [Route(AccountApi.EnvironmentLedgerAccountsByGroupIdUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetEnvironmentLedgerAccountsByGroupIdAsync(int groupId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var accounts = await _repository.GetLedgerAccountsByGroupIdAsync(groupId);
             return JsonReadResult(accounts);
         }
 

@@ -75,6 +75,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        // GET: api/accgroups/brief
+        [Route(AccountGroupApi.AccountGroupBriefUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
+        public async Task<IActionResult> GetAccountGroupsBriefAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var accGroups = await _repository.GetAccountGroupsBriefAsync();
+            return JsonReadResult(accGroups);
+        }
+
         // POST: api/accgroups
         [HttpPost]
         [Route(AccountGroupApi.AccountGroupsUrl)]

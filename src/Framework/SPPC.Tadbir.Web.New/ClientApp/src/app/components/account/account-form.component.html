@@ -37,7 +37,7 @@
                 <div class="form-group">
                   <label for="groupId" class="control-label">{{ 'Account.AccountGroup' | translate }}</label>
 
-                  <kendo-dropdownlist class="ddl-acc" [disabled]="parent"
+                  <kendo-dropdownlist class="ddl-acc" [disabled]="parent || model.groupId"
                                       [data]="accGroupList"
                                       [textField]="'value'"
                                       [valueField]="'key'"
@@ -149,7 +149,7 @@
             <div class="row">
               <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
                 <div class="form-group">
-                  <label for="isActive" class="control-label">{{ 'Account.Status' | translate }}</label>
+                  <label for="isActive" class="control-label">{{ 'Account.IsActive' | translate }}</label>
 
                   <kendo-switch formControlName="isActive"
                                 [onLabel]="getText('Account.Active')"
@@ -161,7 +161,7 @@
 
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="isCurrencyAdjustable" class="control-label">{{ 'Account.AdjustStatus' | translate }}</label>
+                  <label for="isCurrencyAdjustable" class="control-label">{{ 'Account.IsCurrencyAdjustable' | translate }}</label>
 
                   <kendo-switch formControlName="isCurrencyAdjustable"
                                 [onLabel]="getText('Account.Active')"

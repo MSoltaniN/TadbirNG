@@ -1,12 +1,7 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { AccountGroup } from '../../model/index';
-import { Property } from "../../class/metadata/property"
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
-import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
@@ -40,25 +35,15 @@ interface Item {
 
 })
 
-export class AccountGroupsFormComponent extends DetailComponent {
+export class AccountGroupsFormComponent extends DetailComponent implements OnInit{
 
   categoriesList: Array<Item> = [];
   //create properties
   categorySelected: string;
-  active: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
+  @Input() public model: AccountGroup;
 
-  @Input() public set model(accountGroup: AccountGroup) {
-    this.editForm.reset(accountGroup);
-
-    if (accountGroup && this.categoriesList.length > 0) {
-      var item = this.categoriesList.find(f => f.value == accountGroup.category);
-      this.categorySelected = item ? item.key : undefined;
-    }
-
-    this.active = accountGroup !== undefined || this.isNew;
-  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<AccountGroup> = new EventEmitter();
@@ -69,7 +54,6 @@ export class AccountGroupsFormComponent extends DetailComponent {
     e.preventDefault();
     if (this.editForm.valid) {
       this.save.emit(this.editForm.value);
-      this.active = true;
     }
   }
 
@@ -80,7 +64,6 @@ export class AccountGroupsFormComponent extends DetailComponent {
 
   private closeForm(): void {
     this.isNew = false;
-    this.active = false;
     this.cancel.emit();
   }
 
@@ -93,14 +76,26 @@ export class AccountGroupsFormComponent extends DetailComponent {
     public renderer: Renderer2, public metadata: MetaDataService) {
 
     super(toastrService, translate, renderer, metadata, Entities.AccountGroup, Metadatas.AccountGroup);
-    this.getAccountGroupCategory();
   }
 
+  ngOnInit() {
+
+    this.editForm.reset()
+
+    this.getAccountGroupCategory();
+
+    this.editForm.reset(this.model);
+  }
 
   getAccountGroupCategory() {
     this.lookupService.getAll(LookupApi.AccountGroupCategories).subscribe(res => {
 
       this.categoriesList = res.body;
+
+      if (this.model && this.categoriesList.length > 0) {
+        var item = this.categoriesList.find(f => f.value == this.model.category);
+        this.categorySelected = item ? item.key : undefined;
+      }
     })
   }
 }

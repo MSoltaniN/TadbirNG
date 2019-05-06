@@ -48,5 +48,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// مشخص می کند که آیا وضعیت این بخش انتخاب شده است یا نه؟
         /// </summary>
         public bool IsSelected { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی گروه حساب این بخش
+        /// </summary>
+        public int? GroupId { get; set; }
     }
 }
