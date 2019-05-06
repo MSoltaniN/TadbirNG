@@ -26,13 +26,79 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/journal/by-date/by-row
-        [Route(JournalApi.JournalByDateByRowUrl)]
-        public async Task<IActionResult> GetJournalByDateByRowAsync(DateTime? from, DateTime? to)
+        ////[Route(JournalApi.JournalByDateByRowUrl)]
+        public async Task<IActionResult> GetJournalByDateByRowAsync(
+            DateTime? from, DateTime? to)
         {
             Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
-            var journal = await _repository.GetJournalByDateAsync(JournalMode.ByRows, from.Value, to.Value);
+            var journal = await _repository.GetJournalByDateAsync(
+                JournalMode.ByRows, from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-date/by-row/by-branch
+        [Route(JournalApi.JournalByDateByRowByBranchUrl)]
+        public async Task<IActionResult> GetJournalByDateByRowByBranchAsync(
+            DateTime? from, DateTime? to)
+        {
+            Sanitize(ref from, ref to);
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateByBranchAsync(
+                JournalMode.ByRows, from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-date/by-ledger
+        ////[Route(JournalApi.JournalByDateByLedgerUrl)]
+        public async Task<IActionResult> GetJournalByDateByLedgerAsync(DateTime? from, DateTime? to)
+        {
+            Sanitize(ref from, ref to);
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateAsync(
+                JournalMode.ByLedger, from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
+            Localize(journal);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-date/by-subsid
+        ////[Route(JournalApi.JournalByDateBySubsidiaryUrl)]
+        public async Task<IActionResult> GetJournalByDateBySubsidiaryAsync(DateTime? from, DateTime? to)
+        {
+            Sanitize(ref from, ref to);
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByDateAsync(
+                JournalMode.BySubsidiary, from.Value, to.Value);
+            PrepareJournal(journal, gridOptions);
+            Localize(journal);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-no/by-row
+        ////[Route(JournalApi.JournalByNoByRowUrl)]
+        public async Task<IActionResult> GetJournalByNoByRowAsync(int from, int to)
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByNoAsync(JournalMode.ByRows, from, to);
+            PrepareJournal(journal, gridOptions);
+            return Json(journal);
+        }
+
+        // GET: api/reports/journal/by-no/by-row/by-branch
+        [Route(JournalApi.JournalByNoByRowByBranchUrl)]
+        public async Task<IActionResult> GetJournalByNoByRowByBranchAsync(int from, int to)
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            _repository.SetCurrentContext(SecurityContext.User);
+            var journal = await _repository.GetJournalByNoByBranchAsync(JournalMode.ByRows, from, to);
             PrepareJournal(journal, gridOptions);
             return Json(journal);
         }
@@ -46,6 +112,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 _configRepository.GetCurrentFiscalDateRange(out rangeFrom, out rangeTo);
                 from = from ?? rangeFrom;
                 to = to ?? rangeTo;
+            }
+        }
+
+        private void Localize(JournalViewModel journal)
+        {
+            foreach (var journalItem in journal.Items)
+            {
+                journalItem.Description = _strings[AppStrings.AsQuotedInVoucherLines];
             }
         }
 

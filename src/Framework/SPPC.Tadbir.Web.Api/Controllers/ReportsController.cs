@@ -287,7 +287,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/journal/by-date/by-row
-        ////[Route(ReportApi.JournalByDateByRowUrl)]
+        [Route(ReportApi.JournalByDateByRowUrl)]
         public async Task<IActionResult> GetJournalByDateByRowAsync(DateTime? from, DateTime? to)
         {
             Sanitize(ref from, ref to);
