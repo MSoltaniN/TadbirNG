@@ -1274,5 +1274,21 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         /// Default text : {0} والد یافت نشد.
         /// </summary>
         public const string ParentItemNotFound = "ParentItemNotFound";
+
+        /// <summary>
+        /// Default text : از سند
+        /// </summary>
+        public const string FromVocherNo = "FromVocherNo";
+
+        /// <summary>
+        /// Default text : تا سند
+        /// </summary>
+        public const string ToVocherNo = "ToVocherNo";
+
+        /// <summary>
+        /// Default text : وضعیت سند
+        /// </summary>
+        public const string VoucherStatus = "VoucherStatus";
+        
     }
 }

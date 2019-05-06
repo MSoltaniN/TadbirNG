@@ -870,4 +870,13 @@
   <data name="ParentItemNotFound" xml:space="preserve">
     <value>{0} والد یافت نشد.</value>
   </data>
+  <data name="FromVoucherNo" xml:space="preserve">
+    <value>از سند</value>
+  </data>
+  <data name="ToVoucherNo" xml:space="preserve">
+    <value>تا سند</value>
+  </data>
+  <data name="VoucherStatus" xml:space="preserve">
+    <value>وضعیت سند</value>
+  </data>
 </root>

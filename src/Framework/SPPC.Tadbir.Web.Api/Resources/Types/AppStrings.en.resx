@@ -870,4 +870,13 @@
   <data name="ParentItemNotFound" xml:space="preserve">
     <value>Parent {0} could not be found.</value>
   </data>
+  <data name="FromVoucherNo" xml:space="preserve">
+    <value>From voucher no</value>
+  </data>
+  <data name="ToVoucherNo" xml:space="preserve">
+    <value>To voucher no</value>
+  </data>
+  <data name="VoucherStatus" xml:space="preserve">
+    <value>Voucher status</value>
+  </data>
 </root>
