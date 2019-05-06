@@ -457,17 +457,18 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       this.reportingService.getAll(url).subscribe((res: Response) => {    
 
         var printInfo: PrintInfo = <any>res.body;
-        if(printInfo.parameters.length > 0)
-        {
-          this.currentPrintInfo = printInfo;
-          if(formParams == undefined || formParams.length == 0)
-            this.showParameterForm(printInfo);  
-          else
-          {
-             var formPrameters = this.setParamterFromForm(formParams);
-             this.previewReport(formPrameters);
-          }
+        this.currentPrintInfo = printInfo;
 
+        if (printInfo.parameters.length > 0) {          
+          if (formParams == undefined || formParams.length == 0)
+            this.showParameterForm(printInfo);
+          else {
+            var formPrameters = this.setParamterFromForm(formParams);
+            this.previewReport(formPrameters);
+          }
+        }
+        else {
+          this.previewReport();
         }
       });
   }
@@ -498,14 +499,17 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     return paramArrays;
   }
 
-  public previewReport(params : ParameterInfo[])
+  public previewReport(params : ParameterInfo[] = null)
   {
     this.showReportViewer = true;
     this.showReportDesigner = false;    
     var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;        
+    var filterExpression: FilterExpression;
 
-    var filterExpression = this.createFilters(params,this.currentFilter);
-    serviceUrl = this.changeServiceUrl(serviceUrl,params);
+    if (params) {
+      filterExpression = this.createFilters(params, this.currentFilter);
+      serviceUrl = this.changeServiceUrl(serviceUrl, params);
+    }
     var sort = this.currentSort;
 
     this.reportingService.getAll(serviceUrl,
@@ -711,7 +715,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
 
 
-  public DecisionMakingForReport()
+  public DecisionMakingForShowReport()
     {
       var showQReport : boolean = false; 
       var treeData : Array<TreeItem> = null;      

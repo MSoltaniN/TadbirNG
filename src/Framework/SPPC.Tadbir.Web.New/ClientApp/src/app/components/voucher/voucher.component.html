@@ -49,12 +49,7 @@
       <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
       <grid-setting entityTypeName="Voucher"></grid-setting>
-      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>      
-      <!-- <button kendoButton (click)="showReportManagement()" type="button" [icon]="'printer'"></button>
-      <button kendoButton (click)="showQReport()" type="button" [icon]="'printer'"></button> -->
-     
-       <button kendoButton class="hidden-xs reportMargin" (click)="showReport()"
-        [icon]="'printer'" type="button" ></button>
+      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>  
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="35"></kendo-grid-checkbox-column>
