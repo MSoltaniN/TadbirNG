@@ -340,7 +340,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             txtPageHeaderText.Height = 0.8;
             txtPageHeaderText.HorAlignment = StiTextHorAlignment.Center;
             txtPageHeaderText.AutoWidth = true;
-            txtPageHeaderText.Font = new Font("Arial",12);
+            txtPageHeaderText.Font = new Font("Arial", 12);
             if (txtPageHeaderText.Height + txtPageHeaderText.Top > maxHeight)
             {
                 maxHeight = txtPageHeaderText.Height + txtPageHeaderText.Top;
