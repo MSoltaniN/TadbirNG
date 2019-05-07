@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Values;
@@ -8,6 +7,9 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر روزنامه را تعریف می کند
+    /// </summary>
     public interface IJournalRepository
     {
         /// <summary>
@@ -22,6 +24,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ</returns>
         Task<JournalViewModel> GetJournalByDateAsync(
             JournalMode journalMode, DateTime from, DateTime to, GridOptions gridOptions = null);
@@ -32,6 +35,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ و به تفکیک شعبه</returns>
         Task<JournalViewModel> GetJournalByDateByBranchAsync(
             JournalMode journalMode, DateTime from, DateTime to, GridOptions gridOptions = null);
@@ -42,6 +46,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
         /// <param name="from">شماره ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">شماره انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند</returns>
         Task<JournalViewModel> GetJournalByNoAsync(
             JournalMode journalMode, int from, int to, GridOptions gridOptions = null);
@@ -52,6 +57,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
         /// <param name="from">شماره ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">شماره انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند و به تفکیک شعبه</returns>
         Task<JournalViewModel> GetJournalByNoByBranchAsync(
             JournalMode journalMode, int from, int to, GridOptions gridOptions = null);

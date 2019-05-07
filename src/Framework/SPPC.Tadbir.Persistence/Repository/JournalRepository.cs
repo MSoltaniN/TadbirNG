@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -14,6 +16,9 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر روزنامه را پیاده سازی می کند
+    /// </summary>
     public class JournalRepository : IJournalRepository
     {
         /// <summary>
@@ -49,7 +54,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
-        /// <returns></returns>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ</returns>
         public async Task<JournalViewModel> GetJournalByDateAsync(
             JournalMode journalMode, DateTime from, DateTime to, GridOptions gridOptions = null)
         {
@@ -71,6 +77,12 @@ namespace SPPC.Tadbir.Persistence
                 case JournalMode.LedgerSummary:
                     journal = await GetJournalByDateLedgerSummaryAsync(from, to, gridOptions);
                     break;
+                case JournalMode.LedgerSummaryByDate:
+                    journal = await GetJournalByDateLedgerSummaryByDateAsync(from, to);
+                    break;
+                case JournalMode.MonthlyLedgerSummary:
+                    journal = await GetJournalByDateMonthlyLedgerSummaryAsync(from, to, gridOptions);
+                    break;
                 default:
                     break;
             }
@@ -84,6 +96,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
         /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ و به تفکیک شعبه</returns>
         public async Task<JournalViewModel> GetJournalByDateByBranchAsync(
             JournalMode journalMode, DateTime from, DateTime to, GridOptions gridOptions = null)
@@ -104,7 +117,14 @@ namespace SPPC.Tadbir.Persistence
                     journal = await GetJournalByDateBySubsidiaryByBranchAsync(from, to);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalByDateLedgerSummaryByBranchAsync(from, to, gridOptions);
+                    journal = await GetJournalByDateLedgerSummaryByBranchAsync(
+                        from, to, gridOptions);
+                    break;
+                case JournalMode.LedgerSummaryByDate:
+                    journal = await GetJournalByDateLedgerSummaryByDateByBranchAsync(from, to);
+                    break;
+                case JournalMode.MonthlyLedgerSummary:
+                    journal = await GetJournalByDateMonthlyLedgerSummaryAsync(from, to, gridOptions);
                     break;
                 default:
                     break;
@@ -119,6 +139,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
         /// <param name="from">شماره ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">شماره انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند</returns>
         public async Task<JournalViewModel> GetJournalByNoAsync(
             JournalMode journalMode, int from, int to, GridOptions gridOptions = null)
@@ -154,6 +175,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
         /// <param name="from">شماره ابتدا در دوره گزارشگیری مورد نظر</param>
         /// <param name="to">شماره انتها در دوره گزارشگیری مورد نظر</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند و به تفکیک شعبه</returns>
         public async Task<JournalViewModel> GetJournalByNoByBranchAsync(
             JournalMode journalMode, int from, int to, GridOptions gridOptions = null)
@@ -236,6 +258,41 @@ namespace SPPC.Tadbir.Persistence
         {
             var lines = await GetRawJournalByDateLinesAsync(from, to);
             var journalItems = await GetJournalLedgerSummaryItemsAsync(lines, gridOptions);
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateAsync(
+            DateTime from, DateTime to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            foreach (var byDateByNo in GetGroupByThenByItems(
+                lines, art => art.Voucher.Date))
+            {
+                journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
+            }
+
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryAsync(
+            DateTime from, DateTime to, GridOptions gridOptions)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var monthJournal = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
+            foreach (var month in monthEnum.GetMonths())
+            {
+                var monthLines = lines
+                    .Where(art => art.Voucher.Date >= month.Start
+                        && art.Voucher.Date <= month.End);
+                monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(monthLines, gridOptions));
+                Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
+                journalItems.AddRange(monthJournal);
+                monthJournal.Clear();
+            }
+
             return BuildJournal(journalItems);
         }
 
@@ -324,6 +381,44 @@ namespace SPPC.Tadbir.Persistence
         {
             var lines = await GetRawJournalByDateLinesAsync(from, to);
             var journalItems = await GetJournalLedgerSummaryByBranchItemsAsync(lines, gridOptions);
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateByBranchAsync(
+            DateTime from, DateTime to)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            foreach (var byDateByNo in GetGroupByThenByItems(
+                lines, art => art.Voucher.Date, art => art.BranchId))
+            {
+                journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
+            }
+
+            return BuildJournal(journalItems);
+        }
+
+        private async Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryByBranchAsync(
+            DateTime from, DateTime to, GridOptions gridOptions)
+        {
+            var journalItems = new List<JournalItemViewModel>();
+            var monthJournal = new List<JournalItemViewModel>();
+            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
+            foreach (var month in monthEnum.GetMonths())
+            {
+                var monthLines = lines
+                    .Where(art => art.Voucher.Date >= month.Start
+                        && art.Voucher.Date <= month.End);
+                foreach (var byBranch in GetGroupByThenByItems(monthLines, art => art.BranchId))
+                {
+                    monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(byBranch, gridOptions));
+                    Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
+                    journalItems.AddRange(monthJournal);
+                    monthJournal.Clear();
+                }
+            }
+
             return BuildJournal(journalItems);
         }
 
@@ -642,11 +737,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<JournalItemViewModel> GetJournalItemFromGroup(
-            IEnumerable<JournalItemViewModel> items, string fullCode)
+            IEnumerable<JournalItemViewModel> itemGroup, string fullCode)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
-            var item = items.First();
+            var item = itemGroup.First();
             var journalItem = new JournalItemViewModel()
             {
                 AccountFullCode = fullCode,
@@ -654,8 +749,8 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = item.BranchId,
                 BranchName = item.BranchName,
                 VoucherStatusId = item.VoucherStatusId,
-                Debit = items.Sum(art => art.Debit),
-                Credit = items.Sum(art => art.Credit),
+                Debit = itemGroup.Sum(art => art.Debit),
+                Credit = itemGroup.Sum(art => art.Credit),
                 Description = item.AccountName
             };
 
@@ -671,6 +766,17 @@ namespace SPPC.Tadbir.Persistence
 
         private IEnumerable<IEnumerable<VoucherLine>> GetGroupByThenByItems<TKey1>(
             IEnumerable<VoucherLine> lines, Func<VoucherLine, TKey1> firstSelector)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(firstSelector)
+                .GroupBy(firstSelector))
+            {
+                yield return byFirst;
+            }
+        }
+
+        private IEnumerable<IEnumerable<JournalItemViewModel>> GetGroupByThenByItems<TKey1>(
+            IEnumerable<JournalItemViewModel> lines, Func<JournalItemViewModel, TKey1> firstSelector)
         {
             foreach (var byFirst in lines
                 .OrderBy(firstSelector)
@@ -716,17 +822,6 @@ namespace SPPC.Tadbir.Persistence
                         yield return byThird;
                     }
                 }
-            }
-        }
-
-        private IEnumerable<IEnumerable<JournalItemViewModel>> GetGroupByThenByItems<TKey1>(
-            IEnumerable<JournalItemViewModel> lines, Func<JournalItemViewModel, TKey1> firstSelector)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(firstSelector)
-                .GroupBy(firstSelector))
-            {
-                yield return byFirst;
             }
         }
 

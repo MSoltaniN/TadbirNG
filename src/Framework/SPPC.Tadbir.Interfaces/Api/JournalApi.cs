@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
+    /// <summary>
+    /// Defines client URL and server routes for Journal reports
+    /// </summary>
     public sealed class JournalApi
     {
         private JournalApi()
@@ -51,6 +54,36 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string JournalByDateBySubsidiaryUrl = "reports/journal/by-date/by-subsid";
 
+        /// <summary>
+        /// API client URL for Journal-By Date-Ledger Summary report
+        /// </summary>
+        public const string JournalByDateLedgerSummary = "reports/journal/by-date/summary";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-Ledger Summary report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryUrl = "reports/journal/by-date/summary";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-Ledger Summary By Date report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryByDate = "reports/journal/by-date/sum-by-date";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-Ledger Summary By Date report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryByDateUrl = "reports/journal/by-date/sum-by-date";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-Monthly Ledger Summary report
+        /// </summary>
+        public const string JournalByDateMonthlyLedgerSummary = "reports/journal/by-date/sum-by-month";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-Monthly Ledger Summary report
+        /// </summary>
+        public const string JournalByDateMonthlyLedgerSummaryUrl = "reports/journal/by-date/sum-by-month";
+
         #endregion
 
         #region Journal By Date By Branch API
@@ -94,6 +127,36 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for Journal-By Date-By Subsidiary-By Branch report
         /// </summary>
         public const string JournalByDateBySubsidiaryByBranchUrl = "reports/journal/by-date/by-subsid/by-branch";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-Ledger Summary-By Branch report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryByBranch = "reports/journal/by-date/summary/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-Ledger Summary-By Branch report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryByBranchUrl = "reports/journal/by-date/summary/by-branch";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-Ledger Summary By Date-By Branch report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryByDateByBranch = "reports/journal/by-date/sum-by-date/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-Ledger Summary By Date-By Branch report
+        /// </summary>
+        public const string JournalByDateLedgerSummaryByDateByBranchUrl = "reports/journal/by-date/sum-by-date/by-branch";
+
+        /// <summary>
+        /// API client URL for Journal-By Date-Monthly Ledger Summary-By Branch report
+        /// </summary>
+        public const string JournalByDateMonthlyLedgerSummaryByBranch = "reports/journal/by-date/sum-by-month/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By Date-Monthly Ledger Summary-By Branch report
+        /// </summary>
+        public const string JournalByDateMonthlyLedgerSummaryByBranchUrl = "reports/journal/by-date/sum-by-month/by-branch";
 
         #endregion
 
@@ -139,6 +202,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string JournalByNoBySubsidiaryUrl = "reports/journal/by-no/by-subsid";
 
+        /// <summary>
+        /// API client URL for Journal-By No-Ledger Summary report
+        /// </summary>
+        public const string JournalByNoLedgerSummary = "reports/journal/by-no/summary";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-Ledger Summary report
+        /// </summary>
+        public const string JournalByNoLedgerSummaryUrl = "reports/journal/by-no/summary";
+
         #endregion
 
         #region Journal By No By Branch API
@@ -182,6 +255,16 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for Journal-By No-By Subsidiary-By Branch report
         /// </summary>
         public const string JournalByNoBySubsidiaryByBranchUrl = "reports/journal/by-no/by-subsid/by-branch";
+
+        /// <summary>
+        /// API client URL for Journal-By No-Ledger Summary-By Branch report
+        /// </summary>
+        public const string JournalByNoLedgerSummaryByBranch = "reports/journal/by-no/summary/by-branch";
+
+        /// <summary>
+        /// API server route URL for Journal-By No-Ledger Summary-By Branch report
+        /// </summary>
+        public const string JournalByNoLedgerSummaryByBranchUrl = "reports/journal/by-no/summary/by-branch";
 
         #endregion
     }
