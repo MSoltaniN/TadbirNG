@@ -737,11 +737,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<JournalItemViewModel> GetJournalItemFromGroup(
-            IEnumerable<JournalItemViewModel> items, string fullCode)
+            IEnumerable<JournalItemViewModel> itemGroup, string fullCode)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
-            var item = items.First();
+            var item = itemGroup.First();
             var journalItem = new JournalItemViewModel()
             {
                 AccountFullCode = fullCode,
@@ -749,8 +749,8 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = item.BranchId,
                 BranchName = item.BranchName,
                 VoucherStatusId = item.VoucherStatusId,
-                Debit = items.Sum(art => art.Debit),
-                Credit = items.Sum(art => art.Credit),
+                Debit = itemGroup.Sum(art => art.Debit),
+                Credit = itemGroup.Sum(art => art.Credit),
                 Description = item.AccountName
             };
 
@@ -766,6 +766,17 @@ namespace SPPC.Tadbir.Persistence
 
         private IEnumerable<IEnumerable<VoucherLine>> GetGroupByThenByItems<TKey1>(
             IEnumerable<VoucherLine> lines, Func<VoucherLine, TKey1> firstSelector)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(firstSelector)
+                .GroupBy(firstSelector))
+            {
+                yield return byFirst;
+            }
+        }
+
+        private IEnumerable<IEnumerable<JournalItemViewModel>> GetGroupByThenByItems<TKey1>(
+            IEnumerable<JournalItemViewModel> lines, Func<JournalItemViewModel, TKey1> firstSelector)
         {
             foreach (var byFirst in lines
                 .OrderBy(firstSelector)
@@ -811,17 +822,6 @@ namespace SPPC.Tadbir.Persistence
                         yield return byThird;
                     }
                 }
-            }
-        }
-
-        private IEnumerable<IEnumerable<JournalItemViewModel>> GetGroupByThenByItems<TKey1>(
-            IEnumerable<JournalItemViewModel> lines, Func<JournalItemViewModel, TKey1> firstSelector)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(firstSelector)
-                .GroupBy(firstSelector))
-            {
-                yield return byFirst;
             }
         }
 

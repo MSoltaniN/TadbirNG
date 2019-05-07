@@ -240,7 +240,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(JournalApi.JournalByNoLedgerSummaryByBranchUrl)]
         public async Task<IActionResult> GetJournalByNoLedgerSummaryByBranchAsync(int from, int to)
         {
-            var mode = JournalMode.BySubsidiary;
+            var mode = JournalMode.LedgerSummary;
             return await JournalByNumberResultAsync(from, to, mode, true, false, true);
         }
 
@@ -314,8 +314,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private void PrepareJournal(JournalViewModel journal, GridOptions gridOptions)
         {
             var userItems = journal.Items.Apply(gridOptions, false);
-            journal.DebitSum = userItems.Select(item => item.Debit).Sum();
-            journal.CreditSum = userItems.Select(item => item.Credit).Sum();
+            journal.DebitSum = userItems.Sum(item => item.Debit);
+            journal.CreditSum = userItems.Sum(item => item.Credit);
             SetItemCount(userItems.Count());
             journal.SetItems(journal.Items.Apply(gridOptions).ToList());
             int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
@@ -327,8 +327,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void PrepareSummaryJournal(JournalViewModel journal, GridOptions gridOptions)
         {
-            journal.DebitSum = journal.Items.Select(item => item.Debit).Sum();
-            journal.CreditSum = journal.Items.Select(item => item.Credit).Sum();
+            journal.DebitSum = journal.Items.Sum(item => item.Debit);
+            journal.CreditSum = journal.Items.Sum(item => item.Credit);
             SetItemCount(journal.Items.Count());
             journal.SetItems(journal.Items.Apply(gridOptions).ToList());
             int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
@@ -338,10 +338,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private delegate Task<JournalViewModel> JournalByDateDelegate(
-            JournalMode mode, DateTime from, DateTime to);
-        private delegate Task<JournalViewModel> JournalByNumberDelegate(
-            JournalMode mode, int from, int to);
         private delegate void PrepareDelegate(JournalViewModel journal, GridOptions gridOptions);
 
         private readonly IJournalRepository _repository;
