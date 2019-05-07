@@ -254,8 +254,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = isByBranch
-                ? await _repository.GetJournalByDateByBranchAsync(journalMode, from.Value, to.Value)
-                : await _repository.GetJournalByDateAsync(journalMode, from.Value, to.Value);
+                ? await _repository.GetJournalByDateByBranchAsync(
+                    journalMode, from.Value, to.Value, gridOptions)
+                : await _repository.GetJournalByDateAsync(
+                    journalMode, from.Value, to.Value, gridOptions);
             PrepareDelegate prepareJournal = isSummary
                 ? (PrepareDelegate)PrepareSummaryJournal
                 : PrepareJournal;
@@ -276,8 +278,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             _repository.SetCurrentContext(SecurityContext.User);
             var journal = isByBranch
-                ? await _repository.GetJournalByNoByBranchAsync(journalMode, from, to)
-                : await _repository.GetJournalByNoAsync(journalMode, from, to);
+                ? await _repository.GetJournalByNoByBranchAsync(journalMode, from, to, gridOptions)
+                : await _repository.GetJournalByNoAsync(journalMode, from, to, gridOptions);
             PrepareDelegate prepareJournal = isSummary
                 ? (PrepareDelegate)PrepareSummaryJournal
                 : PrepareJournal;
