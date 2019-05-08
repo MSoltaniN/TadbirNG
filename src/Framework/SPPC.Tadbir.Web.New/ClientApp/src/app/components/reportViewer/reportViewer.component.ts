@@ -207,17 +207,17 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
     setTimeout(() => {          
 
-      Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "ToShamsi",
-        "Convert miladi date to shamsi", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
-          /*if (value == null || value == undefined)
-            return "";
+      //Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "ToShamsi",
+      //  "Convert miladi date to shamsi", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
+      //    /*if (value == null || value == undefined)
+      //      return "";
           
-          moment.locale('en');
-          let MomentDate = moment(value).locale('fa').format("YYYY/MM/DD");
-          return MomentDate;*/
-          return "this is a test function";
+      //    moment.locale('en');
+      //    let MomentDate = moment(value).locale('fa').format("YYYY/MM/DD");
+      //    return MomentDate;*/
+      //    return "this is a test function";
 
-        }); 
+      //  }); 
 
       console.log('Load report from url');      
       this.report.load(reportTemplate);
