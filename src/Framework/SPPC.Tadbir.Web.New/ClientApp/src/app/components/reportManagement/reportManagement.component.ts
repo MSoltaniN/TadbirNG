@@ -265,6 +265,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
                 var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
                 this.selectedKeys.push(nodeData.id);
                 this.currentReportName = nodeData.caption;
+                this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"), nodeData.caption);
 
                 while (nodeData.parentId != null) {
                     expandKeysArray.push(nodeData.parentId);
@@ -277,6 +278,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
                 this.disableButtons = false;
                 this.currentReportId = report.id;
                 this.currentDefaultReportId = report.id;
+                
 
                 this.prepareReport(formParams);
             });
@@ -520,9 +522,6 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           parameters : params
         };
         
-        if(this.qReport)
-          reportData.rows = reportData.rows; //this.quickReportRowData;
-
         var viewerIsCloseable : boolean = false;
         if(this.currentReportId != this.currentDefaultReportId)
           viewerIsCloseable = true;
