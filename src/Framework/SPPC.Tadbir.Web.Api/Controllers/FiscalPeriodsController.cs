@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -63,13 +64,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
         public async Task<IActionResult> PostNewFiscalPeriodAsync([FromBody] FiscalPeriodViewModel fiscalPeriod)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var result = await ValidationResultAsync(fiscalPeriod);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveFiscalPeriodAsync(fiscalPeriod);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -81,13 +82,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedFiscalPeriodAsync(
             int fpId, [FromBody] FiscalPeriodViewModel fiscalPeriod)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var result = await ValidationResultAsync(fiscalPeriod, fpId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveFiscalPeriodAsync(fiscalPeriod);
             result = (outputItem != null)
                 ? Ok(outputItem)
@@ -152,9 +153,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            if (await _repository.ExistsFiscalPeriodInRange(fiscalPeriod.StartDate, fiscalPeriod.EndDate))
+            {
+                return BadRequest(_strings.Format(AppStrings.FiscalPeriodAlreadyDefined));
+            }
+
             if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
             {
-                return BadRequest(_strings.Format(AppStrings.PriorityDate, AppStrings.FiscalPeriod));
+                return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
             }
 
             if (await _repository.IsOverlapFiscalPeriodAsync(fiscalPeriod))
