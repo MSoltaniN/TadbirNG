@@ -362,8 +362,10 @@ namespace SPPC.Tadbir.Persistence
             string format = String.Format("D{0}", codeLength);
             var maxCode = (long)Math.Pow(10, codeLength) - 1;
             var lastCode = (existingCodes.Count() > 0) ? Int64.Parse(existingCodes.Max()) : 0;
-            var newCode = (lastCode < maxCode) ? lastCode + 1 : 0;
-            return newCode.ToString(format);
+            var newCode = lastCode + 1;
+            return (lastCode < maxCode)
+                ? newCode.ToString(format)
+                : newCode.ToString();
         }
 
         /// <summary>

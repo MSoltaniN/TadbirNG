@@ -86,11 +86,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Project));
             }
 
-            if (Int32.Parse(newProject.Code) == 0)
-            {
-                return BadRequest(_strings.Format(AppStrings.ChildItemsAreComplete, AppStrings.Project));
-            }
-
             return Json(newProject);
         }
 

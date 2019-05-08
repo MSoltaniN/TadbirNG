@@ -106,11 +106,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.DetailAccount));
             }
 
-            if (Int32.Parse(newDetail.Code) == 0)
-            {
-                return BadRequest(_strings.Format(AppStrings.ChildItemsAreComplete, AppStrings.DetailAccount));
-            }
-
             return Json(newDetail);
         }
 
