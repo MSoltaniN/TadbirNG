@@ -187,7 +187,7 @@ namespace SPPC.Tadbir.Persistence
             var amounts = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
                 .Where(line => line.Account.FullCode.StartsWith(deficitAccount.FullCode)
-                    && line.Voucher.Date >= fromDate && line.Voucher.Date <= toDate)
+                    && line.Voucher.Date.IsBetween(fromDate, toDate))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();
             decimal deficit = amounts
@@ -202,7 +202,7 @@ namespace SPPC.Tadbir.Persistence
             var amounts = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
                 .Where(line => line.Account.FullCode.StartsWith(salesAccount.FullCode)
-                    && line.Voucher.Date >= fromDate && line.Voucher.Date <= toDate)
+                    && line.Voucher.Date.IsBetween(fromDate, toDate))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();
             return amounts

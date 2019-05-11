@@ -285,8 +285,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var month in monthEnum.GetMonths())
             {
                 var monthLines = lines
-                    .Where(art => art.Voucher.Date >= month.Start
-                        && art.Voucher.Date <= month.End);
+                    .Where(art => art.Voucher.Date.IsBetween(month.Start, month.End));
                 monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(monthLines, gridOptions));
                 Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
                 journalItems.AddRange(monthJournal);
@@ -302,7 +301,7 @@ namespace SPPC.Tadbir.Persistence
             return await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
-                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Where(art => art.Voucher.Date.IsBetween(from, to))
                 .ToListAsync();
         }
 
@@ -313,7 +312,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
-                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Where(art => art.Voucher.Date.IsBetween(from, to))
                 .ToListAsync();
         }
 
@@ -408,8 +407,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var month in monthEnum.GetMonths())
             {
                 var monthLines = lines
-                    .Where(art => art.Voucher.Date >= month.Start
-                        && art.Voucher.Date <= month.End);
+                    .Where(art => art.Voucher.Date.IsBetween(month.Start, month.End));
                 foreach (var byBranch in GetGroupByThenByItems(monthLines, art => art.BranchId))
                 {
                     monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(byBranch, gridOptions));
