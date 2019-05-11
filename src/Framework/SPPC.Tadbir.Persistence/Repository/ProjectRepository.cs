@@ -363,10 +363,8 @@ namespace SPPC.Tadbir.Persistence
             string format = String.Format("D{0}", codeLength);
             var maxCode = (long)Math.Pow(10, codeLength) - 1;
             var lastCode = (existingCodes.Count() > 0) ? Int64.Parse(existingCodes.Max()) : 0;
-            var newCode = lastCode + 1;
-            return (lastCode < maxCode)
-                ? newCode.ToString(format)
-                : newCode.ToString();
+            var newCode = Math.Min(lastCode + 1, maxCode);
+            return newCode.ToString(format);
         }
 
         /// <summary>
@@ -429,7 +427,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             return await repository
                 .GetEntityQuery()
-                .Where(prj => prj.ParentId == parentId)
+                .Where(prj => prj.ParentId == parentId
+                    && prj.FiscalPeriodId <= _currentContext.FiscalPeriodId)
                 .Select(prj => prj.Code)
                 .ToListAsync();
         }

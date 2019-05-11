@@ -51,5 +51,18 @@ namespace SPPC.Framework.Extensions
             var enCulture = new CultureInfo("en");
             return DateTime.Parse(value, enCulture);
         }
+
+        /// <summary>
+        /// مقایسه تاریخ بین آبجکت جاری و آبجکت دیگری را بدون در نظر گرفتن ساعت انجام می دهد.
+        /// </summary>
+        /// <param name="dateTime">آبجکتی که این متد توسط آن فراخوانی می شود</param>
+        /// <param name="other">آبجکتی که فقط بخش تاریخ آن با آبجکت جاری مقایسه می شود</param>
+        /// <returns>اگر تاریخ جاری بزرگتر باشد مقدار یک، اگر مساوی باشد مقدار صفر و
+        /// اگر کوچکتر باشد مقدار منفی یک را برمی گرداند</returns>
+        public static int CompareWith(this DateTime dateTime, DateTime other)
+        {
+            Verify.ArgumentNotNull(dateTime);
+            return dateTime.Date.CompareTo(other.Date);
+        }
     }
 }

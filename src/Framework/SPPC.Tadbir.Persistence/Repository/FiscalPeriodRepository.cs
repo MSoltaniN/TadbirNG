@@ -246,9 +246,10 @@ namespace SPPC.Tadbir.Persistence
             var fiscalPeriods = await repository
                 .GetByCriteriaAsync(
                 fp => fp.CompanyId == fiscalPeriod.CompanyId && fp.Id != fiscalPeriod.Id
-                && ((fp.StartDate > fiscalPeriod.StartDate && fp.StartDate < fiscalPeriod.EndDate)
-                || (fp.StartDate < fiscalPeriod.StartDate && fp.EndDate > fiscalPeriod.EndDate)
-                || (fp.EndDate > fiscalPeriod.StartDate && fp.EndDate < fiscalPeriod.EndDate)));
+                && ((fiscalPeriod.StartDate.CompareWith(fp.StartDate) >= 0
+                    && fiscalPeriod.StartDate.CompareWith(fp.EndDate) <= 0)
+                || (fiscalPeriod.EndDate.CompareWith(fp.StartDate) >= 0
+                    && fiscalPeriod.EndDate.CompareWith(fp.EndDate) <= 0)));
 
             return (fiscalPeriods.Count > 0);
         }
