@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
@@ -37,7 +38,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه جاری تعریف شده اند، از دیتابیس خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه اسناد مالی از نوع مفهومی سند حسابداری را که در دوره مالی و شعبه جاری
+        /// تعریف شده اند، از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
@@ -46,6 +48,7 @@ namespace SPPC.Tadbir.Persistence
             var vouchers = await _repository.GetAllOperationAsync<Voucher>(
                 ViewName.Voucher, v => v.Lines, v => v.Status);
             return vouchers
+                .Where(item => item.SubjectType == 0)
                 .OrderBy(item => item.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
                 .Apply(gridOptions)
@@ -89,7 +92,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
             where TViewModel : class, new()
         {
-            return await _repository.GetOperationCountAsync<Voucher, TViewModel>(ViewName.Voucher, gridOptions);
+            return await _repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(item => item.SubjectType == 0)
+                .Select(item => Mapper.Map<TViewModel>(item))
+                .Apply(gridOptions, false)
+                .CountAsync();
         }
 
         /// <summary>
@@ -164,6 +171,7 @@ namespace SPPC.Tadbir.Persistence
             var duplicates = await repository
                 .GetByCriteriaAsync(vch => vch.Id != voucher.Id
                     && vch.No == voucher.No
+                    && vch.SubjectType == voucher.SubjectType
                     && vch.FiscalPeriod.Id == voucher.FiscalPeriodId);
             return (duplicates.Count > 0);
         }
@@ -206,6 +214,10 @@ namespace SPPC.Tadbir.Persistence
         {
             voucher.No = voucherView.No;
             voucher.Date = voucherView.Date;
+            voucher.Reference = voucherView.Reference;
+            voucher.Association = voucherView.Association;
+            voucher.ModifiedById = _currentContext.Id;
+            voucher.SaveCount++;
             voucher.Description = voucherView.Description;
         }
 
@@ -218,8 +230,8 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "Name : {1}{0}Date : {2}{0}Description : {3}",
-                    Environment.NewLine, entity.No, entity.Date, entity.Description)
+                    "Name : {1}{0}Date : {2}{0}Description : {3}{0}Reference : {4}{0}Association : {5}{0}",
+                    Environment.NewLine, entity.No, entity.Date, entity.Description, entity.Reference, entity.Association)
                 : null;
         }
 

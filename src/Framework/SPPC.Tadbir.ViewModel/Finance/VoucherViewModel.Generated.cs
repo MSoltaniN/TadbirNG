@@ -31,6 +31,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
             Reference = String.Empty;
             Association = String.Empty;
             Description = String.Empty;
+            SaveCount = 1;
         }
 
         /// <summary>
