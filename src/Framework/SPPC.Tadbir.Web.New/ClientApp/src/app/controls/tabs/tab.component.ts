@@ -6,6 +6,7 @@
 
 import { Component, Input, ViewChild } from '@angular/core';
 import { ReportViewerComponent } from '../../components/reportViewer/reportViewer.component';
+import { QuickReportViewInfo } from '../../service/report/reporting.service';
 
 
 @Component({
@@ -36,12 +37,13 @@ export class TabComponent {
   @Input() Id:string;
   @Input() Manager: any;
   @Input() IsQuickReport: boolean;
+  @Input() QuickReportInfo: QuickReportViewInfo;
 
   @ViewChild(ReportViewerComponent) reportViewer: ReportViewerComponent;  
     
 
   public callViewer()
   {      
-      this.reportViewer.showReportViewer(this.template,this.dataContext,this.Manager,this.IsQuickReport)
+      this.reportViewer.showReportViewer(this.template,this.dataContext,this.Manager,this.IsQuickReport,this.QuickReportInfo)
   }
 }

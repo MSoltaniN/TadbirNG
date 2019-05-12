@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewEncapsulati
 import { Http } from '@angular/http';
 import { DefaultComponent } from '../../class/default.component';
 import { VoucherService, VoucherInfo, FiscalPeriodService, SettingService } from '../../service/index';
-import { Voucher } from '../../model/index';
+import { Voucher, QuickReportColumnModel } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +21,7 @@ import { DocumentStatusValue } from '../../enum/documentStatusValue';
 import { MessageType, Layout, Entities, Metadatas, environment } from "../../../environments/environment";
 import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Report } from '../../model/report';
-import { ReportingService, ParameterInfo } from '../../service/report/reporting.service';
+import { ReportingService, ParameterInfo, QuickReportViewInfo } from '../../service/report/reporting.service';
 import * as moment from 'jalali-moment';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { TabsComponent } from '../../controls/tabs/tabs.component';
@@ -84,7 +84,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     } 
 
     Stimulsoft.Base.StiLicense.key = "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";
-      
+    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BZar.ttf");
   }
 
   fillResourceVariables(reportObject:Report,stiReport:any)
@@ -198,7 +198,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     this.viewer.renderHtml(this.Id);
   }
 
-  showReportViewer(reportTemplate :string, reportData: any,manager : any, isQuickReport:boolean)
+  showReportViewer(reportTemplate: string, reportData: any, manager: any, isQuickReport: boolean, quickReportViewInfo: QuickReportViewInfo)
   {      
     this.active = true;
     this.viewer =  new Stimulsoft.Viewer.StiViewer(null, this.Id, false);
@@ -226,25 +226,41 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       //report is quick report
       if (this.quickReport) {
 
+        var reportRows = null;
+
         if (reportData.rows instanceof Array)
+        {
           dataSet.readJson(reportData.rows);
+          reportRows = reportData.rows;
+        }
         else {
           //TODO : fire an event in report viewer component for invoke readjson method
-          dataSet.readJson(reportData.rows.items)          
+          dataSet.readJson(reportData.rows.items)
+          reportRows = reportData.rows.items;
         }
 
         var data = dataSet.tables.getByIndex(0);
-
-        //Add data to datastore
-        this.report.regData("data", "data", dataSet);
-
+        
         //Fill dictionary
         var dataSource = new Stimulsoft.Report.Dictionary.StiDataTableSource(data.tableName, data.tableName, data.tableName);
         data.columns.list.forEach(element => {
-          var dataType = element.dataType.jsNamespace + "." + element.dataType.jsTypeName;
+          var dataType = element.dataType.jsNamespace + "." + element.dataType.jsTypeName;          
           dataSource.columns.add(new Stimulsoft.Report.Dictionary.StiDataColumn(element.columnName, element.columnName,
             element.columnName, dataType));
         });
+
+        if (quickReportViewInfo) {
+          var dateColumns = quickReportViewInfo.columns.filter(c => c.dataType.toLowerCase() === "system.datetime");
+          if (dateColumns.length > 0) {
+            var convertedData = reportRows;
+            convertedData = this.convertToShamsiDate(convertedData, dateColumns);
+            this.report.regData("data", "data", convertedData);
+          }
+        }        
+        else {
+          //Add data to datastore
+          this.report.regData("data", "data", dataSet);
+        }
 
         this.report.dictionary.dataSources.add(dataSource);
 
@@ -294,6 +310,19 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         this.reportManager.onDataBind.emit(arg);
       }         
     }, 10);   
+  }
+
+  convertToShamsiDate(rows: any,cols: Array<QuickReportColumnModel>) {
+
+    for (var index = 0; index < rows.length; index++) {
+      cols.forEach(function (item) {
+        if (rows[index][item.name]) {          
+          let momentDate = moment(rows[index][item.name]).locale('fa').format("YYYY/MM/DD");
+          rows[index][item.name] = momentDate;
+        }
+      })      
+    }
+    return rows;
   }
 
 }

@@ -78,7 +78,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   report: any = new Stimulsoft.Report.StiReport();
   
   currentReportId : any;
-  currentViewId : any;
+  currentViewId: any;
+  currentQuickReportViewInfo: QuickReportViewInfo
   qReport : boolean;
   currentReportName : string;
   currentPrintInfo : PrintInfo;
@@ -162,21 +163,22 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
   //متد نمایش گزارش فوری
   public showQuickReport(viewId:string,formParams:Array<ReportParamComponent>,
-    filter:FilterExpression = null,sort:SortDescriptor[] = null,designJson:string,qrRowData:any)
+    filter: FilterExpression = null, sort: SortDescriptor[] = null, designJson: string, qrRowData: any, quickReportViewInfo: QuickReportViewInfo)
   {
       this.active = true;      
       
       if(viewId)
       {
-          this.currentViewId = viewId;          
-          this.showDesktopTab = false;
-          this.currentFilter = filter;
-          this.currentSort = sort;
+        this.currentViewId = viewId;          
+        this.showDesktopTab = false;
+        this.currentFilter = filter;
+        this.currentSort = sort;
+        this.currentQuickReportViewInfo = quickReportViewInfo;
       }
       else      
       {
-          this.showDesktopTab = true;
-          this.currentViewId = undefined;
+        this.showDesktopTab = true;
+        this.currentViewId = undefined;
       }     
 
       this.quickReportJsonDesign = designJson;
@@ -533,7 +535,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           reportTemplate = this.currentPrintInfo.template;
 
         this.tabsComponent.openTab(this.currentReportName,reportTemplate,
-          reportData,viewerIsCloseable,true,false,this.currentReportId,this,this.qReport);
+          reportData,viewerIsCloseable,true,false,this.currentReportId,this,this.qReport,this.currentQuickReportViewInfo);
 
       });      
   } 
@@ -786,7 +788,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             if (this.ViewIdentity.params.length > 0)
               params = this.ViewIdentity.params.toArray();
             
-            this.showQuickReport(id, params, this.Filter, this.Sort, design, treeData );
+            this.showQuickReport(id, params, this.Filter, this.Sort, design, treeData,viewInfo);
     
           });
       }
