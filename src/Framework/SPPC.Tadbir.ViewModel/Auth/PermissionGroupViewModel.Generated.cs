@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Values;
@@ -30,6 +31,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
             this.Name = String.Empty;
             this.EntityName = String.Empty;
             this.Description = String.Empty;
+            Permissions = new List<PermissionViewModel>();
         }
 
         /// <summary>

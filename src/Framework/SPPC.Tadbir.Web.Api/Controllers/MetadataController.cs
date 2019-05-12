@@ -30,6 +30,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        // GET: api/metadata/permissions
+        [Route(MetadataApi.PermissionMetadataUrl)]
+        public async Task<IActionResult> GetPermissionMetadataAsync()
+        {
+            var permissions = await _repository.GetPermissionGroupsAsync();
+            return Json(permissions);
+        }
+
         private IActionResult JsonReadResult<TData>(TData metadata)
         {
             var result = (metadata != null)

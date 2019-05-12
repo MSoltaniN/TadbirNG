@@ -121,5 +121,10 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// </summary>
         [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Settings { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

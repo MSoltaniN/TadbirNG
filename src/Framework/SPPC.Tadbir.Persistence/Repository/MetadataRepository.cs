@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -101,6 +103,29 @@ namespace SPPC.Tadbir.Persistence
                 .Select(cmd => _mapper.Map<CommandViewModel>(cmd))
                 .ToList();
         }
+
+        #region System Designer
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای مجوزهای امنیتی موجود را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از اطلاعات فراداده ای مجوزهای امنیتی موجود</returns>
+        public async Task<IList<PermissionGroupViewModel>> GetPermissionGroupsAsync()
+        {
+            var viewModels = new List<PermissionGroupViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<PermissionGroup>();
+            var permissions = await repository.GetAllAsync(grp => grp.Permissions);
+            Array.ForEach(permissions.ToArray(), perm =>
+            {
+                var viewModel = _mapper.Map<PermissionGroupViewModel>(perm);
+                viewModel.Permissions.AddRange(
+                    perm.Permissions.Select(item => _mapper.Map<PermissionViewModel>(item)));
+                viewModels.Add(viewModel);
+            });
+            return viewModels;
+        }
+
+        #endregion
 
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;

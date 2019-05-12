@@ -31,5 +31,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for entity metadata
         /// </summary>
         public const string EntityMetadataByIdUrl = "metadata/entity/{entityId:min(1)}";
+
+        /// <summary>
+        /// API client URL for permission metadata in security system
+        /// </summary>
+        public const string PermissionMetadata = "metadata/permissions";
+
+        /// <summary>
+        /// API client URL for permission metadata in security system
+        /// </summary>
+        public const string PermissionMetadataUrl = "metadata/permissions";
     }
 }
