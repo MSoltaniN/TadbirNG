@@ -219,7 +219,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Value,
                     opts => opts.MapFrom(
-                        src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
+                        src => String.Join(",", new[] { "VoucherDisplay", src.No.ToString(), src.Date.ToShortDateString() })));
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(

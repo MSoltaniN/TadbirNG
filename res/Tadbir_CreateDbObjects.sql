@@ -231,24 +231,35 @@ CREATE TABLE [Finance].[AccountCollectionAccount] (
 GO
 
 CREATE TABLE [Finance].[Voucher] (
-    [VoucherID]         INT              IDENTITY (1, 1) NOT NULL,
-	[FiscalPeriodID]    INT              NOT NULL,
-	[BranchID]          INT              NOT NULL,
-    [DocumentID]        INT              NULL,
-	[StatusID]          INT              NOT NULL,
-    [CreatedByID]       INT              NOT NULL,
-    [ModifiedByID]      INT              NOT NULL,
-    [No]                NVARCHAR(64)     NOT NULL,
-    [Date]              DATETIME         NOT NULL,
-    [Reference]         NVARCHAR(64)     NULL,
-    [Description]       NVARCHAR(512)    NULL,
-    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Voucher_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_Voucher_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [VoucherID]       INT              IDENTITY (1, 1) NOT NULL,
+    [FiscalPeriodID]  INT              NOT NULL,
+    [BranchID]        INT              NOT NULL,
+    [DocumentID]      INT              NOT NULL,
+    [StatusID]        INT              NOT NULL,
+    [IssuedByID]      INT              NOT NULL,
+    [ModifiedByID]    INT              NOT NULL,
+    [ConfirmedByID]   INT              NOT NULL,
+    [ApprovedByID]    INT              NOT NULL,
+    [No]              INT              NOT NULL,
+    [Date]            DATETIME         NOT NULL,
+    [Reference]       NVARCHAR(64)     NULL,
+    [Association]     NVARCHAR(64)     NULL,
+    [IsBalanced]      BIT              NOT NULL,
+    [Type]            SMALLINT         NOT NULL,
+    [SubjectType]     SMALLINT         NOT NULL,
+    [SaveCount]       INT              NOT NULL,
+    [Description]     NVARCHAR(512)    NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Voucher_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_Voucher_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Voucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
-    , CONSTRAINT [FK_Finance_Voucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_Voucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_Voucher_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
-    , CONSTRAINT [FK_Finance_Voucher_Core_DocumentStatus] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus] ([StatusID])
+    , CONSTRAINT [FK_Finance_Voucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_Voucher_Finance_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Finance].[Branch]([BranchID])
+    , CONSTRAINT [FK_Finance_Voucher_Finance_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Finance].[Document]([DocumentID])
+    , CONSTRAINT [FK_Finance_Voucher_Finance_Status] FOREIGN KEY ([StatusID]) REFERENCES [Finance].[DocumentStatus]([DocumentStatusID])
+    , CONSTRAINT [FK_Finance_Voucher_Finance_IssuedBy] FOREIGN KEY ([IssuedByID]) REFERENCES [Finance].[User]([UserID])
+    , CONSTRAINT [FK_Finance_Voucher_Finance_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Finance].[User]([UserID])
+    , CONSTRAINT [FK_Finance_Voucher_Finance_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Finance].[User]([UserID])
+    , CONSTRAINT [FK_Finance_Voucher_Finance_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Finance].[User]([UserID])
 )
 GO
 
