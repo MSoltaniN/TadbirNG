@@ -438,8 +438,8 @@
   <data name="DateOverlap" xml:space="preserve">
     <value>تاریخ دوره مالی با دوره مالی دیگری همپوشانی دارد.</value>
   </data>
-  <data name="PriorityDate" xml:space="preserve">
-    <value>تاریخ پایان {0} باید بعد از تاریخ شروع {0} باشد</value>
+  <data name="InvalidDatePeriod" xml:space="preserve">
+    <value>تاریخ شروع {0} نمیتواند بعد از تاریخ پایان آن باشد.</value>
   </data>
   <data name="Companies" xml:space="preserve">
     <value>شرکت ها</value>
@@ -878,5 +878,8 @@
   </data>
   <data name="VoucherStatus" xml:space="preserve">
     <value>وضعیت سند</value>
+  </data>
+  <data name="FiscalPeriodAlreadyDefined" xml:space="preserve">
+    <value>در این محدوده تاریخی قبلاً یک دوره مالی تعریف شده است.</value>
   </data>
 </root>

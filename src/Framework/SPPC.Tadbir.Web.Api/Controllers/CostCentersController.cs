@@ -86,11 +86,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.CostCenter));
             }
 
-            if (Int32.Parse(newCenter.Code) == 0)
-            {
-                return BadRequest(_strings.Format(AppStrings.ChildItemsAreComplete, AppStrings.CostCenter));
-            }
-
             return Json(newCenter);
         }
 

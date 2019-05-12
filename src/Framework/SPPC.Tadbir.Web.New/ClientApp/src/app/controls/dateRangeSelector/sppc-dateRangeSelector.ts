@@ -4,6 +4,7 @@ import { SettingService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from '../../class/base.component';
 import { MessageType, SessionKeys } from '../../../environments/environment';
+import * as moment from 'jalali-moment';
 import { stringify } from 'querystring';
 
 
@@ -82,6 +83,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     this.myForm.valueChanges.subscribe(val => {
 
       if (val.fromDate && val.toDate) {
+
         if (this.compareDate(val.fromDate, val.toDate) != 1) {
           if (this.compareDate(val.fromDate, this.fpStartDate) == -1) {
             this.showMessage("تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد", MessageType.Warning);
@@ -93,7 +95,12 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
               this.myForm.patchValue({ 'toDate': this.fpEndDate });
             }
             else {
-              this.valueChange.emit({ fromDate: val.fromDate, toDate: val.toDate });
+
+              this.valueChange.emit({
+                fromDate: this.getEmitDate(val.fromDate, false),
+                toDate: this.getEmitDate(val.toDate, true)
+              });
+
               this.saveTemporarilyDate(val.fromDate, val.toDate);
             }
         }
@@ -106,6 +113,19 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
     });
   }
+
+
+  getEmitDate(date: Date, isToDate: boolean): any {
+    var dateValue = moment(date).format('YYYY/MM/DD');
+    if (isToDate) {
+      var myDate = new Date(dateValue + ' ' + '23:59:59');
+    }
+    else {
+      myDate = new Date(dateValue + ' ' + '00:00:01');
+    }
+    return moment(myDate).format('YYYY/MM/DD HH:mm:ss');
+  }
+
 
 
   getFromDate() {
@@ -144,16 +164,17 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     let d2 = new Date(dateB);
     let d1 = new Date(dateA);
 
-    let same = d1.getTime() === d2.getTime();
+    var diff = d1.getTime() - d2.getTime();
+    var diffDays = Math.ceil(diff / (1000 * 3600 * 24));
 
     //اگر دو تاریخ مساوی باشد
-    if (same) return 0;
+    if (diffDays == 0) return 0;
 
     //اگر تاریخ اول از تاریخ دوم بزرگتر باشد
-    if (d1 > d2) return 1;
+    if (diffDays > 0) return 1;
 
     //اگر تاریخ اول از تاریخ دوم کوچکتر باشد
-    if (d1 < d2) return -1;
+    if (diffDays < 0) return -1;
   }
 
   /**

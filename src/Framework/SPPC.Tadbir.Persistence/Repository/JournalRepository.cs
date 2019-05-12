@@ -231,7 +231,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByDateLinesAsync(from, to);
             foreach (var byDateByNo in GetGroupByThenByItems(
-                lines, art => art.Voucher.Date, art => Int32.Parse(art.Voucher.No)))
+                lines, art => art.Voucher.Date, art => art.Voucher.No))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
             }
@@ -245,7 +245,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByDateLinesAsync(from, to);
             foreach (var byDateByNo in GetGroupByThenByItems(
-                lines, art => art.Voucher.Date, art => Int32.Parse(art.Voucher.No)))
+                lines, art => art.Voucher.Date, art => art.Voucher.No))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byDateByNo));
             }
@@ -285,8 +285,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var month in monthEnum.GetMonths())
             {
                 var monthLines = lines
-                    .Where(art => art.Voucher.Date >= month.Start
-                        && art.Voucher.Date <= month.End);
+                    .Where(art => art.Voucher.Date.IsBetween(month.Start, month.End));
                 monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(monthLines, gridOptions));
                 Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
                 journalItems.AddRange(monthJournal);
@@ -302,7 +301,7 @@ namespace SPPC.Tadbir.Persistence
             return await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
-                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Where(art => art.Voucher.Date.IsBetween(from, to))
                 .ToListAsync();
         }
 
@@ -313,7 +312,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
-                .Where(art => art.Voucher.Date >= from && art.Voucher.Date <= to)
+                .Where(art => art.Voucher.Date.IsBetween(from, to))
                 .ToListAsync();
         }
 
@@ -322,7 +321,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return voucherLines
                 .OrderBy(art => art.Voucher.Date)
-                    .ThenBy(art => Int32.Parse(art.Voucher.No))
+                    .ThenBy(art => art.Voucher.No)
                 .Select(art => _mapper.Map<JournalItemViewModel>(art));
         }
 
@@ -352,7 +351,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByDateLinesAsync(from, to);
             foreach (var byDateByNoByBranch in GetGroupByThenByItems(
-                lines, art => art.Voucher.Date, art => Int32.Parse(art.Voucher.No),
+                lines, art => art.Voucher.Date, art => art.Voucher.No,
                 art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNoByBranch));
@@ -367,7 +366,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByDateLinesAsync(from, to);
             foreach (var byDateByNoByBranch in GetGroupByThenByItems(
-                lines, art => art.Voucher.Date, art => Int32.Parse(art.Voucher.No),
+                lines, art => art.Voucher.Date, art => art.Voucher.No,
                 art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byDateByNoByBranch));
@@ -408,8 +407,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var month in monthEnum.GetMonths())
             {
                 var monthLines = lines
-                    .Where(art => art.Voucher.Date >= month.Start
-                        && art.Voucher.Date <= month.End);
+                    .Where(art => art.Voucher.Date.IsBetween(month.Start, month.End));
                 foreach (var byBranch in GetGroupByThenByItems(monthLines, art => art.BranchId))
                 {
                     monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(byBranch, gridOptions));
@@ -427,7 +425,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return voucherLines
                 .OrderBy(art => art.Voucher.Date)
-                    .ThenBy(art => Int32.Parse(art.Voucher.No))
+                    .ThenBy(art => art.Voucher.No)
                         .ThenBy(art => art.BranchId)
                 .Select(art => _mapper.Map<JournalItemViewModel>(art));
         }
@@ -456,7 +454,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByNoLinesAsync(from, to);
             foreach (var byNo in GetGroupByThenByItems(
-                lines, art => Int32.Parse(art.Voucher.No)))
+                lines, art => art.Voucher.No))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byNo));
             }
@@ -470,7 +468,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByNoLinesAsync(from, to);
             foreach (var byNo in GetGroupByThenByItems(
-                lines, art => Int32.Parse(art.Voucher.No)))
+                lines, art => art.Voucher.No))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byNo));
             }
@@ -491,8 +489,8 @@ namespace SPPC.Tadbir.Persistence
             return await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
-                .Where(art => Int32.Parse(art.Voucher.No) >= from
-                    && Int32.Parse(art.Voucher.No) <= to)
+                .Where(art => art.Voucher.No >= from
+                    && art.Voucher.No <= to)
                 .ToListAsync();
         }
 
@@ -502,7 +500,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
-                .Where(art => Int32.Parse(art.Voucher.No) >= from && Int32.Parse(art.Voucher.No) <= to)
+                .Where(art => art.Voucher.No >= from && art.Voucher.No <= to)
                 .ToListAsync();
         }
 
@@ -510,7 +508,7 @@ namespace SPPC.Tadbir.Persistence
             IEnumerable<VoucherLine> voucherLines)
         {
             return voucherLines
-                .OrderBy(art => Int32.Parse(art.Voucher.No))
+                .OrderBy(art => art.Voucher.No)
                 .Select(art => _mapper.Map<JournalItemViewModel>(art));
         }
 
@@ -538,7 +536,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByNoLinesAsync(from, to);
             foreach (var byNo in GetGroupByThenByItems(
-                lines, art => Int32.Parse(art.Voucher.No), art => art.BranchId))
+                lines, art => art.Voucher.No, art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byNo));
             }
@@ -552,7 +550,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByNoLinesAsync(from, to);
             foreach (var byNo in GetGroupByThenByItems(
-                lines, art => Int32.Parse(art.Voucher.No), art => art.BranchId))
+                lines, art => art.Voucher.No, art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byNo));
             }
@@ -572,7 +570,7 @@ namespace SPPC.Tadbir.Persistence
             IEnumerable<VoucherLine> voucherLines)
         {
             return voucherLines
-                .OrderBy(art => Int32.Parse(art.Voucher.No))
+                .OrderBy(art => art.Voucher.No)
                     .ThenBy(art => art.BranchId)
                 .Select(art => _mapper.Map<JournalItemViewModel>(art));
         }

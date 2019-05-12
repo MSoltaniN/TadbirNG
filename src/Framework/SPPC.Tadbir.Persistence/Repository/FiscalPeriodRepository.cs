@@ -100,6 +100,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا در محدوده تاریخی داده شده دوره مالی تعریف شده یا نه
+        /// </summary>
+        /// <param name="start">شروع دوره مالی مورد نظر</param>
+        /// <param name="end">پایان دوره مالی مورد نظر</param>
+        /// <returns>اگر در محدوده تاریخی داده شده دوره مالی تعریف شده باشد، مقدار "درست"
+        /// و در غیر این صورت مقدار "نادرست" را برمی گرداند.</returns>
+        public async Task<bool> ExistsFiscalPeriodInRange(DateTime start, DateTime end)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var fiscalPeriod = await repository.GetFirstByCriteriaAsync(
+                fp => fp.StartDate == start && fp.EndDate == end && fp.CompanyId == _currentContext.CompanyId);
+            return (fiscalPeriod != null);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای دوره مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای دوره مالی</returns>
@@ -231,9 +246,10 @@ namespace SPPC.Tadbir.Persistence
             var fiscalPeriods = await repository
                 .GetByCriteriaAsync(
                 fp => fp.CompanyId == fiscalPeriod.CompanyId && fp.Id != fiscalPeriod.Id
-                && ((fp.StartDate > fiscalPeriod.StartDate && fp.StartDate < fiscalPeriod.EndDate)
-                || (fp.StartDate < fiscalPeriod.StartDate && fp.EndDate > fiscalPeriod.EndDate)
-                || (fp.EndDate > fiscalPeriod.StartDate && fp.EndDate < fiscalPeriod.EndDate)));
+                && ((fiscalPeriod.StartDate.CompareWith(fp.StartDate) >= 0
+                    && fiscalPeriod.StartDate.CompareWith(fp.EndDate) <= 0)
+                || (fiscalPeriod.EndDate.CompareWith(fp.StartDate) >= 0
+                    && fiscalPeriod.EndDate.CompareWith(fp.EndDate) <= 0)));
 
             return (fiscalPeriods.Count > 0);
         }

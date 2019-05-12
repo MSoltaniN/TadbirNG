@@ -122,6 +122,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
+            mapperConfig.CreateMap<PermissionGroup, PermissionGroupViewModel>();
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
             mapperConfig.CreateMap<PermissionViewModel, Permission>()
@@ -218,7 +219,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Value,
                     opts => opts.MapFrom(
-                        src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
+                        src => String.Join(",", new[] { "VoucherDisplay", src.No.ToString(), src.Date.ToShortDateString() })));
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(

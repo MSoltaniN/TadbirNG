@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel;
@@ -44,6 +45,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fperiodId">شناسه عددی یکی از دوره های مالی</param>
         /// <returns>دوره مالی مشخص شده با شناسه عددی</returns>
         Task<FiscalPeriodViewModel> GetFiscalPeriodAsync(int fperiodId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا در محدوده تاریخی داده شده دوره مالی تعریف شده یا نه
+        /// </summary>
+        /// <param name="start">شروع دوره مالی مورد نظر</param>
+        /// <param name="end">پایان دوره مالی مورد نظر</param>
+        /// <returns>اگر در محدوده تاریخی داده شده دوره مالی تعریف شده باشد، مقدار "درست"
+        /// و در غیر این صورت مقدار "نادرست" را برمی گرداند.</returns>
+        Task<bool> ExistsFiscalPeriodInRange(DateTime start, DateTime end);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای دوره مالی را از محل ذخیره خوانده و برمی گرداند

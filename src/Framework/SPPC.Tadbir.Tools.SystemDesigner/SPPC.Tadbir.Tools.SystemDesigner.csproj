@@ -43,14 +43,22 @@
       <HintPath>..\..\..\bin\Debug\BabakSoft.Platform.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Designers\PermissionDesignerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Designers\PermissionDesignerForm.Designer.cs">
+      <DependentUpon>PermissionDesignerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -62,7 +70,34 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts.cs" />
     <Compile Include="TableMapping.cs" />
+    <Compile Include="Wizards\ViewWizard\EditColumnsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizards\ViewWizard\EditColumnsForm.Designer.cs">
+      <DependentUpon>EditColumnsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\ViewWizard\EditViewForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizards\ViewWizard\EditViewForm.Designer.cs">
+      <DependentUpon>EditViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\ViewWizard\SelectViewModelForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizards\ViewWizard\SelectViewModelForm.Designer.cs">
+      <DependentUpon>SelectViewModelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wizards\ViewWizard\ViewWizardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wizards\ViewWizard\ViewWizardForm.Designer.cs">
+      <DependentUpon>ViewWizardForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="XferRepository.cs" />
+    <EmbeddedResource Include="Designers\PermissionDesignerForm.resx">
+      <DependentUpon>PermissionDesignerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -75,6 +110,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Wizards\ViewWizard\EditColumnsForm.resx">
+      <DependentUpon>EditColumnsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizards\ViewWizard\EditViewForm.resx">
+      <DependentUpon>EditViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizards\ViewWizard\SelectViewModelForm.resx">
+      <DependentUpon>SelectViewModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizards\ViewWizard\ViewWizardForm.resx">
+      <DependentUpon>ViewWizardForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -96,10 +143,15 @@
       <Project>{18c0b0da-db22-4482-b6b7-b98d4decd8b4}</Project>
       <Name>SPPC.Framework.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj">
+      <Project>{81da88f6-b2af-4568-b56b-35cc3368f850}</Project>
+      <Name>SPPC.Framework.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
       <Project>{1359a987-13f0-4013-be47-017287889165}</Project>
       <Name>SPPC.Tadbir.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

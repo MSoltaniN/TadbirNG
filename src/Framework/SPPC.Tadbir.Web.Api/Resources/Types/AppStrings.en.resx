@@ -438,8 +438,8 @@
   <data name="DateOverlap" xml:space="preserve">
     <value>The date of the fiscal period overlaps with another fiscal period.</value>
   </data>
-  <data name="PriorityDate" xml:space="preserve">
-    <value>The end date {0} must be after the start date {0}</value>
+  <data name="InvalidDatePeriod" xml:space="preserve">
+    <value>Start date for {0} cannot be after its end date.</value>
   </data>
   <data name="Companies" xml:space="preserve">
     <value>Companies</value>
@@ -878,5 +878,8 @@
   </data>
   <data name="VoucherStatus" xml:space="preserve">
     <value>Voucher status</value>
+  </data>
+  <data name="FiscalPeriodAlreadyDefined" xml:space="preserve">
+    <value>A fiscal period is already defined in this date range.</value>
   </data>
 </root>

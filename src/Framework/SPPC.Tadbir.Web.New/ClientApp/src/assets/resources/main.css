@@ -369,12 +369,12 @@ table thead tr th span.ui-column-title {
 
  body.tRtl  kendo-grid-toolbar > button
 {
-    float: left!important;
+    /*float: left!important;*/
 }
 
 body.tLtr  kendo-grid-toolbar  > button
 {
-    float: right!important;
+    /*float: right!important;*/
 } 
 
 .reportMargin

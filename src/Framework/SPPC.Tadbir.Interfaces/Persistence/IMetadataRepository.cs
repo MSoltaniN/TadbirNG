@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -45,5 +46,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>مجموعه دستورات در منوی پیش فرض کاربران</returns>
         Task<IList<CommandViewModel>> GetDefaultCommandsAsync();
+
+        #region System Designer
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای مجوزهای امنیتی موجود را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از اطلاعات فراداده ای مجوزهای امنیتی موجود</returns>
+        Task<IList<PermissionGroupViewModel>> GetPermissionGroupsAsync();
+
+        #endregion
     }
 }

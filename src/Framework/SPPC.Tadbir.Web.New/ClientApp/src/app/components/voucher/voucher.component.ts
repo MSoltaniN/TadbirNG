@@ -256,7 +256,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     this.dateFilter = [];
     this.dateFilter.push(new Filter("Date", this.startDate, " >= {0} ", "System.DateTime"),
-      new Filter("Date", this.endDate, " <= {0} ", "System.DateTime"));
+      new Filter("Date", this.endDate, " <= {0} ", "System.DateTime"));    
 
     if (this.firstLoad && this.startDate && this.endDate) {
       this.reloadGrid();
@@ -264,6 +264,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   getVouchers() {
+    this.pageIndex = 0;
     this.reloadGrid();
   }
 
@@ -352,6 +353,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   reloadGrid(insertedModel?: Voucher) {
     this.firstLoad = false;
 
+
     if (this.viewAccess) {
       this.grid.loading = true;
 
@@ -367,7 +369,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
       if (insertedModel)
         this.goToLastPage(this.totalRecords);
-
 
       this.voucherService.getAll(VoucherApi.EnvironmentVouchers, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
         var resData = res.body;
