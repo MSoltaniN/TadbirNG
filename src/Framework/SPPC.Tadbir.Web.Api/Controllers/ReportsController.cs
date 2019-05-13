@@ -611,7 +611,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 foreach (var param in report.Parameters)
                 {
                     param.CaptionKey = _strings[param.CaptionKey];
-                    param.DescriptionKey = _strings[param.DescriptionKey];
+                    param.DescriptionKey = _strings[param.CaptionKey];      // Temporary fix
                 }
             }
         }

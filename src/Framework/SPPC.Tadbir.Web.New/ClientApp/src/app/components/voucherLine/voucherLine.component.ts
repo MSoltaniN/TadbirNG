@@ -195,7 +195,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     var model = viewModel.model;
     var isOpen = viewModel.isOpen;
 
-    model.branchId = this.voucherModel.branchId;
+    model.branchId = this.BranchId;
     model.fiscalPeriodId = this.voucherModel.fiscalPeriodId;
     model.voucherId = this.voucherModel.id;
 
