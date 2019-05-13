@@ -126,6 +126,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 voucher = Mapper.Map<Voucher>(voucherView);
                 voucher.StatusId = (int)DocumentStatusValue.Draft;
+                voucher.SaveCount++;
                 voucher.IssuedById = _currentContext.Id;
                 voucher.ModifiedById = _currentContext.Id;
                 await InsertAsync(repository, voucher);

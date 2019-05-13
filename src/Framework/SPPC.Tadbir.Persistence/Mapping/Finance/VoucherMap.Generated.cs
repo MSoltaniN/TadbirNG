@@ -67,12 +67,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.FiscalPeriod)
                 .WithMany()
-                .HasForeignKey("FiscalPeriodID")
+                .HasForeignKey(e => e.FiscalPeriodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Voucher_Finance_FiscalPeriod");
             builder.HasOne(e => e.Branch)
                 .WithMany()
-                .HasForeignKey("BranchID")
+                .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Voucher_Finance_Branch");
             builder.HasOne(e => e.Document)

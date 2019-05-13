@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
             Reference = String.Empty;
             Association = String.Empty;
             Description = String.Empty;
-            SaveCount = 1;
+            IsBalanced = true;
         }
 
         /// <summary>
@@ -102,14 +102,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// شناسه دیتابیسی کاربر تأییدکننده سند مالی
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int ConfirmedById { get; set; }
+        public int? ConfirmedById { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی کاربر تصویب کننده سند مالی
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int ApprovedById { get; set; }
+        public int? ApprovedById { get; set; }
 
         /// <summary>
         /// شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد
