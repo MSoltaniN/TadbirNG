@@ -213,7 +213,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var tree = GetParentTree(_currentContext.BranchId);
             var queryable = records
-                .Where(entity => entity.FiscalPeriodId == _currentContext.FiscalPeriodId &&
+                .Where(entity => entity.FiscalPeriodId <= _currentContext.FiscalPeriodId &&
                     (entity.BranchScope == (short)BranchScope.AllBranches ||
                     (entity.BranchScope == (short)BranchScope.CurrentBranch &&
                         entity.BranchId == _currentContext.BranchId) ||

@@ -891,4 +891,7 @@
   <data name="VoucherByNo" xml:space="preserve">
     <value>سند شماره ...</value>
   </data>
+  <data name="VoucherOps" xml:space="preserve">
+    <value>عملیات اسناد</value>
+  </data>
 </root>

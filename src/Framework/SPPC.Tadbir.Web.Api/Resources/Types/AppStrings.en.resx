@@ -891,4 +891,7 @@
   <data name="VoucherByNo" xml:space="preserve">
     <value>Voucher by number...</value>
   </data>
+  <data name="VoucherOps" xml:space="preserve">
+    <value>Voucher operations</value>
+  </data>
 </root>

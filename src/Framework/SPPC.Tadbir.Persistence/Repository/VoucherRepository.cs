@@ -81,15 +81,18 @@ namespace SPPC.Tadbir.Persistence
         {
             int lastNo = await GetLastVoucherNoAsync();
             DateTime lastDate = await GetLastVoucherDateAsync();
-            return new VoucherViewModel()
+            var newVoucher = new VoucherViewModel()
             {
                 Date = lastDate,
                 No = lastNo + 1,
                 BranchId = _currentContext.BranchId,
                 FiscalPeriodId = _currentContext.FiscalPeriodId,
                 Type = 0,
-                SubjectType = 0
+                SubjectType = 0,
+                SaveCount = -1
             };
+
+            return await SaveVoucherAsync(newVoucher);
         }
 
         /// <summary>
