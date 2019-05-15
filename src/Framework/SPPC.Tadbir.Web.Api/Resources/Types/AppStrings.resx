@@ -882,4 +882,13 @@
   <data name="FiscalPeriodAlreadyDefined" xml:space="preserve">
     <value>در این محدوده تاریخی قبلاً یک دوره مالی تعریف شده است.</value>
   </data>
+  <data name="LastVoucher" xml:space="preserve">
+    <value>آخرین سند</value>
+  </data>
+  <data name="NewVoucher" xml:space="preserve">
+    <value>سند جدید</value>
+  </data>
+  <data name="VoucherByNo" xml:space="preserve">
+    <value>سند شماره ...</value>
+  </data>
 </root>

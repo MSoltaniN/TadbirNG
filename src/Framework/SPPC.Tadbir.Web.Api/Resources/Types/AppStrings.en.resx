@@ -882,4 +882,13 @@
   <data name="FiscalPeriodAlreadyDefined" xml:space="preserve">
     <value>A fiscal period is already defined in this date range.</value>
   </data>
+  <data name="LastVoucher" xml:space="preserve">
+    <value>Last voucher</value>
+  </data>
+  <data name="NewVoucher" xml:space="preserve">
+    <value>New voucher</value>
+  </data>
+  <data name="VoucherByNo" xml:space="preserve">
+    <value>Voucher by number...</value>
+  </data>
 </root>

@@ -23,11 +23,6 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentVouchersUrl = "vouchers";
 
         /// <summary>
-        /// API server route URL for all vouchers defined in current environment
-        /// </summary>
-        public const string EnvironmentVouchersSyncUrl = "vouchers/sync";
-
-        /// <summary>
         /// API client URL for count of all vouchers defined in current environment
         /// </summary>
         public const string EnvironmentItemCount = "vouchers/count";
@@ -36,11 +31,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for count of all vouchers defined in current environment
         /// </summary>
         public const string EnvironmentItemCountUrl = "vouchers/count";
-
-        /// <summary>
-        /// API server route URL for all vouchers
-        /// </summary>
-        public const string VouchersSyncUrl = "vouchers/sync";
 
         /// <summary>
         /// API client URL for a single voucher specified by identifier
@@ -53,9 +43,34 @@ namespace SPPC.Tadbir.Api
         public const string VoucherUrl = "vouchers/{voucherId:min(1)}";
 
         /// <summary>
-        /// API server route URL for a single voucher specified by identifier
+        /// API client URL for a newly initialized and saved voucher
         /// </summary>
-        public const string VoucherSyncUrl = "vouchers/{voucherId:min(1)}/sync";
+        public const string NewVoucher = "vouchers/new";
+
+        /// <summary>
+        /// API server route URL for a newly initialized and saved voucher
+        /// </summary>
+        public const string NewVoucherUrl = "vouchers/new";
+
+        /// <summary>
+        /// API client URL for a single voucher specified by number
+        /// </summary>
+        public const string VoucherByNo = "vouchers/by-no/{0}";
+
+        /// <summary>
+        /// API server route URL for a single voucher specified by number
+        /// </summary>
+        public const string VoucherByNoUrl = "vouchers/by-no/{voucherNo:min(1)}";
+
+        /// <summary>
+        /// API client URL for the last voucher in current environment
+        /// </summary>
+        public const string LastVoucher = "vouchers/last";
+
+        /// <summary>
+        /// API server route URL for the last voucher in current environment
+        /// </summary>
+        public const string LastVoucherUrl = "vouchers/last";
 
         /// <summary>
         /// API client URL for voucher metadata
@@ -198,11 +213,6 @@ namespace SPPC.Tadbir.Api
         public const string VoucherArticlesUrl = "vouchers/{voucherId:min(1)}/articles";
 
         /// <summary>
-        /// API server route URL for all articles in a single voucher specified by identifier
-        /// </summary>
-        public const string VoucherArticlesSyncUrl = "vouchers/{voucherId:min(1)}/articles/sync";
-
-        /// <summary>
         /// API client URL for count of all articles in a voucher specified by identifier
         /// </summary>
         public const string VoucherArticleCount = "vouchers/{0}/articles/count";
@@ -223,11 +233,6 @@ namespace SPPC.Tadbir.Api
         public const string VoucherArticleUrl = "vouchers/articles/{articleId:min(1)}";
 
         /// <summary>
-        /// API server route URL for a single voucher article specified by identifier
-        /// </summary>
-        public const string VoucherArticleSyncUrl = "vouchers/articles/{articleId:min(1)}/sync";
-
-        /// <summary>
         /// API client URL for details of a single voucher article specified by identifier
         /// </summary>
         public const string VoucherArticleDetails = "vouchers/articles/{0}/details";
@@ -236,11 +241,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for details of a single voucher article specified by identifier
         /// </summary>
         public const string VoucherArticleDetailsUrl = "vouchers/articles/{articleId:min(1)}/details";
-
-        /// <summary>
-        /// API server route URL for details of a single voucher article specified by identifier
-        /// </summary>
-        public const string VoucherArticleDetailsSyncUrl = "vouchers/articles/{articleId:min(1)}/details/sync";
 
         /// <summary>
         /// API client URL for voucher article metadata

@@ -61,6 +61,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(voucher);
         }
 
+        // GET: api/vouchers/new
+        [Route(VoucherApi.NewVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
+        public async Task<IActionResult> GetNewVoucherAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var newVoucher = await _repository.GetNewVoucherAsync();
+            return Json(newVoucher);
+        }
+
+        // GET: api/vouchers/by-no
+        [Route(VoucherApi.VoucherByNoUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetVoucherByNoAsync(int voucherNo)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var voucherByNo = await _repository.GetVoucherByNoAsync(voucherNo);
+            return JsonReadResult(voucherByNo);
+        }
+
+        // GET: api/vouchers/last
+        [Route(VoucherApi.LastVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetLastVoucherAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var lastVoucher = await _repository.GetLastVoucherAsync();
+            return JsonReadResult(lastVoucher);
+        }
+
         // GET: api/vouchers/metadata
         [Route(VoucherApi.VoucherMetadataUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]

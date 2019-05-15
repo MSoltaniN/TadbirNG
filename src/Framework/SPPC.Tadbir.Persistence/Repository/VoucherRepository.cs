@@ -74,6 +74,56 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، سند مالی جدیدی را با مقادیر پیشنهادی ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <returns>سند مالی جدید با مقادیر پیشنهادی</returns>
+        public async Task<VoucherViewModel> GetNewVoucherAsync()
+        {
+            int lastNo = await GetLastVoucherNoAsync();
+            DateTime lastDate = await GetLastVoucherDateAsync();
+            return new VoucherViewModel()
+            {
+                Date = lastDate,
+                No = lastNo + 1,
+                BranchId = _currentContext.BranchId,
+                FiscalPeriodId = _currentContext.FiscalPeriodId,
+                Type = 0,
+                SubjectType = 0
+            };
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سند مالی با شماره مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره یکی از اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شماره</returns>
+        public async Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo)
+        {
+            var voucherByNo = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(voucher => voucher.No == voucherNo)
+                .FirstOrDefaultAsync();
+            return voucherByNo != null
+                ? Mapper.Map<VoucherViewModel>(voucherByNo)
+                : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>آخرین سند مالی</returns>
+        public async Task<VoucherViewModel> GetLastVoucherAsync()
+        {
+            var lastVoucher = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .OrderByDescending(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return lastVoucher != null
+                ? Mapper.Map<VoucherViewModel>(lastVoucher)
+                : null;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
@@ -234,6 +284,40 @@ namespace SPPC.Tadbir.Persistence
                     "Name : {1}{0}Date : {2}{0}Description : {3}{0}Reference : {4}{0}Association : {5}{0}",
                     Environment.NewLine, entity.No, entity.Date, entity.Description, entity.Reference, entity.Association)
                 : null;
+        }
+
+        private async Task<DateTime> GetLastVoucherDateAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lastByDate = await repository
+                .GetEntityQuery()
+                .Where(voucher => voucher.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .OrderByDescending(voucher => voucher.Date)
+                .FirstOrDefaultAsync();
+            DateTime lastDate;
+            if (lastByDate != null)
+            {
+                lastDate = lastByDate.Date;
+            }
+            else
+            {
+                var periodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+                var fiscalPeriod = await periodRepository.GetByIDAsync(_currentContext.FiscalPeriodId);
+                lastDate = (fiscalPeriod != null) ? fiscalPeriod.StartDate : DateTime.Now;
+            }
+
+            return lastDate;
+        }
+
+        private async Task<int> GetLastVoucherNoAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lastByNo = await repository
+                .GetEntityQuery()
+                .Where(voucher => voucher.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .OrderByDescending(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return (lastByNo != null) ? lastByNo.No : 1;
         }
 
         private async Task ManageDocumentAsync(Voucher voucher)
