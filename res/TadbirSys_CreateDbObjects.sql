@@ -900,6 +900,12 @@ INSERT [Metadata].[Column]
 INSERT [Metadata].[Column]
     ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
 	VALUES (198, 21, N'BranchName',NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'{"name":"BranchName","large":{"width":100,"index":6,"designIndex":6,"visibility":"AlwaysVisible","title":"شعبه"},"medium":{"width":100,"index":6,"designIndex":6,"visibility":"AlwaysVisible","title":"شعبه"},"small":{"width":100,"index":6,"designIndex":6,"visibility":"AlwaysVisible","title":"شعبه"},"extraSmall":{"width":100,"index":6,"designIndex":6,"visibility":"AlwaysVisible","title":"شعبه"},"extraLarge":{"width":100,"index":8,"designIndex":8,"visibility":"AlwaysVisible","title":"شعبه"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (199, 2, N'Reference',NULL, N'System.String', N'nvarchar', N'string', 64, 0, 0, 1, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (200, 2, N'Association',NULL, N'System.String', N'nvarchar', N'string', 64, 0, 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
