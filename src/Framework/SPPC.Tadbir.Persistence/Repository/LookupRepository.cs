@@ -329,6 +329,30 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
         }
 
+        public IEnumerable<KeyValue> GetVoucherTypes()
+        {
+            var types = new List<KeyValue>()
+            {
+                new KeyValue { Key = "1", Value = "NormalVoucher" },
+                new KeyValue { Key = "2", Value = "OpeningVoucher" },
+                new KeyValue { Key = "3", Value = "ClosingVoucher" },
+                new KeyValue { Key = "4", Value = "ClosingTempAccounts" }
+            };
+
+            return types;
+        }
+
+        public IEnumerable<KeyValue> GetVoucherLineTypes()
+        {
+            var types = new List<KeyValue>()
+            {
+                new KeyValue { Key = "1", Value = "NormalLine" },
+                new KeyValue { Key = "2", Value = "TaxAndToll" }
+            };
+
+            return types;
+        }
+
         /// <summary>
         /// محدودیت های ثبت قابل استفاده در تعریف حساب را به صورت مجموعه ای از متن های چندزبانه برمی گرداند
         /// </summary>

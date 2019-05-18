@@ -894,4 +894,22 @@
   <data name="VoucherOps" xml:space="preserve">
     <value>Voucher operations</value>
   </data>
+  <data name="ClosingTempAccounts" xml:space="preserve">
+    <value>Closing temp accounts</value>
+  </data>
+  <data name="ClosingVoucher" xml:space="preserve">
+    <value>Closing</value>
+  </data>
+  <data name="NormalVoucher" xml:space="preserve">
+    <value>Normal voucher</value>
+  </data>
+  <data name="OpeningVoucher" xml:space="preserve">
+    <value>Opening</value>
+  </data>
+  <data name="NormalLine" xml:space="preserve">
+    <value>Normal line</value>
+  </data>
+  <data name="TaxAndToll" xml:space="preserve">
+    <value>Tax and toll</value>
+  </data>
 </root>
