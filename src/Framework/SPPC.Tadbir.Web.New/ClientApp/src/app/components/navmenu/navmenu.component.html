@@ -14,7 +14,7 @@
 
         <ul class="treeview-menu" id='menu{{cmd.id}}'>
           <li *ngFor="let innerCmd of cmd.children;" [ngClass]="{'treeview' : innerCmd.routeUrl == null}">
-            <a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : []">
+            <a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : 'javascript:;'">
               <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
               <span class="menuitem child">
                 {{
@@ -38,7 +38,7 @@
                 </a>
                 <ul class="treeview-menu" *ngIf="cmd3.children.length > 0">
                   <li *ngFor="let cmd4 of innerCmd.children;">
-                    <a [routerLink]="cmd4.routeUrl ? [cmd4.routeUrl] : []">
+                    <a [routerLink]="cmd4.routeUrl ? [cmd4.routeUrl] : 'javascript:;'">
                       <span class="glyphicon glyphicon-{{cmd4.iconName}}"></span>
                       <span class="menuitem child">
                         {{ cmd4.title }}

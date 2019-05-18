@@ -87,10 +87,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.getVoucher(VoucherApi.NewVoucher);
   }
 
-  lastVoucher() {
-    this.getVoucher(VoucherApi.LastVoucher);
-  }
-
   byNoVoucher() {
     var voucherNo = this.activeRoute.snapshot.queryParamMap.get('voucherno');
 
@@ -104,8 +100,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   getVoucher(apiUrl: string, byNo: boolean = false) {
-    this.voucherService.getModels(apiUrl).subscribe(res => {
 
+    this.voucherService.getModels(apiUrl).subscribe(res => {
       this.editForm.reset(res);
       this.voucherModel = res;
 
@@ -134,12 +130,13 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       }
 
     },
-      error => {        
-        if (byNo && error.status == 404) {
+      error => {
+        if (error.status == 404) {
           this.showMessage("سند مورد نظر یافت نشد", MessageType.Warning);
-          this.router.navigate(['/home'], { queryParams: { returnUrl: 'voucher/by-no' } });
+          if (byNo)
+            this.router.navigate(['/home'], { queryParams: { returnUrl: 'voucher/by-no' } });
         }
-       
+
       })
   }
 
@@ -167,6 +164,26 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   setBalanceValue(e: any) {
     this.balancedMode = e;
+  }
+
+  nextVoucher() {
+    this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
+  }
+
+  previousVoucher() {
+    this.getVoucher(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no));
+  }
+
+  firstVoucher() {
+    this.getVoucher(VoucherApi.FirstVoucher);
+  }
+
+  lastVoucher() {
+    this.getVoucher(VoucherApi.LastVoucher);
+  }
+
+  searchVoucher() {
+    this.router.navigate(['/home'], { queryParams: { returnUrl: 'voucher/by-no' } });
   }
 }
 
