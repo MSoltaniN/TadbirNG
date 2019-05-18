@@ -1,0 +1,180 @@
+
+<app-bread-cumb></app-bread-cumb>
+
+<div class="panel-body">
+
+  <div *ngIf="errorMessage">
+    <div class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <div>
+
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+      <div class="row">
+        <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa','pull-left':this.CurrentLanguage === 'en'}" style="margin-top: 25px;">
+
+          <button class="k-button" title="سند جدید" (click)="addNew()">
+            <span class="k-icon k-i-file-add"></span>
+          </button>
+
+          <button class="k-button" title="جستجوی سند">
+            <span class="k-icon k-i-search"></span>
+          </button>
+
+          <button class="k-button" title="آخرین سند">
+            <span class="k-icon k-i-arrow-end-right"></span>
+          </button>
+
+          <button class="k-button" title="سند بعدی">
+            <span class="k-icon k-i-arrow-double-60-right"></span>
+          </button>
+
+          <button class="k-button" title="سند قبلی">
+            <span class="k-icon k-i-arrow-double-60-left"></span>
+          </button>
+
+          <button class="k-button" title="اولین سند">
+            <span class="k-icon k-i-arrow-end-left"></span>
+          </button>
+
+          <button class="k-button" [disabled]="!editForm.valid" (click)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
+            <span class="k-icon k-i-save"></span>
+          </button>
+
+          <!--<button class="k-button" SppcCheckAccess="Check" [hidden]="editModel.statusId != 1" (click)="checkHandler(editModel.id, editModel.statusId)" title="{{ 'Voucher.Commit' | translate }}">
+            <span class="k-icon k-i-check-outline"></span>
+          </button>
+
+          <button class="k-button" SppcCheckAccess="Uncheck" [hidden]="editModel.statusId == 1" (click)="checkHandler(editModel.id, editModel.statusId)" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
+            <span class="k-icon k-i-close-outline"></span>
+          </button>-->
+
+        </div>
+        <div class="col-xs-12 col-sm-3" [ngClass]="{'pull-right':this.CurrentLanguage === 'en','pull-left':this.CurrentLanguage === 'fa'}">
+          <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
+          <sppc-datepicker formControlName="date" [minDate]="FiscalPeriodStartDate" [maxDate]="FiscalPeriodEndDate"></sppc-datepicker>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="voucher-form-content">
+
+            <div class="col-xs-12 col-sm-4 sppc-float">
+              <div class="form-group">
+                <label for="no" class="control-label">{{ 'Voucher.No' | translate }}</label>
+
+                <input type="text" class="k-textbox" formControlName="no" [OnlyNumber] />
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.no.valid || editForm.controls.no.pristine">
+                  <span *ngIf="editForm.controls.no.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>
+                  <span *ngIf="editForm.controls.no.errors?.maxlength">{{ 'AllValidations.Voucher.NoIsTooLong' | translate }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 sppc-float">
+              <div class="form-group">
+                <label for="reference" class="control-label">رفرنس</label>
+
+                <input type="text" class="k-textbox" formControlName="reference" />
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.reference.valid || editForm.controls.reference.pristine">
+                  <span *ngIf="editForm.controls.reference.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>
+                  <span *ngIf="editForm.controls.reference.errors?.maxlength">{{ 'AllValidations.Voucher.NoIsTooLong' | translate }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 sppc-float">
+              <div class="form-group">
+                <label for="association" class="control-label">شماره عطف</label>
+
+                <input type="text" class="k-textbox" formControlName="association" />
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.association.valid || editForm.controls.association.pristine">
+                  <span *ngIf="editForm.controls.association.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>
+                  <span *ngIf="editForm.controls.association.errors?.maxlength">{{ 'AllValidations.Voucher.NoIsTooLong' | translate }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="description" class="control-label">{{ 'Voucher.Description' | translate }}</label>
+
+                <input type="text" class="k-textbox" formControlName="description" />
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                  {{ 'AllValidations.Voucher.DescriptionIsTooLong' | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="no" class="control-label">وضعیت سند</label>
+
+                <div class="k-form-field">
+
+                  <div class="voucher-status-item">
+                    <input type="checkbox" name="balanced" id="balanced" class="k-checkbox" [ngModel]="balancedMode" [ngModelOptions]="{standalone: true}" onclick="return false;" />
+                    <label class="k-checkbox-label" for="balanced">تراز</label>
+                  </div>
+
+                  <div class="voucher-status-item">
+                    <input type="checkbox" name="noCommitted" id="noCommitted" class="k-checkbox" [ngModel]="noCommittedMode" [ngModelOptions]="{standalone: true}" onclick="return false;" />
+                    <label class="k-checkbox-label" for="noCommitted">ثبت نشده</label>
+                  </div>
+
+                  <div class="voucher-status-item">
+                    <input type="checkbox" name="committed" id="committed" class="k-checkbox" [ngModel]="committedMode" [ngModelOptions]="{standalone: true}" onclick="return false;" />
+                    <label class="k-checkbox-label" for="committed">ثبت شده</label>
+                  </div>
+
+                  <div class="voucher-status-item">
+                    <input type="checkbox" name="finalized" id="finalized" class="k-checkbox" [ngModel]="finalizedMode" [ngModelOptions]="{standalone: true}" onclick="return false;" />
+                    <label class="k-checkbox-label" for="finalized">ثبت قطعی</label>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+    <div class="row" *ngIf="voucherModel">
+      <div class="col-xs-12">
+
+        <div class="voucher-form-content">
+          <voucherLine [voucherId]="voucherModel.id"
+                       [documentStatus]="voucherModel.statusId"
+                       (isBalanced)="setBalanceValue($event)">
+          </voucherLine>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #itemListRef>
+  <div class="form-group" style="padding: 15px;">
+    <label class="control-label">شماره سند</label>
+    <input type="text" class="k-textbox" [OnlyNumber] />
+  </div>
+</ng-template>
+
