@@ -43,6 +43,26 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo);
 
         /// <summary>
+        /// به روش آسنکرون، اولین سند مالی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اولین سند مالی</returns>
+        Task<VoucherViewModel> GetFirstVoucherAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <returns>سند مالی قبلی</returns>
+        Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی بعدی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <returns>سند مالی بعدی</returns>
+        Task<VoucherViewModel> GetNextVoucherAsync(int currentNo);
+
+        /// <summary>
         /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
         /// </summary>
         /// <returns>آخرین سند مالی</returns>

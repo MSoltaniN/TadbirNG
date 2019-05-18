@@ -63,6 +63,36 @@ namespace SPPC.Tadbir.Api
         public const string VoucherByNoUrl = "vouchers/by-no/{voucherNo:min(1)}";
 
         /// <summary>
+        /// API client URL for the first voucher in current environment
+        /// </summary>
+        public const string FirstVoucher = "vouchers/first";
+
+        /// <summary>
+        /// API server route URL for the first voucher in current environment
+        /// </summary>
+        public const string FirstVoucherUrl = "vouchers/first";
+
+        /// <summary>
+        /// API client URL for previous voucher in current environment
+        /// </summary>
+        public const string PreviousVoucher = "vouchers/{0}/previous";
+
+        /// <summary>
+        /// API server route URL for previous voucher in current environment
+        /// </summary>
+        public const string PreviousVoucherUrl = "vouchers/{voucherNo:min(1)}/previous";
+
+        /// <summary>
+        /// API client URL for next voucher in current environment
+        /// </summary>
+        public const string NextVoucher = "vouchers/{0}/next";
+
+        /// <summary>
+        /// API server route URL for next voucher in current environment
+        /// </summary>
+        public const string NextVoucherUrl = "vouchers/{voucherNo:min(1)}/next";
+
+        /// <summary>
         /// API client URL for the last voucher in current environment
         /// </summary>
         public const string LastVoucher = "vouchers/last";

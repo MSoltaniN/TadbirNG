@@ -112,6 +112,55 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اولین سند مالی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اولین سند مالی</returns>
+        public async Task<VoucherViewModel> GetFirstVoucherAsync()
+        {
+            var firstVoucher = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .OrderBy(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return firstVoucher != null
+                ? Mapper.Map<VoucherViewModel>(firstVoucher)
+                : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <returns>سند مالی قبلی</returns>
+        public async Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo)
+        {
+            var previous = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(voucher => voucher.No < currentNo)
+                .OrderByDescending(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return previous != null
+                ? Mapper.Map<VoucherViewModel>(previous)
+                : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی بعدی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <returns>سند مالی بعدی</returns>
+        public async Task<VoucherViewModel> GetNextVoucherAsync(int currentNo)
+        {
+            var next = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(voucher => voucher.No > currentNo)
+                .OrderBy(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return next != null
+                ? Mapper.Map<VoucherViewModel>(next)
+                : null;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
         /// </summary>
         /// <returns>آخرین سند مالی</returns>
