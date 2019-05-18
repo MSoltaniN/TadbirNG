@@ -58,6 +58,7 @@
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
+    <None Remove="ClientApp\src\app\components\home\home.component.ts" />
     <None Remove="ClientApp\src\app\components\inlineTest\inlineTest.component.ts" />
     <None Remove="ClientApp\src\app\components\journal\journal.component.ts" />
     <None Remove="ClientApp\src\app\components\login\index.ts" />
@@ -911,6 +912,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\home\home.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\inlineTest\inlineTest.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\journal\journal.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\index.ts" />

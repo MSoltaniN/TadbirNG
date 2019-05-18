@@ -91,8 +91,19 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.getVoucher(VoucherApi.LastVoucher);
   }
 
+  byNoVoucher() {
+    var voucherNo = this.activeRoute.snapshot.queryParamMap.get('voucherno');
 
-  getVoucher(apiUrl: string) {
+    if (!voucherNo) {
+      this.router.navigate(['/home'], { queryParams: { returnUrl: 'voucher/by-no' } });
+    }
+    else {
+      this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+    }
+
+  }
+
+  getVoucher(apiUrl: string, byNo: boolean = false) {
     this.voucherService.getModels(apiUrl).subscribe(res => {
 
       this.editForm.reset(res);
@@ -122,25 +133,16 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         default:
       }
 
-    })
+    },
+      error => {        
+        if (byNo && error.status == 404) {
+          this.showMessage("سند مورد نظر یافت نشد", MessageType.Warning);
+          this.router.navigate(['/home'], { queryParams: { returnUrl: 'voucher/by-no' } });
+        }
+       
+      })
   }
 
-
-  //@ViewChild('itemListRef') el: TemplateRef<any>;
-
-  byNoVoucher() {
-
-
-    //this.dialogService.open({
-    //  title: 'شماره سند',
-    //  content: this.el,
-    //  actions: [
-    //    { text: 'تایید', primary: true },
-    //    { text: 'انصراف' },
-    //  ]
-    //});
-
-  }
 
   onSave(e: any): void {
     e.preventDefault();

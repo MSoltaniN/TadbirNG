@@ -1,0 +1,17 @@
+<div>
+  <img class="home-img" src="../../../assets/tadbir-login.png" />
+</div>
+
+
+
+<ng-template #itemListRef>
+  <div class="form-group" style="padding: 15px;" (keydown.enter)="passVoucherId()">
+    <label class="control-label">شماره سند</label>
+    <input type="text" class="k-textbox" [(ngModel)]="voucherNo" [OnlyNumber] />
+  </div>
+</ng-template>
+
+<ng-template #dialogActions>
+  <button kendoButton [primary]="true" [disabled]="!voucherNo" (click)="passVoucherId()">تایید</button>
+  <button kendoButton (click)="close()">انصراف</button>
+</ng-template>
