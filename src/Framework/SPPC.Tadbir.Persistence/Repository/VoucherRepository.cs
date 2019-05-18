@@ -8,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -62,15 +63,16 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
         public async Task<VoucherViewModel> GetVoucherAsync(int voucherId)
         {
-            VoucherViewModel voucherViewModel = null;
+            VoucherViewModel voucher = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetByIDAsync(voucherId, v => v.Lines, v => v.Status);
-            if (voucher != null)
+            var existing = await repository.GetByIDAsync(voucherId, v => v.Lines, v => v.Status);
+            if (existing != null)
             {
-                voucherViewModel = Mapper.Map<VoucherViewModel>(voucher);
+                voucher = Mapper.Map<VoucherViewModel>(existing);
+                voucher.IsBalanced = voucher.DebitSum.AlmostEquals(voucher.CreditSum);
             }
 
-            return voucherViewModel;
+            return voucher;
         }
 
         /// <summary>

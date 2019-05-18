@@ -8,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -190,14 +191,17 @@ namespace SPPC.Tadbir.Persistence
             if (lineView.Id == 0)
             {
                 line = Mapper.Map<VoucherLine>(lineView);
-                await InsertAsync(repository, line);
+                if (await InsertAsync(repository, line))
+                {
+                    await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
+                }
             }
             else
             {
                 line = await repository.GetByIDAsync(lineView.Id);
-                if (line != null)
+                if (line != null && await UpdateAsync(repository, line, lineView))
                 {
-                    await UpdateAsync(repository, line, lineView);
+                    await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
                 }
             }
 
@@ -211,10 +215,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteArticleAsync(int articleId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var article = await repository.GetByIDAsync(articleId);
-            if (article != null)
+            var article = await repository.GetByIDAsync(articleId, art => art.Voucher);
+            if (article != null && await DeleteAsync(repository, article))
             {
-                await DeleteAsync(repository, article);
+                var lineView = Mapper.Map<VoucherLineViewModel>(article);
+                await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
             }
         }
 
@@ -260,6 +265,17 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                     Environment.NewLine, entity.AccountId, entity.DetailId, entity.CostCenterId, entity.ProjectId,
                     entity.CurrencyId, entity.Debit, entity.Credit, entity.Description)
                 : null;
+        }
+
+        private async Task UpdateVoucherBalanceStatusAsync(int voucherId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetByIDAsync(voucherId, v => v.Lines);
+            var debitSum = voucher.Lines.Sum(vl => vl.Debit);
+            var creditSum = voucher.Lines.Sum(vl => vl.Credit);
+            voucher.IsBalanced = debitSum.AlmostEquals(creditSum);
+            repository.Update(voucher);
+            await UnitOfWork.CommitAsync();
         }
 
         private IQueryable<VoucherLine> GetVoucherLinesQuery(int voucherId)

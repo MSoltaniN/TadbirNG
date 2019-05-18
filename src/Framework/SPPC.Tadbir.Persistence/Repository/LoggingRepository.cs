@@ -41,11 +41,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید ذخیره شود</param>
-        public async Task InsertAsync(IRepository<TEntity> repository, TEntity entity)
+        public async Task<bool> InsertAsync(IRepository<TEntity> repository, TEntity entity)
         {
             OnAction("Create", null, entity);
             repository.Insert(entity);
-            await FinalizeActionAsync();
+            return await FinalizeActionAsync();
         }
 
         /// <summary>
@@ -55,14 +55,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که تغییرات آن باید ذخیره شود</param>
         /// <param name="entityView">مدل نمایشی شامل آخرین تغییرات سطر اطلاعاتی</param>
-        public async Task UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView)
+        public async Task<bool> UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView)
         {
             var clone = Mapper.Map<TEntity>(entity);
             OnAction("Edit", clone, null);
             UpdateExisting(entityView, entity);
             Log.AfterState = GetState(entity);
             repository.Update(entity);
-            await FinalizeActionAsync();
+            return await FinalizeActionAsync();
         }
 
         /// <summary>
@@ -71,13 +71,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید حذف شود</param>
-        public async Task DeleteAsync(IRepository<TEntity> repository, TEntity entity)
+        public async Task<bool> DeleteAsync(IRepository<TEntity> repository, TEntity entity)
         {
             var clone = Mapper.Map<TEntity>(entity);
             OnAction("Delete", clone, null);
             DisconnectEntity(entity);
             repository.Delete(entity);
-            await FinalizeActionAsync();
+            return await FinalizeActionAsync();
         }
 
         /// <summary>
@@ -88,11 +88,13 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// تغییرات انجام شده را اعمال کرده و در صورت امکان لاگ عملیاتی را ایجاد می کند
         /// </summary>
-        protected async Task FinalizeActionAsync()
+        protected async Task<bool> FinalizeActionAsync()
         {
+            bool succeeded = false;
             try
             {
                 await UnitOfWork.CommitAsync();
+                succeeded = true;
                 await TrySaveLogAsync();
             }
             catch (Exception ex)
@@ -102,6 +104,8 @@ namespace SPPC.Tadbir.Persistence
                 await TrySaveLogAsync();
                 throw;
             }
+
+            return succeeded;
         }
 
         /// <summary>

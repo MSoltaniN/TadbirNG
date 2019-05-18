@@ -66,5 +66,10 @@ namespace SPPC.Tadbir.Values
         /// آدرس وب برنامه تحت وب
         /// </summary>
         public const string AppRoot = "http://localhost:8802/";
+
+        /// <summary>
+        /// دقت پیش فرض در مقایسه مقادیر اعشاری - برای پیشگیری از خطاهای روند سازی
+        /// </summary>
+        public const decimal RoundingPrecision = 0.000001M;
     }
 }
