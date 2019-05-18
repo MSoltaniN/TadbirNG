@@ -30,12 +30,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
         public VoucherRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
-            IOperationLogRepository log, ISecureRepository repository)
+            IOperationLogRepository log, ISecureRepository repository, IUserRepository userRepository)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -225,6 +227,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(voucherView, "voucherView");
             Voucher voucher = default(Voucher);
+            var displayName = await _userRepository.GetCurrentUserDisplayNameAsync();
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             if (voucherView.Id == 0)
             {
@@ -233,6 +236,7 @@ namespace SPPC.Tadbir.Persistence
                 voucher.SaveCount++;
                 voucher.IssuedById = _currentContext.Id;
                 voucher.ModifiedById = _currentContext.Id;
+                voucher.IssuerName = voucher.ModifierName = displayName;
                 await InsertAsync(repository, voucher);
             }
             else
@@ -241,6 +245,7 @@ namespace SPPC.Tadbir.Persistence
                 if (voucher != null)
                 {
                     voucher.ModifiedById = _currentContext.Id;
+                    voucher.ModifierName = displayName;
                     await UpdateAsync(repository, voucher, voucherView);
                 }
             }
@@ -290,6 +295,7 @@ namespace SPPC.Tadbir.Persistence
         {
             base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
+            _userRepository.SetCurrentContext(userContext);
         }
 
         /// <summary>
@@ -416,5 +422,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISecureRepository _repository;
+        private readonly IUserRepository _userRepository;
     }
 }

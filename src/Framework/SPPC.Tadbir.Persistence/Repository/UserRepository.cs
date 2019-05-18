@@ -144,6 +144,12 @@ namespace SPPC.Tadbir.Persistence
             return userContext;
         }
 
+        public async Task<string> GetCurrentUserDisplayNameAsync()
+        {
+            var user = await GetUserAsync(_currentContext.Id);
+            return String.Format("{0}, {1}", user.PersonLastName, user.PersonFirstName);
+        }
+
         /// <summary>
         /// دسترسی های امنیتی داده شده به یک کاربر را به صورت مجموعه ای از شناسه های دیتابیسی
         /// از دیتابیس خوانده و بر می گرداند
