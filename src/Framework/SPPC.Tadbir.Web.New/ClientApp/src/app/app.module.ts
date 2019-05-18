@@ -64,6 +64,7 @@ import { AccountGroupsFormComponent } from './components/accountGroups/accountGr
 import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAccounts.component';
 import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
 import { JournalComponent } from './components/journal/journal.component';
+import { HomeComponent } from './components/home/home.component';
 
 import { DialogComponent } from './class/dialog.component';
 
@@ -270,6 +271,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AccountCollectionComponent,
     DialogComponent,
     JournalComponent,
+    HomeComponent,
     ReportParametersComponent,
     ViewIdentifierComponent,
     ReportParamComponent,
@@ -336,7 +338,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'accounts/group/:groupid', component: RelatedAccountsComponent, canActivate: [AuthGuard] },
       { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
       { path: 'journal', component: JournalComponent, canActivate: [AuthGuard] },
-
+      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ]),
