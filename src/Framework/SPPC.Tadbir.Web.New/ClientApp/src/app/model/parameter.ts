@@ -22,5 +22,5 @@ export interface Parameter {
     minValue: string;
     maxValue: string;
     descriptionKey: string;
-    name: string;
+    name: string;    
 }

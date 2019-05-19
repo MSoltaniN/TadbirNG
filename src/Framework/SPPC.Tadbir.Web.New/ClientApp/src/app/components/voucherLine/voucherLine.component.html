@@ -39,9 +39,9 @@
         <button kendoGridAddCommand (click)="addNew()" [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'plus-outline'" type="button">{{ 'VoucherLine.New' | translate }}</button>
         <button kendoGridAddCommand [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'plus-outline'" *ngIf="balance != 0" class="k-button" (click)="addNewWithBalance()" type="button">{{ 'VoucherLine.NewWithDifference' | translate }}</button>
         <button *ngIf="groupDelete" [hidden]="documentStatus != documentStatusValue.Draft" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-        <button kendoButton (click)="showReport()" type="button" [icon]="'printer'"></button>
         <grid-setting entityTypeName="VoucherLine"></grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+        <button kendoButton (click)="showReport()" class="reportMargin" type="button" [icon]="'printer'"></button>
       </ng-template>
 
       <!-- template for mobile -->

@@ -367,14 +367,13 @@ table thead tr th span.ui-column-title {
     background-color: #4189C7 !important;
 }
 
- body.tRtl  kendo-grid-toolbar > button
-{
-    /*float: left!important;*/
+body.tRtl kendo-grid-toolbar > button.reportMargin {
+  float: left !important;
 }
 
-body.tLtr  kendo-grid-toolbar  > button
+body.tLtr  kendo-grid-toolbar  > button.reportMargin
 {
-    /*float: right!important;*/
+    float: right!important;
 } 
 
 .reportMargin
