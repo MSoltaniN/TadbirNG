@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید ذخیره شود</param>
-        Task InsertAsync(IRepository<TEntity> repository, TEntity entity);
+        Task<bool> InsertAsync(IRepository<TEntity> repository, TEntity entity);
 
         /// <summary>
         /// به روش آسنکرون، سطر اطلاعاتی اصلاح شده را در دیتابیس جاری برنامه و سطر لاگ عملیاتی را
@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که تغییرات آن باید ذخیره شود</param>
         /// <param name="entityView">مدل نمایشی شامل آخرین تغییرات سطر اطلاعاتی</param>
-        Task UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView);
+        Task<bool> UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView);
 
         /// <summary>
         /// به روش آسنکرون، سطر اطلاعاتی قابل حذف را از دیتابیس جاری برنامه حذف و سطر لاگ عملیاتی را
@@ -37,6 +37,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید حذف شود</param>
-        Task DeleteAsync(IRepository<TEntity> repository, TEntity entity);
+        Task<bool> DeleteAsync(IRepository<TEntity> repository, TEntity entity);
     }
 }

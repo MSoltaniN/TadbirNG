@@ -8,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -29,12 +30,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
         public VoucherRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
-            IOperationLogRepository log, ISecureRepository repository)
+            IOperationLogRepository log, ISecureRepository repository, IUserRepository userRepository)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -62,15 +65,118 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
         public async Task<VoucherViewModel> GetVoucherAsync(int voucherId)
         {
-            VoucherViewModel voucherViewModel = null;
+            VoucherViewModel voucher = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetByIDAsync(voucherId, v => v.Lines, v => v.Status);
-            if (voucher != null)
+            var existing = await repository.GetByIDAsync(voucherId, v => v.Lines, v => v.Status);
+            if (existing != null)
             {
-                voucherViewModel = Mapper.Map<VoucherViewModel>(voucher);
+                voucher = Mapper.Map<VoucherViewModel>(existing);
+                voucher.IsBalanced = voucher.DebitSum.AlmostEquals(voucher.CreditSum);
             }
 
-            return voucherViewModel;
+            return voucher;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سند مالی جدیدی را با مقادیر پیشنهادی ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <returns>سند مالی جدید با مقادیر پیشنهادی</returns>
+        public async Task<VoucherViewModel> GetNewVoucherAsync()
+        {
+            int lastNo = await GetLastVoucherNoAsync();
+            DateTime lastDate = await GetLastVoucherDateAsync();
+            var newVoucher = new VoucherViewModel()
+            {
+                Date = lastDate,
+                No = lastNo + 1,
+                BranchId = _currentContext.BranchId,
+                FiscalPeriodId = _currentContext.FiscalPeriodId,
+                Type = 0,
+                SubjectType = 0,
+                SaveCount = -1
+            };
+
+            return await SaveVoucherAsync(newVoucher);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سند مالی با شماره مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره یکی از اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شماره</returns>
+        public async Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo)
+        {
+            var voucherByNo = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(voucher => voucher.No == voucherNo)
+                .FirstOrDefaultAsync();
+            return voucherByNo != null
+                ? Mapper.Map<VoucherViewModel>(voucherByNo)
+                : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اولین سند مالی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اولین سند مالی</returns>
+        public async Task<VoucherViewModel> GetFirstVoucherAsync()
+        {
+            var firstVoucher = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .OrderBy(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return firstVoucher != null
+                ? Mapper.Map<VoucherViewModel>(firstVoucher)
+                : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <returns>سند مالی قبلی</returns>
+        public async Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo)
+        {
+            var previous = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(voucher => voucher.No < currentNo)
+                .OrderByDescending(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return previous != null
+                ? Mapper.Map<VoucherViewModel>(previous)
+                : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی بعدی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <returns>سند مالی بعدی</returns>
+        public async Task<VoucherViewModel> GetNextVoucherAsync(int currentNo)
+        {
+            var next = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(voucher => voucher.No > currentNo)
+                .OrderBy(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return next != null
+                ? Mapper.Map<VoucherViewModel>(next)
+                : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>آخرین سند مالی</returns>
+        public async Task<VoucherViewModel> GetLastVoucherAsync()
+        {
+            var lastVoucher = await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .OrderByDescending(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return lastVoucher != null
+                ? Mapper.Map<VoucherViewModel>(lastVoucher)
+                : null;
         }
 
         /// <summary>
@@ -121,13 +227,16 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(voucherView, "voucherView");
             Voucher voucher = default(Voucher);
+            var displayName = await _userRepository.GetCurrentUserDisplayNameAsync();
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             if (voucherView.Id == 0)
             {
                 voucher = Mapper.Map<Voucher>(voucherView);
                 voucher.StatusId = (int)DocumentStatusValue.Draft;
+                voucher.SaveCount++;
                 voucher.IssuedById = _currentContext.Id;
                 voucher.ModifiedById = _currentContext.Id;
+                voucher.IssuerName = voucher.ModifierName = displayName;
                 await InsertAsync(repository, voucher);
             }
             else
@@ -136,6 +245,7 @@ namespace SPPC.Tadbir.Persistence
                 if (voucher != null)
                 {
                     voucher.ModifiedById = _currentContext.Id;
+                    voucher.ModifierName = displayName;
                     await UpdateAsync(repository, voucher, voucherView);
                 }
             }
@@ -185,6 +295,7 @@ namespace SPPC.Tadbir.Persistence
         {
             base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
+            _userRepository.SetCurrentContext(userContext);
         }
 
         /// <summary>
@@ -235,6 +346,40 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        private async Task<DateTime> GetLastVoucherDateAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lastByDate = await repository
+                .GetEntityQuery()
+                .Where(voucher => voucher.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .OrderByDescending(voucher => voucher.Date)
+                .FirstOrDefaultAsync();
+            DateTime lastDate;
+            if (lastByDate != null)
+            {
+                lastDate = lastByDate.Date;
+            }
+            else
+            {
+                var periodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+                var fiscalPeriod = await periodRepository.GetByIDAsync(_currentContext.FiscalPeriodId);
+                lastDate = (fiscalPeriod != null) ? fiscalPeriod.StartDate : DateTime.Now;
+            }
+
+            return lastDate;
+        }
+
+        private async Task<int> GetLastVoucherNoAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lastByNo = await repository
+                .GetEntityQuery()
+                .Where(voucher => voucher.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .OrderByDescending(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return (lastByNo != null) ? lastByNo.No : 1;
+        }
+
         private async Task ManageDocumentAsync(Voucher voucher)
         {
             if (voucher != null)
@@ -277,5 +422,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISecureRepository _repository;
+        private readonly IUserRepository _userRepository;
     }
 }

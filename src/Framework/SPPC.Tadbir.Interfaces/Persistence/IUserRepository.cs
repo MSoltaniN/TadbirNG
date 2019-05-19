@@ -50,6 +50,8 @@ namespace SPPC.Tadbir.Persistence
         /// such a user defined; otherwise, returns null.</returns>
         Task<UserContextViewModel> GetUserContextAsync(int userId);
 
+        Task<string> GetCurrentUserDisplayNameAsync();
+
         /// <summary>
         /// به روش آسنکرون، دسترسی های امنیتی داده شده به یک کاربر را به صورت مجموعه ای از شناسه های یکتا
         /// از محل ذخیره خوانده و بر می گرداند

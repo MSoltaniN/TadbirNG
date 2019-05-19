@@ -139,6 +139,26 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string AccountTurnoversUrl = "lookup/accturnovermodes";
 
+        /// <summary>
+        /// API client URL for lookup collection of voucher system types
+        /// </summary>
+        public const string VoucherSysTypes = "lookup/types/voucher";
+
+        /// <summary>
+        /// API server route URL for lookup collection of voucher system types
+        /// </summary>
+        public const string VoucherSysTypesUrl = "lookup/types/voucher";
+
+        /// <summary>
+        /// API client URL for lookup collection of voucher line types
+        /// </summary>
+        public const string VoucherLineTypes = "lookup/types/voucher-line";
+
+        /// <summary>
+        /// API server route URL for lookup collection of voucher line types
+        /// </summary>
+        public const string VoucherLineTypesUrl = "lookup/types/voucher-line";
+
         #endregion
     }
 }

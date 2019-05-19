@@ -882,4 +882,34 @@
   <data name="FiscalPeriodAlreadyDefined" xml:space="preserve">
     <value>در این محدوده تاریخی قبلاً یک دوره مالی تعریف شده است.</value>
   </data>
+  <data name="LastVoucher" xml:space="preserve">
+    <value>آخرین سند</value>
+  </data>
+  <data name="NewVoucher" xml:space="preserve">
+    <value>سند جدید</value>
+  </data>
+  <data name="VoucherByNo" xml:space="preserve">
+    <value>سند شماره ...</value>
+  </data>
+  <data name="VoucherOps" xml:space="preserve">
+    <value>عملیات اسناد</value>
+  </data>
+  <data name="ClosingTempAccounts" xml:space="preserve">
+    <value>بستن حسابهای موقت</value>
+  </data>
+  <data name="ClosingVoucher" xml:space="preserve">
+    <value>اختتامیه</value>
+  </data>
+  <data name="NormalVoucher" xml:space="preserve">
+    <value>سند عادی</value>
+  </data>
+  <data name="OpeningVoucher" xml:space="preserve">
+    <value>افتتاحیه</value>
+  </data>
+  <data name="NormalLine" xml:space="preserve">
+    <value>آرتیکل عادی</value>
+  </data>
+  <data name="TaxAndToll" xml:space="preserve">
+    <value>مالیات و عوارض</value>
+  </data>
 </root>

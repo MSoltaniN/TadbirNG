@@ -17,4 +17,5 @@ export * from './settingsApi';
 export * from './report/voucherReportApi';
 export * from './accountGroupApi';
 export * from './accountCollectionApi';
+export * from './journalApi';
 //# sourceMappingURL=index.js.map

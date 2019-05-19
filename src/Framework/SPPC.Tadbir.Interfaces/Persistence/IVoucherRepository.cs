@@ -30,6 +30,45 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherViewModel> GetVoucherAsync(int voucherId);
 
         /// <summary>
+        /// به روش آسنکرون، سند مالی جدیدی را با مقادیر پیشنهادی ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <returns>سند مالی جدید با مقادیر پیشنهادی</returns>
+        Task<VoucherViewModel> GetNewVoucherAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، سند مالی با شماره مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره یکی از اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شماره</returns>
+        Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo);
+
+        /// <summary>
+        /// به روش آسنکرون، اولین سند مالی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اولین سند مالی</returns>
+        Task<VoucherViewModel> GetFirstVoucherAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <returns>سند مالی قبلی</returns>
+        Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی بعدی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <returns>سند مالی بعدی</returns>
+        Task<VoucherViewModel> GetNextVoucherAsync(int currentNo);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>آخرین سند مالی</returns>
+        Task<VoucherViewModel> GetLastVoucherAsync();
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>

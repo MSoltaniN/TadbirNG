@@ -114,6 +114,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه گروه های حساب تعریف شده</returns>
         Task<IEnumerable<KeyValue>> GetAccountGroupsAsync();
 
+        IEnumerable<KeyValue> GetVoucherTypes();
+
+        IEnumerable<KeyValue> GetVoucherLineTypes();
+
         /// <summary>
         /// محدودیت های ثبت قابل استفاده در تعریف حساب را به صورت مجموعه ای از متن های چندزبانه برمی گرداند
         /// </summary>

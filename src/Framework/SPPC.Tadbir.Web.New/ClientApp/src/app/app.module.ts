@@ -13,13 +13,14 @@ import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { ContextMenuModule } from '@progress/kendo-angular-menu';
- 
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { AccountComponent } from './components/account/account.component';
 import { AccountFormComponent } from './components/account/account-form.component';
 import { VoucherComponent } from './components/voucher/voucher.component';
 import { VoucherFormComponent } from './components/voucher/voucher-form.component';
+import { VoucherEditorComponent } from './components/voucher/voucher-editor.component';
 import { VoucherLineComponent } from './components/voucherLine/voucherLine.component';
 import { VoucherLineFormComponent } from './components/voucherLine/voucherLine-form.component'
 import { UserComponent } from './components/user/user.component';
@@ -63,6 +64,7 @@ import { AccountGroupsFormComponent } from './components/accountGroups/accountGr
 import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAccounts.component';
 import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
 import { JournalComponent } from './components/journal/journal.component';
+import { HomeComponent } from './components/home/home.component';
 
 import { DialogComponent } from './class/dialog.component';
 
@@ -102,7 +104,7 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import {
   AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
   BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService,
-  OperationLogService, DashboardService, AccountGroupsService, AccountCollectionService,GridService
+  OperationLogService, DashboardService, AccountGroupsService, AccountCollectionService, GridService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcGridReorder } from "./directive/grid/sppc-grid-reorder";
@@ -199,6 +201,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SppcBranchScope,
     VoucherComponent,
     VoucherFormComponent,
+    VoucherEditorComponent,
     VoucherLineComponent,
     VoucherLineFormComponent,
     UserComponent,
@@ -266,8 +269,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     RelatedAccountsFormComponent,
     DialogComponent,
     AccountCollectionComponent,
-    DialogComponent,    
+    DialogComponent,
     JournalComponent,
+    HomeComponent,
     ReportParametersComponent,
     ViewIdentifierComponent,
     ReportParamComponent,
@@ -280,7 +284,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     ButtonsModule,
     CommonModule,
-    HttpModule,    
+    HttpModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -315,6 +319,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'login', component: LoginContainerComponent },
       { path: 'logout', component: LogoutComponent },
       { path: 'voucher', component: VoucherComponent, canActivate: [AuthGuard] },
+      { path: 'voucher/:mode', component: VoucherEditorComponent, canActivate: [AuthGuard] },
       { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
       { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
       { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
@@ -333,7 +338,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'accounts/group/:groupid', component: RelatedAccountsComponent, canActivate: [AuthGuard] },
       { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
       { path: 'journal', component: JournalComponent, canActivate: [AuthGuard] },
-
+      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ]),
@@ -369,7 +374,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
     SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherFormComponent,
-    VoucherLineFormComponent, TabComponent, AccountGroupsFormComponent
+    VoucherLineFormComponent, TabComponent, AccountGroupsFormComponent, VoucherEditorComponent
   ],
   bootstrap: [AppComponent]
 })

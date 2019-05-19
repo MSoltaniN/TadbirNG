@@ -83,8 +83,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.currentRoute = sessionStorage.getItem(SessionKeys.CurrentRoute);
     this.disabledCompany = true;
     this.getCompany();
-    //load setting
-    this.loadAllSetting();
+
 
     // var currentLang = localStorage.getItem('lang')
     // if(currentLang == 'fa')
@@ -322,6 +321,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           localStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
 
           this.loadMenuAndRoute(currentUser);
+
+          this.loadAllSetting();
         }
 
       }

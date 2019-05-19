@@ -146,7 +146,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetAccountGroupCategoriesLookup()
         {
             var categoryLookup = _repository.GetAccountGroupCategories();
-            var sortedLookup = Localize(categoryLookup);
+            var sortedLookup = Localize(categoryLookup, true);
             return Json(sortedLookup);
         }
 
@@ -159,10 +159,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accGroupLookup);
         }
 
+        // GET: api/lookup/types/voucher
+        [Route(LookupApi.VoucherSysTypesUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public IActionResult GetVoucherTypeslookup()
+        {
+            var voucherTypes = _repository.GetVoucherTypes().ToList();
+            var localized = Localize(voucherTypes);
+            return Json(localized);
+        }
+
+        // GET: api/lookup/types/voucher-line
+        [Route(LookupApi.VoucherLineTypesUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public IActionResult GetVoucherLineTypesLookup()
+        {
+            var lineTypes = _repository.GetVoucherLineTypes().ToList();
+            var localized = Localize(lineTypes);
+            return Json(localized);
+        }
+
         // GET: api/lookup/accturnovermodes
         [Route(LookupApi.AccountTurnoversUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IActionResult GetAccountTurnoverModeslookup()
+        public IActionResult GetAccountTurnoverModesLookup()
         {
             var turnoverLookup = _repository.GetAccountTurnoverModes();
             var localizedTurnoversLookup = Localize(turnoverLookup);
@@ -208,16 +228,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private IList<KeyValue> Localize(IList<KeyValue> keyValues)
+        private IList<KeyValue> Localize(IList<KeyValue> keyValues, bool isNameSorted = false)
         {
             for (int i = 0; i < keyValues.Count; i++)
             {
                 keyValues[i].Value = _strings[keyValues[i].Value];
             }
 
-            return keyValues
-                .OrderBy(kv => kv.Value)
-                .ToList();
+            return isNameSorted
+                ? keyValues.OrderBy(kv => kv.Value).ToList()
+                : keyValues;
         }
 
         private readonly ILookupRepository _repository;
