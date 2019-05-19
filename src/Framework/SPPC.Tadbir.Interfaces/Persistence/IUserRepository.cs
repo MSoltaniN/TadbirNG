@@ -50,6 +50,10 @@ namespace SPPC.Tadbir.Persistence
         /// such a user defined; otherwise, returns null.</returns>
         Task<UserContextViewModel> GetUserContextAsync(int userId);
 
+        /// <summary>
+        /// نام کاربر جاری را با قالب پیش فرض (نام خانوادگی، نام) برمی گرداند
+        /// </summary>
+        /// <returns>نام کاربر جاری با قالب پیش فرض</returns>
         Task<string> GetCurrentUserDisplayNameAsync();
 
         /// <summary>

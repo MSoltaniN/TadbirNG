@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.LedgerSummary;
-            return await JournalByDateResultAsync(from, to, mode, false, false, true);
+            return await JournalByDateResultAsync(from, to, mode, false, true, true);
         }
 
         // GET: api/reports/journal/by-date/sum-by-date
@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.LedgerSummaryByDate;
-            return await JournalByDateResultAsync(from, to, mode, false, false, false);
+            return await JournalByDateResultAsync(from, to, mode, false, true, false);
         }
 
         // GET: api/reports/journal/by-date/sum-by-month
@@ -86,7 +86,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.MonthlyLedgerSummary;
-            return await JournalByDateResultAsync(from, to, mode, false, false, true);
+            return await JournalByDateResultAsync(from, to, mode, false, true, true);
         }
 
         #endregion
@@ -135,7 +135,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.LedgerSummary;
-            return await JournalByDateResultAsync(from, to, mode, true, false, true);
+            return await JournalByDateResultAsync(from, to, mode, true, true, true);
         }
 
         // GET: api/reports/journal/by-date/sum-by-date/by-branch
@@ -144,7 +144,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.LedgerSummaryByDate;
-            return await JournalByDateResultAsync(from, to, mode, true, false, false);
+            return await JournalByDateResultAsync(from, to, mode, true, true, false);
         }
 
         // GET: api/reports/journal/by-date/sum-by-month/by-branch
@@ -153,7 +153,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.MonthlyLedgerSummary;
-            return await JournalByDateResultAsync(from, to, mode, true, false, true);
+            return await JournalByDateResultAsync(from, to, mode, true, true, true);
         }
 
         #endregion
@@ -197,7 +197,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoLedgerSummaryAsync(int from, int to)
         {
             var mode = JournalMode.LedgerSummary;
-            return await JournalByNumberResultAsync(from, to, mode, false, false, true);
+            return await JournalByNumberResultAsync(from, to, mode, false, true, true);
         }
 
         #endregion
@@ -241,7 +241,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoLedgerSummaryByBranchAsync(int from, int to)
         {
             var mode = JournalMode.LedgerSummary;
-            return await JournalByNumberResultAsync(from, to, mode, true, false, true);
+            return await JournalByNumberResultAsync(from, to, mode, true, true, true);
         }
 
         #endregion

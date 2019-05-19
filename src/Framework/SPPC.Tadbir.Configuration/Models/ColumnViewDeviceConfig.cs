@@ -6,7 +6,7 @@ namespace SPPC.Tadbir.Configuration.Models
     /// <summary>
     /// اطلاعات تنظیمات نمایشی یک ستون از نمای لیستی را برای یک اندازه صفحه نمایش خاص نگهداری می کند
     /// </summary>
-    public class ColumnViewDeviceConfig
+    public class ColumnViewDeviceConfig : ICloneable
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -43,5 +43,21 @@ namespace SPPC.Tadbir.Configuration.Models
         /// عنوان نمایشی ستون در نمای لیستی که بصورت فارسی یا انگلیسی می باشد و برای تمایش در فرم تنظیمات بکار میرود
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// آبجکت جدیدی با مقادیر متناظر با آبجکت فعلی ساخته و برمی گرداند
+        /// </summary>
+        /// <returns>آبجکت جدیدی با مقادیر متناظر با آبجکت فعلی</returns>
+        public object Clone()
+        {
+            return new ColumnViewDeviceConfig()
+            {
+                DesignIndex = DesignIndex,
+                Index = Index,
+                Title = Title,
+                Visibility = Visibility,
+                Width = Width
+            };
+        }
     }
 }

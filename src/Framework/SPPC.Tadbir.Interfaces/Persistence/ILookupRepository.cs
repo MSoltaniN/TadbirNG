@@ -114,8 +114,16 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه گروه های حساب تعریف شده</returns>
         Task<IEnumerable<KeyValue>> GetAccountGroupsAsync();
 
+        /// <summary>
+        /// انواع سیستمی تعریف شده برای سند را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>انواع سیستمی تعریف شده برای سند</returns>
         IEnumerable<KeyValue> GetVoucherTypes();
 
+        /// <summary>
+        /// انواع تعریف شده برای آرتیکل سند را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>انواع تعریف شده برای آرتیکل سند</returns>
         IEnumerable<KeyValue> GetVoucherLineTypes();
 
         /// <summary>
