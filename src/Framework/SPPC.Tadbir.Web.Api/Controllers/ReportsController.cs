@@ -421,9 +421,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             txtPageHeaderText.HorAlignment = StiTextHorAlignment.Center;
             txtPageHeaderText.AutoWidth = true;
 
-            var pfc = new System.Drawing.Text.PrivateFontCollection();
-            pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
-            txtPageHeaderText.Font = new Font(pfc.Families[0], 14, FontStyle.Bold);
+            // var pfc = new System.Drawing.Text.PrivateFontCollection();
+            // pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
+            // txtPageHeaderText.Font = new Font(pfc.Families[0], 14, FontStyle.Bold);
             if (txtPageHeaderText.Height + txtPageHeaderText.Top > maxHeight)
             {
                 maxHeight = txtPageHeaderText.Height + txtPageHeaderText.Top;
