@@ -938,6 +938,8 @@ INSERT [Metadata].[Column]
 INSERT [Metadata].[Column]
     ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
 	VALUES (204, 26, N'BranchName',NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'{"name":"BranchName","large":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"},"medium":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"},"small":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"},"extraSmall":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"},"extraLarge":{"width":100,"index":5,"designIndex":5,"visibility":"AlwaysVisible","title":"شعبه"}}')
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+    VALUES (205, 2, N'StatusId', N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, N'{"name":"GroupId","large":{"width":100,"index":-1,"designIndex":-1,"visibility":"AlwaysHidden","title":"GroupId"},"medium":{"width":100,"index":-1,"designIndex":-1,"visibility":"AlwaysHidden","title":"GroupId"},"small":{"width":100,"index":-1,"designIndex":-1,"visibility":"AlwaysHidden","title":"GroupId"},"extraSmall":{"width":100,"index":-1,"designIndex":-1,"visibility":"AlwaysHidden","title":"GroupId"},"extraLarge":{"width":100,"index":-1,"designIndex":-1,"visibility":"AlwaysHidden","title":"GroupId"}}')
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
