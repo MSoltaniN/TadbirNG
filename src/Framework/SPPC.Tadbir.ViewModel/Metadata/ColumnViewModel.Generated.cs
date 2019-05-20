@@ -122,6 +122,10 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Settings { get; set; }
 
+        /// <summary>
+        /// اطلاعات آبجکت مورد نظر را به صورت متنی برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات آبجکت مورد نظر به صورت متنی</returns>
         public override string ToString()
         {
             return Name;

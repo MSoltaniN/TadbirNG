@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public IList<QuickReportColumnViewModel> Columns { get; set; }
 
         /// <summary>
-        /// لیست پارامتر های فرم برای گزارش فوری 
+        /// لیست پارامتر های فرم برای گزارش فوری
         /// </summary>
         public IList<ParameterViewModel> Parameters { get; set; }
     }
