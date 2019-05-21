@@ -221,12 +221,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var tableParams = new StiTable();
             tableParams.Columns = 4;
 
-            ////using (StreamReader reader = new StreamReader(
-            ////    typeof(Program).Assembly.GetManifestResourceStream("SPPC.Tadbir.Web.Api.Report.cs")))
-            ////{
-            ////    string reportScript = reader.ReadToEnd();
-            ////    quickReport.Script = reportScript;
-            ////}
+            //using (StreamReader reader = new StreamReader(
+            //    typeof(Program).Assembly.GetManifestResourceStream("SPPC.Tadbir.Web.Api.Report.cs")))
+            //{
+            //    string reportScript = reader.ReadToEnd();
+            //    quickReport.Script = reportScript;
+            //}
 
             quickReport = SetPageWidth(quickReport, qr, out outOfPage);
             quickReport = CreateReportFooterBand(quickReport);

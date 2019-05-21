@@ -42,6 +42,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Resources\Reporting\Fonts\" />
+    <Folder Include="Resources\Reporting\Template\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
