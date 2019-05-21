@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// مقدار مورد استفاده در عملیات مرتبط با آرتیکل
         /// </summary>
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         /// <summary>
         /// شماره پیگیری مورد استفاده برای پیگیری مغایرت های بانکی
@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// مبلغ ارز در تراکنش های ارزی
         /// </summary>
-        public decimal CurrencyValue { get; set; }
+        public decimal? CurrencyValue { get; set; }
 
         /// <summary>
         /// علامتگذاری کاربر روی آرتیکل
@@ -93,6 +93,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل
         /// </summary>
-        public int SourceId { get; set; }
+        public int? SourceId { get; set; }
     }
 }
