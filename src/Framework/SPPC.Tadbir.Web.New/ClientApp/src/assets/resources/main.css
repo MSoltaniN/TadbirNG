@@ -367,3 +367,18 @@ body.tRtl .sppc-float {
 body.tLtr .sppc-float {
   float: left !important;
 }
+
+body.tRtl .k-checkbox-label, body.tRtl .k-radio-label {
+  padding-right: 20px;
+  padding-left: 0;
+}
+
+  body.tRtl .k-checkbox-label::before, body.tRtl .k-checkbox-label::after, body.tRtl .k-radio-label::before, body.tRtl .k-radio-label::after {
+    right: 0;
+    left: unset;
+  }
+
+body.tRtl .sppc-input-num {
+  direction: ltr;
+  text-align: right;
+}

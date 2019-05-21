@@ -325,28 +325,36 @@ GO
 
 CREATE TABLE [Finance].[VoucherLine] (
     [LineID]          INT              IDENTITY (1, 1) NOT NULL,
-	[VoucherID]       INT              NOT NULL,
-	[FiscalPeriodID]  INT              NOT NULL,
-	[BranchID]        INT              NOT NULL,
-	[AccountID]       INT              NOT NULL,
-	[DetailID]        INT              NULL,
-	[CostCenterID]    INT              NULL,
-	[ProjectID]       INT              NULL,
-	[CurrencyID]      INT              NOT NULL,
-    [Description]     NVARCHAR(512)    NULL,
+    [VoucherID]       INT              NOT NULL,
+    [FiscalPeriodID]  INT              NOT NULL,
+    [BranchID]        INT              NOT NULL,
+    [AccountID]       INT              NOT NULL,
+    [DetailAccountID] INT              NULL,
+    [CostCenterID]    INT              NULL,
+    [ProjectID]       INT              NULL,
+    [CurrencyID]      INT              NOT NULL,
+    [CreatedByID]     INT              NOT NULL,
+    [RowNo]           INT              NOT NULL,
     [Debit]           MONEY            NOT NULL,
     [Credit]          MONEY            NOT NULL,
+    [Description]     NVARCHAR(512)    NULL,
+    [Amount]          FLOAT            NULL,
+    [FollowupNo]      NVARCHAR(64)     NULL,
+    [CurrencyValue]   MONEY            NULL,
+    [Mark]            NVARCHAR(64)     NULL,
+    [TypeID]          SMALLINT         NOT NULL,
+    [SourceID]        INT              NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_VoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_VoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_VoucherLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Voucher] FOREIGN KEY ([VoucherID]) REFERENCES [Finance].[Voucher] ([VoucherID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailID]) REFERENCES [Finance].[DetailAccount] ([DetailID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter] ([CostCenterID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project] ([ProjectID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Voucher] FOREIGN KEY ([VoucherID]) REFERENCES [Finance].[Voucher]([VoucherID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
 )
 GO
 

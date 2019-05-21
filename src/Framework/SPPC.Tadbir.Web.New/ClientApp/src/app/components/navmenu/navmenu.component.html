@@ -14,7 +14,8 @@
 
         <ul class="treeview-menu" id='menu{{cmd.id}}'>
           <li *ngFor="let innerCmd of cmd.children;" [ngClass]="{'treeview' : innerCmd.routeUrl == null}">
-            <a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : 'javascript:;'">
+            <!--<a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : []">-->
+            <a (click)="onClickMenu(innerCmd.routeUrl)">
               <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
               <span class="menuitem child">
                 {{
@@ -25,9 +26,10 @@
                 <i class="fa pull-left angle" [ngClass]="{'fa-angle-left':this.currentlang === 'fa' , 'fa-angle-right': this.currentlang === 'en'}"></i>
               </span>
             </a>
-            <ul class="treeview-menu" *ngIf="innerCmd.children.length > 0">
-              <li *ngFor="let cmd3 of innerCmd.children;">
-                <a [routerLink]="cmd3.routeUrl ? [cmd3.routeUrl] : []">
+            <ul class="treeview-menu" id='menu{{innerCmd.id}}' *ngIf="innerCmd.children.length > 0">
+              <li *ngFor="let cmd3 of innerCmd.children;" [ngClass]="{'treeview' : cmd3.routeUrl == null}">
+                <!--<a [routerLink]="cmd3.routeUrl ? [cmd3.routeUrl] : []">-->
+                <a (click)="onClickMenu(cmd3.routeUrl)">
                   <span class="glyphicon glyphicon-{{cmd3.iconName}}"></span>
                   <span class="menuitem child">
                     {{ cmd3.title }}
@@ -37,8 +39,9 @@
                   </span>
                 </a>
                 <ul class="treeview-menu" *ngIf="cmd3.children.length > 0">
-                  <li *ngFor="let cmd4 of innerCmd.children;">
-                    <a [routerLink]="cmd4.routeUrl ? [cmd4.routeUrl] : 'javascript:;'">
+                  <li *ngFor="let cmd4 of cmd3.children;">
+                    <!--<a [routerLink]="cmd4.routeUrl ? [cmd4.routeUrl] : []">-->
+                    <a (click)="onClickMenu(cmd4.routeUrl)">
                       <span class="glyphicon glyphicon-{{cmd4.iconName}}"></span>
                       <span class="menuitem child">
                         {{ cmd4.title }}

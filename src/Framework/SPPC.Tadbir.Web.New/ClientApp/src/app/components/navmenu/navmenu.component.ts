@@ -31,7 +31,7 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   public icons: { [id: string]: string; } = {};
 
   constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService,
-    public translate: TranslateService, public renderer2: Renderer2,
+    public translate: TranslateService, public renderer2: Renderer2, public router: Router,
     public metadata: MetaDataService, public el: ElementRef, public settingService: SettingService,
     public location: Location) {
 
@@ -76,6 +76,12 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
         }
       }
     }
+  }
+
+
+  onClickMenu(url: any) {
+    if (url)
+      this.router.navigate([url])
   }
 
   onMenuClick(event: any, id: number) {

@@ -34,7 +34,7 @@ export class DefaultComponent extends BaseComponent {
 
     this.setLanguageSetting();
 
-    this.localizeMsg();
+    this.localizeMsg(this.entityType);
 
     var propertiesValue = localStorage.getItem(this.metaDataName)
     if (!propertiesValue) {
@@ -169,7 +169,7 @@ export class DefaultComponent extends BaseComponent {
 
   async getAllMetaDataAsync(metaDataName: string): Promise<Array<Property>> {
     if (metaDataName) {
-      if (!localStorage.getItem(metaDataName)) {        
+      if (!localStorage.getItem(metaDataName)) {
         const response = await this.metadataService.getMetaData(metaDataName).toPromise();
         let res: any = response;
         this.properties.set(metaDataName, res.columns);
@@ -476,29 +476,31 @@ export class DefaultComponent extends BaseComponent {
   /**
    * this method localize CRUD messages 
    */
-  private localizeMsg() {
+  public localizeMsg(entityName: string) {
     // read message format for crud operations
-    var entityType = '';
-    this.translateService.get("Entity." + this.entityType).subscribe((msg: string) => {
-      entityType = msg;
-    });
 
-    this.translateService.get("Messages.Inserted").subscribe((msg: string) => {
-      this.insertMsg = String.Format(msg, entityType);
-    });
+    if (entityName) {
+      var entityType = '';
+      this.translateService.get("Entity." + entityName).subscribe((msg: string) => {
+        entityType = msg;
+      });
 
-    this.translateService.get("Messages.Updated").subscribe((msg: string) => {
-      this.updateMsg = String.Format(msg, entityType);;
-    });
+      this.translateService.get("Messages.Inserted").subscribe((msg: string) => {
+        this.insertMsg = String.Format(msg, entityType);
+      });
 
-    this.translateService.get("Messages.Deleted").subscribe((msg: string) => {
-      this.deleteMsg = String.Format(msg, entityType);;
-    });
+      this.translateService.get("Messages.Updated").subscribe((msg: string) => {
+        this.updateMsg = String.Format(msg, entityType);;
+      });
 
-    this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
-      this.deleteConfirmMsg = String.Format(msg, entityType);
-    });
+      this.translateService.get("Messages.Deleted").subscribe((msg: string) => {
+        this.deleteMsg = String.Format(msg, entityType);;
+      });
 
+      this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
+        this.deleteConfirmMsg = String.Format(msg, entityType);
+      });
+    }
 
   }
 
@@ -534,7 +536,7 @@ export class DefaultComponent extends BaseComponent {
     this.currentlang = value;
     localStorage.setItem('lang', value);
 
-    this.localizeMsg();
+    this.localizeMsg(this.entityType);
 
 
   }

@@ -40,17 +40,17 @@
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
 
-          <button class="k-button" [disabled]="!editForm.valid" (click)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
-            <span class="k-icon k-i-save"></span>
-          </button>
-
-          <!--<button class="k-button" SppcCheckAccess="Check" [hidden]="editModel.statusId != 1" (click)="checkHandler(editModel.id, editModel.statusId)" title="{{ 'Voucher.Commit' | translate }}">
+          <button class="k-button" SppcCheckAccess="Check" [hidden]="!voucherModel || voucherModel.statusId == 2" (click)="checkHandler()" title="{{ 'Voucher.Commit' | translate }}">
             <span class="k-icon k-i-check-outline"></span>
           </button>
 
-          <button class="k-button" SppcCheckAccess="Uncheck" [hidden]="editModel.statusId == 1" (click)="checkHandler(editModel.id, editModel.statusId)" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
+          <button class="k-button" SppcCheckAccess="Uncheck" [hidden]="!voucherModel || voucherModel.statusId == 1" (click)="checkHandler()" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
             <span class="k-icon k-i-close-outline"></span>
-          </button>-->
+          </button>
+
+          <button class="k-button" [disabled]="!editForm.valid" (click)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
+            <span class="k-icon k-i-save"></span>
+          </button>
 
         </div>
         <div class="col-xs-12 col-sm-3" [ngClass]="{'pull-right':this.CurrentLanguage === 'en','pull-left':this.CurrentLanguage === 'fa'}">
@@ -92,6 +92,19 @@
 
             <div class="col-xs-12 col-sm-4 sppc-float">
               <div class="form-group">
+                <label for="association" class="control-label">شماره روزانه</label>
+
+                <input type="text" class="k-textbox" />
+
+                <!--<div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.association.valid || editForm.controls.association.pristine">
+                  <span *ngIf="editForm.controls.association.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>
+                  <span *ngIf="editForm.controls.association.errors?.maxlength">{{ 'AllValidations.Voucher.NoIsTooLong' | translate }}</span>
+                </div>-->
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 sppc-float">
+              <div class="form-group">
                 <label for="association" class="control-label">شماره عطف</label>
 
                 <input type="text" class="k-textbox" formControlName="association" />
@@ -100,6 +113,27 @@
                   <span *ngIf="editForm.controls.association.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>
                   <span *ngIf="editForm.controls.association.errors?.maxlength">{{ 'AllValidations.Voucher.NoIsTooLong' | translate }}</span>
                 </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 sppc-float">
+              <div class="form-group">
+                <label for="association" class="control-label">نوع سند</label>
+
+                <!--<input type="text" class="k-textbox" />-->
+                <kendo-dropdownlist [data]="voucherTypeList" class="ddl-type"
+                                    [textField]="'value'"
+                                    [valueField]="'key'"
+                                    [valuePrimitive]="true"
+                                    [value]="selectedType"
+                                    [(ngModel)]="selectedType"
+                                    [ngModelOptions]="{standalone: true}">
+                </kendo-dropdownlist>
+                <!--formControlName="type"-->
+                <!--<div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.association.valid || editForm.controls.association.pristine">
+                  <span *ngIf="editForm.controls.association.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>
+                  <span *ngIf="editForm.controls.association.errors?.maxlength">{{ 'AllValidations.Voucher.NoIsTooLong' | translate }}</span>
+                </div>-->
               </div>
             </div>
 

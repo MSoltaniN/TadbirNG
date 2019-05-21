@@ -85,10 +85,12 @@ namespace SPPC.Tadbir.Persistence
         {
             int lastNo = await GetLastVoucherNoAsync();
             DateTime lastDate = await GetLastVoucherDateAsync();
+            int dailyNo = await GetDailyVoucherNoAsync(lastDate);
             var newVoucher = new VoucherViewModel()
             {
                 Date = lastDate,
                 No = lastNo + 1,
+                DailyNo = dailyNo,
                 BranchId = _currentContext.BranchId,
                 FiscalPeriodId = _currentContext.FiscalPeriodId,
                 Type = 0,
@@ -378,6 +380,14 @@ namespace SPPC.Tadbir.Persistence
                 .OrderByDescending(voucher => voucher.No)
                 .FirstOrDefaultAsync();
             return (lastByNo != null) ? lastByNo.No : 1;
+        }
+
+        private async Task<int> GetDailyVoucherNoAsync(DateTime lastDate)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            int count = await repository.GetCountByCriteriaAsync(
+                voucher => lastDate.CompareWith(voucher.Date) == 0);
+            return count + 1;
         }
 
         private async Task ManageDocumentAsync(Voucher voucher)

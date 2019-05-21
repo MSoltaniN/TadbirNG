@@ -8,17 +8,30 @@ import { Observable } from "rxjs/Observable";
 
 
 export class VoucherInfo implements Voucher {
-  fiscalPeriodId: number = 0;
-  branchId: number = 0;
+  fiscalPeriodId: number=0;
+  branchId: number=0;
   statusId: number;
   statusName: string;
   debitSum: number;
   creditSum: number;
-  id: number = 0;
-  no: string;
+  id: number=0;
+  no: number;
   date: Date;
+  reference: string;
+  association: string;
+  isBalanced: boolean;
+  type: number;
+  subjectType: number;
+  saveCount: number;
+  issuedById: number;
+  modifiedById: number;
+  confirmedById?: number;
+  approvedById?: number;
+  issuerName: string;
+  modifierName: string;
+  confirmerName: string;
+  approverName: string;
   description?: string;
-
 }
 
 @Injectable()

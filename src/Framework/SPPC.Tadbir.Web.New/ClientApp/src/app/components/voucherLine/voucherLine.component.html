@@ -106,7 +106,7 @@
       <div class="form-group">
         <label class="control-label">مجموع بدهکار</label>
 
-        <input type="text" class="k-textbox" [ngModel]="debitSum | SppcNumConfig | async" readonly />
+        <input type="text" class="k-textbox sppc-input-num" [ngModel]="debitSum | SppcNumConfig | async" readonly />
       </div>
     </div>
 
@@ -114,7 +114,7 @@
       <div class="form-group">
         <label class="control-label">مجموع بستانکار</label>
 
-        <input type="text" class="k-textbox" [ngModel]="creditSum | SppcNumConfig | async" readonly />
+        <input type="text" class="k-textbox sppc-input-num" [ngModel]="creditSum | SppcNumConfig | async" readonly />
       </div>
     </div>
 
@@ -122,35 +122,15 @@
       <div class="form-group">
         <label class="control-label">اختلاف</label>
 
-        <input type="text" class="k-textbox" [ngModel]="balance | SppcNumConfig | async" readonly />
+        <input type="text" class="k-textbox sppc-input-num" [ngModel]="balance | SppcNumConfig | async" readonly/>
       </div>
     </div>
 
   </div>
 
-  <div *ngIf="selectedRows.length == 1" style="border-top:solid 1px #3c8dbc">
-    <div class="row article-account">
-      <div class="col-xs-12">
-        <label class="control-label">حساب</label>
-        <label class="control-label" style="text-align: center; direction: ltr;">
-          {{ selectedModel.fullAccount.account.fullCode }} -
-          {{ selectedModel.fullAccount.detailAccount.fullCode }} -
-          {{ selectedModel.fullAccount.costCenter.fullCode }} -
-          {{ selectedModel.fullAccount.project.fullCode }}
-        </label>
-        <input type="text" class="k-textbox sppc-float" [ngModel]="selectedModel.fullAccount.account.name" readonly />
-        <input type="text" class="k-textbox sppc-float" [ngModel]="selectedModel.fullAccount.detailAccount.name" readonly />
-        <input type="text" class="k-textbox sppc-float" [ngModel]="selectedModel.fullAccount.costCenter.name" readonly />
-        <input type="text" class="k-textbox sppc-float" [ngModel]="selectedModel.fullAccount.project.name" readonly />
-      </div>
-    </div>
+  <div style="border-top:solid 1px #3c8dbc">
 
-    <div class="row article-description">
-      <div class="col-xs-12">
-        <label class="control-label">شرح آرتیکل</label>
-        <input type="text" class="k-textbox" [ngModel]="selectedModel.description" readonly />
-      </div>
-    </div>
+    <sppc-display-fullAccount [articleModel]="selectedModel"></sppc-display-fullAccount>
 
     <div class="row" style="margin: 25px 0;">
       <div class="col-xs-12">
@@ -158,27 +138,33 @@
 
           <div class="article-status-item">
             <input type="checkbox" id="issuedBy" class="k-checkbox right"
-                   [(ngModel)]="issuedBy" />
-            <label class="k-checkbox-label right" for="issuedBy">تنظیم کننده</label>
+                   [(ngModel)]="isIssued" onclick="return false;" />
+            <label class="k-checkbox-label left" for="issuedBy">تنظیم کننده</label>
 
-            <input type="text" class="k-textbox" />
+            <input type="text" class="k-textbox" [ngModel]="voucherModel?.issuerName" readonly />
 
           </div>
 
           <div class="article-status-item">
             <input type="checkbox" id="confirmedBy" class="k-checkbox"
-                   [(ngModel)]="confirmedBy" />
+                   [(ngModel)]="isConfirmed" onclick="return false;" />
             <label class="k-checkbox-label" for="confirmedBy">تایید کننده</label>
 
-            <input type="text" class="k-textbox" />
+            <input type="text" class="k-textbox" [ngModel]="voucherModel?.confirmerName" readonly />
           </div>
 
           <div class="article-status-item">
             <input type="checkbox" id="approvedBy" class="k-checkbox"
-                   [(ngModel)]="approvedBy" />
+                   [(ngModel)]="isApproved" onclick="return false;" />
             <label class="k-checkbox-label" for="approvedBy">تصویب کننده</label>
 
-            <input type="text" class="k-textbox" />
+            <input type="text" class="k-textbox" [ngModel]="voucherModel?.approverName" readonly />
+          </div>
+
+          <div class="article-status-item">
+            <input type="checkbox" id="DisplayCurrency" class="k-checkbox"
+                   [(ngModel)]="isDisplayCurrency" (ngModelChange)="changeDisplayCurrency()" />
+            <label class="k-checkbox-label" for="DisplayCurrency">مشاهده اطلاعات ارزی</label>
           </div>
         </div>
       </div>

@@ -26,8 +26,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Id)
                 .HasColumnName("VoucherID");
             builder.Property(e => e.No)
-                .IsRequired()
-                .HasMaxLength(64);
+                .IsRequired();
+            builder.Property(e => e.DailyNo)
+                .IsRequired();
             builder.Property(e => e.Date)
                 .HasColumnType("datetime")
                 .IsRequired();

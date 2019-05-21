@@ -92,6 +92,7 @@
     <None Remove="ClientApp\src\app\controls\datepicker\sppc-grid-datepicker.ts" />
     <None Remove="ClientApp\src\app\controls\dateRangeSelector\sppc-dateRangeSelector.ts" />
     <None Remove="ClientApp\src\app\controls\dropdownlist\sppc-dropdownlist.ts" />
+    <None Remove="ClientApp\src\app\controls\fullAccount\sppc-display-fullAccount.ts" />
     <None Remove="ClientApp\src\app\controls\fullAccount\sppc-fullAccount.ts" />
     <None Remove="ClientApp\src\app\controls\grid\spp-grid-date-filter.ts" />
     <None Remove="ClientApp\src\app\controls\grid\sppc-grid-filter.ts" />
@@ -946,6 +947,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\controls\datepicker\sppc-grid-datepicker.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\dateRangeSelector\sppc-dateRangeSelector.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\dropdownlist\sppc-dropdownlist.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\controls\fullAccount\sppc-display-fullAccount.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\fullAccount\sppc-fullAccount.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\grid\spp-grid-date-filter.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\grid\sppc-grid-filter.ts" />
