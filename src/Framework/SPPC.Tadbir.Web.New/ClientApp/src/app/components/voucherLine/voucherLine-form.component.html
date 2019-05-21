@@ -1,66 +1,141 @@
-<div style="padding:15px;" (keydown.esc)="escPress()">
-  <div *ngIf="errorMessage">
-    <div class="alert alert-danger">
-      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-      {{ errorMessage }}
+
+<div class="dialog-body">
+
+  <div style="padding:15px;" (keydown.esc)="escPress()">
+    <div *ngIf="errorMessage">
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ errorMessage }}
+      </div>
     </div>
+
+    <form novalidate [formGroup]="editForm1">
+
+      <div class="row">
+
+        <div class="col-xs-12 col-sm-6 sppc-float">
+          <div class="form-group">
+            <label for="fullAccount" class="control-label">{{ 'VoucherLine.Account' | translate }}</label>
+
+            <sppc-fullAccount formGroupName="fullAccount"
+                              (setFocus)="focusHandler($event)">
+            </sppc-fullAccount>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 sppc-float">
+
+          <div class="col-xs-12">
+            <div class="form-group">
+              <!--<label for="debit" class="control-label">{{ 'VoucherLine.Debit' | translate }}</label>-->
+              <label for="debit" class="control-label">مبلغ</label>
+
+              <sppc-numerictextbox formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
+            </div>
+          </div>
+
+          <div class="col-xs-12">
+            <div class="form-group">
+
+              <div class="voucher-mode-item">
+                <input type="radio" name="mode" id="mode1" class="k-radio"
+                       [ngModel]="mode" value="1" [ngModelOptions]="{standalone: true}" />
+                <label class="k-radio-label" for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
+              </div>
+
+              <div class="voucher-mode-item">
+                <input type="radio" name="mode" id="mode2" class="k-radio"
+                       [ngModel]="mode" value="2" [ngModelOptions]="{standalone: true}" />
+                <label class="k-radio-label" for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="debit" class="control-label">نوع آرتیکل</label>
+
+              <kendo-dropdownlist [data]="voucherLineTypeList" class="ddl-type"
+                                  [textField]="'value'"
+                                  [valueField]="'key'"
+                                  [valuePrimitive]="true"
+                                  [value]="selectedArticleType"
+                                  [(ngModel)]="selectedArticleType"
+                                  [ngModelOptions]="{standalone: true}">
+              </kendo-dropdownlist>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+
+            <label for="description" class="control-label">{{ 'VoucherLine.Description' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="description" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.description.valid || editForm1.controls.description.pristine">
+              {{ 'AllValidations.VoucherLine.DescriptionIsTooLong' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div *ngIf="isDisplayCurrency">
+
+        <hr />
+
+        <div class="row">
+
+          <div class="col-xs-12 col-sm-6 sppc-float">
+
+            <div class="form-group">
+              <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
+
+              <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-currency"
+                                  [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+              </kendo-dropdownlist>
+              <br />
+              <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.currencyId.valid || editForm1.controls.currencyId.pristine">
+                {{ 'AllValidations.VoucherLine.CurrencyIdIsRequired' | translate }}
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-xs-12 col-sm-6 sppc-float">
+            <div class="form-group">
+              <label for="description" class="control-label">مبلغ</label>
+              <input type="text" class="k-textbox" />
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6 sppc-float">
+            <div class="form-group">
+              <label for="description" class="control-label">نرخ</label>
+              <input type="text" class="k-textbox"/>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+    </form>
   </div>
-
-  <form novalidate [formGroup]="editForm1">
-
-    <div class="form-group">
-      <label for="fullAccount" class="control-label">{{ 'VoucherLine.Account' | translate }}</label>
-
-      <sppc-fullAccount formGroupName="fullAccount"
-                        (setFocus)="focusHandler($event)">
-      </sppc-fullAccount>
-    </div>
-
-    <div class="form-group">
-      <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
-
-      <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-fAcc"
-                          [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
-      </kendo-dropdownlist>
-      <br />
-      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.currencyId.valid || editForm1.controls.currencyId.pristine">
-        {{ 'AllValidations.VoucherLine.CurrencyIdIsRequired' | translate }}
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="debit" class="control-label">{{ 'VoucherLine.Debit' | translate }}</label>
-
-      <sppc-numerictextbox formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
-
-      <!--<div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.debit.valid || editForm1.controls.debit.pristine">
-          {{ 'AllValidations.VoucherLine.DebitIsRequired' | translate }}
-      </div>-->
-    </div>
-
-    <div class="form-group">
-      <label for="credit" class="control-label">{{ 'VoucherLine.Credit' | translate }}</label>
-
-      <sppc-numerictextbox formControlName="credit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
-
-      <!--<div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.credit.valid || editForm1.controls.credit.pristine">
-          {{ 'AllValidations.VoucherLine.CreditIsRequired' | translate }}
-      </div>-->
-    </div>
-
-    <div class="form-group">
-      <label for="description" class="control-label">{{ 'VoucherLine.Description' | translate }}</label>
-
-      <textarea class="k-textarea" formControlName="description"></textarea>
-
-      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.description.valid || editForm1.controls.description.pristine">
-        {{ 'AllValidations.VoucherLine.DescriptionIsTooLong' | translate }}
-      </div>
-    </div>
-  </form>
+  <kendo-dialog-actions>
+    <button class="k-button k-primary" [disabled]="!editForm1.valid" (click)="onSave($event,false)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button k-primary" [disabled]="!editForm1.valid" (click)="onSave($event,true)">{{ 'Buttons.OkAndNew' | translate }}</button>
+    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
 </div>
-<kendo-dialog-actions>
-  <button class="k-button k-primary" [disabled]="!editForm1.valid" (click)="onSave($event,false)">{{ 'Buttons.Ok' | translate }}</button>
-  <button class="k-button k-primary" [disabled]="!editForm1.valid" (click)="onSave($event,true)">{{ 'Buttons.OkAndNew' | translate }}</button>
-  <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
-</kendo-dialog-actions>

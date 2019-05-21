@@ -3,14 +3,12 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { VoucherLine } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
-import { DefaultComponent } from "../../class/default.component";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Metadatas, Entities } from '../../../environments/environment';
 import { FullAccountService } from '../../service/fullAccount.service';
 import { VoucherLineService, AccountService, LookupService } from '../../service/index';
 import { DetailComponent } from '../../class/detail.component';
+import { LookupApi } from '../../service/api/lookupApi';
 
 
 
@@ -24,8 +22,17 @@ interface Item {
 @Component({
   selector: 'voucherLine-form-component',
   styles: [`
-    input[type=text],textarea { width: 100%; } /deep/ kendo-numerictextbox{ width:100% !important; }
-    /deep/ .dialog-style .k-dialog { width:250px } @media (max-width: 450px) { /deep/ .dialog-style .k-dialog { width:100% } }
+    input[type=text],textarea,.ddl-currency,.ddl-type { width: 100%; } /deep/ kendo-numerictextbox{ width:100% !important; }
+
+.dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
+@media screen and (max-width:800px) {
+  .dialog-body{
+    width: 90%;
+    min-width: 250px;
+  }
+}
+
+.voucher-mode-item { display: inline; margin: 0 10px; }
 `  ],
   templateUrl: './voucherLine-form.component.html'
 })
@@ -64,9 +71,11 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     })
   });
 
-  public currenciesRows: Array<Item>;
+  currenciesRows: Array<Item>;
+  voucherLineTypeList: Array<Item> = [];
 
-  public selectedCurrencyValue: string | undefined;
+  selectedCurrencyValue: string | undefined;
+  selectedArticleType: string = "1";
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
@@ -74,6 +83,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   @Input() public balance: number = 0;
   @Input() public model: VoucherLine;
 
+  @Input() public isDisplayCurrency: boolean = false;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<{ model: VoucherLine, isOpen: boolean }> = new EventEmitter();
@@ -112,7 +122,8 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
     this.editForm1.reset(this.model);
 
-    this.GetCurrencies();  
+    this.getArticleType();
+    this.GetCurrencies();
 
     if (this.isNewBalance)
       if (this.balance > 0)
@@ -130,7 +141,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
     super(toastrService, translate, renderer, metadata, Entities.VoucherLine, Metadatas.VoucherArticles);
 
-    
+
   }
 
 
@@ -142,6 +153,16 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
         this.selectedCurrencyValue = this.model.currencyId.toString();
       }
 
+    })
+  }
+
+  getArticleType() {
+    this.lookupService.getModels(LookupApi.VoucherLineTypes).subscribe(res => {
+      this.voucherLineTypeList = res;
+
+      //if (this.model && this.model.) {
+      //  this.selectedArticleType = this.model.;
+      //}
     })
   }
 

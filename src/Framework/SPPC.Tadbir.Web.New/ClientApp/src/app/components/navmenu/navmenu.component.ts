@@ -80,7 +80,6 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
 
   onClickMenu(url: any) {
-    debugger;
     if (url)
       this.router.navigate([url])
   }

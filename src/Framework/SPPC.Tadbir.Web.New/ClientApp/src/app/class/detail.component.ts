@@ -108,7 +108,7 @@ export class DetailComponent extends BaseComponent {
      * this method localize CRUD messages 
      */
     private localizeMsg() {
-        // read message format for crud operations
+        // read message format for crud operations      
         var entityType = '';
         this.translate.get("Entity." + this.entityType).subscribe((msg: string) => {
             entityType = msg;

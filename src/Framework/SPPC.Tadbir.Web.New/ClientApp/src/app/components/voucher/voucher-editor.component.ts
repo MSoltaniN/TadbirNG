@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, TemplateRef, ViewChild, ElementRef } from '@angular/core';
-import { VoucherService } from '../../service/index';
+import { VoucherService, LookupService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -13,6 +13,8 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { VoucherApi } from '../../service/api';
 import { Voucher } from '../../model/index';
 import { DocumentStatusValue } from '../../enum/documentStatusValue';
+import { Item } from '../../model/item';
+import { LookupApi } from '../../service/api/index';
 
 
 
@@ -26,7 +28,7 @@ export function getLayoutModule(layout: Layout) {
   templateUrl: './voucher-editor.component.html',
   styles: [`
 .voucher-form-content {margin-top:15px; border: solid 1px #3c8dbc; padding: 15px 10px;}
-input[type=text],textarea { width: 100%; }
+input[type=text], textarea, .ddl-type { width: 100%; }
 .voucher-status-item{ display: inline; margin: 0 10px;}
 `],
   providers: [{
@@ -46,10 +48,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   errorMessage: string;
   voucherModel: Voucher;
-
+  voucherTypeList: Array<Item> = [];
+  selectedType: string;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
-    public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService) {
 
     super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
 
@@ -77,9 +80,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         }
         default:
       }
-
-
     })
+
+    this.getVoucherType();
   }
 
 
@@ -91,7 +94,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     var voucherNo = this.activeRoute.snapshot.queryParamMap.get('voucherno');
 
     if (!voucherNo) {
-      this.router.navigate(['/home'], { queryParams: { returnUrl: 'voucher/by-no' } });
+      this.router.navigate(['/home'], { queryParams: { returnUrl: 'vouchers/by-no' } });
     }
     else {
       this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
@@ -103,8 +106,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
     this.voucherService.getModels(apiUrl).subscribe(res => {
       this.editForm.reset(res);
-      this.voucherModel = res;
 
+      this.voucherModel = res;
+      this.selectedType = this.voucherModel.type.toString();
       this.balancedMode = res.isBalanced;
 
       switch (res.statusId) {
@@ -134,12 +138,17 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         if (error.status == 404) {
           this.showMessage("سند مورد نظر یافت نشد", MessageType.Warning);
           if (byNo)
-            this.router.navigate(['/home'], { queryParams: { returnUrl: 'voucher/by-no' } });
+            this.router.navigate(['/home'], { queryParams: { returnUrl: 'vouchers/by-no' } });
         }
 
       })
   }
 
+  getVoucherType() {
+    this.lookupService.getModels(LookupApi.VoucherSysTypes).subscribe(res => {
+      this.voucherTypeList = res;
+    })
+  }
 
   onSave(e: any): void {
     e.preventDefault();
@@ -183,7 +192,45 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   searchVoucher() {
-    this.router.navigate(['/home'], { queryParams: { returnUrl: 'voucher/by-no' } });
+    this.router.navigate(['/home'], { queryParams: { returnUrl: 'vouchers/by-no' } });
+  }
+
+  checkHandler() {
+    if (this.voucherModel.statusId == DocumentStatusValue.Draft) {
+      //check
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, this.voucherModel.id)).subscribe(res => {
+
+        this.voucherModel.statusId = DocumentStatusValue.NormalCheck;
+
+        this.noCommittedMode = false;
+        this.committedMode = true;
+
+        this.showMessage(this.updateMsg, MessageType.Succes);
+
+      }, (error => {
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+
+    }
+    else {
+      //uncheck
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, this.voucherModel.id)).subscribe(res => {
+
+        this.voucherModel.statusId = DocumentStatusValue.Draft;
+
+        this.noCommittedMode = true;
+        this.committedMode = false;
+
+        this.showMessage(this.updateMsg, MessageType.Succes);
+
+      }, (error => {
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+    }
+
+
   }
 }
 
