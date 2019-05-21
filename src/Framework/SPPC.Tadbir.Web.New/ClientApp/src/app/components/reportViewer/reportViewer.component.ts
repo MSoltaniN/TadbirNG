@@ -253,7 +253,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
         var registerData = false;
         if (quickReportViewInfo) {
-          var dateColumns = quickReportViewInfo.columns.filter(c => c.dataType.toLowerCase() === "system.datetime");
+          var dateColumns = quickReportViewInfo.columns.filter(c => c.dataType.toLowerCase() === "system.date");
           if (dateColumns.length > 0) {
             var convertedData = reportRows;
             convertedData = this.convertToShamsiDate(convertedData, dateColumns);
