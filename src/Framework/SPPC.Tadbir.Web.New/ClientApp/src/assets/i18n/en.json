@@ -231,6 +231,7 @@
   "JournalByDateSummary": {
     "RowNo": "Row No",
     "AccountFullCode": "Account Code",
+    "AccountName": "Account Name",
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",
@@ -240,6 +241,7 @@
     "RowNo": "Row No",
     "VoucherDate": "Voucher Date",
     "AccountFullCode": "Account Code",
+    "AccountName": "Account Name",
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",
@@ -249,6 +251,7 @@
     "RowNo": "Row No",
     "VoucherDate": "Voucher Date",
     "AccountFullCode": "Account Code",
+    "AccountName": "Account Name",
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",
@@ -307,6 +310,7 @@
   "JournalByNoSummary": {
     "RowNo": "Row No",
     "AccountFullCode": "Account Code",
+    "AccountName": "Account Name",
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",

@@ -82,7 +82,12 @@ export class AppComponent implements AfterViewInit,OnInit  {
         return MomentDate;*/
         return "saeed";
 
-      }); 
+      });
+
+    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BZar.ttf");
+    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BTitrBold.ttf");
+    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb.ttf");
+    
   }
 
 

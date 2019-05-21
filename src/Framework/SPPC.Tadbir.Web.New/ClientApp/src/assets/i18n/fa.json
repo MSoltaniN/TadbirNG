@@ -229,6 +229,7 @@
   "JournalByDateSummary": {
     "RowNo": "ردیف",
     "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
     "Credit": "بستانکار",
@@ -238,6 +239,7 @@
     "RowNo": "ردیف",
     "VoucherDate": "تاریخ سند",
     "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
     "Credit": "بستانکار",
@@ -247,6 +249,7 @@
     "RowNo": "ردیف",
     "VoucherDate": "تاریخ سند",
     "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
     "Credit": "بستانکار",
@@ -305,6 +308,7 @@
   "JournalByNoSummary": {
     "RowNo": "ردیف",
     "AccountFullCode": "کد حساب",
+    "AccountName": "نام حساب",
     "Description": "شرح",
     "Debit": "بدهکار",
     "Credit": "بستانکار",

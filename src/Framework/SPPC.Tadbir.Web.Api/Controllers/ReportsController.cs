@@ -20,6 +20,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 using Stimulsoft.Base.Drawing;
 using Stimulsoft.Report;
 using Stimulsoft.Report.Components;
+using Stimulsoft.Report.Components.Table;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -217,19 +218,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool outOfPage = false;
             quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
+            var tableParams = new StiTable();
+            tableParams.Columns = 4;
 
-            using (StreamReader reader = new StreamReader(
-                typeof(Program).Assembly.GetManifestResourceStream("SPPC.Tadbir.Web.Api.Report.cs")))
-            {
-                string reportScript = reader.ReadToEnd();
-                quickReport.Script = reportScript;
-            }
+            ////using (StreamReader reader = new StreamReader(
+            ////    typeof(Program).Assembly.GetManifestResourceStream("SPPC.Tadbir.Web.Api.Report.cs")))
+            ////{
+            ////    string reportScript = reader.ReadToEnd();
+            ////    quickReport.Script = reportScript;
+            ////}
 
             quickReport = SetPageWidth(quickReport, qr, out outOfPage);
             quickReport = CreateReportFooterBand(quickReport);
             quickReport = CreateReportHeaderBand(quickReport);
             quickReport = CreatePageHeaderBand(quickReport, qr.ReportTitle);
             quickReport = CreatePageFooterBand(quickReport);
+            if (qr.Parameters != null)
+            {
+                quickReport = CreateReportParametersBand(qr, quickReport);
+            }
+
             quickReport = CreateHeaderBand(quickReport, qr.Columns, qr.InchValue, dataSourceName);
             quickReport = CreateDataBand(quickReport, qr, dataSourceName);
 
@@ -326,6 +334,78 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return report;
         }
 
+        private static StiReport CreateReportParametersBand(QuickReportViewModel quickReportViewModel, StiReport report)
+        {
+            ////double rightMargin = 1;
+            ////double leftMargin = 1;
+            ////var paramsWidth = report.Pages[0].Width - leftMargin - rightMargin;
+            ////var left = report.Pages[0].Width - rightMargin;
+            ////foreach (var param in quickReportViewModel.Parameters)
+            ////{
+            ////    var txtParamTitle = new StiText();
+
+            ////    txtParamTitle.Text = param.CaptionKey;
+            ////    var tsize = GetStringWidth(param.CaptionKey, txtParamTitle.Font);
+            ////    txtParamTitle.Width = tsize.Width;
+            ////    txtParamTitle.Height = tsize.Height;
+            ////    txtParamTitle.Left = left - tsize.Width;
+            ////    report.Pages[0].Components.Add(txtParamTitle);
+
+            ////    var txtParamValue = new StiText();
+            ////    txtParamValue.Text = param.Value;
+            ////    var vsize = GetStringWidth(param.CaptionKey, txtParamValue.Font);
+            ////    txtParamValue.Width = vsize.Width;
+            ////    txtParamValue.Height = vsize.Height;
+            ////    txtParamValue.Left = left - vsize.Width;
+            ////    report.Pages[0].Components.Add(txtParamValue);
+            ////}
+            StiTable table = new StiTable();
+            table.AutoWidth = StiTableAutoWidth.Page;
+            table.AutoWidthType = StiTableAutoWidthType.FullTable;
+            table.Name = "Table1";
+            table.Width = report.Pages[0].Width;
+            ////table.Height = report.Pages[0].GridSize * 10;
+            table.ColumnCount = 4;
+            table.RowCount = (int)Math.Ceiling(((double)quickReportViewModel.Parameters.Count * 2 / (double)table.ColumnCount));
+
+            report.Pages[0].Components.Add(table);
+            table.CreateCell();
+
+            int i = 0;
+
+            foreach (var param in quickReportViewModel.Parameters)
+            {
+                StiTableCell headerCell = table.Components[i] as StiTableCell;
+                headerCell.Text.Value = param.CaptionKey;
+                headerCell.Text = new StiExpression(param.CaptionKey);
+                headerCell.HorAlignment = StiTextHorAlignment.Right;
+                headerCell.VertAlignment = StiVertAlignment.Center;
+                headerCell.RightToLeft = true;
+                headerCell.Linked = true;
+                headerCell.Margins = new StiMargins(6, 0, 0, 0);
+                i++;
+
+                StiTableCell dataCell = table.Components[i] as StiTableCell;
+                dataCell.Text.Value = "{" + param.Name + "}";
+                dataCell.HorAlignment = StiTextHorAlignment.Left;
+                dataCell.VertAlignment = StiVertAlignment.Center;
+                dataCell.RightToLeft = true;
+
+                i++;
+            }
+
+            table.RightToLeft = true;
+            return report;
+        }
+
+        private static SizeF GetStringWidth(string text, Font font)
+        {
+            Image fakeImage = new Bitmap(1, 1);
+            Graphics graphics = Graphics.FromImage(fakeImage);
+            SizeF size = graphics.MeasureString("Hello", font);
+            return size;
+        }
+
         private static StiReport CreatePageHeaderBand(StiReport report, string header)
         {
             StiPageHeaderBand pageHeader = new StiPageHeaderBand();
@@ -340,7 +420,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             txtPageHeaderText.Height = 0.8;
             txtPageHeaderText.HorAlignment = StiTextHorAlignment.Center;
             txtPageHeaderText.AutoWidth = true;
-            txtPageHeaderText.Font = new Font("SPPC", 12);
+
+            // var pfc = new System.Drawing.Text.PrivateFontCollection();
+            // pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
+            // txtPageHeaderText.Font = new Font(pfc.Families[0], 14, FontStyle.Bold);
             if (txtPageHeaderText.Height + txtPageHeaderText.Top > maxHeight)
             {
                 maxHeight = txtPageHeaderText.Height + txtPageHeaderText.Top;
@@ -384,7 +467,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int gridWidth = columns.Sum(c => c.Width);
             double tableWidth = GetSizeInInch(gridWidth, oneInchInPixels);
             double left = (pageWidth / (double)2) - (tableWidth / (double)2);
-            double top = 0;
+            double top = 0.06;
             double maxHeight = headerBand.Height;
 
             for (int i = columns.Count - 1; i >= 0; i--)
@@ -407,7 +490,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 txtHeaderCell.Linked = true;
                 txtHeaderCell.Text.Value = !string.IsNullOrEmpty(column.UserText) ? column.UserText : column.DefaultText;
                 txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
-                txtHeaderCell.Height = 0.4;
+                txtHeaderCell.Height = 0.6;
                 left = txtHeaderCell.Left + width;
 
                 StiBorder border = new StiBorder();
@@ -507,7 +590,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 txtDataCell.GrowToHeight = true;
                 txtDataCell.HorAlignment = StiTextHorAlignment.Center;
                 txtDataCell.VertAlignment = StiVertAlignment.Center;
-                txtDataCell.Font = new System.Drawing.Font("B Zar", 8, FontStyle.Regular);
+                txtDataCell.Font = new System.Drawing.Font("IranSansWeb", 8, FontStyle.Regular);
                 txtDataCell.Border = border;
 
                 if (brush != null)

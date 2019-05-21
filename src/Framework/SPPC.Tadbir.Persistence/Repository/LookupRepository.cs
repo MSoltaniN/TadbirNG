@@ -329,6 +329,10 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// انواع سیستمی تعریف شده برای سند را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>انواع سیستمی تعریف شده برای سند</returns>
         public IEnumerable<KeyValue> GetVoucherTypes()
         {
             var types = new List<KeyValue>()
@@ -342,6 +346,10 @@ namespace SPPC.Tadbir.Persistence
             return types;
         }
 
+        /// <summary>
+        /// انواع تعریف شده برای آرتیکل سند را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>انواع تعریف شده برای آرتیکل سند</returns>
         public IEnumerable<KeyValue> GetVoucherLineTypes()
         {
             var types = new List<KeyValue>()

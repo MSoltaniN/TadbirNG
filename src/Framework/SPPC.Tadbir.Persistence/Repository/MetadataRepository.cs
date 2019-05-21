@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Domain;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -49,10 +52,15 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<View>();
             var viewMetadata = await repository
-                .GetByCriteriaAsync(vu => vu.Name == viewName, vu => vu.Columns);
-            return viewMetadata
-                .Select(ent => _mapper.Map<ViewViewModel>(ent))
-                .FirstOrDefault();
+                .GetSingleByCriteriaAsync(vu => vu.Name == viewName, vu => vu.Columns);
+            var metadata = _mapper.Map<ViewViewModel>(viewMetadata);
+            foreach (var column in metadata.Columns)
+            {
+                int index = metadata.Columns.IndexOf(column);
+                column.Settings = GetDynamicColumnSettings(column, index);
+            }
+
+            return metadata;
         }
 
         /// <summary>
@@ -126,6 +134,44 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #endregion
+
+        private string GetDynamicColumnSettings(ColumnViewModel column, int index)
+        {
+            var columnConfig = new ColumnViewConfig(column.Name);
+            var deviceConfig = new ColumnViewDeviceConfig()
+            {
+                Visibility = GetDefaultVisibility(column.Name),
+                Width = 100,
+                Index = index,
+                DesignIndex = index
+            };
+            columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Large = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            return JsonHelper.From(columnConfig, false);
+        }
+
+        private string GetDefaultVisibility(string name)
+        {
+            var visibility = ColumnVisibility.Default;
+            string[] alwaysVisibleColumns = new string[] { "RowNo", "BranchName", "Name", "UserName", "No" };
+            if (alwaysVisibleColumns.Contains(name))
+            {
+                visibility = ColumnVisibility.AlwaysVisible;
+            }
+            else if (name.IndexOf("Id") != -1)
+            {
+                visibility = ColumnVisibility.AlwaysHidden;
+            }
+            else
+            {
+                visibility = ColumnVisibility.Visible;
+            }
+
+            return visibility;
+        }
 
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;

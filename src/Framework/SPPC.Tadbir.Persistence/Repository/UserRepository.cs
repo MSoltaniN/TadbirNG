@@ -144,6 +144,10 @@ namespace SPPC.Tadbir.Persistence
             return userContext;
         }
 
+        /// <summary>
+        /// نام کاربر جاری را با قالب پیش فرض (نام خانوادگی، نام) برمی گرداند
+        /// </summary>
+        /// <returns>نام کاربر جاری با قالب پیش فرض</returns>
         public async Task<string> GetCurrentUserDisplayNameAsync()
         {
             var user = await GetUserAsync(_currentContext.Id);

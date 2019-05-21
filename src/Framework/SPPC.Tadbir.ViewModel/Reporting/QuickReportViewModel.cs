@@ -28,5 +28,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// لیست ستون های گرید
         /// </summary>
         public IList<QuickReportColumnViewModel> Columns { get; set; }
+
+        /// <summary>
+        /// لیست پارامتر های فرم برای گزارش فوری
+        /// </summary>
+        public IList<ParameterViewModel> Parameters { get; set; }
     }
 }
