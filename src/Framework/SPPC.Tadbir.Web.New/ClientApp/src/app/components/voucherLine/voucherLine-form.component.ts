@@ -76,6 +76,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   selectedCurrencyValue: string | undefined;
   selectedArticleType: string = "1";
+  creditDebiteMode: string = "1";
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;

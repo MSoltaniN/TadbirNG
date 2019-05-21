@@ -26,11 +26,18 @@
         <div class="col-xs-12 col-sm-6 sppc-float">
 
           <div class="col-xs-12">
-            <div class="form-group">
+            <div class="form-group" *ngIf="creditDebiteMode == '1'">
               <!--<label for="debit" class="control-label">{{ 'VoucherLine.Debit' | translate }}</label>-->
               <label for="debit" class="control-label">مبلغ</label>
 
               <sppc-numerictextbox formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
+            </div>
+
+            <div class="form-group" *ngIf="creditDebiteMode == '2'">
+              <!--<label for="debit" class="control-label">{{ 'VoucherLine.Debit' | translate }}</label>-->
+              <label for="debit" class="control-label">مبلغ</label>
+
+              <sppc-numerictextbox formControlName="credit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
             </div>
           </div>
 
@@ -38,14 +45,14 @@
             <div class="form-group">
 
               <div class="voucher-mode-item">
-                <input type="radio" name="mode" id="mode1" class="k-radio"
-                       [ngModel]="mode" value="1" [ngModelOptions]="{standalone: true}" />
+                <input type="radio" name="creditDebiteMode" id="mode1" class="k-radio"
+                       [(ngModel)]="creditDebiteMode" value="1" [ngModelOptions]="{standalone: true}" />
                 <label class="k-radio-label" for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
               </div>
 
               <div class="voucher-mode-item">
-                <input type="radio" name="mode" id="mode2" class="k-radio"
-                       [ngModel]="mode" value="2" [ngModelOptions]="{standalone: true}" />
+                <input type="radio" name="creditDebiteMode" id="mode2" class="k-radio"
+                       [(ngModel)]="creditDebiteMode" value="2" [ngModelOptions]="{standalone: true}" />
                 <label class="k-radio-label" for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
               </div>
 
