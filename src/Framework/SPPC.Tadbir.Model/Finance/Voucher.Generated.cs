@@ -41,6 +41,11 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
+        /// شماره روزانه سند مالی که مقداری عددی است
+        /// </summary>
+        public virtual int DailyNo { get; set; }
+
+        /// <summary>
         /// شماره عطف برای ایجاد ازتباط محتوایی بین اسناد
         /// </summary>
         public virtual string Association { get; set; }

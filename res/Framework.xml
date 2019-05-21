@@ -1995,7 +1995,13 @@
           <PropertyView name="txtNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="No" type="int" nullable="False" />
           <ColumnView name="No" visible="True" width="120" />
-          <ValidationRule name="No_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule name="No_Validation" required="True" minimum="" maximum="" format="" type="" />
+        </Property>
+        <Property name="DailyNo" type="Int32" isValidated="True" description="شماره روزانه سند مالی که مقداری عددی است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDailyNo" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="DailyNo" type="int" nullable="False" />
+          <ColumnView name="DailyNo" visible="True" width="120" />
+          <ValidationRule name="DailyNo_Validation" required="True" minimum="" maximum="" format="" type="" />
         </Property>
         <Property name="Date" type="DateTime" isValidated="True" description="تاریخ وقوع پیشامد مالی در عملیات روزمره کسب و کار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />

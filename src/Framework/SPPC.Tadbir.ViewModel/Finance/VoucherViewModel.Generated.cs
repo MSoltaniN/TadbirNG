@@ -48,6 +48,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int No { get; set; }
 
         /// <summary>
+        /// شماره روزانه سند مالی که مقداری عددی است
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        public int DailyNo { get; set; }
+
+        /// <summary>
         /// تاریخ وقوع پیشامد مالی در عملیات روزمره کسب و کار
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
