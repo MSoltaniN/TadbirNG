@@ -41,7 +41,7 @@ export class MetaDataService extends BaseService {
         var options = { headers: header };
 
 
-        var url = String.Format(MetadataApi.EntityMetadata, entityName);
+        var url = String.Format(MetadataApi.ViewMetadata, entityName);
         return this.http.get(url, options)
             .map(response => (<Response>response));
         //var result = null;
@@ -62,7 +62,7 @@ export class MetaDataService extends BaseService {
 
         var options = { headers: header };
 
-        var url = String.Format(MetadataApi.EntityMetadataById, entityId);
+        var url = String.Format(MetadataApi.ViewMetadataById, entityId);
         return this.http.get(url, options)
             .map(response => (<Response>response));
     }
