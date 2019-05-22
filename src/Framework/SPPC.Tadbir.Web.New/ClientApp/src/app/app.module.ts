@@ -19,7 +19,6 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { AccountComponent } from './components/account/account.component';
 import { AccountFormComponent } from './components/account/account-form.component';
 import { VoucherComponent } from './components/voucher/voucher.component';
-import { VoucherFormComponent } from './components/voucher/voucher-form.component';
 import { VoucherEditorComponent } from './components/voucher/voucher-editor.component';
 import { VoucherLineComponent } from './components/voucherLine/voucherLine.component';
 import { VoucherLineFormComponent } from './components/voucherLine/voucherLine-form.component'
@@ -202,7 +201,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     SppcGridFilter,
     SppcBranchScope,
     VoucherComponent,
-    VoucherFormComponent,
     VoucherEditorComponent,
     VoucherLineComponent,
     VoucherLineFormComponent,
@@ -375,8 +373,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
-    SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherFormComponent,
-    VoucherLineFormComponent, TabComponent, AccountGroupsFormComponent, VoucherEditorComponent
+    SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherLineFormComponent,
+    TabComponent, AccountGroupsFormComponent, VoucherEditorComponent
   ],
   bootstrap: [AppComponent]
 })

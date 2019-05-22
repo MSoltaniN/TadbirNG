@@ -87,7 +87,6 @@
     <None Remove="ClientApp\src\app\components\voucherLine\voucherLine-form.component.ts" />
     <None Remove="ClientApp\src\app\components\voucherLine\voucherLine.component.ts" />
     <None Remove="ClientApp\src\app\components\voucher\voucher-editor.component.ts" />
-    <None Remove="ClientApp\src\app\components\voucher\voucher-form.component.ts" />
     <None Remove="ClientApp\src\app\components\voucher\voucher.component.ts" />
     <None Remove="ClientApp\src\app\controls\datepicker\sppc-grid-datepicker.ts" />
     <None Remove="ClientApp\src\app\controls\dateRangeSelector\sppc-dateRangeSelector.ts" />
@@ -942,7 +941,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\voucherLine\voucherLine-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\voucherLine\voucherLine.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\voucher\voucher-editor.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\components\voucher\voucher-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\voucher\voucher.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\datepicker\sppc-grid-datepicker.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\dateRangeSelector\sppc-dateRangeSelector.ts" />
