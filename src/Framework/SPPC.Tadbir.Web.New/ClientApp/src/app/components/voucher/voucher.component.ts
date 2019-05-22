@@ -257,50 +257,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     //this.reportManager.showDialog(id, params, this.currentFilter, this.sort,);
   }
 
-  public saveHandler(model: Voucher, isNew: boolean) {
-
-    this.grid.loading = true;
-    if (!isNew) {
-      this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
-        .subscribe(response => {
-          this.editDataItem = undefined;
-          this.showMessage(this.updateMsg, MessageType.Succes);
-
-          this.dialogRef.close();
-          this.dialogModel.parent = undefined;
-          this.dialogModel.errorMessage = undefined;
-          this.dialogModel.model = undefined;
-
-          this.reloadGrid();
-        }, (error => {
-          this.grid.loading = false;
-          this.editDataItem = model;
-          this.dialogModel.errorMessage = error;
-        }));
-    }
-    else {
-      this.voucherService.insert<Voucher>(VoucherApi.EnvironmentVouchers, model)
-        .subscribe((response: any) => {
-          this.editDataItem = undefined;
-          this.showMessage(this.insertMsg, MessageType.Succes);
-          var insertedModel = response;
-
-          this.selectedRows = [];
-
-          this.dialogRef.close();
-          this.dialogModel.parent = undefined;
-          this.dialogModel.errorMessage = undefined;
-          this.dialogModel.model = undefined;
-
-          this.reloadGrid(insertedModel);
-        }, (error => {
-          this.grid.loading = false;
-          this.dialogModel.errorMessage = error;
-        }));
-    }
-
-  }
-
 
   //#endregion
 

@@ -531,7 +531,26 @@
     "StatusName": "Status",
     "Commit": "Commit Voucher",
     "ReturnFromCommit": "Return Voucher",
-    "Save": "ذخیره"
+    "Save": "ذخیره",
+    "IssuerName": "Issuer Name",
+    "ConfirmerName": "Confirmer Name",
+    "ApproverName": "Approver Name",
+    "DisplayCurrencyInfo": "Display Currency Info",
+    "NewVoucher": "New Voucher",
+    "SearchVoucher": "Search Voucher",
+    "LastVoucher": "Last Voucher",
+    "NextVoucher": "Next Voucher",
+    "PreviousVoucher": "Previous Voucher",
+    "FirstVoucher": "First Voucher",
+    "Reference": "Reference",
+    "DailyNo": "Daily Number",
+    "Association": "Association",
+    "Type": "Type",
+    "VoucherStatus": "Voucher Status",
+    "Balanced": "Balanced",
+    "NotCommitted": "Not Committed",
+    "Committed": "Committed",
+    "Finalized": "Finalized"
   },
   "User": {
     "New": "New User",
@@ -753,6 +772,9 @@
       "StartDateIsRequired": "Start date is required.",
       "EndDateIsRequired": "End date is required.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "ReferenceIsTooLong": "Reference can have a maximum of 64 characters.",
+      "AssociationIsTooLong": "Association can have a maximum of 64 characters.",
+      "TypeIsRequired": "Type is required.",
       "NoError": ""
     },
     "FullAccount": {
@@ -781,6 +803,7 @@
       "NoIsTooLong": "Number can have a maximum of 64 characters.",
       "DateIsRequired": "Date is required.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "DailyNoIsRequired": "Daily number is required.",
       "NoError": ""
     },
     "Login": {
