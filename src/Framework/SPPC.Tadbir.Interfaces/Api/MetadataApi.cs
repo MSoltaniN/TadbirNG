@@ -13,24 +13,24 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for entity metadata
+        /// API client URL for metadata of a view specified by name
         /// </summary>
-        public const string EntityMetadata = "metadata/entity/{0}";
+        public const string ViewMetadata = "metadata/view/{0}";
 
         /// <summary>
-        /// API server route URL for entity metadata
+        /// API server route URL for metadata of a view specified by name
         /// </summary>
-        public const string EntityMetadataUrl = "metadata/entity/{entityName}";
+        public const string ViewMetadataUrl = "metadata/view/{viewName}";
 
         /// <summary>
-        /// API client URL for entity metadata
+        /// API client URL for metadata of a view specified by unique identifier
         /// </summary>
-        public const string EntityMetadataById = "metadata/entity/{0}";
+        public const string ViewMetadataById = "metadata/view/{0}";
 
         /// <summary>
-        /// API server route URL for entity metadata
+        /// API server route URL for metadata of a view specified by unique identifier
         /// </summary>
-        public const string EntityMetadataByIdUrl = "metadata/entity/{entityId:min(1)}";
+        public const string ViewMetadataByIdUrl = "metadata/view/{viewId:min(1)}";
 
         /// <summary>
         /// API client URL for permission metadata in security system

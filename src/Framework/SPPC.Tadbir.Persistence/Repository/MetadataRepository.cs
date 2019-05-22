@@ -56,10 +56,12 @@ namespace SPPC.Tadbir.Persistence
             var metadata = _mapper.Map<ViewViewModel>(viewMetadata);
             foreach (var column in metadata.Columns)
             {
-                int index = metadata.Columns.IndexOf(column);
-                column.Settings = GetDynamicColumnSettings(column, index);
+                column.Settings = GetDynamicColumnSettings(column);
             }
 
+            metadata.Columns = metadata.Columns
+                .OrderBy(col => col.DisplayIndex)
+                .ToList();
             return metadata;
         }
 
@@ -72,10 +74,17 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<View>();
             var viewMetadata = await repository
-                .GetByCriteriaAsync(vu => vu.Id == viewId, vu => vu.Columns);
-            return viewMetadata
-                .Select(vu => _mapper.Map<ViewViewModel>(vu))
-                .FirstOrDefault();
+                .GetSingleByCriteriaAsync(vu => vu.Id == viewId, vu => vu.Columns);
+            var metadata = _mapper.Map<ViewViewModel>(viewMetadata);
+            foreach (var column in metadata.Columns)
+            {
+                column.Settings = GetDynamicColumnSettings(column);
+            }
+
+            metadata.Columns = metadata.Columns
+                .OrderBy(col => col.DisplayIndex)
+                .ToList();
+            return metadata;
         }
 
         /// <summary>
@@ -135,35 +144,16 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        private static string GetDefaultVisibility(string name)
-        {
-            var visibility = ColumnVisibility.Default;
-            string[] alwaysVisibleColumns = new string[] { "RowNo", "BranchName", "Name", "UserName", "No" };
-            if (alwaysVisibleColumns.Contains(name))
-            {
-                visibility = ColumnVisibility.AlwaysVisible;
-            }
-            else if (name.IndexOf("Id") != -1)
-            {
-                visibility = ColumnVisibility.AlwaysHidden;
-            }
-            else
-            {
-                visibility = ColumnVisibility.Visible;
-            }
-
-            return visibility;
-        }
-
-        private string GetDynamicColumnSettings(ColumnViewModel column, int index)
+        private string GetDynamicColumnSettings(ColumnViewModel column)
         {
             var columnConfig = new ColumnViewConfig(column.Name);
             var deviceConfig = new ColumnViewDeviceConfig()
             {
-                Visibility = GetDefaultVisibility(column.Name),
+                Title = column.Name,
+                Visibility = column.Visibility ?? "Visible",
                 Width = 100,
-                Index = index,
-                DesignIndex = index
+                Index = column.DisplayIndex,
+                DesignIndex = column.DisplayIndex
             };
             columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
             columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();

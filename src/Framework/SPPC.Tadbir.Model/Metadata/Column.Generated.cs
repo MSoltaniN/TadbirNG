@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.Model.Metadata
             StorageType = String.Empty;
             ScriptType = String.Empty;
             Expression = String.Empty;
-            Settings = String.Empty;
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -98,14 +97,20 @@ namespace SPPC.Tadbir.Model.Metadata
         public virtual bool AllowFiltering { get; set; }
 
         /// <summary>
+        /// وضعیت نمایشی ستون در نمای لیستی که می تواند یکی از مقادیر
+        /// عدم نمایش دائمی، نمایش دائمی، نمایش یا عدم نمایش را داشته باشد
+        /// </summary>
+        public virtual string Visibility { get; set; }
+
+        /// <summary>
+        /// ایندکس نمایشی ستون که از صفر شروع می شود
+        /// </summary>
+        public virtual short DisplayIndex { get; set; }
+
+        /// <summary>
         /// عبارت مورد نیاز برای دسترسی به ستون در عبارات فیلتر
         /// </summary>
         public virtual string Expression { get; set; }
-
-        /// <summary>
-        /// تنظیمات پیش فرض برای نمایش ستون در نمای لیستی
-        /// </summary>
-        public virtual string Settings { get; set; }
 
         /// <summary>
         /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود

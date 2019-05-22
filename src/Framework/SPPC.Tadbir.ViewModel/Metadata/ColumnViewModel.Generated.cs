@@ -111,6 +111,18 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         public bool AllowFiltering { get; set; }
 
         /// <summary>
+        /// وضعیت نمایشی ستون در نمای لیستی که می تواند یکی از مقادیر
+        /// عدم نمایش دائمی، نمایش دائمی، نمایش یا عدم نمایش را داشته باشد
+        /// </summary>
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string Visibility { get; set; }
+
+        /// <summary>
+        /// ایندکس نمایشی ستون که از صفر شروع می شود
+        /// </summary>
+        public short DisplayIndex { get; set; }
+
+        /// <summary>
         /// عبارت مورد نیاز برای دسترسی به ستون در عبارات فیلتر
         /// </summary>
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]

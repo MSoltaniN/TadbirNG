@@ -366,6 +366,18 @@
           <ColumnView name="Allow Filtering" visible="True" width="120" />
           <ValidationRule name="AllowFiltering_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
+        <Property name="Visibility" type="String" isValidated="True" description="وضعیت نمایشی ستون در نمای لیستی که می تواند یکی از مقادیر عدم نمایش دائمی، نمایش دائمی، نمایش یا عدم نمایش را داشته باشد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtVisibility" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Visibility" type="nvarchar(32)" nullable="True" />
+          <ColumnView name="Visibility" visible="True" width="120" />
+          <ValidationRule name="Visibility_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+        </Property>
+        <Property name="DisplayIndex" type="Int16" isValidated="True" description="ایندکس نمایشی ستون که از صفر شروع می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnDisplayIndex" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="DisplayIndex" type="smallint" nullable="False" />
+          <ColumnView name="Display Index" visible="True" width="120" />
+          <ValidationRule name="DisplayIndex_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
         <Property name="Expression" type="String" isValidated="True" description="عبارت مورد نیاز برای دسترسی به ستون در عبارات فیلتر" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtExpression" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Expression" type="varchar(64)" nullable="True" />
@@ -1995,13 +2007,13 @@
           <PropertyView name="txtNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="No" type="int" nullable="False" />
           <ColumnView name="No" visible="True" width="120" />
-          <ValidationRule name="No_Validation" required="True" minimum="" maximum="" format="" type="" />
+          <ValidationRule name="No_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
         <Property name="DailyNo" type="Int32" isValidated="True" description="شماره روزانه سند مالی که مقداری عددی است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDailyNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DailyNo" type="int" nullable="False" />
           <ColumnView name="DailyNo" visible="True" width="120" />
-          <ValidationRule name="DailyNo_Validation" required="True" minimum="" maximum="" format="" type="" />
+          <ValidationRule name="DailyNo_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
         <Property name="Date" type="DateTime" isValidated="True" description="تاریخ وقوع پیشامد مالی در عملیات روزمره کسب و کار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />

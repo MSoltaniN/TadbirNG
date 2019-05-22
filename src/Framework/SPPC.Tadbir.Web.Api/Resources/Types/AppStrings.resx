@@ -912,4 +912,118 @@
   <data name="TaxAndToll" xml:space="preserve">
     <value>مالیات و عوارض</value>
   </data>
+  <data name="AccountFullCode" xml:space="preserve">
+    <value>کد حساب</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>نام حساب</value>
+  </data>
+  <data name="AssociationField" xml:space="preserve">
+    <value>شماره عطف</value>
+  </data>
+  <data name="BranchName" xml:space="preserve">
+    <value>نام شعبه</value>
+  </data>
+  <data name="BranchScope" xml:space="preserve">
+    <value>دسترسی شعبه</value>
+  </data>
+  <data name="CostCenterFullCode" xml:space="preserve">
+    <value>کد مرکز هزینه</value>
+  </data>
+  <data name="CostCenterName" xml:space="preserve">
+    <value>نام مرکز هزینه</value>
+  </data>
+  <data name="DailyNo" xml:space="preserve">
+    <value>شماره روزانه</value>
+  </data>
+  <data name="DetailAccountFullCode" xml:space="preserve">
+    <value>کد تفصیلی شناور</value>
+  </data>
+  <data name="DetailAccountName" xml:space="preserve">
+    <value>نام تفصیلی شناور</value>
+  </data>
+  <data name="FullAccount" xml:space="preserve">
+    <value>بردار حساب</value>
+  </data>
+  <data name="FullAccount.Account.FullCode" xml:space="preserve">
+    <value>کد حساب</value>
+  </data>
+  <data name="FullAccount.Account.Id" xml:space="preserve">
+    <value>شناسه حساب</value>
+  </data>
+  <data name="FullAccount.Account.Name" xml:space="preserve">
+    <value>نام حساب</value>
+  </data>
+  <data name="FullAccount.CostCenter.FullCode" xml:space="preserve">
+    <value>کد مرکز هزینه</value>
+  </data>
+  <data name="FullAccount.CostCenter.Id" xml:space="preserve">
+    <value>شناسه مرکز هزینه</value>
+  </data>
+  <data name="FullAccount.CostCenter.Name" xml:space="preserve">
+    <value>نام مرکز هزینه</value>
+  </data>
+  <data name="FullAccount.DetailAccount.FullCode" xml:space="preserve">
+    <value>کد تفصیلی شناور</value>
+  </data>
+  <data name="FullAccount.DetailAccount.Id" xml:space="preserve">
+    <value>شناسه تفصیلی شناور</value>
+  </data>
+  <data name="FullAccount.DetailAccount.Name" xml:space="preserve">
+    <value>نام تفصیلی شناور</value>
+  </data>
+  <data name="FullAccount.Project.FullCode" xml:space="preserve">
+    <value>کد پروژه</value>
+  </data>
+  <data name="FullAccount.Project.Id" xml:space="preserve">
+    <value>شناسه پروژه</value>
+  </data>
+  <data name="FullAccount.Project.Name" xml:space="preserve">
+    <value>نام پروژه</value>
+  </data>
+  <data name="GroupId" xml:space="preserve">
+    <value>گروه حساب</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>شناسه</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+  <data name="IsCurrencyAdjustable" xml:space="preserve">
+    <value>تسعیرپذیر</value>
+  </data>
+  <data name="IsEnabled" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="LastLoginDate" xml:space="preserve">
+    <value>تاریخ آخرین ورود</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>سطح</value>
+  </data>
+  <data name="ProjectFullCode" xml:space="preserve">
+    <value>کد پروژه</value>
+  </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value>نام پروژه</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>سرور</value>
+  </data>
+  <data name="StatusId" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="StatusName" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="TurnoverMode" xml:space="preserve">
+    <value>محدودیت ثبت</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>نوع</value>
+  </data>
+  <data name="VoucherDate" xml:space="preserve">
+    <value>تاریخ سند</value>
+  </data>
 </root>

@@ -8,6 +8,6 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// <summary>
         /// مجموعه ای از ویژگی های تعریف شده برای موجودیت
         /// </summary>
-        public IList<ColumnViewModel> Columns { get; protected set; }
+        public IList<ColumnViewModel> Columns { get; set; }
     }
 }
