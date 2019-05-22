@@ -326,6 +326,8 @@ namespace SPPC.Tadbir.Persistence
         protected override void UpdateExisting(VoucherViewModel voucherView, Voucher voucher)
         {
             voucher.No = voucherView.No;
+            voucher.DailyNo = voucherView.DailyNo;
+            voucher.Type = voucherView.Type;
             voucher.Date = voucherView.Date;
             voucher.Reference = voucherView.Reference;
             voucher.Association = voucherView.Association;

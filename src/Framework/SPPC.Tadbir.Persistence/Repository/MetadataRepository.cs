@@ -135,25 +135,7 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        private string GetDynamicColumnSettings(ColumnViewModel column, int index)
-        {
-            var columnConfig = new ColumnViewConfig(column.Name);
-            var deviceConfig = new ColumnViewDeviceConfig()
-            {
-                Visibility = GetDefaultVisibility(column.Name),
-                Width = 100,
-                Index = index,
-                DesignIndex = index
-            };
-            columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Large = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            return JsonHelper.From(columnConfig, false);
-        }
-
-        private string GetDefaultVisibility(string name)
+        private static string GetDefaultVisibility(string name)
         {
             var visibility = ColumnVisibility.Default;
             string[] alwaysVisibleColumns = new string[] { "RowNo", "BranchName", "Name", "UserName", "No" };
@@ -171,6 +153,24 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return visibility;
+        }
+
+        private string GetDynamicColumnSettings(ColumnViewModel column, int index)
+        {
+            var columnConfig = new ColumnViewConfig(column.Name);
+            var deviceConfig = new ColumnViewDeviceConfig()
+            {
+                Visibility = GetDefaultVisibility(column.Name),
+                Width = 100,
+                Index = index,
+                DesignIndex = index
+            };
+            columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Large = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            return JsonHelper.From(columnConfig, false);
         }
 
         private readonly IAppUnitOfWork _unitOfWork;

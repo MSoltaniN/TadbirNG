@@ -337,10 +337,10 @@ namespace SPPC.Tadbir.Persistence
         {
             var types = new List<KeyValue>()
             {
-                new KeyValue { Key = "1", Value = "NormalVoucher" },
-                new KeyValue { Key = "2", Value = "OpeningVoucher" },
-                new KeyValue { Key = "3", Value = "ClosingVoucher" },
-                new KeyValue { Key = "4", Value = "ClosingTempAccounts" }
+                new KeyValue { Key = "0", Value = "NormalVoucher" },
+                new KeyValue { Key = "1", Value = "OpeningVoucher" },
+                new KeyValue { Key = "2", Value = "ClosingVoucher" },
+                new KeyValue { Key = "3", Value = "ClosingTempAccounts" }
             };
 
             return types;
@@ -354,8 +354,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var types = new List<KeyValue>()
             {
-                new KeyValue { Key = "1", Value = "NormalLine" },
-                new KeyValue { Key = "2", Value = "TaxAndToll" }
+                new KeyValue { Key = "0", Value = "NormalLine" },
+                new KeyValue { Key = "1", Value = "TaxAndToll" }
             };
 
             return types;
