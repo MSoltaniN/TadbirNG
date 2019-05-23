@@ -1026,4 +1026,10 @@
   <data name="VoucherDate" xml:space="preserve">
     <value>تاریخ سند</value>
   </data>
+  <data name="ReportManagement" xml:space="preserve">
+    <value>مدیریت گزارشات</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>امکانات</value>
+  </data>
 </root>

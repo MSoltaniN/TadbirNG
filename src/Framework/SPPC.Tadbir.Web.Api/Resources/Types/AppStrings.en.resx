@@ -1026,4 +1026,10 @@
   <data name="VoucherDate" xml:space="preserve">
     <value>Voucher date</value>
   </data>
+  <data name="ReportManagement" xml:space="preserve">
+    <value>Report management</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
 </root>
