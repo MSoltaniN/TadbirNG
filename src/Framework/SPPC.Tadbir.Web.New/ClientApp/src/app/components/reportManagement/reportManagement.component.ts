@@ -811,6 +811,10 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             .subscribe((response: any) => {
 
               var design = response.designJson;
+              var outOfPage = response.outOfPage;
+              if (outOfPage) {
+                this.showMessage(this.getText('Report.ReportIsOutOfPage'));
+              }
               var id = this.ViewIdentity.ViewID;
               this.showQuickReport(id, params, this.Filter, this.Sort, design, treeData, viewInfo);
             });

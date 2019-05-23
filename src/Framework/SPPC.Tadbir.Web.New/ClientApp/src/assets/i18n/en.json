@@ -73,7 +73,8 @@
     "DefaultForAll": "Default for everyone",
     "ReportDesktop": "ِDesktop",
     "Close": "Save Design",
-    "ConfirmMsg": "The design environment of the report has changed or you wish to save the report ?"
+    "ConfirmMsg": "The design environment of the report has changed or you wish to save the report ?",
+    "ReportIsOutOfPage": "The report output is out of the page"
   },
   "Buttons": {
     "Ok": "Ok",

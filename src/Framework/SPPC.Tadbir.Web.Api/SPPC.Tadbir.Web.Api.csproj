@@ -38,12 +38,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Reporting\Template\QuickReport.A4.Rtl.mrt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Reporting\Fonts\" />
-    <Folder Include="Resources\Reporting\Template\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -61,6 +63,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Report.cs" />
+    <EmbeddedResource Include="Resources\Reporting\Template\QuickReport.A4.Rtl.mrt" />
   </ItemGroup>
 
   <ItemGroup>
