@@ -207,6 +207,13 @@ namespace SPPC.Tadbir.Persistence
 
         #region Journal Implementation
 
+        private static JournalViewModel BuildJournal(IEnumerable<JournalItemViewModel> journalItems)
+        {
+            var journal = new JournalViewModel();
+            journal.Items.AddRange(journalItems);
+            return journal;
+        }
+
         #region Journal By Date Implementation
 
         private async Task<JournalViewModel> GetJournalByDateByRowAsync(
@@ -753,13 +760,6 @@ namespace SPPC.Tadbir.Persistence
             };
 
             return journalItem;
-        }
-
-        private JournalViewModel BuildJournal(IEnumerable<JournalItemViewModel> journalItems)
-        {
-            var journal = new JournalViewModel();
-            journal.Items.AddRange(journalItems);
-            return journal;
         }
 
         private IEnumerable<IEnumerable<VoucherLine>> GetGroupByThenByItems<TKey1>(

@@ -368,6 +368,14 @@ body.tLtr .sppc-float {
   float: left !important;
 }
 
+body.tRtl .sppc-float-diff {
+  float: left !important;
+}
+
+body.tLtr .sppc-float-diff {
+  float: right !important;
+}
+
 body.tRtl .k-checkbox-label, body.tRtl .k-radio-label {
   padding-right: 20px;
   padding-left: 0;

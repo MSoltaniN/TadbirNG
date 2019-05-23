@@ -1,32 +1,40 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class MetadataController : Controller
+    public class MetadataController : ApiControllerBase
     {
-        public MetadataController(IMetadataRepository repository)
+        public MetadataController(IMetadataRepository repository, IStringLocalizer<AppStrings> strings)
+            : base(strings)
         {
             _repository = repository;
         }
 
-        // GET: api/metadata/entity/{entityName}
-        [Route(MetadataApi.EntityMetadataUrl)]
-        public async Task<IActionResult> GetEntityMetadata(string entityName)
+        // GET: api/metadata/view/{viewName}
+        [Route(MetadataApi.ViewMetadataUrl)]
+        public async Task<IActionResult> GetViewMetadata(string viewName)
         {
-            var metadata = await _repository.GetViewMetadataAsync(entityName);
+            var metadata = await _repository.GetViewMetadataAsync(viewName);
+            Localize(metadata);
             return JsonReadResult(metadata);
         }
 
-        // GET: api/metadata/entity/{entityId:min(1)}
-        [Route(MetadataApi.EntityMetadataByIdUrl)]
-        public async Task<IActionResult> GetEntityMetadataById(int entityId)
+        // GET: api/metadata/view/{viewId:min(1)}
+        [Route(MetadataApi.ViewMetadataByIdUrl)]
+        public async Task<IActionResult> GetViewMetadataById(int viewId)
         {
-            var metadata = await _repository.GetViewMetadataByIdAsync(entityId);
+            var metadata = await _repository.GetViewMetadataByIdAsync(viewId);
+            Localize(metadata);
             return JsonReadResult(metadata);
         }
 
@@ -38,13 +46,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(permissions);
         }
 
-        private IActionResult JsonReadResult<TData>(TData metadata)
+        private void Localize(ViewViewModel metadata)
         {
-            var result = (metadata != null)
-                ? Json(metadata)
-                : NotFound() as IActionResult;
-
-            return result;
+            if (metadata != null)
+            {
+                foreach (var column in metadata.Columns)
+                {
+                    column.Name = _strings[column.Name];
+                    var config = JsonHelper.To<ColumnViewConfig>(column.Settings);
+                    config.ExtraLarge.Title =
+                        config.ExtraSmall.Title =
+                        config.Large.Title =
+                        config.Medium.Title =
+                        config.Small.Title = _strings[column.Name];
+                    column.Settings = JsonHelper.From(config, false);
+                }
+            }
         }
 
         private IMetadataRepository _repository;

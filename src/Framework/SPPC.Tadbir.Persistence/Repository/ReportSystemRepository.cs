@@ -41,6 +41,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات قالب گزارش فوری را به زبان مورد نیاز خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeId">شناسه دیتابیسی زبان مورد نظر</param>
+        /// <returns>اطلاعات قالب گزارش فوری</returns>
+        public async Task<LocalReportViewModel> GetQuickReportTemplateAsync(int localeId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+            var localReport = await repository.GetSingleByCriteriaAsync(
+                rep => rep.ReportId == _quickReportId && rep.LocaleId == localeId);
+            return _mapper.Map<LocalReportViewModel>(localReport);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، ساختار درختی گزارش های تعریف شده را به زبان جاری برنامه خوانده و برمی گرداند
         /// </summary>
         /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>
@@ -333,6 +346,7 @@ namespace SPPC.Tadbir.Persistence
             return reportView;
         }
 
+        private const int _quickReportId = 43;
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
         private UserContextViewModel _currentContext;

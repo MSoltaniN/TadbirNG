@@ -51,6 +51,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   voucherTypeList: Array<Item> = [];
   selectedType: string;
 
+  @Input() voucherItem: Voucher;
+  isShowBreadcrumb: boolean = true;
+
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService) {
 
@@ -61,26 +64,33 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.editForm.reset();
-
-    this.activeRoute.params.subscribe(params => {
-      switch (params['mode']) {
-        case "new": {
-          this.newVoucher();
-          break;
+    if (this.voucherItem) {
+      this.initVoucherForm(this.voucherItem);
+      this.isShowBreadcrumb = false;
+    }
+    else {
+      this.activeRoute.params.subscribe(params => {
+        switch (params['mode']) {
+          case "new": {
+            this.newVoucher();
+            break;
+          }
+          case "last": {
+            this.lastVoucher();
+            break;
+          }
+          case "by-no": {
+            this.byNoVoucher();
+            break;
+          }
+          default: {
+            this.isShowBreadcrumb = false;
+            this.newVoucher();
+          }
         }
-        case "last": {
-          this.lastVoucher();
-          break;
-        }
-        case "by-no": {
-          this.byNoVoucher();
-          break;
-        }
-        default:
-      }
-    })
+      })
+    }
 
     this.getVoucherType();
   }
@@ -105,33 +115,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   getVoucher(apiUrl: string, byNo: boolean = false) {
 
     this.voucherService.getModels(apiUrl).subscribe(res => {
-      this.editForm.reset(res);
 
-      this.voucherModel = res;
-      this.selectedType = this.voucherModel.type.toString();
-      this.balancedMode = res.isBalanced;
-
-      switch (res.statusId) {
-        case DocumentStatusValue.Draft: {
-          this.noCommittedMode = true;
-          this.committedMode = false;
-          this.finalizedMode = false;
-          break;
-        }
-        case DocumentStatusValue.NormalCheck: {
-          this.noCommittedMode = false;
-          this.committedMode = true;
-          this.finalizedMode = false;
-          break;
-        }
-        case DocumentStatusValue.FinalCheck: {
-          this.noCommittedMode = false;
-          this.committedMode = false;
-          this.finalizedMode = true;
-          break;
-        }
-        default:
-      }
+      this.initVoucherForm(res);
 
     },
       error => {
@@ -142,6 +127,36 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         }
 
       })
+  }
+
+  initVoucherForm(item: Voucher) {
+    this.editForm.reset(item);
+
+    this.voucherModel = item;
+    this.selectedType = this.voucherModel.type.toString();
+    this.balancedMode = item.isBalanced;
+
+    switch (item.statusId) {
+      case DocumentStatusValue.Draft: {
+        this.noCommittedMode = true;
+        this.committedMode = false;
+        this.finalizedMode = false;
+        break;
+      }
+      case DocumentStatusValue.NormalCheck: {
+        this.noCommittedMode = false;
+        this.committedMode = true;
+        this.finalizedMode = false;
+        break;
+      }
+      case DocumentStatusValue.FinalCheck: {
+        this.noCommittedMode = false;
+        this.committedMode = false;
+        this.finalizedMode = true;
+        break;
+      }
+      default:
+    }
   }
 
   getVoucherType() {
@@ -158,7 +173,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       let model: Voucher = this.editForm.value;
       model.branchId = this.BranchId;
       model.fiscalPeriodId = this.FiscalPeriodId;
-      model.statusId = this.voucherModel.statusId;
 
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
         .subscribe(response => {

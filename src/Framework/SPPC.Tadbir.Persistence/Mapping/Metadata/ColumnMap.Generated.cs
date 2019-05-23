@@ -51,10 +51,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .IsRequired();
             builder.Property(e => e.AllowFiltering)
                 .IsRequired();
+            builder.Property(e => e.Visibility)
+                .HasMaxLength(32);
+            builder.Property(e => e.DisplayIndex)
+                .IsRequired();
             builder.Property(e => e.Expression)
                 .HasMaxLength(64);
-            builder.Property(e => e.Settings)
-                .HasMaxLength(1024);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");

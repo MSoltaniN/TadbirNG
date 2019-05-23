@@ -18,6 +18,13 @@ namespace SPPC.Tadbir.Persistence
         void SetCurrentContext(UserContextViewModel userContext);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات قالب گزارش فوری را به زبان مورد نیاز خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeId">شناسه دیتابیسی زبان مورد نظر</param>
+        /// <returns>اطلاعات قالب گزارش فوری</returns>
+        Task<LocalReportViewModel> GetQuickReportTemplateAsync(int localeId);
+
+        /// <summary>
         /// به روش آسنکرون، ساختار درختی گزارش های تعریف شده را به زبان جاری برنامه خوانده و برمی گرداند
         /// </summary>
         /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>

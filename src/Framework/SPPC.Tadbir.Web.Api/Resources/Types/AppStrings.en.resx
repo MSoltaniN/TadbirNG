@@ -912,4 +912,124 @@
   <data name="TaxAndToll" xml:space="preserve">
     <value>Tax and toll</value>
   </data>
+  <data name="AccountFullCode" xml:space="preserve">
+    <value>Account code</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="AssociationField" xml:space="preserve">
+    <value>Association no</value>
+  </data>
+  <data name="BranchName" xml:space="preserve">
+    <value>Branch name</value>
+  </data>
+  <data name="BranchScope" xml:space="preserve">
+    <value>Branch scope</value>
+  </data>
+  <data name="CostCenterFullCode" xml:space="preserve">
+    <value>Cost center code</value>
+  </data>
+  <data name="CostCenterName" xml:space="preserve">
+    <value>Cost center name</value>
+  </data>
+  <data name="DailyNo" xml:space="preserve">
+    <value>Daily no</value>
+  </data>
+  <data name="DetailAccountFullCode" xml:space="preserve">
+    <value>Detail account code </value>
+  </data>
+  <data name="DetailAccountName" xml:space="preserve">
+    <value>Detail account name</value>
+  </data>
+  <data name="FullAccount" xml:space="preserve">
+    <value>Full account</value>
+  </data>
+  <data name="FullAccount.Account.FullCode" xml:space="preserve">
+    <value>Account code</value>
+  </data>
+  <data name="FullAccount.Account.Id" xml:space="preserve">
+    <value>Account Id</value>
+  </data>
+  <data name="FullAccount.Account.Name" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="FullAccount.CostCenter.FullCode" xml:space="preserve">
+    <value>Cost center code</value>
+  </data>
+  <data name="FullAccount.CostCenter.Id" xml:space="preserve">
+    <value>Cost center Id</value>
+  </data>
+  <data name="FullAccount.CostCenter.Name" xml:space="preserve">
+    <value>Cost center name</value>
+  </data>
+  <data name="FullAccount.DetailAccount.FullCode" xml:space="preserve">
+    <value>Detail account code</value>
+  </data>
+  <data name="FullAccount.DetailAccount.Id" xml:space="preserve">
+    <value>Detail account Id</value>
+  </data>
+  <data name="FullAccount.DetailAccount.Name" xml:space="preserve">
+    <value>Detail account name</value>
+  </data>
+  <data name="FullAccount.Project.FullCode" xml:space="preserve">
+    <value>Project code</value>
+  </data>
+  <data name="FullAccount.Project.Id" xml:space="preserve">
+    <value>Project Id</value>
+  </data>
+  <data name="FullAccount.Project.Name" xml:space="preserve">
+    <value>Project name</value>
+  </data>
+  <data name="GroupId" xml:space="preserve">
+    <value>Account group</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="IsCurrencyAdjustable" xml:space="preserve">
+    <value>Currency adjustable</value>
+  </data>
+  <data name="IsEnabled" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="LastLoginDate" xml:space="preserve">
+    <value>Last login date</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="ProjectFullCode" xml:space="preserve">
+    <value>Project code</value>
+  </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value>Project name</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="StatusId" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="StatusName" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="TurnoverMode" xml:space="preserve">
+    <value>Turnover mode</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="VoucherDate" xml:space="preserve">
+    <value>Voucher date</value>
+  </data>
+  <data name="ReportManagement" xml:space="preserve">
+    <value>Report management</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
 </root>

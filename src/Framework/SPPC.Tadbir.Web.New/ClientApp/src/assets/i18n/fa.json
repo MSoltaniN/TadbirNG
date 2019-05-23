@@ -530,7 +530,26 @@
     "StatusName": "وضعیت",
     "Commit": "ثبت سند",
     "ReturnFromCommit": "برگشت سند",
-    "Save": "ذخیره"
+    "Save": "ذخیره",
+    "IssuerName": "تنظیم کننده",
+    "ConfirmerName": "تایید کننده",
+    "ApproverName": "تصویب کننده",
+    "DisplayCurrencyInfo": "مشاهده اطلاعات ارزی",
+    "NewVoucher": "سند جدید",
+    "SearchVoucher": "جستجوی سند",
+    "LastVoucher": "آخرین سند",
+    "NextVoucher": "سند بعدی",
+    "PreviousVoucher": "سند قبلی",
+    "FirstVoucher": "اولین سند",
+    "Reference": "رفرنس",
+    "DailyNo": "شماره روزانه",
+    "Association": "شماره عطف",
+    "Type": "نوع سند",
+    "VoucherStatus": "وضعیت سند",
+    "Balanced": "تراز",
+    "NotCommitted": "ثبت نشده",
+    "Committed": "ثبت شده",
+    "Finalized": "ثبت قطعی"
   },
   "User": {
     "New": "کاربر جدید",
@@ -780,6 +799,10 @@
       "NoIsTooLong": "شماره می تواند حداکثر 64 حرف داشته باشد.",
       "DateIsRequired": "وارد کردن تاریخ اجباری است.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "DailyNoIsRequired": "وارد کردن شماره روزانه اجباری است.",
+      "ReferenceIsTooLong": "رفرنس می تواند حداکثر 64 حرف داشته باشد.",
+      "AssociationIsTooLong": "شماره عطف می تواند حداکثر 64 حرف داشته باشد.",
+      "TypeIsRequired": "وارد کردن نوع سند اجباری است.",
       "NoError": ""
     },
     "Login": {

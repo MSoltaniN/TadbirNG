@@ -8,6 +8,7 @@ import { Observable } from "rxjs/Observable";
 
 
 export class VoucherInfo implements Voucher {
+  dailyNo: number;
   fiscalPeriodId: number=0;
   branchId: number=0;
   statusId: number;

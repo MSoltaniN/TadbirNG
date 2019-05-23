@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewChild, ComponentRef } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { VoucherService, VoucherInfo, SettingService } from '../../service/index';
 import { Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent, ColumnComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
-import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
+import { SortDescriptor } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -18,14 +18,14 @@ import { SecureEntity } from '../../security/secureEntity';
 import { VoucherPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
-import { ReportApi } from '../../service/api/reportApi';
-import { ReportingService, QuickReportColumnInfo, QuickReportViewInfo } from '../../service/report/reporting.service';
+import { ReportingService } from '../../service/report/reporting.service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { VoucherFormComponent } from '../../components/voucher/voucher-form.component';
 import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
 import { Filter } from '../../class/filter';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
+import { VoucherEditorComponent } from './voucher-editor.component';
 
 
 
@@ -97,41 +97,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     this.dialogRef = this.dialogService.open({
       title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
-      content: VoucherFormComponent,
+      content: VoucherEditorComponent,
     });
-
-    this.dialogRef.dialog.location.nativeElement.classList.add(isNew ? 'new-dialog' : 'edit-dialog');
 
     this.dialogModel = this.dialogRef.content.instance;
-    this.dialogModel.editModel = this.editDataItem;
-    this.dialogModel.errorMessage = undefined;
-    this.dialogModel.isNew = isNew;
-
-    this.dialogRef.content.instance.save.subscribe((res) => {
-      this.saveHandler(res, isNew);
-    });
-
-    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
-      this.dialogRef.close();
-
-      this.dialogModel.errorMessage = undefined;
-      this.dialogModel.editModel = undefined;
-    });
-
-
-    this.dialogRef.content.instance.changeMode.subscribe((res) => {
-
-      this.dialogRef.close();
-      this.editDataItem = new VoucherInfo();
-
-      this.openEditorDialog(true);
-
-    })
-
-    this.dialogRef.content.instance.setFocus.subscribe((res) => {
-      debugger;
-      //this.dialogRef.dialog.instance.focus();
-    });
+    this.dialogModel.voucherItem = this.editDataItem;
+    this.editDataItem = undefined;
   }
 
 
@@ -207,7 +178,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.grid.loading = true;
     this.voucherService.getById(String.Format(VoucherApi.Voucher, recordId)).subscribe(res => {
       this.editDataItem = res;
-
       this.openEditorDialog(false);
 
       this.grid.loading = false;
@@ -285,50 +255,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     //if (this.viewIdentity.params.length > 0)
       //params = this.viewIdentity.params.toArray();
     //this.reportManager.showDialog(id, params, this.currentFilter, this.sort,);
-  }
-
-  public saveHandler(model: Voucher, isNew: boolean) {
-
-    this.grid.loading = true;
-    if (!isNew) {
-      this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
-        .subscribe(response => {
-          this.editDataItem = undefined;
-          this.showMessage(this.updateMsg, MessageType.Succes);
-
-          this.dialogRef.close();
-          this.dialogModel.parent = undefined;
-          this.dialogModel.errorMessage = undefined;
-          this.dialogModel.model = undefined;
-
-          this.reloadGrid();
-        }, (error => {
-          this.grid.loading = false;
-          this.editDataItem = model;
-          this.dialogModel.errorMessage = error;
-        }));
-    }
-    else {
-      this.voucherService.insert<Voucher>(VoucherApi.EnvironmentVouchers, model)
-        .subscribe((response: any) => {
-          this.editDataItem = undefined;
-          this.showMessage(this.insertMsg, MessageType.Succes);
-          var insertedModel = response;
-
-          this.selectedRows = [];
-
-          this.dialogRef.close();
-          this.dialogModel.parent = undefined;
-          this.dialogModel.errorMessage = undefined;
-          this.dialogModel.model = undefined;
-
-          this.reloadGrid(insertedModel);
-        }, (error => {
-          this.grid.loading = false;
-          this.dialogModel.errorMessage = error;
-        }));
-    }
-
   }
 
 
@@ -434,8 +360,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public addNew() {
-    this.editDataItem = new VoucherInfo();
-
     this.openEditorDialog(true);
   }
 

@@ -31,7 +31,7 @@ namespace <#= _namespace #>
         /// <summary>
         /// Default text : <#= entry.Value #>
         /// </summary>
-        public const string <#= entry.Key #> = "<#= entry.Key #>";
+        public const string <#= entry.Key.Replace('.', '_') #> = "<#= entry.Key #>";
 <# } #>
     }
 }

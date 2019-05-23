@@ -770,6 +770,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await _sysRepository.GetLocaleIdAsync(localCode);
         }
 
+        private async Task<LocalReportViewModel> GetQuickReportTemplateAsync()
+        {
+            int localeId = await GetCurrentLocaleIdAsync();
+            var localReport = await _sysRepository.GetQuickReportTemplateAsync(localeId);
+            return localReport;
+        }
+
         private void Localize(IList<VoucherSummaryViewModel> report)
         {
             var now = DateTime.Now;
