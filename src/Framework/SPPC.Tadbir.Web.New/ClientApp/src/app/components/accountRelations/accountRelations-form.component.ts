@@ -1,12 +1,7 @@
 import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { Property } from "../../class/metadata/property"
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { String } from '../../class/source';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
-import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
@@ -120,14 +115,9 @@ export class AccountRelationsFormComponent extends DetailComponent {
   }
     //Events
 
-    //constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-    //    public accountRelationsService: AccountRelationsService, @Host() defaultComponent: DefaultComponent) {
-    //    super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
-    //}
-
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
+      private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService) {
+      super(toastrService, translate, renderer, metadata, Entities.AccountRelations, undefined);
     }
 
     getApiUrl() {

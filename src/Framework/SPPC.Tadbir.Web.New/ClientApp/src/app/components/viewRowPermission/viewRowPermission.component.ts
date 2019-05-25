@@ -1,17 +1,13 @@
 import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
-import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { ViewRowPermissionService, ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, SettingService } from '../../service/index';
 import { LookupApi, RoleApi } from '../../service/api/index';
@@ -84,7 +80,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
       private viewRowPermissionService: ViewRowPermissionService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-      super(toastrService, translate, renderer, metadata, settingService, Entities.ViewRowPermission, '');
+      super(toastrService, translate, renderer, metadata, settingService, Entities.ViewRowPermission, undefined);
 
         this.getRoles();
 

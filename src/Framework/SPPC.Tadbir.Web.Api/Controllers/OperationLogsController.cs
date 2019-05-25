@@ -34,15 +34,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(operationLogs);
         }
 
-        // GET: api/system/oplog/metadata
-        [Route(SystemApi.OperationLogMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
-        public async Task<IActionResult> GetOperationLogMetadataAsync()
-        {
-            var metadata = await _repository.GetLogMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // GET: api/system/oplog/company/{companyId:int}
         [Route(SystemApi.CompanyOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]

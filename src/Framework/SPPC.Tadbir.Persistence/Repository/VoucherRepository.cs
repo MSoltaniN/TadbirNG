@@ -182,15 +182,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
-        public async Task<ViewViewModel> GetVoucherMetadataAsync()
-        {
-            return await Metadata.GetViewMetadataAsync<Voucher>();
-        }
-
-        /// <summary>
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه جاری را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

@@ -1,12 +1,6 @@
-import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
-import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { RowArgs } from '@progress/kendo-angular-grid';
 import { String } from '../../class/source';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
-import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { RelatedItems } from '../../model/index';

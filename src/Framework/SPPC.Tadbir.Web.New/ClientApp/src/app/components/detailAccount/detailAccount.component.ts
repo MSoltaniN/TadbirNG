@@ -35,7 +35,7 @@ export class DetailAccountComponent extends GridExplorerComponent<DetailAccount>
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.DetailAccount, Metadatas.DetailAccount,
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.DetailAccount,
       "DetailAccount.LedgerDetailAccount", "DetailAccount.EditorTitleNew", "DetailAccount.EditorTitleEdit",
       DetailAccountApi.EnvironmentDetailAccounts, DetailAccountApi.EnvironmentDetailAccountsLedger, DetailAccountApi.DetailAccount, DetailAccountApi.DetailAccountChildren,
       DetailAccountApi.EnvironmentNewChildDetailAccount,ViewName.DetailAccount)

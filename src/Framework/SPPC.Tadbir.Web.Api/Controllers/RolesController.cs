@@ -76,15 +76,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(role);
         }
 
-        // GET: api/roles/metadata
-        [Route(RoleApi.RoleMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
-        public async Task<IActionResult> GetRoleMetadataAsync()
-        {
-            var metadata = await _repository.GetRoleMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // POST: api/roles
         [HttpPost]
         [Route(RoleApi.RolesUrl)]

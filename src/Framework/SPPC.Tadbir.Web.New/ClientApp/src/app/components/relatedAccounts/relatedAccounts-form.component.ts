@@ -1,18 +1,12 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit, Host, Inject } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService, LookupService } from '../../service/index';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+import { AccountService, LookupService } from '../../service/index';
 import { Account } from '../../model/index';
-import { Property } from "../../class/metadata/property"
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { AccountApi } from '../../service/api/accountApi';
-import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
 
@@ -129,7 +123,7 @@ export class RelatedAccountsFormComponent extends DetailComponent implements OnI
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
     public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
+    super(toastrService, translate, renderer, metadata, Entities.Account, ViewName.Account);
   }
 
   getAccountGroups() {

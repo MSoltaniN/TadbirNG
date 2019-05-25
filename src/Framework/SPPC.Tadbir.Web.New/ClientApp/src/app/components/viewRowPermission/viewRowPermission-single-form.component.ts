@@ -2,12 +2,9 @@ import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angula
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { String } from '../../class/source';
-import { Observable } from 'rxjs/Observable';
-import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { ViewRowPermissionService, ItemInfo } from '../../service/index';
 import { LookupApi } from '../../service/api/index';
 import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
@@ -91,8 +88,8 @@ export class ViewRowPermissionSingleFormComponent extends DetailComponent {
   }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-        public viewRowPermissionService: ViewRowPermissionService) {
-        super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, '');
+      public viewRowPermissionService: ViewRowPermissionService) {
+      super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, undefined);
 
         this.getCategories();
     }

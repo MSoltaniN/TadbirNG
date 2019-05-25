@@ -1032,4 +1032,16 @@
   <data name="Tools" xml:space="preserve">
     <value>امکانات</value>
   </data>
+  <data name="CurrencyName" xml:space="preserve">
+    <value>نوع ارز</value>
+  </data>
+  <data name="CurrencyRate" xml:space="preserve">
+    <value>نرخ ارز</value>
+  </data>
+  <data name="CurrencyValue" xml:space="preserve">
+    <value>مبلغ ارز</value>
+  </data>
+  <data name="LineTypeId" xml:space="preserve">
+    <value>نوع آرتیکل</value>
+  </data>
 </root>

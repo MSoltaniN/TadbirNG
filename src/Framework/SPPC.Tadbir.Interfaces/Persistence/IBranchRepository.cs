@@ -52,12 +52,6 @@ namespace SPPC.Tadbir.Persistence
         Task SaveBranchRolesAsync(RelatedItemsViewModel branchRoles);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای شعبه سازمانی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای شعبه سازمانی</returns>
-        Task<ViewViewModel> GetBranchMetadataAsync();
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات یک شعبه سازمانی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="branch">شعبه سازمانی مورد نظر برای ایجاد یا اصلاح</param>

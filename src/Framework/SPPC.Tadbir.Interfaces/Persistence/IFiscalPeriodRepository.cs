@@ -56,12 +56,6 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> ExistsFiscalPeriodInRange(DateTime start, DateTime end);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای دوره مالی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای دوره مالی</returns>
-        Task<ViewViewModel> GetFiscalPeriodMetadataAsync();
-
-        /// <summary>
         /// به روش آسنکرون، نقش های دارای دسترسی به یک دوره مالی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>

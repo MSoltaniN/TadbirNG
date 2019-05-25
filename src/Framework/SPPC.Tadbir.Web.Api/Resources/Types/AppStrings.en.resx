@@ -1032,4 +1032,16 @@
   <data name="Tools" xml:space="preserve">
     <value>Tools</value>
   </data>
+  <data name="CurrencyName" xml:space="preserve">
+    <value>Currency name</value>
+  </data>
+  <data name="CurrencyRate" xml:space="preserve">
+    <value>Currency rate</value>
+  </data>
+  <data name="CurrencyValue" xml:space="preserve">
+    <value>Currency amount</value>
+  </data>
+  <data name="LineTypeId" xml:space="preserve">
+    <value>Line type</value>
+  </data>
 </root>

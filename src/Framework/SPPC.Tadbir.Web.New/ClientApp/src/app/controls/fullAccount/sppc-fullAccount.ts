@@ -11,6 +11,7 @@ import { AccountItemBrief, FullAccount } from '../../model/index';
 import { String } from '../../class/source'
 import { Entities } from '../../../environments/environment';
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
+import { access } from 'fs';
 
 
 
@@ -28,6 +29,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   accountItem: any;
 
   selectedItem: any;
+
+  focusedItem: number;
 
   isEnableAccountFilter: boolean = false;
   isEnableDetailAccountFilter: boolean = false;
@@ -49,16 +52,20 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   costCenterList: any;
   projectList: any;
 
+  /**آیدی حساب انتخاب شده در گرید*/
   accountSelectedId: number[] = [];
+  /**آیدی تفضیلی شناور انتخاب شده در گرید*/
   detailAccountSelectedId: number[] = [];
+  /**آیدی مرکز هزینه انتخاب شده در گرید*/
   costCenterSelectedId: number[] = [];
+  /**آیدی پروژه انتخاب شده در گرید*/
   projectSelectedId: number[] = [];
 
   accountTitle: string;
   detailAccountTitle: string;
   costCenterTitle: string;
   projectTitle: string;
-  accountFullCode: string;
+  //accountFullCode: string;
 
   fullAccount: FullAccountInfo;
 
@@ -70,7 +77,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
     public controlContainer: ControlContainer, private fullAccountService: FullAccountService, private dialogService: DialogService) {
-    super(toastrService, translate, renderer, metadata, '', '');
+    super(toastrService, translate, renderer, metadata, '', undefined);
 
   }
 
@@ -86,8 +93,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
       this.accountSelectedId.push(this.fullAccount.account.id);
       this.accountTitle = this.fullAccount.account.name;
 
-      //this.accountKeysChange([this.fullAccount.account.id]);
-      this.accountFullCode = this.fullAccount.account.fullCode + " - ";
+
+      //this.accountFullCode = this.fullAccount.account.fullCode + " - ";
     }
     else
       this.isNew = true;
@@ -96,23 +103,23 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
       if (this.fullAccount.detailAccount.id > 0) {
         this.detailAccountSelectedId.push(this.fullAccount.detailAccount.id);
         this.detailAccountTitle = this.fullAccount.detailAccount.name;
-        this.accountFullCode += this.fullAccount.detailAccount.fullCode + " - ";
+        // this.accountFullCode += this.fullAccount.detailAccount.fullCode + " - ";
       }
-      else
-        this.accountFullCode += " - ";
+      //else
+      //  this.accountFullCode += " - ";
 
       if (this.fullAccount.costCenter.id > 0) {
         this.costCenterSelectedId.push(this.fullAccount.costCenter.id);
         this.costCenterTitle = this.fullAccount.costCenter.name;
-        this.accountFullCode += this.fullAccount.costCenter.fullCode + " - ";
+        //this.accountFullCode += this.fullAccount.costCenter.fullCode + " - ";
       }
-      else
-        this.accountFullCode += " - ";
+      //else
+      //  this.accountFullCode += " - ";
 
       if (this.fullAccount.project.id > 0) {
         this.projectSelectedId.push(this.fullAccount.project.id);
         this.projectTitle = this.fullAccount.project.name;
-        this.accountFullCode += this.fullAccount.project.fullCode;
+        //this.accountFullCode += this.fullAccount.project.fullCode;
       }
     }
 
@@ -222,7 +229,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
   /**
    * وقتی یک پروژه انتخاب میشود اگر بردار حساب از پروژه شروع شده باشد لیست حسابهای مرتبط را از سرویس میگیرد
-   * @param projectId شنتسه یکتای پروژه انتخاب شده
+   * @param projectId شناسه یکتای پروژه انتخاب شده
    */
   projectKeysChange(projectId: any) {
     this.projectSelectedId = [];
@@ -418,9 +425,14 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   }
   //#endregion
 
-  openDialog(template: TemplateRef<any>,item: number) {
 
-    this.initDialog(item);
+  onFocus(item: number) {
+    this.focusedItem = item;
+  }
+
+  openDialog(template: TemplateRef<any>, item: number) {
+    this.selectedItem = item;
+    this.onReset()
 
     this.dialogRef = this.dialogService.open({
       title: this.getText('FullAccount.Title'),
@@ -431,22 +443,28 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
     this.dialogRef.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
+        this.closeDialog();
         this.setFocus.emit();
       }
     });
-
 
   }
 
 
   initDialog(item: number) {
 
-    this.initItems();
+    this.fullAccount = this.controlContainer.value;
 
-    this.selectedItem = item;
+    if (this.fullAccount.account.id > 0)
+      this.isNew = false;
+    else
+      this.isNew = true;
 
     switch (item) {
       case AccountRelationsType.Account: {
+
+        if (this.fullAccount.account.id > 0)
+          this.accountSelectedId.push(this.fullAccount.account.id);
 
         this.GetAccounts(AccountRelationApi.EnvironmentAccountsLookup);
 
@@ -456,41 +474,49 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
           this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         }
 
-
         break;
       }
       case AccountRelationsType.DetailAccount: {
+
+        if (this.fullAccount.detailAccount.id > 0)
+          this.detailAccountSelectedId.push(this.fullAccount.detailAccount.id);
 
         this.GetDetailAccounts(AccountRelationApi.EnvironmentDetailAccountsLookup);
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, this.detailAccountSelectedId[0]));
-          this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
-          this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
+          //this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
+          //this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
       }
       case AccountRelationsType.CostCenter: {
 
+        if (this.fullAccount.costCenter.id > 0)
+          this.costCenterSelectedId.push(this.fullAccount.costCenter.id);
+
         this.GetCostCenters(AccountRelationApi.EnvironmentCostCentersLookup);
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToCostCenter, this.costCenterSelectedId[0]));
-          this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-          this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
+          //this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
+          //this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
       }
       case AccountRelationsType.Project: {
 
+        if (this.fullAccount.project.id > 0)
+          this.projectSelectedId.push(this.fullAccount.project.id);
+
         this.GetProjects(AccountRelationApi.EnvironmentProjectsLookup);
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToProject, this.projectSelectedId[0]));
-          this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-          this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
+          //this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
+          //this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
@@ -504,43 +530,55 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
    * ذخیره بردار حساب انتخاب شده
    */
   onSave() {
+
     this.accountTitle = undefined;
     this.detailAccountTitle = undefined;
     this.costCenterTitle = undefined;
     this.projectTitle = undefined;
 
-    this.controlContainer.control.patchValue({
-      account: { id: this.accountSelectedId[0] }, detailAccount: { id: this.detailAccountSelectedId[0] },
-      costCenter: { id: this.costCenterSelectedId[0] }, project: { id: this.projectSelectedId[0] }
-    })
+    let fullAccountData: FullAccount = new FullAccountInfo();
 
     if (this.accountSelectedId.length > 0) {
       var account = this.accountsRows.find(f => f.id == this.accountSelectedId[0])
       this.accountTitle = account.name;
-      this.accountFullCode = account.fullCode + " - ";
+      //this.accountFullCode = account.fullCode + " - ";
+      fullAccountData.account = account;
     }
 
     if (this.detailAccountSelectedId.length > 0) {
       var detailAccount = this.detailAccountsRows.find(f => f.id == this.detailAccountSelectedId[0]);
       this.detailAccountTitle = detailAccount.name;
-      this.accountFullCode += detailAccount.fullCode + " - ";
+      //this.accountFullCode += detailAccount.fullCode + " - ";
+      fullAccountData.detailAccount = detailAccount;
     }
-    else
-      this.accountFullCode += " - ";
+    //else
+    //  this.accountFullCode += " - ";
 
     if (this.costCenterSelectedId.length > 0) {
       var costCenter = this.costCentersRows.find(f => f.id == this.costCenterSelectedId[0]);
       this.costCenterTitle = costCenter.name;
-      this.accountFullCode += costCenter.fullCode + " - ";
+      //this.accountFullCode += costCenter.fullCode + " - ";
+      fullAccountData.costCenter = costCenter;
     }
-    else
-      this.accountFullCode += " - ";
+    //else
+    //  this.accountFullCode += " - ";
 
     if (this.projectSelectedId.length > 0) {
       var project = this.projectsRows.find(f => f.id == this.projectSelectedId[0]);
       this.projectTitle = project.name;
-      this.accountFullCode += project.fullCode;
+      //this.accountFullCode += project.fullCode;
+      fullAccountData.project = project;
     }
+
+    this.fullAccount = fullAccountData;
+
+    this.controlContainer.control.patchValue({
+      account: fullAccountData.account,
+      detailAccount: fullAccountData.detailAccount,
+      costCenter: fullAccountData.costCenter,
+      project: fullAccountData.project
+    })
+
 
     this.dialogRef.close();
   }
@@ -556,7 +594,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     this.costCenterSelectedId = [];
     this.projectSelectedId = [];
 
-    this.accountTitle = this.detailAccountTitle = this.costCenterTitle = this.projectTitle = this.accountFullCode = undefined;  
+    //this.accountTitle = this.detailAccountTitle = this.costCenterTitle = this.projectTitle = undefined;//this.accountFullCode = 
     this.accFilterValue = this.dAccFilterValue = this.cCenterFilterValue = this.pFilterValue = undefined;
     this.isEnableAccountFilter = this.isEnableDetailAccountFilter = this.isEnableCostCenterFilter = this.isEnableProjectFilter = false;
 
@@ -580,6 +618,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     this.costCenterSelectedId = [];
     this.projectSelectedId = [];
 
+    this.patchValue();
+
     this.dialogRef.close();
   }
 
@@ -587,32 +627,33 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     this.dialogRef.close();
   }
 
-  initItems() {
 
-    this.accFilterValue = undefined;
-    this.dAccFilterValue = undefined;
-    this.cCenterFilterValue = undefined;  
-    this.pFilterValue = undefined;
+  patchValue() {
+    var defaultModel = this.controlContainer.value;
 
-
-    this.fullAccount = this.controlContainer.value;
-
-    if (this.fullAccount.account.id > 0) {
-      this.isNew = false;
-      this.accountSelectedId.push(this.fullAccount.account.id);
-    }
-    else {
-      this.isNew = true;
+    if (defaultModel.account.id > 0) {
+      this.accountTitle = defaultModel.account.name;
+      //this.accountFullCode = defaultModel.account.fullCode + " - ";
     }
 
-    if (this.fullAccount.detailAccount.id > 0) 
-      this.detailAccountSelectedId.push(this.fullAccount.detailAccount.id);
+    if (defaultModel.detailAccount.id > 0) {
+      this.detailAccountTitle = defaultModel.detailAccount.name;
+      //this.accountFullCode += defaultModel.detailAccount.fullCode + " - ";
+    }
+    //else
+    //  this.accountFullCode += " - ";
 
-    if (this.fullAccount.costCenter.id > 0) 
-      this.costCenterSelectedId.push(this.fullAccount.costCenter.id);
+    if (defaultModel.costCenter.id > 0) {
+      this.costCenterTitle = defaultModel.costCenter.name;
+      //this.accountFullCode += defaultModel.costCenter.fullCode + " - ";
+    }
+    //else
+    //  this.accountFullCode += " - ";
 
-    if (this.fullAccount.project.id > 0) 
-      this.projectSelectedId.push(this.fullAccount.project.id);
+    if (defaultModel.project.id > 0) {
+      this.projectTitle = defaultModel.project.name;
+      //this.accountFullCode += defaultModel.project.fullCode;
+    }
 
   }
 

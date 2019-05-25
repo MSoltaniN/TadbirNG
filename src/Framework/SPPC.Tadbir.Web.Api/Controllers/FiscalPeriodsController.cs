@@ -49,15 +49,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(fiscalPeriod);
         }
 
-        // GET: api/fperiods/metadata
-        [Route(FiscalPeriodApi.FiscalPeriodMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
-        public async Task<IActionResult> GetFiscalPeriodMetadataAsync()
-        {
-            var metadata = await _repository.GetFiscalPeriodMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // POST: api/fperiods
         [HttpPost]
         [Route(FiscalPeriodApi.FiscalPeriodsUrl)]

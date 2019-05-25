@@ -103,16 +103,6 @@ namespace SPPC.Tadbir.Api
         public const string LastVoucherUrl = "vouchers/last";
 
         /// <summary>
-        /// API client URL for voucher metadata
-        /// </summary>
-        public const string VoucherMetadata = "vouchers/metadata";
-
-        /// <summary>
-        /// API server route URL for voucher metadata
-        /// </summary>
-        public const string VoucherMetadataUrl = "vouchers/metadata";
-
-        /// <summary>
         /// API client URL for preparing a single voucher specified by identifier
         /// </summary>
         public const string PrepareVoucher = "vouchers/{0}/prepare";

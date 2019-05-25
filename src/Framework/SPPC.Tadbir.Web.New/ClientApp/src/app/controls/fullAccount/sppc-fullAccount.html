@@ -1,21 +1,27 @@
 <ng-container [formGroup]="controlContainer.control">
   <div class="fullAccount">
-    <input type="text" [(ngModel)]="accountFullCode" placeholder="- - - -" readonly [ngModelOptions]="{standalone: true}" />
+    <!--<input type="text" [(ngModel)]="accountFullCode" placeholder="- - - -" readonly [ngModelOptions]="{standalone: true}" />-->
+    <label class="control-label" style="text-align: center; direction: ltr; display:block">
+      {{ fullAccount?.account.fullCode }} -
+      {{ fullAccount?.detailAccount.fullCode }} -
+      {{ fullAccount?.costCenter.fullCode }} -
+      {{ fullAccount?.project.fullCode }}
+    </label>
     <span class="glyphicon glyphicon-search" (click)="openDialog(itemListRef, accountItem.Account)"></span>
     <div class="fullAccount-item">
-      <div formGroupName="account">
-        <input type="text" class="k-textbox" [(ngModel)]="accountTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.Account)" />
+      <div formGroupName="account" class="sppc-float">
+        <input type="text" class="k-textbox" [(ngModel)]="accountTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.Account)" (focus)="onFocus(accountItem.Account)"/>
         <input type="hidden" formControlName="id" />
       </div>
-      <div formGroupName="detailAccount">
+      <div formGroupName="detailAccount" class="sppc-float">
         <input type="text" class="k-textbox" [(ngModel)]="detailAccountTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.DetailAccount)" />
         <input type="hidden" formControlName="id" />
       </div>
-      <div formGroupName="costCenter">
+      <div formGroupName="costCenter" class="sppc-float">
         <input type="text" class="k-textbox" [(ngModel)]="costCenterTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.CostCenter)" />
         <input type="hidden" formControlName="id" />
       </div>
-      <div formGroupName="project">
+      <div formGroupName="project" class="sppc-float">
         <input type="text" class="k-textbox" [(ngModel)]="projectTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.Project)" />
         <input type="hidden" formControlName="id" />
       </div>

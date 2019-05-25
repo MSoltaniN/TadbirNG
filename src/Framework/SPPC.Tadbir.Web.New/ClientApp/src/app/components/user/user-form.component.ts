@@ -1,14 +1,12 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { User } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
-import { DefaultComponent } from "../../class/default.component";
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Metadatas, Entities } from '../../../environments/environment';
+import { Entities } from '../../../environments/environment';
 import { DetailComponent } from '../../class/detail.component';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -86,7 +84,7 @@ export class UserFormComponent extends DetailComponent {
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.User, Metadatas.User);
+      super(toastrService, translate, renderer, metadata, Entities.User, ViewName.User);
     }
 
 }

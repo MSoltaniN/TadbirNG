@@ -29,6 +29,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل
         /// </summary>
-        public virtual int CurrencyId { get; set; }
+        public virtual int? CurrencyId { get; set; }
     }
 }

@@ -165,15 +165,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای حساب را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>
-        public async Task<ViewViewModel> GetAccountMetadataAsync()
-        {
-            return await Metadata.GetViewMetadataAsync<Account>();
-        }
-
-        /// <summary>
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

@@ -28,13 +28,6 @@ namespace SPPC.Tadbir.Persistence
         Task<AccountGroupViewModel> GetAccountGroupAsync(int groupId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای گروه حساب را
-        /// خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای گروه حساب</returns>
-        Task<ViewViewModel> GetAccountGroupMetadataAsync();
-
-        /// <summary>
         /// به روش آسنکرون، تعداد گروه های حساب را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>

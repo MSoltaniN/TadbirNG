@@ -109,15 +109,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(newDetail);
         }
 
-        // GET: api/faccounts/metadata
-        [Route(DetailAccountApi.DetailAccountMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
-        public async Task<IActionResult> GetDetailAccountMetadataAsync()
-        {
-            var metadata = await _repository.GetDetailAccountMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // GET: api/faccounts/fullcode/{parentId}
         [HttpGet]
         [Route(DetailAccountApi.DetailAccountFullCodeUrl)]

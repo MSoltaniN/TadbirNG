@@ -45,6 +45,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.TypeId)
                 .IsRequired();
             builder.Property(e => e.SourceId);
+            builder.Property(e => e.CurrencyId);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");

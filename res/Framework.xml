@@ -384,12 +384,6 @@
           <ColumnView name="Expression" visible="True" width="120" />
           <ValidationRule name="Expression_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
         </Property>
-        <Property name="Settings" type="String" isValidated="True" description="تنظیمات پیش فرض برای نمایش ستون در نمای لیستی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtSettings" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Settings" type="nvarchar(1024)" nullable="True" />
-          <ColumnView name="Settings" visible="True" width="120" />
-          <ValidationRule name="Settings_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
-        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />

@@ -35,7 +35,7 @@ export class ProjectComponent extends GridExplorerComponent<Project> {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Project, Metadatas.Project,
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Project,
       "Project.LedgerProject", "Project.EditorTitleNew", "Project.EditorTitleEdit",
       ProjectApi.EnvironmentProjects, ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren, ProjectApi.EnvironmentNewChildProject, ViewName.Project)
   }

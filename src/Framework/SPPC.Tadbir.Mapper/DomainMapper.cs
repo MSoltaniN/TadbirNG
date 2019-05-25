@@ -223,16 +223,22 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(
+                    dest => dest.LineTypeId,
+                    opts => opts.MapFrom(src => src.TypeId))
+                .ForMember(
                     dest => dest.FullAccount,
                     opts => opts.MapFrom(
                         src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
             mapperConfig.CreateMap<VoucherLineViewModel, VoucherLine>()
+                .ForMember(
+                    dest => dest.TypeId,
+                    opts => opts.MapFrom(src => src.LineTypeId))
                 .AfterMap((viewModel, model) => model.Voucher.Id = viewModel.VoucherId)
                 .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.Account.Id)
                 .AfterMap((viewModel, model) => model.DetailId = AsNullable(viewModel.FullAccount.DetailAccount.Id))
                 .AfterMap((viewModel, model) => model.CostCenterId = AsNullable(viewModel.FullAccount.CostCenter.Id))
                 .AfterMap((viewModel, model) => model.ProjectId = AsNullable(viewModel.FullAccount.Project.Id))
-                .AfterMap((viewModel, model) => model.CurrencyId = viewModel.CurrencyId ?? 0);
+                .AfterMap((viewModel, model) => model.CurrencyId = viewModel.CurrencyId);
             mapperConfig.CreateMap<VoucherLine, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(

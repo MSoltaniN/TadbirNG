@@ -69,12 +69,6 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<AccountItemBriefViewModel>> GetDetailAccountChildrenAsync(int detailId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای تفصیلی شناور را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای تفصیلی شناور</returns>
-        Task<ViewViewModel> GetDetailAccountMetadataAsync();
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات یک تفصیلی شناور را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="detailAccount">تفصیلی شناور مورد نظر برای ایجاد یا اصلاح</param>

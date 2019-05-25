@@ -71,7 +71,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
     private settingsService: SettingService, public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, settingsService, Entities.Settings, '');
+    super(toastrService, translate, renderer, metadata, settingsService, Entities.Settings, undefined);
   }
 
   public handleSelection(item: TreeItem): void {

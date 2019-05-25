@@ -36,16 +36,6 @@
         public const string BranchUrl = "branches/{branchId:min(1)}";
 
         /// <summary>
-        /// API client URL for branch metadata
-        /// </summary>
-        public const string BranchMetadata = "branches/metadata";
-
-        /// <summary>
-        /// API server route URL for branch metadata
-        /// </summary>
-        public const string BranchMetadataUrl = "branches/metadata";
-
-        /// <summary>
         /// API client URL for all roles who can access a branch item specified by unique identifier
         /// </summary>
         public const string BranchRoles = "branches/{0}/roles";

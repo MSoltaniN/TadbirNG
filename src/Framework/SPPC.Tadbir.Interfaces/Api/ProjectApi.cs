@@ -73,16 +73,6 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentNewChildProjectUrl = "projects/{projectId:int}/children/new";
 
         /// <summary>
-        /// API client URL for project metadata
-        /// </summary>
-        public const string ProjectMetadata = "projects/metadata";
-
-        /// <summary>
-        /// API server route URL for project metadata
-        /// </summary>
-        public const string ProjectMetadataUrl = "projects/metadata";
-
-        /// <summary>
         /// API client URL for project full code
         /// </summary>
         public const string ProjectFullCode = "projects/fullcode/{0}";

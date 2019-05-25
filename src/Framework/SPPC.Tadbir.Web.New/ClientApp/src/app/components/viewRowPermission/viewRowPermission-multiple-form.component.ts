@@ -1,14 +1,12 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { String } from '../../class/source';
-import { Observable } from 'rxjs/Observable';
-import { DefaultComponent } from "../../class/default.component";
-import { Layout, Entities, Metadatas, environment } from "../../../environments/environment";
+import { Layout, Entities, environment } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { ViewRowPermissionService, ItemInfo, RowPermissionsForRoleInfo, ViewRowPermissionInfo } from '../../service/index';
+import { ViewRowPermissionService, ItemInfo, ViewRowPermissionInfo } from '../../service/index';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
@@ -116,7 +114,7 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
     public viewRowPermissionService: ViewRowPermissionService, public sppcLoading: SppcLoadingService) {
-    super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, '');
+    super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, undefined);
   }
 
   getFetchUrl() {

@@ -49,15 +49,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(branch);
         }
 
-        // GET: api/branches/metadata
-        [Route(BranchApi.BranchMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
-        public async Task<IActionResult> GetBranchMetadataAsync()
-        {
-            var metadata = await _repository.GetBranchMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // POST: api/branches
         [HttpPost]
         [Route(BranchApi.BranchesUrl)]

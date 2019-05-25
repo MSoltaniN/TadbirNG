@@ -27,29 +27,29 @@ export class MetaDataService extends BaseService {
      * return metadata from database for each entity
      * @param entityName is name of entity like 'account' , 'transaction' , ...
      */
-    getMetaData(entityName: string) {
+    //getMetaData(entityName: string) {
 
         
 
-        var header = this.httpHeaders;
-        header = header.delete('Content-Type');
-        header = header.delete('X-Tadbir-AuthTicket');
-        header = header.append('Content-Type','application/json; charset=utf-8');
-        header = header.append('X-Tadbir-AuthTicket', this.Ticket);
-        //headers.append('X-Tadbir-AuthTicket', this.Ticket);
+    //    var header = this.httpHeaders;
+    //    header = header.delete('Content-Type');
+    //    header = header.delete('X-Tadbir-AuthTicket');
+    //    header = header.append('Content-Type','application/json; charset=utf-8');
+    //    header = header.append('X-Tadbir-AuthTicket', this.Ticket);
+    //    //headers.append('X-Tadbir-AuthTicket', this.Ticket);
 
-        var options = { headers: header };
+    //    var options = { headers: header };
 
 
-        var url = String.Format(MetadataApi.ViewMetadata, entityName);
-        return this.http.get(url, options)
-            .map(response => (<Response>response));
-        //var result = null;
-        //this.http.get(url, options)
-        //  .map(response => result = (<Response>response).json());
+    //    var url = String.Format(MetadataApi.ViewMetadata, entityName);
+    //    return this.http.get(url, options)
+    //        .map(response => (<Response>response));
+    //    //var result = null;
+    //    //this.http.get(url, options)
+    //    //  .map(response => result = (<Response>response).json());
 
-        //return result;
-    }    
+    //    //return result;
+    //}    
 
 
     getMetaDataById(entityId: number) {

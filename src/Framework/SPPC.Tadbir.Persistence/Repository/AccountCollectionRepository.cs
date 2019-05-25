@@ -91,15 +91,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای مجموعه حساب را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای مجموعه حساب</returns>
-        public async Task<ViewViewModel> GetAccountCollectionMetadataAsync()
-        {
-            return await Metadata.GetViewMetadataAsync<AccountCollectionAccount>();
-        }
-
-        /// <summary>
         /// به روش آسنکرون، حساب های یک مجموعه حساب را اضافه یا کم میکند
         /// </summary>
         /// <param name="accCollectionsList">اطلاعات حساب های یک مجموعه حساب</param>

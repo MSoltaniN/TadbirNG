@@ -8,6 +8,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailComponent } from '../../class/detail.component';
 import { LookupService } from '../../service/index';
 import { LookupApi } from '../../service/api/index';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -75,7 +76,7 @@ export class AccountGroupsFormComponent extends DetailComponent implements OnIni
   constructor(public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.AccountGroup, Metadatas.AccountGroup);
+    super(toastrService, translate, renderer, metadata, Entities.AccountGroup, ViewName.AccountGroup);
   }
 
   ngOnInit() {

@@ -40,16 +40,6 @@
         public const string FiscalPeriodUrl = "fperiods/{fpId:min(1)}";
 
         /// <summary>
-        /// API client URL for fiscal period metadata
-        /// </summary>
-        public const string FiscalPeriodMetadata = "fperiods/metadata";
-
-        /// <summary>
-        /// API server route URL for fiscal period metadata
-        /// </summary>
-        public const string FiscalPeriodMetadataUrl = "fperiods/metadata";
-
-        /// <summary>
         /// API client URL for all roles that can access a fiscal period item specified by unique identifier
         /// </summary>
         public const string FiscalPeriodRoles = "fperiods/{0}/roles";

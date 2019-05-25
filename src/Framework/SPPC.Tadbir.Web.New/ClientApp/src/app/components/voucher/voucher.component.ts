@@ -25,6 +25,7 @@ import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.compo
 import { Filter } from '../../class/filter';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { VoucherEditorComponent } from './voucher-editor.component';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -265,7 +266,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     private voucherService: VoucherService, public renderer: Renderer2,
     public metadata: MetaDataService, public settingService: SettingService,
     public reporingService: ReportingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, Metadatas.Voucher);
+    super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, ViewName.Voucher);
   }
   //#endregion
 

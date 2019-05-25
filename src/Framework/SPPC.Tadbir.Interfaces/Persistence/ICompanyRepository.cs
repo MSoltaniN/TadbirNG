@@ -35,12 +35,6 @@ namespace SPPC.Tadbir.Persistence
         Task<CompanyDbViewModel> GetCompanyAsync(int companyId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای شرکت را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فرا داده ای تعریف شده برای شرکت</returns>
-        Task<ViewViewModel> GetCompanyMetadataAsync();
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات یک شرکت را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="company">شرکت مورد نظر برای ایجاد یا اصلاح</param>

@@ -1,22 +1,18 @@
-import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { OperationLogService, SettingService } from '../../service/index';
 import { OperationLog } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
-import { Observable } from 'rxjs/Observable';
+import { GridDataResult, PageChangeEvent, RowArgs, GridComponent } from '@progress/kendo-angular-grid';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { String } from '../../class/source';
-import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+import { SortDescriptor } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
-import { Filter } from "../../class/filter";
+import { Layout, Entities } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SystemApi } from '../../service/api/index';
-import { SecureEntity } from '../../security/secureEntity';
 import { FilterExpression } from '../../class/filterExpression';
+import { ViewName } from '../../security/viewName';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -100,7 +96,7 @@ export class OperationLogsComponent extends DefaultComponent implements OnInit {
   //#region Constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     private operationLogService: OperationLogService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, Metadatas.OperationLog);
+    super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, ViewName.OperationLog);
   }
   //#endregion
 
