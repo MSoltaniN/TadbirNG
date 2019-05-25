@@ -416,7 +416,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 var component = componentsList.First(p => p.GetType() == typeof(StiReportSummaryBand));
                 reportFooter = (StiReportSummaryBand)component;
                 reportFooter = (StiReportSummaryBand)ChangeLeftPositions(report, reportFooter, ReportBandType.ReportFooter, reportTemplate);
-            }            
+            }
 
             report.Pages[0].Components.Add(reportFooter);
             return report;
@@ -512,31 +512,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 pageHeader = (StiPageHeaderBand)ChangeLeftPositions(report, pageHeader, ReportBandType.PageHeader, reportTemplate);
             }
 
-            /*
-            double maxHeight = pageHeader.Height;
-            txtPageHeaderText.Width = 2;
-            txtPageHeaderText.Name = "txtPageHeaderText";
-            txtPageHeaderText.Left = (report.Pages[0].Width / 2) - (txtPageHeaderText.Width / 2);
-            txtPageHeaderText.Linked = true;
-            txtPageHeaderText.Text = header;
-            txtPageHeaderText.Height = 0.8;
-            txtPageHeaderText.HorAlignment = StiTextHorAlignment.Center;
-            txtPageHeaderText.AutoWidth = true;
+            ////
+            ////double maxHeight = pageHeader.Height;
+            ////txtPageHeaderText.Width = 2;
+            ////txtPageHeaderText.Name = "txtPageHeaderText";
+            ////txtPageHeaderText.Left = (report.Pages[0].Width / 2) - (txtPageHeaderText.Width / 2);
+            ////txtPageHeaderText.Linked = true;
+            ////txtPageHeaderText.Text = header;
+            ////txtPageHeaderText.Height = 0.8;
+            ////txtPageHeaderText.HorAlignment = StiTextHorAlignment.Center;
+            ////txtPageHeaderText.AutoWidth = true;
 
-            // var pfc = new System.Drawing.Text.PrivateFontCollection();
-             pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
-            // txtPageHeaderText.Font = new Font(pfc.Families[0], 14, FontStyle.Bold);
-            if (txtPageHeaderText.Height + txtPageHeaderText.Top > maxHeight)
-            {
-                maxHeight = txtPageHeaderText.Height + txtPageHeaderText.Top;
-            }
+            //// var pfc = new System.Drawing.Text.PrivateFontCollection();
+            //// pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
+            //// txtPageHeaderText.Font = new Font(pfc.Families[0], 14, FontStyle.Bold);
+            ////if (txtPageHeaderText.Height + txtPageHeaderText.Top > maxHeight)
+            ////{
+            ////    maxHeight = txtPageHeaderText.Height + txtPageHeaderText.Top;
+            ////}
 
-            pageHeader.Height = maxHeight;
-            pageHeader.Components.Add(txtPageHeaderText);
-            */
+            ////pageHeader.Height = maxHeight;
+            ////pageHeader.Components.Add(txtPageHeaderText);
+            ////
 
-            //var pfc = new System.Drawing.Text.PrivateFontCollection();
-            //pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
+            ////var pfc = new System.Drawing.Text.PrivateFontCollection();
+            ////pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
 
             report.Pages[0].Components.Add(pageHeader);
 
@@ -585,7 +585,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 headerBand.Components.Clear();
             }
 
-            //double height = double.Parse("0.4", System.Globalization.CultureInfo.InvariantCulture);
+            ////double height = double.Parse("0.4", System.Globalization.CultureInfo.InvariantCulture);
             if (headerBand == null)
             {
                 headerBand = new StiColumnHeaderBand();
@@ -617,31 +617,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     txtHeaderCell.Parent = headerBand;
                 }
 
-                //txtHeaderCell.Linked = true;
+                ////txtHeaderCell.Linked = true;
                 txtHeaderCell.Text.Value = !string.IsNullOrEmpty(column.UserText) ? column.UserText : column.DefaultText;
                 txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
-                //txtHeaderCell.Height = 0.6;
+                ////txtHeaderCell.Height = 0.6;
                 left = txtHeaderCell.Left + width;
 
-                //StiBorder border = new StiBorder();
-                //border.Side = border.Side | StiBorderSides.Left;
-                //border.Side = border.Side | StiBorderSides.Right;
-                //border.Side = border.Side | StiBorderSides.Top;
-                //border.Side = border.Side | StiBorderSides.Bottom;
-                //border.Color = Color.FromName("Black");
+                ////StiBorder border = new StiBorder();
+                ////border.Side = border.Side | StiBorderSides.Left;
+                ////border.Side = border.Side | StiBorderSides.Right;
+                ////border.Side = border.Side | StiBorderSides.Top;
+                ////border.Side = border.Side | StiBorderSides.Bottom;
+                ////border.Color = Color.FromName("Black");
 
-                //txtHeaderCell.CanShrink = true;
-                //txtHeaderCell.CanGrow = true;
-                //txtHeaderCell.GrowToHeight = true;
-                //txtHeaderCell.HorAlignment = StiTextHorAlignment.Center;
-                //txtHeaderCell.VertAlignment = StiVertAlignment.Center;
-                //txtHeaderCell.Font = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
-                //txtHeaderCell.Border = border;
+                ////txtHeaderCell.CanShrink = true;
+                ////txtHeaderCell.CanGrow = true;
+                ////txtHeaderCell.GrowToHeight = true;
+                ////txtHeaderCell.HorAlignment = StiTextHorAlignment.Center;
+                ////txtHeaderCell.VertAlignment = StiVertAlignment.Center;
+                ////txtHeaderCell.Font = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
+                ////txtHeaderCell.Border = border;
 
-                //if (txtHeaderCell.Height > maxHeight)
-                //{
-                //    headerBand.Height = txtHeaderCell.Height;
-                //}
+                ////if (txtHeaderCell.Height > maxHeight)
+                ////{
+                ////    headerBand.Height = txtHeaderCell.Height;
+                ////}
 
                 headerBand.Components.Add(txtHeaderCell);
             }
@@ -680,7 +680,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             dataBand.Name = ctrlName;
             dataBand.DataSourceName = dataSourceName;
 
-            //double maxHeight = dataBand.Height;
+            ////double maxHeight = dataBand.Height;
 
             for (int i = quickReportViewModel.Columns.Count - 1; i >= 0; i--)
             {
@@ -697,51 +697,51 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     txtDataCell.Page = report.Pages[0];
                 }
 
-                //txtDataCell.Height = 0.4;
-                //txtDataCell.HorAlignment = StiTextHorAlignment.Center;
-                //txtDataCell.Linked = true;
+                ////txtDataCell.Height = 0.4;
+                ////txtDataCell.HorAlignment = StiTextHorAlignment.Center;
+                ////txtDataCell.Linked = true;
                 txtDataCell.Width = width;
-                //string functionName = string.Empty;
-                //if (quickReportViewModel.Columns[i].DataType == "System.DateTime" && quickReportViewModel.ReportLang == "fa")
-                //{
-                //    // functionName = "ToShamsi({0})";
-                //}
+                ////string functionName = string.Empty;
+                ////if (quickReportViewModel.Columns[i].DataType == "System.DateTime" && quickReportViewModel.ReportLang == "fa")
+                ////{
+                ////    // functionName = "ToShamsi({0})";
+                ////}
 
                 txtDataCell.Text.Value = GetColumnValue(quickReportViewModel.Columns[i], dataSourceName, string.Empty);
                 txtDataCell.ClientRectangle = new RectangleD(left, top, width, txtDataCell.Height);
                 left = txtDataCell.Left + width;
 
-                //if (txtDataCell.Height > maxHeight)
-                //{
-                //    dataBand.Height = txtDataCell.Height;
-                //}
+                ////if (txtDataCell.Height > maxHeight)
+                ////{
+                ////    dataBand.Height = txtDataCell.Height;
+                ////}
 
-                //StiBorder border = new StiBorder();
+                ////StiBorder border = new StiBorder();
 
-                //border.Side = border.Side | StiBorderSides.Left;
-                //border.Side = border.Side | StiBorderSides.Right;
-                //border.Side = border.Side | StiBorderSides.Top;
-                //border.Side = border.Side | StiBorderSides.Bottom;
-                //border.Color = Color.FromName("Black");
-                //StiBrush brush = null;
+                ////border.Side = border.Side | StiBorderSides.Left;
+                ////border.Side = border.Side | StiBorderSides.Right;
+                ////border.Side = border.Side | StiBorderSides.Top;
+                ////border.Side = border.Side | StiBorderSides.Bottom;
+                ////border.Color = Color.FromName("Black");
+                ////StiBrush brush = null;
 
-                //txtDataCell.CanShrink = true;
-                //txtDataCell.CanGrow = true;
-                //txtDataCell.GrowToHeight = true;
-                //txtDataCell.HorAlignment = StiTextHorAlignment.Center;
-                //txtDataCell.VertAlignment = StiVertAlignment.Center;
+                ////txtDataCell.CanShrink = true;
+                ////txtDataCell.CanGrow = true;
+                ////txtDataCell.GrowToHeight = true;
+                ////txtDataCell.HorAlignment = StiTextHorAlignment.Center;
+                ////txtDataCell.VertAlignment = StiVertAlignment.Center;
 
-                //var pfc = new System.Drawing.Text.PrivateFontCollection();
-                //pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
-                //txtDataCell.Font = new Font(pfc.Families[0], 10, FontStyle.Bold);
-                //txtDataCell.Border = border;
+                ////var pfc = new System.Drawing.Text.PrivateFontCollection();
+                ////pfc.AddFontFile(@"J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\resources\fonts\ReportFont\BTitrBold.ttf");
+                ////txtDataCell.Font = new Font(pfc.Families[0], 10, FontStyle.Bold);
+                ////txtDataCell.Border = border;
 
-                //if (brush != null)
-                //{
-                //    txtDataCell.Brush = brush;
-                //}
+                ////if (brush != null)
+                ////{
+                ////    txtDataCell.Brush = brush;
+                ////}
 
-                //txtDataCell.TextOptions.RightToLeft = true;
+                ////txtDataCell.TextOptions.RightToLeft = true;
                 dataBand.Components.Add(txtDataCell);
             }
 

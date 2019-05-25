@@ -29,12 +29,6 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherLineViewModel> GetArticleAsync(int articleId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
-        Task<ViewViewModel> GetVoucherLineMetadataAsync();
-
-        /// <summary>
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

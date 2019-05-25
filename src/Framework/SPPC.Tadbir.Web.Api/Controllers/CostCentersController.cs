@@ -109,15 +109,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(children);
         }
 
-        // GET: api/ccenters/metadata
-        [Route(CostCenterApi.CostCenterMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public async Task<IActionResult> GetCostCenterMetadataAsync()
-        {
-            var metadata = await _repository.GetCostCenterMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // GET: api/ccenters/fullcode/{parentId}
         [HttpGet]
         [Route(CostCenterApi.CostCenterFullCodeUrl)]

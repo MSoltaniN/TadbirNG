@@ -75,15 +75,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(user);
         }
 
-        // GET: api/users/metadata
-        [Route(UserApi.UserMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
-        public async Task<IActionResult> GetUserMetadataAsync()
-        {
-            var metadata = await _repository.GetUserMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // GET: api/users/current/commands
         [Route(UserApi.CurrentUserCommandsUrl)]
         public async Task<IActionResult> GetCurrentUserCommandsAsync()

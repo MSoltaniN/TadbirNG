@@ -48,15 +48,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(company);
         }
 
-        // GET: api/companies/metadata
-        [Route(CompanyApi.CompanyMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.View)]
-        public async Task<IActionResult> GetCompanyMetadataAsync()
-        {
-            var metadata = await _repository.GetCompanyMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // POST: api/companies
         [HttpPost]
         [Route(CompanyApi.CompaniesUrl)]

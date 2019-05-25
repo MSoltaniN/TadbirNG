@@ -66,15 +66,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
-        // GET: api/accgroups/metadata
-        [Route(AccountGroupApi.AccountGroupMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
-        public async Task<IActionResult> GetAccountGroupMetadataAsync()
-        {
-            var metadata = await _repository.GetAccountGroupMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // GET: api/accgroups/brief
         [Route(AccountGroupApi.AccountGroupBriefUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]

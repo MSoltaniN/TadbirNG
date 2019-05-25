@@ -109,15 +109,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(children);
         }
 
-        // GET: api/projects/metadata
-        [Route(ProjectApi.ProjectMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
-        public async Task<IActionResult> GetProjectMetadataAsync()
-        {
-            var metadata = await _repository.GetProjectMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // GET: api/projects/fullcode/{parentId}
         [HttpGet]
         [Route(ProjectApi.ProjectFullCodeUrl)]

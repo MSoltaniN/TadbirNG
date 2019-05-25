@@ -66,12 +66,6 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<AccountItemBriefViewModel>> GetAccountChildrenAsync(int accountId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای حساب را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>
-        Task<ViewViewModel> GetAccountMetadataAsync();
-
-        /// <summary>
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه جاری برنامه را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

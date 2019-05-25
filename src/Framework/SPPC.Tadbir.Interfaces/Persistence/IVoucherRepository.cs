@@ -69,12 +69,6 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherViewModel> GetLastVoucherAsync();
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
-        Task<ViewViewModel> GetVoucherMetadataAsync();
-
-        /// <summary>
         /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucher">مدل نمایشی سند مالی مورد نظر</param>

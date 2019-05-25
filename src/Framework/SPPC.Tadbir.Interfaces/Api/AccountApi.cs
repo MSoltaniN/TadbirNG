@@ -83,16 +83,6 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentNewChildAccountUrl = "accounts/{accountId:int}/children/new";
 
         /// <summary>
-        /// API client URL for account metadata
-        /// </summary>
-        public const string AccountMetadata = "accounts/metadata";
-
-        /// <summary>
-        /// API server route URL for account metadata
-        /// </summary>
-        public const string AccountMetadataUrl = "accounts/metadata";
-
-        /// <summary>
         /// API client URL for account full code
         /// </summary>
         public const string AccountFullCode = "accounts/fullcode/{0}";

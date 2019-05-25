@@ -121,15 +121,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(lastVoucher);
         }
 
-        // GET: api/vouchers/metadata
-        [Route(VoucherApi.VoucherMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetVoucherMetadataAsync()
-        {
-            var metadata = await _repository.GetVoucherMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // POST: api/vouchers
         [HttpPost]
         [Route(VoucherApi.EnvironmentVouchersUrl)]
@@ -259,15 +250,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var article = await _lineRepository.GetArticleAsync(articleId);
             return JsonReadResult(article);
-        }
-
-        // GET: api/vouchers/articles/metadata
-        [Route(VoucherApi.VoucherArticleMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetVoucherArticleMetadataAsync()
-        {
-            var metadata = await _lineRepository.GetVoucherLineMetadataAsync();
-            return JsonReadResult(metadata);
         }
 
         // POST: api/vouchers/{voucherId:min(1)}/articles

@@ -73,16 +73,6 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentNewChildCostCenterUrl = "ccenters/{ccenterId:int}/children/new";
 
         /// <summary>
-        /// API client URL for cost center metadata
-        /// </summary>
-        public const string CostCenterMetadata = "ccenters/metadata";
-
-        /// <summary>
-        /// API server route URL for cost center metadata
-        /// </summary>
-        public const string CostCenterMetadataUrl = "ccenters/metadata";
-
-        /// <summary>
         /// API client URL for cost center full code
         /// </summary>
         public const string CostCenterFullCode = "ccenters/fullcode/{0}";

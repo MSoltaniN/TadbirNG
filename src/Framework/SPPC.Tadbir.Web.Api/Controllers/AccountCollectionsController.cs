@@ -45,15 +45,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
-        // GET: api/acccollections/metadata
-        [Route(AccountCollectionApi.AccountCollectionMetadataUrl)]
-        [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
-        public async Task<IActionResult> GetAccountCollectionMetadataAsync()
-        {
-            var metadata = await _repository.GetAccountCollectionMetadataAsync();
-            return JsonReadResult(metadata);
-        }
-
         // POST: api/acccollections/collection/{collectionId:min(1)}
         [HttpPost]
         [Route(AccountCollectionApi.AccountCollectionAccountUrl)]

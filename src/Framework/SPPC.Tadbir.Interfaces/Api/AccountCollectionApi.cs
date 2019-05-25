@@ -28,15 +28,5 @@
         /// API server route URL for account collection items
         /// </summary>
         public const string AccountCollectionAccountUrl = "acccollections/collection/{collectionId:min(1)}";
-
-        /// <summary>
-        /// API client URL for account collection metadata
-        /// </summary>
-        public const string AccountCollectionMetadata = "acccollections/metadata";
-
-        /// <summary>
-        /// API server route URL for account collection metadata
-        /// </summary>
-        public const string AccountCollectionMetadataUrl = "acccollections/metadata";
     }
 }

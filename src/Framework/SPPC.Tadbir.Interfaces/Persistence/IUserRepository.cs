@@ -37,12 +37,6 @@ namespace SPPC.Tadbir.Persistence
         Task<UserViewModel> GetUserAsync(int userId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای کاربر را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای کاربر</returns>
-        Task<ViewViewModel> GetUserMetadataAsync();
-
-        /// <summary>
         /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
         /// </summary>
         /// <param name="userId">Unique identifier of the user to search for</param>
