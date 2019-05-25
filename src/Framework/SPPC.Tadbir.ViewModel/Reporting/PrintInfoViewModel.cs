@@ -32,6 +32,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string Template { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی گزارش ذخیره شده در جدول اصلی
+        /// </summary>
+        public string Code { get; set; }
+
+        /// <summary>
         /// مجموعه ای از اطلاعات نمایشی پارامترهای مورد نیاز برای پیش نمایش یا چاپ گزارش
         /// </summary>
         public IList<ParameterViewModel> Parameters { get; protected set; }

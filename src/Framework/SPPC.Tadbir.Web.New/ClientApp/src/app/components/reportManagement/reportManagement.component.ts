@@ -99,8 +99,14 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   deleteConfirmMsg : string;
   deleteConfirm:boolean = false;
   deleteMsg :string;
-  disableButtons:boolean = false;
-  
+
+  //disableButtons: boolean = false;
+  disableDesignButton: boolean = false;
+  disableSaveAsButton: boolean = false;
+  disableDefaultButton: boolean = false;
+  disableDeleteButton: boolean = false;
+  disablePreviewButton: boolean = false;
+
   private reportForm = new FormGroup({    
     reportName: new FormControl("", [Validators.required, Validators.maxLength(256)]),    
   });
@@ -128,7 +134,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.screen.height;//window.innerHeight
     this.initViewer();
-    this.disableButtons = true;
+    this.disEnAllButtons(true);
 
     if (this.loc.path().toLowerCase() == '/reports')
       this.showDialog();
@@ -136,36 +142,57 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   
   onNodeClick(e :any)
   {
+    
     var data = e.dataItem;
     this.qReport = false;
-    if(data.id == -100) 
+    if(data.isDynamic) 
       this.qReport = true;
 
-    if(!data.isGroup)
-    {      
-      if(data.id > -100)
+    if (!data.isGroup) {
+      if (data.id > -100)
         this.currentReportId = data.id;
       this.currentReportName = data.caption;
-      this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"),data.caption);
-      this.disableButtons = false;
+      this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"), data.caption);
+      this.disEnAllButtons(false);
+
+      if (this.showDesktopTab) {
+        if (data.isDynamic) {
+          this.disEnAllButtons(true);
+          this.disablePreviewButton = false;
+        }
+        //this line for show reporttemplate in quickreport
+        if (data.id == 43) {
+          this.disEnAllButtons(true);
+          this.disableDesignButton = false;
+        }
+      }
     }
-    else
-      this.disableButtons = true;
+    else {
+      this.disEnAllButtons(true);
+    }   
+  }
+
+  disEnAllButtons(value:boolean) {
+    this.disableDesignButton = value;
+    this.disableSaveAsButton = value;
+    this.disableDefaultButton = value;
+    this.disableDeleteButton = value;
+    this.disablePreviewButton = value;
   }
   
   onNodeDblClick(dataItem :any)
   {
     var data = dataItem;
-    if(!data.isGroup)
-    {      
+    if (!data.isGroup) {
       this.currentReportId = data.id;
       this.currentReportName = data.caption;
-      this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"),data.caption);
-      this.disableButtons = false;
+      this.qReport = data.isDynamic;
+      this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"), data.caption);
+      this.disEnAllButtons(false);
       this.showReport();
     }
     else
-      this.disableButtons = true;
+      this.disEnAllButtons(true);
   } 
 
   //متد نمایش گزارش فوری
@@ -249,8 +276,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             }
 
             this.qReport = true;
-            this.expandedKeys = expandKeysArray;
-            this.disableButtons = false;
+            this.expandedKeys = expandKeysArray;          
+            this.disEnAllButtons(false);
             this.currentReportId = report.id;
             this.currentDefaultReportId = report.id;
 
@@ -284,7 +311,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
                 this.qReport = false;
                 this.expandedKeys = expandKeysArray;
-                this.disableButtons = false;
+              this.disEnAllButtons(false);
                 this.currentReportId = report.id;
                 this.currentDefaultReportId = report.id;
                 
@@ -542,7 +569,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           reportTemplate = this.currentPrintInfo.template;
 
         this.tabsComponent.openTab(this.currentReportName,reportTemplate,
-          reportData,viewerIsCloseable,true,false,this.currentReportId,this,this.qReport,this.currentQuickReportViewInfo);
+          reportData, viewerIsCloseable, true, false, this.currentReportId, this.currentPrintInfo.code,this,this.qReport,this.currentQuickReportViewInfo);
 
       });      
   } 
@@ -585,7 +612,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + current, false);                
     
     var tabIsOpen = this.tabsComponent.openTab(this.currentReportName,null,null,
-      true,false,true,this.currentReportId,designer);   
+      true,false,true,this.currentReportId,this.currentPrintInfo.code,designer);   
 
     if(!tabIsOpen) return;     
 
@@ -608,8 +635,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         options.components.showSubReport = false;
          
 
-        var rpt = new Stimulsoft.Report.StiReport();
-        var reportTemplate : string;
+      var rpt = new Stimulsoft.Report.StiReport();
+      var reportTemplate: string;
         
         reportTemplate = printInfo.template;
         
@@ -624,35 +651,35 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
         designer.report = rpt;        
       
-        designer.renderHtml('designerTab' + current);       
+        designer.renderHtml('designerTab' + current);      
 
         this.updateTemplateInTab(designer);
+    });
 
-        var currentId = this.currentReportId;
-        var service = this.reportingService;
-        var localId = this.CurrentLanguage == 'fa' ? 2 : 1;
-        var thisComponent = this;
-        // Assign the onSaveReport event function
-        designer.onSaveReport = function (e: any) {
-          
-          var jsonStr = e.report.saveToJsonString();
-          
-          var localReport = new LocalReportInfo();
-          localReport.template = jsonStr;
-          localReport.reportId = currentId;
-          localReport.localeId = localId;
-          thisComponent.updateTemplateInTab(designer);
+    var currentId = this.currentReportId;
+    var service = this.reportingService;
+    var localId = this.CurrentLanguage == 'fa' ? 2 : 1;
+    var thisComponent = this;
+    // Assign the onSaveReport event function
+    designer.onSaveReport = function (e: any) {
 
-          var url = String.Format(ReportApi.Report, currentId);
-          service.saveReport(url,localReport).subscribe((response: any) => {
-            
-            thisComponent.showMessage(thisComponent.getText('Report.SaveIsOk'));
-          }, (error => {
-            thisComponent.showMessage(error);
-          }));
+      var jsonStr = e.report.saveToJsonString();
 
-        }
-    });  
+      var localReport = new LocalReportInfo();
+      localReport.template = jsonStr;
+      localReport.reportId = currentId;
+      localReport.localeId = localId;
+      thisComponent.updateTemplateInTab(designer);
+
+      var url = String.Format(ReportApi.Report, thisComponent.currentReportId);
+      service.saveReport(url, localReport).subscribe((response: any) => {
+
+        thisComponent.showMessage(thisComponent.getText('Report.SaveIsOk'));
+      }, (error => {
+          thisComponent.showMessage(error);
+      }));
+
+    }
   }
 
   deleteReport(deleteFlag : boolean)
@@ -667,7 +694,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             this.showMessage(this.getText('Report.ReportDeleted'));
             this.tabsComponent.closeTabByReportId(this.currentReportId);
             this.currentReportId = null;
-            this.disableButtons = true;
+            this.disEnAllButtons(true);
             
             //reload treeview
             var url = ReportApi.ReportsHierarchy;
@@ -743,7 +770,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     {
       var columnIndex = 0; 
       if(showQReport)
-      {               
+      {
+        //this.ViewIdentity.ViewID
         var properties = this.masterComponent.getAllMetaData(this.MetadataType);
         var thArray = this.Grid.wrapper.nativeElement.getElementsByTagName('TH');
 

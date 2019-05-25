@@ -16,5 +16,6 @@ export interface PrintInfo {
     id: number;
     serviceUrl: string;
     template: string;
+    code: string;
     parameters: Array<Parameter>;
 }

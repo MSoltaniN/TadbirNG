@@ -20,7 +20,7 @@ import { QuickReportViewInfo } from '../../service/report/reporting.service';
   ],
   template: `
     <div [hidden]="!active" class="pane">
-      <report-viewer #viewer [Id]="Id">                                                                
+      <report-viewer #viewer [Id]="Id" [Code]="Code">                                                                
       </report-viewer>
       <div [id]="Id" *ngIf='isDesigner'></div>
     </div>
@@ -34,7 +34,8 @@ export class TabComponent {
   @Input() dataContext;
   @Input() isViewer : boolean;
   @Input() isDesigner : boolean;
-  @Input() Id:string;
+  @Input() Id: string;
+  @Input() Code: string;
   @Input() Manager: any;
   @Input() IsQuickReport: boolean;
   @Input() QuickReportInfo: QuickReportViewInfo;

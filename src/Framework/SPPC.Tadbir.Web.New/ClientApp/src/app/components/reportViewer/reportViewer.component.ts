@@ -25,6 +25,7 @@ import { ReportingService, ParameterInfo, QuickReportViewInfo } from '../../serv
 import * as moment from 'jalali-moment';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { TabsComponent } from '../../controls/tabs/tabs.component';
+import { ReportsQueries } from '../reportManagement/reports.queries';
 
 
 
@@ -48,6 +49,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   @Input() public baseId: number;
   @Input() public showViewer: boolean = false;
   @Input() public Id: string;
+  @Input() public Code: string;
 
  
   
@@ -184,7 +186,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   showDesginedReportViewer(data: any, report: any) {
 
     var parameters: Array<ParameterInfo> = data.parameters;
-    var localReport = this.report;
+    var localReport = report;
     var lang = this.CurrentLanguage;
 
     parameters.forEach(function (param) {
@@ -204,9 +206,9 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     });
 
 
-    this.report = report;    
+    this.report = localReport;    
     this.report.render();
-    this.viewer.report = this.report;
+    this.viewer.report = localReport;
 
     console.log('Rendering the viewer to selected element');
     this.viewer.renderHtml(this.Id);
@@ -225,18 +227,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
     setTimeout(() => {          
 
-      //Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "ToShamsi",
-      //  "Convert miladi date to shamsi", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
-      //    /*if (value == null || value == undefined)
-      //      return "";
-          
-      //    moment.locale('en');
-      //    let MomentDate = moment(value).locale('fa').format("YYYY/MM/DD");
-      //    return MomentDate;*/
-      //    return "this is a test function";
-
-      //  }); 
-
+     
       console.log('Load report from url');      
       this.report.load(reportTemplate);
       var dataSet = new Stimulsoft.System.Data.DataSet('dataset');
@@ -323,60 +314,12 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
         console.log('Rendering the viewer to selected element');
         this.viewer.renderHtml(this.Id);
-
-        // Manage export settings on the server side
-        this.viewer.onBeginExportReport = function (args) {
-
-          //Stimulsoft.StiOptions.Export.Pdf.AllowImportSystemLibraries = true;
-          //Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BZar.ttf", "B Zar");          
-          //Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BTitrBold.ttf");
-          //Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb.ttf");
-          //Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf");
-
-          //args.preventDefault = true;
-          //args.settings.embeddedFonts = true;
-          //args.settings.standardPdfFonts = true;
-          //args.settings.standardPdfFonts = true;
-
-          //var settings = new Stimulsoft.Report.Export.StiPdfExportSettings();
-
-          //// Creating export service
-          //var service = new Stimulsoft.Report.Export.StiPdfExportService();
-          //service.usePdfA = true;
-          //service.useUnicodeMode = true;
-          //service.embeddedFonts = true;
-          
-          //settings.useUnicodeMode = true;
-          //settings.embeddedFonts = true;
-          ////pdfFont
-          
-          //// Creating MemoryStream
-          //var stream = new Stimulsoft.System.IO.MemoryStream();
-
-          //var exportReport = this.report;
-
-          //service.exportTo(exportReport, stream, settings);
-          //var data = stream.toArray();
-          //(<any>Object).saveAs(data, '123' + ".pdf", "application/pdf");
-
-          //// Exportong report into the MemoryStream
-          ////service.exportToAsync(function () {
-          ////  const pdfData = exportReport.exportDocument(Stimulsoft.Report.StiExportFormat.Pdf);
-          ////  (<any>Object).saveAs(pdfData, '123.pdf', 'application/pdf');
-          ////}, exportReport, stream, settings);
-
-          
-          
-
-          
-          //console.log("Rendered report saved into PDF-file.");
-			  }
-
+        
       }
       else {
-        //when report in not quick reports
-        var arg = { report : this.report, data : reportData , viewer : this };
-        this.reportManager.onDataBind.emit(arg);
+
+        this.report = ReportsQueries.registerReport(this.Code,this.report, reportData);
+        this.showDesginedReportViewer(reportData, this.report);        
       }         
     }, 10);   
   }

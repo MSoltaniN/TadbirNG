@@ -70,6 +70,7 @@
     <None Remove="ClientApp\src\app\components\project\project.component.ts" />
     <None Remove="ClientApp\src\app\components\relatedAccounts\relatedAccounts-form.component.ts" />
     <None Remove="ClientApp\src\app\components\relatedAccounts\relatedAccounts.component.ts" />
+    <None Remove="ClientApp\src\app\components\reportManagement\reports.queries.ts" />
     <None Remove="ClientApp\src\app\components\role\role-branch-form.component.ts" />
     <None Remove="ClientApp\src\app\components\role\role-detail-form.component.ts" />
     <None Remove="ClientApp\src\app\components\role\role-fiscalPeriod-form.component.ts" />
@@ -924,6 +925,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\relatedAccounts\relatedAccounts-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\relatedAccounts\relatedAccounts.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\reportManagement\reports.queries.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\role\role-branch-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\role\role-detail-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\role\role-fiscalPeriod-form.component.ts" />

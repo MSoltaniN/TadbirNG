@@ -6,19 +6,19 @@
 
         <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
                 <kendo-splitter [ngStyle]="{'height.px': innerHeight - 210}">
-                        <kendo-splitter-pane [collapsible]="true" size="25%" [collapsed]="qReport">
+                        <kendo-splitter-pane [collapsible]="true" size="25%" [collapsed]="qReport && !showDesktopTab">
                                 <kendo-splitter orientation="vertical" [ngStyle]="{'height.px': innerHeight - 240}">
-                                        <kendo-splitter-pane *ngIf="!qReport" size="8%" [collapsible]="true" [resizable]="false">
+                                        <kendo-splitter-pane *ngIf="!qReport || showDesktopTab" size="8%" [collapsible]="true" [resizable]="false">
                                                 <div class='report-toolbar'>
-                                                        <button [(disabled)]="disableButtons" kendoButton (click)="designReport()" title="{{ 'Report.Design' | translate }}"
+                                                        <button [(disabled)]="disableDesignButton" kendoButton (click)="designReport()" title="{{ 'Report.Design' | translate }}"
                                                                 type="button" [icon]="'pencil'"></button>
-                                                        <button  [(disabled)]="disableButtons" kendoButton (click)="saveAsReport()" title="{{ 'Report.SaveAs' | translate }}"
+                                                        <button  [(disabled)]="disableSaveAsButton" kendoButton (click)="saveAsReport()" title="{{ 'Report.SaveAs' | translate }}"
                                                                 type="button" [icon]="'floppy'"></button>
-                                                        <button  [(disabled)]="disableButtons" kendoButton (click)="setDefaultForAll()" title="{{ 'Report.DefaultForAll' | translate }}"
+                                                        <button  [(disabled)]="disableDefaultButton" kendoButton (click)="setDefaultForAll()" title="{{ 'Report.DefaultForAll' | translate }}"
                                                                 type="button" [icon]="'connector'"></button>
-                                                        <button  [(disabled)]="disableButtons"  kendoButton (click)="showDeleteConfirm()" title="{{ 'Report.Delete' | translate }}"
+                                                        <button  [(disabled)]="disableDeleteButton"  kendoButton (click)="showDeleteConfirm()" title="{{ 'Report.Delete' | translate }}"
                                                                 type="button" [icon]="'trash'"></button>
-                                                        <button [(disabled)]="disableButtons" kendoButton (click)="showReport()" title="{{ 'Report.Preview' | translate }}"
+                                                        <button [(disabled)]="disablePreviewButton" kendoButton (click)="showReport()" title="{{ 'Report.Preview' | translate }}"
                                                                 type="button" [icon]="'eye'"></button>
                                                 </div>
                                         </kendo-splitter-pane>
