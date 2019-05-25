@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Response } from '@angular/http';
 import { FullAccount, AccountItemBrief } from '../model/index';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
-import { String } from '../class/source';
-import { Filter } from "../class/filter";
-import { GridOrderBy } from "../class/grid.orderby";
-import { HttpParams, HttpClient } from "@angular/common/http";
-import { Context } from "../model/context";
-
-import { BaseComponent } from "../class/base.component"
-import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from "@angular/common/http";
 import { BaseService } from '../class/base.service';
 import { LookupApi } from './api/index';
 import { FilterExpression } from '../class/filterExpression';
+import { AccountItemBriefInfo } from './accountRelations.service';
 
 
 export class FullAccountInfo implements FullAccount {
+
+  constructor() {
+    this.account = new AccountItemBriefInfo();
+    this.detailAccount = new AccountItemBriefInfo();
+    this.costCenter = new AccountItemBriefInfo();
+    this.project = new AccountItemBriefInfo();
+  }
+
   account: AccountItemBrief;
   detailAccount: AccountItemBrief;
   costCenter: AccountItemBrief;

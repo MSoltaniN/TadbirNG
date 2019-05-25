@@ -18,12 +18,12 @@ export class AccountItemRelationsInfo implements AccountItemRelations {
 
 export class AccountItemBriefInfo implements AccountItemBrief {
   id: number = 0;
-  name: string;
-  fullCode: string;
+  name: string = '';
+  fullCode: string = '';
   isSelected: boolean;
   childCount: number;
   parentId?: number;
-  code: string;
+  code: string = '';
   level: number;
 }
 
