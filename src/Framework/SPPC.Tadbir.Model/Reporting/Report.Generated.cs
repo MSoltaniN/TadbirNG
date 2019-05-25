@@ -30,8 +30,8 @@ namespace SPPC.Tadbir.Model.Reporting
         {
             Code = String.Empty;
             ServiceUrl = String.Empty;
-            Template = String.Empty;
-            TemplateLtr = String.Empty;
+            //Template = String.Empty;
+            //TemplateLtr = String.Empty;
             ResourceKeys = String.Empty;
             ModifiedDate = DateTime.Now;
             InitReferences();
@@ -71,16 +71,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// مشخص می کند که آیا گزارش مورد نظر طراحی شده است یا فوری
         /// </summary>
         public virtual bool IsDynamic { get; set; }
-
-        /// <summary>
-        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان راست به چپ
-        /// </summary>
-        public virtual string Template { get; set; }
-
-        /// <summary>
-        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان چپ به راست
-        /// </summary>
-        public virtual string TemplateLtr { get; set; }
 
         /// <summary>
         /// مجموعه کلیدهای متن های چند زبانه مورد نیاز در گزارش که با کاراکتر جداکننده از یکدیگر تفکیک شده اند

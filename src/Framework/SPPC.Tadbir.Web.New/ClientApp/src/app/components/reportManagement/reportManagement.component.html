@@ -51,26 +51,9 @@
                         <kendo-splitter-pane>
                                 <div class='col-lg-12 col-sm-12 col-md-12 col-xs-12 noprl' [ngClass]="{'pull-left':this.CurrentLanguage === 'fa' , 'pull-right': this.CurrentLanguage === 'en'}">
                                         <my-tabs>
-                                                <my-tab *ngIf="showDesktopTab" tabTitle="{{ 'Report.ReportDesktop' | translate }}">                                                        
-                                                </my-tab> 
-                                                <!-- <my-tab *ngFor="let tab of reportTabs; let i = index" [tabTitle]="'viewer'">                                                        
-                                                        <report-viewer #viewer *ngIf='showReportViewer' [Id]='tab.index'>                                                                
-                                                        </report-viewer>                                                               
-                                                </my-tab>  -->
-                                                                                             
-                                        </my-tabs>    
-                                        <!-- <div class='row report-header'>                                                                                                                                     
-                                                <span class="k-icon col-lg-12 col-md-12 report-title viewer" 
-                                                *ngIf='showReportViewer'><strong >{{ 'Report.ReportViewer' | translate }} {{currentReportName}}</strong> </span>                                        
-                                                <span class="k-icon col-lg-12 col-md-12 report-title design" 
-                                                *ngIf='showReportDesigner'> <strong>{{ 'Report.ReportDesign' | translate }} {{currentReportName}}</strong></span>                                                                                                
-                                        </div>                                                                                                                                                     -->
-                                        <!-- <div *ngIf='showReportDesigner' id="designer"></div>                                         -->
-                                        <!-- <ng-template #viewerTemplate>
-                                                <ng-container #vc></ng-container>
-                                                <report-viewer #viewer *ngIf='showReportViewer' id='compViewer'></report-viewer>                                                               
-                                        </ng-template>
-                                         -->
+                                                <!--<my-tab *ngIf="showDesktopTab" tabTitle="{{ 'Report.ReportDesktop' | translate }}">                                                        
+                                                </my-tab>-->                                   
+                                        </my-tabs>                                        
                                         <report-parameters (onOkClick)="onOkParams($event)" [reportId]="currentReportId">
                                         </report-parameters>                                                                       
                                 </div>

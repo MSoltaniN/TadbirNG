@@ -339,6 +339,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
       { path: 'journal', component: JournalComponent, canActivate: [AuthGuard] },
       { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+      { path: 'reports', component: ReportManagementComponent, canActivate: [AuthGuard] },
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ]),

@@ -9,17 +9,4 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
-
-export interface Report {
-    parentId?: number;
-    resourceMap: string;
-    id: number;
-    code: string;
-    serviceUrl: string;
-    isGroup: boolean;
-    isSystem: boolean;
-    isDefault: boolean;    
-    resourceKeys: string;
-    subsystemId: number;
-}
+//# sourceMappingURL=report.js.map

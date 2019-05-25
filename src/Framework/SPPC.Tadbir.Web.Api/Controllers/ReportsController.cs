@@ -221,20 +221,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
             string reportTemplate = string.Empty;
+
             // load template for adding styles
-            string templateName = "SPPC.Tadbir.Web.Api.Resources.Reporting.Template.QuickReport.A4.Rtl.mrt";
-            if (qr.ReportLang != "fa")
+            var template = GetQuickReportTemplateAsync().Result;
+            if (template != null)
             {
-                templateName = "SPPC.Tadbir.Web.Api.Resources.Reporting.Template.QuickReport.A4.Rtl.mrt";
+                reportTemplate = template.Template;
+                quickReportTemplate.LoadFromJson(reportTemplate);
+            }
+            else
+            {
+                string templateName = "SPPC.Tadbir.Web.Api.Resources.Reporting.Template.QuickReport.A4.Rtl.mrt";
+                if (qr.ReportLang != "fa")
+                {
+                    templateName = "SPPC.Tadbir.Web.Api.Resources.Reporting.Template.QuickReport.A4.Rtl.mrt";
+                }
+
+                using (StreamReader reader = new StreamReader(
+                    typeof(Program).Assembly.GetManifestResourceStream(templateName)))
+                {
+                    reportTemplate = reader.ReadToEnd();
+                }
+
+                quickReportTemplate.LoadFromString(reportTemplate);
             }
 
-            using (StreamReader reader = new StreamReader(
-                typeof(Program).Assembly.GetManifestResourceStream(templateName)))
-            {
-                reportTemplate = reader.ReadToEnd();
-            }
-
-            quickReportTemplate.LoadFromString(reportTemplate);
             quickReport.Styles.AddRange(quickReportTemplate.Styles);
 
             // load template for adding styles

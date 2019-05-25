@@ -28,8 +28,8 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         {
             Code = String.Empty;
             ServiceUrl = String.Empty;
-            Template = String.Empty;
-            TemplateLtr = String.Empty;
+            //Template = String.Empty;
+            //TemplateLtr = String.Empty;
             ResourceKeys = String.Empty;
         }
 
@@ -73,17 +73,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// مشخص می کند که آیا گزارش مورد نظر طراحی شده است یا فوری
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public bool IsDynamic { get; set; }
-
-        /// <summary>
-        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان راست به چپ
-        /// </summary>
-        public string Template { get; set; }
-
-        /// <summary>
-        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان چپ به راست
-        /// </summary>
-        public string TemplateLtr { get; set; }
+        public bool IsDynamic { get; set; }       
 
         /// <summary>
         /// مجموعه کلیدهای متن های چند زبانه مورد نیاز در گزارش که با کاراکتر جداکننده از یکدیگر تفکیک شده اند

@@ -80,15 +80,9 @@ export class AppComponent implements AfterViewInit,OnInit  {
         moment.locale('en');
         let MomentDate = moment(value).locale('fa').format("YYYY/MM/DD");
         return MomentDate;*/
-        return "saeed";
+        return "Test";
 
-      });
-
-    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BZar.ttf");
-    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BTitrBold.ttf");
-    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb.ttf");
-    Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf");
-    
+      });    
   }
 
 

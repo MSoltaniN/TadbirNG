@@ -130,12 +130,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
      
      
       console.log('Load report from url');
-      var reportTemplate : string;
-
-      // if (this.CurrentLanguage == "fa")
-      //     reportTemplate = reportObject.template;
-      // else
-      //     reportTemplate = reportObject.templateLtr;
+      var reportTemplate : string;    
 
       this.report.load(reportTemplate);
      

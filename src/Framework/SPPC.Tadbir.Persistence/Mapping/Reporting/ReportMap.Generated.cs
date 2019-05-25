@@ -37,9 +37,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.IsDefault)
                 .IsRequired();
             builder.Property(e => e.IsDynamic)
-                .IsRequired();
-            builder.Property(e => e.Template);
-            builder.Property(e => e.TemplateLtr);
+                .IsRequired();            
             builder.Property(e => e.ResourceKeys);
             builder.Property(e => e.SubsystemId)
                 .IsRequired();
