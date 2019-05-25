@@ -332,7 +332,7 @@ CREATE TABLE [Finance].[VoucherLine] (
     [DetailAccountID] INT              NULL,
     [CostCenterID]    INT              NULL,
     [ProjectID]       INT              NULL,
-    [CurrencyID]      INT              NOT NULL,
+    [CurrencyID]      INT              NULL,
     [CreatedByID]     INT              NOT NULL,
     [RowNo]           INT              NOT NULL,
     [Debit]           MONEY            NOT NULL,

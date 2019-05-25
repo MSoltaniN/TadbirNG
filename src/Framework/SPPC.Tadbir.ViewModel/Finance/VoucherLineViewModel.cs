@@ -33,7 +33,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل
         /// </summary>
         [Display(Name = FieldNames.CurrencyTypeField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int? CurrencyId { get; set; }
 
         /// <summary>

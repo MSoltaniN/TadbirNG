@@ -88,7 +88,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه نوع آرتیکل (مانند آرتیکل عادی، مالیات و عوارض و ...)
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public short TypeId { get; set; }
+        public short LineTypeId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل
