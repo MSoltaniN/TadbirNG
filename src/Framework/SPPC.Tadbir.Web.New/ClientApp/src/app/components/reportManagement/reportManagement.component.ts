@@ -605,7 +605,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + current, false);                
     
     var tabIsOpen = this.tabsComponent.openTab(this.currentReportName,null,null,
-      true,false,true,this.currentReportId,this.currentPrintInfo.code,designer);   
+      true,false,true,this.currentReportId,this.currentReportId,designer);   
 
     if(!tabIsOpen) return;     
 
@@ -765,7 +765,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       if(showQReport)
       {
         //this.ViewIdentity.ViewID
-        var properties = this.masterComponent.getAllMetaData(this.MetadataType);
+        var properties = this.masterComponent.getAllMetaData(this.ViewIdentity.ViewID);
         var thArray = this.Grid.wrapper.nativeElement.getElementsByTagName('TH');
 
         var columns: Array<QuickReportColumnInfo> = new Array<QuickReportColumnInfo>();
@@ -786,7 +786,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             qr.sortOrder = 0;
             qr.sortMode = 0;
             
-            var property = properties.filter(p=>p.name.toLowerCase() === column.field.toLowerCase());
+            //var property = properties.filter(p=>p.name.toLowerCase() === column.field.toLowerCase());
+            var property = properties.filter(p=>p.name.toLowerCase() === column.title.toLowerCase());
             if(property.length > 0) 
               qr.dataType = property[0].dotNetType;
 

@@ -145,7 +145,7 @@ export class DefaultComponent extends BaseComponent {
     //var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
     if (metaDataName) {
       if (!localStorage.getItem(metaDataName)) {
-        this.metadataService.getMetaDataById(0).finally(() => {
+        this.metadataService.getMetaDataById(metaDataName).finally(() => {
           if (!this.properties.get(metaDataName)) return undefined;
           var result = this.properties.get(metaDataName);
           return result;
