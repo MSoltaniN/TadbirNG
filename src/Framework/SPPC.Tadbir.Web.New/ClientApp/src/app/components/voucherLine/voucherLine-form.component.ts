@@ -9,6 +9,7 @@ import { FullAccountService } from '../../service/fullAccount.service';
 import { VoucherLineService, AccountService, LookupService } from '../../service/index';
 import { DetailComponent } from '../../class/detail.component';
 import { LookupApi } from '../../service/api/lookupApi';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -140,7 +141,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     public lookupService: LookupService, private fullAccountService: FullAccountService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.VoucherLine, Metadatas.VoucherArticles);
+    super(toastrService, translate, renderer, metadata, Entities.VoucherLine, ViewName.VoucherLine);
 
 
   }

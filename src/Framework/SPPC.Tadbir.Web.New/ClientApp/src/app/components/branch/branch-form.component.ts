@@ -1,16 +1,13 @@
 import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Branch } from '../../model/index';
-import { Property } from "../../class/metadata/property"
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
+import { Layout, Entities } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailComponent } from '../../class/detail.component';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -82,7 +79,7 @@ export class BranchFormComponent extends DetailComponent {
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         public renderer: Renderer2, public metadata: MetaDataService, @Host() defaultComponent: DefaultComponent) {
 
-        super(toastrService, translate, renderer, metadata, Entities.Branch, Metadatas.Branch);
+      super(toastrService, translate, renderer, metadata, Entities.Branch, ViewName.Branch);
     }
 
    

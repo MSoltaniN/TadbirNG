@@ -25,6 +25,7 @@ import { ReportingService, ParameterInfo, QuickReportViewInfo } from '../../serv
 import * as moment from 'jalali-moment';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { TabsComponent } from '../../controls/tabs/tabs.component';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -55,8 +56,8 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
    private voucherService: VoucherService, public renderer: Renderer2,
     public metadata: MetaDataService, public settingService: SettingService,
-    private http: HttpClient,public reporingService:ReportingService) {
-   super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, Metadatas.Voucher);
+    private http: HttpClient, public reporingService: ReportingService) {
+    super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, ViewName.Voucher);
  }
   
   innerWidth : number;

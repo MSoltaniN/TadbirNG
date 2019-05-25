@@ -151,7 +151,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
     public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
+    super(toastrService, translate, renderer, metadata, Entities.Account, ViewName.Account);
   }
 
   getAccountGroups() {

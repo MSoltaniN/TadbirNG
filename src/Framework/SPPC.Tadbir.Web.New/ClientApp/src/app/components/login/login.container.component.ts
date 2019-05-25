@@ -33,7 +33,7 @@ export class LoginContainerComponent extends DefaultComponent implements OnInit 
       public metadata: MetaDataService,
       public settingService: SettingService) 
     {
-      super(toastrService, translate, renderer, metadata, settingService, '', '');
+      super(toastrService, translate, renderer, metadata, settingService, '', undefined);
         this.step2 = false;
     }
 

@@ -65,7 +65,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     public settingService: SettingService,
     @Inject(DOCUMENT) public document,
     public dashboadService: DashboardService) {
-    super(toastrService, translate, renderer, metadata, settingService,'','');
+    super(toastrService, translate, renderer, metadata, settingService, '', undefined);
 
 
       

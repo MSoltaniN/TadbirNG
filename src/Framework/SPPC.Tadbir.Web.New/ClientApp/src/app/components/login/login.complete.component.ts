@@ -71,7 +71,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     public metadata: MetaDataService,
     public userService: UserService,
     public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, '', '');
+    super(toastrService, translate, renderer, metadata, settingService, '', undefined);
 
   }
 

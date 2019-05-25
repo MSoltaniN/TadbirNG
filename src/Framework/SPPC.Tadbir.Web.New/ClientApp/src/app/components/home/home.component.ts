@@ -49,7 +49,7 @@ export class HomeComponent extends DefaultComponent implements OnInit {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute, public router: Router,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, private dialogService: DialogService) {
-    super(toastrService, translate, renderer, metadata, settingService, '', '');
+    super(toastrService, translate, renderer, metadata, settingService, '', undefined);
   }
 
   ngOnInit() {

@@ -35,7 +35,7 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     public metadata: MetaDataService, public el: ElementRef, public settingService: SettingService,
     public location: Location) {
 
-    super(toastrService, translate, renderer2, metadata, settingService, '', '');
+    super(toastrService, translate, renderer2, metadata, settingService, '', undefined);
 
     let menus: any;
     if (this.authenticationService.isRememberMe())

@@ -41,7 +41,7 @@ export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.CostCenter, Metadatas.CostCenter,
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.CostCenter,
       "CostCenter.LedgerCostCenter", "CostCenter.EditorTitleNew", "CostCenter.EditorTitleEdit",
       CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren, CostCenterApi.EnvironmentNewChildCostCenter,
       ViewName.CostCenter)

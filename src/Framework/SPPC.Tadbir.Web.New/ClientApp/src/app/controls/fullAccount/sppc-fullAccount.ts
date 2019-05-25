@@ -30,6 +30,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
   selectedItem: any;
 
+  focusedItem: number;
+
   isEnableAccountFilter: boolean = false;
   isEnableDetailAccountFilter: boolean = false;
   isEnableCostCenterFilter: boolean = false;
@@ -75,7 +77,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
     public controlContainer: ControlContainer, private fullAccountService: FullAccountService, private dialogService: DialogService) {
-    super(toastrService, translate, renderer, metadata, '', '');
+    super(toastrService, translate, renderer, metadata, '', undefined);
 
   }
 
@@ -423,6 +425,10 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   }
   //#endregion
 
+
+  onFocus(item: number) {
+    this.focusedItem = item;
+  }
 
   openDialog(template: TemplateRef<any>, item: number) {
     this.selectedItem = item;

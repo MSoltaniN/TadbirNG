@@ -3,79 +3,77 @@ import { Validators, FormGroup, FormControl, AbstractControl } from '@angular/fo
 import { UserProfile } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
-import { DefaultComponent } from "../../class/default.component";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Metadatas, Entities, MessageType } from '../../../environments/environment';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { UserService, UserProfileInfo } from '../../service/index';
+import { UserService } from '../../service/index';
 import { DetailComponent } from '../../class/detail.component';
+import { ViewName } from '../../security/viewName';
 
 
 
 @Component({
-    selector: 'changePassword-component',
-    styles: [
-        `input[type=text],input[type=password] { width: 100%; }`
-    ],
-    templateUrl: './changePassword.component.html'    
+  selector: 'changePassword-component',
+  styles: [
+    `input[type=text],input[type=password] { width: 100%; }`
+  ],
+  templateUrl: './changePassword.component.html'
 
 })
 
 export class ChangePasswordComponent extends DetailComponent {
 
 
-    ////create a form controls
-    public editForm1 = new FormGroup({
-        userName: new FormControl(""),
-        oldPassword: new FormControl("", [Validators.required]),
-        newPassword: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(32)]),
-        repeatPassword: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(32)]),
-    });
+  ////create a form controls
+  public editForm1 = new FormGroup({
+    userName: new FormControl(""),
+    oldPassword: new FormControl("", [Validators.required]),
+    newPassword: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(32)]),
+    repeatPassword: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(32)]),
+  });
 
-    public model: UserProfile;
-    public user_Name: string = "";
-    public errorMessage: string = "";
+  public model: UserProfile;
+  public user_Name: string = "";
+  public errorMessage: string = "";
 
-    //Events
-    public onSave(e: any): void {
-        e.preventDefault();
-        //this.sppcLoading.show();
+  //Events
+  public onSave(e: any): void {
+    e.preventDefault();
+    //this.sppcLoading.show();
 
-        this.model = this.editForm1.value;
-        this.model.userName = this.user_Name;
+    this.model = this.editForm1.value;
+    this.model.userName = this.user_Name;
 
-        this.userService.changePassword(this.model).subscribe(res => {
-            this.editForm1.reset();
-            this.errorMessage = "";
-            this.showMessage(this.updateMsg, MessageType.Succes);
-        }, (error => {
-            this.errorMessage = error;
-        }));
+    this.userService.changePassword(this.model).subscribe(res => {
+      this.editForm1.reset();
+      this.errorMessage = "";
+      this.showMessage(this.updateMsg, MessageType.Succes);
+    }, (error => {
+      this.errorMessage = error;
+    }));
 
-        //this.sppcLoading.hide();
+    //this.sppcLoading.hide();
 
+  }
+
+
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+    private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService) {
+    super(toastrService, translate, renderer, metadata, Entities.Password, ViewName.User);
+
+    if (localStorage.getItem('currentContext') != null) {
+      var item: string | null;
+      item = localStorage.getItem('currentContext');
+      var currentContext = JSON.parse(item != null ? item.toString() : "");
+      this.user_Name = currentContext ? currentContext.userName.toString() : "";
     }
-
-
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.Password, Metadatas.User);
-
-        if (localStorage.getItem('currentContext') != null) {
-            var item: string | null;
-            item = localStorage.getItem('currentContext');
-            var currentContext = JSON.parse(item != null ? item.toString() : "");
-            this.user_Name = currentContext ? currentContext.userName.toString() : "";
-        }
-        else if (sessionStorage.getItem('currentContext') != null) {
-            var item: string | null;
-            item = sessionStorage.getItem('currentContext');
-            var currentContext = JSON.parse(item != null ? item.toString() : "");
-            this.user_Name = currentContext ? currentContext.userName.toString() : "";
-        }
+    else if (sessionStorage.getItem('currentContext') != null) {
+      var item: string | null;
+      item = sessionStorage.getItem('currentContext');
+      var currentContext = JSON.parse(item != null ? item.toString() : "");
+      this.user_Name = currentContext ? currentContext.userName.toString() : "";
     }
+  }
 
 
 

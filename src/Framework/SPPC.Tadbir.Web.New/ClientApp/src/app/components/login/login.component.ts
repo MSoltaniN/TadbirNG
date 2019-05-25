@@ -43,7 +43,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document
         ) 
     {
-      super(toastrService, translate, renderer, metadata, settingService, '', '');
+      super(toastrService, translate, renderer, metadata, settingService, '', undefined);
         this.lang = this.currentlang;
        
     }

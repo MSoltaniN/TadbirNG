@@ -8,23 +8,21 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
+import { MessageType, Layout, Entities } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { AccountRelationApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { AccountRelationPermissions } from '../../security/permissions';
 import { AccountRelationsService, AccountItemBriefInfo, SettingService } from '../../service/index';
-import { TreeItemLookup, TreeItem, CheckableSettings } from '@progress/kendo-angular-treeview';
+import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
 import { AccountItemRelationsInfo } from '../../service/accountRelations.service';
 import { Filter } from '../../class/filter';
-import { KeyCode } from '../../enum/KeyCode';
 import { AccountRelationsType } from '../../enum/accountRelationType';
 import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
 import { FilterExpression } from '../../class/filterExpression';
-import { DetailComponent } from '../../class/detail.component';
+
 
 
 export function getLayoutModule(layout: Layout) {
@@ -94,7 +92,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
     private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.AccountRelations, '');
+    super(toastrService, translate, renderer, metadata, settingService, Entities.AccountRelations, undefined);
 
     this.mainComponent = [
       { value: "AccountRelations.Account", key: AccountRelationsType.Account },

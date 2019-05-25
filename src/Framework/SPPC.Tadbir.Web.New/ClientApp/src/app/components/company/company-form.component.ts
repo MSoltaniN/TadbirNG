@@ -11,6 +11,7 @@ import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailComponent } from '../../class/detail.component';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -78,7 +79,7 @@ export class CompanyFormComponent extends DetailComponent {
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.Company, Metadatas.Company);
+    super(toastrService, translate, renderer, metadata, Entities.Company, ViewName.Company);
   }
 
 

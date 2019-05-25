@@ -15,6 +15,7 @@ import { Voucher } from '../../model/index';
 import { DocumentStatusValue } from '../../enum/documentStatusValue';
 import { Item } from '../../model/item';
 import { LookupApi } from '../../service/api/index';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -57,7 +58,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
+    super(toastrService, translate, renderer, metadata, Entities.Voucher, ViewName.Voucher);
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }

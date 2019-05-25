@@ -3,26 +3,25 @@ import { AccountGroupsService, AccountInfo, SettingService, AccountService } fro
 import { Account, AccountGroup } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
-import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Response } from '@angular/http';
 import { AccountGroupApi, AccountApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
-import { AccountPermissions, AccountGroupPermissions } from '../../security/permissions';
+import { AccountPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { ActivatedRoute } from '@angular/router';
 import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 import { RelatedAccountsFormComponent } from './relatedAccounts-form.component';
+import { ViewName } from '../../security/viewName';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -260,7 +259,7 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
   constructor(public toastrService: ToastrService, public translate: TranslateService, public accountGroupsService: AccountGroupsService, private activatedroute: ActivatedRoute,
     private accountService: AccountService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public dialogService: DialogService,
     @SkipSelf() @Host() @Optional() private parentComponent: RelatedAccountsComponent) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Account, Metadatas.Account);
+    super(toastrService, translate, renderer, metadata, settingService, Entities.Account, ViewName.Account);
   }
   //#endregion
 

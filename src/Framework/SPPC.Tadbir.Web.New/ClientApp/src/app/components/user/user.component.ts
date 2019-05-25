@@ -3,7 +3,6 @@ import { UserService, UserInfo, RelatedItemsInfo, SettingService } from '../../s
 import { User, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
@@ -11,7 +10,6 @@ import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
-import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
@@ -19,6 +17,7 @@ import { UserApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { UserPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
+import { ViewName } from '../../security/viewName';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -185,7 +184,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
   //#region Constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
     private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.User, Metadatas.User);
+    super(toastrService, translate, renderer, metadata, settingService, Entities.User, ViewName.User);
   }
   //#endregion
 

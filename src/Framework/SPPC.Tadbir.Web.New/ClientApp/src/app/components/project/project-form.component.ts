@@ -1,20 +1,12 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { Project } from '../../model/index';
-
-import { Property } from "../../class/metadata/property"
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 
 import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { ProjectApi } from '../../service/api/index';
-import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
 
@@ -124,7 +116,7 @@ export class ProjectFormComponent extends DetailComponent implements OnInit {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, Entities.Project, Metadatas.Project);
+    super(toastrService, translate, renderer, metadata, Entities.Project, ViewName.Project);
   }
 
 

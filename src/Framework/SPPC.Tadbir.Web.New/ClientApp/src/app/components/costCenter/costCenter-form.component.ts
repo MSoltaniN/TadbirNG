@@ -120,7 +120,7 @@ export class CostCenterFormComponent extends DetailComponent implements OnInit {
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.CostCenter, Metadatas.CostCenter);
+    super(toastrService, translate, renderer, metadata, Entities.CostCenter, ViewName.CostCenter);
   }
 
 

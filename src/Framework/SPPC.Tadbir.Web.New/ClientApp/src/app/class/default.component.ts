@@ -1,4 +1,3 @@
-
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { String } from './source';
@@ -12,6 +11,7 @@ import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
 import { ViewTreeConfig } from '../model/index';
 import { SettingService } from '../service/index';
+import { SessionKeys } from '../../environments/environment';
 
 
 @Injectable()
@@ -20,26 +20,26 @@ export class DefaultComponent extends BaseComponent {
 
   public translateService: TranslateService
 
-
+  public metadataKey: string;
 
   /** array of property.this variable is a container for metadata */
   public properties: Map<string, Array<Property>>;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService
     , public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService,
-    @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public metaDataName: string) {
-
-
+    @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number) {
     super(toastrService);
+
+    this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '');
 
     this.setLanguageSetting();
 
     this.localizeMsg(this.entityType);
 
-    var propertiesValue = localStorage.getItem(this.metaDataName)
+    var propertiesValue = localStorage.getItem(this.metadataKey)
     if (!propertiesValue) {
       this.properties = new Map<string, Array<Property>>();
-      this.properties.set(this.metaDataName, JSON.parse(propertiesValue));
+      this.properties.set(this.metadataKey, JSON.parse(propertiesValue));
     }
   }
 
@@ -96,24 +96,24 @@ export class DefaultComponent extends BaseComponent {
   */
   public getMeta(name: string): Property | undefined {
 
-    if (this.metaDataName) {
+    if (this.metadataKey) {
 
-      if (!localStorage.getItem(this.metaDataName)) {
-        this.metadataService.getMetaData(this.metaDataName).finally(() => {
+      if (!localStorage.getItem(this.metadataKey)) {
+        this.metadataService.getMetaDataById(this.viewId).finally(() => {
 
-          if (!this.properties.get(this.metaDataName)) return undefined;
+          if (!this.properties.get(this.metadataKey)) return undefined;
 
-          var result = this.properties.get(this.metaDataName).find(p => p.name.toLowerCase() == name.toLowerCase());
+          var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
 
           return result;
 
         }).subscribe((res1: any) => {
 
-          this.properties.set(this.metaDataName, res1.columns);
+          this.properties.set(this.metadataKey, res1.columns);
 
-          localStorage.setItem(this.metaDataName, JSON.stringify(res1.columns))
+          localStorage.setItem(this.metadataKey, JSON.stringify(res1.columns))
 
-          var result = this.properties.get(this.metaDataName).find(p => p.name.toLowerCase() == name.toLowerCase());
+          var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
 
           return result;
         });
@@ -122,15 +122,15 @@ export class DefaultComponent extends BaseComponent {
 
 
         var item: string | null;
-        item = localStorage.getItem(this.metaDataName);
+        item = localStorage.getItem(this.metadataKey);
 
         if (!this.properties) this.properties = new Map<string, Array<Property>>();
         var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(this.metaDataName, arr);
+        this.properties.set(this.metadataKey, arr);
 
-        if (!this.properties.get(this.metaDataName)) return undefined;
+        if (!this.properties.get(this.metadataKey)) return undefined;
 
-        var result = this.properties.get(this.metaDataName).find(p => p.name.toLowerCase() == name.toLowerCase());
+        var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
 
         return result;
 
@@ -140,9 +140,12 @@ export class DefaultComponent extends BaseComponent {
   }
 
   public getAllMetaData(metaDataName: string): Array<Property> | undefined {
+
+    //TODO
+    //var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
     if (metaDataName) {
       if (!localStorage.getItem(metaDataName)) {
-        this.metadataService.getMetaData(metaDataName).finally(() => {
+        this.metadataService.getMetaDataById(0).finally(() => {
           if (!this.properties.get(metaDataName)) return undefined;
           var result = this.properties.get(metaDataName);
           return result;
@@ -167,31 +170,33 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
-  async getAllMetaDataAsync(metaDataName: string): Promise<Array<Property>> {
-    if (metaDataName) {
-      if (!localStorage.getItem(metaDataName)) {
-        const response = await this.metadataService.getMetaData(metaDataName).toPromise();
-        let res: any = response;
-        this.properties.set(metaDataName, res.columns);
-        localStorage.setItem(metaDataName, JSON.stringify(res.columns))
-        var result = this.properties.get(metaDataName);
-        return result;
-      }
-      else {
-        var item: string | null;
-        item = localStorage.getItem(metaDataName);
-        if (!this.properties) this.properties = new Map<string, Array<Property>>();
-        var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, arr);
-        if (!this.properties.get(metaDataName)) return undefined;
-        var result = this.properties.get(metaDataName);
-        return result;
-      }
+  //async getAllMetaDataAsync(metaDataName: string): Promise<Array<Property>> {
+  //  if (metaDataName) {
+  //    if (!localStorage.getItem(metaDataName)) {
+  //      const response = await this.metadataService.getMetaData(metaDataName).toPromise();
+  //      let res: any = response;
+  //      this.properties.set(metaDataName, res.columns);
+  //      localStorage.setItem(metaDataName, JSON.stringify(res.columns))
+  //      var result = this.properties.get(metaDataName);
+  //      return result;
+  //    }
+  //    else {
+  //      var item: string | null;
+  //      item = localStorage.getItem(metaDataName);
+  //      if (!this.properties) this.properties = new Map<string, Array<Property>>();
+  //      var arr = JSON.parse(item != null ? item.toString() : "");
+  //      this.properties.set(metaDataName, arr);
+  //      if (!this.properties.get(metaDataName)) return undefined;
+  //      var result = this.properties.get(metaDataName);
+  //      return result;
+  //    }
 
-    }
-  }
+  //  }
+  //}
 
-  async getAllMetaDataByViewIdAsync(viewId: number, metaDataName: string): Promise<Array<Property>> {
+  async getAllMetaDataByViewIdAsync(viewId: number): Promise<Array<Property>> {
+
+    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
 
     if (metaDataName) {
       if (!localStorage.getItem(metaDataName)) {

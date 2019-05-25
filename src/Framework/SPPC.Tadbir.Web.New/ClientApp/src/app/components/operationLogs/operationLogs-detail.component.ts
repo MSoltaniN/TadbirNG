@@ -1,14 +1,12 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { OperationLog } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Metadatas, Entities } from '../../../environments/environment';
+import { Entities } from '../../../environments/environment';
 import { SettingService } from '../../service/index';
+import { ViewName } from '../../security/viewName';
 
 
 
@@ -55,7 +53,7 @@ export class OperationLogsDetailComponent extends DefaultComponent {
     constructor(public toastrService: ToastrService, public translate: TranslateService,
       public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
 
-      super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, Metadatas.OperationLog);
+      super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, ViewName.OperationLog);
     }
 
 }

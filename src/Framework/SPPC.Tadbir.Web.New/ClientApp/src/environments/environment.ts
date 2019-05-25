@@ -102,7 +102,8 @@ export const SessionKeys = {
   CurrentSkin: 'currentSkin',
   NumberConfige: 'numberConfig',
   DateRangeConfig: 'DateRangeConfig',
-  DateRangeSelected: 'DateRangeSelected'
+  DateRangeSelected: 'DateRangeSelected',
+  MetadataKey: 'metadata_view_{0}'
 }
 
 
