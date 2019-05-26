@@ -73,6 +73,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetListSettingsByUserAsync(int userId)
         {
             var listSettings = await _repository.GetListViewConfigByUserAsync(userId);
+            Array.ForEach(listSettings.ToArray(), item => Localize(item));
             return Json(listSettings);
         }
 
@@ -81,6 +82,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetListSettingsByUserAndViewAsync(int userId, int viewId)
         {
             var listSettings = await _repository.GetListViewConfigByUserAsync(userId, viewId);
+            Localize(listSettings);
             return Json(listSettings);
         }
 
@@ -153,6 +155,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     level => level.Name = level.Name == "LevelX"
                         ? String.Format(_strings[AppStrings.LevelX], level.No)
                         : level.Name);
+            }
+        }
+
+        private void Localize(ListFormViewConfig metadata)
+        {
+            if (metadata != null)
+            {
+                foreach (var column in metadata.ColumnViews)
+                {
+                    column.ExtraLarge.Title =
+                        column.ExtraSmall.Title =
+                        column.Large.Title =
+                        column.Medium.Title =
+                        column.Small.Title = _strings[column.Name];
+                }
             }
         }
 
