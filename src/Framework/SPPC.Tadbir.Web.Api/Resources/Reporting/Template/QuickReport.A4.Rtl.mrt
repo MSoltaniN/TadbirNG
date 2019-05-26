@@ -217,6 +217,7 @@
           <NumberID>25</NumberID>
           <Page isRef="2" />
           <Parent isRef="2" />
+          <PrintOnAllPages>True</PrintOnAllPages>
           <RowCount>1</RowCount>
           <Sort isList="true" count="0" />
           <TableStyleFX Ref="14" type="Stimulsoft.Report.Components.Table.StiTable21StyleFX" isKey="true">
@@ -363,10 +364,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>5/23/2019 11:17:17 PM</ReportChanged>
+  <ReportChanged>5/26/2019 2:25:04 PM</ReportChanged>
   <ReportCreated>5/20/2019 2:23:49 PM</ReportCreated>
   <ReportFile>J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.Api\Resources\Reporting\Template\QuickReport.A4.Rtl.mrt</ReportFile>
-  <ReportGuid>844e3f8b66544887a8f4da4dff2f1e34</ReportGuid>
+  <ReportGuid>f4dd3d437a774bc2a4c2ed9d4e5f1a6f</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2019.2.3.0</ReportVersion>
