@@ -761,92 +761,97 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
     switchReport(showQReport : boolean,treeData : any,defReport:any)
     {
-      var columnIndex = 0; 
+      var columnIndex = 0;
+
+      var params: Array<ReportParamComponent> = null;
+      if (this.ViewIdentity.params.length > 0)
+        params = this.ViewIdentity.params.toArray();
+
       if(showQReport)
       {
         //this.ViewIdentity.ViewID
-        var properties = this.masterComponent.getAllMetaData(this.ViewIdentity.ViewID);
-        var thArray = this.Grid.wrapper.nativeElement.getElementsByTagName('TH');
-
-        var columns: Array<QuickReportColumnInfo> = new Array<QuickReportColumnInfo>();
-        this.Grid.leafColumns.forEach(function (item) {              
-          var qr: QuickReportColumnInfo = new QuickReportColumnInfo();
-          var column = item as ColumnComponent;
-          if (column.field) {
-            qr.name = column.field;
-            qr.index = columnIndex;
-            qr.visible = true;
-            
-            if(column.width)
-              qr.width = column.width;
-            else
-              qr.width = thArray[columnIndex].offsetWidth;
-
-            qr.userText = column.displayTitle;
-            qr.sortOrder = 0;
-            qr.sortMode = 0;
-            
-            //var property = properties.filter(p=>p.name.toLowerCase() === column.field.toLowerCase());
-            var property = properties.filter(p=>p.name.toLowerCase() === column.title.toLowerCase());
-            if(property.length > 0) 
-              qr.dataType = property[0].dotNetType;
-
-            qr.defaultText = column.displayTitle;
-            qr.enabled = true;
-            qr.order = columnIndex;  
-            columns.push(qr)
-
-            columnIndex++;
-          }
-        });
-    
-        var dpi_x = document.getElementById('dpi').offsetWidth;    
-        var viewInfo = new QuickReportViewInfo();
-        viewInfo.columns = columns;
-        viewInfo.inchValue = dpi_x;        
-        viewInfo.reportTitle = defReport.caption;
-        viewInfo.reportLang = this.CurrentLanguage;       
-
-        var params : Array<ReportParamComponent> = null;
-        if (this.ViewIdentity.params.length > 0)
-          params = this.ViewIdentity.params.toArray();
-
-        
-        //get parameters for quick report
-        var url = String.Format(ReportApi.Report, defReport.id);
-        this.reportingService.getAll(url).subscribe((res: Response) => {
-
-          var printInfo: PrintInfo = <any>res.body;
-          this.currentPrintInfo = printInfo;
-          if (printInfo.parameters.length > 0)
+        var viewId = parseInt(this.ViewIdentity.ViewID);        
+        this.masterComponent.getAllMetaDataByViewIdAsync(viewId).then(response =>
+        {
+          if (response)
           {
-            var reportParameters = printInfo.parameters;
-            params.forEach(function(p)
-            {
-                if(p.ParamReportVisible == false)
-                {
-                  var index = reportParameters.findIndex(f => f.name === p.ParamName);
-                  if(index >= 0)
-                    reportParameters.splice(index,1);                    
-                }
+            var properties = response;
+            var thArray = this.Grid.wrapper.nativeElement.getElementsByTagName('TH');
 
-            });   
-            viewInfo.parameters = reportParameters;
-          }
+            var columns: Array<QuickReportColumnInfo> = new Array<QuickReportColumnInfo>();
+            this.Grid.leafColumns.forEach(function (item) {
+              var qr: QuickReportColumnInfo = new QuickReportColumnInfo();
+              var column = item as ColumnComponent;
+              if (column.field) {
+                qr.name = column.field;
+                qr.index = columnIndex;
+                qr.visible = true;
 
-          this.reportingService.putEnvironmentUserQuickReport(ReportApi.EnvironmentQuickReport, viewInfo)
-            .subscribe((response: any) => {
+                if (column.width)
+                  qr.width = column.width;
+                else
+                  qr.width = thArray[columnIndex].offsetWidth;
 
-              var design = response.designJson;
-              var outOfPage = response.outOfPage;
-              if (outOfPage) {
-                this.showMessage(this.getText('Report.ReportIsOutOfPage'));
+                qr.userText = column.displayTitle;
+                qr.sortOrder = 0;
+                qr.sortMode = 0;
+
+                //var property = properties.filter(p=>p.name.toLowerCase() === column.field.toLowerCase());
+                var property = properties.filter(p => p.name.toLowerCase() === column.title.toLowerCase());
+                if (property.length > 0)
+                  qr.dataType = property[0].dotNetType;
+
+                qr.defaultText = column.displayTitle;
+                qr.enabled = true;
+                qr.order = columnIndex;
+                columns.push(qr)
+
+                columnIndex++;
               }
-              var id = this.ViewIdentity.ViewID;
-              this.showQuickReport(id, params, this.Filter, this.Sort, design, treeData, viewInfo);
             });
 
-        });        
+            var dpi_x = document.getElementById('dpi').offsetWidth;
+            var viewInfo = new QuickReportViewInfo();
+            viewInfo.columns = columns;
+            viewInfo.inchValue = dpi_x;
+            viewInfo.reportTitle = defReport.caption;
+            viewInfo.reportLang = this.CurrentLanguage;
+            
+            //get parameters for quick report
+            var url = String.Format(ReportApi.Report, defReport.id);
+            this.reportingService.getAll(url).subscribe((res: Response) => {
+
+              var printInfo: PrintInfo = <any>res.body;
+              this.currentPrintInfo = printInfo;
+              if (printInfo.parameters.length > 0) {
+                var reportParameters = printInfo.parameters;
+                params.forEach(function (p) {
+                  if (p.ParamReportVisible == false) {
+                    var index = reportParameters.findIndex(f => f.name === p.ParamName);
+                    if (index >= 0)
+                      reportParameters.splice(index, 1);
+                  }
+
+                });
+                viewInfo.parameters = reportParameters;
+              }
+
+              this.reportingService.putEnvironmentUserQuickReport(ReportApi.EnvironmentQuickReport, viewInfo)
+                .subscribe((response: any) => {
+
+                  var design = response.designJson;
+                  var outOfPage = response.outOfPage;
+                  if (outOfPage) {
+                    this.showMessage(this.getText('Report.ReportIsOutOfPage'));
+                  }
+                  var id = this.ViewIdentity.ViewID;
+                  this.showQuickReport(id, params, this.Filter, this.Sort, design, treeData, viewInfo);
+                });
+
+            });    
+          }
+        });
+            
       }
       else
       {        
