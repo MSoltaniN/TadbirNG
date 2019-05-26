@@ -765,7 +765,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       if(showQReport)
       {
         //this.ViewIdentity.ViewID
-        var properties = this.masterComponent.getAllMetaData(this.ViewIdentity.ViewID);
+        var properties = this.masterComponent.getAllMetaData(parseInt(this.ViewIdentity.ViewID));
         var thArray = this.Grid.wrapper.nativeElement.getElementsByTagName('TH');
 
         var columns: Array<QuickReportColumnInfo> = new Array<QuickReportColumnInfo>();
