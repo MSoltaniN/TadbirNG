@@ -796,8 +796,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
                 qr.sortOrder = 0;
                 qr.sortMode = 0;
 
-                //var property = properties.filter(p=>p.name.toLowerCase() === column.field.toLowerCase());
-                var property = properties.filter(p => p.name.toLowerCase() === column.title.toLowerCase());
+                var property = properties.filter(p=>p.name.toLowerCase() === column.field.toLowerCase());                
                 if (property.length > 0)
                   qr.dataType = property[0].dotNetType;
 
