@@ -96,7 +96,7 @@ export class DefaultComponent extends BaseComponent {
   */
   public getMeta(name: string): Property | undefined {
 
-    if (this.metadataKey) {
+    if (this.viewId) {
 
       if (!localStorage.getItem(this.metadataKey)) {
         this.metadataService.getMetaDataById(this.viewId).finally(() => {
@@ -143,12 +143,11 @@ export class DefaultComponent extends BaseComponent {
 
     //TODO
     //var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
-    
-    if (viewId) {
-      if (!localStorage.getItem(viewId.toString())) {
-        this.metadataService.getMetaDataById(viewId).finally(() => {
-          if (!this.properties.get(viewId.toString())) return undefined;
-          var result = this.properties.get(viewId.toString());
+    if (metaDataName) {
+      if (!localStorage.getItem(metaDataName)) {
+        this.metadataService.getMetaDataById(metaDataName).finally(() => {
+          if (!this.properties.get(metaDataName)) return undefined;
+          var result = this.properties.get(metaDataName);
           return result;
         }).subscribe((res1: any) => {
           this.properties.set(viewId.toString(), res1.columns);
@@ -199,9 +198,9 @@ export class DefaultComponent extends BaseComponent {
 
     var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
 
-    if (metaDataName) {
+    if (viewId) {
       if (!localStorage.getItem(metaDataName)) {
-        const response = await this.metadataService.getReportMetaDataById(viewId).toPromise();
+        const response = await this.metadataService.getMetaDataById(viewId).toPromise();
         let res: any = response;
         this.properties.set(metaDataName, res.columns);
         localStorage.setItem(metaDataName, JSON.stringify(res.columns))

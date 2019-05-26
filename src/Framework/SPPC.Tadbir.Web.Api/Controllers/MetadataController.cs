@@ -52,7 +52,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 foreach (var column in metadata.Columns)
                 {
-                    column.Name = _strings[column.Name];
                     var config = JsonHelper.To<ColumnViewConfig>(column.Settings);
                     config.ExtraLarge.Title =
                         config.ExtraSmall.Title =

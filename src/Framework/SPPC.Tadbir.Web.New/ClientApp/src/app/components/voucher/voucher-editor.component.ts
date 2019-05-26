@@ -66,6 +66,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   ngOnInit() {
     this.editForm.reset();
+
     if (this.voucherItem) {
       this.initVoucherForm(this.voucherItem);
       this.isShowBreadcrumb = false;
@@ -130,7 +131,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       })
   }
 
-  initVoucherForm(item: Voucher) {
+  initVoucherForm(item: Voucher) {    
+
     this.editForm.reset(item);
 
     this.voucherModel = item;
@@ -158,6 +160,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       }
       default:
     }
+      
   }
 
   getVoucherType() {

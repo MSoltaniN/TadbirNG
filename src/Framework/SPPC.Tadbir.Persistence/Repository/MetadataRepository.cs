@@ -150,7 +150,7 @@ namespace SPPC.Tadbir.Persistence
             var deviceConfig = new ColumnViewDeviceConfig()
             {
                 Title = column.Name,
-                Visibility = column.Visibility ?? "Visible",
+                Visibility = column.Visibility ?? ColumnVisibility.Visible,
                 Width = 100,
                 Index = column.DisplayIndex,
                 DesignIndex = column.DisplayIndex

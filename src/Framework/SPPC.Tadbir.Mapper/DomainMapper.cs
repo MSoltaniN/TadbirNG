@@ -449,6 +449,8 @@ namespace SPPC.Tadbir.Mapper
                 .ConvertUsing(MapConfigType<ListFormViewConfig>);
             mapperConfig.CreateMap<Setting, EntityRowAccessConfig>()
                 .ConvertUsing(MapConfigType<EntityRowAccessConfig>);
+            mapperConfig.CreateMap<Column, ColumnViewConfig>()
+                .ConvertUsing(prop => GetDynamicColumnSettings(prop));
             mapperConfig.CreateMap<UserSetting, ListFormViewConfig>()
                 .ConvertUsing(cfg => JsonHelper.To<ListFormViewConfig>(cfg.Values));
             mapperConfig.CreateMap<ViewSetting, ViewTreeFullConfig>()
@@ -568,6 +570,25 @@ namespace SPPC.Tadbir.Mapper
             }
 
             return fullAccount;
+        }
+
+        private static ColumnViewConfig GetDynamicColumnSettings(Column column)
+        {
+            var columnConfig = new ColumnViewConfig(column.Name);
+            var deviceConfig = new ColumnViewDeviceConfig()
+            {
+                Title = column.Name,
+                Visibility = column.Visibility ?? ColumnVisibility.Visible,
+                Width = 100,
+                Index = column.DisplayIndex,
+                DesignIndex = column.DisplayIndex
+            };
+            columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Large = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            return columnConfig;
         }
 
         private static ICryptoService _crypto;
