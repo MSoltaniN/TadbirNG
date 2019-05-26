@@ -143,11 +143,11 @@ export class DefaultComponent extends BaseComponent {
 
     //TODO
     //var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
-    if (metaDataName) {
-      if (!localStorage.getItem(metaDataName)) {
-        this.metadataService.getMetaDataById(metaDataName).finally(() => {
-          if (!this.properties.get(metaDataName)) return undefined;
-          var result = this.properties.get(metaDataName);
+    if (viewId) {
+      if (!localStorage.getItem(viewId.toString())) {
+        this.metadataService.getMetaDataById(viewId).finally(() => {
+          if (!this.properties.get(viewId.toString())) return undefined;
+          var result = this.properties.get(viewId.toString());
           return result;
         }).subscribe((res1: any) => {
           this.properties.set(viewId.toString(), res1.columns);
