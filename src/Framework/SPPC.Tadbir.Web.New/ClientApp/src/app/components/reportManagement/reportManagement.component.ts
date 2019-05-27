@@ -129,14 +129,14 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.initViewer();
     this.disEnAllButtons(true);
 
-    if (this.loc.path().toLowerCase() == '/reports')
-      this.showDialog();
+    //if (this.loc.path().toLowerCase() == '/reports')
+    //  this.showDialog();
   }
   
   onNodeClick(e :any)
   {
-    
     var data = e.dataItem;
+        
     this.qReport = false;
     if(data.isDynamic) 
       this.qReport = true;
@@ -174,8 +174,12 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   }
   
   onNodeDblClick(dataItem :any)
-  {
+  {    
     var data = dataItem;
+    //design template for quick report
+    if (data.id == 43) {      
+      return;
+    }
     if (!data.isGroup) {
       this.currentReportId = data.id;
       this.currentReportName = data.caption;

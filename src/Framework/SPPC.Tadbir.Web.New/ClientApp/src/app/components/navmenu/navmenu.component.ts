@@ -1,4 +1,4 @@
-import { Component, Renderer2, Renderer, ElementRef, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Renderer2, Renderer, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { AuthenticationService } from '../../service/login/index';
 import { SettingService } from '../../service/index';
+import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 
 declare var $: any;
 
@@ -29,6 +30,7 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
   menuList: Array<Command> = new Array<Command>();
   public icons: { [id: string]: string; } = {};
+  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
 
   constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService,
     public translate: TranslateService, public renderer2: Renderer2, public router: Router,
@@ -80,6 +82,12 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
 
   onClickMenu(url: any) {
+    //for show report manager
+    if (url == '/reports') {
+      this.reportManager.showDialog();
+      return;
+    }
+
     if (url)
       this.router.navigate([url])
   }
