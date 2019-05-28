@@ -182,6 +182,7 @@ namespace SPPC.Tadbir.Persistence
             if (lineView.Id == 0)
             {
                 line = Mapper.Map<VoucherLine>(lineView);
+                line.CreatedById = _currentContext.Id;
                 if (await InsertAsync(repository, line))
                 {
                     await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
@@ -236,7 +237,7 @@ namespace SPPC.Tadbir.Persistence
             line.DetailId = lineView.FullAccount.DetailAccount.Id > 0 ? lineView.FullAccount.DetailAccount.Id : (int?)null;
             line.CostCenterId = lineView.FullAccount.CostCenter.Id > 0 ? lineView.FullAccount.CostCenter.Id : (int?)null;
             line.ProjectId = lineView.FullAccount.Project.Id > 0 ? lineView.FullAccount.Project.Id : (int?)null;
-            line.CurrencyId = lineView.CurrencyId ?? 0;
+            line.CurrencyId = lineView.CurrencyId;
             line.Debit = lineView.Debit;
             line.Credit = lineView.Credit;
             line.Description = lineView.Description;

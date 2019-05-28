@@ -13,9 +13,9 @@
 
       <div class="row">
 
-        <div class="col-xs-12 col-sm-6 sppc-float">
+        <div class="col-xs-12 col-sm-7 sppc-float">
           <div class="form-group">
-            <label for="fullAccount" class="control-label">{{ 'VoucherLine.Account' | translate }}</label>
+            <label for="fullAccount" class="control-label" style="position:absolute;">{{ 'VoucherLine.Account' | translate }}</label>
 
             <sppc-fullAccount formGroupName="fullAccount"
                               (setFocus)="focusHandler($event)">
@@ -23,54 +23,59 @@
           </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6 sppc-float">
+        <div class="col-xs-12 col-sm-5 sppc-float">
 
-          <div class="col-xs-12">
-            <div class="form-group" *ngIf="creditDebiteMode == '1'">
-              <!--<label for="debit" class="control-label">{{ 'VoucherLine.Debit' | translate }}</label>-->
-              <label for="debit" class="control-label">مبلغ</label>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group row" *ngIf="creditDebiteMode == '1'">
+                <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-              <sppc-numerictextbox formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
-            </div>
+                <sppc-numerictextbox class="col-xs-8 col-sm-9 sppc-input-num sppc-float" formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
+              </div>
 
-            <div class="form-group" *ngIf="creditDebiteMode == '2'">
-              <!--<label for="debit" class="control-label">{{ 'VoucherLine.Debit' | translate }}</label>-->
-              <label for="debit" class="control-label">مبلغ</label>
+              <div class="form-group row" *ngIf="creditDebiteMode == '2'">
+                <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-              <sppc-numerictextbox formControlName="credit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
+                <sppc-numerictextbox class="col-xs-8 col-sm-9 sppc-input-num sppc-float" formControlName="credit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
+              </div>
             </div>
           </div>
 
-          <div class="col-xs-12">
-            <div class="form-group">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group row">
+                <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float"></label>
+                <div class="voucher-mode-item">
+                  <input type="radio" name="creditDebiteMode" id="mode1" class="k-radio"
+                         [(ngModel)]="creditDebiteMode" value="1" [ngModelOptions]="{standalone: true}" />
+                  <label class="k-radio-label" for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
+                </div>
 
-              <div class="voucher-mode-item">
-                <input type="radio" name="creditDebiteMode" id="mode1" class="k-radio"
-                       [(ngModel)]="creditDebiteMode" value="1" [ngModelOptions]="{standalone: true}" />
-                <label class="k-radio-label" for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
+                <div class="voucher-mode-item">
+                  <input type="radio" name="creditDebiteMode" id="mode2" class="k-radio"
+                         [(ngModel)]="creditDebiteMode" value="2" [ngModelOptions]="{standalone: true}" />
+                  <label class="k-radio-label" for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
+                </div>
+
               </div>
-
-              <div class="voucher-mode-item">
-                <input type="radio" name="creditDebiteMode" id="mode2" class="k-radio"
-                       [(ngModel)]="creditDebiteMode" value="2" [ngModelOptions]="{standalone: true}" />
-                <label class="k-radio-label" for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
-              </div>
-
             </div>
           </div>
 
-          <div class="col-xs-12">
-            <div class="form-group">
-              <label for="debit" class="control-label">نوع آرتیکل</label>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group row">
+                <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.ArticleType' | translate }}</label>
 
-              <kendo-dropdownlist [data]="voucherLineTypeList" class="ddl-type"
-                                  [textField]="'value'"
-                                  [valueField]="'key'"
-                                  [valuePrimitive]="true"
-                                  [value]="selectedArticleType"
-                                  [(ngModel)]="selectedArticleType"
-                                  [ngModelOptions]="{standalone: true}">
-              </kendo-dropdownlist>
+                <kendo-dropdownlist [data]="voucherLineTypeList" class="col-xs-8 col-sm-9 sppc-float"
+                                    [textField]="'value'"
+                                    [valueField]="'key'"
+                                    [valuePrimitive]="true"
+                                    [value]="selectedArticleType"
+                                    [(ngModel)]="selectedArticleType"
+                                    [ngModelOptions]="{standalone: true}"
+                                    formControlName="typeId">
+                </kendo-dropdownlist>
+              </div>
             </div>
           </div>
 
@@ -102,7 +107,7 @@
 
         <div class="row">
 
-          <div class="col-xs-12 col-sm-6 sppc-float">
+          <div class="col-xs-12 col-sm-4 sppc-float">
 
             <div class="form-group">
               <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
@@ -110,25 +115,21 @@
               <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-currency"
                                   [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
               </kendo-dropdownlist>
-              <br />
-              <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.currencyId.valid || editForm1.controls.currencyId.pristine">
-                {{ 'AllValidations.VoucherLine.CurrencyIdIsRequired' | translate }}
-              </div>
             </div>
 
           </div>
 
-          <div class="col-xs-12 col-sm-6 sppc-float">
+          <div class="col-xs-12 col-sm-4 sppc-float">
             <div class="form-group">
-              <label for="description" class="control-label">مبلغ</label>
+              <label for="description" class="control-label">{{ 'VoucherLine.CurrencyValue' | translate }}</label>
+              <input type="text" formControlName="currencyValue" class="k-textbox" />
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-4 sppc-float">
+            <div class="form-group">
+              <label for="description" class="control-label">{{ 'VoucherLine.CurrencyRate' | translate }}</label>
               <input type="text" class="k-textbox" />
-            </div>
-          </div>
-
-          <div class="col-xs-12 col-sm-6 sppc-float">
-            <div class="form-group">
-              <label for="description" class="control-label">نرخ</label>
-              <input type="text" class="k-textbox"/>
             </div>
           </div>
 

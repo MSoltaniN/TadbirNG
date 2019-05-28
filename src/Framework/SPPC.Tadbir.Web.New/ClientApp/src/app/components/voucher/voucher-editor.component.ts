@@ -85,12 +85,6 @@ input[type=text], textarea, .ddl-type { width: 100%; }
 
 export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
-
-  balancedMode: boolean = false;
-  noCommittedMode: boolean = false;
-  committedMode: boolean = false;
-  finalizedMode: boolean = false;
-
   errorMessage: string;
   voucherModel: Voucher;
   voucherTypeList: Array<Item> = [];
@@ -180,31 +174,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.editForm.reset(item);
 
     this.voucherModel = item;
-    this.selectedType = this.voucherModel.type.toString();
-    this.balancedMode = item.isBalanced;
-
-    switch (item.statusId) {
-      case DocumentStatusValue.Draft: {
-        this.noCommittedMode = true;
-        this.committedMode = false;
-        this.finalizedMode = false;
-        break;
-      }
-      case DocumentStatusValue.NormalCheck: {
-        this.noCommittedMode = false;
-        this.committedMode = true;
-        this.finalizedMode = false;
-        break;
-      }
-      case DocumentStatusValue.FinalCheck: {
-        this.noCommittedMode = false;
-        this.committedMode = false;
-        this.finalizedMode = true;
-        break;
-      }
-      default:
-    }
-      
+    this.selectedType = this.voucherModel.type.toString();   
   }
 
   getVoucherType() {
@@ -233,10 +203,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
   }
 
-  setBalanceValue(e: any) {
-    this.balancedMode = e;
-  }
-
   nextVoucher() {
     this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
   }
@@ -263,10 +229,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, this.voucherModel.id)).subscribe(res => {
 
         this.voucherModel.statusId = DocumentStatusValue.NormalCheck;
-
-        this.noCommittedMode = false;
-        this.committedMode = true;
-
         this.showMessage(this.updateMsg, MessageType.Succes);
 
       }, (error => {
@@ -280,10 +242,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, this.voucherModel.id)).subscribe(res => {
 
         this.voucherModel.statusId = DocumentStatusValue.Draft;
-
-        this.noCommittedMode = true;
-        this.committedMode = false;
-
         this.showMessage(this.updateMsg, MessageType.Succes);
 
       }, (error => {
