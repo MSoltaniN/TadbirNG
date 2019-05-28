@@ -223,10 +223,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string reportTemplate = string.Empty;
 
             // load template for adding styles
-            var template = GetQuickReportTemplateAsync().Result;
-            if (template != null)
+            var qtemplate = GetQuickReportTemplateAsync().Result;
+            if (qtemplate != null && !string.IsNullOrEmpty(qtemplate.Template))
             {
-                reportTemplate = template.Template;
+                reportTemplate = qtemplate.Template;
                 quickReportTemplate.LoadFromJson(reportTemplate);
             }
             else
@@ -259,8 +259,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 quickReport = CreateReportParametersBand(qr, quickReport, quickReportTemplate);
             }
 
-            quickReport = CreateHeaderBand(quickReport, qr.Columns, qr.InchValue, dataSourceName, quickReportTemplate);
-            quickReport = CreateDataBand(quickReport, qr, dataSourceName, quickReportTemplate);
+            quickReport = CreateHeaderBand(quickReport, qr.Columns, qr.InchValue, dataSourceName, quickReportTemplate, qr.ReportLang);
+            quickReport = CreateDataBand(quickReport, qr, dataSourceName, quickReportTemplate, qr.ReportLang);
             quickReport = FillLocalVariables(quickReport, qr.ReportTitle);
 
             var jsonData = quickReport.SaveToJsonString();
@@ -560,7 +560,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private static StiReport CreateHeaderBand(StiReport report, IList<QuickReportColumnViewModel> columns,
-            int oneInchInPixels, string dataSourceName, StiReport reportTemplate)
+            int oneInchInPixels, string dataSourceName, StiReport reportTemplate, string lang)
         {
             int visibleColumnCount = columns.Count(c => c.Enabled);
             if (visibleColumnCount == 0)
@@ -568,10 +568,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return null;
             }
 
-            var orderdColumns = columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
+            ////var orderdColumns = columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
+            List<QuickReportColumnViewModel> orderdColumns = null;
+            if (lang == "fa")
+            {
+                orderdColumns = (from c in columns
+                                 orderby c.Order ascending
+                                 where c.Enabled
+                                 select c).ToList();
+            }
+            else
+            {
+                orderdColumns = (from c in columns
+                                     orderby c.Order descending
+                                     where c.Enabled
+                                     select c).ToList();
+            }
+
             string name = "HeaderBand" + dataSourceName;
             StiColumnHeaderBand headerBand = null;
-
             StiText sampleText = null;
             var componentsList = reportTemplate.Pages[0].GetComponents().ToList();
             if (componentsList.Any(p => p.GetType() == typeof(StiColumnHeaderBand)))
@@ -601,9 +616,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             double top = 0.06;
             double maxHeight = headerBand.Height;
 
-            for (int i = columns.Count - 1; i >= 0; i--)
+            for (int i = orderdColumns.Count - 1; i >= 0; i--)
             {
-                QuickReportColumnViewModel column = columns[i];
+                QuickReportColumnViewModel column = orderdColumns[i];
                 StiText txtHeaderCell = null;
                 string ctrlName = "txtTitle_";
                 ctrlName += column.Name + column.Index;
@@ -651,11 +666,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return report;
         }
 
-        private static StiReport CreateDataBand(StiReport report, QuickReportViewModel quickReportViewModel, string dataSourceName, StiReport reportTemplate)
+        private static StiReport CreateDataBand(StiReport report, QuickReportViewModel quickReportViewModel,
+            string dataSourceName, StiReport reportTemplate, string lang)
         {
             string ctrlName = "dataBand" + dataSourceName;
 
-            List<QuickReportColumnViewModel> orderedColumns = quickReportViewModel.Columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
+            ////List<QuickReportColumnViewModel> orderedColumns = quickReportViewModel.Columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
+
+            List<QuickReportColumnViewModel> orderdColumns = null;
+            if (lang == "fa")
+            {
+                orderdColumns = (from c in quickReportViewModel.Columns
+                                 orderby c.Order ascending
+                                 where c.Enabled
+                                 select c).ToList();
+            }
+            else
+            {
+                orderdColumns = (from c in quickReportViewModel.Columns
+                                 orderby c.Order descending
+                                 where c.Enabled
+                                 select c).ToList();
+            }
 
             double pageWidth = report.Pages[0].Width;
             int gridWidth = quickReportViewModel.Columns.Sum(c => c.Width);
@@ -684,11 +716,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             ////double maxHeight = dataBand.Height;
 
-            for (int i = quickReportViewModel.Columns.Count - 1; i >= 0; i--)
+            for (int i = orderdColumns.Count - 1; i >= 0; i--)
             {
-                double width = GetSizeInInch(quickReportViewModel.Columns[i].Width, quickReportViewModel.InchValue);
+                double width = GetSizeInInch(orderdColumns[i].Width, quickReportViewModel.InchValue);
                 StiText txtDataCell = null;
-                string name = "txtDataCell_" + quickReportViewModel.Columns[i].Name;
+                string name = "txtDataCell_" + orderdColumns[i].Name;
 
                 if (txtDataCell == null)
                 {
@@ -709,7 +741,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ////    // functionName = "ToShamsi({0})";
                 ////}
 
-                txtDataCell.Text.Value = GetColumnValue(quickReportViewModel.Columns[i], dataSourceName, string.Empty);
+                txtDataCell.Text.Value = GetColumnValue(orderdColumns[i], dataSourceName, string.Empty);
                 txtDataCell.ClientRectangle = new RectangleD(left, top, width, txtDataCell.Height);
                 left = txtDataCell.Left + width;
 
