@@ -1,7 +1,7 @@
 
 <app-bread-cumb *ngIf="isShowBreadcrumb"></app-bread-cumb>
 
-<div class="panel-body">
+<div class="panel-body" style="padding-top: 0">
 
   <div *ngIf="errorMessage">
     <div class="alert alert-danger">
@@ -14,7 +14,7 @@
 
     <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
       <div class="row">
-        <div class="col-sm-6 sppc-float" style="margin-top: 25px;">
+        <div class="col-xs-12 sppc-float" style="margin-top: 5px;">
 
           <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" (click)="newVoucher()">
             <span class="k-icon k-i-file-add"></span>
@@ -52,19 +52,16 @@
             <span class="k-icon k-i-save"></span>
           </button>
 
-        </div>
-        <div class="col-xs-12 col-sm-3 sppc-float-diff">
-          <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
-          <sppc-datepicker formControlName="date" [minDate]="FiscalPeriodStartDate" [maxDate]="FiscalPeriodEndDate"></sppc-datepicker>
+          <button class="k-button k-button-icon sppc-float-diff" title="{{ 'Buttons.Help' | translate }}"><span class="k-icon k-i-help"></span></button>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-xs-12">
 
+        <div class="col-xs-12">
           <div class="voucher-form-content">
 
-            <div class="col-xs-12 col-sm-4 sppc-float">
+            <div class="col-sm-5ths col-xs-12 sppc-float">
               <div class="form-group">
                 <label for="no" class="control-label">{{ 'Voucher.No' | translate }}</label>
 
@@ -77,7 +74,7 @@
               </div>
             </div>
 
-            <div class="col-xs-12 col-sm-4 sppc-float">
+            <div class="col-sm-5ths col-xs-12 sppc-float">
               <div class="form-group">
                 <label for="reference" class="control-label">{{ 'Voucher.Reference' | translate }}</label>
 
@@ -89,7 +86,7 @@
               </div>
             </div>
 
-            <div class="col-xs-12 col-sm-4 sppc-float">
+            <div class="col-sm-5ths col-xs-12 sppc-float">
               <div class="form-group">
                 <label for="dailyNo" class="control-label">{{ 'Voucher.DailyNo' | translate }}</label>
 
@@ -101,7 +98,7 @@
               </div>
             </div>
 
-            <div class="col-xs-12 col-sm-4 sppc-float">
+            <div class="col-sm-5ths col-xs-12 sppc-float">
               <div class="form-group">
                 <label for="association" class="control-label">{{ 'Voucher.Association' | translate }}</label>
 
@@ -113,8 +110,31 @@
               </div>
             </div>
 
-            <div class="col-xs-12 col-sm-4 sppc-float">
+            <div class="col-sm-5ths col-xs-12 sppc-float">
               <div class="form-group">
+
+                <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
+
+                <sppc-datepicker formControlName="date" [minDate]="FiscalPeriodStartDate" [maxDate]="FiscalPeriodEndDate"></sppc-datepicker>
+
+              </div>
+            </div>
+
+            <div class="col-sm-4-5ths col-xs-12 sppc-float">
+              <div class="form-group">
+                <label for="description" class="control-label">{{ 'Voucher.Description' | translate }}</label>
+
+                <input type="text" class="k-textbox" formControlName="description" />
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                  {{ 'AllValidations.Voucher.DescriptionIsTooLong' | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-5ths col-xs-12 sppc-float">
+              <div class="form-group">
+
                 <label for="type" class="control-label">{{ 'Voucher.Type' | translate }}</label>
 
                 <kendo-dropdownlist [data]="voucherTypeList" class="ddl-type"
@@ -129,48 +149,6 @@
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.type.valid || editForm.controls.type.pristine">
                   <span *ngIf="editForm.controls.type.errors?.required">{{ 'AllValidations.Voucher.TypeIsRequired' | translate }}</span>
                 </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12">
-              <div class="form-group">
-                <label for="description" class="control-label">{{ 'Voucher.Description' | translate }}</label>
-
-                <input type="text" class="k-textbox" formControlName="description" />
-
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                  {{ 'AllValidations.Voucher.DescriptionIsTooLong' | translate }}
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12">
-              <div class="form-group">
-                <label for="no" class="control-label">{{ 'Voucher.VoucherStatus' | translate }}</label>
-
-                <div class="k-form-field">
-
-                  <div class="voucher-status-item">
-                    <input type="checkbox" name="balanced" id="balanced" class="k-checkbox" [ngModel]="balancedMode" [ngModelOptions]="{standalone: true}" onclick="return false;" />
-                    <label class="k-checkbox-label" for="balanced">{{ 'Voucher.Balanced' | translate }}</label>
-                  </div>
-
-                  <div class="voucher-status-item">
-                    <input type="checkbox" name="noCommitted" id="noCommitted" class="k-checkbox" [ngModel]="noCommittedMode" [ngModelOptions]="{standalone: true}" onclick="return false;" />
-                    <label class="k-checkbox-label" for="noCommitted">{{ 'Voucher.NotCommitted' | translate }}</label>
-                  </div>
-
-                  <div class="voucher-status-item">
-                    <input type="checkbox" name="committed" id="committed" class="k-checkbox" [ngModel]="committedMode" [ngModelOptions]="{standalone: true}" onclick="return false;" />
-                    <label class="k-checkbox-label" for="committed">{{ 'Voucher.Committed' | translate }}</label>
-                  </div>
-
-                  <div class="voucher-status-item">
-                    <input type="checkbox" name="finalized" id="finalized" class="k-checkbox" [ngModel]="finalizedMode" [ngModelOptions]="{standalone: true}" onclick="return false;" />
-                    <label class="k-checkbox-label" for="finalized">{{ 'Voucher.Finalized' | translate }}</label>
-                  </div>
-
-                </div>
 
               </div>
             </div>
@@ -178,9 +156,9 @@
             <div class="clearfix"></div>
 
           </div>
-
         </div>
       </div>
+
     </form>
 
     <div class="row" *ngIf="voucherModel">
@@ -188,8 +166,7 @@
 
         <div class="voucher-form-content">
           <voucherLine [voucherID]="voucherModel.id"
-                       [documentStatus]="voucherModel.statusId"
-                       (isBalanced)="setBalanceValue($event)">
+                       [documentStatus]="voucherModel.statusId">
           </voucherLine>
         </div>
 

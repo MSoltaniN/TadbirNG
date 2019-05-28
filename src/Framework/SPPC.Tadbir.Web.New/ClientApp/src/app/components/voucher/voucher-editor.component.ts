@@ -28,9 +28,53 @@ export function getLayoutModule(layout: Layout) {
   selector: 'voucher-editor',
   templateUrl: './voucher-editor.component.html',
   styles: [`
-.voucher-form-content {margin-top:15px; border: solid 1px #3c8dbc; padding: 15px 10px;}
+.voucher-form-content {margin-top:5px; border: solid 1px #3c8dbc; padding: 7px 10px 0;}
 input[type=text], textarea, .ddl-type { width: 100%; }
 .voucher-status-item{ display: inline; margin: 0 10px;}
+
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths,
+.col-sm-4-5ths{
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-xs-5ths {
+  width: 20%;
+  float: left;
+}
+
+@media (min-width: 768px) {
+  .col-sm-5ths {
+    width: 20%;
+    float: left;
+  }
+  .col-sm-4-5ths{
+    width: 80%;
+    float: left;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-md-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-lg-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+
+
 `],
   providers: [{
     provide: RTL,
@@ -40,12 +84,6 @@ input[type=text], textarea, .ddl-type { width: 100%; }
 })
 
 export class VoucherEditorComponent extends DetailComponent implements OnInit {
-
-
-  balancedMode: boolean = false;
-  noCommittedMode: boolean = false;
-  committedMode: boolean = false;
-  finalizedMode: boolean = false;
 
   errorMessage: string;
   voucherModel: Voucher;
@@ -136,31 +174,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.editForm.reset(item);
 
     this.voucherModel = item;
-    this.selectedType = this.voucherModel.type.toString();
-    this.balancedMode = item.isBalanced;
-
-    switch (item.statusId) {
-      case DocumentStatusValue.Draft: {
-        this.noCommittedMode = true;
-        this.committedMode = false;
-        this.finalizedMode = false;
-        break;
-      }
-      case DocumentStatusValue.NormalCheck: {
-        this.noCommittedMode = false;
-        this.committedMode = true;
-        this.finalizedMode = false;
-        break;
-      }
-      case DocumentStatusValue.FinalCheck: {
-        this.noCommittedMode = false;
-        this.committedMode = false;
-        this.finalizedMode = true;
-        break;
-      }
-      default:
-    }
-      
+    this.selectedType = this.voucherModel.type.toString();   
   }
 
   getVoucherType() {
@@ -189,10 +203,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
   }
 
-  setBalanceValue(e: any) {
-    this.balancedMode = e;
-  }
-
   nextVoucher() {
     this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
   }
@@ -219,10 +229,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, this.voucherModel.id)).subscribe(res => {
 
         this.voucherModel.statusId = DocumentStatusValue.NormalCheck;
-
-        this.noCommittedMode = false;
-        this.committedMode = true;
-
         this.showMessage(this.updateMsg, MessageType.Succes);
 
       }, (error => {
@@ -236,10 +242,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, this.voucherModel.id)).subscribe(res => {
 
         this.voucherModel.statusId = DocumentStatusValue.Draft;
-
-        this.noCommittedMode = true;
-        this.committedMode = false;
-
         this.showMessage(this.updateMsg, MessageType.Succes);
 
       }, (error => {

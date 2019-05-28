@@ -445,9 +445,15 @@
     "Delete": "Delete Article",
     "Currency": "Currency",
     "Account": "Account",
+    "Amount": "Amount",
+    "ArticleType": "Article Type",
+    "CurrencyRate": "Currency Rate",
+    "CurrencyValue": "Currency Value",
+    "CurrencyName": "Currency Name",
     "Sum": "Sum",
     "Difference": "Difference",
     "NewWithDifference": "New Article With Difference",
+    "ArticleDescription": "Article Description",
     "FullAccount": {
       "Account": {
         "Name": "Account Name",
@@ -551,7 +557,8 @@
     "Balanced": "Balanced",
     "NotCommitted": "Not Committed",
     "Committed": "Committed",
-    "Finalized": "Finalized"
+    "Finalized": "Finalized",
+    "Version": "Version"
   },
   "User": {
     "New": "New User",

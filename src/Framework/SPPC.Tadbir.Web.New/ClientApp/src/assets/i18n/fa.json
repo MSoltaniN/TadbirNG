@@ -445,7 +445,13 @@
     "Account": "بردار حساب",
     "Sum": "مجموع",
     "Difference": "اختلاف",
+    "Amount": "مبلغ",
+    "ArticleType": "نوع آرتیکل",
+    "CurrencyRate": "نرخ ارز",
+    "CurrencyValue": "مبلغ ارز",
+    "CurrencyName": "نوع ارز",
     "NewWithDifference": "آرتیکل جدید به میزان اختلاف",
+    "ArticleDescription": "شرح آرتیکل",
     "FullAccount": {
       "Account": {
         "Name": "نام حساب",
@@ -524,7 +530,7 @@
     "Delete": "حذف سند",
     "No": "شماره سند مالی",
     "Date": "تاریخ",
-    "Description": "توضیحات",
+    "Description": "شرح",
     "BranchId": "شعبه",
     "FiscalPeriodId": "دوره مالی",
     "StatusName": "وضعیت",
@@ -549,7 +555,8 @@
     "Balanced": "تراز",
     "NotCommitted": "ثبت نشده",
     "Committed": "ثبت شده",
-    "Finalized": "ثبت قطعی"
+    "Finalized": "ثبت قطعی",
+    "Version": "نسخه"
   },
   "User": {
     "New": "کاربر جدید",
