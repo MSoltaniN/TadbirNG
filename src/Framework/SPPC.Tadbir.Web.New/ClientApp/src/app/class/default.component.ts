@@ -141,28 +141,29 @@ export class DefaultComponent extends BaseComponent {
 
   public getAllMetaData(viewId: number): Array<Property> | undefined {
 
-    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
+    //TODO
+    //var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
     if (viewId) {
-      if (!localStorage.getItem(metaDataName)) {
+      if (!localStorage.getItem(viewId.toString())) {
         this.metadataService.getMetaDataById(viewId).finally(() => {
-          if (!this.properties.get(metaDataName)) return undefined;
-          var result = this.properties.get(metaDataName);
+          if (!this.properties.get(viewId.toString())) return undefined;
+          var result = this.properties.get(viewId.toString());
           return result;
         }).subscribe((res1: any) => {
-          this.properties.set(metaDataName, res1.columns);
-          localStorage.setItem(metaDataName, JSON.stringify(res1.columns))
-          var result = this.properties.get(metaDataName);
+          this.properties.set(viewId.toString(), res1.columns);
+          localStorage.setItem(viewId.toString(), JSON.stringify(res1.columns))
+          var result = this.properties.get(viewId.toString());
           return result;
         });
       }
       else {
         var item: string | null;
-        item = localStorage.getItem(metaDataName);
+        item = localStorage.getItem(viewId.toString());
         if (!this.properties) this.properties = new Map<string, Array<Property>>();
         var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, arr);
-        if (!this.properties.get(metaDataName)) return undefined;
-        var result = this.properties.get(metaDataName);
+        this.properties.set(viewId.toString(), arr);
+        if (!this.properties.get(viewId.toString())) return undefined;
+        var result = this.properties.get(viewId.toString());
         return result;
       }
 

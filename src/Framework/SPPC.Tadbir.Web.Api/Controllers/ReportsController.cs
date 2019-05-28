@@ -317,7 +317,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Quick Report Methods
 
-        private static StiReport CreateReportHeaderBand(StiReport report,StiReport reportTemplate)
+        private static StiReport CreateReportHeaderBand(StiReport report, StiReport reportTemplate)
         {
             StiReportTitleBand reportHeader = new StiReportTitleBand();
 
@@ -354,7 +354,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return report;
         }
 
-        private static StiComponent ChangeLeftPositions(StiReport stiReport, StiComponent component, ReportBandType reportBandType , StiReport reportTemplate)
+        private static StiComponent ChangeLeftPositions(StiReport stiReport, StiComponent component, ReportBandType reportBandType, StiReport reportTemplate)
         {
             StiComponentsCollection collection = new StiComponentsCollection();
             double diff = 0;
@@ -406,7 +406,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return component;
         }
 
-        private static StiReport CreateReportFooterBand(StiReport report,StiReport reportTemplate)
+        private static StiReport CreateReportFooterBand(StiReport report, StiReport reportTemplate)
         {
             StiReportSummaryBand reportFooter = new StiReportSummaryBand();
 
@@ -444,7 +444,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return report;
         }
 
-        private static StiReport CreateReportParametersBand(QuickReportViewModel quickReportViewModel, StiReport report,StiReport reportTemplate)
+        private static StiReport CreateReportParametersBand(QuickReportViewModel quickReportViewModel, StiReport report, StiReport reportTemplate)
         {
             // read tblParameter from reportTemplate
             StiTable table = new StiTable();
@@ -582,6 +582,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     sampleText = (StiText)((StiColumnHeaderBand)component).Components.ToList().First(p => p.GetType() == typeof(StiText)).Clone(true);
                 }
+
                 headerBand.Components.Clear();
             }
 
@@ -674,6 +675,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     sampleText = (StiText)((StiDataBand)component).Components.ToList().First(p => p.GetType() == typeof(StiText)).Clone(true);
                 }
+
                 dataBand.Components.Clear();
             }
 
