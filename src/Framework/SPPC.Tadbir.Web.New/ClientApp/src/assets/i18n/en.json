@@ -448,6 +448,7 @@
     "Sum": "Sum",
     "Difference": "Difference",
     "NewWithDifference": "New Article With Difference",
+    "ArticleDescription": "Article Description",
     "FullAccount": {
       "Account": {
         "Name": "Account Name",
@@ -551,7 +552,8 @@
     "Balanced": "Balanced",
     "NotCommitted": "Not Committed",
     "Committed": "Committed",
-    "Finalized": "Finalized"
+    "Finalized": "Finalized",
+    "Version": "Version"
   },
   "User": {
     "New": "New User",

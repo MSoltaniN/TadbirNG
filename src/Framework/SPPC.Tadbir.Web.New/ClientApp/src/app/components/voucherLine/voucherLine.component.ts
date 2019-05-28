@@ -38,7 +38,7 @@ import { ViewName } from '../../security/viewName';
 
 
 input[type=text],textarea,.article-description input[type=text] { width: 100%; }
-.article-status-item { display: inline; margin: 0 10px; } .article-status-item  input[type=text] { width:200px; }
+.article-status-item ,.voucher-status-item { display: inline; margin: 0 10px; } .article-status-item  input[type=text] { width:200px; } .article-description { margin-top: 10px; }
 `]
 })
 

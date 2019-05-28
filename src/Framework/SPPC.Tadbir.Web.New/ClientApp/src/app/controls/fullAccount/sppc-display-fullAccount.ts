@@ -8,13 +8,15 @@ import { VoucherLine } from '../../model/index';
   template: `
     <div class="row article-account">
       <div class="col-xs-12">
-        <label class="control-label">حساب</label>
-        <label class="control-label" style="text-align: center; direction: ltr;">
+        <label class="control-label" style="position: absolute;">حساب</label>
+        <label class="control-label" style="text-align: center; direction: ltr; display:block;">
           {{ model?.fullAccount?.account.fullCode }} -
           {{ model?.fullAccount?.detailAccount.fullCode }} -
           {{ model?.fullAccount?.costCenter.fullCode }} -
           {{ model?.fullAccount?.project.fullCode }}
         </label>
+</div>
+<div class="col-xs-12">
         <input type="text" class="k-textbox sppc-float" [ngModel]="model?.fullAccount?.account.name" readonly />
         <input type="text" class="k-textbox sppc-float" [ngModel]="model?.fullAccount?.detailAccount.name" readonly />
         <input type="text" class="k-textbox sppc-float" [ngModel]="model?.fullAccount?.costCenter.name" readonly />
@@ -22,16 +24,9 @@ import { VoucherLine } from '../../model/index';
       </div>
     </div>
 
-    <div class="row article-description">
-      <div class="col-xs-12">
-        <label class="control-label">شرح آرتیکل</label>
-        <input type="text" class="k-textbox" [ngModel]="model?.description" readonly />
-      </div>
-    </div>
 `  ,
   styles: [`
-.article-account input[type=text] { width:50% } .article-account label { display:block } .article-account ,.article-description { margin-top: 15px; }
-.article-description input[type=text] { width:100% }
+.article-account input[type=text] { width:50% } .article-account { margin-top: 10px; }
 `]
 })
 

@@ -446,6 +446,7 @@
     "Sum": "مجموع",
     "Difference": "اختلاف",
     "NewWithDifference": "آرتیکل جدید به میزان اختلاف",
+    "ArticleDescription": "شرح آرتیکل",
     "FullAccount": {
       "Account": {
         "Name": "نام حساب",
@@ -549,7 +550,8 @@
     "Balanced": "تراز",
     "NotCommitted": "ثبت نشده",
     "Committed": "ثبت شده",
-    "Finalized": "ثبت قطعی"
+    "Finalized": "ثبت قطعی",
+    "Version": "نسخه"
   },
   "User": {
     "New": "کاربر جدید",
