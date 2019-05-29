@@ -216,7 +216,13 @@
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",
-    "BranchName": "Branch"
+    "BranchName": "Branch",
+    "DetailAccountFullCode": "Detail Account FullCode",
+    "DetailAccountName": "Detail Account Name",
+    "CostCenterFullCode": "Cost Center FullCode",
+    "CostCenterName": "Cost Center Name",
+    "ProjectFullCode": "Project FullCode",
+    "ProjectName": "Project Name"
   },
   "JournalByDateBySubsidiary": {
     "RowNo": "Row No",
@@ -236,7 +242,9 @@
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",
-    "BranchName": "Branch"
+    "BranchName": "Branch",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No"
   },
   "JournalByDateSummaryByDate": {
     "RowNo": "Row No",
@@ -267,7 +275,13 @@
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",
-    "BranchName": "Branch"
+    "BranchName": "Branch",
+    "DetailAccountFullCode": "Detail Account FullCode",
+    "DetailAccountName": "Detail Account Name",
+    "CostCenterFullCode": "Cost Center FullCode",
+    "CostCenterName": "Cost Center Name",
+    "ProjectFullCode": "Project FullCode",
+    "ProjectName": "Project Name"
   },
   "JournalByNoByRowDetail": {
     "RowNo": "Row No",
@@ -315,7 +329,9 @@
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",
-    "BranchName": "Branch"
+    "BranchName": "Branch",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No"
   },
   "Account": {
     "NewSubAccount": "New sub account",
@@ -347,7 +363,8 @@
     "Active": "Active",
     "Inactive": "Inactive",
     "IsCurrencyAdjustable": "Can adjust with currency rate",
-    "LedgerAccount": "Ledger Accounts"
+    "LedgerAccount": "Ledger Accounts",
+    "TurnoverMode": "Turn over Mode"
   },
   "AccountCollection": {
     "Category": "Account Collection Categories",
@@ -445,6 +462,11 @@
     "Delete": "Delete Article",
     "Currency": "Currency",
     "Account": "Account",
+    "Amount": "Amount",
+    "ArticleType": "Article Type",
+    "CurrencyRate": "Currency Rate",
+    "CurrencyValue": "Currency Value",
+    "CurrencyName": "Currency Name",
     "Sum": "Sum",
     "Difference": "Difference",
     "NewWithDifference": "New Article With Difference",

@@ -54,8 +54,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Voucher)
-                .WithMany()
-                .HasForeignKey("VoucherID")
+                .WithMany(v => v.Lines)
+                .HasForeignKey(e => e.VoucherId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_Voucher");
             builder.HasOne(e => e.Currency)
@@ -95,7 +95,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_Project");
             builder.HasOne(e => e.CreatedBy)
                 .WithMany()
-                .HasForeignKey("CreatedByID")
+                .HasForeignKey(e => e.CreatedById)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_VoucherLine_Auth_CreatedBy");
         }

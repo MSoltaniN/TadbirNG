@@ -44,9 +44,11 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   public editForm1 = new FormGroup({
     id: new FormControl(),
     voucherId: new FormControl(),
-    currencyId: new FormControl("", Validators.required),
+    currencyId: new FormControl(),
     debit: new FormControl(),
     credit: new FormControl(),
+    currencyValue: new FormControl(),
+    typeId: new FormControl(),
     description: new FormControl("", Validators.maxLength(512)),
     fullAccount: new FormGroup({
       account: new FormGroup({
@@ -76,7 +78,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   voucherLineTypeList: Array<Item> = [];
 
   selectedCurrencyValue: string | undefined;
-  selectedArticleType: string = "1";
+  selectedArticleType: string = "0";
   creditDebiteMode: string = "1";
 
   @Input() public isNew: boolean = false;
@@ -104,6 +106,11 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
       if (!model.credit)
         model.credit = 0;
 
+      if (this.creditDebiteMode == "1")
+        model.credit = 0;
+      else
+        model.debit = 0;
+      debugger;
       this.save.emit({ model, isOpen });
 
     }
@@ -121,28 +128,35 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   ngOnInit(): void {
 
-
     this.editForm1.reset(this.model);
 
     this.getArticleType();
     this.GetCurrencies();
 
     if (this.isNewBalance)
-      if (this.balance > 0)
+      if (this.balance > 0) {
         this.editForm1.patchValue({ 'credit': Math.abs(this.balance) });
+        this.creditDebiteMode = "2";
+      }
       else
-        if (this.balance < 0)
+        if (this.balance < 0) {
           this.editForm1.patchValue({ 'debit': Math.abs(this.balance) });
+          this.creditDebiteMode = "1";
+        }
+
+    if (!this.isNew) {
+      if (this.model.credit > 0)
+        this.creditDebiteMode = "2";
+      else
+        this.creditDebiteMode = "1";
+    }
 
   }
 
-  constructor(private voucherLineService: VoucherLineService, private accountService: AccountService,
-    public toastrService: ToastrService, public translate: TranslateService,
-    public lookupService: LookupService, private fullAccountService: FullAccountService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
+  constructor(public toastrService: ToastrService, public translate: TranslateService,
+    public lookupService: LookupService, public renderer: Renderer2, public metadata: MetaDataService) {
 
     super(toastrService, translate, renderer, metadata, Entities.VoucherLine, ViewName.VoucherLine);
-
 
   }
 
@@ -161,10 +175,6 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   getArticleType() {
     this.lookupService.getModels(LookupApi.VoucherLineTypes).subscribe(res => {
       this.voucherLineTypeList = res;
-
-      //if (this.model && this.model.) {
-      //  this.selectedArticleType = this.model.;
-      //}
     })
   }
 
