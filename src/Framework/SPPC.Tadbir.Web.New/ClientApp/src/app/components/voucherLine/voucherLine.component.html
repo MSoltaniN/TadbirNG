@@ -62,7 +62,7 @@
       <kendo-grid-column media="(max-width: 450px)" title="">
         <ng-template kendoGridCellTemplate let-dataItem>
           <dl>
-            <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
+            <ng-template ngFor let-item [ngForOf]="gridColumnsRow" let-i="index">
               <dt>{{ getColumnTitle(item.name) }}:</dt>
               <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
               <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
@@ -74,7 +74,7 @@
 
       </kendo-grid-column>
 
-      <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumns" width="{{getColumnWidth(item)}}" sppc-grid-column="{{ entityTypeName }}.{{ item.name }}">
+      <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumnsRow" width="{{getColumnWidth(item)}}" sppc-grid-column="{{ entityTypeName }}.{{ item.name }}">
 
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMetaData(item.name)" [column]="column" [filter]="filter"></sppc-grid-filter>

@@ -241,6 +241,7 @@ namespace SPPC.Tadbir.Persistence
             line.Debit = lineView.Debit;
             line.Credit = lineView.Credit;
             line.Description = lineView.Description;
+            line.CurrencyValue = lineView.CurrencyValue;
         }
 
         /// <summary>
