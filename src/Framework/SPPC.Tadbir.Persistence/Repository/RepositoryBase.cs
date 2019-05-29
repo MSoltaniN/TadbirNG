@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Text;
+using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
@@ -8,7 +11,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// کلاس پایه که امکانات اولیه عملیات دیتابیسی را در اختیار کلاس های مشتق شده قرار می دهد
     /// </summary>
-    public abstract class RepositoryBase
+    public abstract class RepositoryBase : IRepositoryBase
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -38,6 +41,16 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         protected IMetadataRepository Metadata { get; }
 
+        public async Task SetCurrentCompanyAsync(int companyId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync(companyId);
+            if (company != null)
+            {
+                UnitOfWork.SwitchCompany(BuildConnectionString(company));
+            }
+        }
+
         /// <summary>
         /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
         /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
@@ -53,5 +66,22 @@ namespace SPPC.Tadbir.Persistence
         /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
         /// </summary>
         protected UserContextViewModel _currentContext;
+
+        private static string BuildConnectionString(CompanyDb company)
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
+            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
+            {
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                    company.UserName, company.Password);
+            }
+            else
+            {
+                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
+            }
+
+            return builder.ToString();
+        }
     }
 }

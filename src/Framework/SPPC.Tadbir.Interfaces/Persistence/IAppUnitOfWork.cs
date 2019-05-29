@@ -14,6 +14,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         void UseCompanyContext();
 
+        void SwitchCompany(string connection);
+
         /// <summary>
         /// واحد کاری را برای ارتباط با دیتابیس سیستمی برنامه تنظیم می کند
         /// </summary>

@@ -308,6 +308,18 @@ CREATE TABLE [Config].[CompanyDb] (
 )
 GO
 
+CREATE TABLE [Auth].[RoleCompany] (
+    [RoleCompanyID] INT              IDENTITY (1, 1) NOT NULL,
+    [RoleID]        INT              NOT NULL,
+    [CompanyID]     INT              NOT NULL,
+    [rowguid]       UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_RoleCompany_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]  DATETIME         CONSTRAINT [DF_Auth_RoleCompany_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_RoleCompany] PRIMARY KEY CLUSTERED ([RoleCompanyID] ASC)
+    , CONSTRAINT [FK_Auth_RoleCompany_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
+    , CONSTRAINT [FK_Auth_RoleCompany_Config_CompanyDb] FOREIGN KEY ([CompanyID]) REFERENCES [Config].[CompanyDb] ([CompanyID])
+)
+GO
+
 CREATE TABLE [Core].[OperationLog] (
     [OperationLogID]   INT              IDENTITY (1, 1) NOT NULL,
     [UserID]           INT              NOT NULL,
@@ -687,10 +699,10 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], 
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression], [rowguid], [ModifiedDate]) VALUES (212, 3, N'FullAccount.CostCenter.Name', NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'Hidden', 5, NULL, N'a4700fda-230b-48a5-ba6a-4b060ffc96ba', CAST(N'2019-05-22T15:34:24.930' AS DateTime))
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression], [rowguid], [ModifiedDate]) VALUES (213, 3, N'FullAccount.Project.FullCode', NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'Hidden', 6, NULL, N'c36a7437-a687-48b6-857e-f359cce8d79a', CAST(N'2019-05-22T15:34:24.930' AS DateTime))
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression], [rowguid], [ModifiedDate]) VALUES (214, 3, N'FullAccount.Project.Name', NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'Hidden', 7, NULL, N'6f65b60a-9553-45fb-8bd3-d293ad4fa459', CAST(N'2019-05-22T15:34:24.930' AS DateTime))
-INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression]) VALUES (215, 1, N'CurrencyName', NULL, N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, N'AlwaysVisible', 11, NULL)
-INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression]) VALUES (216, 25, N'CurrencyValue', N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 1, 1, 1, N'AlwaysVisible', 12, NULL)
-INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression]) VALUES (217, 25, N'CurrencyRate', N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
-INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression]) VALUES (218, 25, N'TypeId', NULL, N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression]) VALUES (215, 3, N'CurrencyName', NULL, N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, N'AlwaysVisible', 11, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression]) VALUES (216, 3, N'CurrencyValue', N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 1, 1, 1, N'AlwaysVisible', 12, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression]) VALUES (217, 3, N'CurrencyRate', N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression]) VALUES (218, 3, N'TypeId', NULL, N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 

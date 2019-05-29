@@ -15,5 +15,10 @@ namespace SPPC.Tadbir.Model.Auth
         /// Gets a collection of existing associations between roles and permissions
         /// </summary>
         public virtual IList<RolePermission> RolePermissions { get; protected set; }
+
+        /// <summary>
+        /// Gets a collection of existing associations between roles and companies
+        /// </summary>
+        public virtual IList<RoleCompany> RoleCompanies { get; protected set; }
     }
 }

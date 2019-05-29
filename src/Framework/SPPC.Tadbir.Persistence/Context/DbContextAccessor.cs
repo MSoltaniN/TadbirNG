@@ -19,10 +19,15 @@ namespace SPPC.Tadbir.Persistence
             SystemContext = systemContext;
         }
 
+        public void SwitchCompanyContext(string connection)
+        {
+            CompanyContext = new TadbirContext(connection);
+        }
+
         /// <summary>
         /// دیتابیس شرکت جاری در برنامه
         /// </summary>
-        public TadbirContext CompanyContext { get; }
+        public TadbirContext CompanyContext { get; private set; }
 
         /// <summary>
         /// دیتابیس سیستمی برنامه

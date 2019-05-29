@@ -19,6 +19,11 @@ namespace SPPC.Tadbir.Persistence
             _contextAccessor = contextAccessor;
         }
 
+        public void SwitchCompany(string connection)
+        {
+            _contextAccessor.SwitchCompanyContext(connection);
+        }
+
         /// <summary>
         /// واحد کاری را برای ارتباط با دیتابیس شرکت جاری تنظیم می کند
         /// </summary>
