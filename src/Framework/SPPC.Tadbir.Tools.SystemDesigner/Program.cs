@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         [STAThread]
         static void Main()
         {
-            //DoXferTadbirDb();
+            DoXferTadbirDb();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWindow());
@@ -22,19 +22,21 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
 
         private static void DoXferTadbirDb()
         {
-            string src = "Server=ESLAMIE315;Database=COLORAN;User ID=sa;Password=T@dbir1217;MultipleActiveResultSets=true";
-            string target = "Server=ESLAMIE315;Database=XferDemo;User ID=sa;Password=T@dbir1217;MultipleActiveResultSets=true";
+            string src = @"Server=(localdb)\ProjectsV13;Database=COLORAN;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string target = @"Server=(localdb)\ProjectsV13;Database=ColoranNG;Trusted_Connection=True;MultipleActiveResultSets=true";
 
             try
             {
                 var repo = new XferRepository(src, target);
-                //repo.XferFiscalPeriods();
-                //repo.XferAccountGroups();
+                repo.XferFiscalPeriods();
+                repo.XferCurrencies();
+                repo.XferAccountGroups();
                 repo.XferAccounts();
-                //repo.XferDetailAccounts();
-                //repo.XferCostCenters();
-                //repo.XferProjects();
-                //repo.XferVouchers();
+                repo.XferDetailAccounts();
+                repo.XferCostCenters();
+                repo.XferProjects();
+                repo.XferAccountRelations();
+                repo.XferVouchers();
                 repo.XferVoucherLines();
                 MessageBox.Show("Transfer completed successfully!", "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
