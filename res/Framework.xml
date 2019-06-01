@@ -2165,9 +2165,9 @@
         </Property>
         <Property name="Description" type="String" isValidated="True" description="شرح آرتیکل سند مالی برای قرار دادن اطلاعات تکمیلی مرتبط با این بخش" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <PropertyStorage name="Description" type="nvarchar(1024)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
         </Property>
         <Property name="Amount" type="Decimal" isValidated="True" description="مقدار مورد استفاده در عملیات مرتبط با آرتیکل" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtAmount" format="" type="TextBox" bindingMember="Text" />
@@ -2223,7 +2223,7 @@
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" joinTable="" description="مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="DetailAccount" entityName="DetailAccount" hasKey="True" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail" entityName="DetailAccount" hasKey="True" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" joinTable="" description="مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" joinTable="" description="مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" joinTable="" description="پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />

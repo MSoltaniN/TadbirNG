@@ -21,9 +21,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             var fps = _dalFrom.Query("SELECT * FROM __FiscalPeriod__ WHERE Id > 0");
             foreach (DataRow row in fps.Rows)
             {
+                DateTime start = DateTime.Now.Parse(row["StartDate"].ToString(), true);
+                DateTime end = DateTime.Now.Parse(row["EndDate"].ToString(), true);
                 string insertQuery = String.Format(Scripts.InsertFiscalPeriod,
-                    row["Id"].ToString(), row["Name"].ToString(), row["StartDate"].ToString(),
-                    row["EndDate"].ToString(), row["FPDesc"].ToString());
+                    row["Id"].ToString(), row["Name"].ToString(), start.ToShortDateString(false),
+                    end.ToShortDateString(false), row["FPDesc"].ToString());
                 _dalTo.ExecuteNonQuery(insertQuery);
             }
 
@@ -53,9 +55,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
-        public void XferAccounts()
+        public void XferAccounts(int fpId)
         {
-            var accounts = _dalFrom.Query("SELECT * FROM __Account__ WHERE Id > 0");
+            string command = String.Format("SELECT * FROM __Account__ WHERE Id > 0 AND FPId = {0}", fpId);
+            var accounts = _dalFrom.Query(command);
             _accountMap = BuildAccountMap(accounts);
             foreach (DataRow row in accounts.Rows)
             {
@@ -68,9 +71,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
-        public void XferDetailAccounts()
+        public void XferDetailAccounts(int fpId)
         {
-            var detailAccounts = _dalFrom.Query("SELECT * FROM __DetailAcc__ WHERE Id > 0");
+            string command = String.Format("SELECT * FROM __DetailAcc__ WHERE Id > 0 AND FPId = {0}", fpId);
+            var detailAccounts = _dalFrom.Query(command);
             var vms = detailAccounts.Rows
                 .Cast<DataRow>()
                 .Select(row => GetViewModel(row))
@@ -94,9 +98,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
-        public void XferCostCenters()
+        public void XferCostCenters(int fpId)
         {
-            var centers = _dalFrom.Query("SELECT * FROM __CostCenter__ WHERE Id > 0");
+            string command = String.Format("SELECT * FROM __CostCenter__ WHERE Id > 0 AND FPId = {0}", fpId);
+            var centers = _dalFrom.Query(command);
             foreach (DataRow row in centers.Rows)
             {
                 string insertQuery = String.Format(Scripts.InsertCostCenter,
@@ -106,9 +111,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
-        public void XferProjects()
+        public void XferProjects(int fpId)
         {
-            var projects = _dalFrom.Query("SELECT * FROM __Project__ WHERE Id > 0");
+            string command = String.Format("SELECT * FROM __Project__ WHERE Id > 0 AND FPId = {0}", fpId);
+            var projects = _dalFrom.Query(command);
             foreach (DataRow row in projects.Rows)
             {
                 string insertQuery = String.Format(Scripts.InsertProject,
@@ -118,17 +124,25 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
-        public void XferAccountRelations()
+        public void XferAccountRelations(int fpId)
         {
-            XferAccountDetails(_accountMap);
-            XferAccountCenters(_accountMap);
-            XferAccountProjects(_accountMap);
+            _accountMap = new Dictionary<string, int>();
+            var accounts = _dalTo.Query("SELECT * FROM [Finance].[Account]");
+            foreach (DataRow account in accounts.Rows)
+            {
+                _accountMap.Add(account["FullCode"].ToString(), Int32.Parse(account["AccountID"].ToString()));
+            }
+
+            XferAccountDetails(fpId, _accountMap);
+            XferAccountCenters(fpId, _accountMap);
+            XferAccountProjects(fpId, _accountMap);
         }
 
-        public void XferAccountDetails(Dictionary<string, int> accountMap)
+        public void XferAccountDetails(int fpId, Dictionary<string, int> accountMap)
         {
             int id = 1;
-            var accountDetails = _dalFrom.Query("SELECT * FROM __AccVsDetail__");
+            string command = String.Format("SELECT * FROM __AccVsDetail__ WHERE FPId = {0}", fpId);
+            var accountDetails = _dalFrom.Query(command);
             foreach (DataRow row in accountDetails.Rows)
             {
                 int accountId = accountMap[row["FullId"].ToString()];
@@ -139,10 +153,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
-        public void XferAccountCenters(Dictionary<string, int> accountMap)
+        public void XferAccountCenters(int fpId, Dictionary<string, int> accountMap)
         {
             int id = 1;
-            var accountCenters = _dalFrom.Query("SELECT * FROM __AccVsCC__");
+            string command = String.Format("SELECT * FROM __AccVsCC__ WHERE FPId = {0}", fpId);
+            var accountCenters = _dalFrom.Query(command);
             foreach (DataRow row in accountCenters.Rows)
             {
                 int accountId = accountMap[row["FullId"].ToString()];
@@ -153,23 +168,25 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
-        public void XferAccountProjects(Dictionary<string, int> accountMap)
+        public void XferAccountProjects(int fpId, Dictionary<string, int> accountMap)
         {
             int id = 1;
-            var accountProjects = _dalFrom.Query("SELECT * FROM __AccVsPrj__");
+            string command = String.Format("SELECT * FROM __AccVsPrj__ WHERE FPId = {0}", fpId);
+            var accountProjects = _dalFrom.Query(command);
             foreach (DataRow row in accountProjects.Rows)
             {
                 int accountId = accountMap[row["FullId"].ToString()];
-                string insertQuery = String.Format(Scripts.InsertAccountDetailAccount,
+                string insertQuery = String.Format(Scripts.InsertAccountProject,
                     id, accountId, Int32.Parse(row["PrjId"].ToString()));
                 _dalTo.ExecuteNonQuery(insertQuery);
                 id++;
             }
         }
 
-        public void XferVouchers()
+        public void XferVouchers(int fpId)
         {
-            var vouchers = _dalFrom.Query("SELECT * FROM __Transaction__ WHERE Id > 0");
+            string command = String.Format("SELECT * FROM __Transaction__ WHERE Id > 0 AND FPId = {0}", fpId);
+            var vouchers = _dalFrom.Query(command);
             foreach (DataRow row in vouchers.Rows)
             {
                 string date = DateTime.Now.Parse(row["TDate"].ToString(), true).ToShortDateString(false);
@@ -181,7 +198,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
         }
 
-        public void XferVoucherLines()
+        public void XferVoucherLines(int fpId)
         {
             _accountMap = new Dictionary<string, int>();
             var accounts = _dalTo.Query("SELECT * FROM [Finance].[Account]");
@@ -191,7 +208,8 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             }
 
             int id = 1;
-            var lines = _dalFrom.Query("SELECT * FROM __Article__ WHERE Id > 0 ORDER BY TransId, Id");
+            string command = String.Format("SELECT * FROM __Article__ WHERE Id > 0 AND FPId = {0} ORDER BY TransId, Id", fpId);
+            var lines = _dalFrom.Query(command);
             foreach (DataRow row in lines.Rows)
             {
                 if (row["AccountId"].ToString() == "0")
@@ -247,15 +265,22 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
                 account.GroupId = Int32.Parse(row["Category"].ToString());
             }
 
-            string parentCode = row["ParentId"].ToString();
-            if (parentCode != "0")
+            try
             {
-                account.Code = account.FullCode.Substring(parentCode.Length);
-                account.ParentId = accountMap[parentCode];
+                string parentCode = row["ParentId"].ToString();
+                if (parentCode != "0")
+                {
+                    account.Code = account.FullCode.Substring(parentCode.Length);
+                    account.ParentId = accountMap[parentCode];
+                }
+                else
+                {
+                    account.Code = account.FullCode;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                account.Code = account.FullCode;
+                var msg = ex.Message;
             }
 
             return account;

@@ -153,7 +153,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[FiscalPeriodID]
            ,[BranchID]
            ,[AccountID]
-           ,[DetailAccountID]
+           ,[DetailID]
            ,[CostCenterID]
            ,[ProjectID]
            ,[CurrencyID]

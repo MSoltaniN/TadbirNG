@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// شناسه دیتابیسی پول یا ارز مورد استفاده در این سرفصل حسابداری
         /// </summary>
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
 
         /// <summary>
         /// تعداد حساب های زیرمجموعه این حساب در ساختار درختی

@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ApproverName)
                 .HasMaxLength(64);
             builder.Property(e => e.Description)
-                .HasMaxLength(512);
+                .HasMaxLength(1024);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
