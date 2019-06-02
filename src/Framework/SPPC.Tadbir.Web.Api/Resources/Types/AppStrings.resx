@@ -1044,4 +1044,49 @@
   <data name="LineTypeId" xml:space="preserve">
     <value>نوع آرتیکل</value>
   </data>
+  <data name="Role_Accountant" xml:space="preserve">
+    <value>کارشناس حسابداری</value>
+  </data>
+  <data name="Role_AccountingHead" xml:space="preserve">
+    <value>رئیس حسابداری</value>
+  </data>
+  <data name="Role_CFO" xml:space="preserve">
+    <value>مدیر مالی</value>
+  </data>
+  <data name="Role_CFOAssistant" xml:space="preserve">
+    <value>معاون مالی</value>
+  </data>
+  <data name="Role_DepartmentHead" xml:space="preserve">
+    <value>سرپرست واحد</value>
+  </data>
+  <data name="Role_DepartmentManager" xml:space="preserve">
+    <value>مدیر واحد</value>
+  </data>
+  <data name="Role_SalesAssistant" xml:space="preserve">
+    <value>معاون فروش</value>
+  </data>
+  <data name="Role_SalesManager" xml:space="preserve">
+    <value>مدیر فروش</value>
+  </data>
+  <data name="Role_SalesRep" xml:space="preserve">
+    <value>کارشناس فروش</value>
+  </data>
+  <data name="Role_SysAdmin" xml:space="preserve">
+    <value>راهبر سیستم</value>
+  </data>
+  <data name="Role_SysAdminDesc" xml:space="preserve">
+    <value>این نقش دارای کلیه دسترسی های تعریف شده در برنامه بوده و قابل اصلاح یا حذف نیست.</value>
+  </data>
+  <data name="Role_WarehouseAccountant" xml:space="preserve">
+    <value>کارشناس حسابداری انبار</value>
+  </data>
+  <data name="Role_WarehouseHead" xml:space="preserve">
+    <value>سرپرست انبار</value>
+  </data>
+  <data name="Role_WarehouseManager" xml:space="preserve">
+    <value>مدیر انبار</value>
+  </data>
+  <data name="Role_WarehouseRep" xml:space="preserve">
+    <value>انباردار</value>
+  </data>
 </root>

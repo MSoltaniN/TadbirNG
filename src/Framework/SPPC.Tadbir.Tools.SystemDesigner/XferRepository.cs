@@ -209,7 +209,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
 
             int id = 1;
             string command = String.Format("SELECT * FROM __Article__ WHERE Id > 0 AND FPId = {0} ORDER BY TransId, Id", fpId);
-            var lines = _dalFrom.Query(command);
+            var lines = _dalFrom.Query(command, CommandType.Text, 150);
             foreach (DataRow row in lines.Rows)
             {
                 if (row["AccountId"].ToString() == "0")

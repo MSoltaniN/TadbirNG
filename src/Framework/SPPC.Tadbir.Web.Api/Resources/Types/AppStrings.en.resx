@@ -1044,4 +1044,49 @@
   <data name="LineTypeId" xml:space="preserve">
     <value>Line type</value>
   </data>
+  <data name="Role_Accountant" xml:space="preserve">
+    <value>Accountant</value>
+  </data>
+  <data name="Role_AccountingHead" xml:space="preserve">
+    <value>Accounting head</value>
+  </data>
+  <data name="Role_CFO" xml:space="preserve">
+    <value>CFO</value>
+  </data>
+  <data name="Role_CFOAssistant" xml:space="preserve">
+    <value>CFO assistant</value>
+  </data>
+  <data name="Role_DepartmentHead" xml:space="preserve">
+    <value>Department head</value>
+  </data>
+  <data name="Role_DepartmentManager" xml:space="preserve">
+    <value>Department manager</value>
+  </data>
+  <data name="Role_SalesAssistant" xml:space="preserve">
+    <value>Sales assistant</value>
+  </data>
+  <data name="Role_SalesManager" xml:space="preserve">
+    <value>Sales manager</value>
+  </data>
+  <data name="Role_SalesRep" xml:space="preserve">
+    <value>Sales representative</value>
+  </data>
+  <data name="Role_SysAdmin" xml:space="preserve">
+    <value>System Administrator</value>
+  </data>
+  <data name="Role_SysAdminDesc" xml:space="preserve">
+    <value>This role has all built-in permissions and cannot be modified or deleted.</value>
+  </data>
+  <data name="Role_WarehouseAccountant" xml:space="preserve">
+    <value>Warehouse accountant</value>
+  </data>
+  <data name="Role_WarehouseHead" xml:space="preserve">
+    <value>Warehouse head</value>
+  </data>
+  <data name="Role_WarehouseManager" xml:space="preserve">
+    <value>Warehouse manager</value>
+  </data>
+  <data name="Role_WarehouseRep" xml:space="preserve">
+    <value>Warehouse representative</value>
+  </data>
 </root>
