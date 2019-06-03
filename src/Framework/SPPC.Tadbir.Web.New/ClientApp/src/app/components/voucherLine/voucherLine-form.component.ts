@@ -110,7 +110,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
         model.credit = 0;
       else
         model.debit = 0;
-
+      debugger;
       this.save.emit({ model, isOpen });
 
     }

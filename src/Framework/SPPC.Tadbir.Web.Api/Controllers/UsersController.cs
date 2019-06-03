@@ -284,6 +284,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetUserRolesAsync(int userId)
         {
             var roles = await _repository.GetUserRolesAsync(userId);
+            Localize(roles);
             return JsonReadResult(roles);
         }
 
@@ -363,6 +364,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var securityContext = new SecurityContext(userContext);
             return _contextEncoder.Encode(securityContext);
+        }
+
+        private void Localize(RelatedItemsViewModel roles)
+        {
+            Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
 
         private IUserRepository _repository;

@@ -21,26 +21,16 @@ namespace SPPC.Tadbir.Persistence
     /// عملیات مورد نیاز برای خواندن لیست موجودیت ها به صورت مجموعه ای از کلید و مقدار را پیاده سازی می کند.
     /// کلید برابر شناسه دیتابیسی موجودیت و مقدار برابر نام موجودیت خواهد بود
     /// </summary>
-    public class LookupRepository : ILookupRepository
+    public class LookupRepository : RepositoryBase, ILookupRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public LookupRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
+        public LookupRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
+            : base(unitOfWork, mapper, metadata)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را تنظیم می کند
-        /// </summary>
-        /// <param name="currentContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public void SetCurrentContext(UserContextViewModel currentContext)
-        {
-            _currentContext = currentContext;
         }
 
         #region Finance Subsystem Lookup
@@ -55,12 +45,12 @@ namespace SPPC.Tadbir.Persistence
         {
             int fpId = _currentContext.FiscalPeriodId;
             int branchId = _currentContext.BranchId;
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
                 .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id <= fpId
                     && acc.Branch.Id == branchId);
             return accounts
-                .Select(acc => _mapper.Map<KeyValue>(acc))
+                .Select(acc => Mapper.Map<KeyValue>(acc))
                 .Apply(gridOptions);
         }
 
@@ -74,12 +64,12 @@ namespace SPPC.Tadbir.Persistence
         {
             int fpId = _currentContext.FiscalPeriodId;
             int branchId = _currentContext.BranchId;
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccounts = await repository
                 .GetByCriteriaAsync(det => det.FiscalPeriod.Id <= fpId
                     && det.Branch.Id == branchId);
             return detailAccounts
-                .Select(det => _mapper.Map<KeyValue>(det))
+                .Select(det => Mapper.Map<KeyValue>(det))
                 .Apply(gridOptions);
         }
 
@@ -93,12 +83,12 @@ namespace SPPC.Tadbir.Persistence
         {
             int fpId = _currentContext.FiscalPeriodId;
             int branchId = _currentContext.BranchId;
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenters = await repository
                 .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id <= fpId
                     && cc.Branch.Id == branchId);
             return costCenters
-                .Select(cc => _mapper.Map<KeyValue>(cc))
+                .Select(cc => Mapper.Map<KeyValue>(cc))
                 .Apply(gridOptions);
         }
 
@@ -112,12 +102,12 @@ namespace SPPC.Tadbir.Persistence
         {
             int fpId = _currentContext.FiscalPeriodId;
             int branchId = _currentContext.BranchId;
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var projects = await repository
                 .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id <= fpId
                     && prj.Branch.Id == branchId);
             return projects
-                .Select(prj => _mapper.Map<KeyValue>(prj))
+                .Select(prj => Mapper.Map<KeyValue>(prj))
                 .Apply(gridOptions);
         }
 
@@ -131,12 +121,12 @@ namespace SPPC.Tadbir.Persistence
         {
             int fpId = _currentContext.FiscalPeriodId;
             int branchId = _currentContext.BranchId;
-            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var vouchers = await repository
                 .GetByCriteriaAsync(voucher => voucher.FiscalPeriod.Id == fpId
                     && voucher.Branch.Id == branchId);
             return vouchers
-                .Select(voucher => _mapper.Map<KeyValue>(voucher))
+                .Select(voucher => Mapper.Map<KeyValue>(voucher))
                 .Apply(gridOptions);
         }
 
@@ -150,12 +140,12 @@ namespace SPPC.Tadbir.Persistence
         {
             int fpId = _currentContext.FiscalPeriodId;
             int branchId = _currentContext.BranchId;
-            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var lines = await repository
                 .GetByCriteriaAsync(line => line.FiscalPeriod.Id == fpId
                     && line.Branch.Id == branchId);
             return lines
-                .Select(line => _mapper.Map<KeyValue>(line))
+                .Select(line => Mapper.Map<KeyValue>(line))
                 .Apply(gridOptions);
         }
 
@@ -165,12 +155,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ارز های تعریف شده</returns>
         public async Task<IEnumerable<KeyValue>> GetCurrenciesAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<Currency>();
+            var repository = UnitOfWork.GetAsyncRepository<Currency>();
             var currencies = await repository
                 .GetAllAsync();
             return currencies
                 .OrderBy(curr => curr.Name)
-                .Select(curr => _mapper.Map<KeyValue>(curr));
+                .Select(curr => Mapper.Map<KeyValue>(curr));
         }
 
         /// <summary>
@@ -181,38 +171,35 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از شرکت های قابل دسترسی</returns>
         public async Task<IList<KeyValue>> GetUserAccessibleCompaniesAsync(int userId)
         {
-            _unitOfWork.UseSystemContext();
+            UnitOfWork.UseSystemContext();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             var companies = new List<int>();
             if (user != null)
             {
-                _unitOfWork.UseCompanyContext();
-                var relatedRepository = _unitOfWork.GetAsyncRepository<RoleBranch>();
+                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleCompany>();
                 Array.ForEach(
                     user.UserRoles
-                        .Select(ur => ur.Role)
+                        .Select(ur => ur.RoleId)
                         .ToArray(),
-                    role =>
+                    roleId =>
                     {
-                        var roleBranchesModel = relatedRepository.GetByCriteria(
-                            rb => rb.RoleId == role.Id, rb => rb.Branch);
+                        var roleCompanies = relatedRepository.GetByCriteria(
+                            rc => rc.RoleId == roleId);
                         companies.AddRange(
-                            roleBranchesModel
-                                .Select(rb => rb.Branch.CompanyId));
+                            roleCompanies.Select(rc => rc.CompanyId));
                     });
             }
 
-            _unitOfWork.UseSystemContext();
-            var repository = _unitOfWork.GetAsyncRepository<CompanyDb>();
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var userCompanies = await repository
                 .GetEntityQuery()
                 .Where(c => companies
                     .Distinct()
                     .Contains(c.Id))
-                .Select(c => _mapper.Map<KeyValue>(c))
+                .Select(c => Mapper.Map<KeyValue>(c))
                 .ToListAsync();
-            _unitOfWork.UseCompanyContext();
+            UnitOfWork.UseCompanyContext();
             return userCompanies;
         }
 
@@ -226,23 +213,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetUserAccessibleFiscalPeriodsAsync(int companyId, int userId)
         {
             var fiscalPeriods = new List<FiscalPeriod>();
-            _unitOfWork.UseSystemContext();
+            UnitOfWork.UseSystemContext();
+            await SetCurrentCompanyAsync(companyId);
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             if (user != null)
             {
-                _unitOfWork.UseCompanyContext();
-                var relatedRepository = _unitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
+                UnitOfWork.UseCompanyContext();
+                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
                 Array.ForEach(
                     user.UserRoles
-                        .Select(ur => ur.Role)
+                        .Select(ur => ur.RoleId)
                         .ToArray(),
-                    role =>
+                    roleId =>
                     {
-                        var rolePeriodsModel = relatedRepository.GetByCriteria(
-                            rfp => rfp.RoleId == role.Id, rfp => rfp.FiscalPeriod);
+                        var rolePeriods = relatedRepository.GetByCriteria(
+                            rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
                         fiscalPeriods.AddRange(
-                            rolePeriodsModel
+                            rolePeriods
                                 .Select(rfp => rfp.FiscalPeriod)
                                 .Where(fp => fp.CompanyId == companyId));
                     });
@@ -254,7 +242,7 @@ namespace SPPC.Tadbir.Persistence
 
             return fiscalPeriods
                 .OrderBy(fp => fp.Name)
-                .Select(fp => _mapper.Map<KeyValue>(fp));
+                .Select(fp => Mapper.Map<KeyValue>(fp));
         }
 
         /// <summary>
@@ -267,23 +255,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetUserAccessibleBranchesAsync(int companyId, int userId)
         {
             var branches = new List<Branch>();
-            _unitOfWork.UseSystemContext();
+            UnitOfWork.UseSystemContext();
+            await SetCurrentCompanyAsync(companyId);
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             if (user != null)
             {
-                _unitOfWork.UseCompanyContext();
-                var relatedRepository = _unitOfWork.GetAsyncRepository<RoleBranch>();
+                UnitOfWork.UseCompanyContext();
+                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleBranch>();
                 Array.ForEach(
                     user.UserRoles
-                        .Select(ur => ur.Role)
+                        .Select(ur => ur.RoleId)
                         .ToArray(),
-                    role =>
+                    roleId =>
                     {
-                        var roleBranchesModel = relatedRepository.GetByCriteria(
-                            rb => rb.RoleId == role.Id, rb => rb.Branch);
+                        var roleBranches = relatedRepository.GetByCriteria(
+                            rb => rb.RoleId == roleId, rb => rb.Branch);
                         branches.AddRange(
-                            roleBranchesModel
+                            roleBranches
                                 .Select(rb => rb.Branch)
                                 .Where(br => br.CompanyId == companyId));
                     });
@@ -295,7 +284,7 @@ namespace SPPC.Tadbir.Persistence
 
             return branches
                 .OrderBy(br => br.Name)
-                .Select(br => _mapper.Map<KeyValue>(br));
+                .Select(br => Mapper.Map<KeyValue>(br));
         }
 
         /// <summary>
@@ -322,10 +311,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه گروه های حساب تعریف شده</returns>
         public async Task<IEnumerable<KeyValue>> GetAccountGroupsAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<AccountGroup>();
+            var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
             return await repository
                 .GetEntityQuery()
-                .Select(grp => _mapper.Map<KeyValue>(grp))
+                .Select(grp => Mapper.Map<KeyValue>(grp))
                 .ToListAsync();
         }
 
@@ -391,15 +380,15 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IDictionary<int, string>> GetUserPersonsAsync()
         {
             var userPersons = new Dictionary<int, string>();
-            _unitOfWork.UseSystemContext();
-            var repository = _unitOfWork.GetAsyncRepository<User>();
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<User>();
             var all = await repository
                 .GetEntityQuery(user => user.Person)
                 .Select(user => new KeyValuePair<int, string>(
                     user.Id, String.Format("{0}، {1}", user.Person.LastName, user.Person.FirstName)))
                 .ToArrayAsync();
             Array.ForEach(all, kv => userPersons.Add(kv.Key, kv.Value));
-            _unitOfWork.UseCompanyContext();
+            UnitOfWork.UseCompanyContext();
             return userPersons;
         }
 
@@ -409,16 +398,16 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>
         public async Task<IList<KeyValue>> GetRolesAsync(GridOptions gridOptions = null)
         {
-            _unitOfWork.UseSystemContext();
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var roles = await repository
                 .GetAllAsync();
             var lookup = roles
                 .OrderBy(role => role.Name)
-                .Select(role => _mapper.Map<KeyValue>(role))
+                .Select(role => Mapper.Map<KeyValue>(role))
                 .Apply(gridOptions)
                 .ToList();
-            _unitOfWork.UseCompanyContext();
+            UnitOfWork.UseCompanyContext();
             return lookup;
         }
 
@@ -432,17 +421,17 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
         public async Task<IList<KeyValue>> GetEntityViewsAsync(GridOptions gridOptions = null)
         {
-            _unitOfWork.UseSystemContext();
-            var repository = _unitOfWork.GetAsyncRepository<View>();
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<View>();
             var views = await repository
                 .GetEntityQuery()
                 .Where(view => !String.IsNullOrEmpty(view.FetchUrl))
                 .ToListAsync();
             var lookup = views
-                .Select(view => _mapper.Map<KeyValue>(view))
+                .Select(view => Mapper.Map<KeyValue>(view))
                 .Apply(gridOptions)
                 .ToList();
-            _unitOfWork.UseCompanyContext();
+            UnitOfWork.UseCompanyContext();
             return lookup;
         }
 
@@ -452,15 +441,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های درختی</returns>
         public async Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions = null)
         {
-            _unitOfWork.UseSystemContext();
-            var repository = _unitOfWork.GetAsyncRepository<View>();
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<View>();
             var views = await repository
                 .GetByCriteriaAsync(vu => vu.IsHierarchy);
             var lookup = views
-                .Select(view => _mapper.Map<KeyValue>(view))
+                .Select(view => Mapper.Map<KeyValue>(view))
                 .Apply(gridOptions)
                 .ToList();
-            _unitOfWork.UseCompanyContext();
+            UnitOfWork.UseCompanyContext();
             return lookup;
         }
 
@@ -468,17 +457,12 @@ namespace SPPC.Tadbir.Persistence
 
         private IQueryable<User> GetUserQuery(int userId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var repository = UnitOfWork.GetAsyncRepository<User>();
             var query = repository
                 .GetEntityQuery()
                 .Where(usr => usr.Id == userId)
-                .Include(usr => usr.UserRoles)
-                    .ThenInclude(ur => ur.Role);
+                .Include(usr => usr.UserRoles);
             return query;
         }
-
-        private IAppUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
-        private UserContextViewModel _currentContext;
     }
 }

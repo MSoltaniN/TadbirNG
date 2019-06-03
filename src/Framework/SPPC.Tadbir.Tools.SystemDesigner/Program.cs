@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Configuration;
 using System.Windows.Forms;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner
@@ -14,7 +12,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         [STAThread]
         static void Main()
         {
-            //DoXferTadbirDb();
+            DoXferTadbirDb();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWindow());
@@ -22,20 +20,23 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
 
         private static void DoXferTadbirDb()
         {
-            string src = "Server=ESLAMIE315;Database=COLORAN;User ID=sa;Password=T@dbir1217;MultipleActiveResultSets=true";
-            string target = "Server=ESLAMIE315;Database=XferDemo;User ID=sa;Password=T@dbir1217;MultipleActiveResultSets=true";
+            string src = ConfigurationManager.ConnectionStrings["SourceDb"].ConnectionString;
+            string target = ConfigurationManager.ConnectionStrings["TargetDb"].ConnectionString;
 
+            int fpId = GetFiscalPeriodId();
             try
             {
                 var repo = new XferRepository(src, target);
-                //repo.XferFiscalPeriods();
-                //repo.XferAccountGroups();
-                repo.XferAccounts();
-                //repo.XferDetailAccounts();
-                //repo.XferCostCenters();
-                //repo.XferProjects();
-                //repo.XferVouchers();
-                repo.XferVoucherLines();
+                repo.XferFiscalPeriods();
+                repo.XferCurrencies();
+                repo.XferAccountGroups();
+                repo.XferAccounts(fpId);
+                repo.XferDetailAccounts(fpId);
+                repo.XferCostCenters(fpId);
+                repo.XferProjects(fpId);
+                repo.XferAccountRelations(fpId);
+                repo.XferVouchers(fpId);
+                repo.XferVoucherLines(fpId);
                 MessageBox.Show("Transfer completed successfully!", "INFO", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -43,6 +44,12 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
                 MessageBox.Show(ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
+        }
+
+        private static int GetFiscalPeriodId()
+        {
+            string fpIdConfig = ConfigurationManager.AppSettings["FPId"];
+            return !String.IsNullOrEmpty(fpIdConfig) ? Int32.Parse(fpIdConfig) : 1;
         }
     }
 }

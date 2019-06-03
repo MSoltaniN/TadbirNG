@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Finance_Account_Finance_Group");
             builder.HasOne(e => e.Currency)
                 .WithMany()
-                .HasForeignKey(e=>e.CurrencyId)
+                .HasForeignKey(e => e.CurrencyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Account_Finance_Currency");
         }

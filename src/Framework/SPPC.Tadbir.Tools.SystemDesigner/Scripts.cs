@@ -14,11 +14,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
      VALUES
            (1, 1, N'دفتر مرکزی', 0)";
 
-        public const string InsertDefaultCurrency =
+        public const string InsertCurrency =
             @"INSERT INTO [Finance].[Currency]
            ([CurrencyID], [Name])
      VALUES
-           (1, N'ریال')";
+           ('{0}', N'{1}')";
 
         public const string InsertFiscalPeriod =
             @"INSERT INTO [Finance].[FiscalPeriod]
@@ -26,18 +26,20 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
 		   ,[CompanyID]
            ,[Name]
            ,[StartDate]
-           ,[EndDate])
+           ,[EndDate]
+           ,[Description])
      VALUES
-           ('{0}', '1', N'{1}', '{2}', '{3}')";
+           ('{0}', '1', N'{1}', '{2}', '{3}', N'{4}')";
 
         public const string InsertAccountGroup =
             @"INSERT INTO [Finance].[AccountGroup]
            ([GroupID]
 		   ,[Name]
            ,[InventoryMode]
-           ,[Category])
+           ,[Category]
+           ,[Description])
      VALUES
-           ('{0}', N'{1}', '{2}', '{3}')";
+           ('{0}', N'{1}', '{2}', '{3}', N'{4}')";
 
         public const string InsertAccount =
             @"INSERT INTO [Finance].[Account]
@@ -51,9 +53,13 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Code]
            ,[FullCode]
            ,[Name]
-           ,[Level])
+           ,[Level]
+           ,[IsActive]
+           ,[IsCurrencyAdjustable]
+           ,[TurnoverMode]
+           ,[Description])
      VALUES
-           ('{0}',{1},{2},'{3}','1','1','0', N'{4}', N'{5}',N'{6}','{7}')";
+           ('{0}',{1},{2},'{3}','1',NULL,'0', N'{4}', N'{5}',N'{6}','{7}', '1', '1', '-1', N'{7}')";
 
         public const string InsertDetailAccount =
             @"INSERT INTO [Finance].[DetailAccount]
@@ -65,9 +71,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Code]
            ,[FullCode]
            ,[Name]
-           ,[Level])
+           ,[Level]
+           ,[Description])
      VALUES
-           ('{0}', {1}, '{2}', 1, 0, N'{3}', N'{4}', N'{5}', {6})";
+           ('{0}', {1}, '{2}', 1, 0, N'{3}', N'{4}', N'{5}', {6}, N'{7}')";
 
         public const string InsertCostCenter =
             @"INSERT INTO [Finance].[CostCenter]
@@ -79,9 +86,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Code]
            ,[FullCode]
            ,[Name]
-           ,[Level])
+           ,[Level]
+           ,[Description])
      VALUES
-           ('{0}', NULL, '{1}', 1, 0, N'{2}', N'{3}', N'{4}', 0)";
+           ('{0}', NULL, '{1}', 1, 0, N'{2}', N'{3}', N'{4}', 0, N'{5}')";
 
         public const string InsertProject =
             @"INSERT INTO [Finance].[Project]
@@ -93,25 +101,50 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[Code]
            ,[FullCode]
            ,[Name]
-           ,[Level])
+           ,[Level]
+           ,[Description])
      VALUES
-           ('{0}', NULL, '{1}', 1, 0, N'{2}', N'{3}', N'{4}', 0)";
+           ('{0}', NULL, '{1}', 1, 0, N'{2}', N'{3}', N'{4}', 0, N'{5}')";
+
+        public const string InsertAccountDetailAccount =
+            @"INSERT INTO [Finance].[AccountDetailAccount]
+           ([AccountDetailAccountID], [AccountID], [DetailID])
+     VALUES
+           ('{0}', '{1}', '{2}')";
+
+        public const string InsertAccountCostCenter =
+            @"INSERT INTO [Finance].[AccountCostCenter]
+           ([AccountCostCenterID], [AccountID], [CostCenterID])
+     VALUES
+           ('{0}', '{1}', '{2}')";
+
+        public const string InsertAccountProject =
+            @"INSERT INTO [Finance].[AccountProject]
+           ([AccountProjectID], [AccountID], [ProjectID])
+     VALUES
+           ('{0}', '{1}', '{2}')";
 
         public const string InsertVoucher =
             @"INSERT INTO [Finance].[Voucher]
            ([VoucherID]
 		   ,[FiscalPeriodID]
            ,[BranchID]
-           ,[DocumentID]
            ,[StatusID]
-           ,[CreatedByID]
+           ,[IssuedByID]
            ,[ModifiedByID]
            ,[No]
            ,[Date]
            ,[Reference]
-           ,[Description])
+           ,[Description]
+           ,[DailyNo]
+           ,[IsBalanced]
+           ,[Type]
+           ,[SubjectType]
+           ,[SaveCount]
+           ,[IssuerName]
+           ,[ModifierName])
      VALUES
-           ('{0}', '{1}', 1, NULL, 1, 1, 1, '{2}', '{3}', N'{4}', N'{5}')";
+           ('{0}', '{1}', 1, 1, 1, 1, '{2}', '{3}', N'{4}', N'{5}', 1, {6}, 0, 0, {7}, N'{8}', N'{8}')";
 
         public const string InsertVoucherLine =
             @"INSERT INTO [Finance].[VoucherLine]
@@ -124,10 +157,16 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
            ,[CostCenterID]
            ,[ProjectID]
            ,[CurrencyID]
-           ,[Description]
+           ,[CreatedByID]
+           ,[RowNo]
            ,[Debit]
-           ,[Credit])
+           ,[Credit]
+           ,[Description]
+           ,[CurrencyValue]
+           ,[Mark]
+           ,[TypeID]
+           ,[SourceID])
      VALUES
-           ('{0}', '{1}', '{2}', 1, '{3}', {4}, {5}, {6}, 1, N'{7}', '{8}', '{9}')";
+           ('{0}', '{1}', '{2}', 1, '{3}', {4}, {5}, {6}, {7}, 1, '{8}', '{9}', '{10}', N'{11}', '{12}', N'{13}', 0, {14})";
     }
 }

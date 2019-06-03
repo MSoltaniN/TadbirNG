@@ -13,6 +13,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         TadbirContext CompanyContext { get; }
 
+        void SwitchCompanyContext(string connection);
+
         /// <summary>
         /// دیتابیس سیستمی برنامه
         /// </summary>

@@ -19,6 +19,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی پول یا ارز مورد استفاده در این سرفصل حسابداری
         /// </summary>
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
     }
 }

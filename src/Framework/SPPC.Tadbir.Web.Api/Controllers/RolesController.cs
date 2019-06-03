@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetRoleCountAsync(GridOptions);
             SetItemCount(itemCount);
             var roles = await _repository.GetRolesAsync(GridOptions);
+            Localize(roles);
             return Json(roles);
         }
 
@@ -279,8 +281,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        private void Localize(IList<RoleViewModel> roles)
+        {
+            Array.ForEach(roles.ToArray(), role =>
+            {
+                role.Name = _strings[role.Name];
+                role.Description = _strings[role.Description ?? String.Empty];
+            });
+        }
+
         private void LocalizeRole(RoleFullViewModel role)
         {
+            role.Role.Name = _strings[role.Role.Name];
+            role.Role.Description = _strings[role.Role.Description ?? String.Empty];
             role.Role.Permissions = role.Role.Permissions
                 .Select(name => GetLocalName(name))
                 .ToList();
@@ -293,6 +306,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void LocalizeRoleDetails(RoleDetailsViewModel role)
         {
+            role.Role.Name = _strings[role.Role.Name];
+            role.Role.Description = _strings[role.Role.Description ?? String.Empty];
             role.Role.Permissions = role.Role.Permissions
                 .Select(name => GetLocalName(name))
                 .ToList();

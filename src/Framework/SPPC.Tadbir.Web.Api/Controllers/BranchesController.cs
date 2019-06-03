@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -110,6 +111,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetBranchRolesAsync(int branchId)
         {
             var roles = await _repository.GetBranchRolesAsync(branchId);
+            Localize(roles);
             return JsonReadResult(roles);
         }
 
@@ -156,6 +158,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private void Localize(RelatedItemsViewModel roles)
+        {
+            Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
 
         private IBranchRepository _repository;

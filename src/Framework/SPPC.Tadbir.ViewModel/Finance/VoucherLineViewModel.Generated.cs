@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شرح آرتیکل سند مالی برای قرار دادن اطلاعات تکمیلی مرتبط با این بخش
         /// </summary>
         [Display(Name = FieldNames.DescriptionField)]
-        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldHasLengthRange)]
+        [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldHasLengthRange)]
         public string Description { get; set; }
 
         /// <summary>
