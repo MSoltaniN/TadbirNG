@@ -42,7 +42,7 @@
               <Parent isRef="3" />
               <Text>{vReportFirstTitle}</Text>
               <TextBrush>[55:55:55]</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </txtReportHeader>
@@ -74,6 +74,7 @@
               <Parent isRef="5" />
               <Text>{PageNumber}</Text>
               <TextBrush>[55:55:55]</TextBrush>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </txtPageNumber>
@@ -105,7 +106,7 @@
               <Parent isRef="7" />
               <Text>{vReportTitle}</Text>
               <TextBrush>[55:55:55]</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </txtPageHeader>
@@ -125,12 +126,11 @@
             <Table1_Cell1 Ref="10" type="TableCell" isKey="true">
               <Border>None;[155:155:155];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
-              <CellDockStyle>Right</CellDockStyle>
+              <CellDockStyle>Left</CellDockStyle>
               <ClientRectangle>0,0,1.9,0.3</ClientRectangle>
               <ComponentStyle>Tadbir_ParameterTitle</ComponentStyle>
               <Conditions isList="true" count="0" />
               <Font>Microsoft Sans Serif,12,Bold,Point,False,178</Font>
-              <HorAlignment>Right</HorAlignment>
               <ID>0</ID>
               <JoinCells isList="true" count="0" />
               <Margins>5,0,0,0</Margins>
@@ -140,14 +140,14 @@
               <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
               <Text>از تاریخ</Text>
               <TextBrush>Black</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Table1_Cell1>
             <Table1_Cell2 Ref="11" type="TableCell" isKey="true">
               <Border>None;[155:155:155];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
-              <CellDockStyle>Right</CellDockStyle>
+              <CellDockStyle>Left</CellDockStyle>
               <ClientRectangle>1.9,0,1.9,0.3</ClientRectangle>
               <ComponentStyle>Tadbir_ParameterValue</ComponentStyle>
               <Conditions isList="true" count="0" />
@@ -161,19 +161,18 @@
               <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
               <Text>1397/01/01</Text>
               <TextBrush>SaddleBrown</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Table1_Cell2>
             <Table1_Cell3 Ref="12" type="TableCell" isKey="true">
               <Border>None;[155:155:155];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
-              <CellDockStyle>Right</CellDockStyle>
+              <CellDockStyle>Left</CellDockStyle>
               <ClientRectangle>3.8,0,1.8,0.3</ClientRectangle>
               <ComponentStyle>Tadbir_ParameterTitle</ComponentStyle>
               <Conditions isList="true" count="0" />
               <Font>Microsoft Sans Serif,12,Bold,Point,False,178</Font>
-              <HorAlignment>Right</HorAlignment>
               <ID>2</ID>
               <JoinCells isList="true" count="0" />
               <Margins>0,0,0,0</Margins>
@@ -183,14 +182,14 @@
               <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
               <Text>تا تاریخ</Text>
               <TextBrush>Black</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Table1_Cell3>
             <Table1_Cell4 Ref="13" type="TableCell" isKey="true">
               <Border>None;[155:155:155];1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
-              <CellDockStyle>Right</CellDockStyle>
+              <CellDockStyle>Left</CellDockStyle>
               <ClientRectangle>5.6,0,1.8,0.3</ClientRectangle>
               <ComponentStyle>Tadbir_ParameterValue</ComponentStyle>
               <Conditions isList="true" count="0" />
@@ -204,7 +203,7 @@
               <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
               <Text>1397/05/05</Text>
               <TextBrush>SaddleBrown</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Table1_Cell4>
@@ -262,7 +261,7 @@
               <Parent isRef="15" />
               <Text>عنوان ستون</Text>
               <TextBrush>Black</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </txtColumnHeader>
@@ -296,7 +295,7 @@
               <Parent isRef="17" />
               <Text>محتوای اطلاعاتی ستون</Text>
               <TextBrush>Black</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </txtColumnData>
@@ -330,7 +329,7 @@
               <Parent isRef="19" />
               <Text>{vReportSummaryTitle}</Text>
               <TextBrush>[55:55:55]</TextBrush>
-              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <TextOptions>,,,,,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </txtReportFooter>
@@ -364,10 +363,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>5/26/2019 2:25:04 PM</ReportChanged>
+  <ReportChanged>5/29/2019 3:20:30 AM</ReportChanged>
   <ReportCreated>5/20/2019 2:23:49 PM</ReportCreated>
-  <ReportFile>J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.Api\Resources\Reporting\Template\QuickReport.A4.Rtl.mrt</ReportFile>
-  <ReportGuid>f4dd3d437a774bc2a4c2ed9d4e5f1a6f</ReportGuid>
+  <ReportFile>J:\SourceCodes\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.Api\Resources\Reporting\Template\QuickReport.A4.Ltr.mrt</ReportFile>
+  <ReportGuid>43f4908a26be4e448d7648fb5811f4df</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2019.2.3.0</ReportVersion>
@@ -412,7 +411,7 @@ namespace Reports
         </Item20>
       </Conditions>
       <Description>عنوان گزارش</Description>
-      <Font>IRANSansWeb,14.25,Bold,Point,False,178</Font>
+      <Font>Microsoft Sans Serif,14.25,Bold,Point,False,178</Font>
       <HorAlignment>Center</HorAlignment>
       <Name>Tadbir_ReportTitle</Name>
       <NegativeTextBrush>Red</NegativeTextBrush>
@@ -434,7 +433,7 @@ namespace Reports
         </Item22>
       </Conditions>
       <Description>پاورقی گزارش</Description>
-      <Font>IRANSansWeb,12,Bold,Point,False,178</Font>
+      <Font>Microsoft Sans Serif,12,Bold,Point,False,178</Font>
       <HorAlignment>Center</HorAlignment>
       <Name>Tadbir_ReportFooter</Name>
       <NegativeTextBrush>Red</NegativeTextBrush>
@@ -456,7 +455,7 @@ namespace Reports
         </Item24>
       </Conditions>
       <Description>عنوان صفحه</Description>
-      <Font>IRANSansWeb,14.25,Bold,Point,False,0</Font>
+      <Font>Microsoft Sans Serif,14.25,Bold,Point,False,0</Font>
       <HorAlignment>Center</HorAlignment>
       <Name>Tadbir_PageHeader</Name>
       <NegativeTextBrush>Red</NegativeTextBrush>
@@ -480,7 +479,7 @@ namespace Reports
         </Item26>
       </Conditions>
       <Description>پاورقی صفحه</Description>
-      <Font>IRANSansWeb,11.25,Bold,Point,False,178</Font>
+      <Font>Microsoft Sans Serif,11.25,Bold,Point,False,178</Font>
       <HorAlignment>Center</HorAlignment>
       <Name>Tadbir_PageFooter</Name>
       <NegativeTextBrush>Red</NegativeTextBrush>
@@ -503,8 +502,7 @@ namespace Reports
         </Item28>
       </Conditions>
       <Description>عنوان پارامتر ها</Description>
-      <Font>IRANSansWeb,12,Bold,Point,False,178</Font>
-      <HorAlignment>Right</HorAlignment>
+      <Font>Microsoft Sans Serif,12,Bold,Point,False,178</Font>
       <Name>Tadbir_ParameterTitle</Name>
       <NegativeTextBrush>Red</NegativeTextBrush>
       <TextBrush>Black</TextBrush>
@@ -525,7 +523,7 @@ namespace Reports
         </Item30>
       </Conditions>
       <Description>مقدار پارامتر ها</Description>
-      <Font>IRANSansWeb,12,Regular,Point,False,178</Font>
+      <Font>Microsoft Sans Serif,12,Regular,Point,False,178</Font>
       <Name>Tadbir_ParameterValue</Name>
       <NegativeTextBrush>Red</NegativeTextBrush>
       <TextBrush>SaddleBrown</TextBrush>
@@ -546,7 +544,7 @@ namespace Reports
         </Item32>
       </Conditions>
       <Description>عنوان ستون ها</Description>
-      <Font>IRANSansWeb,12,Bold,Point,False,178</Font>
+      <Font>Microsoft Sans Serif,12,Bold,Point,False,178</Font>
       <HorAlignment>Center</HorAlignment>
       <Name>Tadbir_ColumnHeaders</Name>
       <NegativeTextBrush>Red</NegativeTextBrush>
@@ -568,7 +566,7 @@ namespace Reports
         </Item34>
       </Conditions>
       <Description>ستون ها اطلاعاتی</Description>
-      <Font>IRANSansWeb,12,Regular,Point,False,178</Font>
+      <Font>Microsoft Sans Serif,12,Regular,Point,False,178</Font>
       <HorAlignment>Center</HorAlignment>
       <Name>Tadbir_ColumnData</Name>
       <NegativeTextBrush>Transparent</NegativeTextBrush>
@@ -591,7 +589,7 @@ namespace Reports
         </Item36>
       </Conditions>
       <Description>شماره صفحه</Description>
-      <Font>IRANSansWeb,9.75,Regular,Point,False,178</Font>
+      <Font>Microsoft Sans Serif,9.75,Regular,Point,False,178</Font>
       <HorAlignment>Center</HorAlignment>
       <Name>Tadbir_PageNumber</Name>
       <NegativeTextBrush>Red</NegativeTextBrush>
