@@ -301,6 +301,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
       if (res.headers != null) {
         let newTicket = res.headers.get('X-Tadbir-AuthTicket');
+        let contextInfo = <ContextInfo>res.body;
 
         var currentUser = this.authenticationService.getCurrentUser();
         if (currentUser != null) {
@@ -309,7 +310,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           currentUser.companyId = parseInt(this.companyId);
           currentUser.fpId = parseInt(this.fiscalPeriodId);
           currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
-
+          currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;
+          currentUser.branchName = contextInfo.branchName;
+          currentUser.companyName = contextInfo.companyName;
           currentUser.ticket = newTicket;
 
           if (this.authenticationService.isRememberMe())

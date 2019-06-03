@@ -10,15 +10,18 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment, SessionKeys } from '../../../environments/environment';
 
 export class ContextInfo implements Context {
-    userName: string = "";
-    password: string = "";
-    firstName: string = "";
-    lastName: string = "";
-    ticket: string = "";
-    fpId: number = 0;
-    branchId: number = 0;
-    companyId: number = 0;
-    permissions: PermissionBrief[];
+  userName: string = "";
+  password: string = "";
+  firstName: string = "";
+  lastName: string = "";
+  ticket: string = "";
+  fpId: number = 0;
+  branchId: number = 0;
+  companyId: number = 0;
+  branchName: string;
+  companyName: string;
+  fiscalPeriodName: string;
+  permissions: PermissionBrief[];
 }
 
 export class CompanyLoginInfo implements CompanyLogin {

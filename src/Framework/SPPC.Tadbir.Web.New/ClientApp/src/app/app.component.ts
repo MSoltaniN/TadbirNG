@@ -3,7 +3,7 @@ import { Context } from './model/context';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
-import { AuthenticationService } from './service/login/index';
+import { AuthenticationService, ContextInfo } from './service/login/index';
 import { UserService } from './service/user.service';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { SessionKeys } from '../environments/environment';
@@ -190,29 +190,7 @@ export class AppComponent implements AfterViewInit,OnInit  {
         else {
           if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans-en.css')
             this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
-        }
-        // var lang = localStorage.getItem('lang');
-        // if(lang == 'fa' || lang == null)
-        // {
-        //     this.document.getElementById('adminlteLtr').setAttribute('disabled','true');
-        //     this.document.getElementById('adminlteRtl').removeAttribute('disabled');
-
-        //     this.document.getElementById('adminlteRtl').setAttribute('href','assets/dist/css/AdminLTE.Rtl.css');
-        //     this.document.getElementById('adminlteLtr').setAttribute('href','');
-
-        //     localStorage.setItem('lang','fa');
-        // }
-        // else
-        // {
-        //     this.document.getElementById('adminlteRtl').setAttribute('disabled','true');
-        //     this.document.getElementById('adminlteLtr').removeAttribute('disabled');
-
-        //     this.document.getElementById('adminlteLtr').setAttribute('href','assets/dist/css/AdminLTE.css');
-        //     this.document.getElementById('adminlteRtl').setAttribute('href','');
-            
-        // }
-
-        
+        }               
 
         //#endregion
 
@@ -227,68 +205,69 @@ export class AppComponent implements AfterViewInit,OnInit  {
         var currentUrl = location.path().toLowerCase();
         if (currentUrl != '/logout' && currentUrl != '/login')
           sessionStorage.setItem(SessionKeys.CurrentRoute, currentUrl);
-
-
-        var contextIsEmpty: boolean = true;
+        //var contextIsEmpty: boolean = true;
 
         if (localStorage.getItem('currentContext') != null) {
           var item: string | null;
           item = localStorage.getItem('currentContext');
-          var currentContext = JSON.parse(item != null ? item.toString() : "");
+          var currentContext = <ContextInfo>JSON.parse(item != null ? item.toString() : "");
 
-          branchId = currentContext ? parseInt(currentContext.branchId) : 0;
-          companyId = currentContext ? parseInt(currentContext.companyId) : 0;
-          fpId = currentContext ? parseInt(currentContext.fpId) : 0;
+          branchId = currentContext ? currentContext.branchId : 0;
+          companyId = currentContext ? currentContext.companyId : 0;
+          fpId = currentContext ? currentContext.fpId : 0;
           ticket = currentContext ? currentContext.ticket : "";
           this.userName = currentContext ? currentContext.userName.toString() : "";
+          this.fiscalPeriodName = currentContext ? currentContext.fiscalPeriodName.toString() : "";
+          this.branchName = currentContext ? currentContext.branchName.toString() : "";
+          this.companyName = currentContext ? currentContext.companyName.toString() : "";
 
-
-          contextIsEmpty = false;
+          //contextIsEmpty = false;
         }
         else if (sessionStorage.getItem('currentContext') != null) {
           var item: string | null;
           item = sessionStorage.getItem('currentContext');
-          var currentContext = JSON.parse(item != null ? item.toString() : "");
+          var currentContext = <ContextInfo>JSON.parse(item != null ? item.toString() : "");
 
-          branchId = currentContext ? parseInt(currentContext.branchId) : 0;
-          companyId = currentContext ? parseInt(currentContext.companyId) : 0;
-          fpId = currentContext ? parseInt(currentContext.fpId) : 0;
+          branchId = currentContext ? currentContext.branchId : 0;
+          companyId = currentContext ? currentContext.companyId : 0;
+          fpId = currentContext ? currentContext.fpId : 0;
           ticket = currentContext ? currentContext.ticket.toString() : "";
           this.userName = currentContext ? currentContext.userName.toString() : "";
-
-
-          contextIsEmpty = false;
+          this.fiscalPeriodName = currentContext ? currentContext.fiscalPeriodName.toString() : "";
+          this.branchName = currentContext ? currentContext.branchName.toString() : "";
+          this.companyName = currentContext ? currentContext.companyName.toString() : "";
+          //contextIsEmpty = false;
         }
 
-        if (!contextIsEmpty) {
+        //if (!contextIsEmpty) {
 
 
 
-          var fps = this.authenticationService.getFiscalPeriod(companyId, ticket);
-          if (fps != null) {
-            fps.subscribe(res => {
-              //this.fiscalPeriods = res;
-              this.fiscalPeriodName = res.filter((p: any) => p.key == fpId)[0].value;
-            });
-          }
+        //  var fps = this.authenticationService.getFiscalPeriod(companyId, ticket);
+        //  if (fps != null) {
+        //    fps.subscribe(res => {
+        //      //this.fiscalPeriods = res;
+        //      this.fiscalPeriodName = res.filter((p: any) => p.key == fpId)[0].value;
+        //    });
+        //  }
 
-          var branchList = this.authenticationService.getBranches(companyId, ticket);
-          if (branchList != null) {
-            branchList.subscribe(res => {
-              this.branchName = res.filter((p: any) => p.key == branchId)[0].value;
-            });
-          }
+        //  var branchList = this.authenticationService.getBranches(companyId, ticket);
+        //  if (branchList != null) {
+        //    branchList.subscribe(res => {
+        //      this.branchName = res.filter((p: any) => p.key == branchId)[0].value;
+        //    });
+        //  }
 
 
-          var companiesList = this.authenticationService.getCompanies(this.userName, ticket);
-          if (companiesList != null) {
-            companiesList.subscribe(res => {
-              this.companyName = res.filter((p: any) => p.key == companyId)[0].value;;
+        //  var companiesList = this.authenticationService.getCompanies(this.userName, ticket);
+        //  if (companiesList != null) {
+        //    companiesList.subscribe(res => {
+        //      this.companyName = res.filter((p: any) => p.key == companyId)[0].value;;
 
-            });
-          }
+        //    });
+        //  }
 
-        }
+        //}
 
         //#endregion
       }

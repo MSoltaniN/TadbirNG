@@ -358,6 +358,7 @@ namespace SPPC.Tadbir.Persistence
                 userContext.Connection = BuildConnectionString(company);
             }
 
+            await SetCurrentCompanyAsync((int)companyLogin.CompanyId);
             UnitOfWork.UseCompanyContext();
             var branchRepo = UnitOfWork.GetAsyncRepository<Branch>();
             var fiscalRepo = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
