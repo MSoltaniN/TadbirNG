@@ -54,6 +54,21 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public int FiscalPeriodId { get; set; }
 
         /// <summary>
+        /// نام شرکتی که کاربر به آن وارد شده
+        /// </summary>
+        public string CompanyName { get; set; }
+
+        /// <summary>
+        /// نام شعبه ای از شرکت جاری که کاربر به آن وارد شده
+        /// </summary>
+        public string BranchName { get; set; }
+
+        /// <summary>
+        /// نام دوره مالی از شرکت جاری که کاربر به آن وارد شده
+        /// </summary>
+        public string FiscalPeriodName { get; set; }
+
+        /// <summary>
         /// مجموعه شناسه های دیتابیسی نقش های تخصیص یافته به این کاربر
         /// </summary>
         public IList<int> Roles { get; private set; }

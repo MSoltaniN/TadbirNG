@@ -11,6 +11,8 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
+using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -347,12 +349,23 @@ namespace SPPC.Tadbir.Persistence
             userContext.CompanyId = (int)companyLogin.CompanyId;
             userContext.BranchId = (int)companyLogin.BranchId;
             userContext.FiscalPeriodId = (int)companyLogin.FiscalPeriodId;
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await repository.GetByIDAsync((int)companyLogin.CompanyId);
+
+            var companyRepo = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await companyRepo.GetByIDAsync((int)companyLogin.CompanyId);
             if (company != null)
             {
+                userContext.CompanyName = company.Name;
                 userContext.Connection = BuildConnectionString(company);
             }
+
+            UnitOfWork.UseCompanyContext();
+            var branchRepo = UnitOfWork.GetAsyncRepository<Branch>();
+            var fiscalRepo = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var branch = await branchRepo.GetByIDAsync((int)companyLogin.BranchId);
+            userContext.BranchName = branch?.Name;
+            var fiscalPeriod = await fiscalRepo.GetByIDAsync((int)companyLogin.FiscalPeriodId);
+            userContext.FiscalPeriodName = fiscalPeriod?.Name;
+            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>

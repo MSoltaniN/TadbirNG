@@ -275,7 +275,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var userContext = SecurityContext.User;
             await _repository.UpdateUserCompanyLoginAsync(companyLogin, userContext);
             Response.Headers[AppConstants.ContextHeaderName] = GetEncodedTicket(userContext);
-            return Ok();
+            return Ok(userContext);
         }
 
         // GET: api/users/{userId:min(1)}/roles
