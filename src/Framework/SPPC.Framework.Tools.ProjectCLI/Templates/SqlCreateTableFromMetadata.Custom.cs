@@ -35,6 +35,20 @@ namespace SPPC.Framework.Tools.ProjectCLI.Templates
             return String.Format("{0}{1}", type, padding);
         }
 
+        private string GetRelationArea(Entity entity, Relation relation)
+        {
+            string area = String.Empty;
+            var relatedEntity = entity.Repository.Entities
+                .Where(ent => ent.Name == relation.EntityName)
+                .SingleOrDefault();
+            if (relatedEntity != null)
+            {
+                area = relatedEntity.Area;
+            }
+
+            return area;
+        }
+
         private Entity[] _entities;
         private int _maxFieldPadding;
         private int _maxTypePadding;

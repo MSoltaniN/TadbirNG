@@ -415,7 +415,7 @@ foreach (var entity in _entities)
             this.Write("_");
             
             #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\SqlCreateTableFromMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
+            this.Write(this.ToStringHelper.ToStringWithCulture(GetRelationArea(entity, relation)));
             
             #line default
             #line hidden

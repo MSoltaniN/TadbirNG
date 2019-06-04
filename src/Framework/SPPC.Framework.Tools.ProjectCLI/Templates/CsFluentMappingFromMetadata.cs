@@ -86,38 +86,30 @@ bool needsRelationMapping = _entity.Relations
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n    internal sealed class ");
+            this.Write("\r\n{\r\n    internal static class ");
             
             #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
-            this.Write("Map\r\n    {\r\n        private ");
+            this.Write("Map\r\n    {\r\n        internal static void BuildMapping(EntityTypeBuilder<");
             
             #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
-            this.Write("Map()\r\n        {\r\n        }\r\n\r\n        internal static void BuildMapping(EntityTy" +
-                    "peBuilder<");
-            
-            #line 43 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
-            
-            #line default
-            #line hidden
             this.Write("> builder)\r\n        {\r\n            builder.ToTable(\"");
             
-            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
             this.Write("\", \"");
             
-            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Area));
             
             #line default
@@ -125,14 +117,14 @@ bool needsRelationMapping = _entity.Relations
             this.Write("\");\r\n            builder.HasKey(e => e.Id);\r\n            builder.Property(e => e." +
                     "Id)\r\n                .HasColumnName(\"");
             
-            #line 48 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 44 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idProperty.Storage.Name));
             
             #line default
             #line hidden
             this.Write("\");\r\n");
             
-            #line 49 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
 
     foreach (var property in customProperties)
     { 
@@ -141,14 +133,14 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("            builder.Property(e => e.");
             
-            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 48 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
             
             #line default
             #line hidden
             this.Write(")");
             
-            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 48 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
 
         if (property.ValidationRule.Required)
         { 
@@ -157,7 +149,7 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("\r\n                .IsRequired()");
             
-            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
 
         }
         if (property.ValidationRule.Type == ValidationRuleType.Length && !String.IsNullOrEmpty(property.ValidationRule.Maximum))
@@ -167,14 +159,14 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("\r\n                .HasMaxLength(");
             
-            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.ValidationRule.Maximum));
             
             #line default
             #line hidden
             this.Write(")");
             
-            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
 
         } 
             
@@ -182,7 +174,7 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write(";\r\n");
             
-            #line 63 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 59 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
   }
 
             
@@ -196,7 +188,7 @@ bool needsRelationMapping = _entity.Relations
                 .HasDefaultValueSql(""(getdate())"");
 ");
             
-            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
 
     if (needsRelationMapping)
     { 
@@ -205,7 +197,7 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("\r\n");
             
-            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
   }
 
     foreach (var relation in _entity.Relations)
@@ -217,14 +209,14 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("            builder.HasOne(e => e.");
             
-            #line 81 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EndpointName));
             
             #line default
             #line hidden
             this.Write(")\r\n                .WithMany()\r\n");
             
-            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
 
             string idPropName = String.Format("{0}Id", relation.EndpointName);
 			string idColName = String.Format("{0}ID", relation.EndpointName);
@@ -236,14 +228,14 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("                .HasForeignKey(e => e.");
             
-            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 85 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idPropName));
             
             #line default
             #line hidden
             this.Write(")\r\n");
             
-            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 86 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
           }
             else
             { 
@@ -252,14 +244,14 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("                .HasForeignKey(\"");
             
-            #line 93 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idColName));
             
             #line default
             #line hidden
             this.Write("\")\r\n");
             
-            #line 94 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
           } 
             
             #line default
@@ -267,35 +259,35 @@ bool needsRelationMapping = _entity.Relations
             this.Write("                .OnDelete(DeleteBehavior.ClientSetNull)\r\n                .HasCons" +
                     "traintName(\"FK_");
             
-            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 92 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Area));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 92 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Area));
+            #line 92 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GetRelationArea(relation)));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 92 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EndpointName));
             
             #line default
             #line hidden
             this.Write("\");\r\n");
             
-            #line 97 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 93 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
       }
         else if (relation.Multiplicity == RelationMultiplicity.OneToOne)
         { 
@@ -304,21 +296,21 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("            builder.HasOne(e => e.");
             
-            #line 100 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EndpointName));
             
             #line default
             #line hidden
             this.Write(")\r\n                .WithOne(p => p.");
             
-            #line 101 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 97 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
             this.Write(")\r\n");
             
-            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 98 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
 
             if (relation.HasKey)
             { 
@@ -327,21 +319,21 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("                .HasForeignKey<");
             
-            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 101 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
             this.Write(">(\"");
             
-            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 101 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EntityName));
             
             #line default
             #line hidden
             this.Write("ID\")\r\n");
             
-            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
           }
             else
             { 
@@ -350,21 +342,21 @@ bool needsRelationMapping = _entity.Relations
             #line hidden
             this.Write("                .HasForeignKey<");
             
-            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EntityName));
             
             #line default
             #line hidden
             this.Write(">(\"");
             
-            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
             this.Write("ID\")\r\n");
             
-            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
           }
 
             
@@ -373,42 +365,42 @@ bool needsRelationMapping = _entity.Relations
             this.Write("                .OnDelete(DeleteBehavior.ClientSetNull)\r\n                .HasCons" +
                     "traintName(\"FK_");
             
-            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Area));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Area));
+            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GetRelationArea(relation)));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EndpointName));
             
             #line default
             #line hidden
             this.Write("\");\r\n");
             
-            #line 114 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
       }
 
             
             #line default
             #line hidden
             
-            #line 116 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
+            #line 112 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsFluentMappingFromMetadata.tt"
   }
 
             

@@ -54,25 +54,47 @@ namespace SPPC.Framework.Tools.ProjectCLI.Templates
 
 using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
-
 ");
             
-            #line 23 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+
+foreach(var ns in GetRequiredNamespaces())
+{ 
+            
+            #line default
+            #line hidden
+            this.Write("using ");
+            
+            #line 24 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ns));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n");
+            
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+ }
+
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
  var codeNamespace = NamespaceUtil.GetNamespace(_entity.Repository, "Model", _entity.Area); 
             
             #line default
             #line hidden
             this.Write("namespace ");
             
-            #line 24 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(codeNamespace));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n");
             
-            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
   if(!String.IsNullOrWhiteSpace(_entity.Description))
     { 
             
@@ -80,36 +102,43 @@ using SPPC.Framework.Domain;
             #line hidden
             this.Write("    /// <summary>\r\n    /// ");
             
-            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 34 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Description));
             
             #line default
             #line hidden
             this.Write("\r\n    /// </summary>\r\n");
             
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
   } 
             
             #line default
             #line hidden
             this.Write("    public partial class ");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
-            this.Write(" : IEntity\r\n    {\r\n        /// <summary>\r\n        /// نمونه جدیدی از این کلاس می " +
-                    "سازد\r\n        /// </summary>\r\n        public ");
+            this.Write(" : ");
             
             #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Type));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n    {\r\n        /// <summary>\r\n        /// نمونه جدیدی از این کلاس می سازد\r\n    " +
+                    "    /// </summary>\r\n        public ");
+            
+            #line 42 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_entity.Name));
             
             #line default
             #line hidden
             this.Write("()\r\n        {\r\n");
             
-            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 44 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
 
 var textProps = _entity.Properties.Where(prop => prop.Type.ToString() == "String");
 foreach(var textProp in textProps)
@@ -119,106 +148,87 @@ foreach(var textProp in textProps)
             #line hidden
             this.Write("            ");
             
-            #line 43 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 48 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(textProp.Name));
             
             #line default
             #line hidden
             this.Write(" = String.Empty;\r\n");
             
-            #line 44 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 49 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+ }
+var dateProps = _entity.Properties.Where(prop => prop.Type.ToString() == "DateTime");
+foreach(var dateProp in dateProps)
+{ 
+            
+            #line default
+            #line hidden
+            this.Write("            ");
+            
+            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dateProp.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" = DateTime.Now;\r\n");
+            
+            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("            ModifiedDate = DateTime.Now;\r\n            InitReferences();\r\n        " +
-                    "}\r\n\r\n");
+            this.Write("        }\r\n");
             
-            #line 49 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
 
-foreach(var property in _entity.Properties)
+foreach(var property in GetNonInheritedProperties())
 {
-    if(property.Name == "Id")
+    if(!String.IsNullOrWhiteSpace(property.Description))
     { 
-            
-            #line default
-            #line hidden
-            this.Write("        /// <summary>\r\n        /// شناسه دیتابیسی این موجودیت که به صورت خودکار ت" +
-                    "وسط دیتابیس تولید می شود\r\n        /// </summary>\r\n        public virtual int Id " +
-                    "{ get; set; }\r\n");
-            
-            #line 58 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-  }
-    else if(property.Name == "RowGuid")
-    { 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n        /// <summary>\r\n        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار " +
-                    "توسط دیتابیس مقداردهی می شود\r\n        /// </summary>\r\n        public virtual Gui" +
-                    "d RowGuid { get; set; }\r\n");
-            
-            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-  }
-    else if(property.Name == "ModifiedDate")
-    { 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n        /// <summary>\r\n        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خ" +
-                    "ودکار توسط ابزار دسترسی به داده مقداردهی می شود\r\n        /// </summary>\r\n       " +
-                    " public virtual DateTime ModifiedDate { get; set; }\r\n");
-            
-            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-  }
-    else
-    {
-        if(!String.IsNullOrWhiteSpace(property.Description))
-        { 
             
             #line default
             #line hidden
             this.Write("\r\n        /// <summary>\r\n        /// ");
             
-            #line 81 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 63 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Description));
             
             #line default
             #line hidden
             this.Write("\r\n        /// </summary>\r\n");
             
-            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-      } 
+            #line 65 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+  } 
             
             #line default
             #line hidden
             this.Write("        public virtual ");
             
-            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.GetTypeAlias(property)));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
             
             #line default
             #line hidden
             this.Write(" { get; set; }\r\n");
             
-            #line 85 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-  }
+            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+
 }
-foreach (var relation in _entity.Relations)
+foreach (var relation in GetNonInheritedRelations())
 { 
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
   if (!String.IsNullOrEmpty(relation.Description))
     { 
             
@@ -226,14 +236,14 @@ foreach (var relation in _entity.Relations)
             #line hidden
             this.Write("        /// <summary>\r\n        /// ");
             
-            #line 93 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Description));
             
             #line default
             #line hidden
             this.Write("\r\n        /// </summary>\r\n");
             
-            #line 95 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
   }
     if (relation.Multiplicity == RelationMultiplicity.OneToOne || relation.Multiplicity == RelationMultiplicity.ManyToOne)
     { 
@@ -242,21 +252,21 @@ foreach (var relation in _entity.Relations)
             #line hidden
             this.Write("        public virtual ");
             
-            #line 98 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EntityName));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 98 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write(" { get; set; }\r\n");
             
-            #line 99 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 81 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
   }
     else if (relation.Multiplicity == RelationMultiplicity.OneToMany)
     { 
@@ -265,21 +275,21 @@ foreach (var relation in _entity.Relations)
             #line hidden
             this.Write("        public virtual IList<");
             
-            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EntityName));
             
             #line default
             #line hidden
             this.Write("> ");
             
-            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
             
             #line default
             #line hidden
             this.Write(" { get; protected set; }\r\n");
             
-            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 85 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
   }
     else if (relation.Multiplicity == RelationMultiplicity.ManyToMany)
     { 
@@ -288,106 +298,27 @@ foreach (var relation in _entity.Relations)
             #line hidden
             this.Write("        public virtual IList<");
             
-            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.JoinTable));
             
             #line default
             #line hidden
             this.Write("> ");
             
-            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.JoinTable));
             
             #line default
             #line hidden
             this.Write("s { get; protected set; }\r\n");
             
-            #line 107 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
+            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
   }
 } 
             
             #line default
             #line hidden
-            this.Write("\r\n        private void InitReferences()\r\n        {\r\n");
-            
-            #line 112 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-
-foreach (var relation in _entity.Relations)
-{
-    if (relation.Multiplicity == RelationMultiplicity.OneToMany)
-    { 
-            
-            #line default
-            #line hidden
-            this.Write("            ");
-            
-            #line 117 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write(" = new List<");
-            
-            #line 117 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.EntityName));
-            
-            #line default
-            #line hidden
-            this.Write(">();\r\n");
-            
-            #line 118 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-  }
-    if (relation.Multiplicity == RelationMultiplicity.ManyToMany)
-    { 
-            
-            #line default
-            #line hidden
-            this.Write("            ");
-            
-            #line 121 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.JoinTable));
-            
-            #line default
-            #line hidden
-            this.Write("s = new List<");
-            
-            #line 121 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.JoinTable));
-            
-            #line default
-            #line hidden
-            this.Write(">();\r\n");
-            
-            #line 122 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-  }
-    if (relation.Multiplicity == RelationMultiplicity.ManyToOne)
-    { 
-            
-            #line default
-            #line hidden
-            this.Write("            ");
-            
-            #line 125 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.Name));
-            
-            #line default
-            #line hidden
-            this.Write(" = new ");
-            
-            #line 125 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(relation.EntityName));
-            
-            #line default
-            #line hidden
-            this.Write("();\r\n");
-            
-            #line 126 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\CsPocoFromXmlMetadata.tt"
-  }
-} 
-            
-            #line default
-            #line hidden
-            this.Write("        }\r\n    }\r\n}\r\n");
+            this.Write("    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

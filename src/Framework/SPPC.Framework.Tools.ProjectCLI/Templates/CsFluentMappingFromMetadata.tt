@@ -34,12 +34,8 @@ using <#= usingNamespace #>;
 
 namespace <#= codeNamespace #>
 {
-    internal sealed class <#= _entity.Name #>Map
+    internal static class <#= _entity.Name #>Map
     {
-        private <#= _entity.Name #>Map()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<<#= _entity.Name #>> builder)
         {
             builder.ToTable("<#= _entity.Name #>", "<#= _entity.Area #>");
@@ -93,7 +89,7 @@ namespace <#= codeNamespace #>
                 .HasForeignKey("<#= idColName #>")
 <#          } #>
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_<#= _entity.Area #>_<#= _entity.Name #>_<#= _entity.Area #>_<#= relation.EndpointName #>");
+                .HasConstraintName("FK_<#= _entity.Area #>_<#= _entity.Name #>_<#= GetRelationArea(relation) #>_<#= relation.EndpointName #>");
 <#      }
         else if (relation.Multiplicity == RelationMultiplicity.OneToOne)
         { #>
@@ -110,7 +106,7 @@ namespace <#= codeNamespace #>
 <#          }
 #>
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_<#= _entity.Area #>_<#= _entity.Name #>_<#= _entity.Area #>_<#= relation.EndpointName #>");
+                .HasConstraintName("FK_<#= _entity.Area #>_<#= _entity.Name #>_<#= GetRelationArea(relation) #>_<#= relation.EndpointName #>");
 <#      }
 #>
 <#  }

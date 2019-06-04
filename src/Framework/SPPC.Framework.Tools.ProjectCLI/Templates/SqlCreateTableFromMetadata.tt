@@ -79,7 +79,7 @@ CREATE TABLE <#= tableName #> (
 <# }
    foreach (var relation in entity.Relations.Where(rel => rel.HasKey))
    {#>
-    , CONSTRAINT [FK_<#= entity.Area #>_<#= entity.Name #>_<#= entity.Area #>_<#= relation.EndpointName #>] FOREIGN KEY ([<#= relation.EndpointName #>ID]) REFERENCES [<#= entity.Area #>].[<#= relation.EntityName #>]([<#= relation.EntityName #>ID])
+    , CONSTRAINT [FK_<#= entity.Area #>_<#= entity.Name #>_<#= GetRelationArea(entity, relation) #>_<#= relation.EndpointName #>] FOREIGN KEY ([<#= relation.EndpointName #>ID]) REFERENCES [<#= entity.Area #>].[<#= relation.EntityName #>]([<#= relation.EntityName #>ID])
 <# }
 #>
 )

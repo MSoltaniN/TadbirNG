@@ -164,6 +164,10 @@
       <Project>{d1f6c20d-75c8-4b50-b4c3-4a695158b45e}</Project>
       <Name>SPPC.Tadbir.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj">
+      <Project>{332e0afe-ec57-480c-9f93-e2a48167fc6d}</Project>
+      <Name>SPPC.Tadbir.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
       <Project>{1359a987-13f0-4013-be47-017287889165}</Project>
       <Name>SPPC.Tadbir.ViewModel</Name>
