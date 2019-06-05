@@ -19,6 +19,10 @@ namespace SPPC.Tadbir.Persistence
             _contextAccessor = contextAccessor;
         }
 
+        /// <summary>
+        /// دیتابیس جاری را مطابق با رشته اتصال دیتابیسی داده شده تنظیم می کند
+        /// </summary>
+        /// <param name="connection">رشته اتصال دیتابیسی مورد نظر</param>
         public void SwitchCompany(string connection)
         {
             _contextAccessor.SwitchCompanyContext(connection);

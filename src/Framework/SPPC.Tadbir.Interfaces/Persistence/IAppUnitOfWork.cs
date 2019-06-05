@@ -14,6 +14,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         void UseCompanyContext();
 
+        /// <summary>
+        /// دیتابیس جاری را مطابق با رشته اتصال دیتابیسی داده شده تنظیم می کند
+        /// </summary>
+        /// <param name="connection">رشته اتصال دیتابیسی مورد نظر</param>
         void SwitchCompany(string connection);
 
         /// <summary>

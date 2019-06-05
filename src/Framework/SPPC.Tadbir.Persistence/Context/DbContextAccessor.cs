@@ -19,6 +19,10 @@ namespace SPPC.Tadbir.Persistence
             SystemContext = systemContext;
         }
 
+        /// <summary>
+        /// دیتابیس جاری را مطابق با رشته اتصال دیتابیسی داده شده تنظیم می کند
+        /// </summary>
+        /// <param name="connection">رشته اتصال دیتابیسی مورد نظر</param>
         public void SwitchCompanyContext(string connection)
         {
             CompanyContext = new TadbirContext(connection);

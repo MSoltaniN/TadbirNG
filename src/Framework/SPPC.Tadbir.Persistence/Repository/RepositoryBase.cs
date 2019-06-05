@@ -41,6 +41,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         protected IMetadataRepository Metadata { get; }
 
+        /// <summary>
+        /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
+        /// </summary>
+        /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
         public async Task SetCurrentCompanyAsync(int companyId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
