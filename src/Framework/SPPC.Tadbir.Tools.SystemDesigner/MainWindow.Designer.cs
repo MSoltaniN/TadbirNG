@@ -31,6 +31,8 @@
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.menuSecurity = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSecurityPermission = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuGenerate = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuGenerateBlankController = new System.Windows.Forms.ToolStripMenuItem();
             this.wizardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewWizardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
@@ -41,6 +43,7 @@
             this.mainMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuSecurity,
+            this.menuGenerate,
             this.wizardsToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
@@ -64,6 +67,21 @@
             this.menuSecurityPermission.Size = new System.Drawing.Size(307, 26);
             this.menuSecurityPermission.Text = "&Permission Designer";
             // 
+            // menuGenerate
+            // 
+            this.menuGenerate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuGenerateBlankController});
+            this.menuGenerate.Name = "menuGenerate";
+            this.menuGenerate.Size = new System.Drawing.Size(81, 24);
+            this.menuGenerate.Text = "&Generate";
+            // 
+            // menuGenerateBlankController
+            // 
+            this.menuGenerateBlankController.Name = "menuGenerateBlankController";
+            this.menuGenerateBlankController.Size = new System.Drawing.Size(216, 26);
+            this.menuGenerateBlankController.Text = "API Controller...";
+            this.menuGenerateBlankController.Click += new System.EventHandler(this.GenerateApiController_Click);
+            // 
             // wizardsToolStripMenuItem
             // 
             this.wizardsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -75,7 +93,7 @@
             // viewWizardToolStripMenuItem
             // 
             this.viewWizardToolStripMenuItem.Name = "viewWizardToolStripMenuItem";
-            this.viewWizardToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.viewWizardToolStripMenuItem.Size = new System.Drawing.Size(167, 26);
             this.viewWizardToolStripMenuItem.Text = "View Wizard";
             this.viewWizardToolStripMenuItem.Click += new System.EventHandler(this.viewWizardToolStripMenuItem_Click);
             // 
@@ -104,6 +122,8 @@
         private System.Windows.Forms.ToolStripMenuItem menuSecurityPermission;
         private System.Windows.Forms.ToolStripMenuItem wizardsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewWizardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuGenerate;
+        private System.Windows.Forms.ToolStripMenuItem menuGenerateBlankController;
     }
 }
 

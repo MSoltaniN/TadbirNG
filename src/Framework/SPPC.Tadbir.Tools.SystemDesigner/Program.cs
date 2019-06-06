@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         [STAThread]
         static void Main()
         {
-            DoXferTadbirDb();
+            //DoXferTadbirDb();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWindow());

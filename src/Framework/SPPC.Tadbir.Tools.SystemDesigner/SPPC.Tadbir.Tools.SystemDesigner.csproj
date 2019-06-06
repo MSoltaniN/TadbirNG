@@ -55,21 +55,48 @@
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Commands\GenerateControllerCommand.cs" />
     <Compile Include="Designers\PermissionDesignerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Designers\PermissionDesignerForm.Designer.cs">
       <DependentUpon>PermissionDesignerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\GenerateControllerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GenerateControllerForm.Designer.cs">
+      <DependentUpon>GenerateControllerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ITextTemplate.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\ControllerModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts.cs" />
+    <Compile Include="Templates\BlankController.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlankController.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\BlankController.Custom.cs" />
+    <Compile Include="Templates\EmptyCrudController.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmptyCrudController.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\EmptyCrudController.Custom.cs" />
+    <Compile Include="Wizards\NewCrudEntityWizard\NewCrudEntityWizardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wizards\NewCrudEntityWizard\NewCrudEntityWizardForm.Designer.cs">
+      <DependentUpon>NewCrudEntityWizardForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Wizards\ViewWizard\EditColumnsForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -98,6 +125,9 @@
     <EmbeddedResource Include="Designers\PermissionDesignerForm.resx">
       <DependentUpon>PermissionDesignerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GenerateControllerForm.resx">
+      <DependentUpon>GenerateControllerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,6 +140,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Wizards\NewCrudEntityWizard\NewCrudEntityWizardForm.resx">
+      <DependentUpon>NewCrudEntityWizardForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Wizards\ViewWizard\EditColumnsForm.resx">
       <DependentUpon>EditColumnsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,5 +186,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Templates\BlankController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BlankController.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\EmptyCrudController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EmptyCrudController.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

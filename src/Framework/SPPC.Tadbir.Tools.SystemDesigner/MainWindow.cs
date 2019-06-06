@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
+using SPPC.Tadbir.Tools.SystemDesigner.Commands;
+using SPPC.Tadbir.Tools.SystemDesigner.Forms;
+using SPPC.Tadbir.Tools.SystemDesigner.Models;
 using SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner
 {
@@ -19,6 +21,18 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             //wizardPage.View = new ViewViewModel() { Name = "MyLousyView", FetchUrl = "my/lousy/fetch/url", IsHierarchy = true };
             wizard.Controls.Add(wizardPage);
             wizard.Show();
+        }
+
+        private void GenerateApiController_Click(object sender, EventArgs e)
+        {
+            var form = new GenerateControllerForm() { Controller = new ControllerModel() };
+            if (form.ShowDialog(this) == DialogResult.OK)
+            {
+                var command = new GenerateControllerCommand(form.Controller);
+                command.Execute();
+                MessageBox.Show(this, "Generation completed without errors.", "Success",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }
