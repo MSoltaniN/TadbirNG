@@ -43,6 +43,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
             chkModel.DataBindings.Add("Checked", Options, "HasModel");
             chkViewModel.DataBindings.Add("Checked", Options, "HasViewModel");
             chkDbMapping.DataBindings.Add("Checked", Options, "HasDbMapping");
+            chkDbScript.DataBindings.Add("Checked", Options, "HasDbScript");
             chkRepoInterface.DataBindings.Add("Checked", Options, "HasRepoInterface");
             chkRepoImpl.DataBindings.Add("Checked", Options, "HasRepoImplementation");
             chkApiRoutes.DataBindings.Add("Checked", Options, "HasApiRouting");

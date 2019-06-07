@@ -41,11 +41,13 @@
             this.chkWithImpl = new System.Windows.Forms.CheckBox();
             this.chkWithMethod = new System.Windows.Forms.CheckBox();
             this.chkController = new System.Windows.Forms.CheckBox();
+            this.chkDbScript = new System.Windows.Forms.CheckBox();
             this.grpOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpOptions
             // 
+            this.grpOptions.Controls.Add(this.chkDbScript);
             this.grpOptions.Controls.Add(this.chkTsApiRouting);
             this.grpOptions.Controls.Add(this.chkTsViewModel);
             this.grpOptions.Controls.Add(this.chkPermEnum);
@@ -69,30 +71,30 @@
             // chkTsApiRouting
             // 
             this.chkTsApiRouting.AutoSize = true;
-            this.chkTsApiRouting.Location = new System.Drawing.Point(10, 287);
+            this.chkTsApiRouting.Location = new System.Drawing.Point(10, 316);
             this.chkTsApiRouting.Name = "chkTsApiRouting";
             this.chkTsApiRouting.Size = new System.Drawing.Size(240, 21);
-            this.chkTsApiRouting.TabIndex = 11;
+            this.chkTsApiRouting.TabIndex = 12;
             this.chkTsApiRouting.Text = "Generate TypeScript API Routing";
             this.chkTsApiRouting.UseVisualStyleBackColor = true;
             // 
             // chkTsViewModel
             // 
             this.chkTsViewModel.AutoSize = true;
-            this.chkTsViewModel.Location = new System.Drawing.Point(10, 260);
+            this.chkTsViewModel.Location = new System.Drawing.Point(10, 289);
             this.chkTsViewModel.Name = "chkTsViewModel";
             this.chkTsViewModel.Size = new System.Drawing.Size(237, 21);
-            this.chkTsViewModel.TabIndex = 10;
+            this.chkTsViewModel.TabIndex = 11;
             this.chkTsViewModel.Text = "Generate TypeScript View Model";
             this.chkTsViewModel.UseVisualStyleBackColor = true;
             // 
             // chkPermEnum
             // 
             this.chkPermEnum.AutoSize = true;
-            this.chkPermEnum.Location = new System.Drawing.Point(10, 233);
+            this.chkPermEnum.Location = new System.Drawing.Point(10, 262);
             this.chkPermEnum.Name = "chkPermEnum";
             this.chkPermEnum.Size = new System.Drawing.Size(210, 21);
-            this.chkPermEnum.TabIndex = 9;
+            this.chkPermEnum.TabIndex = 10;
             this.chkPermEnum.Text = "Generate Permissions Enum";
             this.chkPermEnum.UseVisualStyleBackColor = true;
             this.chkPermEnum.CheckedChanged += new System.EventHandler(this.PermEnum_CheckedChanged);
@@ -100,30 +102,30 @@
             // chkApiRoutes
             // 
             this.chkApiRoutes.AutoSize = true;
-            this.chkApiRoutes.Location = new System.Drawing.Point(10, 206);
+            this.chkApiRoutes.Location = new System.Drawing.Point(10, 235);
             this.chkApiRoutes.Name = "chkApiRoutes";
             this.chkApiRoutes.Size = new System.Drawing.Size(168, 21);
-            this.chkApiRoutes.TabIndex = 8;
+            this.chkApiRoutes.TabIndex = 9;
             this.chkApiRoutes.Text = "Generate API Routing";
             this.chkApiRoutes.UseVisualStyleBackColor = true;
             // 
             // chkRepoImpl
             // 
             this.chkRepoImpl.AutoSize = true;
-            this.chkRepoImpl.Location = new System.Drawing.Point(10, 179);
+            this.chkRepoImpl.Location = new System.Drawing.Point(10, 208);
             this.chkRepoImpl.Name = "chkRepoImpl";
             this.chkRepoImpl.Size = new System.Drawing.Size(261, 21);
-            this.chkRepoImpl.TabIndex = 7;
+            this.chkRepoImpl.TabIndex = 8;
             this.chkRepoImpl.Text = "Generate Repository Implementation";
             this.chkRepoImpl.UseVisualStyleBackColor = true;
             // 
             // chkRepoInterface
             // 
             this.chkRepoInterface.AutoSize = true;
-            this.chkRepoInterface.Location = new System.Drawing.Point(10, 152);
+            this.chkRepoInterface.Location = new System.Drawing.Point(10, 181);
             this.chkRepoInterface.Name = "chkRepoInterface";
             this.chkRepoInterface.Size = new System.Drawing.Size(221, 21);
-            this.chkRepoInterface.TabIndex = 6;
+            this.chkRepoInterface.TabIndex = 7;
             this.chkRepoInterface.Text = "Generate Repository Interface";
             this.chkRepoInterface.UseVisualStyleBackColor = true;
             // 
@@ -188,6 +190,16 @@
             this.chkController.UseVisualStyleBackColor = true;
             this.chkController.CheckedChanged += new System.EventHandler(this.Controller_CheckedChanged);
             // 
+            // chkDbScript
+            // 
+            this.chkDbScript.AutoSize = true;
+            this.chkDbScript.Location = new System.Drawing.Point(10, 153);
+            this.chkDbScript.Name = "chkDbScript";
+            this.chkDbScript.Size = new System.Drawing.Size(237, 21);
+            this.chkDbScript.TabIndex = 6;
+            this.chkDbScript.Text = "Generate CREATE TABLE Script";
+            this.chkDbScript.UseVisualStyleBackColor = true;
+            // 
             // WizardOptionsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -216,5 +228,6 @@
         private System.Windows.Forms.CheckBox chkApiRoutes;
         private System.Windows.Forms.CheckBox chkRepoImpl;
         private System.Windows.Forms.CheckBox chkRepoInterface;
+        private System.Windows.Forms.CheckBox chkDbScript;
     }
 }

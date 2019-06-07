@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
             base.OnLoad(e);
             SetupBindings();
             var repository = LoadXmlMetadataRepository(
-                ConfigurationManager.AppSettings["MetadataPath"]);
+                ConfigurationManager.AppSettings["XmlRepoPath"]);
             cmbEntity.DataSource = repository.Entities.ToList();
         }
 
