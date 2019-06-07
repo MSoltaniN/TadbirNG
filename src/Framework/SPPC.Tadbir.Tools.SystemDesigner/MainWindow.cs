@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using SPPC.Tadbir.Tools.SystemDesigner.Commands;
 using SPPC.Tadbir.Tools.SystemDesigner.Forms;
 using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using SPPC.Tadbir.Tools.SystemDesigner.Wizards.NewCrudEntityWizard;
 using SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner
@@ -31,6 +32,18 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
                 var command = new GenerateControllerCommand(form.Controller);
                 command.Execute();
                 MessageBox.Show(this, "Generation completed without errors.", "Success",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void WizardsCrudManager_Click(object sender, EventArgs e)
+        {
+            var form = new NewCrudEntityWizardForm();
+            if (form.ShowDialog(this) == DialogResult.OK)
+            {
+                var command = new CrudEntityWizardCommand(form.WizardModel);
+                command.Execute();
+                MessageBox.Show(this, "Wizard completed!", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }

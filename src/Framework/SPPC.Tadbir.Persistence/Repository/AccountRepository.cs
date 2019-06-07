@@ -15,7 +15,6 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
