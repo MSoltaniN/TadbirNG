@@ -23,6 +23,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
             {
                 GenerateModelLayer();
             }
+            if (_model.Options.HasRepoInterface || _model.Options.HasRepoImplementation)
+            {
+                GeneratePersistenceLayer();
+            }
         }
 
         private void GenerateController()
@@ -37,6 +41,12 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
         private void GenerateModelLayer()
         {
             var command = new GenerateCsModelCommand(_model);
+            command.Execute();
+        }
+
+        private void GeneratePersistenceLayer()
+        {
+            var command = new GenerateRepositoryCommand(_model);
             command.Execute();
         }
 

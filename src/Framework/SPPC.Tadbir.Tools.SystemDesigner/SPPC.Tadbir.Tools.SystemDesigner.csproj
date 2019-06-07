@@ -67,7 +67,8 @@
     <Compile Include="Commands\CrudEntityWizardCommand.cs" />
     <Compile Include="Commands\GenerateControllerCommand.cs" />
     <Compile Include="Commands\GenerateCsModelCommand.cs" />
-    <Compile Include="Commands\ICliCommand.cs" />
+    <Compile Include="Commands\GenerateRepositoryCommand.cs" />
+    <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Designers\PermissionDesignerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +129,18 @@
       <DependentUpon>EmptyCrudController.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\EmptyCrudController.Custom.cs" />
+    <Compile Include="Templates\RepoImplementationFromMetadata.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepoImplementationFromMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\RepoImplementationFromMetadata.Custom.cs" />
+    <Compile Include="Templates\RepoInterfaceFromMetadata.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepoInterfaceFromMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\RepoInterfaceFromMetadata.Custom.cs" />
     <Compile Include="Templates\SqlCreateTableFromMetadata.cs">
       <DependentUpon>SqlCreateTableFromMetadata.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -272,6 +285,14 @@
     <Content Include="Templates\BlankController.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>BlankController.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\RepoImplementationFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepoImplementationFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\RepoInterfaceFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepoInterfaceFromMetadata.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\SqlCreateTableFromMetadata.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
