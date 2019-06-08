@@ -547,7 +547,7 @@
     "New": "New Voucher",
     "Edit": "Edit",
     "Delete": "Delete",
-    "No": "Voucher No",
+    "No": "Number",
     "Date": "Date",
     "Description": "Description",
     "BranchId": "Branch",
@@ -575,7 +575,8 @@
     "NotCommitted": "Not Committed",
     "Committed": "Committed",
     "Finalized": "Finalized",
-    "Version": "Version"
+    "Version": "Version",
+    "VoucherNotFound": "Voucher Not Found"
   },
   "User": {
     "New": "New User",

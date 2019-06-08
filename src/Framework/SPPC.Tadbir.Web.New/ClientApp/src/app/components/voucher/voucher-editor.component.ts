@@ -157,11 +157,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.voucherService.getModels(apiUrl).subscribe(res => {
 
       this.initVoucherForm(res);
-
+      this.errorMessage = undefined;
     },
       error => {
         if (error.status == 404) {
-          this.showMessage("سند مورد نظر یافت نشد", MessageType.Warning);
+          this.showMessage(this.getText("Voucher.VoucherNotFound"), MessageType.Warning);
           if (byNo)
             this.router.navigate(['/home'], { queryParams: { returnUrl: 'vouchers/by-no' } });
         }
@@ -169,12 +169,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       })
   }
 
-  initVoucherForm(item: Voucher) {    
+  initVoucherForm(item: Voucher) {
 
     this.editForm.reset(item);
 
     this.voucherModel = item;
-    this.selectedType = this.voucherModel.type.toString();   
+    this.selectedType = this.voucherModel.type.toString();
   }
 
   getVoucherType() {
@@ -191,6 +191,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       let model: Voucher = this.editForm.value;
       model.branchId = this.BranchId;
       model.fiscalPeriodId = this.FiscalPeriodId;
+      model.statusId = this.voucherModel.statusId;
 
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
         .subscribe(response => {
@@ -224,16 +225,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   checkHandler() {
+    this.errorMessage = undefined;
     if (this.voucherModel.statusId == DocumentStatusValue.Draft) {
       //check
       this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, this.voucherModel.id)).subscribe(res => {
 
         this.voucherModel.statusId = DocumentStatusValue.NormalCheck;
-        this.showMessage(this.updateMsg, MessageType.Succes);
-
       }, (error => {
         var message = error.message ? error.message : error;
-        this.showMessage(message, MessageType.Warning);
+        this.errorMessage = message;
       }));
 
     }
@@ -242,11 +242,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, this.voucherModel.id)).subscribe(res => {
 
         this.voucherModel.statusId = DocumentStatusValue.Draft;
-        this.showMessage(this.updateMsg, MessageType.Succes);
-
       }, (error => {
         var message = error.message ? error.message : error;
-        this.showMessage(message, MessageType.Warning);
+        this.errorMessage = message;
       }));
     }
 

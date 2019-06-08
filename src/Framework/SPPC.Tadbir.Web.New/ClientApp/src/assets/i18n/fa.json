@@ -545,7 +545,7 @@
     "New": "سند جدید",
     "Edit": "ویرایش",
     "Delete": "حذف سند",
-    "No": "شماره سند مالی",
+    "No": "شماره",
     "Date": "تاریخ",
     "Description": "شرح",
     "BranchId": "شعبه",
@@ -573,7 +573,8 @@
     "NotCommitted": "ثبت نشده",
     "Committed": "ثبت شده",
     "Finalized": "ثبت قطعی",
-    "Version": "نسخه"
+    "Version": "نسخه",
+    "VoucherNotFound": "سند مورد نظر یافت نشد"
   },
   "User": {
     "New": "کاربر جدید",
