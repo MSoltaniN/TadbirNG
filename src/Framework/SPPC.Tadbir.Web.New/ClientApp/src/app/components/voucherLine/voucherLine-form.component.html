@@ -30,13 +30,16 @@
               <div class="form-group row" *ngIf="creditDebiteMode == '1'">
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-                <sppc-numerictextbox class="col-xs-8 col-sm-9 sppc-input-num sppc-float" formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
+                <!--<sppc-numerictextbox class="col-xs-8 col-sm-9 sppc-input-num sppc-float" formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>-->
+                <sppc-numericInput formControlName="debit" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>
               </div>
 
               <div class="form-group row" *ngIf="creditDebiteMode == '2'">
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-                <sppc-numerictextbox class="col-xs-8 col-sm-9 sppc-input-num sppc-float" formControlName="credit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
+                <!--<sppc-numerictextbox class="col-xs-8 col-sm-9 sppc-input-num sppc-float" formControlName="credit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>-->
+                <sppc-numericInput formControlName="credit" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>
+
               </div>
             </div>
           </div>

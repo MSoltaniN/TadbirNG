@@ -79,6 +79,7 @@ import { Layout } from '../environments/environment';
 //custom controls
 import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
 import { SppcNumericTextBox } from './controls/textbox/sppc-numerictextbox';
+import { SppcNumericInput } from './controls/textbox/sppc-numericInput';
 import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
 import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
 import { SppcDateRangeSelector } from './controls/dateRangeSelector/sppc-dateRangeSelector';
@@ -188,6 +189,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LogoutComponent,
     SppcMaskTextBox,
     SppcNumericTextBox,
+    SppcNumericInput,
     SppcDropDownList,
     SppcDatepicker,
     SppcDateRangeSelector,

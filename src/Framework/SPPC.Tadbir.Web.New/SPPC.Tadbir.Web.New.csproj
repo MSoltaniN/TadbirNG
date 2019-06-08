@@ -100,6 +100,7 @@
     <None Remove="ClientApp\src\app\controls\sppcLoading\sppc-loading.component.ts" />
     <None Remove="ClientApp\src\app\controls\sppcLoading\sppc-loading.service.ts" />
     <None Remove="ClientApp\src\app\controls\textbox\sppc-mask-textbox.ts" />
+    <None Remove="ClientApp\src\app\controls\textbox\sppc-numericInput.ts" />
     <None Remove="ClientApp\src\app\controls\textbox\sppc-numerictextbox.ts" />
     <None Remove="ClientApp\src\app\directive\editorForm\editor-title.component.ts" />
     <None Remove="ClientApp\src\app\directive\fullCode\fullCode.directive.ts" />
@@ -955,6 +956,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\controls\sppcLoading\sppc-loading.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\sppcLoading\sppc-loading.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\textbox\sppc-mask-textbox.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\controls\textbox\sppc-numericInput.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\textbox\sppc-numerictextbox.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\editorForm\editor-title.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\fullCode\fullCodeTest.directive.ts" />
