@@ -85,17 +85,15 @@ namespace SPPC.Tadbir.Persistence
         {
             int lastNo = await GetLastVoucherNoAsync();
             DateTime lastDate = await GetLastVoucherDateAsync();
-            int dailyNo = await GetDailyVoucherNoAsync(lastDate);
             var newVoucher = new VoucherViewModel()
             {
                 Date = lastDate,
                 No = lastNo + 1,
-                DailyNo = dailyNo,
                 BranchId = _currentContext.BranchId,
                 FiscalPeriodId = _currentContext.FiscalPeriodId,
                 Type = 0,
                 SubjectType = 0,
-                SaveCount = -1
+                SaveCount = 0
             };
 
             return await SaveVoucherAsync(newVoucher);
@@ -212,6 +210,15 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، شماره روزانه سند را با توجه به سندهای موجود در یک تاریخ تنظیم می کند
+        /// </summary>
+        /// <param name="voucher">اطلاعات نمایشی سند جدید</param>
+        public async Task SetVoucherDailyNoAsync(VoucherViewModel voucher)
+        {
+            voucher.DailyNo = await GetNextDailyNoAsync(voucher);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="voucherView">سند مالی برای ایجاد یا اصلاح</param>
@@ -226,7 +233,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 voucher = Mapper.Map<Voucher>(voucherView);
                 voucher.StatusId = (int)DocumentStatusValue.Draft;
-                voucher.SaveCount++;
                 voucher.IssuedById = _currentContext.Id;
                 voucher.ModifiedById = _currentContext.Id;
                 voucher.IssuerName = voucher.ModifierName = displayName;
@@ -277,6 +283,29 @@ namespace SPPC.Tadbir.Persistence
                     && vch.SubjectType == voucher.SubjectType
                     && vch.FiscalPeriod.Id == voucher.FiscalPeriodId);
             return (duplicates.Count > 0);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا شماره روزانه سند مورد نظر، با توجه به تاریخ سند، تکراری است یا نه
+        /// </summary>
+        /// <param name="voucher">سند مالی که تکراری بودن شماره روزانه آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن شماره، در غیر این صورت مقدار بولی نادرست</returns>
+        public async Task<bool> IsDuplicateVoucherDailyNoAsync(VoucherViewModel voucher)
+        {
+            bool isDuplicate = false;
+            Verify.ArgumentNotNull(voucher, nameof(voucher));
+            if (voucher.Id > 0)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+                int count = await repository.GetCountByCriteriaAsync(
+                    v => v.Id != voucher.Id
+                        && voucher.Date.CompareWith(v.Date) == 0
+                        && v.DailyNo == voucher.DailyNo
+                        && v.FiscalPeriodId == voucher.FiscalPeriodId);
+                isDuplicate = (count > 0);
+            }
+
+            return isDuplicate;
         }
 
         /// <summary>
@@ -375,12 +404,23 @@ namespace SPPC.Tadbir.Persistence
             return (lastByNo != null) ? lastByNo.No : 1;
         }
 
-        private async Task<int> GetDailyVoucherNoAsync(DateTime lastDate)
+        /// <summary>
+        /// به روش آسنکرون، شماره روزانه بعدی را برای سند مورد نظر به دست آورده و برمی گرداند
+        /// </summary>
+        /// <param name="voucher">مدل نمایشی سند مورد نظر</param>
+        /// <returns>شماره روزانه بعدی</returns>
+        private async Task<int> GetNextDailyNoAsync(VoucherViewModel voucher)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            int count = await repository.GetCountByCriteriaAsync(
-                voucher => lastDate.CompareWith(voucher.Date) == 0);
-            return count + 1;
+            var sameDate = await repository
+                .GetByCriteriaAsync(v => v.Date == voucher.Date
+                    && v.FiscalPeriodId == voucher.FiscalPeriodId
+                    && v.SubjectType == voucher.SubjectType);
+            int lastNo = sameDate
+                .OrderByDescending(v => v.DailyNo)
+                .Select(v => v.DailyNo)
+                .FirstOrDefault();
+            return (lastNo + 1);
         }
 
         private async Task ManageDocumentAsync(Voucher voucher)

@@ -86,6 +86,12 @@ namespace SPPC.Tadbir.Persistence
             where TViewModel : class, new();
 
         /// <summary>
+        /// به روش آسنکرون، شماره روزانه سند را با توجه به سندهای موجود در یک تاریخ تنظیم می کند
+        /// </summary>
+        /// <param name="voucher">اطلاعات نمایشی سند جدید</param>
+        Task SetVoucherDailyNoAsync(VoucherViewModel voucher);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
@@ -104,6 +110,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucher">سند مالی که تکراری بودن شماره آن باید بررسی شود</param>
         /// <returns>مقدار بولی درست در صورت تکراری بودن شماره، در غیر این صورت مقدار بولی نادرست</returns>
         Task<bool> IsDuplicateVoucherNoAsync(VoucherViewModel voucher);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا شماره روزانه سند مورد نظر، با توجه به تاریخ سند، تکراری است یا نه
+        /// </summary>
+        /// <param name="voucher">سند مالی که تکراری بودن شماره روزانه آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن شماره، در غیر این صورت مقدار بولی نادرست</returns>
+        Task<bool> IsDuplicateVoucherDailyNoAsync(VoucherViewModel voucher);
 
         /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند

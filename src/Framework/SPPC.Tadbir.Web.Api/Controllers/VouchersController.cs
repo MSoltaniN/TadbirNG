@@ -170,6 +170,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             _repository.SetCurrentContext(SecurityContext.User);
+            if (voucher.SaveCount == 0)
+            {
+                await _repository.SetVoucherDailyNoAsync(voucher);
+            }
+
             var outputVoucher = await _repository.SaveVoucherAsync(voucher);
             result = (outputVoucher != null)
                 ? Ok(outputVoucher)
@@ -367,6 +372,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (await _repository.IsDuplicateVoucherNoAsync(voucher))
             {
                 return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.VoucherNo));
+            }
+
+            if (await _repository.IsDuplicateVoucherDailyNoAsync(voucher))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DailyNo));
             }
 
             var fiscalPeriod = await _repository.GetVoucherFiscalPeriodAsync(voucher);
