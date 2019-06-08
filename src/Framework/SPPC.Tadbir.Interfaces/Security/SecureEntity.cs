@@ -101,5 +101,15 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت گزارش کاربری
         /// </summary>
         public const string UserReport = "UserReport";
+
+        /// <summary>
+        /// نام موجودیت دفتر روزنامه
+        /// </summary>
+        public const string Journal = "Journal";
+
+        /// <summary>
+        /// نام موجودیت گزارش
+        /// </summary>
+        public const string Report = "Report";
     }
 }

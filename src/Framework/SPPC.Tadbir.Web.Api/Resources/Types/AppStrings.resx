@@ -1098,4 +1098,34 @@
   <data name="SpecialOps" xml:space="preserve">
     <value>عملیات ویژه</value>
   </data>
+  <data name="Design" xml:space="preserve">
+    <value>تغییر فرم</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>فیلتر</value>
+  </data>
+  <data name="JournalReport" xml:space="preserve">
+    <value>گزارش دفتر روزنامه</value>
+  </data>
+  <data name="Lookup" xml:space="preserve">
+    <value>جستجو</value>
+  </data>
+  <data name="Mark" xml:space="preserve">
+    <value>علامتگذاری</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>چاپ</value>
+  </data>
+  <data name="QuickReportDesign" xml:space="preserve">
+    <value>تغییر فرم گزارش فوری</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>گزارشات</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>مشاهده</value>
+  </data>
+  <data name="ViewByBranch" xml:space="preserve">
+    <value>مشاهده به تفکیک شعبه</value>
+  </data>
 </root>

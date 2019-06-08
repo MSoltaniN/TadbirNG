@@ -7,8 +7,10 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Reporting;
+using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -28,6 +30,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-row
         [Route(JournalApi.JournalByDateByRowUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByDateByRowAsync(
             DateTime? from, DateTime? to)
         {
@@ -37,6 +40,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-row-detail
         [Route(JournalApi.JournalByDateByRowDetailUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByDateByRowDetailAsync(
             DateTime? from, DateTime? to)
         {
@@ -46,6 +50,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-ledger
         [Route(JournalApi.JournalByDateByLedgerUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByDateByLedgerAsync(
             DateTime? from, DateTime? to)
         {
@@ -55,6 +60,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-subsid
         [Route(JournalApi.JournalByDateBySubsidiaryUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByDateBySubsidiaryAsync(
             DateTime? from, DateTime? to)
         {
@@ -64,6 +70,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/summary
         [Route(JournalApi.JournalByDateLedgerSummaryUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByDateLedgerSummaryAsync(
             DateTime? from, DateTime? to)
         {
@@ -73,6 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/sum-by-date
         [Route(JournalApi.JournalByDateLedgerSummaryByDateUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByDateLedgerSummaryByDateAsync(
             DateTime? from, DateTime? to)
         {
@@ -82,6 +90,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/sum-by-month
         [Route(JournalApi.JournalByDateMonthlyLedgerSummaryUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByDateMonthlyLedgerSummaryAsync(
             DateTime? from, DateTime? to)
         {
@@ -95,6 +104,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-row/by-branch
         [Route(JournalApi.JournalByDateByRowByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByDateByRowByBranchAsync(
             DateTime? from, DateTime? to)
         {
@@ -104,6 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-row-detail/by-branch
         [Route(JournalApi.JournalByDateByRowDetailByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByDateByRowDetailByBranchAsync(
             DateTime? from, DateTime? to)
         {
@@ -113,6 +124,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-ledger/by-branch
         [Route(JournalApi.JournalByDateByLedgerByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByDateByLedgerByBranchAsync(
             DateTime? from, DateTime? to)
         {
@@ -122,6 +134,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/by-subsid/by-branch
         [Route(JournalApi.JournalByDateBySubsidiaryByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByDateBySubsidiaryByBranchAsync(
             DateTime? from, DateTime? to)
         {
@@ -131,6 +144,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/summary/by-branch
         [Route(JournalApi.JournalByDateLedgerSummaryByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByDateLedgerSummaryByBranchAsync(
             DateTime? from, DateTime? to)
         {
@@ -140,6 +154,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/sum-by-date/by-branch
         [Route(JournalApi.JournalByDateLedgerSummaryByDateByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByDateLedgerSummaryByDateByBranchAsync(
             DateTime? from, DateTime? to)
         {
@@ -149,6 +164,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-date/sum-by-month/by-branch
         [Route(JournalApi.JournalByDateMonthlyLedgerSummaryByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByDateMonthlyLedgerSummaryByBranchAsync(
             DateTime? from, DateTime? to)
         {
@@ -162,6 +178,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-row
         [Route(JournalApi.JournalByNoByRowUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByNoByRowAsync(int from, int to)
         {
             var mode = JournalMode.ByRows;
@@ -170,6 +187,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-row-detail
         [Route(JournalApi.JournalByNoByRowDetailUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByNoByRowDetailAsync(int from, int to)
         {
             var mode = JournalMode.ByRowsWithDetail;
@@ -178,6 +196,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-ledger
         [Route(JournalApi.JournalByNoByLedgerUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByNoByLedgerAsync(int from, int to)
         {
             var mode = JournalMode.ByLedger;
@@ -186,6 +205,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-subsid
         [Route(JournalApi.JournalByNoBySubsidiaryUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByNoBySubsidiaryAsync(int from, int to)
         {
             var mode = JournalMode.BySubsidiary;
@@ -194,6 +214,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/summary
         [Route(JournalApi.JournalByNoLedgerSummaryUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.View)]
         public async Task<IActionResult> GetJournalByNoLedgerSummaryAsync(int from, int to)
         {
             var mode = JournalMode.LedgerSummary;
@@ -206,6 +227,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-row/by-branch
         [Route(JournalApi.JournalByNoByRowByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByNoByRowByBranchAsync(int from, int to)
         {
             var mode = JournalMode.ByRows;
@@ -214,6 +236,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-row-detail/by-branch
         [Route(JournalApi.JournalByNoByRowDetailByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByNoByRowDetailByBranchAsync(int from, int to)
         {
             var mode = JournalMode.ByRowsWithDetail;
@@ -222,6 +245,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-ledger/by-branch
         [Route(JournalApi.JournalByNoByLedgerByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByNoByLedgerByBranchAsync(int from, int to)
         {
             var mode = JournalMode.ByLedger;
@@ -230,6 +254,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/by-subsid/by-branch
         [Route(JournalApi.JournalByNoBySubsidiaryByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByNoBySubsidiaryByBranchAsync(int from, int to)
         {
             var mode = JournalMode.BySubsidiary;
@@ -238,6 +263,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/reports/journal/by-no/summary/by-branch
         [Route(JournalApi.JournalByNoLedgerSummaryByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)(JournalPermissions.View | JournalPermissions.ByBranch))]
         public async Task<IActionResult> GetJournalByNoLedgerSummaryByBranchAsync(int from, int to)
         {
             var mode = JournalMode.LedgerSummary;

@@ -300,6 +300,7 @@ namespace SPPC.Tadbir.Persistence
                 int count = await repository.GetCountByCriteriaAsync(
                     v => v.Id != voucher.Id
                         && voucher.Date.CompareWith(v.Date) == 0
+                        && v.DailyNo != 0
                         && v.DailyNo == voucher.DailyNo
                         && v.FiscalPeriodId == voucher.FiscalPeriodId);
                 isDuplicate = (count > 0);

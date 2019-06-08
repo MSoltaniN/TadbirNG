@@ -1098,4 +1098,34 @@
   <data name="SpecialOps" xml:space="preserve">
     <value>Special operations</value>
   </data>
+  <data name="Design" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="JournalReport" xml:space="preserve">
+    <value>Journal report</value>
+  </data>
+  <data name="Lookup" xml:space="preserve">
+    <value>Lookup</value>
+  </data>
+  <data name="Mark" xml:space="preserve">
+    <value>Mark</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="QuickReportDesign" xml:space="preserve">
+    <value>Design quick report</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ViewByBranch" xml:space="preserve">
+    <value>View by branch</value>
+  </data>
 </root>

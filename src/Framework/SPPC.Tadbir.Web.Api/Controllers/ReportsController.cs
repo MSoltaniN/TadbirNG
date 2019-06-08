@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/reports/sys
         [HttpPost]
         [Route(ReportApi.ReportsUrl)]
-        [AuthorizeRequest(SecureEntity.UserReport, (int)ReportPermissions.Save)]
+        [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Save)]
         public async Task<IActionResult> PostNewUserReportAsync([FromBody] LocalReportViewModel report)
         {
             if (report == null)
@@ -116,7 +116,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/reports/sys/{reportId:min(1)}
         [HttpPut]
         [Route(ReportApi.ReportUrl)]
-        [AuthorizeRequest(SecureEntity.UserReport, (int)ReportPermissions.Save)]
+        [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Save)]
         public async Task<IActionResult> PutModifiedUserReportAsync(
             int reportId, [FromBody] LocalReportViewModel report)
         {
@@ -149,7 +149,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/reports/sys/{reportId:min(1)}/caption
         [HttpPut]
         [Route(ReportApi.ReportCaptionUrl)]
-        [AuthorizeRequest(SecureEntity.UserReport, (int)ReportPermissions.Save)]
+        [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Save)]
         public async Task<IActionResult> PutModifiedUserReportCaptionAsync(
             int reportId, [FromBody] LocalReportViewModel report)
         {
@@ -181,7 +181,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         [HttpPut]
         [Route(ReportApi.ReportDefaultUrl)]
-        [AuthorizeRequest(SecureEntity.UserReport, (int)ReportPermissions.SetDefault)]
+        [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.SetDefault)]
         public async Task<IActionResult> PutExistingReportAsDefaultAsync(int reportId)
         {
             await _sysRepository.SetReportAsDefaultAsync(reportId);
@@ -191,7 +191,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // DELETE: api/reports/sys/{reportId:min(1)}
         [HttpDelete]
         [Route(ReportApi.ReportUrl)]
-        [AuthorizeRequest(SecureEntity.UserReport, (int)ReportPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingUserReportAsync(int reportId)
         {
             var summary = await _sysRepository.GetReportSummaryAsync(reportId);

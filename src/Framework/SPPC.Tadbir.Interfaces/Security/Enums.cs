@@ -415,10 +415,10 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
-    /// فلگ های تعریف شده برای دسترسی های امنیتی به بخش مدیریت گزارشات را تعریف می کند
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به بخش مدیریت گزارشات کاربری را تعریف می کند
     /// </summary>
     [Flags]
-    public enum ReportPermissions
+    public enum UserReportPermissions
     {
         /// <summary>
         /// عدم دسترسی به مدیریت گزارشات
@@ -439,6 +439,33 @@ namespace SPPC.Tadbir.Security
         /// دسترسی تعیین گزارش پیش فرض
         /// </summary>
         SetDefault = 0x4
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به بخش مدیریت گزارشات را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum ReportPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به مدیریت گزارشات
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده فرم مدیریت گزارشات
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی تغییر فرم
+        /// </summary>
+        Design = 0x2,
+
+        /// <summary>
+        /// دسترسی تغییر فرم گزارش فوری
+        /// </summary>
+        QuickReportDesign = 0x4,
     }
 
     /// <summary>
@@ -632,5 +659,47 @@ namespace SPPC.Tadbir.Security
         /// Indicates all permissions available for managing a company
         /// </summary>
         All = 0xf
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به دفتر روزنامه را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum JournalPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به دفتر روزنامه
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده دفتر روزنامه
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی جستجوی اطلاعات دفتر روزنامه
+        /// </summary>
+        Lookup = 0x2,
+
+        /// <summary>
+        /// دسترسی فیلتر اطلاعات دفتر روزنامه
+        /// </summary>
+        Filter = 0x4,
+
+        /// <summary>
+        /// دسترسی چاپ اطلاعات دفتر روزنامه
+        /// </summary>
+        Print = 0x8,
+
+        /// <summary>
+        /// دسترسی علامتگذاری ردیف های دفتر روزنامه
+        /// </summary>
+        Mark = 0x10,
+
+        /// <summary>
+        /// دسترسی مشاهده دفتر روزنامه به تفکیک شعبه
+        /// </summary>
+        ByBranch = 0x20
     }
 }
