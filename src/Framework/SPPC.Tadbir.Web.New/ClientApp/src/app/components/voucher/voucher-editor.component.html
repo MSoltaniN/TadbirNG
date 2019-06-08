@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-xs-12 sppc-float" style="margin-top: 5px;">
 
-          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" (click)="newVoucher()">
+          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" (click)="getNewVoucher()">
             <span class="k-icon k-i-file-add"></span>
           </button>
 
@@ -28,11 +28,11 @@
             <span class="k-icon k-i-arrow-end-right"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.PreviousVoucher' | translate }}" (click)="previousVoucher()">
+          <button class="k-button" [disabled]="isFirstVoucher" title="{{ 'Voucher.PreviousVoucher' | translate }}" (click)="previousVoucher()">
             <span class="k-icon k-i-arrow-double-60-right"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.NextVoucher' | translate }}" (click)="nextVoucher()">
+          <button class="k-button" [disabled]="isLastVoucher" title="{{ 'Voucher.NextVoucher' | translate }}" (click)="nextVoucher()">
             <span class="k-icon k-i-arrow-double-60-left"></span>
           </button>
 

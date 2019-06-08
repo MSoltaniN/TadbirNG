@@ -67,7 +67,7 @@ export class HomeComponent extends DefaultComponent implements OnInit {
 
   passVoucherId() {
     this.close();
-    this.router.navigate([this.returnUrl], { queryParams: { voucherno: this.voucherNo } });
+    this.router.navigate([this.returnUrl], { queryParams: { no: this.voucherNo } });
   }
 
   public close() {

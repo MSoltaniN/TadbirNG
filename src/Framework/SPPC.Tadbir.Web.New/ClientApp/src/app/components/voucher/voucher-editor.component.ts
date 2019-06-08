@@ -92,6 +92,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   @Input() voucherItem: Voucher;
   isShowBreadcrumb: boolean = true;
+  isFirstVoucher: boolean = false;
+  isLastVoucher: boolean = false;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService) {
@@ -117,12 +119,30 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
             break;
           }
           case "last": {
-            this.lastVoucher();
+            this.isLastVoucher = true;
+            this.getVoucher(VoucherApi.LastVoucher);
             break;
           }
           case "by-no": {
             this.byNoVoucher();
             break;
+          }
+          case "first": {
+            this.isFirstVoucher = true;
+            this.getVoucher(VoucherApi.FirstVoucher);
+            break
+          }
+          case "next": {
+            var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no')
+            if (voucherNo)
+              this.getVoucher(String.Format(VoucherApi.NextVoucher, voucherNo), true);
+            break
+          }
+          case "previous": {
+            var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no')
+            if (voucherNo)
+              this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
+            break
           }
           default: {
             this.isShowBreadcrumb = false;
@@ -140,8 +160,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.getVoucher(VoucherApi.NewVoucher);
   }
 
+  getNewVoucher() {
+    if (this.voucherItem)
+      this.getVoucher(VoucherApi.NewVoucher);
+    else
+      this.router.navigate(['/vouchers/new']);
+  }
+
   byNoVoucher() {
-    var voucherNo = this.activeRoute.snapshot.queryParamMap.get('voucherno');
+    var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
 
     if (!voucherNo) {
       this.router.navigate(['/home'], { queryParams: { returnUrl: 'vouchers/by-no' } });
@@ -153,7 +180,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   getVoucher(apiUrl: string, byNo: boolean = false) {
-
     this.voucherService.getModels(apiUrl).subscribe(res => {
 
       this.initVoucherForm(res);
@@ -205,19 +231,43 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   nextVoucher() {
-    this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
+    if (this.voucherItem) {
+      this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
+      this.isFirstVoucher = false;
+      this.isLastVoucher = false;
+    }
+    else
+      this.router.navigate(['/vouchers/next'], { queryParams: { no: this.voucherModel.no } });
   }
 
   previousVoucher() {
-    this.getVoucher(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no));
+    if (this.voucherItem) {
+      this.getVoucher(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no));
+      this.isFirstVoucher = false;
+      this.isLastVoucher = false;
+    }
+    else
+      this.router.navigate(['/vouchers/previous'], { queryParams: { no: this.voucherModel.no } });
   }
 
-  firstVoucher() {
-    this.getVoucher(VoucherApi.FirstVoucher);
+  firstVoucher() {    
+    if (this.voucherItem) {
+      this.getVoucher(VoucherApi.FirstVoucher);
+      this.isFirstVoucher = true;
+      this.isLastVoucher = false;
+    }
+    else
+      this.router.navigate(['/vouchers/first']);
   }
 
-  lastVoucher() {
-    this.getVoucher(VoucherApi.LastVoucher);
+  lastVoucher() {    
+    if (this.voucherItem) {      
+      this.getVoucher(VoucherApi.LastVoucher);
+      this.isFirstVoucher = false;
+      this.isLastVoucher = true;
+    }
+    else
+      this.router.navigate(['/vouchers/last']);
   }
 
   searchVoucher() {
