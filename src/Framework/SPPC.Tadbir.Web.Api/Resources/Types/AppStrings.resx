@@ -1089,4 +1089,13 @@
   <data name="Role_WarehouseRep" xml:space="preserve">
     <value>انباردار</value>
   </data>
+  <data name="IssueClosingVoucher" xml:space="preserve">
+    <value>صدور سند اختتامیه</value>
+  </data>
+  <data name="IssueOpeningVoucher" xml:space="preserve">
+    <value>صدور سند افتتاحیه</value>
+  </data>
+  <data name="SpecialOps" xml:space="preserve">
+    <value>عملیات ویژه</value>
+  </data>
 </root>

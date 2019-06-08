@@ -1089,4 +1089,13 @@
   <data name="Role_WarehouseRep" xml:space="preserve">
     <value>Warehouse representative</value>
   </data>
+  <data name="IssueClosingVoucher" xml:space="preserve">
+    <value>Issue closing voucher</value>
+  </data>
+  <data name="IssueOpeningVoucher" xml:space="preserve">
+    <value>Issue opening voucher</value>
+  </data>
+  <data name="SpecialOps" xml:space="preserve">
+    <value>Special operations</value>
+  </data>
 </root>

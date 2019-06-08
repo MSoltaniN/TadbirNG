@@ -1332,6 +1332,14 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (29, 26, NULL, N'LastVoucher', N'/vouchers/last', N'list', N'Ctrl+L')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (30, NULL, NULL, N'Tools', NULL, N'tasks', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (31, 30, NULL, N'ReportManagement', NULL, N'list', N'Ctrl+R')
+INSERT [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (32, NULL, NULL, N'SpecialOps', NULL, NULL, NULL)
+INSERT [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (33, 32, NULL, N'IssueOpeningVoucher', N'/opening-voucher', N'list', NULL)
+INSERT [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (34, 32, NULL, N'IssueClosingVoucher', N'/closing-voucher', N'list', NULL)
+INSERT [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (35, 32, NULL, N'CloseTempAccount', N'/close-temp-accounts', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET ANSI_NULLS OFF
