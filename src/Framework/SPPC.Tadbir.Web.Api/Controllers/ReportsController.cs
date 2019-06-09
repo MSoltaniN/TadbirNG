@@ -478,8 +478,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             panel.PrintOn = table.PrintOnAllPages ? StiPrintOnType.AllPages : StiPrintOnType.OnlyFirstPage;
             panel.Components.Add(table);
             ph.Components.Add(panel);
-
-
             table.CreateCell();
             int i = 0;
             foreach (var param in quickReportViewModel.Parameters)
