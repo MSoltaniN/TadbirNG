@@ -124,7 +124,7 @@ export class BaseService extends EnviromentComponent{
    * @param model رکورد برای ویرایش
    * @param modelId شماره id مدل
    */
-  public edit<T>(apiUrl: string, model: T): Observable<string> {
+  public edit<T>(apiUrl: string, model: T): Observable<any> {
     var body = JSON.stringify(model);
     return this.http.put(apiUrl, body, this.option)
       .map(res => res)

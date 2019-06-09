@@ -163,8 +163,14 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   getNewVoucher() {
     if (this.voucherItem)
       this.getVoucher(VoucherApi.NewVoucher);
-    else
-      this.router.navigate(['/vouchers/new']);
+    else {
+      this.redirectTo('/vouchers/new')
+    }
+  }
+
+  redirectTo(uri) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
   }
 
   byNoVoucher() {
@@ -218,14 +224,19 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       model.branchId = this.BranchId;
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.statusId = this.voucherModel.statusId;
+      model.saveCount = this.voucherModel.saveCount;
 
-      this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
-        .subscribe(response => {
-          this.showMessage(this.updateMsg, MessageType.Succes);
-        }, (error => {
+      this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model).subscribe(res => {
+        debugger;
+        var result = res;
+        this.editForm.reset(result);
+        this.voucherModel = result;
+        this.errorMessage = undefined;
+        this.showMessage(this.updateMsg, MessageType.Succes);
+      }, (error => {
 
-          this.errorMessage = error;
-        }));
+        this.errorMessage = error;
+      }));
 
     }
   }
@@ -250,7 +261,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.router.navigate(['/vouchers/previous'], { queryParams: { no: this.voucherModel.no } });
   }
 
-  firstVoucher() {    
+  firstVoucher() {
     if (this.voucherItem) {
       this.getVoucher(VoucherApi.FirstVoucher);
       this.isFirstVoucher = true;
@@ -260,8 +271,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.router.navigate(['/vouchers/first']);
   }
 
-  lastVoucher() {    
-    if (this.voucherItem) {      
+  lastVoucher() {
+    if (this.voucherItem) {
       this.getVoucher(VoucherApi.LastVoucher);
       this.isFirstVoucher = false;
       this.isLastVoucher = true;

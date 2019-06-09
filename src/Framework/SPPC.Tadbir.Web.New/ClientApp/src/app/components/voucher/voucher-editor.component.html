@@ -90,7 +90,7 @@
               <div class="form-group">
                 <label for="dailyNo" class="control-label">{{ 'Voucher.DailyNo' | translate }}</label>
 
-                <input type="text" formControlName="dailyNo" class="k-textbox" />
+                <input type="text" formControlName="dailyNo" class="k-textbox" [attr.disabled] = "voucherModel && voucherModel.saveCount === 0 ? 'disabled' : null"/>
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dailyNo.valid || editForm.controls.dailyNo.pristine">
                   <span *ngIf="editForm.controls.dailyNo.errors?.required">{{ 'AllValidations.Voucher.DailyNoIsRequired' | translate }}</span>
@@ -166,7 +166,8 @@
 
         <div class="voucher-form-content">
           <voucherLine [voucherID]="voucherModel.id"
-                       [documentStatus]="voucherModel.statusId">
+                       [documentStatus]="voucherModel.statusId"
+                       [saveCount]="voucherModel.saveCount">
           </voucherLine>
         </div>
 
