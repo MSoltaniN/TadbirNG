@@ -1131,4 +1131,13 @@
   <data name="Checked" xml:space="preserve">
     <value>ثبت عادی</value>
   </data>
+  <data name="Approved" xml:space="preserve">
+    <value>تصویب شده</value>
+  </data>
+  <data name="Confirmed" xml:space="preserve">
+    <value>تاییدشده</value>
+  </data>
+  <data name="Finalized" xml:space="preserve">
+    <value>ثبت قطعی</value>
+  </data>
 </root>

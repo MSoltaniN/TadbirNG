@@ -215,6 +215,66 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // PUT: api/vouchers/{voucherId:int}/confirm
+        [HttpPut]
+        [Route(VoucherApi.ConfirmVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
+        public async Task<IActionResult> PutExistingVoucherAsConfirmed(int voucherId)
+        {
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Confirmed);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/confirm/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoConfirmVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoConfirm)]
+        public async Task<IActionResult> PutExistingVoucherAsUnconfirmed(int voucherId)
+        {
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/approve
+        [HttpPut]
+        [Route(VoucherApi.ApproveVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
+        public async Task<IActionResult> PutExistingVoucherAsApproved(int voucherId)
+        {
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Approved);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/approve/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoApproveVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoApprove)]
+        public async Task<IActionResult> PutExistingVoucherAsUnapproved(int voucherId)
+        {
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Confirmed);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/finalize
+        [HttpPut]
+        [Route(VoucherApi.FinalizeVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Finalize)]
+        public async Task<IActionResult> PutExistingVoucherAsFinalized(int voucherId)
+        {
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Finalized);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/finalize/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoFinalizeVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoFinalize)]
+        public async Task<IActionResult> PutExistingVoucherAsUnfinalized(int voucherId)
+        {
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Approved);
+            return Ok();
+        }
+
         // DELETE: api/vouchers/{voucherId:int}
         [HttpDelete]
         [Route(VoucherApi.VoucherUrl)]

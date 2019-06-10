@@ -532,12 +532,12 @@ namespace SPPC.Tadbir.Security
         /// <summary>
         /// دسترسی ثبت قطعی سند حسابداری
         /// </summary>
-        FinalCheck = 0x400,
+        Finalize = 0x400,
 
         /// <summary>
         /// دسترسی برگشت از ثبت قطعی سند حسابداری
         /// </summary>
-        UndoFinalCheck = 0x800,
+        UndoFinalize = 0x800,
 
         /// <summary>
         /// دسترسی تایید سند حسابداری

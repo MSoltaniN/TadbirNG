@@ -1131,4 +1131,13 @@
   <data name="Checked" xml:space="preserve">
     <value>Normal check</value>
   </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="Finalized" xml:space="preserve">
+    <value>Finalized</value>
+  </data>
 </root>
