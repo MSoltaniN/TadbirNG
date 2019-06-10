@@ -469,70 +469,100 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
-    /// Provides flag values for permissions currently defined for managing a financial voucher.
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به اسناد حسابداری را تعریف می کند
     /// </summary>
     [Flags]
     public enum VoucherPermissions
     {
         /// <summary>
-        /// Indicates no permission for managing a voucher
+        /// عدم دسترسی به اسناد حسابداری
         /// </summary>
         None = 0x0,
 
         /// <summary>
-        /// Indicates permission to view voucher list or details of a voucher
+        /// دسترسی مشاهده اسناد حسابداری
         /// </summary>
         View = 0x1,
 
         /// <summary>
-        /// Indicates permission to create a new voucher
+        /// دسترسی ایجاد سند حسابداری
         /// </summary>
         Create = 0x2,
 
         /// <summary>
-        /// Indicates permission to edit an existing voucher
+        /// دسترسی اصلاح سند حسابداری
         /// </summary>
         Edit = 0x4,
 
         /// <summary>
-        /// Indicates permission to delete an existing voucher
+        /// دسترسی حذف سند حسابداری
         /// </summary>
         Delete = 0x8,
 
         /// <summary>
-        /// دسترسی تنظیم سند (تغییر وضعیت عملیاتی سند به وضعیت تنظیم شده)
+        /// دسترسی حرکت روی اسناد حسابداری
         /// </summary>
-        Prepare = 0x10,
+        Navigate = 0x10,
 
         /// <summary>
-        /// دسترسی بررسی سند (تغییر وضعیت عملیاتی سند به وضعیت بررسی شده)
+        /// دسترسی جستجوی پیشرفته اسناد حسابداری
         /// </summary>
-        Review = 0x20,
+        Lookup = 0x20,
 
         /// <summary>
-        /// دسترسی تایید سند (تغییر وضعیت عملیاتی سند به وضعیت تایید شده)
+        /// دسترسی فیلتر پیشرفته اسناد حسابداری
         /// </summary>
-        Confirm = 0x40,
+        Filter = 0x40,
 
         /// <summary>
-        /// دسترسی تصویب سند (تغییر وضعیت عملیاتی سند به وضعیت تصویب شده)
+        /// دسترسی چاپ اسناد حسابداری
         /// </summary>
-        Approve = 0x80,
+        Print = 0x80,
 
         /// <summary>
-        /// دسترسی ثبت سند
+        /// دسترسی ثبت سند حسابداری
         /// </summary>
         Check = 0x100,
 
         /// <summary>
-        /// دسترسی برگشت سند
+        /// دسترسی برگشت از ثبت سند حسابداری
         /// </summary>
-        Uncheck = 0x200,
+        UndoCheck = 0x200,
 
         /// <summary>
-        /// Indicates all permissions available for managing a voucher
+        /// دسترسی ثبت قطعی سند حسابداری
         /// </summary>
-        All = 0x3ff
+        FinalCheck = 0x400,
+
+        /// <summary>
+        /// دسترسی برگشت از ثبت قطعی سند حسابداری
+        /// </summary>
+        UndoFinalCheck = 0x800,
+
+        /// <summary>
+        /// دسترسی تایید سند حسابداری
+        /// </summary>
+        Confirm = 0x1000,
+
+        /// <summary>
+        /// دسترسی برگشت از تایید سند حسابداری
+        /// </summary>
+        UndoConfirm = 0x2000,
+
+        /// <summary>
+        /// دسترسی تصویب سند حسابداری
+        /// </summary>
+        Approve = 0x4000,
+
+        /// <summary>
+        /// دسترسی برگشت از تصویب سند حسابداری
+        /// </summary>
+        UndoApprove = 0x8000,
+
+        /// <summary>
+        /// کلیه دسترسی های تعریف شده برای اسناد حسابداری
+        /// </summary>
+        All = 0xffff
     }
 
     /// <summary>

@@ -67,43 +67,6 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Updates operational status of a financial voucher to Prepared.
-        /// </summary>
-        /// <param name="voucherId">Unique identifier of the voucher to prepare</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public ServiceResponse PrepareVoucher(int voucherId, string paraph = null)
-        {
-            var detail = new ActionDetailViewModel() { Paraph = paraph };
-            var response = _apiClient.Update(detail, VoucherApi.PrepareVoucher, voucherId);
-            return response;
-        }
-
-        /// <summary>
-        /// Updates operational status of a financial voucher to Reviewed.
-        /// </summary>
-        /// <param name="voucherId">Unique identifier of the voucher to review</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public ServiceResponse ReviewVoucher(int voucherId, string paraph = null)
-        {
-            var detail = new ActionDetailViewModel() { Paraph = paraph };
-            var response = _apiClient.Update(detail, VoucherApi.ReviewVoucher, voucherId);
-            return response;
-        }
-
-        /// <summary>
-        /// Updates operational status of a reviewed financial voucher to Prepred,
-        /// meaning it needs to be reviewed again.
-        /// </summary>
-        /// <param name="voucherId">Unique identifier of the voucher to reject</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public ServiceResponse RejectVoucher(int voucherId, string paraph = null)
-        {
-            var detail = new ActionDetailViewModel() { Paraph = paraph };
-            var response = _apiClient.Update(detail, VoucherApi.RejectVoucher, voucherId);
-            return response;
-        }
-
-        /// <summary>
         /// Updates operational status of a financial voucher to Confirmed.
         /// </summary>
         /// <param name="voucherId">Unique identifier of the voucher to confirm</param>
@@ -124,43 +87,6 @@ namespace SPPC.Tadbir.Service
         {
             var detail = new ActionDetailViewModel() { Paraph = paraph };
             var response = _apiClient.Update(detail, VoucherApi.ApproveVoucher, voucherId);
-            return response;
-        }
-
-        /// <summary>
-        /// Updates operational status of multiple financial vouchers to Prepared.
-        /// </summary>
-        /// <param name="vouchers">Unique identifiers of vouchers to prepare</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public ServiceResponse PrepareVouchers(IEnumerable<int> vouchers, string paraph = null)
-        {
-            var detail = GetGroupOperationDetail(vouchers, paraph);
-            var response = _apiClient.Update(detail, VoucherApi.PrepareVouchers);
-            return response;
-        }
-
-        /// <summary>
-        /// Updates operational status of multiple financial vouchers to Reviewed.
-        /// </summary>
-        /// <param name="vouchers">Unique identifiers of vouchers to review</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public ServiceResponse ReviewVouchers(IEnumerable<int> vouchers, string paraph = null)
-        {
-            var detail = GetGroupOperationDetail(vouchers, paraph);
-            var response = _apiClient.Update(detail, VoucherApi.ReviewVouchers);
-            return response;
-        }
-
-        /// <summary>
-        /// Updates operational status of multiple reviewed financial voucher to Prepared,
-        /// meaning they need to be reviewed again.
-        /// </summary>
-        /// <param name="vouchers">Unique identifiers of vouchers to reject</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public ServiceResponse RejectVouchers(IEnumerable<int> vouchers, string paraph = null)
-        {
-            var detail = GetGroupOperationDetail(vouchers, paraph);
-            var response = _apiClient.Update(detail, VoucherApi.RejectVouchers);
             return response;
         }
 

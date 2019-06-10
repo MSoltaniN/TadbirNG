@@ -83,7 +83,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/vouchers/first
         [Route(VoucherApi.FirstVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetFirstVoucherAsync()
         {
             _repository.SetCurrentContext(SecurityContext.User);
@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/vouchers/{voucherNo:min(1)}/previous
         [Route(VoucherApi.PreviousVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousVoucherAsync(int voucherNo)
         {
             _repository.SetCurrentContext(SecurityContext.User);
@@ -103,7 +103,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/vouchers/{voucherNo:min(1)}/next
         [Route(VoucherApi.NextVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetNextVoucherAsync(int voucherNo)
         {
             _repository.SetCurrentContext(SecurityContext.User);
@@ -201,14 +201,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.CantCheckUnbalancedDocument, AppStrings.Voucher));
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.NormalCheck);
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
             return Ok();
         }
 
-        // PUT: api/vouchers/{voucherId:int}/uncheck
+        // PUT: api/vouchers/{voucherId:int}/check/undo
         [HttpPut]
-        [Route(VoucherApi.UncheckVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Uncheck)]
+        [Route(VoucherApi.UndoCheckVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoCheck)]
         public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
         {
             await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Draft);
@@ -313,6 +313,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ? Ok(outputLine)
                 : NotFound() as IActionResult;
             return result;
+        }
+
+        // PUT: api/vouchers/articles/{articleId:min(1)}/mark
+        [HttpPut]
+        [Route(VoucherApi.VoucherArticleMarkUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.Mark)]
+        public async Task<IActionResult> PutModifiedArticleMarkAsync(
+            int articleId, [FromBody] VoucherLineMarkViewModel mark)
+        {
+            await _lineRepository.SaveArticleMarkAsync(mark);
+            return Ok();
         }
 
         // DELETE: api/vouchers/articles/{articleId:min(1)}

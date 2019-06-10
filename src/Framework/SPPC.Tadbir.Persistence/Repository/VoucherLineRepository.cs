@@ -201,6 +201,23 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، علامتگذاری مشخص شده را روی آرتیکل سند اعمال می کند
+        /// </summary>
+        /// <param name="mark">اطلاعات علامتکذاری آرتیکل</param>
+        public async Task SaveArticleMarkAsync(VoucherLineMarkViewModel mark)
+        {
+            Verify.ArgumentNotNull(mark, nameof(mark));
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            var line = await repository.GetByIDAsync(mark.Id);
+            if (line != null)
+            {
+                line.Mark = mark.Mark;
+                repository.Update(line);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از محل ذخیره حذف می کند
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>

@@ -78,6 +78,12 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherLineViewModel> SaveArticleAsync(VoucherLineViewModel article);
 
         /// <summary>
+        /// به روش آسنکرون، علامتگذاری مشخص شده را روی آرتیکل سند اعمال می کند
+        /// </summary>
+        /// <param name="mark">اطلاعات علامتکذاری آرتیکل</param>
+        Task SaveArticleMarkAsync(VoucherLineMarkViewModel mark);
+
+        /// <summary>
         /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل برای حذف</param>

@@ -21,11 +21,21 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// وضعیت ثبت عادی برای مستند اداری
         /// </summary>
-        NormalCheck = 2,
+        Checked = 2,
+
+        /// <summary>
+        /// وضعیت تاییدشده برای مستند اداری
+        /// </summary>
+        Confirmed = 2,
+
+        /// <summary>
+        /// وضعیت تصویب شده برای مستند اداری
+        /// </summary>
+        Approved = 2,
 
         /// <summary>
         /// وضعیت ثبت قطعی برای مستند اداری
         /// </summary>
-        FinalCheck = 3
+        Finalized = 3
     }
 }

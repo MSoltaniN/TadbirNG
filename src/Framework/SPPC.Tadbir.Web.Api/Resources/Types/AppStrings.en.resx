@@ -1128,4 +1128,7 @@
   <data name="ViewByBranch" xml:space="preserve">
     <value>View by branch</value>
   </data>
+  <data name="Checked" xml:space="preserve">
+    <value>Normal check</value>
+  </data>
 </root>

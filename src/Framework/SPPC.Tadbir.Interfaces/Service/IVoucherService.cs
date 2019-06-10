@@ -62,28 +62,6 @@ namespace SPPC.Tadbir.Service
         #region Voucher Workflow Operations
 
         /// <summary>
-        /// Updates operational status of a financial voucher to Prepared.
-        /// </summary>
-        /// <param name="voucherId">Unique identifier of the voucher to prepare</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        ServiceResponse PrepareVoucher(int voucherId, string paraph = null);
-
-        /// <summary>
-        /// Updates operational status of a financial voucher to Reviewed.
-        /// </summary>
-        /// <param name="voucherId">Unique identifier of the voucher to review</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        ServiceResponse ReviewVoucher(int voucherId, string paraph = null);
-
-        /// <summary>
-        /// Updates operational status of a reviewed financial voucher to Prepared,
-        /// meaning it needs to be reviewed again.
-        /// </summary>
-        /// <param name="voucherId">Unique identifier of the voucher to reject</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        ServiceResponse RejectVoucher(int voucherId, string paraph = null);
-
-        /// <summary>
         /// Updates operational status of a financial voucher to Confirmed.
         /// </summary>
         /// <param name="voucherId">Unique identifier of the voucher to confirm</param>
@@ -96,28 +74,6 @@ namespace SPPC.Tadbir.Service
         /// <param name="voucherId">Unique identifier of the voucher to approve</param>
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
         ServiceResponse ApproveVoucher(int voucherId, string paraph = null);
-
-        /// <summary>
-        /// Updates operational status of multiple financial vouchers to Prepared.
-        /// </summary>
-        /// <param name="vouchers">Unique identifiers of vouchers to prepare</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        ServiceResponse PrepareVouchers(IEnumerable<int> vouchers, string paraph = null);
-
-        /// <summary>
-        /// Updates operational status of multiple financial vouchers to Reviewed.
-        /// </summary>
-        /// <param name="vouchers">Unique identifiers of vouchers to review</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        ServiceResponse ReviewVouchers(IEnumerable<int> vouchers, string paraph = null);
-
-        /// <summary>
-        /// Updates operational status of multiple reviewed financial voucher to Prepared,
-        /// meaning they need to be reviewed again.
-        /// </summary>
-        /// <param name="vouchers">Unique identifiers of vouchers to reject</param>
-        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        ServiceResponse RejectVouchers(IEnumerable<int> vouchers, string paraph = null);
 
         /// <summary>
         /// Updates operational status of multiple financial vouchers to Confirmed.

@@ -1128,4 +1128,7 @@
   <data name="ViewByBranch" xml:space="preserve">
     <value>مشاهده به تفکیک شعبه</value>
   </data>
+  <data name="Checked" xml:space="preserve">
+    <value>ثبت عادی</value>
+  </data>
 </root>

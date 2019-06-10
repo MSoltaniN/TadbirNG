@@ -103,46 +103,6 @@ namespace SPPC.Tadbir.Api
         public const string LastVoucherUrl = "vouchers/last";
 
         /// <summary>
-        /// API client URL for preparing a single voucher specified by identifier
-        /// </summary>
-        public const string PrepareVoucher = "vouchers/{0}/prepare";
-
-        /// <summary>
-        /// API server route URL for preparing a single voucher specified by identifier
-        /// </summary>
-        public const string PrepareVoucherUrl = "vouchers/{voucherId:int}/prepare";
-
-        /// <summary>
-        /// API client URL for preparing multiple vouchers
-        /// </summary>
-        public const string PrepareVouchers = "vouchers/prepare";
-
-        /// <summary>
-        /// API server route URL for preparing multiple vouchers
-        /// </summary>
-        public const string PrepareVouchersUrl = "vouchers/prepare";
-
-        /// <summary>
-        /// API client URL for reviewing multiple vouchers
-        /// </summary>
-        public const string ReviewVouchers = "vouchers/review";
-
-        /// <summary>
-        /// API server route URL for reviewing multiple vouchers
-        /// </summary>
-        public const string ReviewVouchersUrl = "vouchers/review";
-
-        /// <summary>
-        /// API client URL for rejecting multiple vouchers
-        /// </summary>
-        public const string RejectVouchers = "vouchers/reject";
-
-        /// <summary>
-        /// API server route URL for rejecting multiple vouchers
-        /// </summary>
-        public const string RejectVouchersUrl = "vouchers/reject";
-
-        /// <summary>
         /// API client URL for confirming multiple vouchers
         /// </summary>
         public const string ConfirmVouchers = "vouchers/confirm";
@@ -161,26 +121,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for approving multiple vouchers
         /// </summary>
         public const string ApproveVouchersUrl = "vouchers/approve";
-
-        /// <summary>
-        /// API client URL for reviewing a single voucher specified by identifier
-        /// </summary>
-        public const string ReviewVoucher = "vouchers/{0}/review";
-
-        /// <summary>
-        /// API server route URL for reviewing a single voucher specified by identifier
-        /// </summary>
-        public const string ReviewVoucherUrl = "vouchers/{voucherId:min(1)}/review";
-
-        /// <summary>
-        /// API client URL for rejecting a reviewed voucher specified by identifier
-        /// </summary>
-        public const string RejectVoucher = "vouchers/{0}/reject";
-
-        /// <summary>
-        /// API server route URL for rejecting a reviewed voucher specified by identifier
-        /// </summary>
-        public const string RejectVoucherUrl = "vouchers/{voucherId:min(1)}/reject";
 
         /// <summary>
         /// API client URL for confirming a single voucher specified by identifier
@@ -213,14 +153,34 @@ namespace SPPC.Tadbir.Api
         public const string CheckVoucherUrl = "vouchers/{voucherId:min(1)}/check";
 
         /// <summary>
-        /// API client URL for checking (changing document status to Checked) a single voucher specified by identifier
+        /// API client URL for undoing check for a single voucher specified by identifier
         /// </summary>
-        public const string UncheckVoucher = "vouchers/{0}/uncheck";
+        public const string UndoCheckVoucher = "vouchers/{0}/check/undo";
 
         /// <summary>
-        /// API server route URL for checking (changing document status to Checked) a single voucher specified by identifier
+        /// API server route URL for undoing check for a single voucher specified by identifier
         /// </summary>
-        public const string UncheckVoucherUrl = "vouchers/{voucherId:min(1)}/uncheck";
+        public const string UndoCheckVoucherUrl = "vouchers/{voucherId:min(1)}/check/undo";
+
+        /// <summary>
+        /// API client URL for finalizing a single voucher specified by identifier
+        /// </summary>
+        public const string FinalizeVoucher = "vouchers/{0}/finalize";
+
+        /// <summary>
+        /// API server route URL for finalizing a single voucher specified by identifier
+        /// </summary>
+        public const string FinalizeVoucherUrl = "vouchers/{voucherId:min(1)}/finalize";
+
+        /// <summary>
+        /// API client URL for undoing finalize for a single voucher specified by identifier
+        /// </summary>
+        public const string UndoFinalizeVoucher = "vouchers/{0}/finalize/undo";
+
+        /// <summary>
+        /// API server route URL for undoing finalize for a single voucher specified by identifier
+        /// </summary>
+        public const string UndoFinalizeVoucherUrl = "vouchers/{voucherId:min(1)}/finalize/undo";
 
         /// <summary>
         /// API client URL for all articles in a single voucher specified by identifier
@@ -251,6 +211,16 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a single voucher article specified by identifier
         /// </summary>
         public const string VoucherArticleUrl = "vouchers/articles/{articleId:min(1)}";
+
+        /// <summary>
+        /// API client URL for a single voucher article specified by identifier
+        /// </summary>
+        public const string VoucherArticleMark = "vouchers/articles/{0}/mark";
+
+        /// <summary>
+        /// API server route URL for a single voucher article specified by identifier
+        /// </summary>
+        public const string VoucherArticleMarkUrl = "vouchers/articles/{articleId:min(1)}/mark";
 
         /// <summary>
         /// API client URL for details of a single voucher article specified by identifier
