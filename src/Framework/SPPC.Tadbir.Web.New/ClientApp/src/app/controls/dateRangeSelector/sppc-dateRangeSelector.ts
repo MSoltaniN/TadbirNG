@@ -161,10 +161,13 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
   compareDate(dateA: Date, dateB: Date): number {
 
-    let d2 = new Date(dateB);
-    let d1 = new Date(dateA);
+    var dateValueA = moment(dateA).format('YYYY/MM/DD');
+    var dateValueB = moment(dateB).format('YYYY/MM/DD');
 
-    var diff = d1.getTime() - d2.getTime();
+    let dA = new Date(dateValueA + ' ' + '00:00:00');
+    let dB = new Date(dateValueB + ' ' + '00:00:00');
+
+    var diff = dA.getTime() - dB.getTime();
     var diffDays = Math.ceil(diff / (1000 * 3600 * 24));
 
     //اگر دو تاریخ مساوی باشد
@@ -187,9 +190,23 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       var sessionFromDate = "fromDate" + this.viewName;
       var sessionToDate = "toDate" + this.viewName;
 
-      sessionStorage.removeItem(SessionKeys.DateRangeSelected);
-
       let sessionDateRangeArray: any[] = [];
+
+      var dateStorage = sessionStorage.getItem(SessionKeys.DateRangeSelected);
+      if (dateStorage)
+        sessionDateRangeArray = JSON.parse(dateStorage);
+
+      if (sessionDateRangeArray.length > 0) {
+        var fromIndex = sessionDateRangeArray.findIndex(f => f.key.toLowerCase() == sessionFromDate.toLowerCase());
+        if (fromIndex > -1)
+          sessionDateRangeArray.splice(fromIndex, 1);
+
+        var toIndex = sessionDateRangeArray.findIndex(f => f.key.toLowerCase() == sessionToDate.toLowerCase());
+        if (toIndex > -1)
+          sessionDateRangeArray.splice(toIndex, 1);
+      }
+
+      sessionStorage.removeItem(SessionKeys.DateRangeSelected);
 
       if (fromDate)
         sessionDateRangeArray.push({ key: sessionFromDate, value: fromDate.toString() });
