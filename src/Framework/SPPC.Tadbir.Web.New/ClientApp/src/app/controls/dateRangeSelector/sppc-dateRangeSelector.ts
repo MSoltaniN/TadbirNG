@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms'
 import { SettingService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from '../../class/base.component';
 import { MessageType, SessionKeys } from '../../../environments/environment';
 import * as moment from 'jalali-moment';
-import { stringify } from 'querystring';
 
 
 

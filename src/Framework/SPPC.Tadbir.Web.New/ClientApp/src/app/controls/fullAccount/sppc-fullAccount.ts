@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2, TemplateRef, Output, EventEmitter } from '@angular/core'
-import { FormBuilder, ControlContainer, Validators } from '@angular/forms'
+import { ControlContainer } from '@angular/forms'
 import { FullAccountService, FullAccountInfo } from '../../service/index';
 import { DetailComponent } from '../../class/detail.component';
 import { ToastrService } from 'ngx-toastr';
@@ -9,9 +9,7 @@ import { AccountRelationsType } from '../../enum/accountRelationType';
 import { AccountRelationApi } from '../../service/api/index';
 import { AccountItemBrief, FullAccount } from '../../model/index';
 import { String } from '../../class/source'
-import { Entities } from '../../../environments/environment';
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
-import { access } from 'fs';
 
 
 
@@ -157,8 +155,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
         this.costCenterSelectedId = [];
         this.projectSelectedId = [];
 
-        this.GetCostCenters(String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.accountSelectedId[0]));
-        this.GetProjects(String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.accountSelectedId[0]));
+        this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
+        this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         break;
       }
       case AccountRelationsType.CostCenter: {
@@ -168,8 +166,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
         this.detailAccountSelectedId = [];
         this.projectSelectedId = [];
 
-        this.GetDetailAccounts(String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-        this.GetProjects(String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.accountSelectedId[0]));
+        this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
+        this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         break;
       }
       case AccountRelationsType.Project: {
@@ -179,8 +177,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
         this.detailAccountSelectedId = [];
         this.costCenterSelectedId = [];
 
-        this.GetDetailAccounts(String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-        this.GetCostCenters(String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.accountSelectedId[0]));
+        this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
+        this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
         break;
       }
       default:
@@ -485,8 +483,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, this.detailAccountSelectedId[0]));
-          //this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
-          //this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
@@ -500,8 +496,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToCostCenter, this.costCenterSelectedId[0]));
-          //this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-          //this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
@@ -515,8 +509,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToProject, this.projectSelectedId[0]));
-          //this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-          //this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
@@ -541,32 +533,24 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     if (this.accountSelectedId.length > 0) {
       var account = this.accountsRows.find(f => f.id == this.accountSelectedId[0])
       this.accountTitle = account.name;
-      //this.accountFullCode = account.fullCode + " - ";
       fullAccountData.account = account;
     }
 
     if (this.detailAccountSelectedId.length > 0) {
       var detailAccount = this.detailAccountsRows.find(f => f.id == this.detailAccountSelectedId[0]);
       this.detailAccountTitle = detailAccount.name;
-      //this.accountFullCode += detailAccount.fullCode + " - ";
       fullAccountData.detailAccount = detailAccount;
     }
-    //else
-    //  this.accountFullCode += " - ";
 
     if (this.costCenterSelectedId.length > 0) {
       var costCenter = this.costCentersRows.find(f => f.id == this.costCenterSelectedId[0]);
       this.costCenterTitle = costCenter.name;
-      //this.accountFullCode += costCenter.fullCode + " - ";
       fullAccountData.costCenter = costCenter;
     }
-    //else
-    //  this.accountFullCode += " - ";
 
     if (this.projectSelectedId.length > 0) {
       var project = this.projectsRows.find(f => f.id == this.projectSelectedId[0]);
       this.projectTitle = project.name;
-      //this.accountFullCode += project.fullCode;
       fullAccountData.project = project;
     }
 
@@ -594,7 +578,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     this.costCenterSelectedId = [];
     this.projectSelectedId = [];
 
-    //this.accountTitle = this.detailAccountTitle = this.costCenterTitle = this.projectTitle = undefined;//this.accountFullCode = 
     this.accFilterValue = this.dAccFilterValue = this.cCenterFilterValue = this.pFilterValue = undefined;
     this.isEnableAccountFilter = this.isEnableDetailAccountFilter = this.isEnableCostCenterFilter = this.isEnableProjectFilter = false;
 
@@ -633,26 +616,18 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
     if (defaultModel.account.id > 0) {
       this.accountTitle = defaultModel.account.name;
-      //this.accountFullCode = defaultModel.account.fullCode + " - ";
     }
 
     if (defaultModel.detailAccount.id > 0) {
       this.detailAccountTitle = defaultModel.detailAccount.name;
-      //this.accountFullCode += defaultModel.detailAccount.fullCode + " - ";
     }
-    //else
-    //  this.accountFullCode += " - ";
 
     if (defaultModel.costCenter.id > 0) {
       this.costCenterTitle = defaultModel.costCenter.name;
-      //this.accountFullCode += defaultModel.costCenter.fullCode + " - ";
     }
-    //else
-    //  this.accountFullCode += " - ";
 
     if (defaultModel.project.id > 0) {
       this.projectTitle = defaultModel.project.name;
-      //this.accountFullCode += defaultModel.project.fullCode;
     }
 
   }

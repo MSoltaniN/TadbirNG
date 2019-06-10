@@ -40,16 +40,16 @@
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
 
+          <button class="k-button" [disabled]="!editForm.valid" (click)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
+            <span class="k-icon k-i-save"></span>
+          </button>
+
           <button class="k-button" SppcCheckAccess="Check" [hidden]="!voucherModel || voucherModel.statusId == 2" (click)="checkHandler()" title="{{ 'Voucher.Commit' | translate }}">
             <span class="k-icon k-i-check-outline"></span>
           </button>
 
           <button class="k-button" SppcCheckAccess="Uncheck" [hidden]="!voucherModel || voucherModel.statusId == 1" (click)="checkHandler()" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
             <span class="k-icon k-i-close-outline"></span>
-          </button>
-
-          <button class="k-button" [disabled]="!editForm.valid" (click)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
-            <span class="k-icon k-i-save"></span>
           </button>
 
           <button class="k-button k-button-icon sppc-float-diff" title="{{ 'Buttons.Help' | translate }}"><span class="k-icon k-i-help"></span></button>
