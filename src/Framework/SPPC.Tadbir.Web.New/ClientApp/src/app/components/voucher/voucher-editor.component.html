@@ -16,27 +16,27 @@
       <div class="row">
         <div class="col-xs-12 sppc-float" style="margin-top: 5px;">
 
-          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" (click)="getNewVoucher()">
+          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.New)">
             <span class="k-icon k-i-file-add"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.SearchVoucher' | translate }}" (click)="searchVoucher()">
+          <button class="k-button" title="{{ 'Voucher.SearchVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Search)">
             <span class="k-icon k-i-search"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.FirstVoucher' | translate }}" (click)="firstVoucher()">
+          <button class="k-button" title="{{ 'Voucher.FirstVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.First)">
             <span class="k-icon k-i-arrow-end-right"></span>
           </button>
 
-          <button class="k-button" [disabled]="isFirstVoucher" title="{{ 'Voucher.PreviousVoucher' | translate }}" (click)="previousVoucher()">
+          <button class="k-button" [disabled]="isFirstVoucher" title="{{ 'Voucher.PreviousVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Previous)">
             <span class="k-icon k-i-arrow-double-60-right"></span>
           </button>
 
-          <button class="k-button" [disabled]="isLastVoucher" title="{{ 'Voucher.NextVoucher' | translate }}" (click)="nextVoucher()">
+          <button class="k-button" [disabled]="isLastVoucher" title="{{ 'Voucher.NextVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Next)">
             <span class="k-icon k-i-arrow-double-60-left"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.LastVoucher' | translate }}" (click)="lastVoucher()">
+          <button class="k-button" title="{{ 'Voucher.LastVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Last)">
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
 

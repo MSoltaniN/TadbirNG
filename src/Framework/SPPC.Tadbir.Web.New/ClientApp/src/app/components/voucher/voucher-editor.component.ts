@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, TemplateRef, ViewChild, ElementRef } from '@angular/core';
-import { VoucherService, LookupService } from '../../service/index';
+import { VoucherService, LookupService, VoucherInfo } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -9,13 +9,14 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailComponent } from '../../class/detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService } from '@progress/kendo-angular-dialog';
+import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
 import { VoucherApi } from '../../service/api';
 import { Voucher } from '../../model/index';
 import { DocumentStatusValue } from '../../enum/documentStatusValue';
 import { Item } from '../../model/item';
 import { LookupApi } from '../../service/api/index';
 import { ViewName } from '../../security/viewName';
+import { VoucherOperations } from '../../enum/voucherOperations';
 
 
 
@@ -31,6 +32,8 @@ export function getLayoutModule(layout: Layout) {
 .voucher-form-content {margin-top:5px; border: solid 1px #3c8dbc; padding: 7px 10px 0;}
 input[type=text], textarea, .ddl-type { width: 100%; }
 .voucher-status-item{ display: inline; margin: 0 10px;}
+
+/deep/.dialog-padding .k-window-content {padding:15px !important}
 
 .col-xs-5ths,
 .col-sm-5ths,
@@ -95,6 +98,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   isFirstVoucher: boolean = false;
   isLastVoucher: boolean = false;
 
+  voucherOperationsItem: any;
+
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService) {
 
@@ -105,6 +110,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
 
   ngOnInit() {
+    this.voucherOperationsItem = VoucherOperations;
+
     this.editForm.reset();
 
     if (this.voucherItem) {
@@ -215,9 +222,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     })
   }
 
-  onSave(e: any): void {
-    e.preventDefault();
-
+  onSave(e?: any): void {
     if (this.editForm.valid) {
 
       let model: Voucher = this.editForm.value;
@@ -225,17 +230,18 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.statusId = this.voucherModel.statusId;
       model.saveCount = this.voucherModel.saveCount;
-
+      debugger;
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model).subscribe(res => {
         debugger;
-        var result = res;
-        this.editForm.reset(result);
-        this.voucherModel = result;
+        this.editForm.reset(res);
+        this.voucherModel = res;
         this.errorMessage = undefined;
         this.showMessage(this.updateMsg, MessageType.Succes);
       }, (error => {
-
-        this.errorMessage = error;
+        if (e)
+          this.errorMessage = error;
+        else
+          this.showMessage(error, MessageType.Warning);
       }));
 
     }
@@ -311,6 +317,93 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
 
   }
+
+  voucherOperation(item: VoucherOperations) {
+    var model1 = new VoucherInfo();
+    var model2 = new VoucherInfo();
+    
+    model1.no = parseInt(this.editForm.value.no);
+    model1.reference = this.editForm.value.reference;
+    model1.dailyNo = parseInt(this.editForm.value.dailyNo);
+    model1.association = this.editForm.value.association;
+    model1.date = new Date(this.editForm.value.date);
+    model1.description = this.editForm.value.description;
+    model1.type = parseInt(this.editForm.value.type);
+
+    model2.no = this.voucherModel.no;
+    model2.reference = this.voucherModel.reference;
+    model2.dailyNo = this.voucherModel.dailyNo;
+    model2.association = this.voucherModel.association;
+    model2.date = new Date(this.voucherModel.date);
+    model2.description = this.voucherModel.description;
+    model2.type = this.voucherModel.type;
+
+    var isFormDataChenged = true;
+    if (JSON.stringify(model2) === JSON.stringify(model1))
+      isFormDataChenged = false;
+
+    if (isFormDataChenged) {
+      
+      const dialog: DialogRef = this.dialogService.open({
+        title: this.getText('Entity.Voucher'),
+        content: this.getText('Voucher.SaveChanges'),
+        actions: [
+          { text: this.getText('Buttons.Yes'), mode: 1, primary: true },
+          { text: this.getText('Buttons.No'), mode: 0 }
+        ],
+        width: 450,
+        height: 150,
+        minWidth: 250
+      });
+
+      dialog.dialog.location.nativeElement.classList.add('dialog-padding');
+
+      dialog.result.subscribe((result) => {
+        let res: any = result;
+        if (res.mode == 1)
+          this.onSave();
+
+        this.executeVoucherOperation(item);
+
+      });
+
+    }
+    else {
+      this.executeVoucherOperation(item);
+    }
+
+  }
+
+  executeVoucherOperation(item: VoucherOperations) {
+    switch (item) {
+      case VoucherOperations.First: {
+        this.firstVoucher();
+        break;
+      }
+      case VoucherOperations.Last: {
+        this.lastVoucher();
+        break;
+      }
+      case VoucherOperations.New: {
+        this.getNewVoucher();
+        break;
+      }
+      case VoucherOperations.Next: {
+        this.nextVoucher();
+        break;
+      }
+      case VoucherOperations.Previous: {
+        this.previousVoucher();
+        break;
+      }
+      case VoucherOperations.Search: {
+        this.searchVoucher();
+        break;
+      }
+      default:
+    }
+  }
+
 }
 
 

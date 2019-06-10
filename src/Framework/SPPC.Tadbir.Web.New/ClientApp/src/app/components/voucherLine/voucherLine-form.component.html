@@ -30,14 +30,12 @@
               <div class="form-group row" *ngIf="creditDebiteMode == '1'">
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-                <!--<sppc-numerictextbox class="col-xs-8 col-sm-9 sppc-input-num sppc-float" formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>-->
                 <sppc-numericInput formControlName="debit" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>
               </div>
 
               <div class="form-group row" *ngIf="creditDebiteMode == '2'">
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-                <!--<sppc-numerictextbox class="col-xs-8 col-sm-9 sppc-input-num sppc-float" formControlName="credit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>-->
                 <sppc-numericInput formControlName="credit" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>
 
               </div>
@@ -67,7 +65,7 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="form-group row">
-                <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.ArticleType' | translate }}</label>
+                <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float" style="padding: 0 10px;">{{ 'VoucherLine.ArticleType' | translate }}</label>
 
                 <kendo-dropdownlist [data]="voucherLineTypeList" class="col-xs-8 col-sm-9 sppc-float"
                                     [textField]="'value'"
@@ -100,9 +98,6 @@
           </div>
         </div>
       </div>
-
-
-
 
       <div *ngIf="isDisplayCurrency">
 

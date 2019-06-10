@@ -121,6 +121,7 @@
     <None Remove="ClientApp\src\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\src\app\enum\settingsKey.ts" />
     <None Remove="ClientApp\src\app\enum\TypeLevel.ts" />
+    <None Remove="ClientApp\src\app\enum\voucherOperations.ts" />
     <None Remove="ClientApp\src\app\model\account.ts" />
     <None Remove="ClientApp\src\app\model\columnViewConfig.ts" />
     <None Remove="ClientApp\src\app\model\columnViewDeviceConfig.ts" />
@@ -975,6 +976,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\enum\journal.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\settingsKey.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\dateRangeType.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\enum\voucherOperations.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\typeLevel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\account.ts" />

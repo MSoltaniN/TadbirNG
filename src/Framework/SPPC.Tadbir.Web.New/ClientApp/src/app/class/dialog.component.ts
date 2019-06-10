@@ -21,7 +21,7 @@ export function getLayoutModule(layout: Layout) {
 `,
   styles: [`
 /deep/.dialog .k-window-content {
-  padding: 0 !important
+  padding: 0
 }
 
 /deep/.rtlDialog .k-dialog-wrapper {
