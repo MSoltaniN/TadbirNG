@@ -261,12 +261,17 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
         var registerData = false;
         if (quickReportViewInfo) {
+          registerData = true;
           var dateColumns = quickReportViewInfo.columns.filter(c => c.dataType.toLowerCase() === "system.date");
-          if (dateColumns.length > 0) {
+          if (dateColumns.length > 0 && this.CurrentLanguage == "fa") {
             var convertedData = reportRows;
             convertedData = this.convertToShamsiDate(convertedData, dateColumns);
-            this.report.regData("data", "data", convertedData);
-            registerData = true;
+            this.report.regData("data", "data", convertedData);           
+          }
+          else if (dateColumns.length > 0) {            
+              var convertedData = reportRows;
+              convertedData = this.convertToMiladiDate(convertedData, dateColumns);
+              this.report.regData("data", "data", convertedData);                          
           }
         }
 
@@ -334,6 +339,19 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
           rows[index][item.name] = momentDate;
         }
       })      
+    }
+    return rows;
+  }
+
+  convertToMiladiDate(rows: any, cols: Array<QuickReportColumnModel>) {
+
+    for (var index = 0; index < rows.length; index++) {
+      cols.forEach(function (item) {
+        if (rows[index][item.name]) {
+          let momentDate = moment(rows[index][item.name]).locale('en').format("YYYY/MM/DD");
+          rows[index][item.name] = momentDate;
+        }
+      })
     }
     return rows;
   }
