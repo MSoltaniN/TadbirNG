@@ -439,8 +439,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   {
       if(this.currentReportId)
       {
-          this.showSaveAsDialog = true;
-          this.reportForm.controls.reportName.setValue("");
+        this.showSaveAsDialog = true;
+        this.reportForm.controls.reportName.setValue("");
+        this.reportForm.status = "VALID";
       }
   }
 
