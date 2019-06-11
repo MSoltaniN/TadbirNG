@@ -807,6 +807,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
                 qr.defaultText = column.displayTitle;
                 qr.enabled = true;
                 qr.order = columnIndex;
+                qr.type = property[0].storageType;
                 columns.push(qr)
 
                 columnIndex++;

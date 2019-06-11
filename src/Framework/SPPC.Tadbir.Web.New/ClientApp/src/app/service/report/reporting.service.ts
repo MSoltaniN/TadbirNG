@@ -90,17 +90,18 @@ export class LocalReportInfo implements LocalReport
 
 export class QuickReportColumnInfo implements QuickReportColumnModel
 {   
-    name:string;    
-    defaultText:string;   
-    index:number;
-    sortMode : number;    
-    sortOrder:number;
-    width : number;
-    enabled : boolean;    
-    order : number;
-    userText : string;    
-    dataType : string;    
-    visible : boolean;
+  name:string;    
+  defaultText:string;   
+  index:number;
+  sortMode : number;    
+  sortOrder:number;
+  width : number;
+  enabled : boolean;    
+  order : number;
+  userText : string;    
+  dataType : string;    
+  visible: boolean;
+  type: string;
 }
 
 export class QuickReportViewInfo implements QuickReportViewModel 

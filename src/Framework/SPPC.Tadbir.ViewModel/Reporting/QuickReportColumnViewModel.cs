@@ -63,5 +63,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         ///
         /// </summary>
         public bool Visible { get; set; }
+
+        /// <summary>
+        /// مشخص کننده نوع ستون برای استفاده خاص مثلا money یا number یا date
+        /// </summary>
+        public string Type { get; set; }
     }
 }

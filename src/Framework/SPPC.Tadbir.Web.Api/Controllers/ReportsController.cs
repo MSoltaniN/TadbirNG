@@ -485,22 +485,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 table.Components[i] = (StiTableCell)titleCell.Clone(true);
                 StiTableCell headerCell = table.Components[i] as StiTableCell;
                 headerCell.Text.Value = param.CaptionKey;
-                headerCell.ComponentStyle = titleCell.ComponentStyle;
+                ////headerCell.ComponentStyle = titleCell.ComponentStyle;
                 headerCell.Name = "cell" + i;
                 headerCell.Linked = true;
                 ////headerCell.Border = new StiBorder(StiBorderSides.All, Color.Black, 1, StiPenStyle.Dash);
                 ////headerCell.CellDockStyle = titleCell.CellDockStyle;
-                headerCell.TextOptions.RightToLeft = titleCell.TextOptions.RightToLeft;
+                ////headerCell.TextOptions.RightToLeft = titleCell.TextOptions.RightToLeft;
                 i++;
 
                 table.Components[i] = (StiTableCell)valueCell.Clone(true);
                 StiTableCell dataCell = table.Components[i] as StiTableCell;
                 dataCell.Name = "cell" + i;
                 dataCell.Text.Value = "{" + param.Name + "}";
-                dataCell.ComponentStyle = valueCell.ComponentStyle;
+                ////dataCell.ComponentStyle = valueCell.ComponentStyle;
                 ////dataCell.Border = new StiBorder(StiBorderSides.All, Color.Black, 1, StiPenStyle.Dash);
                 ////dataCell.CellDockStyle = StiDockStyle.Left;
-                dataCell.TextOptions.RightToLeft = valueCell.TextOptions.RightToLeft;
+                ////dataCell.TextOptions.RightToLeft = valueCell.TextOptions.RightToLeft;
                 i++;
             }
 
@@ -753,6 +753,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     txtDataCell.Left = left;
                     txtDataCell.Parent = dataBand;
                     txtDataCell.Page = report.Pages[0];
+                }
+
+                if (orderdColumns[i].Type.ToLower() == "money")
+                {
+                    txtDataCell.TextFormat = new Stimulsoft.Report.Components.TextFormats.StiNumberFormatService(1, ".", 0, ",", 3, true, false, " ");
                 }
 
                 txtDataCell.Width = width;
