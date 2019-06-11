@@ -155,6 +155,7 @@
     "FinalVoucherShouldLarger": "شماره سند پایانی دوره گزارشگیری باید بزرگتر از شماره سند آغاز دوره باشد",
     "ChooseByDate": "برای تهیه گزارش {0}، باید گزینش بر اساس تاریخ باشد نه شماره سند",
     "RequiredVoucherNumber": "برای تهیه گزارش، شماره سند آغاز و پایان الزامی است",
+    "VoucherInfo": "سند حسابداری",
     "DisplayTypes": {
       "VoucherRows": "مطابق ردیف های سند",
       "VoucherRowsWithFloatingAccounts": "مطابق ردیف های سند با سطوح شناور",
