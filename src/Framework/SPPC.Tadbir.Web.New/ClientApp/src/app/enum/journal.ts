@@ -79,3 +79,9 @@ export enum ArticleTypesResource {
   /** آرتیکل های علامت گذاری نشده*/
   UncheckedVoucherLines = "Journal.ArticleTypes.UncheckedVoucherLines"
 }
+
+export enum ArticleTypesResourceKey {
+  AllVoucherLines = '1',
+  MarkedVoucherLines = '2',
+  UncheckedVoucherLines = '3'
+}

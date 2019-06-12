@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var JournalType;
+export var JournalType;
 (function (JournalType) {
     JournalType["ByDate"] = "1";
     JournalType["ByVoucher"] = "2";
-})(JournalType = exports.JournalType || (exports.JournalType = {}));
-var JournalDisplayType;
+})(JournalType || (JournalType = {}));
+export var JournalDisplayType;
 (function (JournalDisplayType) {
     /**مطابق ردیف های سند */
     JournalDisplayType[JournalDisplayType["ByDateByRow"] = 1] = "ByDateByRow";
@@ -21,8 +19,8 @@ var JournalDisplayType;
     JournalDisplayType[JournalDisplayType["ByDateLedgerSummaryByDate"] = 6] = "ByDateLedgerSummaryByDate";
     /**سند خلاصه به تفکیک ماه */
     JournalDisplayType[JournalDisplayType["ByDateLedgerSummaryByMonth"] = 7] = "ByDateLedgerSummaryByMonth";
-})(JournalDisplayType = exports.JournalDisplayType || (exports.JournalDisplayType = {}));
-var JournalDisplayTypeResource;
+})(JournalDisplayType || (JournalDisplayType = {}));
+export var JournalDisplayTypeResource;
 (function (JournalDisplayTypeResource) {
     /**مطابق ردیف های سند */
     JournalDisplayTypeResource["VoucherRows"] = "Journal.DisplayTypes.VoucherRows";
@@ -38,8 +36,8 @@ var JournalDisplayTypeResource;
     JournalDisplayTypeResource["BriefVoucherByDate"] = "Journal.DisplayTypes.BriefVoucherByDate";
     /**سند خلاصه به تفکیک ماه */
     JournalDisplayTypeResource["BriefVoucherByMonth"] = "Journal.DisplayTypes.BriefVoucherByMonth";
-})(JournalDisplayTypeResource = exports.JournalDisplayTypeResource || (exports.JournalDisplayTypeResource = {}));
-var VoucherStatusResource;
+})(JournalDisplayTypeResource || (JournalDisplayTypeResource = {}));
+export var VoucherStatusResource;
 (function (VoucherStatusResource) {
     /** ثبت شده*/
     VoucherStatusResource["Committed"] = "Journal.VoucherStatuses.Committed";
@@ -51,15 +49,15 @@ var VoucherStatusResource;
     VoucherStatusResource["Approved"] = "Journal.VoucherStatuses.Approved";
     /** کلیه اسناد*/
     VoucherStatusResource["AllVouchers"] = "Journal.VoucherStatuses.AllVouchers";
-})(VoucherStatusResource = exports.VoucherStatusResource || (exports.VoucherStatusResource = {}));
-var BranchScopeResource;
+})(VoucherStatusResource || (VoucherStatusResource = {}));
+export var BranchScopeResource;
 (function (BranchScopeResource) {
     /**شعبه جاری */
     BranchScopeResource["CurrentBranch"] = "BranchScope.CurrentBranch";
     /**شعبه جاری و زیر مجموعه ها */
     BranchScopeResource["CurrentBranchAndSubsets"] = "BranchScope.CurrentBranchAndSubsets";
-})(BranchScopeResource = exports.BranchScopeResource || (exports.BranchScopeResource = {}));
-var ArticleTypesResource;
+})(BranchScopeResource || (BranchScopeResource = {}));
+export var ArticleTypesResource;
 (function (ArticleTypesResource) {
     /** کلیه آرتیکل ها*/
     ArticleTypesResource["AllVoucherLines"] = "Journal.ArticleTypes.AllVoucherLines";
@@ -67,5 +65,11 @@ var ArticleTypesResource;
     ArticleTypesResource["MarkedVoucherLines"] = "Journal.ArticleTypes.MarkedVoucherLines";
     /** آرتیکل های علامت گذاری نشده*/
     ArticleTypesResource["UncheckedVoucherLines"] = "Journal.ArticleTypes.UncheckedVoucherLines";
-})(ArticleTypesResource = exports.ArticleTypesResource || (exports.ArticleTypesResource = {}));
+})(ArticleTypesResource || (ArticleTypesResource = {}));
+export var ArticleTypesResourceKey;
+(function (ArticleTypesResourceKey) {
+    ArticleTypesResourceKey["AllVoucherLines"] = "1";
+    ArticleTypesResourceKey["MarkedVoucherLines"] = "2";
+    ArticleTypesResourceKey["UncheckedVoucherLines"] = "3";
+})(ArticleTypesResourceKey || (ArticleTypesResourceKey = {}));
 //# sourceMappingURL=journal.js.map
