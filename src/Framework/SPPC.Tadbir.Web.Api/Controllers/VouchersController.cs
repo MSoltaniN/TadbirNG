@@ -188,17 +188,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Check)]
         public async Task<IActionResult> PutExistingVoucherAsChecked(int voucherId)
         {
-            var voucher = await _repository.GetVoucherAsync(voucherId);
-            if (voucher == null)
+            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Check);
+            if (result is BadRequestObjectResult)
             {
-                var message = String.Format(
-                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucherId);
-                return BadRequest(message);
-            }
-
-            if (IsUnbalancedVoucher(voucher))
-            {
-                return BadRequest(_strings.Format(AppStrings.CantCheckUnbalancedDocument, AppStrings.Voucher));
+                return result;
             }
 
             await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
@@ -211,6 +204,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoCheck)]
         public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
         {
+            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoCheck);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Draft);
             return Ok();
         }
@@ -221,7 +220,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public async Task<IActionResult> PutExistingVoucherAsConfirmed(int voucherId)
         {
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Confirmed);
+            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Confirm);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherConfirmationAsync(voucherId, true);
             return Ok();
         }
 
@@ -231,7 +236,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoConfirm)]
         public async Task<IActionResult> PutExistingVoucherAsUnconfirmed(int voucherId)
         {
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
+            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoConfirm);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherConfirmationAsync(voucherId, false);
             return Ok();
         }
 
@@ -241,7 +252,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
         public async Task<IActionResult> PutExistingVoucherAsApproved(int voucherId)
         {
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Approved);
+            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Approve);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherApprovalAsync(voucherId, true);
             return Ok();
         }
 
@@ -251,7 +268,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoApprove)]
         public async Task<IActionResult> PutExistingVoucherAsUnapproved(int voucherId)
         {
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Confirmed);
+            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoApprove);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherApprovalAsync(voucherId, false);
             return Ok();
         }
 
@@ -261,6 +284,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Finalize)]
         public async Task<IActionResult> PutExistingVoucherAsFinalized(int voucherId)
         {
+            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Finalize);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Finalized);
             return Ok();
         }
@@ -269,10 +298,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(VoucherApi.UndoFinalizeVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoFinalize)]
-        public async Task<IActionResult> PutExistingVoucherAsUnfinalized(int voucherId)
+        public IActionResult PutExistingVoucherAsUnfinalized(int voucherId)
         {
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Approved);
-            return Ok();
+            // NOTE: This operation is formally ILLEGAL, so it's currently disabled.
+            return Unauthorized();
         }
 
         // DELETE: api/vouchers/{voucherId:int}
@@ -527,6 +556,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (voucher.StatusId != (int)DocumentStatusValue.Draft)
             {
                 return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher));
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> VoucherActionValidationResultAsync(int voucherId, string action)
+        {
+            var error = await _repository.ValidateVoucherActionAsync(voucherId, action);
+            if (!String.IsNullOrEmpty(error))
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidVoucherAction, action, error));
             }
 
             return Ok();

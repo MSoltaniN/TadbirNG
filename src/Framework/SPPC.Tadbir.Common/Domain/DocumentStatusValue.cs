@@ -24,16 +24,6 @@ namespace SPPC.Tadbir.Domain
         Checked = 2,
 
         /// <summary>
-        /// وضعیت تاییدشده برای مستند اداری
-        /// </summary>
-        Confirmed = 2,
-
-        /// <summary>
-        /// وضعیت تصویب شده برای مستند اداری
-        /// </summary>
-        Approved = 2,
-
-        /// <summary>
         /// وضعیت ثبت قطعی برای مستند اداری
         /// </summary>
         Finalized = 3

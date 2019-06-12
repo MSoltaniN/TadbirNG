@@ -5,7 +5,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -130,5 +129,23 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
         /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
         Task SetVoucherStatusAsync(int voucherId, DocumentStatusValue status);
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تایید سند مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <param name="isConfirmed">مشخص می کند که سند مورد نظر تایید شده است یا نه؟ مقدار بولی درست
+        /// یعنی سند تایید شده و مقدار بولی نادرست یعنی سند برگشت از تایید شده است.</param>
+        Task SetVoucherConfirmationAsync(int voucherId, bool isConfirmed);
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تصویب سند مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <param name="isApproved">مشخص می کند که سند مورد نظر تصویب شده است یا نه؟ مقدار بولی درست
+        /// یعنی سند تصویب شده و مقدار بولی نادرست یعنی سند برگشت از تصویب شده است.</param>
+        Task SetVoucherApprovalAsync(int voucherId, bool isApproved);
+
+        Task<string> ValidateVoucherActionAsync(int voucherId, string action);
     }
 }

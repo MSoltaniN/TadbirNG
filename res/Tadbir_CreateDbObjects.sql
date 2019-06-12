@@ -449,9 +449,7 @@ GO
 SET IDENTITY_INSERT [Core].[DocumentStatus] ON
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (1, N'Draft')
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (2, N'Checked')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (3, N'Confirmed')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (4, N'Approved')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (5, N'Finalized')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (3, N'Finalized')
 SET IDENTITY_INSERT [Core].[DocumentStatus] OFF
 
 SET IDENTITY_INSERT [Config].[ViewSetting] ON

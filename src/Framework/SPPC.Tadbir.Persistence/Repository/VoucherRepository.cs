@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
@@ -340,6 +341,55 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، وضعیت تایید سند مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <param name="isConfirmed">مشخص می کند که سند مورد نظر تایید شده است یا نه؟ مقدار بولی درست
+        /// یعنی سند تایید شده و مقدار بولی نادرست یعنی سند برگشت از تایید شده است.</param>
+        public async Task SetVoucherConfirmationAsync(int voucherId, bool isConfirmed)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetByIDAsync(voucherId);
+            if (voucher != null)
+            {
+                voucher.ConfirmedById = isConfirmed ? _currentContext.Id : (int?)null;
+                voucher.ConfirmerName = isConfirmed ? GetCurrentUserDisplayName() : null;
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تصویب سند مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <param name="isApproved">مشخص می کند که سند مورد نظر تصویب شده است یا نه؟ مقدار بولی درست
+        /// یعنی سند تصویب شده و مقدار بولی نادرست یعنی سند برگشت از تصویب شده است.</param>
+        public async Task SetVoucherApprovalAsync(int voucherId, bool isApproved)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetByIDAsync(voucherId);
+            if (voucher != null)
+            {
+                voucher.ApprovedById = isApproved ? _currentContext.Id : (int?)null;
+                voucher.ApproverName = isApproved ? GetCurrentUserDisplayName() : null;
+            }
+        }
+
+        public async Task<string> ValidateVoucherActionAsync(int voucherId, string action)
+        {
+            string error = String.Empty;
+            var status = await GetLatestVoucherStatusAsync(voucherId);
+            var transition = GetValidTransitions()
+                .Where(kv => kv.Key == status && kv.Value == action)
+                .FirstOrDefault();
+            if (transition == null)
+            {
+                error = status;
+            }
+
+            return error;
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="voucherView">مدل نمایشی شامل آخرین تغییرات</param>
@@ -463,6 +513,61 @@ namespace SPPC.Tadbir.Persistence
 
                 await UnitOfWork.CommitAsync();
             }
+        }
+
+        private string GetCurrentUserDisplayName()
+        {
+            return String.Format("{0}, {1}", _currentContext.PersonLastName, _currentContext.PersonFirstName);
+        }
+
+        private List<KeyValue> GetValidTransitions()
+        {
+            var transitions = new List<KeyValue>
+            {
+                new KeyValue(VoucherStatus.Balanced, VoucherAction.Check),
+                new KeyValue(VoucherStatus.Checked, VoucherAction.Finalize),
+                new KeyValue(VoucherStatus.Checked, VoucherAction.Confirm),
+                new KeyValue(VoucherStatus.Checked, VoucherAction.UndoCheck),
+                new KeyValue(VoucherStatus.Confirmed, VoucherAction.Approve),
+                new KeyValue(VoucherStatus.Confirmed, VoucherAction.UndoConfirm),
+                new KeyValue(VoucherStatus.Approved, VoucherAction.UndoApprove)
+            };
+            return transitions;
+        }
+
+        private async Task<string> GetLatestVoucherStatusAsync(int voucherId)
+        {
+            string status = null;
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetByIDAsync(voucherId);
+            {
+                if (voucher.StatusId == (int)DocumentStatusValue.Finalized)
+                {
+                    status = VoucherStatus.Finalized;
+                }
+                else if (voucher.ApprovedById != null)
+                {
+                    status = VoucherStatus.Approved;
+                }
+                else if (voucher.ConfirmedById != null)
+                {
+                    status = VoucherStatus.Confirmed;
+                }
+                else if (voucher.StatusId == (int)DocumentStatusValue.Checked)
+                {
+                    status = VoucherStatus.Checked;
+                }
+                else if (voucher.IsBalanced)
+                {
+                    status = VoucherStatus.Balanced;
+                }
+                else
+                {
+                    status = VoucherStatus.NotBalanced;
+                }
+            }
+
+            return status;
         }
 
         private readonly ISecureRepository _repository;
