@@ -12,10 +12,10 @@
     </div>
 
     <div class="row" id="main-section">
-        <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+        <div class="col-sm-6 sppc-float">
             <div class="section-header">
                 <span class="control-label">{{ getTitleText('ViewRowPermission.ListTitle' | translate) }}  </span>
-                <input type="text" class="k-textbox" [(ngModel)]="searchValue" (keydown.enter)="onSearch()" />
+                <input type="text" class="k-textbox input-search-form" [(ngModel)]="searchValue" (keydown.enter)="onSearch()" />
                 <button class="k-button k-primary btn-search"
                         (click)="onSearch()">
                     <span class="k-i-filter k-icon"></span>

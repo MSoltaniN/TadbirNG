@@ -31,7 +31,7 @@ export function getLayoutModule(layout: Layout) {
 #main-section { border: solid 1px #337ab7; border-radius: 3px; margin:0;}
     #main-section > .col-sm-6 { padding: 0; }
     @media screen and (max-width:768px){ #main-section > .col-sm-6 { float:unset !important; }}
-.section-header { border: solid 1px #337ab7; padding: 7px 10px;}
+.section-header { border: solid 1px #337ab7; padding: 7px 10px;}  .section-header .input-search-form { width: calc(100% - 200px); }
 .section-body { padding: 10px; border-right: solid 1px #337ab7; border-left: solid 1px #337ab7; height: 450px; overflow-y: scroll; }
 .header-label { margin: 6px 0 5px; display: block; } #frm-btn{ margin-top:15px; }
 .k-treeview { white-space: unset !important;}
