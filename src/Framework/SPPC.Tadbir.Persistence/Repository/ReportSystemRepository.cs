@@ -60,7 +60,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>ساختار درختی گزارش ها به زبان جاری برنامه</returns>
         public async Task<IList<TreeItemViewModel>> GetReportTreeAsync(int localeId)
         {
-            return await GetReportTreeByCriteriaAsync(localeId, rep => true);
+            return await GetReportTreeByCriteriaAsync(
+                localeId, rep => !rep.IsDynamic && !rep.Code.EndsWith("QReport"));
         }
 
         /// <summary>
@@ -288,6 +289,24 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(view, vu => vu.Reports);
                 await _unitOfWork.CommitAsync();
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا عنوان گزارش محلی داده شده تکراری است یا نه؟
+        /// </summary>
+        /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>
+        /// <param name="report">گزارش محلی مورد نظر</param>
+        /// <returns>در صورت تکراری بودن مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsDuplicateReportCaptionAsync(int localeId, LocalReportViewModel report)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+            int count = await repository.GetCountByCriteriaAsync(
+                rep => rep.Id != report.Id
+                    && rep.ReportId == report.ReportId
+                    && rep.LocaleId == localeId
+                    && rep.Caption == report.Caption);
+            return (count > 0);
         }
 
         private static void Localize(int localeId, List<Report> reports, List<TreeItemViewModel> tree)

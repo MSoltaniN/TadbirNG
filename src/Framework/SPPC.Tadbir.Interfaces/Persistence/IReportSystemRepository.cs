@@ -107,5 +107,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
         Task SetReportAsDefaultAsync(int reportId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا عنوان گزارش محلی داده شده تکراری است یا نه؟
+        /// </summary>
+        /// <param name="localeId">شناسه دیتابیسی زبان جاری برنامه</param>
+        /// <param name="report">گزارش محلی مورد نظر</param>
+        /// <returns>در صورت تکراری بودن مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsDuplicateReportCaptionAsync(int localeId, LocalReportViewModel report);
     }
 }

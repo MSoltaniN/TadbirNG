@@ -1140,4 +1140,7 @@
   <data name="Finalized" xml:space="preserve">
     <value>Finalized</value>
   </data>
+  <data name="ReportCaption" xml:space="preserve">
+    <value>Report caption</value>
+  </data>
 </root>

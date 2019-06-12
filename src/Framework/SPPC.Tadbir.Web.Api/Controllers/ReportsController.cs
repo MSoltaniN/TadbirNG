@@ -97,14 +97,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Save)]
         public async Task<IActionResult> PostNewUserReportAsync([FromBody] LocalReportViewModel report)
         {
-            if (report == null)
+            var result = await ReportValidationResultAsync(report);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
-            }
-
-            if (report.ReportId == 0)
-            {
-                return BadRequest(_strings.Format(AppStrings.SourceReportIsRequired));
+                return result;
             }
 
             _sysRepository.SetCurrentContext(SecurityContext.User);
@@ -120,25 +116,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedUserReportAsync(
             int reportId, [FromBody] LocalReportViewModel report)
         {
-            if (report == null)
+            var result = await ReportValidationResultAsync(report, reportId);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
-            }
-
-            if (report.ReportId != reportId)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserReport));
-            }
-
-            var summary = await _sysRepository.GetReportSummaryAsync(reportId);
-            if (summary == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
-            }
-
-            if (summary.IsSystem)
-            {
-                return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
+                return result;
             }
 
             report.LocaleId = await GetCurrentLocaleIdAsync();
@@ -153,25 +134,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedUserReportCaptionAsync(
             int reportId, [FromBody] LocalReportViewModel report)
         {
-            if (report == null)
+            var result = await ReportValidationResultAsync(report, reportId);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
-            }
-
-            if (report.ReportId != reportId)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserReport));
-            }
-
-            var summary = await _sysRepository.GetReportSummaryAsync(reportId);
-            if (summary == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
-            }
-
-            if (summary.IsSystem)
-            {
-                return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
+                return result;
             }
 
             report.LocaleId = await GetCurrentLocaleIdAsync();
@@ -870,6 +836,49 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     param.DescriptionKey = _strings[param.CaptionKey];      // Temporary fix
                 }
             }
+        }
+
+        private async Task<IActionResult> ReportValidationResultAsync(
+            LocalReportViewModel report, int reportId = 0)
+        {
+            if (report == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
+            }
+
+            if (report.ReportId == 0)
+            {
+                return BadRequest(_strings.Format(AppStrings.SourceReportIsRequired));
+            }
+
+            int localeId = await GetCurrentLocaleIdAsync();
+            if (await _sysRepository.IsDuplicateReportCaptionAsync(localeId, report))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.ReportCaption));
+            }
+
+            if (reportId == 0)
+            {
+                return Ok();
+            }
+
+            if (report.ReportId != reportId)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserReport));
+            }
+
+            var summary = await _sysRepository.GetReportSummaryAsync(reportId);
+            if (summary == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
+            }
+
+            if (summary.IsSystem)
+            {
+                return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
+            }
+
+            return Ok();
         }
 
         private readonly IReportRepository _repository;
