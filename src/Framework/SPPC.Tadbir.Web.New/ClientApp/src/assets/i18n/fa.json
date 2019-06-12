@@ -187,7 +187,8 @@
     "Description": "شرح",
     "Debit": "بدهکار",
     "Credit": "بستانکار",
-    "BranchName": "شعبه"
+    "BranchName": "شعبه",
+    "Mark": "علامت گذاری"
   },
   "JournalByDateByRowDetail": {
     "RowNo": "ردیف",
@@ -204,7 +205,8 @@
     "CostCenterName": "نام مرکز هزینه",
     "ProjectFullCode": "کد پروژه",
     "ProjectName": "نام پروژه",
-    "BranchName": "شعبه"
+    "BranchName": "شعبه",
+    "Mark": "علامت گذاری"
   },
   "JournalByDateByLedger": {
     "RowNo": "ردیف",

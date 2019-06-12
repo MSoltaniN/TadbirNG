@@ -141,6 +141,10 @@
         {{ debitSum | SppcNumConfig | async }}
       </ng-template>
 
+      <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">
+        <input class="k-textbox" [formControl]="formGroup.get(column.field)">
+      </ng-template>
+
     </kendo-grid-column>
 
   </kendo-grid>

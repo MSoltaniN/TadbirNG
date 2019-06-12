@@ -306,7 +306,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
     else {
       //uncheck
-      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, this.voucherModel.id)).subscribe(res => {
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UndoCheckVoucher, this.voucherModel.id)).subscribe(res => {
 
         this.voucherModel.statusId = DocumentStatusValue.Draft;
       }, (error => {

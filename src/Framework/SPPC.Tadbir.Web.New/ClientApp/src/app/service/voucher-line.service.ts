@@ -48,6 +48,14 @@ export class VoucherLineService extends BaseService {
         var options = { headers: this.httpHeaders };
         return this.http.get(url, options)
             .map(response => <any>(<Response>response));;
-    }
+  }
+
+  putArticleMark(articleId: number, mark: string) {
+    var url = String.Format(VoucherApi.VoucherArticleMark, articleId);
+    var body = JSON.stringify({ id: articleId, mark: mark });
+    return this.http.put(url, body, this.option)
+      .map(res => res)
+      .catch(this.handleError);
+  }
 
 }

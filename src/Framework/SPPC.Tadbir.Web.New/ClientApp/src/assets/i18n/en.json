@@ -189,7 +189,8 @@
     "Description": "Description",
     "Debit": "Debit",
     "Credit": "Credit",
-    "BranchName": "Branch"
+    "BranchName": "Branch",
+    "Mark": "Mark"
   },
   "JournalByDateByRowDetail": {
     "RowNo": "Row No",
@@ -206,7 +207,8 @@
     "CostCenterName": "Cost Center Name",
     "ProjectFullCode": "Project Code",
     "ProjectName": "Project Name",
-    "BranchName": "Branch"
+    "BranchName": "Branch",
+    "Mark": "Mark"
   },
   "JournalByDateByLedger": {
     "RowNo": "Row No",
