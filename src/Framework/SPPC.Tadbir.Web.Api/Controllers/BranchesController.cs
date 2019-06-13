@@ -82,10 +82,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveBranchAsync(branch);
-            result = (outputItem != null)
-                ? Ok(outputItem)
-                : NotFound() as IActionResult;
-            return result;
+            return OkReadResult(outputItem);
         }
 
         // DELETE: api/branches/{branchId:min(1)}

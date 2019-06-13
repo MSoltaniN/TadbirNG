@@ -34,6 +34,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
             {
                 template = new EmptyCrudController(_model);
             }
+            else if (_model.HasCrudImpl)
+            {
+                template = new StarterCrudController(_model);
+            }
 
             return template;
         }

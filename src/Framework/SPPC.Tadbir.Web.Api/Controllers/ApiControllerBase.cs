@@ -43,6 +43,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        protected IActionResult OkReadResult(object data)
+        {
+            var result = (data != null)
+                ? Ok(data)
+                : NotFound() as IActionResult;
+
+            return result;
+        }
+
         protected string GetAcceptLanguages()
         {
             var acceptLanguages = "fa-IR,fa";

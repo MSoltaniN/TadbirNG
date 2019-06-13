@@ -147,6 +147,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Templates\SqlCreateTableFromMetadata.Custom.cs" />
+    <Compile Include="Templates\StarterCrudController.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StarterCrudController.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\StarterCrudController.Custom.cs" />
     <Compile Include="Templates\TsApiFromCsApi.cs">
       <DependentUpon>TsApiFromCsApi.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -297,6 +303,10 @@
     <Content Include="Templates\SqlCreateTableFromMetadata.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>SqlCreateTableFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\StarterCrudController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StarterCrudController.cs</LastGenOutput>
     </Content>
     <None Include="Templates\TsModelFromCsViewModel.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

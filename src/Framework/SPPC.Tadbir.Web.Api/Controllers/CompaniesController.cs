@@ -80,10 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCompanyAsync(company);
-            result = (outputItem != null)
-                ? Ok(outputItem)
-                : NotFound() as IActionResult;
-            return result;
+            return OkReadResult(outputItem);
         }
 
         // DELETE: api/companies/{companyId:min(1)}
@@ -109,8 +106,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var company = await _repository.GetCompanyAsync(item);
             if (company == null)
             {
-                message = String.Format(
-                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Company), item);
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Company, item.ToString());
             }
 
             return message;
