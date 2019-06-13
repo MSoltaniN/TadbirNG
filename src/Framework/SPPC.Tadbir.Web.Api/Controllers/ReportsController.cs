@@ -478,7 +478,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             Image fakeImage = new Bitmap(1, 1);
             Graphics graphics = Graphics.FromImage(fakeImage);
-            SizeF size = graphics.MeasureString("Hello", font);
+            SizeF size = graphics.MeasureString(text, font);
             return size;
         }
 

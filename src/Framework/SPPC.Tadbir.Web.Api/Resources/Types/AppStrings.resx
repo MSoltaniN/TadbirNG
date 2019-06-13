@@ -1144,6 +1144,33 @@
     <value>عنوان گزارش</value>
   </data>
   <data name="InvalidVoucherAction" xml:space="preserve">
-    <value>عمل {0} روی سند {1} امکان پذیر نیست.</value>
+    <value>عمل '{0}' روی سند با آخرین وضعیت '{1}' امکان پذیر نیست.</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>تصویب</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>ثبت</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>تایید</value>
+  </data>
+  <data name="Finalize" xml:space="preserve">
+    <value>ثبت قطعی</value>
+  </data>
+  <data name="NotBalanced" xml:space="preserve">
+    <value>ناتراز</value>
+  </data>
+  <data name="UndoApprove" xml:space="preserve">
+    <value>برگشت از تصویب</value>
+  </data>
+  <data name="UndoCheck" xml:space="preserve">
+    <value>برگشت از ثبت</value>
+  </data>
+  <data name="UndoConfirm" xml:space="preserve">
+    <value>برگشت از تایید</value>
+  </data>
+  <data name="VoucherLineMark" xml:space="preserve">
+    <value>علامتگذاری آرتیکل</value>
   </data>
 </root>

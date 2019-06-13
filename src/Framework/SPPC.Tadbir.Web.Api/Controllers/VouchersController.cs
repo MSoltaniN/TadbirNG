@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return AppStrings.Voucher; }
         }
 
-        #region Voucher CRUD Operations
+        #region Voucher Operations
 
         // GET: api/vouchers
         [Route(VoucherApi.EnvironmentVouchersUrl)]
@@ -301,6 +301,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult PutExistingVoucherAsUnfinalized(int voucherId)
         {
             // NOTE: This operation is formally ILLEGAL, so it's currently disabled.
+            int id = voucherId; // Prevent unused argument warning
             return Unauthorized();
         }
 
@@ -323,7 +324,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        #region Article CRUD Operations
+        #region Article Operations
 
         // GET: api/vouchers/{voucherId:min(1)}/articles
         [Route(VoucherApi.VoucherArticlesUrl)]
@@ -353,6 +354,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewArticleAsync(
             int voucherId, [FromBody] VoucherLineViewModel article)
         {
+            int id = voucherId; // Prevent unused argument warning
             var result = VoucherLineValidationResultAsync(article);
             if (result is BadRequestObjectResult)
             {
@@ -411,6 +413,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedArticleMarkAsync(
             int articleId, [FromBody] VoucherLineMarkViewModel mark)
         {
+            var result = BasicValidationResult(mark, AppStrings.VoucherLineMark, articleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             await _lineRepository.SaveArticleMarkAsync(mark);
             return Ok();
         }

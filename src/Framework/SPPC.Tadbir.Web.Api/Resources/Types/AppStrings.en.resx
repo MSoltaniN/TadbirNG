@@ -1144,6 +1144,33 @@
     <value>Report caption</value>
   </data>
   <data name="InvalidVoucherAction" xml:space="preserve">
-    <value>Action {0} cannot be done on a voucher that is {1}.</value>
+    <value>Action '{0}' cannot be done on a voucher whose latest status is '{1}'.</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Finalize" xml:space="preserve">
+    <value>Finalize</value>
+  </data>
+  <data name="NotBalanced" xml:space="preserve">
+    <value>Not balanced</value>
+  </data>
+  <data name="UndoApprove" xml:space="preserve">
+    <value>Undo approve</value>
+  </data>
+  <data name="UndoCheck" xml:space="preserve">
+    <value>Undo check</value>
+  </data>
+  <data name="UndoConfirm" xml:space="preserve">
+    <value>Undo confirm</value>
+  </data>
+  <data name="VoucherLineMark" xml:space="preserve">
+    <value>Voucher line mark</value>
   </data>
 </root>

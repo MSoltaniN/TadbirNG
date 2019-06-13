@@ -14,7 +14,6 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -374,6 +373,13 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// عمل داده شده را روی سند با شناسه دیتابیسی مشخص شده بررسی و اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <param name="action">عمل مورد نظر</param>
+        /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
+        /// آخرین وضعیت سند را برمی گرداند</returns>
         public async Task<string> ValidateVoucherActionAsync(int voucherId, string action)
         {
             string error = String.Empty;
@@ -540,6 +546,7 @@ namespace SPPC.Tadbir.Persistence
             string status = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var voucher = await repository.GetByIDAsync(voucherId);
+            if (voucher != null)
             {
                 if (voucher.StatusId == (int)DocumentStatusValue.Finalized)
                 {

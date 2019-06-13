@@ -146,6 +146,13 @@ namespace SPPC.Tadbir.Persistence
         /// یعنی سند تصویب شده و مقدار بولی نادرست یعنی سند برگشت از تصویب شده است.</param>
         Task SetVoucherApprovalAsync(int voucherId, bool isApproved);
 
+        /// <summary>
+        /// عمل داده شده را روی سند با شناسه دیتابیسی مشخص شده بررسی و اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <param name="action">عمل مورد نظر</param>
+        /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
+        /// آخرین وضعیت سند را برمی گرداند</returns>
         Task<string> ValidateVoucherActionAsync(int voucherId, string action);
     }
 }
