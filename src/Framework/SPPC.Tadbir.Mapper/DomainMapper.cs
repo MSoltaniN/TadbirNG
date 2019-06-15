@@ -523,7 +523,6 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Lines, opts => opts.Ignore());
 
             mapperConfig.CreateMap<VoucherLine, JournalItemViewModel>();
-            mapperConfig.CreateMap<VoucherLine, JournalWithDetailItemViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

@@ -102,5 +102,15 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// شناسه دیتابیسی وضعیت ثبتی سند مالی
         /// </summary>
         public int VoucherStatusId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربر تاییدکننده سند مالی
+        /// </summary>
+        public int? VoucherConfirmedById { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربر تصویب کننده سند مالی
+        /// </summary>
+        public int? VoucherApprovedById { get; set; }
     }
 }
