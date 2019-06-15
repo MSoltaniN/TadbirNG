@@ -540,7 +540,8 @@ namespace SPPC.Tadbir.Persistence
                 new KeyValue(VoucherStatus.Checked, VoucherAction.UndoCheck),
                 new KeyValue(VoucherStatus.Confirmed, VoucherAction.Approve),
                 new KeyValue(VoucherStatus.Confirmed, VoucherAction.UndoConfirm),
-                new KeyValue(VoucherStatus.Approved, VoucherAction.UndoApprove)
+                new KeyValue(VoucherStatus.Approved, VoucherAction.UndoApprove),
+                new KeyValue(VoucherStatus.Approved, VoucherAction.Finalize)
             };
             return transitions;
         }
