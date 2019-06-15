@@ -45,6 +45,12 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         public string Name { get; set; }
 
         /// <summary>
+        /// نوع موجودیت مرتبط با این نمای اطلاعاتی : پایه، عملیاتی و غیره
+        /// </summary>
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string Entitytype { get; set; }
+
+        /// <summary>
         /// مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

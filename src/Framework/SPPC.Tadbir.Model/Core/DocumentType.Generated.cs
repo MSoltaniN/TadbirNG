@@ -12,14 +12,13 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Core
 {
     /// <summary>
     /// یکی از انواع مختلف اسناد مالی یا اداری که برای طبقه بندی مستندات استفاده می شود
     /// </summary>
-    public partial class DocumentType : IEntity
+    public partial class DocumentType : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس ایجاد می کند.
@@ -32,24 +31,9 @@ namespace SPPC.Tadbir.Model.Core
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
         /// نام طبقه بندی سند مالی یا اداری
         /// </summary>
         public virtual string Name { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         private void InitReferences()
         {

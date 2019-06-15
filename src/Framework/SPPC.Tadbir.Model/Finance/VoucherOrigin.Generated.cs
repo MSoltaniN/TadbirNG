@@ -12,14 +12,13 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Finance
 {
     /// <summary>
     /// اطلاعات یکی از ماخذهای تعریف شده برای یک سند مالی را نگهداری می کند
     /// </summary>
-    public partial class VoucherOrigin : IEntity
+    public partial class VoucherOrigin : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -30,21 +29,6 @@ namespace SPPC.Tadbir.Model.Finance
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// نام ماخذ ایجاد سند مالی

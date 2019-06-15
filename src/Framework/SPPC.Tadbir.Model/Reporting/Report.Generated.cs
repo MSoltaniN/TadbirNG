@@ -12,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Metadata;
 
@@ -21,7 +20,7 @@ namespace SPPC.Tadbir.Model.Reporting
     /// <summary>
     /// اطلاعات یک گزارش در برنامه را نگهداری می کند
     /// </summary>
-    public partial class Report : IEntity
+    public partial class Report : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -36,11 +35,6 @@ namespace SPPC.Tadbir.Model.Reporting
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// کد شناسایی گزارش سیستمی در زیرساخت گزارشات
@@ -81,16 +75,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// شناسه زیرسیستم گزارش
         /// </summary>
         public virtual int SubsystemId { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// گروه بندی اصلی این گزارش در ساختار درختی گزارشات

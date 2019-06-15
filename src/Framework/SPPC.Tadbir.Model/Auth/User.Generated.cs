@@ -13,14 +13,13 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model.Contact;
-using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Auth
 {
     /// <summary>
     /// Represents an application user recognized by the security subsystem
     /// </summary>
-    public partial class User : IEntity
+    public partial class User : CoreEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="User"/> class.
@@ -32,11 +31,6 @@ namespace SPPC.Tadbir.Model.Auth
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the login name of this user
@@ -57,16 +51,6 @@ namespace SPPC.Tadbir.Model.Auth
         /// Gets or sets the value that indicates if this user is enabled inside the application's security system
         /// </summary>
         public virtual bool IsEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the business person that this user represents

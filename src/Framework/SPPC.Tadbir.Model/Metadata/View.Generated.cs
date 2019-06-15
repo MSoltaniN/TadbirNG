@@ -12,14 +12,13 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Metadata
 {
     /// <summary>
     /// اطلاعات فراداده ای یک نمای اطلاعاتی در برنامه را نگهداری می کند
     /// </summary>
-    public partial class View : IEntity
+    public partial class View : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -33,14 +32,14 @@ namespace SPPC.Tadbir.Model.Metadata
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
         /// نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی
         /// </summary>
         public virtual string Name { get; set; }
+
+        /// <summary>
+        /// نوع موجودیت مرتبط با این نمای اطلاعاتی : پایه، عملیاتی و غیره
+        /// </summary>
+        public virtual string Entitytype { get; set; }
 
         /// <summary>
         /// مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه
@@ -56,16 +55,6 @@ namespace SPPC.Tadbir.Model.Metadata
         /// آدرس مورد نیاز برای خواندن رکوردهای موجودیت از سرویس وب
         /// </summary>
         public virtual string FetchUrl { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// مجموعه ای از ستون های تعریف شده برای نمای اطلاعاتی

@@ -12,14 +12,13 @@
 
 using System;
 using SPPC.Framework.Domain;
-using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Model.Config
 {
     /// <summary>
     /// اطلاعات تنظیمات موجود برای یکی از نماهای اطلاعاتی برنامه را نگهداری می کند
     /// </summary>
-    public partial class ViewSetting : IEntity
+    public partial class ViewSetting : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -32,11 +31,6 @@ namespace SPPC.Tadbir.Model.Config
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی اطلاعات عمومی تنظیمات
@@ -62,16 +56,6 @@ namespace SPPC.Tadbir.Model.Config
         /// ریز اطلاعات تنظیمات پیش فرض که با فرمت مشخصی ذخیره و بازیابی می شود
         /// </summary>
         public virtual string DefaultValues { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         private void InitReferences()
         {

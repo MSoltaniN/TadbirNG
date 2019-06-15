@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Config
     /// <summary>
     /// اطلاعات مربوط به بانک اطلاعاتی یک شرکت را نگهداری می کند
     /// </summary>
-    public partial class CompanyDb : IEntity
+    public partial class CompanyDb : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -35,11 +35,6 @@ namespace SPPC.Tadbir.Model.Config
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// نام شرکت به صورتی که در لیست شرکت های موجود نمایش داده می شود
@@ -75,16 +70,6 @@ namespace SPPC.Tadbir.Model.Config
         /// اطلاعات تکمیلی در مورد این شرکت
         /// </summary>
         public virtual string Description { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         private void InitReferences()
         {

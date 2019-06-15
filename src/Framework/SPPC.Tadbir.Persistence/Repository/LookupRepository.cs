@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
@@ -413,23 +414,21 @@ namespace SPPC.Tadbir.Persistence
         #region Metadata Subsystem lookup
 
         /// <summary>
+        /// به روش آسنکرون، موجودیت های پایه تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه موجودیت های پایه تعریف شده</returns>
+        public async Task<IList<KeyValue>> GetBaseEntityViewsAsync(GridOptions gridOptions = null)
+        {
+            return await GetViewsByCriteriaAsync(view => view.Entitytype == "Base", gridOptions);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، موجودیت های تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
         public async Task<IList<KeyValue>> GetEntityViewsAsync(GridOptions gridOptions = null)
         {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<View>();
-            var views = await repository
-                .GetEntityQuery()
-                .Where(view => !String.IsNullOrEmpty(view.FetchUrl))
-                .ToListAsync();
-            var lookup = views
-                .Select(view => Mapper.Map<KeyValue>(view))
-                .Apply(gridOptions)
-                .ToList();
-            UnitOfWork.UseCompanyContext();
-            return lookup;
+            return await GetViewsByCriteriaAsync(view => !String.IsNullOrEmpty(view.FetchUrl), gridOptions);
         }
 
         /// <summary>
@@ -438,16 +437,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های درختی</returns>
         public async Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions = null)
         {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<View>();
-            var views = await repository
-                .GetByCriteriaAsync(vu => vu.IsHierarchy);
-            var lookup = views
-                .Select(view => Mapper.Map<KeyValue>(view))
-                .Apply(gridOptions)
-                .ToList();
-            UnitOfWork.UseCompanyContext();
-            return lookup;
+            return await GetViewsByCriteriaAsync(view => view.IsHierarchy, gridOptions);
         }
 
         #endregion
@@ -460,6 +450,21 @@ namespace SPPC.Tadbir.Persistence
                 .Where(usr => usr.Id == userId)
                 .Include(usr => usr.UserRoles);
             return query;
+        }
+
+        private async Task<IList<KeyValue>> GetViewsByCriteriaAsync(
+            Expression<Func<View, bool>> criteria, GridOptions gridOptions = null)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<View>();
+            var views = await repository
+                .GetByCriteriaAsync(criteria);
+            var lookup = views
+                .Select(view => Mapper.Map<KeyValue>(view))
+                .Apply(gridOptions)
+                .ToList();
+            UnitOfWork.UseCompanyContext();
+            return lookup;
         }
     }
 }

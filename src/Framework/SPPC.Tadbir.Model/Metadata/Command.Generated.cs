@@ -11,8 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Model.Metadata
@@ -20,7 +18,7 @@ namespace SPPC.Tadbir.Model.Metadata
     /// <summary>
     /// اطلاعات متادیتای دستورات برنامه را نگهداری می کند
     /// </summary>
-    public partial class Command : IEntity
+    public partial class Command : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -31,11 +29,6 @@ namespace SPPC.Tadbir.Model.Metadata
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// شناسه عنوان این دستور در متن های چند زبانه
@@ -56,16 +49,6 @@ namespace SPPC.Tadbir.Model.Metadata
         /// کلید ترکیبی میان بُر برای فراخوانی دستور از طریق صفحه کلید
         /// </summary>
         public virtual string HotKey { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// دستور والد این دستور در ساختار درختی دستورات

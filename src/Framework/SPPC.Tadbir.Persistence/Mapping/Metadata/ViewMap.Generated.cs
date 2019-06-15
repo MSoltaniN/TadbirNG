@@ -28,6 +28,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(64);
+            builder.Property(e => e.Entitytype)
+                .HasMaxLength(32);
             builder.Property(e => e.IsHierarchy)
                 .IsRequired();
             builder.Property(e => e.IsCartableIntegrated)

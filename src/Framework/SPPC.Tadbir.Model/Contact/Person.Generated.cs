@@ -11,16 +11,14 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Contact
 {
     /// <summary>
     /// Represents information about a business person
     /// </summary>
-    public partial class Person : IEntity
+    public partial class Person : CoreEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Person"/> class.
@@ -34,11 +32,6 @@ namespace SPPC.Tadbir.Model.Contact
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the first name of this person
         /// </summary>
         public virtual string FirstName { get; set; }
@@ -47,16 +40,6 @@ namespace SPPC.Tadbir.Model.Contact
         /// Gets or sets the last name of this person
         /// </summary>
         public virtual string LastName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the application user that represents this user in security subsystem

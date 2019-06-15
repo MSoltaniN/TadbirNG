@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Metadata
     /// <summary>
     /// اطلاعات فراداده ای یک متن محلی شده را نگهداری می کند
     /// </summary>
-    public partial class LocalText : IEntity
+    public partial class LocalText : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس ایجاد می کند.
@@ -32,11 +32,6 @@ namespace SPPC.Tadbir.Model.Metadata
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
         /// شناسه یکتای متن محلی شده - به زبان انگلیسی
         /// </summary>
         public virtual string ResourceId { get; set; }
@@ -45,16 +40,6 @@ namespace SPPC.Tadbir.Model.Metadata
         /// متن محلی شده
         /// </summary>
         public virtual string Text { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// زبان این متن محلی شده را مشخص می کند

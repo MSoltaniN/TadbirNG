@@ -11,7 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using SPPC.Framework.Domain;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Metadata;
 
@@ -20,7 +19,7 @@ namespace SPPC.Tadbir.Model.Auth
     /// <summary>
     /// تنظیمات مورد استفاده در محدودسازی سطرهای اطلاعاتی قابل دسترسی را نگهداری می کند
     /// </summary>
-    public partial class ViewRowPermission : IEntity
+    public partial class ViewRowPermission : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -31,11 +30,6 @@ namespace SPPC.Tadbir.Model.Auth
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// روش محدودسازی سطرهای اطلاعاتی قابل دسترسی
@@ -61,16 +55,6 @@ namespace SPPC.Tadbir.Model.Auth
         /// شناسه های دیتابیسی برای تعریف دقیق سطرهای قابل دسترسی، که با یک جداکننده از هم جدا شده اند
         /// </summary>
         public virtual string Items { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// نقش امنیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود

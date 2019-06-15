@@ -11,9 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using SPPC.Framework.Domain;
-using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -33,21 +30,6 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
-
-        /// <summary>
         /// مجموعه حساب
         /// </summary>
         public virtual AccountCollection Collection { get; set; }
@@ -56,16 +38,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// حساب
         /// </summary>
         public virtual Account Account { get; set; }
-
-        /// <summary>
-        /// شعبه
-        /// </summary>
-        public virtual Branch Branch { get; set; }
-
-        /// <summary>
-        /// دوره مالی
-        /// </summary>
-        public virtual FiscalPeriod FiscalPeriod { get; set; }
 
         private void InitReferences()
         {

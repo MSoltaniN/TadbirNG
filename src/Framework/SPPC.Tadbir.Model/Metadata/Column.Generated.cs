@@ -12,14 +12,13 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Metadata
 {
     /// <summary>
     /// اطلاعات فراداده ای یک ستون در یک نمای اطلاعاتی را نگهداری می کند
     /// </summary>
-    public partial class Column : IEntity
+    public partial class Column : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -35,11 +34,6 @@ namespace SPPC.Tadbir.Model.Metadata
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// نام ستون به صورت غیر محلی شده - به زبان انگلیسی
@@ -111,16 +105,6 @@ namespace SPPC.Tadbir.Model.Metadata
         /// عبارت مورد نیاز برای دسترسی به ستون در عبارات فیلتر
         /// </summary>
         public virtual string Expression { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// موجودیتی که این ستون در آن تعریف شده است

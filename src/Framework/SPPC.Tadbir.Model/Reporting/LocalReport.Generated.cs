@@ -11,8 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Model.Reporting
@@ -20,7 +18,7 @@ namespace SPPC.Tadbir.Model.Reporting
     /// <summary>
     /// اطلاعات الگوی محلی شده یکی از گزارش های برنامه را نگهداری می کند
     /// </summary>
-    public partial class LocalReport : IEntity
+    public partial class LocalReport : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -34,11 +32,6 @@ namespace SPPC.Tadbir.Model.Reporting
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
         /// عنوان محلی شده گزارش به صورتی که در نمای درختی گزارشات دیده می شود
         /// </summary>
         public virtual string Caption { get; set; }
@@ -47,16 +40,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// اطلاعات الگوی گزارش با متن های محلی شده
         /// </summary>
         public virtual string Template { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// زبان مورد استفاده در گزارش محلی شده
