@@ -44,7 +44,7 @@ export var VoucherStatusResource;
     /** ثبت قطعی شده*/
     VoucherStatusResource["Finalized"] = "Journal.VoucherStatuses.Finalized";
     /** تایید شده*/
-    VoucherStatusResource["Accepted"] = "Journal.VoucherStatuses.Accepted";
+    VoucherStatusResource["Confirmed"] = "Journal.VoucherStatuses.Accepted";
     /** تصویب شده*/
     VoucherStatusResource["Approved"] = "Journal.VoucherStatuses.Approved";
     /** کلیه اسناد*/

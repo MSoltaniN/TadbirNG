@@ -52,7 +52,7 @@ export enum VoucherStatusResource {
   Finalized = "Journal.VoucherStatuses.Finalized",
 
   /** تایید شده*/
-  Accepted = "Journal.VoucherStatuses.Accepted",
+  Confirmed = "Journal.VoucherStatuses.Accepted",
 
   /** تصویب شده*/
   Approved = "Journal.VoucherStatuses.Approved",
