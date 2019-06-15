@@ -292,36 +292,22 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   checkHandler() {
-    this.errorMessage = undefined;
-    if (this.voucherModel.statusId == DocumentStatusValue.Draft) {
-      //check
-      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, this.voucherModel.id)).subscribe(res => {
+    var apiUrl = String.Format(this.voucherModel.statusId == DocumentStatusValue.Draft ? VoucherApi.CheckVoucher : VoucherApi.UndoCheckVoucher, this.voucherModel.id);
 
-        this.voucherModel.statusId = DocumentStatusValue.NormalCheck;
-      }, (error => {
-        var message = error.message ? error.message : error;
-        this.errorMessage = message;
-      }));
+    this.voucherService.changeVoucherStatus(apiUrl).subscribe(res => {
 
-    }
-    else {
-      //uncheck
-      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UndoCheckVoucher, this.voucherModel.id)).subscribe(res => {
-
-        this.voucherModel.statusId = DocumentStatusValue.Draft;
-      }, (error => {
-        var message = error.message ? error.message : error;
-        this.errorMessage = message;
-      }));
-    }
-
+      this.voucherModel.statusId = this.voucherModel.statusId == DocumentStatusValue.Draft ? DocumentStatusValue.NormalCheck : DocumentStatusValue.Draft;
+    }, (error => {
+      var message = error.message ? error.message : error;
+      this.showMessage(message, MessageType.Warning);
+    }));
 
   }
 
   voucherOperation(item: VoucherOperations) {
     var model1 = new VoucherInfo();
     var model2 = new VoucherInfo();
-    
+
     model1.no = parseInt(this.editForm.value.no);
     model1.reference = this.editForm.value.reference;
     model1.dailyNo = parseInt(this.editForm.value.dailyNo);
@@ -343,7 +329,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       isFormDataChenged = false;
 
     if (isFormDataChenged) {
-      
+
       const dialog: DialogRef = this.dialogService.open({
         title: this.getText('Entity.Voucher'),
         content: this.getText('Voucher.SaveChanges'),

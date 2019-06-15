@@ -220,6 +220,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public async Task<IActionResult> PutExistingVoucherAsConfirmed(int voucherId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Confirm);
             if (result is BadRequestObjectResult)
             {
@@ -252,6 +253,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
         public async Task<IActionResult> PutExistingVoucherAsApproved(int voucherId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Approve);
             if (result is BadRequestObjectResult)
             {

@@ -353,6 +353,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 voucher.ConfirmedById = isConfirmed ? _currentContext.Id : (int?)null;
                 voucher.ConfirmerName = isConfirmed ? GetCurrentUserDisplayName() : null;
+                repository.Update(voucher);
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -370,6 +372,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 voucher.ApprovedById = isApproved ? _currentContext.Id : (int?)null;
                 voucher.ApproverName = isApproved ? GetCurrentUserDisplayName() : null;
+                repository.Update(voucher);
+                await UnitOfWork.CommitAsync();
             }
         }
 

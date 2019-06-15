@@ -197,7 +197,7 @@
 
           <div class="article-status-item">
             <input type="checkbox" id="confirmedBy" class="k-checkbox"
-                   [(ngModel)]="isConfirmed" onclick="return false;" />
+                   [(ngModel)]="isConfirmed" (ngModelChange)="changeVoucherStatus('confirm')"/>
             <label class="k-checkbox-label" for="confirmedBy">{{ 'Voucher.ConfirmerName' | translate }}</label>
 
             <input type="text" class="k-textbox" [ngModel]="voucherModel?.confirmerName" readonly />
@@ -205,7 +205,7 @@
 
           <div class="article-status-item">
             <input type="checkbox" id="approvedBy" class="k-checkbox"
-                   [(ngModel)]="isApproved" onclick="return false;" />
+                   [(ngModel)]="isApproved" (ngModelChange)="changeVoucherStatus('approve')"/>
             <label class="k-checkbox-label" for="approvedBy">{{ 'Voucher.ApproverName' | translate }}</label>
 
             <input type="text" class="k-textbox" [ngModel]="voucherModel?.approverName" readonly />
