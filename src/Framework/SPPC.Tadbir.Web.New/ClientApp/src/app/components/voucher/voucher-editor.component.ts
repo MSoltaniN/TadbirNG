@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, TemplateRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, TemplateRef, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { VoucherService, LookupService, VoucherInfo } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
@@ -94,6 +94,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   selectedType: string;
 
   @Input() voucherItem: Voucher;
+  @Output() reloadGrid: EventEmitter<any> = new EventEmitter();
+
   isShowBreadcrumb: boolean = true;
   isFirstVoucher: boolean = false;
   isLastVoucher: boolean = false;
@@ -297,6 +299,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.voucherService.changeVoucherStatus(apiUrl).subscribe(res => {
 
       this.voucherModel.statusId = this.voucherModel.statusId == DocumentStatusValue.Draft ? DocumentStatusValue.NormalCheck : DocumentStatusValue.Draft;
+
+      this.reloadGrid.emit();
+
     }, (error => {
       var message = error.message ? error.message : error;
       this.showMessage(message, MessageType.Warning);

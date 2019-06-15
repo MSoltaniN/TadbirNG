@@ -109,6 +109,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.voucherItem = this.editDataItem;
     this.editDataItem = undefined;
+
+    this.dialogRef.content.instance.reloadGrid.subscribe((res) => {
+      this.reloadGrid();
+    });
+
   }
 
 
