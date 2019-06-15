@@ -248,6 +248,86 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تنظیمات کاربری موجود برای جستجوی سریع در یکی از فرم های لیستی را
+        /// برای کاربر مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
+        /// <returns>تنظیمات کاربری موجود برای جستجوی سریع</returns>
+        public async Task<QuickSearchConfig> GetQuickSearchConfigAsync(int userId, int viewId)
+        {
+            var userConfig = default(QuickSearchConfig);
+            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
+            var items = await repository
+                .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(QuickSearchConfig).Name
+                    && cfg.User.Id == userId
+                    && cfg.View.Id == viewId);
+            var config = items.SingleOrDefault();
+            if (config == null)
+            {
+                var viewRepository = _unitOfWork.GetAsyncRepository<View>();
+                var entityView = await viewRepository.GetByIDAsync(viewId, ev => ev.Columns);
+                if (entityView != null)
+                {
+                    userConfig = new QuickSearchConfig()
+                    {
+                        ViewId = entityView.Id,
+                        SearchMode = TextSearchMode.Contains
+                    };
+                    foreach (var column in entityView.Columns
+                        .Where(col => col.Visibility == ColumnVisibility.AlwaysVisible
+                            || col.Visibility == null))
+                    {
+                        userConfig.Columns.Add(_mapper.Map<QuickSearchColumnConfig>(column));
+                    }
+                }
+            }
+            else
+            {
+                userConfig = _mapper.Map<QuickSearchConfig>(config);
+            }
+
+            return userConfig;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات کاربری برای جستجوی سریع در یکی از فرم های لیستی را ذخیره می کند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <param name="userConfig">تنظیمات کاربری برای جستجوی سریع</param>
+        public async Task SaveQuickSearchConfigAsync(int userId, QuickSearchConfig userConfig)
+        {
+            Verify.ArgumentNotNull(userConfig, nameof(userConfig));
+            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
+            var userRepository = _unitOfWork.GetAsyncRepository<User>();
+            var existing = await repository
+                .GetEntityWithTrackingQuery()
+                .Where(cfg => cfg.User.Id == userId
+                    && cfg.ViewId == userConfig.ViewId
+                    && cfg.ModelType == typeof(QuickSearchConfig).Name)
+                .SingleOrDefaultAsync();
+            if (existing == null)
+            {
+                var newUserConfig = new UserSetting()
+                {
+                    SettingId = 6,      // TODO: Remove this hard-coded value
+                    ViewId = userConfig.ViewId,
+                    User = await userRepository.GetByIDAsync(userId),
+                    ModelType = typeof(QuickSearchConfig).Name,
+                    Values = JsonHelper.From(userConfig, false)
+                };
+
+                repository.Insert(newUserConfig);
+            }
+            else
+            {
+                existing.Values = JsonHelper.From(userConfig, false);
+            }
+
+            await _unitOfWork.CommitAsync();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای ساختار نمای درختی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>

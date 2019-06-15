@@ -16,6 +16,11 @@ namespace SPPC.Tadbir.Configuration.Models
         }
 
         /// <summary>
+        /// نام سیستمی ستون
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// عنوان محلی شده ستون
         /// </summary>
         public string Title { get; set; }

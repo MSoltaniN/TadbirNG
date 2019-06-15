@@ -419,7 +419,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های پایه تعریف شده</returns>
         public async Task<IList<KeyValue>> GetBaseEntityViewsAsync(GridOptions gridOptions = null)
         {
-            return await GetViewsByCriteriaAsync(view => view.Entitytype == "Base", gridOptions);
+            return await GetViewsByCriteriaAsync(view => view.EntityType == "Base", gridOptions);
         }
 
         /// <summary>

@@ -53,6 +53,28 @@ namespace SPPC.Tadbir.Api
         public const string ListSettingsByUserAndViewUrl = "settings/list/users/{userId:min(1)}/views/{viewId:min(1)}";
 
         /// <summary>
+        /// API client URL for all quick search settings for a user specified by unique identifier
+        /// </summary>
+        public const string QuickSearchSettingsByUser = "settings/qsearch/users/{0}";
+
+        /// <summary>
+        /// API server route URL for all quick search settings for a user specified by unique identifier
+        /// </summary>
+        public const string QuickSearchSettingsByUserUrl = "settings/qsearch/users/{userId:min(1)}";
+
+        /// <summary>
+        /// API client URL for quick search settings for a user and a view
+        /// (both specified by unique identifier)
+        /// </summary>
+        public const string QuickSearchSettingsByUserAndView = "settings/qsearch/users/{0}/views/{1}";
+
+        /// <summary>
+        /// API server route URL for quick search settings for a user and a view
+        /// (both specified by unique identifier)
+        /// </summary>
+        public const string QuickSearchSettingsByUserAndViewUrl = "settings/qsearch/users/{userId:min(1)}/views/{viewId:min(1)}";
+
+        /// <summary>
         /// API client URL for workflow settings
         /// </summary>
         public const string WorkflowSettings = "settings/workflows";

@@ -474,6 +474,15 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.DefaultValues,
                     opts => opts.MapFrom(
                         src => JsonHelper.From(src.Default, false, null)));
+            mapperConfig.CreateMap<Column, QuickSearchColumnConfig>()
+                .ForMember(
+                    dest => dest.Title,
+                    opts => opts.MapFrom(src => src.Name))
+                .ForMember(dest => dest.IsDisplayed, opts => opts.UseValue(true))
+                .ForMember(dest => dest.IsSearched, opts => opts.MapFrom(
+                    src => src.Name == "FullCode" || src.Name == "Name"));
+            mapperConfig.CreateMap<UserSetting, QuickSearchConfig>()
+                .ConvertUsing(cfg => JsonHelper.To<QuickSearchConfig>(cfg.Values));
 
             mapperConfig.CreateMap<CompanyDb, CompanyDbViewModel>();
             mapperConfig.CreateMap<CompanyDbViewModel, CompanyDb>();

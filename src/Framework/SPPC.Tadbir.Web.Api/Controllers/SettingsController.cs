@@ -101,6 +101,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/settings/qsearch/users/{userId:min(1)}/views/{viewId:min(1)}
+        [Route(SettingsApi.QuickSearchSettingsByUserAndViewUrl)]
+        public async Task<IActionResult> GetQSearchSettingsByUserAndViewAsync(int userId, int viewId)
+        {
+            var searchSettings = await _repository.GetQuickSearchConfigAsync(userId, viewId);
+            Localize(searchSettings);
+            return Json(searchSettings);
+        }
+
+        // PUT: api/settings/qsearch/users/{userId:min(1)}
+        [HttpPut]
+        [Route(SettingsApi.QuickSearchSettingsByUserUrl)]
+        public async Task<IActionResult> PutModifiedQSearchSettingsByUserAsync(
+            int userId, [FromBody] QuickSearchConfig settings)
+        {
+            if (settings == null)
+            {
+                return BadRequest();        // TODO: Add error message
+            }
+
+            await _repository.SaveQuickSearchConfigAsync(userId, settings);
+            return Ok();
+        }
+
         // GET: api/settings/views/{viewId:min(1)}/tree
         [Route(SettingsApi.ViewTreeSettingsByViewUrl)]
         [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ViewSettings)]
@@ -169,6 +193,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         column.Large.Title =
                         column.Medium.Title =
                         column.Small.Title = _strings[column.Name];
+                }
+            }
+        }
+
+        private void Localize(QuickSearchConfig searchSettings)
+        {
+            if (searchSettings != null)
+            {
+                foreach (var column in searchSettings.Columns)
+                {
+                    column.Title = _strings[column.Title];
                 }
             }
         }
