@@ -48,8 +48,14 @@
       <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
       <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
+      <button SppcCheckAccess="Check" (click)="onCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledCheckBtn()" title="{{ 'Voucher.Commit' | translate }}"><span class="k-icon k-i-check-outline"></span></button>
+      <button SppcCheckAccess="Uncheck" (click)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()" title="{{ 'Voucher.ReturnFromCommit' | translate }}"><span class="k-icon k-i-close-outline"></span></button>
+
+      <button (click)="onFinalizeHandler()" class="k-button k-button-icon" [disabled]="isDisabledFinalizeBtn()" title="{{ 'Voucher.Finalized' | translate }}"><span class="k-icon k-i-track-changes-accept-all"></span></button>
+
+
       <grid-setting entityTypeName="Voucher"></grid-setting>
-      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>  
+      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="35"></kendo-grid-checkbox-column>

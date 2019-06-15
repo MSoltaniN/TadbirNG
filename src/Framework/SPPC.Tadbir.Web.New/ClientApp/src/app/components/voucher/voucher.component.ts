@@ -26,6 +26,7 @@ import { Filter } from '../../class/filter';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { VoucherEditorComponent } from './voucher-editor.component';
 import { ViewName } from '../../security/viewName';
+import { DocumentStatusValue } from '../../enum/documentStatusValue';
 
 
 
@@ -47,7 +48,6 @@ declare var Stimulsoft: any;
 
 export class VoucherComponent extends DefaultComponent implements OnInit {
 
-  //#region Fields
   @ViewChild(GridComponent) grid: GridComponent;
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
   @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
@@ -55,7 +55,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   
 
   public rowData: GridDataResult;
-  public selectedRows: number[] = [];
+  public selectedRows: Voucher[] = [];
   public totalRecords: number;
   firstLoad: boolean = true;
   dateFilter: Array<Filter> = [];
@@ -77,14 +77,20 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   clickedRowItem: Voucher = undefined;
   editDataItem?: Voucher = undefined;
 
-  groupDelete: boolean = false;
+  groupOperation: boolean = false;
 
 
   private dialogRef: DialogRef;
   private dialogModel: any;
-  //#endregion
 
-  //#region Events
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public dialogService: DialogService,
+    public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
+    private voucherService: VoucherService, public renderer: Renderer2,
+    public metadata: MetaDataService, public settingService: SettingService,
+    public reporingService: ReportingService) {
+    super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, ViewName.Voucher);
+  }
+
   ngOnInit() {
     this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
     //this.reloadGrid();
@@ -124,19 +130,16 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     
   }
 
-  
-
-
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
-    return context.dataItem.id;
+    return context.dataItem;
   }
 
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
     if (this.selectedRows.length > 1)
-      this.groupDelete = true;
+      this.groupOperation = true;
     else
-      this.groupDelete = false;
+      this.groupOperation = false;
   }
 
   filterChange(filter: CompositeFilterDescriptor): void {
@@ -159,8 +162,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   removeHandler(arg: any) {
     this.deleteConfirm = true;
-    if (!this.groupDelete) {
-      var recordId = this.selectedRows[0];
+    if (!this.groupOperation) {
+      var recordId = this.selectedRows[0].id;
       var record = this.rowData.data.find(f => f.id == recordId);
 
       this.prepareDeleteConfirm(record.name);
@@ -174,7 +177,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public editHandler(arg: any) {
-    var recordId = this.selectedRows[0];
+    var recordId = this.selectedRows[0].id;
     this.grid.loading = true;
     this.voucherService.getById(String.Format(VoucherApi.Voucher, recordId)).subscribe(res => {
       this.editDataItem = res;
@@ -257,21 +260,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     //this.reportManager.showDialog(id, params, this.currentFilter, this.sort,);
   }
 
-
-  //#endregion
-
-  //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public dialogService: DialogService,
-    public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
-    private voucherService: VoucherService, public renderer: Renderer2,
-    public metadata: MetaDataService, public settingService: SettingService,
-    public reporingService: ReportingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, ViewName.Voucher);
-  }
-  //#endregion
-
-  //#region Methods
-
   reloadGridEvent() {
     this.reloadGrid();
   }
@@ -331,7 +319,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   deleteModel(confirm: boolean) {
     if (confirm) {
-      if (this.groupDelete) {
+      if (this.groupOperation) {
         //حذف گروهی
       }
       else {
@@ -363,7 +351,98 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.openEditorDialog(true);
   }
 
-  //#endregion
+  isDisabledCheckBtn = () => {
+    if (this.selectedRows.length == 0)
+      return true;
+    else {
+      if (this.selectedRows.length == 1) {
+        if (this.selectedRows[0].statusId == DocumentStatusValue.Draft)
+          return false;
+        else
+          return true;
+      }
+      else
+        return false;
+    }
+  }
+
+  isDisabledUnCheckBtn = () => {
+    if (this.selectedRows.length == 0)
+      return true;
+    else {
+      if (this.selectedRows.length == 1) {
+        if (this.selectedRows[0].statusId == DocumentStatusValue.NormalCheck)
+          return false;
+        else
+          return true;
+      }
+      else
+        return false;
+    }
+  }
+
+  isDisabledFinalizeBtn = () => {
+    if (this.selectedRows.length == 0)
+      return true;
+    else {
+      if (this.selectedRows.length == 1) {
+        if (this.selectedRows[0].statusId == DocumentStatusValue.NormalCheck)
+          return false;
+        else
+          return true;
+      }
+      else
+        return false;
+    }
+  }
+
+  onCheckHandler() {
+    if (this.groupOperation) {
+      //ثبت گروهی
+    }
+    else {
+      //ثبت تکی
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, this.selectedRows[0].id)).subscribe(res => {
+        this.reloadGrid();
+        this.selectedRows = [];
+      }, (error => {
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+    }
+  }
+
+  onUnCheckHandler() {
+    if (this.groupOperation) {
+      //برگشت سند گروهی
+    }
+    else {
+      //برگشت سند تکی
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UndoCheckVoucher, this.selectedRows[0].id)).subscribe(res => {
+        this.reloadGrid();
+        this.selectedRows = [];
+      }, (error => {
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+    }
+  }
+
+  onFinalizeHandler() {
+    if (this.groupOperation) {
+      //ثبت قطعی گروهی
+    }
+    else {
+      //ثبت قطعی تکی
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.FinalizeVoucher, this.selectedRows[0].id)).subscribe(res => {
+        this.reloadGrid();
+        this.selectedRows = [];
+      }, (error => {
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+    }
+  }
 }
 
 
