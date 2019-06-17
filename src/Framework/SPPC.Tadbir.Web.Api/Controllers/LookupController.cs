@@ -217,12 +217,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(viewsLookup);
         }
 
-        // GET: api/lookup/views/tree
+        // GET: api/lookup/views/base
         [Route(LookupApi.BaseEntityViewsUrl)]
         public async Task<IActionResult> GetBaseViewsLookupAsync()
         {
             var baseLookup = await _repository.GetBaseEntityViewsAsync();
-            Array.ForEach(baseLookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
+            Array.ForEach(baseLookup.ToArray(), lookup => lookup.Name = _strings[lookup.Name]);
             return Json(baseLookup);
         }
 

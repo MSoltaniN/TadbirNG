@@ -32,6 +32,7 @@ CREATE TABLE [Metadata].[View] (
     [IsHierarchy]            BIT              NOT NULL,
     [IsCartableIntegrated]   BIT              NOT NULL,
     [FetchUrl]               NVARCHAR(512)    NOT NULL,
+    [SearchUrl]              NVARCHAR(512)    NULL,
     [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_View_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]           DATETIME         CONSTRAINT [DF_Metadata_View_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Metadata_View] PRIMARY KEY CLUSTERED ([ViewID] ASC)

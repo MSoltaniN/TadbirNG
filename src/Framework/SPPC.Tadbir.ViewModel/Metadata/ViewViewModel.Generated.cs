@@ -68,5 +68,11 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string FetchUrl { get; set; }
+
+        /// <summary>
+        /// آدرس مورد نیاز برای خواندن رکوردهای موجودیت با فیلتر سطر و شعبه از سرویس وب
+        /// </summary>
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public virtual string SearchUrl { get; set; }
     }
 }
