@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Model.Metadata
         /// <summary>
         /// نوع موجودیت مرتبط با این نمای اطلاعاتی : پایه، عملیاتی و غیره
         /// </summary>
-        public virtual string Entitytype { get; set; }
+        public virtual string EntityType { get; set; }
 
         /// <summary>
         /// مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه

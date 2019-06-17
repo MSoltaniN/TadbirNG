@@ -68,6 +68,22 @@ namespace SPPC.Tadbir.Persistence
         Task SaveUserListConfigAsync(int userId, ListFormViewConfig userConfig);
 
         /// <summary>
+        /// به روش آسنکرون، تنظیمات کاربری موجود برای جستجوی سریع در یکی از فرم های لیستی را
+        /// برای کاربر مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
+        /// <returns>تنظیمات کاربری موجود برای جستجوی سریع</returns>
+        Task<QuickSearchConfig> GetQuickSearchConfigAsync(int userId, int viewId);
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات کاربری برای جستجوی سریع در یکی از فرم های لیستی را ذخیره می کند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <param name="userConfig">تنظیمات کاربری برای جستجوی سریع</param>
+        Task SaveQuickSearchConfigAsync(int userId, QuickSearchConfig userConfig);
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای ساختار نمای درختی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
