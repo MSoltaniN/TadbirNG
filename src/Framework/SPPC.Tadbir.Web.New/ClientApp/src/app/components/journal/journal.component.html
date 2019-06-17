@@ -9,6 +9,7 @@
 <!--<report-viewer id='compviewer'></report-viewer>-->
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
 [Filter]="currentFilter" [RowData]="rowData" ></report-management>
+<report-setting></report-setting>
 <div class="panel-body">  
   <kendo-grid id="{{viewId}}"
               style="width:100%;"
@@ -79,6 +80,8 @@
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
       <button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'Journal.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>
       <button kendoButton class="hidden-xs reportMargin" (click)="showReport()"
+              [icon]="'printer'" type="button"></button>
+      <button kendoButton (click)="showReportSetting()"
               [icon]="'printer'" type="button"></button>
     </ng-template>
 

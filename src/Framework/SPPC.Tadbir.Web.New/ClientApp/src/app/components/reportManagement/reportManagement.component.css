@@ -59,10 +59,13 @@
     color: black;
 }
 
-.rep-folder
-{
-    font-size: 15px;
-    font-weight: 500;
+.saveAsForm {
+  padding: 16px 16px!important;
+}
+
+.rep-folder {
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .rep-user

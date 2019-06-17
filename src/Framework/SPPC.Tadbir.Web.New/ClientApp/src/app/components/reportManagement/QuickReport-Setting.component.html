@@ -1,0 +1,38 @@
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="currentFilter" [RowData]="rowData"></report-management>
+<kendo-dialog [minWidth]="400" width="{{dialogWidth}}" [height]="280" *ngIf="active" class="permission-dialog"
+              [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (close)="closeDialog()">
+  <kendo-dialog-titlebar>
+    {{ 'Report.QuickReportSetting' | translate }}
+  </kendo-dialog-titlebar>
+  <kendo-grid id="grdQRSetting" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              #grdQRSetting
+              [pageable]="false"
+              [height]="200"
+              [resizable]="true"
+              [filterable]="true"
+              [reorderable]="true"
+              [scrollable]="'scrollable'"
+              [loading]="false">
+    <ng-template kendoGridNoRecordsTemplate>
+      <div></div>
+    </ng-template>
+    <ng-template kendoGridToolbarTemplate>
+      <button kendoButton (click)="showReport()"
+              [icon]="'printer'" type="button"></button>
+      <button kendoButton (click)="saveReport()"
+              [icon]="'save'" type="button"></button>
+    </ng-template>
+    <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumnsRow" 
+                       width="{{getColumnWidth(item)}}" sppc-grid-column="{{ entityTypeName }}.{{ item.name }}">
+      <ng-template kendoGridFilterCellTemplate>
+        <kendo-switch (valueChange)="switchChange($event)"
+                      offLabel="{{ 'Report.No' | translate }}"
+                      checked="{{ item.visibility === 'visible' ? 'checked' : ''}}"                        
+                      onLabel="{{ 'Report.Yes' | translate }}">
+        </kendo-switch>        
+      </ng-template>
+    </kendo-grid-column>
+    
+  </kendo-grid>
+  </kendo-dialog>

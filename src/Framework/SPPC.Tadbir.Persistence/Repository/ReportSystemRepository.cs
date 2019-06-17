@@ -302,9 +302,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
             int count = await repository.GetCountByCriteriaAsync(
-                rep => rep.Id != report.Id
-                    && rep.ReportId == report.ReportId
-                    && rep.LocaleId == localeId
+                rep => rep.LocaleId == localeId
                     && rep.Caption == report.Caption);
             return (count > 0);
         }
