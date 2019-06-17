@@ -13,4 +13,5 @@ export interface Property {
   minLength: number;
   expression: string;
   settings: string;
+  visibility: string;
 }
