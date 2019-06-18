@@ -57,6 +57,11 @@ namespace SPPC.Tadbir.Model.Metadata
         public virtual string FetchUrl { get; set; }
 
         /// <summary>
+        /// آدرس مورد نیاز برای خواندن رکوردهای موجودیت با فیلتر سطر و شعبه از سرویس وب
+        /// </summary>
+        public virtual string SearchUrl { get; set; }
+
+        /// <summary>
         /// مجموعه ای از ستون های تعریف شده برای نمای اطلاعاتی
         /// </summary>
         public virtual IList<Column> Columns { get; protected set; }

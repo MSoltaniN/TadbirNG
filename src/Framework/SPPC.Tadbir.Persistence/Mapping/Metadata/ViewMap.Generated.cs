@@ -37,6 +37,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.FetchUrl)
                 .IsRequired()
                 .HasMaxLength(512);
+            builder.Property(e => e.SearchUrl)
+                .HasMaxLength(512);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");

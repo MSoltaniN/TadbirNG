@@ -172,6 +172,7 @@ import { TabsComponent } from './controls/tabs/tabs.component';
 import { DynamicTabsDirective } from './controls/tabs/dynamic-tabs.directive';
 import { from } from 'rxjs/observable/from';
 import { ReportMGComponent } from './components/viewIdentifier/report.mg.component';
+import { QuickReportSettingComponent } from './components/reportManagement/QuickReport-Setting.component';
 
 
 
@@ -286,7 +287,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     TabsComponent,
     DynamicTabsDirective,
     ReportMGComponent,
+<<<<<<< .merge_file_a04516
     SelectFormComponent
+=======
+    QuickReportSettingComponent
+>>>>>>> .merge_file_a11828
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -266,6 +266,14 @@ namespace SPPC.Tadbir.Persistence
                 report.LocalReports.Clear();
                 report.Parameters.Clear();
                 repository.Delete(report);
+
+                if (report.IsDefault)
+                {
+                    var systemReport = await repository.GetSingleByCriteriaAsync(rep => rep.Code == report.Code && rep.IsSystem);
+                    systemReport.IsDefault = true;
+                    repository.Update(systemReport);
+                }
+
                 await _unitOfWork.CommitAsync();
             }
         }
@@ -276,17 +284,17 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
         public async Task SetReportAsDefaultAsync(int reportId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<ReportView>();
-            var view = await repository.GetSingleByCriteriaAsync(
-                vu => vu.Reports.Select(rep => rep.Id).Contains(reportId), vu => vu.Reports);
-            if (view != null)
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetByIDAsync(reportId);
+            if (report != null)
             {
-                foreach (var viewReport in view.Reports)
+                var groupReports = await repository.GetByCriteriaAsync(rep => rep.Code == report.Code);
+                foreach (var groupReport in groupReports)
                 {
-                    viewReport.IsDefault = (viewReport.Id == reportId);
+                    groupReport.IsDefault = (groupReport.Id == reportId);
+                    repository.Update(groupReport);
                 }
 
-                repository.Update(view, vu => vu.Reports);
                 await _unitOfWork.CommitAsync();
             }
         }
@@ -302,9 +310,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
             int count = await repository.GetCountByCriteriaAsync(
-                rep => rep.Id != report.Id
-                    && rep.ReportId == report.ReportId
-                    && rep.LocaleId == localeId
+                rep => rep.LocaleId == localeId
                     && rep.Caption == report.Caption);
             return (count > 0);
         }

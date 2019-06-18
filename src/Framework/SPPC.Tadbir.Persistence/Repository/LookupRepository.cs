@@ -14,6 +14,7 @@ using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -417,9 +418,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های پایه تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های پایه تعریف شده</returns>
-        public async Task<IList<KeyValue>> GetBaseEntityViewsAsync(GridOptions gridOptions = null)
+        public async Task<IList<ViewSummaryViewModel>> GetBaseEntityViewsAsync(GridOptions gridOptions = null)
         {
-            return await GetViewsByCriteriaAsync(view => view.EntityType == "Base", gridOptions);
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<View>();
+            var views = await repository
+                .GetByCriteriaAsync(view => view.EntityType == "Base");
+            var lookup = views
+                .Select(view => Mapper.Map<ViewSummaryViewModel>(view))
+                .Apply(gridOptions)
+                .ToList();
+            UnitOfWork.UseCompanyContext();
+            return lookup;
         }
 
         /// <summary>

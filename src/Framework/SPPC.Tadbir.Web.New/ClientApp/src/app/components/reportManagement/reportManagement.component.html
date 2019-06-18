@@ -62,13 +62,13 @@
 
         </div>
 </kendo-dialog>
-<kendo-dialog [minWidth]="300" [width]="400" [height]="220" *ngIf="showSaveAsDialog" class="permission-dialog"
+<kendo-dialog [minWidth]="300" [width]="400" [height]="230" *ngIf="showSaveAsDialog" class="permission-dialog"
         [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (close)="cancelReportForm($event)">
         <kendo-dialog-titlebar>
                 {{ 'Report.SaveAs' | translate }}
         </kendo-dialog-titlebar>
         <form novalidate [formGroup]="reportForm">
-                <div class="form-group">
+                <div class="form-group saveAsForm">
                         <label for="txtReportName" class="control-label">{{ 'Report.Title' | translate }}</label>
                         <input type="text" id="txtReportName" class="k-textbox " formControlName="reportName" />
                         <div class="k-tooltip k-tooltip-validation" [hidden]="reportForm.controls.reportName.valid || reportForm.controls.reportName.pristine">
