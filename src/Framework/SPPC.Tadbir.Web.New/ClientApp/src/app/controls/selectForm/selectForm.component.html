@@ -43,8 +43,8 @@
         <div class="form-group">
           <label class="control-label">{{ 'SelectForm.SubjectOfTheSearch' | translate }}</label>
           <kendo-dropdownlist [data]="baseEntitiesList" class="sppc-width-100"
-                              [textField]="'value'"
-                              [valueField]="'key'"
+                              [textField]="'name'"
+                              [valueField]="'id'"
                               [valuePrimitive]="true"
                               [value]="selectedEntity"
                               [(ngModel)]="selectedEntity"

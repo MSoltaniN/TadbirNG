@@ -287,11 +287,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     TabsComponent,
     DynamicTabsDirective,
     ReportMGComponent,
-<<<<<<< .merge_file_a04516
-    SelectFormComponent
-=======
+    SelectFormComponent,
     QuickReportSettingComponent
->>>>>>> .merge_file_a11828
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
