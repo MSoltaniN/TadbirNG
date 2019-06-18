@@ -137,6 +137,17 @@
     "CurrentBranchAndSubsets": "Current Branch And Subsets",
     "CurrentBranch": "Current Branch"
   },
+  "SelectForm": {
+    "Title": "Select Form",
+    "EntityTitle": "Select {0} by {1}",
+    "SubjectOfTheSearch": "Subject Of The Search",
+    "StartsWith": "From Start",
+    "Contains": "Contains",
+    "EndsWith": "From End",
+    "SearchBy": "Search By",
+    "DisplayableColumns": "Displayable Columns",
+    "SearchType": "Search Type"
+  },
   "Journal": {
     "ByDate": "By Date",
     "ByVoucher": "By Voucher",

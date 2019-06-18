@@ -9,7 +9,7 @@ import { SettingBrief } from "../model/settingBrief";
 import { ColumnViewDeviceConfig } from "../model/columnViewDeviceConfig";
 import { HttpClient } from "@angular/common/http";
 import { ColumnVisibility, SessionKeys } from "../../environments/environment";
-import { ViewTreeConfig, ViewTreeLevelConfig, NumberConfig } from "../model/index";
+import { ViewTreeConfig, ViewTreeLevelConfig, NumberConfig, QuickSearchConfig, QuickSearchColumnConfig } from "../model/index";
 import { Observable } from "rxjs/Observable";
 import { SettingKey } from "../enum/settingsKey";
 import { Config } from "protractor";
@@ -71,6 +71,7 @@ export class SettingViewModelInfo {
     public index: number | undefined = 0,
     public visibility: boolean = true,
     public disabled: boolean = false,
+    public isSearched: boolean = false,
     public title: string = "") { }
 
 }
@@ -82,6 +83,17 @@ export class ViewTreeConfigInfo implements ViewTreeConfig {
   levels: ViewTreeLevelConfig[];
 }
 
+export class QuickSearchConfigInfo implements QuickSearchConfig {
+  constructor(public viewId: number = 0, public searchMode: string = "", public columns: QuickSearchColumnConfig[] = []) { }
+}
+
+export class QuickSearchColumnConfigInfo implements QuickSearchColumnConfig {
+  name: string;
+  title: string;
+  displayIndex: number;
+  isDisplayed: boolean;
+  isSearched: boolean;
+}
 
 @Injectable()
 export class SettingService extends BaseService {
@@ -141,6 +153,60 @@ export class SettingService extends BaseService {
       .map(res => res)
       .catch(this.handleError);
 
+  }
+
+
+  getQuickSearchSettingsByUserAndView(userId: number, viewId: number) {
+    var url = String.Format(SettingsApi.QuickSearchSettingsByUserAndView, userId, viewId);
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
+
+  putUserQuickSearchSettings(userId: number, setting: QuickSearchConfig) {
+    var url = String.Format(SettingsApi.QuickSearchSettingsByUser, userId);
+    var body = JSON.stringify(setting);
+    var options = { headers: this.httpHeaders };
+    return this.http.put(url, body, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
+  async getQuickSearchSettingsByUserAndViewAsync(userId: number, viewId: number): Promise<QuickSearchConfig> {
+    var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
+
+    var qsSetting = localStorage.getItem(sessionKey);
+    if (qsSetting) {
+      return JSON.parse(qsSetting);
+    }
+    else {
+      var url = String.Format(SettingsApi.QuickSearchSettingsByUserAndView, userId, viewId);
+      const response = await this.getQuickSearchSettingsByUserAndView(userId, viewId).toPromise();
+      if (response) {
+        localStorage.setItem(sessionKey, JSON.stringify(response));
+        return response;
+      }
+    }
+
+    return null;
+  }
+
+  setLocalQuickSearchSettings(userId: number, viewId: number, setting: QuickSearchConfig) {
+    var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
+
+    var jsonSetting = JSON.stringify(setting);
+
+    localStorage.setItem(sessionKey, jsonSetting);
+  }
+
+  getLocalQuickSearchSettings(userId: number, viewId: number): QuickSearchConfig | null {
+    var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
+
+    var jsonSetting = localStorage.getItem(sessionKey);;
+    if (jsonSetting)
+      return JSON.parse(jsonSetting);
+
+    return null;    
   }
 
   //#region Setting Helper Method
@@ -256,7 +322,7 @@ export class SettingService extends BaseService {
     }
 
   }
-  
+
   /**
    * تنظیمات را با استفاده از شناسه تنظیمات برمیگرداند
    * @param settingId شناسه یکتای تنظیمات
@@ -265,8 +331,8 @@ export class SettingService extends BaseService {
     var url = String.Format(SettingsApi.Setting, settingId);
     var options = { headers: this.httpHeaders };
     return this.http.get(url, options)
-    .map(res => res)
-    .catch(this.handleError);
+      .map(res => res)
+      .catch(this.handleError);
   }
 
   async getDateConfigAsync(type: string): Promise<Date> {

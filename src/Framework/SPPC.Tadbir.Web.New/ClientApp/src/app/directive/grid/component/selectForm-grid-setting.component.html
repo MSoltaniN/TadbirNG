@@ -1,0 +1,46 @@
+<button *ngIf="entityName" (click)="showSetting()" kendoButton [icon]="'gear'" [ngClass]="{'pull-left' : rtl ,'pull-right' : !rtl}" type="button" title="{{ 'Buttons.Setting' | translate }}"></button>
+<kendo-dialog *ngIf="show" (close)="closeSetting()" title="{{'Buttons.Setting' | translate}}" [minWidth]="500" [width]="450">
+  <kendo-grid id="grdColumns" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              [data]="gridRowData"
+              [pageable]="false"
+              [scrollable]="'none'"
+              [selectable]="{enabled: true, checkboxOnly: true}">
+
+    <kendo-grid-checkbox-column title="{{'SelectForm.SearchBy' | translate}}">
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        <input type="checkbox" name="search-{{rowIndex}}" id="search-{{rowIndex}}" class="k-checkbox" [checked]="dataItem.isSearched" 
+               (change)="changeIsSearched(dataItem,$event)" />
+        <label class="k-checkbox-label" for="search-{{rowIndex}}">{{ dataItem.title }}</label>
+      </ng-template>
+    </kendo-grid-checkbox-column>
+
+    <kendo-grid-checkbox-column title="{{'SelectForm.DisplayableColumns' | translate}}">
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        <input type="checkbox" name="show-{{rowIndex}}" id="show-{{rowIndex}}" class="k-checkbox" [checked]="dataItem.visibility" [disabled]="dataItem.disabled"
+               (change)="changeVisibility(dataItem,$event)"/>
+        <label class="k-checkbox-label" for="show-{{rowIndex}}">{{ dataItem.title }}</label>
+      </ng-template>
+    </kendo-grid-checkbox-column>
+
+    <kendo-grid-checkbox-column title="{{'SelectForm.SearchType' | translate}}">
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        <div *ngIf="rowIndex == 0">
+          <input type="radio" name="textSearchMode" id="first"  value="StartsWith" class="k-radio"
+                 [checked]="gettextSearchModeState('StartsWith')" (change)="onChangeTxtSearchMode('StartsWith')"/>
+          <label class="k-radio-label" for="first">{{'SelectForm.StartsWith' | translate}}</label>
+        </div>
+        <div *ngIf="rowIndex == 1">
+          <input type="radio" name="textSearchMode" id="middle"  value="Contains" class="k-radio"
+                 [checked]="gettextSearchModeState('Contains')" (change)="onChangeTxtSearchMode('Contains')"/>
+          <label class="k-radio-label" for="middle">{{'SelectForm.Contains' | translate}}</label>
+        </div>
+        <div *ngIf="rowIndex == 2">
+          <input type="radio" name="textSearchMode" id="end"  value="EndsWith" class="k-radio"
+                 [checked]="gettextSearchModeState('EndsWith')" (change)="onChangeTxtSearchMode('EndsWith')"/>
+          <label class="k-radio-label" for="end">{{'SelectForm.EndsWith' | translate}}</label>
+        </div>
+      </ng-template>
+    </kendo-grid-checkbox-column>
+
+  </kendo-grid>
+</kendo-dialog>

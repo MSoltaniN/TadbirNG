@@ -169,30 +169,6 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
-  //async getAllMetaDataAsync(metaDataName: string): Promise<Array<Property>> {
-  //  if (metaDataName) {
-  //    if (!localStorage.getItem(metaDataName)) {
-  //      const response = await this.metadataService.getMetaData(metaDataName).toPromise();
-  //      let res: any = response;
-  //      this.properties.set(metaDataName, res.columns);
-  //      localStorage.setItem(metaDataName, JSON.stringify(res.columns))
-  //      var result = this.properties.get(metaDataName);
-  //      return result;
-  //    }
-  //    else {
-  //      var item: string | null;
-  //      item = localStorage.getItem(metaDataName);
-  //      if (!this.properties) this.properties = new Map<string, Array<Property>>();
-  //      var arr = JSON.parse(item != null ? item.toString() : "");
-  //      this.properties.set(metaDataName, arr);
-  //      if (!this.properties.get(metaDataName)) return undefined;
-  //      var result = this.properties.get(metaDataName);
-  //      return result;
-  //    }
-
-  //  }
-  //}
-
   async getAllMetaDataByViewIdAsync(viewId: number): Promise<Array<Property>> {
 
     var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
@@ -219,34 +195,6 @@ export class DefaultComponent extends BaseComponent {
     }
 
   }
-
-  //public getAllMetaDataByViewId(viewId: number, metaDataName: string): Array<Property> | undefined {
-  //  if (metaDataName) {
-  //    if (!localStorage.getItem(metaDataName)) {
-  //      this.metadataService.getReportMetaDataById(viewId).finally(() => {
-  //        if (!this.properties.get(metaDataName)) return undefined;
-  //        var result = this.properties.get(metaDataName);
-  //        return result;
-  //      }).subscribe((res1: any) => {
-  //        this.properties.set(metaDataName, res1.columns);
-  //        localStorage.setItem(metaDataName, JSON.stringify(res1.columns))
-  //        var result = this.properties.get(metaDataName);
-  //        return result;
-  //      });
-  //    }
-  //    else {
-  //      var item: string | null;
-  //      item = localStorage.getItem(metaDataName);
-  //      if (!this.properties) this.properties = new Map<string, Array<Property>>();
-  //      var arr = JSON.parse(item != null ? item.toString() : "");
-  //      this.properties.set(metaDataName, arr);
-  //      if (!this.properties.get(metaDataName)) return undefined;
-  //      var result = this.properties.get(metaDataName);
-  //      return result;
-  //    }
-
-  //  }
-  //}
 
   public getViewTreeSettings(viewId: number): ViewTreeConfig {
 
@@ -278,62 +226,6 @@ export class DefaultComponent extends BaseComponent {
       }
     }
   }
-
-  //public treeConfig: Array<{ name: string, viewTree: any }> = [];
-
-  //public getViewTreeSettings(viewId: number): ViewTreeConfig {
-
-  //  let treeConfig: Array<{ name: string, viewTree: any }> = [];
-
-  //  treeConfig = JSON.parse(sessionStorage.getItem("viewTreeConfig"));
-  //  var viewName = "view-" + viewId;
-
-  //  console.log(viewName);
-  //  console.log(treeConfig);
-
-
-  //  if (treeConfig == undefined || treeConfig.length == 0) {
-  //    console.log("1");
-  //    treeConfig = [];
-  //    this.settingService.getViewTreeSettings(viewId).subscribe(res => {
-  //      console.log("2");
-
-  //      let result: any = res;
-
-  //      treeConfig.push({ name: viewName, viewTree: result.current });
-  //      sessionStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
-
-  //      return JSON.parse(JSON.stringify(result.current));
-  //    })
-  //  }
-  //  else {
-  //    console.log("3");
-
-  //    var config = treeConfig.find(f => f.name == viewName);
-  //    if (config) {
-  //      console.log("4");
-
-  //      return config.viewTree;
-  //    }
-  //    else {
-  //      console.log("5");
-
-  //      this.settingService.getViewTreeSettings(viewId).subscribe(res => {
-  //        console.log("6");
-
-  //        let result: any = res;
-
-  //        treeConfig.push({ name: viewName, viewTree: result.current });
-
-  //        sessionStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
-
-  //        return JSON.parse(JSON.stringify(result.current));
-
-  //      })
-  //    }
-  //  }
-  //}
-
 
 
   /** return the current language */

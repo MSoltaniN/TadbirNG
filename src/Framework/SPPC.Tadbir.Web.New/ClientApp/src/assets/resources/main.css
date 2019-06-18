@@ -351,10 +351,9 @@ body.tRtl kendo-grid-toolbar > button.reportMargin {
   float: left !important;
 }
 
-body.tLtr  kendo-grid-toolbar  > button.reportMargin
-{
-    float: right!important;
-} 
+body.tLtr kendo-grid-toolbar > button.reportMargin {
+  float: right !important;
+}
 
 .reportMargin {
   margin-left: 4px;
@@ -391,5 +390,20 @@ body.tRtl .sppc-input-num {
   text-align: right;
 }
 
+.sppc-width-100 {
+  width:100% !important;
+}
+.sppc-dialog-md {
+  width: 800px
+}
 
+  .sppc-dialog-md hr {
+    border-top: dashed 1px #eee;
+  }
 
+@media screen and (max-width:800px) {
+  .sppc-dialog-md {
+    width: 90%;
+    min-width: 250px;
+  }
+}

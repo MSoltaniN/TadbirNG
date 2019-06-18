@@ -38,3 +38,5 @@ export * from './accountCollectionAccount';
 export * from './item';
 export * from './numberConfig';
 export * from './quickReportColumn';
+export * from './quickSearchConfig';
+export * from './quickSearchColumnConfig';

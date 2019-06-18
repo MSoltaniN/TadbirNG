@@ -24,8 +24,15 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\controls\accountSelect\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\controls\accountSelect\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\src\app\controls\accountSelect\**" />
+    <None Remove="ClientApp\src\app\controls\accountSelect\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +52,7 @@
     <None Remove="ClientApp\src\app\class\gridExplorer.component.ts" />
     <None Remove="ClientApp\src\app\class\inlineGrid.component.ts" />
     <None Remove="ClientApp\src\app\class\metadata\property.ts" />
+    <None Remove="ClientApp\src\app\components\accountBook\accountBook.component.ts" />
     <None Remove="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
@@ -108,6 +116,7 @@
     <None Remove="ClientApp\src\app\directive\grid\component\auto-generated-grid-setting.component.ts" />
     <None Remove="ClientApp\src\app\directive\grid\component\grid-filter.component.ts" />
     <None Remove="ClientApp\src\app\directive\grid\component\grid-setting.component.ts" />
+    <None Remove="ClientApp\src\app\directive\grid\component\selectForm-grid-setting.component.ts" />
     <None Remove="ClientApp\src\app\directive\grid\sppc-auto-generated-grid-resize.ts" />
     <None Remove="ClientApp\src\app\directive\grid\sppc-check-access.ts" />
     <None Remove="ClientApp\src\app\directive\grid\sppc-grid-reorder.ts" />
@@ -131,6 +140,8 @@
     <None Remove="ClientApp\src\app\model\IEntity.ts" />
     <None Remove="ClientApp\src\app\model\index.ts" />
     <None Remove="ClientApp\src\app\model\listFormViewConfig.ts" />
+    <None Remove="ClientApp\src\app\model\quickSearchColumnConfig.ts" />
+    <None Remove="ClientApp\src\app\model\quickSearchConfig.ts" />
     <None Remove="ClientApp\src\app\model\role.ts" />
     <None Remove="ClientApp\src\app\model\user.ts" />
     <None Remove="ClientApp\src\app\model\ViewTreeConfig.ts" />
@@ -902,6 +913,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\class\filterExpressionOperator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\grid.orderby.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\metadata\property.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\accountBook\accountBook.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
@@ -962,6 +974,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\directive\editorForm\editor-title.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\fullCode\fullCodeTest.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\fullCode\fullCode.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directive\grid\component\selectForm-grid-setting.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\component\grid-filter.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\component\auto-generated-grid-setting.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\component\grid-setting.component.ts" />
@@ -988,10 +1001,12 @@
     <TypeScriptCompile Include="ClientApp\src\app\model\IEntity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\listFormViewConfig.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\quickSearchColumnConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\role.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\user.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\viewTreeConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\viewTreeLevelConfig.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\quickSearchConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\voucher.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\pipes\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\pipes\sppc.numConfig.pipe.ts" />

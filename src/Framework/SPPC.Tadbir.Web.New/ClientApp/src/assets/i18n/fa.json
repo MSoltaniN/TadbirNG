@@ -135,6 +135,17 @@
     "CurrentBranchAndSubsets": "شعبه جاری و زیر مجموعه ها",
     "CurrentBranch": "شعبه جاری"
   },
+  "SelectForm": {
+    "Title": "فرم انتخاب",
+    "EntityTitle": "انتخاب {0} بر اساس {1}",
+    "SubjectOfTheSearch": "موضوع مورد جستجو",
+    "StartsWith": "از ابتدا",
+    "Contains": "از میان",
+    "EndsWith": "از انتها",
+    "SearchBy": "جستجو بر اساس",
+    "DisplayableColumns": "فیلدها جهت نمایش",
+    "SearchType": "نوع جستجو"
+  },
   "Journal": {
     "ByDate": "بر اساس تاریخ",
     "ByVoucher": "بر اساس سند",
