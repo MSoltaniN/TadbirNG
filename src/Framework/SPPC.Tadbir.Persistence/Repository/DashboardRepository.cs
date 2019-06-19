@@ -42,15 +42,18 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات مالی محاسبه شده</returns>
         public async Task<DashboardSummariesViewModel> GetSummariesAsync()
         {
-            return new DashboardSummariesViewModel()
-            {
-                BankBalance = await CalculateBankBalanceAsync(),
-                CashierBalance = await CalculateCashierBalanceAsync(),
-                LiquidRatio = await CalculateLiquidRatioAsync(),
-                UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
-                NetSales = await GetNetSalesSeriesAsync(),
-                GrossSales = await GetGrossSalesSeriesAsync()
-            };
+            return new DashboardSummariesViewModel();
+
+            // Hard-coded items in dashboard can crash the app when logged into converted databases.
+            ////return new DashboardSummariesViewModel()
+            ////{
+            ////    BankBalance = await CalculateBankBalanceAsync(),
+            ////    CashierBalance = await CalculateCashierBalanceAsync(),
+            ////    LiquidRatio = await CalculateLiquidRatioAsync(),
+            ////    UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
+            ////    NetSales = await GetNetSalesSeriesAsync(),
+            ////    GrossSales = await GetGrossSalesSeriesAsync()
+            ////};
         }
 
         /// <summary>
