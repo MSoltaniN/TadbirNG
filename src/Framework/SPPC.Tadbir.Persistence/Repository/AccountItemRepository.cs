@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
@@ -164,44 +166,48 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مانده حساب مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
         /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetAccountBalanceAsync(int accountId)
+        public async Task<decimal> GetAccountBalanceAsync(int accountId, DateTime date)
         {
-            throw new NotImplementedException();
+            return await GetItemBalanceAsync(date, line => line.AccountId == accountId);
         }
 
         /// <summary>
         /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
         /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetDetailAccountBalanceAsync(int faccountId)
+        public async Task<decimal> GetDetailAccountBalanceAsync(int faccountId, DateTime date)
         {
-            throw new NotImplementedException();
+            return await GetItemBalanceAsync(date, line => line.DetailId == faccountId);
         }
 
         /// <summary>
         /// به روش آسنکرون، مانده مرکز هزینه مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
         /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetCostCenterBalanceAsync(int ccenterId)
+        public async Task<decimal> GetCostCenterBalanceAsync(int ccenterId, DateTime date)
         {
-            throw new NotImplementedException();
+            return await GetItemBalanceAsync(date, line => line.CostCenterId == ccenterId);
         }
 
         /// <summary>
         /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
         /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetProjectBalanceAsync(int projectId)
+        public async Task<decimal> GetProjectBalanceAsync(int projectId, DateTime date)
         {
-            throw new NotImplementedException();
+            return await GetItemBalanceAsync(date, line => line.ProjectId == projectId);
         }
 
         /// <summary>
@@ -210,11 +216,25 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _currentContext = userContext;
             _repository.SetCurrentContext(userContext);
+        }
+
+        private async Task<decimal> GetItemBalanceAsync(
+            DateTime date, Expression<Func<VoucherLine, bool>> itemCriteria)
+        {
+            return await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, line => line.Voucher)
+                .Where(line => line.Voucher.Date.CompareWith(date) < 0
+                    && line.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .Where(itemCriteria)
+                .Select(line => line.Debit - line.Credit)
+                .SumAsync();
         }
 
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;
+        private UserContextViewModel _currentContext;
     }
 }

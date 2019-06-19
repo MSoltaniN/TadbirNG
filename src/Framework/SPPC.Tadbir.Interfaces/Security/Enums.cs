@@ -732,4 +732,46 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         ByBranch = 0x20
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به دفتر حساب را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum AccountBookPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به دفتر حساب
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده دفتر حساب
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی جستجوی اطلاعات دفتر حساب
+        /// </summary>
+        Lookup = 0x2,
+
+        /// <summary>
+        /// دسترسی فیلتر اطلاعات دفتر حساب
+        /// </summary>
+        Filter = 0x4,
+
+        /// <summary>
+        /// دسترسی چاپ اطلاعات دفتر حساب
+        /// </summary>
+        Print = 0x8,
+
+        /// <summary>
+        /// دسترسی علامتگذاری ردیف های دفتر حساب
+        /// </summary>
+        Mark = 0x10,
+
+        /// <summary>
+        /// دسترسی مشاهده دفتر حساب به تفکیک شعبه
+        /// </summary>
+        ByBranch = 0x20
+    }
 }

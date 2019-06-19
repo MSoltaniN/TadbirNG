@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -24,6 +25,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
         /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
         /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        Task<AccountBookViewModel> GetAccountBookByRowAsync(int viewId, int accountId, DateTime from, DateTime to);
+        Task<AccountBookViewModel> GetAccountBookByRowAsync(int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions);
     }
 }

@@ -108,6 +108,11 @@ namespace SPPC.Tadbir.Security
         public const string Journal = "Journal";
 
         /// <summary>
+        /// نام موجودیت دفتر حساب
+        /// </summary>
+        public const string AccountBook = "AccountBook";
+
+        /// <summary>
         /// نام موجودیت گزارش
         /// </summary>
         public const string Report = "Report";

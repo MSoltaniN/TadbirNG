@@ -1173,4 +1173,7 @@
   <data name="VoucherLineMark" xml:space="preserve">
     <value>Voucher line mark</value>
   </data>
+  <data name="InitialBalance" xml:space="preserve">
+    <value>Initial balance</value>
+  </data>
 </root>
