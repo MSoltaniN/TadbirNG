@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;

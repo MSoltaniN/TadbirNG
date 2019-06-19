@@ -54,6 +54,26 @@ namespace SPPC.Tadbir.Api
         public const string DetailAccountUrl = "faccounts/{faccountId:min(1)}";
 
         /// <summary>
+        /// API client URL for previous (accessible) detail account relative to a single detail account specified by unique identifier
+        /// </summary>
+        public const string PreviousEnvironmentDetailAccount = "faccounts/{0}/previous";
+
+        /// <summary>
+        /// API server route URL for previous (accessible) detail account relative to a single detail account specified by unique identifier
+        /// </summary>
+        public const string PreviousEnvironmentDetailAccountUrl = "faccounts/{faccountId:min(1)}/previous";
+
+        /// <summary>
+        /// API client URL for next (accessible) detail account relative to a single detail account specified by unique identifier
+        /// </summary>
+        public const string NextEnvironmentDetailAccount = "faccounts/{0}/next";
+
+        /// <summary>
+        /// API server route URL for next (accessible) detail account relative to a single detail account specified by unique identifier
+        /// </summary>
+        public const string NextEnvironmentDetailAccountUrl = "faccounts/{faccountId:min(1)}/next";
+
+        /// <summary>
         /// API client URL for all child detail accounts under a specific detail account in hierarchy
         /// </summary>
         public const string DetailAccountChildren = "faccounts/{0}/children";

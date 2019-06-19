@@ -161,6 +161,50 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مانده حساب مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetAccountBalanceAsync(int accountId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetDetailAccountBalanceAsync(int faccountId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده مرکز هزینه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetCostCenterBalanceAsync(int ccenterId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetProjectBalanceAsync(int projectId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
