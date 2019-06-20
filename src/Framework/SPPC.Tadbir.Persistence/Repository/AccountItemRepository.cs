@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
@@ -171,7 +172,10 @@ namespace SPPC.Tadbir.Persistence
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         public async Task<decimal> GetAccountBalanceAsync(int accountId, DateTime date)
         {
-            return await GetItemBalanceAsync(date, line => line.AccountId == accountId);
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId);
+            Verify.ArgumentNotNull(account, nameof(account));
+            return await GetItemBalanceAsync(date, line => line.Account.FullCode.StartsWith(account.FullCode));
         }
 
         /// <summary>
@@ -224,7 +228,8 @@ namespace SPPC.Tadbir.Persistence
             DateTime date, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             return await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, line => line.Voucher)
+                .GetAllOperationQuery<VoucherLine>(
+                    ViewName.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.CompareWith(date) < 0
                     && line.FiscalPeriodId == _currentContext.FiscalPeriodId)
                 .Where(itemCriteria)

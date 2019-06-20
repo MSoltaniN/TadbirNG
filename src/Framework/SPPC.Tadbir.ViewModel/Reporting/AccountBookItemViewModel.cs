@@ -28,7 +28,12 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// شماره سند مالی، ستون شماره در نمای لیستی
         /// </summary>
-        public string VoucherNo { get; set; }
+        public int VoucherNo { get; set; }
+
+        /// <summary>
+        /// تعداد آرتیکل ها در گزارش های تجمیع شده روی چند سند
+        /// </summary>
+        public int LineCount { get; set; }
 
         /// <summary>
         /// شرح آرتیکل مالی

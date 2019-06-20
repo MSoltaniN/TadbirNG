@@ -1176,4 +1176,7 @@
   <data name="InitialBalance" xml:space="preserve">
     <value>Initial balance</value>
   </data>
+  <data name="AsQuotedInJournal" xml:space="preserve">
+    <value>As quoted in journal</value>
+  </data>
 </root>

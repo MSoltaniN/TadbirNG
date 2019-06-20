@@ -1176,4 +1176,7 @@
   <data name="InitialBalance" xml:space="preserve">
     <value>مانده اولیه</value>
   </data>
+  <data name="AsQuotedInJournal" xml:space="preserve">
+    <value>به شرح دفتر روزنامه</value>
+  </data>
 </root>

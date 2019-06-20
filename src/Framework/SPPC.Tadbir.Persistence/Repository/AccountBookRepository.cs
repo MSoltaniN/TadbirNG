@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
@@ -69,28 +70,47 @@ namespace SPPC.Tadbir.Persistence
             return book;
         }
 
-        private static Expression<Func<VoucherLine, bool>> GetItemCriteria(int viewId, int itemId)
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ هر سند" را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
+        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
+        public async Task<AccountBookViewModel> GetAccountBookVoucherSumAsync(
+            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
-            Expression<Func<VoucherLine, bool>> itemCriteria = null;
-            switch (viewId)
-            {
-                case ViewName.Account:
-                    itemCriteria = (line => line.AccountId == itemId);
-                    break;
-                case ViewName.DetailAccount:
-                    itemCriteria = (line => line.DetailId == itemId);
-                    break;
-                case ViewName.CostCenter:
-                    itemCriteria = (line => line.CostCenterId == itemId);
-                    break;
-                case ViewName.Project:
-                    itemCriteria = (line => line.ProjectId == itemId);
-                    break;
-                default:
-                    break;
-            }
+            var book = new AccountBookViewModel();
+            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
 
-            return itemCriteria;
+            var itemCriteria = GetItemCriteria(viewId, accountId);
+            var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
+            AggregateAccountBook(book, lines, gridOptions, line => line.VoucherNo);
+            return book;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ اسناد در هر روز" را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
+        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
+        public async Task<AccountBookViewModel> GetAccountBookDailySumAsync(
+            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
+        {
+            var book = new AccountBookViewModel();
+            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
+
+            var itemCriteria = GetItemCriteria(viewId, accountId);
+            var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
+            AggregateAccountBook(book, lines, gridOptions, line => line.VoucherDate);
+            return book;
         }
 
         private static void PrepareAccountBook(AccountBookViewModel book)
@@ -108,7 +128,48 @@ namespace SPPC.Tadbir.Persistence
             book.Balance = book.Items.Last().Balance;
         }
 
-        private async Task<AccountBookItemViewModel> GetFirstBookItemAsync(int viewId, int accountId, DateTime date)
+        private static AccountBookItemViewModel GetAggregatedBookItem(
+            AccountBookItemViewModel line, bool singleMode)
+        {
+            return new AccountBookItemViewModel()
+            {
+                Description = "AsQuotedInJournal",
+                VoucherDate = line.VoucherDate,
+                VoucherNo = singleMode ? line.VoucherNo : 0,
+                VoucherStatusId = singleMode ? line.VoucherStatusId : 0,
+                VoucherConfirmedById = singleMode ? line.VoucherConfirmedById : null,
+                VoucherApprovedById = singleMode ? line.VoucherApprovedById : null
+            };
+        }
+
+        private Expression<Func<VoucherLine, bool>> GetItemCriteria(int viewId, int itemId)
+        {
+            Expression<Func<VoucherLine, bool>> itemCriteria = null;
+            switch (viewId)
+            {
+                case ViewName.Account:
+                    var account = GetAccountItem(itemId);
+                    Verify.ArgumentNotNull(account, nameof(account));
+                    itemCriteria = (line => line.Account.FullCode.StartsWith(account.FullCode));
+                    break;
+                case ViewName.DetailAccount:
+                    itemCriteria = (line => line.DetailId == itemId);
+                    break;
+                case ViewName.CostCenter:
+                    itemCriteria = (line => line.CostCenterId == itemId);
+                    break;
+                case ViewName.Project:
+                    itemCriteria = (line => line.ProjectId == itemId);
+                    break;
+                default:
+                    break;
+            }
+
+            return itemCriteria;
+        }
+
+        private async Task<AccountBookItemViewModel> GetFirstBookItemAsync(
+            int viewId, int accountId, DateTime date)
         {
             decimal balance = 0.0M;
             switch (viewId)
@@ -150,16 +211,45 @@ namespace SPPC.Tadbir.Persistence
             PrepareAccountBook(book);
         }
 
-        private IQueryable<VoucherLine> GetRawAccountBookLines(Expression<Func<VoucherLine, bool>> itemCriteria,
-            DateTime from, DateTime to)
+        private IQueryable<VoucherLine> GetRawAccountBookLines(
+            Expression<Func<VoucherLine, bool>> itemCriteria, DateTime from, DateTime to)
         {
             return _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine, line => line.Voucher)
+                .GetAllOperationQuery<VoucherLine>(
+                    ViewName.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.CompareWith(from) >= 0
                     && line.Voucher.Date.CompareWith(to) <= 0)
                 .Where(itemCriteria)
                 .OrderBy(line => line.Voucher.Date)
                     .ThenBy(line => line.Voucher.No);
+        }
+
+        private void AggregateAccountBook<TKey>(
+            AccountBookViewModel book, IEnumerable<VoucherLine> lines, GridOptions gridOptions,
+            Func<AccountBookItemViewModel, TKey> keySelector)
+        {
+            bool byNo = typeof(TKey) == typeof(int);
+            var items = lines
+                .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
+                .Apply(gridOptions);
+            var bookGroups = items
+                .GroupBy(keySelector);
+            foreach (var bookGroup in bookGroups)
+            {
+                var bookItem = GetAggregatedBookItem(bookGroup.First(), byNo);
+                bookItem.Debit = bookGroup.Sum(line => line.Debit);
+                bookItem.Credit = bookGroup.Sum(line => line.Credit);
+                bookItem.LineCount = bookGroup.Count();
+                book.Items.Add(bookItem);
+            }
+
+            PrepareAccountBook(book);
+        }
+
+        private Account GetAccountItem(int accountId)
+        {
+            var repository = UnitOfWork.GetRepository<Account>();
+            return repository.GetByID(accountId);
         }
 
         private readonly IAccountItemRepository _itemRepository;
