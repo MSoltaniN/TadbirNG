@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن اطلاعات فراداده ای را فراهم می کند</param>
+        /// <param name="item">پیاده سازی اینترفیس مربوط به عملیات بردار حساب</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
         public AccountBookRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper,
             IMetadataRepository metadata, IAccountItemRepository item, ISecureRepository repository)
@@ -51,40 +53,59 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
         /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
         /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
         public async Task<AccountBookViewModel> GetAccountBookByRowAsync(
             int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
             var book = new AccountBookViewModel();
             book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
-            if (viewId == ViewName.Account)
-            {
-                await AddBookItemsAsync(book, line => line.AccountId == accountId, from, to);
-            }
-            else if (viewId == ViewName.DetailAccount)
-            {
-                await AddBookItemsAsync(book, line => line.DetailId == accountId, from, to);
-            }
-            else if (viewId == ViewName.CostCenter)
-            {
-                await AddBookItemsAsync(book, line => line.CostCenterId == accountId, from, to);
-            }
-            else if (viewId == ViewName.Project)
-            {
-                await AddBookItemsAsync(book, line => line.ProjectId == accountId, from, to);
-            }
 
+            var itemCriteria = GetItemCriteria(viewId, accountId);
+            var bookItems = await GetRawAccountBookLines(itemCriteria, from, to)
+                .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
+                .ToListAsync();
+            AddBookItems(book, bookItems, gridOptions);
             return book;
         }
 
-        private static void SetRunningBalance(AccountBookViewModel book)
+        private static Expression<Func<VoucherLine, bool>> GetItemCriteria(int viewId, int itemId)
         {
+            Expression<Func<VoucherLine, bool>> itemCriteria = null;
+            switch (viewId)
+            {
+                case ViewName.Account:
+                    itemCriteria = (line => line.AccountId == itemId);
+                    break;
+                case ViewName.DetailAccount:
+                    itemCriteria = (line => line.DetailId == itemId);
+                    break;
+                case ViewName.CostCenter:
+                    itemCriteria = (line => line.CostCenterId == itemId);
+                    break;
+                case ViewName.Project:
+                    itemCriteria = (line => line.ProjectId == itemId);
+                    break;
+                default:
+                    break;
+            }
+
+            return itemCriteria;
+        }
+
+        private static void PrepareAccountBook(AccountBookViewModel book)
+        {
+            int rowNo = 2;
             decimal balance = book.Items[0].Balance;
             Array.ForEach(book.Items.Skip(1).ToArray(), item =>
             {
                 balance = balance + item.Debit - item.Credit;
                 item.Balance = balance;
+                item.RowNo = rowNo++;
             });
+            book.DebitSum = book.Items.Sum(item => item.Debit);
+            book.CreditSum = book.Items.Sum(item => item.Credit);
+            book.Balance = book.Items.Last().Balance;
         }
 
         private async Task<AccountBookItemViewModel> GetFirstBookItemAsync(int viewId, int accountId, DateTime date)
@@ -110,7 +131,7 @@ namespace SPPC.Tadbir.Persistence
 
             return new AccountBookItemViewModel()
             {
-                Balance = await _itemRepository.GetAccountBalanceAsync(accountId, date),
+                Balance = balance,
                 BranchId = _currentContext.BranchId,
                 BranchName = _currentContext.BranchName,
                 Description = "InitialBalance",
@@ -119,14 +140,14 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private async Task AddBookItemsAsync(AccountBookViewModel book, Expression<Func<VoucherLine, bool>> itemCriteria,
-            DateTime from, DateTime to)
+        private void AddBookItems(AccountBookViewModel book,
+            IList<AccountBookItemViewModel> items, GridOptions gridOptions)
         {
-            var bookItems = await GetRawAccountBookLines(itemCriteria, from, to)
-                .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
-                .ToListAsync();
-            book.Items.AddRange(bookItems);
-            SetRunningBalance(book);
+            items = items
+                .Apply(gridOptions)
+                .ToList();
+            book.Items.AddRange(items);
+            PrepareAccountBook(book);
         }
 
         private IQueryable<VoucherLine> GetRawAccountBookLines(Expression<Func<VoucherLine, bool>> itemCriteria,

@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Presentation;
@@ -8,6 +7,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -29,13 +29,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accbook/account/{accountId:min(1)}/by-row
         [Route(AccountBookApi.AccountBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
-        public async Task<IActionResult> GetAccountBookByRowAsync(int accountId, DateTime? from, DateTime? to)
+        public async Task<IActionResult> GetAccountBookByRowAsync(
+            int accountId, DateTime? from, DateTime? to)
         {
-            var gridOptions = GridOptions ?? new GridOptions();
-            Sanitize(ref from, ref to);
-            _repository.SetCurrentContext(SecurityContext.User);
-            var book = await _repository.GetAccountBookByRowAsync(
-                ViewName.Account, accountId, from.Value, to.Value, gridOptions);
+            var book = await GetAccountBookByRowAsync(ViewName.Account, accountId, from, to);
             return Json(book);
         }
 
@@ -70,9 +67,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accbook/faccount/{faccountId:min(1)}/by-row
         [Route(AccountBookApi.DetailAccountBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
-        public async Task<IActionResult> GetDetailAccountBookByRowAsync(int faccountId)
+        public async Task<IActionResult> GetDetailAccountBookByRowAsync(
+            int faccountId, DateTime? from, DateTime? to)
         {
-            return Ok();
+            var book = await GetAccountBookByRowAsync(ViewName.DetailAccount, faccountId, from, to);
+            return Json(book);
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/voucher-sum
@@ -106,9 +105,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/by-row
         [Route(AccountBookApi.CostCenterBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
-        public async Task<IActionResult> GetCostCenterBookByRowAsync(int ccenterId)
+        public async Task<IActionResult> GetCostCenterBookByRowAsync(
+            int ccenterId, DateTime? from, DateTime? to)
         {
-            return Ok();
+            var book = await GetAccountBookByRowAsync(ViewName.CostCenter, ccenterId, from, to);
+            return Json(book);
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/voucher-sum
@@ -142,9 +143,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accbook/project/{projectId:min(1)}/by-row
         [Route(AccountBookApi.ProjectBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
-        public async Task<IActionResult> GetProjectBookByRowAsync(int projectId)
+        public async Task<IActionResult> GetProjectBookByRowAsync(
+            int projectId, DateTime? from, DateTime? to)
         {
-            return Ok();
+            var book = await GetAccountBookByRowAsync(ViewName.Project, projectId, from, to);
+            return Json(book);
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/voucher-sum
@@ -173,6 +176,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        private async Task<AccountBookViewModel> GetAccountBookByRowAsync(
+            int viewId, int accountId, DateTime? from, DateTime? to)
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            Sanitize(ref from, ref to);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var book = await _repository.GetAccountBookByRowAsync(
+                viewId, accountId, from.Value, to.Value, gridOptions);
+            SetItemCount(book.Items.Count);
+            Localize(book);
+            return book;
+        }
+
         private void Sanitize(ref DateTime? from, ref DateTime? to)
         {
             if (from == null || to == null)
@@ -183,6 +199,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from = from ?? rangeFrom;
                 to = to ?? rangeTo;
             }
+        }
+
+        private void Localize(AccountBookViewModel book)
+        {
+            Array.ForEach(book.Items.ToArray(), item => item.Description = _strings[item.Description]);
         }
 
         private readonly IAccountBookRepository _repository;
