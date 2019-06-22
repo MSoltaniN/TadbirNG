@@ -7,8 +7,12 @@ using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -17,9 +21,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public partial class LookupController : ApiControllerBase
     {
-        public LookupController(ILookupRepository repository, IStringLocalizer<AppStrings> strings)
+        public LookupController(ILookupRepository repository,
+            IConfigRepository config, IStringLocalizer<AppStrings> strings)
         {
             _repository = repository;
+            _configRepository = config;
             _strings = strings;
         }
 
@@ -235,6 +241,48 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(treesLookup);
         }
 
+        // GET: api/lookup/accbook/levels
+        [Route(LookupApi.AccountBookLevelsUrl)]
+        public async Task<IActionResult> GetAccountBookLevelsAsync()
+        {
+            var levels = new List<AccountLevelViewModel>();
+            var allConfig = await _configRepository.GetAllViewTreeConfigAsync();
+            int key = 0;
+            foreach (var config in allConfig)
+            {
+                int viewId = config.Current.ViewId;
+                if (viewId == ViewName.Account)
+                {
+                    Array.ForEach(config.Current.Levels.Where(lvl => lvl.IsUsed).ToArray(), level =>
+                    {
+                        levels.Add(new AccountLevelViewModel()
+                        {
+                            Key = key++,
+                            Level = level.No - 1,
+                            Title = LocalizeLevelTitle(level.Name, level.No),
+                            ViewId = viewId
+                        });
+                    });
+                }
+                else
+                {
+                    var lastUsed = config.Current.Levels
+                        .Where(lvl => lvl.IsUsed)
+                        .OrderByDescending(lvl => lvl.No)
+                        .First();
+                    levels.Add(new AccountLevelViewModel()
+                    {
+                        Key = key++,
+                        Level = lastUsed.No - 1,
+                        Title = LocalizeLevelTitle(lastUsed.Name, lastUsed.No),
+                        ViewId = viewId
+                    });
+                }
+            }
+
+            return Json(levels);
+        }
+
         #endregion
 
         private IList<KeyValue> Localize(IList<KeyValue> keyValues, bool isNameSorted = false)
@@ -249,6 +297,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 : keyValues;
         }
 
+        private string LocalizeLevelTitle(string title, int level)
+        {
+            return title == "LevelX"
+                ? _strings.Format(title, level.ToString())
+                : _strings.Format(title);
+        }
+
         private readonly ILookupRepository _repository;
+        private readonly IConfigRepository _configRepository;
     }
 }

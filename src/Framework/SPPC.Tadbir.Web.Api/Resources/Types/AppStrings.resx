@@ -1179,4 +1179,7 @@
   <data name="AsQuotedInJournal" xml:space="preserve">
     <value>به شرح دفتر روزنامه</value>
   </data>
+  <data name="AccountFullName" xml:space="preserve">
+    <value>سرفصل حسابداری</value>
+  </data>
 </root>

@@ -84,6 +84,12 @@ namespace SPPC.Tadbir.Persistence
         Task SaveQuickSearchConfigAsync(int userId, QuickSearchConfig userConfig);
 
         /// <summary>
+        /// به روش آسنکرون، تنظیمات موجود برای ساختار همه نماهای درختی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>تنظیمات موجود برای ساختار همه نماهای درختی</returns>
+        Task<IList<ViewTreeFullConfig>> GetAllViewTreeConfigAsync();
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای ساختار نمای درختی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>

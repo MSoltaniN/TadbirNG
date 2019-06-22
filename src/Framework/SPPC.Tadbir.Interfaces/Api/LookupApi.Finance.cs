@@ -159,6 +159,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string VoucherLineTypesUrl = "lookup/types/voucher-line";
 
+        /// <summary>
+        /// API client URL for all applicable tree levels in Account Book report
+        /// </summary>
+        public const string AccountBookLevels = "lookup/accbook/levels";
+
+        /// <summary>
+        /// API server route URL for all applicable tree levels in Account Book report
+        /// </summary>
+        public const string AccountBookLevelsUrl = "lookup/accbook/levels";
+
         #endregion
     }
 }

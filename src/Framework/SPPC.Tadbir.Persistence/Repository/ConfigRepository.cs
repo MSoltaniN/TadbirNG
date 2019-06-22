@@ -328,6 +328,28 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تنظیمات موجود برای ساختار همه نماهای درختی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>تنظیمات موجود برای ساختار همه نماهای درختی</returns>
+        public async Task<IList<ViewTreeFullConfig>> GetAllViewTreeConfigAsync()
+        {
+            var allConfig = new List<ViewTreeFullConfig>();
+            _unitOfWork.UseCompanyContext();
+            var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
+            var configItems = await repository
+                .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ViewTreeConfig).Name);
+            foreach (var config in configItems)
+            {
+                var treeConfig = _mapper.Map<ViewTreeFullConfig>(config);
+                ClipUsableTreeLevels(treeConfig);
+                allConfig.Add(treeConfig);
+            }
+
+            _unitOfWork.UseSystemContext();
+            return allConfig;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای ساختار نمای درختی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>

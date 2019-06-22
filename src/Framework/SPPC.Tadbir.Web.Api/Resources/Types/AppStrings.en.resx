@@ -1179,4 +1179,7 @@
   <data name="AsQuotedInJournal" xml:space="preserve">
     <value>As quoted in journal</value>
   </data>
+  <data name="AccountFullName" xml:space="preserve">
+    <value>Account</value>
+  </data>
 </root>
