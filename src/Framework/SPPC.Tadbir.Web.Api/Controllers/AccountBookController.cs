@@ -192,6 +192,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        #region Account Item Navigation
+
+        // GET: api/accbook/view/{viewId:min(1)}/item/{itemId:min(1)}/prev
+        [Route(AccountBookApi.PreviousEnvironmentItemUrl)]
+        public async Task<IActionResult> GetPreviousEnvironmentItemAsync(int viewId, int itemId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var previous = await _repository.GetPreviousAccountItemAsync(viewId, itemId);
+            return JsonReadResult(previous);
+        }
+
+        // GET: api/accbook/view/{viewId:min(1)}/item/{itemId:min(1)}/next
+        [Route(AccountBookApi.NextEnvironmentItemUrl)]
+        public async Task<IActionResult> GetNextEnvironmentItemAsync(int viewId, int itemId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var next = await _repository.GetNextAccountItemAsync(viewId, itemId);
+            return JsonReadResult(next);
+        }
+
+        #endregion
+
         private async Task<AccountBookViewModel> GetAccountBookByRowAsync(
             int viewId, int accountId, DateTime? from, DateTime? to)
         {

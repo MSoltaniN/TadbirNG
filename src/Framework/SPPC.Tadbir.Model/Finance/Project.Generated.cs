@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -19,7 +20,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// اطلاعات یک پروژه مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند
     /// </summary>
-    public partial class Project : BaseEntity
+    public partial class Project : TreeEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس ایجاد می کند.
@@ -33,26 +34,6 @@ namespace SPPC.Tadbir.Model.Finance
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// کد شناسایی برای سطح جاری پروژه در ساختار درختی
-        /// </summary>
-        public virtual string Code { get; set; }
-
-        /// <summary>
-        /// کد شناسایی کامل پروژه متشکل از کدهای تمام سطوح قبلی در ساختار درختی
-        /// </summary>
-        public virtual string FullCode { get; set; }
-
-        /// <summary>
-        /// نام پروژه
-        /// </summary>
-        public virtual string Name { get; set; }
-
-        /// <summary>
-        /// شماره سطح که عمق این پروژه را در ساختار درختی مشخص می کند
-        /// </summary>
-        public virtual short Level { get; set; }
 
         /// <summary>
         /// شرحی که اطلاعات تکمیلی برای این پروژه را مشخص می کند

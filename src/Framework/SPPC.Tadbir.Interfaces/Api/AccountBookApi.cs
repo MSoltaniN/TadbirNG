@@ -187,5 +187,29 @@ namespace SPPC.Tadbir.Api
         public const string ProjectBookMonthlySumUrl = "accbook/project/{projectId:min(1)}/monthly-sum";
 
         #endregion
+
+        #region Account Item Navigation
+
+        /// <summary>
+        /// API client URL for previous accessible account item relative to the item specified by unique identifier
+        /// </summary>
+        public const string PreviousEnvironmentItem = "accbook/view/{0}/item/{1}/prev";
+
+        /// <summary>
+        /// API server route URL for previous accessible account item relative to the item specified by unique identifier
+        /// </summary>
+        public const string PreviousEnvironmentItemUrl = "accbook/view/{viewId:min(1)}/item/{itemId:min(1)}/prev";
+
+        /// <summary>
+        /// API client URL for next accessible account item relative to the item specified by unique identifier
+        /// </summary>
+        public const string NextEnvironmentItem = "accbook/view/{0}/item/{1}/next";
+
+        /// <summary>
+        /// API server route URL for next accessible account item relative to the item specified by unique identifier
+        /// </summary>
+        public const string NextEnvironmentItemUrl = "accbook/view/{viewId:min(1)}/item/{itemId:min(1)}/next";
+
+        #endregion
     }
 }

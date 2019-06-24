@@ -9,8 +9,10 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -111,6 +113,48 @@ namespace SPPC.Tadbir.Persistence
             var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
             AggregateAccountBook(book, lines, gridOptions, line => line.VoucherDate);
             return book;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مولفه حساب قبلی قابل دسترسی نسبت به مولفه حساب مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب جاری</param>
+        /// <returns>اطلاعات نمایشی مختصر برای مولفه حساب قبلی</returns>
+        public async Task<AccountItemBriefViewModel> GetPreviousAccountItemAsync(int viewId, int itemId)
+        {
+            var previous = default(AccountItemBriefViewModel);
+            var previousItem = await GetAccountItemQuery(viewId)
+                .Where(item => item.Id < itemId)
+                .OrderByDescending(item => item.Id)
+                .FirstOrDefaultAsync();
+            if (previousItem != null)
+            {
+                previous = Mapper.Map<AccountItemBriefViewModel>(previousItem);
+            }
+
+            return previous;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مولفه حساب بعدی قابل دسترسی نسبت به مولفه حساب مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب جاری</param>
+        /// <returns>اطلاعات نمایشی مختصر برای مولفه حساب بعدی</returns>
+        public async Task<AccountItemBriefViewModel> GetNextAccountItemAsync(int viewId, int itemId)
+        {
+            var next = default(AccountItemBriefViewModel);
+            var nextItem = await GetAccountItemQuery(viewId)
+                .Where(item => item.Id > itemId)
+                .OrderBy(item => item.Id)
+                .FirstOrDefaultAsync();
+            if (nextItem != null)
+            {
+                next = Mapper.Map<AccountItemBriefViewModel>(nextItem);
+            }
+
+            return next;
         }
 
         private static void PrepareAccountBook(AccountBookViewModel book)
@@ -250,6 +294,29 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetRepository<Account>();
             return repository.GetByID(accountId);
+        }
+
+        private IQueryable<TreeEntity> GetAccountItemQuery(int viewId)
+        {
+            IQueryable<TreeEntity> items = null;
+            if (viewId == ViewName.Account)
+            {
+                items = _repository.GetAllQuery<Account>(viewId);
+            }
+            else if (viewId == ViewName.DetailAccount)
+            {
+                items = _repository.GetAllQuery<DetailAccount>(viewId);
+            }
+            else if (viewId == ViewName.CostCenter)
+            {
+                items = _repository.GetAllQuery<CostCenter>(viewId);
+            }
+            else if (viewId == ViewName.Project)
+            {
+                items = _repository.GetAllQuery<Project>(viewId);
+            }
+
+            return items;
         }
 
         private readonly IAccountItemRepository _itemRepository;

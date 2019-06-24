@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -19,7 +20,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// اطلاعات یک سرفصل حسابداری مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند
     /// </summary>
-    public partial class Account : BaseEntity
+    public partial class Account : TreeEntity, IBaseEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -38,26 +39,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی گروه مرتبط با حساب کل
         /// </summary>
         public virtual int? GroupId { get; set; }
-
-        /// <summary>
-        /// کد شناسایی برای سطح جاری سرفصل حسابداری در ساختار درختی
-        /// </summary>
-        public virtual string Code { get; set; }
-
-        /// <summary>
-        /// کد شناسایی کامل سرفصل حسابداری متشکل از کدهای تمام سطوح قبلی در ساختار درختی
-        /// </summary>
-        public virtual string FullCode { get; set; }
-
-        /// <summary>
-        /// نام سرفصل حسابداری
-        /// </summary>
-        public virtual string Name { get; set; }
-
-        /// <summary>
-        /// شماره سطح که عمق این سرفصل حسابداری را در ساختار درختی مشخص می کند
-        /// </summary>
-        public virtual short Level { get; set; }
 
         /// <summary>
         /// مشخص می کند که آیا حساب مورد نظر فعال است یا نه؟

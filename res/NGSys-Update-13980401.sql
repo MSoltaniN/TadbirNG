@@ -57,6 +57,12 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], 
 VALUES (247, 29, N'BranchName', NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, N'AlwaysVisible', 7, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (36, 24, 72, N'AccountBook', N'/account-book', N'list', NULL)
+SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+
 UPDATE [Metadata].[View]
 SET Name = 'AccountFullName'
 WHERE ViewID = 1
