@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -116,6 +118,47 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ اسناد در هر ماه" را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
+        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
+        public async Task<AccountBookViewModel> GetAccountBookMonthlySumAsync(int viewId, int accountId,
+            DateTime from, DateTime to, GridOptions gridOptions)
+        {
+            var book = new AccountBookViewModel();
+            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
+
+            var itemCriteria = GetItemCriteria(viewId, accountId);
+            var lines = GetRawAccountBookLines(itemCriteria, from, to);
+            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
+            foreach (var month in monthEnum.GetMonths())
+            {
+                var monthLines = lines
+                    .Where(art => art.Voucher.Date.IsBetween(month.Start, month.End))
+                    .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
+                    .Apply(gridOptions, false)
+                    .ToList();
+                if (monthLines.Count > 0)
+                {
+                    var bookItem = GetAggregatedBookItem(monthLines.First(), false);
+                    bookItem.Debit = monthLines.Sum(line => line.Debit);
+                    bookItem.Credit = monthLines.Sum(line => line.Credit);
+                    bookItem.LineCount = monthLines.Count();
+                    bookItem.VoucherDate = month.End;
+                    book.Items.Add(bookItem);
+                }
+            }
+
+            PrepareAccountBook(book);
+            return book;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مولفه حساب قبلی قابل دسترسی نسبت به مولفه حساب مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>
@@ -124,8 +167,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountItemBriefViewModel> GetPreviousAccountItemAsync(int viewId, int itemId)
         {
             var previous = default(AccountItemBriefViewModel);
+            var accountItem = GetAccountItem(viewId, itemId);
             var previousItem = await GetAccountItemQuery(viewId)
-                .Where(item => item.Id < itemId)
+                .Where(item => item.Id < itemId && item.Level == accountItem.Level)
                 .OrderByDescending(item => item.Id)
                 .FirstOrDefaultAsync();
             if (previousItem != null)
@@ -145,8 +189,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountItemBriefViewModel> GetNextAccountItemAsync(int viewId, int itemId)
         {
             var next = default(AccountItemBriefViewModel);
+            var accountItem = GetAccountItem(viewId, itemId);
             var nextItem = await GetAccountItemQuery(viewId)
-                .Where(item => item.Id > itemId)
+                .Where(item => item.Id > itemId && item.Level == accountItem.Level)
                 .OrderBy(item => item.Id)
                 .FirstOrDefaultAsync();
             if (nextItem != null)
@@ -192,7 +237,7 @@ namespace SPPC.Tadbir.Persistence
             switch (viewId)
             {
                 case ViewName.Account:
-                    var account = GetAccountItem(itemId);
+                    var account = GetAccountItem<Account>(itemId);
                     Verify.ArgumentNotNull(account, nameof(account));
                     itemCriteria = (line => line.Account.FullCode.StartsWith(account.FullCode));
                     break;
@@ -249,7 +294,7 @@ namespace SPPC.Tadbir.Persistence
             IList<AccountBookItemViewModel> items, GridOptions gridOptions)
         {
             items = items
-                .Apply(gridOptions)
+                .Apply(gridOptions, false)
                 .ToList();
             book.Items.AddRange(items);
             PrepareAccountBook(book);
@@ -261,8 +306,7 @@ namespace SPPC.Tadbir.Persistence
             return _repository
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account)
-                .Where(line => line.Voucher.Date.CompareWith(from) >= 0
-                    && line.Voucher.Date.CompareWith(to) <= 0)
+                .Where(line => line.Voucher.Date.IsBetween(from, to))
                 .Where(itemCriteria)
                 .OrderBy(line => line.Voucher.Date)
                     .ThenBy(line => line.Voucher.No);
@@ -275,7 +319,7 @@ namespace SPPC.Tadbir.Persistence
             bool byNo = typeof(TKey) == typeof(int);
             var items = lines
                 .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
-                .Apply(gridOptions);
+                .Apply(gridOptions, false);
             var bookGroups = items
                 .GroupBy(keySelector);
             foreach (var bookGroup in bookGroups)
@@ -290,10 +334,34 @@ namespace SPPC.Tadbir.Persistence
             PrepareAccountBook(book);
         }
 
-        private Account GetAccountItem(int accountId)
+        private TreeEntity GetAccountItem(int viewId, int itemId)
         {
-            var repository = UnitOfWork.GetRepository<Account>();
-            return repository.GetByID(accountId);
+            var item = default(TreeEntity);
+            if (viewId == ViewName.Account)
+            {
+                item = GetAccountItem<Account>(itemId);
+            }
+            else if (viewId == ViewName.DetailAccount)
+            {
+                item = GetAccountItem<DetailAccount>(itemId);
+            }
+            else if (viewId == ViewName.CostCenter)
+            {
+                item = GetAccountItem<CostCenter>(itemId);
+            }
+            else if (viewId == ViewName.Project)
+            {
+                item = GetAccountItem<Project>(itemId);
+            }
+
+            return item;
+        }
+
+        private TItem GetAccountItem<TItem>(int itemId)
+            where TItem : TreeEntity
+        {
+            var repository = UnitOfWork.GetRepository<TItem>();
+            return repository.GetByID(itemId);
         }
 
         private IQueryable<TreeEntity> GetAccountItemQuery(int viewId)
