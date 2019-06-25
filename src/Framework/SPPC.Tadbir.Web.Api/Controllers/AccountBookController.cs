@@ -258,7 +258,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void Localize(AccountBookViewModel book)
         {
-            Array.ForEach(book.Items.ToArray(), item => item.Description = _strings[item.Description]);
+            Array.ForEach(book.Items.ToArray(), item => item.Description = _strings[item.Description ?? String.Empty]);
         }
 
         private delegate Task<AccountBookViewModel> AccountBookDelegate(int viewId, int itemId,

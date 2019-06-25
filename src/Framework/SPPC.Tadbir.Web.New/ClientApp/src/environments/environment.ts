@@ -79,7 +79,10 @@ export const Entities = {
   JournalByNoByRowDetail: "JournalByNoByRowDetail",
   JournalByNoByLedger: "JournalByNoByLedger",
   JournalByNoBySubsidiary: "JournalByNoBySubsidiary",
-  JournalByNoSummary: "JournalByNoSummary"
+  JournalByNoSummary: "JournalByNoSummary",
+  AccountBookSingle: "AccountBookSingle",
+  AccountBookSingleSummary: "AccountBookSingleSummary",
+  AccountBookSummary: "AccountBookSummary"
 }
 
 export const ColumnVisibility =
@@ -104,7 +107,8 @@ export const SessionKeys = {
   DateRangeConfig: 'DateRangeConfig',
   DateRangeSelected: 'DateRangeSelected',
   MetadataKey: 'metadata_view_{0}',
-  QuickSearchConfig:'QuickSearchConfig_{0}_{1}'
+  QuickSearchConfig: 'QuickSearchConfig_{0}_{1}',
+  SelectForm: 'SelectForm'
 }
 
 

@@ -92,6 +92,8 @@ export class BreadCumbComponent implements OnInit {
       case "journal":
         this.getText("Entity.Journal");
         break;
+      case "accountbook":
+        this.getText("Entity.AccountBook");
     }
   }
 }

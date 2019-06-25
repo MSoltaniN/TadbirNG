@@ -37,8 +37,9 @@ export class DefaultComponent extends BaseComponent {
     this.localizeMsg(this.entityType);
 
     var propertiesValue = localStorage.getItem(this.metadataKey)
+    this.properties = new Map<string, Array<Property>>();
     if (!propertiesValue) {
-      this.properties = new Map<string, Array<Property>>();
+      //this.properties = new Map<string, Array<Property>>();
       this.properties.set(this.metadataKey, JSON.parse(propertiesValue));
     }
   }
@@ -170,7 +171,6 @@ export class DefaultComponent extends BaseComponent {
   }
 
   async getAllMetaDataByViewIdAsync(viewId: number): Promise<Array<Property>> {
-
     var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
 
     if (viewId) {

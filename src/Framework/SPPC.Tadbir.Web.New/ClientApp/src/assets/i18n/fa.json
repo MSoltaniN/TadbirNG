@@ -99,14 +99,16 @@
     "Save": "ذخیره",
     "Close": "بستن",
     "Subset": "زیر مجموعه",
-    "Compute": "محاسبه"
+    "Compute": "محاسبه",
+    "Next": "بعدی",
+    "Previous": "قبلی"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
     "FieldName": "نام ستون"
   },
   "Entity": {
-    "Account": "اطلاعات حساب",
+    "Account": "حساب",
     "Voucher": "اطلاعات سند",
     "VoucherLine": "آرتیکل سند",
     "User": "کاربر",
@@ -131,7 +133,8 @@
     "JournalByDateByLedger": "در سطح کل",
     "JournalByDateBySubsidiary": "در سطح معین",
     "JournalByDateSummary": "سند خلاصه",
-    "JournalByDateSummaryByDate": "سند خلاصه به تفکیک تاریخ"
+    "JournalByDateSummaryByDate": "سند خلاصه به تفکیک تاریخ",
+    "AccountBook": "دفتر حساب"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -148,6 +151,57 @@
     "SearchBy": "جستجو بر اساس",
     "DisplayableColumns": "فیلدها جهت نمایش",
     "SearchType": "نوع جستجو"
+  },
+  "AccountBook": {
+    "DisplayByRow": "مطابق رديف‌هاى سند",
+    "DisplayByVoucherSum": "جمع مبالغ هر سند",
+    "DisplayByDailySum": "جمع مبالغ اسناد در هر روز",
+    "DisplayByMonthlySum": "جمع مبالغ اسناد در هر ماه",
+    "VoucherInfo": "سند حسابداری",
+    "Sum": "مجموع",
+    "DebitSum": "جمع بدهکار",
+    "CreditSum": "جمع بستانکار",
+    "BookType": "نوع دفتر",
+    "DisplayType": "نوع نمایش",
+    "SelectBranch": "انتخاب شعبه",
+    "BranchSeparation": "به تفکیک شعبه",
+    "VoucherStatus": "وضعیت سند",
+    "ArticleType": "وضعیت علامت گذاری",
+    "OnLabel": "بله",
+    "OffLabel": "خیر",
+    "ModelNotValid": "{0} معتبر نمیباشد"
+
+  },
+  "AccountBookSingle": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ",
+    "VoucherNo": "شماره سند",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "Balance": "مانده",
+    "Mark": "علامت گذاری",
+    "BranchName": "شعبه"
+  },
+  "AccountBookSingleSummary": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ",
+    "VoucherNo": "شماره سند",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "Balance": "مانده",
+    "BranchName": "شعبه"
+  },
+  "AccountBookSummary": {
+    "RowNo": "ردیف",
+    "VoucherDate": "تاریخ",
+    "LineCount": "تعداد",
+    "Description": "شرح",
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "Balance": "مانده",
+    "BranchName": "شعبه"
   },
   "Journal": {
     "ByDate": "بر اساس تاریخ",

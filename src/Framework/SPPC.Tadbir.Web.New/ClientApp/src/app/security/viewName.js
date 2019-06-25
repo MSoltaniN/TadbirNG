@@ -26,5 +26,8 @@ export var ViewName;
     ViewName[ViewName["JournalByNoByLedger"] = 24] = "JournalByNoByLedger";
     ViewName[ViewName["JournalByNoBySubsidiary"] = 25] = "JournalByNoBySubsidiary";
     ViewName[ViewName["JournalByNoSummary"] = 26] = "JournalByNoSummary";
+    ViewName[ViewName["AccountBookSingle"] = 27] = "AccountBookSingle";
+    ViewName[ViewName["AccountBookSingleSummary"] = 28] = "AccountBookSingleSummary";
+    ViewName[ViewName["AccountBookSummary"] = 29] = "AccountBookSummary";
 })(ViewName || (ViewName = {}));
 //# sourceMappingURL=viewName.js.map
