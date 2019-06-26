@@ -20,7 +20,7 @@ import { FilterExpression } from '../../class/filterExpression';
 import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
 import { ReportingService } from '../../service/report/reporting.service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
-import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
+import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
 import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
 import { Filter } from '../../class/filter';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
@@ -110,8 +110,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.dialogModel.voucherItem = this.editDataItem;
     this.editDataItem = undefined;
 
-    this.dialogRef.content.instance.reloadGrid.subscribe((res) => {
-      this.reloadGrid();
+    this.dialogRef.result.subscribe((result) => {
+      if (result instanceof DialogCloseResult) {
+        this.reloadGrid();
+      }
     });
 
   }

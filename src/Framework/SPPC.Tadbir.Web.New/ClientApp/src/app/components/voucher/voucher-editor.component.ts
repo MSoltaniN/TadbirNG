@@ -94,7 +94,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   selectedType: string;
 
   @Input() voucherItem: Voucher;
-  @Output() reloadGrid: EventEmitter<any> = new EventEmitter();
+  //@Output() reloadGrid: EventEmitter<any> = new EventEmitter();
 
   isShowBreadcrumb: boolean = true;
   isFirstVoucher: boolean = false;
@@ -300,7 +300,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
       this.voucherModel.statusId = this.voucherModel.statusId == DocumentStatusValue.Draft ? DocumentStatusValue.NormalCheck : DocumentStatusValue.Draft;
 
-      this.reloadGrid.emit();
+      //this.reloadGrid.emit();
 
     }, (error => {
       var message = error.message ? error.message : error;
