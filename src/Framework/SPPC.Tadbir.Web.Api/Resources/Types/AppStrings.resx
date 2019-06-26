@@ -1182,4 +1182,7 @@
   <data name="AccountFullName" xml:space="preserve">
     <value>سرفصل حسابداری</value>
   </data>
+  <data name="AccountBook" xml:space="preserve">
+    <value>دفتر حساب</value>
+  </data>
 </root>
