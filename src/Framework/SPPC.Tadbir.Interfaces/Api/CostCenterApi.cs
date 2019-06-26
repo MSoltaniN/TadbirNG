@@ -53,26 +53,6 @@ namespace SPPC.Tadbir.Api
         public const string CostCenterUrl = "ccenters/{ccenterId:min(1)}";
 
         /// <summary>
-        /// API client URL for previous (accessible) cost center relative to a single cost center specified by unique identifier
-        /// </summary>
-        public const string PreviousEnvironmentCostCenter = "ccenters/{0}/previous";
-
-        /// <summary>
-        /// API server route URL for previous (accessible) cost center relative to a single cost center specified by unique identifier
-        /// </summary>
-        public const string PreviousEnvironmentCostCenterUrl = "ccenters/{ccenterId:min(1)}/previous";
-
-        /// <summary>
-        /// API client URL for next (accessible) cost center relative to a single cost center specified by unique identifier
-        /// </summary>
-        public const string NextEnvironmentCostCenter = "ccenters/{0}/next";
-
-        /// <summary>
-        /// API server route URL for next (accessible) cost center relative to a single cost center specified by unique identifier
-        /// </summary>
-        public const string NextEnvironmentCostCenterUrl = "ccenters/{ccenterId:min(1)}/next";
-
-        /// <summary>
         /// API client URL for all child cost centers under a specific cost center in hierarchy
         /// </summary>
         public const string CostCenterChildren = "ccenters/{0}/children";

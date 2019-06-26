@@ -100,7 +100,9 @@
     "Save": "Save",
     "Close": "Close",
     "Subset": "subset",
-    "Compute": "Compute"
+    "Compute": "Compute",
+    "Next": "Next",
+    "Previous": "Previous"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -134,7 +136,9 @@
     "JournalByDateByLedger": "Journal By Date By Ledger",
     "JournalByDateBySubsidiary": "Journal By Date By Subsidiary",
     "JournalByDateSummary": "Journal By Date Summary",
-    "JournalByDateSummaryByDate": "Journal By Date Summary By Date"
+    "JournalByDateSummaryByDate": "Journal By Date Summary By Date",
+    "AccountBook": "Account Book"
+
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -151,6 +155,56 @@
     "SearchBy": "Search By",
     "DisplayableColumns": "Displayable Columns",
     "SearchType": "Search Type"
+  },
+  "AccountBook": {
+    "DisplayByRow": "By Row",
+    "DisplayByVoucherSum": "Voucher Sum",
+    "DisplayByDailySum": "Daily Sum",
+    "DisplayByMonthlySum": "Monthly Sum",
+    "VoucherInfo": "Voucher",
+    "Sum": "Sum",
+    "DebitSum": "Debit Sum",
+    "CreditSum": "Credit Sum",
+    "BookType": "Book Type",
+    "DisplayType": "Display Type",
+    "SelectBranch": "Select Branch",
+    "BranchSeparation": "Branch Separation",
+    "VoucherStatus": "Voucher Status",
+    "ArticleType": "Mark Status",
+    "OnLabel": "Yes",
+    "OffLabel": "No",
+    "ModelNotValid": "The {0} is not valid"
+  },
+  "AccountBookSingle": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "Balance": "Balance",
+    "Mark": "Mark",
+    "BranchName": "Branch Name"
+  },
+  "AccountBookSingleSummary": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "VoucherNo": "Voucher No",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "Balance": "Balance",
+    "BranchName": "Branch Name"
+  },
+  "AccountBookSummary": {
+    "RowNo": "Row No",
+    "VoucherDate": "Voucher Date",
+    "LineCount": "Count",
+    "Description": "Description",
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "Balance": "Balance",
+    "BranchName": "Branch Name"
   },
   "Journal": {
     "ByDate": "By Date",

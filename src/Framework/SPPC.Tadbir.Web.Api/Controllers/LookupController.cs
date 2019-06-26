@@ -7,7 +7,6 @@ using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Api;
-using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -194,6 +193,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var localizedTurnoversLookup = Localize(turnoverLookup);
             return Json(localizedTurnoversLookup);
         }
+
         #endregion
 
         #region Security Subsystem API

@@ -26,5 +26,8 @@ export enum ViewName {
   JournalByNoByRowDetail = 23,
   JournalByNoByLedger = 24,
   JournalByNoBySubsidiary = 25,
-  JournalByNoSummary = 26
+  JournalByNoSummary = 26,
+  AccountBookSingle = 27,
+  AccountBookSingleSummary = 28,
+  AccountBookSummary = 29
 }

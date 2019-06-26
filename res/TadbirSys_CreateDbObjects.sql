@@ -1419,6 +1419,8 @@ INSERT [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey]
     VALUES (34, 32, NULL, N'IssueClosingVoucher', N'/closing-voucher', N'list', NULL)
 INSERT [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (35, 32, NULL, N'ClosingTempAccounts', N'/close-temp-accounts', N'list', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (36, 24, 72, N'AccountBook', N'/account-book', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET ANSI_NULLS OFF

@@ -126,6 +126,7 @@
     <None Remove="ClientApp\src\app\directive\onlyNumber\sppc.onlyNumber.ts" />
     <None Remove="ClientApp\src\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\src\app\directive\Validator\Sppc-code-length-validator.ts" />
+    <None Remove="ClientApp\src\app\enum\accountBook.ts" />
     <None Remove="ClientApp\src\app\enum\dateRangeType.ts" />
     <None Remove="ClientApp\src\app\enum\journal.ts" />
     <None Remove="ClientApp\src\app\enum\KeyCode.ts" />
@@ -990,6 +991,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\Validator\Sppc-code-length-validator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\journal.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\enum\accountBook.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\settingsKey.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\dateRangeType.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\voucherOperations.ts" />

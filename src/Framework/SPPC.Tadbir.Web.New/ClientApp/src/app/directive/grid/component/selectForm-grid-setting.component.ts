@@ -356,7 +356,6 @@ export class SelectFormGridSettingComponent extends BaseComponent implements OnI
 
     if (currentSetting)
       this.settingService.putUserQuickSearchSettings(this.UserId, currentSetting).subscribe(response => {
-
       }, (error => {
 
       }));

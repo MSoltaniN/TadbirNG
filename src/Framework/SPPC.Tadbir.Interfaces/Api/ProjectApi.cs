@@ -53,26 +53,6 @@ namespace SPPC.Tadbir.Api
         public const string ProjectUrl = "projects/{projectId:min(1)}";
 
         /// <summary>
-        /// API client URL for previous (accessible) project relative to a single project specified by unique identifier
-        /// </summary>
-        public const string PreviousEnvironmentProject = "projects/{0}/previous";
-
-        /// <summary>
-        /// API server route URL for previous (accessible) project relative to a single project specified by unique identifier
-        /// </summary>
-        public const string PreviousEnvironmentProjectUrl = "projects/{projectId:min(1)}/previous";
-
-        /// <summary>
-        /// API client URL for next (accessible) project relative to a single project specified by unique identifier
-        /// </summary>
-        public const string NextEnvironmentProject = "projects/{0}/next";
-
-        /// <summary>
-        /// API server route URL for next (accessible) project relative to a single project specified by unique identifier
-        /// </summary>
-        public const string NextEnvironmentProjectUrl = "projects/{projectId:min(1)}/next";
-
-        /// <summary>
         /// API client URL for all child projects under a specific project in hierarchy
         /// </summary>
         public const string ProjectChildren = "projects/{0}/children";

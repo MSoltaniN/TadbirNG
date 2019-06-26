@@ -10,6 +10,7 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Mapper.ModelHelpers;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
@@ -266,6 +267,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<FiscalPeriod, RelatedItemViewModel>();
 
+            mapperConfig.CreateMap<TreeEntity, AccountItemBriefViewModel>();
             mapperConfig.CreateMap<AccountItemBriefViewModel, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));

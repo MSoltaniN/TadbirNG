@@ -63,26 +63,6 @@ namespace SPPC.Tadbir.Api
         public const string AccountUrl = "accounts/{accountId:min(1)}";
 
         /// <summary>
-        /// API client URL for previous (accessible) account relative to a single account specified by unique identifier
-        /// </summary>
-        public const string PreviousEnvironmentAccount = "accounts/{0}/previous";
-
-        /// <summary>
-        /// API server route URL for previous (accessible) account relative to a single account specified by unique identifier
-        /// </summary>
-        public const string PreviousEnvironmentAccountUrl = "accounts/{accountId:min(1)}/previous";
-
-        /// <summary>
-        /// API client URL for next (accessible) account relative to a single account specified by unique identifier
-        /// </summary>
-        public const string NextEnvironmentAccount = "accounts/{0}/next";
-
-        /// <summary>
-        /// API server route URL for next (accessible) account relative to a single account specified by unique identifier
-        /// </summary>
-        public const string NextEnvironmentAccountUrl = "accounts/{accountId:min(1)}/next";
-
-        /// <summary>
         /// API client URL for all child accounts under a specific account in hierarchy
         /// </summary>
         public const string AccountChildren = "accounts/{0}/children";
