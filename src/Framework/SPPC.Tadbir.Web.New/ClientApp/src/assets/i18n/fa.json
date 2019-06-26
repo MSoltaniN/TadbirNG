@@ -77,7 +77,8 @@
     "ReportIsOutOfPage": "خروجی گزارش خارج از صفحه نمایشگر می باشد",
     "No": "خیر",
     "Yes": "بله",
-    "QuickReportSetting": "تنظیمات گزارش فوری"
+    "QuickReportSetting": "تنظیمات گزارش فوری",
+    "QuickReportValidate": "لطفا قبل از ایجاد گزارش فوری دکمه محاسبه را کلیک کنید"
   },
   "Buttons": {
     "Ok": "تایید",

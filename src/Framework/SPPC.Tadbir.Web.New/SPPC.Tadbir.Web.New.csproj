@@ -141,6 +141,7 @@
     <None Remove="ClientApp\src\app\model\IEntity.ts" />
     <None Remove="ClientApp\src\app\model\index.ts" />
     <None Remove="ClientApp\src\app\model\listFormViewConfig.ts" />
+    <None Remove="ClientApp\src\app\model\quickReportSetting.ts" />
     <None Remove="ClientApp\src\app\model\quickSearchColumnConfig.ts" />
     <None Remove="ClientApp\src\app\model\quickSearchConfig.ts" />
     <None Remove="ClientApp\src\app\model\role.ts" />
@@ -1003,6 +1004,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\model\IEntity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\listFormViewConfig.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model\quickReportSetting.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\quickSearchColumnConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\role.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model\user.ts" />

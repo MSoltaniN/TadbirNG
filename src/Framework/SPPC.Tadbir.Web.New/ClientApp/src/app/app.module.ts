@@ -306,7 +306,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DpDatePickerModule,
     TextMaskModule,
     TreeViewModule,
-    HttpClientModule,
+    HttpClientModule,    
     NgProgressModule.forRoot({
       direction: 'ltr+',
       spinnerPosition: 'left',

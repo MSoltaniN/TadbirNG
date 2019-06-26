@@ -542,6 +542,15 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;        
     var filterExpression: FilterExpression;
 
+    //remove parameter that ParamInFilter == false
+    this.ViewIdentity.params.forEach(function (p) {
+      if (!p.ParamInFilter) {
+        var index = params.findIndex(f => f.name === p.ParamName);
+        if (index >= 0)
+          params.splice(index, 1);
+      }
+    });
+
     filterExpression = this.createFilters(params, this.currentFilter);
 
     if (params) {      
@@ -749,7 +758,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
 
 
-  public DecisionMakingForShowReport()
+  public DecisionMakingForShowReport(viewInfo: QuickReportViewInfo = null)
     {
       var showQReport : boolean = false; 
       var treeData : Array<TreeItem> = null;      
@@ -761,11 +770,11 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
         if(treeData.filter((t : any) => t.isDynamic === true).length > 0) 
           showQReport = true;  
         var defaultReport = treeData.filter((t : any) => t.isDefault === true)[0];
-        this.switchReport(showQReport,treeData,defaultReport);          
+        this.switchReport(showQReport,treeData,defaultReport,viewInfo);          
       });
     }
 
-    switchReport(showQReport : boolean,treeData : any,defReport:any)
+  switchReport(showQReport: boolean, treeData: any, defReport: any, viewInfo: QuickReportViewInfo)
     {
       var columnIndex = 0;
 
@@ -777,10 +786,11 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
       {
         //this.ViewIdentity.ViewID
         var viewId = parseInt(this.ViewIdentity.ViewID);        
-        this.masterComponent.getAllMetaDataByViewIdAsync(viewId).then(response =>
-        {
-          if (response)
-          {
+        //this.masterComponent.getAllMetaDataByViewIdAsync(viewId).then(response =>
+        //{
+          //if (response)
+          //{
+            /*
             var properties = response;
             var thArray = this.Grid.wrapper.nativeElement.getElementsByTagName('TH');
 
@@ -820,8 +830,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
             var viewInfo = new QuickReportViewInfo();
             viewInfo.columns = columns;
             viewInfo.inchValue = dpi_x;
-            viewInfo.reportTitle = defReport.caption;
             viewInfo.reportLang = this.CurrentLanguage;
+            */
+            viewInfo.reportTitle = defReport.caption;           
             
             //get parameters for quick report
             var url = String.Format(ReportApi.Report, defReport.id);
@@ -855,8 +866,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
                 });
 
             });    
-          }
-        });
+          //}
+        //});
             
       }
       else

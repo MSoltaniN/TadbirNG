@@ -10,6 +10,7 @@ export class ReportParamComponent implements OnInit {
   @Input() public ParamValue: string;  
   @Input() public ParamDataType: string;
   @Input() public ParamReportVisible: boolean = true;
+  @Input() public ParamInFilter: boolean = true;
 
   constructor() { }
 

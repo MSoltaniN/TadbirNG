@@ -1,4 +1,4 @@
-<kendo-dialog [minWidth]="400" [width]="innerWidth" [height]="innerHeight" *ngIf="active" class="permission-dialog"
+<kendo-dialog [minWidth]="400" [width]="innerWidth" [minHeight]="400" [height]="innerHeight" *ngIf="active" class="permission-dialog"
         [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (close)="closeDialog()">
         <kendo-dialog-titlebar>
                 {{ 'Report.ReportManagement' | translate }}

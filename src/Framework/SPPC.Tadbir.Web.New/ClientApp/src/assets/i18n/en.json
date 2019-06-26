@@ -74,7 +74,11 @@
     "ReportDesktop": "ِDesktop",
     "Close": "Save Design",
     "ConfirmMsg": "The design environment of the report has changed or you wish to save the report ?",
-    "ReportIsOutOfPage": "The report output is out of the page"
+    "ReportIsOutOfPage": "The report output is out of the page",
+    "No": "No",
+    "Yes": "Yes",
+    "QuickReportSetting": "Quick Report Setting",
+    "QuickReportValidate": "Please click the calculation button before creating an instant report"
   },
   "Buttons": {
     "Ok": "Ok",

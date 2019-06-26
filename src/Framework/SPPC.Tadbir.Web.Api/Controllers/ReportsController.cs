@@ -552,7 +552,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private static StiReport CreateHeaderBand(StiReport report, IList<QuickReportColumnViewModel> columns,
             int oneInchInPixels, string dataSourceName, StiReport reportTemplate, string lang)
         {
-            int visibleColumnCount = columns.Count(c => c.Enabled);
+            int visibleColumnCount = columns.Count(c => c.Visible);
             if (visibleColumnCount == 0)
             {
                 return null;
@@ -564,15 +564,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 orderdColumns = (from c in columns
                                  orderby c.Order ascending
-                                 where c.Enabled
+                                 where c.Visible
                                  select c).ToList();
             }
             else
             {
                 orderdColumns = (from c in columns
                                      orderby c.Order descending
-                                     where c.Enabled
-                                     select c).ToList();
+                                     where c.Visible
+                                 select c).ToList();
             }
 
             string name = "HeaderBand" + dataSourceName;
@@ -600,7 +600,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             int dataCellIndex = visibleColumnCount;
             double pageWidth = report.Pages[0].Width;
-            int gridWidth = columns.Sum(c => c.Width);
+            int gridWidth = columns.Where(p => p.Visible).Sum(c => c.Width);
             double tableWidth = GetSizeInInch(gridWidth, oneInchInPixels);
             double left = (pageWidth / (double)2) - (tableWidth / (double)2);
             double top = 0.06;
@@ -628,7 +628,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
                 ////txtHeaderCell.Height = 0.6;
                 left = txtHeaderCell.Left + width;
-
                 ////StiBorder border = new StiBorder();
                 ////border.Side = border.Side | StiBorderSides.Left;
                 ////border.Side = border.Side | StiBorderSides.Right;
@@ -668,19 +667,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 orderdColumns = (from c in quickReportViewModel.Columns
                                  orderby c.Order ascending
-                                 where c.Enabled
+                                 where c.Visible
                                  select c).ToList();
             }
             else
             {
                 orderdColumns = (from c in quickReportViewModel.Columns
                                  orderby c.Order descending
-                                 where c.Enabled
+                                 where c.Visible
                                  select c).ToList();
             }
 
             double pageWidth = report.Pages[0].Width;
-            int gridWidth = quickReportViewModel.Columns.Sum(c => c.Width);
+            int gridWidth = quickReportViewModel.Columns.Where(c => c.Visible).Sum(c => c.Width);
             double tableWidth = GetSizeInInch(gridWidth, quickReportViewModel.InchValue);
 
             double left = (pageWidth / (double)2) - (tableWidth / (double)2);
@@ -725,6 +724,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     txtDataCell.TextFormat = new Stimulsoft.Report.Components.TextFormats.StiNumberFormatService(1, ".", 0, ",", 3, true, false, " ");
                 }
+
+                ////txtDataCell.Border = new StiBorder(StiBorderSides.Bottom | StiBorderSides.Left | StiBorderSides.Right, Color.Black, 1, StiPenStyle.Solid);
 
                 txtDataCell.Width = width;
                 txtDataCell.Text.Value = GetColumnValue(orderdColumns[i], dataSourceName, string.Empty);
