@@ -391,8 +391,9 @@ body.tRtl .sppc-input-num {
 }
 
 .sppc-width-100 {
-  width:100% !important;
+  width: 100% !important;
 }
+
 .sppc-dialog-md {
   width: 800px
 }
@@ -406,4 +407,9 @@ body.tRtl .sppc-input-num {
     width: 90%;
     min-width: 250px;
   }
+}
+
+.k-grid-table .k-grid-norecords {
+  text-align: unset;
+  display: contents;
 }

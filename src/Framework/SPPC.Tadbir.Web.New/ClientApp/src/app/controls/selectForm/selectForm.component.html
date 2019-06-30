@@ -28,6 +28,7 @@
               (filterChange)="filterChange($event)"
               (selectedKeysChange)="onSelectedKeysChange($event)"
               (dataStateChange)="onDataStateChange()"
+              (dblclick)="rowDoubleClickHandler()"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
     <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
