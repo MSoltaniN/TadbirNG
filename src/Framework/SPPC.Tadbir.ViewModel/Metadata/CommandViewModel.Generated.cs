@@ -26,6 +26,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         public CommandViewModel()
         {
             Title = String.Empty;
+            HasPermission = true;
             Children = new List<CommandViewModel>();
         }
 
