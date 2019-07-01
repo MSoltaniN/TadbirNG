@@ -82,7 +82,7 @@
             <td>{{ creditSum | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <td> مانده </td>
+            <td>{{ 'AccountBook.Remained' | translate }}</td>
             <td>{{ balance | SppcNumConfig | async }}</td>
           </tr>
         </table>
@@ -104,7 +104,9 @@
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
-        {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
+        <div class="money-item">
+          {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
+        </div>
       </ng-template>
 
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Credit'">

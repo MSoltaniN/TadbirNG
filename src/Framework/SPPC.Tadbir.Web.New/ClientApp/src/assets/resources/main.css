@@ -409,7 +409,11 @@ body.tRtl .sppc-input-num {
   }
 }
 
-.k-grid-table .k-grid-norecords {
+.k-grid .k-grid-norecords {
   text-align: unset;
   display: contents;
+}
+
+.k-grid .money-item {
+  direction: ltr;
 }

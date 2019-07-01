@@ -124,6 +124,7 @@
     <None Remove="ClientApp\src\app\directive\grid\sppc-grid-resize.ts" />
     <None Remove="ClientApp\src\app\directive\grid\sppc-viewTree-config.ts" />
     <None Remove="ClientApp\src\app\directive\onlyNumber\sppc.onlyNumber.ts" />
+    <None Remove="ClientApp\src\app\directive\sppc-permissionCheck.ts" />
     <None Remove="ClientApp\src\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\src\app\directive\Validator\Sppc-code-length-validator.ts" />
     <None Remove="ClientApp\src\app\enum\accountBook.ts" />
@@ -988,6 +989,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\sppc-grid-reorder.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\sppc-grid-resize.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\onlyNumber\sppc.onlyNumber.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directive\sppc-permissionCheck.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\Validator\Sppc-code-length-validator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\journal.ts" />
