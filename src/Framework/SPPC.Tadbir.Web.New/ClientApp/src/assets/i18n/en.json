@@ -7,7 +7,8 @@
     "Name": "Tadbir Accounting System",
     "SummaryName": "Tadbir",
     "NotViewAccess": "You do not have access to view information",
-    "Level": "Level"
+    "Level": "Level",
+    "AccessDenied": "You do not have permission to access"
   },
   "Enviroment": {
     "FiscalPeriod": "Fiscal Period",
@@ -165,6 +166,7 @@
     "Sum": "Sum",
     "DebitSum": "Debit Sum",
     "CreditSum": "Credit Sum",
+    "Remained": "Remained",
     "BookType": "Book Type",
     "DisplayType": "Display Type",
     "SelectBranch": "Select Branch",

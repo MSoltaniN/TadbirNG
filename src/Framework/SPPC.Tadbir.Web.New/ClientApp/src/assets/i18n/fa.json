@@ -7,7 +7,8 @@
     "Name": "سیستم جامع تدبیر",
     "SummaryName": "تدبیر",
     "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
-    "Level": "سطح"
+    "Level": "سطح",
+    "AccessDenied": "شما اجازه دسترسی ندارید"
   },
   "Enviroment": {
     "FiscalPeriod": "دوره مالی",
@@ -162,6 +163,7 @@
     "Sum": "مجموع",
     "DebitSum": "جمع بدهکار",
     "CreditSum": "جمع بستانکار",
+    "Remained": "مانده",
     "BookType": "نوع دفتر",
     "DisplayType": "نوع نمایش",
     "SelectBranch": "انتخاب شعبه",
