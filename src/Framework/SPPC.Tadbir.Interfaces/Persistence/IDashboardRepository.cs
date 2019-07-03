@@ -15,7 +15,7 @@ namespace SPPC.Tadbir.Persistence
         /// مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات مالی محاسبه شده</returns>
-        DashboardSummariesViewModel GetSummariesAsync();
+        DashboardSummariesViewModel GetSummaries();
 
         /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای فیلترهای سطری و شعب تنظیم می کند
