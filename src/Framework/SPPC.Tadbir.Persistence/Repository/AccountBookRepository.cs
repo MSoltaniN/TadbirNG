@@ -141,13 +141,13 @@ namespace SPPC.Tadbir.Persistence
                     .ToList();
                 if (monthLines.Count > 0)
                 {
-                    var bookItem = GetAggregatedBookItem(monthLines, false);
-                    bookItem.VoucherDate = month.End;
-                    book.Items.Add(bookItem);
+                    var aggregates = GetAggregatedBookItems(monthLines, false);
+                    Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
+                    book.Items.AddRange(aggregates);
                 }
             }
 
-            PrepareAccountBook(book);
+            PrepareAccountBook(book, gridOptions);
             return book;
         }
 
@@ -243,14 +243,14 @@ namespace SPPC.Tadbir.Persistence
                 {
                     foreach (var byBranch in GetGroupByThenByItems(monthLines, item => item.BranchId))
                     {
-                        var bookItem = GetAggregatedBookItem(byBranch, true);
-                        bookItem.VoucherDate = month.End;
-                        book.Items.Add(bookItem);
+                        var aggregates = GetAggregatedBookItems(byBranch, true);
+                        Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
+                        book.Items.AddRange(aggregates);
                     }
                 }
             }
 
-            PrepareAccountBook(book);
+            PrepareAccountBook(book, gridOptions);
             return book;
         }
 
@@ -298,7 +298,7 @@ namespace SPPC.Tadbir.Persistence
             return next;
         }
 
-        private static void PrepareAccountBook(AccountBookViewModel book)
+        private static void PrepareAccountBook(AccountBookViewModel book, GridOptions gridOptions)
         {
             int rowNo = 2;
             decimal balance = book.Items[0].Balance;
@@ -311,12 +311,38 @@ namespace SPPC.Tadbir.Persistence
             book.DebitSum = book.Items.Sum(item => item.Debit);
             book.CreditSum = book.Items.Sum(item => item.Credit);
             book.Balance = book.Items.Last().Balance;
+            book.TotalCount = book.Items.Count;
+            book.SetItems(book.Items.ApplyPaging(gridOptions).ToArray());
+        }
+
+        private static IEnumerable<AccountBookItemViewModel> GetAggregatedBookItems(
+            IEnumerable<AccountBookItemViewModel> items, bool singleMode)
+        {
+            var aggregates = new List<AccountBookItemViewModel>();
+            decimal debitSum = items.Sum(line => line.Debit);
+            decimal creditSum = items.Sum(line => line.Credit);
+            if (debitSum > 0.0M)
+            {
+                var item = GetAggregatedBookItem(items.First(), singleMode);
+                item.Debit = debitSum;
+                item.LineCount = items.Count(line => line.Debit > 0.0M);
+                aggregates.Add(item);
+            }
+
+            if (creditSum > 0.0M)
+            {
+                var item = GetAggregatedBookItem(items.First(), singleMode);
+                item.Credit = creditSum;
+                item.LineCount = items.Count(line => line.Credit > 0.0M);
+                aggregates.Add(item);
+            }
+
+            return aggregates;
         }
 
         private static AccountBookItemViewModel GetAggregatedBookItem(
-            IEnumerable<AccountBookItemViewModel> items, bool singleMode)
+            AccountBookItemViewModel item, bool singleMode)
         {
-            var item = items.First();
             return new AccountBookItemViewModel()
             {
                 Description = "AsQuotedInJournal",
@@ -325,9 +351,6 @@ namespace SPPC.Tadbir.Persistence
                 VoucherStatusId = singleMode ? item.VoucherStatusId : 0,
                 VoucherConfirmedById = singleMode ? item.VoucherConfirmedById : null,
                 VoucherApprovedById = singleMode ? item.VoucherApprovedById : null,
-                Debit = items.Sum(line => line.Debit),
-                Credit = items.Sum(line => line.Credit),
-                LineCount = items.Count(),
                 BranchId = singleMode ? item.BranchId : 0,
                 BranchName = singleMode ? item.BranchName : null
             };
@@ -398,7 +421,7 @@ namespace SPPC.Tadbir.Persistence
             book.Items.AddRange(items
                 .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
                 .Apply(gridOptions, false));
-            PrepareAccountBook(book);
+            PrepareAccountBook(book, gridOptions);
         }
 
         private IQueryable<VoucherLine> GetRawAccountBookLines(
@@ -406,7 +429,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = _repository
                 .GetAllOperationQuery<VoucherLine>(
-                    ViewName.VoucherLine, line => line.Voucher, line => line.Account)
+                    ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                 .Where(line => line.Voucher.Date.IsBetween(from, to))
                 .Where(itemCriteria);
             return byBranch
@@ -429,11 +452,11 @@ namespace SPPC.Tadbir.Persistence
                 .GroupBy(keySelector);
             foreach (var bookGroup in GetAccountBookGroups(items, byNo, byBranch))
             {
-                var bookItem = GetAggregatedBookItem(bookGroup, byNo);
-                book.Items.Add(bookItem);
+                var aggregates = GetAggregatedBookItems(bookGroup, byNo || byBranch);
+                book.Items.AddRange(aggregates);
             }
 
-            PrepareAccountBook(book);
+            PrepareAccountBook(book, gridOptions);
         }
 
         private void AggregateAccountBookByBranch<TKey>(
@@ -448,11 +471,11 @@ namespace SPPC.Tadbir.Persistence
                 .GroupBy(keySelector);
             foreach (var bookGroup in bookGroups)
             {
-                var bookItem = GetAggregatedBookItem(bookGroup, byNo);
-                book.Items.Add(bookItem);
+                var aggregates = GetAggregatedBookItems(bookGroup, byNo);
+                book.Items.AddRange(aggregates);
             }
 
-            PrepareAccountBook(book);
+            PrepareAccountBook(book, gridOptions);
         }
 
         private TreeEntity GetAccountItem(int viewId, int itemId)

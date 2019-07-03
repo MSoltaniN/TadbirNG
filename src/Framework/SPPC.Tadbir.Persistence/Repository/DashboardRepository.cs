@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Persistence
         /// مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات مالی محاسبه شده</returns>
-        public async Task<DashboardSummariesViewModel> GetSummariesAsync()
+        public DashboardSummariesViewModel GetSummariesAsync()
         {
             return new DashboardSummariesViewModel();
 

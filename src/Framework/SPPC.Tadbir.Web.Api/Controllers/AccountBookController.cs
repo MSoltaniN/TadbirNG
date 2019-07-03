@@ -360,7 +360,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Sanitize(ref from, ref to);
             _repository.SetCurrentContext(SecurityContext.User);
             var book = await accountBook(viewId, accountId, from.Value, to.Value, gridOptions);
-            SetItemCount(book.Items.Count);
+            SetItemCount(book.TotalCount);
             Localize(book);
             return Json(book);
         }

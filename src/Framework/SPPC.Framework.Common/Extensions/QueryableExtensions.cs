@@ -45,5 +45,24 @@ namespace SPPC.Framework.Extensions
 
             return queryable;
         }
+
+        /// <summary>
+        /// Applies only paging to items in a queryable instance
+        /// </summary>
+        /// <typeparam name="T">Type of items in queryable instance</typeparam>
+        /// <param name="queryable">Self reference (this) of queryable instance</param>
+        /// <param name="gridOptions">Options for filtering, sorting and paging items</param>
+        /// <returns>This object</returns>
+        public static IQueryable<T> ApplyPaging<T>(this IQueryable<T> queryable, GridOptions gridOptions)
+        {
+            Verify.ArgumentNotNull(queryable, nameof(queryable));
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
+            gridOptions.Paging = gridOptions.Paging ?? new GridPaging();
+            gridOptions.Paging.PageIndex = Math.Max(1, gridOptions.Paging.PageIndex);   // Prevent zero or negative page index
+            gridOptions.Paging.PageSize = Math.Max(1, gridOptions.Paging.PageSize);     // Prevent zero or negative page size
+            return queryable
+                .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
+                .Take(gridOptions.Paging.PageSize);
+        }
     }
 }

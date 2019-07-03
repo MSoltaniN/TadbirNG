@@ -49,8 +49,23 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public decimal Balance { get; set; }
 
         /// <summary>
+        /// تعداد کل سطرهای اطلاعاتی گزارش
+        /// </summary>
+        public int TotalCount { get; set; }
+
+        /// <summary>
         /// مجموعه سطرهای اطلاعاتی گزارش
         /// </summary>
         public List<AccountBookItemViewModel> Items { get; }
+
+        /// <summary>
+        /// سطرهای اطلاعاتی گزارش را با مجوعه سطرهای اطلاعاتی داده شده جایگزین می کند
+        /// </summary>
+        /// <param name="items">سطرهای اطلاعاتی مورد نظر برای جایگزینی در مدل نمایشی</param>
+        public void SetItems(IEnumerable<AccountBookItemViewModel> items)
+        {
+            Items.Clear();
+            Items.AddRange(items);
+        }
     }
 }
