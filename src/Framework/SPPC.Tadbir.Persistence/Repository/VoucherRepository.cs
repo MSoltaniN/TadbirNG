@@ -462,7 +462,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(voucher => voucher.FiscalPeriodId == _currentContext.FiscalPeriodId)
                 .OrderByDescending(voucher => voucher.No)
                 .FirstOrDefaultAsync();
-            return (lastByNo != null) ? lastByNo.No : 1;
+            return (lastByNo != null) ? lastByNo.No : 0;
         }
 
         /// <summary>
