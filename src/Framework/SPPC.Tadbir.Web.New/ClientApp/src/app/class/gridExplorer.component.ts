@@ -1,6 +1,5 @@
 import { Injectable, ViewChild, Renderer2, Optional, Inject, ChangeDetectorRef, ElementRef, OnInit } from "@angular/core";
 import { DefaultComponent } from "./default.component";
-import { Property } from "./metadata/property";
 import { GridComponent, GridDataResult, PageChangeEvent, SelectAllCheckboxState, RowArgs } from "@progress/kendo-angular-grid";
 import { FilterExpression } from "./filterExpression";
 import { ToastrService } from "ngx-toastr";
@@ -16,8 +15,8 @@ import { ContextMenuComponent } from "@progress/kendo-angular-menu";
 import { AccountItemBrief, ViewTreeConfig, ViewTreeLevelConfig } from "../model";
 import { of } from 'rxjs/observable/of';
 import { TreeItem } from "@progress/kendo-angular-treeview";
-import { MessageType } from "../../environments/environment";
-import { ViewName } from "../security/viewName";
+import { MessageType, Entities } from "../../environments/environment";
+import { AccountPermissions } from "../security/permissions";
 
 
 
@@ -167,24 +166,37 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
   }
 
   public onSelectContextmenu({ item }): void {
+
+    let hasPermission: boolean = false;
+
     switch (item.mode) {
       case 'Remove': {
-        this.contextMenuRemoveHandler();
+        hasPermission = this.isAccess(Entities.Account, AccountPermissions.Delete);
+        if (hasPermission)
+          this.contextMenuRemoveHandler();
         break;
       }
       case 'Edit': {
-        this.contextMenuEditHandler();
-        this.selectedContextmenu = undefined;
+        hasPermission = this.isAccess(Entities.Account, AccountPermissions.Edit);
+        if (hasPermission) {
+          this.contextMenuEditHandler();
+          this.selectedContextmenu = undefined;
+        }
         break;
       }
       case 'New': {
-        this.contextMenuAddNewHandler();
-        this.selectedContextmenu = undefined;
+        hasPermission = this.isAccess(Entities.Account, AccountPermissions.Create);
+        if (hasPermission) {
+          this.contextMenuAddNewHandler();
+          this.selectedContextmenu = undefined;
+        }
         break;
       }
       default:
     }
 
+    if (!hasPermission)
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
   }
 
   contextMenuAddNewHandler() {

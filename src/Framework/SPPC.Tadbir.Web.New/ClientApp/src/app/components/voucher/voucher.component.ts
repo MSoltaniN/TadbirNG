@@ -15,7 +15,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { VoucherApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
-import { VoucherPermissions } from '../../security/permissions';
+import { VoucherPermissions, Permissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
 import { ReportingService } from '../../service/report/reporting.service';
@@ -124,17 +124,20 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public rowDoubleClickHandler() {
-    if (this.clickedRowItem) {
-      this.grid.loading = true;
-      this.voucherService.getById(String.Format(VoucherApi.Voucher, this.clickedRowItem.id)).subscribe(res => {
-        this.editDataItem = res;
+    if (this.isAccess(Entities.Voucher, VoucherPermissions.Edit)) {
+      if (this.clickedRowItem) {
+        this.grid.loading = true;
+        this.voucherService.getById(String.Format(VoucherApi.Voucher, this.clickedRowItem.id)).subscribe(res => {
+          this.editDataItem = res;
 
-        this.openEditorDialog(false);
+          this.openEditorDialog(false);
 
-        this.grid.loading = false;
-      })
+          this.grid.loading = false;
+        })
+      }
     }
-    
+    else
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
   }
 
   selectionKey(context: RowArgs): string {

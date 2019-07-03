@@ -29,10 +29,10 @@
       {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
     </ng-template>
     <ng-template kendoGridToolbarTemplate>
-      <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Role.New' | translate }}"></button>
+      <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Role.New' | translate }}"></button>
 
-      <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
-      <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+      <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+      <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
       <grid-setting entityTypeName="Role"></grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
@@ -54,9 +54,9 @@
         </dl>
 
         <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
-        <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
-        <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
-        <button kendoButton SppcCheckAccess="AssignFiscalPeriods" (click)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignUsers" (sppcClick)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignBranches" (sppcClick)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignFiscalPeriods" (sppcClick)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
       </ng-template>
     </kendo-grid-column>
     <!-- template for mobile -->
@@ -75,9 +75,9 @@
     <kendo-grid-command-column media="(min-width: 450px)">
       <ng-template kendoGridCellTemplate let-role>
         <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
-        <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
-        <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
-        <button kendoButton SppcCheckAccess="AssignFiscalPeriods" (click)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignUsers" (sppcClick)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignBranches" (sppcClick)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignFiscalPeriods" (sppcClick)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
       </ng-template>
     </kendo-grid-command-column>
     <!-- additional columns on large devices -->

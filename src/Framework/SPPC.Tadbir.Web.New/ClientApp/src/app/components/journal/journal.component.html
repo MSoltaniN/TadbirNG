@@ -238,7 +238,7 @@
         </kendo-switch>
       </div>
       <div class="col-xs-12 col-sm-4 form-group">
-        <button class="k-button btn-compute-default" (click)="getReportData()"
+        <button class="k-button btn-compute-default" SppcPermissionCheck="Filter" EntityName="Journal" (sppcClick)="getReportData()"
                 [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en','btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
           {{ 'Buttons.Compute' | translate }}
         </button>

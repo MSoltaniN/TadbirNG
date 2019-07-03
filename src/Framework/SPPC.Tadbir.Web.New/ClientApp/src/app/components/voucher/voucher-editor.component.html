@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-xs-12 sppc-float" style="margin-top: 5px;">
 
-          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.New)">
+          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" SppcPermissionCheck="Create" (sppcClick)="voucherOperation(voucherOperationsItem.New)">
             <span class="k-icon k-i-file-add"></span>
           </button>
 
@@ -24,31 +24,31 @@
             <span class="k-icon k-i-search"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.FirstVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.First)">
+          <button class="k-button" title="{{ 'Voucher.FirstVoucher' | translate }}" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.First)">
             <span class="k-icon k-i-arrow-end-right"></span>
           </button>
 
-          <button class="k-button" [disabled]="isFirstVoucher" title="{{ 'Voucher.PreviousVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Previous)">
+          <button class="k-button" [disabled]="isFirstVoucher" title="{{ 'Voucher.PreviousVoucher' | translate }}" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.Previous)">
             <span class="k-icon k-i-arrow-double-60-right"></span>
           </button>
 
-          <button class="k-button" [disabled]="isLastVoucher" title="{{ 'Voucher.NextVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Next)">
+          <button class="k-button" [disabled]="isLastVoucher" title="{{ 'Voucher.NextVoucher' | translate }}" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.Next)">
             <span class="k-icon k-i-arrow-double-60-left"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.LastVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Last)">
+          <button class="k-button" title="{{ 'Voucher.LastVoucher' | translate }}" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.Last)">
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
 
-          <button class="k-button" [disabled]="!editForm.valid" (click)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
+          <button class="k-button" [disabled]="!editForm.valid" SppcPermissionCheck="Edit" (sppcClick)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
             <span class="k-icon k-i-save"></span>
           </button>
 
-          <button class="k-button" SppcCheckAccess="Check" [hidden]="!voucherModel || voucherModel.statusId == 2" (click)="checkHandler()" title="{{ 'Voucher.Commit' | translate }}">
+          <button class="k-button" SppcPermissionCheck="Check" (sppcClick)="checkHandler()" [hidden]="!voucherModel || voucherModel.statusId > 1" title="{{ 'Voucher.Commit' | translate }}">
             <span class="k-icon k-i-check-outline"></span>
           </button>
 
-          <button class="k-button" SppcCheckAccess="Uncheck" [hidden]="!voucherModel || voucherModel.statusId == 1" (click)="checkHandler()" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
+          <button class="k-button" SppcPermissionCheck="UndoCheck" (sppcClick)="checkHandler()" [hidden]="!voucherModel || voucherModel.statusId < 2" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
             <span class="k-icon k-i-close-outline"></span>
           </button>
 

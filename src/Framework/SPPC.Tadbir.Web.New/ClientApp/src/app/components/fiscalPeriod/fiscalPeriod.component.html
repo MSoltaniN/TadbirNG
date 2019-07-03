@@ -30,10 +30,10 @@
       {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
     </ng-template>
     <ng-template kendoGridToolbarTemplate>
-      <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'FiscalPeriod.New' | translate }}"></button>
+      <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'FiscalPeriod.New' | translate }}"></button>
 
-      <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
-      <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+      <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+      <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
       <grid-setting entityTypeName="FiscalPeriod"></grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
@@ -55,7 +55,7 @@
           <dt>{{ 'FiscalPeriod.Description' | translate  }}:</dt>
           <dd>{{ fiscalPeriod.description }}</dd>
         </dl>
-        <button kendoButton (click)="rolesHandler(fiscalPeriod.id)" [primary]="true">{{ 'FiscalPeriod.Roles' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignRoles" (sppcClick)="rolesHandler(fiscalPeriod.id)" [primary]="true">{{ 'FiscalPeriod.Roles' | translate }}</button>
       </ng-template>
     </kendo-grid-column>
     <!-- template for mobile -->
@@ -84,7 +84,7 @@
 
     <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
       <ng-template kendoGridCellTemplate let-dataItem>
-        <button kendoButton (click)="rolesHandler(dataItem.id)" [primary]="true">{{ 'FiscalPeriod.Roles' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignRoles" (sppcClick)="rolesHandler(fiscalPeriod.id)" [primary]="true">{{ 'FiscalPeriod.Roles' | translate }}</button>
       </ng-template>
     </kendo-grid-command-column>
     <!-- template for mid-size devices -->
@@ -121,7 +121,7 @@
 
     <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
       <ng-template kendoGridCellTemplate let-dataItem>
-        <button kendoButton (click)="rolesHandler(dataItem.id)" [primary]="true">{{ 'FiscalPeriod.Roles' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignRoles" (sppcClick)="rolesHandler(fiscalPeriod.id)" [primary]="true">{{ 'FiscalPeriod.Roles' | translate }}</button>
       </ng-template>
     </kendo-grid-command-column>
     <!-- additional columns on large devices -->

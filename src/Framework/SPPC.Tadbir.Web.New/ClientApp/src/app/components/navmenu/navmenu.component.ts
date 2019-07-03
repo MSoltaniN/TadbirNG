@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { UserService, CommandInfo } from '../../service/user.service';
 import { Command } from '../../model/command';
-import { SessionKeys } from '../../../environments/environment';
+import { SessionKeys, MessageType } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
@@ -81,15 +81,19 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   }
 
 
-  onClickMenu(url: any) {
-    //for show report manager
-    if (url == '/reports') {
-      this.reportManager.showDialog();
-      return;
-    }
+  onClickMenu(item: Command) {
+    if (item.hasPermission) {
+      //for show report manager
+      if (item.routeUrl == '/reports') {
+        this.reportManager.showDialog();
+        return;
+      }
 
-    if (url)
-      this.router.navigate([url])
+      if (item.routeUrl)
+        this.router.navigate([item.routeUrl])
+    }
+    else
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
   }
 
   onMenuClick(event: any, id: number) {

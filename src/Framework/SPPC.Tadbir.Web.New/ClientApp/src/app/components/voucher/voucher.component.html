@@ -43,15 +43,15 @@
 
       <sppc-dateRangeSelector [viewName]="'voucher'" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
 
-      <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Voucher.New' | translate }}"></button>
+      <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Voucher.New' | translate }}"></button>
 
-      <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
-      <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+      <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+      <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
-      <button SppcCheckAccess="Check" (click)="onCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledCheckBtn()" title="{{ 'Voucher.Commit' | translate }}"><span class="k-icon k-i-check-outline"></span></button>
-      <button SppcCheckAccess="Uncheck" (click)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()" title="{{ 'Voucher.ReturnFromCommit' | translate }}"><span class="k-icon k-i-close-outline"></span></button>
+      <button SppcPermissionCheck="Check" (sppcClick)="onCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledCheckBtn()" title="{{ 'Voucher.Commit' | translate }}"><span class="k-icon k-i-check-outline"></span></button>
+      <button SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()" title="{{ 'Voucher.ReturnFromCommit' | translate }}"><span class="k-icon k-i-close-outline"></span></button>
 
-      <button (click)="onFinalizeHandler()" class="k-button k-button-icon" [disabled]="isDisabledFinalizeBtn()" title="{{ 'Voucher.Finalized' | translate }}"><span class="k-icon k-i-track-changes-accept-all"></span></button>
+      <button SppcPermissionCheck="Finalize" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon" [disabled]="isDisabledFinalizeBtn()" title="{{ 'Voucher.Finalized' | translate }}"><span class="k-icon k-i-track-changes-accept-all"></span></button>
 
 
       <grid-setting entityTypeName="Voucher"></grid-setting>

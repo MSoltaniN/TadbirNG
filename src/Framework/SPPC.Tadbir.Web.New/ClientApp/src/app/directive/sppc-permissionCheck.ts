@@ -30,41 +30,39 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription.unsubscribe();   
   }
 
   @HostListener('click', ['$event'])
   clickEvent(event) {
     event.preventDefault();
     event.stopPropagation();
-
     if (this.haveAccess())
       this.clicks.next(event);
     else
       this.translate.get('App.AccessDenied').subscribe((msg: string) => {
         this.toastrService.warning(msg);
-      });
-     
+      });     
   }
 
 
   haveAccess(): boolean {
+    var eName = this.entityName;
     if (!this.entityName) {
       var viewId = (<any>this.parentComponet)._view.component.viewId;
-      this.entityName = viewId ? ViewName[viewId] : (<any>this.parentComponet)._view.component.entityType;
+      eName = viewId ? ViewName[viewId] : (<any>this.parentComponet)._view.component.entityType;
     }
 
-    if (this.entityName && this.permissionKey) {
-      var permission = this.permissionKeys.getPermission(this.entityName, this.permissionKey);
+    if (eName && this.permissionKey) {
+      var permission = this.permissionKeys.getPermission(eName, this.permissionKey);
 
       if (permission)
-        var isAccess = this.enviroment.isAccess(this.entityName, permission);
+        var isAccess = this.enviroment.isAccess(eName, permission);
 
       return isAccess;
     }
 
     return false;
-
   }
 
 

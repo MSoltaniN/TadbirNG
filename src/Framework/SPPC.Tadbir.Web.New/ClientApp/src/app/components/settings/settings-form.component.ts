@@ -91,7 +91,7 @@ export class SettingsFormComponent extends DetailComponent {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, Entities.Settings, undefined);
+    super(toastrService, translate, renderer, metadata, Entities.Setting, undefined);
 
     this.ddlDateRanges = [
       { value: "Settings.DateRanges.FiscalStartToCurrent", key: DateRangeType.FiscalStartToCurrent },

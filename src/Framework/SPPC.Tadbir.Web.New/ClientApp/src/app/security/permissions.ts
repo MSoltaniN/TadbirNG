@@ -247,8 +247,20 @@ export class Permissions {
       case "company":
         id = <any>CompanyPermissions[<any>premissionName];
         break;
-      case "accountGroup":
+      case "accountgroup":
         id = <any>AccountGroupPermissions[<any>premissionName];
+        break;
+      case "viewrowpermission":
+        id = <any>RowAccessPermissions[<any>premissionName];
+        break;
+      case "setting":
+        id = <any>SettingPermissions[<any>premissionName];
+        break;
+      case "journal":
+        id = <any>JournalPermissions[<any>premissionName];
+        break;
+      case "accountbook":
+        id = <any>AccountBookPermissions[<any>premissionName];
         break;
     }
 
