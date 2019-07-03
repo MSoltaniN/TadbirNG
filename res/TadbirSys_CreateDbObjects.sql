@@ -714,6 +714,7 @@ INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName])
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (18, N'ManageEntities,UserReports', N'UserReport')
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (19, N'JournalReport', N'Journal')
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (20, N'ManageEntities,Reports', N'Report')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (21, N'AccountBookReport', N'AccountBook')
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -797,6 +798,12 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (78, 20, N'View', 1)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (79, 20, N'Design', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (80, 20, N'QuickReportDesign', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (81, 21, N'View', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (82, 21, N'Lookup', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (83, 21, N'Filter', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (84, 21, N'Print', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (85, 21, N'Mark', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (86, 21, N'ViewByBranch', 32)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Auth].[RolePermission] ON
@@ -881,6 +888,12 @@ INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 77)
 INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 78)
 INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 79)
 INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 80)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 81)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 82)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 83)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 84)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 85)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 86)
 
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
@@ -1407,8 +1420,8 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (25, 24, 72, N'JournalLedger', N'/journal', N'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (26, 1, NULL, N'VoucherOps', NULL, NULL, NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (27, 26, 27, N'NewVoucher', N'/vouchers/new', N'list', N'Ctrl+N')
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (28, 26, 26, N'VoucherByNo', N'/vouchers/by-no', N'list', N'Ctrl+S')
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (29, 26, 26, N'LastVoucher', N'/vouchers/last', N'list', N'Ctrl+L')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (28, 26, 28, N'VoucherByNo', N'/vouchers/by-no', N'list', N'Ctrl+S')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (29, 26, 28, N'LastVoucher', N'/vouchers/last', N'list', N'Ctrl+L')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (30, NULL, NULL, N'Tools', NULL, N'tasks', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (31, 30, 78, N'ReportManagement', NULL, N'list', N'Ctrl+R')
 INSERT [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
