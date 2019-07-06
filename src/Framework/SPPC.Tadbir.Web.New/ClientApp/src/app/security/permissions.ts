@@ -201,7 +201,7 @@ export enum AccountBookPermissions {
     ByBranch = 32
 }
 
-import { Injectable } from '@angular/core';
+
 
 @Injectable()
 export class Permissions {
