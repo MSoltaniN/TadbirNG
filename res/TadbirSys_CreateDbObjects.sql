@@ -1412,7 +1412,7 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (17, 15, NULL, N'LogOut', N'/logout', 'log-out', 'Ctrl+Shift+X')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (18, 12, 58, N'RowAccessSettings', N'/viewRowPermission', 'tasks', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (19, 12, 60, N'Settings', N'/settings', 'tasks', NULL)
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (20, 15, NULL, N'CompanyLogin', N'/login', 'tasks', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (20, 15, NULL, N'ChangeCompany', N'/login', 'tasks', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (21, 1, 62, N'AccountGroups', N'/account-groups', 'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (22, 12, 68, N'OperationLogs', N'/operation-log', 'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (23, 1, 66, N'AccountCollections', N'/account-collection', N'list', NULL)
