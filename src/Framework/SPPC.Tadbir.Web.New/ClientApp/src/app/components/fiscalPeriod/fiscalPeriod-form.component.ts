@@ -43,7 +43,6 @@ export class FiscalPeriodFormComponent extends DetailComponent {
 
   @Input() public set model(fiscalPeriod: FiscalPeriod) {
 
-    debugger;
     if (fiscalPeriod && this.isNew) {
       fiscalPeriod.startDate = this.getStartDate();
       fiscalPeriod.endDate = this.getEndDate();
