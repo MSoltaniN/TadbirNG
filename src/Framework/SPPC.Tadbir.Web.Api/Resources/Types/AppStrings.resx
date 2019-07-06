@@ -918,7 +918,7 @@
   <data name="AccountName" xml:space="preserve">
     <value>نام حساب</value>
   </data>
-  <data name="AssociationField" xml:space="preserve">
+  <data name="Association" xml:space="preserve">
     <value>شماره عطف</value>
   </data>
   <data name="BranchName" xml:space="preserve">
