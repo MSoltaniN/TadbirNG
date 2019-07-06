@@ -1185,4 +1185,10 @@
   <data name="AccountBook" xml:space="preserve">
     <value>دفتر حساب</value>
   </data>
+  <data name="Balance" xml:space="preserve">
+    <value>مانده</value>
+  </data>
+  <data name="LineCount" xml:space="preserve">
+    <value>تعداد</value>
+  </data>
 </root>

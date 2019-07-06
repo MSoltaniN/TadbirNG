@@ -1185,4 +1185,10 @@
   <data name="AccountBook" xml:space="preserve">
     <value>Account book</value>
   </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="LineCount" xml:space="preserve">
+    <value>Count</value>
+  </data>
 </root>
