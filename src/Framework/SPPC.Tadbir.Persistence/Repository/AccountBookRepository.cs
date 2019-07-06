@@ -84,13 +84,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountBookViewModel> GetAccountBookVoucherSumAsync(
             int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
-            var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
-
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
-            AggregateAccountBook(book, lines, gridOptions, line => line.VoucherNo);
-            return book;
+            return await GetSummaryAccountBookAsync(viewId, accountId, from, to, gridOptions, true, false);
         }
 
         /// <summary>
@@ -106,13 +100,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountBookViewModel> GetAccountBookDailySumAsync(
             int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
-            var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
-
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
-            AggregateAccountBook(book, lines, gridOptions, line => line.VoucherDate);
-            return book;
+            return await GetSummaryAccountBookAsync(viewId, accountId, from, to, gridOptions, false, false);
         }
 
         /// <summary>
@@ -128,27 +116,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountBookViewModel> GetAccountBookMonthlySumAsync(
             int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
-            var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
-
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
-            foreach (var month in monthEnum.GetMonths())
-            {
-                var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
-                    .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
-                    .Apply(gridOptions, false)
-                    .ToList();
-                if (monthLines.Count > 0)
-                {
-                    var aggregates = GetAggregatedBookItems(monthLines, false);
-                    Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
-                    book.Items.AddRange(aggregates);
-                }
-            }
-
-            PrepareAccountBook(book, gridOptions);
-            return book;
+            return await GetMonthlySummaryAccountBookAsync(viewId, accountId, from, to, gridOptions, false);
         }
 
         /// <summary>
@@ -184,13 +152,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountBookViewModel> GetAccountBookVoucherSumByBranchAsync(
             int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
-            var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
-
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
-            AggregateAccountBook(book, lines, gridOptions, line => line.VoucherNo, true);
-            return book;
+            return await GetSummaryAccountBookAsync(viewId, accountId, from, to, gridOptions, true, true);
         }
 
         /// <summary>
@@ -206,13 +168,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountBookViewModel> GetAccountBookDailySumByBranchAsync(
             int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
-            var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
-
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
-            AggregateAccountBook(book, lines, gridOptions, line => line.VoucherDate, true);
-            return book;
+            return await GetSummaryAccountBookAsync(viewId, accountId, from, to, gridOptions, true, true);
         }
 
         /// <summary>
@@ -228,30 +184,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountBookViewModel> GetAccountBookMonthlySumByBranchAsync(int viewId, int accountId,
             DateTime from, DateTime to, GridOptions gridOptions)
         {
-            var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
-
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
-            foreach (var month in monthEnum.GetMonths())
-            {
-                var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End, true)
-                    .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
-                    .Apply(gridOptions, false)
-                    .ToList();
-                if (monthLines.Count > 0)
-                {
-                    foreach (var byBranch in GetGroupByThenByItems(monthLines, item => item.BranchId))
-                    {
-                        var aggregates = GetAggregatedBookItems(byBranch, true);
-                        Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
-                        book.Items.AddRange(aggregates);
-                    }
-                }
-            }
-
-            PrepareAccountBook(book, gridOptions);
-            return book;
+            return await GetMonthlySummaryAccountBookAsync(viewId, accountId, from, to, gridOptions, true);
         }
 
         /// <summary>
@@ -356,6 +289,59 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
+        private async Task<AccountBookViewModel> GetSummaryAccountBookAsync(
+            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions,
+            bool byNo, bool byBranch = false)
+        {
+            var book = new AccountBookViewModel();
+            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
+
+            var itemCriteria = GetItemCriteria(viewId, accountId);
+            var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
+            AggregateAccountBook(book, lines, gridOptions, true);
+            return book;
+        }
+
+        private async Task<AccountBookViewModel> GetMonthlySummaryAccountBookAsync(
+            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions,
+            bool byBranch = false)
+        {
+            var book = new AccountBookViewModel();
+            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
+
+            var itemCriteria = GetItemCriteria(viewId, accountId);
+            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
+            foreach (var month in monthEnum.GetMonths())
+            {
+                var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End, true)
+                    .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
+                    .Apply(gridOptions, false)
+                    .ToList();
+                if (monthLines.Count > 0)
+                {
+                    if (byBranch)
+                    {
+                        Array.ForEach(
+                            GetGroupByThenByItems(monthLines, item => item.BranchId).ToArray(), group =>
+                            {
+                                var aggregates = GetAggregatedBookItems(group, true);
+                                Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
+                                book.Items.AddRange(aggregates);
+                            });
+                    }
+                    else
+                    {
+                        var aggregates = GetAggregatedBookItems(monthLines, false);
+                        Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
+                        book.Items.AddRange(aggregates);
+                    }
+                }
+            }
+
+            PrepareAccountBook(book, gridOptions);
+            return book;
+        }
+
         private Expression<Func<VoucherLine, bool>> GetItemCriteria(int viewId, int itemId)
         {
             Expression<Func<VoucherLine, bool>> itemCriteria = null;
@@ -440,38 +426,16 @@ namespace SPPC.Tadbir.Persistence
                       .ThenBy(line => line.BranchId);
         }
 
-        private void AggregateAccountBook<TKey>(
+        private void AggregateAccountBook(
             AccountBookViewModel book, IEnumerable<VoucherLine> lines, GridOptions gridOptions,
-            Func<AccountBookItemViewModel, TKey> keySelector, bool byBranch = false)
+            bool byNo, bool byBranch = false)
         {
-            bool byNo = typeof(TKey) == typeof(int);
             var items = lines
                 .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
                 .Apply(gridOptions, false);
-            var bookGroups = items
-                .GroupBy(keySelector);
             foreach (var bookGroup in GetAccountBookGroups(items, byNo, byBranch))
             {
                 var aggregates = GetAggregatedBookItems(bookGroup, byNo || byBranch);
-                book.Items.AddRange(aggregates);
-            }
-
-            PrepareAccountBook(book, gridOptions);
-        }
-
-        private void AggregateAccountBookByBranch<TKey>(
-            AccountBookViewModel book, IEnumerable<VoucherLine> lines, GridOptions gridOptions,
-            Func<AccountBookItemViewModel, TKey> keySelector)
-        {
-            bool byNo = typeof(TKey) == typeof(int);
-            var items = lines
-                .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
-                .Apply(gridOptions, false);
-            var bookGroups = items
-                .GroupBy(keySelector);
-            foreach (var bookGroup in bookGroups)
-            {
-                var aggregates = GetAggregatedBookItems(bookGroup, byNo);
                 book.Items.AddRange(aggregates);
             }
 

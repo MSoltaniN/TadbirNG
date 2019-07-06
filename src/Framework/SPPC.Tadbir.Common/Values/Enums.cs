@@ -161,4 +161,30 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         NonLeafAccounts = 2
     }
+
+    /// <summary>
+    /// انواع سیستمی اسناد را تعریف می کند
+    /// </summary>
+    public enum VoucherType
+    {
+        /// <summary>
+        /// نوع سیستمی سند عادی
+        /// </summary>
+        NormalVoucher = 0,
+
+        /// <summary>
+        /// نوع سیستمی سند افتتاحیه
+        /// </summary>
+        OpeningVoucher = 1,
+
+        /// <summary>
+        /// نوع سیستمی سند اختتامیه
+        /// </summary>
+        ClosingVoucher = 2,
+
+        /// <summary>
+        /// نوع سیستمی بستن حسابهای موقت
+        /// </summary>
+        ClosingTempAccounts = 3
+    }
 }
