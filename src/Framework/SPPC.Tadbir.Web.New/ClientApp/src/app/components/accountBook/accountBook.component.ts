@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Renderer2, NgZone, ChangeDetectorRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer2, NgZone, ChangeDetectorRef } from '@angular/core';
 import { SettingService, GridService, VoucherService, VoucherLineService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
@@ -12,17 +12,17 @@ import { Filter } from '../../class/filter';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { Item } from '../../model/index';
 import { String } from '../../class/source';
-import { JournalDisplayType, JournalDisplayTypeResource, VoucherStatusResource, BranchScopeResource, ArticleTypesResource, ArticleTypesResourceKey } from '../../enum/journal';
+import { VoucherStatusResource, BranchScopeResource, ArticleTypesResource, ArticleTypesResourceKey } from '../../enum/journal';
 import { ViewName } from '../../security/viewName';
 import { ReportingService } from '../../service/report/reporting.service';
 import { ColumnBase } from '@progress/kendo-angular-grid';
-import { JournalApi, VoucherApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi, LookupApi } from '../../service/api/index';
+import { VoucherApi, LookupApi } from '../../service/api/index';
 import { VoucherEditorComponent } from '../voucher/voucher-editor.component';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { SelectFormComponent } from '../../controls/selectForm/selectForm.component';
 import { AccountBookApi } from '../../service/api/accountBookApi';
 import { AccountBookDisplayType, AccountBookDisplayTypeResource } from '../../enum/accountBook';
-import { Permissions, AccountBookPermissions, VoucherPermissions } from '../../security/permissions';
+import { AccountBookPermissions, VoucherPermissions } from '../../security/permissions';
 
 
 export function getLayoutModule(layout: Layout) {

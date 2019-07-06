@@ -57,8 +57,6 @@
 
         <div>
           <div>
-
-            <!--data-metadataType="{{this.metadataType}}"-->
             <kendo-grid id="{{viewId}}"
                         style="width:100%;"
                         #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
@@ -87,13 +85,25 @@
                         (dblclick)="rowDoubleClickHandler()"
                         sppc-auto-generated-grid-reorder
                         sppc-auto-generated-grid-resize>
-              <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                                   pagerOf="{{ 'Paging.Of' | translate }}"
-                                   pagerItems="{{ 'Paging.Record' | translate }}">
-              </kendo-grid-messages>
+
               <ng-template kendoGridNoRecordsTemplate>
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
               </ng-template>
+
+              <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                   pagerOf="{{ 'Paging.Of' | translate }}"
+                                   pagerItems="{{ 'Paging.Record' | translate }}"
+                                   pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}">
+              </kendo-grid-messages>
+
+              <ng-template kendoPagerTemplate>
+                <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+                <kendo-pager-info></kendo-pager-info>
+                <kendo-pager-numeric-buttons [buttonCount]="5"></kendo-pager-numeric-buttons>
+                <kendo-pager-next-buttons></kendo-pager-next-buttons>
+                <kendo-pager-page-sizes [pageSizes]="pageSizeArray"></kendo-pager-page-sizes>
+              </ng-template>
+
               <ng-template kendoGridToolbarTemplate>
 
                 <section class="content-header" style="padding-top:0;">

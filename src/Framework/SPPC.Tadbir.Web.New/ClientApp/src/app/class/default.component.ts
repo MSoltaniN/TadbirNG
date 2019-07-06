@@ -235,6 +235,7 @@ export class DefaultComponent extends BaseComponent {
   /** the default value of grid paging size  */
   pageSize: number = 10;
 
+  public pageSizeArray: number[] = [5, 10, 20, 50, 100];
 
   public skip: number = 0;
 

@@ -30,23 +30,37 @@
                 [selectedKeys]="selectedRows"
                 [kendoGridSelectBy]="selectionKey"
                 (filterChange)="filterChange($event)"
-                (selectedKeysChange)="onSelectedKeysChange($event)"                
+                (selectedKeysChange)="onSelectedKeysChange($event)"
                 sppc-auto-generated-grid-reorder
                 sppc-auto-generated-grid-resize>
-      <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                           pagerOf="{{ 'Paging.Of' | translate }}"
-                           pagerItems="{{ 'Paging.Record' | translate }}">
-      </kendo-grid-messages>
+
       <ng-template kendoGridNoRecordsTemplate>
         {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
       </ng-template>
+
+      <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                           pagerOf="{{ 'Paging.Of' | translate }}"
+                           pagerItems="{{ 'Paging.Record' | translate }}"
+                           pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}">
+      </kendo-grid-messages>
+
+      <ng-template kendoPagerTemplate>
+        <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+        <kendo-pager-info></kendo-pager-info>
+        <kendo-pager-numeric-buttons [buttonCount]="5"></kendo-pager-numeric-buttons>
+        <kendo-pager-next-buttons></kendo-pager-next-buttons>
+        <kendo-pager-page-sizes [pageSizes]="pageSizeArray"></kendo-pager-page-sizes>
+      </ng-template>
+
       <ng-template kendoGridToolbarTemplate>
 
         <button kendoGridAddCommand SppcPermissionCheck="Create" EntityName="Voucher" (sppcClick)="addNew()" [hidden]="documentStatusId != documentStatusValue.Draft" [icon]="'file-add'" type="button" title="{{ 'VoucherLine.New' | translate }}"></button>
 
         <button kendoGridAddCommand [hidden]="documentStatusId != documentStatusValue.Draft" type="button"
                 [icon]="'plus-outline'" *ngIf="balance != 0" class="k-button"
-                SppcPermissionCheck="Create" EntityName="Voucher" (sppcClick)="addNewWithBalance()">{{ 'VoucherLine.NewWithDifference' | translate }}</button>
+                SppcPermissionCheck="Create" EntityName="Voucher" (sppcClick)="addNewWithBalance()">
+          {{ 'VoucherLine.NewWithDifference' | translate }}
+        </button>
 
         <button [hidden]="documentStatusId != documentStatusValue.Draft" SppcPermissionCheck="Edit" EntityName="Voucher" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
         <button [hidden]="documentStatusId != documentStatusValue.Draft" SppcPermissionCheck="Delete" EntityName="Voucher" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>

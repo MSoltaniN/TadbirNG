@@ -790,7 +790,8 @@
   },
   "Paging": {
     "Record": "Record",
-    "Of": "Of"
+    "Of": "Of",
+    "ItemsPerPage": "Items Per Page"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"
