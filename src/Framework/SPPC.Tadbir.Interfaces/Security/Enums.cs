@@ -530,34 +530,34 @@ namespace SPPC.Tadbir.Security
         UndoCheck = 0x200,
 
         /// <summary>
-        /// دسترسی ثبت قطعی سند حسابداری
-        /// </summary>
-        Finalize = 0x400,
-
-        /// <summary>
-        /// دسترسی برگشت از ثبت قطعی سند حسابداری
-        /// </summary>
-        UndoFinalize = 0x800,
-
-        /// <summary>
         /// دسترسی تایید سند حسابداری
         /// </summary>
-        Confirm = 0x1000,
+        Confirm = 0x400,
 
         /// <summary>
         /// دسترسی برگشت از تایید سند حسابداری
         /// </summary>
-        UndoConfirm = 0x2000,
+        UndoConfirm = 0x800,
 
         /// <summary>
         /// دسترسی تصویب سند حسابداری
         /// </summary>
-        Approve = 0x4000,
+        Approve = 0x1000,
 
         /// <summary>
         /// دسترسی برگشت از تصویب سند حسابداری
         /// </summary>
-        UndoApprove = 0x8000,
+        UndoApprove = 0x2000,
+
+        /// <summary>
+        /// دسترسی ثبت قطعی سند حسابداری
+        /// </summary>
+        Finalize = 0x4000,
+
+        /// <summary>
+        /// دسترسی برگشت از ثبت قطعی سند حسابداری
+        /// </summary>
+        UndoFinalize = 0x8000,
 
         /// <summary>
         /// کلیه دسترسی های تعریف شده برای اسناد حسابداری

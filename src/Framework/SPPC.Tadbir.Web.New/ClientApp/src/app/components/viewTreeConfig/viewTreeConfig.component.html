@@ -59,14 +59,14 @@
 
         <kendo-grid-command-column>
           <ng-template kendoGridCellTemplate let-level>
-            <button class="k-button k-primary" [disabled]="!level.isEnabled" (click)="setDefaultConfig(level)">{{ 'ViewTreeConfig.DefaultSettings' | translate }}</button>
+            <button class="k-button k-primary" [disabled]="!level.isEnabled"  SppcPermissionCheck="ManageSettings" (sppcClick)="setDefaultConfig(level)">{{ 'ViewTreeConfig.DefaultSettings' | translate }}</button>
           </ng-template>
         </kendo-grid-command-column>
 
 
       </kendo-grid>
 
-      <button class="k-button k-primary btn-setting" [disabled]="finalViewTreeConfig.length == 0" (click)="saveAllConfig()">{{ 'ViewTreeConfig.Save' | translate }}</button>
+      <button class="k-button k-primary btn-setting" [disabled]="finalViewTreeConfig.length == 0"  SppcPermissionCheck="ManageSettings" (sppcClick)="saveAllConfig()">{{ 'ViewTreeConfig.Save' | translate }}</button>
 
 
 

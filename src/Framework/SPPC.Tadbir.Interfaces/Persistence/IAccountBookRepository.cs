@@ -69,6 +69,56 @@ namespace SPPC.Tadbir.Persistence
             DateTime from, DateTime to, GridOptions gridOptions);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "ساده : مطابق ردیف های سند" را به تفکیک شعبه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
+        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
+        Task<AccountBookViewModel> GetAccountBookByRowByBranchAsync(int viewId, int accountId,
+            DateTime from, DateTime to, GridOptions gridOptions);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ هر سند" را به تفکیک شعبه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
+        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
+        Task<AccountBookViewModel> GetAccountBookVoucherSumByBranchAsync(int viewId, int accountId,
+            DateTime from, DateTime to, GridOptions gridOptions);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ اسناد در هر روز" را
+        /// به تفکیک شعبه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
+        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
+        Task<AccountBookViewModel> GetAccountBookDailySumByBranchAsync(int viewId, int accountId,
+            DateTime from, DateTime to, GridOptions gridOptions);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ اسناد در هر ماه" را
+        /// به تفکیک شعبه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
+        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
+        Task<AccountBookViewModel> GetAccountBookMonthlySumByBranchAsync(int viewId, int accountId,
+            DateTime from, DateTime to, GridOptions gridOptions);
+
+        /// <summary>
         /// به روش آسنکرون، مولفه حساب قبلی قابل دسترسی نسبت به مولفه حساب مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>

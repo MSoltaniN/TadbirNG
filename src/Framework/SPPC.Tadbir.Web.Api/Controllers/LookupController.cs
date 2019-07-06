@@ -204,7 +204,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetRolesLookupAsync()
         {
             var rolesLookup = await _repository.GetRolesAsync();
-            return Json(rolesLookup);
+            var sortedLookup = Localize(rolesLookup, true);
+            return Json(sortedLookup);
         }
 
         #endregion

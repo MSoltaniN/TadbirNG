@@ -7,7 +7,8 @@
     "Name": "سیستم جامع تدبیر",
     "SummaryName": "تدبیر",
     "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
-    "Level": "سطح"
+    "Level": "سطح",
+    "AccessDenied": "شما اجازه دسترسی ندارید"
   },
   "Enviroment": {
     "FiscalPeriod": "دوره مالی",
@@ -122,7 +123,7 @@
     "Branch": "شعبه",
     "Company": "شرکت",
     "AccountRelations": "ارتباطات حساب",
-    "Settings": "تنظیمات",
+    "Setting": "تنظیمات",
     "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
     "OperationLog": "لاگ های عملیاتی",
     "ViewTreeConfig": "تنظیمات ساختار درختی",
@@ -162,6 +163,7 @@
     "Sum": "مجموع",
     "DebitSum": "جمع بدهکار",
     "CreditSum": "جمع بستانکار",
+    "Remained": "مانده",
     "BookType": "نوع دفتر",
     "DisplayType": "نوع نمایش",
     "SelectBranch": "انتخاب شعبه",
@@ -786,7 +788,8 @@
   },
   "Paging": {
     "Record": "رکورد",
-    "Of": "از"
+    "Of": "از",
+    "ItemsPerPage": "سطر در هر صفحه"
   },
   "Grid": {
     "noRecords": "هیچ رکوردی یافت نشد!!!!!!!!!!"

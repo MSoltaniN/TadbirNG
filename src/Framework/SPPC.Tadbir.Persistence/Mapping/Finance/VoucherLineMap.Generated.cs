@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasOne(e => e.Voucher)
                 .WithMany(v => v.Lines)
                 .HasForeignKey(e => e.VoucherId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_Voucher");
             builder.HasOne(e => e.Currency)
                 .WithMany()

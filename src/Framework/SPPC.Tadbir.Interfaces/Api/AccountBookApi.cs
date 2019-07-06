@@ -54,6 +54,46 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string AccountBookMonthlySumUrl = "accbook/account/{accountId:min(1)}/monthly-sum";
 
+        /// <summary>
+        /// API client URL for Book report by row by branch for an account specified by unique identifier
+        /// </summary>
+        public const string AccountBookByRowByBranch = "accbook/account/{0}/by-row/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by row by branch for an account specified by unique identifier
+        /// </summary>
+        public const string AccountBookByRowByBranchUrl = "accbook/account/{accountId:min(1)}/by-row/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by voucher sum by branch for an account specified by unique identifier
+        /// </summary>
+        public const string AccountBookVoucherSumByBranch = "accbook/account/{0}/voucher-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by voucher sum by branch for an account specified by unique identifier
+        /// </summary>
+        public const string AccountBookVoucherSumByBranchUrl = "accbook/account/{accountId:min(1)}/voucher-sum/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by daily sum by branch for an account specified by unique identifier
+        /// </summary>
+        public const string AccountBookDailySumByBranch = "accbook/account/{0}/daily-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by daily sum by branch for an account specified by unique identifier
+        /// </summary>
+        public const string AccountBookDailySumByBranchUrl = "accbook/account/{accountId:min(1)}/daily-sum/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by monthly sum by branch for an account specified by unique identifier
+        /// </summary>
+        public const string AccountBookMonthlySumByBranch = "accbook/account/{0}/monthly-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by monthly sum by branch for an account specified by unique identifier
+        /// </summary>
+        public const string AccountBookMonthlySumByBranchUrl = "accbook/account/{accountId:min(1)}/monthly-sum/by-branch";
+
         #endregion
 
         #region DetailAccount Books
@@ -97,6 +137,46 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for Book report by monthly sum for a detail account specified by unique identifier
         /// </summary>
         public const string DetailAccountBookMonthlySumUrl = "accbook/faccount/{faccountId:min(1)}/monthly-sum";
+
+        /// <summary>
+        /// API client URL for Book report by row by branch for a detail account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountBookByRowByBranch = "accbook/faccount/{0}/by-row/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by row by branch for a detail account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountBookByRowByBranchUrl = "accbook/faccount/{faccountId:min(1)}/by-row/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by voucher sum by branch for a detail account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountBookVoucherSumByBranch = "accbook/faccount/{0}/voucher-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by voucher sum by branch for a detail account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountBookVoucherSumByBranchUrl = "accbook/faccount/{faccountId:min(1)}/voucher-sum/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by daily sum by branch for a detail account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountBookDailySumByBranch = "accbook/faccount/{0}/daily-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by daily sum by branch for a detail account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountBookDailySumByBranchUrl = "accbook/faccount/{faccountId:min(1)}/daily-sum/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by monthly sum by branch for a detail account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountBookMonthlySumByBranch = "accbook/faccount/{0}/monthly-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by monthly sum by branch for a detail account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountBookMonthlySumByBranchUrl = "accbook/faccount/{faccountId:min(1)}/monthly-sum/by-branch";
 
         #endregion
 
@@ -142,6 +222,46 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string CostCenterBookMonthlySumUrl = "accbook/ccenter/{ccenterId:min(1)}/monthly-sum";
 
+        /// <summary>
+        /// API client URL for Book report by row by branch for a cost center specified by unique identifier
+        /// </summary>
+        public const string CostCenterBookByRowByBranch = "accbook/ccenter/{0}/by-row/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by row by branch for a cost center specified by unique identifier
+        /// </summary>
+        public const string CostCenterBookByRowByBranchUrl = "accbook/ccenter/{ccenterId:min(1)}/by-row/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by voucher sum by branch for a cost center specified by unique identifier
+        /// </summary>
+        public const string CostCenterBookVoucherSumByBranch = "accbook/ccenter/{0}/voucher-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by voucher sum by branch for a cost center specified by unique identifier
+        /// </summary>
+        public const string CostCenterBookVoucherSumByBranchUrl = "accbook/ccenter/{ccenterId:min(1)}/voucher-sum/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by daily sum by branch for a cost center specified by unique identifier
+        /// </summary>
+        public const string CostCenterBookDailySumByBranch = "accbook/ccenter/{0}/daily-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by daily sum by branch for a cost center specified by unique identifier
+        /// </summary>
+        public const string CostCenterBookDailySumByBranchUrl = "accbook/ccenter/{ccenterId:min(1)}/daily-sum/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by monthly sum by branch for a cost center specified by unique identifier
+        /// </summary>
+        public const string CostCenterBookMonthlySumByBranch = "accbook/ccenter/{0}/monthly-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by monthly sum by branch for a cost center specified by unique identifier
+        /// </summary>
+        public const string CostCenterBookMonthlySumByBranchUrl = "accbook/ccenter/{ccenterId:min(1)}/monthly-sum/by-branch";
+
         #endregion
 
         #region Project Books
@@ -185,6 +305,46 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for Book report by monthly sum for a project specified by unique identifier
         /// </summary>
         public const string ProjectBookMonthlySumUrl = "accbook/project/{projectId:min(1)}/monthly-sum";
+
+        /// <summary>
+        /// API client URL for Book report by row by branch for a project specified by unique identifier
+        /// </summary>
+        public const string ProjectBookByRowByBranch = "accbook/project/{0}/by-row/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by row by branch for a project specified by unique identifier
+        /// </summary>
+        public const string ProjectBookByRowByBranchUrl = "accbook/project/{projectId:min(1)}/by-row/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by voucher sum by branch for a project specified by unique identifier
+        /// </summary>
+        public const string ProjectBookVoucherSumByBranch = "accbook/project/{0}/voucher-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by voucher sum by branch for a project specified by unique identifier
+        /// </summary>
+        public const string ProjectBookVoucherSumByBranchUrl = "accbook/project/{projectId:min(1)}/voucher-sum/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by daily sum by branch for a project specified by unique identifier
+        /// </summary>
+        public const string ProjectBookDailySumByBranch = "accbook/project/{0}/daily-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by daily sum by branch for a project specified by unique identifier
+        /// </summary>
+        public const string ProjectBookDailySumByBranchUrl = "accbook/project/{projectId:min(1)}/daily-sum/by-branch";
+
+        /// <summary>
+        /// API client URL for Book report by monthly sum by branch for a project specified by unique identifier
+        /// </summary>
+        public const string ProjectBookMonthlySumByBranch = "accbook/project/{0}/monthly-sum/by-branch";
+
+        /// <summary>
+        /// API server route URL for Book report by monthly sum by branch for a project specified by unique identifier
+        /// </summary>
+        public const string ProjectBookMonthlySumByBranchUrl = "accbook/project/{projectId:min(1)}/monthly-sum/by-branch";
 
         #endregion
 

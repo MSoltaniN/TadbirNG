@@ -57,8 +57,6 @@
 
         <div>
           <div>
-
-            <!--data-metadataType="{{this.metadataType}}"-->
             <kendo-grid id="{{viewId}}"
                         style="width:100%;"
                         #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
@@ -87,13 +85,25 @@
                         (dblclick)="rowDoubleClickHandler()"
                         sppc-auto-generated-grid-reorder
                         sppc-auto-generated-grid-resize>
-              <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                                   pagerOf="{{ 'Paging.Of' | translate }}"
-                                   pagerItems="{{ 'Paging.Record' | translate }}">
-              </kendo-grid-messages>
+
               <ng-template kendoGridNoRecordsTemplate>
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
               </ng-template>
+
+              <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                   pagerOf="{{ 'Paging.Of' | translate }}"
+                                   pagerItems="{{ 'Paging.Record' | translate }}"
+                                   pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}">
+              </kendo-grid-messages>
+
+              <ng-template kendoPagerTemplate>
+                <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+                <kendo-pager-info></kendo-pager-info>
+                <kendo-pager-numeric-buttons [buttonCount]="5"></kendo-pager-numeric-buttons>
+                <kendo-pager-next-buttons></kendo-pager-next-buttons>
+                <kendo-pager-page-sizes [pageSizes]="pageSizeArray"></kendo-pager-page-sizes>
+              </ng-template>
+
               <ng-template kendoGridToolbarTemplate>
 
                 <section class="content-header" style="padding-top:0;">
@@ -103,10 +113,10 @@
                   </ol>
                 </section>
 
-                <button kendoGridAddCommand (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Account.New' | translate }}"></button>
+                <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Account.New' | translate }}"></button>
 
-                <button (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
-                <button (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+                <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+                <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
                 <button (click)="subsetHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Subset' | translate }}"><span class="k-icon k-i-filter-add-expression"></span></button>
 
 
@@ -124,7 +134,7 @@
                 <ng-template kendoGridCellTemplate let-dataItem>
                   <dl>
                     <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
-                      <dt>{{ getColumnTitle(item.name) }}:</dt>
+                      <dt>{{ getColumnTitle(item) }}:</dt>
                       <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
                       <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
                       <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate }}</dd>
@@ -135,7 +145,7 @@
 
               </kendo-grid-column>
 
-              <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumns" width="{{getColumnWidth(item)}}" sppc-grid-column="{{ entityTypeName }}.{{ item.name }}">
+              <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumns" sppc-auto-grid-column="{{ item.settings }}">
 
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                   <sppc-grid-filter [metaData]="getMetaData(item.name)" [column]="column" [filter]="filter"></sppc-grid-filter>

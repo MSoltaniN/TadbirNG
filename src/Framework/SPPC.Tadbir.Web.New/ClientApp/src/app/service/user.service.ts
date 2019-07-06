@@ -36,7 +36,7 @@ export class CommandInfo implements Command {
     
     constructor(public id: number, public title: string = "", public routeUrl: string,
         public iconName: string = "", public hotKey: string,
-        public children: Command[] ,permissionId?: number | undefined) { }
+        public children: Command[], public hasPermission: boolean, permissionId?: number | undefined) { }
     
 }
 

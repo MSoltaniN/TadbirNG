@@ -918,7 +918,7 @@
   <data name="AccountName" xml:space="preserve">
     <value>Account name</value>
   </data>
-  <data name="AssociationField" xml:space="preserve">
+  <data name="Association" xml:space="preserve">
     <value>Association no</value>
   </data>
   <data name="BranchName" xml:space="preserve">
@@ -1181,5 +1181,14 @@
   </data>
   <data name="AccountFullName" xml:space="preserve">
     <value>Account</value>
+  </data>
+  <data name="AccountBook" xml:space="preserve">
+    <value>Account book</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="LineCount" xml:space="preserve">
+    <value>Count</value>
   </data>
 </root>

@@ -7,7 +7,8 @@
     "Name": "Tadbir Accounting System",
     "SummaryName": "Tadbir",
     "NotViewAccess": "You do not have access to view information",
-    "Level": "Level"
+    "Level": "Level",
+    "AccessDenied": "You do not have permission to access"
   },
   "Enviroment": {
     "FiscalPeriod": "Fiscal Period",
@@ -122,7 +123,7 @@
     "Branch": "Branch",
     "Company": "Company",
     "AccountRelations": "Account Relations",
-    "Settings": "Settings",
+    "Setting": "Settings",
     "ViewRowPermission": "Row Permission",
     "OperationLog": "Operation Logs",
     "Unsuccessful": "Unsuccessful",
@@ -165,6 +166,7 @@
     "Sum": "Sum",
     "DebitSum": "Debit Sum",
     "CreditSum": "Credit Sum",
+    "Remained": "Remained",
     "BookType": "Book Type",
     "DisplayType": "Display Type",
     "SelectBranch": "Select Branch",
@@ -788,7 +790,8 @@
   },
   "Paging": {
     "Record": "Record",
-    "Of": "Of"
+    "Of": "Of",
+    "ItemsPerPage": "Items Per Page"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"

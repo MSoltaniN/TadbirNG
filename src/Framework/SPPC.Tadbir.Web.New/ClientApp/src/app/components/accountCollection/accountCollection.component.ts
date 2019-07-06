@@ -59,7 +59,6 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
 
   currentFilter: FilterExpression;
-  viewAccess: boolean;
   collectionViewAccess: boolean;
   /**
   *شناسه سطرهای انتخاب شده از گرید حسابهای قابل انتخاب
@@ -88,7 +87,6 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
   //#region Events
   ngOnInit() {
-    this.viewAccess = this.isAccess(SecureEntity.AccountCollection, AccountPermissions.View);
     this.collectionViewAccess = this.isAccess(SecureEntity.AccountCollection, AccountCollectionPermissions.View)
     this.getAccountCollectionCategory();
     this.getAccountLevels();
@@ -173,7 +171,6 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
       //شماره سطح در جدول حساب از صفر شروع میشود ولی در سطوح حساب از یک شروع میشود به همین دلیل یک واحد از شماره سطح انتخاب شده کم میکنیم
 
-      if (this.viewAccess) {
         var filter = this.currentFilter;
         if (this.ddlLevelSelected == undefined || this.ddlLevelSelected == null) {
           this.showMessage(this.getText('AccountCollection.SelectLevel'), MessageType.Warning);
@@ -211,15 +208,6 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
             this.grid.loading = false;
           })
         }
-      }
-      else {
-        this.rowData = {
-          data: [],
-          total: 0
-        }
-        this.selectedRowData = [];
-      }
-
     }
     else {
       this.showMessage(this.getText('AccountCollection.SelectCollection'), MessageType.Warning);

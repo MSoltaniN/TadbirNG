@@ -29,10 +29,10 @@
       {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
     </ng-template>
     <ng-template kendoGridToolbarTemplate let-branch>
-      <button kendoGridAddCommand SppcCheckAccess="Create" *ngIf="!parentId" (click)="addNew(parentId , true)" [icon]="'file-add'" type="button" title="{{ 'Branch.New' | translate }}"></button>
+      <button kendoGridAddCommand SppcPermissionCheck="Create" *ngIf="!parentId" (sppcClick)="addNew(parentId , true)" [icon]="'file-add'" type="button" title="{{ 'Branch.New' | translate }}"></button>
 
-      <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
-      <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+      <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+      <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
       <grid-setting entityTypeName="Branch"></grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
@@ -50,9 +50,9 @@
           <dt>{{ 'Branch.Description' | translate  }}</dt>
           <dd>{{ branch.description }}</dd>
         </dl>
-        <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(branch.id)" [icon]="'plus-outline'" type="button">{{ 'Buttons.New' | translate }}</button>
+        <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew(branch.id)" [icon]="'plus-outline'" type="button">{{ 'Buttons.New' | translate }}</button>
 
-        <button kendoButton (click)="rolesHandler(branch.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignRoles" (sppcClick)="rolesHandler(branch.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
       </ng-template>
     </kendo-grid-column>
     <!-- template for mobile -->
@@ -78,9 +78,9 @@
 
     <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px)">
       <ng-template kendoGridCellTemplate let-dataItem>
-        <button [icon]="'plus-outline'" (click)="addNew(dataItem.id)" kendoGridAddCommand SppcCheckAccess="Create" title="{{ 'Branch.NewSubBrench' | translate }}"></button>
+        <button [icon]="'plus-outline'" SppcPermissionCheck="Create" (sppcClick)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'Branch.NewSubBrench' | translate }}"></button>
 
-        <button kendoButton (click)="rolesHandler(dataItem.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
+        <button kendoButton SppcPermissionCheck="AssignRoles" (sppcClick)="rolesHandler(dataItem.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
       </ng-template>
     </kendo-grid-command-column>
     <!-- additional columns on large devices -->

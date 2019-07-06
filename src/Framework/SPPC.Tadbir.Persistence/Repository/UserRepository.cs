@@ -483,18 +483,7 @@ namespace SPPC.Tadbir.Persistence
                 }
                 else if (IsInaccessibleCommand(command, permissions))
                 {
-                    int index = commands.IndexOf(command);
-                    commands.RemoveAt(index);
-                    count--;
-                    i--;
-                }
-
-                if (IsTopLevelCommand(command) && command.Children.Count == 0)
-                {
-                    int index = commands.IndexOf(command);
-                    commands.RemoveAt(index);
-                    count--;
-                    i--;
+                    command.HasPermission = false;
                 }
             }
         }

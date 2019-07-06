@@ -63,6 +63,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.Account, accountId, from, to);
         }
 
+        // GET: api/accbook/account/{accountId:min(1)}/by-row/by-branch
+        [Route(AccountBookApi.AccountBookByRowByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetAccountBookByRowByBranchAsync(
+            int accountId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.Account, accountId, from, to, true);
+        }
+
+        // GET: api/accbook/account/{accountId:min(1)}/voucher-sum/by-branch
+        [Route(AccountBookApi.AccountBookVoucherSumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetAccountBookVoucherSumByBranchAsync(
+            int accountId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.Account, accountId, from, to, true);
+        }
+
+        // GET: api/accbook/account/{accountId:min(1)}/daily-sum/by-branch
+        [Route(AccountBookApi.AccountBookDailySumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetAccountBookDailySumByBranchAsync(
+            int accountId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.Account, accountId, from, to, true);
+        }
+
+        // GET: api/accbook/account/{accountId:min(1)}/monthly-sum/by-branch
+        [Route(AccountBookApi.AccountBookMonthlySumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetAccountBookMonthlySumByBranchAsync(
+            int accountId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.Account, accountId, from, to, true);
+        }
+
         #endregion
 
         #region DetailAccount Books
@@ -101,6 +137,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int faccountId, DateTime? from, DateTime? to)
         {
             return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.DetailAccount, faccountId, from, to);
+        }
+
+        // GET: api/accbook/faccount/{faccountId:min(1)}/by-row/by-branch
+        [Route(AccountBookApi.DetailAccountBookByRowByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetDetailAccountBookByRowByBranchAsync(
+            int faccountId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.DetailAccount, faccountId, from, to, true);
+        }
+
+        // GET: api/accbook/faccount/{faccountId:min(1)}/voucher-sum/by-branch
+        [Route(AccountBookApi.DetailAccountBookVoucherSumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetDetailAccountBookVoucherSumByBranchAsync(
+            int faccountId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.DetailAccount, faccountId, from, to, true);
+        }
+
+        // GET: api/accbook/faccount/{faccountId:min(1)}/daily-sum/by-branch
+        [Route(AccountBookApi.DetailAccountBookDailySumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetDetailAccountBookDailySumByBranchAsync(
+            int faccountId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.DetailAccount, faccountId, from, to, true);
+        }
+
+        // GET: api/accbook/faccount/{faccountId:min(1)}/monthly-sum/by-branch
+        [Route(AccountBookApi.DetailAccountBookMonthlySumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetDetailAccountBookMonthlySumByBranchAsync(
+            int faccountId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.DetailAccount, faccountId, from, to, true);
         }
 
         #endregion
@@ -143,6 +215,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.CostCenter, ccenterId, from, to);
         }
 
+        // GET: api/accbook/ccenter/{ccenterId:min(1)}/by-row/by-branch
+        [Route(AccountBookApi.CostCenterBookByRowByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetCostCenterBookByRowByBranchAsync(
+            int ccenterId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.CostCenter, ccenterId, from, to, true);
+        }
+
+        // GET: api/accbook/ccenter/{ccenterId:min(1)}/voucher-sum/by-branch
+        [Route(AccountBookApi.CostCenterBookVoucherSumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetCostCenterBookVoucherSumByBranchAsync(
+            int ccenterId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.CostCenter, ccenterId, from, to, true);
+        }
+
+        // GET: api/accbook/ccenter/{ccenterId:min(1)}/daily-sum/by-branch
+        [Route(AccountBookApi.CostCenterBookDailySumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetCostCenterBookDailySumByBranchAsync(
+            int ccenterId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.CostCenter, ccenterId, from, to, true);
+        }
+
+        // GET: api/accbook/ccenter/{ccenterId:min(1)}/monthly-sum/by-branch
+        [Route(AccountBookApi.CostCenterBookMonthlySumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetCostCenterBookMonthlySumByBranchAsync(
+            int ccenterId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.CostCenter, ccenterId, from, to, true);
+        }
+
         #endregion
 
         #region Project Books
@@ -183,6 +291,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.Project, projectId, from, to);
         }
 
+        // GET: api/accbook/project/{projectId:min(1)}/by-row/by-branch
+        [Route(AccountBookApi.ProjectBookByRowByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetProjectBookByRowByBranchAsync(
+            int projectId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.Project, projectId, from, to, true);
+        }
+
+        // GET: api/accbook/project/{projectId:min(1)}/voucher-sum/by-branch
+        [Route(AccountBookApi.ProjectBookVoucherSumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetProjectBookVoucherSumByBranchAsync(
+            int projectId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.Project, projectId, from, to, true);
+        }
+
+        // GET: api/accbook/project/{projectId:min(1)}/daily-sum/by-branch
+        [Route(AccountBookApi.ProjectBookDailySumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetProjectBookDailySumByBranchAsync(
+            int projectId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.Project, projectId, from, to, true);
+        }
+
+        // GET: api/accbook/project/{projectId:min(1)}/monthly-sum/by-branch
+        [Route(AccountBookApi.ProjectBookMonthlySumByBranchUrl)]
+        [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
+        public async Task<IActionResult> GetProjectBookMonthlySumByBranchAsync(
+            int projectId, DateTime? from, DateTime? to)
+        {
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.Project, projectId, from, to, true);
+        }
+
         #endregion
 
         #region Account Item Navigation
@@ -208,34 +352,43 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #endregion
 
         private async Task<IActionResult> AccountBookResultAsync(
-            AccountBookMode bookMode, int viewId, int accountId, DateTime? from, DateTime? to)
+            AccountBookMode bookMode, int viewId, int accountId, DateTime? from, DateTime? to,
+            bool byBranch = false)
         {
-            var accountBook = GetAccountBookDelegate(bookMode);
+            var accountBook = GetAccountBookDelegate(bookMode, byBranch);
             var gridOptions = GridOptions ?? new GridOptions();
             Sanitize(ref from, ref to);
             _repository.SetCurrentContext(SecurityContext.User);
             var book = await accountBook(viewId, accountId, from.Value, to.Value, gridOptions);
-            SetItemCount(book.Items.Count);
+            SetItemCount(book.TotalCount);
             Localize(book);
             return Json(book);
         }
 
-        private AccountBookDelegate GetAccountBookDelegate(AccountBookMode bookMode)
+        private AccountBookDelegate GetAccountBookDelegate(AccountBookMode bookMode, bool byBranch = false)
         {
             var bookDelegate = default(AccountBookDelegate);
             switch (bookMode)
             {
                 case AccountBookMode.ByRows:
-                    bookDelegate = _repository.GetAccountBookByRowAsync;
+                    bookDelegate = byBranch
+                        ? _repository.GetAccountBookByRowByBranchAsync
+                        : (AccountBookDelegate)_repository.GetAccountBookByRowAsync;
                     break;
                 case AccountBookMode.VoucherSum:
-                    bookDelegate = _repository.GetAccountBookVoucherSumAsync;
+                    bookDelegate = byBranch
+                        ? _repository.GetAccountBookVoucherSumByBranchAsync
+                        : (AccountBookDelegate)_repository.GetAccountBookVoucherSumAsync;
                     break;
                 case AccountBookMode.DailySum:
-                    bookDelegate = _repository.GetAccountBookDailySumAsync;
+                    bookDelegate = byBranch
+                        ? _repository.GetAccountBookDailySumByBranchAsync
+                        : (AccountBookDelegate)_repository.GetAccountBookDailySumAsync;
                     break;
                 case AccountBookMode.MonthlySum:
-                    bookDelegate = _repository.GetAccountBookMonthlySumAsync;
+                    bookDelegate = byBranch
+                        ? _repository.GetAccountBookMonthlySumByBranchAsync
+                        : (AccountBookDelegate)_repository.GetAccountBookMonthlySumAsync;
                     break;
                 default:
                     break;

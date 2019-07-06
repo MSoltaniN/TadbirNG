@@ -77,7 +77,5 @@ export class AccountComponent extends GridExplorerComponent<Account> {
       }
   }
 
-  
-
 }
 

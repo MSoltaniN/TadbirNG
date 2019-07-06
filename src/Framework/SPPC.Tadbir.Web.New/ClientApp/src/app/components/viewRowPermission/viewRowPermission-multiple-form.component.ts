@@ -54,7 +54,7 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
   rowPermission: ViewRowPermissionInfo;
 
   entityName: string = '';
-  viewId: number;
+
 
   public rowList: ItemInfo[] = [];
   public rowCheckedKeys: number[] = [];

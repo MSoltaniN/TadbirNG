@@ -94,10 +94,10 @@
                   </ol>
                 </section>
 
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'CostCenter.New' | translate }}"></button>
+                <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'CostCenter.New' | translate }}"></button>
 
-                <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
-                <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+                <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+                <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
                 <button (click)="subsetHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Subset' | translate }}"><span class="k-icon k-i-filter-add-expression"></span></button>
 
                 <grid-setting entityTypeName="CostCenter"></grid-setting>

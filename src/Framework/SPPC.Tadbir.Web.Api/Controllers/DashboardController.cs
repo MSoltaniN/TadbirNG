@@ -21,10 +21,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/dashboard/summaries
         [Route(DashboardApi.SummariesUrl)]
-        public async Task<IActionResult> GetSummariesAsync()
+        public IActionResult GetSummaries()
         {
             _repository.SetCurrentContext(SecurityContext.User);
-            var summaries = await _repository.GetSummariesAsync();
+            var summaries = _repository.GetSummaries();
             Localize(summaries);
             return Json(summaries);
         }
