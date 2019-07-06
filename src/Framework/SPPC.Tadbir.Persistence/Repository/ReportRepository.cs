@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -9,6 +10,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -49,6 +51,75 @@ namespace SPPC.Tadbir.Persistence
         {
             _currentContext = userContext;
             _repository.SetCurrentContext(userContext);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده حساب مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetAccountBalanceAsync(int accountId, DateTime date)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId);
+            Verify.ArgumentNotNull(account, nameof(account));
+            return await GetItemBalanceAsync(date, line => line.Account.FullCode.StartsWith(account.FullCode));
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetDetailAccountBalanceAsync(int faccountId, DateTime date)
+        {
+            return await GetItemBalanceAsync(date, line => line.DetailId == faccountId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده مرکز هزینه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetCostCenterBalanceAsync(int ccenterId, DateTime date)
+        {
+            return await GetItemBalanceAsync(date, line => line.CostCenterId == ccenterId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetProjectBalanceAsync(int projectId, DateTime date)
+        {
+            return await GetItemBalanceAsync(date, line => line.ProjectId == projectId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تاریخ سند سیستمی با نوع داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">یکی از انواع تعریف شده برای سندهای سیستمی</param>
+        /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
+        public async Task<DateTime?> GetSpecialVoucherDate(VoucherType type)
+        {
+            DateTime? voucherDate = null;
+            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetFirstByCriteriaAsync(v => v.Type == (int)type);
+            if (voucher != null)
+            {
+                voucherDate = voucher.Date;
+            }
+
+            return voucherDate;
         }
 
         /// <summary>
@@ -230,6 +301,19 @@ namespace SPPC.Tadbir.Persistence
                     Description = line.DetailAccount.Name
                 });
             }
+        }
+
+        private async Task<decimal> GetItemBalanceAsync(
+            DateTime date, Expression<Func<VoucherLine, bool>> itemCriteria)
+        {
+            return await _repository
+                .GetAllOperationQuery<VoucherLine>(
+                    ViewName.VoucherLine, line => line.Voucher, line => line.Account)
+                .Where(line => line.Voucher.Date.CompareWith(date) < 0
+                    && line.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .Where(itemCriteria)
+                .Select(line => line.Debit - line.Credit)
+                .SumAsync();
         }
 
         private IQueryable<Voucher> GetStandardVoucherFormQuery(bool withDetail = false)

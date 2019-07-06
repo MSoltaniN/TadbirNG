@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -18,6 +19,49 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
         void SetCurrentContext(UserContextViewModel userContext);
+
+        /// <summary>
+        /// به روش آسنکرون، مانده حساب مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        Task<decimal> GetAccountBalanceAsync(int accountId, DateTime date);
+
+        /// <summary>
+        /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        Task<decimal> GetDetailAccountBalanceAsync(int faccountId, DateTime date);
+
+        /// <summary>
+        /// به روش آسنکرون، مانده مرکز هزینه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        Task<decimal> GetCostCenterBalanceAsync(int ccenterId, DateTime date);
+
+        /// <summary>
+        /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        Task<decimal> GetProjectBalanceAsync(int projectId, DateTime date);
+
+        /// <summary>
+        /// به روش آسنکرون، تاریخ سند سیستمی با نوع داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">یکی از انواع تعریف شده برای سندهای سیستمی</param>
+        /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
+        Task<DateTime?> GetSpecialVoucherDate(VoucherType type);
 
         /// <summary>
         /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند

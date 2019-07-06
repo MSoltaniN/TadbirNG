@@ -69,42 +69,6 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync(GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، مانده حساب مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
-        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        Task<decimal> GetAccountBalanceAsync(int accountId, DateTime date);
-
-        /// <summary>
-        /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
-        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        Task<decimal> GetDetailAccountBalanceAsync(int faccountId, DateTime date);
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مرکز هزینه مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
-        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        Task<decimal> GetCostCenterBalanceAsync(int ccenterId, DateTime date);
-
-        /// <summary>
-        /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
-        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        Task<decimal> GetProjectBalanceAsync(int projectId, DateTime date);
-
-        /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
