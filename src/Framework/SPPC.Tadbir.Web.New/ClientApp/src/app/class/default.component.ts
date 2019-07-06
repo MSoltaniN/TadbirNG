@@ -171,10 +171,10 @@ export class DefaultComponent extends BaseComponent {
   }
 
   async getAllMetaDataByViewIdAsync(viewId: number): Promise<Array<Property>> {
-    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
+    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() + '_' + this.currentlang : '');
 
     if (viewId) {
-      if (!localStorage.getItem(metaDataName)) {
+      if (!localStorage.getItem(metaDataName )) {
         const response = await this.metadataService.getMetaDataById(viewId).toPromise();
         let res: any = response;
         this.properties.set(metaDataName, res.columns);
