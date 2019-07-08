@@ -1191,4 +1191,10 @@
   <data name="LineCount" xml:space="preserve">
     <value>Count</value>
   </data>
+  <data name="AccountBookReport" xml:space="preserve">
+    <value>Account ledger</value>
+  </data>
+  <data name="NavigateEntities" xml:space="preserve">
+    <value>Navigate {0}</value>
+  </data>
 </root>

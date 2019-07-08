@@ -1105,7 +1105,7 @@
     <value>فیلتر</value>
   </data>
   <data name="JournalReport" xml:space="preserve">
-    <value>گزارش دفتر روزنامه</value>
+    <value>دفتر روزنامه</value>
   </data>
   <data name="Lookup" xml:space="preserve">
     <value>جستجو</value>
@@ -1190,5 +1190,11 @@
   </data>
   <data name="LineCount" xml:space="preserve">
     <value>تعداد</value>
+  </data>
+  <data name="AccountBookReport" xml:space="preserve">
+    <value>دفتر حساب</value>
+  </data>
+  <data name="NavigateEntities" xml:space="preserve">
+    <value>جابجایی روی {0}</value>
   </data>
 </root>
