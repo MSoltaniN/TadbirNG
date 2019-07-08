@@ -651,7 +651,8 @@
     "Finalized": "Finalized",
     "Version": "Version",
     "VoucherNotFound": "Voucher Not Found",
-    "SaveChanges": "Do you want to save changes?"
+    "SaveChanges": "Do you want to save changes?",
+    "VoucherDetail": "Voucher Detail"
   },
   "User": {
     "New": "New User",
