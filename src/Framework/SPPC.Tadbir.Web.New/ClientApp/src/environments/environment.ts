@@ -108,7 +108,7 @@ export const SessionKeys = {
   NumberConfige: 'numberConfig',
   DateRangeConfig: 'DateRangeConfig',
   DateRangeSelected: 'DateRangeSelected',
-  MetadataKey: 'metadata_view_{0}',
+  MetadataKey: 'metadata_view_{0}_{1}',
   QuickSearchConfig: 'QuickSearchConfig_{0}_{1}',
   SelectForm: 'SelectForm'
 }

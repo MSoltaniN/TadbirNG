@@ -23,7 +23,7 @@ export class DetailComponent extends BaseComponent {
     @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number) {
     super(toastrService);
 
-    this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId? this.viewId.toString():'');
+    this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.CurrentLanguage);
 
     this.localizeMsg();
     var propertiesValue = localStorage.getItem(this.metadataKey)

@@ -212,8 +212,19 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
 
   loadAllSetting() {
+    if (this.version != localStorage.getItem("app-version")) {
+      localStorage.removeItem(SessionKeys.Setting + this.UserId);
 
-    var settingList: Array<ListFormViewConfig> = new Array<ListFormViewConfig>();
+      var n = localStorage.length;
+      while (n--) {
+        var key = localStorage.key(n);
+        if (/metadata_view/.test(key)) {
+          localStorage.removeItem(key);
+        }
+      }
+      localStorage.setItem("app-version", this.version);
+    }
+
 
     this.settingService.getListSettingsByUser(this.UserId).subscribe((res: Array<ListFormViewConfig>) => {
 

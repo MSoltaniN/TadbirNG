@@ -7,6 +7,8 @@ export class EnviromentComponent {
 
   }
 
+  public version: string = '1.0.0';
+
   public get CurrentLanguage(): string {
 
     var lang: string = "fa";

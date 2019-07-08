@@ -28,11 +28,11 @@ export class DefaultComponent extends BaseComponent {
   constructor(public toastrService: ToastrService, public translate: TranslateService
     , public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService,
     @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number) {
-    super(toastrService);
-
-    this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '');
+    super(toastrService);   
 
     this.setLanguageSetting();
+
+    this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.currentlang);
 
     this.localizeMsg(this.entityType);
 
@@ -142,7 +142,7 @@ export class DefaultComponent extends BaseComponent {
 
   public getAllMetaData(viewId: number): Array<Property> | undefined {
 
-    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '');
+    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
     if (viewId) {
       if (!localStorage.getItem(metaDataName)) {
         this.metadataService.getMetaDataById(viewId).finally(() => {
@@ -171,7 +171,7 @@ export class DefaultComponent extends BaseComponent {
   }
 
   async getAllMetaDataByViewIdAsync(viewId: number): Promise<Array<Property>> {
-    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() + '_' + this.currentlang : '');
+    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
 
     if (viewId) {
       if (!localStorage.getItem(metaDataName )) {

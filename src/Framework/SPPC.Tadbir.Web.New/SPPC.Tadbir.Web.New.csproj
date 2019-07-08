@@ -162,6 +162,7 @@
     <None Remove="ClientApp\src\app\service\index.ts" />
     <None Remove="ClientApp\src\app\service\lookup.service.ts" />
     <None Remove="ClientApp\src\app\service\message\sppc-message.service.ts" />
+    <None Remove="ClientApp\src\app\service\metadata\metadata.resolve.ts" />
     <None Remove="ClientApp\src\app\service\metadata\metadata.service.ts" />
     <None Remove="ClientApp\src\app\service\role.service.ts" />
     <None Remove="ClientApp\src\app\service\settings.service.ts" />
