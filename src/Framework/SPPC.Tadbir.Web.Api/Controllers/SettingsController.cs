@@ -125,6 +125,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/settings/qreport/users/{userId:min(1)}/views/{viewId:min(1)}
+        [Route(SettingsApi.QuickReportSettingsByUserAndViewUrl)]
+        public async Task<IActionResult> GetQReportSettingsByUserAndViewAsync(int userId, int viewId)
+        {
+            var reportSettings = await _repository.GetQuickReportConfigAsync(userId, viewId);
+            Localize(reportSettings);
+            return Json(reportSettings);
+        }
+
+        // PUT: api/settings/qreport/users/{userId:min(1)}
+        [HttpPut]
+        [Route(SettingsApi.QuickReportSettingsByUserUrl)]
+        public async Task<IActionResult> PutModifiedQReportSettingsByUserAsync(
+            int userId, [FromBody] QuickReportConfig settings)
+        {
+            if (settings == null)
+            {
+                return BadRequest();        // TODO: Add error message
+            }
+
+            await _repository.SaveQuickReportConfigAsync(userId, settings);
+            return Ok();
+        }
+
         // GET: api/settings/views/{viewId:min(1)}/tree
         [Route(SettingsApi.ViewTreeSettingsByViewUrl)]
         [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ViewSettings)]
@@ -204,6 +228,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 foreach (var column in searchSettings.Columns)
                 {
                     column.Title = _strings[column.Title];
+                }
+            }
+        }
+
+        private void Localize(QuickReportConfig reportSettings)
+        {
+            if (reportSettings != null)
+            {
+                var localCode = GetAcceptLanguages().Substring(0, 2);
+                foreach (var column in reportSettings.Columns)
+                {
+                    var userTitle = column.UserTitle
+                        .Where(item => item.Key == localCode)
+                        .SingleOrDefault();
+                    column.Title = !String.IsNullOrEmpty(userTitle.Value)
+                        ? userTitle.Value
+                        : _strings[column.Title];
                 }
             }
         }

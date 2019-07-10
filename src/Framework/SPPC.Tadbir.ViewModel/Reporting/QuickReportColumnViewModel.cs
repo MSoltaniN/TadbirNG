@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -22,27 +21,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         ///
         /// </summary>
-        public int Index { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public int SortMode { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public int SortOrder { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
         public int Width { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool Enabled { get; set; }
 
         /// <summary>
         ///
@@ -53,11 +32,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         ///
         /// </summary>
         public string UserText { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public string DataType { get; set; }
 
         /// <summary>
         ///

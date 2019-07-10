@@ -611,7 +611,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 QuickReportColumnViewModel column = orderdColumns[i];
                 StiText txtHeaderCell = null;
                 string ctrlName = "txtTitle_";
-                ctrlName += column.Name + column.Index;
+                ctrlName += column.Name + column.Order;
                 double width = GetSizeInInch(column.Width, oneInchInPixels);
                 if (txtHeaderCell == null)
                 {
