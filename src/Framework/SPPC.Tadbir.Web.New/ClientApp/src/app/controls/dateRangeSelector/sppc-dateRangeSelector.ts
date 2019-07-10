@@ -3,8 +3,9 @@ import { FormGroup, FormControl } from '@angular/forms'
 import { SettingService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from '../../class/base.component';
-import { MessageType, SessionKeys } from '../../../environments/environment';
+import { MessageType } from '../../../environments/environment';
 import * as moment from 'jalali-moment';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -40,8 +41,8 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
   @Output() valueChange = new EventEmitter();
 
-  constructor(public settingService: SettingService, public toastrService: ToastrService) {
-    super(toastrService);
+  constructor(public settingService: SettingService, public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
+    super(toastrService, bStorageService);
   }
 
   async ngOnInit() {
@@ -57,19 +58,10 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
 
     var lang: string = "fa";
-    if (localStorage.getItem('lang') != null) {
-      var item: string | null;
-      item = localStorage.getItem('lang');
-      if (item)
-        lang = item;
-    }
-    else
-      if (sessionStorage.getItem('lang') != null) {
-        var item: string | null;
-        item = sessionStorage.getItem('lang');
-        if (item)
-          lang = item;
-      }
+    var item: string | null;
+    item = this.bStorageService.getLanguage();
+    if (item)
+      lang = item;
 
     if (lang == "fa")
       this.rtl = true;
@@ -191,7 +183,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
       let sessionDateRangeArray: any[] = [];
 
-      var dateStorage = sessionStorage.getItem(SessionKeys.DateRangeSelected);
+      var dateStorage = this.bStorageService.getSelectedDateRange();
       if (dateStorage)
         sessionDateRangeArray = JSON.parse(dateStorage);
 
@@ -205,7 +197,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
           sessionDateRangeArray.splice(toIndex, 1);
       }
 
-      sessionStorage.removeItem(SessionKeys.DateRangeSelected);
+      this.bStorageService.removeSelectedDateRange();
 
       if (fromDate)
         sessionDateRangeArray.push({ key: sessionFromDate, value: fromDate.toString() });
@@ -214,7 +206,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
         sessionDateRangeArray.push({ key: sessionToDate, value: toDate.toString() });
 
       if (sessionDateRangeArray.length > 0)
-        sessionStorage.setItem(SessionKeys.DateRangeSelected, JSON.stringify(sessionDateRangeArray));
+        this.bStorageService.setSelectedDaterange(sessionDateRangeArray);
     }
   }
 
@@ -225,7 +217,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
       let sessionDateRangeArray: any[] = [];
 
-      var dateStorage = sessionStorage.getItem(SessionKeys.DateRangeSelected);
+      var dateStorage = this.bStorageService.getSelectedDateRange();
       if (dateStorage) {
         sessionDateRangeArray = JSON.parse(dateStorage);
         var dateItem = sessionDateRangeArray.find(f => f.key.toLowerCase() == sessionFromDate.toLowerCase());
@@ -243,7 +235,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
       let sessionDateRangeArray: any[] = [];
 
-      var dateStorage = sessionStorage.getItem(SessionKeys.DateRangeSelected);
+      var dateStorage = this.bStorageService.getSelectedDateRange();
       if (dateStorage) {
         sessionDateRangeArray = JSON.parse(dateStorage);
         var dateItem = sessionDateRangeArray.find(f => f.key.toLowerCase() == sessionToDate.toLowerCase());

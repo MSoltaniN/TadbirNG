@@ -4,14 +4,15 @@ import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
 import { BaseService } from '../class/base.service';
 import { LookupApi, AccountRelationApi } from './api/index';
+import { BrowserStorageService } from './browserStorage.service';
 
 
 
 @Injectable()
 export class LookupService extends BaseService {
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
   GetLookup(url: string) {

@@ -13,6 +13,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SystemApi } from '../../service/api/index';
 import { FilterExpression } from '../../class/filterExpression';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -94,9 +95,9 @@ export class OperationLogsComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     private operationLogService: OperationLogService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, ViewName.OperationLog);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.OperationLog, ViewName.OperationLog);
   }
   //#endregion
 

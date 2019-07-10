@@ -10,12 +10,10 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { SettingService, SettingTreeNodeInfo, SettingBriefInfo } from '../../service/index';
 import { SettingsApi } from '../../service/api/settingsApi';
-import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
+import { TreeItem } from '@progress/kendo-angular-treeview';
 import { SettingsFormComponent } from './settings-form.component';
-import { SessionKeys } from '../../../environments/environment';
 import { SettingKey } from '../../enum/settingsKey';
-
-
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -69,9 +67,9 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
 
   }
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
     private settingsService: SettingService, public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, settingsService, Entities.Setting, undefined);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingsService, Entities.Setting, undefined);
   }
 
   public handleSelection(item: TreeItem): void {
@@ -105,24 +103,21 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
 
 
     //#region بروزرسانی تنظیمات ذخیره شده 
-    if (localStorage.getItem(SessionKeys.NumberConfige))
-      localStorage.removeItem(SessionKeys.NumberConfige);
+    this.bStorageService.removeNumberConfig();
 
     var numConfig = this.settingsCategories.find(f => f.id == SettingKey.NumberDisplayConfig);
     if (numConfig) {
-      localStorage.setItem(SessionKeys.NumberConfige, JSON.stringify(numConfig.values));
+      this.bStorageService.setNumberConfig(numConfig.values)
     }
 
-    if (localStorage.getItem(SessionKeys.DateRangeConfig))
-      localStorage.removeItem(SessionKeys.DateRangeConfig);
+    this.bStorageService.removeDateRangeConfig();
 
     var dateConfig = this.settingsCategories.find(f => f.id == SettingKey.DateRangeConfig);
     if (dateConfig) {
-      localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(dateConfig.values));
+      this.bStorageService.setDateRangeConfig(dateConfig.values);
     }
 
-    if (sessionStorage.getItem(SessionKeys.DateRangeSelected))
-      sessionStorage.removeItem(SessionKeys.DateRangeSelected);
+    this.bStorageService.removeSelectedDateRange();
     //#endregion
 
 

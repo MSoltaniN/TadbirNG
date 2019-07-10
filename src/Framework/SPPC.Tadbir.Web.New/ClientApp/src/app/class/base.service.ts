@@ -1,17 +1,11 @@
 import { EnviromentComponent } from "./enviroment.component";
-import { RequestOptions, Http, Response } from "@angular/http";
-import { Headers } from '@angular/http';
-import { Filter } from "./filter";
+import { Response } from "@angular/http";
 import { GridOrderBy } from "./grid.orderby";
 import { String } from '../class/source';
 import { Observable } from "rxjs/Observable";
 import { FilterExpression } from "./filterExpression";
-import { ToastrService } from "ngx-toastr";
-import { TranslateService } from '@ngx-translate/core';
-import { SppcLoadingService } from "../controls/sppcLoading/index";
-import { ReflectiveInjector, Injector, Injectable, ErrorHandler } from '@angular/core';
-import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { ActivatedRoute, Router } from "@angular/router";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
+import { BrowserStorageService } from "../service/browserStorage.service";
 
 
 
@@ -21,8 +15,8 @@ export class BaseService extends EnviromentComponent{
   //option: any;
   //httpHeaders = new HttpHeaders();
 
-  constructor(public http: HttpClient) {
-    super();
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(bStorageService);
     //this.httpHeaders = this.httpHeaders.append('Content-Type', 'application/json; charset=utf-8');
 
     //this.httpHeaders = this.httpHeaders.append('X-Tadbir-AuthTicket', this.Ticket);

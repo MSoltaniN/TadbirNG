@@ -11,6 +11,7 @@ import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
 import { String } from '../../class/source';
 import { BranchApi, LookupApi } from '../../service/api/index';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -150,8 +151,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   }
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, Entities.Account, ViewName.Account);
+    public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Account, ViewName.Account);
   }
 
   getAccountGroups() {

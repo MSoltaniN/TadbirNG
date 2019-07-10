@@ -1,9 +1,11 @@
 import { PermissionBrief } from "../model/index";
+import { BrowserStorageService } from "../service/browserStorage.service";
+import { Inject } from "@angular/core";
 
 
 export class EnviromentComponent {
 
-  constructor() {
+  constructor(@Inject(BrowserStorageService) public bStorageService: BrowserStorageService) {
 
   }
 
@@ -13,9 +15,9 @@ export class EnviromentComponent {
 
     var lang: string = "fa";
 
-    if (localStorage.getItem('lang') != null) {
+    if (this.bStorageService.getLanguage() != null) {
       var item: string | null;
-      item = localStorage.getItem('lang');
+      item = this.bStorageService.getLanguage();
 
       if (item)
         lang = item;
@@ -27,164 +29,46 @@ export class EnviromentComponent {
 
 
   public get FiscalPeriodId(): number {
-
-    var fpId = 0;
-
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      fpId = currentContext ? parseInt(currentContext.fpId) : 0;
-
-    }
-    else if (sessionStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      fpId = currentContext ? parseInt(currentContext.fpId) : 0;
-
-    }
-
-    return fpId;
+    var currentContext = this.bStorageService.getCurrentUser();
+    return currentContext ? currentContext.fpId : 0;
   }
 
   public get BranchId(): number {
-
-    var branchId = 0;
-
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      branchId = currentContext ? parseInt(currentContext.branchId) : 0;
-
-    }
-    else if (sessionStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      branchId = currentContext ? parseInt(currentContext.branchId) : 0;
-
-    }
-    return branchId;
+    var currentContext = this.bStorageService.getCurrentUser();
+    return currentContext ? currentContext.branchId : 0;;
   }
 
   public get CompanyId(): number {
-
-    var companyId = 0;
-
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      companyId = currentContext ? parseInt(currentContext.companyId) : 0;
-
-    }
-    else if (sessionStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      companyId = currentContext ? parseInt(currentContext.companyId) : 0;
-
-    }
-
-    return companyId;
+    var currentContext = this.bStorageService.getCurrentUser();
+    return currentContext ? currentContext.companyId : 0;;
   }
 
   public get Ticket(): string {
-
-    var ticket = '';
-
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      ticket = currentContext ? currentContext.ticket.toString() : '';
-
-    }
-    else if (sessionStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      ticket = currentContext ? currentContext.ticket.toString() : '';
-
-    }
-    return ticket;
+    var currentContext = this.bStorageService.getCurrentUser();
+    return currentContext ? currentContext.ticket : '';
   }
 
   public get UserId(): number {
-
+    var currentContext = this.bStorageService.getCurrentUser();
     var userId = 0;
 
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
+    if (currentContext) {
       var jsonContext = atob(currentContext.ticket);
       var context = JSON.parse(jsonContext);
-
       userId = currentContext ? parseInt(context.user.id) : 0;
-
     }
-    else if (sessionStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      var jsonContext = atob(currentContext.ticket);
-      var context = JSON.parse(jsonContext);
-
-      userId = currentContext ? parseInt(context.user.id) : 0;
-
-    }
-
     return userId;
   }
 
   public get UserName(): string {
-
-    var userName = '';
-
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      userName = currentContext ? currentContext.userName.toString() : '';
-
-    }
-    else if (sessionStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      userName = currentContext ? currentContext.userName.toString() : '';
-
-    }
-    return userName;
+    var currentContext = this.bStorageService.getCurrentUser();
+    return currentContext ? currentContext.userName : '';
   }
 
   public get Permissions(): Array<PermissionBrief> {
     let permission: Array<PermissionBrief> = [];
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-      permission = currentContext.permissions;
-    }
-    else if (sessionStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
+    var currentContext = this.bStorageService.getCurrentUser();
+    if (currentContext) {
       permission = currentContext.permissions;
     }
     return permission;
@@ -192,44 +76,22 @@ export class EnviromentComponent {
 
   public get FiscalPeriodStartDate(): Date {
     var startDate = undefined;
+    var item = this.bStorageService.getFiscalPeriod();
 
-    if (localStorage.getItem('fiscalPeriod') != null) {
-      var item: string | null;
-      item = localStorage.getItem('fiscalPeriod');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      startDate = currentContext ? currentContext.startDate : undefined;
-
-    }
-    else if (sessionStorage.getItem('fiscalPeriod') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('fiscalPeriod');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      startDate = currentContext ? currentContext.startDate : undefined;
-
+    if (item) {
+      var fp = JSON.parse(item != null ? item.toString() : "");
+      startDate = fp ? fp.startDate : undefined;
     }
     return startDate;
   }
 
   public get FiscalPeriodEndDate(): Date {
     var endDate = undefined;
+    var item = this.bStorageService.getFiscalPeriod();
 
-    if (localStorage.getItem('fiscalPeriod') != null) {
-      var item: string | null;
-      item = localStorage.getItem('fiscalPeriod');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      endDate = currentContext ? currentContext.endDate : undefined;
-
-    }
-    else if (sessionStorage.getItem('fiscalPeriod') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('fiscalPeriod');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-      endDate = currentContext ? currentContext.endDate : undefined;
-
+    if (item) {
+      var fp = JSON.parse(item != null ? item.toString() : "");
+      endDate = fp ? fp.endDate : undefined;
     }
     return endDate;
   }

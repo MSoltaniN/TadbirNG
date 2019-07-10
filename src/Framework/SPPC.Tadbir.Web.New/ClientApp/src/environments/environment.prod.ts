@@ -86,21 +86,21 @@ export const ColumnVisibility =
 }
 
 
-export const SessionKeys = {
-  Menu: 'menu',
-  Profile: 'profile',
-  Setting: 'setting',
-  LastUserBranch: 'lastUserBranch',
-  LastUserFpId: 'lastUserFpId',
-  CurrentRoute: 'currentRoute',
-  CurrentSkin: 'currentSkin',
-  NumberConfige: 'numberConfig',
-  DateRangeConfig: 'DateRangeConfig',
-  DateRangeSelected: 'DateRangeSelected',
-  MetadataKey: 'metadata_view_{0}_{1}',
-  QuickSearchConfig: 'QuickSearchConfig',
-  SelectForm: 'SelectForm'
-}
+//export const SessionKeys = {
+//  Menu: 'menu',
+//  Profile: 'profile',
+//  Setting: 'setting',
+//  LastUserBranch: 'lastUserBranch',
+//  LastUserFpId: 'lastUserFpId',
+//  CurrentRoute: 'currentRoute',
+//  CurrentSkin: 'currentSkin',
+//  NumberConfige: 'numberConfig',
+//  DateRangeConfig: 'DateRangeConfig',
+//  DateRangeSelected: 'DateRangeSelected',
+//  MetadataKey: 'metadata_view_{0}_{1}',
+//  QuickSearchConfig: 'QuickSearchConfig',
+//  SelectForm: 'SelectForm'
+//}
 
 
 

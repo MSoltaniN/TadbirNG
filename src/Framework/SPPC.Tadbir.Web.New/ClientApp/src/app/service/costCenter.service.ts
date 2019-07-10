@@ -1,9 +1,8 @@
-﻿import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Injectable } from '@angular/core';
 import { BaseService } from '../class/base.service';
-
 import { CostCenter } from '../model/index';
 import { HttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 
 export class CostCenterInfo implements CostCenter {
@@ -24,8 +23,8 @@ export class CostCenterInfo implements CostCenter {
 @Injectable()
 export class CostCenterService extends BaseService {
 
-    constructor(public http: HttpClient) {
-        super(http);
-    }
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
+  }
 
 }

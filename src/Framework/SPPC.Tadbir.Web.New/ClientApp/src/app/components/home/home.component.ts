@@ -9,6 +9,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '@progress/kendo-angular-dialog';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -47,9 +48,9 @@ export class HomeComponent extends DefaultComponent implements OnInit {
   returnUrl: string;
 
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute, public router: Router,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute, public router: Router, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, private dialogService: DialogService) {
-    super(toastrService, translate, renderer, metadata, settingService, '', undefined);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
   }
 
   ngOnInit() {

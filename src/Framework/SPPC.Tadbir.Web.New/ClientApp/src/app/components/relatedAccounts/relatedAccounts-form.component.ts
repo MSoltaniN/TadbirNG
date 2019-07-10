@@ -9,6 +9,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -122,8 +123,8 @@ export class RelatedAccountsFormComponent extends DetailComponent implements OnI
   }
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, Entities.Account, ViewName.Account);
+    public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Account, ViewName.Account);
   }
 
   getAccountGroups() {

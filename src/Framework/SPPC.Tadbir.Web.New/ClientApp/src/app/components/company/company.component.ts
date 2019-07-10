@@ -18,6 +18,7 @@ import { SecureEntity } from '../../security/secureEntity';
 import { CompanyPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -167,9 +168,9 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
   //#region Constructor
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
     private companyService: CompanyService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Company, ViewName.Company);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Company, ViewName.Company);
   }
 
   //#endregion

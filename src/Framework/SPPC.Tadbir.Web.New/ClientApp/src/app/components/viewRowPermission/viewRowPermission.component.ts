@@ -3,15 +3,14 @@ import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
-import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { ViewRowPermissionService, ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, SettingService } from '../../service/index';
 import { LookupApi, RoleApi } from '../../service/api/index';
 import { PermissionType } from '../../enum/permissionType';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -37,12 +36,6 @@ export function getLayoutModule(layout: Layout) {
 })
 
 export class ViewRowPermissionComponent extends DefaultComponent implements OnInit {
-  public filterChange(filter: CompositeFilterDescriptor): void {
-    throw new Error("Method not implemented.");
-  }
-  public reloadGrid(insertedModel?: any): void {
-    throw new Error("Method not implemented.");
-  }
 
   public isActiveSingleForm: boolean = false;
   public isActiveMultipleForm: boolean = false;
@@ -79,8 +72,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private viewRowPermissionService: ViewRowPermissionService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.ViewRowPermission, undefined);
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.ViewRowPermission, undefined);
 
     this.getRoles();
 

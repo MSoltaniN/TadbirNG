@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseService } from "../class/base.service";
-import { Http, Response } from "@angular/http";
+import { Response } from "@angular/http";
 import { ListFormViewConfig } from "../model/listFormViewConfig";
 import { ColumnViewConfig } from "../model/columnViewConfig";
 import { SettingsApi } from "./api/settingsApi";
@@ -8,13 +8,12 @@ import { String } from '../class/source';
 import { SettingBrief } from "../model/settingBrief";
 import { ColumnViewDeviceConfig } from "../model/columnViewDeviceConfig";
 import { HttpClient } from "@angular/common/http";
-import { ColumnVisibility, SessionKeys } from "../../environments/environment";
+import { ColumnVisibility } from "../../environments/environment";
 import { ViewTreeConfig, ViewTreeLevelConfig, NumberConfig, QuickSearchConfig, QuickSearchColumnConfig } from "../model/index";
 import { Observable } from "rxjs/Observable";
 import { SettingKey } from "../enum/settingsKey";
-import { Config } from "protractor";
-import { async } from "q";
 import { DateRangeType } from "../enum/dateRangeType";
+import { BrowserStorageService } from "./browserStorage.service";
 
 
 export class SettingBriefInfo implements SettingBrief {
@@ -98,8 +97,8 @@ export class QuickSearchColumnConfigInfo implements QuickSearchColumnConfig {
 @Injectable()
 export class SettingService extends BaseService {
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
   public getSettingsCategories(apiUrl: string) {
@@ -173,17 +172,14 @@ export class SettingService extends BaseService {
   }
 
   async getQuickSearchSettingsByUserAndViewAsync(userId: number, viewId: number): Promise<QuickSearchConfig> {
-    var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
-
-    var qsSetting = localStorage.getItem(sessionKey);
+    var qsSetting = this.bStorageService.getQuickSearchConfig(viewId, userId);
     if (qsSetting) {
       return JSON.parse(qsSetting);
     }
     else {
-      var url = String.Format(SettingsApi.QuickSearchSettingsByUserAndView, userId, viewId);
       const response = await this.getQuickSearchSettingsByUserAndView(userId, viewId).toPromise();
       if (response) {
-        localStorage.setItem(sessionKey, JSON.stringify(response));
+        this.bStorageService.setQuickSearchConfig(viewId, userId,response)
         return response;
       }
     }
@@ -192,17 +188,11 @@ export class SettingService extends BaseService {
   }
 
   setLocalQuickSearchSettings(userId: number, viewId: number, setting: QuickSearchConfig) {
-    var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
-
-    var jsonSetting = JSON.stringify(setting);
-
-    localStorage.setItem(sessionKey, jsonSetting);
+    this.bStorageService.setQuickSearchConfig(viewId, userId, setting);
   }
 
   getLocalQuickSearchSettings(userId: number, viewId: number): QuickSearchConfig | null {
-    var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
-
-    var jsonSetting = localStorage.getItem(sessionKey);;
+    var jsonSetting = this.bStorageService.getQuickSearchConfig(viewId, userId);
     if (jsonSetting)
       return JSON.parse(jsonSetting);
 
@@ -213,7 +203,7 @@ export class SettingService extends BaseService {
 
   public getSettingByViewId(viewId: number): ListFormViewConfig | null {
 
-    var settingsJson = localStorage.getItem(SessionKeys.Setting + this.UserId);
+    var settingsJson = this.bStorageService.getUserSettings(this.UserId);
     if (settingsJson) {
       var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
 
@@ -229,7 +219,7 @@ export class SettingService extends BaseService {
 
     //var storageId: string = this.grid.wrapper.nativeElement.id + this.defaultComponent.UserId;
 
-    var settingsJson = localStorage.getItem(SessionKeys.Setting + this.UserId);
+    var settingsJson = this.bStorageService.getUserSettings(this.UserId);
     if (settingsJson) {
       var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
 
@@ -241,9 +231,7 @@ export class SettingService extends BaseService {
       else
         settings.push(currentSetting);
 
-      var jsonSetting = JSON.stringify(settings);
-
-      localStorage.setItem(SessionKeys.Setting + this.UserId, jsonSetting);
+      this.bStorageService.setUserSetting(settings, this.UserId);
     }
   }
 
@@ -305,18 +293,17 @@ export class SettingService extends BaseService {
 
   async getNumberConfigBySettingIdAsync(): Promise<NumberConfig> {
     let config: NumberConfig;
-    if (localStorage.getItem(SessionKeys.NumberConfige) != null) {
-      var numConfig = localStorage.getItem(SessionKeys.NumberConfige);
-      if (numConfig) {
+
+    var numConfig = this.bStorageService.getNumberConfig();
+    if (numConfig) {
         config = JSON.parse(numConfig);
         return config;
-      }
     }
     else {
       const response = await this.getSettingById(SettingKey.NumberDisplayConfig).toPromise();
       if (response) {
         var res = response.values;
-        localStorage.setItem(SessionKeys.NumberConfige, JSON.stringify(response.values));
+        this.bStorageService.setNumberConfig(res);
         return res;
       }
     }
@@ -341,15 +328,17 @@ export class SettingService extends BaseService {
     let fromDate: Date;
     let toDate: Date;
 
-    if (localStorage.getItem(SessionKeys.DateRangeConfig) != null) {
-      var range = JSON.parse(localStorage.getItem(SessionKeys.DateRangeConfig));
+    var dateRangeConfig = this.bStorageService.getdateRangeConfig();
+
+    if (dateRangeConfig) {
+      var range = JSON.parse(dateRangeConfig);
       dateRange = range ? range.defaultDateRange : DateRangeType.CurrentToCurrent;
     }
     else {
       const response = await this.getSettingById(SettingKey.DateRangeConfig).toPromise();
       if (response) {
         var res = response.values;
-        localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(response.values));
+        this.bStorageService.setDateRangeConfig(res);
         dateRange = res.defaultDateRange;
       }
     }

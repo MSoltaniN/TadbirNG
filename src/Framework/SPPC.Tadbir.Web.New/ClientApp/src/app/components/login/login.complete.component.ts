@@ -5,14 +5,14 @@ import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { Renderer2 } from '@angular/core';
 import { ContextInfo } from "../../service/login/authentication.service";
-import { MessageType, Layout, MessagePosition, SessionKeys } from "../../../environments/environment";
+import { MessageType, Layout, MessagePosition} from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService, SettingService } from '../../service/index';
 import { Command } from '../../model/command';
 import { ListFormViewConfig } from '../../model/listFormViewConfig';
-import { SettingKey } from '../../enum/settingsKey';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -70,8 +70,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     public renderer: Renderer2,
     public metadata: MetaDataService,
     public userService: UserService,
-    public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, '', undefined);
+    public settingService: SettingService,
+    public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
 
   }
 
@@ -80,7 +81,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   //#region Events
 
   ngOnInit() {
-    this.currentRoute = sessionStorage.getItem(SessionKeys.CurrentRoute);
+    debugger;
+    this.currentRoute = this.bStorageService.getCurrentRoute();
     this.disabledCompany = true;
     this.getCompany();
 
@@ -117,8 +119,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.getBranch(value);
     this.getFiscalPeriod(value);
 
-    var lastBranchId = localStorage.getItem(SessionKeys.LastUserBranch + this.UserId + this.companyId);
-    var lastFpId = localStorage.getItem(SessionKeys.LastUserFpId + this.UserId + this.companyId);
+    var lastBranchId = this.bStorageService.getLastUserBranch(this.UserId, this.companyId);
+    var lastFpId = this.bStorageService.getLastUserFpId(this.UserId, this.companyId);
 
     if (lastBranchId)
       this.branchId = lastBranchId;
@@ -199,7 +201,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   onCancleClick() {
     if (this.authenticationService.islogin()) {
-      var currentUser = this.authenticationService.getCurrentUser();
+      var currentUser = this.bStorageService.getCurrentUser();
       if (currentUser != null) {
         this.companyId = currentUser.companyId.toString();
         this.branchId = currentUser.branchId.toString();
@@ -212,27 +214,15 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
 
   loadAllSetting() {
-    if (this.version != localStorage.getItem("app-version")) {
-      localStorage.removeItem(SessionKeys.Setting + this.UserId);
-
-      var n = localStorage.length;
-      while (n--) {
-        var key = localStorage.key(n);
-        if (/metadata_view/.test(key)) {
-          localStorage.removeItem(key);
-        }
-      }
-      localStorage.setItem("app-version", this.version);
-    }
-
+    this.bStorageService.checkVersion(this.version, this.UserId);
 
     this.settingService.getListSettingsByUser(this.UserId).subscribe((res: Array<ListFormViewConfig>) => {
 
       if (res)
-        localStorage.setItem(SessionKeys.Setting + this.UserId, JSON.stringify(res));
+        this.bStorageService.setUserSetting(res, this.UserId);
     });
 
-      sessionStorage.removeItem(SessionKeys.DateRangeSelected);
+    this.bStorageService.removeSelectedDateRange();
   }
 
 
@@ -243,32 +233,26 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     var commands: any;
 
     this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
-      if (this.authenticationService.isRememberMe())
-        localStorage.setItem('fiscalPeriod', JSON.stringify(res));
-      else
-        sessionStorage.setItem('fiscalPeriod', JSON.stringify(res));
+
+      this.bStorageService.setFiscalPeriod(res);
+
     })
 
     this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
       var list: Array<Command> = res;
 
-      if (this.authenticationService.isRememberMe()) {
-        localStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
-        localStorage.setItem('currentContext', JSON.stringify(currentUser));
-      }
-      else {
-        sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
-        sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
-      }
+      this.bStorageService.setCurrentContext(currentUser);
+      this.bStorageService.setMenu(res);
+
 
       if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
         var url = this.route.snapshot.queryParams['returnUrl'];
         this.router.navigate([url]);
       }
       else {
-        var currentRoute = sessionStorage.getItem(SessionKeys.CurrentRoute);
+        var currentRoute = this.bStorageService.getCurrentRoute();
         if (currentRoute) {
-          sessionStorage.removeItem(SessionKeys.CurrentRoute);
+          this.bStorageService.removeCurrentRoute();
           this.router.navigate([currentRoute]);
         }
         else {
@@ -281,12 +265,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
       var list: Array<Command> = res;
 
-      if (this.authenticationService.isRememberMe()) {
-        localStorage.setItem(SessionKeys.Profile, JSON.stringify(res));
-      }
-      else {
-        sessionStorage.setItem(SessionKeys.Profile, JSON.stringify(res));
-      }
+      this.bStorageService.setProfile(res);
 
     });
 
@@ -313,7 +292,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         let newTicket = res.headers.get('X-Tadbir-AuthTicket');
         let contextInfo = <ContextInfo>res.body;
 
-        var currentUser = this.authenticationService.getCurrentUser();
+        var currentUser = this.bStorageService.getCurrentUser();
         if (currentUser != null) {
 
           currentUser.branchId = parseInt(this.branchId);
@@ -325,13 +304,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           currentUser.companyName = contextInfo.companyName;
           currentUser.ticket = newTicket;
 
-          if (this.authenticationService.isRememberMe())
-            localStorage.setItem('currentContext', JSON.stringify(currentUser));
-          else
-            sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
-
-          localStorage.setItem(SessionKeys.LastUserBranch + this.UserId + this.companyId, this.branchId);
-          localStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
+          this.bStorageService.setCurrentContext(currentUser);
+          this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.companyId, this.branchId, this.fiscalPeriodId);
 
           this.loadMenuAndRoute(currentUser);
 

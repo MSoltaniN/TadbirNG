@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators/map';
 import { AccountItemRelations, AccountItemBrief } from '../model/index';
-import { Filter } from '../class/filter';
 import { FilterExpression } from '../class/filterExpression';
 import { HttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 
 
@@ -29,8 +29,9 @@ export class AccountItemBriefInfo implements AccountItemBrief {
 
 @Injectable()
 export class AccountRelationsService extends BaseService {
-  constructor(public http: HttpClient) {
-    super(http);
+
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
   public getChildrens(apiUrl: string) {

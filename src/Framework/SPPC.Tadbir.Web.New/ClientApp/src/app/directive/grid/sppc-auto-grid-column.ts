@@ -1,13 +1,13 @@
 
-import { Directive, Host, Input, ElementRef, Renderer2 } from "@angular/core";
+import { Directive, Host, Input } from "@angular/core";
 import { ColumnComponent } from "@progress/kendo-angular-grid";
-import { TranslateService } from '@ngx-translate/core';
 import { DefaultComponent } from "../../class/default.component";
 import { String } from '../../class/source';
 import { GridFilterComponent } from "./component/grid-filter.component";
 import { ColumnViewConfig } from "../../model/columnViewConfig";
 import { EnviromentComponent } from "../../class/enviroment.component";
 import { ColumnViewDeviceConfig } from "../../model/columnViewDeviceConfig";
+import { BrowserStorageService } from "../../service/browserStorage.service";
 
 
 @Directive({
@@ -17,8 +17,8 @@ import { ColumnViewDeviceConfig } from "../../model/columnViewDeviceConfig";
 
 export class SppcAutoGridColumn extends EnviromentComponent {
 
-  constructor(@Host() private hostColumn: ColumnComponent) {
-    super();
+  constructor(@Host() private hostColumn: ColumnComponent, public bStorageService: BrowserStorageService) {
+    super(bStorageService);
   }
 
 

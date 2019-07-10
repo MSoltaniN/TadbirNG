@@ -20,6 +20,7 @@ import { BranchPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -253,10 +254,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
   //#region Constructor
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
     private branchService: BranchService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
     @SkipSelf() @Host() @Optional() private parentComponent: BranchComponent) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Branch, ViewName.Branch);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Branch, ViewName.Branch);
   }
 
   //#endregion

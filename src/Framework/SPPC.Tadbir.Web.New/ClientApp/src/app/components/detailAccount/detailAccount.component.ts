@@ -1,9 +1,9 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
+import { Component, Renderer2 } from '@angular/core';
+import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService, GridService, DetailAccountInfo } from '../../service';
+import { SettingService, GridService } from '../../service';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailAccountApi } from '../../service/api';
 import { DetailAccount } from '../../model';
@@ -12,6 +12,7 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { ViewName } from '../../security/viewName';
 import { GridExplorerComponent } from '../../class/gridExplorer.component';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -34,11 +35,11 @@ export class DetailAccountComponent extends GridExplorerComponent<DetailAccount>
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.DetailAccount,
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.DetailAccount,
       "DetailAccount.LedgerDetailAccount", "DetailAccount.EditorTitleNew", "DetailAccount.EditorTitleEdit",
       DetailAccountApi.EnvironmentDetailAccounts, DetailAccountApi.EnvironmentDetailAccountsLedger, DetailAccountApi.DetailAccount, DetailAccountApi.DetailAccountChildren,
-      DetailAccountApi.EnvironmentNewChildDetailAccount,ViewName.DetailAccount)
+      DetailAccountApi.EnvironmentNewChildDetailAccount, ViewName.DetailAccount)
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */

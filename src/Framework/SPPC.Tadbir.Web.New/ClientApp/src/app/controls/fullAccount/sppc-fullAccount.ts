@@ -10,6 +10,7 @@ import { AccountRelationApi } from '../../service/api/index';
 import { AccountItemBrief, FullAccount } from '../../model/index';
 import { String } from '../../class/source'
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -74,8 +75,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   //#endregion
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-    public controlContainer: ControlContainer, private fullAccountService: FullAccountService, private dialogService: DialogService) {
-    super(toastrService, translate, renderer, metadata, '', undefined);
+    public controlContainer: ControlContainer, private fullAccountService: FullAccountService, private dialogService: DialogService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, '', undefined);
 
   }
 

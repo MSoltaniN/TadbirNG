@@ -12,6 +12,7 @@ import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
 import { Filter } from '../../class/filter';
 import { DetailComponent } from '../../class/detail.component';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -113,8 +114,8 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-    public viewRowPermissionService: ViewRowPermissionService, public sppcLoading: SppcLoadingService) {
-    super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, undefined);
+    public viewRowPermissionService: ViewRowPermissionService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.ViewRowPermission, undefined);
   }
 
   getFetchUrl() {

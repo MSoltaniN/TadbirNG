@@ -11,7 +11,7 @@ import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
 import { ViewTreeConfig } from '../model/index';
 import { SettingService } from '../service/index';
-import { SessionKeys } from '../../environments/environment';
+import { BrowserStorageService, SessionKeys } from '../service/browserStorage.service';
 
 
 @Injectable()
@@ -25,10 +25,10 @@ export class DefaultComponent extends BaseComponent {
   /** array of property.this variable is a container for metadata */
   public properties: Map<string, Array<Property>>;
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService
-    , public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
+    public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService,
     @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number) {
-    super(toastrService);   
+    super(toastrService, bStorageService);   
 
     this.setLanguageSetting();
 
@@ -36,7 +36,7 @@ export class DefaultComponent extends BaseComponent {
 
     this.localizeMsg(this.entityType);
 
-    var propertiesValue = localStorage.getItem(this.metadataKey)
+    var propertiesValue = this.bStorageService.getMetadata(this.metadataKey);
     this.properties = new Map<string, Array<Property>>();
     if (!propertiesValue) {
       //this.properties = new Map<string, Array<Property>>();
@@ -53,7 +53,7 @@ export class DefaultComponent extends BaseComponent {
     //use lang
     this.translate.addLangs(["en", "fa"]);
 
-    var lang = localStorage.getItem('lang');
+    var lang = this.bStorageService.getLanguage();
     if (lang) {
       this.currentlang = lang;
     }
@@ -98,43 +98,28 @@ export class DefaultComponent extends BaseComponent {
   public getMeta(name: string): Property | undefined {
 
     if (this.viewId) {
+      var item: string | null;
+      item = this.bStorageService.getMetadata(this.metadataKey);
 
-      if (!localStorage.getItem(this.metadataKey)) {
+      if (!item) {
         this.metadataService.getMetaDataById(this.viewId).finally(() => {
-
           if (!this.properties.get(this.metadataKey)) return undefined;
-
           var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-
           return result;
-
         }).subscribe((res1: any) => {
-
           this.properties.set(this.metadataKey, res1.columns);
-
-          localStorage.setItem(this.metadataKey, JSON.stringify(res1.columns))
-
+          this.bStorageService.setMetadata(this.metadataKey, res1.columns);
           var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-
           return result;
         });
       }
       else {
-
-
-        var item: string | null;
-        item = localStorage.getItem(this.metadataKey);
-
         if (!this.properties) this.properties = new Map<string, Array<Property>>();
         var arr = JSON.parse(item != null ? item.toString() : "");
         this.properties.set(this.metadataKey, arr);
-
         if (!this.properties.get(this.metadataKey)) return undefined;
-
         var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-
         return result;
-
       }
 
     }
@@ -144,21 +129,24 @@ export class DefaultComponent extends BaseComponent {
 
     var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
     if (viewId) {
-      if (!localStorage.getItem(metaDataName)) {
+
+      var item: string | null;
+      item = this.bStorageService.getMetadata(metaDataName);
+
+      if (!item) {
         this.metadataService.getMetaDataById(viewId).finally(() => {
           if (!this.properties.get(metaDataName)) return undefined;
           var result = this.properties.get(metaDataName);
           return result;
         }).subscribe((res1: any) => {
           this.properties.set(metaDataName, res1.columns);
-          localStorage.setItem(metaDataName, JSON.stringify(res1.columns))
+          this.bStorageService.setMetadata(metaDataName, res1.columns);
           var result = this.properties.get(metaDataName);
           return result;
         });
       }
       else {
-        var item: string | null;
-        item = localStorage.getItem(metaDataName);
+        
         if (!this.properties) this.properties = new Map<string, Array<Property>>();
         var arr = JSON.parse(item != null ? item.toString() : "");
         this.properties.set(metaDataName, arr);
@@ -174,17 +162,17 @@ export class DefaultComponent extends BaseComponent {
     var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
 
     if (viewId) {
-      if (!localStorage.getItem(metaDataName )) {
+      var item: string | null;
+      item = this.bStorageService.getMetadata(metaDataName);
+      if (!item) {
         const response = await this.metadataService.getMetaDataById(viewId).toPromise();
         let res: any = response;
         this.properties.set(metaDataName, res.columns);
-        localStorage.setItem(metaDataName, JSON.stringify(res.columns))
+        this.bStorageService.setMetadata(metaDataName, res.columns);
         var result = this.properties.get(metaDataName);
         return result;
       }
-      else {
-        var item: string | null;
-        item = localStorage.getItem(metaDataName);
+      else {       
         if (!this.properties) this.properties = new Map<string, Array<Property>>();
         var arr = JSON.parse(item != null ? item.toString() : "");
         this.properties.set(metaDataName, arr);
@@ -199,7 +187,7 @@ export class DefaultComponent extends BaseComponent {
   public getViewTreeSettings(viewId: number): ViewTreeConfig {
 
     let treeConfig: Array<{ name: string, viewTree: any }> = [];
-    treeConfig = JSON.parse(localStorage.getItem("viewTreeConfig"));
+    treeConfig = JSON.parse(this.bStorageService.getViewTreeConfig());
     var viewName = "view-" + viewId;
 
     if (treeConfig == undefined || treeConfig.length == 0) {
@@ -207,7 +195,7 @@ export class DefaultComponent extends BaseComponent {
       this.settingService.getViewTreeSettings(viewId).subscribe(res => {
         let result: any = res;
         treeConfig.push({ name: viewName, viewTree: result.current });
-        localStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
+        this.bStorageService.setViewTreeConfig(treeConfig);
         return JSON.parse(JSON.stringify(result.current));
       })
     }
@@ -220,7 +208,7 @@ export class DefaultComponent extends BaseComponent {
         this.settingService.getViewTreeSettings(viewId).subscribe(res => {
           let result: any = res;
           treeConfig.push({ name: viewName, viewTree: result.current });
-          localStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
+          this.bStorageService.setViewTreeConfig(treeConfig);
           return JSON.parse(JSON.stringify(result.current));
         })
       }
@@ -431,7 +419,7 @@ export class DefaultComponent extends BaseComponent {
     this.translateService.use(value);
 
     this.currentlang = value;
-    localStorage.setItem('lang', value);
+    this.bStorageService.setLanguage(value);
 
     this.localizeMsg(this.entityType);
 

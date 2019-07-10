@@ -15,6 +15,7 @@ import { CostCenterFormComponent } from './costCenter-form.component';
 import { GridComponent } from '@progress/kendo-angular-grid';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -40,8 +41,8 @@ export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.CostCenter,
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService,bStorageService, Entities.CostCenter,
       "CostCenter.LedgerCostCenter", "CostCenter.EditorTitleNew", "CostCenter.EditorTitleEdit",
       CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren, CostCenterApi.EnvironmentNewChildCostCenter,
       ViewName.CostCenter)

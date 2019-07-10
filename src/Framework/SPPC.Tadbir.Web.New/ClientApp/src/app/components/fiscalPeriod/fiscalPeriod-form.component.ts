@@ -8,6 +8,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -111,11 +112,10 @@ export class FiscalPeriodFormComponent extends DetailComponent {
   }
   //Events
 
-  constructor(private fiscalPeriodService: FiscalPeriodService,
-    public toastrService: ToastrService, public translate: TranslateService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.FiscalPeriod, ViewName.FiscalPeriod);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.FiscalPeriod, ViewName.FiscalPeriod);
 
   }
 

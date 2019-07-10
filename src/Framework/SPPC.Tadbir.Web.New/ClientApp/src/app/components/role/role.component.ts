@@ -17,6 +17,7 @@ import { SecureEntity } from '../../security/secureEntity';
 import { RolePermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -202,9 +203,9 @@ export class RoleComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
     public roleService: RoleService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Role, ViewName.Role);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Role, ViewName.Role);
   }
   //#endregion
 
