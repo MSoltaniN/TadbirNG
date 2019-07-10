@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { BaseService } from '../class/base.service';
-
-import { Voucher, DocumentAction } from '../model/index';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Voucher } from '../model/index';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
+import { BrowserStorageService } from './browserStorage.service';
 
 
 export class VoucherInfo implements Voucher {
@@ -37,8 +36,9 @@ export class VoucherInfo implements Voucher {
 
 @Injectable()
 export class VoucherService extends BaseService {
-  constructor(public http: HttpClient) {
-    super(http);
+
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
 

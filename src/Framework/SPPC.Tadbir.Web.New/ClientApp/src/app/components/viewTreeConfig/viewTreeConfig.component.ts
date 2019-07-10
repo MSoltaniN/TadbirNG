@@ -14,6 +14,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { SettingsApi, LookupApi } from '../../service/api/index';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -93,8 +94,8 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private formBuilder: FormBuilder,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Setting, undefined);
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Setting, undefined);
 
   }
 

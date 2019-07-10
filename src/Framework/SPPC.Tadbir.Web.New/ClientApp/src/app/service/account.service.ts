@@ -5,6 +5,7 @@ import { Account } from '../model/index';
 import { String } from '../class/source';
 import { AccountApi } from './api/accountApi';
 import { HttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 export class AccountInfo implements Account {
   currencyId: number = 1;
@@ -35,8 +36,8 @@ export class AccountInfo implements Account {
 @Injectable()
 export class AccountService extends BaseService {
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
 

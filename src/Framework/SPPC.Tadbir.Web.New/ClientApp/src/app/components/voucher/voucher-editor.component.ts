@@ -17,6 +17,7 @@ import { Item } from '../../model/item';
 import { LookupApi } from '../../service/api/index';
 import { ViewName } from '../../security/viewName';
 import { VoucherOperations } from '../../enum/voucherOperations';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -104,9 +105,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   voucherOperationsItem: any;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
-    public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
+    public bStorageService: BrowserStorageService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.Voucher, ViewName.Voucher);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Voucher, ViewName.Voucher);
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }

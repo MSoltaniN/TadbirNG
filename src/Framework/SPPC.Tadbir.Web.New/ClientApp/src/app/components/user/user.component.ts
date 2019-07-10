@@ -18,6 +18,7 @@ import { SecureEntity } from '../../security/secureEntity';
 import { UserPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -182,9 +183,9 @@ export class UserComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
     private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.User, ViewName.User);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.User, ViewName.User);
   }
   //#endregion
 

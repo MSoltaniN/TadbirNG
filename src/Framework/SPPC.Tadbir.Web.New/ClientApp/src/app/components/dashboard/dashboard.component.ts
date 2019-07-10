@@ -1,21 +1,17 @@
-import { Component, Inject, OnInit, Renderer2,AfterViewInit } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { Context } from '../../model/context';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT } from '@angular/platform-browser';
 import { AuthenticationService } from '../../service/login/index';
-
 import { ToastrService } from 'ngx-toastr';
-
 import { TranslateService } from '@ngx-translate/core';
-
-import { SessionKeys } from '../../../environments/environment.prod';
 import { DefaultComponent } from '../../class/default.component';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SettingService,DashboardService } from '../../service/index';
-import { Chart, ChartData, Point } from "chart.js";
+import { SettingService, DashboardService } from '../../service/index';
+import { Chart } from "chart.js";
 import { DashboardSummaries } from '../../model/dashboardSummaries';
-import { tick } from '@angular/core/testing';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 @Component({
@@ -45,46 +41,40 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   public branches: any = {};
 
   public fiscalPeriods: any = {};
-  
+
   public dashboardInfo: DashboardSummaries;
 
-  public cashierBalance:any;
-  public bankBalance:any;
-  public liquidRatio:any;
-  public unbalancedVoucherCount:any;
+  public cashierBalance: any;
+  public bankBalance: any;
+  public liquidRatio: any;
+  public unbalancedVoucherCount: any;
   // public netSales:any;
   // public grossSales:any;
 
-  constructor(public router: Router,location: Location,
+  constructor(public router: Router, location: Location,
     private route: ActivatedRoute,
     public authenticationService: AuthenticationService,
     public toastrService: ToastrService,
-    public translate: TranslateService,    
+    public translate: TranslateService,
     public renderer: Renderer2,
     public metadata: MetaDataService,
     public settingService: SettingService,
+    public bStorageService: BrowserStorageService,
     @Inject(DOCUMENT) public document,
     public dashboadService: DashboardService) {
-    super(toastrService, translate, renderer, metadata, settingService, '', undefined);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
 
+    this.currentContext = this.bStorageService.getCurrentUser();
 
-      
+    var language = this.bStorageService.getLanguage();
+    if (language) {
+      this.lang = language;
+    }
+    else {
+      this.lang = "fa";
 
-      if (localStorage.getItem('currentContext') != null) {
-        var item: string | null;
-        item = localStorage.getItem('currentContext');
-        this.currentContext = JSON.parse(item != null ? item.toString() : "");
-      }
-  
-      var language = localStorage.getItem('lang');
-      if (language) {
-        this.lang = language;
-      }
-      else {
-        this.lang = "fa";
-  
-      }
-  
+    }
+
 
     //#region Hide navbar
     if (this.currentContext != undefined) {
@@ -93,20 +83,20 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
     Chart.defaults.global.defaultFontFamily = "'SPPC'";
 
-    this.dashboadService.getDashboardInfo().subscribe((res : DashboardSummaries) => {
-        
-        this.cashierBalance = res.cashierBalance;
-        this.bankBalance = res.bankBalance;
-        this.liquidRatio = res.liquidRatio;
-        this.unbalancedVoucherCount = res.unbalancedVoucherCount;
-        // this.grossSales = res.grossSales;
-        // this.netSales = res.netSales;
-        this.dashboardInfo = res;
+    this.dashboadService.getDashboardInfo().subscribe((res: DashboardSummaries) => {
 
-        this.drawNetSalesChart();
+      this.cashierBalance = res.cashierBalance;
+      this.bankBalance = res.bankBalance;
+      this.liquidRatio = res.liquidRatio;
+      this.unbalancedVoucherCount = res.unbalancedVoucherCount;
+      // this.grossSales = res.grossSales;
+      // this.netSales = res.netSales;
+      this.dashboardInfo = res;
 
-        this.drawGrossSalesChart();
-        
+      this.drawNetSalesChart();
+
+      this.drawGrossSalesChart();
+
     });
 
     //#endregion
@@ -130,7 +120,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         this.showNavbar = true;
 
         var spacePad = this.document.getElementById('spacePad')
-        var currentLang = localStorage.getItem('lang')
+        var currentLang = this.bStorageService.getLanguage();
         if (currentLang == 'fa' || currentLang == null) {
           if (spacePad) {
             spacePad.classList.add('pull-right');
@@ -156,44 +146,23 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         //set current route to session
         var currentUrl = location.path().toLowerCase();
         if (currentUrl != '/logout' && currentUrl != '/login')
-          sessionStorage.setItem(SessionKeys.CurrentRoute, currentUrl);
+          this.bStorageService.setCurrentRoute(currentUrl);
 
 
         var contextIsEmpty: boolean = true;
 
-        if (localStorage.getItem('currentContext') != null) {
-          var item: string | null;
-          item = localStorage.getItem('currentContext');
-          var currentContext = JSON.parse(item != null ? item.toString() : "");
+        var currentContext = this.bStorageService.getCurrentUser();
 
-          branchId = currentContext ? parseInt(currentContext.branchId) : 0;
-          companyId = currentContext ? parseInt(currentContext.companyId) : 0;
-          fpId = currentContext ? parseInt(currentContext.fpId) : 0;
-          ticket = currentContext ? currentContext.ticket : "";
-          this.userName = currentContext ? currentContext.userName.toString() : "";
-
-
-          contextIsEmpty = false;
-        }
-        else if (sessionStorage.getItem('currentContext') != null) {
-          var item: string | null;
-          item = sessionStorage.getItem('currentContext');
-          var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-          branchId = currentContext ? parseInt(currentContext.branchId) : 0;
-          companyId = currentContext ? parseInt(currentContext.companyId) : 0;
-          fpId = currentContext ? parseInt(currentContext.fpId) : 0;
-          ticket = currentContext ? currentContext.ticket.toString() : "";
-          this.userName = currentContext ? currentContext.userName.toString() : "";
-
-
+        if (currentContext) {
+          branchId = currentContext.branchId;
+          companyId = currentContext.companyId;
+          fpId = currentContext.fpId;
+          ticket = currentContext.ticket;
+          this.userName = currentContext.userName;
           contextIsEmpty = false;
         }
 
         if (!contextIsEmpty) {
-
-
-
           var fps = this.authenticationService.getFiscalPeriod(companyId, ticket);
           if (fps != null) {
             fps.subscribe(res => {
@@ -220,7 +189,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
         }
 
-        
+
 
         //#endregion
       }
@@ -234,134 +203,132 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   canvas: any;
   ctx: any;
 
-  drawNetSalesChart()
-  {
-    var labels : Array<string> = [];
-    var values : Array<number> = [];
+  drawNetSalesChart() {
+    var labels: Array<string> = [];
+    var values: Array<number> = [];
 
-     this.dashboardInfo.netSales.points.forEach(function(value){
-       labels.push(value.xValue);
-     })
-
-     this.dashboardInfo.netSales.points.forEach(function(value){
-       values.push(value.yValue);
+    this.dashboardInfo.netSales.points.forEach(function (value) {
+      labels.push(value.xValue);
     })
 
-    
+    this.dashboardInfo.netSales.points.forEach(function (value) {
+      values.push(value.yValue);
+    })
+
+
     this.canvas = document.getElementById('netChart');
     this.ctx = this.canvas.getContext('2d');
     let myChart = new Chart(this.ctx, {
       type: 'line',
 
       data: {
-          labels: labels,          
-          datasets: [{
-              fill:false,
-              label: this.dashboardInfo.netSales.title,              
-              data: values,
-               backgroundColor: [
-                   'rgba(255, 99, 132, 1)',
-                   'rgba(54, 162, 235, 1)',
-                   'rgba(255, 206, 86, 1)'
-               ],
-              borderWidth: 3              
-          }]
+        labels: labels,
+        datasets: [{
+          fill: false,
+          label: this.dashboardInfo.netSales.title,
+          data: values,
+          backgroundColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)'
+          ],
+          borderWidth: 3
+        }]
       },
       options: {
         responsive: true,
         scales: {
           yAxes: [
-              {
-                  ticks: {
-                      callback: function(label, index, labels) {
-                          return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
-                      },                      
-                  }    
+            {
+              ticks: {
+                callback: function (label, index, labels) {
+                  return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+                },
               }
-          ]
-      },
-      tooltips: {
-        mode: 'index',
-        intersect: false,
-        callbacks: {
-            label: function (t, d) {                
-                return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
             }
+          ]
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+          callbacks: {
+            label: function (t, d) {
+              return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+            }
+          }
         }
-      }     
       }
     });
-        
+
 
   }
 
-  drawGrossSalesChart()
-  {
-    var labels : Array<string> = [];
-    var values : Array<number> = [];
+  drawGrossSalesChart() {
+    var labels: Array<string> = [];
+    var values: Array<number> = [];
 
-     this.dashboardInfo.grossSales.points.forEach(function(value){
-       labels.push(value.xValue);
-     })
-
-     this.dashboardInfo.grossSales.points.forEach(function(value){
-       values.push(value.yValue);
+    this.dashboardInfo.grossSales.points.forEach(function (value) {
+      labels.push(value.xValue);
     })
-    
+
+    this.dashboardInfo.grossSales.points.forEach(function (value) {
+      values.push(value.yValue);
+    })
+
     this.canvas = document.getElementById('grossChart');
     this.ctx = this.canvas.getContext('2d');
     let myChart = new Chart(this.ctx, {
       type: 'bar',
       data: {
-          labels: labels,          
-          datasets: [{              
-              label: this.dashboardInfo.grossSales.title,
-              data: values,
-              borderWidth: 1
-          }]
+        labels: labels,
+        datasets: [{
+          label: this.dashboardInfo.grossSales.title,
+          data: values,
+          borderWidth: 1
+        }]
       },
       options: {
         responsive: true,
         scales: {
           yAxes: [
-              {
-                  ticks: {
-                      callback: function(label, index, labels) {
-                          return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
-                      },                      
-                  }    
+            {
+              ticks: {
+                callback: function (label, index, labels) {
+                  return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+                },
               }
-          ]
-      },
-      tooltips: {
-        mode: 'index',
-        intersect: false,
-        callbacks: {
-            label: function (t, d) {                
-                return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
             }
+          ]
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+          callbacks: {
+            label: function (t, d) {
+              return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+            }
+          }
         }
-      }     
       },
-      
+
     });
 
-    
+
   }
 
   ngAfterViewInit() {
-    
-    
+
+
   }
 
   ngOnInit() {
 
-    
-     
+
+
   }
 
 
-  
+
 
 
 

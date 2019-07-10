@@ -1,10 +1,11 @@
-﻿import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Response} from '@angular/http';
 import { BaseService } from '../class/base.service';
 import { Branch, RelatedItems } from '../model/index';
 import { String } from '../class/source';
 import { BranchApi } from './api/index';
 import { HttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 
 export class BranchInfo implements Branch {
@@ -22,9 +23,9 @@ export class BranchInfo implements Branch {
 export class BranchService extends BaseService {
 
 
-    constructor(public http: HttpClient) {
-        super(http);
-    }
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
+  }
 
     getBranchRoles(branchId: number) {
         var url = String.Format(BranchApi.BranchRoles, branchId);

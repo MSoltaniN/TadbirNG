@@ -1,8 +1,8 @@
-import { ToastrService } from 'ngx-toastr';
 import { MessageType, MessagePosition, Layout } from "../../environments/environment";
 import { EnviromentComponent } from "./enviroment.component"
 import { Component } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
+import { BrowserStorageService } from '../service/browserStorage.service';
 
 
 
@@ -37,9 +37,8 @@ export function getLayoutModule(layout: Layout) {
 
 export class DialogComponent extends EnviromentComponent {
 
-    constructor()
-    {
-      super();
-    }
+  constructor(public bStorageService: BrowserStorageService) {
+    super(bStorageService);
+  }
 
 }

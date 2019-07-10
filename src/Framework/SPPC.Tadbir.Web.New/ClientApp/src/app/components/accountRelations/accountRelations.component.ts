@@ -22,6 +22,7 @@ import { Filter } from '../../class/filter';
 import { AccountRelationsType } from '../../enum/accountRelationType';
 import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
 import { FilterExpression } from '../../class/filterExpression';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -90,9 +91,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
   }
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
     private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.AccountRelations, undefined);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.AccountRelations, undefined);
 
     this.mainComponent = [
       { value: "AccountRelations.Account", key: AccountRelationsType.Account },

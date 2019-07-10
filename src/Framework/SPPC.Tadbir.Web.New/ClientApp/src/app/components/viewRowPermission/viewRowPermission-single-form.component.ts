@@ -9,6 +9,7 @@ import { ViewRowPermissionService, ItemInfo } from '../../service/index';
 import { LookupApi } from '../../service/api/index';
 import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
 import { DetailComponent } from '../../class/detail.component';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -88,8 +89,8 @@ export class ViewRowPermissionSingleFormComponent extends DetailComponent {
   }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-      public viewRowPermissionService: ViewRowPermissionService) {
-      super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, undefined);
+      public viewRowPermissionService: ViewRowPermissionService, public bStorageService: BrowserStorageService) {
+      super(toastrService, translate, bStorageService, renderer, metadata, Entities.ViewRowPermission, undefined);
 
         this.getCategories();
     }

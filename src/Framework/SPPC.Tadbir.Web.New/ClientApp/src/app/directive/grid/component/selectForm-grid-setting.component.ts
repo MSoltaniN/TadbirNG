@@ -6,14 +6,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { BaseComponent } from "../../../class/base.component";
 import { GridComponent } from "@progress/kendo-angular-grid";
 import { DefaultComponent } from "../../../class/default.component";
-import { ListFormViewConfig } from "../../../model/listFormViewConfig";
 import { ColumnViewDeviceConfig } from "../../../model/columnViewDeviceConfig";
 import { ColumnViewConfig } from "../../../model/columnViewConfig";
 import { SettingService } from "../../../service/index";
-import { ListFormViewConfigInfo, SettingViewModelInfo, QuickSearchConfigInfo, QuickSearchColumnConfigInfo } from "../../../service/settings.service";
+import {  SettingViewModelInfo, QuickSearchConfigInfo, QuickSearchColumnConfigInfo } from "../../../service/settings.service";
 import { ViewName } from "../../../security/viewName";
 import { Property } from "../../../class/metadata/property";
 import { QuickSearchConfig } from "../../../model/index";
+import { BrowserStorageService } from "../../../service/browserStorage.service";
 
 
 export function getLayoutModule(layout: Layout) {
@@ -83,9 +83,9 @@ export class SelectFormGridSettingComponent extends BaseComponent implements OnI
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public settingService: SettingService,
-    @Host() private grid: GridComponent, private elRef: ElementRef, @Host() public defaultComponent: DefaultComponent) {
+    @Host() private grid: GridComponent, private elRef: ElementRef, @Host() public defaultComponent: DefaultComponent, public bStorageService: BrowserStorageService) {
 
-    super(toastrService);
+    super(toastrService, bStorageService);
   }
 
   ngOnDestroy() {

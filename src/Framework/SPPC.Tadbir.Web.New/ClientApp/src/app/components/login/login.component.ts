@@ -1,4 +1,3 @@
-
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../service/login/index';
@@ -8,10 +7,9 @@ import { TranslateService } from '@ngx-translate/core';
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SettingService } from '../../service/index';
-import { Metadatas } from '../../../environments/environment';
 import { DOCUMENT } from '@angular/common';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -38,12 +36,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService, public toastrService: ToastrService,
+      private authenticationService: AuthenticationService, public toastrService: ToastrService, public bStorageService: BrowserStorageService,
         public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2,
         public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document
         ) 
     {
-      super(toastrService, translate, renderer, metadata, settingService, '', undefined);
+      super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
         this.lang = this.currentlang;
        
     }
