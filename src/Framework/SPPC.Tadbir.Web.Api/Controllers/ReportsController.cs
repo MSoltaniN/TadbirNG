@@ -392,7 +392,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             double width = report.Pages[0].Width;
             outOfPage = false;
-            int gridWidth = quickReportViewModel.Columns.Sum(c => c.Width);
+            int gridWidth = quickReportViewModel.Columns.Where(c => c.Visible).Sum(c => c.Width);
             double tableWidth = GetSizeInInch(gridWidth, quickReportViewModel.InchValue);
 
             // check page width in portrait
