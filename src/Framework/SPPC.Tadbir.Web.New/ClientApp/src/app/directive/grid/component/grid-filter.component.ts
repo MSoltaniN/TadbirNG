@@ -6,87 +6,86 @@ import { ToastrService } from "ngx-toastr";
 import { GridComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from "../../../service/settings.service";
-import { DefaultComponent } from "../../../class/default.component";
-import { AccountComponent } from "../../../components/account/account.component";
+import { BrowserStorageService } from "../../../service/browserStorage.service";
 
 export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
+  return layout.getLayout();
 }
 
 @Component({
-    selector: 'grid-filter',
-    templateUrl: './grid-filter.component.html',
-    styleUrls: ['./grid-filter.component.css'],
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    }]
+  selector: 'grid-filter',
+  templateUrl: './grid-filter.component.html',
+  styleUrls: ['./grid-filter.component.css'],
+  providers: [{
+    provide: RTL,
+    useFactory: getLayoutModule,
+    deps: [Layout]
+  }]
 })
 
 export class GridFilterComponent extends BaseComponent implements OnInit, OnDestroy {
 
-    rtl: boolean;
-    @Input() public showClearFilter: number = 0;
-    @Input() public parentComponent: any;
-    
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public settingService: SettingService,
-        @Host() private grid: GridComponent, private elRef: ElementRef) {
+  rtl: boolean;
+  @Input() public showClearFilter: number = 0;
+  @Input() public parentComponent: any;
 
-        super(toastrService);
-        if(this.grid.filter)
-            this.grid.filter.filters = [];
-    }
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public settingService: SettingService,
+    @Host() private grid: GridComponent, private elRef: ElementRef, public bStorageService: BrowserStorageService) {
 
-    ngOnDestroy(): void {
-       
-    }
+    super(toastrService, bStorageService);
+    if (this.grid.filter)
+      this.grid.filter.filters = [];
+  }
 
-    ngOnInit(): void {
-        if (this.CurrentLanguage == 'fa')
-            this.rtl = true;
-        else
-            this.rtl = false;
+  ngOnDestroy(): void {
 
-        var self = this;
+  }
 
-        //document.addEventListener('keydown', function (ev: KeyboardEvent) {
-        //    if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
-        //        self.parentComponent.reloadGrid();
-        //    }
-        //});
+  ngOnInit(): void {
+    if (this.CurrentLanguage == 'fa')
+      this.rtl = true;
+    else
+      this.rtl = false;
 
-        
-        
-        document.addEventListener('keydown', function (ev: KeyboardEvent) {
-            if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
-                self.parentComponent.reloadGrid();
-            }
-        });       
+    var self = this;
 
-    }
+    //document.addEventListener('keydown', function (ev: KeyboardEvent) {
+    //    if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
+    //        self.parentComponent.reloadGrid();
+    //    }
+    //});
 
-    @Output() reloadEvent = new EventEmitter();
 
-    filterGridEmit(): void {
 
-        this.reloadEvent.emit();
-    }
+    document.addEventListener('keydown', function (ev: KeyboardEvent) {
+      if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
+        self.parentComponent.reloadGrid();
+      }
+    });
 
-    filterGrid(): void {        
+  }
 
-        this.showClearFilter = this.grid.filter.filters.length;
+  @Output() reloadEvent = new EventEmitter();
 
-        this.parentComponent.reloadGrid();
-    }
+  filterGridEmit(): void {
 
-    removeFilterGrid(): void {
-        this.grid.filter.filters = [];
-        this.showClearFilter = this.grid.filter.filters.length;
+    this.reloadEvent.emit();
+  }
 
-        this.parentComponent.filterChange(this.grid.filter);
-        this.parentComponent.reloadGrid();
+  filterGrid(): void {
 
-    }
+    this.showClearFilter = this.grid.filter.filters.length;
+
+    this.parentComponent.reloadGrid();
+  }
+
+  removeFilterGrid(): void {
+    this.grid.filter.filters = [];
+    this.showClearFilter = this.grid.filter.filters.length;
+
+    this.parentComponent.filterChange(this.grid.filter);
+    this.parentComponent.reloadGrid();
+
+  }
 
 }

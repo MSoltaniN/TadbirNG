@@ -17,6 +17,7 @@ import { of } from 'rxjs/observable/of';
 import { TreeItem } from "@progress/kendo-angular-treeview";
 import { MessageType, Entities } from "../../environments/environment";
 import { AccountPermissions } from "../security/permissions";
+import { BrowserStorageService } from "../service/browserStorage.service";
 
 
 
@@ -70,13 +71,13 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
     @Optional() @Inject('empty') public entityName: string, @Optional() @Inject('empty') public parentTitlekey: string,
     @Optional() @Inject('empty') public editorNewTitlePattern: string, @Optional() @Inject('empty') public editorEditTitlePattern: string,
     @Optional() @Inject('empty') public environmentModelsUrl: string, @Optional() @Inject('empty') public environmentModelsLedgerUrl: string,
     @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string, @Optional() @Inject('empty') public modelNewChildUrl: string,
     @Optional() @Inject('empty') public viewId: number) {
-    super(toastrService, translate, renderer, metadata, settingService, entityName, viewId);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, entityName, viewId);
   }
 
   ngOnInit() {

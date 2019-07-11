@@ -13,6 +13,7 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { AccountFormComponent } from './account-form.component';
 import { ViewName } from '../../security/viewName';
 import { GridExplorerComponent } from '../../class/gridExplorer.component';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 //#endregion
 
@@ -37,8 +38,8 @@ export class AccountComponent extends GridExplorerComponent<Account> {
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Account,
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService,bStorageService, Entities.Account,
       "Account.LedgerAccount", "Account.EditorTitleNew", "Account.EditorTitleEdit",
       AccountApi.EnvironmentAccounts, AccountApi.EnvironmentLedgerAccounts, AccountApi.Account, AccountApi.AccountChildren, AccountApi.EnvironmentNewChildAccount, ViewName.Account)
   }

@@ -3,6 +3,7 @@ import { BaseService } from '../class/base.service';
 import { AccountCollectionCategory, AccountCollection } from '../model/index';
 import { HttpClient } from '@angular/common/http';
 import { AccountCollectionAccount } from '../model/accountCollectionAccount';
+import { BrowserStorageService } from './browserStorage.service';
 
 export class AccountCollectionCategoryInfo implements AccountCollectionCategory {
   accountCollections: AccountCollection[];
@@ -30,8 +31,8 @@ export class AccountCollectionAccountInfo implements AccountCollectionAccount {
 @Injectable()
 export class AccountCollectionService extends BaseService {
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
 }

@@ -109,6 +109,7 @@ import {
   BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService,
   OperationLogService, DashboardService, AccountGroupsService, AccountCollectionService, GridService
 } from './service/index';
+import { BrowserStorageService } from './service/browserStorage.service';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcAutoGridColumn } from './directive/grid/sppc-auto-grid-column';
 import { SppcGridReorder } from "./directive/grid/sppc-grid-reorder";
@@ -362,7 +363,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
     UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
-    FullCodeService, OperationLogService, DashboardService, ReportingService, AccountGroupsService, AccountCollectionService, GridService,
+    FullCodeService, OperationLogService, DashboardService, ReportingService, AccountGroupsService, AccountCollectionService, GridService, BrowserStorageService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: ErrorHandler, useClass: GeneralErrorHandler },
     //{

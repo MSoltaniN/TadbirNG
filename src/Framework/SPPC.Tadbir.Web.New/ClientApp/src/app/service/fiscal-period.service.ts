@@ -1,10 +1,11 @@
-﻿import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
 import { BaseService } from '../class/base.service';
 import { FiscalPeriod, RelatedItems } from '../model/index';
 import { String } from '../class/source';
 import { FiscalPeriodApi } from './api/index';
 import { HttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 
 export class FiscalPeriodInfo implements FiscalPeriod {
@@ -20,9 +21,9 @@ export class FiscalPeriodInfo implements FiscalPeriod {
 @Injectable()
 export class FiscalPeriodService extends BaseService{
 
-    constructor(public http: HttpClient) {
-        super(http);
-    }
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
+  }
 
     getFiscalPeriodRoles(fPeriodId: number) {
         var url = String.Format(FiscalPeriodApi.FiscalPeriodRoles, fPeriodId);

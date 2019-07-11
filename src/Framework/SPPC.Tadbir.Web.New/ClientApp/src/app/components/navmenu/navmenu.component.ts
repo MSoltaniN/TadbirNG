@@ -1,17 +1,17 @@
-import { Component, Renderer2, Renderer, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, Renderer2, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { UserService, CommandInfo } from '../../service/user.service';
 import { Command } from '../../model/command';
-import { SessionKeys, MessageType } from '../../../environments/environment';
+import { MessageType } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { AuthenticationService } from '../../service/login/index';
 import { SettingService } from '../../service/index';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 declare var $: any;
 
@@ -21,30 +21,19 @@ declare var $: any;
   styleUrls: ['./navmenu.component.css']
 })
 export class NavMenuComponent extends DefaultComponent implements OnInit, AfterViewInit {
-  public filterChange(filter: CompositeFilterDescriptor): void {
-    throw new Error("Method not implemented.");
-  }
-  public reloadGrid(insertedModel?: any): void {
-    throw new Error("Method not implemented.");
-  }
 
   menuList: Array<Command> = new Array<Command>();
   public icons: { [id: string]: string; } = {};
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
 
-  constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService,
+  constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService, public bStorageService: BrowserStorageService,
     public translate: TranslateService, public renderer2: Renderer2, public router: Router,
     public metadata: MetaDataService, public el: ElementRef, public settingService: SettingService,
     public location: Location) {
 
-    super(toastrService, translate, renderer2, metadata, settingService, '', undefined);
-
-    let menus: any;
-    if (this.authenticationService.isRememberMe())
-      menus = localStorage.getItem(SessionKeys.Menu);
-    else
-      menus = sessionStorage.getItem(SessionKeys.Menu);
-
+    super(toastrService, translate, bStorageService, renderer2, metadata, settingService, '', undefined);
+    
+    var menus = this.bStorageService.getMenu()
 
     if (menus)
       this.menuList = JSON.parse(menus);

@@ -6,7 +6,7 @@ import { MetaDataService } from "../service/metadata/metadata.service";
 import { FormGroup, FormControl, ValidatorFn, Validators } from "@angular/forms";
 import { Property } from "./metadata/property";
 import { String } from './source';
-import { SessionKeys } from "../../environments/environment";
+import { BrowserStorageService, SessionKeys } from "../service/browserStorage.service";
 
 
 
@@ -18,15 +18,15 @@ export class DetailComponent extends BaseComponent {
 
   public metadataKey: string;
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService
-    , public renderer: Renderer2, private metadataService: MetaDataService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
+    public renderer: Renderer2, private metadataService: MetaDataService,
     @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number) {
-    super(toastrService);
+    super(toastrService, bStorageService);
 
     this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.CurrentLanguage);
 
     this.localizeMsg();
-    var propertiesValue = localStorage.getItem(this.metadataKey)
+    var propertiesValue = this.bStorageService.getMetadata(this.metadataKey);
 
     this.properties = new Map<string, Array<Property>>();
     this.properties.set(this.metadataKey, JSON.parse(propertiesValue));
@@ -37,23 +37,15 @@ export class DetailComponent extends BaseComponent {
 
       this.form = new FormGroup({ id: new FormControl() });
       if (!this.properties.get(this.metadataKey)) {
-
         this.metadataService.getMetaDataById(this.viewId).finally(() => {
-
           this.fillFormValidators();
-
           return this.form;
-
         }).subscribe((res1: any) => {
-
-          this.properties.set(this.metadataKey, res1.columns);
-          localStorage.setItem(this.metadataKey, JSON.stringify(res1.columns));
-
+          this.properties.set(this.metadataKey, res1.columns);          
+          this.bStorageService.setMetadata(this.metadataKey, res1.columns);
           return
         });
-
       }
-
     }
     else {
       this.fillFormValidators();
@@ -95,9 +87,8 @@ export class DetailComponent extends BaseComponent {
 
       }).subscribe((res1: any) => {
 
-        this.properties[this.metadataKey] = res1.properties;
-
-        localStorage.setItem(this.metadataKey, JSON.stringify(this.properties[this.metadataKey]))
+        this.properties[this.metadataKey] = res1.properties;        
+        this.bStorageService.setMetadata(this.metadataKey, this.properties[this.metadataKey]);
 
         return
       });

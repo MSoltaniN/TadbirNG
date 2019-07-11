@@ -1,14 +1,15 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { UserProfile } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Metadatas, Entities, MessageType } from '../../../environments/environment';
+import { Entities, MessageType } from '../../../environments/environment';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { UserService } from '../../service/index';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -58,8 +59,8 @@ export class ChangePasswordComponent extends DetailComponent {
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-    private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, Entities.Password, ViewName.User);
+    private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Password, ViewName.User);
 
     if (localStorage.getItem('currentContext') != null) {
       var item: string | null;

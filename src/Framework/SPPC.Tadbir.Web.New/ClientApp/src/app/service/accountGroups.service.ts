@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { BaseService } from '../class/base.service';
 import { AccountGroup } from '../model/index';
-import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 export class AccountGroupInfo implements AccountGroup {
   id: number = 0;
@@ -15,8 +15,8 @@ export class AccountGroupInfo implements AccountGroup {
 @Injectable()
 export class AccountGroupsService extends BaseService {
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
 

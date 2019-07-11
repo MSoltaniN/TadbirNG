@@ -7,6 +7,7 @@ import { BaseService } from '../class/base.service';
 import { LookupApi } from './api/index';
 import { FilterExpression } from '../class/filterExpression';
 import { AccountItemBriefInfo } from './accountRelations.service';
+import { BrowserStorageService } from './browserStorage.service';
 
 
 export class FullAccountInfo implements FullAccount {
@@ -28,8 +29,8 @@ export class FullAccountInfo implements FullAccount {
 @Injectable()
 export class FullAccountService extends BaseService {
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
   GetAccountsLookup() {

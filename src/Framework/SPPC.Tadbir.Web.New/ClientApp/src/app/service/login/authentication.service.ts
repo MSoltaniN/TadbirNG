@@ -7,7 +7,8 @@ import { PermissionBrief, CompanyLogin } from '../../model/index';
 import { String } from '../../class/source';
 import { LookupApi, FiscalPeriodApi, UserApi } from '../api/index';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { environment, SessionKeys } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { BrowserStorageService } from '../browserStorage.service';
 
 export class ContextInfo implements Context {
   userName: string = "";
@@ -25,9 +26,9 @@ export class ContextInfo implements Context {
 }
 
 export class CompanyLoginInfo implements CompanyLogin {
-    companyId?: number;
-    branchId?: number;
-    fiscalPeriodId?: number;
+  companyId?: number;
+  branchId?: number;
+  fiscalPeriodId?: number;
 }
 
 
@@ -35,174 +36,123 @@ export class CompanyLoginInfo implements CompanyLogin {
 export class AuthenticationService {
 
 
-    constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, public bStorageService: BrowserStorageService) {
 
-    }
+  }
 
-    login(username: string, password: string, remember: boolean) {
-        return this.http.put(environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/, { observe: "response"})
-            .map((response) => {
-                // login successful if there's a jwt token in the response   
-                
-                if (response.headers != null) {
-                    let ticket = response.headers.get('X-Tadbir-AuthTicket');
-                    if (response.status == 200 && ticket != null) {
-                        var user = new ContextInfo();
-                        user.ticket = ticket;
-                        user.userName = username;
+  login(username: string, password: string, remember: boolean) {
+    return this.http.put(environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/, { observe: "response" })
+      .map((response) => {
+        // login successful if there's a jwt token in the response   
 
-                        // در صورتی که تیک بخاطر سپردن بخورد در حافظه storage ذخیره می شود
-                        if (remember)
-                            localStorage.setItem('currentContext', JSON.stringify(user));
-                        else // در صورتی که تیک بخاطر سپردن بخورد در حافظه session ذخیره می شود
-                            sessionStorage.setItem('currentContext', JSON.stringify(user));
-                    }
-                }
-            })
+        if (response.headers != null) {
+          let ticket = response.headers.get('X-Tadbir-AuthTicket');
+          if (response.status == 200 && ticket != null) {
+            var user = new ContextInfo();
+            user.ticket = ticket;
+            user.userName = username;
 
-    }
-
-    islogin() {
-        if (localStorage.getItem('currentContext')) {
-            var item: string | null;
-            item = localStorage.getItem('currentContext');
-            var currentContext = JSON.parse(item != null ? item.toString() : "");
-            if (currentContext.userName != '') {
-                return true;
-            }
+            this.bStorageService.setCurrentContext(user);
+          }
         }
-        else if (sessionStorage.getItem('currentContext')) {
-            var item: string | null;
-            item = sessionStorage.getItem('currentContext');
-            var currentContext = JSON.parse(item != null ? item.toString() : "");
-            if (currentContext.userName != '') {
-                return true;
-            }
-        }
+      })
 
-        return false;
-    }
+  }
 
-    isRememberMe() {
-        if (localStorage.getItem('currentContext')) {
-            return true;
-        }
+  islogin() {
+    return this.bStorageService.islogin();
+  }
 
-        return false;
-    }
+  isRememberMe() {
+    return this.bStorageService.isRememberMe();
+  }
 
-    getCurrentUser(): ContextInfo | null {
-        var currentUser: ContextInfo;
-        var item: string | null = '';
-        if (localStorage.getItem('currentContext')) {
-            item = localStorage.getItem('currentContext');
-        }
-        else if (sessionStorage.getItem('currentContext')) {
-            item = sessionStorage.getItem('currentContext');
-        }
+  logout() {
+    // remove user from local storage to log user out
+    this.bStorageService.removeCurrentContext();
 
-        if (item) {
-            var currentUser: ContextInfo = item !== null ? JSON.parse(item) : null;
-            return currentUser;
-        }
+    this.bStorageService.removeFiscalPeriod();
 
-        return null;
-    }
+    this.bStorageService.removeCurrentRoute();
+  }
 
-    logout() {
-        // remove user from local storage to log user out
-        if (localStorage.getItem('currentContext'))
-            localStorage.removeItem('currentContext');
+  getCompanies(userName: string, ticket: string): Observable<any> {
+    var header = new HttpHeaders();
+    header = header.delete('X-Tadbir-AuthTicket');
+    header = header.delete('Content-Type');
 
-        if (sessionStorage.getItem('currentContext'))
-            sessionStorage.removeItem('currentContext');
+    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    header = header.append('X-Tadbir-AuthTicket', ticket);
 
-        if (localStorage.getItem('fiscalPeriod'))
-            localStorage.removeItem('fiscalPeriod');
+    if (ticket == '') return Observable.empty<Response>();
+    var jsonContext = atob(ticket);
+    var context = JSON.parse(jsonContext);
+    var userId = context.user.id;
+    var url = String.Format(LookupApi.UserAccessibleCompanies, userId);
+    var options = { headers: header };
+    return this.http.get(url, { headers: header })
+      .map(response => <any>(<Response>response));
+  }
 
-        if (sessionStorage.getItem('fiscalPeriod'))
-        sessionStorage.removeItem('fiscalPeriod');
+  getBranches(companyId: number, ticket: string): Observable<any> {
+    var header = new HttpHeaders();
+    header = header.delete('X-Tadbir-AuthTicket');
+    header = header.delete('Content-Type');
 
-      sessionStorage.removeItem(SessionKeys.CurrentRoute);
-    }
+    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    header = header.append('X-Tadbir-AuthTicket', ticket);
 
-    getCompanies(userName: string, ticket: string): Observable<any> {
-        var header = new HttpHeaders();
-        header = header.delete('X-Tadbir-AuthTicket');
-        header = header.delete('Content-Type');
+    if (ticket == '') return Observable.empty<Response>();
+    var jsonContext = atob(ticket);
+    var context = JSON.parse(jsonContext);
+    var userId = context.user.id;
+    var url = String.Format(LookupApi.UserAccessibleCompanyBranches, companyId, userId);
+    return this.http.get(url, { headers: header })
+      .map(response => <any>(<Response>response));
+  }
 
-        header = header.append('Content-Type', 'application/json; charset=utf-8');
-        header = header.append('X-Tadbir-AuthTicket', ticket);
+  getFiscalPeriod(companyId: number, ticket: string): Observable<any> {
+    var header = new HttpHeaders();
+    header = header.delete('X-Tadbir-AuthTicket');
+    header = header.delete('Content-Type');
 
-        if (ticket == '') return Observable.empty<Response>();
-        var jsonContext = atob(ticket);
-        var context = JSON.parse(jsonContext);
-        var userId = context.user.id;
-        var url = String.Format(LookupApi.UserAccessibleCompanies, userId);
-         var options = { headers: header };
-        return this.http.get(url, { headers: header })
-            .map(response => <any>(<Response>response));
-    }
+    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    header = header.append('X-Tadbir-AuthTicket', ticket);
 
-    getBranches(companyId: number, ticket: string): Observable<any> {
-        var header = new HttpHeaders();
-        header = header.delete('X-Tadbir-AuthTicket');
-        header = header.delete('Content-Type');
+    if (ticket == '') return Observable.empty<Response>();
+    var jsonContext = atob(ticket);
+    var context = JSON.parse(jsonContext);
+    var userId = context.user.id;
+    var url = String.Format(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId, userId);
+    return this.http.get(url, { headers: header })
+      .map(response => <any>(<Response>response));
+  }
 
-        header = header.append('Content-Type', 'application/json; charset=utf-8');
-        header = header.append('X-Tadbir-AuthTicket', ticket);
+  getFiscalPeriodById(fpId: number, ticket: string) {
+    var header = new HttpHeaders();
+    header = header.delete('X-Tadbir-AuthTicket');
+    header = header.delete('Content-Type');
 
-        if (ticket == '') return Observable.empty<Response>();
-        var jsonContext = atob(ticket);
-        var context = JSON.parse(jsonContext);
-        var userId = context.user.id;
-        var url = String.Format(LookupApi.UserAccessibleCompanyBranches, companyId, userId);
-        return this.http.get(url, { headers: header })
-            .map(response => <any>(<Response>response));
-    }
+    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    header = header.append('X-Tadbir-AuthTicket', ticket);
 
-    getFiscalPeriod(companyId: number, ticket: string): Observable<any> {
-        var header = new HttpHeaders();
-        header = header.delete('X-Tadbir-AuthTicket');
-        header = header.delete('Content-Type');
+    return this.http.get(String.Format(FiscalPeriodApi.FiscalPeriod, fpId), { headers: header })
+      .map(response => <any>(<Response>response));
+  }
 
-        header = header.append('Content-Type', 'application/json; charset=utf-8');
-        header = header.append('X-Tadbir-AuthTicket', ticket);
+  getCompanyTicket(model: CompanyLogin, ticket: string): Observable<any> {
+    var header = new HttpHeaders();
+    //header = header.delete('X-Tadbir-AuthTicket');
+    //header = header.delete('Content-Type');
 
-        if (ticket == '') return Observable.empty<Response>();
-        var jsonContext = atob(ticket);
-        var context = JSON.parse(jsonContext);
-        var userId = context.user.id;
-        var url = String.Format(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId, userId);
-        return this.http.get(url, { headers: header })
-            .map(response => <any>(<Response>response));
-    }
+    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    header = header.append('X-Tadbir-AuthTicket', ticket);
 
-    getFiscalPeriodById(fpId: number, ticket: string) {
-        var header = new HttpHeaders();
-        header = header.delete('X-Tadbir-AuthTicket');
-        header = header.delete('Content-Type');
+    var body = JSON.stringify(model);
 
-        header = header.append('Content-Type', 'application/json; charset=utf-8');
-        header = header.append('X-Tadbir-AuthTicket', ticket);
-
-        return this.http.get(String.Format(FiscalPeriodApi.FiscalPeriod, fpId), { headers: header })
-            .map(response => <any>(<Response>response));
-    }
-
-    getCompanyTicket(model: CompanyLogin, ticket: string): Observable<any> {
-        var header = new HttpHeaders();
-        //header = header.delete('X-Tadbir-AuthTicket');
-        //header = header.delete('Content-Type');
-
-        header = header.append('Content-Type', 'application/json; charset=utf-8');
-        header = header.append('X-Tadbir-AuthTicket', ticket);
-
-        var body = JSON.stringify(model);
-
-        var url = UserApi.UserCompanyLoginStatus;
-        //var options = { headers: header, observe: "response" };
-        return this.http.put(url, body, { headers: header, observe: "response" })
-            .map(response => <any>(<HttpResponse<any>>response));
-    }
+    var url = UserApi.UserCompanyLoginStatus;
+    //var options = { headers: header, observe: "response" };
+    return this.http.put(url, body, { headers: header, observe: "response" })
+      .map(response => <any>(<HttpResponse<any>>response));
+  }
 }

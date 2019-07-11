@@ -3,15 +3,13 @@ import { Context } from './model/context';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
-import { AuthenticationService, ContextInfo } from './service/login/index';
+import { AuthenticationService } from './service/login/index';
 import { UserService } from './service/user.service';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { SessionKeys } from '../environments/environment';
 import { Command } from './model/command';
-import { format } from 'url';
-import * as moment from 'jalali-moment';
+import { BrowserStorageService } from './service/browserStorage.service';
 
-declare var $:any;
+declare var $: any;
 declare var Stimulsoft: any;
 
 @Component({
@@ -20,8 +18,8 @@ declare var Stimulsoft: any;
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements AfterViewInit,OnInit  {
- 
+export class AppComponent implements AfterViewInit, OnInit {
+
 
   options = {
     min: 8,
@@ -72,27 +70,26 @@ export class AppComponent implements AfterViewInit,OnInit  {
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/IRANSansWeb.ttf", "IRANSansWeb");
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);
       //assets/resources/fonts/IranSans-En/ttf
-      
+
     }
     else {
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb.ttf", "IRANSansWeb");
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);
     }
     //Stimulsoft.System.Drawing.FontStyle.Italic
-    
+
     this.registerFunctions();
   }
 
-  registerFunctions()
-  {   
-    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction", 
-      "this is a test function", "", typeof(String), "", [typeof(String)], [""], [""], function(value) {
-        var result : string = value;        
+  registerFunctions() {
+    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction",
+      "this is a test function", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
+        var result: string = value;
         return result.toUpperCase();
       });
 
     Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "ToShamsi",
-      "Convert miladi date to shamsi", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {    
+      "Convert miladi date to shamsi", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
         /*if (value == null || value == undefined)
           return "";
         
@@ -101,26 +98,28 @@ export class AppComponent implements AfterViewInit,OnInit  {
         return MomentDate;*/
         return "Test";
 
-      });    
+      });
   }
 
 
   constructor(location: Location,
-     public router: Router, 
+    public router: Router,
     public authenticationService: AuthenticationService,
-     public userService: UserService,
+    public bStorageService: BrowserStorageService,
+    public userService: UserService,
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer) {
-     
+
     //#region init Lang    
 
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      this.currentContext = JSON.parse(item != null ? item.toString() : "");
-    }
+    //if (localStorage.getItem('currentContext') != null) {
+    //  var item: string | null;
+    //  item = localStorage.getItem('currentContext');
+    //  this.currentContext = JSON.parse(item != null ? item.toString() : "");
+    //}
+    this.currentContext = this.bStorageService.getCurrentUser();
 
-    var language = localStorage.getItem('lang');
+    var language = this.bStorageService.getLanguage();
     if (language) {
       this.lang = language;
     }
@@ -158,7 +157,7 @@ export class AppComponent implements AfterViewInit,OnInit  {
         this.showNavbar = true;
 
         var spacePad = this.document.getElementById('spacePad')
-        var currentLang = localStorage.getItem('lang')
+        var currentLang = this.bStorageService.getLanguage();
         if (currentLang == 'fa' || currentLang == null) {
           if (spacePad) {
             spacePad.classList.add('pull-right');
@@ -172,17 +171,15 @@ export class AppComponent implements AfterViewInit,OnInit  {
           }
         }
 
-        var currentSkin = localStorage.getItem(SessionKeys.CurrentSkin);
-        if(currentSkin != null)
-        {
-          if(!this.document.getElementById('mainBody').classList.contains(currentSkin))
-          {
-              this.document.getElementById('mainBody').classList.add(currentSkin);
-              this.document.getElementById('mainBody').classList.remove('skin-blue');
+        var currentSkin = this.bStorageService.getCurrentSkin();
+        if (currentSkin != null) {
+          if (!this.document.getElementById('mainBody').classList.contains(currentSkin)) {
+            this.document.getElementById('mainBody').classList.add(currentSkin);
+            this.document.getElementById('mainBody').classList.remove('skin-blue');
           }
         }
 
-        var lang = localStorage.getItem('lang');
+        var lang = this.bStorageService.getLanguage();
         if (lang == 'fa' || lang == null) {
           if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans.css')
             this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans.css');
@@ -190,7 +187,7 @@ export class AppComponent implements AfterViewInit,OnInit  {
         else {
           if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans-en.css')
             this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
-        }               
+        }
 
         //#endregion
 
@@ -204,14 +201,11 @@ export class AppComponent implements AfterViewInit,OnInit  {
         //set current route to session
         var currentUrl = location.path().toLowerCase();
         if (currentUrl != '/logout' && currentUrl != '/login')
-          sessionStorage.setItem(SessionKeys.CurrentRoute, currentUrl);
+          this.bStorageService.setCurrentRoute(currentUrl);
         //var contextIsEmpty: boolean = true;
 
-        if (localStorage.getItem('currentContext') != null) {
-          var item: string | null;
-          item = localStorage.getItem('currentContext');
-          var currentContext = <ContextInfo>JSON.parse(item != null ? item.toString() : "");
-
+        var currentContext = this.bStorageService.getCurrentUser();
+        if (currentContext) {
           branchId = currentContext ? currentContext.branchId : 0;
           companyId = currentContext ? currentContext.companyId : 0;
           fpId = currentContext ? currentContext.fpId : 0;
@@ -223,21 +217,7 @@ export class AppComponent implements AfterViewInit,OnInit  {
 
           //contextIsEmpty = false;
         }
-        else if (sessionStorage.getItem('currentContext') != null) {
-          var item: string | null;
-          item = sessionStorage.getItem('currentContext');
-          var currentContext = <ContextInfo>JSON.parse(item != null ? item.toString() : "");
 
-          branchId = currentContext ? currentContext.branchId : 0;
-          companyId = currentContext ? currentContext.companyId : 0;
-          fpId = currentContext ? currentContext.fpId : 0;
-          ticket = currentContext ? currentContext.ticket.toString() : "";
-          this.userName = currentContext ? currentContext.userName.toString() : "";
-          this.fiscalPeriodName = currentContext ? currentContext.fiscalPeriodName.toString() : "";
-          this.branchName = currentContext ? currentContext.branchName.toString() : "";
-          this.companyName = currentContext ? currentContext.companyName.toString() : "";
-          //contextIsEmpty = false;
-        }
 
         //if (!contextIsEmpty) {
 
@@ -278,12 +258,12 @@ export class AppComponent implements AfterViewInit,OnInit  {
     //this.initHotKeys();
   }
 
-  cssUrl : string;
+  cssUrl: string;
 
- 
+
 
   ngAfterViewInit() {
-    $.fn.bindTree(); 
+    $.fn.bindTree();
   }
 
   public hotKeyMap: { [id: string]: string; } = {}
@@ -308,7 +288,7 @@ export class AppComponent implements AfterViewInit,OnInit  {
 
     var url = '';
 
-    var menus = sessionStorage.getItem(SessionKeys.Menu);
+    var menus = this.bStorageService.getMenu();
     if (menus) {
       this.menuList = JSON.parse(menus);
 
@@ -355,7 +335,7 @@ export class AppComponent implements AfterViewInit,OnInit  {
     var hotKeys: Array<string> = new Array<string>();
 
 
-    var menus = sessionStorage.getItem(SessionKeys.Menu);
+    var menus = this.bStorageService.getMenu();
     if (menus)
       menuList = JSON.parse(menus);
 

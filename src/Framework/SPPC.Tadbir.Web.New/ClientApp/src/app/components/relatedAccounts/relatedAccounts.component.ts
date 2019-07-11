@@ -22,6 +22,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 import { RelatedAccountsFormComponent } from './relatedAccounts-form.component';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -258,8 +259,8 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
   //#region Constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService, public accountGroupsService: AccountGroupsService, private activatedroute: ActivatedRoute,
     private accountService: AccountService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public dialogService: DialogService,
-    @SkipSelf() @Host() @Optional() private parentComponent: RelatedAccountsComponent) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Account, ViewName.Account);
+    @SkipSelf() @Host() @Optional() private parentComponent: RelatedAccountsComponent, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Account, ViewName.Account);
   }
   //#endregion
 

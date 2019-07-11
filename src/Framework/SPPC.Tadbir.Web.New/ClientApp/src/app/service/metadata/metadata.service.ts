@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../../class/source';
-import { Filter } from "../../class/filter";
-import { GridOrderBy } from "../../class/grid.orderby";
 import { HttpParams, HttpClient } from "@angular/common/http";
-import { Context } from "../../model/context";
 import { BaseService } from '../../class/base.service';
-import { Property } from '../../class/metadata/property';
 import { MetadataApi } from '../api/index';
 import { ReportApi } from '../api/reportApi';
+import { BrowserStorageService } from '../browserStorage.service';
 
 @Injectable()
 export class MetaDataService extends BaseService {
@@ -19,8 +14,8 @@ export class MetaDataService extends BaseService {
   headers: Headers;
   options: RequestOptions;
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
   /**

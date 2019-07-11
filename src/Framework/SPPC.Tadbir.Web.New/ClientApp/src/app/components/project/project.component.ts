@@ -1,9 +1,9 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
+import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService, ProjectInfo, GridService } from '../../service';
+import { SettingService, GridService } from '../../service';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { ProjectApi } from '../../service/api';
 import { Project } from '../../model';
@@ -12,6 +12,7 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { ViewName } from '../../security/viewName';
 import { GridExplorerComponent } from '../../class/gridExplorer.component';
 import { ProjectFormComponent } from './project-form.component';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -34,8 +35,8 @@ export class ProjectComponent extends GridExplorerComponent<Project> {
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, Entities.Project,
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Project,
       "Project.LedgerProject", "Project.EditorTitleNew", "Project.EditorTitleEdit",
       ProjectApi.EnvironmentProjects, ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren, ProjectApi.EnvironmentNewChildProject, ViewName.Project)
   }

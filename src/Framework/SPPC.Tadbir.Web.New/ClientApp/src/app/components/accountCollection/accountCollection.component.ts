@@ -22,6 +22,7 @@ import { AccountCollectionPermissions, AccountPermissions } from '../../security
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { TypeLevel } from '../../enum/TypeLevel';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -96,9 +97,9 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     private accountCollectionService: AccountCollectionService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.AccountCollection, ViewName.AccountCollection);
+    super(toastrService, translate,bStorageService, renderer, metadata, settingService, Entities.AccountCollection, ViewName.AccountCollection);
   }
   //#endregion
 

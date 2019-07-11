@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Response } from '@angular/http';
 import { Role, Permission, RoleFull, UserBrief, Branch, RoleDetails, RelatedItems, RelatedItem } from '../model/index';
 import { RoleApi } from './api/index';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
-import { Filter } from "../class/filter";
-import { GridOrderBy } from "../class/grid.orderby";
-import { HttpParams, HttpClient } from "@angular/common/http";
-import { Context } from "../model/context";
-import { BaseComponent } from "../class/base.component"
-import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from "@angular/common/http";
 import { BaseService } from '../class/base.service';
+import { BrowserStorageService } from './browserStorage.service';
 
 
 export class RoleInfo implements Role {
@@ -53,9 +48,9 @@ export class RoleDetailsInfo implements RoleDetails {
 @Injectable()
 export class RoleService extends BaseService {
 
-    constructor(public http: HttpClient) {
-        super(http);
-    }
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
+  }
 
     getNewRoleFull() {
         var url = RoleApi.NewRole;

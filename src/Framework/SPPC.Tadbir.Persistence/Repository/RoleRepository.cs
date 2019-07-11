@@ -117,7 +117,7 @@ namespace SPPC.Tadbir.Persistence
                 };
                 Array.ForEach(enabledPermissions
                     .Concat(disabledView)
-                    .OrderBy(perm => perm.Id)
+                    .OrderBy(perm => perm.GroupId)
                     .ToArray(), perm => role.Permissions.Add(perm));
             }
 

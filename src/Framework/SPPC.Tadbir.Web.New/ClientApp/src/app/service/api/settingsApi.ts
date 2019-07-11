@@ -32,6 +32,12 @@ export class SettingsApi {
     // settings/qsearch/users/{userId:min(1)}/views/{viewId:min(1)}
     public static QuickSearchSettingsByUserAndView = environment.BaseUrl + "/settings/qsearch/users/{0}/views/{1}";
 
+    // settings/qreport/users/{userId:min(1)}
+    public static QuickReportSettingsByUser = environment.BaseUrl + "/settings/qreport/users/{0}";
+
+    // settings/qreport/users/{userId:min(1)}/views/{viewId:min(1)}
+    public static QuickReportSettingsByUserAndView = environment.BaseUrl + "/settings/qreport/users/{0}/views/{1}";
+
     // settings/workflows
     public static WorkflowSettings = environment.BaseUrl + "/settings/workflows";
 

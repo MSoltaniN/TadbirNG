@@ -17,6 +17,7 @@ import { Item } from '../../model/item';
 import { LookupApi } from '../../service/api/index';
 import { ViewName } from '../../security/viewName';
 import { VoucherOperations } from '../../enum/voucherOperations';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -94,6 +95,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   selectedType: string;
 
   @Input() voucherItem: Voucher;
+  @Input() isOpenFromList: boolean = false;
   //@Output() reloadGrid: EventEmitter<any> = new EventEmitter();
 
   isShowBreadcrumb: boolean = true;
@@ -103,9 +105,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   voucherOperationsItem: any;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
-    public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
+    public bStorageService: BrowserStorageService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.Voucher, ViewName.Voucher);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Voucher, ViewName.Voucher);
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -170,7 +173,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   getNewVoucher() {
-    if (this.voucherItem)
+    if (this.voucherItem || this.isOpenFromList)
       this.getVoucher(VoucherApi.NewVoucher);
     else {
       this.redirectTo('/vouchers/new')
@@ -232,9 +235,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.statusId = this.voucherModel.statusId;
       model.saveCount = this.voucherModel.saveCount;
-      debugger;
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model).subscribe(res => {
-        debugger;
         this.editForm.reset(res);
         this.voucherModel = res;
         this.errorMessage = undefined;
@@ -250,7 +251,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   nextVoucher() {
-    if (this.voucherItem) {
+    if (this.voucherItem || this.isOpenFromList) {
       this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
       this.isFirstVoucher = false;
       this.isLastVoucher = false;
@@ -260,7 +261,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   previousVoucher() {
-    if (this.voucherItem) {
+    if (this.voucherItem || this.isOpenFromList) {
       this.getVoucher(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no));
       this.isFirstVoucher = false;
       this.isLastVoucher = false;
@@ -270,7 +271,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   firstVoucher() {
-    if (this.voucherItem) {
+    if (this.voucherItem || this.isOpenFromList) {
       this.getVoucher(VoucherApi.FirstVoucher);
       this.isFirstVoucher = true;
       this.isLastVoucher = false;
@@ -280,7 +281,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   lastVoucher() {
-    if (this.voucherItem) {
+    if (this.voucherItem || this.isOpenFromList) {
       this.getVoucher(VoucherApi.LastVoucher);
       this.isFirstVoucher = false;
       this.isLastVoucher = true;

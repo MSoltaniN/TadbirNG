@@ -109,11 +109,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="type">یکی از انواع تعریف شده برای سندهای سیستمی</param>
         /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
-        public async Task<DateTime?> GetSpecialVoucherDate(VoucherType type)
+        public async Task<DateTime?> GetSpecialVoucherDateAsync(VoucherType type)
         {
             DateTime? voucherDate = null;
             var repository = _unitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetFirstByCriteriaAsync(v => v.Type == (int)type);
+            var voucher = await repository.GetFirstByCriteriaAsync(v => v.Type == (short)type);
             if (voucher != null)
             {
                 voucherDate = voucher.Date;

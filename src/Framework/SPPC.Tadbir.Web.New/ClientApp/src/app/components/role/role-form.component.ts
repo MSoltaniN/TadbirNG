@@ -11,6 +11,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { TreeNodeInfo } from '../../model/index';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -211,11 +212,11 @@ export class RoleFormComponent extends DetailComponent {
     return context.dataItem.id;
   }
 
-  constructor(private roleService: RoleService, private formBuilder: FormBuilder,
+  constructor(private roleService: RoleService, private formBuilder: FormBuilder, public bStorageService: BrowserStorageService,
     public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.Role, ViewName.Role);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Role, ViewName.Role);
   }
 
 

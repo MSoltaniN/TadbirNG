@@ -1,32 +1,22 @@
 import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewEncapsulation} from '@angular/core';
 import { Http } from '@angular/http';
 import { DefaultComponent } from '../../class/default.component';
-import { VoucherService, VoucherInfo, FiscalPeriodService, SettingService } from '../../service/index';
-import { Voucher, QuickReportColumnModel } from '../../model/index';
+import { VoucherService, SettingService } from '../../service/index';
+import { QuickReportColumnModel } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
-import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { String } from '../../class/source';
-import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { VoucherApi } from '../../service/api/index';
-import { SecureEntity } from '../../security/secureEntity';
-import { VoucherPermissions } from '../../security/permissions';
-import { FilterExpression } from '../../class/filterExpression';
-import { DocumentStatusValue } from '../../enum/documentStatusValue';
-import { MessageType, Layout, Entities, Metadatas, environment } from "../../../environments/environment";
-import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
+import {  Entities } from "../../../environments/environment";
+import { HttpClient } from "@angular/common/http";
 import { Report } from '../../model/report';
 import { ReportingService, ParameterInfo, QuickReportViewInfo } from '../../service/report/reporting.service';
 import * as moment from 'jalali-moment';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
-import { TabsComponent } from '../../controls/tabs/tabs.component';
 import { ReportsQueries } from '../reportManagement/reports.queries';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -54,12 +44,12 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
  
   
-  constructor(public toastrService: ToastrService, public translate: TranslateService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
    private voucherService: VoucherService, public renderer: Renderer2,
     public metadata: MetaDataService, public settingService: SettingService,
     private http: HttpClient, public reporingService: ReportingService) {
-    super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, ViewName.Voucher);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Voucher, ViewName.Voucher);
  }
   
   innerWidth : number;

@@ -69,7 +69,6 @@
     <None Remove="ClientApp\src\app\components\home\home.component.ts" />
     <None Remove="ClientApp\src\app\components\inlineTest\inlineTest.component.ts" />
     <None Remove="ClientApp\src\app\components\journal\journal.component.ts" />
-    <None Remove="ClientApp\src\app\components\login\index.ts" />
     <None Remove="ClientApp\src\app\components\login\login.complete.component.ts" />
     <None Remove="ClientApp\src\app\components\login\login.component.ts" />
     <None Remove="ClientApp\src\app\components\login\login.container.component.ts" />
@@ -935,7 +934,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\home\home.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\inlineTest\inlineTest.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\journal\journal.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\components\login\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\login.complete.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\login.container.component.ts" />

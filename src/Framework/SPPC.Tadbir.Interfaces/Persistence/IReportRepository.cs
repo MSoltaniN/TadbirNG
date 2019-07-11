@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="type">یکی از انواع تعریف شده برای سندهای سیستمی</param>
         /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
-        Task<DateTime?> GetSpecialVoucherDate(VoucherType type);
+        Task<DateTime?> GetSpecialVoucherDateAsync(VoucherType type);
 
         /// <summary>
         /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند

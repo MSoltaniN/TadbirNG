@@ -1,15 +1,15 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { VoucherLine } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Metadatas, Entities } from '../../../environments/environment';
-import { FullAccountService } from '../../service/fullAccount.service';
-import { VoucherLineService, AccountService, LookupService } from '../../service/index';
+import { LookupService } from '../../service/index';
 import { DetailComponent } from '../../class/detail.component';
 import { LookupApi } from '../../service/api/lookupApi';
 import { ViewName } from '../../security/viewName';
+import { BrowserStorageService } from '../../service/browserStorage.service';
 
 
 
@@ -152,10 +152,10 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   }
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public lookupService: LookupService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-    super(toastrService, translate, renderer, metadata, Entities.VoucherLine, ViewName.VoucherLine);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.VoucherLine, ViewName.VoucherLine);
 
   }
 

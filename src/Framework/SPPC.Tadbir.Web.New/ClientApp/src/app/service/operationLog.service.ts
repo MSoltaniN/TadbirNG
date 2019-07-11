@@ -1,9 +1,8 @@
-﻿import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Injectable } from '@angular/core';
 import { BaseService } from '../class/base.service';
-
-import { Project, OperationLog } from '../model/index';
+import { OperationLog } from '../model/index';
 import { HttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 
 export class OperationLogInfo implements OperationLog {
@@ -27,7 +26,7 @@ export class OperationLogInfo implements OperationLog {
 @Injectable()
 export class OperationLogService extends BaseService {
 
-    constructor(public http: HttpClient) {
-        super(http);
-    }
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
+  }
 }

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { BaseService } from '../class/base.service';
 import { RowPermissionsForRole, ViewRowPermission } from '../model/index';
 import { FilterExpression } from '../class/filterExpression';
 import { HttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 export interface Item {
   key: number,
@@ -34,8 +35,8 @@ export class ViewRowPermissionInfo implements ViewRowPermission {
 @Injectable()
 export class ViewRowPermissionService extends BaseService {
 
-  constructor(public http: HttpClient) {
-    super(http);
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
   }
 
   //public getRowList(apiUrl: string) {
