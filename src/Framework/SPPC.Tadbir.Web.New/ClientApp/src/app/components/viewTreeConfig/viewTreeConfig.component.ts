@@ -51,10 +51,10 @@ export function getLayoutModule(layout: Layout) {
 .btn-setting {
     position: absolute;
     bottom: 15px;
-    left: 28px;
-    right: 0;
     text-align: justify;
 }
+.btn-setting-rtl {left: 28px;}
+.btn-setting-ltr {right: 30px;}
 `],
   providers: [{
     provide: RTL,
@@ -96,7 +96,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private formBuilder: FormBuilder,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Setting, undefined);
-
+    
   }
 
   /**
