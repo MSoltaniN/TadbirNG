@@ -8,7 +8,6 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -147,10 +146,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(Currency entity)
         {
-            return String.Format(@"Name : {1}{0}Country : {2}{0}Code : {3}{0}MinorUnit : {4}{0}
+            return (entity != null)
+                ? String.Format(@"Name : {1}{0}Country : {2}{0}Code : {3}{0}MinorUnit : {4}{0}
 Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLine,
                 entity.Name, entity.Country, entity.Code, entity.MinorUnit, entity.Multiplier,
-                entity.DecimalCount, entity.Description);
+                entity.DecimalCount, entity.Description)
+                : null;
         }
     }
 }
