@@ -578,17 +578,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string name = "HeaderBand" + dataSourceName;
             StiColumnHeaderBand headerBand = null;
             StiText sampleText = null;
+            StiText sampleNumber = null;
+            StiComponent component = null;
+
             var componentsList = reportTemplate.Pages[0].GetComponents().ToList();
             if (componentsList.Any(p => p.GetType() == typeof(StiColumnHeaderBand)))
             {
-                var component = componentsList.First(p => p.GetType() == typeof(StiColumnHeaderBand));
+                component = componentsList.First(p => p.GetType() == typeof(StiColumnHeaderBand));
                 headerBand = (StiColumnHeaderBand)component.Clone(true);
-                if (((StiColumnHeaderBand)component).Components.ToList().Any(p => p.GetType() == typeof(StiText)))
-                {
-                    sampleText = (StiText)((StiColumnHeaderBand)component).Components.ToList().First(p => p.GetType() == typeof(StiText)).Clone(true);
-                }
+                //if (((StiColumnHeaderBand)component).Components.ToList().Any(p => p.GetType() == typeof(StiText)))
+                //{
+                //    sampleText = (StiText)((StiColumnHeaderBand)component).Components.ToList().First(p => p.GetType() == typeof(StiText)).Clone(true);
+                //}
 
                 headerBand.Components.Clear();
+            }
+
+            // copy text style
+            if (((StiColumnHeaderBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                .Any(c => c.ComponentStyle == "Tadbir_ColumnTextHeader"))
+            {
+                sampleText = (StiText)((StiColumnHeaderBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                    .First(c => c.ComponentStyle == "Tadbir_ColumnTextHeader").Clone(true);
+            }
+
+            // copy number style
+            if (((StiColumnHeaderBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                .Any(c => c.ComponentStyle == "Tadbir_ColumnNumberHeader"))
+            {
+                sampleNumber = (StiText)((StiColumnHeaderBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                    .First(c => c.ComponentStyle == "Tadbir_ColumnNumberHeader").Clone(true);
             }
 
             ////double height = double.Parse("0.4", System.Globalization.CultureInfo.InvariantCulture);
@@ -616,6 +635,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 if (txtHeaderCell == null)
                 {
                     txtHeaderCell = (StiText)(sampleText.Clone(true));
+
+                    switch (orderdColumns[i].Type.ToLower())
+                    {
+                        case "string":
+                            txtHeaderCell = (StiText)(sampleText.Clone(true));
+                            break;
+                        case "number":
+                        case "money":
+                            txtHeaderCell = (StiText)(sampleNumber.Clone(true));
+                            break;
+                        case "date":
+                            txtHeaderCell = (StiText)(sampleNumber.Clone(true));
+                            break;
+                    }
+
                     txtHeaderCell.Name = ctrlName;
                     txtHeaderCell.Left = left;
                     txtHeaderCell.Width = width;
@@ -687,19 +721,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             StiDataBand dataBand = new StiDataBand();
             StiText sampleText = null;
+            StiText sampleNumber = null;
+            StiText sampleDate = null;
             var componentsList = reportTemplate.Pages[0].GetComponents().ToList();
+            StiComponent component = null;
+
             if (componentsList.Any(p => p.GetType() == typeof(StiDataBand)))
             {
-                var component = componentsList.First(p => p.GetType() == typeof(StiDataBand));
+                component = componentsList.First(p => p.GetType() == typeof(StiDataBand));
                 dataBand = (StiDataBand)component.Clone(true);
-                if (((StiDataBand)component).Components.ToList().Any(p => p.GetType() == typeof(StiText)))
-                {
-                    sampleText = (StiText)((StiDataBand)component).Components.ToList().First(p => p.GetType() == typeof(StiText)).Clone(true);
-                }
-
-                dataBand.Components.Clear();
             }
 
+            // copy text style
+            if (((StiDataBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                .Any(c => c.ComponentStyle == "Tadbir_ColumnTextData"))
+            {
+                sampleText = (StiText)((StiDataBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                    .First(c => c.ComponentStyle == "Tadbir_ColumnTextData").Clone(true);
+            }
+
+            // copy date style
+            if (((StiDataBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                .Any(c => c.ComponentStyle == "Tadbir_ColumnNumberData"))
+            {
+                sampleNumber = (StiText)((StiDataBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                    .First(c => c.ComponentStyle == "Tadbir_ColumnNumberData").Clone(true);
+            }
+
+            // copy number style
+            if (((StiDataBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                .Any(c => c.ComponentStyle == "Tadbir_ColumnDateData"))
+            {
+                sampleDate = (StiText)((StiDataBand)component).Components.ToList().Where(p => p.GetType() == typeof(StiText))
+                    .First(c => c.ComponentStyle == "Tadbir_ColumnDateData").Clone(true);
+            }
+
+            dataBand.Components.Clear();
             dataBand.Name = ctrlName;
             dataBand.DataSourceName = dataSourceName;
 
@@ -713,7 +770,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
                 if (txtDataCell == null)
                 {
-                    txtDataCell = (StiText)(sampleText.Clone(true));
+                    if (orderdColumns[i].Name.ToLower() != "rowno")
+                    {
+                        switch (orderdColumns[i].Type.ToLower())
+                        {
+                            case "string":
+                                txtDataCell = (StiText)(sampleText.Clone(true));
+                                break;
+                            case "number":
+                            case "money":
+                                txtDataCell = (StiText)(sampleNumber.Clone(true));
+                                break;
+                            case "date":
+                                txtDataCell = (StiText)(sampleDate.Clone(true));
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        txtDataCell = (StiText)(sampleDate.Clone(true));
+                    }
+
                     txtDataCell.Name = name;
                     txtDataCell.Left = left;
                     txtDataCell.Parent = dataBand;
