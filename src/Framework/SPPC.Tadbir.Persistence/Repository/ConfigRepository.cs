@@ -343,25 +343,7 @@ namespace SPPC.Tadbir.Persistence
                     && cfg.User.Id == userId
                     && cfg.View.Id == viewId);
             var config = items.SingleOrDefault();
-            if (config == null)
-            {
-                var viewRepository = _unitOfWork.GetAsyncRepository<View>();
-                var entityView = await viewRepository.GetByIDAsync(viewId, ev => ev.Columns);
-                if (entityView != null)
-                {
-                    userConfig = new QuickReportConfig()
-                    {
-                        ViewId = entityView.Id
-                    };
-                    foreach (var column in entityView.Columns
-                        .Where(col => col.Visibility == ColumnVisibility.AlwaysVisible
-                            || col.Visibility == null))
-                    {
-                        userConfig.Columns.Add(_mapper.Map<QuickReportColumnConfig>(column));
-                    }
-                }
-            }
-            else
+            if (config != null)
             {
                 userConfig = _mapper.Map<QuickReportConfig>(config);
             }
