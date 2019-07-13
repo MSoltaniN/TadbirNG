@@ -252,7 +252,7 @@ export class Permissions {
       case "accountgroup":
         id = <any>AccountGroupPermissions[<any>premissionName];
         break;
-      case "viewrowpermission":
+      case "rowaccess":
         id = <any>RowAccessPermissions[<any>premissionName];
         break;
       case "setting":

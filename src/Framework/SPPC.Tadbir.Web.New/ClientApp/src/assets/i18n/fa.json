@@ -124,7 +124,7 @@
     "Company": "شرکت",
     "AccountRelations": "ارتباطات حساب",
     "Setting": "تنظیمات",
-    "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
+    "RowAccess": "دسترسی به سطرهای اطلاعاتی",
     "OperationLog": "لاگ های عملیاتی",
     "ViewTreeConfig": "تنظیمات ساختار درختی",
     "AccountGroup": "گروه حساب",
