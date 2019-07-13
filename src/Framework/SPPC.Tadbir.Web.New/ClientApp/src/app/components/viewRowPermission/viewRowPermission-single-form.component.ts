@@ -90,7 +90,7 @@ export class ViewRowPermissionSingleFormComponent extends DetailComponent {
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
       public viewRowPermissionService: ViewRowPermissionService, public bStorageService: BrowserStorageService) {
-      super(toastrService, translate, bStorageService, renderer, metadata, Entities.ViewRowPermission, undefined);
+      super(toastrService, translate, bStorageService, renderer, metadata, Entities.RowAccess, undefined);
 
         this.getCategories();
     }

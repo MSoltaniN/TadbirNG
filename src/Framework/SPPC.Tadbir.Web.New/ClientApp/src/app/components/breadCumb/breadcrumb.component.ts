@@ -74,8 +74,8 @@ export class BreadCumbComponent implements OnInit {
       case "accountrelations":
         this.getText("Entity.AccountRelations");
         break;
-      case "settings":
-        this.getText("Entity.Settings");
+      case "setting":
+        this.getText("Entity.Setting");
         break;
       case "viewrowpermission":
         this.getText("Entity.ViewRowPermission");
