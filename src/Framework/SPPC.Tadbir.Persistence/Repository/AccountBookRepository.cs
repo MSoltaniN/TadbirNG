@@ -376,12 +376,14 @@ namespace SPPC.Tadbir.Persistence
                         Array.ForEach(GetGroupByThenByItems(lines, item => item.BranchId).ToArray(), group =>
                         {
                             var aggregates = GetAggregatedBookItems(group, true);
+                            Array.ForEach(aggregates.ToArray(), item => item.Description = voucherType.ToString());
                             book.Items.AddRange(aggregates);
                         });
                     }
                     else
                     {
                         var aggregates = GetAggregatedBookItems(lines, false);
+                        Array.ForEach(aggregates.ToArray(), item => item.Description = voucherType.ToString());
                         book.Items.AddRange(aggregates);
                     }
                 }
@@ -463,13 +465,11 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                 .Where(line => line.Voucher.Date.IsBetween(from, to))
-                .Where(itemCriteria);
-            return byBranch
-                ? query.OrderBy(line => line.Voucher.Date)
-                      .ThenBy(line => line.Voucher.No)
-                      .ThenBy(line => line.BranchId)
-                : query.OrderBy(line => line.Voucher.Date)
-                      .ThenBy(line => line.Voucher.No);
+                .Where(itemCriteria)
+                .OrderBy(line => line.Voucher.Date)
+                .ThenBy(line => line.Voucher.No)
+                .ThenBy(line => line.RowNo);
+            return query;
         }
 
         private void AggregateAccountBook(
