@@ -73,7 +73,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private viewRowPermissionService: ViewRowPermissionService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.ViewRowPermission, undefined);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.RowAccess, undefined);
 
     this.getRoles();
 

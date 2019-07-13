@@ -239,12 +239,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 var localCode = GetAcceptLanguages().Substring(0, 2);
                 foreach (var column in reportSettings.Columns)
                 {
-                    var userTitle = column.UserTitle
+                    var userTitle = column.UserTitleMap
                         .Where(item => item.Key == localCode)
                         .SingleOrDefault();
-                    column.Title = !String.IsNullOrEmpty(userTitle.Value)
+                    column.UserTitle = !String.IsNullOrEmpty(userTitle.Value)
                         ? userTitle.Value
                         : _strings[column.Title];
+                    var userWidth = column.WidthMap
+                        .Where(item => item.Key == localCode)
+                        .SingleOrDefault();
+                    if (!String.IsNullOrEmpty(userWidth.Key))
+                    {
+                        column.Width = userWidth.Value;
+                    }
                 }
             }
         }

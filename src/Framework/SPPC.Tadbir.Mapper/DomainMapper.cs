@@ -253,6 +253,7 @@ namespace SPPC.Tadbir.Mapper
                             new[] { "VoucherLineDisplay", src.Debit.ToString("C0"), src.Credit.ToString("C0"), src.Description })));
             mapperConfig.CreateMap<VoucherLine, VoucherLineAmountsViewModel>();
 
+            mapperConfig.CreateMap<CurrencyViewModel, Currency>();
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
@@ -489,14 +490,6 @@ namespace SPPC.Tadbir.Mapper
                     src => src.Name == "FullCode" || src.Name == "Name"));
             mapperConfig.CreateMap<UserSetting, QuickSearchConfig>()
                 .ConvertUsing(cfg => JsonHelper.To<QuickSearchConfig>(cfg.Values));
-            mapperConfig.CreateMap<Column, QuickReportColumnConfig>()
-                .ForMember(
-                    dest => dest.Title,
-                    opts => opts.MapFrom(src => src.Name))
-                .ForMember(
-                    dest => dest.Visible,
-                    opts => opts.MapFrom(src => src.Visibility == ColumnVisibility.AlwaysVisible
-                        || src.Visibility == ColumnVisibility.Visible));
             mapperConfig.CreateMap<UserSetting, QuickReportConfig>()
                 .ConvertUsing(cfg => JsonHelper.To<QuickReportConfig>(cfg.Values));
 

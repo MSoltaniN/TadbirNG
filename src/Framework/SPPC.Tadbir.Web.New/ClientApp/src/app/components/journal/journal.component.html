@@ -133,7 +133,7 @@
     <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumnsRow" sppc-auto-grid-column="{{ item.settings }}">
 
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-        <sppc-grid-filter [metaData]="getMetaData(item.name)" [column]="column" [filter]="filter"></sppc-grid-filter>
+        <sppc-auto-grid-filter [metaData]="item.scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'Date'">
@@ -250,8 +250,8 @@
         </kendo-switch>
       </div>
       <div class="col-xs-12 col-sm-4 form-group">
-        <button class="k-button btn-compute-default" SppcPermissionCheck="Filter" EntityName="Journal" (sppcClick)="getReportData()"
-                [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en','btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
+        <button class="k-button btn-compute-default sppc-float-diff" SppcPermissionCheck="Filter" EntityName="Journal" (sppcClick)="getReportData()"
+                [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
           {{ 'Buttons.Compute' | translate }}
         </button>
       </div>

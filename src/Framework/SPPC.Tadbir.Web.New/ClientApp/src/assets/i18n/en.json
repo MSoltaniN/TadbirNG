@@ -124,7 +124,7 @@
     "Company": "Company",
     "AccountRelations": "Account Relations",
     "Setting": "Settings",
-    "ViewRowPermission": "Row Permission",
+    "RowAccess": "Row Access",
     "OperationLog": "Operation Logs",
     "Unsuccessful": "Unsuccessful",
     "Successful": "Successful",

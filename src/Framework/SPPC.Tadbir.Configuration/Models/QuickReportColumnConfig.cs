@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Configuration.Models
         /// </summary>
         public QuickReportColumnConfig()
         {
-            UserTitle = new Dictionary<string, string>();
+            UserTitleMap = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Configuration.Models
         /// <summary>
         /// متن کاربری تنظیم شده برای ستون که بجای متن پیش فرض استفاده می شود
         /// </summary>
-        public IDictionary<string, string> UserTitle { get; }
+        public string UserTitle { get; set; }
 
         /// <summary>
         /// مشخص می کند که آیا ستون مورد نظر نشان داده می شود یا نه؟
@@ -50,5 +50,15 @@ namespace SPPC.Tadbir.Configuration.Models
         /// مشخص کننده نوع ستون برای استفاده خاص مثلا money یا number یا date
         /// </summary>
         public string Type { get; set; }
+
+        /// <summary>
+        /// دیکشنری برای نگهداری متن های کاربری عنوان ستون در زبان های مختلف
+        /// </summary>
+        public IDictionary<string, string> UserTitleMap { get; }
+
+        /// <summary>
+        /// دیکشنری برای نگهداری اندازه های کاربری عرض ستون در زبان های مختلف
+        /// </summary>
+        public IDictionary<string, int> WidthMap { get; }
     }
 }

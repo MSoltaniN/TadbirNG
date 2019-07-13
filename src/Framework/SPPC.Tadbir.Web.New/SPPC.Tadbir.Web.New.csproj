@@ -103,6 +103,7 @@
     <None Remove="ClientApp\src\app\controls\fullAccount\sppc-display-fullAccount.ts" />
     <None Remove="ClientApp\src\app\controls\fullAccount\sppc-fullAccount.ts" />
     <None Remove="ClientApp\src\app\controls\grid\spp-grid-date-filter.ts" />
+    <None Remove="ClientApp\src\app\controls\grid\sppc-auto-grid-filter.ts" />
     <None Remove="ClientApp\src\app\controls\grid\sppc-grid-filter.ts" />
     <None Remove="ClientApp\src\app\controls\sppcLoading\index.ts" />
     <None Remove="ClientApp\src\app\controls\sppcLoading\sppc-loading.component.ts" />
@@ -968,6 +969,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\controls\fullAccount\sppc-display-fullAccount.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\fullAccount\sppc-fullAccount.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\grid\spp-grid-date-filter.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\controls\grid\sppc-auto-grid-filter.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\grid\sppc-grid-filter.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\sppcLoading\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\sppcLoading\sppc-loading.component.ts" />

@@ -64,7 +64,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountBookViewModel> GetAccountBookByRowAsync(
             int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
-            return await GetSimpleBookAsync(viewId, accountId, from, to, gridOptions, false);
+            return await GetSimpleBookAsync(viewId, accountId, from, to, gridOptions);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountBookViewModel> GetAccountBookByRowByBranchAsync(
             int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
-            return await GetSimpleBookAsync(viewId, accountId, from, to, gridOptions, true);
+            return await GetSimpleBookAsync(viewId, accountId, from, to, gridOptions);
         }
 
         /// <summary>
@@ -279,14 +279,13 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<AccountBookViewModel> GetSimpleBookAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions,
-            bool byBranch = false)
+            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
         {
             var book = new AccountBookViewModel();
             book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
 
             var itemCriteria = GetItemCriteria(viewId, accountId);
-            var bookItems = await GetRawAccountBookLines(itemCriteria, from, to, byBranch)
+            var bookItems = await GetRawAccountBookLines(itemCriteria, from, to)
                 .ToListAsync();
             AddBookItems(book, bookItems, gridOptions);
             return book;
@@ -319,7 +318,7 @@ namespace SPPC.Tadbir.Persistence
             var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
             {
-                var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End, true)
+                var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
                     .Where(art => art.Voucher.Type == (short)VoucherType.NormalVoucher)
                     .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
                     .Apply(gridOptions, false)
@@ -376,12 +375,14 @@ namespace SPPC.Tadbir.Persistence
                         Array.ForEach(GetGroupByThenByItems(lines, item => item.BranchId).ToArray(), group =>
                         {
                             var aggregates = GetAggregatedBookItems(group, true);
+                            Array.ForEach(aggregates.ToArray(), item => item.Description = voucherType.ToString());
                             book.Items.AddRange(aggregates);
                         });
                     }
                     else
                     {
                         var aggregates = GetAggregatedBookItems(lines, false);
+                        Array.ForEach(aggregates.ToArray(), item => item.Description = voucherType.ToString());
                         book.Items.AddRange(aggregates);
                     }
                 }
@@ -457,19 +458,17 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IQueryable<VoucherLine> GetRawAccountBookLines(
-            Expression<Func<VoucherLine, bool>> itemCriteria, DateTime from, DateTime to, bool byBranch = false)
+            Expression<Func<VoucherLine, bool>> itemCriteria, DateTime from, DateTime to)
         {
             var query = _repository
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                 .Where(line => line.Voucher.Date.IsBetween(from, to))
-                .Where(itemCriteria);
-            return byBranch
-                ? query.OrderBy(line => line.Voucher.Date)
-                      .ThenBy(line => line.Voucher.No)
-                      .ThenBy(line => line.BranchId)
-                : query.OrderBy(line => line.Voucher.Date)
-                      .ThenBy(line => line.Voucher.No);
+                .Where(itemCriteria)
+                .OrderBy(line => line.Voucher.Date)
+                .ThenBy(line => line.Voucher.No)
+                .ThenBy(line => line.RowNo);
+            return query;
         }
 
         private void AggregateAccountBook(

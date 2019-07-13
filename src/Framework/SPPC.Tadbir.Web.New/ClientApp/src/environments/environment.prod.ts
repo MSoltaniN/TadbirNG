@@ -53,7 +53,7 @@ export const Entities = {
   Company: 'Company',
   AccountRelations: "AccountRelations",
   Setting: "Setting",
-  ViewRowPermission: "ViewRowPermission",
+  RowAccess: 'RowAccess',
   OperationLog: "OperationLog",
   AccountGroup: "AccountGroup",
   AccountCollection: "AccountCollection",
