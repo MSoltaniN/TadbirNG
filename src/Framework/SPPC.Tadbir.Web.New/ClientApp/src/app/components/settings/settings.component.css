@@ -66,5 +66,13 @@
 .btn-setting {
   position: absolute;
   bottom: 15px;
+  /*left: 28px;*/
+}
+
+.btn-setting-rtl {
   left: 28px;
+}
+
+.btn-setting-ltr {
+  right: 30px;
 }
