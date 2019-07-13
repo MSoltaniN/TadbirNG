@@ -29,9 +29,28 @@ GO
 CREATE TABLE [Finance].[Currency] (
     [CurrencyID]     INT              IDENTITY (1, 1) NOT NULL,
     [Name]           NVARCHAR(64)     NOT NULL,
+    [Country]        NVARCHAR(64)     NOT NULL,
+    [Code]           NVARCHAR(8)      NOT NULL,
+    [MinorUnit]      NVARCHAR(16)     NOT NULL,
+    [Multiplier]     INT              NOT NULL,
+    [DecimalCount]   SMALLINT         NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Currency] PRIMARY KEY CLUSTERED ([CurrencyID] ASC)
+)
+GO
+
+CREATE TABLE [Finance].[CurrencyRate] (
+    [CurrencyRateID]   INT              IDENTITY (1, 1) NOT NULL,
+    [CurrencyID]       INT              NOT NULL,
+    [Date]             DATETIME         NOT NULL,
+    [Time]             TIME(7)          NOT NULL,
+    [Multiplier]       FLOAT            NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CurrencyRate_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_CurrencyRate_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_CurrencyRate] PRIMARY KEY CLUSTERED ([CurrencyRateID] ASC)
+    , CONSTRAINT [FK_Finance_CurrencyRate_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
 )
 GO
 
