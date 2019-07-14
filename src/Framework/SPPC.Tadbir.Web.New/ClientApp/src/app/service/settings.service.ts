@@ -286,6 +286,18 @@ export class SettingService extends BaseService {
     return columnViewDevice;
   }
 
+  /**
+   * تنظیمات گزارش فوری را برمیگرداند
+   * @param userId
+   * @param viewId
+   */
+  public getQuickReportSettingsByUserAndView(userId: number, viewId: number) {
+    var url = String.Format(SettingsApi.QuickReportSettingsByUserAndView, userId, viewId);
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
+
 
   /**
    * تنظیمات مربوط به فرمت اعداد را برمیگرداند

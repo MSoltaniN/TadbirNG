@@ -33,7 +33,7 @@ ReportApi.ReportCaption = environment.BaseUrl + "/reports/sys/{0}/caption";
 // reports/metadata/{viewId:min(1)}
 ReportApi.ReportMetadataByView = environment.BaseUrl + "/reports/metadata/{0}";
 // reports/sys/quickreport
-ReportApi.EnvironmentQuickReport = environment.BaseUrl + "/reports/sys/quickreport";
+ReportApi.EnvironmentQuickReport = environment.BaseUrl + "/reports/sys/quickreport/{0}";
 // reports/voucher/sum-by-date
 ReportApi.EnvironmentVoucherSummaryByDate = environment.BaseUrl + "/reports/voucher/sum-by-date";
 // reports/voucher/std-form

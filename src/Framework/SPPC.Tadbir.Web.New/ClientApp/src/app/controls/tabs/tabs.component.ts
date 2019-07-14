@@ -17,6 +17,7 @@ import {
 import { TabComponent } from './tab.component';
 import { DynamicTabsDirective } from './dynamic-tabs.directive';
 import { QuickReportViewInfo } from '../../service/report/reporting.service';
+import { QuickReportConfigInfo } from '../../model/QuickReportConfig';
 
 
 @Component({
@@ -144,7 +145,7 @@ export class TabsComponent implements AfterContentInit {
 
   openTab(title: string, template, data, isCloseable = false,
     isViewer: boolean = false, isDesigner: boolean = false, id: string,code:string, manager: any, isQuickReport: boolean = false,
-    quickReportViewInfo: QuickReportViewInfo= null): boolean {
+    quickReportViewInfo: QuickReportConfigInfo= null): boolean {
 
     var prefix : string;
     if(isViewer)

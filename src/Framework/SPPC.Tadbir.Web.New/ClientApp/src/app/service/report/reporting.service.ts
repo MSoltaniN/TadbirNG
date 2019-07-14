@@ -7,6 +7,7 @@ import { LocalReport } from '../../model/localReport';
 import { Parameter } from '../../model/parameter';
 import { QuickReportColumnModel, QuickReportViewModel } from '../../model/quickReportColumn';
 import { BrowserStorageService } from '../browserStorage.service';
+import { QuickReportConfigInfo } from '../../model/QuickReportConfig';
 
 
 @Injectable()
@@ -43,10 +44,21 @@ export class ReportingService extends ReportBaseService {
       .catch(this.handleError);
   }
 
+  /*
   public putEnvironmentUserQuickReport(apiUrl: string, viewInfo: QuickReportViewInfo): Observable<string> {
 
     var body = JSON.stringify(viewInfo);
 
+    return this.http.put(apiUrl, body, this.option)
+      .map(res => res)
+      .catch(this.handleError);
+
+  }*/
+
+  public putEnvironmentUserQuickReport(apiUrl: string, viewInfo: QuickReportConfigInfo): Observable<string> {
+
+    var body = JSON.stringify(viewInfo);
+    
     return this.http.put(apiUrl, body, this.option)
       .map(res => res)
       .catch(this.handleError);

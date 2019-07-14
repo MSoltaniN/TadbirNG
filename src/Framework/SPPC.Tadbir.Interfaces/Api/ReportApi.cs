@@ -122,7 +122,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a quick report invoked by environment user
         /// </summary>
-        public const string EnvironmentQuickReportUrl = "reports/sys/quickreport";
+        public const string EnvironmentQuickReportUrl = "reports/sys/quickreport/{unit:min(1)}";
 
         #endregion
 

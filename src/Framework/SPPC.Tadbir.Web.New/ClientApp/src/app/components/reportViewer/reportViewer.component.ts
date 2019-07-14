@@ -17,6 +17,8 @@ import { ReportManagementComponent } from '../reportManagement/reportManagement.
 import { ReportsQueries } from '../reportManagement/reports.queries';
 import { ViewName } from '../../security/viewName';
 import { BrowserStorageService } from '../../service/browserStorage.service';
+import { QuickReportConfigInfo } from '../../model/QuickReportConfig';
+import { QuickReportColumnConfig } from '../../model/QuickReportColumnConfig';
 
 
 
@@ -205,7 +207,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     this.viewer.renderHtml(this.Id);
   }
 
-  showReportViewer(reportTemplate: string, reportData: any, manager: any, isQuickReport: boolean, quickReportViewInfo: QuickReportViewInfo)
+  showReportViewer(reportTemplate: string, reportData: any, manager: any, isQuickReport: boolean, quickReportViewInfo: QuickReportConfigInfo)
   {      
     this.active = true;
 
@@ -252,7 +254,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         var registerData = false;
         if (quickReportViewInfo) {
           registerData = true;
-          var dateColumns = quickReportViewInfo.columns.filter(c => c.dataType.toLowerCase() === "system.date");
+          var dateColumns = quickReportViewInfo.columns.filter(c => c.type.toLowerCase() === "date");
           if (dateColumns.length > 0 && this.CurrentLanguage == "fa") {
             var convertedData = reportRows;
             convertedData = this.convertToShamsiDate(convertedData, dateColumns);
@@ -320,7 +322,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     }, 10);   
   }
 
-  convertToShamsiDate(rows: any,cols: Array<QuickReportColumnModel>) {
+  convertToShamsiDate(rows: any,cols: Array<QuickReportColumnConfig>) {
 
     for (var index = 0; index < rows.length; index++) {
       cols.forEach(function (item) {
@@ -333,7 +335,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     return rows;
   }
 
-  convertToMiladiDate(rows: any, cols: Array<QuickReportColumnModel>) {
+  convertToMiladiDate(rows: any, cols: Array<QuickReportColumnConfig>) {
 
     for (var index = 0; index < rows.length; index++) {
       cols.forEach(function (item) {

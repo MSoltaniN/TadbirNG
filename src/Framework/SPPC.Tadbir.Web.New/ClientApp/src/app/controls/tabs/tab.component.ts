@@ -7,6 +7,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ReportViewerComponent } from '../../components/reportViewer/reportViewer.component';
 import { QuickReportViewInfo } from '../../service/report/reporting.service';
+import { QuickReportConfigInfo } from '../../model/QuickReportConfig';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class TabComponent {
   @Input() Code: string;
   @Input() Manager: any;
   @Input() IsQuickReport: boolean;
-  @Input() QuickReportInfo: QuickReportViewInfo;
+  @Input() QuickReportInfo: QuickReportConfigInfo;
 
   @ViewChild(ReportViewerComponent) reportViewer: ReportViewerComponent;  
     

@@ -45,7 +45,7 @@ export class ReportApi {
     public static ReportMetadataByView = environment.BaseUrl + "/reports/metadata/{0}";
 
     // reports/sys/quickreport
-    public static EnvironmentQuickReport = environment.BaseUrl + "/reports/sys/quickreport";
+    public static EnvironmentQuickReport = environment.BaseUrl + "/reports/sys/quickreport/{0}";
 
     // reports/voucher/sum-by-date
     public static EnvironmentVoucherSummaryByDate = environment.BaseUrl + "/reports/voucher/sum-by-date";

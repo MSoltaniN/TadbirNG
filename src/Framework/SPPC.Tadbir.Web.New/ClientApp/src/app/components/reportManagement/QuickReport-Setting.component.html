@@ -29,7 +29,7 @@
     <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of this.viewInfo.columns "
                        [width]="item.width" field="{{item.name}}">
       <ng-template kendoGridHeaderTemplate>
-        <span class="hdrQReport">{{item.userText}}</span>
+        <span class="hdrQReport">{{item.userTitle}}</span>
       </ng-template>
       <ng-template kendoGridCellTemplate let-dataItem let-column="column" let-columnIndex="columnIndex" let-rowIndex="rowIndex">
         <kendo-switch (valueChange)="switchChange($event,column)" *ngIf="rowIndex === 0"
