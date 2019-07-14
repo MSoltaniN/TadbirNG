@@ -229,11 +229,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             quickReport = CreateHeaderBand(quickReport, qr.Columns, inchValue, dataSourceName, quickReportTemplate, reportLang);
-            quickReport = CreateDataBand(quickReport, qr, dataSourceName, quickReportTemplate, reportLang , inchValue);
+            quickReport = CreateDataBand(quickReport, qr, dataSourceName, quickReportTemplate, reportLang, inchValue);
             quickReport = FillLocalVariables(quickReport, qr.Title);
 
-            //SettingsController settingsController = new SettingsController();
-            //settingsController.PutModifiedQReportSettingsByUserAsync(this.SecurityContext.User.Id, qr);
+            ////SettingsController settingsController = new SettingsController();
+            ////settingsController.PutModifiedQReportSettingsByUserAsync(this.SecurityContext.User.Id, qr);
             _configRepository.SaveQuickReportConfigAsync(this.SecurityContext.User.Id, qr);
 
             var jsonData = quickReport.SaveToJsonString();
@@ -395,7 +395,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return report;
         }
 
-        private static StiReport SetPageWidth(StiReport report, QuickReportConfig quickReportViewModel,int inchValue, out bool outOfPage)
+        private static StiReport SetPageWidth(StiReport report, QuickReportConfig quickReportViewModel, int inchValue, out bool outOfPage)
         {
             double width = report.Pages[0].Width;
             outOfPage = false;
@@ -695,7 +695,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private static StiReport CreateDataBand(StiReport report, QuickReportConfig quickReportViewModel,
-            string dataSourceName, StiReport reportTemplate, string lang,int inchValue)
+            string dataSourceName, StiReport reportTemplate, string lang, int inchValue)
         {
             string ctrlName = "dataBand" + dataSourceName;
 
