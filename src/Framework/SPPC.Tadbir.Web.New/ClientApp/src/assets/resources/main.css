@@ -417,3 +417,35 @@ body.tRtl .sppc-input-num {
 .k-grid .money-item {
   direction: ltr;
 }
+
+
+
+.sppc-switch.k-switch {
+  width: 8.5em;
+}
+
+.sppc-switch.k-switch[dir='rtl'].k-switch-off .k-switch-handle {
+    left: calc(100% - 7.6em);
+  }
+
+.sppc-switch.k-switch[dir='rtl'].k-switch-on .k-switch-handle {
+    left: 5px;
+  }
+
+.sppc-switch.k-switch[dir='ltr'].k-switch-on .k-switch-handle {
+    left: calc(100% - 8.1em);
+  }
+
+.sppc-switch .k-switch-label-on, .sppc-switch .k-switch-label-off {
+  overflow: unset !important;
+}
+
+.sppc-switch .k-switch-label-on {
+  left: -44px;
+}
+.sppc-switch.k-switch[dir="rtl"] .k-switch-label-off {
+  left: -10px;
+}
+.sppc-switch.k-switch[dir="rtl"] .k-switch-label-on {
+  right: -45px;
+}

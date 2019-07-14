@@ -47,7 +47,6 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
 
 
   haveAccess(): boolean {
-    debugger;
     var eName = this.entityName;
     if (!this.entityName) {
       var viewId = (<any>this.parentComponet)._view.component.viewId;

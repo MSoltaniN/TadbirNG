@@ -15,15 +15,11 @@ import { BrowserStorageService } from '../../service/browserStorage.service';
   selector: 'user-form-component',
   styles: [
     `input[type=text],input[type=password] { width: 100%; } .ddl-fAcc {width:49%}
-         /deep/ .k-switch[dir='rtl'] .k-switch-label-off { left: -3.35em; }
-         /deep/.k-switch-label-on { left: -4.4em;}
-         /deep/.k-switch{width: 9em;}
-         /deep/.k-switch[dir='rtl']{width: 6.4em;}
-         
 `
   ],
   templateUrl: './user-form.component.html'
 })
+
 
 export class UserFormComponent extends DetailComponent {
 
