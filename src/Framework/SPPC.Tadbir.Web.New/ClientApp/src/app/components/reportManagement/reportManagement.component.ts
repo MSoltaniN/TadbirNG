@@ -864,6 +864,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     if (showQReport) {
 
       viewInfo.title = defReport.caption;
+      viewInfo.viewId = Number(this.ViewIdentity.ViewID);
 
       //get parameters for quick report
       var url = String.Format(ReportApi.Report, defReport.id);

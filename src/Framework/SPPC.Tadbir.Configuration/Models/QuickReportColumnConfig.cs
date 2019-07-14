@@ -14,6 +14,7 @@ namespace SPPC.Tadbir.Configuration.Models
         public QuickReportColumnConfig()
         {
             UserTitleMap = new Dictionary<string, string>();
+            WidthMap = new Dictionary<string, int>();
         }
 
         /// <summary>
