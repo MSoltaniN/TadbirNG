@@ -69,7 +69,7 @@
             <dt>{{ getColumnTitle(item) }}:</dt>
             <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
             <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
-            <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate }}</dd>
+            <dd *ngIf="item.scriptType == 'DateTime'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate:'DateTime' }}</dd>
           </ng-template>
         </dl>
       </ng-template>
