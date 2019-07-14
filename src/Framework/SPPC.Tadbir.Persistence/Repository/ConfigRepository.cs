@@ -383,6 +383,7 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 existing.Values = JsonHelper.From(userConfig, false);
+                repository.Update(existing);
             }
 
             await _unitOfWork.CommitAsync();

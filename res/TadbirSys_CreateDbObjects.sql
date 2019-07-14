@@ -674,7 +674,7 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey)
     VALUES (6, 'QuickSearchSettings', 3, 2, 'QuickSearchConfig', N'{}', N'{}', 'QuickSearchSettingsDescription')
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey)
-    VALUES (7, 'QuickReportSettings', 3, 2, 'QuickReportConfig', N'{}', 'QuickReportSettingsDescription')
+    VALUES (7, 'QuickReportSettings', 3, 2, 'QuickReportConfig', N'{}', N'{}', 'QuickReportSettingsDescription')
 SET IDENTITY_INSERT [Config].[Setting] OFF
 
 

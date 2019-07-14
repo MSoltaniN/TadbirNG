@@ -756,8 +756,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
               
           },         
           msg => { // Error
-            reject(false);
-            return null;
+            reject(false);           
           }
         );
     });
@@ -842,6 +841,9 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     var showQReport: boolean = false;
     var treeData: Array<TreeItem> = null;
     var url = String.Format(ReportApi.ReportsByView, this.ViewIdentity.ViewID);
+
+    var dpi_x = document.getElementById('dpi').offsetWidth;
+    viewInfo.inchValue = dpi_x;
 
     this.reportingService.getAll(url)
       .subscribe((res: any) => {
