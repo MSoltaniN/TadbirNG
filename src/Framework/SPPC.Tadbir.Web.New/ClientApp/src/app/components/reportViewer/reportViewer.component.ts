@@ -252,18 +252,19 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         });
 
         var registerData = false;
-        if (quickReportViewInfo) {
-          registerData = true;
+        if (quickReportViewInfo) {          
           var dateColumns = quickReportViewInfo.columns.filter(c => c.type.toLowerCase() === "date");
           if (dateColumns.length > 0 && this.CurrentLanguage == "fa") {
             var convertedData = reportRows;
             convertedData = this.convertToShamsiDate(convertedData, dateColumns);
-            this.report.regData("data", "data", convertedData);           
+            this.report.regData("data", "data", convertedData);
+            registerData = true;
           }
           else if (dateColumns.length > 0) {            
               var convertedData = reportRows;
               convertedData = this.convertToMiladiDate(convertedData, dateColumns);
-              this.report.regData("data", "data", convertedData);                          
+            this.report.regData("data", "data", convertedData);
+            registerData = true;
           }
         }
 

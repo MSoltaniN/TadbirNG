@@ -527,14 +527,17 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;
     var filterExpression: FilterExpression;
 
+
     //remove parameter that ParamInFilter == false
-    this.ViewIdentity.params.forEach(function (p) {
-      if (!p.ParamInFilter) {
-        var index = params.findIndex(f => f.name === p.ParamName);
-        if (index >= 0)
-          params.splice(index, 1);
-      }
-    });
+    if (this.ViewIdentity) {
+      this.ViewIdentity.params.forEach(function (p) {
+        if (!p.ParamInFilter) {
+          var index = params.findIndex(f => f.name === p.ParamName);
+          if (index >= 0)
+            params.splice(index, 1);
+        }
+      });
+    }
 
     filterExpression = this.createFilters(params, this.currentFilter);
 

@@ -1086,6 +1086,16 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         public const string FromDate = "FromDate";
 
         /// <summary>
+        /// Default text : از شماره
+        /// </summary>
+        public const string FromNo = "FromNo";
+
+        /// <summary>
+        /// Default text : تا شماره
+        /// </summary>
+        public const string ToNo = "ToNo";
+
+        /// <summary>
         /// Default text : شماره  صفحه :
         /// </summary>
         public const string PgNumber = "PgNumber";

@@ -1197,4 +1197,10 @@
   <data name="NavigateEntities" xml:space="preserve">
     <value>Navigate {0}</value>
   </data>
+  <data name="FromNo" xml:space="preserve">
+    <value>From No</value>
+  </data>
+  <data name="ToNo" xml:space="preserve">
+    <value>To No</value>
+  </data>
 </root>
