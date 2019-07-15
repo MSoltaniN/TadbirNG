@@ -1,5 +1,5 @@
 //#region Imports
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone, Renderer2, OnInit } from '@angular/core';
 import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,7 @@ import { AccountFormComponent } from './account-form.component';
 import { ViewName } from '../../security/viewName';
 import { GridExplorerComponent } from '../../class/gridExplorer.component';
 import { BrowserStorageService } from '../../service/browserStorage.service';
+import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
 
 //#endregion
 
@@ -33,17 +34,30 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class AccountComponent extends GridExplorerComponent<Account> {
+export class AccountComponent extends AutoGridExplorerComponent<Account> implements OnInit {
 
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
+    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService,bStorageService, Entities.Account,
       "Account.LedgerAccount", "Account.EditorTitleNew", "Account.EditorTitleEdit",
-      AccountApi.EnvironmentAccounts, AccountApi.EnvironmentLedgerAccounts, AccountApi.Account, AccountApi.AccountChildren, AccountApi.EnvironmentNewChildAccount, ViewName.Account)
+      AccountApi.EnvironmentAccounts, AccountApi.EnvironmentLedgerAccounts, AccountApi.Account, AccountApi.AccountChildren,
+      AccountApi.EnvironmentNewChildAccount,cdref, ngZone)
   }
 
+
+  ngOnInit(): void {
+    this.entityName = Entities.Account;
+    this.viewId = ViewName[this.entityTypeName];
+
+    this.treeConfig = this.getViewTreeSettings(this.viewId);
+    this.getTreeNode();
+    this.reloadGrid();
+    
+    //this.cdref.detectChanges();
+  }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
