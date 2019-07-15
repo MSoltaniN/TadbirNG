@@ -81,6 +81,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(voucherByNo);
         }
 
+        // GET: api/vouchers/range
+        [Route(VoucherApi.EnvironmentItemRangeUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetEnvironmentVoucherRnageAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var range = await _repository.GetVoucherRangeInfoAsync();
+            return Json(range);
+        }
+
         // GET: api/vouchers/first
         [Route(VoucherApi.FirstVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]

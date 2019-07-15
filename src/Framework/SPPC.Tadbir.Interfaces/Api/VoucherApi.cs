@@ -33,6 +33,16 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentItemCountUrl = "vouchers/count";
 
         /// <summary>
+        /// API client URL for first and last voucher number accessible in current environment
+        /// </summary>
+        public const string EnvironmentItemRange = "vouchers/range";
+
+        /// <summary>
+        /// API server route URL for first and last voucher number accessible in current environment
+        /// </summary>
+        public const string EnvironmentItemRangeUrl = "vouchers/range";
+
+        /// <summary>
         /// API client URL for a single voucher specified by identifier
         /// </summary>
         public const string Voucher = "vouchers/{0}";

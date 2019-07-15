@@ -85,6 +85,12 @@ namespace SPPC.Tadbir.Persistence
             where TViewModel : class, new();
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات محدوده سندهای قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>محدوده سندهای قابل دسترسی توسط کاربر جاری</returns>
+        Task<NumberedItemRangeViewModel> GetVoucherRangeInfoAsync();
+
+        /// <summary>
         /// به روش آسنکرون، شماره روزانه سند را با توجه به سندهای موجود در یک تاریخ تنظیم می کند
         /// </summary>
         /// <param name="voucher">اطلاعات نمایشی سند جدید</param>
