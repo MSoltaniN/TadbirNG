@@ -197,6 +197,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات محدوده سندهای قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>محدوده سندهای قابل دسترسی توسط کاربر جاری</returns>
+        public async Task<NumberedItemRangeViewModel> GetVoucherRangeInfoAsync()
+        {
+            var query = _repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .OrderBy(voucher => voucher.No);
+            var first = await query.FirstOrDefaultAsync();
+            var last = await query.LastOrDefaultAsync();
+            return new NumberedItemRangeViewModel()
+            {
+                ViewId = ViewName.Voucher,
+                FirstNo = (first != null) ? first.No : 0,
+                LastNo = (last != null) ? last.No : 0
+            };
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucher">مدل نمایشی سند مالی مورد نظر</param>
