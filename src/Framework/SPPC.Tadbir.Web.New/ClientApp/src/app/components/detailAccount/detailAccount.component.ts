@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, Renderer2, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
@@ -10,9 +10,9 @@ import { DetailAccount } from '../../model';
 import { String } from '../../class/source';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { ViewName } from '../../security/viewName';
-import { GridExplorerComponent } from '../../class/gridExplorer.component';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
 import { BrowserStorageService } from '../../service/browserStorage.service';
+import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -31,16 +31,29 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class DetailAccountComponent extends GridExplorerComponent<DetailAccount> {
+export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAccount> implements OnInit {
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
+    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.DetailAccount,
       "DetailAccount.LedgerDetailAccount", "DetailAccount.EditorTitleNew", "DetailAccount.EditorTitleEdit",
       DetailAccountApi.EnvironmentDetailAccounts, DetailAccountApi.EnvironmentDetailAccountsLedger, DetailAccountApi.DetailAccount, DetailAccountApi.DetailAccountChildren,
-      DetailAccountApi.EnvironmentNewChildDetailAccount, ViewName.DetailAccount)
+      DetailAccountApi.EnvironmentNewChildDetailAccount, cdref, ngZone)
   }
+
+
+  ngOnInit(): void {
+    this.entityName = Entities.DetailAccount;
+    this.viewId = ViewName[this.entityTypeName];
+
+    this.treeConfig = this.getViewTreeSettings(this.viewId);
+    this.getTreeNode();
+    this.reloadGrid();
+
+  }
+
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
