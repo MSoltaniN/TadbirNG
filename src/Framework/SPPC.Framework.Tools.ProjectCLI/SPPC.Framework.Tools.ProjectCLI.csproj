@@ -67,6 +67,7 @@
     <Compile Include="Commands\GenerateCsModelCommand.cs" />
     <Compile Include="Commands\GenerateKeyClassCommand.cs" />
     <Compile Include="Commands\GenerateTsSecurityCommand.cs" />
+    <Compile Include="Commands\RefreshDatabasesCommand.cs" />
     <Compile Include="NamespaceUtil.cs" />
     <Compile Include="Templates\CsFluentMappingFromMetadata.cs">
       <AutoGen>True</AutoGen>

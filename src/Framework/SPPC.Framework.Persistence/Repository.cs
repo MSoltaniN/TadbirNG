@@ -9,8 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
-using SPPC.Framework.Extensions;
-using SPPC.Framework.Presentation;
 
 namespace SPPC.Framework.Persistence
 {
@@ -465,6 +463,15 @@ namespace SPPC.Framework.Persistence
         public void Delete(TEntity entity)
         {
             _dataSet.Remove(entity);
+        }
+
+        /// <summary>
+        /// Directly executes a SQL command on the database represented by current DbContext
+        /// </summary>
+        /// <param name="command">SQL command to execute (syntax is checked by database provider)</param>
+        public void ExecuteCommand(string command)
+        {
+            _dataContext.Database.ExecuteSqlCommand(command);
         }
 
         #endregion

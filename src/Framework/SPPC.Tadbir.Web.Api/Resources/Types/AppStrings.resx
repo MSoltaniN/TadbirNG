@@ -351,9 +351,6 @@
   <data name="Inventories" xml:space="preserve">
     <value>موجودی کالا</value>
   </data>
-  <data name="IRVouchers" xml:space="preserve">
-    <value>رسید و حواله</value>
-  </data>
   <data name="ManageEntities" xml:space="preserve">
     <value>مدیریت {0}</value>
   </data>

@@ -66,6 +66,13 @@
       "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsSecurityCommand, ProjectCLI"
     },
     {
+      "name": "refdb",
+      "parameters": [
+      ],
+      "description": "Refreshes system and company databases with latest schema changes.",
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.RefreshDatabasesCommand, ProjectCLI"
+    },
+    {
       "name": "csmodel",
       "parameters": [
         {

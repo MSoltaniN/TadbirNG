@@ -161,5 +161,11 @@ namespace SPPC.Framework.Persistence
         /// </summary>
         /// <param name="entity">Entity to delete</param>
         void Delete(TEntity entity);
+
+        /// <summary>
+        /// Directly executes a SQL command on the database represented by current DbContext
+        /// </summary>
+        /// <param name="command">SQL command to execute (syntax is checked by database provider)</param>
+        void ExecuteCommand(string command);
     }
 }

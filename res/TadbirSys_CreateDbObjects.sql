@@ -25,6 +25,15 @@ GO
 CREATE SCHEMA [Contact]
 GO
 
+CREATE TABLE [Core].[Version] (
+    [VersionID]      INT              NOT NULL,
+    [Number]         VARCHAR(16)      NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Version_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Core_Version_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_Version] PRIMARY KEY CLUSTERED ([VersionID] ASC)
+)
+GO
+
 CREATE TABLE [Metadata].[View] (
     [ViewID]                 INT              IDENTITY (1, 1) NOT NULL,
     [Name]                   VARCHAR(64)      NOT NULL,
@@ -751,12 +760,12 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (27, 7, N'CreateEntity,Voucher', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (28, 7, N'EditEntity,Voucher', 4)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (29, 7, N'DeleteEntity,Voucher', 8)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (30, 7, N'PrepareEntity,Voucher', 16)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (31, 7, N'ReviewEntity,Voucher', 32)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (32, 7, N'ConfirmEntity,Voucher', 64)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (33, 7, N'ApproveEntity,Voucher', 128)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (34, 7, N'CheckEntity,Voucher', 256)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (35, 7, N'UncheckEntity,Voucher', 512)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (30, 7, N'NavigateEntities,Vouchers', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (31, 7, N'Lookup', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (32, 7, N'Filter', 64)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (33, 7, N'Print', 128)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (34, 7, N'Check', 256)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (35, 7, N'UndoCheck', 512)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (36, 8, N'ViewEntities,Branches', 1)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (37, 8, N'CreateEntity,Branch', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (38, 8, N'EditEntity,Branch', 4)
@@ -903,6 +912,11 @@ INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 83)
 INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 84)
 INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 85)
 INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 86)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 87)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 88)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 89)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 90)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 91)
 
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
