@@ -36,6 +36,10 @@
     <Reference Include="BabakSoft.Platform.Common">
       <HintPath>..\..\..\lib\BabakSoft.Platform.Common.dll</HintPath>
     </Reference>
+    <Reference Include="BabakSoft.Platform.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\BabakSoft.Platform.Data.dll</HintPath>
+    </Reference>
     <Reference Include="BabakSoft.Platform.Extensions">
       <HintPath>..\..\..\lib\BabakSoft.Platform.Extensions.dll</HintPath>
     </Reference>
@@ -55,6 +59,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,10 +69,14 @@
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Models\AppSettingsModel.cs" />
     <Compile Include="Commands\GenerateCsModelCommand.cs" />
     <Compile Include="Commands\GenerateKeyClassCommand.cs" />
     <Compile Include="Commands\GenerateTsSecurityCommand.cs" />
     <Compile Include="Commands\RefreshDatabasesCommand.cs" />
+    <Compile Include="Models\ConnectionStringsModel.cs" />
+    <Compile Include="Models\LoggingModel.cs" />
+    <Compile Include="Models\LogLevelModel.cs" />
     <Compile Include="NamespaceUtil.cs" />
     <Compile Include="Templates\CsFluentMappingFromMetadata.cs">
       <AutoGen>True</AutoGen>
