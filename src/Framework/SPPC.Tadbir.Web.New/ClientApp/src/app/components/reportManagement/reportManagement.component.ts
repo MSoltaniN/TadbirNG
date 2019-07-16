@@ -739,7 +739,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
    * @param viewInfo
    * @param reportManager
    */
-  public async directShowReport()  {
+  public /*async*/ directShowReport()  {
 
     var viewId = parseInt(this.ViewIdentity.ViewID);
     var userId = this.UserId;
