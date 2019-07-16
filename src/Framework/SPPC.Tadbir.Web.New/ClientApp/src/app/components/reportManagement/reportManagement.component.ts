@@ -744,6 +744,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     var viewId = parseInt(this.ViewIdentity.ViewID);
     var userId = this.UserId;
 
+    /*
     let promise = new Promise((resolve, reject) => {
       this.settingService.getQuickReportSettingsByUserAndView(userId, viewId)
         .toPromise()
@@ -764,9 +765,19 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
         );
     });
     return promise;
+    */
+
 
     
+    var jsonString = localStorage.getItem("s" + viewId + this.currentlang + userId);
+    if (jsonString) {
+      var res = <QuickReportConfigInfo>JSON.parse(jsonString);
+      this.DecisionMakingForShowReport(res);
+      return true;
+    }
     
+    return false;
+
   }
 
 
