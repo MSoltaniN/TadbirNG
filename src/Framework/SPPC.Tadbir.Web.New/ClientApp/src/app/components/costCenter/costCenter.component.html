@@ -68,8 +68,8 @@
                       [scrollable]="'scrollable'"
                       (pageChange)="pageChange($event)"
                       (sortChange)="sortChange($event)"
-                      (edit)="editHandler($event)"
-                      (remove)="removeHandler($event)"
+                      (edit)="editHandler()"
+                      (remove)="removeHandler()"
                       [loading]="false"
                       [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                       [selectedKeys]="selectedRows"
@@ -118,6 +118,10 @@
                                            (columnsList)="getColumns($event)">
               </auto-generated-grid-setting>
               <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+
+              <button kendoButton class="hidden-xs reportMargin" (click)="showReport()"
+                                              [icon]="'printer'" type="button"></button>
+
             </ng-template>
 
             <kendo-grid-checkbox-column showSelectAll="true" width="66"></kendo-grid-checkbox-column>
