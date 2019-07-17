@@ -1,21 +1,20 @@
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
+import { Component, OnInit, Renderer2, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService, GridService, CostCenterInfo } from '../../service';
+import { SettingService, GridService } from '../../service';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { CostCenterApi } from '../../service/api';
 import { CostCenter } from '../../model';
 import { String } from '../../class/source';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { ViewName } from '../../security/viewName';
-import { GridExplorerComponent } from '../../class/gridExplorer.component';
 import { CostCenterFormComponent } from './costCenter-form.component';
-import { GridComponent } from '@progress/kendo-angular-grid';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
 import { BrowserStorageService } from '../../service/browserStorage.service';
+import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -34,18 +33,28 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
+export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> implements OnInit {
 
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;  
+  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
-    super(toastrService, translate, service, dialogService, renderer, metadata, settingService,bStorageService, Entities.CostCenter,
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
+    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
+    super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.CostCenter,
       "CostCenter.LedgerCostCenter", "CostCenter.EditorTitleNew", "CostCenter.EditorTitleEdit",
-      CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren, CostCenterApi.EnvironmentNewChildCostCenter,
-      ViewName.CostCenter)
+      CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren,
+      CostCenterApi.EnvironmentNewChildCostCenter, cdref, ngZone)
+  }
+
+  ngOnInit(): void {
+    this.entityName = Entities.CostCenter;
+    this.viewId = ViewName[this.entityTypeName];
+
+    this.treeConfig = this.getViewTreeSettings(this.viewId);
+    this.getTreeNode();
+    this.reloadGrid();
+
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
@@ -82,7 +91,7 @@ export class CostCenterComponent extends GridExplorerComponent<CostCenter>{
       }
   }
 
-  public showReport() { 
+  public showReport() {
     this.reportManager.DecisionMakingForShowReport();
   }
 
