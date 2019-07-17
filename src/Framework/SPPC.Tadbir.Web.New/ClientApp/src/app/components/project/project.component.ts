@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
@@ -10,9 +10,9 @@ import { Project } from '../../model';
 import { String } from '../../class/source';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { ViewName } from '../../security/viewName';
-import { GridExplorerComponent } from '../../class/gridExplorer.component';
 import { ProjectFormComponent } from './project-form.component';
 import { BrowserStorageService } from '../../service/browserStorage.service';
+import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -30,17 +30,29 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class ProjectComponent extends GridExplorerComponent<Project> {
+export class ProjectComponent extends AutoGridExplorerComponent<Project> implements OnInit{
 
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
+    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Project,
       "Project.LedgerProject", "Project.EditorTitleNew", "Project.EditorTitleEdit",
-      ProjectApi.EnvironmentProjects, ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren, ProjectApi.EnvironmentNewChildProject, ViewName.Project)
+      ProjectApi.EnvironmentProjects, ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren, ProjectApi.EnvironmentNewChildProject,
+      cdref, ngZone)
   }
 
+  ngOnInit(): void {
+    this.entityName = Entities.Project;
+    this.viewId = ViewName[this.entityTypeName];
+
+    this.treeConfig = this.getViewTreeSettings(this.viewId);
+    this.getTreeNode();
+    this.reloadGrid();
+
+    //this.cdref.detectChanges();
+  }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
