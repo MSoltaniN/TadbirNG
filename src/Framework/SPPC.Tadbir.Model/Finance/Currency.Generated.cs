@@ -16,9 +16,9 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Model.Finance
 {
     /// <summary>
-    /// Represents a local or international currency used for registering monetary transactions
+    /// اطلاعات یک ارز محلی یا بین المللی را برای استفاده در تراکنش های ارزی نگهداری می کند
     /// </summary>
-    public partial class Currency : CoreEntity
+    public partial class Currency : BaseEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

@@ -25,6 +25,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("CurrencyID");
+            builder.Property(e => e.BranchScope)
+                .IsRequired();
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(64);
@@ -49,6 +51,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
+
+            builder.HasOne(e => e.Branch)
+                .WithMany()
+                .HasForeignKey(e => e.BranchId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_Currency_Corporate_Branch");
         }
     }
 }

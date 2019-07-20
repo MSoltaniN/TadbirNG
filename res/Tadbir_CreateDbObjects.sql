@@ -26,18 +26,30 @@ CREATE SCHEMA [Workflow]
 GO
 
 
+CREATE TABLE [Core].[Version] (
+    [VersionID]      INT              NOT NULL,
+    [Number]         VARCHAR(16)      NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Version_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Core_Version_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_Version] PRIMARY KEY CLUSTERED ([VersionID] ASC)
+)
+GO
+
 CREATE TABLE [Finance].[Currency] (
     [CurrencyID]     INT              IDENTITY (1, 1) NOT NULL,
+	[BranchID]       INT              NOT NULL,
     [Name]           NVARCHAR(64)     NOT NULL,
     [Country]        NVARCHAR(64)     NOT NULL,
     [Code]           NVARCHAR(8)      NOT NULL,
     [MinorUnit]      NVARCHAR(16)     NOT NULL,
     [Multiplier]     INT              NOT NULL,
     [DecimalCount]   SMALLINT         NOT NULL,
+	[BranchScope]    SMALLINT         CONSTRAINT [DF_Finance_Currency_BranchScope] DEFAULT (0) NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Currency] PRIMARY KEY CLUSTERED ([CurrencyID] ASC)
+    , CONSTRAINT [FK_Finance_Currency_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
 GO
 
