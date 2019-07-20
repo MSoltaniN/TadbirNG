@@ -28,5 +28,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a currency item specified by unique identifier
         /// </summary>
         public const string CurrencyUrl = "currencies/{currencyId:min(1)}";
+
+        /// <summary>
+        /// API client URL for currency information by name key
+        /// </summary>
+        public const string CurrencyInfoByName = "currencies/info/{0}";
+
+        /// <summary>
+        /// API server route URL for currency information by name key
+        /// </summary>
+        public const string CurrencyInfoByNameUrl = "currencies/info/{nameKey}";
     }
 }

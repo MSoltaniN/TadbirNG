@@ -253,6 +253,12 @@ namespace SPPC.Tadbir.Mapper
                             new[] { "VoucherLineDisplay", src.Debit.ToString("C0"), src.Credit.ToString("C0"), src.Description })));
             mapperConfig.CreateMap<VoucherLine, VoucherLineAmountsViewModel>();
 
+            mapperConfig.CreateMap<CurrencyInfo, CurrencyViewModel>()
+                .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.Currency.Code))
+                .ForMember(dest => dest.DecimalCount, opts => opts.MapFrom(src => src.Currency.DecimalCount))
+                .ForMember(dest => dest.MinorUnit, opts => opts.MapFrom(src => src.Currency.MinorUnit))
+                .ForMember(dest => dest.Multiplier, opts => opts.MapFrom(src => Math.Pow(10, src.Currency.DecimalCount)))
+                .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Currency.Name));
             mapperConfig.CreateMap<CurrencyViewModel, Currency>();
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))

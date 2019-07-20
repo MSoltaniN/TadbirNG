@@ -47,6 +47,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(currency);
         }
 
+        // GET: api/currencies/info/{nameKey}
+        [Route(CurrencyApi.CurrencyInfoByNameUrl)]
+        public IActionResult GetCurrencyInfoByName(string nameKey)
+        {
+            var currency = _repository.GetCurrencyByName(nameKey);
+            return JsonReadResult(currency);
+        }
+
         // POST: api/currencies
         [HttpPost]
         [Route(CurrencyApi.CurrenciesUrl)]

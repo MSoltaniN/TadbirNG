@@ -34,6 +34,13 @@ namespace SPPC.Tadbir.Persistence
         Task<CurrencyViewModel> GetCurrencyAsync(int currencyId);
 
         /// <summary>
+        /// اطلاعات استاندارد یک ارز با نام مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="nameKey">کلید متن چندزبانه برای نام ارز مورد نظر</param>
+        /// <returns>اطلاعات استاندارد ارز</returns>
+        CurrencyViewModel GetCurrencyByName(string nameKey);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک ارز را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="currency">ارز مورد نظر برای ایجاد یا اصلاح</param>

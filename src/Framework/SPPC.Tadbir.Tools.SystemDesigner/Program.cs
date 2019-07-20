@@ -21,6 +21,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         static void Main()
         {
             //DoXferTadbirDb();
+            AddResources();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWindow());
@@ -74,9 +75,9 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         private static void AddResources()
         {
             var currencies = JsonHelper.To<List<CurrencyInfo>>(File.ReadAllText("currencies.json"));
-            AddCountryResources(currencies, "AppStrings.en.resx");
-            AddCountryResources(currencies, "AppStrings.resx");
-            Console.WriteLine("Country resources added.");
+            AddOtherResources(currencies, "AppStrings.en.resx");
+            AddOtherResources(currencies, "AppStrings.resx");
+            Console.WriteLine("Currency and minor unit resources added.");
             Console.ReadLine();
         }
 
@@ -204,6 +205,46 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
                 foreach (var currency in currencies)
                 {
                     writer.AddResource(String.Format("Country_{0}", ToIdentifier(currency.Country)), currency.Country);
+                }
+            }
+        }
+
+        private static void AddOtherResources(List<CurrencyInfo> currencies, string resx)
+        {
+            var units = currencies
+                .Select(curr => curr.Currency.Name)
+                .Distinct()
+                .Select(curr => new KeyValue(String.Format("CUnit_{0}", ToIdentifier(curr)), curr))
+                .ToList();
+            var minorUnits = currencies
+                .Select(curr => curr.Currency.MinorUnit)
+                .Distinct()
+                .Select(unit => new KeyValue(String.Format("CMUnit_{0}", ToIdentifier(unit)), unit))
+                .ToList();
+            var existing = new List<DictionaryEntry>();
+            using (var reader = new ResXResourceReader(resx))
+            {
+                foreach (DictionaryEntry entry in reader)
+                {
+                    existing.Add(new DictionaryEntry(entry.Key, entry.Value));
+                }
+            }
+
+            using (var writer = new ResXResourceWriter(resx))
+            {
+                foreach (var entry in existing)
+                {
+                    writer.AddResource(entry.Key.ToString(), entry.Value.ToString());
+                }
+
+                foreach (var unit in units)
+                {
+                    writer.AddResource(unit.Key, unit.Value);
+                }
+
+                foreach (var minorUnit in minorUnits)
+                {
+                    writer.AddResource(minorUnit.Key, minorUnit.Value);
                 }
             }
         }
