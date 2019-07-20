@@ -43,6 +43,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .IsRequired();
             builder.Property(e => e.DecimalCount)
                 .IsRequired();
+            builder.Property(e => e.IsActive)
+                .IsRequired();
             builder.Property(e => e.Description)
                 .HasMaxLength(512);
             builder.Property(e => e.RowGuid)

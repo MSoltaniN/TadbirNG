@@ -37,14 +37,16 @@ GO
 
 CREATE TABLE [Finance].[Currency] (
     [CurrencyID]     INT              IDENTITY (1, 1) NOT NULL,
+	[FiscalPeriodID] INT              CONSTRAINT [DF_Finance_Currency_FiscalPeriodID] DEFAULT (0) NOT NULL,
 	[BranchID]       INT              NOT NULL,
+	[BranchScope]    SMALLINT         CONSTRAINT [DF_Finance_Currency_BranchScope] DEFAULT (0) NOT NULL,
     [Name]           NVARCHAR(64)     NOT NULL,
     [Country]        NVARCHAR(64)     NOT NULL,
     [Code]           NVARCHAR(8)      NOT NULL,
     [MinorUnit]      NVARCHAR(16)     NOT NULL,
     [Multiplier]     INT              NOT NULL,
     [DecimalCount]   SMALLINT         NOT NULL,
-	[BranchScope]    SMALLINT         CONSTRAINT [DF_Finance_Currency_BranchScope] DEFAULT (0) NOT NULL,
+    [IsActive]       BIT              NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL

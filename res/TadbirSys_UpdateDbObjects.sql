@@ -1,82 +1,27 @@
--- 1.1.600
--- Demo : Creating a new table
-CREATE TABLE [Core].[Test] (
-    [TestID]         INT              NOT NULL,
-    [Name]           VARCHAR(16)      NOT NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Test_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Core_Test_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Core_Test] PRIMARY KEY CLUSTERED ([TestID] ASC)
-)
+-- 1.1.666
+SET IDENTITY_INSERT [Metadata].[View] ON
+INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (30, 'Currency', 0, 0, N'')
+SET IDENTITY_INSERT [Metadata].[View] OFF
 
--- Demo : Inserting a record in an existing table
-INSERT INTO [Core].[Test] ([TestID], [Name])
-VALUES(1, 'Test Name')
-
--- 1.1.607
--- Demo : Adding a new NOT NULL column to an existing table, with default value
-ALTER TABLE [Core].[Test]
-ADD MyColumn NVARCHAR(64) NOT NULL
-CONSTRAINT DF_Core_Test_MyColumn DEFAULT N'Surprise!'
-WITH VALUES;
-GO
-
--- Demo : Adding a new NULL column to an existing table, with default value
-ALTER TABLE [Core].[Test]
-ADD MyOptionalColumn NVARCHAR(32) NULL
-CONSTRAINT DF_Core_Test_MyOptionalColumn DEFAULT N'Outstanding!'
-WITH VALUES;
-GO
-
--- 1.1.612
--- Demo : Inserting several rows with Identity On/Off directives
-SET IDENTITY_INSERT [Auth].[User] ON
-INSERT INTO [Auth].[User] ([UserID], [UserName], [PasswordHash], [IsEnabled]) VALUES(8, N'babak', '70db1869eb931d8978843e6c2d95a5ea3a038fce782b939479374126040cb6f5', 1)
-INSERT INTO [Auth].[User] ([UserID], [UserName], [PasswordHash], [IsEnabled]) VALUES(9, N'albert', '70db1869eb931d8978843e6c2d95a5ea3a038fce782b939479374126040cb6f5', 1)
-INSERT INTO [Auth].[User] ([UserID], [UserName], [PasswordHash], [IsEnabled]) VALUES(10, N'teymour', '70db1869eb931d8978843e6c2d95a5ea3a038fce782b939479374126040cb6f5', 1)
-SET IDENTITY_INSERT [Auth].[User] OFF
-
-SET IDENTITY_INSERT [Contact].[Person] ON
-INSERT INTO [Contact].[Person] ([PersonID], [UserID], [FirstName], [LastName]) VALUES(8, 8, N'Babak', N'Eslamieh')
-INSERT INTO [Contact].[Person] ([PersonID], [UserID], [FirstName], [LastName]) VALUES(9, 9, N'Edward', N'Scissorhands')
-INSERT INTO [Contact].[Person] ([PersonID], [UserID], [FirstName], [LastName]) VALUES(10, 10, N'Teymour', N'Lang')
-SET IDENTITY_INSERT [Contact].[Person] OFF
-
--- Demo : Updating existing data
-UPDATE [Auth].[Permission]
-SET Name = N'Check'
-WHERE GroupID = 7 AND Flag = 256
-
-UPDATE [Auth].[Permission]
-SET Name = N'UndoCheck'
-WHERE GroupID = 7 AND Flag = 512
-
--- 1.1.618
--- Demo : Deleting expired data
-DELETE FROM [Contact].[Person]
-WHERE PersonID >= 8
-
-DELETE FROM [Auth].[User]
-WHERE UserID >= 8
-
--- Demo : Deleting existing columns
-ALTER TABLE [Core].[Test]
-DROP DF_Core_Test_MyColumn
-GO
-
-ALTER TABLE [Core].[Test]
-DROP COLUMN [MyColumn];
-GO
-
-ALTER TABLE [Core].[Test]
-DROP DF_Core_Test_MyOptionalColumn
-GO
-
-ALTER TABLE [Core].[Test]
-DROP COLUMN [MyOptionalColumn];
-GO
-
--- 1.1.622
--- Demo : Deleting an expired table
-DROP TABLE [Core].[Test]
-GO
-
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (248, 30, N'Id', NULL, N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (249, 30, N'Name', NULL, N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, N'AlwaysVisible', 0, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (250, 30, N'Code', NULL, N'System.String', N'nvarchar', N'string', 8, 0, 0, 0, 1, 1, NULL, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (251, 30, N'Country', NULL, N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL, 2, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (252, 30, N'MinorUnit', NULL, N'System.String', N'nvarchar', N'string', 16, 0, 0, 0, 1, 1, NULL, 3, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (253, 30, N'Description', NULL, N'System.String', N'nvarchar', N'string', 512, 0, 0, 1, 1, 1, NULL, 4, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (254, 30, N'BranchName', NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, NULL, 5, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (255, 30, N'DecimalCount', NULL, N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 1, 1, N'Hidden', 6, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (256, 30, N'BranchScope', NULL, N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (257, 30, N'IsActive', NULL, N'System.Boolean', N'bit', N'boolean', 0, 0, 0, 0, 1, 1, N'Hidden', 7, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF
