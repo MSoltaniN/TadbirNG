@@ -130,12 +130,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="currency">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(CurrencyViewModel currencyViewModel, Currency currency)
         {
+            currency.BranchScope = currencyViewModel.BranchScope;
             currency.Name = currencyViewModel.Name;
             currency.Country = currencyViewModel.Country;
             currency.Code = currencyViewModel.Code;
             currency.MinorUnit = currencyViewModel.MinorUnit;
             currency.Multiplier = currencyViewModel.Multiplier;
             currency.DecimalCount = currencyViewModel.DecimalCount;
+            currency.IsActive = currencyViewModel.IsActive;
             currency.Description = currencyViewModel.Description;
         }
 
