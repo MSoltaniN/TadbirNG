@@ -50,6 +50,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\BabakSoft.Platform.Metadata.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.10.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\HtmlAgilityPack.1.11.10\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -81,6 +84,7 @@
     <Compile Include="Forms\GenerateControllerForm.Designer.cs">
       <DependentUpon>GenerateControllerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -91,6 +95,8 @@
     <Compile Include="Models\ControllerModel.cs" />
     <Compile Include="Models\CrudWizardModel.cs" />
     <Compile Include="Models\CrudWizardOptionsModel.cs" />
+    <Compile Include="Models\CurrencyDetail.cs" />
+    <Compile Include="Models\CurrencyInfo.cs" />
     <Compile Include="Models\EntityActionsModel.cs" />
     <Compile Include="Models\EntityInfoModel.cs" />
     <Compile Include="NamespaceUtil.cs" />
@@ -259,6 +265,7 @@
     <None Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
