@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -39,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
             var currencies = await repository
-                .GetEntityQuery()
+                .GetEntityQuery(curr => curr.Branch)
                 .Select(item => Mapper.Map<CurrencyViewModel>(item))
                 .ToListAsync();
             return currencies
@@ -73,13 +76,28 @@ namespace SPPC.Tadbir.Persistence
         {
             CurrencyViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
-            var currency = await repository.GetByIDAsync(currencyId);
+            var currency = await repository.GetByIDAsync(currencyId, curr => curr.Branch);
             if (currency != null)
             {
                 item = Mapper.Map<CurrencyViewModel>(currency);
             }
 
             return item;
+        }
+
+        /// <summary>
+        /// اطلاعات استاندارد یک ارز با نام مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="nameKey">کلید متن چندزبانه برای نام ارز مورد نظر</param>
+        /// <returns>اطلاعات استاندارد ارز</returns>
+        public CurrencyViewModel GetCurrencyByName(string nameKey)
+        {
+            var currencies = JsonHelper.To<List<CurrencyInfo>>(File.ReadAllText(_currencyDbPath));
+            var currency = currencies
+                .Where(curr => curr.Currency.Name == nameKey)
+                .Select(curr => Mapper.Map<CurrencyViewModel>(curr))
+                .FirstOrDefault();
+            return currency;
         }
 
         /// <summary>
@@ -130,12 +148,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="currency">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(CurrencyViewModel currencyViewModel, Currency currency)
         {
+            currency.BranchScope = currencyViewModel.BranchScope;
             currency.Name = currencyViewModel.Name;
             currency.Country = currencyViewModel.Country;
             currency.Code = currencyViewModel.Code;
             currency.MinorUnit = currencyViewModel.MinorUnit;
             currency.Multiplier = currencyViewModel.Multiplier;
             currency.DecimalCount = currencyViewModel.DecimalCount;
+            currency.IsActive = currencyViewModel.IsActive;
             currency.Description = currencyViewModel.Description;
         }
 
@@ -153,5 +173,7 @@ Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLi
                 entity.DecimalCount, entity.Description)
                 : null;
         }
+
+        private const string _currencyDbPath = @"..\..\..\src\Framework\SPPC.Tadbir.Persistence\currencies.json";
     }
 }

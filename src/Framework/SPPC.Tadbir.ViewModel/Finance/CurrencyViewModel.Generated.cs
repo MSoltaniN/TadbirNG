@@ -39,6 +39,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int Id { get; set; }
 
         /// <summary>
+        /// محدوده دسترسی به ارز را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل
+        /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
+        /// </summary>
+        public short BranchScope { get; set; }
+
+        /// <summary>
         /// کلید متن چند زبانه برای نام ارز استاندارد
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
@@ -77,6 +83,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public short DecimalCount { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا ارز مورد نظر در برنامه فعال است یا نه؟
+        /// </summary>
+        public bool IsActive { get; set; }
 
         /// <summary>
         /// شرح تکمیلی برای نگهداری جزئیات بیشتر در مورد ارز

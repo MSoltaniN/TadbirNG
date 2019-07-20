@@ -73,3 +73,16 @@ ADD CONSTRAINT [FK_Finance_Currency_Corporate_Branch] FOREIGN KEY ([BranchID])
     REFERENCES [Corporate].[Branch]([BranchID]);
 GO
 
+-- 1.1.666
+ALTER TABLE [Finance].[Currency]
+ADD [FiscalPeriodID] INT NOT NULL
+CONSTRAINT DF_Finance_Currency_FiscalPeriodID DEFAULT 0
+WITH VALUES;
+GO
+
+ALTER TABLE [Finance].[Currency]
+ADD [IsActive] BIT NOT NULL
+CONSTRAINT DF_Finance_Currency_IsActive DEFAULT 1
+WITH VALUES;
+GO
+

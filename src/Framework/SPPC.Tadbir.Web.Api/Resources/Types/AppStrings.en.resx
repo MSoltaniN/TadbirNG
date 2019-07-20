@@ -1866,4 +1866,664 @@
   <data name="Country_Zimbabwe" xml:space="preserve">
     <value>Zimbabwe</value>
   </data>
+  <data name="CUnit_AfghanAfghani" xml:space="preserve">
+    <value>Afghan afghani</value>
+  </data>
+  <data name="CUnit_Euro" xml:space="preserve">
+    <value>Euro</value>
+  </data>
+  <data name="CUnit_AlbanianLek" xml:space="preserve">
+    <value>Albanian lek</value>
+  </data>
+  <data name="CUnit_AlgerianDinar" xml:space="preserve">
+    <value>Algerian dinar</value>
+  </data>
+  <data name="CUnit_AngolanKwanza" xml:space="preserve">
+    <value>Angolan kwanza</value>
+  </data>
+  <data name="CUnit_EasternCaribbeanDollar" xml:space="preserve">
+    <value>Eastern Caribbean dollar</value>
+  </data>
+  <data name="CUnit_ArgentinePeso" xml:space="preserve">
+    <value>Argentine peso</value>
+  </data>
+  <data name="CUnit_ArmenianDram" xml:space="preserve">
+    <value>Armenian dram</value>
+  </data>
+  <data name="CUnit_ArubanFlorin" xml:space="preserve">
+    <value>Aruban florin</value>
+  </data>
+  <data name="CUnit_AscensionPound" xml:space="preserve">
+    <value>Ascension pound</value>
+  </data>
+  <data name="CUnit_AustralianDollar" xml:space="preserve">
+    <value>Australian dollar</value>
+  </data>
+  <data name="CUnit_AzerbaijaniManat" xml:space="preserve">
+    <value>Azerbaijani manat</value>
+  </data>
+  <data name="CUnit_BahamianDollar" xml:space="preserve">
+    <value>Bahamian dollar</value>
+  </data>
+  <data name="CUnit_BahrainiDinar" xml:space="preserve">
+    <value>Bahraini dinar</value>
+  </data>
+  <data name="CUnit_BangladeshiTaka" xml:space="preserve">
+    <value>Bangladeshi taka</value>
+  </data>
+  <data name="CUnit_BarbadianDollar" xml:space="preserve">
+    <value>Barbadian dollar</value>
+  </data>
+  <data name="CUnit_BelarusianRuble" xml:space="preserve">
+    <value>Belarusian ruble</value>
+  </data>
+  <data name="CUnit_BelizeDollar" xml:space="preserve">
+    <value>Belize dollar</value>
+  </data>
+  <data name="CUnit_WestAfricanCFAFranc" xml:space="preserve">
+    <value>West African CFA franc</value>
+  </data>
+  <data name="CUnit_BermudianDollar" xml:space="preserve">
+    <value>Bermudian dollar</value>
+  </data>
+  <data name="CUnit_BolivianBoliviano" xml:space="preserve">
+    <value>Bolivian boliviano</value>
+  </data>
+  <data name="CUnit_UnitedStatesDollar" xml:space="preserve">
+    <value>United States dollar</value>
+  </data>
+  <data name="CUnit_BosniaAndHerzegovinaConvertibleMark" xml:space="preserve">
+    <value>Bosnia and Herzegovina convertible mark</value>
+  </data>
+  <data name="CUnit_BotswanaPula" xml:space="preserve">
+    <value>Botswana pula</value>
+  </data>
+  <data name="CUnit_BrazilianReal" xml:space="preserve">
+    <value>Brazilian real</value>
+  </data>
+  <data name="CUnit_BritishVirginIslandsDollar" xml:space="preserve">
+    <value>British Virgin Islands dollar</value>
+  </data>
+  <data name="CUnit_BulgarianLev" xml:space="preserve">
+    <value>Bulgarian lev</value>
+  </data>
+  <data name="CUnit_BurundianFranc" xml:space="preserve">
+    <value>Burundian franc</value>
+  </data>
+  <data name="CUnit_CambodianRiel" xml:space="preserve">
+    <value>Cambodian riel</value>
+  </data>
+  <data name="CUnit_CentralAfricanCFAFranc" xml:space="preserve">
+    <value>Central African CFA franc</value>
+  </data>
+  <data name="CUnit_CanadianDollar" xml:space="preserve">
+    <value>Canadian dollar</value>
+  </data>
+  <data name="CUnit_CapeVerdeanEscudo" xml:space="preserve">
+    <value>Cape Verdean escudo</value>
+  </data>
+  <data name="CUnit_CaymanIslandsDollar" xml:space="preserve">
+    <value>Cayman Islands dollar</value>
+  </data>
+  <data name="CUnit_ChileanPeso" xml:space="preserve">
+    <value>Chilean peso</value>
+  </data>
+  <data name="CUnit_ChineseYuan" xml:space="preserve">
+    <value>Chinese yuan</value>
+  </data>
+  <data name="CUnit_ColombianPeso" xml:space="preserve">
+    <value>Colombian peso</value>
+  </data>
+  <data name="CUnit_ComorianFranc" xml:space="preserve">
+    <value>Comorian franc</value>
+  </data>
+  <data name="CUnit_CongoleseFranc" xml:space="preserve">
+    <value>Congolese franc</value>
+  </data>
+  <data name="CUnit_CostaRicanColón" xml:space="preserve">
+    <value>Costa Rican colón</value>
+  </data>
+  <data name="CUnit_CroatianKuna" xml:space="preserve">
+    <value>Croatian kuna</value>
+  </data>
+  <data name="CUnit_CubanPeso" xml:space="preserve">
+    <value>Cuban peso</value>
+  </data>
+  <data name="CUnit_NetherlandsAntilleanGuilder" xml:space="preserve">
+    <value>Netherlands Antillean guilder</value>
+  </data>
+  <data name="CUnit_CzechKoruna" xml:space="preserve">
+    <value>Czech koruna</value>
+  </data>
+  <data name="CUnit_DanishKrone" xml:space="preserve">
+    <value>Danish krone</value>
+  </data>
+  <data name="CUnit_DjiboutianFranc" xml:space="preserve">
+    <value>Djiboutian franc</value>
+  </data>
+  <data name="CUnit_DominicanPeso" xml:space="preserve">
+    <value>Dominican peso</value>
+  </data>
+  <data name="CUnit_EgyptianPound" xml:space="preserve">
+    <value>Egyptian pound</value>
+  </data>
+  <data name="CUnit_EritreanNakfa" xml:space="preserve">
+    <value>Eritrean nakfa</value>
+  </data>
+  <data name="CUnit_SwaziLilangeni" xml:space="preserve">
+    <value>Swazi lilangeni</value>
+  </data>
+  <data name="CUnit_EthiopianBirr" xml:space="preserve">
+    <value>Ethiopian birr</value>
+  </data>
+  <data name="CUnit_FalklandIslandsPound" xml:space="preserve">
+    <value>Falkland Islands pound</value>
+  </data>
+  <data name="CUnit_FijianDollar" xml:space="preserve">
+    <value>Fijian dollar</value>
+  </data>
+  <data name="CUnit_CFPFranc" xml:space="preserve">
+    <value>CFP franc</value>
+  </data>
+  <data name="CUnit_GambianDalasi" xml:space="preserve">
+    <value>Gambian dalasi</value>
+  </data>
+  <data name="CUnit_GeorgianLari" xml:space="preserve">
+    <value>Georgian lari</value>
+  </data>
+  <data name="CUnit_GhanaianCedi" xml:space="preserve">
+    <value>Ghanaian cedi</value>
+  </data>
+  <data name="CUnit_GibraltarPound" xml:space="preserve">
+    <value>Gibraltar pound</value>
+  </data>
+  <data name="CUnit_GuatemalanQuetzal" xml:space="preserve">
+    <value>Guatemalan quetzal</value>
+  </data>
+  <data name="CUnit_GuineanFranc" xml:space="preserve">
+    <value>Guinean franc</value>
+  </data>
+  <data name="CUnit_GuyaneseDollar" xml:space="preserve">
+    <value>Guyanese dollar</value>
+  </data>
+  <data name="CUnit_HaitianGourde" xml:space="preserve">
+    <value>Haitian gourde</value>
+  </data>
+  <data name="CUnit_HonduranLempira" xml:space="preserve">
+    <value>Honduran lempira</value>
+  </data>
+  <data name="CUnit_HongKongDollar" xml:space="preserve">
+    <value>Hong Kong dollar</value>
+  </data>
+  <data name="CUnit_HungarianForint" xml:space="preserve">
+    <value>Hungarian forint</value>
+  </data>
+  <data name="CUnit_IcelandicKróna" xml:space="preserve">
+    <value>Icelandic króna</value>
+  </data>
+  <data name="CUnit_IndianRupee" xml:space="preserve">
+    <value>Indian rupee</value>
+  </data>
+  <data name="CUnit_IndonesianRupiah" xml:space="preserve">
+    <value>Indonesian rupiah</value>
+  </data>
+  <data name="CUnit_IranianRial" xml:space="preserve">
+    <value>Iranian rial</value>
+  </data>
+  <data name="CUnit_IraqiDinar" xml:space="preserve">
+    <value>Iraqi dinar</value>
+  </data>
+  <data name="CUnit_IsraeliNewShekel" xml:space="preserve">
+    <value>Israeli new shekel</value>
+  </data>
+  <data name="CUnit_JamaicanDollar" xml:space="preserve">
+    <value>Jamaican dollar</value>
+  </data>
+  <data name="CUnit_JapaneseYen" xml:space="preserve">
+    <value>Japanese yen</value>
+  </data>
+  <data name="CUnit_JordanianDinar" xml:space="preserve">
+    <value>Jordanian dinar</value>
+  </data>
+  <data name="CUnit_KazakhstaniTenge" xml:space="preserve">
+    <value>Kazakhstani tenge</value>
+  </data>
+  <data name="CUnit_KenyanShilling" xml:space="preserve">
+    <value>Kenyan shilling</value>
+  </data>
+  <data name="CUnit_NorthKoreanWon" xml:space="preserve">
+    <value>North Korean won</value>
+  </data>
+  <data name="CUnit_SouthKoreanWon" xml:space="preserve">
+    <value>South Korean won</value>
+  </data>
+  <data name="CUnit_KuwaitiDinar" xml:space="preserve">
+    <value>Kuwaiti dinar</value>
+  </data>
+  <data name="CUnit_KyrgyzstaniSom" xml:space="preserve">
+    <value>Kyrgyzstani som</value>
+  </data>
+  <data name="CUnit_LaoKip" xml:space="preserve">
+    <value>Lao kip</value>
+  </data>
+  <data name="CUnit_LebanesePound" xml:space="preserve">
+    <value>Lebanese pound</value>
+  </data>
+  <data name="CUnit_LiberianDollar" xml:space="preserve">
+    <value>Liberian dollar</value>
+  </data>
+  <data name="CUnit_LibyanDinar" xml:space="preserve">
+    <value>Libyan dinar</value>
+  </data>
+  <data name="CUnit_SwissFranc" xml:space="preserve">
+    <value>Swiss franc</value>
+  </data>
+  <data name="CUnit_MacanesePataca" xml:space="preserve">
+    <value>Macanese pataca</value>
+  </data>
+  <data name="CUnit_MalagasyAriary" xml:space="preserve">
+    <value>Malagasy ariary</value>
+  </data>
+  <data name="CUnit_MalawianKwacha" xml:space="preserve">
+    <value>Malawian kwacha</value>
+  </data>
+  <data name="CUnit_MalaysianRinggit" xml:space="preserve">
+    <value>Malaysian ringgit</value>
+  </data>
+  <data name="CUnit_MaldivianRufiyaa" xml:space="preserve">
+    <value>Maldivian rufiyaa</value>
+  </data>
+  <data name="CUnit_MauritanianOuguiya" xml:space="preserve">
+    <value>Mauritanian ouguiya</value>
+  </data>
+  <data name="CUnit_MauritianRupee" xml:space="preserve">
+    <value>Mauritian rupee</value>
+  </data>
+  <data name="CUnit_MexicanPeso" xml:space="preserve">
+    <value>Mexican peso</value>
+  </data>
+  <data name="CUnit_MicronesianDollar" xml:space="preserve">
+    <value>Micronesian dollar</value>
+  </data>
+  <data name="CUnit_MoldovanLeu" xml:space="preserve">
+    <value>Moldovan leu</value>
+  </data>
+  <data name="CUnit_MongolianTögrög" xml:space="preserve">
+    <value>Mongolian tögrög</value>
+  </data>
+  <data name="CUnit_MoroccanDirham" xml:space="preserve">
+    <value>Moroccan dirham</value>
+  </data>
+  <data name="CUnit_MozambicanMetical" xml:space="preserve">
+    <value>Mozambican metical</value>
+  </data>
+  <data name="CUnit_BurmeseKyat" xml:space="preserve">
+    <value>Burmese kyat</value>
+  </data>
+  <data name="CUnit_NewZealandDollar" xml:space="preserve">
+    <value>New Zealand dollar</value>
+  </data>
+  <data name="CUnit_NicaraguanCórdoba" xml:space="preserve">
+    <value>Nicaraguan córdoba</value>
+  </data>
+  <data name="CUnit_NigerianNaira" xml:space="preserve">
+    <value>Nigerian naira</value>
+  </data>
+  <data name="CUnit_MacedonianDenar" xml:space="preserve">
+    <value>Macedonian denar</value>
+  </data>
+  <data name="CUnit_TurkishLira" xml:space="preserve">
+    <value>Turkish lira</value>
+  </data>
+  <data name="CUnit_NorwegianKrone" xml:space="preserve">
+    <value>Norwegian krone</value>
+  </data>
+  <data name="CUnit_OmaniRial" xml:space="preserve">
+    <value>Omani rial</value>
+  </data>
+  <data name="CUnit_PakistaniRupee" xml:space="preserve">
+    <value>Pakistani rupee</value>
+  </data>
+  <data name="CUnit_PalauanDollar" xml:space="preserve">
+    <value>Palauan dollar</value>
+  </data>
+  <data name="CUnit_PapuaNewGuineanKina" xml:space="preserve">
+    <value>Papua New Guinean kina</value>
+  </data>
+  <data name="CUnit_ParaguayanGuaraní" xml:space="preserve">
+    <value>Paraguayan guaraní</value>
+  </data>
+  <data name="CUnit_PeruvianSol" xml:space="preserve">
+    <value>Peruvian sol</value>
+  </data>
+  <data name="CUnit_PhilippinePeso" xml:space="preserve">
+    <value>Philippine peso</value>
+  </data>
+  <data name="CUnit_PolishZłoty" xml:space="preserve">
+    <value>Polish złoty</value>
+  </data>
+  <data name="CUnit_QatariRiyal" xml:space="preserve">
+    <value>Qatari riyal</value>
+  </data>
+  <data name="CUnit_RomanianLeu" xml:space="preserve">
+    <value>Romanian leu</value>
+  </data>
+  <data name="CUnit_RussianRuble" xml:space="preserve">
+    <value>Russian ruble</value>
+  </data>
+  <data name="CUnit_RwandanFranc" xml:space="preserve">
+    <value>Rwandan franc</value>
+  </data>
+  <data name="CUnit_SaintHelenaPound" xml:space="preserve">
+    <value>Saint Helena pound</value>
+  </data>
+  <data name="CUnit_SamoanTālā" xml:space="preserve">
+    <value>Samoan tālā</value>
+  </data>
+  <data name="CUnit_SãoToméAndPríncipeDobra" xml:space="preserve">
+    <value>São Tomé and Príncipe dobra</value>
+  </data>
+  <data name="CUnit_SaudiRiyal" xml:space="preserve">
+    <value>Saudi riyal</value>
+  </data>
+  <data name="CUnit_SerbianDinar" xml:space="preserve">
+    <value>Serbian dinar</value>
+  </data>
+  <data name="CUnit_SeychelloisRupee" xml:space="preserve">
+    <value>Seychellois rupee</value>
+  </data>
+  <data name="CUnit_SierraLeoneanLeone" xml:space="preserve">
+    <value>Sierra Leonean leone</value>
+  </data>
+  <data name="CUnit_BruneiDollar" xml:space="preserve">
+    <value>Brunei dollar</value>
+  </data>
+  <data name="CUnit_SolomonIslandsDollar" xml:space="preserve">
+    <value>Solomon Islands dollar</value>
+  </data>
+  <data name="CUnit_SomaliShilling" xml:space="preserve">
+    <value>Somali shilling</value>
+  </data>
+  <data name="CUnit_SomalilandShilling" xml:space="preserve">
+    <value>Somaliland shilling</value>
+  </data>
+  <data name="CUnit_SouthAfricanRand" xml:space="preserve">
+    <value>South African rand</value>
+  </data>
+  <data name="CUnit_BritishPound" xml:space="preserve">
+    <value>British pound</value>
+  </data>
+  <data name="CUnit_SouthSudanesePound" xml:space="preserve">
+    <value>South Sudanese pound</value>
+  </data>
+  <data name="CUnit_SriLankanRupee" xml:space="preserve">
+    <value>Sri Lankan rupee</value>
+  </data>
+  <data name="CUnit_SudanesePound" xml:space="preserve">
+    <value>Sudanese pound</value>
+  </data>
+  <data name="CUnit_SurinameseDollar" xml:space="preserve">
+    <value>Surinamese dollar</value>
+  </data>
+  <data name="CUnit_SwedishKrona" xml:space="preserve">
+    <value>Swedish krona</value>
+  </data>
+  <data name="CUnit_SyrianPound" xml:space="preserve">
+    <value>Syrian pound</value>
+  </data>
+  <data name="CUnit_NewTaiwanDollar" xml:space="preserve">
+    <value>New Taiwan dollar</value>
+  </data>
+  <data name="CUnit_TajikistaniSomoni" xml:space="preserve">
+    <value>Tajikistani somoni</value>
+  </data>
+  <data name="CUnit_TanzanianShilling" xml:space="preserve">
+    <value>Tanzanian shilling</value>
+  </data>
+  <data name="CUnit_ThaiBaht" xml:space="preserve">
+    <value>Thai baht</value>
+  </data>
+  <data name="CUnit_TonganPaanga" xml:space="preserve">
+    <value>Tongan paʻanga</value>
+  </data>
+  <data name="CUnit_TransnistrianRuble" xml:space="preserve">
+    <value>Transnistrian ruble</value>
+  </data>
+  <data name="CUnit_TrinidadAndTobagoDollar" xml:space="preserve">
+    <value>Trinidad and Tobago dollar</value>
+  </data>
+  <data name="CUnit_TunisianDinar" xml:space="preserve">
+    <value>Tunisian dinar</value>
+  </data>
+  <data name="CUnit_TurkmenistanManat" xml:space="preserve">
+    <value>Turkmenistan manat</value>
+  </data>
+  <data name="CUnit_UgandanShilling" xml:space="preserve">
+    <value>Ugandan shilling</value>
+  </data>
+  <data name="CUnit_UkrainianHryvnia" xml:space="preserve">
+    <value>Ukrainian hryvnia</value>
+  </data>
+  <data name="CUnit_UnitedArabEmiratesDirham" xml:space="preserve">
+    <value>United Arab Emirates dirham</value>
+  </data>
+  <data name="CUnit_UruguayanPeso" xml:space="preserve">
+    <value>Uruguayan peso</value>
+  </data>
+  <data name="CUnit_UzbekistaniSom" xml:space="preserve">
+    <value>Uzbekistani soʻm</value>
+  </data>
+  <data name="CUnit_VanuatuVatu" xml:space="preserve">
+    <value>Vanuatu vatu</value>
+  </data>
+  <data name="CUnit_VenezuelanBolívarSoberano" xml:space="preserve">
+    <value>Venezuelan bolívar soberano</value>
+  </data>
+  <data name="CUnit_VietnameseĐồng" xml:space="preserve">
+    <value>Vietnamese đồng</value>
+  </data>
+  <data name="CUnit_YemeniRial" xml:space="preserve">
+    <value>Yemeni rial</value>
+  </data>
+  <data name="CUnit_ZambianKwacha" xml:space="preserve">
+    <value>Zambian kwacha</value>
+  </data>
+  <data name="CMUnit_Pul" xml:space="preserve">
+    <value>Pul</value>
+  </data>
+  <data name="CMUnit_Cent" xml:space="preserve">
+    <value>Cent</value>
+  </data>
+  <data name="CMUnit_Qindarkë" xml:space="preserve">
+    <value>Qindarkë</value>
+  </data>
+  <data name="CMUnit_Santeem" xml:space="preserve">
+    <value>Santeem</value>
+  </data>
+  <data name="CMUnit_Centavo" xml:space="preserve">
+    <value>Centavo</value>
+  </data>
+  <data name="CMUnit_Luma" xml:space="preserve">
+    <value>Luma</value>
+  </data>
+  <data name="CMUnit_Penny" xml:space="preserve">
+    <value>Penny</value>
+  </data>
+  <data name="CMUnit_Qəpik" xml:space="preserve">
+    <value>Qəpik</value>
+  </data>
+  <data name="CMUnit_Fils" xml:space="preserve">
+    <value>Fils</value>
+  </data>
+  <data name="CMUnit_Poisha" xml:space="preserve">
+    <value>Poisha</value>
+  </data>
+  <data name="CMUnit_Kapyeyka" xml:space="preserve">
+    <value>Kapyeyka</value>
+  </data>
+  <data name="CMUnit_Centime" xml:space="preserve">
+    <value>Centime</value>
+  </data>
+  <data name="CMUnit_Fening" xml:space="preserve">
+    <value>Fening</value>
+  </data>
+  <data name="CMUnit_Thebe" xml:space="preserve">
+    <value>Thebe</value>
+  </data>
+  <data name="CMUnit_Stotinka" xml:space="preserve">
+    <value>Stotinka</value>
+  </data>
+  <data name="CMUnit_Sen" xml:space="preserve">
+    <value>Sen</value>
+  </data>
+  <data name="CMUnit_Fen" xml:space="preserve">
+    <value>Fen</value>
+  </data>
+  <data name="CMUnit_Lipa" xml:space="preserve">
+    <value>Lipa</value>
+  </data>
+  <data name="CMUnit_Haléř" xml:space="preserve">
+    <value>Haléř</value>
+  </data>
+  <data name="CMUnit_Piastre" xml:space="preserve">
+    <value>Piastre</value>
+  </data>
+  <data name="CMUnit_Santim" xml:space="preserve">
+    <value>Santim</value>
+  </data>
+  <data name="CMUnit_Butut" xml:space="preserve">
+    <value>Butut</value>
+  </data>
+  <data name="CMUnit_Tetri" xml:space="preserve">
+    <value>Tetri</value>
+  </data>
+  <data name="CMUnit_Pesewa" xml:space="preserve">
+    <value>Pesewa</value>
+  </data>
+  <data name="CMUnit_Fillér" xml:space="preserve">
+    <value>Fillér</value>
+  </data>
+  <data name="CMUnit_Eyrir" xml:space="preserve">
+    <value>Eyrir</value>
+  </data>
+  <data name="CMUnit_Paisa" xml:space="preserve">
+    <value>Paisa</value>
+  </data>
+  <data name="CMUnit_Dinar" xml:space="preserve">
+    <value>Dinar</value>
+  </data>
+  <data name="CMUnit_Agora" xml:space="preserve">
+    <value>Agora</value>
+  </data>
+  <data name="CMUnit_Tïın" xml:space="preserve">
+    <value>Tïın</value>
+  </data>
+  <data name="CMUnit_Chon" xml:space="preserve">
+    <value>Chon</value>
+  </data>
+  <data name="CMUnit_Jeon" xml:space="preserve">
+    <value>Jeon</value>
+  </data>
+  <data name="CMUnit_Tyiyn" xml:space="preserve">
+    <value>Tyiyn</value>
+  </data>
+  <data name="CMUnit_Att" xml:space="preserve">
+    <value>Att</value>
+  </data>
+  <data name="CMUnit_Dirham" xml:space="preserve">
+    <value>Dirham</value>
+  </data>
+  <data name="CMUnit_Rappen" xml:space="preserve">
+    <value>Rappen</value>
+  </data>
+  <data name="CMUnit_Avo" xml:space="preserve">
+    <value>Avo</value>
+  </data>
+  <data name="CMUnit_Iraimbilanja" xml:space="preserve">
+    <value>Iraimbilanja</value>
+  </data>
+  <data name="CMUnit_Tambala" xml:space="preserve">
+    <value>Tambala</value>
+  </data>
+  <data name="CMUnit_Laari" xml:space="preserve">
+    <value>Laari</value>
+  </data>
+  <data name="CMUnit_Khoums" xml:space="preserve">
+    <value>Khoums</value>
+  </data>
+  <data name="CMUnit_Ban" xml:space="preserve">
+    <value>Ban</value>
+  </data>
+  <data name="CMUnit_Möngö" xml:space="preserve">
+    <value>Möngö</value>
+  </data>
+  <data name="CMUnit_Pya" xml:space="preserve">
+    <value>Pya</value>
+  </data>
+  <data name="CMUnit_Kobo" xml:space="preserve">
+    <value>Kobo</value>
+  </data>
+  <data name="CMUnit_Deni" xml:space="preserve">
+    <value>Deni</value>
+  </data>
+  <data name="CMUnit_Kuruş" xml:space="preserve">
+    <value>Kuruş</value>
+  </data>
+  <data name="CMUnit_Baisa" xml:space="preserve">
+    <value>Baisa</value>
+  </data>
+  <data name="CMUnit_Toea" xml:space="preserve">
+    <value>Toea</value>
+  </data>
+  <data name="CMUnit_Sentimo" xml:space="preserve">
+    <value>Sentimo</value>
+  </data>
+  <data name="CMUnit_Grosz" xml:space="preserve">
+    <value>Grosz</value>
+  </data>
+  <data name="CMUnit_Kopek" xml:space="preserve">
+    <value>Kopek</value>
+  </data>
+  <data name="CMUnit_Sene" xml:space="preserve">
+    <value>Sene</value>
+  </data>
+  <data name="CMUnit_Halala" xml:space="preserve">
+    <value>Halala</value>
+  </data>
+  <data name="CMUnit_Para" xml:space="preserve">
+    <value>Para</value>
+  </data>
+  <data name="CMUnit_Öre" xml:space="preserve">
+    <value>Öre</value>
+  </data>
+  <data name="CMUnit_Diram" xml:space="preserve">
+    <value>Diram</value>
+  </data>
+  <data name="CMUnit_Satang" xml:space="preserve">
+    <value>Satang</value>
+  </data>
+  <data name="CMUnit_Seniti" xml:space="preserve">
+    <value>Seniti</value>
+  </data>
+  <data name="CMUnit_Millime" xml:space="preserve">
+    <value>Millime</value>
+  </data>
+  <data name="CMUnit_Tennesi" xml:space="preserve">
+    <value>Tennesi</value>
+  </data>
+  <data name="CMUnit_Kopiyka" xml:space="preserve">
+    <value>Kopiyka</value>
+  </data>
+  <data name="CMUnit_Centésimo" xml:space="preserve">
+    <value>Centésimo</value>
+  </data>
+  <data name="CMUnit_Tiyin" xml:space="preserve">
+    <value>Tiyin</value>
+  </data>
+  <data name="CMUnit_Hào" xml:space="preserve">
+    <value>Hào</value>
+  </data>
+  <data name="CMUnit_Ngwee" xml:space="preserve">
+    <value>Ngwee</value>
+  </data>
 </root>
