@@ -526,24 +526,33 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     this.showReportDesigner = false;
     var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;
     var filterExpression: FilterExpression;
-
+    var urlParameters = new Array<ReportParamComponent>();
 
     //remove parameter that ParamInFilter == false
     if (this.ViewIdentity) {
       this.ViewIdentity.params.forEach(function (p) {
+        if (p.ParamType && p.ParamType.toLowerCase() == "urlparameter") {
+          urlParameters.push(p);
+        }
+
         if (!p.ParamInFilter) {
           var index = params.findIndex(f => f.name === p.ParamName);
           if (index >= 0)
             params.splice(index, 1);
-        }
+        }        
       });
     }
 
-    filterExpression = this.createFilters(params, this.currentFilter);
+    filterExpression = this.currentFilter;//this.createFilters(params, this.currentFilter);
 
     if (params) {
-      serviceUrl = this.changeServiceUrl(serviceUrl, params);
+      serviceUrl = this.changeServiceUrl(serviceUrl, params);      
     }
+
+    if (urlParameters.length > 0) {
+      serviceUrl = this.replaceServiceUrlParams(serviceUrl, urlParameters);
+    }
+
     var sort = this.currentSort;
 
     this.reportingService.getAll(serviceUrl,
@@ -570,7 +579,22 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
       });
   }
 
-  changeServiceUrl(url: string, params: ParameterInfo[]): string {
+  replaceServiceUrlParams(url: string, params: ReportParamComponent[]): string {
+    
+    if (params.length > 0) {
+      var args = new Array<any>();
+      params.forEach((item) => {
+        args.push(item.ParamValue);
+      });
+
+      url = String.Format(url, args);
+    }
+
+    return url;
+  }
+
+  changeServiceUrl(url: string, params: ParameterInfo[]): string {   
+
     var queryStringParams = params.filter(p => p.controlType === 'QueryString');
     if (queryStringParams.length > 0)
       url += '?';
@@ -584,6 +608,9 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     });
     return url;
   }
+
+
+
 
   saveDesignOfReport(id: string) {
     var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + id.replace('designerTab', ''), false);

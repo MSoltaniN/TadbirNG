@@ -15,6 +15,7 @@ import { ReportManagementComponent } from '../reportManagement/reportManagement.
 import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
 import { BrowserStorageService } from '../../service/browserStorage.service';
 import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
+import { QuickReportSettingComponent } from '../reportManagement/QuickReport-Setting.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -37,6 +38,8 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
 
   @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
+
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
@@ -91,8 +94,36 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
       }
   }
 
-  public showReport() {
-    this.reportManager.DecisionMakingForShowReport();
+   public showReport() {
+
+    if (this.validateReport()) {
+      /*this.reportManager.directShowReport().then(Response => {
+        if (!Response) {
+          this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+          this.showReportSetting();
+        }
+      });*/
+
+      
+      if (!this.reportManager.directShowReport()) {
+          this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+          this.showReportSetting();
+      }     
+    }
+  }
+
+  public validateReport() {
+    if (!this.rowData || this.rowData.total == 0) {
+      this.showMessage(this.getText("Report.QuickReportValidate"));
+      return false;
+    }
+    return true;
+  }
+
+  public showReportSetting() {
+    if (this.validateReport()) {
+      this.reportSetting.showReportSetting(this.gridColumns, this.entityTypeName, this.viewId, this.reportManager);
+    }
   }
 
 

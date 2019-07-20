@@ -79,7 +79,9 @@
     "No": "No",
     "Yes": "Yes",
     "QuickReportSetting": "Quick Report Setting",
-    "QuickReportValidate": "Please click the calculation button before creating an instant report"
+    "QuickReportValidate": "Please click the calculation button before creating an instant report",
+    "ReportSetting": "Quick Report Setting",
+    "Print": "Print"
   },
   "Buttons": {
     "Ok": "Ok",

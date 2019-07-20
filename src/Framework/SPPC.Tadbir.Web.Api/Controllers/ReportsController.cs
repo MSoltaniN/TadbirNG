@@ -221,7 +221,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             quickReport = SetPageWidth(quickReport, qr, inchValue, out outOf);
             quickReport = CreateReportFooterBand(quickReport, quickReportTemplate);
             quickReport = CreateReportHeaderBand(quickReport, quickReportTemplate);
-            quickReport = CreatePageHeaderBand(quickReport, quickReportTemplate);
+
+            bool createParameterHeader = qr.Parameters != null && qr.Parameters.Count > 0;
+
+            quickReport = CreatePageHeaderBand(quickReport, quickReportTemplate, createParameterHeader);
             quickReport = CreatePageFooterBand(quickReport, quickReportTemplate);
             if (qr.Parameters != null)
             {
@@ -489,7 +492,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return size;
         }
 
-        private static StiReport CreatePageHeaderBand(StiReport report, StiReport reportTemplate)
+        private static StiReport CreatePageHeaderBand(StiReport report, StiReport reportTemplate, bool createParameterHeader)
         {
             StiPageHeaderBand pageHeader = new StiPageHeaderBand();
 
@@ -529,13 +532,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             report.Pages[0].Components.Add(pageHeader);
 
-            StiPageHeaderBand headerParameter = (StiPageHeaderBand)pageHeader.Clone(true);
-            headerParameter.Name = "hdrParams";
-            headerParameter.Linked = true;
-            headerParameter.Height = 0.9;
-            headerParameter.CanGrow = true;
-
-            report.Pages[0].Components.Add(headerParameter);
+            if (createParameterHeader)
+            {
+                StiPageHeaderBand headerParameter = (StiPageHeaderBand)pageHeader.Clone(true);
+                headerParameter.Name = "hdrParams";
+                headerParameter.Linked = true;
+                headerParameter.Height = 0.9;
+                headerParameter.CanGrow = true;
+                headerParameter.Components.Clear();
+                report.Pages[0].Components.Add(headerParameter);
+            }
 
             return report;
         }

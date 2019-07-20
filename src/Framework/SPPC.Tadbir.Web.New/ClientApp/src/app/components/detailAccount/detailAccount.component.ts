@@ -1,4 +1,4 @@
-import { Component, Renderer2, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, Renderer2, OnInit, ChangeDetectorRef, NgZone, ViewChild } from '@angular/core';
 import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
@@ -13,6 +13,9 @@ import { ViewName } from '../../security/viewName';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
 import { BrowserStorageService } from '../../service/browserStorage.service';
 import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
+import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
+import { QuickReportSettingComponent } from '../reportManagement/QuickReport-Setting.component';
+import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -33,6 +36,9 @@ export function getLayoutModule(layout: Layout) {
 
 export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAccount> implements OnInit {
 
+  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
@@ -87,6 +93,38 @@ export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAcco
       else {
         this.showMessage(String.Format(errorMsg, (this.levelConfig.no - 1).toString()), MessageType.Warning);
       }
+  }
+
+  public showReport() {
+
+    if (this.validateReport()) {
+      /*this.reportManager.directShowReport().then(Response => {
+        if (!Response) {
+          this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+          this.showReportSetting();
+        }
+      });*/
+
+
+      if (!this.reportManager.directShowReport()) {
+        this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+        this.showReportSetting();
+      }
+    }
+  }
+
+  public validateReport() {
+    if (!this.rowData || this.rowData.total == 0) {
+      this.showMessage(this.getText("Report.QuickReportValidate"));
+      return false;
+    }
+    return true;
+  }
+
+  public showReportSetting() {
+    if (this.validateReport()) {
+      this.reportSetting.showReportSetting(this.gridColumns, this.entityTypeName, this.viewId, this.reportManager);
+    }
   }
 
 }

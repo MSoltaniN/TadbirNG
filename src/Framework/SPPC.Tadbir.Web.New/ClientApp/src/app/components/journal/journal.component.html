@@ -93,9 +93,9 @@
       <button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'Journal.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>
       <!--<button kendoButton class="hidden-xs reportMargin" (click)="showReport()"
       [icon]="'printer'" type="button"></button>-->
-      <button kendoButton class="hidden-xs reportMargin" (click)="showReportSetting()"
+      <button kendoButton class="hidden-xs rm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showReportSetting()"
               [icon]="'form-element'" type="button"></button>
-      <button kendoButton class="hidden-xs reportMargin" (click)="showReport()"
+      <button kendoButton class="hidden-xs rm" title="{{ 'Report.Print' | translate }}" (click)="showReport()"
               [icon]="'printer'" type="button"></button>
     </ng-template>
 

@@ -1,6 +1,10 @@
 
 <app-bread-cumb></app-bread-cumb>
-
+<view-identifier [ViewID]="viewId">
+</view-identifier>
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="currentFilter" [RowData]="rowData"></report-management>
+<report-setting></report-setting>
 <kendo-splitter orientation="vertical" style="height:calc(100vh - 95px);">
 
   <kendo-splitter-pane>
@@ -116,6 +120,10 @@
                                            (columnsList)="getColumns($event)">
               </auto-generated-grid-setting>
               <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+              <button kendoButton class="hidden-xs rm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showReportSetting()"
+                      [icon]="'form-element'" type="button"></button>
+              <button kendoButton class="hidden-xs rm" title="{{ 'Report.Print' | translate }}" (click)="showReport()"
+                      [icon]="'printer'" type="button"></button>
             </ng-template>
 
             <kendo-grid-checkbox-column showSelectAll="true" width="66"></kendo-grid-checkbox-column>
