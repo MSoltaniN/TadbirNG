@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +53,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetCurrencyInfoByName(string nameKey)
         {
             var currency = _repository.GetCurrencyByName(nameKey);
+            Localize(currency);
+            currency.BranchId = SecurityContext.User.BranchId;
+            currency.BranchName = SecurityContext.User.BranchName;
             return JsonReadResult(currency);
+        }
+
+        // GET: api/currencies/names/lookup
+        [Route(CurrencyApi.CurrencyNamesLookupUrl)]
+        public IActionResult GetCurrencyNamesLookup()
+        {
+            var currencyNames = _repository.GetCurrencyNamesLookup();
+            Array.ForEach(currencyNames.ToArray(), name => name.Value = _strings[name.Value]);
+            SetItemCount(currencyNames.Count);
+            var sortedList = currencyNames
+                .OrderBy(kv => kv.Value)
+                .ToList();
+            return Json(sortedList);
         }
 
         // POST: api/currencies
@@ -116,6 +133,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private void Localize(CurrencyViewModel currency)
+        {
+            currency.Name = _strings[currency.Name];
+            currency.MinorUnit = _strings[currency.MinorUnit];
         }
 
         private readonly ICurrencyRepository _repository;

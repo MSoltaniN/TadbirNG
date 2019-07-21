@@ -1203,9 +1203,6 @@
   <data name="Country_Afghanistan" xml:space="preserve">
     <value>Afghanistan</value>
   </data>
-  <data name="Country_AkrotiriAndDhekelia" xml:space="preserve">
-    <value>Akrotiri and Dhekelia</value>
-  </data>
   <data name="Country_Albania" xml:space="preserve">
     <value>Albania</value>
   </data>
@@ -1275,9 +1272,6 @@
   <data name="Country_Bolivia" xml:space="preserve">
     <value>Bolivia</value>
   </data>
-  <data name="Country_Bonaire" xml:space="preserve">
-    <value>Bonaire</value>
-  </data>
   <data name="Country_BosniaAndHerzegovina" xml:space="preserve">
     <value>Bosnia and Herzegovina</value>
   </data>
@@ -1286,12 +1280,6 @@
   </data>
   <data name="Country_Brazil" xml:space="preserve">
     <value>Brazil</value>
-  </data>
-  <data name="Country_BritishIndianOceanTerritory" xml:space="preserve">
-    <value>British Indian Ocean Territory</value>
-  </data>
-  <data name="Country_BritishVirginIslands" xml:space="preserve">
-    <value>British Virgin Islands</value>
   </data>
   <data name="Country_Bulgaria" xml:space="preserve">
     <value>Bulgaria</value>
@@ -1398,9 +1386,6 @@
   <data name="Country_Estonia" xml:space="preserve">
     <value>Estonia</value>
   </data>
-  <data name="Country_Eswatini" xml:space="preserve">
-    <value>Eswatini</value>
-  </data>
   <data name="Country_Ethiopia" xml:space="preserve">
     <value>Ethiopia</value>
   </data>
@@ -1415,9 +1400,6 @@
   </data>
   <data name="Country_France" xml:space="preserve">
     <value>France</value>
-  </data>
-  <data name="Country_FrenchPolynesia" xml:space="preserve">
-    <value>French Polynesia</value>
   </data>
   <data name="Country_Gabon" xml:space="preserve">
     <value>Gabon</value>
@@ -1572,14 +1554,8 @@
   <data name="Country_Mauritania" xml:space="preserve">
     <value>Mauritania</value>
   </data>
-  <data name="Country_Mauritius" xml:space="preserve">
-    <value>Mauritius</value>
-  </data>
   <data name="Country_Mexico" xml:space="preserve">
     <value>Mexico</value>
-  </data>
-  <data name="Country_Micronesia" xml:space="preserve">
-    <value>Micronesia</value>
   </data>
   <data name="Country_Moldova" xml:space="preserve">
     <value>Moldova</value>
@@ -1625,9 +1601,6 @@
   </data>
   <data name="Country_Nigeria" xml:space="preserve">
     <value>Nigeria</value>
-  </data>
-  <data name="Country_Niue" xml:space="preserve">
-    <value>Niue</value>
   </data>
   <data name="Country_NorthMacedonia" xml:space="preserve">
     <value>North Macedonia</value>
@@ -1683,9 +1656,6 @@
   <data name="Country_Rwanda" xml:space="preserve">
     <value>Rwanda</value>
   </data>
-  <data name="Country_Saba" xml:space="preserve">
-    <value>Saba</value>
-  </data>
   <data name="Country_SahrawiRepublic" xml:space="preserve">
     <value>Sahrawi Republic</value>
   </data>
@@ -1697,9 +1667,6 @@
   </data>
   <data name="Country_SaintLucia" xml:space="preserve">
     <value>Saint Lucia</value>
-  </data>
-  <data name="Country_SaintVincentAndTheGrenadines" xml:space="preserve">
-    <value>Saint Vincent and the Grenadines</value>
   </data>
   <data name="Country_Samoa" xml:space="preserve">
     <value>Samoa</value>
@@ -1746,14 +1713,8 @@
   <data name="Country_Somalia" xml:space="preserve">
     <value>Somalia</value>
   </data>
-  <data name="Country_Somaliland" xml:space="preserve">
-    <value>Somaliland</value>
-  </data>
   <data name="Country_SouthAfrica" xml:space="preserve">
     <value>South Africa</value>
-  </data>
-  <data name="Country_SouthGeorgiaAndTheSouthSandwichIslands" xml:space="preserve">
-    <value>South Georgia and the South Sandwich Islands</value>
   </data>
   <data name="Country_SouthOssetia" xml:space="preserve">
     <value>South Ossetia</value>
@@ -1800,14 +1761,8 @@
   <data name="Country_Tonga" xml:space="preserve">
     <value>Tonga</value>
   </data>
-  <data name="Country_Transnistria" xml:space="preserve">
-    <value>Transnistria</value>
-  </data>
   <data name="Country_TrinidadAndTobago" xml:space="preserve">
     <value>Trinidad and Tobago</value>
-  </data>
-  <data name="Country_TristanDaCunha" xml:space="preserve">
-    <value>Tristan da Cunha</value>
   </data>
   <data name="Country_Tunisia" xml:space="preserve">
     <value>Tunisia</value>
@@ -1817,9 +1772,6 @@
   </data>
   <data name="Country_Turkmenistan" xml:space="preserve">
     <value>Turkmenistan</value>
-  </data>
-  <data name="Country_TurksAndCaicosIslands" xml:space="preserve">
-    <value>Turks and Caicos Islands</value>
   </data>
   <data name="Country_Uganda" xml:space="preserve">
     <value>Uganda</value>
@@ -1842,9 +1794,6 @@
   <data name="Country_Uzbekistan" xml:space="preserve">
     <value>Uzbekistan</value>
   </data>
-  <data name="Country_Vanuatu" xml:space="preserve">
-    <value>Vanuatu</value>
-  </data>
   <data name="Country_VaticanCity" xml:space="preserve">
     <value>Vatican City</value>
   </data>
@@ -1853,9 +1802,6 @@
   </data>
   <data name="Country_Vietnam" xml:space="preserve">
     <value>Vietnam</value>
-  </data>
-  <data name="Country_WallisAndFutuna" xml:space="preserve">
-    <value>Wallis and Futuna</value>
   </data>
   <data name="Country_Yemen" xml:space="preserve">
     <value>Yemen</value>
@@ -2286,9 +2232,6 @@
   <data name="CUnit_TonganPaanga" xml:space="preserve">
     <value>Tongan paʻanga</value>
   </data>
-  <data name="CUnit_TransnistrianRuble" xml:space="preserve">
-    <value>Transnistrian ruble</value>
-  </data>
   <data name="CUnit_TrinidadAndTobagoDollar" xml:space="preserve">
     <value>Trinidad and Tobago dollar</value>
   </data>
@@ -2312,9 +2255,6 @@
   </data>
   <data name="CUnit_UzbekistaniSom" xml:space="preserve">
     <value>Uzbekistani soʻm</value>
-  </data>
-  <data name="CUnit_VanuatuVatu" xml:space="preserve">
-    <value>Vanuatu vatu</value>
   </data>
   <data name="CUnit_VenezuelanBolívarSoberano" xml:space="preserve">
     <value>Venezuelan bolívar soberano</value>

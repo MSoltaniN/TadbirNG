@@ -31,6 +31,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
             Code = String.Empty;
             MinorUnit = String.Empty;
             Description = String.Empty;
+            IsActive = true;
         }
 
         /// <summary>

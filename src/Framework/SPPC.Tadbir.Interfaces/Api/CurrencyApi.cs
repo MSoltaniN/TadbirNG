@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SPPC.Tadbir.Api
 {
@@ -38,5 +37,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for currency information by name key
         /// </summary>
         public const string CurrencyInfoByNameUrl = "currencies/info/{nameKey}";
+
+        /// <summary>
+        /// API client URL for all currency names as key-value items
+        /// </summary>
+        public const string CurrencyNamesLookup = "currencies/names/lookup";
+
+        /// <summary>
+        /// API server route URL for all currency names as key-value items
+        /// </summary>
+        public const string CurrencyNamesLookupUrl = "currencies/names/lookup";
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -39,6 +40,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="nameKey">کلید متن چندزبانه برای نام ارز مورد نظر</param>
         /// <returns>اطلاعات استاندارد ارز</returns>
         CurrencyViewModel GetCurrencyByName(string nameKey);
+
+        /// <summary>
+        /// مجموعه ای از همه ارزهای معتبر شناخته شده را به صورت زوج های کلید-مقدار خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از همه ارزهای معتبر شناخته شده</returns>
+        IList<KeyValue> GetCurrencyNamesLookup();
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک ارز را ایجاد یا اصلاح می کند
