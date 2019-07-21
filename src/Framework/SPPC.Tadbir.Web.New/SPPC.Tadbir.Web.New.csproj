@@ -63,6 +63,8 @@
     <None Remove="ClientApp\src\app\components\branch\branch-roles-form.component.ts" />
     <None Remove="ClientApp\src\app\components\company\company-form.component.ts" />
     <None Remove="ClientApp\src\app\components\costCenter\costCenter-form.component.ts" />
+    <None Remove="ClientApp\src\app\components\currency\currency-form.component.ts" />
+    <None Remove="ClientApp\src\app\components\currency\currency.component.ts" />
     <None Remove="ClientApp\src\app\components\detailAccount\detailAccount-form.component.ts" />
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
@@ -161,6 +163,7 @@
     <None Remove="ClientApp\src\app\security\viewName.ts" />
     <None Remove="ClientApp\src\app\service\accountRelations.service.ts" />
     <None Remove="ClientApp\src\app\service\api\index.ts" />
+    <None Remove="ClientApp\src\app\service\currency.service.ts" />
     <None Remove="ClientApp\src\app\service\fiscal-period.service.ts" />
     <None Remove="ClientApp\src\app\service\fullAccount.service.ts" />
     <None Remove="ClientApp\src\app\service\index.ts" />
@@ -933,6 +936,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\branch\branch-roles-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\company\company-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\costCenter\costCenter-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\currency\currency.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\currency\currency-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\detailAccount\detailAccount-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
@@ -1030,6 +1035,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\security\viewName.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\accountRelations.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\api\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\currency.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\fiscal-period.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\fullAccount.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\index.ts" />

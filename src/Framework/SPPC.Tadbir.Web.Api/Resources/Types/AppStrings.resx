@@ -2457,4 +2457,13 @@
   <data name="CMUnit_Ngwee" xml:space="preserve">
     <value>نگووی</value>
   </data>
+  <data name="Country" xml:space="preserve">
+    <value>کشور</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>تعداد ارقام اعشار</value>
+  </data>
+  <data name="MinorUnit" xml:space="preserve">
+    <value>ارز جزء</value>
+  </data>
 </root>

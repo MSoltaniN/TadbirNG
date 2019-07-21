@@ -65,6 +65,8 @@ import { RelatedAccountsFormComponent } from './components/relatedAccounts/relat
 import { JournalComponent } from './components/journal/journal.component';
 import { HomeComponent } from './components/home/home.component';
 import { AccountBookComponent } from './components/accountBook/accountBook.component';
+import { CurrencyComponent } from './components/currency/currency.component';
+import { CurrencyFormComponent } from './components/currency/currency-form.component';
 
 import { DialogComponent } from './class/dialog.component';
 
@@ -107,7 +109,7 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import {
   AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
   BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService,
-  OperationLogService, DashboardService, AccountGroupsService, AccountCollectionService, GridService
+  OperationLogService, DashboardService, AccountGroupsService, AccountCollectionService, GridService, CurrencyService
 } from './service/index';
 import { BrowserStorageService } from './service/browserStorage.service';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -295,7 +297,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     DynamicTabsDirective,
     ReportMGComponent,
     SelectFormComponent,
-    QuickReportSettingComponent
+    QuickReportSettingComponent,
+    CurrencyComponent,
+    CurrencyFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -358,6 +362,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'account-book', component: AccountBookComponent, canActivate: [AuthGuard] },
       { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
       { path: 'reports', component: ReportManagementComponent, canActivate: [AuthGuard] },
+      { path: 'currency', component: CurrencyComponent, canActivate: [AuthGuard] },
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ]),
@@ -365,7 +370,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
     UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
-    FullCodeService, OperationLogService, DashboardService, ReportingService, AccountGroupsService, AccountCollectionService, GridService, BrowserStorageService,
+    FullCodeService, OperationLogService, DashboardService, ReportingService, AccountGroupsService, AccountCollectionService, GridService, BrowserStorageService, CurrencyService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: ErrorHandler, useClass: GeneralErrorHandler },
     //{
@@ -393,7 +398,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
     SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherLineFormComponent,
-    TabComponent, AccountGroupsFormComponent, VoucherEditorComponent, SelectFormComponent
+    TabComponent, AccountGroupsFormComponent, VoucherEditorComponent, SelectFormComponent, CurrencyFormComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -2466,4 +2466,13 @@
   <data name="CMUnit_Ngwee" xml:space="preserve">
     <value>Ngwee</value>
   </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Decimal Count</value>
+  </data>
+  <data name="MinorUnit" xml:space="preserve">
+    <value>Currency Minor Unit</value>
+  </data>
 </root>

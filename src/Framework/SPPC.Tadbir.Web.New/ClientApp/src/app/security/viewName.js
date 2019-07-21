@@ -29,5 +29,6 @@ export var ViewName;
     ViewName[ViewName["AccountBookSingle"] = 27] = "AccountBookSingle";
     ViewName[ViewName["AccountBookSingleSummary"] = 28] = "AccountBookSingleSummary";
     ViewName[ViewName["AccountBookSummary"] = 29] = "AccountBookSummary";
+    ViewName[ViewName["Currency"] = 30] = "Currency";
 })(ViewName || (ViewName = {}));
 //# sourceMappingURL=viewName.js.map

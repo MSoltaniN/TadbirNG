@@ -21,3 +21,4 @@ export * from './dashboard.service';
 export * from './accountGroups.service';
 export * from './accountCollection.service';
 export * from './grid.service';
+export * from './currency.service';
