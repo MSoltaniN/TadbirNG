@@ -69,7 +69,7 @@
                                      (columnsList)="getColumns($event)">
         </auto-generated-grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-        <button kendoButton SppcPermissionCheck="Print" EntityName="Voucher" (sppcClick)="showReport()" class="reportMargin" type="button" [icon]="'printer'"></button>
+        <button kendoButton SppcPermissionCheck="Print" EntityName="Voucher" (sppcClick)="showReport()" class="hidden-xs rm" type="button" [icon]="'printer'"></button>
       </ng-template>
 
       <kendo-grid-checkbox-column showSelectAll="true" width="50"></kendo-grid-checkbox-column>
