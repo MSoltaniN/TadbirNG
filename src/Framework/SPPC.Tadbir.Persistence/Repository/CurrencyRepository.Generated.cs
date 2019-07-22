@@ -92,12 +92,27 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات استاندارد ارز</returns>
         public CurrencyViewModel GetCurrencyByName(string nameKey)
         {
-            var currencies = JsonHelper.To<List<CurrencyInfo>>(File.ReadAllText(_currencyDbPath));
+            var currencies = GetLocalCurrencyDatabase();
             var currency = currencies
-                .Where(curr => curr.Currency.Name == nameKey)
+                .Where(curr => curr.Currency.NameKey == nameKey)
                 .Select(curr => Mapper.Map<CurrencyViewModel>(curr))
                 .FirstOrDefault();
             return currency;
+        }
+
+        /// <summary>
+        /// مجموعه ای از همه ارزهای معتبر شناخته شده را به صورت زوج های کلید-مقدار خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از همه ارزهای معتبر شناخته شده</returns>
+        public IList<KeyValue> GetCurrencyNamesLookup()
+        {
+            var currencies = GetLocalCurrencyDatabase();
+            var names = currencies
+                .Select(info => info.Currency.NameKey)
+                .Distinct()
+                .Select(name => new KeyValue(name, name))
+                .ToList();
+            return names;
         }
 
         /// <summary>
@@ -172,6 +187,11 @@ Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLi
                 entity.Name, entity.Country, entity.Code, entity.MinorUnit, entity.Multiplier,
                 entity.DecimalCount, entity.Description)
                 : null;
+        }
+
+        private List<CurrencyInfo> GetLocalCurrencyDatabase()
+        {
+            return JsonHelper.To<List<CurrencyInfo>>(File.ReadAllText(_currencyDbPath));
         }
 
         private const string _currencyDbPath = @"..\..\..\src\Framework\SPPC.Tadbir.Persistence\currencies.json";

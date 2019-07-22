@@ -139,7 +139,8 @@
     "JournalByDateBySubsidiary": "در سطح معین",
     "JournalByDateSummary": "سند خلاصه",
     "JournalByDateSummaryByDate": "سند خلاصه به تفکیک تاریخ",
-    "AccountBook": "دفتر حساب"
+    "AccountBook": "دفتر حساب",
+    "Currency": "ارز"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -156,6 +157,19 @@
     "SearchBy": "جستجو بر اساس",
     "DisplayableColumns": "فیلدها جهت نمایش",
     "SearchType": "نوع جستجو"
+  },
+  "Currency": {
+    "New": "ارز جدید",
+    "Name": "نام ارز",
+    "Country": "کشور",
+    "Code": "نمایه بین المللی",
+    "MinorUnit": "ارز جزء",
+    "Multiplier": "ضریب",
+    "DecimalCount": "تعداد ارقام اعشار",
+    "Description": "شرح",
+    "branchScope": "دسترسی شعبه",
+    "IsActive": "وضعیت",
+    "BranchName": "نام شعبه"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",

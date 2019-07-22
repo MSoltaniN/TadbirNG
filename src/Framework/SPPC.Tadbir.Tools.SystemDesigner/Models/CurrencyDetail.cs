@@ -5,9 +5,13 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Models
 {
     public class CurrencyDetail
     {
+        public string NameKey { get; set; }
+
         public string Name { get; set; }
 
         public string Code { get; set; }
+
+        public string MinorUnitKey { get; set; }
 
         public string MinorUnit { get; set; }
 

@@ -29,5 +29,6 @@ export enum ViewName {
   JournalByNoSummary = 26,
   AccountBookSingle = 27,
   AccountBookSingleSummary = 28,
-  AccountBookSummary = 29
+  AccountBookSummary = 29,
+  Currency = 30
 }

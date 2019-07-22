@@ -20,8 +20,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         [STAThread]
         static void Main()
         {
-            //DoXferTadbirDb();
-            AddResources();
+            BuildCurrencyDatabase();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWindow());
@@ -143,28 +142,30 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
 
         private static CurrencyInfo GetCurrencyFromRow(HAP::HtmlNode row)
         {
-            CurrencyInfo currency = null;
+            CurrencyInfo info = null;
             if (IsCurrencyRow(row))
             {
-                currency = new CurrencyInfo();
+                info = new CurrencyInfo();
                 var children = GetNonTextChildren(row);
-                currency.Country = children[0].ChildNodes
+                info.Country = children[0].ChildNodes
                     .Where(n => n.Name == "a")
                     .First()
                     .InnerText;
-                currency.Currency.Name = children[1].ChildNodes[0]
+                info.Currency.Name = children[1].ChildNodes[0]
                     .InnerText;
-                currency.Currency.Code = children[3].InnerText.Trim();
-                currency.Currency.MinorUnit = children[4].ChildNodes[0]
+                info.Currency.NameKey = "CUnit_" + ToIdentifier(info.Currency.Name);
+                info.Currency.Code = children[3].InnerText.Trim();
+                info.Currency.MinorUnit = children[4].ChildNodes[0]
                     .InnerText;
+                info.Currency.MinorUnitKey = "CMUnit_" + ToIdentifier(info.Currency.MinorUnit);
                 string decimalPlaces = children[5].InnerText.Trim();
                 if (decimalPlaces != "(none)")
                 {
-                    currency.Currency.DecimalCount = (int)Math.Log10(Double.Parse(decimalPlaces));
+                    info.Currency.DecimalCount = (int)Math.Log10(Double.Parse(decimalPlaces));
                 }
             }
 
-            return currency;
+            return info;
         }
 
         private static bool IsCurrencyRow(HAP::HtmlNode row)
@@ -252,7 +253,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         private static string ToIdentifier(string name)
         {
             var items = name
-                .Split(new string[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries)
+                .Split(new string[] { " ", ",", "-", "'" }, StringSplitOptions.RemoveEmptyEntries)
                 .Where(str => str.Length >= 2)
                 .Select(str => String.Format("{0}{1}", Char.ToUpper(str[0]), str.Substring(1)))
                 .ToArray();

@@ -140,8 +140,8 @@
     "JournalByDateBySubsidiary": "Journal By Date By Subsidiary",
     "JournalByDateSummary": "Journal By Date Summary",
     "JournalByDateSummaryByDate": "Journal By Date Summary By Date",
-    "AccountBook": "Account Book"
-
+    "AccountBook": "Account Book",
+    "Currency": "Currency"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -158,6 +158,19 @@
     "SearchBy": "Search By",
     "DisplayableColumns": "Displayable Columns",
     "SearchType": "Search Type"
+  },
+  "Currency": {
+    "New": "New Currency",
+    "Name": "Name",
+    "Country": "Country",
+    "Code": "Code",
+    "MinorUnit": "MinorUnit",
+    "Multiplier": "Multiplier",
+    "DecimalCount": "Decimal Count",
+    "Description": "Description",
+    "branchScope": "Branch Scope",
+    "IsActive": "Active",
+    "BranchName": "Branch Name"
   },
   "AccountBook": {
     "DisplayByRow": "By Row",

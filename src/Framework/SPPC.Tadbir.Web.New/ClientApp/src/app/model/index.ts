@@ -40,3 +40,4 @@ export * from './numberConfig';
 export * from './quickReportColumn';
 export * from './quickSearchConfig';
 export * from './quickSearchColumnConfig';
+export * from './currency';

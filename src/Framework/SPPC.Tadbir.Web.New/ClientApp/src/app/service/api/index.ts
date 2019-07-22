@@ -18,3 +18,4 @@ export * from './report/voucherReportApi';
 export * from './accountGroupApi';
 export * from './accountCollectionApi';
 export * from './journalApi';
+export * from './currencyApi';
