@@ -99,7 +99,8 @@
         </div>
       </div>
 
-      <div *ngIf="isDisplayCurrency">
+      <div>
+        <!--*ngIf="isDisplayCurrency"-->
 
         <hr />
 
@@ -108,6 +109,9 @@
           <div class="col-xs-12 col-sm-4 sppc-float">
 
             <div class="form-group">
+
+              <input type="checkbox" id="approvedBy" class="k-checkbox" /> <!--[(ngModel)]="isApproved" (ngModelChange)="changeVoucherStatus('approve')"-->
+
               <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
 
               <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-currency"

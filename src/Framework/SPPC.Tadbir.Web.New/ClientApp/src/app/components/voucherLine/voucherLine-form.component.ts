@@ -87,8 +87,6 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   @Input() public balance: number = 0;
   @Input() public model: VoucherLine;
 
-  @Input() public isDisplayCurrency: boolean = false;
-
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<{ model: VoucherLine, isOpen: boolean }> = new EventEmitter();
   @Output() setFocus: EventEmitter<any> = new EventEmitter();
