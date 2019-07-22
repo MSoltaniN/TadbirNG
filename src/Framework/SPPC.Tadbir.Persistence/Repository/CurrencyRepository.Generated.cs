@@ -88,11 +88,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// اطلاعات استاندارد یک ارز با نام مشخص شده را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="localDbPath">مسیر فیزیکی فایل استاتیک بانک اطلاعاتی ارزهای استاندارد</param>
         /// <param name="nameKey">کلید متن چندزبانه برای نام ارز مورد نظر</param>
         /// <returns>اطلاعات استاندارد ارز</returns>
-        public CurrencyViewModel GetCurrencyByName(string nameKey)
+        public CurrencyViewModel GetCurrencyByName(string localDbPath, string nameKey)
         {
-            var currencies = GetLocalCurrencyDatabase();
+            var currencies = GetLocalCurrencyDatabase(localDbPath);
             var currency = currencies
                 .Where(curr => curr.Currency.NameKey == nameKey)
                 .Select(curr => Mapper.Map<CurrencyViewModel>(curr))
@@ -103,10 +104,11 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از همه ارزهای معتبر شناخته شده را به صورت زوج های کلید-مقدار خوانده و برمی گرداند
         /// </summary>
+        /// <param name="localDbPath">مسیر فیزیکی فایل استاتیک بانک اطلاعاتی ارزهای استاندارد</param>
         /// <returns>مجموعه ای از همه ارزهای معتبر شناخته شده</returns>
-        public IList<KeyValue> GetCurrencyNamesLookup()
+        public IList<KeyValue> GetCurrencyNamesLookup(string localDbPath)
         {
-            var currencies = GetLocalCurrencyDatabase();
+            var currencies = GetLocalCurrencyDatabase(localDbPath);
             var names = currencies
                 .Select(info => info.Currency.NameKey)
                 .Distinct()
@@ -189,11 +191,11 @@ Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLi
                 : null;
         }
 
-        private List<CurrencyInfo> GetLocalCurrencyDatabase()
+        private List<CurrencyInfo> GetLocalCurrencyDatabase(string localDbPath)
         {
-            return JsonHelper.To<List<CurrencyInfo>>(File.ReadAllText(_currencyDbPath));
+            return JsonHelper.To<List<CurrencyInfo>>(File.ReadAllText(localDbPath));
         }
 
-        private const string _currencyDbPath = @"..\..\..\src\Framework\SPPC.Tadbir.Persistence\currencies.json";
+        private const string _currencyDbPath = "currencies.json";
     }
 }

@@ -37,15 +37,17 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// اطلاعات استاندارد یک ارز با نام مشخص شده را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="localDbPath">مسیر فیزیکی فایل استاتیک بانک اطلاعاتی ارزهای استاندارد</param>
         /// <param name="nameKey">کلید متن چندزبانه برای نام ارز مورد نظر</param>
         /// <returns>اطلاعات استاندارد ارز</returns>
-        CurrencyViewModel GetCurrencyByName(string nameKey);
+        CurrencyViewModel GetCurrencyByName(string localDbPath, string nameKey);
 
         /// <summary>
         /// مجموعه ای از همه ارزهای معتبر شناخته شده را به صورت زوج های کلید-مقدار خوانده و برمی گرداند
         /// </summary>
+        /// <param name="localDbPath">مسیر فیزیکی فایل استاتیک بانک اطلاعاتی ارزهای استاندارد</param>
         /// <returns>مجموعه ای از همه ارزهای معتبر شناخته شده</returns>
-        IList<KeyValue> GetCurrencyNamesLookup();
+        IList<KeyValue> GetCurrencyNamesLookup(string localDbPath);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک ارز را ایجاد یا اصلاح می کند
