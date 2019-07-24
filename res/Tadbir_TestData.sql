@@ -38,7 +38,7 @@ INSERT INTO [Auth].[RoleFiscalPeriod] (RoleFiscalPeriodID, RoleID, FiscalPeriodI
 SET IDENTITY_INSERT [Auth].[RoleFiscalPeriod] OFF
 
 SET IDENTITY_INSERT [Finance].[Currency] ON
-INSERT INTO [Finance].[Currency] (CurrencyID, Name) VALUES (1, N'ریال')
+INSERT INTO [Finance].[Currency] ([Name],[Country],[Code],[MinorUnit]) VALUES(N'CUnit_IranianRial', N'Country_Iran', N'IRR', N'CMUnit_Dinar')
 SET IDENTITY_INSERT [Finance].[Currency] OFF
 
 -- Insert suggested account coding...

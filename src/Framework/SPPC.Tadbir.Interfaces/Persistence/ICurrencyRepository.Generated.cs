@@ -63,6 +63,20 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteCurrencyAsync(int currencyId);
 
         /// <summary>
+        /// به روش آسنکرون، ارزهای مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        Task DeleteCurrenciesAsync(IEnumerable<int> items);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا ارز مشخص شده با شناسه دیتابیسی قابل حذف هست یا نه؟
+        /// </summary>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای حذف</param>
+        /// <returns>در صورتی که ارز مورد نظر قابل حذف باشد مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند.</returns>
+        Task<bool> CanDeleteCurrencyAsync(int currencyId);
+
+        /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>

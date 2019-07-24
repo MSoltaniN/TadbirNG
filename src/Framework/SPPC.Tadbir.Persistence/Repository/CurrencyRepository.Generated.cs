@@ -151,11 +151,41 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteCurrencyAsync(int currencyId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
-            var currency = await repository.GetByIDAsync(currencyId);
+            var currency = await repository.GetByIDWithTrackingAsync(currencyId, curr => curr.Rates);
             if (currency != null)
             {
+                currency.Rates.Clear();
                 await DeleteAsync(repository, currency);
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارزهای مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        public async Task DeleteCurrenciesAsync(IEnumerable<int> items)
+        {
+            foreach (int item in items)
+            {
+                await DeleteCurrencyAsync(item);
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا ارز مشخص شده با شناسه دیتابیسی قابل حذف هست یا نه؟
+        /// </summary>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای حذف</param>
+        /// <returns>در صورتی که ارز مورد نظر قابل حذف باشد مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند.</returns>
+        public async Task<bool> CanDeleteCurrencyAsync(int currencyId)
+        {
+            bool isUsed = await IsUsedInAccounts(currencyId);
+            if (!isUsed)
+            {
+                isUsed = await IsUsedInVoucherLines(currencyId);
+            }
+
+            return !isUsed;
         }
 
         /// <summary>
@@ -196,6 +226,24 @@ Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLi
             return JsonHelper.To<List<CurrencyInfo>>(File.ReadAllText(localDbPath));
         }
 
-        private const string _currencyDbPath = "currencies.json";
+        private async Task<bool> IsUsedInAccounts(int currencyId)
+        {
+            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
+            int usageCount = await accountRepository
+                .GetEntityQuery()
+                .Where(acc => acc.CurrencyId == currencyId)
+                .CountAsync();
+            return (usageCount != 0);
+        }
+
+        private async Task<bool> IsUsedInVoucherLines(int currencyId)
+        {
+            var lineRepository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            int usageCount = await lineRepository
+                .GetEntityQuery()
+                .Where(line => line.CurrencyId == currencyId)
+                .CountAsync();
+            return (usageCount != 0);
+        }
     }
 }

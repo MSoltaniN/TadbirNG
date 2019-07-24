@@ -718,7 +718,7 @@
     <value>Manual</value>
   </data>
   <data name="CantDeleteUsedAccountGroup" xml:space="preserve">
-    <value>This group is assigned to one or more general accounts and cannot be deleted.</value>
+    <value>The group '{0}' is assigned to one or more ledger accounts and cannot be deleted.</value>
   </data>
   <data name="AccountGroups" xml:space="preserve">
     <value>Account groups</value>
@@ -2474,5 +2474,11 @@
   </data>
   <data name="MinorUnit" xml:space="preserve">
     <value>Currency Minor Unit</value>
+  </data>
+  <data name="CMUnit_Centimo" xml:space="preserve">
+    <value>Centimo</value>
+  </data>
+  <data name="CantDeleteUsedCurrency" xml:space="preserve">
+    <value>The currency '{0}' is used in application and cannot be deleted.</value>
   </data>
 </root>

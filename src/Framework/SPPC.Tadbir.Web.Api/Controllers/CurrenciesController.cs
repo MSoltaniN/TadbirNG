@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -129,6 +131,41 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // PUT: api/currencies
+        [HttpPut]
+        [Route(CurrencyApi.CurrenciesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Delete)]
+        public async Task<IActionResult> PutExistingCurrenciesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _repository.DeleteCurrenciesAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                messages.Add(await ValidateDeleteAsync(item));
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
+        }
+
         private async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
@@ -136,6 +173,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (currency == null)
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Currency, item.ToString());
+            }
+            else
+            {
+                bool canDelete = await _repository.CanDeleteCurrencyAsync(item);
+                if (!canDelete)
+                {
+                    message = _strings.Format(AppStrings.CantDeleteUsedCurrency, _strings[currency.Name]);
+                }
             }
 
             return message;

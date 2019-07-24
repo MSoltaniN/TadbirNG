@@ -2293,7 +2293,7 @@
       "nameKey": "CUnit_VenezuelanBolívarSoberano",
       "name": "Venezuelan bolívar soberano",
       "code": "VES",
-      "minorUnitKey": "CMUnit_Céntimo",
+      "minorUnitKey": "CMUnit_Centimo",
       "minorUnit": "Céntimo",
       "decimalCount": 2
     }
