@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -94,20 +96,37 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingFiscalPeriodAsync(int fpId)
         {
-            bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(fpId);
-            if (!canDelete)
+            string result = await ValidateDeleteAsync(fpId);
+            if (!String.IsNullOrEmpty(result))
             {
-                return BadRequest(_strings.Format(AppStrings.CantDeleteFiscalPeriodWithData));
-            }
-
-            var fperiod = await _repository.GetFiscalPeriodAsync(fpId);
-            if (fperiod == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.FiscalPeriod));
+                return BadRequest(result);
             }
 
             _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteFiscalPeriodAsync(fpId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // PUT: api/companies
+        [HttpPut]
+        [Route(CompanyApi.CompaniesUrl)]
+        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Delete)]
+        public async Task<IActionResult> PutExistingCompaniesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _repository.DeleteFiscalPeriodsAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -162,6 +181,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                messages.Add(await ValidateDeleteAsync(item));
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
+        }
+
+        private async Task<string> ValidateDeleteAsync(int item)
+        {
+            string message = String.Empty;
+            var fperiod = await _repository.GetFiscalPeriodAsync(item);
+            if (fperiod == null)
+            {
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.FiscalPeriod, item.ToString());
+            }
+            else
+            {
+                bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
+                if (!canDelete)
+                {
+                    message = _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
+                }
+            }
+
+            return message;
         }
 
         private void Localize(RelatedItemsViewModel roles)

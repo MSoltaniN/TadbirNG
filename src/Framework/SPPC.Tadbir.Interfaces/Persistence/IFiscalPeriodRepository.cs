@@ -82,6 +82,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteFiscalPeriodAsync(int fperiodId);
 
         /// <summary>
+        /// به روش آسنکرون، دوره های مالی مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        Task DeleteFiscalPeriodsAsync(IEnumerable<int> items);
+
+        /// <summary>
         /// مشخص میکند که آیا تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی است؟
         /// </summary>
         /// <param name="fiscalPeriod">مدل نمایشی دوره مالی مورد نظر</param>

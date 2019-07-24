@@ -616,7 +616,7 @@
     <value>Switch company</value>
   </data>
   <data name="CannotDeleteAssignedBranch" xml:space="preserve">
-    <value>The branch {0} is assigned to one or more roles and cannot be deleted.</value>
+    <value>The branch '{0}' is assigned to one or more roles and cannot be deleted.</value>
   </data>
   <data name="CantModifyCheckedDocument" xml:space="preserve">
     <value>This {0} is checked and cannot be modified or deleted.</value>
@@ -634,7 +634,7 @@
     <value>Net Monthly Sales Chart</value>
   </data>
   <data name="CantDeleteFiscalPeriodWithData" xml:space="preserve">
-    <value>This fiscal period has one or more records defined and cannot be deleted.</value>
+    <value>This fiscal period '{0}' has one or more records defined and cannot be deleted.</value>
   </data>
   <data name="InvalidAccountInFullAccount" xml:space="preserve">
     <value>Selected account is invalid or inaccessible.</value>

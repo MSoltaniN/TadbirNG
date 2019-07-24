@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
-using SPPC.Tadbir.ViewModel.Corporate;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -46,6 +44,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="companyId">شناسه عددی شرکت مورد نظر برای حذف</param>
         Task DeleteCompanyAsync(int companyId);
+
+        /// <summary>
+        /// به روش آسنکرون، شرکت های مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        Task DeleteCompaniesAsync(IEnumerable<int> items);
 
         /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند

@@ -121,6 +121,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، شرکت های مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        public async Task DeleteCompaniesAsync(IEnumerable<int> items)
+        {
+            foreach (int item in items)
+            {
+                await DeleteCompanyAsync(item);
+            }
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="companyViewModel">مدل نمایشی شامل آخرین تغییرات</param>
