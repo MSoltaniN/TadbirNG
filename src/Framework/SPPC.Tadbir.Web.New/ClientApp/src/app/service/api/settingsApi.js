@@ -32,4 +32,6 @@ SettingsApi.QuickReportSettingsByUserAndView = environment.BaseUrl + "/settings/
 SettingsApi.WorkflowSettings = environment.BaseUrl + "/settings/workflows";
 // settings/views/tree
 SettingsApi.ViewTreeSettings = environment.BaseUrl + "/settings/views/tree";
+// settings/views/{viewId:min(1)}/tree
+SettingsApi.ViewTreeSettingsByView = environment.BaseUrl + "/settings/views/{0}/tree";
 //# sourceMappingURL=settingsApi.js.map
