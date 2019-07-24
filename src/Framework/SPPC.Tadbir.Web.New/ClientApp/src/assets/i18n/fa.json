@@ -169,7 +169,8 @@
     "Description": "شرح",
     "branchScope": "دسترسی شعبه",
     "IsActive": "وضعیت",
-    "BranchName": "نام شعبه"
+    "BranchName": "نام شعبه",
+    "Rate": "نرخ ارز"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",

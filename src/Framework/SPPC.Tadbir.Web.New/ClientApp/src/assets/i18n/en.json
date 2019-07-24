@@ -170,7 +170,8 @@
     "Description": "Description",
     "branchScope": "Branch Scope",
     "IsActive": "Active",
-    "BranchName": "Branch Name"
+    "BranchName": "Branch Name",
+    "Rate": "Exchange Rate"
   },
   "AccountBook": {
     "DisplayByRow": "By Row",

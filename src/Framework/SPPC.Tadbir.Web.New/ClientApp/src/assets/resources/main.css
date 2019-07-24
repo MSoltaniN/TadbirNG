@@ -416,26 +416,26 @@ body.tRtl .sppc-input-num {
   display: contents;
 }
 
-.k-grid .money-item {
+.k-grid .money-item, .k-footer-template > td{
   direction: ltr;
 }
 
 
 
 .sppc-switch.k-switch {
-  width: 8.5em;
+  width: 8.5em !important;
 }
 
-.sppc-switch.k-switch[dir='rtl'].k-switch-off .k-switch-handle {
-    left: calc(100% - 7.6em);
+  .sppc-switch.k-switch[dir='rtl'].k-switch-off .k-switch-handle {
+    left: calc(100% - 7.6em) !important;
   }
 
-.sppc-switch.k-switch[dir='rtl'].k-switch-on .k-switch-handle {
-    left: 5px;
+  .sppc-switch.k-switch[dir='rtl'].k-switch-on .k-switch-handle {
+    left: 5px !important;
   }
 
-.sppc-switch.k-switch[dir='ltr'].k-switch-on .k-switch-handle {
-    left: calc(100% - 8.1em);
+  .sppc-switch.k-switch[dir='ltr'].k-switch-on .k-switch-handle {
+    left: calc(100% - 8.1em) !important;
   }
 
 .sppc-switch .k-switch-label-on, .sppc-switch .k-switch-label-off {
@@ -443,11 +443,11 @@ body.tRtl .sppc-input-num {
 }
 
 .sppc-switch .k-switch-label-on {
-  left: -44px;
+  left: -44px !important;
 }
 .sppc-switch.k-switch[dir="rtl"] .k-switch-label-off {
-  left: -10px;
+  left: -10px !important;
 }
 .sppc-switch.k-switch[dir="rtl"] .k-switch-label-on {
-  right: -45px;
+  right: -45px !important;
 }

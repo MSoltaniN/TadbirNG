@@ -24,10 +24,12 @@ SettingsApi.ListSettingsByUserAndView = environment.BaseUrl + "/settings/list/us
 SettingsApi.QuickSearchSettingsByUser = environment.BaseUrl + "/settings/qsearch/users/{0}";
 // settings/qsearch/users/{userId:min(1)}/views/{viewId:min(1)}
 SettingsApi.QuickSearchSettingsByUserAndView = environment.BaseUrl + "/settings/qsearch/users/{0}/views/{1}";
+// settings/qreport/users/{userId:min(1)}
+SettingsApi.QuickReportSettingsByUser = environment.BaseUrl + "/settings/qreport/users/{0}";
+// settings/qreport/users/{userId:min(1)}/views/{viewId:min(1)}
+SettingsApi.QuickReportSettingsByUserAndView = environment.BaseUrl + "/settings/qreport/users/{0}/views/{1}";
 // settings/workflows
 SettingsApi.WorkflowSettings = environment.BaseUrl + "/settings/workflows";
 // settings/views/tree
 SettingsApi.ViewTreeSettings = environment.BaseUrl + "/settings/views/tree";
-// settings/views/{viewId:min(1)}/tree
-SettingsApi.ViewTreeSettingsByView = environment.BaseUrl + "/settings/views/{0}/tree";
 //# sourceMappingURL=settingsApi.js.map
