@@ -187,4 +187,35 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         ClosingTempAccounts = 3
     }
+
+    /// <summary>
+    /// حالات ممکن برای محدودیت ثبت مالی را در سرفصل های حسابداری تعریف می کند
+    /// </summary>
+    public enum TurnoverMode
+    {
+        /// <summary>
+        /// نداشتن محدودیت برای ثبت مالی
+        /// </summary>
+        Unlimited = -1,
+
+        /// <summary>
+        /// محدودیت بدهکار در طول دوره
+        /// </summary>
+        DebtorDuringPeriod = 0,
+
+        /// <summary>
+        /// محدودیت بستانکار در طول دوره
+        /// </summary>
+        CreditorDuringPeriod = 1,
+
+        /// <summary>
+        /// محدودیت بدهکار در انتهای دوره
+        /// </summary>
+        DebtorEndPeriod = 2,
+
+        /// <summary>
+        /// محدودیت بستانکار در انتهای دوره
+        /// </summary>
+        CreditorEndPeriod = 3
+    }
 }
