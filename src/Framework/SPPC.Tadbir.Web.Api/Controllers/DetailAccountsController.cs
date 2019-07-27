@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -203,47 +202,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        private async Task<IActionResult> ValidationResultAsync(DetailAccountViewModel detailAccount, int faccountId = 0)
-        {
-            var result = BasicValidationResult(detailAccount, faccountId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            if (await _repository.IsDuplicateDetailAccountAsync(detailAccount))
-            {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.DetailAccount, detailAccount.FullCode));
-            }
-
-            result = BranchValidationResult(detailAccount);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = ConfigValidationResult(detailAccount, _treeConfig.Current);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            return Ok();
-        }
-
-        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            foreach (int item in items)
-            {
-                messages.Add(await ValidateDeleteAsync(item));
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
-        }
-
-        private async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var detailAccount = await _repository.GetDetailAccountAsync(item);
@@ -278,6 +237,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private async Task<IActionResult> ValidationResultAsync(DetailAccountViewModel detailAccount, int faccountId = 0)
+        {
+            var result = BasicValidationResult(detailAccount, faccountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsDuplicateDetailAccountAsync(detailAccount))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.DetailAccount, detailAccount.FullCode));
+            }
+
+            result = BranchValidationResult(detailAccount);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = ConfigValidationResult(detailAccount, _treeConfig.Current);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            return Ok();
         }
 
         private readonly IDetailAccountRepository _repository;

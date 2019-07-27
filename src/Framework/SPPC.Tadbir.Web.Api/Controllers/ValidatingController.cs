@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -6,7 +8,6 @@ using SPPC.Framework.Common;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
-using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Resources.Types;
@@ -82,6 +83,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        protected async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                messages.Add(await ValidateDeleteAsync(item));
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
+        }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected virtual async Task<string> ValidateDeleteAsync(int item)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            return String.Empty;
         }
 
         private IActionResult GetBasicValidationResult(object item, int itemId)

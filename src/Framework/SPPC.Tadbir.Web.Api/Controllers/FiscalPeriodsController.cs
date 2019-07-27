@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -107,11 +106,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // PUT: api/companies
+        // PUT: api/fperiods
         [HttpPut]
-        [Route(CompanyApi.CompaniesUrl)]
-        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Delete)]
-        public async Task<IActionResult> PutExistingCompaniesAsDeletedAsync(
+        [Route(FiscalPeriodApi.FiscalPeriodsUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Delete)]
+        public async Task<IActionResult> PutExistingFiscalPeriodsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -157,6 +156,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        protected override async Task<string> ValidateDeleteAsync(int item)
+        {
+            string message = String.Empty;
+            var fperiod = await _repository.GetFiscalPeriodAsync(item);
+            if (fperiod == null)
+            {
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.FiscalPeriod, item.ToString());
+            }
+            else
+            {
+                bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
+                if (!canDelete)
+                {
+                    message = _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
+                }
+            }
+
+            return message;
+        }
+
         private async Task<IActionResult> ValidationResultAsync(FiscalPeriodViewModel fiscalPeriod, int fperiodId = 0)
         {
             var result = BasicValidationResult(fiscalPeriod, fperiodId);
@@ -181,38 +200,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            foreach (int item in items)
-            {
-                messages.Add(await ValidateDeleteAsync(item));
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
-        }
-
-        private async Task<string> ValidateDeleteAsync(int item)
-        {
-            string message = String.Empty;
-            var fperiod = await _repository.GetFiscalPeriodAsync(item);
-            if (fperiod == null)
-            {
-                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.FiscalPeriod, item.ToString());
-            }
-            else
-            {
-                bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
-                if (!canDelete)
-                {
-                    message = _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
-                }
-            }
-
-            return message;
         }
 
         private void Localize(RelatedItemsViewModel roles)

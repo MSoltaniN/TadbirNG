@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -154,19 +153,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            foreach (int item in items)
-            {
-                messages.Add(await ValidateDeleteAsync(item));
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
-        }
-
-        private async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var currency = await _repository.GetCurrencyAsync(item);

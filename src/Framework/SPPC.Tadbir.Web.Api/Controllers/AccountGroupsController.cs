@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -157,24 +156,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        private void Localize(params AccountGroupViewModel[] accountGroups)
-        {
-            Array.ForEach(accountGroups, grp => grp.Category = _strings[grp.Category]);
-        }
-
-        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            foreach (int item in items)
-            {
-                messages.Add(await ValidateDeleteAsync(item));
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
-        }
-
-        private async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var accountGroup = await _repository.GetAccountGroupAsync(item);
@@ -192,6 +174,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private void Localize(params AccountGroupViewModel[] accountGroups)
+        {
+            Array.ForEach(accountGroups, grp => grp.Category = _strings[grp.Category]);
         }
 
         private readonly IAccountGroupRepository _repository;
