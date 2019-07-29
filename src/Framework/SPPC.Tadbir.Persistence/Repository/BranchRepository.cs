@@ -12,6 +12,7 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -89,6 +90,37 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return item;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه شعب سازمانی در اولین سطح را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از شعب سازمانی تعریف شده در اولین سطح</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetRootBranchesAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            var rootBranches = await repository
+                .GetEntityQuery(br => br.Children)
+                .Where(br => br.Level == 0)
+                .Select(br => Mapper.Map<AccountItemBriefViewModel>(br))
+                .ToListAsync();
+            return rootBranches;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه شعب سازمانی زیرمجموعه یک شعبه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
+        /// <returns>مجموعه ای از شعب سازمانی زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetBranchChildrenAsync(int branchId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            var children = await repository
+                .GetEntityQuery(br => br.Children)
+                .Where(br => br.ParentId == branchId)
+                .Select(br => Mapper.Map<AccountItemBriefViewModel>(br))
+                .ToListAsync();
+            return children;
         }
 
         /// <summary>

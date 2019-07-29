@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -334,6 +336,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // PUT: api/vouchers
+        [HttpPut]
+        [Route(VoucherApi.EnvironmentVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
+        public async Task<IActionResult> PutExistingVouchersAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _repository.DeleteVouchersAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         #endregion
 
         #region Article Operations
@@ -449,6 +474,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             _lineRepository.SetCurrentContext(SecurityContext.User);
             await _lineRepository.DeleteArticleAsync(articleId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // PUT: api/vouchers/articles
+        [HttpPut]
+        [Route(VoucherApi.AllVoucherArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
+        public async Task<IActionResult> PutExistingVoucherLinesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupLineDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _lineRepository.DeleteArticlesAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -575,7 +623,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (voucher.StatusId != (int)DocumentStatusValue.Draft)
             {
-                return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher));
+                return BadRequest(_strings.Format(AppStrings.CantDeleteNonDraftDocument, AppStrings.Voucher, voucher.No.ToString()));
             }
 
             return Ok();
@@ -590,6 +638,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private async Task<IEnumerable<string>> ValidateGroupLineDeleteAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                messages.Add(await ValidateLineDeleteAsync(item));
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
         private void Localize(params VoucherViewModel[] vouchers)

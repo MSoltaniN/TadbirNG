@@ -90,6 +90,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteArticleAsync(int articleId);
 
         /// <summary>
+        /// به روش آسنکرون، آرتیکل های مشخص شده با شناسه عددی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        Task DeleteArticlesAsync(IEnumerable<int> items);
+
+        /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>

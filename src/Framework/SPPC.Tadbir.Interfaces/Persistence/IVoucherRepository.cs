@@ -110,6 +110,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteVoucherAsync(int voucherId);
 
         /// <summary>
+        /// به روش آسنکرون، اسناد مالی مشخص شده با شناسه عددی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        Task DeleteVouchersAsync(IEnumerable<int> items);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا شماره سند مورد نظر تکراری است یا نه
         /// </summary>
         /// <param name="voucher">سند مالی که تکراری بودن شماره آن باید بررسی شود</param>

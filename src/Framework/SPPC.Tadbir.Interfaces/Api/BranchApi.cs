@@ -26,6 +26,16 @@
         public const string BranchesUrl = "branches";
 
         /// <summary>
+        /// API client URL for all root branch items
+        /// </summary>
+        public const string RootBranches = "branches/root";
+
+        /// <summary>
+        /// API server route URL for all root branch items
+        /// </summary>
+        public const string RootBranchesUrl = "branches/root";
+
+        /// <summary>
         /// API client URL for a branch item specified by unique identifier
         /// </summary>
         public const string Branch = "branches/{0}";
@@ -34,6 +44,16 @@
         /// API server route URL for a branch item specified by unique identifier
         /// </summary>
         public const string BranchUrl = "branches/{branchId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all children of a branch item specified by unique identifier
+        /// </summary>
+        public const string BranchChildren = "branches/{0}/children";
+
+        /// <summary>
+        /// API server route URL for all children of a branch item specified by unique identifier
+        /// </summary>
+        public const string BranchChildrenUrl = "branches/{branchId:min(1)}/children";
 
         /// <summary>
         /// API client URL for all roles who can access a branch item specified by unique identifier

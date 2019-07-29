@@ -4,6 +4,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -31,11 +32,24 @@ namespace SPPC.Tadbir.Persistence
         Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون،شعبه سازمانی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، شعبه سازمانی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="branchId">شناسه عددی یکی از شعب سازمانی موجود</param>
         /// <returns>شعبه سازمانی مشخص شده با شناسه عددی</returns>
         Task<BranchViewModel> GetBranchAsync(int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه شعب سازمانی در اولین سطح را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از شعب سازمانی تعریف شده در اولین سطح</returns>
+        Task<IList<AccountItemBriefViewModel>> GetRootBranchesAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه شعب سازمانی زیرمجموعه یک شعبه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
+        /// <returns>مجموعه ای از شعب سازمانی زیرمجموعه</returns>
+        Task<IList<AccountItemBriefViewModel>> GetBranchChildrenAsync(int branchId);
 
         /// <summary>
         /// به روش آسنکرون، نقش های دارای دسترسی به یک شعبه را خوانده و برمی گرداند

@@ -213,6 +213,16 @@ namespace SPPC.Tadbir.Api
         public const string UndoFinalizeVoucherUrl = "vouchers/{voucherId:min(1)}/finalize/undo";
 
         /// <summary>
+        /// API client URL for all available articles
+        /// </summary>
+        public const string AllVoucherArticles = "vouchers/articles";
+
+        /// <summary>
+        /// API server route URL for all available articles
+        /// </summary>
+        public const string AllVoucherArticlesUrl = "vouchers/articles";
+
+        /// <summary>
         /// API client URL for all articles in a single voucher specified by identifier
         /// </summary>
         public const string VoucherArticles = "vouchers/{0}/articles";
