@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Web.Api
                     .WithExposedHeaders("X-Tadbir-AuthTicket", "X-Total-Count")
                     .WithHeaders("Content-Type", "Accept-Language", "X-Tadbir-AuthTicket", "X-Tadbir-GridOptions"));
 
+            app.UseStaticFiles();
             app.UseMvc();
         }
 

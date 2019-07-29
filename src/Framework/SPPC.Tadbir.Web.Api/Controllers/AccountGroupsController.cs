@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -121,21 +122,58 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingAccountGroupAsync(int groupId)
         {
-            var accountGroup = await _repository.GetAccountGroupAsync(groupId);
-            if (accountGroup == null)
+            string message = await ValidateDeleteAsync(groupId);
+            if (!String.IsNullOrEmpty(message))
             {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.AccountGroup));
-            }
-
-            bool canDelete = await _repository.CanDeleteAccountGroupAsync(groupId);
-            if (!canDelete)
-            {
-                return BadRequest(_strings.Format(AppStrings.CantDeleteUsedAccountGroup));
+                return BadRequest(message);
             }
 
             _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteAccountGroupAsync(groupId);
             return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // PUT: api/accgroups
+        [HttpPut]
+        [Route(AccountGroupApi.AccountGroupsUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Delete)]
+        public async Task<IActionResult> PutExistingAccountGroupsAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _repository.DeleteAccountGroupsAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        protected override async Task<string> ValidateDeleteAsync(int item)
+        {
+            string message = String.Empty;
+            var accountGroup = await _repository.GetAccountGroupAsync(item);
+            if (accountGroup == null)
+            {
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.AccountGroup, item.ToString());
+            }
+            else
+            {
+                bool canDelete = await _repository.CanDeleteAccountGroupAsync(item);
+                if (!canDelete)
+                {
+                    message = _strings.Format(AppStrings.CantDeleteUsedAccountGroup, accountGroup.Name);
+                }
+            }
+
+            return message;
         }
 
         private void Localize(params AccountGroupViewModel[] accountGroups)

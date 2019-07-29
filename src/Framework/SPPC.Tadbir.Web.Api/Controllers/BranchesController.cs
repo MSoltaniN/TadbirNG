@@ -8,6 +8,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -102,6 +103,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // PUT: api/branches
+        [HttpPut]
+        [Route(BranchApi.BranchesUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Delete)]
+        public async Task<IActionResult> PutExistingCompaniesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _repository.DeleteBranchesAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         // GET: api/branches/{branchId:min(1)}/roles
         [Route(BranchApi.BranchRolesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
@@ -129,14 +153,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var branch = await _repository.GetBranchAsync(item);
             if (branch == null)
             {
-                return String.Format(
-                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Branch), item);
+                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Branch, item.ToString());
             }
 
             var hasChildren = await _repository.HasChildrenAsync(item);
@@ -150,8 +173,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var hasRoles = await _repository.HasAssignedRolesAsync(item);
             if (hasRoles == true)
             {
-                return String.Format(
-                   _strings[AppStrings.CannotDeleteAssignedBranch], String.Format("'{0}'", branch.Name));
+                return _strings.Format(AppStrings.CannotDeleteAssignedBranch, branch.Name);
             }
 
             return message;

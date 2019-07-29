@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// ضریب تبدیل به ارز پایه شرکت - این عدد برابر است با مقدار ارز پایه معادل با یک واحد ارز مرتبط
         /// </summary>
-        public virtual decimal Multiplier { get; set; }
+        public virtual double Multiplier { get; set; }
 
         /// <summary>
         /// ارزی که نرخ روزانه یا لحظه ای برای ان ثبت می شود

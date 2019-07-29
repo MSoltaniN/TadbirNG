@@ -31,6 +31,7 @@ namespace SPPC.Tadbir.Model.Finance
             MinorUnit = String.Empty;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
+            Rates = new List<CurrencyRate>();
         }
 
         /// <summary>

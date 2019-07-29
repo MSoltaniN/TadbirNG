@@ -193,6 +193,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، شعبه های مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        public async Task DeleteBranchesAsync(IEnumerable<int> items)
+        {
+            foreach (int item in items)
+            {
+                await DeleteBranchAsync(item);
+            }
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا شعبه سازمانی انتخاب شده دارای زیرمجموعه هست یا نه
         /// </summary>
         /// <param name="branchId">شناسه یکتای یکی از شعب سازمانی موجود</param>

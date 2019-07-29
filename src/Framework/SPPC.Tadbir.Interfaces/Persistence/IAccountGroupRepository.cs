@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -69,6 +68,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="groupId">شناسه گروه حساب مورد نظر برای حذف</param>
         Task DeleteAccountGroupAsync(int groupId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات مجموعه ای از گروه های حساب موجود را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        Task DeleteAccountGroupsAsync(IEnumerable<int> items);
 
         /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند

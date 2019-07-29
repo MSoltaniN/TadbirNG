@@ -454,6 +454,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        protected override async Task<string> ValidateDeleteAsync(int voucherId)
+        {
+            string message = String.Empty;
+            var voucher = await _repository.GetVoucherAsync(voucherId);
+            if (voucher == null)
+            {
+                message = String.Format(
+                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucherId);
+            }
+
+            var result = BranchValidationResult(voucher);
+            if (result is BadRequestObjectResult branchError)
+            {
+                message = branchError.Value.ToString();
+            }
+
+            result = CheckedValidationResult(voucher);
+            if (result is BadRequestObjectResult statusError)
+            {
+                message = statusError.Value.ToString();
+            }
+
+            return message;
+        }
+
         private static bool IsUnbalancedVoucher(VoucherViewModel voucher)
         {
             return (voucher.DebitSum == 0.0M && voucher.CreditSum == 0.0M)
@@ -525,31 +550,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        private async Task<string> ValidateDeleteAsync(int voucherId)
-        {
-            string message = String.Empty;
-            var voucher = await _repository.GetVoucherAsync(voucherId);
-            if (voucher == null)
-            {
-                message = String.Format(
-                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucherId);
-            }
-
-            var result = BranchValidationResult(voucher);
-            if (result is BadRequestObjectResult branchError)
-            {
-                message = branchError.Value.ToString();
-            }
-
-            result = CheckedValidationResult(voucher);
-            if (result is BadRequestObjectResult statusError)
-            {
-                message = statusError.Value.ToString();
-            }
-
-            return message;
         }
 
         private async Task<string> ValidateLineDeleteAsync(int articleId)

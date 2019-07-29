@@ -616,7 +616,7 @@
     <value>تغییر شرکت</value>
   </data>
   <data name="CannotDeleteAssignedBranch" xml:space="preserve">
-    <value>شعبه {0} به یک یا چند نقش تخصیص داده شده و قابل حذف نیست.</value>
+    <value>شعبه '{0}' به یک یا چند نقش تخصیص داده شده و قابل حذف نیست.</value>
   </data>
   <data name="CantModifyCheckedDocument" xml:space="preserve">
     <value>{0} مورد نظر ثبت شده و قابل ویرایش یا حذف نیست.</value>
@@ -634,7 +634,7 @@
     <value>نمودار فروش خالص ماهانه در سال مالی جاری</value>
   </data>
   <data name="CantDeleteFiscalPeriodWithData" xml:space="preserve">
-    <value>در این دوره مالی یک یا چند سطر اطلاعاتی ایجاد شده و قابل حذف نیست.</value>
+    <value>در دوره مالی '{0}' یک یا چند سطر اطلاعاتی ایجاد شده و قابل حذف نیست.</value>
   </data>
   <data name="InvalidAccountInFullAccount" xml:space="preserve">
     <value>حساب انتخاب شده نامعتبر یا غیر قابل دسترس است.</value>
@@ -718,7 +718,7 @@
     <value>سند عادی</value>
   </data>
   <data name="CantDeleteUsedAccountGroup" xml:space="preserve">
-    <value>این گروه به یک یا چند حساب کل تخصیص داده شده و قابل حذف نیست.</value>
+    <value>گروه '{0}' به یک یا چند حساب کل تخصیص داده شده و قابل حذف نیست.</value>
   </data>
   <data name="AccountGroups" xml:space="preserve">
     <value>گروه های حساب</value>
@@ -2465,5 +2465,11 @@
   </data>
   <data name="MinorUnit" xml:space="preserve">
     <value>ارز جزء</value>
+  </data>
+  <data name="CMUnit_Centimo" xml:space="preserve">
+    <value>سنتیمو</value>
+  </data>
+  <data name="CantDeleteUsedCurrency" xml:space="preserve">
+    <value>ارز '{0}' در سیستم استفاده شده و قابل حذف نیست.</value>
   </data>
 </root>

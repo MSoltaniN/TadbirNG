@@ -616,7 +616,7 @@
     <value>Switch company</value>
   </data>
   <data name="CannotDeleteAssignedBranch" xml:space="preserve">
-    <value>The branch {0} is assigned to one or more roles and cannot be deleted.</value>
+    <value>The branch '{0}' is assigned to one or more roles and cannot be deleted.</value>
   </data>
   <data name="CantModifyCheckedDocument" xml:space="preserve">
     <value>This {0} is checked and cannot be modified or deleted.</value>
@@ -634,7 +634,7 @@
     <value>Net Monthly Sales Chart</value>
   </data>
   <data name="CantDeleteFiscalPeriodWithData" xml:space="preserve">
-    <value>This fiscal period has one or more records defined and cannot be deleted.</value>
+    <value>This fiscal period '{0}' has one or more records defined and cannot be deleted.</value>
   </data>
   <data name="InvalidAccountInFullAccount" xml:space="preserve">
     <value>Selected account is invalid or inaccessible.</value>
@@ -718,7 +718,7 @@
     <value>Manual</value>
   </data>
   <data name="CantDeleteUsedAccountGroup" xml:space="preserve">
-    <value>This group is assigned to one or more general accounts and cannot be deleted.</value>
+    <value>The group '{0}' is assigned to one or more ledger accounts and cannot be deleted.</value>
   </data>
   <data name="AccountGroups" xml:space="preserve">
     <value>Account groups</value>
@@ -2474,5 +2474,11 @@
   </data>
   <data name="MinorUnit" xml:space="preserve">
     <value>Currency Minor Unit</value>
+  </data>
+  <data name="CMUnit_Centimo" xml:space="preserve">
+    <value>Centimo</value>
+  </data>
+  <data name="CantDeleteUsedCurrency" xml:space="preserve">
+    <value>The currency '{0}' is used in application and cannot be deleted.</value>
   </data>
 </root>

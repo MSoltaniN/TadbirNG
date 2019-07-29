@@ -39,9 +39,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Currency)
-                .WithMany()
-                .HasForeignKey("CurrencyID")
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .WithMany(r => r.Rates)
+                .HasForeignKey(e => e.CurrencyId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Finance_CurrencyRate_Finance_Currency");
         }
     }

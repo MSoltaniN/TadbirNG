@@ -12,7 +12,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -174,6 +173,18 @@ namespace SPPC.Tadbir.Persistence
             if (accountGroup != null)
             {
                 await DeleteAsync(repository, accountGroup);
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات مجموعه ای از گروه های حساب موجود را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        public async Task DeleteAccountGroupsAsync(IEnumerable<int> items)
+        {
+            foreach (int item in items)
+            {
+                await DeleteAccountGroupAsync(item);
             }
         }
 

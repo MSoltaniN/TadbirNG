@@ -1,12 +1,15 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -17,10 +20,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class CurrenciesController : ValidatingController<CurrencyViewModel>
     {
-        public CurrenciesController(ICurrencyRepository repository, IStringLocalizer<AppStrings> strings = null)
+        public CurrenciesController(ICurrencyRepository repository,
+            IHostingEnvironment host, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
+            _host = host;
         }
 
         protected override string EntityNameKey
@@ -52,7 +57,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyApi.CurrencyInfoByNameUrl)]
         public IActionResult GetCurrencyInfoByName(string nameKey)
         {
-            var currency = _repository.GetCurrencyByName(nameKey);
+            var path = GetLocalCurrencyDbPath();
+            var currency = _repository.GetCurrencyByName(path, nameKey);
             Localize(currency);
             currency.BranchId = SecurityContext.User.BranchId;
             currency.BranchName = SecurityContext.User.BranchName;
@@ -63,7 +69,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyApi.CurrencyNamesLookupUrl)]
         public IActionResult GetCurrencyNamesLookup()
         {
-            var currencyNames = _repository.GetCurrencyNamesLookup();
+            var path = GetLocalCurrencyDbPath();
+            var currencyNames = _repository.GetCurrencyNamesLookup(path);
             Array.ForEach(currencyNames.ToArray(), name => name.Value = _strings[name.Value]);
             SetItemCount(currencyNames.Count);
             var sortedList = currencyNames
@@ -123,13 +130,44 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        private async Task<string> ValidateDeleteAsync(int item)
+        // PUT: api/currencies
+        [HttpPut]
+        [Route(CurrencyApi.CurrenciesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Delete)]
+        public async Task<IActionResult> PutExistingCurrenciesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _repository.DeleteCurrenciesAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var currency = await _repository.GetCurrencyAsync(item);
             if (currency == null)
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Currency, item.ToString());
+            }
+            else
+            {
+                bool canDelete = await _repository.CanDeleteCurrencyAsync(item);
+                if (!canDelete)
+                {
+                    message = _strings.Format(AppStrings.CantDeleteUsedCurrency, _strings[currency.Name]);
+                }
             }
 
             return message;
@@ -141,6 +179,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             currency.MinorUnit = _strings[currency.MinorUnit];
         }
 
+        private string GetLocalCurrencyDbPath()
+        {
+            return Path.Combine(_host.WebRootPath, "static", "currencies.json");
+        }
+
         private readonly ICurrencyRepository _repository;
+        private readonly IHostingEnvironment _host;
     }
 }

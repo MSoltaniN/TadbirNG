@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -210,57 +209,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        private async Task<IActionResult> ValidationResultAsync(AccountViewModel account, int accountId = 0)
-        {
-            var result = BasicValidationResult(account, accountId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            if (account.Level == 0 && !account.GroupId.HasValue)
-            {
-                return BadRequest(_strings.Format(AppStrings.AccountGroupIsRequired));
-            }
-
-            if (await _repository.IsDuplicateAccountAsync(account))
-            {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
-            }
-
-            if (account.ParentId != null && await _repository.IsAccountCollectionValidAsync(account))
-            {
-                return BadRequest(_strings.Format(AppStrings.CannotInsertLeafAccount));
-            }
-
-            result = BranchValidationResult(account);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = ConfigValidationResult(account, _treeConfig.Current);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            return Ok();
-        }
-
-        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            foreach (int item in items)
-            {
-                messages.Add(await ValidateDeleteAsync(item));
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
-        }
-
-        private async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var account = await _repository.GetAccountAsync(item);
@@ -300,6 +249,44 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private async Task<IActionResult> ValidationResultAsync(AccountViewModel account, int accountId = 0)
+        {
+            var result = BasicValidationResult(account, accountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (account.Level == 0 && !account.GroupId.HasValue)
+            {
+                return BadRequest(_strings.Format(AppStrings.AccountGroupIsRequired));
+            }
+
+            if (await _repository.IsDuplicateAccountAsync(account))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
+            }
+
+            if (account.ParentId != null && await _repository.IsAccountCollectionValidAsync(account))
+            {
+                return BadRequest(_strings.Format(AppStrings.CannotInsertLeafAccount));
+            }
+
+            result = BranchValidationResult(account);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = ConfigValidationResult(account, _treeConfig.Current);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            return Ok();
         }
 
         private readonly IAccountRepository _repository;
