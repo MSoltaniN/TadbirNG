@@ -118,7 +118,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.voucherOperationsItem = VoucherOperations;
 
     this.editForm.reset();
-
+    
     if (this.voucherItem) {
       this.initVoucherForm(this.voucherItem);
       this.isShowBreadcrumb = false;
