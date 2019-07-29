@@ -294,6 +294,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Branch, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<Branch, RelatedItemViewModel>();
+            mapperConfig.CreateMap<Branch, AccountItemBriefViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
         }
 
         private static void MapWorkflowTypes(IMapperConfigurationExpression mapperConfig)

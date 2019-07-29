@@ -51,6 +51,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(branch);
         }
 
+        // GET: api/branches/root
+        [Route(BranchApi.RootBranchesUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
+        public async Task<IActionResult> GetRootBranchesAsync()
+        {
+            var rootBranches = await _repository.GetRootBranchesAsync();
+            return Json(rootBranches);
+        }
+
+        // GET: api/branches/{branchId:min(1)}/children
+        [Route(BranchApi.BranchChildrenUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
+        public async Task<IActionResult> GetBranchChildrenAsync(int branchId)
+        {
+            var children = await _repository.GetBranchChildrenAsync(branchId);
+            return JsonReadResult(children);
+        }
+
         // POST: api/branches
         [HttpPost]
         [Route(BranchApi.BranchesUrl)]
