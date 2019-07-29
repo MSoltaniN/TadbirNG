@@ -1051,6 +1051,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\components\error\" />
+    <Folder Include="ClientApp\src\app\components\currencyRate\" />
     <Folder Include="ClientApp\src\assets\resources\fonts\IranSans-En\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
