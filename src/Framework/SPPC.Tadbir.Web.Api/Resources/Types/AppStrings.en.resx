@@ -2481,4 +2481,7 @@
   <data name="CantDeleteUsedCurrency" xml:space="preserve">
     <value>The currency '{0}' is used in application and cannot be deleted.</value>
   </data>
+  <data name="CantDeleteNonDraftDocument" xml:space="preserve">
+    <value>The {0} with number {1} is not draft and cannot be deleted.</value>
+  </data>
 </root>

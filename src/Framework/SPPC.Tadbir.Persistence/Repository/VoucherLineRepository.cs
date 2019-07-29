@@ -233,6 +233,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، آرتیکل های مشخص شده با شناسه عددی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        public async Task DeleteArticlesAsync(IEnumerable<int> items)
+        {
+            foreach (int item in items)
+            {
+                await DeleteArticleAsync(item);
+            }
+        }
+
+        /// <summary>
         /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
         /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
         /// </summary>

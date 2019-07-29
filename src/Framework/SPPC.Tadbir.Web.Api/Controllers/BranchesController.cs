@@ -107,7 +107,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(BranchApi.BranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Delete)]
-        public async Task<IActionResult> PutExistingCompaniesAsDeletedAsync(
+        public async Task<IActionResult> PutExistingBranchesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
