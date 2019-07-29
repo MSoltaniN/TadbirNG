@@ -1,6 +1,7 @@
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, Host } from '@angular/core';
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";  //npm shrinkwrap
+import { ColumnComponent } from '@progress/kendo-angular-grid';
 
 @Component({
   selector: 'sppc-auto-grid-filter',
@@ -36,4 +37,54 @@ export class SppcAutoGridFilter {
     }
 
   }
+
+  constructor(@Host() private hostColumn: ColumnComponent) {
+   
+  }
+
+ 
+  ngAfterViewInit() {
+
+    var self = this.hostColumn;
+
+    var items = document.getElementsByClassName('k-dropdown-operator');
+    if (items.length > 0) {
+
+      for (var i = 0; i < items.length; i++) {
+        var element = items.item(i);
+        if (element.getAttribute('used') == null) {
+          var observer = new MutationObserver(mutations => {
+            mutations.forEach(function (mutation) {
+              if (mutation.type == 'attributes' && mutation.attributeName == "ng-reflect-value") {
+                var temp = <any>self.filterCellTemplate.templateRef;
+                temp._parentView.component.reloadGrid();
+            
+              }
+            });
+          });
+
+          var config = { attributes: true, childList: true, characterData: true };
+
+          observer.observe(element, config);
+          element.setAttribute('used', '1');
+
+          var btnRemoveFilter = element.nextElementSibling;          
+          if (btnRemoveFilter) {
+            btnRemoveFilter.addEventListener('click', () => {              
+              //var inputFilter = btnRemoveFilter.previousElementSibling.previousElementSibling;
+              //inputFilter.nodeValue = "";
+              var temp = <any>self.filterCellTemplate.templateRef;
+              temp._parentView.component.reloadGrid();
+            });                 
+                
+            btnRemoveFilter.setAttribute('used', '1');
+
+          }
+        }
+      }
+
+    }
+
+  }
+
 }
