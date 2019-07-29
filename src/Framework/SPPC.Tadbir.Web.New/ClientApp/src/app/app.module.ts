@@ -412,7 +412,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
     SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherLineFormComponent,
-    TabComponent, AccountGroupsFormComponent, VoucherEditorComponent, SelectFormComponent, CurrencyFormComponent
+    TabComponent, AccountGroupsFormComponent, VoucherEditorComponent, SelectFormComponent, CurrencyFormComponent, BranchFormComponent, BranchRolesFormComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -1,47 +1,45 @@
-<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
-              (close)="closeForm()" [minWidth]="250" [width]="450">
-    <kendo-dialog-titlebar>
-        {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
-    </kendo-dialog-titlebar>
 
-    <div *ngIf="parentValue != ''">
-        <div class="alert alert-info fade in alert-dismissible">
-            <span class='accInfoTitle'><strong>{{ parentTitle }} </strong></span> : {{ parentValue }}
-        </div>
+<div style="padding:15px;" (keydown.esc)="escPress()">
+
+  <div *ngIf="parent">
+    <div class="alert alert-info fade in alert-dismissible">
+      <span class='accInfoTitle'><strong>{{ 'App.Level' | translate }}{{ parent.level + 2 }} </strong></span> : {{ parent.name }}
     </div>
+  </div>
 
-    <div *ngIf="errorMessage != ''">
-      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-      <div class="alert alert-danger">
-        {{ errorMessage }}
+  <div *ngIf="errorMessage">
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+    <div class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+    <div class="form-group">
+      <label for="name" class="control-label">{{ 'Branch.Name' | translate }}</label>
+
+      <input type="text" class="k-textbox" formControlName="name" />
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+        <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.Branch.NameIsRequired' | translate }}</span>
+        <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Branch.NameIsTooLong' | translate }}</span>
       </div>
     </div>
 
-    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
-        <div class="form-group">
-            <label for="name" class="control-label">{{ 'Branch.Name' | translate }}</label>
+    <div class="form-group">
+      <label for="description" class="control-label">{{ 'Branch.Description' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="name" />
+      <textarea class="k-textarea" formControlName="description"></textarea>
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.Branch.NameIsRequired' | translate }}</span>
-                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Branch.NameIsTooLong' | translate }}</span>
-            </div>
-        </div>
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+        {{ 'AllValidations.Branch.DescriptionIsTooLong' | translate }}
+      </div>
+    </div>
+  </form>
 
-        <div class="form-group">
-            <label for="description" class="control-label">{{ 'Branch.Description' | translate }}</label>
+</div>
 
-            <textarea class="k-textarea" formControlName="description"></textarea>
-
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                {{ 'AllValidations.Branch.DescriptionIsTooLong' | translate }}
-            </div>
-        </div>
-    </form>
-
-    <kendo-dialog-actions>
-        <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
-        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
-    </kendo-dialog-actions>
-</kendo-dialog>
+<kendo-dialog-actions>
+  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+  <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+</kendo-dialog-actions>

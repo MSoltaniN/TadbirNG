@@ -631,7 +631,8 @@
     "Roles": "Roles",
     "UpdateRoles": "Branch roles have been successfully edited",
     "RolesTitle": "List of available roles to the branch",
-    "NotFoundData": "Not Found Branch"
+    "NotFoundData": "Not Found Branch",
+    "LedgerBranch": "Ledger Branch"
   },
   "Voucher": {
     "New": "New Voucher",
