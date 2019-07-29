@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ContextInfo } from './login';
 import { String } from '../class/source';
+import { LZStringService } from 'ng-lz-string';
 
 export const SessionKeys = {
   CurrentContext: 'CurrentContext',
@@ -27,7 +28,7 @@ export const SessionKeys = {
 @Injectable()
 export class BrowserStorageService {
 
-  constructor() { }
+  constructor(private lz: LZStringService) { }
 
   setCurrentContext(currentUser: ContextInfo) {
     if (this.isRememberMe())
@@ -190,11 +191,32 @@ export class BrowserStorageService {
   }
 
   getMetadata(metadataKey: string): string {
-    return localStorage.getItem(metadataKey)
+
+    
+
+    var compressedData = localStorage.getItem(metadataKey);
+    if (compressedData) {
+      var t0 = performance.now();
+      var decompressed = this.lz.decompress(compressedData);
+      var t1 = performance.now();
+      console.log("decompress metadata time : " + (t1 - t0) + " milliseconds.");
+
+      return decompressed;
+    }
+
+    return null;    
   }
 
   setMetadata(metadataKey: string, columns: any) {
-    localStorage.setItem(metadataKey, JSON.stringify(columns))
+    var jsonData = JSON.stringify(columns);
+    if (jsonData) {
+      var t0 = performance.now();
+      var compressedJSON = this.lz.compress(jsonData);
+      var t1 = performance.now();
+      console.log("compress metadata time : " + (t1 - t0) + " milliseconds.");
+
+      localStorage.setItem(metadataKey, compressedJSON);
+    }
   }
 
   getViewTreeConfig(): string {

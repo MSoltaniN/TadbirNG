@@ -52,6 +52,7 @@
     <None Remove="ClientApp\src\app\class\grid.orderby.ts" />
     <None Remove="ClientApp\src\app\class\gridExplorer.component.ts" />
     <None Remove="ClientApp\src\app\class\inlineGrid.component.ts" />
+    <None Remove="ClientApp\src\app\class\metadata\metadata.resolver.ts" />
     <None Remove="ClientApp\src\app\class\metadata\property.ts" />
     <None Remove="ClientApp\src\app\components\accountBook\accountBook.component.ts" />
     <None Remove="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
@@ -925,6 +926,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\class\filterExpressionBuilder.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\filterExpressionOperator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\grid.orderby.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\class\metadata\metadata.resolver.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\metadata\property.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountBook\accountBook.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
