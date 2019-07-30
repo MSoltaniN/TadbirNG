@@ -411,6 +411,17 @@ body.tRtl .sppc-input-num {
   }
 }
 
+.sppc-dialog-xs{
+  width:450px;
+}
+
+@media screen and (max-width:450px) {
+  .sppc-dialog-xs {
+    width: 90%;
+    min-width: 250px;
+  }
+}
+
 .k-grid .k-grid-norecords {
   text-align: unset;
   display: contents;

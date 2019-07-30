@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
 import { Branch } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -27,36 +27,48 @@ export function getLayoutModule(layout: Layout) {
     provide: RTL,
     useFactory: getLayoutModule,
     deps: [Layout]
-  }]
+  }, DefaultComponent]
 
 })
 
-export class BranchFormComponent extends DetailComponent {
+export class BranchFormComponent extends DetailComponent implements OnInit {
 
-  //create properties
-  active: boolean = false;
+
+  @Input() public parent: Branch;
+  @Input() public model: Branch;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public parentTitle: string = '';
-  @Input() public parentValue: string = '';
-
-  @Input() public set model(branch: Branch) {
-    this.editForm.reset(branch);
-
-    this.active = branch !== undefined || this.isNew;
-  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<Branch> = new EventEmitter();
-  //create properties
 
-  //Events
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
+        public renderer: Renderer2, public metadata: MetaDataService, @Host() defaultComponent: DefaultComponent) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Branch, ViewName.Branch);
+  }
+
+  ngOnInit(): void {
+
+    this.editForm.reset();
+
+    setTimeout(() => {
+      this.editForm.reset(this.model);
+    })
+
+  }
+
+
   public onSave(e: any): void {
     e.preventDefault();
     if (this.editForm.valid) {
-      this.save.emit(this.editForm.value);
-      this.active = true;
+      let model: Branch = this.editForm.value;
+      model.companyId = this.CompanyId;
+      if (this.isNew) {
+        model.level = this.parent ? this.parent.level + 1 : 0;
+        model.parentId = this.parent ? this.parent.id : null;
+      }
+      this.save.emit(model);
     }
   }
 
@@ -66,22 +78,10 @@ export class BranchFormComponent extends DetailComponent {
   }
 
   private closeForm(): void {
-    this.isNew = false;
-    this.active = false;
     this.cancel.emit();
   }
 
   escPress() {
     this.closeForm();
   }
-
-  //Events
-
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-        public renderer: Renderer2, public metadata: MetaDataService, @Host() defaultComponent: DefaultComponent) {
-
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Branch, ViewName.Branch);
-  }
-
-
 }
