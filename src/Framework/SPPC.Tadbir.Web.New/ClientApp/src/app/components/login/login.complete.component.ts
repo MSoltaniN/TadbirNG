@@ -80,8 +80,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   //#region Events
 
-  ngOnInit() {
-    debugger;
+  ngOnInit() {    
     this.currentRoute = this.bStorageService.getCurrentRoute();
     this.disabledCompany = true;
     this.getCompany();
@@ -107,14 +106,15 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   }
 
   public companyChange(value: any): void {
+
     this.disabledBranch = true;
     this.disabledFiscalPeriod = true;
 
     this.branches = [];
-    this.branchId = '';
+    this.branchId = undefined;
 
     this.fiscalPeriods = [];
-    this.fiscalPeriodId = '';
+    this.fiscalPeriodId = undefined;
 
     this.getBranch(value);
     this.getFiscalPeriod(value);
