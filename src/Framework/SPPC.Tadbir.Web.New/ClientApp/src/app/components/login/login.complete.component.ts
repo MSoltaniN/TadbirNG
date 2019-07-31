@@ -101,10 +101,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   //#region Methods
 
-  public branchChange(value: any) {
-    this.fiscalPeriodId = '';
-  }
-
   public companyChange(value: any): void {
 
     this.disabledBranch = true;

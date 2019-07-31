@@ -21,7 +21,7 @@
           </div>
           <div class="form-group voffset2">
               <label class="col-md-12">{{ 'Branch.BranchName' | translate }}</label>
-              <kendo-dropdownlist [disabled]="disabledBranch" class="col-md-12" (valueChange)="branchChange($event)" [data]="branches" [valuePrimitive]="true"
+              <kendo-dropdownlist [disabled]="disabledBranch" class="col-md-12" [data]="branches" [valuePrimitive]="true"
                                   [textField]="'value'" [(ngModel)]="branchId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
                   <ng-template kendoDropDownListNoDataTemplate>
                       <span class="ddl-noData"> {{ 'Branch.NotFoundData' | translate }}</span>
