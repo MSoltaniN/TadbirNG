@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -25,27 +27,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// خلاصه اطلاعات حساب کل را برای مجموعه حساب بانک خوانده و برمی گرداند
+        /// اطلاعات خلاصه کلیه حساب های تخصیص داده شده به یک مجموعه حساب خاص را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات حساب کل برای مجموعه حساب بانک</returns>
-        public async Task<AccountItemBriefViewModel> GetBankAccountAsync()
+        /// <param name="collectionId">شناسه دیتابیسی مجموعه حساب مورد نظر</param>
+        /// <returns>اطلاعات حساب های تخصیص داده شده به مجموعه حساب</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetAccountSetItems(AccountCollectionId collectionId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var bankAccount = await repository.GetSingleByCriteriaAsync(
-                acc => acc.FullCode == _bankAccount);
-            return _mapper.Map<AccountItemBriefViewModel>(bankAccount);
-        }
-
-        /// <summary>
-        /// خلاصه اطلاعات حساب کل را برای مجموعه حساب صندوق خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات حساب کل برای مجموعه حساب صندوق</returns>
-        public async Task<AccountItemBriefViewModel> GetCashierAccountAsync()
-        {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var cashierAccount = await repository.GetSingleByCriteriaAsync(
-                acc => acc.FullCode == _cashierAccount);
-            return _mapper.Map<AccountItemBriefViewModel>(cashierAccount);
+            var repository = _unitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var bankAccounts = await repository
+                .GetEntityQuery(aca => aca.Account)
+                .Where(aca => aca.CollectionId == (int)collectionId)
+                .Select(aca => _mapper.Map<AccountItemBriefViewModel>(aca.Account))
+                .ToListAsync();
+            return bankAccounts;
         }
 
         /// <summary>

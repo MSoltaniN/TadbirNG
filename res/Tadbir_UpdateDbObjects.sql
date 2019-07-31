@@ -86,3 +86,125 @@ CONSTRAINT DF_Finance_Currency_IsActive DEFAULT 1
 WITH VALUES;
 GO
 
+-- 1.1.676
+-- NOTE: This update requires suggested coding and may not be valid for default company database
+UPDATE [Finance].[Account]
+SET GroupID = 1
+WHERE ParentID IS NULL AND AccountID >= 101 AND AccountID <= 135
+
+UPDATE [Finance].[Account]
+SET GroupID = 2
+WHERE ParentID IS NULL AND AccountID >= 136 AND AccountID <= 145
+
+UPDATE [Finance].[Account]
+SET GroupID = 3
+WHERE ParentID IS NULL AND AccountID >= 146 AND AccountID <= 163
+
+UPDATE [Finance].[Account]
+SET GroupID = 4
+WHERE ParentID IS NULL AND AccountID >= 164 AND AccountID <= 167
+
+UPDATE [Finance].[Account]
+SET GroupID = 5
+WHERE ParentID IS NULL AND AccountID >= 168 AND AccountID <= 172
+
+UPDATE [Finance].[Account]
+SET GroupID = 6
+WHERE ParentID IS NULL AND AccountID >= 173 AND AccountID <= 177
+
+UPDATE [Finance].[Account]
+SET GroupID = 7
+WHERE ParentID IS NULL AND AccountID >= 178 AND AccountID <= 181
+
+UPDATE [Finance].[Account]
+SET GroupID = 8
+WHERE AccountID = 182
+
+UPDATE [Finance].[Account]
+SET GroupID = 10
+WHERE ParentID IS NULL AND AccountID >= 186 AND AccountID <= 212
+
+UPDATE [Finance].[Account]
+SET GroupID = 11
+WHERE ParentID IS NULL AND AccountID >= 213 AND AccountID <= 216
+
+UPDATE [Finance].[Account]
+SET GroupID = 12
+WHERE ParentID IS NULL AND AccountID >= 217 AND AccountID <= 220
+
+UPDATE [Finance].[Account]
+SET GroupID = 13
+WHERE ParentID IS NULL AND AccountID >= 221 AND AccountID <= 222
+
+SET IDENTITY_INSERT [Finance].[AccountCollectionAccount] ON
+-- Add bank accounts
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (1, 17, 106, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (2, 17, 107, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (3, 17, 108, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (4, 17, 109, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (5, 17, 110, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (6, 17, 111, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (7, 17, 112, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (8, 17, 113, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (9, 17, 114, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (10, 17, 115, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (11, 17, 116, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (12, 17, 117, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (13, 17, 118, 1, 1)
+
+-- Add cashier accounts
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (14, 16, 102, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (15, 16, 103, 1, 1)
+
+-- Add liquid asset accounts
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (16, 1, 101, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (17, 1, 106, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (18, 1, 119, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (19, 1, 120, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (20, 1, 124, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (21, 1, 126, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (22, 1, 130, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (23, 1, 131, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (24, 1, 135, 1, 1)
+
+-- Add liquid liability accounts
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (25, 3, 146, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (26, 3, 148, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (27, 3, 150, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (28, 3, 160, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (29, 3, 161, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (30, 3, 162, 1, 1)
+INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [CollectionID], [AccountID], [BranchID], [FiscalPeriodID])
+    VALUES (31, 3, 163, 1, 1)
+
+SET IDENTITY_INSERT [Finance].[AccountCollectionAccount] OFF

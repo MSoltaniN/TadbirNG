@@ -37,12 +37,16 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
+        /// به روش آسنکرون، مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات مالی محاسبه شده</returns>
-        public DashboardSummariesViewModel GetSummaries()
+        public async Task<DashboardSummariesViewModel> GetSummariesAsync()
         {
-            return new DashboardSummariesViewModel();
+            return new DashboardSummariesViewModel()
+            {
+                BankBalance = await CalculateBankBalanceAsync(),
+                CashierBalance = await CalculateCashierBalanceAsync()
+            };
 
             // Hard-coded items in dashboard can crash the app when logged into converted databases.
             ////return new DashboardSummariesViewModel()
@@ -79,10 +83,10 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<decimal> CalculateBankBalanceAsync()
         {
-            var bankAccount = await _setRepository.GetBankAccountAsync();
+            var bankAccounts = await _setRepository.GetAccountSetItems(AccountCollectionId.Bank);
             var amounts = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                .Where(line => line.Account.FullCode.StartsWith(bankAccount.FullCode))
+                .Where(line => bankAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();
             return CalculateBalance(amounts);
@@ -90,10 +94,10 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<decimal> CalculateCashierBalanceAsync()
         {
-            var cashierAccount = await _setRepository.GetCashierAccountAsync();
+            var cashierAccounts = await _setRepository.GetAccountSetItems(AccountCollectionId.Cashier);
             var amounts = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                .Where(line => line.Account.FullCode.StartsWith(cashierAccount.FullCode))
+                .Where(line => cashierAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();
             return CalculateBalance(amounts);

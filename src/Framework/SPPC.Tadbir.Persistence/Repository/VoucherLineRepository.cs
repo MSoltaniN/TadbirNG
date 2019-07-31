@@ -224,7 +224,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteArticleAsync(int articleId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var article = await repository.GetByIDAsync(articleId, art => art.Voucher);
+            var article = await repository.GetByIDAsync(articleId);
             if (article != null && await DeleteAsync(repository, article))
             {
                 var lineView = Mapper.Map<VoucherLineViewModel>(article);

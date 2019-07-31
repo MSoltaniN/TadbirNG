@@ -495,7 +495,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
+            _lineRepository.SetCurrentContext(SecurityContext.User);
             await _lineRepository.DeleteArticlesAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

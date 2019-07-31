@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -11,16 +12,11 @@ namespace SPPC.Tadbir.Persistence
     public interface IAccountSetRepository
     {
         /// <summary>
-        /// خلاصه اطلاعات حساب کل را برای مجموعه حساب بانک خوانده و برمی گرداند
+        /// اطلاعات خلاصه کلیه حساب های تخصیص داده شده به یک مجموعه حساب خاص را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات حساب کل برای مجموعه حساب بانک</returns>
-        Task<AccountItemBriefViewModel> GetBankAccountAsync();
-
-        /// <summary>
-        /// خلاصه اطلاعات حساب کل را برای مجموعه حساب صندوق خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات حساب کل برای مجموعه حساب صندوق</returns>
-        Task<AccountItemBriefViewModel> GetCashierAccountAsync();
+        /// <param name="collectionId">شناسه دیتابیسی مجموعه حساب مورد نظر</param>
+        /// <returns>اطلاعات حساب های تخصیص داده شده به مجموعه حساب</returns>
+        Task<IList<AccountItemBriefViewModel>> GetAccountSetItems(AccountCollectionId collectionId);
 
         /// <summary>
         /// خلاصه اطلاعات حساب کل را برای مجموعه حساب فروش خوانده و برمی گرداند

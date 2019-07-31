@@ -12,10 +12,10 @@ namespace SPPC.Tadbir.Persistence
     public interface IDashboardRepository
     {
         /// <summary>
-        /// مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
+        /// به روش آسنکرون، مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات مالی محاسبه شده</returns>
-        DashboardSummariesViewModel GetSummaries();
+        Task<DashboardSummariesViewModel> GetSummariesAsync();
 
         /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای فیلترهای سطری و شعب تنظیم می کند
