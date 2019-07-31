@@ -367,6 +367,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\TadbirSolutionInfo.cs" Link="TadbirSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="ClientApp\src\assets\i18n\en.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
