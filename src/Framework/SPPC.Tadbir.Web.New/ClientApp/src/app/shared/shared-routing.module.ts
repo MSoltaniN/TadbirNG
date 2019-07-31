@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './components/layout/layout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AuthGuard } from '@sppc/core';
 
 const routes: Routes = [{
   path: '',
   component: LayoutComponent,
-  //canActivate: [AuthGuardService],
+  canActivate: [AuthGuard],
   children: [
     { path: 'dashboard', component: DashboardComponent },
   ]

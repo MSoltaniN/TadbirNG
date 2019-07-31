@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { } from ''
+import { AuthenticationService, AuthGuard } from '@sppc/core'
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: []
+  declarations: [],
+  providers: [AuthenticationService, AuthGuard]
 })
 export class CoreModule { }

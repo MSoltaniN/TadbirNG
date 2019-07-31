@@ -29,6 +29,15 @@
       ],
       "@sppc/finance/*": [
         "src/app/finance/*"
+      ],
+      "@sppc/config/*": [
+        "src/app/config/*"
+      ],
+      "@sppc/organization/*": [
+        "src/app/organization/*"
+      ],
+      "@sppc/admin/*": [
+        "src/app/admin/*"
       ]
 
     }    
