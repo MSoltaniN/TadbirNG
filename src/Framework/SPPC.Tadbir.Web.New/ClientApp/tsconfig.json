@@ -16,6 +16,21 @@
       "dom"
     ],
     "module": "es2015",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@sppc/*": [
+        "app/*"
+      ],
+      "@sppc/core/*": [
+        "app/core/*"
+      ],
+      "@sppc/shared/*": [
+        "app/shared/*"
+      ],
+      "@sppc/finance/*": [
+        "app/finance/*"
+      ]
+
+    }    
   }
 }
