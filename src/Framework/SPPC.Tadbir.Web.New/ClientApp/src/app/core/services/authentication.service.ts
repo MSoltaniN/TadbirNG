@@ -8,7 +8,7 @@ import { String } from '../../class/source';
 import { LookupApi, FiscalPeriodApi, UserApi } from '../api/index';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { BrowserStorageService } from '../browserStorage.service';
+import { BrowserStorageService } from '../../shared/services';
 
 export class ContextInfo implements Context {
   userName: string = "";

@@ -1,0 +1,19 @@
+
+
+<div class='container-fluid' (window:keypress)="doSomething($event)">
+  <div class='row'>
+    <div id="mainContent" class="nopad body-content">
+
+      <app-appheader></app-appheader>
+      <nav-menu></nav-menu>
+
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+        <sppc-dialog></sppc-dialog>
+      </div>
+
+    </div>
+    <app-appfooter></app-appfooter>
+    <app-appsetting></app-appsetting>
+  </div>
+</div>

@@ -19,16 +19,16 @@
     "baseUrl": "./",
     "paths": {
       "@sppc/*": [
-        "app/*"
+        "src/app/*"
       ],
       "@sppc/core/*": [
-        "app/core/*"
+        "src/app/core/*"
       ],
       "@sppc/shared/*": [
-        "app/shared/*"
+        "src/app/shared/*"
       ],
       "@sppc/finance/*": [
-        "app/finance/*"
+        "src/app/finance/*"
       ]
 
     }    

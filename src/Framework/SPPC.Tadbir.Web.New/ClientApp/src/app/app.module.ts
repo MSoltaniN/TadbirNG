@@ -15,6 +15,9 @@ import { PopupModule } from '@progress/kendo-angular-popup';
 import { ContextMenuModule } from '@progress/kendo-angular-menu';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
+
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { AccountComponent } from './components/account/account.component';
 import { AccountFormComponent } from './components/account/account-form.component';
@@ -162,7 +165,6 @@ import { AppmenuComponent } from './components/appmenu/appmenu.component';
 import { AppheaderComponent } from './components/appheader/appheader.component';
 import { AppfooterComponent } from './components/appfooter/appfooter.component';
 import { AppsettingComponent } from './components/appsetting/appsetting.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BreadCumbComponent } from './components/breadCumb/breadcrumb.component';
 import { ReportViewerComponent } from './components/reportViewer/reportViewer.component';
 import { ReportBaseService } from './class/report.base.service';
@@ -176,7 +178,6 @@ import { ReportParamComponent } from './components/viewIdentifier/reportParam.co
 import { TabComponent } from './controls/tabs/tab.component';
 import { TabsComponent } from './controls/tabs/tabs.component';
 import { DynamicTabsDirective } from './controls/tabs/dynamic-tabs.directive';
-import { from } from 'rxjs/observable/from';
 import { ReportMGComponent } from './components/viewIdentifier/report.mg.component';
 import { QuickReportSettingComponent } from './components/reportManagement/QuickReport-Setting.component';
 
@@ -186,6 +187,13 @@ import { MetaDataResolver } from './class/metadata/metadata.resolver';
 //import compress package
 import { LZStringModule, LZStringService } from 'ng-lz-string';
 import { ViewName } from './security/viewName';
+
+
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+import { FinanceModule } from './finance/finance.module';
+
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -307,6 +315,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     CurrencyFormComponent
   ],
   imports: [
+    CoreModule,
+    SharedModule,
+    FinanceModule,
+    AppRoutingModule,
+
+
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     ButtonsModule,
     CommonModule,
@@ -340,44 +354,44 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    RouterModule.forRoot([
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
-      { path: 'login', component: LoginContainerComponent },
-      { path: 'logout', component: LogoutComponent },
-      { path: 'voucher', component: VoucherComponent, canActivate: [AuthGuard] },
-      {
-        path: 'vouchers/:mode', component: VoucherEditorComponent, canActivate: [AuthGuard],
-        data: { viewId: ViewName.Voucher },
-        resolve: {
-          team: MetaDataResolver
-        }
-      },
-      { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
-      { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
-      { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
-      { path: 'detailAccount', component: DetailAccountComponent, canActivate: [AuthGuard] },
-      { path: 'costCenter', component: CostCenterComponent, canActivate: [AuthGuard] },
-      { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
-      { path: 'fiscalperiod', component: FiscalPeriodComponent, canActivate: [AuthGuard] },
-      { path: 'branches', component: BranchComponent, canActivate: [AuthGuard] },
-      { path: 'companies', component: CompanyComponent, canActivate: [AuthGuard] },
-      { path: 'accountrelations', component: AccountRelationsComponent, canActivate: [AuthGuard] },
-      { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-      { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
-      { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
-      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-      { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
-      { path: 'accounts/group/:groupid', component: RelatedAccountsComponent, canActivate: [AuthGuard] },
-      { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
-      { path: 'journal', component: JournalComponent, canActivate: [AuthGuard] },
-      { path: 'account-book', component: AccountBookComponent, canActivate: [AuthGuard] },
-      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-      { path: 'reports', component: ReportManagementComponent, canActivate: [AuthGuard] },
-      { path: 'currency', component: CurrencyComponent, canActivate: [AuthGuard] },
-      //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
-      { path: '**', redirectTo: 'dashboard' }
-    ]),
+    //RouterModule.forRoot([
+    //  { path: '', redirectTo: 'login', pathMatch: 'full' },
+    //  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+    //  { path: 'login', component: LoginContainerComponent },
+    //  { path: 'logout', component: LogoutComponent },
+    //  { path: 'voucher', component: VoucherComponent, canActivate: [AuthGuard] },
+    //  {
+    //    path: 'vouchers/:mode', component: VoucherEditorComponent, canActivate: [AuthGuard],
+    //    data: { viewId: ViewName.Voucher },
+    //    resolve: {
+    //      team: MetaDataResolver
+    //    }
+    //  },
+    //  { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
+    //  { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
+    //  { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+    //  { path: 'detailAccount', component: DetailAccountComponent, canActivate: [AuthGuard] },
+    //  { path: 'costCenter', component: CostCenterComponent, canActivate: [AuthGuard] },
+    //  { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
+    //  { path: 'fiscalperiod', component: FiscalPeriodComponent, canActivate: [AuthGuard] },
+    //  { path: 'branches', component: BranchComponent, canActivate: [AuthGuard] },
+    //  { path: 'companies', component: CompanyComponent, canActivate: [AuthGuard] },
+    //  { path: 'accountrelations', component: AccountRelationsComponent, canActivate: [AuthGuard] },
+    //  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+    //  { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
+    //  { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
+    //  //{ path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+    //  { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
+    //  { path: 'accounts/group/:groupid', component: RelatedAccountsComponent, canActivate: [AuthGuard] },
+    //  { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
+    //  { path: 'journal', component: JournalComponent, canActivate: [AuthGuard] },
+    //  { path: 'account-book', component: AccountBookComponent, canActivate: [AuthGuard] },
+    //  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+    //  { path: 'reports', component: ReportManagementComponent, canActivate: [AuthGuard] },
+    //  { path: 'currency', component: CurrencyComponent, canActivate: [AuthGuard] },
+    //  //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
+    //  { path: '**', redirectTo: 'dashboard' }
+    //]),
     LayoutModule
   ],
   providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,

@@ -1,14 +1,15 @@
 <!-- <link rel="stylesheet" [href]='sanitizer.bypassSecurityTrustResourceUrl(cssUrl)'> -->
-<ng-progress></ng-progress>
+
+
+<<!--ng-progress></ng-progress>
 <div class='container-fluid' (window:keypress)="doSomething($event)">
   <div class='row'>
     <div id="mainContent" class="nopad body-content">
       <app-appheader *ngIf="showNavbar"></app-appheader>
       <nav-menu *ngIf="showNavbar"></nav-menu>
       <div [ngClass]="{'content-wrapper':showNavbar , '': !showNavbar}">
-        <!-- <section [ngClass]="{'content':showNavbar , '': !showNavbar}"> -->
         <router-outlet></router-outlet>
-        <!-- </section> -->
+
 
 
         <sppc-dialog></sppc-dialog>
@@ -40,4 +41,6 @@
   </div>
 </div>
 <div id="dpi" style="height: 1in; width: 1in; left: 100%; 
-position: fixed; top: 100%;visibility: hidden"></div>
+position: fixed; top: 100%;visibility: hidden"></div>-->
+
+<router-outlet></router-outlet>
