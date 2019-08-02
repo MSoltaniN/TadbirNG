@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
@@ -16,26 +17,13 @@ namespace SPPC.Framework.Tools.ProjectCLI
     {
         public void Execute()
         {
-            var version = GetSysDatabaseVersion();
-            var scriptFile = ConfigurationManager.AppSettings["UpdateScriptPath"];
-            var blocks = GetRequiredBlocks(version, File.ReadAllText(scriptFile));
-            if (blocks.Count > 0)
+            string sysConnection = GetSysConnectionString();
+            UpdateDatabaseFromScript(sysConnection, "SysUpdateScriptPath");
+            var companyConnections = GetCompanyConnectionStrings(sysConnection);
+            foreach (string connection in companyConnections)
             {
-                BuildTempScriptFile(blocks.Values.Cast<string>().ToList());
-                DoRefreshDatabase();
-                File.Delete(_tempScript);
+                UpdateDatabaseFromScript(connection, "UpdateScriptPath");
             }
-            else
-            {
-                Console.WriteLine("Databases are up-to-date.");
-            }
-        }
-
-        private Version GetSysDatabaseVersion()
-        {
-            var sysDal = new SqlDataLayer(GetSysConnectionString(), ProviderType.SqlClient);
-            var result = sysDal.QueryScalar("SELECT Number FROM [Core].[Version]");
-            return new Version(result.ToString());
         }
 
         private string GetSysConnectionString()
@@ -43,6 +31,68 @@ namespace SPPC.Framework.Tools.ProjectCLI
             string path = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
+        }
+
+        private string[] GetCompanyConnectionStrings(string sysConnection)
+        {
+            var connections = new List<string>();
+            var dal = new SqlDataLayer(sysConnection, ProviderType.SqlClient);
+            var result = dal.Query("SELECT DbName, Server, UserName, Password FROM [Config].[CompanyDb]");
+            foreach (DataRow row in result.Rows)
+            {
+                var company = new CompanyDbModel()
+                {
+                    DbName = row[0].ToString(),
+                    Server = row[1].ToString(),
+                    UserName = row[2].ToString(),
+                    Password = row[3].ToString()
+                };
+                connections.Add(BuildConnectionString(company));
+            }
+
+            return connections.ToArray();
+        }
+
+        private string BuildConnectionString(CompanyDbModel company)
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
+            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
+            {
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                    company.UserName, company.Password);
+            }
+            else
+            {
+                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
+            }
+
+            return builder.ToString();
+        }
+
+        private void UpdateDatabaseFromScript(string connection, string configKey)
+        {
+            var version = GetDatabaseVersion(connection);
+            var sqlBuilder = new SqlConnectionStringBuilder(connection);
+            var scriptFile = ConfigurationManager.AppSettings[configKey];
+            var blocks = GetRequiredBlocks(version, File.ReadAllText(scriptFile));
+            if (blocks.Count > 0)
+            {
+                BuildTempScriptFile(blocks.Values.Cast<string>().ToList());
+                DoRefreshDatabase(connection);
+                File.Delete(_tempScript);
+            }
+            else
+            {
+                Console.WriteLine("Database '{0}' is up-to-date.", sqlBuilder.InitialCatalog);
+            }
+        }
+
+        private Version GetDatabaseVersion(string connection)
+        {
+            var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
+            var result = dal.QueryScalar("SELECT Number FROM [Core].[Version]");
+            return new Version(result.ToString());
         }
 
         private Dictionary<Version, string> GetRequiredBlocks(Version version, string script)
@@ -83,11 +133,11 @@ namespace SPPC.Framework.Tools.ProjectCLI
             File.AppendAllText(_tempScript, builder.ToString());
         }
 
-        private void DoRefreshDatabase()
+        private void DoRefreshDatabase(string connection)
         {
+            var sqlBuilder = new SqlConnectionStringBuilder(connection);
             Console.WriteLine();
-            Console.WriteLine("Performing database schema refresh...");
-            var sqlBuilder = new SqlConnectionStringBuilder(GetSysConnectionString());
+            Console.WriteLine("Performing schema refresh for database '{0}'...", sqlBuilder.InitialCatalog);
             string utilityPath = ConfigurationManager.AppSettings["CmdUtilityPath"];
             var psi = new ProcessStartInfo()
             {

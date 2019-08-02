@@ -74,6 +74,7 @@
     <Compile Include="Commands\GenerateKeyClassCommand.cs" />
     <Compile Include="Commands\GenerateTsSecurityCommand.cs" />
     <Compile Include="Commands\RefreshDatabasesCommand.cs" />
+    <Compile Include="Models\CompanyDbModel.cs" />
     <Compile Include="Models\ConnectionStringsModel.cs" />
     <Compile Include="Models\LoggingModel.cs" />
     <Compile Include="Models\LogLevelModel.cs" />
