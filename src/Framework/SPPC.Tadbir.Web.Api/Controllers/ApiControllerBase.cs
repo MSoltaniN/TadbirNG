@@ -52,6 +52,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        protected string GetPrimaryRequestLanguage()
+        {
+            string languages = GetAcceptLanguages();
+            return languages.Substring(0, 2);
+        }
+
         protected string GetAcceptLanguages()
         {
             var acceptLanguages = "fa-IR,fa";

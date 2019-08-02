@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -39,25 +40,23 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="calendar">تقویم مورد استفاده برای نمودارهای ماهیانه</param>
         /// <returns>اطلاعات مالی محاسبه شده</returns>
-        public async Task<DashboardSummariesViewModel> GetSummariesAsync()
+        public async Task<DashboardSummariesViewModel> GetSummariesAsync(Calendar calendar)
         {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var currentPeriod = await repository.GetByIDAsync(_currentContext.FiscalPeriodId);
+            var monthEnum = new MonthEnumerator(currentPeriod.StartDate, currentPeriod.EndDate, calendar);
+            var months = monthEnum.GetMonths();
             return new DashboardSummariesViewModel()
             {
+                LiquidRatio = await CalculateLiquidRatioAsync(),
+                UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
                 BankBalance = await CalculateBankBalanceAsync(),
-                CashierBalance = await CalculateCashierBalanceAsync()
+                CashierBalance = await CalculateCashierBalanceAsync(),
+                NetSales = await GetMonthlyNetSalesAsync(months),
+                GrossSales = await GetMonthlyGrossSalesAsync(months)
             };
-
-            // Hard-coded items in dashboard can crash the app when logged into converted databases.
-            ////return new DashboardSummariesViewModel()
-            ////{
-            ////    BankBalance = await CalculateBankBalanceAsync(),
-            ////    CashierBalance = await CalculateCashierBalanceAsync(),
-            ////    LiquidRatio = await CalculateLiquidRatioAsync(),
-            ////    UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
-            ////    NetSales = await GetNetSalesSeriesAsync(),
-            ////    GrossSales = await GetGrossSalesSeriesAsync()
-            ////};
         }
 
         /// <summary>
@@ -72,51 +71,27 @@ namespace SPPC.Tadbir.Persistence
 
         private static decimal CalculateBalance(IEnumerable<VoucherLineAmountsViewModel> amounts)
         {
-            decimal debitSum = amounts
-                .Select(am => am.Debit)
-                .Sum();
-            decimal creditSum = amounts
-                .Select(am => am.Credit)
-                .Sum();
+            decimal debitSum = amounts.Sum(am => am.Debit);
+            decimal creditSum = amounts.Sum(am => am.Credit);
             return debitSum - creditSum;
         }
 
         private async Task<decimal> CalculateBankBalanceAsync()
         {
-            var bankAccounts = await _setRepository.GetAccountSetItems(AccountCollectionId.Bank);
-            var amounts = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                .Where(line => bankAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
-                .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
-                .ToListAsync();
+            var amounts = await GetAccountSetAmountsAsync(AccountCollectionId.Bank);
             return CalculateBalance(amounts);
         }
 
         private async Task<decimal> CalculateCashierBalanceAsync()
         {
-            var cashierAccounts = await _setRepository.GetAccountSetItems(AccountCollectionId.Cashier);
-            var amounts = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                .Where(line => cashierAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
-                .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
-                .ToListAsync();
+            var amounts = await GetAccountSetAmountsAsync(AccountCollectionId.Cashier);
             return CalculateBalance(amounts);
         }
 
         private async Task<decimal> CalculateLiquidRatioAsync()
         {
-            var assets = await _setRepository.GetLiquidAssetAccountsAsync();
-            var liabilities = await _setRepository.GetLiquidLiabilityAccountsAsync();
-            var assetAmounts = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                .Where(line => assets.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
-                .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
-                .ToListAsync();
-            var liabilityAmounts = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                .Where(line => liabilities.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
-                .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
-                .ToListAsync();
+            var assetAmounts = await GetAccountSetAmountsAsync(AccountCollectionId.LiquidAssets);
+            var liabilityAmounts = await GetAccountSetAmountsAsync(AccountCollectionId.LiquidLiabilities);
             decimal liquidAssets = CalculateBalance(assetAmounts);
             decimal liquidLiabilities = Math.Max(1.0M, Math.Abs(CalculateBalance(liabilityAmounts)));
             decimal liquidRatio = Math.Round(liquidAssets / liquidLiabilities, 2);
@@ -125,35 +100,26 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<int> GetUnbalancedVoucherCountAsync()
         {
-            var all = await _repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher, v => v.Lines)
-                .Select(v => Mapper.Map<VoucherViewModel>(v))
-                .ToListAsync();
-            int unbalancedCount = all
-                .Where(v => Math.Abs(v.DebitSum - v.CreditSum) >= 1.0M)
-                .Count();
-            return unbalancedCount;
+            return await _repository
+                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(v => !v.IsBalanced)
+                .CountAsync();
         }
 
-        private async Task<DashboardChartSeriesViewModel> GetNetSalesSeriesAsync()
+        private async Task<DashboardChartSeriesViewModel> GetMonthlyNetSalesAsync(
+            IEnumerable<MonthInfo> months)
         {
-            var periodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var currentPeriod = await periodRepository.GetByIDAsync(_currentContext.FiscalPeriodId);
-            var calendar = new PersianCalendar();
             var series = new DashboardChartSeriesViewModel()
             {
                 Title = "NetMonthlySalesChartTitle",
                 Legend = "NetSalesChartLegend"
             };
-            int year = calendar.GetYear(currentPeriod.StartDate);
-            foreach (int month in Enumerable.Range(1, 12))
+            foreach (var month in months)
             {
-                DateTime startOfMonth = calendar.GetStartOfMonth(year, month);
-                DateTime endOfMonth = calendar.GetEndOfMonth(year, month);
-                decimal netSales = await GetNetSalesAsync(startOfMonth, endOfMonth);
+                decimal netSales = await GetNetSalesAsync(month.Start, month.End);
                 series.Points.Add(new DashboardChartPointViewModel()
                 {
-                    XValue = JalaliDateTime.FromDateTime(startOfMonth).MonthName,
+                    XValue = month.Name,
                     YValue = netSales
                 });
             }
@@ -161,25 +127,20 @@ namespace SPPC.Tadbir.Persistence
             return series;
         }
 
-        private async Task<DashboardChartSeriesViewModel> GetGrossSalesSeriesAsync()
+        private async Task<DashboardChartSeriesViewModel> GetMonthlyGrossSalesAsync(
+            IEnumerable<MonthInfo> months)
         {
-            var periodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var currentPeriod = await periodRepository.GetByIDAsync(_currentContext.FiscalPeriodId);
-            var calendar = new PersianCalendar();
             var series = new DashboardChartSeriesViewModel()
             {
                 Title = "GrossMonthlySalesChartTitle",
                 Legend = "GrossSalesChartLegend"
             };
-            int year = calendar.GetYear(currentPeriod.StartDate);
-            foreach (int month in Enumerable.Range(1, 12))
+            foreach (var month in months)
             {
-                DateTime startOfMonth = calendar.GetStartOfMonth(year, month);
-                DateTime endOfMonth = calendar.GetEndOfMonth(year, month);
-                decimal grossSales = await GetGrossSalesAsync(startOfMonth, endOfMonth);
+                decimal grossSales = await GetGrossSalesAsync(month.Start, month.End);
                 series.Points.Add(new DashboardChartPointViewModel()
                 {
-                    XValue = JalaliDateTime.FromDateTime(startOfMonth).MonthName,
+                    XValue = month.Name,
                     YValue = grossSales
                 });
             }
@@ -190,31 +151,38 @@ namespace SPPC.Tadbir.Persistence
         private async Task<decimal> GetNetSalesAsync(DateTime fromDate, DateTime toDate)
         {
             decimal grossSales = await GetGrossSalesAsync(fromDate, toDate);
-            var deficitAccount = await _setRepository.GetSalesDeficitAccountAsync();
+            var deficitAccounts = await _setRepository.GetSalesDeficitAccountsAsync();
             var amounts = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                .Where(line => line.Account.FullCode.StartsWith(deficitAccount.FullCode)
+                .Where(line => deficitAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode))
                     && line.Voucher.Date.IsBetween(fromDate, toDate))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();
-            decimal deficit = amounts
-                .Select(am => am.Debit)
-                .Sum();
+            decimal deficit = amounts.Sum(am => am.Debit);
             return grossSales - deficit;
         }
 
         private async Task<decimal> GetGrossSalesAsync(DateTime fromDate, DateTime toDate)
         {
-            var salesAccount = await _setRepository.GetSalesAccountAsync();
+            var salesAccounts = await _setRepository.GetAccountSetItemsAsync(AccountCollectionId.Sales);
             var amounts = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                .Where(line => line.Account.FullCode.StartsWith(salesAccount.FullCode)
+                .Where(line => salesAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode))
                     && line.Voucher.Date.IsBetween(fromDate, toDate))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();
-            return amounts
-                .Select(am => am.Credit)
-                .Sum();
+            return amounts.Sum(am => am.Credit);
+        }
+
+        private async Task<IEnumerable<VoucherLineAmountsViewModel>> GetAccountSetAmountsAsync(
+            AccountCollectionId collectionId)
+        {
+            var accounts = await _setRepository.GetAccountSetItemsAsync(collectionId);
+            return await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
+                .Where(line => accounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
+                .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
+                .ToListAsync();
         }
 
         private readonly ISecureRepository _repository;

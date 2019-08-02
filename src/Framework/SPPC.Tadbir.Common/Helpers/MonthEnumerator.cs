@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Helpers
                 int year = Calendar.GetYear(current);
                 int month = Calendar.GetMonth(current);
                 int monthDays = Calendar.GetDaysInMonth(year, month);
-                string monthName = month.ToString();
+                string monthName = String.Format("Month{0}", month);
                 var monthInfo = new MonthInfo()
                 {
                     Start = Calendar.ToDateTime(year, month, 1, 0, 0, 0, 0),

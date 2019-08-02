@@ -2475,4 +2475,40 @@
   <data name="CantDeleteNonDraftDocument" xml:space="preserve">
     <value>{0} شماره {1} در وضعیت پیش نویس نبوده و قابل حذف نیست.</value>
   </data>
+  <data name="Month1" xml:space="preserve">
+    <value>فروردین</value>
+  </data>
+  <data name="Month10" xml:space="preserve">
+    <value>دی</value>
+  </data>
+  <data name="Month11" xml:space="preserve">
+    <value>بهمن</value>
+  </data>
+  <data name="Month12" xml:space="preserve">
+    <value>اسفند</value>
+  </data>
+  <data name="Month2" xml:space="preserve">
+    <value>اردیبهشت</value>
+  </data>
+  <data name="Month3" xml:space="preserve">
+    <value>خرداد</value>
+  </data>
+  <data name="Month4" xml:space="preserve">
+    <value>تیر</value>
+  </data>
+  <data name="Month5" xml:space="preserve">
+    <value>مرداد</value>
+  </data>
+  <data name="Month6" xml:space="preserve">
+    <value>شهریور</value>
+  </data>
+  <data name="Month7" xml:space="preserve">
+    <value>مهر</value>
+  </data>
+  <data name="Month8" xml:space="preserve">
+    <value>آبان</value>
+  </data>
+  <data name="Month9" xml:space="preserve">
+    <value>آذر</value>
+  </data>
 </root>

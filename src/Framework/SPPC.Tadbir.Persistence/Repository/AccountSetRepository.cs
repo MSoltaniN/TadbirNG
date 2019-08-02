@@ -27,85 +27,36 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات خلاصه کلیه حساب های تخصیص داده شده به یک مجموعه حساب خاص را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات خلاصه کلیه حساب های تخصیص داده شده
+        /// به یک مجموعه حساب خاص را خوانده و برمی گرداند
         /// </summary>
         /// <param name="collectionId">شناسه دیتابیسی مجموعه حساب مورد نظر</param>
         /// <returns>اطلاعات حساب های تخصیص داده شده به مجموعه حساب</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetAccountSetItems(AccountCollectionId collectionId)
+        public async Task<IList<AccountItemBriefViewModel>> GetAccountSetItemsAsync(
+            AccountCollectionId collectionId)
         {
             var repository = _unitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            var bankAccounts = await repository
+            var accounts = await repository
                 .GetEntityQuery(aca => aca.Account)
                 .Where(aca => aca.CollectionId == (int)collectionId)
                 .Select(aca => _mapper.Map<AccountItemBriefViewModel>(aca.Account))
                 .ToListAsync();
-            return bankAccounts;
+            return accounts;
         }
 
         /// <summary>
-        /// خلاصه اطلاعات حساب کل را برای مجموعه حساب فروش خوانده و برمی گرداند
+        /// خلاصه اطلاعات حساب های مرتبط با مجموعه حساب های کسر از فروش (برگشت از فروش و تخفیفات فروش) را
+        /// خوانده و برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات حساب کل برای مجموعه حساب فروش</returns>
-        public async Task<AccountItemBriefViewModel> GetSalesAccountAsync()
+        /// <returns>اطلاعات حساب های مرتبط با مجموعه حساب های کسر از فروش</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetSalesDeficitAccountsAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var salesAccount = await repository.GetSingleByCriteriaAsync(
-                acc => acc.FullCode == _salesAccount);
-            return _mapper.Map<AccountItemBriefViewModel>(salesAccount);
+            var salesDeficit = new List<AccountItemBriefViewModel>();
+            salesDeficit.AddRange(await GetAccountSetItemsAsync(AccountCollectionId.SalesRefund));
+            salesDeficit.AddRange(await GetAccountSetItemsAsync(AccountCollectionId.SalesDiscount));
+            return salesDeficit;
         }
 
-        /// <summary>
-        /// خلاصه اطلاعات حساب کل را برای مجموعه حساب برگشت از فروش و تخفیفات خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات حساب کل برای مجموعه حساب برگشت از فروش و تخفیفات</returns>
-        public async Task<AccountItemBriefViewModel> GetSalesDeficitAccountAsync()
-        {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var deficitAccount = await repository.GetSingleByCriteriaAsync(
-                acc => acc.FullCode == _salesDeficitAccount);
-            return _mapper.Map<AccountItemBriefViewModel>(deficitAccount);
-        }
-
-        /// <summary>
-        /// خلاصه اطلاعات حساب های کل را برای مجموعه حساب دارایی های جاری خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات حساب های کل برای مجموعه حساب دارایی های جاری</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetLiquidAssetAccountsAsync()
-        {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var assetAccounts = await repository.GetByCriteriaAsync(
-                acc => _liquidAssetAccounts.Contains(acc.FullCode));
-            return assetAccounts
-                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
-                .ToList();
-        }
-
-        /// <summary>
-        /// خلاصه اطلاعات حساب های کل را برای مجموعه حساب بدهی های جاری خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات حساب های کل برای مجموعه حساب بدهی های جاری</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetLiquidLiabilityAccountsAsync()
-        {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var assetAccounts = await repository.GetByCriteriaAsync(
-                acc => _liquidLiabilityAccounts.Contains(acc.FullCode));
-            return assetAccounts
-                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
-                .ToList();
-        }
-
-        private const string _bankAccount = "112";
-        private const string _cashierAccount = "111001";
-        private const string _salesAccount = "411";
-        private const string _salesDeficitAccount = "412";
-        private readonly string[] _liquidAssetAccounts = new string[]
-            {
-                "111", "112", "113", "114", "115", "116", "117", "118", "119", "552"
-            };
-        private readonly string[] _liquidLiabilityAccounts = new string[]
-            {
-                "211", "212", "213", "214", "215", "216", "217"
-            };
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
     }

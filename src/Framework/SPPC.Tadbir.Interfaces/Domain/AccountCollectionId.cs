@@ -35,6 +35,21 @@ namespace SPPC.Tadbir.Domain
         NonLiquidLiabilities = 4,
 
         /// <summary>
+        /// مجموعه حساب فروش
+        /// </summary>
+        Sales = 4,
+
+        /// <summary>
+        /// مجموعه حساب برگشت از فروش
+        /// </summary>
+        SalesRefund = 4,
+
+        /// <summary>
+        /// مجموعه حساب تخفیفات فروش
+        /// </summary>
+        SalesDiscount = 4,
+
+        /// <summary>
         /// مجموعه حساب صندوق
         /// </summary>
         Cashier = 16,
