@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
-import { OperationLog } from '../../model/index';
+
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { DefaultComponent } from "../../class/default.component";
@@ -8,6 +8,7 @@ import { Entities } from '../../../environments/environment';
 import { SettingService } from '../../service/index';
 import { ViewName } from '../../security/viewName';
 import { BrowserStorageService } from '../../service/browserStorage.service';
+import { OperationLog } from '@sppc/admin';
 
 
 

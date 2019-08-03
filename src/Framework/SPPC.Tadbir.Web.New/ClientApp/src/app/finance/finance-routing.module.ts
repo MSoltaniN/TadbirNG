@@ -13,9 +13,9 @@ import { ProjectComponent } from './components/base/project/project.component';
 import { VoucherComponent } from './components/operational/voucher/voucher.component';
 import { VoucherEditorComponent } from './components/operational/voucher/voucher-editor.component';
 import { ViewName } from '@sppc/shared/security';
-import { MetaDataResolver } from '@sppc/class/metadata/metadata.resolver';
 import { AccountBookComponent } from './components/reporting/accountBook/accountBook.component';
 import { JournalComponent } from './components/reporting/journal/journal.component';
+import { MetaDataResolver } from '@sppc/shared/class/metadata/metadata.resolver';
 
 const routes: Routes = [{
   path: 'finance',
