@@ -46,6 +46,11 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual DetailAccount Parent { get; set; }
 
         /// <summary>
+        /// ارز پایه یا پیش فرض مورد استفاده برای این تفصیلی شناور
+        /// </summary>
+        public virtual Currency Currency { get; set; }
+
+        /// <summary>
         /// مجموعه ای از سرفصل های حسابداری مرتبط با این تفصیلی شناور
         /// </summary>
         public IList<AccountDetailAccount> AccountDetailAccounts { get; protected set; }

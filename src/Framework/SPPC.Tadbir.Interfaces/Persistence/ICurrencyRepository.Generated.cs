@@ -35,6 +35,13 @@ namespace SPPC.Tadbir.Persistence
         Task<CurrencyViewModel> GetCurrencyAsync(int currencyId);
 
         /// <summary>
+        /// به روش آسنکرون، کلیه نرخ های ثبت شده برای ارز مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر</param>
+        /// <returns>مجموعه نرخ های ثبت شده برای ارز مورد نظر</returns>
+        Task<IList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId);
+
+        /// <summary>
         /// اطلاعات استاندارد یک ارز با نام مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="localDbPath">مسیر فیزیکی فایل استاتیک بانک اطلاعاتی ارزهای استاندارد</param>

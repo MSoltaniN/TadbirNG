@@ -2511,4 +2511,10 @@
   <data name="Month9" xml:space="preserve">
     <value>آذر</value>
   </data>
+  <data name="ChangeStatus" xml:space="preserve">
+    <value>تغییر وضعیت</value>
+  </data>
+  <data name="CurrencyRates" xml:space="preserve">
+    <value>نرخ های ارز</value>
+  </data>
 </root>

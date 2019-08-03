@@ -2520,4 +2520,10 @@
   <data name="Month9" xml:space="preserve">
     <value>September</value>
   </data>
+  <data name="ChangeStatus" xml:space="preserve">
+    <value>Change status</value>
+  </data>
+  <data name="CurrencyRates" xml:space="preserve">
+    <value>currency rates</value>
+  </data>
 </root>

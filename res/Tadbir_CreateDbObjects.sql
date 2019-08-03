@@ -58,6 +58,8 @@ GO
 CREATE TABLE [Finance].[CurrencyRate] (
     [CurrencyRateID]   INT              IDENTITY (1, 1) NOT NULL,
     [CurrencyID]       INT              NOT NULL,
+    [BranchID]         INT              NOT NULL,
+    [BranchScope]      SMALLINT         CONSTRAINT [DF_Finance_CurrencyRate_BranchScope] DEFAULT (0) NOT NULL,
     [Date]             DATETIME         NOT NULL,
     [Time]             TIME(7)          NOT NULL,
     [Multiplier]       FLOAT            NOT NULL,
@@ -65,6 +67,7 @@ CREATE TABLE [Finance].[CurrencyRate] (
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_CurrencyRate_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_CurrencyRate] PRIMARY KEY CLUSTERED ([CurrencyRateID] ASC)
     , CONSTRAINT [FK_Finance_CurrencyRate_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
+    , CONSTRAINT [FK_Finance_CurrencyRate_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
 GO
 
@@ -301,6 +304,7 @@ CREATE TABLE [Finance].[DetailAccount] (
     [DetailID]          INT              IDENTITY (1, 1) NOT NULL,
     [ParentID]          INT              NULL,
 	[FiscalPeriodID]    INT              NOT NULL,
+	[CurrencyID]        INT              NULL,
 	[BranchID]          INT              NOT NULL,
 	[BranchScope]       SMALLINT         CONSTRAINT [DF_Finance_DetailAccount_BranchScope] DEFAULT (0) NOT NULL,
     [Code]              NVARCHAR(16)     NOT NULL,
@@ -314,6 +318,7 @@ CREATE TABLE [Finance].[DetailAccount] (
     , CONSTRAINT [FK_Finance_DetailAccount_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[DetailAccount]([DetailID])
     , CONSTRAINT [FK_Finance_DetailAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_DetailAccount_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_DetailAccount_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
 )
 GO
 

@@ -518,6 +518,28 @@ namespace SPPC.Tadbir.Mapper.Tests
 
         #endregion // Currency Mapping Tests
 
+        #region CurrencyRate Mapping Tests
+
+        [Test]
+        public void ContainsMappingFromCurrencyRateToCurrencyRateViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Currency, KeyValue>();
+        }
+
+        [Test]
+        public void CanMapFromCurrencyRateToCurrencyRateViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Currency, KeyValue>();
+        }
+
+        #endregion // CurrencyRate Mapping Tests
+
         #region FiscalPeriod Mapping Tests
 
         [Test]

@@ -308,9 +308,81 @@ namespace SPPC.Tadbir.Security
         Delete = 0x8,
 
         /// <summary>
+        /// دسترسی جستجوی ارزها در لیست
+        /// </summary>
+        Lookup = 0x10,
+
+        /// <summary>
+        /// دسترسی فیلتر ارزها در لیست
+        /// </summary>
+        Filter = 0x20,
+
+        /// <summary>
+        /// دسترسی چاپ لیست ارزها
+        /// </summary>
+        Print = 0x40,
+
+        /// <summary>
+        /// دسترسی تغییر وضعیت یک ارز از فعال به غیرفعال یا بالعکس
+        /// </summary>
+        ChangeStatus = 0x80,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت ارزها
         /// </summary>
-        All = 0xf
+        All = 0xff
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به نرخ ارزها را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CurrencyRatePermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به نرخ ارز
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست نرخ های ارز یا جزییات یک نرخ
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک نرخ ارز جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک نرخ ارز موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک نرخ ارز موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی جستجوی نرخ های ارز در لیست
+        /// </summary>
+        Lookup = 0x10,
+
+        /// <summary>
+        /// دسترسی فیلتر نرخ های ارز در لیست
+        /// </summary>
+        Filter = 0x20,
+
+        /// <summary>
+        /// دسترسی چاپ لیست نرخ های ارز
+        /// </summary>
+        Print = 0x40,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت ارزها
+        /// </summary>
+        All = 0x7f
     }
 
     /// <summary>

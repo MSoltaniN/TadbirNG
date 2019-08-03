@@ -208,3 +208,30 @@ INSERT INTO [Finance].[AccountCollectionAccount] ([CollectionAccountID], [Collec
     VALUES (31, 3, 163, 1, 1)
 
 SET IDENTITY_INSERT [Finance].[AccountCollectionAccount] OFF
+
+-- 1.1.679
+ALTER TABLE [Finance].[CurrencyRate]
+ADD [BranchID] INT NOT NULL
+CONSTRAINT [DF_Finance_CurrencyRate_BranchID] DEFAULT (1)
+WITH VALUES;
+GO
+
+ALTER TABLE [Finance].[CurrencyRate]
+ADD [BranchScope] SMALLINT NOT NULL
+CONSTRAINT [DF_Finance_CurrencyRate_BranchScope] DEFAULT (0)
+WITH VALUES;
+GO
+
+ALTER TABLE [Finance].[CurrencyRate]
+ADD CONSTRAINT [FK_Finance_CurrencyRate_Corporate_Branch] FOREIGN KEY ([BranchID])
+    REFERENCES [Corporate].[Branch]([BranchID]);
+GO
+
+ALTER TABLE [Finance].[DetailAccount]
+ADD [CurrencyID] INT NULL
+GO
+
+ALTER TABLE [Finance].[DetailAccount]
+ADD CONSTRAINT [FK_Finance_DetailAccount_Finance_Currency] FOREIGN KEY ([CurrencyID])
+    REFERENCES [Finance].[Currency]([CurrencyID]);
+GO
