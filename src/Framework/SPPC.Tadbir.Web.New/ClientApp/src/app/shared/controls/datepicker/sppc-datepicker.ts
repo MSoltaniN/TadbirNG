@@ -3,7 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Va
 import { DatePipe } from '@angular/common'
 
 import * as moment from 'jalali-moment';
-import { KeyCode } from '../../enum/KeyCode';
+import { KeyCode } from '@sppc/shared';
 
 @Component({
   selector: 'sppc-datepicker',

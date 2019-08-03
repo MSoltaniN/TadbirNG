@@ -16,8 +16,8 @@ import {
 
 import { TabComponent } from './tab.component';
 import { DynamicTabsDirective } from './dynamic-tabs.directive';
-import { QuickReportViewInfo } from '../../service/report/reporting.service';
-import { QuickReportConfigInfo } from '../../model/QuickReportConfig';
+import { QuickReportConfigInfo } from '@sppc/shared';
+
 
 
 @Component({

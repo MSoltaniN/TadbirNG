@@ -3,10 +3,9 @@ import { StringFilterComponent } from "@progress/kendo-angular-grid/dist/es2015/
 import { LocalizationService } from "@progress/kendo-angular-l10n";
 import { FilterService, BaseFilterCellComponent } from "@progress/kendo-angular-grid";
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";
-import { DefaultComponent } from "../../class/default.component";
 import { DatePickerDirective } from "ng2-jalali-date-picker";
 import { SppcDatepicker } from "../datepicker/sppc-datepicker";
-import { SppcGridDatepicker } from "../datepicker/sppc-grid-datepicker";
+import { SppcGridDatepicker } from "@sppc/shared";
 declare var jquery: any;
 declare var $: any;
 

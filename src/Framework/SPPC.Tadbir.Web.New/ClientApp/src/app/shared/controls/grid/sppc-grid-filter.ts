@@ -1,7 +1,8 @@
 ﻿
 import { Component, Input } from '@angular/core';
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";  //npm shrinkwrap
-import { Property } from '../../class/metadata/property';
+import { Property } from '@sppc/shared';
+
 
 @Component({
     selector: 'sppc-grid-filter',
