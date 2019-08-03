@@ -2,15 +2,14 @@ import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { String } from '../../class/source';
-import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { ViewRowPermissionService, ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, SettingService } from '../../service/index';
-import { LookupApi, RoleApi } from '../../service/api/index';
-import { PermissionType } from '../../enum/permissionType';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { String, DefaultComponent } from '@sppc/shared/class';
+import { Layout, Entities, MessageType } from 'environments/environment';
+import { ViewRowPermissionInfo, RowPermissionsForRoleInfo, Item, ItemInfo, ViewRowPermissionService, RoleApi } from '@sppc/admin';
+import { MetaDataService, BrowserStorageService, PermissionType, LookupApi } from '@sppc/shared';
+import { SettingService } from '@sppc/config';
+
+
 
 
 

@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { RoleDetails } from '../../model/index';
-import { String } from '../../class/source';
-import { Layout } from "../../../environments/environment";
+import { String } from '@sppc/shared/class';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { TreeNodeInfo } from '../../model/index';
-import { Permission } from '../../model/permission';
-import { DetailComponent } from '../../class/detail.component';
+import { DetailComponent } from '@sppc/shared/class';
+import { TreeNodeInfo } from '@sppc/shared';
+import { Permission } from '@sppc/core';
+import { Layout } from 'environments/environment';
+import { RoleDetails } from '@sppc/admin';
 
 
 export function getLayoutModule(layout: Layout) {

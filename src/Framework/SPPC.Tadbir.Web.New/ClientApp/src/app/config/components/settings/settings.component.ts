@@ -2,18 +2,14 @@ import { Component, OnInit, Input, Renderer2, ViewChild, forwardRef } from '@ang
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { String } from '../../class/source';
-import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { SettingService, SettingTreeNodeInfo, SettingBriefInfo } from '../../service/index';
-import { SettingsApi } from '../../service/api/settingsApi';
 import { TreeItem } from '@progress/kendo-angular-treeview';
+import { String, DefaultComponent } from '@sppc/shared/class';
+import { Layout, Entities, MessageType } from 'environments/environment';
 import { SettingsFormComponent } from './settings-form.component';
-import { SettingKey } from '../../enum/settingsKey';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { SettingBriefInfo, SettingsApi, SettingTreeNodeInfo, SettingService } from '@sppc/config';
+import { SppcLoadingService, BrowserStorageService, MetaDataService, SettingKey } from '@sppc/shared';
+
 
 
 

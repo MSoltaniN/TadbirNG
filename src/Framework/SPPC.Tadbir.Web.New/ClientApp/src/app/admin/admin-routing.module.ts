@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from '@sppc/shared/components/layout/layout.component';
-import { AuthGuard } from '../core';
+import { AuthGuard } from '@sppc/core';
 import { OperationLogsComponent } from '@sppc/admin/components/operationLogs/operationLogs.component';
 import { RoleComponent } from '@sppc/admin/components/role/role.component';
 import { UserComponent } from '@sppc/admin/components/user/user.component';
 import { ChangePasswordComponent } from '@sppc/admin/components/user/changePassword.component';
 import { ViewRowPermissionComponent } from '@sppc/admin/components/viewRowPermission/viewRowPermission.component';
-//import { LayoutComponent } from '../shared/components/layout/layout.component';
+
+
 
 const routes: Routes = [{
   path: 'admin',

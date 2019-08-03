@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RowArgs } from '@progress/kendo-angular-grid';
-import { String } from '../../class/source';
-import { Layout } from "../../../environments/environment";
+import { String } from '@sppc/shared/class';
+import { Layout } from 'environments/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { RelatedItems } from '../../model/index';
-import { DetailComponent } from '../../class/detail.component';
+import { DetailComponent } from '@sppc/shared/class';
+import { RelatedItems } from '@sppc/shared';
+
 
 
 export function getLayoutModule(layout: Layout) {
