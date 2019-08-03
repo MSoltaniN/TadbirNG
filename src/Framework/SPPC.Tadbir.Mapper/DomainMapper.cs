@@ -264,6 +264,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
+            mapperConfig.CreateMap<CurrencyRate, CurrencyRateViewModel>();
+
             mapperConfig.CreateMap<FiscalPeriod, FiscalPeriodViewModel>();
             mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
                .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId);

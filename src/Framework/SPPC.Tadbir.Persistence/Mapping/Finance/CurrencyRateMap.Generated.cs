@@ -25,6 +25,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("CurrencyRateID");
+            builder.Property(e => e.BranchScope)
+                .IsRequired();
             builder.Property(e => e.Date)
                 .IsRequired();
             builder.Property(e => e.Time)
@@ -43,6 +45,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.CurrencyId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Finance_CurrencyRate_Finance_Currency");
+            builder.HasOne(d => d.Branch)
+                .WithMany()
+                .HasForeignKey(e => e.BranchId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_CurrencyRate_Corporate_Branch");
         }
     }
 }

@@ -15,5 +15,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی تفصیلی شناور والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی ارزپایه یا پیش فرض این تفصیلی شناور
+        /// </summary>
+        public int? CurrencyId { get; set; }
     }
 }

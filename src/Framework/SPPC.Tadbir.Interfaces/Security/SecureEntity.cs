@@ -53,6 +53,11 @@ namespace SPPC.Tadbir.Security
         public const string Currency = "Currency";
 
         /// <summary>
+        /// نام موجودیت نرخ ارز
+        /// </summary>
+        public const string CurrencyRate = "CurrencyRate";
+
+        /// <summary>
         /// نام موجودیت دوره مالی
         /// </summary>
         public const string FiscalPeriod = "FiscalPeriod";

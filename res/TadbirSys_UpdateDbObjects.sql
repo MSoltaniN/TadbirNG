@@ -77,3 +77,33 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (38, 37, 78, N'ReportManagement', N'/reports', N'list', N'Ctrl+R')
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
+-- 1.1.679
+SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (22, N'CurrencyRate', N'CurrencyRate')
+SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
+
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (92, 6, N'Lookup', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (93, 6, N'Filter', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (94, 6, N'Print', 64)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (95, 6, N'ChangeStatus', 128)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (96, 22, N'ViewEntities,CurrencyRates', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (97, 22, N'CreateEntity,CurrencyRate', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (98, 22, N'EditEntity,CurrencyRate', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (99, 22, N'DeleteEntity,CurrencyRate', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (100, 22, N'Lookup', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (101, 22, N'Filter', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (102, 22, N'Print', 64)
+SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 92)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 93)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 94)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 95)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 96)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 97)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 98)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 99)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 100)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 101)
+INSERT INTO [Auth].[RolePermission] (RoleID, PermissionID) VALUES (1, 102)

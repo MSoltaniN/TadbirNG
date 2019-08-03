@@ -39,6 +39,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .WithMany(p => p.Children)
                 .HasForeignKey(e => e.ParentId)
                 .HasConstraintName("FK_Finance_DetailAccount_Finance_Parent");
+            builder.HasOne(d => d.Currency)
+                .WithMany()
+                .HasForeignKey(e => e.CurrencyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_DetailAccount_Finance_Currency");
             builder.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey(e => e.BranchId)

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Extensions;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -51,6 +53,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var currency = await _repository.GetCurrencyAsync(currencyId);
             return JsonReadResult(currency);
+        }
+
+        // GET: api/currencies/{currencyId:min(1)}/rates
+        [Route(CurrencyApi.CurrencyRatesUrl)]
+        [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.View)]
+        public async Task<IActionResult> GetCurrencyRatesAsync(int currencyId)
+        {
+            var allRates = await _repository.GetCurrencyRatesAsync(currencyId);
+            SetItemCount(allRates.Count);
+            var gridOptions = GridOptions ?? new GridOptions();
+            var rates = allRates
+                .Apply(gridOptions)
+                .ToList();
+            return Json(rates);
         }
 
         // GET: api/currencies/info/{nameKey}
