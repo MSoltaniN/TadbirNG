@@ -1,12 +1,8 @@
 
 import { Directive, Host, HostListener, ElementRef } from "@angular/core";
 import { GridComponent, ColumnComponent} from "@progress/kendo-angular-grid";
-import { DefaultComponent } from "../../class/default.component";
-import { String } from '../../class/source';
-import { SettingService } from "../../service/index";
-import { BaseComponent } from "../../class/base.component";
 import { ToastrService } from "ngx-toastr";
-import { BrowserStorageService } from "../../service/browserStorage.service";
+import { DefaultComponent, BaseComponent, BrowserStorageService } from "@sppc/shared";
 
 
 @Directive({

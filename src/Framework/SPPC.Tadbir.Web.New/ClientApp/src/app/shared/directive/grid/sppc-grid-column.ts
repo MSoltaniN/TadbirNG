@@ -2,10 +2,8 @@
 import { Directive, Host, Input, ElementRef, Renderer2 } from "@angular/core";
 import { ColumnComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
-import { DefaultComponent } from "../../class/default.component";
-import { String } from '../../class/source';
 import { GridFilterComponent } from "./component/grid-filter.component";
-//import { Component } from '@angular/core'
+import { DefaultComponent } from "@sppc/shared";
 
 
 

@@ -4,7 +4,8 @@ import { RTL } from "@progress/kendo-angular-l10n";
 import { ToastrService } from "ngx-toastr";
 import { GridComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
-import { DefaultComponent } from "../../class/default.component";
+import { DefaultComponent } from "@sppc/shared";
+
 
 
 

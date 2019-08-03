@@ -1,17 +1,12 @@
 import { RTL } from "@progress/kendo-angular-l10n";
-import { Layout, ColumnVisibility } from "../../../../environments/environment";
 import { Component, OnInit, ViewContainerRef, Host, ElementRef, OnDestroy, Input } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
-import { BaseComponent } from "../../../class/base.component";
 import { GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
-import { DefaultComponent } from "../../../class/default.component";
-import { ListFormViewConfig } from "../../../model/listFormViewConfig";
-import { ColumnViewDeviceConfig } from "../../../model/columnViewDeviceConfig";
-import { ColumnViewConfig } from "../../../model/columnViewConfig";
-import { ColumnViewConfigInfo, SettingService } from "../../../service/index";
-import { ListFormViewConfigInfo, SettingViewModelInfo } from "../../../service/settings.service";
-import { BrowserStorageService } from "../../../service/browserStorage.service";
+import { Layout, ColumnVisibility } from "environments/environment";
+import { BaseComponent, ListFormViewConfig, DefaultComponent, BrowserStorageService, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared";
+import { SettingViewModelInfo, SettingService, ListFormViewConfigInfo, ColumnViewConfigInfo } from "@sppc/config";
+
 
 
 export function getLayoutModule(layout: Layout) {
