@@ -2,8 +2,8 @@ import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from '../../service/login/index';
 import { Component } from "@angular/core";
+import { AuthenticationService } from "@sppc/core";
 
 
 @Component({

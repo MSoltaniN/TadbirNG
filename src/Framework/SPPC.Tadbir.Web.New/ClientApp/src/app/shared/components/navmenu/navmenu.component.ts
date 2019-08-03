@@ -1,17 +1,14 @@
 import { Component, Renderer2, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Command } from '../../model/command';
-import { MessageType } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { AuthenticationService } from '../../service/login/index';
-import { SettingService } from '../../service/index';
-import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { DefaultComponent, Command, MetaDataService, ReportManagementComponent } from '@sppc/shared';
+import { SettingService } from '@sppc/config';
+import { AuthenticationService } from '@sppc/core';
+
+
+
 
 declare var $: any;
 

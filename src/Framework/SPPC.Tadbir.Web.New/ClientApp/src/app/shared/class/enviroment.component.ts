@@ -1,6 +1,8 @@
-import { PermissionBrief } from "../model/index";
-import { BrowserStorageService } from "../service/browserStorage.service";
+
 import { Inject } from "@angular/core";
+import { BrowserStorageService } from "../services";
+
+
 
 
 export class EnviromentComponent {

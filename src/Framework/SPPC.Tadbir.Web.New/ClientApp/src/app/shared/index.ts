@@ -5,3 +5,5 @@ export * from './services/index';
 export * from './enum/index';
 export * from './security/index';
 export * from './controls/index';
+export * from './services/browserStorage.service'
+export * from './components';

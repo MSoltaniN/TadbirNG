@@ -1,12 +1,13 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from '../../service/login/index';
 import { ToastrService } from 'ngx-toastr';
 import { DefaultComponent } from "../../class/default.component";
 import { TranslateService } from '@ngx-translate/core';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SettingService } from '../../service/index';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { AuthenticationService } from '@sppc/core';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { SettingService } from '@sppc/config';
+
+
 
 
 @Component({

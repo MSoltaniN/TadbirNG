@@ -1,16 +1,13 @@
 import { Component, OnInit, Renderer2, TemplateRef, ViewChild } from '@angular/core';
-import { SettingService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { DefaultComponent } from "../../class/default.component";
-import { Layout } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '@progress/kendo-angular-dialog';
-import { BrowserStorageService } from '../../service/browserStorage.service';
-
+import { Layout } from 'environments/environment';
+import { DefaultComponent, MetaDataService } from '@sppc/shared';
+import { SettingService } from '@sppc/config';
 
 
 
