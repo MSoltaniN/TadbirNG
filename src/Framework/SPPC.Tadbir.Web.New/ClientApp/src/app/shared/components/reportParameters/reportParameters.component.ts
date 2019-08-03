@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Parameter } from '../../model/parameter';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { PrintInfo } from '../../model/printInfo';
-import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
-import { ParameterInfo } from '../../service/report/reporting.service';
+import { ParameterInfo, PrintInfo } from '@sppc/shared';
+
+
 
 @Component({
   selector: 'report-parameters',

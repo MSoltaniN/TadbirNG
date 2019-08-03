@@ -1,13 +1,6 @@
 
-
-
-import { AddCommandDirective } from "@progress/kendo-angular-grid/dist/es2015/editing/add-command.directive";
-import { Button } from "@progress/kendo-angular-buttons";
 import { Directive, Renderer, ElementRef, Host, Input, Self, HostBinding, ViewChild, SkipSelf, ViewContainerRef, Renderer2, OnInit, Inject } from "@angular/core";
-import { EnviromentComponent } from "../../class/enviroment.component";
-import { SecureEntity } from "../../security/secureEntity";
-import { AccountPermissions, Permissions } from "../../security/permissions";
-import { DefaultComponent } from "../../class/default.component";
+import { DefaultComponent, EnviromentComponent } from "@sppc/shared";
 
 
 @Directive({

@@ -2,12 +2,9 @@
 import { Directive, Host, Input, HostListener, ElementRef } from "@angular/core";
 import { GridComponent, ColumnComponent, CheckboxColumnComponent, ColumnBase } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
-import { DefaultComponent } from "../../class/default.component";
-import { String } from '../../class/source';
 import { CommandColumnComponent } from "@progress/kendo-angular-grid/dist/es2015/columns/command-column.component";
-import { SettingService } from "../../service/index";
-import { ColumnViewConfig } from "../../model/columnViewConfig";
-import { ColumnViewDeviceConfig } from "../../model/columnViewDeviceConfig";
+import { DefaultComponent, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared";
+
 
 
 @Directive({

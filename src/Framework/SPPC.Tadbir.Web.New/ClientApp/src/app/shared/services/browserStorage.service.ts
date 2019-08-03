@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ContextInfo } from './login';
-import { String } from '../class/source';
+import { String } from '@sppc/shared';
 import { LZStringService } from 'ng-lz-string';
+import { ContextInfo } from '@sppc/core';
 
 export const SessionKeys = {
   CurrentContext: 'CurrentContext',

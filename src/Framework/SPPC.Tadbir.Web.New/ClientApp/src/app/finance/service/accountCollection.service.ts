@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../class/base.service';
-import { AccountCollectionCategory, AccountCollection } from '../model/index';
 import { HttpClient } from '@angular/common/http';
-import { AccountCollectionAccount } from '../model/accountCollectionAccount';
-import { BrowserStorageService } from './browserStorage.service';
+import { BaseService, BrowserStorageService } from '@sppc/shared';
+import { AccountCollectionAccount, AccountCollection, AccountCollectionCategory } from '..';
+
 
 export class AccountCollectionCategoryInfo implements AccountCollectionCategory {
   accountCollections: AccountCollection[];

@@ -1,4 +1,5 @@
-import { ViewTreeLevelConfig } from "../model/index";
+import { ViewTreeLevelConfig } from ".";
+
 
 
 export interface ViewTreeConfig {

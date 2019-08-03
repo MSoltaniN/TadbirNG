@@ -1,16 +1,12 @@
 import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { String } from '../../class/source';
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { ViewRowPermissionService, ItemInfo } from '../../service/index';
-import { LookupApi } from '../../service/api/index';
-import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
-import { DetailComponent } from '../../class/detail.component';
-import { BrowserStorageService } from '../../service/browserStorage.service';
-
+import { TreeItem } from '@progress/kendo-angular-treeview';
+import { String, DetailComponent } from '@sppc/shared/class';
+import { Layout, Entities } from 'environments/environment';
+import { ItemInfo, ViewRowPermissionService } from '@sppc/admin';
+import { BrowserStorageService, MetaDataService, LookupApi } from '@sppc/shared';
 
 
 export function getLayoutModule(layout: Layout) {

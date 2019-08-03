@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { BaseService } from '../class/base.service';
-import { Account } from '../model/index';
-import { String } from '../class/source';
 import { AccountApi } from './api/accountApi';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { BrowserStorageService, BaseService, String } from '@sppc/shared';
+import { Account } from '@sppc/finance';
+
 
 export class AccountInfo implements Account {
   currencyId: number = 1;

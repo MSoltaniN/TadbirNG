@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthenticationService, CompanyLoginInfo } from '../../service/login/index';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { Renderer2 } from '@angular/core';
-import { ContextInfo } from "../../service/login/authentication.service";
-import { MessageType, Layout, MessagePosition} from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService, SettingService } from '../../service/index';
-import { Command } from '../../model/command';
-import { ListFormViewConfig } from '../../model/listFormViewConfig';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { Layout } from 'environments/environment';
+import { AuthenticationService } from '@sppc/core';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { SettingService } from '@sppc/config';
+import { UserService } from '@sppc/admin';
+
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();

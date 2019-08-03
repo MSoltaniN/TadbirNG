@@ -1,18 +1,13 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { String } from '../../class/source';
-import { Layout, Entities, environment } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { ViewRowPermissionService, ItemInfo, ViewRowPermissionInfo } from '../../service/index';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
-import { FilterExpression } from '../../class/filterExpression';
-import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
-import { Filter } from '../../class/filter';
-import { DetailComponent } from '../../class/detail.component';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { String, DetailComponent, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
+import { Layout, Entities, environment } from 'environments/environment';
+import { ItemInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin';
+import { SppcLoadingService, MetaDataService, BrowserStorageService } from '@sppc/shared';
+
 
 
 

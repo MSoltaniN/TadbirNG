@@ -1,13 +1,10 @@
 import { Component, Inject, Injector, AfterViewInit, AfterContentInit, OnInit } from '@angular/core';
-import { Context } from './model/context';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
-import { AuthenticationService } from './service/login/index';
-import { UserService } from './service/user.service';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { Command } from './model/command';
-import { BrowserStorageService } from './service/browserStorage.service';
+import { Context, AuthenticationService } from '@sppc/core';
+import { BrowserStorageService, Command } from '@sppc/shared';
+import { UserService } from '@sppc/admin';
 
 declare var $: any;
 declare var Stimulsoft: any;

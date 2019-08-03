@@ -1,13 +1,9 @@
 
 import { Directive, Host, Input } from "@angular/core";
 import { ColumnComponent } from "@progress/kendo-angular-grid";
-import { DefaultComponent } from "../../class/default.component";
-import { String } from '../../class/source';
+import { BrowserStorageService, EnviromentComponent, DefaultComponent, ColumnViewDeviceConfig, ColumnViewConfig } from "@sppc/shared";
 import { GridFilterComponent } from "./component/grid-filter.component";
-import { ColumnViewConfig } from "../../model/columnViewConfig";
-import { EnviromentComponent } from "../../class/enviroment.component";
-import { ColumnViewDeviceConfig } from "../../model/columnViewDeviceConfig";
-import { BrowserStorageService } from "../../service/browserStorage.service";
+
 
 
 @Directive({

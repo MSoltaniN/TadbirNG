@@ -1,28 +1,19 @@
 import { Component, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AccountCollectionService, SettingService } from '../../service/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, PageChangeEvent, GridComponent } from '@progress/kendo-angular-grid';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { String } from '../../class/source';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
-import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
-import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { AccountCollectionApi, AccountApi } from '../../service/api/index';
-import { SecureEntity } from '../../security/secureEntity';
-import { FilterExpression } from '../../class/filterExpression';
-import { AccountCollectionCategory, AccountCollection, ViewTreeLevelConfig, AccountCollectionAccount, Account } from '../../model/index';
 import { TreeItem } from '@progress/kendo-angular-treeview';
-import { AccountRelationsType } from '../../enum/accountRelationType';
-import { AccountCollectionPermissions, AccountPermissions } from '../../security/permissions';
-import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
-import { TypeLevel } from '../../enum/TypeLevel';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { String, DefaultComponent, FilterExpression, Filter, FilterExpressionOperator } from '@sppc/shared/class';
+import { Layout, Entities, MessageType } from 'environments/environment';
+import { AccountCollection, AccountCollectionCategory, AccountCollectionAccount, Account, AccountCollectionService, AccountCollectionApi, AccountApi } from '@sppc/finance';
+import { ViewTreeLevelConfig, SettingService } from '@sppc/config';
+import { SecureEntity, AccountCollectionPermissions, BrowserStorageService, MetaDataService, ViewName } from '@sppc/shared';
+import { AccountRelationsType, TypeLevel } from '@sppc/finance/enum';
+
 
 
 export function getLayoutModule(layout: Layout) {

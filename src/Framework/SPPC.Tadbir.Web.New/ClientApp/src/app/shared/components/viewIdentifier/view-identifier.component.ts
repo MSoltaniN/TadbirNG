@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, AfterViewInit, ContentChildren } from '@angular/core';
-import { ReportParamComponent } from './reportParam.component';
+import { ReportParamComponent } from '@sppc/shared';
+
 
 @Component({
   selector: 'view-identifier',

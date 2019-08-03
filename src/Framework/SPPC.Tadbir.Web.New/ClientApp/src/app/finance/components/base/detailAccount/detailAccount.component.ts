@@ -1,21 +1,18 @@
 import { Component, Renderer2, OnInit, ChangeDetectorRef, NgZone, ViewChild } from '@angular/core';
-import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService, GridService } from '../../service';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { DetailAccountApi } from '../../service/api';
-import { DetailAccount } from '../../model';
-import { String } from '../../class/source';
+import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
+import { Layout, Entities, MessageType } from 'environments/environment';
+import { DetailAccount, DetailAccountApi } from '@sppc/finance';
+import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
+import { GridService, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
 import { DialogService } from '@progress/kendo-angular-dialog';
-import { ViewName } from '../../security/viewName';
+import { SettingService } from '@sppc/config';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
-import { BrowserStorageService } from '../../service/browserStorage.service';
-import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
-import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
-import { QuickReportSettingComponent } from '../reportManagement/QuickReport-Setting.component';
-import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
+
 
 
 export function getLayoutModule(layout: Layout) {

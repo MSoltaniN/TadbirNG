@@ -1,11 +1,9 @@
 
 import { Directive, OnInit, OnDestroy, Input, Output, EventEmitter, HostListener, ViewContainerRef } from "@angular/core";
 import { Subject, Subscription } from "rxjs";
-import { ViewName } from "../security/viewName";
-import { EnviromentComponent } from "../class/enviroment.component";
-import { Permissions } from "../security/permissions";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
+import { EnviromentComponent, ViewName } from "@sppc/shared";
 
 
 @Directive({

@@ -1,19 +1,12 @@
 import { Injectable } from "@angular/core";
-import { BaseService } from "../class/base.service";
 import { Response } from "@angular/http";
-import { ListFormViewConfig } from "../model/listFormViewConfig";
-import { ColumnViewConfig } from "../model/columnViewConfig";
-import { SettingsApi } from "./api/settingsApi";
-import { String } from '../class/source';
-import { SettingBrief } from "../model/settingBrief";
-import { ColumnViewDeviceConfig } from "../model/columnViewDeviceConfig";
 import { HttpClient } from "@angular/common/http";
-import { ColumnVisibility } from "../../environments/environment";
-import { ViewTreeConfig, ViewTreeLevelConfig, NumberConfig, QuickSearchConfig, QuickSearchColumnConfig } from "../model/index";
 import { Observable } from "rxjs/Observable";
-import { SettingKey } from "../enum/settingsKey";
-import { DateRangeType } from "../enum/dateRangeType";
-import { BrowserStorageService } from "./browserStorage.service";
+import { SettingBrief, ViewTreeConfig, ViewTreeLevelConfig, SettingsApi, NumberConfig } from "..";
+import { ColumnViewDeviceConfig, ListFormViewConfig, ColumnViewConfig, QuickSearchConfig, QuickSearchColumnConfig, BaseService, BrowserStorageService, SettingKey, DateRangeType } from "@sppc/shared";
+import { ColumnVisibility } from "environments/environment";
+import { String } from '@sppc/shared/class';
+
 
 
 export class SettingBriefInfo implements SettingBrief {

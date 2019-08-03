@@ -1,21 +1,17 @@
 import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild } from '@angular/core';
-import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService, GridService } from '../../service';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { ProjectApi } from '../../service/api';
-import { Project } from '../../model';
-import { String } from '../../class/source';
 import { DialogService } from '@progress/kendo-angular-dialog';
-import { ViewName } from '../../security/viewName';
+import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
+import { Layout, Entities, MessageType } from 'environments/environment';
+import { Project, ProjectApi } from '@sppc/finance';
+import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
+import { GridService, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
+import { SettingService } from '@sppc/config';
 import { ProjectFormComponent } from './project-form.component';
-import { BrowserStorageService } from '../../service/browserStorage.service';
-import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
-import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
-import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
-import { QuickReportSettingComponent } from '../reportManagement/QuickReport-Setting.component';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();

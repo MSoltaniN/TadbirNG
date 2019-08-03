@@ -1,16 +1,12 @@
 import { Component, OnInit, Renderer2, TemplateRef, Output, EventEmitter } from '@angular/core'
 import { ControlContainer } from '@angular/forms'
-import { FullAccountService, FullAccountInfo } from '../../service/index';
-import { DetailComponent } from '../../class/detail.component';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { AccountRelationsType } from '../../enum/accountRelationType';
-import { AccountRelationApi } from '../../service/api/index';
-import { AccountItemBrief, FullAccount } from '../../model/index';
-import { String } from '../../class/source'
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { String,DetailComponent, MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { AccountItemBrief, FullAccountInfo, FullAccountService, AccountRelationsType, AccountRelationApi, FullAccount } from '@sppc/finance';
+
+
 
 
 

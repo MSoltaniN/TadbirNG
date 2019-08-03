@@ -1,19 +1,11 @@
 import { RTL } from "@progress/kendo-angular-l10n";
-import { Layout, ColumnVisibility } from "../../../../environments/environment";
 import { Component, OnInit, Host, ElementRef, OnDestroy, Input, Output, EventEmitter } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
-import { BaseComponent } from "../../../class/base.component";
 import { GridComponent } from "@progress/kendo-angular-grid";
-import { DefaultComponent } from "../../../class/default.component";
-import { ColumnViewDeviceConfig } from "../../../model/columnViewDeviceConfig";
-import { ColumnViewConfig } from "../../../model/columnViewConfig";
-import { SettingService } from "../../../service/index";
-import {  SettingViewModelInfo, QuickSearchConfigInfo, QuickSearchColumnConfigInfo } from "../../../service/settings.service";
-import { ViewName } from "../../../security/viewName";
-import { Property } from "../../../class/metadata/property";
-import { QuickSearchConfig } from "../../../model/index";
-import { BrowserStorageService } from "../../../service/browserStorage.service";
+import { Layout, ColumnVisibility } from "environments/environment";
+import { BaseComponent, QuickSearchConfig, ViewName, Property, BrowserStorageService, DefaultComponent, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared";
+import { SettingViewModelInfo, QuickSearchConfigInfo, QuickSearchColumnConfigInfo, SettingService } from "@sppc/config";
 
 
 export function getLayoutModule(layout: Layout) {

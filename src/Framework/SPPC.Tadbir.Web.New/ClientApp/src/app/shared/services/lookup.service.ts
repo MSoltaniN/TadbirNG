@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import {  Response } from '@angular/http';
 import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
-import { BaseService } from '../class/base.service';
-import { LookupApi, AccountRelationApi } from './api/index';
-import { BrowserStorageService } from './browserStorage.service';
+import { AccountRelationApi } from '@sppc/finance';
+import { BaseService,BrowserStorageService } from '@sppc/shared';
 
 
 

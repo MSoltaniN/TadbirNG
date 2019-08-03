@@ -1,13 +1,11 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { User } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Entities } from '../../../environments/environment';
-import { DetailComponent } from '../../class/detail.component';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { DetailComponent } from '@sppc/shared/class';
+import { User } from '@sppc/admin';
+import { MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
+import { Entities } from 'environments/environment';
 
 
 

@@ -1,21 +1,13 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { String } from '../../class/source';
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { AccountItemBriefInfo, AccountRelationsService, AccountItemRelationsInfo } from '../../service/index';
-import { AccountRelationApi } from '../../service/api/index';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
-import { KeyCode } from '../../enum/KeyCode';
-import { Filter } from '../../class/filter';
-import { AccountRelationsType } from '../../enum/accountRelationType';
-import { FilterExpression } from '../../class/filterExpression';
-import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
-import { DetailComponent } from '../../class/detail.component';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { Layout, Entities } from 'environments/environment';
+import { DetailComponent, SppcLoadingService, BrowserStorageService, MetaDataService, KeyCode, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared';
+import { AccountItemBriefInfo, AccountItemRelationsInfo, AccountRelationsService, AccountRelationApi } from '@sppc/finance';
+import { AccountRelationsType } from '@sppc/finance/enum';
+import { String } from '@sppc/shared/class';
 
 
 

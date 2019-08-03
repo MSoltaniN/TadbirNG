@@ -2,14 +2,11 @@ import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core
 import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Layout, Entities } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SettingsType } from '../../enum/settingsType';
-import { SettingBriefInfo } from '../../service/index';
-import { DetailComponent } from '../../class/detail.component';
-import { DateRangeType } from '../../enum/dateRangeType';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { Layout, Entities } from 'environments/environment';
+import { DetailComponent, BrowserStorageService, MetaDataService, DateRangeType, SettingsType } from '@sppc/shared';
+import { SettingBriefInfo } from '@sppc/config';
+
 
 
 

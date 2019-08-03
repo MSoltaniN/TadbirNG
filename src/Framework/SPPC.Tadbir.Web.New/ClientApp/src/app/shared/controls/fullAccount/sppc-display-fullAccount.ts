@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { VoucherLine } from '../../model/index';
+import { VoucherLine } from '@sppc/finance';
 
 
 

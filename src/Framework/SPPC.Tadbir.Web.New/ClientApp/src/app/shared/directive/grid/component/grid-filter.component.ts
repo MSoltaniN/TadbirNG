@@ -1,12 +1,13 @@
-import { BaseComponent } from "../../../class/base.component";
+
 import { OnInit, OnDestroy, Component, Host, ElementRef, Input, EventEmitter, Output } from "@angular/core";
-import { Layout } from "../../../../environments/environment";
+
 import { RTL } from "@progress/kendo-angular-l10n";
 import { ToastrService } from "ngx-toastr";
 import { GridComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService } from "../../../service/settings.service";
-import { BrowserStorageService } from "../../../service/browserStorage.service";
+import { Layout } from "environments/environment";
+import { BaseComponent, BrowserStorageService } from "@sppc/shared";
+import { SettingService } from "@sppc/config";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
