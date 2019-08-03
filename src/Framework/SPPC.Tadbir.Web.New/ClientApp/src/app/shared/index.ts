@@ -1,3 +1,4 @@
+export * from './class/index';
 export * from './models/index';
 export * from './services/api/index';
 export * from './services/index';

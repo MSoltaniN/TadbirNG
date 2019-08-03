@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Command } from '../../model/command';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { Command, BrowserStorageService } from '@sppc/shared';
+
 
 @Component({
   selector: 'app-appheader',

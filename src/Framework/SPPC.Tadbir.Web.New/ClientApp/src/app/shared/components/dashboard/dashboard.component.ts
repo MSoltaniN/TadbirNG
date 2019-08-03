@@ -1,17 +1,13 @@
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
-import { Context } from '../../model/context';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT } from '@angular/platform-browser';
-import { AuthenticationService } from '../../service/login/index';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { DefaultComponent } from '../../class/default.component';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SettingService, DashboardService } from '../../service/index';
 import { Chart } from "chart.js";
-import { DashboardSummaries } from '../../model/dashboardSummaries';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { DefaultComponent } from '@sppc/shared';
+
+
 
 
 @Component({
