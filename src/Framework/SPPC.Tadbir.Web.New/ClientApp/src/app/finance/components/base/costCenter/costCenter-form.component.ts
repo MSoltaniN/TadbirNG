@@ -1,14 +1,11 @@
 import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
-import { CostCenter } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { DefaultComponent } from "../../class/default.component";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { DetailComponent } from '../../class/detail.component';
-import { Layout, Entities, Metadatas } from '../../../environments/environment';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { Layout, Entities } from 'environments/environment';
+import { DefaultComponent, DetailComponent, ViewName, MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { CostCenter } from '@sppc/finance';
+
 
 
 export function getLayoutModule(layout: Layout) {

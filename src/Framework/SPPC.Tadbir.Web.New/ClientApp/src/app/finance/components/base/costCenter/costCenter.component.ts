@@ -1,21 +1,18 @@
 import { Component, OnInit, Renderer2, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
-import { Layout, Entities, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService, GridService } from '../../service';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { CostCenterApi } from '../../service/api';
-import { CostCenter } from '../../model';
-import { String } from '../../class/source';
 import { DialogService } from '@progress/kendo-angular-dialog';
-import { ViewName } from '../../security/viewName';
+import { Layout, Entities, MessageType } from 'environments/environment';
+import { CostCenter, CostCenterApi } from '@sppc/finance';
+import { AutoGridExplorerComponent, GridService, BrowserStorageService, MetaDataService, ViewName } from '@sppc/shared';
+import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
+import { SettingService } from '@sppc/config';
 import { CostCenterFormComponent } from './costCenter-form.component';
-import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
-import { ViewIdentifierComponent } from '../viewIdentifier/view-identifier.component';
-import { BrowserStorageService } from '../../service/browserStorage.service';
-import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
-import { QuickReportSettingComponent } from '../reportManagement/QuickReport-Setting.component';
+import { String } from '@sppc/shared/class';
+
 
 
 export function getLayoutModule(layout: Layout) {

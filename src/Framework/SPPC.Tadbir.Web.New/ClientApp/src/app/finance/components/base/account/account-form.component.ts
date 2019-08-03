@@ -1,17 +1,13 @@
 import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
-import { AccountService, LookupService } from '../../service/index';
-import { Account } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { DefaultComponent } from "../../class/default.component";
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { DetailComponent } from '../../class/detail.component';
-import { ViewName } from '../../security/viewName';
-import { String } from '../../class/source';
-import { BranchApi, LookupApi } from '../../service/api/index';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { String, DefaultComponent, DetailComponent } from '@sppc/shared/class';
+import { Layout, Entities } from 'environments/environment';
+import { Account, AccountService } from '@sppc/finance';
+import { ViewName, MetaDataService, BrowserStorageService, LookupService, LookupApi } from '@sppc/shared';
+import { BranchApi } from '@sppc/organization';
+
 
 
 

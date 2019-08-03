@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Response } from '@angular/http';
-import { BaseService } from '../class/base.service';
 import { Observable } from 'rxjs';
-
 import { map } from 'rxjs/operators/map';
-import { AccountItemRelations, AccountItemBrief } from '../model/index';
-import { FilterExpression } from '../class/filterExpression';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { AccountItemRelations, AccountItemBrief } from '..';
+import { BaseService, BrowserStorageService, FilterExpression } from '@sppc/shared';
+
 
 
 

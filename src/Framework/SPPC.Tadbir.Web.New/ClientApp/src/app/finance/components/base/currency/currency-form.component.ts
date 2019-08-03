@@ -1,15 +1,11 @@
 import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
-import { Currency } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Entities, MessageType } from '../../../environments/environment';
-import { LookupService, CurrencyService } from '../../service/index';
-import { DetailComponent } from '../../class/detail.component';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
-import { String } from '../../class/source'
-import { CurrencyApi } from '../../service/api/index';
+import { String, DetailComponent } from '@sppc/shared/class';
+import { Currency, CurrencyService, CurrencyApi } from '@sppc/finance';
+import { BrowserStorageService, MetaDataService, LookupService, ViewName } from '@sppc/shared';
+import { Entities, MessageType } from 'environments/environment';
+
 
 
 
