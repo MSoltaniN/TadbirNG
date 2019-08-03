@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
-import { DefaultComponent } from '../../class/default.component';
+import { DefaultComponent } from '@sppc/shared';
 
 @Directive({
   selector: '[SppcCodeLength]',

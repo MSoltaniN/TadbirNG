@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import "rxjs/Rx";
-import { String } from '../../class/source';
+import { String, BaseService, BrowserStorageService, MetadataApi, ReportApi } from '@sppc/shared';
 import { HttpParams, HttpClient } from "@angular/common/http";
-import { BaseService } from '../../class/base.service';
-import { MetadataApi } from '../api/index';
-import { ReportApi } from '../api/reportApi';
-import { BrowserStorageService } from '../browserStorage.service';
+
 
 @Injectable()
 export class MetaDataService extends BaseService {
