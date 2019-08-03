@@ -1,25 +1,14 @@
 import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewEncapsulation} from '@angular/core';
 import { Http } from '@angular/http';
-import { DefaultComponent } from '../../class/default.component';
-import { VoucherService, SettingService } from '../../service/index';
-import { QuickReportColumnModel } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import {  Entities } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { Report } from '../../model/report';
-import { ReportingService, ParameterInfo, QuickReportViewInfo } from '../../service/report/reporting.service';
 import * as moment from 'jalali-moment';
-import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
-import { ReportsQueries } from '../reportManagement/reports.queries';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
-import { QuickReportConfigInfo } from '../../model/QuickReportConfig';
-import { QuickReportColumnConfig } from '../../model/QuickReportColumnConfig';
-
+import { DefaultComponent, ReportManagementComponent, SppcLoadingService, MetaDataService, ReportingService, Report, ParameterInfo, ReportsQueries, QuickReportColumnConfig } from '@sppc/shared';
+import { VoucherService } from '@sppc/finance';
+import { Entities } from 'environments/environment';
+import { SettingService } from '@sppc/config';
 
 
 declare var Stimulsoft: any;
