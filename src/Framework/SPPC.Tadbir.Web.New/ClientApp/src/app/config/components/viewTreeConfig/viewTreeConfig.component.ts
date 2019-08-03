@@ -2,19 +2,13 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { String } from '../../class/source';
-import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { SettingService } from '../../service/index';
-import { ViewName } from '../../security/viewName';
-import { ViewTreeConfig, ViewTreeLevelConfig } from '../../model/index';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { SettingsApi, LookupApi } from '../../service/api/index';
-import { MetaDataService } from '../../service/metadata/metadata.service';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { String, DefaultComponent } from '@sppc/shared/class';
+import { Layout, Entities, MessageType } from 'environments/environment';
+import { ViewTreeLevelConfig, ViewTreeConfig, SettingService, SettingsApi } from '@sppc/config';
+import { MetaDataService, SppcLoadingService, BrowserStorageService, ViewName, LookupApi } from '@sppc/shared';
 
 
 
