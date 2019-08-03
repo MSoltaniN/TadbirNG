@@ -16,30 +16,30 @@
       "dom"
     ],
     "module": "es2015",
-    "baseUrl": "./",
+    "baseUrl": "src",
     "paths": {
       "@sppc/*": [
-        "src/app/*"
+        "app/*"
       ],
       "@sppc/core/*": [
-        "src/app/core/*"
+        "app/core/*"
       ],
       "@sppc/shared/*": [
-        "src/app/shared/*"
+        "app/shared/*"
       ],
       "@sppc/finance/*": [
-        "src/app/finance/*"
+        "app/finance/*"
       ],
       "@sppc/config/*": [
-        "src/app/config/*"
+        "app/config/*"
       ],
       "@sppc/organization/*": [
-        "src/app/organization/*"
+        "app/organization/*"
       ],
       "@sppc/admin/*": [
-        "src/app/admin/*"
+        "app/admin/*"
       ]
 
-    }    
+    }
   }
 }
