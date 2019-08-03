@@ -49,6 +49,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// ضریب تبدیل به ارز پایه شرکت - این عدد برابر است با مقدار ارز پایه معادل با یک واحد ارز مرتبط
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public decimal Multiplier { get; set; }
+        public double Multiplier { get; set; }
     }
 }

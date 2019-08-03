@@ -22,11 +22,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class CurrenciesController : ValidatingController<CurrencyViewModel>
     {
-        public CurrenciesController(ICurrencyRepository repository,
+        public CurrenciesController(ICurrencyRepository repository, ICurrencyRateRepository rateRepository,
             IHostingEnvironment host, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
+            _rateRepository = rateRepository;
             _host = host;
         }
 
@@ -60,13 +61,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.View)]
         public async Task<IActionResult> GetCurrencyRatesAsync(int currencyId)
         {
-            var allRates = await _repository.GetCurrencyRatesAsync(currencyId);
+            var allRates = await _rateRepository.GetCurrencyRatesAsync(currencyId);
             SetItemCount(allRates.Count);
             var gridOptions = GridOptions ?? new GridOptions();
             var rates = allRates
                 .Apply(gridOptions)
                 .ToList();
             return Json(rates);
+        }
+
+        // GET: api/currencies/rates/{rateId:min(1)}
+        [Route(CurrencyApi.CurrencyRateUrl)]
+        [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.View)]
+        public async Task<IActionResult> GetCurrencyRateAsync(int rateId)
+        {
+            var currencyRate = await _rateRepository.GetCurrencyRateAsync(rateId);
+            return JsonReadResult(currencyRate);
         }
 
         // GET: api/currencies/info/{nameKey}
@@ -112,6 +122,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        // POST: api/currencies/{currencyId:min(1)}/rates
+        [HttpPost]
+        [Route(CurrencyApi.CurrencyRatesUrl)]
+        [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.Create)]
+        public async Task<IActionResult> PostNewCurrencyRateAsync(
+            int currencyId, [FromBody] CurrencyRateViewModel currencyRate)
+        {
+            var result = BasicValidationResult(currencyRate);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            _rateRepository.SetCurrentContext(SecurityContext.User);
+            var outputItem = await _rateRepository.SaveCurrencyRateAsync(currencyRate);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
         // PUT: api/currencies/{currencyId:min(1)}
         [HttpPut]
         [Route(CurrencyApi.CurrencyUrl)]
@@ -129,6 +157,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return OkReadResult(outputItem);
         }
 
+        // PUT: api/currencies/rates/{rateId:min(1)}
+        [HttpPut]
+        [Route(CurrencyApi.CurrencyRateUrl)]
+        [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.Edit)]
+        public async Task<IActionResult> PutModifiedCurrencyRateAsync(
+            int rateId, [FromBody] CurrencyRateViewModel currencyRate)
+        {
+            var result = BasicValidationResult(currencyRate, rateId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            _rateRepository.SetCurrentContext(SecurityContext.User);
+            var outputItem = await _rateRepository.SaveCurrencyRateAsync(currencyRate);
+            return OkReadResult(outputItem);
+        }
+
         // DELETE: api/currencies/{currencyId:min(1)}
         [HttpDelete]
         [Route(CurrencyApi.CurrencyUrl)]
@@ -143,6 +189,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteCurrencyAsync(currencyId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // DELETE: api/currencies/rates/{rateId:min(1)}
+        [HttpDelete]
+        [Route(CurrencyApi.CurrencyRateUrl)]
+        [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingCurrencyRateAsync(int rateId)
+        {
+            string message = await ValidateRateDeleteAsync(rateId);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
+            _rateRepository.SetCurrentContext(SecurityContext.User);
+            await _rateRepository.DeleteCurrencyRateAsync(rateId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -177,6 +240,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Currency, item.ToString());
             }
+            else if (currency.BranchId != SecurityContext.User.BranchId)
+            {
+                message = _strings.Format(AppStrings.OtherBranchEditNotAllowed);
+            }
             else
             {
                 bool canDelete = await _repository.CanDeleteCurrencyAsync(item);
@@ -184,6 +251,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     message = _strings.Format(AppStrings.CantDeleteUsedCurrency, _strings[currency.Name]);
                 }
+            }
+
+            return message;
+        }
+
+        protected async Task<string> ValidateRateDeleteAsync(int item)
+        {
+            string message = String.Empty;
+            var currencyRate = await _rateRepository.GetCurrencyRateAsync(item);
+            if (currencyRate == null)
+            {
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.CurrencyRate, item.ToString());
+            }
+            else if (currencyRate.BranchId != SecurityContext.User.BranchId)
+            {
+                message = _strings.Format(AppStrings.OtherBranchEditNotAllowed);
             }
 
             return message;
@@ -201,6 +284,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly ICurrencyRepository _repository;
+        private readonly ICurrencyRateRepository _rateRepository;
         private readonly IHostingEnvironment _host;
     }
 }
