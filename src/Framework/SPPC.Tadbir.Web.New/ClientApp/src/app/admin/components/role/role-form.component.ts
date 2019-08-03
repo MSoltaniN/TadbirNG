@@ -1,17 +1,15 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { RoleService, RoleFullInfo } from '../../service/index';
 import { RowArgs } from '@progress/kendo-angular-grid';
-import { Role, Permission, RoleFullViewModel } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { TreeNodeInfo } from '../../model/index';
-import { DetailComponent } from '../../class/detail.component';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { Layout, Entities } from 'environments/environment';
+import { DetailComponent } from '@sppc/shared/class';
+import { TreeNodeInfo, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
+import { Role, RoleFullInfo, RoleFullViewModel, RoleService } from '@sppc/admin';
+import { Permission } from '@sppc/core';
+
 
 
 export function getLayoutModule(layout: Layout) {

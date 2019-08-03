@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { BaseService } from '../class/base.service';
-import { RowPermissionsForRole, ViewRowPermission } from '../model/index';
-import { FilterExpression } from '../class/filterExpression';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { RowPermissionsForRole, ViewRowPermission } from '..';
+import { BaseService } from '@sppc/shared/class';
+import { BrowserStorageService } from '@sppc/shared';
+import { FilterExpression } from '@sppc/shared/class';
+
 
 export interface Item {
   key: number,

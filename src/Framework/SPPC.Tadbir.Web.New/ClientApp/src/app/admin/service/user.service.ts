@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { User, UserProfile, RelatedItems } from '../model/index';
-import { UserApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
-import { String } from '../class/source';
+import { String } from '@sppc/shared/class';
 import { HttpClient } from "@angular/common/http";
-import { BaseService } from '../class/base.service';
-import { Command } from '../model/command';
-import { BrowserStorageService } from './browserStorage.service';
+import { User, UserApi } from '..';
+import { UserProfile, Command, BrowserStorageService, RelatedItems } from '@sppc/shared';
+import { BaseService } from '@sppc/shared/class';
+
 
 
 export class UserInfo implements User {

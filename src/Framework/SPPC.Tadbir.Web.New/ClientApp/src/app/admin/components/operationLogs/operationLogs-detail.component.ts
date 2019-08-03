@@ -1,14 +1,11 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
-
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { DefaultComponent } from "../../class/default.component";
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Entities } from '../../../environments/environment';
-import { SettingService } from '../../service/index';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
 import { OperationLog } from '@sppc/admin';
+import { DefaultComponent } from '@sppc/shared/class';
+import { MetaDataService, ViewName, BrowserStorageService } from '@sppc/shared';
+import { SettingService } from '@sppc/config';
+import { Entities } from 'environments/environment';
 
 
 

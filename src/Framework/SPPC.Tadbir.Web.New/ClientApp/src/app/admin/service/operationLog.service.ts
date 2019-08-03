@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../class/base.service';
-import { OperationLog } from '../model/index';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { BaseService } from '@sppc/shared/class';
+import { OperationLog } from '..';
+import { BrowserStorageService } from '@sppc/shared';
+
 
 
 export class OperationLogInfo implements OperationLog {

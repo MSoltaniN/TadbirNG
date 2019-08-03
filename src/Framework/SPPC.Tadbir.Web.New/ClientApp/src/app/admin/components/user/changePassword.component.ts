@@ -1,15 +1,12 @@
 import { Component, Renderer2 } from '@angular/core';
-import { Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import { UserProfile } from '../../model/index';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { Entities, MessageType } from '../../../environments/environment';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { UserService } from '../../service/index';
-import { DetailComponent } from '../../class/detail.component';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { DetailComponent } from '@sppc/shared/class';
+import { UserProfile, MetaDataService, SppcLoadingService, ViewName, BrowserStorageService } from '@sppc/shared';
+import { MessageType, Entities } from 'environments/environment';
+import { UserService } from '@sppc/admin';
+
 
 
 
