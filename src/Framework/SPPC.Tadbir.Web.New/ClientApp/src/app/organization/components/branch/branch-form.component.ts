@@ -1,14 +1,11 @@
 import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
-import { Branch } from '../../model/index';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { DefaultComponent } from "../../class/default.component";
-import { Layout, Entities } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { DetailComponent } from '../../class/detail.component';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { DetailComponent, MetaDataService, DefaultComponent, BrowserStorageService, ViewName } from '@sppc/shared';
+import { Layout, Entities } from '@sppc/env/environment';
+import { Branch } from '@sppc/organization';
+
 
 
 

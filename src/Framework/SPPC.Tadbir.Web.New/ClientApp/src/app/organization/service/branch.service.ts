@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Response} from '@angular/http';
-import { BaseService } from '../class/base.service';
-import { Branch, RelatedItems } from '../model/index';
-import { String } from '../class/source';
-import { BranchApi } from './api/index';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { String, BaseService } from '@sppc/shared/class';
+import { Branch, BranchApi } from '..';
+import { BrowserStorageService, RelatedItems } from '@sppc/shared';
 
 
 export class BranchInfo implements Branch {

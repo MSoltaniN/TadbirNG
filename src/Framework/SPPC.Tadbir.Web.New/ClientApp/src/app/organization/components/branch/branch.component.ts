@@ -1,22 +1,16 @@
 import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone } from '@angular/core';
-import { BranchService, BranchInfo, SettingService, GridService } from '../../service/index';
-import { Branch, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { String } from '../../class/source';
-import { MessageType, Layout, Entities } from "../../../environments/environment";
-import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { BranchApi } from '../../service/api/index';
-import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
-import { AutoGridExplorerComponent } from '../../class/autoGridExplorer.component';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { BranchFormComponent } from './branch-form.component';
 import { BranchRolesFormComponent } from './branch-roles-form.component';
+import { String, AutoGridExplorerComponent, Filter, FilterExpressionOperator } from '@sppc/shared/class';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Branch, BranchService, BranchApi, BranchInfo } from '@sppc/organization';
+import { GridService, BrowserStorageService, MetaDataService, ViewName, RelatedItems } from '@sppc/shared';
+import { SettingService } from '@sppc/config';
 
 
 export function getLayoutModule(layout: Layout) {

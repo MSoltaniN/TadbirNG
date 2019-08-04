@@ -1,11 +1,9 @@
 import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { RowArgs } from '@progress/kendo-angular-grid';
-import { Layout } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { RelatedItems } from '../../model/index';
-import { SecureEntity } from '../../security/secureEntity';
-import { FiscalPeriodPermissions } from '../../security/permissions';
-import { DetailComponent } from '../../class/detail.component';
+import { Layout } from '@sppc/env/environment';
+import { DetailComponent, RelatedItems, SecureEntity, FiscalPeriodPermissions } from '@sppc/shared';
+
 
 
 export function getLayoutModule(layout: Layout) {

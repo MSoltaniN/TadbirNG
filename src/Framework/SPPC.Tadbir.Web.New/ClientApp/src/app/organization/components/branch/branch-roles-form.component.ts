@@ -2,14 +2,11 @@ import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angu
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Layout, Entities } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { RelatedItems } from '../../model/index';
-import { DetailComponent } from '../../class/detail.component';
-import { BranchService } from '../../service';
-import { ViewName } from '../../security/viewName';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { DetailComponent, RelatedItems, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
+import { Layout, Entities } from '@sppc/env/environment';
+import { BranchService } from '@sppc/organization';
+
 
 
 export function getLayoutModule(layout: Layout) {

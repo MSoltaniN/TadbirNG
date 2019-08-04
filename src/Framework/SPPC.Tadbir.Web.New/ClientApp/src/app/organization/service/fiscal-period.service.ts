@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { BaseService } from '../class/base.service';
-import { FiscalPeriod, RelatedItems } from '../model/index';
-import { String } from '../class/source';
 import { FiscalPeriodApi } from './api/index';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { String, BaseService } from '@sppc/shared/class';
+import { BrowserStorageService, RelatedItems } from '@sppc/shared';
+import { FiscalPeriod } from '..';
+
 
 
 export class FiscalPeriodInfo implements FiscalPeriod {

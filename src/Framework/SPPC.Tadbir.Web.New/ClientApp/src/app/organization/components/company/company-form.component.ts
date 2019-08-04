@@ -1,13 +1,11 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
-import { Company } from '../../model/index';
+import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { DetailComponent } from '../../class/detail.component';
-import { ViewName } from '../../security/viewName';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { Layout, Entities } from '@sppc/env/environment';
+import { DetailComponent, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
+import { CompanyDb } from '@sppc/organization';
+
 
 
 
@@ -37,14 +35,14 @@ export class CompanyFormComponent extends DetailComponent {
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public set model(company: Company) {
+  @Input() public set model(company: CompanyDb) {
     this.editForm.reset(company);
 
     this.active = company !== undefined || this.isNew;
   }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
-  @Output() save: EventEmitter<Company> = new EventEmitter();
+  @Output() save: EventEmitter<CompanyDb> = new EventEmitter();
   //create properties
 
   //Events
