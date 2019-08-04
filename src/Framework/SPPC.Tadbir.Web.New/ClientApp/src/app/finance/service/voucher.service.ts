@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../class/base.service';
-import { Voucher } from '../model/index';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
-import { BrowserStorageService } from './browserStorage.service';
+import { BrowserStorageService, BaseService } from '@sppc/shared';
+import { Voucher } from '..';
 
 
 export class VoucherInfo implements Voucher {

@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { VoucherLine } from '../model/index';
-import { VoucherApi } from './api/index';
-import { AccountItemBrief } from "../model/accountItemBrief";
-import { String } from '../class/source';
-import { BaseService } from '../class/base.service';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { String, BaseService } from '@sppc/shared/class';
+import { VoucherLine, AccountItemBrief, VoucherApi } from '..';
+import { BrowserStorageService } from '@sppc/shared';
 
 
 

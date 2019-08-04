@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 
 import { FullAccount } from "./fullAccount";
-import { IEntity } from "./IEntity";
+import { IEntity } from "@sppc/shared";
 
 export interface VoucherLine extends IEntity{
     voucherId: number;

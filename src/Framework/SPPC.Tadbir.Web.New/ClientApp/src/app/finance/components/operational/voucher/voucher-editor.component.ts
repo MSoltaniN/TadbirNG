@@ -1,23 +1,14 @@
-import { Component, OnInit, Input, Renderer2, TemplateRef, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { VoucherService, LookupService, VoucherInfo } from '../../service/index';
+import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
-import { String } from '../../class/source';
-import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { DetailComponent } from '../../class/detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
-import { VoucherApi } from '../../service/api';
-import { Voucher } from '../../model/index';
-import { DocumentStatusValue } from '../../enum/documentStatusValue';
-import { Item } from '../../model/item';
-import { LookupApi } from '../../service/api/index';
-import { ViewName } from '../../security/viewName';
-import { VoucherOperations } from '../../enum/voucherOperations';
-import { BrowserStorageService } from '../../service/browserStorage.service';
+import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
+import { String, DetailComponent } from '@sppc/shared/class';
+import { Layout, Entities, MessageType } from 'environments/environment';
+import { Voucher, VoucherService, VoucherOperations, VoucherApi, DocumentStatusValue, VoucherInfo } from '@sppc/finance';
+import { Item, MetaDataService, BrowserStorageService, ViewName, LookupService, LookupApi } from '@sppc/shared';
 
 
 
