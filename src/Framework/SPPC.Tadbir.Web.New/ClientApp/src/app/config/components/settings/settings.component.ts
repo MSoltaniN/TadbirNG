@@ -5,10 +5,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DefaultComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from 'environments/environment';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { SettingsFormComponent } from './settings-form.component';
 import { SettingBriefInfo, SettingsApi, SettingTreeNodeInfo, SettingService } from '@sppc/config';
-import { SppcLoadingService, BrowserStorageService, MetaDataService, SettingKey } from '@sppc/shared';
+import { BrowserStorageService, MetaDataService, SettingKey } from '@sppc/shared';
 
 
 
@@ -63,7 +63,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
 
   }
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     private settingsService: SettingService, public renderer: Renderer2, public metadata: MetaDataService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingsService, Entities.Setting, undefined);
   }

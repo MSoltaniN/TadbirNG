@@ -3,8 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
-import { Layout, Entities } from 'environments/environment';
-import { DetailComponent, SppcLoadingService, BrowserStorageService, MetaDataService, KeyCode, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared';
+import { Layout, Entities } from '@sppc/env/environment';
+import { DetailComponent, BrowserStorageService, MetaDataService, KeyCode, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared';
 import { AccountItemBriefInfo, AccountItemRelationsInfo, AccountRelationsService, AccountRelationApi } from '@sppc/finance';
 import { AccountRelationsType } from '@sppc/finance/enum';
 import { String } from '@sppc/shared/class';
@@ -108,7 +108,7 @@ export class AccountRelationsFormComponent extends DetailComponent {
   }
   //Events
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.AccountRelations, undefined);
   }

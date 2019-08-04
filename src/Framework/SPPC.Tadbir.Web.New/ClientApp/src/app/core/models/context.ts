@@ -1,5 +1,6 @@
 import { PermissionBrief } from "./permissionBrief";
-import { IEntity } from "./IEntity";
+import { IEntity } from "@sppc/shared";
+
 
 export interface Context extends IEntity {
   userName: string;

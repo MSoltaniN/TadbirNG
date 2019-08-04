@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Layout, Entities } from 'environments/environment';
+import { Layout, Entities } from '@sppc/env/environment';
 import { DetailComponent, LookupService, BrowserStorageService, MetaDataService, ViewName, LookupApi } from '@sppc/shared';
 import { AccountGroup } from '@sppc/finance';
 

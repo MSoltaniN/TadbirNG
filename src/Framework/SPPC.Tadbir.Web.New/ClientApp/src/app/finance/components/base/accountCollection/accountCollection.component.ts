@@ -8,7 +8,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DefaultComponent, FilterExpression, Filter, FilterExpressionOperator } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from 'environments/environment';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { AccountCollection, AccountCollectionCategory, AccountCollectionAccount, Account, AccountCollectionService, AccountCollectionApi, AccountApi } from '@sppc/finance';
 import { ViewTreeLevelConfig, SettingService } from '@sppc/config';
 import { SecureEntity, AccountCollectionPermissions, BrowserStorageService, MetaDataService, ViewName } from '@sppc/shared';

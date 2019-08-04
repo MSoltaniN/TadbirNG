@@ -4,9 +4,9 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DetailComponent } from '@sppc/shared/class';
-import { Layout, Entities } from 'environments/environment';
-import { ItemInfo, ViewRowPermissionService } from '@sppc/admin';
+import { Layout, Entities } from '@sppc/env/environment';
 import { BrowserStorageService, MetaDataService, LookupApi } from '@sppc/shared';
+import { ItemInfo, ViewRowPermissionService } from '@sppc/admin/service';
 
 
 export function getLayoutModule(layout: Layout) {

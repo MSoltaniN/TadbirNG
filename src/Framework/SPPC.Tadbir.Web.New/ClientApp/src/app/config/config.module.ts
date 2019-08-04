@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ConfigRoutingModule } from './config-routing.module';
 
+import { SharedModule } from '../shared/shared.module';
+
 import { SettingService } from '@sppc/config';
 
 import { SettingsComponent } from '@sppc/config/components/settings/settings.component';
@@ -12,7 +14,8 @@ import { ViewTreeConfigComponent } from '@sppc/config/components/viewTreeConfig/
 @NgModule({
   imports: [
     CommonModule,
-    ConfigRoutingModule
+    ConfigRoutingModule,
+    SharedModule
   ],
   declarations: [SettingsComponent, SettingsFormComponent, ViewTreeConfigComponent],
   providers: [SettingService]

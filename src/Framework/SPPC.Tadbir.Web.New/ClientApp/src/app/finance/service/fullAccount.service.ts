@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { FullAccount, AccountItemBrief } from '../model/index';
 import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
-import { BaseService } from '../class/base.service';
-import { LookupApi } from './api/index';
-import { FilterExpression } from '../class/filterExpression';
 import { AccountItemBriefInfo } from './accountRelations.service';
-import { BrowserStorageService } from './browserStorage.service';
+import { BaseService, BrowserStorageService, LookupApi, FilterExpression } from '@sppc/shared';
+import { AccountItemBrief, FullAccount } from '..';
+
 
 
 export class FullAccountInfo implements FullAccount {

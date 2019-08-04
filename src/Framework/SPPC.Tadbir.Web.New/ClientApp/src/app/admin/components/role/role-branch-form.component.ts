@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { String } from '@sppc/shared/class';
-import { Layout } from 'environments/environment';
+import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { RelatedItems } from '@sppc/shared';

@@ -5,10 +5,12 @@ import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from "@angular/common/http";
 import * as moment from 'jalali-moment';
-import { DefaultComponent, ReportManagementComponent, SppcLoadingService, MetaDataService, ReportingService, Report, ParameterInfo, ReportsQueries, QuickReportColumnConfig } from '@sppc/shared';
+import { DefaultComponent, MetaDataService, ReportingService, Report, ParameterInfo, QuickReportColumnConfig, ViewName, BrowserStorageService, QuickReportConfigInfo } from '@sppc/shared';
 import { VoucherService } from '@sppc/finance';
-import { Entities } from 'environments/environment';
+import { Entities } from '@sppc/env/environment';
 import { SettingService } from '@sppc/config';
+import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
+import { ReportsQueries } from '../reportManagement/reports.queries';
 
 
 declare var Stimulsoft: any;
@@ -36,7 +38,6 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
  
   
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
    private voucherService: VoucherService, public renderer: Renderer2,
     public metadata: MetaDataService, public settingService: SettingService,
     private http: HttpClient, public reporingService: ReportingService) {

@@ -4,8 +4,8 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { TreeNodeInfo } from '@sppc/shared';
 import { Permission } from '@sppc/core';
-import { Layout } from 'environments/environment';
-import { RoleDetails } from '@sppc/admin';
+import { Layout } from '@sppc/env/environment';
+import { RoleDetails } from '@sppc/admin/models';
 
 
 export function getLayoutModule(layout: Layout) {

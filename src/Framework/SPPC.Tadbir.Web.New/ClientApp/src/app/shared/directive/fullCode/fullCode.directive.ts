@@ -1,7 +1,5 @@
-﻿
+
 import { Directive, ElementRef, HostListener, Input, Inject, AfterViewInit, Renderer } from "@angular/core";
-import { AbstractControl, Validator } from "@angular/forms";
-import { DOCUMENT } from '@angular/common';
 import { FullCodeService } from "@sppc/finance";
 
 

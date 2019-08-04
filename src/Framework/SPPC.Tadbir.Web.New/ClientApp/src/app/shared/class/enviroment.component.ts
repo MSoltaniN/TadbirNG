@@ -1,6 +1,7 @@
 
 import { Inject } from "@angular/core";
 import { BrowserStorageService } from "../services";
+import { PermissionBrief } from "@sppc/core";
 
 
 

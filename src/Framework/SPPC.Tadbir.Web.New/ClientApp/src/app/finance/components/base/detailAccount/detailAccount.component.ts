@@ -3,7 +3,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from 'environments/environment';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { DetailAccount, DetailAccountApi } from '@sppc/finance';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';

@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 
-import { OperationLogService, RoleService, UserService, ViewRowPermissionService } from '@sppc/admin';
+import { SharedModule } from '../shared/shared.module';
+
+import { OperationLogService, RoleService, UserService, ViewRowPermissionService } from '@sppc/admin/service/index';
 
 import { OperationLogsComponent } from '@sppc/admin/components/operationLogs/operationLogs.component';
 import { OperationLogsDetailComponent } from '@sppc/admin/components/operationLogs/operationLogs-detail.component';
@@ -25,7 +27,8 @@ import { ViewRowPermissionMultipleFormComponent } from '@sppc/admin/components/v
 @NgModule({
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    SharedModule
   ],
   declarations: [OperationLogsComponent, OperationLogsDetailComponent, OperationLogsDetailComponent, RoleComponent, RoleFormComponent, RoleBranchFormComponent, RoleDetailFormComponent,
     RoleFiscalPeriodFormComponent, RoleUserFormComponent, UserComponent, UserFormComponent, UserRolesFormComponent, ChangePasswordComponent, ViewRowPermissionComponent,

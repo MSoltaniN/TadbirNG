@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { FinanceRoutingModule } from './finance-routing.module';
 
+import { SharedModule } from '../shared/shared.module';
+
 import {
   AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
   FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService
@@ -33,7 +35,8 @@ import { JournalComponent } from '@sppc/finance/components/reporting/journal/jou
 @NgModule({
   imports: [
     CommonModule,
-    FinanceRoutingModule
+    FinanceRoutingModule,
+    SharedModule
   ],
   declarations: [AccountComponent, AccountFormComponent, AccountCollectionComponent, AccountGroupsComponent, AccountGroupsFormComponent, AccountRelationsComponent,
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,

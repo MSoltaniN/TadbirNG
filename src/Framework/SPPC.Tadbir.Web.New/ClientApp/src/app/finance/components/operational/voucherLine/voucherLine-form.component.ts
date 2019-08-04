@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { DetailComponent, LookupService, MetaDataService, BrowserStorageService, ViewName, LookupApi } from '@sppc/shared';
 import { VoucherLine } from '@sppc/finance';
-import { Entities } from 'environments/environment';
+import { Entities } from '@sppc/env/environment';
 
 
 

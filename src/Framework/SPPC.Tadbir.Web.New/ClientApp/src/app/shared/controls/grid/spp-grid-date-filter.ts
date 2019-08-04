@@ -1,11 +1,7 @@
-﻿import { Directive, OnInit, ElementRef, ViewContainerRef, Component, Input, ViewChild, Renderer2, ComponentFactoryResolver, Inject, ApplicationRef, Injector, EmbeddedViewRef, AfterViewInit, Host } from "@angular/core";
-import { StringFilterComponent } from "@progress/kendo-angular-grid/dist/es2015/filtering/string-filter.component";
-import { LocalizationService } from "@progress/kendo-angular-l10n";
+import { Directive, OnInit, ElementRef, ViewContainerRef, Component, Input, ViewChild, Renderer2, ComponentFactoryResolver, Inject, ApplicationRef, Injector, EmbeddedViewRef, AfterViewInit, Host } from "@angular/core";
 import { FilterService, BaseFilterCellComponent } from "@progress/kendo-angular-grid";
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";
-import { DatePickerDirective } from "ng2-jalali-date-picker";
-import { SppcDatepicker } from "../datepicker/sppc-datepicker";
-import { SppcGridDatepicker } from "@sppc/shared";
+import { SppcGridDatepicker } from "..";
 declare var jquery: any;
 declare var $: any;
 

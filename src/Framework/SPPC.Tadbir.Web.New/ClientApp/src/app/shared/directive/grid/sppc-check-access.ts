@@ -1,6 +1,6 @@
 
 import { Directive, Renderer, ElementRef, Host, Input, Self, HostBinding, ViewChild, SkipSelf, ViewContainerRef, Renderer2, OnInit, Inject } from "@angular/core";
-import { DefaultComponent, EnviromentComponent } from "@sppc/shared";
+import { DefaultComponent, EnviromentComponent, Permissions } from "@sppc/shared";
 
 
 @Directive({

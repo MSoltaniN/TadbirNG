@@ -21,18 +21,8 @@ export class SppcCodeLengthDirective implements Validator {
     if (this.SppcCodeLength && this.ViewId) {
       var config = this.defultComponent.getViewTreeSettings(this.ViewId);
 
-      //console.log("config");
-      //console.log(config);
-
       if (config) {
         var viewConfig = config.levels.find(f => f != null && f.no == this.SppcCodeLength);
-
-        //console.log("view");
-        //console.log(viewConfig);
-
-        //console.log("code");
-        //debugger;
-        //console.log(this.SppcCodeLength);
 
         var inputValue = c.value;
 

@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DefaultComponent, DetailComponent, ViewName, BrowserStorageService, MetaDataService } from '@sppc/shared';
-import { Layout, Entities } from 'environments/environment';
+import { Layout, Entities } from '@sppc/env/environment';
 import { Project } from '@sppc/finance';
 
 

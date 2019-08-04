@@ -5,8 +5,8 @@ import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
-import { Layout, Entities, MessageType } from 'environments/environment';
-import { DefaultComponent, SecureEntity, AccountRelationPermissions, SppcLoadingService, MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { DefaultComponent, SecureEntity, AccountRelationPermissions, MetaDataService, BrowserStorageService } from '@sppc/shared';
 import { String, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
 import { AccountItemBriefInfo, AccountRelationsService, AccountRelationApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi, AccountItemRelationsInfo } from '@sppc/finance';
 import { SettingService } from '@sppc/config';
@@ -80,7 +80,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
   }
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.AccountRelations, undefined);
 

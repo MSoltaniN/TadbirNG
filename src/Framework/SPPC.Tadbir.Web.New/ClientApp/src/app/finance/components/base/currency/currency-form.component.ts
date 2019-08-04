@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { String, DetailComponent } from '@sppc/shared/class';
 import { Currency, CurrencyService, CurrencyApi } from '@sppc/finance';
 import { BrowserStorageService, MetaDataService, LookupService, ViewName } from '@sppc/shared';
-import { Entities, MessageType } from 'environments/environment';
+import { Entities, MessageType } from '@sppc/env/environment';
 
 
 

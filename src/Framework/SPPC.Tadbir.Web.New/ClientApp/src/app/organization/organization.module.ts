@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { OrganizationRoutingModule } from './organization-routing.module';
 
+import { SharedModule } from '../shared/shared.module';
+
 import { BranchService, CompanyService, FiscalPeriodService } from '@sppc/organization/service/index';
 
 import { BranchComponent } from '@sppc/organization/components/branch/branch.component';
@@ -17,7 +19,8 @@ import { FiscalPeriodRolesFormComponent } from '@sppc/organization/components/fi
 @NgModule({
   imports: [
     CommonModule,
-    OrganizationRoutingModule
+    OrganizationRoutingModule,
+    SharedModule
   ],
   declarations: [BranchComponent, BranchFormComponent, BranchRolesFormComponent, CompanyComponent, CompanyFormComponent, FiscalPeriodComponent,
     FiscalPeriodFormComponent, FiscalPeriodRolesFormComponent],

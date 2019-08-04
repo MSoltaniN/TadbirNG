@@ -3,7 +3,7 @@ import { RowArgs } from '@progress/kendo-angular-grid';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { RelatedItems, SecureEntity, UserPermissions } from '@sppc/shared';
-import { Layout } from 'environments/environment';
+import { Layout } from '@sppc/env/environment';
 
 
 

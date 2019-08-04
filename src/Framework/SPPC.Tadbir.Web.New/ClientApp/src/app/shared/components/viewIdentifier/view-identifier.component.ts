@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, AfterViewInit, ContentChildren } from '@angular/core';
-import { ReportParamComponent } from '@sppc/shared';
+import { ReportParamComponent } from './reportParam.component';
 
 
 @Component({

@@ -1,7 +1,7 @@
 import { ToastrService } from 'ngx-toastr';
-import { MessageType, MessagePosition } from "../../environments/environment";
 import { EnviromentComponent } from "./enviroment.component"
-import { BrowserStorageService } from '../service/browserStorage.service';
+import { BrowserStorageService } from '..';
+import { MessageType, MessagePosition } from '@sppc/env/environment';
 
 
 

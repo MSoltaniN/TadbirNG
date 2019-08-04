@@ -3,9 +3,9 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { DetailComponent } from '@sppc/shared/class';
-import { UserProfile, MetaDataService, SppcLoadingService, ViewName, BrowserStorageService } from '@sppc/shared';
-import { MessageType, Entities } from 'environments/environment';
-import { UserService } from '@sppc/admin';
+import { UserProfile, MetaDataService, ViewName, BrowserStorageService } from '@sppc/shared';
+import { MessageType, Entities } from '@sppc/env/environment';
+import { UserService } from '@sppc/admin/service';
 
 
 
@@ -55,7 +55,7 @@ export class ChangePasswordComponent extends DetailComponent {
   }
 
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService,
     private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Password, ViewName.User);
 

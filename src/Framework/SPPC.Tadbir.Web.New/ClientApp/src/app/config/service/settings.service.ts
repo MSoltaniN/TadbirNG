@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import { SettingBrief, ViewTreeConfig, ViewTreeLevelConfig, SettingsApi, NumberConfig } from "..";
 import { ColumnViewDeviceConfig, ListFormViewConfig, ColumnViewConfig, QuickSearchConfig, QuickSearchColumnConfig, BaseService, BrowserStorageService, SettingKey, DateRangeType } from "@sppc/shared";
-import { ColumnVisibility } from "environments/environment";
+import { ColumnVisibility } from "@sppc/env/environment";
 import { String } from '@sppc/shared/class';
 
 

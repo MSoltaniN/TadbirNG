@@ -4,7 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
 import { String,DetailComponent, MetaDataService, BrowserStorageService } from '@sppc/shared';
-import { AccountItemBrief, FullAccountInfo, FullAccountService, AccountRelationsType, AccountRelationApi, FullAccount } from '@sppc/finance';
+import { AccountItemBrief, FullAccountInfo, FullAccountService, AccountRelationApi, FullAccount } from '@sppc/finance';
+import { AccountRelationsType } from '@sppc/finance/enum';
 
 
 

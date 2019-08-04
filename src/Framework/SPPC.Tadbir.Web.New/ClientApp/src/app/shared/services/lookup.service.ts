@@ -4,6 +4,7 @@ import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
 import { AccountRelationApi } from '@sppc/finance';
 import { BaseService,BrowserStorageService } from '@sppc/shared';
+import { LookupApi } from '../index';
 
 
 

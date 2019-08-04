@@ -4,20 +4,19 @@ import { GridComponent, GridDataResult, PageChangeEvent, SelectAllCheckboxState,
 import { FilterExpression } from "./filterExpression";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
-import { MetaDataService } from "../service/metadata/metadata.service";
-import { SettingService, GridService } from "../service/index";
 import { SortDescriptor, CompositeFilterDescriptor } from "@progress/kendo-data-query";
 import { String } from "./source";
 import { Filter } from "./filter";
 import { FilterExpressionOperator } from "./filterExpressionOperator";
 import { DialogService, DialogRef } from "@progress/kendo-angular-dialog";
 import { ContextMenuComponent } from "@progress/kendo-angular-menu";
-import { AccountItemBrief, ViewTreeConfig, ViewTreeLevelConfig } from "../model";
 import { of } from 'rxjs/observable/of';
 import { TreeItem } from "@progress/kendo-angular-treeview";
-import { MessageType, Entities } from "../../environments/environment";
 import { AccountPermissions } from "../security/permissions";
-import { BrowserStorageService } from "../service/browserStorage.service";
+import { AccountItemBrief } from "@sppc/finance";
+import { ViewTreeConfig, ViewTreeLevelConfig, SettingService } from "@sppc/config";
+import { MetaDataService, GridService, BrowserStorageService } from "..";
+import { Entities, MessageType } from "@sppc/env/environment";
 
 
 

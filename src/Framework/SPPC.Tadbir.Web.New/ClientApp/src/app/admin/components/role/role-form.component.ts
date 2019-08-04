@@ -4,11 +4,12 @@ import { RowArgs } from '@progress/kendo-angular-grid';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Layout, Entities } from 'environments/environment';
+import { Layout, Entities } from '@sppc/env/environment';
 import { DetailComponent } from '@sppc/shared/class';
 import { TreeNodeInfo, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
-import { Role, RoleFullInfo, RoleFullViewModel, RoleService } from '@sppc/admin';
 import { Permission } from '@sppc/core';
+import { Role, RoleFullViewModel } from '@sppc/admin/models';
+import { RoleFullInfo } from '@sppc/admin/service';
 
 
 
@@ -210,7 +211,7 @@ export class RoleFormComponent extends DetailComponent {
     return context.dataItem.id;
   }
 
-  constructor(private roleService: RoleService, private formBuilder: FormBuilder, public bStorageService: BrowserStorageService,
+  constructor(public bStorageService: BrowserStorageService,
     public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 

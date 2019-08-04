@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { BaseService } from '../class/base.service';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { BrowserStorageService, BaseService } from '@sppc/shared';
 
 
 @Injectable()

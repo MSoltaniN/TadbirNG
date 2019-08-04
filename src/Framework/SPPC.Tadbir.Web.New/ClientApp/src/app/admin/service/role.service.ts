@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
-import { Role, RoleFull, RoleDetails, UserBrief, RoleApi } from '..';
 import { Permission } from '@sppc/core';
 import { RelatedItems, RelatedItem, BrowserStorageService } from '@sppc/shared';
 import { String } from '@sppc/shared/class';
 import { Branch } from '@sppc/organization';
 import { BaseService } from '@sppc/shared/class';
+import { Role, RoleFull, RoleDetails, UserBrief } from '../models';
+import { RoleApi } from './api';
 
 
 

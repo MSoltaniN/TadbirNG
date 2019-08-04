@@ -3,7 +3,7 @@ import { Component, OnInit, ViewContainerRef, Host, ElementRef, OnDestroy, Input
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 import { GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
-import { Layout, ColumnVisibility } from "environments/environment";
+import { Layout, ColumnVisibility } from "@sppc/env/environment";
 import { BaseComponent, ListFormViewConfig, DefaultComponent, BrowserStorageService, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared";
 import { SettingViewModelInfo, SettingService, ListFormViewConfigInfo, ColumnViewConfigInfo } from "@sppc/config";
 

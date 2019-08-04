@@ -6,9 +6,10 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { String, DetailComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from 'environments/environment';
-import { Voucher, VoucherService, VoucherOperations, VoucherApi, DocumentStatusValue, VoucherInfo } from '@sppc/finance';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Voucher, VoucherService, VoucherApi, VoucherInfo } from '@sppc/finance';
 import { Item, MetaDataService, BrowserStorageService, ViewName, LookupService, LookupApi } from '@sppc/shared';
+import { DocumentStatusValue, VoucherOperations } from '@sppc/finance/enum';
 
 
 

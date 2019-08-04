@@ -6,12 +6,10 @@ import { BaseComponent } from "./base.component"
 import { Property } from "./metadata/property"
 import { Filter } from './filter';
 import { Renderer2, Injectable, Inject, Optional } from "@angular/core";
-import { MetaDataService } from '../service/metadata/metadata.service';
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
-import { ViewTreeConfig } from '../model/index';
-import { SettingService } from '../service/index';
-import { BrowserStorageService, SessionKeys } from '../service/browserStorage.service';
+import { SessionKeys, MetaDataService, BrowserStorageService } from '../index';
+import { SettingService, ViewTreeConfig } from '@sppc/config';
 
 
 @Injectable()

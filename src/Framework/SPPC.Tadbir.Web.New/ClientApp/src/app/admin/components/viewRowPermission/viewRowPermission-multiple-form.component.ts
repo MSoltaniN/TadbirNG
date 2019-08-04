@@ -4,9 +4,9 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 import { String, DetailComponent, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
-import { Layout, Entities, environment } from 'environments/environment';
-import { ItemInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin';
-import { SppcLoadingService, MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { Layout, Entities, environment } from '@sppc/env/environment';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { ItemInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';
 
 
 
@@ -109,7 +109,7 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-    public viewRowPermissionService: ViewRowPermissionService, public sppcLoading: SppcLoadingService, public bStorageService: BrowserStorageService) {
+    public viewRowPermissionService: ViewRowPermissionService, public bStorageService: BrowserStorageService) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.RowAccess, undefined);
   }
 

@@ -1,21 +1,13 @@
 import { Injectable, ViewChild, Renderer2, Optional, Inject, ChangeDetectorRef, NgZone } from "@angular/core";
-import { DefaultComponent } from "./default.component";
-import { Property } from "./metadata/property";
 import { GridComponent, GridDataResult, PageChangeEvent, SelectAllCheckboxState, RowArgs, ColumnBase } from "@progress/kendo-angular-grid";
-import { FilterExpression } from "./filterExpression";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
-import { MetaDataService } from "../service/metadata/metadata.service";
-import { SettingService, GridService } from "../service/index";
 import { SortDescriptor, CompositeFilterDescriptor } from "@progress/kendo-data-query";
-import { String } from "./source";
-import { Filter } from "./filter";
-import { FilterExpressionOperator } from "./filterExpressionOperator";
-import { ViewName } from "../security/viewName";
-import { ColumnViewConfig } from "../model/columnViewConfig";
 import { take } from 'rxjs/operators';
-import { ListFormViewConfig } from "../model/listFormViewConfig";
-import { BrowserStorageService, SessionKeys } from "../service/browserStorage.service";
+import { FilterExpression, Filter, Property, FilterExpressionOperator, DefaultComponent, String } from ".";
+import { MetaDataService, GridService, BrowserStorageService, SessionKeys, ViewName, ListFormViewConfig, ColumnViewConfig } from "..";
+import { SettingService } from "@sppc/config";
+
 
 
 @Injectable()

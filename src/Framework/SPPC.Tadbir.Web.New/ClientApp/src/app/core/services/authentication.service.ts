@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
-import { Context } from "../../model/context";
-import { PermissionBrief, CompanyLogin } from '../../model/index';
-import { String } from '../../class/source';
-import { LookupApi, FiscalPeriodApi, UserApi } from '../api/index';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { BrowserStorageService } from '../../shared/services';
+import { Context } from '../models/context';
+import { PermissionBrief } from '..';
+import { CompanyLogin, BrowserStorageService, LookupApi } from '@sppc/shared';
+import { environment } from '@sppc/env/environment';
+import { FiscalPeriodApi } from '@sppc/organization';
+import { UserApi } from '@sppc/admin';
+import { String } from '@sppc/shared/class';
+
 
 export class ContextInfo implements Context {
   userName: string = "";

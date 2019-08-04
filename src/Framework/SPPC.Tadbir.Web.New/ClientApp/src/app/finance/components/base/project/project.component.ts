@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from 'environments/environment';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { Project, ProjectApi } from '@sppc/finance';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';

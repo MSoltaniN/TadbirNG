@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { OperationLog } from '@sppc/admin';
+import { OperationLog } from '@sppc/admin/models/index';
 import { DefaultComponent } from '@sppc/shared/class';
 import { MetaDataService, ViewName, BrowserStorageService } from '@sppc/shared';
 import { SettingService } from '@sppc/config';
-import { Entities } from 'environments/environment';
+import { Entities } from '@sppc/env/environment';
 
 
 

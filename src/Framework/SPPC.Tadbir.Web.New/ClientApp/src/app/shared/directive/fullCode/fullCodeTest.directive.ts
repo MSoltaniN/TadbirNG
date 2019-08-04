@@ -1,8 +1,5 @@
 
-import { Directive, ElementRef, HostListener, Input, Inject, AfterViewInit, Renderer } from "@angular/core";
-import { AbstractControl, Validator } from "@angular/forms";
-import { DOCUMENT } from '@angular/common';
-import { FullCodeService } from "@sppc/finance";
+import { Directive, ElementRef, HostListener, Input,  AfterViewInit, Renderer } from "@angular/core";
 
 
 
@@ -22,7 +19,7 @@ export class FullCodeTestDirective implements AfterViewInit {
     this.fullCodeElement = document.getElementById(this.sppcFullCodeTest) as any;
   }
 
-  constructor(public el: ElementRef, private renderer: Renderer, private fullCodeService: FullCodeService) { }
+  constructor(public el: ElementRef, private renderer: Renderer) { }
 
   @HostListener('input') onEvent() {
     let code = this.el.nativeElement.value;

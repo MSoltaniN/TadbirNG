@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../class/base.service';
-import { Project } from '../model/index';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from './browserStorage.service';
+import { Project } from '../index';
+import { BaseService, BrowserStorageService } from '../../shared/index';
+
 
 
 export class ProjectInfo implements Project {

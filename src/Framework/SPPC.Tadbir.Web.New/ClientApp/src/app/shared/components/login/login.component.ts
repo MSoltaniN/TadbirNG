@@ -5,10 +5,11 @@ import { DefaultComponent } from "../../class/default.component";
 import { TranslateService } from '@ngx-translate/core';
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+//import { DOCUMENT } from '@angular/common';
 import { AuthenticationService } from '@sppc/core';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared';
 import { SettingService } from '@sppc/config';
+import { DOCUMENT } from '@angular/platform-browser';
 
 
 

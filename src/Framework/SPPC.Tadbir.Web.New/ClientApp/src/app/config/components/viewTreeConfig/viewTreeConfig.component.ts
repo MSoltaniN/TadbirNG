@@ -6,9 +6,9 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { String, DefaultComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from 'environments/environment';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { ViewTreeLevelConfig, ViewTreeConfig, SettingService, SettingsApi } from '@sppc/config';
-import { MetaDataService, SppcLoadingService, BrowserStorageService, ViewName, LookupApi } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService, ViewName, LookupApi } from '@sppc/shared';
 
 
 
@@ -87,7 +87,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   }
 
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private formBuilder: FormBuilder,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, private formBuilder: FormBuilder,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Setting, undefined);
     

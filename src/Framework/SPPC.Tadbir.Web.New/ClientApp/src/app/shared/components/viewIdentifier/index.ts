@@ -1,2 +1,2 @@
-export * from './reportParam.component'
-export * from './view-identifier.component'
+export * from './reportParam.component';
+export * from './view-identifier.component';
