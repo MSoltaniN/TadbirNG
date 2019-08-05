@@ -1,4 +1,3 @@
-import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';

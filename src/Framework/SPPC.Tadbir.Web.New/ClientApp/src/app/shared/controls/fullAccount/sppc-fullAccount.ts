@@ -3,10 +3,12 @@ import { ControlContainer } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
-import { String,DetailComponent, MetaDataService, BrowserStorageService } from '@sppc/shared';
-import { AccountItemBrief, FullAccountInfo, FullAccountService, AccountRelationApi, FullAccount } from '@sppc/finance';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { AccountItemBrief, FullAccount } from '@sppc/finance/models';
+import { FullAccountInfo, FullAccountService } from '@sppc/finance/service';
+import { AccountRelationApi } from '@sppc/finance/service/api';
 import { AccountRelationsType } from '@sppc/finance/enum';
-
+import { DetailComponent, String } from '@sppc/shared/class';
 
 
 

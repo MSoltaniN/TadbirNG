@@ -7,10 +7,12 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { String, DefaultComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService, ViewName, LookupApi } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { ViewTreeLevelConfig, ViewTreeConfig } from '@sppc/config/models';
 import { SettingService } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
+import { ViewName } from '@sppc/shared/security';
+import { LookupApi } from '@sppc/shared/services/api';
 
 
 

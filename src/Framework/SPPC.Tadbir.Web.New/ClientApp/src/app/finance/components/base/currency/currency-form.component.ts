@@ -2,9 +2,12 @@ import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { String, DetailComponent } from '@sppc/shared/class';
-import { Currency, CurrencyService, CurrencyApi } from '@sppc/finance';
-import { BrowserStorageService, MetaDataService, LookupService, ViewName } from '@sppc/shared';
+import { Currency } from '@sppc/finance/models';
+import { CurrencyService } from '@sppc/finance/service';
+import { CurrencyApi } from '@sppc/finance/service/api';
+import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/shared/services';
 import { Entities, MessageType } from '@sppc/env/environment';
+import { ViewName } from '@sppc/shared/security';
 
 
 

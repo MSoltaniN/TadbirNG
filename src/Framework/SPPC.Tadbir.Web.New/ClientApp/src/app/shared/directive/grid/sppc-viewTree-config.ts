@@ -1,10 +1,5 @@
-
-
-
-import { AddCommandDirective } from "@progress/kendo-angular-grid/dist/es2015/editing/add-command.directive";
-import { Button } from "@progress/kendo-angular-buttons";
-import { Directive, Renderer, ElementRef, Host, Input, Self, HostBinding, ViewChild, SkipSelf, ViewContainerRef, Renderer2, OnInit, Inject } from "@angular/core";
-import { DefaultComponent, EnviromentComponent } from "@sppc/shared";
+import { Directive, ElementRef, ViewContainerRef, Renderer2, OnInit } from "@angular/core";
+import { DefaultComponent, EnviromentComponent } from "@sppc/shared/class";
 
 
 @Directive({

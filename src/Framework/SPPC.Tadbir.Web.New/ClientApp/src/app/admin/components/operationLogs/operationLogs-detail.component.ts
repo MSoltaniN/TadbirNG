@@ -3,9 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { OperationLog } from '@sppc/admin/models/index';
 import { DefaultComponent } from '@sppc/shared/class';
-import { MetaDataService, ViewName, BrowserStorageService } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { Entities } from '@sppc/env/environment';
+import { ViewName } from '@sppc/shared/security';
 
 
 

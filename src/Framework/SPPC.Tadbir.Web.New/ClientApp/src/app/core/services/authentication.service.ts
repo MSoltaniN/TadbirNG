@@ -5,11 +5,13 @@ import 'rxjs/add/operator/map'
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Context } from '../models/context';
 import { PermissionBrief } from '..';
-import { CompanyLogin, BrowserStorageService, LookupApi } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
 import { environment } from '@sppc/env/environment';
-import { FiscalPeriodApi } from '@sppc/organization';
+import { FiscalPeriodApi } from '@sppc/organization/service/api';
 import { UserApi } from '@sppc/admin/service/api';
-import { String } from '@sppc/shared/class';
+import { String } from '@sppc/shared/class/source';
+import { CompanyLogin } from '@sppc/shared/models';
+import { LookupApi } from '@sppc/shared/services/api';
 
 
 export class ContextInfo implements Context {

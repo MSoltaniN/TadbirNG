@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { BrowserStorageService } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
 import { DOCUMENT } from '@angular/platform-browser';
 
 

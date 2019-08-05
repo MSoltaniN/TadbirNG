@@ -6,10 +6,12 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities } from '@sppc/env/environment';
 import { DetailComponent } from '@sppc/shared/class';
-import { TreeNodeInfo, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { Permission } from '@sppc/core';
 import { Role, RoleFullViewModel } from '@sppc/admin/models';
 import { RoleFullInfo } from '@sppc/admin/service';
+import { TreeNodeInfo } from '@sppc/shared/models';
+import { ViewName } from '@sppc/shared/security';
 
 
 

@@ -3,7 +3,7 @@ import { Directive, Host, Input, ElementRef, Renderer2 } from "@angular/core";
 import { ColumnComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
 import { GridFilterComponent } from "./component/grid-filter.component";
-import { DefaultComponent } from "@sppc/shared";
+import { DefaultComponent } from "@sppc/shared/class";
 
 
 

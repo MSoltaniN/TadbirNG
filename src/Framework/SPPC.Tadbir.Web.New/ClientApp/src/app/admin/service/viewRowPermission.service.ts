@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from '@sppc/shared/class';
-import { BrowserStorageService } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
 import { FilterExpression } from '@sppc/shared/class';
 import { RowPermissionsForRole, ViewRowPermission } from '../models';
 

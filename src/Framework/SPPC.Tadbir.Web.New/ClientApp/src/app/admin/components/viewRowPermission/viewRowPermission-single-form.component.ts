@@ -5,8 +5,9 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DetailComponent } from '@sppc/shared/class';
 import { Layout, Entities } from '@sppc/env/environment';
-import { BrowserStorageService, MetaDataService, LookupApi } from '@sppc/shared';
+import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { ItemInfo, ViewRowPermissionService } from '@sppc/admin/service';
+import { LookupApi } from '@sppc/shared/services/api';
 
 
 export function getLayoutModule(layout: Layout) {

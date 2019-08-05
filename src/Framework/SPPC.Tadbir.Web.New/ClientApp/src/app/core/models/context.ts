@@ -1,5 +1,5 @@
 import { PermissionBrief } from "./permissionBrief";
-import { IEntity } from "@sppc/shared";
+import { IEntity } from "@sppc/shared/models";
 
 
 export interface Context extends IEntity {

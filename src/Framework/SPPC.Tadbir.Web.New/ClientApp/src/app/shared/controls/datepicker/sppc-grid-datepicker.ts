@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, Renderer2, Host, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, OnDestroy, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 

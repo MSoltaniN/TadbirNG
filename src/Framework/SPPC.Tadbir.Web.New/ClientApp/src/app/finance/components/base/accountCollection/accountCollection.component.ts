@@ -9,11 +9,14 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DefaultComponent, FilterExpression, Filter, FilterExpressionOperator } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { AccountCollection, AccountCollectionCategory, AccountCollectionAccount, Account, AccountCollectionService, AccountCollectionApi, AccountApi } from '@sppc/finance';
+import { AccountCollection, AccountCollectionCategory, AccountCollectionAccount, Account } from '@sppc/finance/models';
+import { AccountCollectionApi, AccountApi } from '@sppc/finance/service/api';
+import { AccountCollectionService } from '@sppc/finance/service';
 import { SettingService } from '@sppc/config/service';
-import { SecureEntity, AccountCollectionPermissions, BrowserStorageService, MetaDataService, ViewName } from '@sppc/shared';
+import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { AccountRelationsType, TypeLevel } from '@sppc/finance/enum';
 import { ViewTreeLevelConfig } from '@sppc/config/models';
+import { SecureEntity, AccountCollectionPermissions, ViewName } from '@sppc/shared/security';
 
 
 
@@ -91,7 +94,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   //#region Constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     private accountCollectionService: AccountCollectionService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-    super(toastrService, translate,bStorageService, renderer, metadata, settingService, Entities.AccountCollection, ViewName.AccountCollection);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.AccountCollection, ViewName.AccountCollection);
   }
   //#endregion
 
@@ -164,43 +167,43 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
       //شماره سطح در جدول حساب از صفر شروع میشود ولی در سطوح حساب از یک شروع میشود به همین دلیل یک واحد از شماره سطح انتخاب شده کم میکنیم
 
-        var filter = this.currentFilter;
-        if (this.ddlLevelSelected == undefined || this.ddlLevelSelected == null) {
-          this.showMessage(this.getText('AccountCollection.SelectLevel'), MessageType.Warning);
-        }
-        else {
-          if (this.ddlLevelSelected > 0)
-            filter = this.addFilterToFilterExpression(this.currentFilter,
-              new Filter("Level", (this.ddlLevelSelected - 1).toString(), "== {0}", "System.Int32"), FilterExpressionOperator.And);
+      var filter = this.currentFilter;
+      if (this.ddlLevelSelected == undefined || this.ddlLevelSelected == null) {
+        this.showMessage(this.getText('AccountCollection.SelectLevel'), MessageType.Warning);
+      }
+      else {
+        if (this.ddlLevelSelected > 0)
+          filter = this.addFilterToFilterExpression(this.currentFilter,
+            new Filter("Level", (this.ddlLevelSelected - 1).toString(), "== {0}", "System.Int32"), FilterExpressionOperator.And);
 
-          if (this.totalRecords == this.skip && this.totalRecords != 0) {
-            this.skip = this.skip - this.pageSize;
+        if (this.totalRecords == this.skip && this.totalRecords != 0) {
+          this.skip = this.skip - this.pageSize;
+        }
+        this.grid.loading = true;
+
+        this.accountCollectionService.getAll(AccountApi.EnvironmentAccounts, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
+          var resData = res.body;
+
+          var totalCount = 0;
+
+          if (res.headers != null) {
+            var headers = res.headers != undefined ? res.headers : null;
+            if (headers != null) {
+              var retheader = headers.get('X-Total-Count');
+              if (retheader != null)
+                totalCount = parseInt(retheader.toString());
+            }
           }
-          this.grid.loading = true;
+          this.rowData = {
+            data: resData,
+            total: totalCount
+          }
 
-          this.accountCollectionService.getAll(AccountApi.EnvironmentAccounts, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
-            var resData = res.body;
-
-            var totalCount = 0;
-
-            if (res.headers != null) {
-              var headers = res.headers != undefined ? res.headers : null;
-              if (headers != null) {
-                var retheader = headers.get('X-Total-Count');
-                if (retheader != null)
-                  totalCount = parseInt(retheader.toString());
-              }
-            }
-            this.rowData = {
-              data: resData,
-              total: totalCount
-            }
-
-            this.dataloadingMessage = !(resData.length == 0);
-            this.totalRecords = totalCount;
-            this.grid.loading = false;
-          })
-        }
+          this.dataloadingMessage = !(resData.length == 0);
+          this.totalRecords = totalCount;
+          this.grid.loading = false;
+        })
+      }
     }
     else {
       this.showMessage(this.getText('AccountCollection.SelectCollection'), MessageType.Warning);

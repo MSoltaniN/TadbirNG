@@ -4,8 +4,11 @@ import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 import { GridComponent } from "@progress/kendo-angular-grid";
 import { Layout, ColumnVisibility } from "@sppc/env/environment";
-import { BaseComponent, QuickSearchConfig, ViewName, Property, BrowserStorageService, DefaultComponent, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared";
+import { QuickSearchConfig, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared/models";
 import { SettingViewModelInfo, QuickSearchConfigInfo, QuickSearchColumnConfigInfo, SettingService } from "@sppc/config/service";
+import { BaseComponent, DefaultComponent, Property } from "@sppc/shared/class";
+import { ViewName } from "@sppc/shared/security";
+import { BrowserStorageService } from "@sppc/shared/services";
 
 
 export function getLayoutModule(layout: Layout) {

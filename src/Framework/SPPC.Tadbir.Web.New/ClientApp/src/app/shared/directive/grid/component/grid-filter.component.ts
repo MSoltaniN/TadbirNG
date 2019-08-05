@@ -6,8 +6,9 @@ import { ToastrService } from "ngx-toastr";
 import { GridComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
 import { Layout } from "@sppc/env/environment";
-import { BaseComponent, BrowserStorageService } from "@sppc/shared";
+import { BrowserStorageService } from "@sppc/shared/services";
 import { SettingService } from "@sppc/config/service";
+import { BaseComponent } from "@sppc/shared/class";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();

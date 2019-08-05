@@ -2,9 +2,11 @@ import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from 
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { DetailComponent, MetaDataService, DefaultComponent, BrowserStorageService, ViewName } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { Layout, Entities } from '@sppc/env/environment';
-import { Branch } from '@sppc/organization';
+import { Branch } from '@sppc/organization/models';
+import { DefaultComponent, DetailComponent } from '@sppc/shared/class';
+import { ViewName } from '@sppc/shared/security';
 
 
 
@@ -41,7 +43,7 @@ export class BranchFormComponent extends DetailComponent implements OnInit {
   @Output() save: EventEmitter<Branch> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-        public renderer: Renderer2, public metadata: MetaDataService, @Host() defaultComponent: DefaultComponent) {
+    public renderer: Renderer2, public metadata: MetaDataService) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Branch, ViewName.Branch);
   }
 

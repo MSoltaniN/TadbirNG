@@ -3,8 +3,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities } from '@sppc/env/environment';
-import { DetailComponent, LookupService, BrowserStorageService, MetaDataService, ViewName, LookupApi } from '@sppc/shared';
-import { AccountGroup } from '@sppc/finance';
+import { LookupService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
+import { AccountGroup } from '@sppc/finance/models';
+import { DetailComponent } from '@sppc/shared/class';
+import { ViewName } from '@sppc/shared/security';
+import { LookupApi } from '@sppc/shared/services/api';
 
 
 

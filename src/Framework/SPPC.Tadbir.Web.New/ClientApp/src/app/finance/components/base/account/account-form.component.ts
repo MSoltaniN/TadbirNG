@@ -4,9 +4,12 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent, DetailComponent } from '@sppc/shared/class';
 import { Layout, Entities } from '@sppc/env/environment';
-import { Account, AccountService } from '@sppc/finance';
-import { ViewName, MetaDataService, BrowserStorageService, LookupService, LookupApi } from '@sppc/shared';
-import { BranchApi } from '@sppc/organization';
+import { AccountService } from '@sppc/finance/service';
+import { Account } from '@sppc/finance/models';
+import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
+import { BranchApi } from '@sppc/organization/service/api';
+import { ViewName } from '@sppc/shared/security';
+import { LookupApi } from '@sppc/shared/services/api';
 
 
 

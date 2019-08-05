@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ParameterInfo, PrintInfo } from '@sppc/shared';
+import { ParameterInfo } from '@sppc/shared/services';
+import { PrintInfo } from '@sppc/shared/models';
 
 
 

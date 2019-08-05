@@ -3,8 +3,10 @@ import { Response } from '@angular/http';
 import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
 import { AccountItemBriefInfo } from './accountRelations.service';
-import { BaseService, BrowserStorageService, LookupApi, FilterExpression } from '@sppc/shared';
-import { AccountItemBrief, FullAccount } from '..';
+import { BrowserStorageService } from '@sppc/shared/services';
+import { AccountItemBrief, FullAccount } from '@sppc/finance/models';
+import { BaseService, FilterExpression } from '@sppc/shared/class';
+import { LookupApi } from '@sppc/shared/services/api';
 
 
 

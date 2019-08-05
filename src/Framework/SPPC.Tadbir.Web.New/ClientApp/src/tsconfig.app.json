@@ -4,7 +4,36 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",
-    "types": []
+    "types": [],
+    "paths": {
+      "*": [
+        "../node_modules/*"
+      ],
+      "@sppc/*": [
+        "app/*"
+      ],
+      "@sppc/core/*": [
+        "app/core/*"
+      ],
+      "@sppc/shared/*": [
+        "app/shared/*"
+      ],
+      "@sppc/finance/*": [
+        "app/finance/*"
+      ],
+      "@sppc/config/*": [
+        "app/config/*"
+      ],
+      "@sppc/organization/*": [
+        "app/organization/*"
+      ],
+      "@sppc/admin/*": [
+        "app/admin/*"
+      ],
+      "@sppc/env/*": [
+        "environments/*"
+      ]
+    }
   },
   "exclude": [
     "test.ts",

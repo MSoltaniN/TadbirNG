@@ -2,9 +2,12 @@ import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angu
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { DetailComponent, LookupService, MetaDataService, BrowserStorageService, ViewName, LookupApi } from '@sppc/shared';
-import { VoucherLine } from '@sppc/finance';
+import { LookupService, MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { VoucherLine } from '@sppc/finance/models';
 import { Entities } from '@sppc/env/environment';
+import { DetailComponent } from '@sppc/shared/class';
+import { ViewName } from '@sppc/shared/security';
+import { LookupApi } from '@sppc/shared/services/api';
 
 
 

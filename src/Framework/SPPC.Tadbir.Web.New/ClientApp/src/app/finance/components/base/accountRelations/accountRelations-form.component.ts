@@ -4,10 +4,12 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 import { Layout, Entities } from '@sppc/env/environment';
-import { DetailComponent, BrowserStorageService, MetaDataService, KeyCode, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared';
-import { AccountItemBriefInfo, AccountItemRelationsInfo, AccountRelationsService, AccountRelationApi } from '@sppc/finance';
+import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
+import { AccountItemBriefInfo, AccountItemRelationsInfo, AccountRelationsService } from '@sppc/finance/service';
+import { AccountRelationApi } from '@sppc/finance/service/api';
 import { AccountRelationsType } from '@sppc/finance/enum';
-import { String } from '@sppc/shared/class';
+import { String, DetailComponent, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
+import { KeyCode } from '@sppc/shared/enum';
 
 
 

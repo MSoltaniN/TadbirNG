@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Command, BrowserStorageService } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
+import { Command } from '@sppc/shared/models'
 
 
 @Component({

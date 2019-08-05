@@ -3,9 +3,11 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { DetailComponent } from '@sppc/shared/class';
-import { UserProfile, MetaDataService, ViewName, BrowserStorageService } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { MessageType, Entities } from '@sppc/env/environment';
 import { UserService } from '@sppc/admin/service';
+import { UserProfile } from '@sppc/shared/models';
+import { ViewName } from '@sppc/shared/security';
 
 
 

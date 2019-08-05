@@ -3,8 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { Context, AuthenticationService } from '@sppc/core';
-import { BrowserStorageService, Command } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
 import { UserService } from '@sppc/admin/service';
+import { Command } from '@sppc/shared/models';
 
 declare var $: any;
 declare var Stimulsoft: any;

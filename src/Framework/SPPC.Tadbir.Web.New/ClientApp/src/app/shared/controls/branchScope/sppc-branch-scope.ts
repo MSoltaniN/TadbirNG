@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, SimpleChanges, Optional, Host, SkipSelf } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, ControlContainer, AbstractControl } from '@angular/forms'
+import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms'
 
 
 interface Item {

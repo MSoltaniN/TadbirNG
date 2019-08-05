@@ -1,7 +1,7 @@
 
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, Validator, AbstractControl, FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { KeyCode } from '@sppc/shared';
+import { KeyCode } from '@sppc/shared/enum';
 
 
 

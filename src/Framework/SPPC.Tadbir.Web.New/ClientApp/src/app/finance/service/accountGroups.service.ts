@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BaseService, BrowserStorageService } from '@sppc/shared';
-import { AccountGroup } from '..';
+import { BrowserStorageService } from '@sppc/shared/services';
+import { AccountGroup } from '@sppc/finance/models';
+import { BaseService } from '@sppc/shared/class';
 
 
 export class AccountGroupInfo implements AccountGroup {

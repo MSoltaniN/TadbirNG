@@ -2,8 +2,9 @@
 import { Directive, Host, Input, HostListener, ElementRef } from "@angular/core";
 import { GridComponent, ColumnComponent, CheckboxColumnComponent, ColumnBase } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
-import { DefaultComponent, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared";
+import { ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared/models";
 import { SettingService } from "@sppc/config/service";
+import { DefaultComponent } from "@sppc/shared/class";
 
 
 

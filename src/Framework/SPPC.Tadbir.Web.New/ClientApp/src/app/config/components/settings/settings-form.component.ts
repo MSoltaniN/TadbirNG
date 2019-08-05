@@ -4,8 +4,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities } from '@sppc/env/environment';
-import { DetailComponent, BrowserStorageService, MetaDataService, DateRangeType, SettingsType } from '@sppc/shared';
+import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { SettingBriefInfo } from '@sppc/config/service';
+import { DetailComponent } from '@sppc/shared/class';
+import { DateRangeType, SettingsType } from '@sppc/shared/enum';
 
 
 

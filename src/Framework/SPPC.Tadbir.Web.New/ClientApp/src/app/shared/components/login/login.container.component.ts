@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DefaultComponent } from "../../class/default.component";
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '@sppc/core';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 
 

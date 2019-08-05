@@ -10,13 +10,11 @@ import {
   AfterContentInit,
   ViewChild,
   ComponentFactoryResolver,
-  ViewContainerRef,
-  Input
 } from '@angular/core';
 
 import { TabComponent } from './tab.component';
 import { DynamicTabsDirective } from './dynamic-tabs.directive';
-import { QuickReportConfigInfo } from '@sppc/shared';
+import { QuickReportConfigInfo } from '@sppc/shared/models';
 
 
 

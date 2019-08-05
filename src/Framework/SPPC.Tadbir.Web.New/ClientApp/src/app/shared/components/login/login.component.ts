@@ -7,7 +7,7 @@ import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 //import { DOCUMENT } from '@angular/common';
 import { AuthenticationService } from '@sppc/core';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { DOCUMENT } from '@angular/platform-browser';
 

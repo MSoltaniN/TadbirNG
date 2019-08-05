@@ -2,10 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'jalali-moment';
-import { BrowserStorageService } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
-import { BaseComponent } from '../../index';
 import { MessageType } from '@sppc/env/environment';
+import { BaseComponent } from '@sppc/shared/class';
 
 
 

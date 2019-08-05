@@ -1,10 +1,6 @@
 
-import { OnInit, OnDestroy, Component, Host, ElementRef, Input, EventEmitter, Output } from "@angular/core";
-import { RTL } from "@progress/kendo-angular-l10n";
-import { ToastrService } from "ngx-toastr";
-import { GridComponent } from "@progress/kendo-angular-grid";
-import { TranslateService } from '@ngx-translate/core';
-import { DefaultComponent } from "@sppc/shared";
+import { Component, Input } from "@angular/core";
+import { DefaultComponent } from "@sppc/shared/class";
 
 
 

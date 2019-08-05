@@ -1,7 +1,6 @@
-﻿
-import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+
+import { Component, OnInit, Input, forwardRef} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 
 const noop = () => {
 };

@@ -2,11 +2,15 @@ import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { ColumnViewDeviceConfig, ListFormViewConfig, ColumnViewConfig, QuickSearchConfig, QuickSearchColumnConfig, BaseService, BrowserStorageService, SettingKey, DateRangeType } from "@sppc/shared";
+import { ColumnViewDeviceConfig, ListFormViewConfig, ColumnViewConfig, QuickSearchConfig, QuickSearchColumnConfig } from "@sppc/shared/models";
 import { ColumnVisibility } from "@sppc/env/environment";
-import { String } from '@sppc/shared/class';
+//import { String, BaseService } from '@sppc/shared/class';
+import { String } from '@sppc/shared/class/source';
+import { BaseService } from '@sppc/shared/class/base.service';
 import { SettingBrief, ViewTreeConfig, ViewTreeLevelConfig, NumberConfig } from "../models";
 import { SettingsApi } from "./api";
+import { BrowserStorageService } from "@sppc/shared/services";
+import { DateRangeType, SettingKey } from "@sppc/shared/enum";
 
 
 

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormControl, ValidatorFn, Validators } from "@angular/forms";
 import { Property } from "./metadata/property";
 import { String } from './source';
-import { MetaDataService, BrowserStorageService, SessionKeys } from "..";
+import { MetaDataService, BrowserStorageService, SessionKeys } from "../services";
 
 
 
