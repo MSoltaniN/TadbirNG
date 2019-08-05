@@ -1,8 +1,10 @@
 
 import { Directive, Host, Input } from "@angular/core";
 import { ColumnComponent } from "@progress/kendo-angular-grid";
-import { BrowserStorageService, EnviromentComponent, DefaultComponent, ColumnViewDeviceConfig, ColumnViewConfig } from "@sppc/shared";
+import { ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared/models";
 import { GridFilterComponent } from "./component/grid-filter.component";
+import { DefaultComponent, EnviromentComponent } from "@sppc/shared/class";
+import { BrowserStorageService } from "@sppc/shared/services";
 
 
 

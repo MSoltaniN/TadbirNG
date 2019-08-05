@@ -4,14 +4,16 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { DetailAccount, DetailAccountApi } from '@sppc/finance';
+import { DetailAccountApi } from '@sppc/finance/service/api';
+import { DetailAccount } from '@sppc/finance/models';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
-import { GridService, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
+import { GridService, MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { SettingService } from '@sppc/config/service';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
+import { ViewName } from '@sppc/shared/security';
 
 
 

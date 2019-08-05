@@ -7,9 +7,10 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { TranslateService } from '@ngx-translate/core';
 import { Layout, MessageType, MessagePosition } from '@sppc/env/environment';
 import { AuthenticationService, ContextInfo, CompanyLoginInfo } from '@sppc/core';
-import { MetaDataService, BrowserStorageService, ListFormViewConfig, Command } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { UserService } from '@sppc/admin/service';
+import { Command, ListFormViewConfig } from '@sppc/shared/models';
 
 
 export function getLayoutModule(layout: Layout) {

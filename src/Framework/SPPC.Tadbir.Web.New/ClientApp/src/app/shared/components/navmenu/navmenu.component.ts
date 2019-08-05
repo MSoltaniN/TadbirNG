@@ -3,11 +3,13 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { DefaultComponent, Command, MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { AuthenticationService } from '@sppc/core';
 import { MessageType } from '@sppc/env/environment';
 import { ReportManagementComponent } from '..';
+import { DefaultComponent } from '@sppc/shared/class';
+import { Command } from '@sppc/shared/models';
 
 
 

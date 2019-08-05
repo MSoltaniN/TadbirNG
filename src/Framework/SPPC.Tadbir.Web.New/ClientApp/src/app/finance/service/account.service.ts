@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { AccountApi } from './api/accountApi';
 import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService, BaseService, String } from '@sppc/shared';
-import { Account } from '@sppc/finance';
+import { BrowserStorageService } from '@sppc/shared/services';
+import { Account } from '@sppc/finance/models';
+import { BaseService } from '@sppc/shared/class';
+import { String } from '@sppc/shared/class';
 
 
 export class AccountInfo implements Account {

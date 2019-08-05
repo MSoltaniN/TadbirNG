@@ -3,12 +3,13 @@ import { Response } from '@angular/http';
 import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
 import { Permission } from '@sppc/core';
-import { RelatedItems, RelatedItem, BrowserStorageService } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
 import { String } from '@sppc/shared/class';
 import { Branch } from '@sppc/organization';
 import { BaseService } from '@sppc/shared/class';
 import { Role, RoleFull, RoleDetails, UserBrief } from '../models';
 import { RoleApi } from './api';
+import { RelatedItems, RelatedItem } from '@sppc/shared/models';
 
 
 

@@ -13,10 +13,10 @@ import { ContextMenuComponent } from "@progress/kendo-angular-menu";
 import { of } from 'rxjs/observable/of';
 import { TreeItem } from "@progress/kendo-angular-treeview";
 import { AccountPermissions } from "../security/permissions";
-import { AccountItemBrief } from "@sppc/finance";
+import { AccountItemBrief } from "@sppc/finance/models";
 import { SettingService } from "@sppc/config/service";
 import { ViewTreeConfig, ViewTreeLevelConfig } from '@sppc/config/models';
-import { MetaDataService, GridService, BrowserStorageService } from "..";
+import { MetaDataService, GridService, BrowserStorageService } from "../services";
 import { Entities, MessageType } from "@sppc/env/environment";
 
 

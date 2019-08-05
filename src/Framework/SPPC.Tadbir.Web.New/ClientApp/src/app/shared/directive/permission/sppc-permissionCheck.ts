@@ -3,7 +3,8 @@ import { Directive, OnInit, OnDestroy, Input, Output, EventEmitter, HostListener
 import { Subject, Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
-import { EnviromentComponent, ViewName, Permissions } from "@sppc/shared";
+import { ViewName, Permissions } from "@sppc/shared/security";
+import { EnviromentComponent } from "@sppc/shared/class";
 
 
 @Directive({

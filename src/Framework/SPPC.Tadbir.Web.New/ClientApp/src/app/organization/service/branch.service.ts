@@ -3,7 +3,8 @@ import { Response} from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { String, BaseService } from '@sppc/shared/class';
 import { Branch, BranchApi } from '..';
-import { BrowserStorageService, RelatedItems } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
+import { RelatedItems } from '@sppc/shared/models';
 
 
 export class BranchInfo implements Branch {

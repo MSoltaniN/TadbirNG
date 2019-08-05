@@ -7,10 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { String, DetailComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { Voucher, VoucherService, VoucherApi, VoucherInfo } from '@sppc/finance';
-import { Item, MetaDataService, BrowserStorageService, ViewName, LookupService, LookupApi } from '@sppc/shared';
+import { VoucherService, VoucherInfo } from '@sppc/finance/service';
+import { VoucherApi } from '@sppc/finance/service/api';
+import { Voucher } from '@sppc/finance/models';
+import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
 import { DocumentStatusValue, VoucherOperations } from '@sppc/finance/enum';
-
+import { ViewName } from '@sppc/shared/security';
+import { LookupApi } from '@sppc/shared/services/api';
+import { Item } from '@sppc/shared/models';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -110,7 +114,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.voucherOperationsItem = VoucherOperations;
 
     this.editForm.reset();
-    
+
     if (this.voucherItem) {
       this.initVoucherForm(this.voucherItem);
       this.isShowBreadcrumb = false;

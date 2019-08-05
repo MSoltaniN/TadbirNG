@@ -5,10 +5,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService, PermissionType, LookupApi } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';
 import { RoleApi } from '@sppc/admin/service/api';
+import { PermissionType } from '@sppc/shared/enum';
+import { LookupApi } from '@sppc/shared/services/api';
 
 
 

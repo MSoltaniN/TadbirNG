@@ -7,9 +7,10 @@ import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DefaultComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { SettingsFormComponent } from './settings-form.component';
-import { BrowserStorageService, MetaDataService, SettingKey } from '@sppc/shared';
+import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { SettingBriefInfo, SettingTreeNodeInfo, SettingService } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
+import { SettingKey } from '@sppc/shared/enum';
 
 
 

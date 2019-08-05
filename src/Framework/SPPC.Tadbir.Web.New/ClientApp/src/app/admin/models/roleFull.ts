@@ -1,4 +1,4 @@
-import { IEntity } from "@sppc/shared";
+import { IEntity } from "@sppc/shared/models";
 import { Role } from ".";
 import { Permission } from "@sppc/core";
 

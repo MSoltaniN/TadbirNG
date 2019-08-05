@@ -1,7 +1,7 @@
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { String } from '../source';
-import { MetaDataService, BrowserStorageService, SessionKeys } from "@sppc/shared";
+import { MetaDataService, BrowserStorageService, SessionKeys } from "@sppc/shared/services";
 
 @Injectable()
 export class MetaDataResolver implements Resolve<any> {

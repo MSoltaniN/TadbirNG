@@ -5,7 +5,7 @@
  */
 
 import { Component, Input, ViewChild } from '@angular/core';
-import { QuickReportConfigInfo } from '@sppc/shared';
+import { QuickReportConfigInfo } from '@sppc/shared/models';
 import { ReportViewerComponent } from '@sppc/shared/components';
 
 

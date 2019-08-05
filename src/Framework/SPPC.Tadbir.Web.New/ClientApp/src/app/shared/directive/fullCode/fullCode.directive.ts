@@ -1,6 +1,6 @@
 
 import { Directive, ElementRef, HostListener, Input, Inject, AfterViewInit, Renderer } from "@angular/core";
-import { FullCodeService } from "@sppc/finance";
+import { FullCodeService } from "@sppc/finance/service";
 
 
 

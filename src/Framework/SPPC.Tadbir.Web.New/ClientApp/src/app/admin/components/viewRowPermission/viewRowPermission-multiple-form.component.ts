@@ -5,7 +5,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 import { String, DetailComponent, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
 import { Layout, Entities, environment } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { ItemInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';
 
 

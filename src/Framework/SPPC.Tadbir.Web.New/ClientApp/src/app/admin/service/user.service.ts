@@ -4,10 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '@sppc/shared/class';
 import { HttpClient } from "@angular/common/http";
-import { UserProfile, Command, BrowserStorageService, RelatedItems } from '@sppc/shared';
+import { BrowserStorageService } from '@sppc/shared/services';
 import { BaseService } from '@sppc/shared/class';
 import { User } from '../models';
 import { UserApi } from './api';
+import { UserProfile, Command, RelatedItems } from '@sppc/shared/models';
 
 
 

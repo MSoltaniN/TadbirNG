@@ -1,7 +1,7 @@
-﻿
+
 import { Component, Input } from '@angular/core';
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";  //npm shrinkwrap
-import { Property } from '@sppc/shared';
+import { Property } from '@sppc/shared/class';
 
 
 @Component({

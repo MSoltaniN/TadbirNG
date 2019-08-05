@@ -2,8 +2,8 @@ import { EnviromentComponent } from "./enviroment.component";
 import { GridOrderBy } from "./grid.orderby";
 import { Observable } from "rxjs/Observable";
 import { FilterExpression } from "./filterExpression";
-import {  HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { BrowserStorageService } from "..";
+import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
+import { BrowserStorageService } from "../services";
 
 
 

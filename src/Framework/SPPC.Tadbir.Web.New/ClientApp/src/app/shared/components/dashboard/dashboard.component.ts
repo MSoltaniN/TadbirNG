@@ -5,9 +5,11 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart } from "chart.js";
-import { DefaultComponent, DashboardSummaries, MetaDataService, BrowserStorageService, DashboardService } from '@sppc/shared';
+import { MetaDataService, BrowserStorageService, DashboardService } from '@sppc/shared/services';
 import { Context, AuthenticationService } from '@sppc/core';
 import { SettingService } from '@sppc/config/service';
+import { DefaultComponent } from '@sppc/shared/class';
+import { DashboardSummaries } from '@sppc/shared/models';
 
 
 

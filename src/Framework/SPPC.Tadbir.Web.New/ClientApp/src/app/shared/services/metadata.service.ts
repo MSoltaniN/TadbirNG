@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Response, Headers, RequestOptions } from '@angular/http';
 import "rxjs/Rx";
-import { String, BaseService, BrowserStorageService, MetadataApi, ReportApi } from '@sppc/shared';
-import { HttpParams, HttpClient } from "@angular/common/http";
+import { MetadataApi, ReportApi } from '@sppc/shared/services/api';
+import { HttpClient } from "@angular/common/http";
+import { BaseService } from '../class';
+import { BrowserStorageService } from '.';
+import { String } from '@sppc/shared/class';
 
 
 @Injectable()

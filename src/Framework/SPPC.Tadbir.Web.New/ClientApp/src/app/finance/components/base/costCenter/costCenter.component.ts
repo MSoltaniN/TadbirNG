@@ -4,14 +4,16 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { CostCenter, CostCenterApi } from '@sppc/finance';
-import { AutoGridExplorerComponent, GridService, BrowserStorageService, MetaDataService, ViewName } from '@sppc/shared';
+import { CostCenterApi } from '@sppc/finance/service/api';
+import { CostCenter } from '@sppc/finance/models';
+import { GridService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { SettingService } from '@sppc/config/service';
 import { CostCenterFormComponent } from './costCenter-form.component';
-import { String } from '@sppc/shared/class';
+import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
+import { ViewName } from '@sppc/shared/security';
 
 
 

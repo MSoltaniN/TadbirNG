@@ -9,8 +9,10 @@ import { BranchRolesFormComponent } from './branch-roles-form.component';
 import { String, AutoGridExplorerComponent, Filter, FilterExpressionOperator } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { Branch, BranchService, BranchApi, BranchInfo } from '@sppc/organization';
-import { GridService, BrowserStorageService, MetaDataService, ViewName, RelatedItems } from '@sppc/shared';
+import { GridService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
+import { ViewName } from '@sppc/shared/security';
+import { RelatedItems } from '@sppc/shared/models';
 
 
 export function getLayoutModule(layout: Layout) {

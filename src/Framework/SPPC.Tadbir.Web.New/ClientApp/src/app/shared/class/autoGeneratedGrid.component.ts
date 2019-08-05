@@ -5,8 +5,10 @@ import { TranslateService } from "@ngx-translate/core";
 import { SortDescriptor, CompositeFilterDescriptor } from "@progress/kendo-data-query";
 import { take } from 'rxjs/operators';
 import { FilterExpression, Filter, Property, FilterExpressionOperator, DefaultComponent, String } from ".";
-import { MetaDataService, GridService, BrowserStorageService, SessionKeys, ViewName, ListFormViewConfig, ColumnViewConfig } from "..";
+import { MetaDataService, GridService, BrowserStorageService, SessionKeys } from "../services";
 import { SettingService } from "@sppc/config/service";
+import { ViewName } from "../security";
+import { ColumnViewConfig, ListFormViewConfig } from "../models";
 
 
 

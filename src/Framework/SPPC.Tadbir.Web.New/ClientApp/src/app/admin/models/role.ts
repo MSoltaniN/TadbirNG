@@ -1,5 +1,5 @@
 import { Permission } from "@sppc/core";
-import { IEntity } from "@sppc/shared";
+import { IEntity } from "@sppc/shared/models";
 
 
 // ------------------------------------------------------------------------------
