@@ -227,8 +227,7 @@ namespace SPPC.Tadbir.Persistence
             var article = await repository.GetByIDAsync(articleId);
             if (article != null && await DeleteAsync(repository, article))
             {
-                var lineView = Mapper.Map<VoucherLineViewModel>(article);
-                await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
+                await UpdateVoucherBalanceStatusAsync(article.VoucherId);
             }
         }
 
@@ -238,9 +237,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
         public async Task DeleteArticlesAsync(IEnumerable<int> items)
         {
+            int voucherId = 0;
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             foreach (int item in items)
             {
-                await DeleteArticleAsync(item);
+                var article = await repository.GetByIDAsync(item);
+                if (article != null)
+                {
+                    voucherId = article.VoucherId;
+                    await DeleteAsync(repository, article);
+                }
+            }
+
+            if (voucherId > 0)
+            {
+                await UpdateVoucherBalanceStatusAsync(voucherId);
             }
         }
 
