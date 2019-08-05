@@ -7,7 +7,7 @@ import { GridComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
 import { Layout } from "@sppc/env/environment";
 import { BaseComponent, BrowserStorageService } from "@sppc/shared";
-import { SettingService } from "@sppc/config";
+import { SettingService } from "@sppc/config/service";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();

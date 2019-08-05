@@ -5,7 +5,7 @@ import { ConfigRoutingModule } from './config-routing.module';
 
 import { SharedModule } from '../shared/shared.module';
 
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 
 import { SettingsComponent } from '@sppc/config/components/settings/settings.component';
 import { SettingsFormComponent } from '@sppc/config/components/settings/settings-form.component';

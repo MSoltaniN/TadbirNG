@@ -9,7 +9,8 @@ import { Renderer2, Injectable, Inject, Optional } from "@angular/core";
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
 import { SessionKeys, MetaDataService, BrowserStorageService } from '../index';
-import { SettingService, ViewTreeConfig } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
+import { ViewTreeConfig } from '@sppc/config/models';
 
 
 @Injectable()

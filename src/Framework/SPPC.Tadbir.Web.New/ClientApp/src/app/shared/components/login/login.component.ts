@@ -8,7 +8,7 @@ import { Host, Renderer2 } from '@angular/core';
 //import { DOCUMENT } from '@angular/common';
 import { AuthenticationService } from '@sppc/core';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { DOCUMENT } from '@angular/platform-browser';
 
 

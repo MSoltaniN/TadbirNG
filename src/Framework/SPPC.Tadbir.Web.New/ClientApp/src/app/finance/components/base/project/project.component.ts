@@ -10,7 +10,7 @@ import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { GridService, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { ProjectFormComponent } from './project-form.component';
 
 export function getLayoutModule(layout: Layout) {

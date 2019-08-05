@@ -10,7 +10,7 @@ import { OperationLog } from '@sppc/admin/models';
 import { OperationLogService } from '@sppc/admin/service';
 import { SystemApi } from '@sppc/admin/service/api';
 import { GridService, BrowserStorageService, MetaDataService, ViewName } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 
 
 

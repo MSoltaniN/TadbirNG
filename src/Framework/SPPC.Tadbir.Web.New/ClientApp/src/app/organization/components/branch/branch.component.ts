@@ -10,7 +10,7 @@ import { String, AutoGridExplorerComponent, Filter, FilterExpressionOperator } f
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { Branch, BranchService, BranchApi, BranchInfo } from '@sppc/organization';
 import { GridService, BrowserStorageService, MetaDataService, ViewName, RelatedItems } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 
 
 export function getLayoutModule(layout: Layout) {

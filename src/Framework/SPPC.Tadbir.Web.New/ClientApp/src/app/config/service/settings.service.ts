@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { SettingBrief, ViewTreeConfig, ViewTreeLevelConfig, SettingsApi, NumberConfig } from "..";
 import { ColumnViewDeviceConfig, ListFormViewConfig, ColumnViewConfig, QuickSearchConfig, QuickSearchColumnConfig, BaseService, BrowserStorageService, SettingKey, DateRangeType } from "@sppc/shared";
 import { ColumnVisibility } from "@sppc/env/environment";
 import { String } from '@sppc/shared/class';
+import { SettingBrief, ViewTreeConfig, ViewTreeLevelConfig, NumberConfig } from "../models";
+import { SettingsApi } from "./api";
 
 
 

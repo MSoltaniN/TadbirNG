@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'jalali-moment';
 import { BrowserStorageService } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { BaseComponent } from '../../index';
 import { MessageType } from '@sppc/env/environment';
 

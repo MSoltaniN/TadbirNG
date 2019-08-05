@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { Layout } from '@sppc/env/environment';
 import { DefaultComponent, MetaDataService, BrowserStorageService } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 
 
 

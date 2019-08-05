@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
 import { Layout, ColumnVisibility } from "@sppc/env/environment";
 import { BaseComponent, ListFormViewConfig, DefaultComponent, BrowserStorageService, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared";
-import { SettingViewModelInfo, SettingService, ListFormViewConfigInfo, ColumnViewConfigInfo } from "@sppc/config";
+import { SettingViewModelInfo, SettingService, ListFormViewConfigInfo, ColumnViewConfigInfo } from "@sppc/config/service";
 
 
 

@@ -3,7 +3,7 @@ import { Directive, Host, HostListener, ElementRef } from "@angular/core";
 import { GridComponent, ColumnComponent} from "@progress/kendo-angular-grid";
 import { ToastrService } from "ngx-toastr";
 import { DefaultComponent, BaseComponent, BrowserStorageService } from "@sppc/shared";
-import { SettingService } from "@sppc/config";
+import { SettingService } from "@sppc/config/service";
 
 
 @Directive({

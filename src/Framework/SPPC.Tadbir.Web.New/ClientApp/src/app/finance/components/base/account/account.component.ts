@@ -10,7 +10,7 @@ import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { AutoGridExplorerComponent, GridService, BrowserStorageService, MetaDataService, ViewName } from '@sppc/shared';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { AccountApi } from '@sppc/finance';
 import { String } from '@sppc/shared/class';
 

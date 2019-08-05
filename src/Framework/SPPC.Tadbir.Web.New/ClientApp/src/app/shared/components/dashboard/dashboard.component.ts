@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Chart } from "chart.js";
 import { DefaultComponent, DashboardSummaries, MetaDataService, BrowserStorageService, DashboardService } from '@sppc/shared';
 import { Context, AuthenticationService } from '@sppc/core';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 
 
 

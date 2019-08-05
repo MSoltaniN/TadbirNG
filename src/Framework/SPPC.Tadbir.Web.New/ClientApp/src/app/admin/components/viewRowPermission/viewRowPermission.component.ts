@@ -6,7 +6,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { MetaDataService, BrowserStorageService, PermissionType, LookupApi } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';
 import { RoleApi } from '@sppc/admin/service/api';
 

@@ -1,10 +1,10 @@
-import { Component, Inject, Injector, AfterViewInit, AfterContentInit, OnInit } from '@angular/core';
+import { Component, Inject, AfterViewInit, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { Context, AuthenticationService } from '@sppc/core';
 import { BrowserStorageService, Command } from '@sppc/shared';
-import { UserService } from '@sppc/admin';
+import { UserService } from '@sppc/admin/service';
 
 declare var $: any;
 declare var Stimulsoft: any;

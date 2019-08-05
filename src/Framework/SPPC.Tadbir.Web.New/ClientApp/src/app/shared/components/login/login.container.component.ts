@@ -5,7 +5,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '@sppc/core';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 
 
 

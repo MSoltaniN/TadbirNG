@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities } from '@sppc/env/environment';
 import { DetailComponent, BrowserStorageService, MetaDataService, DateRangeType, SettingsType } from '@sppc/shared';
-import { SettingBriefInfo } from '@sppc/config';
+import { SettingBriefInfo } from '@sppc/config/service';
 
 
 

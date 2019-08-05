@@ -8,7 +8,7 @@ import { PermissionBrief } from '..';
 import { CompanyLogin, BrowserStorageService, LookupApi } from '@sppc/shared';
 import { environment } from '@sppc/env/environment';
 import { FiscalPeriodApi } from '@sppc/organization';
-import { UserApi } from '@sppc/admin';
+import { UserApi } from '@sppc/admin/service/api';
 import { String } from '@sppc/shared/class';
 
 

@@ -75,7 +75,7 @@ import { EnviromentComponent } from './shared/class/enviroment.component';
   ],
   imports: [
     CoreModule,
-    SharedModule,
+    SharedModule.forRoot(),
     FinanceModule,
     AdminModule,
     ConfigModule,

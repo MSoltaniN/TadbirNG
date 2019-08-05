@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OperationLog } from '@sppc/admin/models/index';
 import { DefaultComponent } from '@sppc/shared/class';
 import { MetaDataService, ViewName, BrowserStorageService } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { Entities } from '@sppc/env/environment';
 
 

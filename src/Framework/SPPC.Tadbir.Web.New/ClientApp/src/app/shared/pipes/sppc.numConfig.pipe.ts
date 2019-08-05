@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { SettingService, NumberConfig } from "@sppc/config";
+import { SettingService } from "@sppc/config/service";
+import { NumberConfig } from "@sppc/config/models";
 
 
 @Pipe({

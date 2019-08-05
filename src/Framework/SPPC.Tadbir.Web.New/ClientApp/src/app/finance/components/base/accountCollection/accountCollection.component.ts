@@ -10,9 +10,10 @@ import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DefaultComponent, FilterExpression, Filter, FilterExpressionOperator } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { AccountCollection, AccountCollectionCategory, AccountCollectionAccount, Account, AccountCollectionService, AccountCollectionApi, AccountApi } from '@sppc/finance';
-import { ViewTreeLevelConfig, SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { SecureEntity, AccountCollectionPermissions, BrowserStorageService, MetaDataService, ViewName } from '@sppc/shared';
 import { AccountRelationsType, TypeLevel } from '@sppc/finance/enum';
+import { ViewTreeLevelConfig } from '@sppc/config/models';
 
 
 

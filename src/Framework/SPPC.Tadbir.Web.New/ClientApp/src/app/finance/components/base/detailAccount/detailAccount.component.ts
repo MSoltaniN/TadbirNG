@@ -10,7 +10,7 @@ import { ReportManagementComponent } from '@sppc/shared/components/reportManagem
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { GridService, MetaDataService, BrowserStorageService, ViewName } from '@sppc/shared';
 import { DialogService } from '@progress/kendo-angular-dialog';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
 
 

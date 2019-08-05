@@ -8,8 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Layout, MessageType, MessagePosition } from '@sppc/env/environment';
 import { AuthenticationService, ContextInfo, CompanyLoginInfo } from '@sppc/core';
 import { MetaDataService, BrowserStorageService, ListFormViewConfig, Command } from '@sppc/shared';
-import { SettingService } from '@sppc/config';
-import { UserService } from '@sppc/admin';
+import { SettingService } from '@sppc/config/service';
+import { UserService } from '@sppc/admin/service';
 
 
 export function getLayoutModule(layout: Layout) {

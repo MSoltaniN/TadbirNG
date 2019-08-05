@@ -9,7 +9,7 @@ import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { DefaultComponent, SecureEntity, AccountRelationPermissions, MetaDataService, BrowserStorageService } from '@sppc/shared';
 import { String, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
 import { AccountItemBriefInfo, AccountRelationsService, AccountRelationApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi, AccountItemRelationsInfo } from '@sppc/finance';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { AccountRelationsType } from '@sppc/finance/enum';
 
 

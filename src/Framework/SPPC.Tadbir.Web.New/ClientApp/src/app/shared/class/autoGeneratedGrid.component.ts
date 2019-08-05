@@ -6,7 +6,7 @@ import { SortDescriptor, CompositeFilterDescriptor } from "@progress/kendo-data-
 import { take } from 'rxjs/operators';
 import { FilterExpression, Filter, Property, FilterExpressionOperator, DefaultComponent, String } from ".";
 import { MetaDataService, GridService, BrowserStorageService, SessionKeys, ViewName, ListFormViewConfig, ColumnViewConfig } from "..";
-import { SettingService } from "@sppc/config";
+import { SettingService } from "@sppc/config/service";
 
 
 

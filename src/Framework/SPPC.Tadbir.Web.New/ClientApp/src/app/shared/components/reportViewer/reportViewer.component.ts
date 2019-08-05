@@ -8,7 +8,7 @@ import * as moment from 'jalali-moment';
 import { DefaultComponent, MetaDataService, ReportingService, Report, ParameterInfo, QuickReportColumnConfig, ViewName, BrowserStorageService, QuickReportConfigInfo } from '@sppc/shared';
 import { VoucherService } from '@sppc/finance';
 import { Entities } from '@sppc/env/environment';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ReportsQueries } from '../reportManagement/reports.queries';
 

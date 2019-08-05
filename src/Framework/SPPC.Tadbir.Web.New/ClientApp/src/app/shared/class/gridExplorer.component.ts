@@ -14,7 +14,8 @@ import { of } from 'rxjs/observable/of';
 import { TreeItem } from "@progress/kendo-angular-treeview";
 import { AccountPermissions } from "../security/permissions";
 import { AccountItemBrief } from "@sppc/finance";
-import { ViewTreeConfig, ViewTreeLevelConfig, SettingService } from "@sppc/config";
+import { SettingService } from "@sppc/config/service";
+import { ViewTreeConfig, ViewTreeLevelConfig } from '@sppc/config/models';
 import { MetaDataService, GridService, BrowserStorageService } from "..";
 import { Entities, MessageType } from "@sppc/env/environment";
 

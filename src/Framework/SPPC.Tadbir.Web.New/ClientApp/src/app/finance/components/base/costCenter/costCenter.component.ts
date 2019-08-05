@@ -9,7 +9,7 @@ import { AutoGridExplorerComponent, GridService, BrowserStorageService, MetaData
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
-import { SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { CostCenterFormComponent } from './costCenter-form.component';
 import { String } from '@sppc/shared/class';
 

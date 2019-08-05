@@ -6,7 +6,7 @@ import { GridComponent } from "@progress/kendo-angular-grid";
 import { async } from "q";
 import { Layout, ColumnVisibility } from "@sppc/env/environment";
 import { BaseComponent, ListFormViewConfig, ViewName, DefaultComponent, BrowserStorageService, Property, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared";
-import { SettingViewModelInfo, SettingService, ListFormViewConfigInfo } from "@sppc/config";
+import { SettingViewModelInfo, SettingService, ListFormViewConfigInfo } from "@sppc/config/service";
 
 
 export function getLayoutModule(layout: Layout) {

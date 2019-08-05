@@ -16,8 +16,9 @@ import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { AccountItemBrief, AccountGroupsService, AccountGroupApi, AccountApi, AccountGroupInfo, AccountGroup, Account } from '@sppc/finance';
-import { ViewTreeConfig, ViewTreeLevelConfig, SettingService } from '@sppc/config';
+import { SettingService } from '@sppc/config/service';
 import { String, Filter } from '@sppc/shared/class';
+import { ViewTreeConfig, ViewTreeLevelConfig } from '@sppc/config/models';
 
 
 
