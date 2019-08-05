@@ -1,6 +1,6 @@
 
 import { Headers, RequestOptions, BaseRequestOptions, Http, HttpModule } from '@angular/http';
-import { APP_BASE_HREF, Location, LocationStrategy, HashLocationStrategy } from '@angular/common/common';
+import { APP_BASE_HREF, Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { TextMaskModule } from 'angular2-text-mask';
 import { Layout } from '../environments/environment';
 //import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
