@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { Account } from '@sppc/finance/models';
 import { BaseService } from '@sppc/shared/class';
-import { String } from '@sppc/shared/class';
+import { String } from '@sppc/shared/class/source';
 
 
 export class AccountInfo implements Account {

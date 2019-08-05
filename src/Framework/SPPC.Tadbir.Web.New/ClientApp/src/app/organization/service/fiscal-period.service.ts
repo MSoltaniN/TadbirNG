@@ -4,7 +4,7 @@ import { FiscalPeriodApi } from './api/index';
 import { HttpClient } from '@angular/common/http';
 import { String, BaseService } from '@sppc/shared/class';
 import { BrowserStorageService } from '@sppc/shared/services';
-import { FiscalPeriod } from '..';
+import { FiscalPeriod } from '@sppc/organization/models';
 import { RelatedItems } from '@sppc/shared/models';
 
 

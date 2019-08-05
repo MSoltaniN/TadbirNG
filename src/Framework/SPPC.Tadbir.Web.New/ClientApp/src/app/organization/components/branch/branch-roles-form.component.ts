@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { Layout, Entities } from '@sppc/env/environment';
-import { BranchService } from '@sppc/organization';
+import { BranchService } from '@sppc/organization/service';
 import { DetailComponent } from '@sppc/shared/class';
 import { RelatedItems } from '@sppc/shared/models';
 import { ViewName } from '@sppc/shared/security';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { String } from '@sppc/shared/class';
+import { String } from '@sppc/shared/class/source';
 import { LZStringService } from 'ng-lz-string';
 import { ContextInfo } from '@sppc/core';
 

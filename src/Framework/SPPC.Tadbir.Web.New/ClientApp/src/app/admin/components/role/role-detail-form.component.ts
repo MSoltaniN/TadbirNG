@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { String } from '@sppc/shared/class';
+import { String } from '@sppc/shared/class/source';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { Permission } from '@sppc/core';

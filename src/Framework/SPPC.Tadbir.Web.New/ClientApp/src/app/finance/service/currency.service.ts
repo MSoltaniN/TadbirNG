@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { BrowserStorageService } from '@sppc/shared/services';
-import { FiscalPeriodApi } from '@sppc/organization';
+import { FiscalPeriodApi } from '@sppc/organization/service/api';
 import { String, BaseService } from '@sppc/shared/class';
 import { Currency } from '@sppc/finance/models';
 import { RelatedItems } from '@sppc/shared/models';

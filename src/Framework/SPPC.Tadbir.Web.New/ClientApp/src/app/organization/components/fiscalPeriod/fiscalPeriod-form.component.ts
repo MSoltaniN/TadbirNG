@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities } from '@sppc/env/environment';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
-import { FiscalPeriod } from '@sppc/organization';
+import { FiscalPeriod } from '@sppc/organization/models';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 

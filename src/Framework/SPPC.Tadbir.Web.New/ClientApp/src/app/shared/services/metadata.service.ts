@@ -5,7 +5,7 @@ import { MetadataApi, ReportApi } from '@sppc/shared/services/api';
 import { HttpClient } from "@angular/common/http";
 import { BaseService } from '../class';
 import { BrowserStorageService } from '.';
-import { String } from '@sppc/shared/class';
+import { String } from '@sppc/shared/class/source';
 
 
 @Injectable()

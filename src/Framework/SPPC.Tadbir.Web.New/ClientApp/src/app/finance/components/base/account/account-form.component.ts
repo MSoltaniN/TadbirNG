@@ -7,7 +7,7 @@ import { Layout, Entities } from '@sppc/env/environment';
 import { AccountService } from '@sppc/finance/service';
 import { Account } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
-import { BranchApi } from '@sppc/organization';
+import { BranchApi } from '@sppc/organization/service/api';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 

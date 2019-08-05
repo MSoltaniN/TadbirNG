@@ -8,7 +8,9 @@ import { BranchFormComponent } from './branch-form.component';
 import { BranchRolesFormComponent } from './branch-roles-form.component';
 import { String, AutoGridExplorerComponent, Filter, FilterExpressionOperator } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { Branch, BranchService, BranchApi, BranchInfo } from '@sppc/organization';
+import { BranchService, BranchInfo } from '@sppc/organization/service';
+import { BranchApi, } from '@sppc/organization/service/api';
+import { Branch } from '@sppc/organization/models';
 import { GridService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ViewName } from '@sppc/shared/security';
@@ -44,7 +46,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   ngOnInit() {
     this.entityName = Entities.Branch;
     this.viewId = ViewName[this.entityTypeName];
-    
+
     this.getTreeNode();
     this.reloadGrid();
   }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
-import { String } from '@sppc/shared/class';
+import { String } from '@sppc/shared/class/source';
 import { HttpClient } from "@angular/common/http";
 import { BrowserStorageService } from '@sppc/shared/services';
 import { BaseService } from '@sppc/shared/class';
