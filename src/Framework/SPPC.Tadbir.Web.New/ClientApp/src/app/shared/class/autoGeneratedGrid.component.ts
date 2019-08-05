@@ -10,10 +10,12 @@ import { Filter } from '@sppc/shared/class/filter';
 import { Property } from '@sppc/shared/class/metadata/property';
 import { FilterExpressionOperator } from '@sppc/shared/class/filterExpressionOperator';
 import { DefaultComponent } from '@sppc/shared/class/default.component';
-import { MetaDataService, GridService, BrowserStorageService, SessionKeys } from "../services";
-import { SettingService } from "@sppc/config/service";
+import { BrowserStorageService, SessionKeys } from "@sppc/shared/services/browserStorage.service";
+import { SettingService } from "@sppc/config/service/settings.service";
 import { ViewName } from "../security";
-import { ColumnViewConfig, ListFormViewConfig } from "../models";
+import { ColumnViewConfig, ListFormViewConfig } from "@sppc/shared/models";
+import { MetaDataService } from "@sppc/shared/services/metadata.service";
+import { GridService } from "@sppc/shared/services/grid.service";
 
 
 

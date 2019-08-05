@@ -1,7 +1,7 @@
 import { Directive, OnInit, ElementRef, ViewContainerRef, Component, Input, ViewChild, Renderer2, ComponentFactoryResolver, Inject, ApplicationRef, Injector, EmbeddedViewRef, AfterViewInit, Host } from "@angular/core";
 import { FilterService, BaseFilterCellComponent } from "@progress/kendo-angular-grid";
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";
-import { SppcGridDatepicker } from "..";
+import { SppcGridDatepicker } from "@sppc/shared/controls/datepicker/sppc-grid-datepicker";
 declare var jquery: any;
 declare var $: any;
 

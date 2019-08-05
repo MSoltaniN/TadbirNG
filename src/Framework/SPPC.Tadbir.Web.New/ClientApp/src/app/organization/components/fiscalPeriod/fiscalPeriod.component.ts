@@ -11,9 +11,11 @@ import { FiscalPeriodApi } from '@sppc/organization/service/api';
 import { FiscalPeriod } from '@sppc/organization/models';
 import { RelatedItemsInfo } from '@sppc/admin/service';
 import { SettingService } from '@sppc/config/service';
-import { ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent } from '@sppc/shared/components';
 import { ViewName } from '@sppc/shared/security';
 import { RelatedItems } from '@sppc/shared/models';
+import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 
 
 

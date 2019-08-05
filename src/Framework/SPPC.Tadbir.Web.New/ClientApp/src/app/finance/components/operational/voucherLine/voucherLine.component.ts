@@ -15,8 +15,10 @@ import { Entities } from '@sppc/env/environment';
 import { VoucherLineFormComponent } from './voucherLine-form.component';
 import { MessageType } from '@sppc/env/environment';
 import { DocumentStatusValue } from '@sppc/finance/enum';
-import { ViewIdentifierComponent, ReportViewerComponent, ReportManagementComponent } from '@sppc/shared/components';
 import { ViewName, VoucherPermissions } from '@sppc/shared/security';
+import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
+import { ReportViewerComponent } from '@sppc/shared/components/reportViewer/reportViewer.component';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 
 
 

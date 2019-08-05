@@ -7,9 +7,9 @@ import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { AuthenticationService } from '@sppc/core';
 import { MessageType } from '@sppc/env/environment';
-import { ReportManagementComponent } from '..';
 import { DefaultComponent } from '@sppc/shared/class';
 import { Command } from '@sppc/shared/models';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 
 
 

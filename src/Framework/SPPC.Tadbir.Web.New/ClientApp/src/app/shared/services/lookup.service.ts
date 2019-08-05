@@ -3,9 +3,9 @@ import {  Response } from '@angular/http';
 import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
 import { AccountRelationApi } from '@sppc/finance/service/api';
-import { BrowserStorageService } from '@sppc/shared/services';
+import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
 import { LookupApi } from '@sppc/shared/services/api';
-import { BaseService } from '../class';
+import { BaseService } from '@sppc/shared/class/base.service';
 
 
 

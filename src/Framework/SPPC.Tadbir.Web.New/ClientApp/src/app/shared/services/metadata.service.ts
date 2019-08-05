@@ -3,8 +3,8 @@ import { Response, Headers, RequestOptions } from '@angular/http';
 import "rxjs/Rx";
 import { MetadataApi, ReportApi } from '@sppc/shared/services/api';
 import { HttpClient } from "@angular/common/http";
-import { BaseService } from '../class';
-import { BrowserStorageService } from '.';
+import { BaseService } from '@sppc/shared/class/base.service';
+import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
 import { String } from '@sppc/shared/class/source';
 
 

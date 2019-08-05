@@ -14,9 +14,12 @@ import { VoucherApi, JournalApi } from '@sppc/finance/service/api';
 import { SettingService } from '@sppc/config/service';
 import { VoucherEditorComponent } from '../../operational/voucher/voucher-editor.component';
 import { JournalDisplayTypeResource, VoucherStatusResource, BranchScopeResource, ArticleTypesResource, ArticleTypesResourceKey, JournalType, JournalDisplayType } from '@sppc/finance/enum';
-import { ViewIdentifierComponent, ReportViewerComponent, ReportManagementComponent, QuickReportSettingComponent } from '@sppc/shared/components';
 import { Item } from '@sppc/shared/models';
 import { ViewName, JournalPermissions, VoucherPermissions } from '@sppc/shared/security';
+import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
+import { ReportViewerComponent } from '@sppc/shared/components/reportViewer/reportViewer.component';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 
 
 export function getLayoutModule(layout: Layout) {

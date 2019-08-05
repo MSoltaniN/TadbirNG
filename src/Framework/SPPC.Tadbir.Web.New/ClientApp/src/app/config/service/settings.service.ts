@@ -9,7 +9,7 @@ import { String } from '@sppc/shared/class/source';
 import { BaseService } from '@sppc/shared/class/base.service';
 import { SettingBrief, ViewTreeConfig, ViewTreeLevelConfig, NumberConfig } from "../models";
 import { SettingsApi } from "./api";
-import { BrowserStorageService } from "@sppc/shared/services";
+import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 import { DateRangeType, SettingKey } from "@sppc/shared/enum";
 
 

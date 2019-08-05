@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LocalReport, QuickReportConfigInfo, Parameter, QuickReportColumnModel, QuickReportViewModel } from '@sppc/shared/models';
-import { ReportBaseService } from '../class';
-import { BrowserStorageService } from '.';
+import { ReportBaseService } from '@sppc/shared/class/report.base.service';
+import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
 
 
 @Injectable()

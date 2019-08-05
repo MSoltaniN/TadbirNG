@@ -13,8 +13,10 @@ import { Voucher } from '@sppc/finance/models';
 import { SettingService } from '@sppc/config/service';
 import { VoucherEditorComponent } from './voucher-editor.component';
 import { DocumentStatusValue } from '@sppc/finance/enum';
-import { ReportViewerComponent, ViewIdentifierComponent, ReportManagementComponent } from '@sppc/shared/components';
 import { ViewName, VoucherPermissions } from '@sppc/shared/security';
+import { ReportViewerComponent } from '@sppc/shared/components/reportViewer/reportViewer.component';
+import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 
 
 

@@ -8,8 +8,9 @@ import { Filter } from './filter';
 import { Renderer2, Injectable, Inject, Optional } from "@angular/core";
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
-import { MetaDataService, BrowserStorageService, SessionKeys } from '../services';
-import { SettingService } from '@sppc/config/service';
+import {  BrowserStorageService,SessionKeys } from '@sppc/shared/services/browserStorage.service';
+import {  MetaDataService } from '@sppc/shared/services/metadata.service';
+import { SettingService } from '@sppc/config/service/settings.service';
 import { ViewTreeConfig } from '@sppc/config/models';
 
 

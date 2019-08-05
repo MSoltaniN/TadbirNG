@@ -1,6 +1,6 @@
 export * from './branchScope/sppc-branch-scope';
 export * from './datepicker/sppc-datepicker';
-export * from './datepicker/sppc-grid-datepicker';
+// export * from './datepicker/sppc-grid-datepicker';
 export * from './dateRangeSelector/sppc-dateRangeSelector';
 export * from './dropdownlist/sppc-dropdownlist';
 export * from './fullAccount/sppc-display-fullAccount';

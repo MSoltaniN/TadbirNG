@@ -16,7 +16,9 @@ import { AccountPermissions } from "../security/permissions";
 import { AccountItemBrief } from "@sppc/finance/models";
 import { SettingService } from "@sppc/config/service";
 import { ViewTreeConfig, ViewTreeLevelConfig } from '@sppc/config/models';
-import { MetaDataService, GridService, BrowserStorageService } from "../services";
+import { MetaDataService } from "@sppc/shared/services/metadata.service";
+import { GridService } from "@sppc/shared/services/grid.service";
+import {  BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 import { Entities, MessageType } from "@sppc/env/environment";
 
 
