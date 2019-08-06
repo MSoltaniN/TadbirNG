@@ -203,15 +203,16 @@ export class AppComponent implements AfterViewInit, OnInit {
         //var contextIsEmpty: boolean = true;
 
         var currentContext = this.bStorageService.getCurrentUser();
+        debugger;
         if (currentContext) {
           branchId = currentContext ? currentContext.branchId : 0;
           companyId = currentContext ? currentContext.companyId : 0;
           fpId = currentContext ? currentContext.fpId : 0;
           ticket = currentContext ? currentContext.ticket : "";
           this.userName = currentContext ? currentContext.userName.toString() : "";
-          this.fiscalPeriodName = currentContext ? currentContext.fiscalPeriodName.toString() : "";
-          this.branchName = currentContext ? currentContext.branchName.toString() : "";
-          this.companyName = currentContext ? currentContext.companyName.toString() : "";
+          this.fiscalPeriodName = currentContext && currentContext.fiscalPeriodName ? currentContext.fiscalPeriodName.toString() : "";
+          this.branchName = currentContext && currentContext.branchName ? currentContext.branchName.toString() : "";
+          this.companyName = currentContext && currentContext.companyName ? currentContext.companyName.toString() : "";
 
           //contextIsEmpty = false;
         }

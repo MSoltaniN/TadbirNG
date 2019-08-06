@@ -251,7 +251,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           this.router.navigate([currentRoute]);
         }
         else {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/tadbir/dashboard']);
         }
       }
 
