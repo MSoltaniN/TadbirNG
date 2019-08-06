@@ -9,9 +9,11 @@ import { LoginContainerComponent } from './components/login/login.container.comp
 import { LogoutComponent } from './components/login/logout.component';
 
 const routes: Routes = [
-  
+
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginContainerComponent },
   { path: 'logout', component: LogoutComponent },
+  
   {
     path: 'tadbir',
     component: LayoutComponent,
@@ -20,10 +22,10 @@ const routes: Routes = [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'home', component: HomeComponent },
-      { path: 'reports', component: ReportManagementComponent },            
+      { path: 'reports', component: ReportManagementComponent },
     ]
   },
-
+  
 
 ];
 
