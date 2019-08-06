@@ -8,7 +8,8 @@ import { EnviromentComponent } from "@sppc/shared/class";
 
 
 @Directive({
-  selector: '[SppcPermissionCheck]'
+  selector: '[SppcPermissionCheck]',
+  providers:[Permissions]
 })
 
 export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
