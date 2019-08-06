@@ -785,15 +785,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     {
                         switch (orderdColumns[i].Type.ToLower())
                         {
-                            case "string":
-                                txtDataCell = (StiText)(sampleText.Clone(true));
-                                break;
                             case "number":
                             case "money":
                                 txtDataCell = (StiText)(sampleNumber.Clone(true));
                                 break;
                             case "date":
                                 txtDataCell = (StiText)(sampleDate.Clone(true));
+                                break;
+                            case "string":
+                            default:
+                                txtDataCell = (StiText)(sampleText.Clone(true));
                                 break;
                         }
                     }
