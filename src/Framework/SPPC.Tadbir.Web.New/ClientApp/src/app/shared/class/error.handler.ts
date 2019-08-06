@@ -1,12 +1,10 @@
-import { Component, OnInit, Input, Injector, ErrorHandler, Injectable, Host, ViewContainerRef } from "@angular/core";
-import { RTL } from "@progress/kendo-angular-l10n";
+import {  OnInit, Input, Injector, ErrorHandler, Injectable, Host, ViewContainerRef } from "@angular/core";
 
 
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 
 import { Router } from "@angular/router";
-import { SppcLoadingService } from "../controls/sppcLoading";
 
 
     
@@ -25,7 +23,6 @@ export class GeneralErrorHandler implements ErrorHandler, OnInit {
     handleError(error: any): void {
         const notificationService = this.injector.get(ToastrService);
         const translateService = this.injector.get(TranslateService);
-        const sppcLoadingService = this.injector.get(SppcLoadingService);
         const router = this.injector.get(Router);
         
 
@@ -52,9 +49,6 @@ export class GeneralErrorHandler implements ErrorHandler, OnInit {
                 errMsgLabel = msg;
             });
 
-
-
-            sppcLoadingService.hide();
 
             eMessage = eMessage + "<br>" + errCodeLabel + ":" + eCode;
 

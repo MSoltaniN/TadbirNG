@@ -10,7 +10,7 @@ import { DefaultComponent } from "@sppc/shared/class";
 
 @Directive({
     selector: '[sppc-grid-reorder]',
-    providers: [ String,DefaultComponent]
+    providers: [DefaultComponent]
 })
 
 export class SppcGridReorder {

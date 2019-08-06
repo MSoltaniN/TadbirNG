@@ -9,7 +9,6 @@ export * from './grid/spp-grid-date-filter';
 export * from './grid/sppc-auto-grid-filter';
 export * from './grid/sppc-grid-filter';
 export * from './selectForm/selectForm.component';
-export * from './sppcLoading/index';
 export * from './tabs/dynamic-tabs.directive';
 export * from './tabs/tab.component';
 export * from './tabs/tabs.component';

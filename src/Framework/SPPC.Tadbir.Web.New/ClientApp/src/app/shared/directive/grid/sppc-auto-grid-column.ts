@@ -10,7 +10,7 @@ import { BrowserStorageService } from "@sppc/shared/services";
 
 @Directive({
   selector: '[sppc-auto-grid-column]',
-  providers: [String, DefaultComponent, GridFilterComponent]
+  providers: [DefaultComponent, GridFilterComponent]
 })
 
 export class SppcAutoGridColumn extends EnviromentComponent {

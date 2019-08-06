@@ -10,7 +10,7 @@ import { DefaultComponent } from "@sppc/shared/class";
 
 @Directive({
   selector: '[sppc-grid-column]',
-  providers: [String, DefaultComponent, GridFilterComponent]
+  providers: [DefaultComponent, GridFilterComponent]
 })
 
 export class SppcGridColumn {

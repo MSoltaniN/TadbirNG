@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FinanceRoutingModule } from './finance-routing.module';
@@ -40,10 +40,11 @@ import { JournalComponent } from '@sppc/finance/components/reporting/journal/jou
   ],
   declarations: [AccountComponent, AccountFormComponent, AccountCollectionComponent, AccountGroupsComponent, AccountGroupsFormComponent, AccountRelationsComponent,
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
-    ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, AccountBookComponent, JournalComponent],
+    ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
-    FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService]
+    FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService],
+  schemas: [NO_ERRORS_SCHEMA]
 })
 export class FinanceModule { }
