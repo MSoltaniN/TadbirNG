@@ -91,9 +91,6 @@ import { EnviromentComponent } from './shared/class/enviroment.component';
     
   ],
   schemas: [NO_ERRORS_SCHEMA],
-  //entryComponents: [
-  //  SppcGridDatepicker,    
-  //  TabComponent,   SelectFormComponent,   //],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
