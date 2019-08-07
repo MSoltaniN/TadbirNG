@@ -36,24 +36,8 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   currentContext?: Context = undefined;
 
-  public showNavbar: boolean = false;
-
-  public isLogin: boolean = false;
-
   public isRtl: boolean;
-
   public lang: string = '';
-
-  public companyName: string;
-  public branchName: string;
-  public fiscalPeriodName: string;
-  public userName: string;
-
-  public compenies: any = {};
-
-  public branches: any = {};
-
-  public fiscalPeriods: any = {};
 
   ngOnInit() {
 
@@ -110,11 +94,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 
     //#region init Lang    
 
-    //if (localStorage.getItem('currentContext') != null) {
-    //  var item: string | null;
-    //  item = localStorage.getItem('currentContext');
-    //  this.currentContext = JSON.parse(item != null ? item.toString() : "");
-    //}
     this.currentContext = this.bStorageService.getCurrentUser();
 
     var language = this.bStorageService.getLanguage();
@@ -128,133 +107,51 @@ export class AppComponent implements AfterViewInit, OnInit {
 
     //#endregion
 
-    //#region Hide navbar
-    if (this.currentContext != undefined) {
-      this.showNavbar = true;
-    }
+    if (!this.bStorageService.islogin()) {
 
-    //#endregion
-
-    //#region Event in Each Route 
-
-    router.events.subscribe((val) => {
-
-      //$.fn.bindTree(); 
-
-      if (location.path().toLowerCase() == '/login' || location.path().toString().indexOf('/login?returnUrl=') >= 0) {
-        this.showNavbar = false;
-
-        this.isLogin = true;
-
+      //#region add class to element
+      var spacePad = this.document.getElementById('spacePad')
+      var currentLang = this.bStorageService.getLanguage();
+      if (currentLang == 'fa' || currentLang == null) {
+        if (spacePad) {
+          spacePad.classList.add('pull-right');
+          spacePad.classList.remove('pull-left');
+        }
       }
       else {
-
-        //#region add class to element
-
-        this.isLogin = false;
-        this.showNavbar = true;
-
-        var spacePad = this.document.getElementById('spacePad')
-        var currentLang = this.bStorageService.getLanguage();
-        if (currentLang == 'fa' || currentLang == null) {
-          if (spacePad) {
-            spacePad.classList.add('pull-right');
-            spacePad.classList.remove('pull-left');
-          }
+        if (spacePad) {
+          spacePad.classList.add('pull-left');
+          spacePad.classList.remove('pull-right');
         }
-        else {
-          if (spacePad) {
-            spacePad.classList.add('pull-left');
-            spacePad.classList.remove('pull-right');
-          }
-        }
-
-        var currentSkin = this.bStorageService.getCurrentSkin();
-        if (currentSkin != null) {
-          if (!this.document.getElementById('mainBody').classList.contains(currentSkin)) {
-            this.document.getElementById('mainBody').classList.add(currentSkin);
-            this.document.getElementById('mainBody').classList.remove('skin-blue');
-          }
-        }
-
-        var lang = this.bStorageService.getLanguage();
-        if (lang == 'fa' || lang == null) {
-          if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans.css')
-            this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans.css');
-        }
-        else {
-          if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans-en.css')
-            this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
-        }
-
-        //#endregion
-
-        //#region init enviroment variables
-
-        var branchId: number = 0;
-        var companyId: number = 0;
-        var fpId: number = 0;
-        var ticket: string = "";
-
-        //set current route to session
-        var currentUrl = location.path().toLowerCase();
-        if (currentUrl != '/logout' && currentUrl != '/login')
-          this.bStorageService.setCurrentRoute(currentUrl);
-        //var contextIsEmpty: boolean = true;
-
-        var currentContext = this.bStorageService.getCurrentUser();
-        debugger;
-        if (currentContext) {
-          branchId = currentContext ? currentContext.branchId : 0;
-          companyId = currentContext ? currentContext.companyId : 0;
-          fpId = currentContext ? currentContext.fpId : 0;
-          ticket = currentContext ? currentContext.ticket : "";
-          this.userName = currentContext ? currentContext.userName.toString() : "";
-          this.fiscalPeriodName = currentContext && currentContext.fiscalPeriodName ? currentContext.fiscalPeriodName.toString() : "";
-          this.branchName = currentContext && currentContext.branchName ? currentContext.branchName.toString() : "";
-          this.companyName = currentContext && currentContext.companyName ? currentContext.companyName.toString() : "";
-
-          //contextIsEmpty = false;
-        }
-
-
-        //if (!contextIsEmpty) {
-
-
-
-        //  var fps = this.authenticationService.getFiscalPeriod(companyId, ticket);
-        //  if (fps != null) {
-        //    fps.subscribe(res => {
-        //      //this.fiscalPeriods = res;
-        //      this.fiscalPeriodName = res.filter((p: any) => p.key == fpId)[0].value;
-        //    });
-        //  }
-
-        //  var branchList = this.authenticationService.getBranches(companyId, ticket);
-        //  if (branchList != null) {
-        //    branchList.subscribe(res => {
-        //      this.branchName = res.filter((p: any) => p.key == branchId)[0].value;
-        //    });
-        //  }
-
-
-        //  var companiesList = this.authenticationService.getCompanies(this.userName, ticket);
-        //  if (companiesList != null) {
-        //    companiesList.subscribe(res => {
-        //      this.companyName = res.filter((p: any) => p.key == companyId)[0].value;;
-
-        //    });
-        //  }
-
-        //}
-
-        //#endregion
       }
-    });
 
-    //#endregion
+      var currentSkin = this.bStorageService.getCurrentSkin();
+      if (currentSkin != null) {
+        if (!this.document.getElementById('mainBody').classList.contains(currentSkin)) {
+          this.document.getElementById('mainBody').classList.add(currentSkin);
+          this.document.getElementById('mainBody').classList.remove('skin-blue');
+        }
+      }
 
-    //this.initHotKeys();
+      var lang = this.bStorageService.getLanguage();
+      if (lang == 'fa' || lang == null) {
+        if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans.css')
+          this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans.css');
+      }
+      else {
+        if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans-en.css')
+          this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
+      }
+
+      //#endregion
+
+      //#region set current route to session
+      var currentUrl = location.path().toLowerCase();
+      if (currentUrl != '/logout' && currentUrl != '/login')
+        this.bStorageService.setCurrentRoute(currentUrl);
+      //#endregion
+    }
+
   }
 
   cssUrl: string;

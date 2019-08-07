@@ -212,7 +212,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.bStorageService.checkVersion(this.version, this.UserId);
 
     this.settingService.getListSettingsByUser(this.UserId).subscribe((res: Array<ListFormViewConfig>) => {
-
       if (res)
         this.bStorageService.setUserSetting(res, this.UserId);
     });

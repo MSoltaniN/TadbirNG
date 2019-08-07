@@ -199,7 +199,7 @@ export class BrowserStorageService {
       var t0 = performance.now();
       var decompressed = this.lz.decompress(compressedData);
       var t1 = performance.now();
-      console.log("decompress metadata time : " + (t1 - t0) + " milliseconds.");
+      //console.log("decompress metadata time : " + (t1 - t0) + " milliseconds.");
 
       return decompressed;
     }
@@ -213,7 +213,7 @@ export class BrowserStorageService {
       var t0 = performance.now();
       var compressedJSON = this.lz.compress(jsonData);
       var t1 = performance.now();
-      console.log("compress metadata time : " + (t1 - t0) + " milliseconds.");
+      //console.log("compress metadata time : " + (t1 - t0) + " milliseconds.");
 
       localStorage.setItem(metadataKey, compressedJSON);
     }

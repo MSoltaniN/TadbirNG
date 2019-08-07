@@ -172,7 +172,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     if (this.voucherItem || this.isOpenFromList)
       this.getVoucher(VoucherApi.NewVoucher);
     else {
-      this.redirectTo('/vouchers/new')
+      this.redirectTo('/finance/vouchers/new')
     }
   }
 
@@ -185,7 +185,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
 
     if (!voucherNo) {
-      this.router.navigate(['/home'], { queryParams: { returnUrl: 'vouchers/by-no' } });
+      this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no' } });
     }
     else {
       this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
@@ -203,7 +203,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         if (error.status == 404) {
           this.showMessage(this.getText("Voucher.VoucherNotFound"), MessageType.Warning);
           if (byNo)
-            this.router.navigate(['/home'], { queryParams: { returnUrl: 'vouchers/by-no' } });
+            this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no' } });
         }
 
       })
@@ -253,7 +253,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.isLastVoucher = false;
     }
     else
-      this.router.navigate(['/vouchers/next'], { queryParams: { no: this.voucherModel.no } });
+      this.router.navigate(['/finance/vouchers/next'], { queryParams: { no: this.voucherModel.no } });
   }
 
   previousVoucher() {
@@ -263,7 +263,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.isLastVoucher = false;
     }
     else
-      this.router.navigate(['/vouchers/previous'], { queryParams: { no: this.voucherModel.no } });
+      this.router.navigate(['/finance/vouchers/previous'], { queryParams: { no: this.voucherModel.no } });
   }
 
   firstVoucher() {
@@ -273,7 +273,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.isLastVoucher = false;
     }
     else
-      this.router.navigate(['/vouchers/first']);
+      this.router.navigate(['/finance/vouchers/first']);
   }
 
   lastVoucher() {
@@ -283,11 +283,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.isLastVoucher = true;
     }
     else
-      this.router.navigate(['/vouchers/last']);
+      this.router.navigate(['/finance/vouchers/last']);
   }
 
   searchVoucher() {
-    this.router.navigate(['/home'], { queryParams: { returnUrl: 'vouchers/by-no' } });
+    this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no' } });
   }
 
   checkHandler() {
