@@ -129,3 +129,30 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], 
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (265, 31, N'BranchName', NULL, N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, NULL, 3, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+
+-- 1.1.682
+update metadata.command set RouteUrl = '/organization/fiscalperiod' where RouteUrl = '/fiscalperiod'
+update metadata.command set RouteUrl = '/organization/branches' where RouteUrl = '/branches'
+update metadata.command set RouteUrl = '/organization/companies' where RouteUrl = '/companies'
+update metadata.command set RouteUrl = '/tadbir/reports' where RouteUrl = '/reports'
+update metadata.command set RouteUrl = '/config/settings' where RouteUrl = '/settings'
+update metadata.command set RouteUrl = '/admin/operation-log' where RouteUrl = '/operation-log'
+update metadata.command set RouteUrl = '/admin/roles' where RouteUrl = '/roles'
+update metadata.command set RouteUrl = '/admin/users' where RouteUrl = '/users'
+update metadata.command set RouteUrl = '/admin/changePassword' where RouteUrl = '/changePassword'
+update metadata.command set RouteUrl = '/admin/viewRowPermission' where RouteUrl = '/viewRowPermission'
+update metadata.command set RouteUrl = '/finance/account' where RouteUrl = '/account'
+update metadata.command set RouteUrl = '/finance/account-collection' where RouteUrl = '/account-collection'
+update metadata.command set RouteUrl = '/finance/account-groups' where RouteUrl = '/account-groups'
+update metadata.command set RouteUrl = '/finance/accountrelations' where RouteUrl = '/accountrelations'
+update metadata.command set RouteUrl = '/finance/costCenter' where RouteUrl = '/costCenter'
+update metadata.command set RouteUrl = '/finance/detailAccount' where RouteUrl = '/detailAccount'
+update metadata.command set RouteUrl = '/finance/projects' where RouteUrl = '/projects'
+update metadata.command set RouteUrl = '/finance/voucher' where RouteUrl = '/voucher'
+update metadata.command set RouteUrl = '/finance/vouchers/new' where RouteUrl = '/vouchers/new'
+update metadata.command set RouteUrl = '/finance/vouchers/by-no' where RouteUrl = '/vouchers/by-no'
+update metadata.command set RouteUrl = '/finance/vouchers/last' where RouteUrl = '/vouchers/last'
+update metadata.command set RouteUrl = '/finance/account-book' where RouteUrl = '/account-book'
+update metadata.command set RouteUrl = '/finance/journal' where RouteUrl = '/journal'
+
