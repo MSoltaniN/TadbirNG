@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { FiscalPeriodApi } from '@sppc/organization/service/api';
 import { String, BaseService } from '@sppc/shared/class';
-import { Currency } from '@sppc/finance/models';
+import { Currency, CurrencyRate } from '@sppc/finance/models';
 import { RelatedItems } from '@sppc/shared/models';
+import { Time } from '@angular/common';
 
 
 export class CurrencyInfo implements Currency {
@@ -19,6 +20,16 @@ export class CurrencyInfo implements Currency {
   description?: string;
   branchScope: number = 0;
   isActive: boolean;
+}
+
+export class CurrencyRateInfo implements CurrencyRate {
+  currencyId: number;
+  branchId: number;
+  branchName: string;
+  id: number = 0;
+  date: Date;
+  time: Time;
+  multiplier: number;
 }
 
 @Injectable()

@@ -30,5 +30,6 @@ export enum ViewName {
   AccountBookSingle = 27,
   AccountBookSingleSummary = 28,
   AccountBookSummary = 29,
-  Currency = 30
+  Currency = 30,
+  CurrencyRate = 31
 }

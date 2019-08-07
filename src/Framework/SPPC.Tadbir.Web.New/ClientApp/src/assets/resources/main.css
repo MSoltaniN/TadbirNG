@@ -457,7 +457,7 @@ body.tRtl .sppc-input-num {
   left: -44px !important;
 }
 .sppc-switch.k-switch[dir="rtl"] .k-switch-label-off {
-  left: -10px !important;
+  left: -40px !important;
 }
 .sppc-switch.k-switch[dir="rtl"] .k-switch-label-on {
   right: -45px !important;

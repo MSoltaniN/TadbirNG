@@ -12,3 +12,4 @@ export * from './fullaccount';
 export * from './Project';
 export * from './voucher';
 export * from './voucherLine';
+export * from './currencyRate';

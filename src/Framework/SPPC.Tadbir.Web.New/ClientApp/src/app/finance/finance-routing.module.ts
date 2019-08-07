@@ -16,6 +16,7 @@ import { ViewName } from '@sppc/shared/security';
 import { AccountBookComponent } from './components/reporting/accountBook/accountBook.component';
 import { JournalComponent } from './components/reporting/journal/journal.component';
 import { MetaDataResolver } from '@sppc/shared/class/metadata/metadata.resolver';
+import { currencyRateComponent } from './components/base/currencyRate/currencyRate.component';
 
 const routes: Routes = [{
   path: 'finance',
@@ -39,6 +40,7 @@ const routes: Routes = [{
     },
     { path: 'account-book', component: AccountBookComponent },
     { path: 'journal', component: JournalComponent },
+    { path: 'currency-rate/:id', component: currencyRateComponent },
   ]
 }];
 

@@ -31,6 +31,7 @@ import { VoucherLineComponent } from '@sppc/finance/components/operational/vouch
 import { VoucherLineFormComponent } from '@sppc/finance/components/operational/voucherLine/voucherLine-form.component';
 import { AccountBookComponent } from '@sppc/finance/components/reporting/accountBook/accountBook.component';
 import { JournalComponent } from '@sppc/finance/components/reporting/journal/journal.component';
+import { currencyRateComponent } from '@sppc/finance/components/base/currencyRate/currencyRate.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { JournalComponent } from '@sppc/finance/components/reporting/journal/jou
   ],
   declarations: [AccountComponent, AccountFormComponent, AccountCollectionComponent, AccountGroupsComponent, AccountGroupsFormComponent, AccountRelationsComponent,
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
-    ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent],
+    ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
+    currencyRateComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,

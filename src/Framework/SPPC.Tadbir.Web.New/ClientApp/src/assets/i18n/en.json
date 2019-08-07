@@ -141,7 +141,8 @@
     "JournalByDateSummary": "Journal By Date Summary",
     "JournalByDateSummaryByDate": "Journal By Date Summary By Date",
     "AccountBook": "Account Book",
-    "Currency": "Currency"
+    "Currency": "Currency",
+    "CurrencyRate": "Currency Rate"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -172,6 +173,9 @@
     "IsActive": "Active",
     "BranchName": "Branch Name",
     "Rate": "Exchange Rate"
+  },
+  "CurrencyRate": {
+    "New": "New Currency Rate"
   },
   "AccountBook": {
     "DisplayByRow": "By Row",

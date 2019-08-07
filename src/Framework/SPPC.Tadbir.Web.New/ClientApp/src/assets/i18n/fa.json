@@ -140,7 +140,8 @@
     "JournalByDateSummary": "سند خلاصه",
     "JournalByDateSummaryByDate": "سند خلاصه به تفکیک تاریخ",
     "AccountBook": "دفتر حساب",
-    "Currency": "ارز"
+    "Currency": "ارز",
+    "CurrencyRate": "نرخ ارز"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -171,6 +172,9 @@
     "IsActive": "وضعیت",
     "BranchName": "نام شعبه",
     "Rate": "نرخ ارز"
+  },
+  "CurrencyRate": {
+    "New": "نرخ ارز جدید"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",

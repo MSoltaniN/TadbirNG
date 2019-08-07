@@ -98,6 +98,9 @@ export class BreadCumbComponent implements OnInit {
       case "currency":
         this.getText("Entity.Currency");
         break;
+      case "currencyrate":
+        this.getText("Entity.CurrencyRate");
+        break;
     }
   }
 }
