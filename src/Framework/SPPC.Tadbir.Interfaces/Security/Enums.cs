@@ -846,4 +846,41 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         ByBranch = 0x20
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به دفتر حساب را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum TestBalancePermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به تراز آزمایشی
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده تراز آزمایشی
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی جستجوی اطلاعات تراز آزمایشی
+        /// </summary>
+        Lookup = 0x2,
+
+        /// <summary>
+        /// دسترسی فیلتر اطلاعات تراز آزمایشی
+        /// </summary>
+        Filter = 0x4,
+
+        /// <summary>
+        /// دسترسی چاپ اطلاعات تراز آزمایشی
+        /// </summary>
+        Print = 0x8,
+
+        /// <summary>
+        /// دسترسی مشاهده تراز آزمایشی به تفکیک شعبه
+        /// </summary>
+        ByBranch = 0x10
+    }
 }

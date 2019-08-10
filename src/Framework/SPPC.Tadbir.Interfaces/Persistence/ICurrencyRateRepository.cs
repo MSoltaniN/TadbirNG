@@ -6,6 +6,9 @@ using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    /// عملیات مورد نیاز برای مدیریت اطلاعات نرخ های ارز را تعریف می کند
+    /// </summary>
     public interface ICurrencyRateRepository
     {
         /// <summary>

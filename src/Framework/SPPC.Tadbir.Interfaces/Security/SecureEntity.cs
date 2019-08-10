@@ -118,6 +118,11 @@ namespace SPPC.Tadbir.Security
         public const string AccountBook = "AccountBook";
 
         /// <summary>
+        /// نام موجودیت تراز آزمایشی
+        /// </summary>
+        public const string TestBalance = "TestBalance";
+
+        /// <summary>
         /// نام موجودیت گزارش
         /// </summary>
         public const string Report = "Report";
