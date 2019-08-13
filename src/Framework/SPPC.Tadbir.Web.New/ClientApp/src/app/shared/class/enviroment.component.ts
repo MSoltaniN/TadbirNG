@@ -41,6 +41,11 @@ export class EnviromentComponent {
     return currentContext ? currentContext.branchId : 0;;
   }
 
+  public get BranchName(): string {
+    var currentContext = this.bStorageService.getCurrentUser();
+    return currentContext ? currentContext.branchName : "";
+  }
+
   public get CompanyId(): number {
     var currentContext = this.bStorageService.getCurrentUser();
     return currentContext ? currentContext.companyId : 0;;

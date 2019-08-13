@@ -836,7 +836,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\shared\directive\" />
-    <Folder Include="ClientApp\src\app\shared\controls\" />
     <Folder Include="ClientApp\src\app\shared\security\" />
     <Folder Include="ClientApp\src\assets\resources\fonts\IranSans-En\" />
     <Folder Include="Properties\PublishProfiles\" />

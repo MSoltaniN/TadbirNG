@@ -1,0 +1,70 @@
+
+<div class="dialog-body">
+
+  <div style="padding:15px;" (keydown.esc)="escPress()">
+    <div *ngIf="errorMessage">
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ errorMessage }}
+      </div>
+    </div>
+
+    <form novalidate [formGroup]="editForm">
+
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 sppc-float">
+          <div class="form-group">
+            <label for="name" class="control-label">{{ 'CurrencyRate.Date' | translate }}</label>
+            <sppc-datepicker formControlName="date"></sppc-datepicker>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-group">
+            <label for="code" class="control-label">{{ 'CurrencyRate.Time' | translate }}</label>
+
+            <!--<input type="text" class="k-textbox" formControlName="time"/>-->
+            <sppc-timepicker formControlName="time"></sppc-timepicker>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 sppc-float">
+          <div class="form-group">
+            <label for="" class="control-label">{{ 'CurrencyRate.Rate' | translate }}</label>
+            <sppc-numericInput formControlName="multiplier" class="sppc-input-num sppc-float sppc-width-100"></sppc-numericInput>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 sppc-float">
+          <div class="form-group">
+            <label for="branchName" class="control-label">{{ 'CurrencyRate.Name' | translate }}</label>
+
+            <input type="text" class="k-textbox" [ngModel]="currencyName" [ngModelOptions]="{standalone: true}" readonly />
+
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 sppc-float">
+          <div class="form-group">
+            <label for="branchName" class="control-label">{{ 'CurrencyRate.BranchName' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="branchName" readonly/>
+
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
+</div>
