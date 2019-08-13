@@ -175,7 +175,12 @@
     "Rate": "Exchange Rate"
   },
   "CurrencyRate": {
-    "New": "New Currency Rate"
+    "New": "New Currency Rate",
+    "Date": "Date",
+    "Time": "Time",
+    "Rate": "Exchange Rate",
+    "Name": "Name",
+    "BranchName": "Branch Name"
   },
   "AccountBook": {
     "DisplayByRow": "By Row",

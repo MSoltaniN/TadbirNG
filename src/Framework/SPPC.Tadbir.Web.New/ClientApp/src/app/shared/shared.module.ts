@@ -72,6 +72,7 @@ import { FullCodeDirective } from '@sppc/shared/directive/fullCode/fullCode.dire
 import { FullCodeTestDirective } from '@sppc/shared/directive/fullCode/fullCodeTest.directive';
 import { SpccOnlyNumberDirective } from '@sppc/shared/directive/onlyNumber/sppc.onlyNumber';
 import { SppcPermissionCheckDirective } from '@sppc/shared/directive/permission/sppc-permissionCheck';
+import { SppcTimepicker } from '@sppc/shared/controls/timepicker/sppc-timepicker';
 
 
 
@@ -131,7 +132,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReplaceLineBreaksPipe, DialogComponent, GridFilterComponent, SppcBranchScope, SppcDatepicker, SppcDateRangeSelector, SppcDropDownList, SppcDisplayFullAccountComponent,
     SppcFullAccountComponent, SppcGridDatepicker, SppcGridDateFilter, FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective,
     TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput, SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective,
-    FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective],
+    FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker],
 
   entryComponents: [TabComponent, SppcGridDatepicker],
 
@@ -149,7 +150,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective, TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput,
     SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
-    ReportViewerComponent]
+    ReportViewerComponent, SppcTimepicker]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

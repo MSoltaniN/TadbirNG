@@ -174,7 +174,12 @@
     "Rate": "نرخ ارز"
   },
   "CurrencyRate": {
-    "New": "نرخ ارز جدید"
+    "New": "نرخ ارز جدید",
+    "Date": "تاریخ",
+    "Time": "زمان",
+    "Rate": "نرخ ارز",
+    "Name": "نام ارز",
+    "BranchName": "نام شعبه"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",

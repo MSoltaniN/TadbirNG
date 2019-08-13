@@ -15,3 +15,4 @@ export * from './tabs/tabs.component';
 export * from './textbox/sppc-mask-textbox';
 export * from './textbox/sppc-numericInput';
 export * from './textbox/sppc-numerictextbox';
+export * from './timepicker/sppc-timepicker';
