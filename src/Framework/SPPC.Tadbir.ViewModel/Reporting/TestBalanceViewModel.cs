@@ -26,5 +26,15 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// سطر پایانی گزارش شامل مقادیر جمع کل محاسبه شده برای ستون های گزارش
         /// </summary>
         public TestBalanceItemViewModel Total { get; set; }
+
+        /// <summary>
+        /// سطرهای اطلاعاتی فعلی را با سطرهای داده شده جایگزین می کند
+        /// </summary>
+        /// <param name="items">مجموعه سطرهای اطلاعاتی جدید برای گزارش</param>
+        public void SetBalanceItems(IEnumerable<TestBalanceItemViewModel> items)
+        {
+            Items.Clear();
+            Items.AddRange(items);
+        }
     }
 }

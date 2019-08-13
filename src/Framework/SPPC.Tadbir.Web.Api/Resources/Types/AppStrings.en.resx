@@ -2526,4 +2526,10 @@
   <data name="CurrencyRates" xml:space="preserve">
     <value>currency rates</value>
   </data>
+  <data name="Multiplier" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="Revised" xml:space="preserve">
+    <value>Revised</value>
+  </data>
 </root>

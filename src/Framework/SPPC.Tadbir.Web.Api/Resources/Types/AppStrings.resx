@@ -2517,4 +2517,10 @@
   <data name="CurrencyRates" xml:space="preserve">
     <value>نرخ های ارز</value>
   </data>
+  <data name="Multiplier" xml:space="preserve">
+    <value>نرخ</value>
+  </data>
+  <data name="Revised" xml:space="preserve">
+    <value>اصلاحی</value>
+  </data>
 </root>

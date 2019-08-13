@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -113,7 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Detail Level reports
 
-        // GET: api/testbal/ledger/2-col
+        // GET: api/testbal/detail/2-col
         [Route(TestBalanceApi.TwoColumnDetailBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTwoColumnDetailBalanceAsync(string from, string to, bool? byBranch)
@@ -121,7 +122,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.TwoColumn, from, to, byBranch);
         }
 
-        // GET: api/testbal/ledger/4-col
+        // GET: api/testbal/detail/4-col
         [Route(TestBalanceApi.FourColumnDetailBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetFourColumnDetailBalanceAsync(string from, string to, bool? byBranch)
@@ -129,7 +130,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.FourColumn, from, to, byBranch);
         }
 
-        // GET: api/testbal/ledger/6-col
+        // GET: api/testbal/detail/6-col
         [Route(TestBalanceApi.SixColumnDetailBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetSixColumnDetailBalanceAsync(string from, string to, bool? byBranch)
@@ -137,7 +138,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.SixColumn, from, to, byBranch);
         }
 
-        // GET: api/testbal/ledger/8-col
+        // GET: api/testbal/detail/8-col
         [Route(TestBalanceApi.EightColumnDetailBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetEightColumnDetailBalanceAsync(string from, string to, bool? byBranch)
@@ -145,7 +146,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.EightColumn, from, to, byBranch);
         }
 
-        // GET: api/testbal/ledger/10-col
+        // GET: api/testbal/detail/10-col
         [Route(TestBalanceApi.TenColumnDetailBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTenColumnDetailBalanceAsync(string from, string to, bool? byBranch)
@@ -352,6 +353,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> TestBalanceResultAsync(TestBalanceMode mode, TestBalanceFormat format,
             string from, string to, bool? byBranch, int itemId = 0, int level = 0)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var parameters = GetParameters(from, to, format, byBranch);
             var balance = default(TestBalanceViewModel);
             switch (mode)
@@ -376,6 +378,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     break;
             }
 
+            SetItemCount(balance.Items.Count);
+            balance.SetBalanceItems(balance.Items.Apply(GridOptions).ToList());
             return Json(balance);
         }
 
