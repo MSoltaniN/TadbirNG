@@ -2523,4 +2523,49 @@
   <data name="Revised" xml:space="preserve">
     <value>اصلاحی</value>
   </data>
+  <data name="Corrections" xml:space="preserve">
+    <value>اصلاحات</value>
+  </data>
+  <data name="CorrectionsCredit" xml:space="preserve">
+    <value>بستانکار</value>
+  </data>
+  <data name="CorrectionsDebit" xml:space="preserve">
+    <value>بدهکار</value>
+  </data>
+  <data name="EndBalance" xml:space="preserve">
+    <value>مانده انتهای دوره</value>
+  </data>
+  <data name="EndBalanceCredit" xml:space="preserve">
+    <value>بستانکار</value>
+  </data>
+  <data name="EndBalanceDebit" xml:space="preserve">
+    <value>بدهکار</value>
+  </data>
+  <data name="OperationSum" xml:space="preserve">
+    <value>جمع عملیات</value>
+  </data>
+  <data name="OperationSumCredit" xml:space="preserve">
+    <value>بستانکار</value>
+  </data>
+  <data name="OperationSumDebit" xml:space="preserve">
+    <value>بدهکار</value>
+  </data>
+  <data name="StartBalance" xml:space="preserve">
+    <value>مانده ابتدای دوره</value>
+  </data>
+  <data name="StartBalanceCredit" xml:space="preserve">
+    <value>بستانکار</value>
+  </data>
+  <data name="StartBalanceDebit" xml:space="preserve">
+    <value>بدهکار</value>
+  </data>
+  <data name="Turnover" xml:space="preserve">
+    <value>گردش طی دوره</value>
+  </data>
+  <data name="TurnoverCredit" xml:space="preserve">
+    <value>بستانکار</value>
+  </data>
+  <data name="TurnoverDebit" xml:space="preserve">
+    <value>بدهکار</value>
+  </data>
 </root>
