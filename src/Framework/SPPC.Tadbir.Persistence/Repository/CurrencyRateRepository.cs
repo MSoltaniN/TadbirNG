@@ -126,6 +126,7 @@ namespace SPPC.Tadbir.Persistence
             rate.Date = rateViewModel.Date;
             rate.Time = rateViewModel.Time;
             rate.Multiplier = rateViewModel.Multiplier;
+            rate.Description = rateViewModel.Description;
         }
 
         /// <summary>

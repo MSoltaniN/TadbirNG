@@ -16,6 +16,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         }
 
         /// <summary>
+        /// شماره ردیف سطر در گزارش
+        /// </summary>
+        public int RowNo { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی حساب مورد استفاده در سطر گزارش
         /// </summary>
         public int AccountId { get; set; }

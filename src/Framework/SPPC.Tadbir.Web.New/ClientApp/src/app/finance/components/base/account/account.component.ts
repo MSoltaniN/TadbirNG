@@ -14,6 +14,8 @@ import { SettingService } from '@sppc/config/service';
 import { AccountApi } from '@sppc/finance/service/api';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
+import { SelectFormComponent } from '@sppc/shared/controls';
+import { Account } from '@sppc/finance/models';
 
 
 //#endregion
@@ -39,6 +41,10 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
   @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
   @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
+
+
+  strSearch: string;
+  selectedAccount: Account;
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
@@ -127,5 +133,36 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
     }
   }
 
+
+  openSelectForm() {
+    if (this.strSearch) {
+      this.dialogRef = this.dialogService.open({
+        content: SelectFormComponent,
+      });
+
+      this.dialogModel = this.dialogRef.content.instance;
+
+      this.dialogModel.viewID = this.viewId;
+      this.dialogModel.strSearch = this.strSearch;
+      this.dialogModel.isDisableEntities = true;
+
+      this.dialogRef.content.instance.cancel.subscribe((res) => {
+        this.dialogRef.close();
+      });
+
+      this.dialogRef.content.instance.result.subscribe((res) => {
+
+        this.selectedAccount = res.dataItem;
+        //this.selectedViewId = res.viewId;
+        //this.initValue();
+        this.dialogRef.close();
+      });
+    }
+  }
+
+  clearSearch() {
+    this.strSearch = undefined;
+    this.selectedAccount = undefined;
+  }
 }
 

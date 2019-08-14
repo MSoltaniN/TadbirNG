@@ -116,7 +116,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrenciesLookupAsync()
         {
             var currencyLookup = await _repository.GetCurrenciesAsync();
-            return Json(currencyLookup);
+            var localized = Localize(currencyLookup.ToList(), true);
+            return Json(localized);
+        }
+
+        // GET: api/lookup/currencies/info
+        [Route(LookupApi.CurrenciesInfoUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
+        public async Task<IActionResult> GetCurrenciesInfoLookupAsync()
+        {
+            var currencyLookup = await _repository.GetCurrenciesInfoAsync();
+            var localized = Localize(currencyLookup.ToList(), true);
+            return Json(localized);
         }
 
         // GET: api/lookup/companies/user/{userId:min(1)}
@@ -296,6 +307,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return isNameSorted
                 ? keyValues.OrderBy(kv => kv.Value).ToList()
                 : keyValues;
+        }
+
+        private IList<CurrencyInfoViewModel> Localize(IList<CurrencyInfoViewModel> items, bool isNameSorted = false)
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                items[i].Name = _strings[items[i].Name];
+            }
+
+            return isNameSorted
+                ? items.OrderBy(item => item.Name).ToList()
+                : items;
         }
 
         private string LocalizeLevelTitle(string title, int level)

@@ -63,6 +63,7 @@ CREATE TABLE [Finance].[CurrencyRate] (
     [Date]             DATETIME         NOT NULL,
     [Time]             TIME(7)          NOT NULL,
     [Multiplier]       FLOAT            NOT NULL,
+	[Description]    NVARCHAR(512)      NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CurrencyRate_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_CurrencyRate_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_CurrencyRate] PRIMARY KEY CLUSTERED ([CurrencyRateID] ASC)

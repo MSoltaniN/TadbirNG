@@ -263,6 +263,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<Currency, CurrencyInfoViewModel>()
+                .ForMember(dest => dest.LastRate, opts => opts.Ignore());
 
             mapperConfig.CreateMap<CurrencyRate, CurrencyRateViewModel>();
             mapperConfig.CreateMap<CurrencyRateViewModel, CurrencyRate>();
