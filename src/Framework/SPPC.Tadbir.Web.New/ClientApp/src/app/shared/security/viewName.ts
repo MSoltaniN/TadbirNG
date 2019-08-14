@@ -1,3 +1,4 @@
+import { TestBalanceApi } from "@sppc/finance/service/api/testBalanceApi";
 
 
 export enum ViewName {
@@ -31,5 +32,6 @@ export enum ViewName {
   AccountBookSingleSummary = 28,
   AccountBookSummary = 29,
   Currency = 30,
-  CurrencyRate = 31
+  CurrencyRate = 31,
+  TestBalance = 32
 }
