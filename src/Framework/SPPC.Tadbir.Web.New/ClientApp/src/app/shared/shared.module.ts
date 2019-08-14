@@ -134,7 +134,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput, SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective,
     FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker],
 
-  entryComponents: [TabComponent, SppcGridDatepicker],
+  entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent],
 
   //providers: [BrowserStorageService, DashboardService, GridService, LookupService, MetaDataService, ReportingService, 
   //  { provide: MessageService, useClass: GridMessageService },
