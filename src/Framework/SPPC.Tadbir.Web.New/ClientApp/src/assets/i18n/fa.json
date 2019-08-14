@@ -157,7 +157,8 @@
     "EndsWith": "از انتها",
     "SearchBy": "جستجو بر اساس",
     "DisplayableColumns": "فیلدها جهت نمایش",
-    "SearchType": "نوع جستجو"
+    "SearchType": "نوع جستجو",
+    "SearchTitle": "جستجو"
   },
   "Currency": {
     "New": "ارز جدید",

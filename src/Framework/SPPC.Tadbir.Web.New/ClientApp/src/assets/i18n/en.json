@@ -158,7 +158,8 @@
     "EndsWith": "From End",
     "SearchBy": "Search By",
     "DisplayableColumns": "Displayable Columns",
-    "SearchType": "Search Type"
+    "SearchType": "Search Type",
+    "SearchTitle": "Search"
   },
   "Currency": {
     "New": "New Currency",
