@@ -52,6 +52,11 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual short BranchScope { get; set; }
 
         /// <summary>
+        /// شرح تکمیلی برای نگهداری جزئیات بیشتر در مورد نرخ ارز
+        /// </summary>
+        public virtual string Description { get; set; }
+
+        /// <summary>
         /// ارزی که نرخ روزانه یا لحظه ای برای ان ثبت می شود
         /// </summary>
         public virtual Currency Currency { get; set; }

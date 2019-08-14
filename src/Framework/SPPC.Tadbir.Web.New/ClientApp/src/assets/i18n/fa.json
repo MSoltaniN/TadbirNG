@@ -180,7 +180,8 @@
     "Time": "زمان",
     "Rate": "نرخ ارز",
     "Name": "نام ارز",
-    "BranchName": "نام شعبه"
+    "BranchName": "نام شعبه",
+    "Description": "شرح"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",

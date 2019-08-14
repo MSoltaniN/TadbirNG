@@ -703,6 +703,12 @@
           <ColumnView name="Modified Date" visible="True" width="120" />
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="10/13/9378" format="yyyy-MM-dd" type="Value" />
         </Property>
+        <Property name="Description" type="String" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+        </Property>
       </Properties>
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" isRequired="True" joinTable="" description="ارزی که نرخ روزانه یا لحظه ای برای ان ثبت می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />

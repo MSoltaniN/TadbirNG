@@ -22,4 +22,5 @@ export interface CurrencyRate {
     date: Date;
     time: Time;
     multiplier: number;
+    description: string;
 }

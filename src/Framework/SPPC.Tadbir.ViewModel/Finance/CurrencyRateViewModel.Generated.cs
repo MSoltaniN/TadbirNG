@@ -50,5 +50,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public double Multiplier { get; set; }
+
+        /// <summary>
+        /// شرح تکمیلی برای نگهداری جزئیات بیشتر در مورد نرخ ارز
+        /// </summary>
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string Description { get; set; }
     }
 }

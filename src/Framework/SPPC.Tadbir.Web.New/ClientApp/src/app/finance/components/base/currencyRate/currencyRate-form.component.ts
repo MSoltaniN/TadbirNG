@@ -75,7 +75,8 @@ export class CurrencyRateFormComponent extends DetailComponent implements OnInit
       branchName: this.model.branchName,
       time: this.model.time,
       multiplier: this.model.multiplier,
-      date: this.model.date
+      date: this.model.date,
+      description: this.model.description
     });
   }
 
