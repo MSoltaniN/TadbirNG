@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -75,6 +76,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>مجموعه ارز های تعریف شده</returns>
         Task<IEnumerable<KeyValue>> GetCurrenciesAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کلی ارزهای تعریف شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ارز های تعریف شده</returns>
+        Task<IEnumerable<CurrencyInfoViewModel>> GetCurrenciesInfoAsync();
 
         /// <summary>
         /// به روش آسنکرون، شرکت های تعریف شده و قابل دسترسی توسط کاربر مشخص شده را به صورت مجموعه ای

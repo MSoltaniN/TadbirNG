@@ -14,6 +14,7 @@ using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -158,11 +159,35 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetCurrenciesAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
+            return await repository
+                .GetEntityQuery()
+                .Select(curr => Mapper.Map<KeyValue>(curr))
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کلی ارزهای تعریف شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ارز های تعریف شده</returns>
+        public async Task<IEnumerable<CurrencyInfoViewModel>> GetCurrenciesInfoAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Currency>();
             var currencies = await repository
-                .GetAllAsync();
-            return currencies
-                .OrderBy(curr => curr.Name)
-                .Select(curr => Mapper.Map<KeyValue>(curr));
+                .GetEntityQuery(curr => curr.Rates)
+                .ToListAsync();
+            var lookup = new List<CurrencyInfoViewModel>();
+            foreach (var currency in currencies)
+            {
+                var lookupItem = Mapper.Map<CurrencyInfoViewModel>(currency);
+                var lastRate = currency.Rates
+                    .OrderByDescending(rate => rate.Date)
+                    .ThenByDescending(rate => rate.Time)
+                    .FirstOrDefault();
+                lookupItem.LastRate = (lastRate != null) ? lastRate.Multiplier : 0.0F;
+                lookup.Add(lookupItem);
+            }
+
+            return lookup;
         }
 
         /// <summary>

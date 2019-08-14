@@ -110,6 +110,16 @@ namespace SPPC.Tadbir.Api
         public const string CurrenciesUrl = "lookup/currencies";
 
         /// <summary>
+        /// API client URL for lookup collection of all currencies with last rates
+        /// </summary>
+        public const string CurrenciesInfo = "lookup/currencies/info";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all currencies with last rates
+        /// </summary>
+        public const string CurrenciesInfoUrl = "lookup/currencies/info";
+
+        /// <summary>
         /// API client URL for lookup collection of all categories used in account groups
         /// </summary>
         public const string AccountGroupCategories = "lookup/accgroup/categories";
