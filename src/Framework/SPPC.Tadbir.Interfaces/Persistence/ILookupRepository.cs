@@ -80,8 +80,9 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات کلی ارزهای تعریف شده را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="withRate">مشخص می کند که آیا آخرین نرخ ثبت شده برای ارز مورد نیاز است یا نه؟</param>
         /// <returns>مجموعه ارز های تعریف شده</returns>
-        Task<IEnumerable<CurrencyInfoViewModel>> GetCurrenciesInfoAsync();
+        Task<IEnumerable<CurrencyInfoViewModel>> GetCurrenciesInfoAsync(bool withRate);
 
         /// <summary>
         /// به روش آسنکرون، شرکت های تعریف شده و قابل دسترسی توسط کاربر مشخص شده را به صورت مجموعه ای

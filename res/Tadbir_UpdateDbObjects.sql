@@ -236,7 +236,7 @@ ADD CONSTRAINT [FK_Finance_DetailAccount_Finance_Currency] FOREIGN KEY ([Currenc
     REFERENCES [Finance].[Currency]([CurrencyID]);
 GO
 
---1.1.688
+-- 1.1.688
 ALTER TABLE [Finance].[CurrencyRate]
 ADD [Description] NVARCHAR(512) NULL
 GO

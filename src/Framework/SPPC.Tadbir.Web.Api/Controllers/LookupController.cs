@@ -120,12 +120,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(localized);
         }
 
-        // GET: api/lookup/currencies/info
+        // GET: api/lookup/currencies/info[?withRate={true|false}]
         [Route(LookupApi.CurrenciesInfoUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
-        public async Task<IActionResult> GetCurrenciesInfoLookupAsync()
+        public async Task<IActionResult> GetCurrenciesInfoLookupAsync(bool withRate = true)
         {
-            var currencyLookup = await _repository.GetCurrenciesInfoAsync();
+            var currencyLookup = await _repository.GetCurrenciesInfoAsync(withRate);
             var localized = Localize(currencyLookup.ToList(), true);
             return Json(localized);
         }

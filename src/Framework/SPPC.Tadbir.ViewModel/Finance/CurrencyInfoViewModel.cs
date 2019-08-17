@@ -19,6 +19,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string Name { get; set; }
 
         /// <summary>
+        /// نمایه استاندارد بین المللی ارز، که معمولاً سه حرفی است
+        /// </summary>
+        public string Code { get; set; }
+
+        /// <summary>
         /// آخرین نرخ وارد شده نسبت به ارز پیش فرض برای ارز
         /// </summary>
         public double LastRate { get; set; }
