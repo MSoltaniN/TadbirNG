@@ -67,6 +67,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\core\models\index.ts" />
     <None Remove="ClientApp\src\app\core\services\index.ts" />
+    <None Remove="ClientApp\src\app\finance\enum\balance.ts" />
     <None Remove="ClientApp\src\app\finance\models\index.ts" />
     <None Remove="ClientApp\src\app\finance\service\api\index.ts" />
     <None Remove="ClientApp\src\app\finance\service\index.ts" />
@@ -819,6 +820,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\core\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\services\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\finance\enum\balance.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\api\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\index.ts" />
