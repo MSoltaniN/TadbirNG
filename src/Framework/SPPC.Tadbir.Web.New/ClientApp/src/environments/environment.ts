@@ -86,7 +86,12 @@ export const Entities = {
   AccountBookSingleSummary: "AccountBookSingleSummary",
   AccountBookSummary: "AccountBookSummary",
   Currency: "Currency",
-  CurrencyRate: 'CurrencyRate'
+  CurrencyRate: 'CurrencyRate',
+  TestBalance2Column: "TestBalance2Column",
+  TestBalance4Column: "TestBalance4Column",
+  TestBalance6Column: "TestBalance6Column",
+  TestBalance8Column: "TestBalance8Column",
+  TestBalance10Column: "TestBalance10Column",
 }
 
 export const ColumnVisibility =
