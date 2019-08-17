@@ -77,6 +77,15 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> CanDeleteCurrencyAsync(int currencyId);
 
         /// <summary>
+        /// به روش آسنکرون، تکراری بودن ارز مشخص شده توسط نمایه بین المللی را بررسی می کند
+        /// </summary>
+        /// <param name="code">نمایه بین المللی ارز مورد نظر</param>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اگر ارز مشخص شده قبلاً تعریف شده باشد مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsDuplicateCurrencyAsync(string code, int currencyId = 0);
+
+        /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>

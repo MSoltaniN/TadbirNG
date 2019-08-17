@@ -2583,4 +2583,7 @@
   <data name="TestBalance" xml:space="preserve">
     <value>Test balance</value>
   </data>
+  <data name="CurrencyAlreadyExists" xml:space="preserve">
+    <value>Currency with international code {0} already exists.</value>
+  </data>
 </root>

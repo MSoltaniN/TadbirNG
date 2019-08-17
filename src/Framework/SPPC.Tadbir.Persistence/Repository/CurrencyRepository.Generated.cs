@@ -189,6 +189,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تکراری بودن ارز مشخص شده توسط نمایه بین المللی را بررسی می کند
+        /// </summary>
+        /// <param name="code">نمایه بین المللی ارز مورد نظر</param>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اگر ارز مشخص شده قبلاً تعریف شده باشد مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsDuplicateCurrencyAsync(string code, int currencyId = 0)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Currency>();
+            var existing = await repository.GetFirstByCriteriaAsync(
+                curr => curr.Code == code && curr.Id != currencyId);
+            return existing != null;
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="currencyViewModel">مدل نمایشی شامل آخرین تغییرات</param>

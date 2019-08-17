@@ -117,6 +117,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            if (await _repository.IsDuplicateCurrencyAsync(currency.Code, currency.Id))
+            {
+                string message = _strings.Format(AppStrings.CurrencyAlreadyExists, currency.Code);
+                return BadRequest(message);
+            }
+
             _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCurrencyAsync(currency);
             return StatusCode(StatusCodes.Status201Created, outputItem);
@@ -155,6 +161,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            if (await _repository.IsDuplicateCurrencyAsync(currency.Code, currency.Id))
+            {
+                string message = _strings.Format(AppStrings.CurrencyAlreadyExists, currency.Code);
+                return BadRequest(message);
             }
 
             _repository.SetCurrentContext(SecurityContext.User);

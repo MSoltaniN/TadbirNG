@@ -479,6 +479,19 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
+        private static async Task<double> GetLastCurrencyRateAsync(
+            IAsyncRepository<Currency> repository, Currency currency)
+        {
+            await repository.LoadCollectionAsync(currency, curr => curr.Rates);
+            var lastRate = currency.Rates
+                .OrderByDescending(rate => rate.Date)
+                .ThenByDescending(rate => rate.Time)
+                .FirstOrDefault();
+            return lastRate != null
+                ? lastRate.Multiplier
+                : 0.0F;
+        }
+
         private IQueryable<User> GetUserQuery(int userId)
         {
             var repository = UnitOfWork.GetAsyncRepository<User>();
@@ -502,18 +515,6 @@ namespace SPPC.Tadbir.Persistence
                 .ToList();
             UnitOfWork.UseCompanyContext();
             return lookup;
-        }
-
-        private async Task<double> GetLastCurrencyRateAsync(IAsyncRepository<Currency> repository, Currency currency)
-        {
-            await repository.LoadCollectionAsync(currency, curr => curr.Rates);
-            var lastRate = currency.Rates
-                .OrderByDescending(rate => rate.Date)
-                .ThenByDescending(rate => rate.Time)
-                .FirstOrDefault();
-            return lastRate != null
-                ? lastRate.Multiplier
-                : 0.0F;
         }
     }
 }
