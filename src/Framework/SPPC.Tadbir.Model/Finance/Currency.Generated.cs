@@ -50,6 +50,11 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual string Code { get; set; }
 
         /// <summary>
+        /// کد ارز مرتبط مالیاتی
+        /// </summary>
+        public virtual int TaxCode { get; set; }
+
+        /// <summary>
         /// کلید متن چند زبانه برای نام ارز جزء مورد استفاده، که برای ارزهای خارجی معمولاً سنت است
         /// </summary>
         public virtual string MinorUnit { get; set; }

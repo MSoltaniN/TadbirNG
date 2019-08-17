@@ -36,6 +36,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Code)
                 .IsRequired()
                 .HasMaxLength(8);
+            builder.Property(e => e.TaxCode)
+                .IsRequired();
             builder.Property(e => e.MinorUnit)
                 .IsRequired()
                 .HasMaxLength(16);

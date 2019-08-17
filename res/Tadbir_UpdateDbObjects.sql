@@ -240,3 +240,10 @@ GO
 ALTER TABLE [Finance].[CurrencyRate]
 ADD [Description] NVARCHAR(512) NULL
 GO
+
+-- 1.1.692
+ALTER TABLE [Finance].[Currency]
+ADD [TaxCode] INT NOT NULL
+CONSTRAINT [DF_Finance_Currency_TaxCode] DEFAULT (0)
+WITH VALUES;
+GO

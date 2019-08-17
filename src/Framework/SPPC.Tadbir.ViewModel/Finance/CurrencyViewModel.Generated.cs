@@ -67,6 +67,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string Code { get; set; }
 
         /// <summary>
+        /// کد ارز مرتبط مالیاتی
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        public virtual int TaxCode { get; set; }
+
+        /// <summary>
         /// کلید متن چند زبانه برای نام ارز جزء مورد استفاده، که برای ارزهای خارجی معمولاً سنت است
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

@@ -43,6 +43,7 @@ CREATE TABLE [Finance].[Currency] (
     [Name]           NVARCHAR(64)     NOT NULL,
     [Country]        NVARCHAR(64)     NOT NULL,
     [Code]           NVARCHAR(8)      NOT NULL,
+    [TaxCode]        INT              NOT NULL,
     [MinorUnit]      NVARCHAR(16)     NOT NULL,
     [Multiplier]     INT              NOT NULL,
     [DecimalCount]   SMALLINT         NOT NULL,

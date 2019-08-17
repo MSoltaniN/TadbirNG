@@ -214,6 +214,7 @@ namespace SPPC.Tadbir.Persistence
             currency.Name = currencyViewModel.Name;
             currency.Country = currencyViewModel.Country;
             currency.Code = currencyViewModel.Code;
+            currency.TaxCode = currencyViewModel.TaxCode;
             currency.MinorUnit = currencyViewModel.MinorUnit;
             currency.Multiplier = currencyViewModel.Multiplier;
             currency.DecimalCount = currencyViewModel.DecimalCount;
