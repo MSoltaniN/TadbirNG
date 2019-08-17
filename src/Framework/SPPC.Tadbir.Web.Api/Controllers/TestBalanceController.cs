@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -319,15 +321,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #endregion
 
         private static TestBalanceParameters GetParameters(
-            string from, string to, TestBalanceFormat format, bool? byBranch)
+            string from, string to, TestBalanceFormat format, bool? byBranch, int branchId = 0)
         {
-            var parameters = new TestBalanceParameters() { Format = format };
-            if (DateTime.TryParse(from, out DateTime fromDate))
+            var parameters = new TestBalanceParameters() { Format = format, BranchId = branchId };
+            var culture = new CultureInfo("en");
+            if (DateTime.TryParse(from, culture, DateTimeStyles.None, out DateTime fromDate))
             {
                 parameters.FromDate = fromDate;
             }
 
-            if (DateTime.TryParse(to, out DateTime toDate))
+            if (DateTime.TryParse(to, culture, DateTimeStyles.None, out DateTime toDate))
             {
                 parameters.ToDate = toDate;
             }
@@ -354,7 +357,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string from, string to, bool? byBranch, int itemId = 0, int level = 0)
         {
             _repository.SetCurrentContext(SecurityContext.User);
-            var parameters = GetParameters(from, to, format, byBranch);
+            var gridOptions = GridOptions ?? new GridOptions();
+            int branchId = gridOptions.Filter.ToString().Contains("BranchId")
+                ? SecurityContext.User.BranchId
+                : 0;
+            var parameters = GetParameters(from, to, format, byBranch, branchId);
             var balance = default(TestBalanceViewModel);
             switch (mode)
             {
@@ -379,7 +386,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             SetItemCount(balance.Items.Count);
-            balance.SetBalanceItems(balance.Items.Apply(GridOptions).ToList());
+            balance.SetBalanceItems(balance.Items.Apply(gridOptions).ToList());
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
+            foreach (var balanceItem in balance.Items)
+            {
+                balanceItem.RowNo = rowNo++;
+            }
+
             return Json(balance);
         }
 

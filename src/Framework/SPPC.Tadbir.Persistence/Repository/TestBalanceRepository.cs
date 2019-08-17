@@ -66,7 +66,8 @@ namespace SPPC.Tadbir.Persistence
             var lines = await GetRawBalanceLinesAsync(parameters, lineFilter);
             foreach (var lineGroup in GetTurnoverGroups(lines, ViewName.Account, 0))
             {
-                testBalance.Items.Add(GetTwoAndFourColumnBalanceItem(lineGroup, ViewName.Account));
+                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
+                    lineGroup, lineGroup.Key));
             }
 
             if (parameters.Format >= TestBalanceFormat.SixColumn)
@@ -183,39 +184,49 @@ namespace SPPC.Tadbir.Persistence
             if (parameters.FromDate != null && parameters.ToDate != null)
             {
                 lines = await GetRawBalanceByDateLinesAsync(
-                    parameters.FromDate.Value, parameters.ToDate.Value, lineFilter);
+                    parameters.FromDate.Value, parameters.ToDate.Value, lineFilter, parameters.BranchId);
             }
             else if (parameters.FromNo != null && parameters.ToNo != null)
             {
                 lines = await GetRawBalanceByNoLinesAsync(
-                    parameters.FromNo.Value, parameters.ToNo.Value, lineFilter);
+                    parameters.FromNo.Value, parameters.ToNo.Value, lineFilter, parameters.BranchId);
             }
 
             return lines;
         }
 
         private async Task<IList<VoucherLine>> GetRawBalanceByDateLinesAsync(
-            DateTime from, DateTime to, Expression<Func<VoucherLine, bool>> lineFilter)
+            DateTime from, DateTime to, Expression<Func<VoucherLine, bool>> lineFilter, int branchId)
         {
-            return await _repository
+            var query = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date.IsBetween(from, to))
-                .Where(lineFilter)
-                .ToListAsync();
+                .Where(lineFilter);
+            if (branchId > 0)
+            {
+                query = query.Where(art => art.BranchId == branchId);
+            }
+
+            return await query.ToListAsync();
         }
 
         private async Task<IList<VoucherLine>> GetRawBalanceByNoLinesAsync(
-            int from, int to, Expression<Func<VoucherLine, bool>> lineFilter)
+            int from, int to, Expression<Func<VoucherLine, bool>> lineFilter, int branchId)
         {
-            return await _repository
+            var query = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.FiscalPeriodId == _currentContext.FiscalPeriodId
                     && art.Voucher.No >= from
                     && art.Voucher.No <= to)
-                .Where(lineFilter)
-                .ToListAsync();
+                .Where(lineFilter);
+            if (branchId > 0)
+            {
+                query = query.Where(art => art.BranchId == branchId);
+            }
+
+            return await query.ToListAsync();
         }
 
         private IEnumerable<IGrouping<string, VoucherLine>> GetTurnoverGroups(
@@ -228,21 +239,19 @@ namespace SPPC.Tadbir.Persistence
             return turnoverGroups;
         }
 
-        private TestBalanceItemViewModel GetTwoAndFourColumnBalanceItem(
-            IEnumerable<VoucherLine> lines, int viewId)
+        private async Task<TestBalanceItemViewModel> GetTwoAndFourColumnBalanceItemAsync(
+            IEnumerable<VoucherLine> lines, string fullCode)
         {
             var line = lines.First();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
             var balanceItem = new TestBalanceItemViewModel()
             {
-                AccountId = (viewId == ViewName.Account)
-                    ? line.AccountId
-                    : line.DetailId.Value,
-                AccountName = (viewId == ViewName.Account)
-                    ? line.Account.Name
-                    : line.DetailAccount.Name,
-                AccountFullCode = (viewId == ViewName.Account)
-                    ? line.Account.FullCode
-                    : line.DetailAccount.FullCode,
+                BranchId = line.BranchId,
+                BranchName = line.Branch.Name,
+                AccountId = account.Id,
+                AccountName = account.Name,
+                AccountFullCode = fullCode,
                 TurnoverDebit = lines.Sum(item => item.Debit),
                 TurnoverCredit = lines.Sum(item => item.Credit)
             };

@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Values
         public int? ToNo { get; set; }
 
         /// <summary>
+        /// در صورت گزارش گیری برای شعبه جاری، کد شعبه جاری و در غیر این صورت مقدار صفر دارد
+        /// </summary>
+        public int BranchId { get; set; }
+
+        /// <summary>
         /// مشخص می کند که آیا گزارش گیری باید به تفکیک شعبه انجام شود یا نه؟
         /// </summary>
         public bool IsByBranch { get; set; }
