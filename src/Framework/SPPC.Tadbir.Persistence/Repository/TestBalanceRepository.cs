@@ -25,6 +25,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
+        /// <param name="reportRepository">امکانات عمومی و مشترک در گزارش های مالی را تعریف می کند</param>
         /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         public TestBalanceRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecureRepository repository,
@@ -152,6 +153,29 @@ namespace SPPC.Tadbir.Persistence
             throw new NotImplementedException();
         }
 
+        private static void AddOperationSums(TestBalanceViewModel testBalance)
+        {
+            foreach (var item in testBalance.Items)
+            {
+                item.OperationSumDebit = item.StartBalanceDebit + item.TurnoverDebit;
+                item.OperationSumCredit = item.StartBalanceCredit + item.TurnoverCredit;
+            }
+        }
+
+        private static void SetItemsSummary(TestBalanceViewModel testBalance)
+        {
+            testBalance.Total.StartBalanceDebit = testBalance.Items.Sum(item => item.StartBalanceDebit);
+            testBalance.Total.StartBalanceCredit = testBalance.Items.Sum(item => item.StartBalanceDebit);
+            testBalance.Total.TurnoverDebit = testBalance.Items.Sum(item => item.TurnoverDebit);
+            testBalance.Total.TurnoverCredit = testBalance.Items.Sum(item => item.TurnoverCredit);
+            testBalance.Total.OperationSumDebit = testBalance.Items.Sum(item => item.OperationSumDebit);
+            testBalance.Total.OperationSumCredit = testBalance.Items.Sum(item => item.OperationSumCredit);
+            testBalance.Total.CorrectionsDebit = testBalance.Items.Sum(item => item.CorrectionsDebit);
+            testBalance.Total.CorrectionsCredit = testBalance.Items.Sum(item => item.CorrectionsCredit);
+            testBalance.Total.EndBalanceDebit = testBalance.Items.Sum(item => item.EndBalanceDebit);
+            testBalance.Total.EndBalanceCredit = testBalance.Items.Sum(item => item.EndBalanceCredit);
+        }
+
         private async Task<IList<VoucherLine>> GetRawBalanceLinesAsync(
             TestBalanceParameters parameters, Expression<Func<VoucherLine, bool>> lineFilter)
         {
@@ -236,29 +260,6 @@ namespace SPPC.Tadbir.Persistence
                 item.StartBalanceDebit = Math.Max(0, balance);
                 item.StartBalanceCredit = Math.Abs(Math.Min(0, balance));
             }
-        }
-
-        private void AddOperationSums(TestBalanceViewModel testBalance)
-        {
-            foreach (var item in testBalance.Items)
-            {
-                item.OperationSumDebit = item.StartBalanceDebit + item.TurnoverDebit;
-                item.OperationSumCredit = item.StartBalanceCredit + item.TurnoverCredit;
-            }
-        }
-
-        private void SetItemsSummary(TestBalanceViewModel testBalance)
-        {
-            testBalance.Total.StartBalanceDebit = testBalance.Items.Sum(item => item.StartBalanceDebit);
-            testBalance.Total.StartBalanceCredit = testBalance.Items.Sum(item => item.StartBalanceDebit);
-            testBalance.Total.TurnoverDebit = testBalance.Items.Sum(item => item.TurnoverDebit);
-            testBalance.Total.TurnoverCredit = testBalance.Items.Sum(item => item.TurnoverCredit);
-            testBalance.Total.OperationSumDebit = testBalance.Items.Sum(item => item.OperationSumDebit);
-            testBalance.Total.OperationSumCredit = testBalance.Items.Sum(item => item.OperationSumCredit);
-            testBalance.Total.CorrectionsDebit = testBalance.Items.Sum(item => item.CorrectionsDebit);
-            testBalance.Total.CorrectionsCredit = testBalance.Items.Sum(item => item.CorrectionsCredit);
-            testBalance.Total.EndBalanceDebit = testBalance.Items.Sum(item => item.EndBalanceDebit);
-            testBalance.Total.EndBalanceCredit = testBalance.Items.Sum(item => item.EndBalanceCredit);
         }
 
         private int GetLevelCodeLength(int viewId, int level)

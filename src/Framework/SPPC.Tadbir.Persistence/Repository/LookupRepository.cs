@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
@@ -169,21 +170,21 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات کلی ارزهای تعریف شده را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ارز های تعریف شده</returns>
-        public async Task<IEnumerable<CurrencyInfoViewModel>> GetCurrenciesInfoAsync()
+        public async Task<IEnumerable<CurrencyInfoViewModel>> GetCurrenciesInfoAsync(bool withRate)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
             var currencies = await repository
-                .GetEntityQuery(curr => curr.Rates)
+                .GetEntityWithTrackingQuery()
                 .ToListAsync();
             var lookup = new List<CurrencyInfoViewModel>();
             foreach (var currency in currencies)
             {
                 var lookupItem = Mapper.Map<CurrencyInfoViewModel>(currency);
-                var lastRate = currency.Rates
-                    .OrderByDescending(rate => rate.Date)
-                    .ThenByDescending(rate => rate.Time)
-                    .FirstOrDefault();
-                lookupItem.LastRate = (lastRate != null) ? lastRate.Multiplier : 0.0F;
+                if (withRate)
+                {
+                    lookupItem.LastRate = await GetLastCurrencyRateAsync(repository, currency);
+                }
+
                 lookup.Add(lookupItem);
             }
 
@@ -501,6 +502,18 @@ namespace SPPC.Tadbir.Persistence
                 .ToList();
             UnitOfWork.UseCompanyContext();
             return lookup;
+        }
+
+        private async Task<double> GetLastCurrencyRateAsync(IAsyncRepository<Currency> repository, Currency currency)
+        {
+            await repository.LoadCollectionAsync(currency, curr => curr.Rates);
+            var lastRate = currency.Rates
+                .OrderByDescending(rate => rate.Date)
+                .ThenByDescending(rate => rate.Time)
+                .FirstOrDefault();
+            return lastRate != null
+                ? lastRate.Multiplier
+                : 0.0F;
         }
     }
 }
