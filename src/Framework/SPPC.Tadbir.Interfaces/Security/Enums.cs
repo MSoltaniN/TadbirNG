@@ -848,7 +848,7 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
-    /// فلگ های تعریف شده برای دسترسی های امنیتی به دفتر حساب را تعریف می کند
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به تراز آزمایشی را تعریف می کند
     /// </summary>
     [Flags]
     public enum TestBalancePermissions

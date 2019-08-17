@@ -2568,4 +2568,10 @@
   <data name="TurnoverDebit" xml:space="preserve">
     <value>بدهکار</value>
   </data>
+  <data name="FinancialReports" xml:space="preserve">
+    <value>گزارش های مالی</value>
+  </data>
+  <data name="TestBalance" xml:space="preserve">
+    <value>تراز آزمایشی</value>
+  </data>
 </root>
