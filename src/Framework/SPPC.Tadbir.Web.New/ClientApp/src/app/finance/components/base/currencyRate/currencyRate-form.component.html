@@ -59,15 +59,24 @@
           </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6 sppc-float">
+        <div class="col-sm-6">
           <div class="form-group">
-            <label for="branchName" class="control-label">{{ 'CurrencyRate.Description' | translate }}</label>
+            <label for="branchScope" class="control-label">{{ 'CurrencyRate.BranchScope' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="description"/>
-
+            <sppc-branch-scope formControlName="branchScope" [isNew]="isNew" [isEnableInEditMode]="true"></sppc-branch-scope>
           </div>
         </div>
 
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12 sppc-float">
+          <div class="form-group">
+            <label for="branchName" class="control-label">{{ 'CurrencyRate.Description' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="description" />
+          </div>
+        </div>
       </div>
 
     </form>

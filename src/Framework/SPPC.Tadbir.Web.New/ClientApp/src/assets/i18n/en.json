@@ -182,7 +182,8 @@
     "Rate": "Exchange Rate",
     "Name": "Name",
     "BranchName": "Branch Name",
-    "Description": "Description"
+    "Description": "Description",
+    "BranchScope": "Branch Scope"
   },
   "AccountBook": {
     "DisplayByRow": "By Row",

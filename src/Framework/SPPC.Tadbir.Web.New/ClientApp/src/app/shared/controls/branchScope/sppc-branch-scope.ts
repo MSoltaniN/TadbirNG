@@ -10,7 +10,7 @@ interface Item {
 @Component({
   selector: 'sppc-branch-scope',
   template: `
-               <kendo-dropdownlist class="ddl-branch-scope" [data]="scopeData" [valuePrimitive]="true" [disabled]="!isNew"
+               <kendo-dropdownlist class="ddl-branch-scope" [data]="scopeData" [valuePrimitive]="true" [disabled]="!isNew && !isEnableInEditMode"
                                    [textField]="'value'" [(ngModel)]="scopeSelected" [value]="scopeSelected" [valueField]="'key'"
                                    (valueChange)="onPermissionChange($event)">        
                             <ng-template kendoDropDownListValueTemplate let-dataItem>
@@ -42,12 +42,13 @@ export class SppcBranchScope implements OnInit, ControlValueAccessor, Validator 
   public scopeData: Array<Item>;
   permission: number;
   scopeSelected: number;
-  _parentScope: number;
+  _parentScope: number = 0;
 
   @Input() set parentScope(ps: number) {
     this._parentScope = ps;
   }
   @Input() public isNew: boolean;
+  @Input() public isEnableInEditMode: boolean = false;
 
   propagateChange: any = () => { };
 
@@ -61,7 +62,6 @@ export class SppcBranchScope implements OnInit, ControlValueAccessor, Validator 
   }
 
   ngOnInit() {
-
     this.scopeData = this.scope.filter(f => f.key >= this._parentScope);
     if (this.isNew) {
       this.scopeSelected = this._parentScope;
@@ -69,7 +69,7 @@ export class SppcBranchScope implements OnInit, ControlValueAccessor, Validator 
       setTimeout(() => {
         this.propagateChange(this.scopeSelected);
       })
-    }   
+    }
   }
 
   onPermissionChange(e: any) {

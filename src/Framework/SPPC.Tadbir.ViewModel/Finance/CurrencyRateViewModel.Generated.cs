@@ -52,6 +52,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public double Multiplier { get; set; }
 
         /// <summary>
+        /// محدوده دسترسی به نرخ ارز را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل
+        /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
+        /// </summary>
+        public short BranchScope { get; set; }
+
+        /// <summary>
         /// شرح تکمیلی برای نگهداری جزئیات بیشتر در مورد نرخ ارز
         /// </summary>
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]

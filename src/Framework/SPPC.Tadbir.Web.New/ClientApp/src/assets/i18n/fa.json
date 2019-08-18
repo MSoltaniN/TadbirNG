@@ -182,7 +182,8 @@
     "Rate": "نرخ ارز",
     "Name": "نام ارز",
     "BranchName": "نام شعبه",
-    "Description": "شرح"
+    "Description": "شرح",
+    "BranchScope": "دسترسی شعب"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",

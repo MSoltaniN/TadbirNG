@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { String, DetailComponent } from '@sppc/shared/class';
-import { Currency, CurrencyRate } from '@sppc/finance/models';
+import { DetailComponent } from '@sppc/shared/class';
+import { CurrencyRate } from '@sppc/finance/models';
 import { CurrencyService } from '@sppc/finance/service';
-import { CurrencyApi } from '@sppc/finance/service/api';
 import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/shared/services';
-import { Entities, MessageType } from '@sppc/env/environment';
+import { Entities } from '@sppc/env/environment';
 import { ViewName } from '@sppc/shared/security';
 
 
@@ -29,6 +28,8 @@ import { ViewName } from '@sppc/shared/security';
 })
 
 export class CurrencyRateFormComponent extends DetailComponent implements OnInit {
+
+  parentScopeValue: number = 0;
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
@@ -76,9 +77,9 @@ export class CurrencyRateFormComponent extends DetailComponent implements OnInit
       time: this.model.time,
       multiplier: this.model.multiplier,
       date: this.model.date,
-      description: this.model.description
+      description: this.model.description,
+      branchScope: this.model.branchScope
     });
   }
-
 
 }

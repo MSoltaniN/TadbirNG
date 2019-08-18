@@ -30,6 +30,7 @@ export class CurrencyRateInfo implements CurrencyRate {
   date: Date;
   time: Time;
   multiplier: number;
+  branchScope: number;
   description: string;
 }
 
