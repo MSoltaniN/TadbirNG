@@ -15,8 +15,8 @@ export function getLayoutModule(layout: Layout) {
 }
 
 interface Item {
-  Key: string,
-  Value: string
+  key: string,
+  value: string
 }
 
 
@@ -42,6 +42,7 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
   parentFullCode: string = '';
   level: number = 0;
   currenciesRows: Array<Item>;
+  filteredCurrencies: Array<Item>;
   selectedCurrencyValue: string;
 
   @Input() public parent: DetailAccount;
@@ -56,7 +57,6 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
   //Events
   public onSave(e: any): void {
     e.preventDefault();
-    debugger;
     let model: DetailAccount = this.editForm.value;
     if (this.editForm.valid) {
       if (this.model.id > 0) {
@@ -120,9 +120,14 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
   getCurrencies() {
     this.lookupService.GetCurrenciesLookup().subscribe(res => {
       this.currenciesRows = res;
+      this.filteredCurrencies = res;
       if (this.model != undefined && this.model.currencyId != undefined) {
         this.selectedCurrencyValue = this.model.currencyId.toString();
       }
     })
+  }
+
+  handleFilter(value: any) {
+    this.filteredCurrencies = this.currenciesRows.filter((s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1);
   }
 }

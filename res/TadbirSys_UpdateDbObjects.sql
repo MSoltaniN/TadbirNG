@@ -317,5 +317,5 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 -- 1.1.695
 SET IDENTITY_INSERT [Metadata].[Column] ON
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (319, 6, N'CurrencyId', NULL, N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+    VALUES (319, 6, N'CurrencyId', NULL, N'System.Int32', N'int', N'number', 0, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF

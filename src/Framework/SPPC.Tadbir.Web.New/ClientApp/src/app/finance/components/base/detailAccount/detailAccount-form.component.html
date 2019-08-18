@@ -55,8 +55,17 @@
     <div class="form-group">
       <label for="currencyId" class="control-label">{{ 'DetailAccount.DefaultCurrency' | translate }}</label>
 
-      <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="sppc-width-100"
-                          [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'">
+      <kendo-dropdownlist [data]="filteredCurrencies"
+                          [filterable]="true"
+                          [valuePrimitive]="true"
+                          formControlName="currencyId"
+                          class="sppc-width-100"
+                          [textField]="'value'"
+                          [value]="selectedCurrencyValue"
+                          [(ngModel)]="selectedCurrencyValue"
+                          [valueField]="'key'"
+                          (filterChange)="handleFilter($event)"
+                          [defaultItem]="{ value: '', key: null }">
       </kendo-dropdownlist>
 
     </div>
