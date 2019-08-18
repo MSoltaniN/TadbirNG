@@ -105,10 +105,12 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
   }
 
   writeValue(value: any): void {
-    if (value) {
-
+    if (value != null && value!=undefined && value >= 0) {
       this.showValue = this.setComma(value);
       this.hiddenValue = this.showValue;
+    }
+    else {
+      this.showValue = undefined;
     }
   }
 

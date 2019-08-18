@@ -9,7 +9,7 @@ import { RelatedItems } from '@sppc/shared/models';
 import { Time } from '@angular/common';
 
 
-export class CurrencyInfo implements Currency {
+export class CurrencyEntity implements Currency {
   id: number = 0;
   name: string;
   country: string;

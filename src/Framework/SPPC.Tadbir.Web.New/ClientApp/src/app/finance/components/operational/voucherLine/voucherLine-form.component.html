@@ -1,5 +1,5 @@
 
-<div class="dialog-body">
+<div class="dialog-body" style="min-height: 395px;">
 
   <div style="padding:15px;" (keydown.esc)="escPress()">
     <div *ngIf="errorMessage">
@@ -30,13 +30,13 @@
               <div class="form-group row" *ngIf="creditDebiteMode == '1'">
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-                <sppc-numericInput formControlName="debit" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>
+                <sppc-numericInput formControlName="debit" (keyup)="onDebitChange()" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>
               </div>
 
               <div class="form-group row" *ngIf="creditDebiteMode == '2'">
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-                <sppc-numericInput formControlName="credit" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>
+                <sppc-numericInput formControlName="credit" (keyup)="onCreditChange()" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>
 
               </div>
             </div>
@@ -65,7 +65,7 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="form-group row">
-                <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float" style="padding: 0 10px;">{{ 'VoucherLine.ArticleType' | translate }}</label>
+                <label class="control-label col-xs-4 col-sm-3 sppc-float" style="padding: 0 10px;">{{ 'VoucherLine.ArticleType' | translate }}</label>
 
                 <kendo-dropdownlist [data]="voucherLineTypeList" class="col-xs-8 col-sm-9 sppc-float"
                                     [textField]="'value'"
@@ -100,22 +100,36 @@
       </div>
 
       <div>
-        <!--*ngIf="isDisplayCurrency"-->
 
         <hr />
 
         <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <input type="checkbox" id="currencyInfo" class="k-checkbox" [(ngModel)]="isDisplayCurrencyInfo" [ngModelOptions]="{standalone: true}" />
+              <label class="k-checkbox-label" for="currencyInfo">اطلاعات ارزی</label>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row" [hidden]="!isDisplayCurrencyInfo">
 
           <div class="col-xs-12 col-sm-4 sppc-float">
 
             <div class="form-group">
-
-              <input type="checkbox" id="approvedBy" class="k-checkbox" /> <!--[(ngModel)]="isApproved" (ngModelChange)="changeVoucherStatus('approve')"-->
-
               <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
-
-              <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-currency"
-                                  [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+              <kendo-dropdownlist [data]="currenciesRows"
+                                  class="ddl-currency"
+                                  [textField]="'name'"
+                                  [valueField]="'id'"
+                                  [valuePrimitive]="true"
+                                  [value]="selectedCurrencyValue"
+                                  [(ngModel)]="selectedCurrencyValue"
+                                  [ngModelOptions]="{standalone: true}"
+                                  (valueChange)="onChangeCurrency()"
+                                  formControlName="currencyId"
+                                  [defaultItem]="{ name: '', id: 0 }">
               </kendo-dropdownlist>
             </div>
 
@@ -124,14 +138,15 @@
           <div class="col-xs-12 col-sm-4 sppc-float">
             <div class="form-group">
               <label for="description" class="control-label">{{ 'VoucherLine.CurrencyValue' | translate }}</label>
-              <input type="text" formControlName="currencyValue" class="k-textbox" />
+              <sppc-numericInput formControlName="currencyValue" (keyup)="changeCurrencyValue()" class="sppc-input-num"></sppc-numericInput>
+
             </div>
           </div>
 
           <div class="col-xs-12 col-sm-4 sppc-float">
             <div class="form-group">
               <label for="description" class="control-label">{{ 'VoucherLine.CurrencyRate' | translate }}</label>
-              <input type="text" class="k-textbox" />
+              <sppc-numericInput [(ngModel)]="currencyRate" (ngModelChange)="onChangeCurrencyRate()" [ngModelOptions]="{standalone: true}" class="sppc-input-num"></sppc-numericInput>
             </div>
           </div>
 

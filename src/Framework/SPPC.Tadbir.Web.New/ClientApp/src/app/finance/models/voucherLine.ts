@@ -13,14 +13,15 @@
 import { FullAccount } from "./fullAccount";
 import { IEntity } from "@sppc/shared/models";
 
-export interface VoucherLine extends IEntity{
-    voucherId: number;
-    branchId: number;
-    fiscalPeriodId: number;
-    fullAccount: FullAccount;
-    currencyId?: number;
-    id: number;
-    description?: string;
-    debit: number;
-    credit: number;
+export interface VoucherLine extends IEntity {
+  voucherId: number;
+  branchId: number;
+  fiscalPeriodId: number;
+  fullAccount: FullAccount;
+  currencyId?: number;
+  id: number;
+  description?: string;
+  debit: number;
+  credit: number;
+  currencyValue?: number;
 }

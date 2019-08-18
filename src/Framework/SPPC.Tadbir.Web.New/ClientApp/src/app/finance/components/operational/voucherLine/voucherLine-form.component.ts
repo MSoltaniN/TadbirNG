@@ -3,13 +3,11 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { LookupService, MetaDataService, BrowserStorageService } from '@sppc/shared/services';
-import { VoucherLine } from '@sppc/finance/models';
+import { VoucherLine, CurrencyInfo } from '@sppc/finance/models';
 import { Entities } from '@sppc/env/environment';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
-
-
 
 
 
@@ -38,6 +36,9 @@ interface Item {
 })
 
 export class VoucherLineFormComponent extends DetailComponent implements OnInit {
+
+
+  currencyOption: boolean = true;//این فیلد برای تنظیمات تاثیر مبلغ ریالی و نرخ  و مبلغ ارز میباشد و باید از تنظیمات خوانده شود
 
   //TODO: create form with metadata
   public editForm1 = new FormGroup({
@@ -73,12 +74,15 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     })
   });
 
-  currenciesRows: Array<Item>;
+  currenciesRows: Array<CurrencyInfo>;
   voucherLineTypeList: Array<Item> = [];
 
-  selectedCurrencyValue: string | undefined;
+  selectedCurrencyValue: number;
   selectedArticleType: string = "0";
   creditDebiteMode: string = "1";
+
+  isDisplayCurrencyInfo: boolean = false;
+  currencyRate: number | undefined;
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
@@ -126,8 +130,9 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
     this.editForm1.reset(this.model);
 
-    this.getArticleType();
     this.GetCurrencies();
+    this.getArticleType();
+
 
     if (this.isNewBalance)
       if (this.balance > 0) {
@@ -146,7 +151,6 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
       else
         this.creditDebiteMode = "1";
     }
-
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
@@ -158,11 +162,15 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
 
   GetCurrencies() {
-    this.lookupService.GetCurrenciesLookup().subscribe(res => {
+    this.lookupService.GetLookup(LookupApi.CurrenciesInfo).subscribe(res => {
       this.currenciesRows = res;
 
       if (this.model != undefined && this.model.currencyId != undefined) {
-        this.selectedCurrencyValue = this.model.currencyId.toString();
+        this.isDisplayCurrencyInfo = true;
+        this.selectedCurrencyValue = this.model.currencyId;
+
+        var cdValue = this.model.credit > 0 ? this.model.credit : this.model.debit;
+        this.currencyRate = cdValue && this.model.currencyValue ? cdValue / this.model.currencyValue : undefined;
       }
 
     })
@@ -178,4 +186,135 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     this.setFocus.emit();
   }
 
+  onChangeCurrency() {
+    if (this.selectedCurrencyValue) {
+      var selectedCurrency = this.currenciesRows.find(f => f.id == this.selectedCurrencyValue);
+      this.currencyRate = selectedCurrency.lastRate;
+
+      if (this.editForm1.value.currencyValue) {
+
+        var cdValue = this.editForm1.value.currencyValue * this.currencyRate
+
+        if (this.creditDebiteMode == "1")
+          this.editForm1.patchValue({ debit: cdValue });
+        if (this.creditDebiteMode == "2")
+          this.editForm1.patchValue({ credit: cdValue });
+      }
+    }
+    else {
+      this.currencyRate = undefined;
+    }
+
+    if (this.selectedCurrencyValue == 0)
+      this.editForm1.patchValue({ currencyValue: undefined });
+  }
+
+  changeCurrencyValue() {
+
+    var cdValue = undefined;
+    if (this.creditDebiteMode == "1")
+      cdValue = this.editForm1.value.debit;
+    if (this.creditDebiteMode == "2")
+      cdValue = this.editForm1.value.credit;
+
+    var currencyValue = this.editForm1.value.currencyValue;
+
+    if (this.currencyOption) {
+
+      //#region آپشن فعال است و با تغییر مبلغ ارزی، مبلغ ریالی تغییر میکند
+
+      if (this.currencyRate) {
+        cdValue = currencyValue ? this.currencyRate * currencyValue : undefined;
+      }
+
+      if (this.creditDebiteMode == "1")
+        this.editForm1.patchValue({ debit: cdValue });
+
+      if (this.creditDebiteMode == "2")
+        this.editForm1.patchValue({ credit: cdValue });
+
+      //#endregion
+    }
+    else {
+      //#region آپشن غیرفعال است و با تغییر مبلغ ارزی، نرخ ارز تغییر میکند
+      if (this.selectedCurrencyValue) {
+        if (cdValue && currencyValue) {
+          this.currencyRate = cdValue / currencyValue;
+        }
+        else {
+          this.currencyRate = this.currenciesRows.find(f => f.id == this.selectedCurrencyValue).lastRate;
+        }
+      }
+      //endregion
+    }
+  }
+
+  onDebitChange() {
+    var currValue = this.editForm1.value.currencyValue;
+    var debit = this.editForm1.value.debit;
+    if (this.currencyOption) {
+      //#region آپشن فعال است و با تغییر مبلغ ریالی، مبلغ ارزی تغییر میکند      
+      if (this.currencyRate) {
+        currValue = debit ? debit / this.currencyRate : undefined;
+      }
+
+      this.editForm1.patchValue({ currencyValue: currValue });
+      //#endregion
+    }
+    else {
+      //#region آپشن غیرفعال است و با تغییر مبلغ ریالی، نرخ ارز تغییر میکند
+      if (this.selectedCurrencyValue) {
+        if (debit && currValue) {
+          this.currencyRate = debit / currValue;
+        }
+        else {
+          this.currencyRate = this.currenciesRows.find(f => f.id == this.selectedCurrencyValue).lastRate;
+        }
+      }
+      //endregion
+    }
+  }
+
+  onCreditChange() {
+    var currValue = this.editForm1.value.currencyValue;
+    var credit = this.editForm1.value.credit;
+    if (this.currencyOption) {
+      //#region آپشن فعال است و با تغییر مبلغ ریالی، مبلغ ارزی تغییر میکند      
+      if (this.currencyRate) {
+        currValue = credit ? credit / this.currencyRate : undefined;
+      }
+
+      this.editForm1.patchValue({ currencyValue: currValue });
+      //#endregion
+    }
+    else {
+      //#region آپشن غیرفعال است و با تغییر مبلغ ریالی، نرخ ارز تغییر میکند
+      if (this.selectedCurrencyValue) {
+        if (credit && currValue) {
+          this.currencyRate = credit / currValue;
+        }
+        else {
+          this.currencyRate = this.currenciesRows.find(f => f.id == this.selectedCurrencyValue).lastRate;
+        }
+      }
+      //endregion
+    }
+  }
+
+  onChangeCurrencyRate() {
+    var cdValue = undefined;
+    var currencyValue = this.editForm1.value.currencyValue;
+    if (this.currencyRate && currencyValue) {
+      cdValue = this.currencyRate * currencyValue;
+    }
+    else {
+      cdValue = undefined;
+    }
+
+    if (this.creditDebiteMode == "1")
+      this.editForm1.patchValue({ debit: cdValue });
+
+    if (this.creditDebiteMode == "2")
+      this.editForm1.patchValue({ credit: cdValue });
+  }
 }
