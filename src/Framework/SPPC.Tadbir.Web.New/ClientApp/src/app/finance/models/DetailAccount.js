@@ -9,20 +9,4 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
-
-export interface DetailAccount {
-    parentId?: number;
-    fiscalPeriodId: number;
-    branchId: number;
-    companyId: number;
-    childCount: number;
-    id: number;
-    branchScope: number;
-    code: string;
-    fullCode: string;
-    name: string;
-    level: number;
-    description?: string;
-    currencyId?: number;
-}
+//# sourceMappingURL=DetailAccount.js.map

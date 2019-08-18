@@ -754,7 +754,8 @@
     "BranchScope": "Branch Scope",
     "LedgerDetailAccount": "First Level Detail Accounts",
     "EditorTitleEdit": "Edit detail account in level {0}",
-    "EditorTitleNew": "New detail account in level {0}"
+    "EditorTitleNew": "New detail account in level {0}",
+    "DefaultCurrency": "Default Currency"
   },
   "CostCenter": {
     "New": "New Cost Center",

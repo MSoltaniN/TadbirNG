@@ -19,6 +19,7 @@ export class DetailAccountInfo implements DetailAccount {
     branchId: number = 0;
     companyId: number;
     branchScope: number = 0;
+    currencyId?: number;
 }
 
 @Injectable()

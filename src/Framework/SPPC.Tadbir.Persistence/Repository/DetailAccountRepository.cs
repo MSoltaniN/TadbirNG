@@ -343,6 +343,7 @@ namespace SPPC.Tadbir.Persistence
             detailAccount.Name = detailAccountViewModel.Name;
             detailAccount.Level = detailAccountViewModel.Level;
             detailAccount.Description = detailAccountViewModel.Description;
+            detailAccount.CurrencyId = detailAccountViewModel.CurrencyId;
         }
 
         private static string GetNewDetailAccountCode(

@@ -27,6 +27,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int CompanyId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی پول یا ارز مورد استفاده در این تفصیلی شناور
+        /// </summary>
+        public int? CurrencyId { get; set; }
+
+        /// <summary>
         /// تعداد شناورهای زیرمجموعه این تفصیلی شناور در ساختار درختی
         /// </summary>
         public int ChildCount { get; set; }

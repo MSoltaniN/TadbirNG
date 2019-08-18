@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
 import { DetailAccount } from '@sppc/finance/models';
 import { DefaultComponent, DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
@@ -41,6 +41,8 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
   parentScopeValue: number = 0;
   parentFullCode: string = '';
   level: number = 0;
+  currenciesRows: Array<Item>;
+  selectedCurrencyValue: string;
 
   @Input() public parent: DetailAccount;
   @Input() public model: DetailAccount;
@@ -54,7 +56,7 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
   //Events
   public onSave(e: any): void {
     e.preventDefault();
-
+    debugger;
     let model: DetailAccount = this.editForm.value;
     if (this.editForm.valid) {
       if (this.model.id > 0) {
@@ -88,6 +90,8 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
 
     this.editForm.reset();
 
+    this.getCurrencies();
+
     this.parentScopeValue = 0;
 
     if (this.parent) {
@@ -109,9 +113,16 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public lookupService: LookupService) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.DetailAccount, ViewName.DetailAccount);
   }
 
-
+  getCurrencies() {
+    this.lookupService.GetCurrenciesLookup().subscribe(res => {
+      this.currenciesRows = res;
+      if (this.model != undefined && this.model.currencyId != undefined) {
+        this.selectedCurrencyValue = this.model.currencyId.toString();
+      }
+    })
+  }
 }
