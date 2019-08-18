@@ -41,6 +41,11 @@ namespace SPPC.Tadbir.Model.Metadata
         public virtual string Name { get; set; }
 
         /// <summary>
+        /// گروه فیلد
+        /// </summary>
+        public virtual string GroupName { get; set; }
+
+        /// <summary>
         /// نوع کاربردی ستون در برنامه مانند مقدار، مبلغ یا رفرنس
         /// </summary>
         public virtual string Type { get; set; }
