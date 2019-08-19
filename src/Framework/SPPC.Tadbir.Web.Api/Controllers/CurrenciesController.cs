@@ -145,6 +145,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(sortedList);
         }
 
+        // GET: api/currencies/default/account/{accountId:min(1)}/faccount/{faccountId:min(1)}
+        [Route(CurrencyApi.DefaultCurrencyByFullAccountUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
+        public async Task<IActionResult> GetDefaultCurrencyByFullAccountAsync(int accountId, int faccountId)
+        {
+            var currencyInfo = await _repository.GetDefaultCurrencyAsync(accountId, faccountId);
+            return Json(currencyInfo);
+        }
+
         // POST: api/currencies
         [HttpPost]
         [Route(CurrencyApi.CurrenciesUrl)]

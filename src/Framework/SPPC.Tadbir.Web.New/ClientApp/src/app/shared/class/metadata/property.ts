@@ -14,4 +14,5 @@ export interface Property {
   expression: string;
   settings: string;
   visibility: string;
+  groupName: string;
 }

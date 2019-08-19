@@ -249,6 +249,9 @@
     "ToVoucher": "تا سند",
     "Closing": "اختتامیه",
     "CloseAccounts": "بستن حسابها",
+    "DebitSum": "جمع بدهکار",
+    "CreditSum": "جمع بستانکار",
+    "Sum": "مجموع",
     "Format": {
       "Balance2Column": "2 ستونی",
       "Balance4Column": "4 ستونی",

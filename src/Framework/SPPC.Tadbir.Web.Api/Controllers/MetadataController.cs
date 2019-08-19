@@ -58,6 +58,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         config.Large.Title =
                         config.Medium.Title =
                         config.Small.Title = _strings[column.Name];
+                    column.GroupName = _strings[column.GroupName ?? string.Empty];
                     column.Settings = JsonHelper.From(config, false);
                 }
             }
