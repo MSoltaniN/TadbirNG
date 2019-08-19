@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,18 +24,57 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class CurrenciesController : ValidatingController<CurrencyViewModel>
     {
         public CurrenciesController(ICurrencyRepository repository, ICurrencyRateRepository rateRepository,
-            IHostingEnvironment host, IStringLocalizer<AppStrings> strings = null)
+            IHostingEnvironment host, IHostingEnvironment hostingEnvironment, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
             _rateRepository = rateRepository;
             _host = host;
+
+            _hostingEnvironment = hostingEnvironment;
         }
 
         protected override string EntityNameKey
         {
             get { return AppStrings.Currency; }
         }
+
+        #region برای تست آپلود فایل میباشد
+        private IHostingEnvironment _hostingEnvironment;
+
+        [Route("currencies/test-upload")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> PostUploadAsync()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                string folderName = "Upload";
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                string newPath = Path.Combine(webRootPath, folderName);
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
+
+                if (file.Length > 0)
+                {
+                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    string fullPath = Path.Combine(newPath, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+
+                return Json("انجام شد");
+            }
+            catch (Exception ex)
+            {
+                return Json("خطا: " + ex.Message);
+            }
+        }
+        #endregion
 
         // GET: api/currencies
         [Route(CurrencyApi.CurrenciesUrl)]
