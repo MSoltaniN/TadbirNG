@@ -45,7 +45,19 @@
           <div class="form-group">
             <label for="" class="control-label">ارز مرتبط مالیاتی</label>
 
-            <input type="text" class="k-textbox" readonly/>
+            <input type="text" class="k-textbox related-currency" readonly />
+
+            <label for="file-upload" class="custom-file-upload">
+              <i class="fa fa-cloud-upload" *ngIf="progress == 0 || progress == 100" style="padding:2px 4px 2px !important;"></i>
+              <span class="upload-msg" *ngIf="progress > 0 && progress < 100">
+                {{progress}}%
+              </span>
+            </label>
+            <input #myInput id="file-upload" type="file" multiple (change)="onFileChange($event)" />
+
+            <span class="upload-msg" *ngIf="message">
+              {{message}}
+            </span>
 
           </div>
         </div>
