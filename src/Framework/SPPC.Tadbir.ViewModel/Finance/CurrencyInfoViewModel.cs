@@ -27,5 +27,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// آخرین نرخ وارد شده نسبت به ارز پیش فرض برای ارز
         /// </summary>
         public double LastRate { get; set; }
+
+        /// <summary>
+        /// تعداد ارقام اعشار مورد نیاز برای ارز
+        /// </summary>
+        public short DecimalCount { get; set; }
     }
 }

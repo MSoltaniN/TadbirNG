@@ -50,6 +50,14 @@ namespace SPPC.Tadbir.Persistence
         IList<KeyValue> GetCurrencyNamesLookup(string localDbPath);
 
         /// <summary>
+        /// به روش آسنکرون، ارز پیش فرض برای یک بردار حساب با حساب و شناور مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب در بردار حساب مورد نظر</param>
+        /// <param name="faccountId">شناسه دیتابیسی مولفه تفصیلی شناور در بردار حساب مورد نظر</param>
+        /// <returns>اطلاعات ارز پیش فرض برای بردار حساب مشخص شده</returns>
+        Task<CurrencyInfoViewModel> GetDefaultCurrencyAsync(int accountId, int faccountId);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک ارز را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="currency">ارز مورد نظر برای ایجاد یا اصلاح</param>

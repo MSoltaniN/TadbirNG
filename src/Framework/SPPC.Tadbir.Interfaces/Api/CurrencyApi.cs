@@ -67,5 +67,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all currency names as key-value items
         /// </summary>
         public const string CurrencyNamesLookupUrl = "currencies/names/lookup";
+
+        /// <summary>
+        /// API client URL for default currency usable for an account and a detail account
+        /// </summary>
+        public const string DefaultCurrencyByFullAccount = "currencies/default/account/{0}/faccount/{1}";
+
+        /// <summary>
+        /// API client URL for default currency usable for an account and a detail account
+        /// </summary>
+        public const string DefaultCurrencyByFullAccountUrl = "currencies/default/account/{accountId:min(1)}/faccount/{faccountId:min(1)}";
     }
 }
