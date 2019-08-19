@@ -32,10 +32,5 @@ namespace SPPC.Tadbir.Values
         /// تراز آزمایشی در سطح تفصیلی های یک حساب معین
         /// </summary>
         SubsidiaryItems = 4,
-
-        /// <summary>
-        /// تراز آزمایشی برای یکی از سطوح تفصیلی شناور
-        /// </summary>
-        DetailAccountLevel = 5
     }
 }
