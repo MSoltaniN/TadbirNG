@@ -159,6 +159,40 @@
 
     </kendo-grid-column>
 
+    <kendo-grid-column-group title="{{ gcn.groupName }}" *ngFor="let gcn of gridGroupColumnNames"  media="(min-width: 450px)">
+      <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of getColumnRows(gcn)"
+                         sppc-auto-grid-column="{{ item.settings }}">
+
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-auto-grid-filter [metaData]="item.scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
+        </ng-template>
+
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'Date'">
+          {{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate  }}
+        </ng-template>
+
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean'">
+          {{ getRowValue(item.name,dataItem,item.scriptType)  }}
+        </ng-template>
+
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
+          {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
+        </ng-template>
+
+        <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Credit'">
+          {{ creditSum | SppcNumConfig | async }}
+        </ng-template>
+
+        <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Debit'">
+          {{ debitSum | SppcNumConfig | async }}
+        </ng-template>
+
+        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">
+          <input class="k-textbox" [formControl]="formGroup.get(column.field)">
+        </ng-template>
+
+      </kendo-grid-column>
+    </kendo-grid-column-group>
   </kendo-grid>
 
   <div class="section-option col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
@@ -192,7 +226,7 @@
                                 [valuePrimitive]="true"
                                 [value]="formatSelected"
                                 [(ngModel)]="formatSelected"
-                                (ngModelChange)="changeParam()">
+                                (ngModelChange)="changeFormatType()">
               <ng-template kendoDropDownListValueTemplate let-dataItem>
                 {{ dataItem?.value | translate }}
               </ng-template>
