@@ -45,7 +45,7 @@ export const Metadatas = {
   JournalByNoByRowDetail: "journalbynobyrowdetail",
   JournalByNoByLedger: "journalbynobyledger",
   JournalByNoBySubsidiary: "journalbynobysubsidiary",
-  JournalByNoSummary: "journalbynosummary"
+  JournalByNoSummary: "journalbynosummary"  
 }
 
 
@@ -87,11 +87,11 @@ export const Entities = {
   AccountBookSummary: "AccountBookSummary",
   Currency: "Currency",
   CurrencyRate: 'CurrencyRate',
-  TestBalance2Column: "TestBalance2Column",
-  TestBalance4Column: "TestBalance4Column",
-  TestBalance6Column: "TestBalance6Column",
-  TestBalance8Column: "TestBalance8Column",
-  TestBalance10Column: "TestBalance10Column",
+  TestBalance2Column: 'TestBalance2Column',
+  TestBalance4Column: 'TestBalance4Column',
+  TestBalance6Column: 'TestBalance6Column',
+  TestBalance8Column: 'TestBalance8Column',
+  TestBalance10Column: 'TestBalance10Column'
 }
 
 export const ColumnVisibility =

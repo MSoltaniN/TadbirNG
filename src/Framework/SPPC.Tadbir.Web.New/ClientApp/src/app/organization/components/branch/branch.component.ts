@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +15,10 @@ import { GridService, BrowserStorageService, MetaDataService } from '@sppc/share
 import { SettingService } from '@sppc/config/service';
 import { ViewName } from '@sppc/shared/security';
 import { RelatedItems } from '@sppc/shared/models';
+import { ViewIdentifierComponent, ReportViewerComponent } from '@sppc/shared/components';
+import { GridComponent } from '@progress/kendo-angular-grid';
+import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -33,6 +37,12 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class BranchComponent extends AutoGridExplorerComponent<Branch> implements OnInit {
+
+  @ViewChild(GridComponent) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
