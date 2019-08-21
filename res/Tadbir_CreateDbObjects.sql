@@ -73,6 +73,16 @@ CREATE TABLE [Finance].[CurrencyRate] (
 )
 GO
 
+CREATE TABLE [Finance].[TaxCurrency] (
+    [TaxCurrencyID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Code]            INT              NOT NULL,
+    [Name]            NVARCHAR(64)     NOT NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_TaxCurrency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_TaxCurrency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_TaxCurrency] PRIMARY KEY CLUSTERED ([TaxCurrencyID] ASC)
+)
+GO
+
 CREATE TABLE [Core].[DocumentType] (
     [TypeID]                INT              IDENTITY (1, 1) NOT NULL,
     [Name]                  NVARCHAR(64)     NOT NULL,

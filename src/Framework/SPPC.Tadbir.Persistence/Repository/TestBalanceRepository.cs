@@ -209,7 +209,7 @@ namespace SPPC.Tadbir.Persistence
             testBalance.Total.EndBalanceCredit = testBalance.Items.Sum(item => item.EndBalanceCredit);
         }
 
-        private async Task<TestBalanceViewModel> GetGeneraBalanceAsync(
+        private async Task<TestBalanceViewModel> GetGeneralBalanceAsync(
             TestBalanceMode mode, TestBalanceParameters parameters)
         {
             var testBalance = new TestBalanceViewModel();

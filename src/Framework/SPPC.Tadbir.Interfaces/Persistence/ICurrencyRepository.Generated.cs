@@ -58,6 +58,18 @@ namespace SPPC.Tadbir.Persistence
         Task<CurrencyInfoViewModel> GetDefaultCurrencyAsync(int accountId, int faccountId);
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ارزهای مالیاتی تعریف شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>ارزهای مالیاتی تعریف شده در دیتابیس شرکت جاری</returns>
+        Task<IList<TaxCurrencyViewModel>> GetTaxCurrenciesAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، ارزهای مالیاتی تعریف شده در شرکت جاری را به روزرسانی می کند
+        /// </summary>
+        /// <param name="mdbPath">مسیر فایل بانک اطلاعاتی اکسس مرتبط با ارزهای مالیاتی</param>
+        Task UpdateTaxCurrenciesAsync(string mdbPath);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک ارز را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="currency">ارز مورد نظر برای ایجاد یا اصلاح</param>

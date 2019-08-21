@@ -300,7 +300,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> TestBalanceResultAsync(TestBalanceMode mode, TestBalanceFormat format,
-            string from, string to, bool? byBranch, int itemId = 0, int level = 0)
+            string from, string to, bool? byBranch, int itemId = 0)
         {
             if (format == TestBalanceFormat.TenColumn)
             {

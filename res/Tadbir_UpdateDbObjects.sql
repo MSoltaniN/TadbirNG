@@ -247,3 +247,15 @@ ADD [TaxCode] INT NOT NULL
 CONSTRAINT [DF_Finance_Currency_TaxCode] DEFAULT (0)
 WITH VALUES;
 GO
+
+-- 1.1.699
+CREATE TABLE [Finance].[TaxCurrency] (
+    [TaxCurrencyID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Code]            INT              NOT NULL,
+    [Name]            NVARCHAR(64)     NOT NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_TaxCurrency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_TaxCurrency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_TaxCurrency] PRIMARY KEY CLUSTERED ([TaxCurrencyID] ASC)
+)
+GO
+
