@@ -146,7 +146,7 @@
           <div class="col-xs-12 col-sm-4 sppc-float">
             <div class="form-group">
               <label for="description" class="control-label">{{ 'VoucherLine.CurrencyRate' | translate }}</label>
-              <sppc-numericInput [(ngModel)]="currencyRate" (ngModelChange)="onChangeCurrencyRate()" [ngModelOptions]="{standalone: true}" class="sppc-input-num"></sppc-numericInput>
+              <sppc-numericInput [(ngModel)]="currencyRate" (ngModelChange)="onChangeCurrencyRate()" [decimalCount]="decimalCount" [ngModelOptions]="{standalone: true}" class="sppc-input-num"></sppc-numericInput>
             </div>
           </div>
 

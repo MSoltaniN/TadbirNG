@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت ارزها را تعریف میکند
     /// </summary>
-    public interface ICurrencyRepository
+    public interface ICurrencyRepository : IRepositoryBase
     {
         /// <summary>
         /// به روش آسنکرون، کلیه ارزها را خوانده و برمی گرداند
@@ -48,6 +48,26 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="localDbPath">مسیر فیزیکی فایل استاتیک بانک اطلاعاتی ارزهای استاندارد</param>
         /// <returns>مجموعه ای از همه ارزهای معتبر شناخته شده</returns>
         IList<KeyValue> GetCurrencyNamesLookup(string localDbPath);
+
+        /// <summary>
+        /// به روش آسنکرون، ارز پیش فرض برای یک بردار حساب با حساب و شناور مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب در بردار حساب مورد نظر</param>
+        /// <param name="faccountId">شناسه دیتابیسی مولفه تفصیلی شناور در بردار حساب مورد نظر</param>
+        /// <returns>اطلاعات ارز پیش فرض برای بردار حساب مشخص شده</returns>
+        Task<CurrencyInfoViewModel> GetDefaultCurrencyAsync(int accountId, int faccountId);
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ارزهای مالیاتی تعریف شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>ارزهای مالیاتی تعریف شده در دیتابیس شرکت جاری</returns>
+        Task<IList<TaxCurrencyViewModel>> GetTaxCurrenciesAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، ارزهای مالیاتی تعریف شده در شرکت جاری را به روزرسانی می کند
+        /// </summary>
+        /// <param name="mdbPath">مسیر فایل بانک اطلاعاتی اکسس مرتبط با ارزهای مالیاتی</param>
+        Task UpdateTaxCurrenciesAsync(string mdbPath);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک ارز را ایجاد یا اصلاح می کند

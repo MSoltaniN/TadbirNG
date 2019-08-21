@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -25,6 +26,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="connection">رشته اتصال دیتابیسی مورد نظر</param>
         public void SwitchCompanyContext(string connection)
         {
+            Verify.ArgumentNotNullOrEmptyString(connection, nameof(connection));
             CompanyContext = new TadbirContext(connection);
         }
 

@@ -20,6 +20,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// رشته اتصال مرتبط با شرکت جاری را برمی گرداند
+        /// </summary>
+        public string CompanyConnection
+        {
+            get { return _contextAccessor.CompanyContext.ConnectionString; }
+        }
+
+        /// <summary>
         /// دیتابیس جاری را مطابق با رشته اتصال دیتابیسی داده شده تنظیم می کند
         /// </summary>
         /// <param name="connection">رشته اتصال دیتابیسی مورد نظر</param>

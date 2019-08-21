@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { FiscalPeriodApi } from '@sppc/organization/service/api';
 import { String, BaseService } from '@sppc/shared/class';
 import { Currency, CurrencyRate } from '@sppc/finance/models';
 import { RelatedItems } from '@sppc/shared/models';
 import { Time } from '@angular/common';
+import { environment } from '@sppc/env/environment';
 
 
 export class CurrencyEntity implements Currency {
@@ -57,6 +58,18 @@ export class CurrencyService extends BaseService {
     return this.http.put(url, body, options)
       .map(res => res)
       .catch(this.handleError);
+  }
+
+  postFile(file: File) {
+    var currentContext = this.bStorageService.getCurrentUser();
+    const apiUrl = environment.BaseUrl + "/currencies/test-upload";
+    const formData: FormData = new FormData();
+    formData.append(file.name, file, file.name);
+    formData.append("X-Tadbir-AuthTicket", currentContext ? currentContext.ticket : "");
+
+    const uploadReq = new HttpRequest('POST', apiUrl, formData, { reportProgress: true, });
+
+    return this.http.request(uploadReq);
   }
 
 }

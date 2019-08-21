@@ -24,8 +24,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="connectionString">Database connection to use for this context</param>
         public TadbirContext(string connectionString)
         {
-            _connectionString = connectionString;
+            ConnectionString = connectionString;
         }
+
+        /// <summary>
+        /// Gets the connection string currently set in this data context
+        /// </summary>
+        public string ConnectionString { get; }
 
         /// <summary>
         /// Performs entity mappings required for converting data between object and relational forms
@@ -61,6 +66,7 @@ namespace SPPC.Tadbir.Persistence
             RoleFiscalPeriodMap.BuildMapping(modelBuilder.Entity<RoleFiscalPeriod>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
+            TaxCurrencyMap.BuildMapping(modelBuilder.Entity<TaxCurrency>());
             VoucherMap.BuildMapping(modelBuilder.Entity<Voucher>());
             VoucherLineMap.BuildMapping(modelBuilder.Entity<VoucherLine>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
@@ -79,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="optionsBuilder">Builder used for configuring data context</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_connectionString);
+            optionsBuilder.UseSqlServer(ConnectionString);
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -116,7 +122,6 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        private string _connectionString;
         private bool _disposed = false;
     }
 }

@@ -15,6 +15,7 @@ namespace SPPC.Tadbir.Values
         {
             Format = TestBalanceFormat.SixColumn;
             IsByBranch = false;
+            Options = TestBalanceOptions.None;
         }
 
         /// <summary>
@@ -51,5 +52,10 @@ namespace SPPC.Tadbir.Values
         /// مشخص می کند که آیا گزارش گیری باید به تفکیک شعبه انجام شود یا نه؟
         /// </summary>
         public bool IsByBranch { get; set; }
+
+        /// <summary>
+        /// گزینه های عملیاتی مورد نیاز در گزارش
+        /// </summary>
+        public TestBalanceOptions Options { get; set; }
     }
 }

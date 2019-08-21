@@ -10,6 +10,11 @@ namespace SPPC.Tadbir.Persistence
     public interface IAppUnitOfWork : IUnitOfWork
     {
         /// <summary>
+        /// رشته اتصال مرتبط با شرکت جاری را برمی گرداند
+        /// </summary>
+        string CompanyConnection { get; }
+
+        /// <summary>
         /// واحد کاری را برای ارتباط با دیتابیس شرکت جاری تنظیم می کند
         /// </summary>
         void UseCompanyContext();

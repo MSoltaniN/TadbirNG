@@ -266,60 +266,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        #region DetailAccount Level reports
-
-        // GET: api/testbal/detail/level/{levelId:min(1)}/2-col
-        [Route(TestBalanceApi.TwoColumnDetailLevelBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTwoColumnDetailLevelBalanceAsync(
-            int level, string from, string to, bool? byBranch)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.DetailAccountLevel, TestBalanceFormat.TwoColumn,
-                from, to, byBranch, 0, level);
-        }
-
-        // GET: api/testbal/detail/level/{levelId:min(1)}/4-col
-        [Route(TestBalanceApi.FourColumnDetailLevelBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetFourColumnDetailLevelBalanceAsync(
-            int level, string from, string to, bool? byBranch)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.DetailAccountLevel, TestBalanceFormat.FourColumn,
-                from, to, byBranch, 0, level);
-        }
-
-        // GET: api/testbal/detail/level/{levelId:min(1)}/6-col
-        [Route(TestBalanceApi.SixColumnDetailLevelBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetSixColumnDetailLevelBalanceAsync(
-            int level, string from, string to, bool? byBranch)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.DetailAccountLevel, TestBalanceFormat.SixColumn,
-                from, to, byBranch, 0, level);
-        }
-
-        // GET: api/testbal/detail/level/{levelId:min(1)}/8-col
-        [Route(TestBalanceApi.EightColumnDetailLevelBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetEightColumnDetailLevelBalanceAsync(
-            int level, string from, string to, bool? byBranch)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.DetailAccountLevel, TestBalanceFormat.EightColumn,
-                from, to, byBranch, 0, level);
-        }
-
-        // GET: api/testbal/detail/level/{levelId:min(1)}/10-col
-        [Route(TestBalanceApi.TenColumnDetailLevelBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTenColumnDetailLevelBalanceAsync(
-            int level, string from, string to, bool? byBranch)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.DetailAccountLevel, TestBalanceFormat.TenColumn,
-                from, to, byBranch, 0, level);
-        }
-
-        #endregion
-
         private static TestBalanceParameters GetParameters(
             string from, string to, TestBalanceFormat format, bool? byBranch, int branchId = 0)
         {
@@ -354,8 +300,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> TestBalanceResultAsync(TestBalanceMode mode, TestBalanceFormat format,
-            string from, string to, bool? byBranch, int itemId = 0, int level = 0)
+            string from, string to, bool? byBranch, int itemId = 0)
         {
+            if (format == TestBalanceFormat.TenColumn)
+            {
+                return NotFound();      // 10-column balance modes are temporarily disabled (until further notice)
+            }
+
             _repository.SetCurrentContext(SecurityContext.User);
             var gridOptions = GridOptions ?? new GridOptions();
             int branchId = gridOptions.Filter.ToString().Contains("BranchId")
@@ -379,9 +330,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     break;
                 case TestBalanceMode.SubsidiaryItems:
                     balance = await _repository.GetSubsidiaryItemsBalanceAsync(itemId, parameters);
-                    break;
-                case TestBalanceMode.DetailAccountLevel:
-                    balance = await _repository.GetDetailAccountLevelBalanceAsync(level, parameters);
                     break;
             }
 

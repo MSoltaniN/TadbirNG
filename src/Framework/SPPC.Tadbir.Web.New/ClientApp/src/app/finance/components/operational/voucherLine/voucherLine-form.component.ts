@@ -5,10 +5,11 @@ import { ToastrService } from 'ngx-toastr';
 import { LookupService, MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { VoucherLine, CurrencyInfo } from '@sppc/finance/models';
 import { Entities } from '@sppc/env/environment';
-import { DetailComponent } from '@sppc/shared/class';
+import { DetailComponent, String } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
-
+import { CurrencyService } from '@sppc/finance/service';
+import { CurrencyApi } from '@sppc/finance/service/api';
 
 
 interface Item {
@@ -83,6 +84,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   isDisplayCurrencyInfo: boolean = false;
   currencyRate: number | undefined;
+  decimalCount: number = 0;
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
@@ -94,9 +96,43 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   @Output() save: EventEmitter<{ model: VoucherLine, isOpen: boolean }> = new EventEmitter();
   @Output() setFocus: EventEmitter<any> = new EventEmitter();
 
-  //create properties
 
-  //Events
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService, public currencyService: CurrencyService,
+    public lookupService: LookupService, public renderer: Renderer2, public metadata: MetaDataService) {
+
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.VoucherLine, ViewName.VoucherLine);
+
+  }
+
+  ngOnInit(): void {
+
+    this.editForm1.reset(this.model);
+
+    this.getCurrencies();
+    this.getArticleType();
+
+
+    if (this.isNewBalance)
+      if (this.balance > 0) {
+        this.editForm1.patchValue({ 'credit': Math.abs(this.balance) });
+        this.creditDebiteMode = "2";
+      }
+      else
+        if (this.balance < 0) {
+          this.editForm1.patchValue({ 'debit': Math.abs(this.balance) });
+          this.creditDebiteMode = "1";
+        }
+
+    if (!this.isNew) {
+      if (this.model.credit > 0)
+        this.creditDebiteMode = "2";
+      else
+        this.creditDebiteMode = "1";
+    }
+
+    this.onChangeFullAccount();
+  }
+
   public onSave(e: any, isOpen: boolean): void {
     e.preventDefault();
     if (this.editForm1.valid) {
@@ -124,44 +160,8 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   escPress() {
     this.cancel.emit();
   }
-  //Events
 
-  ngOnInit(): void {
-
-    this.editForm1.reset(this.model);
-
-    this.GetCurrencies();
-    this.getArticleType();
-
-
-    if (this.isNewBalance)
-      if (this.balance > 0) {
-        this.editForm1.patchValue({ 'credit': Math.abs(this.balance) });
-        this.creditDebiteMode = "2";
-      }
-      else
-        if (this.balance < 0) {
-          this.editForm1.patchValue({ 'debit': Math.abs(this.balance) });
-          this.creditDebiteMode = "1";
-        }
-
-    if (!this.isNew) {
-      if (this.model.credit > 0)
-        this.creditDebiteMode = "2";
-      else
-        this.creditDebiteMode = "1";
-    }
-  }
-
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public lookupService: LookupService, public renderer: Renderer2, public metadata: MetaDataService) {
-
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.VoucherLine, ViewName.VoucherLine);
-
-  }
-
-
-  GetCurrencies() {
+  getCurrencies() {
     this.lookupService.GetLookup(LookupApi.CurrenciesInfo).subscribe(res => {
       this.currenciesRows = res;
 
@@ -171,6 +171,9 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
         var cdValue = this.model.credit > 0 ? this.model.credit : this.model.debit;
         this.currencyRate = cdValue && this.model.currencyValue ? cdValue / this.model.currencyValue : undefined;
+
+        var currency = this.currenciesRows.find(f => f.id == this.model.currencyId);
+        this.decimalCount = currency ? currency.decimalCount : 0;
       }
 
     })
@@ -189,6 +192,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   onChangeCurrency() {
     if (this.selectedCurrencyValue) {
       var selectedCurrency = this.currenciesRows.find(f => f.id == this.selectedCurrencyValue);
+      this.decimalCount = selectedCurrency.decimalCount;
       this.currencyRate = selectedCurrency.lastRate;
 
       if (this.editForm1.value.currencyValue) {
@@ -202,6 +206,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
       }
     }
     else {
+      this.decimalCount = 0;
       this.currencyRate = undefined;
     }
 
@@ -316,5 +321,19 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
     if (this.creditDebiteMode == "2")
       this.editForm1.patchValue({ credit: cdValue });
+  }
+
+  onChangeFullAccount(): void {
+    this.editForm1.get('fullAccount').valueChanges.subscribe(val => {
+      if (!this.selectedCurrencyValue) {
+        this.currencyService.getModels(String.Format(CurrencyApi.DefaultCurrencyByFullAccount, val.account.id, val.detailAccount.id)).subscribe(res => {
+          if (res) {
+            this.selectedCurrencyValue = res.id;
+            var currency = this.currenciesRows.find(f => f.id == res.id);
+            this.currencyRate = currency.lastRate;
+          }
+        })
+      }
+    });
   }
 }

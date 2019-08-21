@@ -88,19 +88,4 @@ export class TestBalanceApi {
 
     // testbal/subsid/{accountId:min(1)}/items/10-col
     public static TenColumnSubsidiaryItemsBalance = environment.BaseUrl + "/testbal/subsid/{0}/items/10-col";
-
-    // testbal/detail/level/{levelId:min(1)}/2-col
-    public static TwoColumnDetailLevelBalance = environment.BaseUrl + "/testbal/detail/level/{0}/2-col";
-
-    // testbal/detail/level/{levelId:min(1)}/4-col
-    public static FourColumnDetailLevelBalance = environment.BaseUrl + "/testbal/detail/level/{0}/4-col";
-
-    // testbal/detail/level/{levelId:min(1)}/6-col
-    public static SixColumnDetailLevelBalance = environment.BaseUrl + "/testbal/detail/level/{0}/6-col";
-
-    // testbal/detail/level/{levelId:min(1)}/8-col
-    public static EightColumnDetailLevelBalance = environment.BaseUrl + "/testbal/detail/level/{0}/8-col";
-
-    // testbal/detail/level/{levelId:min(1)}/10-col
-    public static TenColumnDetailLevelBalance = environment.BaseUrl + "/testbal/detail/level/{0}/10-col";
 }

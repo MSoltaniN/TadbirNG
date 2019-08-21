@@ -9,11 +9,4 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
-
-export interface CurrencyInfo {
-    id: number;
-    name: string;
-    lastRate: number;
-    decimalCount: number;
-}
+//# sourceMappingURL=currencyInfo.js.map

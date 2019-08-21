@@ -50,14 +50,6 @@ namespace SPPC.Tadbir.Persistence
         Task<TestBalanceViewModel> GetSubsidiaryItemsBalanceAsync(int accountId, TestBalanceParameters parameters);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی برای یکی از سطوح تفصیلی شناور را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="level">شماره سطح مورد نظر از تفصیلی های شناور برای گزارش گیری</param>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        Task<TestBalanceViewModel> GetDetailAccountLevelBalanceAsync(int level, TestBalanceParameters parameters);
-
-        /// <summary>
         /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>

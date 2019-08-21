@@ -27,10 +27,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        /// <param name="access">امکان کار با دیتابیس های برنامه اکسس را فراهم می کند</param>
         public CurrencyRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper,
-            IMetadataRepository metadata, IOperationLogRepository log)
+            IMetadataRepository metadata, IOperationLogRepository log, IAccessRepository access)
             : base(unitOfWork, mapper, metadata, log)
         {
+            _access = access;
         }
 
         /// <summary>
@@ -115,6 +117,66 @@ namespace SPPC.Tadbir.Persistence
                 .Select(name => new KeyValue(name, name))
                 .ToList();
             return names;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارز پیش فرض برای یک بردار حساب با حساب و شناور مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی مولفه حساب در بردار حساب مورد نظر</param>
+        /// <param name="faccountId">شناسه دیتابیسی مولفه تفصیلی شناور در بردار حساب مورد نظر</param>
+        /// <returns>اطلاعات ارز پیش فرض برای بردار حساب مشخص شده</returns>
+        public async Task<CurrencyInfoViewModel> GetDefaultCurrencyAsync(int accountId, int faccountId)
+        {
+            var currency = default(CurrencyInfoViewModel);
+            var detailRepository = UnitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await detailRepository.GetByIDAsync(faccountId, facc => facc.Currency);
+            if (detailAccount != null && detailAccount.CurrencyId.HasValue)
+            {
+                currency = Mapper.Map<CurrencyInfoViewModel>(detailAccount.Currency);
+            }
+            else
+            {
+                var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
+                var account = await accountRepository.GetFirstByCriteriaAsync(
+                    acc => acc.Id == accountId, acc => acc.Currency);
+                if (account != null && account.CurrencyId.HasValue)
+                {
+                    currency = Mapper.Map<CurrencyInfoViewModel>(account.Currency);
+                }
+            }
+
+            return currency;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ارزهای مالیاتی تعریف شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>ارزهای مالیاتی تعریف شده در دیتابیس شرکت جاری</returns>
+        public async Task<IList<TaxCurrencyViewModel>> GetTaxCurrenciesAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TaxCurrency>();
+            return await repository
+                .GetEntityQuery()
+                .OrderBy(curr => curr.Name)
+                .Select(curr => Mapper.Map<TaxCurrencyViewModel>(curr))
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارزهای مالیاتی تعریف شده در شرکت جاری را به روزرسانی می کند
+        /// </summary>
+        /// <param name="mdbPath">مسیر فایل بانک اطلاعاتی اکسس مرتبط با ارزهای مالیاتی</param>
+        public async Task UpdateTaxCurrenciesAsync(string mdbPath)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TaxCurrency>();
+            repository.ExecuteCommand("TRUNCATE TABLE [Finance].[TaxCurrency]");
+            var taxItems = await _access.GetAllAsync<TaxCurrencyViewModel>(mdbPath, "Arz");
+            foreach (var taxItem in taxItems)
+            {
+                repository.Insert(Mapper.Map<TaxCurrency>(taxItem));
+            }
+
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -261,5 +323,7 @@ Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLi
                 .CountAsync();
             return (usageCount != 0);
         }
+
+        private readonly IAccessRepository _access;
     }
 }

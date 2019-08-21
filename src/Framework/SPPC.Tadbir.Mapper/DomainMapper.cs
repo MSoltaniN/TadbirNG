@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using AutoMapper;
 using SPPC.Framework.Common;
@@ -253,10 +254,13 @@ namespace SPPC.Tadbir.Mapper
                             new[] { "VoucherLineDisplay", src.Debit.ToString("C0"), src.Credit.ToString("C0"), src.Description })));
             mapperConfig.CreateMap<VoucherLine, VoucherLineAmountsViewModel>();
 
+            mapperConfig.CreateMap<Currency, CurrencyViewModel>()
+                .ForMember(dest => dest.MinorUnitKey, opts => opts.MapFrom(src => src.MinorUnit));
             mapperConfig.CreateMap<CurrencyInfo, CurrencyViewModel>()
                 .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.Currency.Code))
                 .ForMember(dest => dest.DecimalCount, opts => opts.MapFrom(src => src.Currency.DecimalCount))
                 .ForMember(dest => dest.MinorUnit, opts => opts.MapFrom(src => src.Currency.MinorUnitKey))
+                .ForMember(dest => dest.MinorUnitKey, opts => opts.MapFrom(src => src.Currency.MinorUnitKey))
                 .ForMember(dest => dest.Multiplier, opts => opts.MapFrom(src => Math.Pow(10, src.Currency.DecimalCount)))
                 .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Currency.NameKey));
             mapperConfig.CreateMap<CurrencyViewModel, Currency>();
@@ -283,6 +287,11 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<AccountItemBriefViewModel, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+
+            mapperConfig.CreateMap<TaxCurrencyViewModel, TaxCurrency>();
+            mapperConfig.CreateMap<DbDataReader, TaxCurrencyViewModel>()
+                .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src["Code"]))
+                .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src["Name"]));
         }
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)

@@ -281,59 +281,5 @@ namespace SPPC.Tadbir.Api
         public const string TenColumnSubsidiaryItemsBalanceUrl = "testbal/subsid/{accountId:min(1)}/items/10-col";
 
         #endregion
-
-        #region DetailAccount Level reports
-
-        /// <summary>
-        /// Client URL for two-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string TwoColumnDetailLevelBalance = "testbal/detail/level/{0}/2-col";
-
-        /// <summary>
-        /// Server route URL for two-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string TwoColumnDetailLevelBalanceUrl = "testbal/detail/level/{levelId:min(1)}/2-col";
-
-        /// <summary>
-        /// Client URL for four-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string FourColumnDetailLevelBalance = "testbal/detail/level/{0}/4-col";
-
-        /// <summary>
-        /// Server route URL for four-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string FourColumnDetailLevelBalanceUrl = "testbal/detail/level/{levelId:min(1)}/4-col";
-
-        /// <summary>
-        /// Client URL for six-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string SixColumnDetailLevelBalance = "testbal/detail/level/{0}/6-col";
-
-        /// <summary>
-        /// Server route URL for six-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string SixColumnDetailLevelBalanceUrl = "testbal/detail/level/{levelId:min(1)}/6-col";
-
-        /// <summary>
-        /// Client URL for eight-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string EightColumnDetailLevelBalance = "testbal/detail/level/{0}/8-col";
-
-        /// <summary>
-        /// Server route URL for eight-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string EightColumnDetailLevelBalanceUrl = "testbal/detail/level/{levelId:min(1)}/8-col";
-
-        /// <summary>
-        /// Client URL for ten-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string TenColumnDetailLevelBalance = "testbal/detail/level/{0}/10-col";
-
-        /// <summary>
-        /// Server route URL for ten-column test balance report for all detail accounts in a specific level
-        /// </summary>
-        public const string TenColumnDetailLevelBalanceUrl = "testbal/detail/level/{levelId:min(1)}/10-col";
-
-        #endregion
     }
 }
