@@ -12,6 +12,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
@@ -65,6 +66,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     {
                         file.CopyTo(stream);
                     }
+
+                    var ticket = Request.Form[AppConstants.ContextHeaderName];
+                    var context = SecurityContextFromTicket(ticket);
+                    _repository.CompanyConnection = context.User.Connection;
+                    await _repository.UpdateTaxCurrenciesAsync(fullPath);
                 }
 
                 return Json("انجام شد");
@@ -84,6 +90,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
             var currencies = await _repository.GetCurrenciesAsync(GridOptions);
+            foreach (var currency in currencies)
+            {
+                Localize(currency);
+            }
+
             return Json(currencies);
         }
 

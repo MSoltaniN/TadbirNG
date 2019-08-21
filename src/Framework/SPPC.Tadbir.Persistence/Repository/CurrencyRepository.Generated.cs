@@ -27,10 +27,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        /// <param name="access">امکان کار با دیتابیس های برنامه اکسس را فراهم می کند</param>
         public CurrencyRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper,
-            IMetadataRepository metadata, IOperationLogRepository log)
+            IMetadataRepository metadata, IOperationLogRepository log, IAccessRepository access)
             : base(unitOfWork, mapper, metadata, log)
         {
+            _access = access;
         }
 
         /// <summary>
@@ -152,7 +154,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>ارزهای مالیاتی تعریف شده در دیتابیس شرکت جاری</returns>
         public async Task<IList<TaxCurrencyViewModel>> GetTaxCurrenciesAsync()
         {
-            throw new NotImplementedException();
+            var repository = UnitOfWork.GetAsyncRepository<TaxCurrency>();
+            return await repository
+                .GetEntityQuery()
+                .OrderBy(curr => curr.Name)
+                .Select(curr => Mapper.Map<TaxCurrencyViewModel>(curr))
+                .ToListAsync();
         }
 
         /// <summary>
@@ -161,7 +168,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mdbPath">مسیر فایل بانک اطلاعاتی اکسس مرتبط با ارزهای مالیاتی</param>
         public async Task UpdateTaxCurrenciesAsync(string mdbPath)
         {
-            throw new NotImplementedException();
+            var repository = UnitOfWork.GetAsyncRepository<TaxCurrency>();
+            repository.ExecuteCommand("TRUNCATE TABLE [Finance].[TaxCurrency]");
+            var taxItems = await _access.GetAllAsync<TaxCurrencyViewModel>(mdbPath, "Arz");
+            foreach (var taxItem in taxItems)
+            {
+                repository.Insert(Mapper.Map<TaxCurrency>(taxItem));
+            }
+
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -308,5 +323,7 @@ Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLi
                 .CountAsync();
             return (usageCount != 0);
         }
+
+        private readonly IAccessRepository _access;
     }
 }

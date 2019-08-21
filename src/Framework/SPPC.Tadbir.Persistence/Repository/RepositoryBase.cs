@@ -27,6 +27,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// رشته اتصال مرتبط با شرکت جاری
+        /// </summary>
+        public string CompanyConnection
+        {
+            get
+            {
+                return UnitOfWork.CompanyConnection;
+            }
+            set
+            {
+                if (!String.IsNullOrEmpty(value))
+                {
+                    UnitOfWork.SwitchCompany(value);
+                }
+            }
+        }
+
+        /// <summary>
         /// پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی
         /// </summary>
         protected IAppUnitOfWork UnitOfWork { get; }
@@ -66,11 +84,6 @@ namespace SPPC.Tadbir.Persistence
             _currentContext = userContext;
         }
 
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
-        /// </summary>
-        protected UserContextViewModel _currentContext;
-
         private static string BuildConnectionString(CompanyDb company)
         {
             var builder = new StringBuilder();
@@ -87,5 +100,10 @@ namespace SPPC.Tadbir.Persistence
 
             return builder.ToString();
         }
+
+        /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
+        /// </summary>
+        protected UserContextViewModel _currentContext;
     }
 }

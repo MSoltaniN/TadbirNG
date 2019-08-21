@@ -29,6 +29,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return GetGridOptions(); }
         }
 
+        protected static SecurityContext SecurityContextFromTicket(string ticket)
+        {
+            var json = Encoding.UTF8.GetString(Transform.FromBase64String(ticket));
+            return JsonHelper.To<SecurityContext>(json);
+        }
+
         protected void SetItemCount(int count)
         {
             Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
@@ -78,8 +84,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return null;
             }
 
-            var json = Encoding.UTF8.GetString(Transform.FromBase64String(context));
-            return JsonHelper.To<SecurityContext>(json);
+            return SecurityContextFromTicket(context);
         }
 
         private GridOptions GetGridOptions()

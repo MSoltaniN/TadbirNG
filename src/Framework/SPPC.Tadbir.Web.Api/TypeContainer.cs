@@ -87,6 +87,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ICurrencyRepository, CurrencyRepository>();
             _services.AddTransient<ICurrencyRateRepository, CurrencyRateRepository>();
             _services.AddTransient<ITestBalanceRepository, TestBalanceRepository>();
+            _services.AddTransient<IAccessRepository, AccessRepository>();
         }
 
         private void AddServiceTypes()

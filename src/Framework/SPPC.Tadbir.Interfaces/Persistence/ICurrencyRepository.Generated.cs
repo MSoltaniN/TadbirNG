@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت ارزها را تعریف میکند
     /// </summary>
-    public interface ICurrencyRepository
+    public interface ICurrencyRepository : IRepositoryBase
     {
         /// <summary>
         /// به روش آسنکرون، کلیه ارزها را خوانده و برمی گرداند

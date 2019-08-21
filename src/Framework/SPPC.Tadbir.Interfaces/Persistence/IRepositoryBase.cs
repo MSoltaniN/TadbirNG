@@ -10,6 +10,11 @@ namespace SPPC.Tadbir.Persistence
     public interface IRepositoryBase
     {
         /// <summary>
+        /// رشته اتصال مرتبط با شرکت جاری
+        /// </summary>
+        string CompanyConnection { get; set; }
+
+        /// <summary>
         /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
         /// </summary>
         /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
