@@ -29,11 +29,18 @@ import { KeyCode } from '@sppc/shared/enum';
 export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator {
 
   @Input() cssClass: string = "";
+  @Input() set decimalCount(decCount: number) {
+    this.deciCount = 0
+    if (decCount)
+      this.deciCount = decCount;
+  }
+
 
   private parseError: boolean = false;
 
   showValue: string;
   hiddenValue: string;
+  deciCount: number;
 
   constructor() { }
 
@@ -97,6 +104,9 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
   setComma(num: string): string {
     var parts = num.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (parts.length > 1 && this.deciCount) {
+      parts[1] = parts[1].substr(0, this.deciCount);
+    }
     return parts.join(".");
   }
 
@@ -105,7 +115,7 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
   }
 
   writeValue(value: any): void {
-    if (value != null && value!=undefined && value >= 0) {
+    if (value != null && value != undefined && value >= 0) {
       this.showValue = this.setComma(value);
       this.hiddenValue = this.showValue;
     }

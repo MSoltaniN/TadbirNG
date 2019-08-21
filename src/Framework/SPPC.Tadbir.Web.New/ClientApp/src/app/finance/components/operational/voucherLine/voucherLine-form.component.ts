@@ -10,7 +10,6 @@ import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 
 
-
 interface Item {
   Key: string,
   Value: string
@@ -38,7 +37,7 @@ interface Item {
 export class VoucherLineFormComponent extends DetailComponent implements OnInit {
 
 
-  currencyOption: boolean = true;//این فیلد برای تنظیمات تاثیر مبلغ ریالی و نرخ  و مبلغ ارز میباشد و باید از تنظیمات خوانده شود
+  currencyOption: boolean = false;//این فیلد برای تنظیمات تاثیر مبلغ ریالی و نرخ  و مبلغ ارز میباشد و باید از تنظیمات خوانده شود
 
   //TODO: create form with metadata
   public editForm1 = new FormGroup({
@@ -83,6 +82,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   isDisplayCurrencyInfo: boolean = false;
   currencyRate: number | undefined;
+  decimalCount: number = 0;
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
@@ -130,7 +130,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
     this.editForm1.reset(this.model);
 
-    this.GetCurrencies();
+    this.getCurrencies();
     this.getArticleType();
 
 
@@ -161,7 +161,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   }
 
 
-  GetCurrencies() {
+  getCurrencies() {
     this.lookupService.GetLookup(LookupApi.CurrenciesInfo).subscribe(res => {
       this.currenciesRows = res;
 
@@ -171,6 +171,9 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
         var cdValue = this.model.credit > 0 ? this.model.credit : this.model.debit;
         this.currencyRate = cdValue && this.model.currencyValue ? cdValue / this.model.currencyValue : undefined;
+
+        var currency = this.currenciesRows.find(f => f.id == this.model.currencyId);
+        this.decimalCount = currency ? currency.decimalCount : 0;
       }
 
     })
@@ -189,6 +192,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   onChangeCurrency() {
     if (this.selectedCurrencyValue) {
       var selectedCurrency = this.currenciesRows.find(f => f.id == this.selectedCurrencyValue);
+      this.decimalCount = selectedCurrency.decimalCount;
       this.currencyRate = selectedCurrency.lastRate;
 
       if (this.editForm1.value.currencyValue) {
@@ -202,6 +206,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
       }
     }
     else {
+      this.decimalCount = 0;
       this.currencyRate = undefined;
     }
 
