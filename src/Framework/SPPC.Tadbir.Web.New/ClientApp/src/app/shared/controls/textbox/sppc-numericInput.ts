@@ -9,7 +9,7 @@ import { KeyCode } from '@sppc/shared/enum';
 @Component({
   selector: 'sppc-numericInput',
   template: `
-<input type="text" [(ngModel)]="showValue" (ngModelChange)="changeValue()" [OnlyNumber] class="k-textbox num-input" [ngClass]="cssClass" (keydown)="keyPress($event.keyCode)"/>
+<input type="text" [(ngModel)]="showValue" (ngModelChange)="changeValue()" [OnlyNumber] class="k-textbox num-input" [ngClass]="cssClass" (keyup)="keyPress($event)"/>
 `,
   styles: [`.num-input { width:100% }`],
   providers: [
@@ -49,8 +49,8 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
 
   propagateChange: any = () => { };
 
-  keyPress(keyCode: any) {
-    switch (keyCode) {
+  keyPress(event: any) {
+    switch (event.keyCode) {
       case KeyCode.Plus: {
         var show = this.removeComma(this.showValue);
         this.showValue = (parseInt(show) * 100).toString()
@@ -80,31 +80,53 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
         break;
       }
       default:
-        break;
+        {
+          this.showValue = this.removeComma(this.showValue);
+          this.hiddenValue = this.showValue;
+          if (this.showValue) {
+            this.showValue = this.setComma(this.showValue, event);
+
+            this.parseError = false;
+          }
+          else {
+            this.parseError = true;
+          }
+
+          this.hiddenValue = this.removeComma(this.showValue);
+
+          break;
+        }
     }
+
     this.propagateChange(this.hiddenValue);
   }
 
   changeValue() {
-    this.showValue = this.removeComma(this.showValue);
-    this.hiddenValue = this.showValue;
-    if (this.showValue) {
-      this.showValue = this.setComma(this.showValue);
+    //this.showValue = (parseInt(this.showValue) + 2).toString();
+    //this.showValue = this.removeComma(this.showValue);
+    //this.hiddenValue = this.showValue;
+    //if (this.showValue) {
+    //  this.showValue = this.setComma(this.showValue);
 
-      this.parseError = false;
-    }
-    else {
-      this.parseError = true;
-    }
+    //  this.parseError = false;
+    //}
+    //else {
+    //  this.parseError = true;
+    //}
 
-    this.propagateChange(this.hiddenValue);
+    //this.hiddenValue = this.removeComma(this.showValue);
+    //debugger;
+    //this.propagateChange(this.hiddenValue);
 
   }
 
-  setComma(num: string): string {
+  setComma(num: string, event?: any): string {
     var parts = num.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     if (parts.length > 1 && this.deciCount) {
+      if (parts[1].length > this.deciCount && event) {
+        event.preventDefault();
+      }
       parts[1] = parts[1].substr(0, this.deciCount);
     }
     return parts.join(".");

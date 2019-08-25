@@ -26,6 +26,7 @@
                                 [(ngModel)]="selectedCurrencyName"
                                 (valueChange)="onChangeCurrency($event)"
                                 (filterChange)="handleFilter($event)"
+                                formControlName="name"
                                 [ngModelOptions]="{standalone: true}">
             </kendo-dropdownlist>
           </div>
