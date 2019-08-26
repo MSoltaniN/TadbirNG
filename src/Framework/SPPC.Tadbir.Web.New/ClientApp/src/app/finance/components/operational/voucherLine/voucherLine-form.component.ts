@@ -212,7 +212,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     }
 
     if (this.selectedCurrencyValue == 0)
-      this.editForm1.patchValue({ currencyId: undefined; currencyValue: undefined });
+      this.editForm1.patchValue({ currencyId: undefined, currencyValue: undefined });
   }
 
   changeCurrencyValue() {
