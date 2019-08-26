@@ -30,6 +30,15 @@ namespace SPPC.Tadbir.Persistence
         Task<decimal> GetAccountBalanceAsync(int accountId, DateTime date);
 
         /// <summary>
+        /// به روش آسنکرون، مانده حساب مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        Task<decimal> GetAccountBalanceAsync(int accountId, int number);
+
+        /// <summary>
         /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
@@ -37,6 +46,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         Task<decimal> GetDetailAccountBalanceAsync(int faccountId, DateTime date);
+
+        /// <summary>
+        /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
+        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        Task<decimal> GetDetailAccountBalanceAsync(int faccountId, int number);
 
         /// <summary>
         /// به روش آسنکرون، مانده مرکز هزینه مشخص شده را محاسبه کرده و برمی گرداند
@@ -48,6 +66,15 @@ namespace SPPC.Tadbir.Persistence
         Task<decimal> GetCostCenterBalanceAsync(int ccenterId, DateTime date);
 
         /// <summary>
+        /// به روش آسنکرون، مانده مرکز هزینه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        Task<decimal> GetCostCenterBalanceAsync(int ccenterId, int number);
+
+        /// <summary>
         /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
@@ -55,6 +82,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         Task<decimal> GetProjectBalanceAsync(int projectId, DateTime date);
+
+        /// <summary>
+        /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
+        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        Task<decimal> GetProjectBalanceAsync(int projectId, int number);
 
         /// <summary>
         /// به روش آسنکرون، تاریخ سند سیستمی با نوع داده شده را خوانده و برمی گرداند

@@ -24,13 +24,8 @@ namespace SPPC.Tadbir.Values
         Detail = 2,
 
         /// <summary>
-        /// تراز آزمایشی در سطحمعین های یک حساب  کل
+        /// تراز آزمایشی زیرمجموعه های یک حساب
         /// </summary>
-        LedgerItems = 3,
-
-        /// <summary>
-        /// تراز آزمایشی در سطح تفصیلی های یک حساب معین
-        /// </summary>
-        SubsidiaryItems = 4,
+        AccountItems = 3,
     }
 }

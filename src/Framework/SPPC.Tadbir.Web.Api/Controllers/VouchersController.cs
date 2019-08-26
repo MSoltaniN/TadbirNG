@@ -372,7 +372,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _lineRepository.GetArticleCountAsync<VoucherLineViewModel>(voucherId, GridOptions);
             SetItemCount(itemCount);
             var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
-            foreach(var article in articles)
+            foreach (var article in articles)
             {
                 article.CurrencyName = _strings[article.CurrencyName];
             }

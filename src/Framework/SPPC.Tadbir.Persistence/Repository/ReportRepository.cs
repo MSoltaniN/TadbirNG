@@ -69,6 +69,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مانده حساب مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetAccountBalanceAsync(int accountId, int number)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId);
+            Verify.ArgumentNotNull(account, nameof(account));
+            return await GetItemBalanceAsync(number, line => line.Account.FullCode.StartsWith(account.FullCode));
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
@@ -78,6 +93,18 @@ namespace SPPC.Tadbir.Persistence
         public async Task<decimal> GetDetailAccountBalanceAsync(int faccountId, DateTime date)
         {
             return await GetItemBalanceAsync(date, line => line.DetailId == faccountId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده تفصیلی شناور مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر</param>
+        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetDetailAccountBalanceAsync(int faccountId, int number)
+        {
+            return await GetItemBalanceAsync(number, line => line.DetailId == faccountId);
         }
 
         /// <summary>
@@ -93,6 +120,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مانده مرکز هزینه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetCostCenterBalanceAsync(int ccenterId, int number)
+        {
+            return await GetItemBalanceAsync(number, line => line.CostCenterId == ccenterId);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
@@ -102,6 +141,18 @@ namespace SPPC.Tadbir.Persistence
         public async Task<decimal> GetProjectBalanceAsync(int projectId, DateTime date)
         {
             return await GetItemBalanceAsync(date, line => line.ProjectId == projectId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مانده پروژه مشخص شده را محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
+        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
+        public async Task<decimal> GetProjectBalanceAsync(int projectId, int number)
+        {
+            return await GetItemBalanceAsync(number, line => line.ProjectId == projectId);
         }
 
         /// <summary>
@@ -310,6 +361,19 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.CompareWith(date) < 0
+                    && line.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .Where(itemCriteria)
+                .Select(line => line.Debit - line.Credit)
+                .SumAsync();
+        }
+
+        private async Task<decimal> GetItemBalanceAsync(
+            int number, Expression<Func<VoucherLine, bool>> itemCriteria)
+        {
+            return await _repository
+                .GetAllOperationQuery<VoucherLine>(
+                    ViewName.VoucherLine, line => line.Voucher, line => line.Account)
+                .Where(line => line.Voucher.No < number
                     && line.FiscalPeriodId == _currentContext.FiscalPeriodId)
                 .Where(itemCriteria)
                 .Select(line => line.Debit - line.Credit)

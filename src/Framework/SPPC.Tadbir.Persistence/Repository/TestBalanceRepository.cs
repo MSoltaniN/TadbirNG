@@ -56,27 +56,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
         public async Task<TestBalanceViewModel> GetLedgerBalanceAsync(TestBalanceParameters parameters)
         {
-            var testBalance = new TestBalanceViewModel();
-            Func<VoucherLine, bool> lineFilter = line => true;
-            var lines = await GetRawBalanceLinesAsync(parameters);
-            foreach (var lineGroup in GetTurnoverGroups(lines, 0, lineFilter))
-            {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
-            }
-
-            if (parameters.Format >= TestBalanceFormat.SixColumn)
-            {
-                await AddInitialBalancesAsync(testBalance, parameters.FromDate.Value);
-            }
-
-            if (parameters.Format >= TestBalanceFormat.EightColumn)
-            {
-                AddOperationSums(testBalance);
-            }
-
-            SetSummaryItems(testBalance);
-            return testBalance;
+            Func<VoucherLine, bool> ledgerFilter = line => true;
+            return await GetGeneralBalanceAsync(TestBalanceMode.Ledger, parameters, ledgerFilter);
         }
 
         /// <summary>
@@ -86,36 +67,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
         public async Task<TestBalanceViewModel> GetSubsidiaryBalanceAsync(TestBalanceParameters parameters)
         {
-            var testBalance = new TestBalanceViewModel();
             Func<VoucherLine, bool> ledgerFilter = line => line.Account.Level == 0;
             Func<VoucherLine, bool> subsidiaryFilter = line => line.Account.Level >= 1;
-            var lines = await GetRawBalanceLinesAsync(parameters);
-            foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter))
-            {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
-            }
-
-            foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter))
-            {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
-            }
-
-            var sortedItems = testBalance.Items.OrderBy(item => item.AccountFullCode).ToArray();
-            testBalance.SetBalanceItems(sortedItems);
-            if (parameters.Format >= TestBalanceFormat.SixColumn)
-            {
-                await AddInitialBalancesAsync(testBalance, parameters.FromDate.Value);
-            }
-
-            if (parameters.Format >= TestBalanceFormat.EightColumn)
-            {
-                AddOperationSums(testBalance);
-            }
-
-            SetSummaryItems(testBalance);
-            return testBalance;
+            return await GetGeneralBalanceAsync(TestBalanceMode.Subsidiary, parameters,
+                ledgerFilter, subsidiaryFilter);
         }
 
         /// <summary>
@@ -125,65 +80,62 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
         public async Task<TestBalanceViewModel> GetDetailBalanceAsync(TestBalanceParameters parameters)
         {
-            var testBalance = new TestBalanceViewModel();
             Func<VoucherLine, bool> ledgerFilter = line => line.Account.Level == 0;
             Func<VoucherLine, bool> subsidiaryFilter = line => line.Account.Level == 1;
             Func<VoucherLine, bool> detailFilter = line => line.Account.Level >= 2;
-            var lines = await GetRawBalanceLinesAsync(parameters);
-            foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter))
+            return await GetGeneralBalanceAsync(TestBalanceMode.Detail, parameters,
+                ledgerFilter, subsidiaryFilter, detailFilter);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی زیرمجموعه های یک حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های دارای زیرمجموعه</param>
+        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
+        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
+        public async Task<TestBalanceViewModel> GetChildrenBalanceAsync(
+            int accountId, TestBalanceParameters parameters)
+        {
+            var testBalance = new TestBalanceViewModel();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            if (account != null)
             {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
+                int groupLevel = account.Level + 1;
+                IEnumerable<VoucherLine> lines = await GetRawBalanceLinesAsync(parameters);
+                lines = lines.Where(line => line.Account.FullCode.StartsWith(account.FullCode));
+                foreach (var lineGroup in GetTurnoverGroups(lines, groupLevel, line => true))
+                {
+                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
+                        lineGroup, lineGroup.Key));
+                }
+
+                if (parameters.Format >= TestBalanceFormat.SixColumn)
+                {
+                    await AddInitialBalancesAsync(testBalance, parameters);
+                    UpdateEndBalances(testBalance);
+                }
+
+                if (parameters.Format >= TestBalanceFormat.EightColumn)
+                {
+                    AddOperationSums(testBalance);
+                }
+
+                SetSummaryItems(testBalance);
             }
 
-            foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter))
-            {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
-            }
-
-            foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter))
-            {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
-            }
-
-            var sortedItems = testBalance.Items.OrderBy(item => item.AccountFullCode).ToArray();
-            testBalance.SetBalanceItems(sortedItems);
-            if (parameters.Format >= TestBalanceFormat.SixColumn)
-            {
-                await AddInitialBalancesAsync(testBalance, parameters.FromDate.Value);
-            }
-
-            if (parameters.Format >= TestBalanceFormat.EightColumn)
-            {
-                AddOperationSums(testBalance);
-            }
-
-            SetSummaryItems(testBalance);
             return testBalance;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی معین های یک حساب کل را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های کل</param>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        public async Task<TestBalanceViewModel> GetLedgerItemsBalanceAsync(int accountId, TestBalanceParameters parameters)
+        private static void UpdateEndBalances(TestBalanceViewModel testBalance)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی تفصیلی های یک حساب معین را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های معین</param>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        public async Task<TestBalanceViewModel> GetSubsidiaryItemsBalanceAsync(int accountId, TestBalanceParameters parameters)
-        {
-            throw new NotImplementedException();
+            foreach (var item in testBalance.Items)
+            {
+                decimal balance = (item.StartBalanceDebit + item.TurnoverDebit)
+                    - (item.StartBalanceCredit + item.TurnoverCredit);
+                item.EndBalanceDebit = Math.Max(0, balance);
+                item.EndBalanceCredit = Math.Abs(Math.Min(0, balance));
+            }
         }
 
         private static void AddOperationSums(TestBalanceViewModel testBalance)
@@ -210,36 +162,44 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<TestBalanceViewModel> GetGeneralBalanceAsync(
-            TestBalanceMode mode, TestBalanceParameters parameters)
+            TestBalanceMode mode, TestBalanceParameters parameters, Func<VoucherLine, bool> ledgerFilter,
+            Func<VoucherLine, bool> subsidiaryFilter = null, Func<VoucherLine, bool> detailFilter = null)
         {
             var testBalance = new TestBalanceViewModel();
-            Func<VoucherLine, bool> ledgerFilter = line => line.Account.Level == 0;
-            Func<VoucherLine, bool> subsidiaryFilter = line => line.Account.Level == 1;
-            Func<VoucherLine, bool> detailFilter = line => line.Account.Level >= 2;
             var lines = await GetRawBalanceLinesAsync(parameters);
-            foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter))
+            if (mode == TestBalanceMode.Detail)
             {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
+                foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter))
+                {
+                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
+                        lineGroup, lineGroup.Key));
+                }
             }
 
-            foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter))
+            if (mode == TestBalanceMode.Detail || mode == TestBalanceMode.Subsidiary)
             {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
+                foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter))
+                {
+                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
+                        lineGroup, lineGroup.Key));
+                }
             }
 
-            foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter))
+            if (mode <= TestBalanceMode.Detail)
             {
-                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                    lineGroup, lineGroup.Key));
+                foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter))
+                {
+                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
+                        lineGroup, lineGroup.Key));
+                }
             }
 
             var sortedItems = testBalance.Items.OrderBy(item => item.AccountFullCode).ToArray();
             testBalance.SetBalanceItems(sortedItems);
             if (parameters.Format >= TestBalanceFormat.SixColumn)
             {
-                await AddInitialBalancesAsync(testBalance, parameters.FromDate.Value);
+                await AddInitialBalancesAsync(testBalance, parameters);
+                UpdateEndBalances(testBalance);
             }
 
             if (parameters.Format >= TestBalanceFormat.EightColumn)
@@ -333,11 +293,13 @@ namespace SPPC.Tadbir.Persistence
             return balanceItem;
         }
 
-        private async Task AddInitialBalancesAsync(TestBalanceViewModel testBalance, DateTime date)
+        private async Task AddInitialBalancesAsync(TestBalanceViewModel testBalance, TestBalanceParameters parameters)
         {
             foreach (var item in testBalance.Items)
             {
-                decimal balance = await _reportRepository.GetAccountBalanceAsync(item.AccountId, date);
+                decimal balance = parameters.FromDate.HasValue
+                    ? await _reportRepository.GetAccountBalanceAsync(item.AccountId, parameters.FromDate.Value)
+                    : await _reportRepository.GetAccountBalanceAsync(item.AccountId, parameters.FromNo.Value);
                 item.StartBalanceDebit = Math.Max(0, balance);
                 item.StartBalanceCredit = Math.Abs(Math.Min(0, balance));
             }
