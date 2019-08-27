@@ -161,6 +161,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetDefaultCurrencyByFullAccountAsync(int accountId, int faccountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var currencyInfo = await _repository.GetDefaultCurrencyAsync(accountId, faccountId);
             return Json(currencyInfo);
         }

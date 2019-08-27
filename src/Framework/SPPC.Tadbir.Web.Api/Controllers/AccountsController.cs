@@ -63,6 +63,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var account = await _repository.GetAccountAsync(accountId);
             return JsonReadResult(account);
         }
@@ -176,13 +177,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingAccountAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             string result = await ValidateDeleteAsync(accountId);
             if (!String.IsNullOrEmpty(result))
             {
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteAccountAsync(accountId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -198,13 +199,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var result = await ValidateGroupDeleteAsync(actionDetail.Items);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteAccountsAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

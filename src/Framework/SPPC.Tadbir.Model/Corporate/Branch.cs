@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Model.Corporate
 {
@@ -25,5 +26,10 @@ namespace SPPC.Tadbir.Model.Corporate
         /// Gets a collection of existing associations between roles and branches
         /// </summary>
         public virtual IList<RoleBranch> RoleBranches { get; protected set; }
+
+        /// <summary>
+        /// مجموعه ای از سرفصل های حسابداری و ارزهای انتخاب شده برای این شعبه
+        /// </summary>
+        public IList<AccountCurrency> AccountCurrencies { get; set; }
     }
 }

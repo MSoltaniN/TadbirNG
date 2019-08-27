@@ -9,6 +9,7 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Persistence.Mapping;
+using SPPC.Tadbir.Persistence.Mapping.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -42,6 +43,7 @@ namespace SPPC.Tadbir.Persistence
             AccountCollectionMap.BuildMapping(modelBuilder.Entity<AccountCollection>());
             AccountCollectionAccountMap.BuildMapping(modelBuilder.Entity<AccountCollectionAccount>());
             AccountCollectionCategoryMap.BuildMapping(modelBuilder.Entity<AccountCollectionCategory>());
+            AccountCurrencyMap.BuildMapping(modelBuilder.Entity<AccountCurrency>());
             AccountGroupMap.BuildMapping(modelBuilder.Entity<AccountGroup>());
             AccountDetailAccountMap.BuildMapping(modelBuilder.Entity<AccountDetailAccount>());
             AccountCostCenterMap.BuildMapping(modelBuilder.Entity<AccountCostCenter>());
