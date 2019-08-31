@@ -1,8 +1,10 @@
 <view-identifier [ViewID]="viewId">
-  <report-param ParamName='fromDate' [ParamValue]="fromDate"></report-param>
-  <report-param ParamName='toDate' [ParamValue]="toDate"></report-param>
-  <report-param ParamName='fromNo' [ParamValue]="fromVoucher"></report-param>
-  <report-param ParamName='toNo' [ParamValue]="toVoucher"></report-param>  
+  <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="testBalanceType == '1'"></report-param>
+  <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="testBalanceType == '1'"></report-param>
+  <report-param ParamName='fromNo' [ParamValue]="fromVoucher" [ParamInFilter]="testBalanceType == '2'"></report-param>
+  <report-param ParamName='toNo' [ParamValue]="toVoucher" [ParamInFilter]="testBalanceType == '2'"></report-param>
+  <report-param ParamName='VoucherStatus' [ParamValue]="voucherStatusSelected"
+                [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
 </view-identifier>
 <app-bread-cumb [entityTypeName]="'TestBalance'"></app-bread-cumb>
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"

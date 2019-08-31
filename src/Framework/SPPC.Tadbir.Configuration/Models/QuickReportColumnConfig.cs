@@ -53,6 +53,11 @@ namespace SPPC.Tadbir.Configuration.Models
         public string Type { get; set; }
 
         /// <summary>
+        /// گروه بندی برای ستون
+        /// </summary>
+        public string GroupName { get; set; }
+
+        /// <summary>
         /// دیکشنری برای نگهداری متن های کاربری عنوان ستون در زبان های مختلف
         /// </summary>
         public IDictionary<string, string> UserTitleMap { get; }

@@ -487,21 +487,22 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
     this.currentPrintInfo.parameters.forEach(function (param) {
       var fparam = formParams.filter(f => f.ParamName == param.name);
+      if (fparam.length > 0) {
+        var paramInfo: ParameterInfo = new ParameterInfo();
+        paramInfo.fieldName = param.fieldName;
 
-      var paramInfo: ParameterInfo = new ParameterInfo();
-      paramInfo.fieldName = param.fieldName;
+        paramInfo.controlType = param.controlType;
+        paramInfo.id = param.id;
+        paramInfo.defaultValue = param.defaultValue ? param.defaultValue : "";
+        paramInfo.captionKey = param.captionKey;
+        paramInfo.operator = param.operator;
+        paramInfo.dataType = param.dataType;
+        paramInfo.descriptionKey = param.descriptionKey;
+        paramInfo.name = param.name;
+        paramInfo.value = fparam[0].ParamValue;
 
-      paramInfo.controlType = param.controlType;
-      paramInfo.id = param.id;
-      paramInfo.defaultValue = param.defaultValue ? param.defaultValue : "";
-      paramInfo.captionKey = param.captionKey;
-      paramInfo.operator = param.operator;
-      paramInfo.dataType = param.dataType;
-      paramInfo.descriptionKey = param.descriptionKey;
-      paramInfo.name = param.name;
-      paramInfo.value = fparam[0].ParamValue;
-
-      paramArrays.push(paramInfo);
+        paramArrays.push(paramInfo);
+      }
     });
 
     return paramArrays;
@@ -827,6 +828,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
               qr.type = property[0].storageType;
             else
               qr.type = property[0].scriptType;
+
+            qr.groupName = property[0].groupName;
 
             columns.push(qr);
 

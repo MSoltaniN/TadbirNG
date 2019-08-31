@@ -571,6 +571,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return null;
             }
 
+            bool isGroupExist = columns.Any(c => !string.IsNullOrEmpty(c.GroupName));
+
             ////var orderdColumns = columns.Where(c => c.Enabled).OrderByDescending(c => c.Order).ToList();
             List<QuickReportColumnConfig> orderdColumns = null;
             if (lang == "fa")
@@ -599,6 +601,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 component = componentsList.First(p => p.GetType() == typeof(StiColumnHeaderBand));
                 headerBand = (StiColumnHeaderBand)component.Clone(true);
+                if (isGroupExist)
+                {
+                    headerBand.Height = headerBand.Height * 2;
+                    headerBand.CanGrow = false;
+                }
             }
 
             // copy text style
@@ -628,13 +635,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 headerBand.Components.Clear();
             }
 
+            headerBand.Border = new StiBorder(StiBorderSides.All, Color.Red, 1, StiPenStyle.Dash);
+
             int dataCellIndex = visibleColumnCount;
             double pageWidth = report.Pages[0].Width;
             int gridWidth = columns.Where(p => p.Visible).Sum(c => c.Width);
             double tableWidth = GetSizeInInch(gridWidth, oneInchInPixels);
             double left = (pageWidth / (double)2) - (tableWidth / (double)2);
-            double top = 0.06;
+            double top = 0;
             double maxHeight = headerBand.Height;
+
+            string lastGroupName = string.Empty;
+            double lastWidth = 0;
 
             for (int i = orderdColumns.Count - 1; i >= 0; i--)
             {
@@ -643,6 +655,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 string ctrlName = "txtTitle_";
                 ctrlName += column.Name + column.DisplayIndex;
                 double width = GetSizeInInch(column.Width, oneInchInPixels);
+
                 if (txtHeaderCell == null)
                 {
                     txtHeaderCell = (StiText)(sampleText.Clone(true));
@@ -666,33 +679,46 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     txtHeaderCell.Width = width;
                     txtHeaderCell.Page = report.Pages[0];
                     txtHeaderCell.Parent = headerBand;
+                    if (string.IsNullOrEmpty(orderdColumns[i].GroupName) && isGroupExist)
+                    {
+                        top = 0;
+                        txtHeaderCell.CanGrow = true;
+                        txtHeaderCell.Height = txtHeaderCell.Height * 2;
+                        txtHeaderCell.GrowToHeight = true;
+                        txtHeaderCell.CanShrink = false;
+                    }
+                    else if (isGroupExist)
+                    {
+                        top = 0;
+                        if (orderdColumns[i].GroupName == lastGroupName)
+                        {
+                            StiText txtGroupText = (StiText)txtHeaderCell.Clone(true);
+                            txtGroupText.Width = txtHeaderCell.Width + lastWidth;
+                            txtGroupText.Text.Value = lastGroupName;
+                            txtGroupText.CanShrink = false;
+                            txtGroupText.ClientRectangle = new RectangleD(left - lastWidth, top, txtGroupText.Width, txtGroupText.Height);
+                            headerBand.Components.Add(txtGroupText);
+
+                            lastGroupName = string.Empty;
+                        }
+                        else
+                        {
+                            lastWidth = txtHeaderCell.Width;
+                            lastGroupName = orderdColumns[i].GroupName;
+                        }
+
+                        txtHeaderCell.CanShrink = false;
+                        top = txtHeaderCell.Height;
+                    }
+                    else
+                    {
+                        top = 0;
+                    }
                 }
 
-                ////txtHeaderCell.Linked = true;
                 txtHeaderCell.Text.Value = !string.IsNullOrEmpty(column.UserTitle) ? column.UserTitle : column.Title;
                 txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
-                ////txtHeaderCell.Height = 0.6;
                 left = txtHeaderCell.Left + width;
-                ////StiBorder border = new StiBorder();
-                ////border.Side = border.Side | StiBorderSides.Left;
-                ////border.Side = border.Side | StiBorderSides.Right;
-                ////border.Side = border.Side | StiBorderSides.Top;
-                ////border.Side = border.Side | StiBorderSides.Bottom;
-                ////border.Color = Color.FromName("Black");
-
-                ////txtHeaderCell.CanShrink = true;
-                ////txtHeaderCell.CanGrow = true;
-                ////txtHeaderCell.GrowToHeight = true;
-                ////txtHeaderCell.HorAlignment = StiTextHorAlignment.Center;
-                ////txtHeaderCell.VertAlignment = StiVertAlignment.Center;
-                ////txtHeaderCell.Font = new System.Drawing.Font("Arial", 10, FontStyle.Bold);
-                ////txtHeaderCell.Border = border;
-
-                ////if (txtHeaderCell.Height > maxHeight)
-                ////{
-                ////    headerBand.Height = txtHeaderCell.Height;
-                ////}
-
                 headerBand.Components.Add(txtHeaderCell);
             }
 
