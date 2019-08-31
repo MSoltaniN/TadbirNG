@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Framework.Presentation;
 
 namespace SPPC.Tadbir.Values
 {
@@ -44,14 +45,14 @@ namespace SPPC.Tadbir.Values
         public int? ToNo { get; set; }
 
         /// <summary>
-        /// در صورت گزارش گیری برای شعبه جاری، کد شعبه جاری و در غیر این صورت مقدار صفر دارد
-        /// </summary>
-        public int BranchId { get; set; }
-
-        /// <summary>
         /// مشخص می کند که آیا گزارش گیری باید به تفکیک شعبه انجام شود یا نه؟
         /// </summary>
         public bool IsByBranch { get; set; }
+
+        /// <summary>
+        /// گزینه های مورد استفاده برای مرتب سازی، فیلتر و صفحه بندی اطلاعات گزارش
+        /// </summary>
+        public GridOptions GridOptions { get; set; }
 
         /// <summary>
         /// گزینه های عملیاتی مورد نیاز در گزارش

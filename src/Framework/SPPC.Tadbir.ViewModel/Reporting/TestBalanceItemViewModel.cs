@@ -36,6 +36,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string AccountFullCode { get; set; }
 
         /// <summary>
+        /// شماره سطح که عمق حساب به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
+        /// </summary>
+        public short AccountLevel { get; set; }
+
+        /// <summary>
         /// مانده ابتدای دوره - بدهکار
         /// </summary>
         public decimal StartBalanceDebit { get; set; }

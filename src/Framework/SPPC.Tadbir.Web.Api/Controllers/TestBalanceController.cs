@@ -163,7 +163,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/testbal/{accountId:min(1)}/items/2-col
         [Route(TestBalanceApi.TwoColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTwoColumnLedgerItemsBalanceAsync(
+        public async Task<IActionResult> GetTwoColumnChildItemsBalanceAsync(
             int accountId, string from, string to, bool? byBranch)
         {
             return await TestBalanceResultAsync(TestBalanceMode.AccountItems, TestBalanceFormat.TwoColumn,
@@ -173,7 +173,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/testbal/{accountId:min(1)}/items/4-col
         [Route(TestBalanceApi.FourColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetFourColumnLedgerItemsBalanceAsync(
+        public async Task<IActionResult> GetFourColumnChildItemsBalanceAsync(
             int accountId, string from, string to, bool? byBranch)
         {
             return await TestBalanceResultAsync(TestBalanceMode.AccountItems, TestBalanceFormat.FourColumn,
@@ -183,7 +183,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/testbal/{accountId:min(1)}/items/6-col
         [Route(TestBalanceApi.SixColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetSixColumnLedgerItemsBalanceAsync(
+        public async Task<IActionResult> GetSixColumnChildItemsBalanceAsync(
             int accountId, string from, string to, bool? byBranch)
         {
             return await TestBalanceResultAsync(TestBalanceMode.AccountItems, TestBalanceFormat.SixColumn,
@@ -193,7 +193,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/testbal/{accountId:min(1)}/items/8-col
         [Route(TestBalanceApi.EightColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetEightColumnLedgerItemsBalanceAsync(
+        public async Task<IActionResult> GetEightColumnChildItemsBalanceAsync(
             int accountId, string from, string to, bool? byBranch)
         {
             return await TestBalanceResultAsync(TestBalanceMode.AccountItems, TestBalanceFormat.EightColumn,
@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/testbal/{accountId:min(1)}/items/10-col
         [Route(TestBalanceApi.TenColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTenColumnLedgerItemsBalanceAsync(
+        public async Task<IActionResult> GetTenColumnChildItemsBalanceAsync(
             int accountId, string from, string to, bool? byBranch)
         {
             return await TestBalanceResultAsync(TestBalanceMode.AccountItems, TestBalanceFormat.TenColumn,
@@ -213,9 +213,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #endregion
 
         private static TestBalanceParameters GetParameters(
-            string from, string to, TestBalanceFormat format, bool? byBranch, int branchId = 0)
+            string from, string to, TestBalanceFormat format, GridOptions gridOptions, bool? byBranch)
         {
-            var parameters = new TestBalanceParameters() { Format = format, BranchId = branchId };
+            var parameters = new TestBalanceParameters()
+            {
+                Format = format,
+                GridOptions = gridOptions
+            };
             var culture = new CultureInfo("en");
             if (DateTime.TryParse(from, culture, DateTimeStyles.None, out DateTime fromDate))
             {
@@ -255,10 +259,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             _repository.SetCurrentContext(SecurityContext.User);
             var gridOptions = GridOptions ?? new GridOptions();
-            int branchId = gridOptions.Filter != null && gridOptions.Filter.ToString().Contains("BranchId")
-                ? SecurityContext.User.BranchId
-                : 0;
-            var parameters = GetParameters(from, to, format, byBranch, branchId);
+            var parameters = GetParameters(from, to, format, gridOptions, byBranch);
             var balance = default(TestBalanceViewModel);
             switch (mode)
             {
@@ -277,7 +278,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             SetItemCount(balance.Items.Count);
-            balance.SetBalanceItems(balance.Items.Apply(gridOptions).ToList());
+            balance.SetBalanceItems(balance.Items.ApplyPaging(gridOptions).ToList());
             int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
             foreach (var balanceItem in balance.Items)
             {
