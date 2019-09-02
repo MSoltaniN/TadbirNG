@@ -105,10 +105,10 @@ namespace SPPC.Tadbir.Persistence
                 Func<TestBalanceItemViewModel, bool> lineFilter = line => line.AccountLevel >= groupLevel;
                 IEnumerable<TestBalanceItemViewModel> lines = await GetRawBalanceLinesAsync(parameters);
                 lines = lines.Where(line => line.AccountFullCode.StartsWith(account.FullCode));
-                foreach (var lineGroup in GetTurnoverGroups(lines, groupLevel, lineFilter))
+                foreach (var lineGroup in GetTurnoverGroups(lines, groupLevel, lineFilter, parameters.IsByBranch))
                 {
-                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                        lineGroup, lineGroup.Key, parameters.Format));
+                    await AddTwoAndFourColumnBalanceItemAsync(
+                        testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
                 }
 
                 await AddSixAndEightColumnBalanceItemsAsync(testBalance, parameters);
@@ -154,35 +154,37 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<TestBalanceViewModel> GetGeneralBalanceAsync(
-            TestBalanceMode mode, TestBalanceParameters parameters, Func<TestBalanceItemViewModel, bool> ledgerFilter,
-            Func<TestBalanceItemViewModel, bool> subsidiaryFilter = null, Func<TestBalanceItemViewModel, bool> detailFilter = null)
+            TestBalanceMode mode, TestBalanceParameters parameters,
+            Func<TestBalanceItemViewModel, bool> ledgerFilter,
+            Func<TestBalanceItemViewModel, bool> subsidiaryFilter = null,
+            Func<TestBalanceItemViewModel, bool> detailFilter = null)
         {
             var testBalance = new TestBalanceViewModel();
             var lines = await GetRawBalanceLinesAsync(parameters);
             if (mode == TestBalanceMode.Detail)
             {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter))
+                foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter, parameters.IsByBranch))
                 {
-                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                        lineGroup, lineGroup.Key, parameters.Format));
+                    await AddTwoAndFourColumnBalanceItemAsync(
+                        testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
                 }
             }
 
             if (mode == TestBalanceMode.Detail || mode == TestBalanceMode.Subsidiary)
             {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter))
+                foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter, parameters.IsByBranch))
                 {
-                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                        lineGroup, lineGroup.Key, parameters.Format));
+                    await AddTwoAndFourColumnBalanceItemAsync(
+                        testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
                 }
             }
 
             if (mode <= TestBalanceMode.Detail)
             {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter))
+                foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter, parameters.IsByBranch))
                 {
-                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                        lineGroup, lineGroup.Key, parameters.Format));
+                    await AddTwoAndFourColumnBalanceItemAsync(
+                        testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
                 }
             }
 
@@ -192,7 +194,8 @@ namespace SPPC.Tadbir.Persistence
             return testBalance;
         }
 
-        private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(TestBalanceParameters parameters)
+        private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(
+            TestBalanceParameters parameters)
         {
             IList<TestBalanceItemViewModel> lines = null;
             if (parameters.FromDate != null && parameters.ToDate != null)
@@ -243,18 +246,15 @@ namespace SPPC.Tadbir.Persistence
 
         private IEnumerable<IGrouping<string, TestBalanceItemViewModel>> GetTurnoverGroups(
             IEnumerable<TestBalanceItemViewModel> lines, int groupLevel,
-            Func<TestBalanceItemViewModel, bool> lineFilter)
+            Func<TestBalanceItemViewModel, bool> lineFilter, bool byBranch = false)
         {
             int codeLength = GetLevelCodeLength(ViewName.Account, groupLevel);
-            var turnoverGroups = lines
-                .Where(lineFilter)
-                .OrderBy(art => art.AccountFullCode)
-                .GroupBy(art => art.AccountFullCode.Substring(0, codeLength));
-            return turnoverGroups;
+            return GetGroupByThenByItems(lines.Where(lineFilter),
+                    item => item.AccountFullCode.Substring(0, codeLength));
         }
 
         private async Task<TestBalanceItemViewModel> GetTwoAndFourColumnBalanceItemAsync(
-            IEnumerable<TestBalanceItemViewModel> lines, string fullCode, TestBalanceFormat format)
+            IEnumerable<TestBalanceItemViewModel> lines, TestBalanceFormat format, string fullCode)
         {
             var first = lines.First();
             var repository = _unitOfWork.GetAsyncRepository<Account>();
@@ -265,7 +265,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchName = first.BranchName,
                 AccountId = account.Id,
                 AccountName = account.Name,
-                AccountFullCode = fullCode
+                AccountFullCode = account.FullCode
             };
             decimal turnoverDebit = lines.Sum(item => item.TurnoverDebit);
             decimal turnoverCredit = lines.Sum(item => item.TurnoverCredit);
@@ -279,6 +279,22 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return balanceItem;
+        }
+
+        private async Task AddTwoAndFourColumnBalanceItemAsync(TestBalanceViewModel testBalance,
+            IEnumerable<TestBalanceItemViewModel> lines, string fullCode, TestBalanceFormat format, bool byBranch)
+        {
+            if (byBranch)
+            {
+                foreach (var branchGroup in GetGroupByThenByItems(lines, line => line.BranchId))
+                {
+                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(lines, format, fullCode));
+                }
+            }
+            else
+            {
+                testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(lines, format, fullCode));
+            }
         }
 
         private async Task AddSixAndEightColumnBalanceItemsAsync(
@@ -375,6 +391,34 @@ namespace SPPC.Tadbir.Persistence
                 && item.OperationSumCredit == 0.0M
                 && item.EndBalanceDebit == 0.0M
                 && item.EndBalanceCredit == 0.0M;
+        }
+
+        private IEnumerable<IGrouping<TKey1, TestBalanceItemViewModel>> GetGroupByThenByItems<TKey1>(
+            IEnumerable<TestBalanceItemViewModel> lines, Func<TestBalanceItemViewModel, TKey1> firstSelector)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(firstSelector)
+                .GroupBy(firstSelector))
+            {
+                yield return byFirst;
+            }
+        }
+
+        private IEnumerable<IGrouping<TKey2, TestBalanceItemViewModel>> GetGroupByThenByItems<TKey1, TKey2>(
+            IEnumerable<TestBalanceItemViewModel> lines, Func<TestBalanceItemViewModel, TKey1> firstSelector,
+            Func<TestBalanceItemViewModel, TKey2> secondSelector)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(firstSelector)
+                .GroupBy(firstSelector))
+            {
+                foreach (var bySecond in byFirst
+                    .OrderBy(secondSelector)
+                    .GroupBy(secondSelector))
+                {
+                    yield return bySecond;
+                }
+            }
         }
 
         private readonly IAppUnitOfWork _unitOfWork;
