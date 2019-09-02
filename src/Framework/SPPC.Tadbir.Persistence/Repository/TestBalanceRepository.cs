@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
@@ -98,7 +98,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var testBalance = new TestBalanceViewModel();
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            var account = await repository.GetByIDAsync(accountId);
             if (account != null)
             {
                 int groupLevel = account.Level + 1;
@@ -108,20 +108,11 @@ namespace SPPC.Tadbir.Persistence
                 foreach (var lineGroup in GetTurnoverGroups(lines, groupLevel, lineFilter))
                 {
                     testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                        lineGroup, lineGroup.Key));
+                        lineGroup, lineGroup.Key, parameters.Format));
                 }
 
-                if (parameters.Format >= TestBalanceFormat.SixColumn)
-                {
-                    await AddInitialBalancesAsync(testBalance, parameters);
-                    UpdateEndBalances(testBalance);
-                }
-
-                if (parameters.Format >= TestBalanceFormat.EightColumn)
-                {
-                    AddOperationSums(testBalance);
-                }
-
+                await AddSixAndEightColumnBalanceItemsAsync(testBalance, parameters);
+                await ApplyZeroBalanceOptionAsync(testBalance, parameters);
                 SetSummaryItems(testBalance);
             }
 
@@ -173,7 +164,7 @@ namespace SPPC.Tadbir.Persistence
                 foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter))
                 {
                     testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                        lineGroup, lineGroup.Key));
+                        lineGroup, lineGroup.Key, parameters.Format));
                 }
             }
 
@@ -182,7 +173,7 @@ namespace SPPC.Tadbir.Persistence
                 foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter))
                 {
                     testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                        lineGroup, lineGroup.Key));
+                        lineGroup, lineGroup.Key, parameters.Format));
                 }
             }
 
@@ -191,23 +182,12 @@ namespace SPPC.Tadbir.Persistence
                 foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter))
                 {
                     testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(
-                        lineGroup, lineGroup.Key));
+                        lineGroup, lineGroup.Key, parameters.Format));
                 }
             }
 
-            var sortedItems = testBalance.Items.OrderBy(item => item.AccountFullCode).ToArray();
-            testBalance.SetBalanceItems(sortedItems);
-            if (parameters.Format >= TestBalanceFormat.SixColumn)
-            {
-                await AddInitialBalancesAsync(testBalance, parameters);
-                UpdateEndBalances(testBalance);
-            }
-
-            if (parameters.Format >= TestBalanceFormat.EightColumn)
-            {
-                AddOperationSums(testBalance);
-            }
-
+            await AddSixAndEightColumnBalanceItemsAsync(testBalance, parameters);
+            await ApplyZeroBalanceOptionAsync(testBalance, parameters);
             SetSummaryItems(testBalance);
             return testBalance;
         }
@@ -217,42 +197,48 @@ namespace SPPC.Tadbir.Persistence
             IList<TestBalanceItemViewModel> lines = null;
             if (parameters.FromDate != null && parameters.ToDate != null)
             {
-                lines = await GetRawBalanceByDateLinesAsync(
-                    parameters.FromDate.Value, parameters.ToDate.Value, parameters.GridOptions);
+                Expression<Func<VoucherLine, bool>> mainFilter = art => art.Voucher.Date.IsBetween(
+                    parameters.FromDate.Value, parameters.ToDate.Value);
+                lines = await GetRawBalanceLinesAsync(mainFilter, parameters);
             }
             else if (parameters.FromNo != null && parameters.ToNo != null)
             {
-                lines = await GetRawBalanceByNoLinesAsync(
-                    parameters.FromNo.Value, parameters.ToNo.Value, parameters.GridOptions);
+                Expression<Func<VoucherLine, bool>> mainFilter = art => art.FiscalPeriodId == _currentContext.FiscalPeriodId
+                    && art.Voucher.No >= parameters.FromNo.Value
+                    && art.Voucher.No <= parameters.ToNo.Value;
+                lines = await GetRawBalanceLinesAsync(mainFilter, parameters);
             }
 
             return lines;
         }
 
-        private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceByDateLinesAsync(
-            DateTime from, DateTime to, GridOptions gridOptions)
+        private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(
+            Expression<Func<VoucherLine, bool>> mainFilter, TestBalanceParameters parameters)
         {
-            var lines = await _repository
+            var query = _repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
-                    art => art.Voucher, art => art.Account, art => art.Branch)
-                .Where(art => art.Voucher.Date.IsBetween(from, to))
-                .Select(art => _mapper.Map<TestBalanceItemViewModel>(art))
-                .ToListAsync();
-            return lines.Apply(gridOptions, false).ToList();
-        }
+                    art => art.Voucher, art => art.Account, art => art.Branch);
+            var options = parameters.Options;
+            if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
+            {
+                query = query.Where(art => art.Voucher.Type != (short)VoucherType.ClosingVoucher);
+            }
 
-        private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceByNoLinesAsync(
-            int from, int to, GridOptions gridOptions)
-        {
-            var lines = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
-                    art => art.Voucher, art => art.Account, art => art.Branch)
-                .Where(art => art.FiscalPeriodId == _currentContext.FiscalPeriodId
-                    && art.Voucher.No >= from
-                    && art.Voucher.No <= to)
+            if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
+            {
+                query = query.Where(art => art.Voucher.Type != (short)VoucherType.ClosingTempAccounts);
+            }
+
+            if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+            {
+                query = query.Where(art => art.Voucher.Type != (short)VoucherType.OpeningVoucher);
+            }
+
+            var lines = await query
+                .Where(mainFilter)
                 .Select(art => _mapper.Map<TestBalanceItemViewModel>(art))
                 .ToListAsync();
-            return lines.Apply(gridOptions, false).ToList();
+            return lines.Apply(parameters.GridOptions, false).ToList();
         }
 
         private IEnumerable<IGrouping<string, TestBalanceItemViewModel>> GetTurnoverGroups(
@@ -268,25 +254,46 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<TestBalanceItemViewModel> GetTwoAndFourColumnBalanceItemAsync(
-            IEnumerable<TestBalanceItemViewModel> lines, string fullCode)
+            IEnumerable<TestBalanceItemViewModel> lines, string fullCode, TestBalanceFormat format)
         {
-            var line = lines.First();
+            var first = lines.First();
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
             var balanceItem = new TestBalanceItemViewModel()
             {
-                BranchId = line.BranchId,
-                BranchName = line.BranchName,
+                BranchId = first.BranchId,
+                BranchName = first.BranchName,
                 AccountId = account.Id,
                 AccountName = account.Name,
-                AccountFullCode = fullCode,
-                TurnoverDebit = lines.Sum(item => item.TurnoverDebit),
-                TurnoverCredit = lines.Sum(item => item.TurnoverCredit)
+                AccountFullCode = fullCode
             };
-            decimal balance = balanceItem.TurnoverDebit - balanceItem.TurnoverCredit;
+            decimal turnoverDebit = lines.Sum(item => item.TurnoverDebit);
+            decimal turnoverCredit = lines.Sum(item => item.TurnoverCredit);
+            decimal balance = turnoverDebit - turnoverCredit;
             balanceItem.EndBalanceDebit = Math.Max(0, balance);
             balanceItem.EndBalanceCredit = Math.Abs(Math.Min(0, balance));
+            if (format >= TestBalanceFormat.FourColumn)
+            {
+                balanceItem.TurnoverDebit = turnoverDebit;
+                balanceItem.TurnoverCredit = turnoverCredit;
+            }
+
             return balanceItem;
+        }
+
+        private async Task AddSixAndEightColumnBalanceItemsAsync(
+            TestBalanceViewModel testBalance, TestBalanceParameters parameters)
+        {
+            if (parameters.Format >= TestBalanceFormat.SixColumn)
+            {
+                await AddInitialBalancesAsync(testBalance, parameters);
+                UpdateEndBalances(testBalance);
+            }
+
+            if (parameters.Format >= TestBalanceFormat.EightColumn)
+            {
+                AddOperationSums(testBalance);
+            }
         }
 
         private async Task AddInitialBalancesAsync(TestBalanceViewModel testBalance, TestBalanceParameters parameters)
@@ -296,6 +303,12 @@ namespace SPPC.Tadbir.Persistence
                 decimal balance = parameters.FromDate.HasValue
                     ? await _reportRepository.GetAccountBalanceAsync(item.AccountId, parameters.FromDate.Value)
                     : await _reportRepository.GetAccountBalanceAsync(item.AccountId, parameters.FromNo.Value);
+                if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+                {
+                    balance += await _reportRepository.GetSpecialVoucherBalanceAsync(
+                        VoucherType.OpeningVoucher, item.AccountId);
+                }
+
                 item.StartBalanceDebit = Math.Max(0, balance);
                 item.StartBalanceCredit = Math.Abs(Math.Min(0, balance));
             }
@@ -311,6 +324,57 @@ namespace SPPC.Tadbir.Persistence
                 .Where(cfg => cfg.No <= level + 1)
                 .Sum(cfg => cfg.CodeLength);
             return codeLength;
+        }
+
+        private async Task ApplyZeroBalanceOptionAsync(
+            TestBalanceViewModel testBalance, TestBalanceParameters parameters)
+        {
+            if ((parameters.Options & TestBalanceOptions.ShowZeroBalanceItems) > 0)
+            {
+                // Add items for accounts not used in articles...
+                var usedIds = testBalance.Items
+                    .Where(item => item.AccountLevel == (short)parameters.Mode)
+                    .Select(item => item.AccountId);
+                var notUsed = await _repository
+                    .GetAllQuery<Account>(ViewName.Account, acc => acc.Branch)
+                    .Where(acc => !usedIds.Contains(acc.Id))
+                    .Select(acc => new { acc.Id, acc.Name, acc.FullCode, acc.BranchId, BranchName = acc.Branch.Name })
+                    .ToListAsync();
+                foreach (var notUsedItem in notUsed)
+                {
+                    testBalance.Items.Add(new TestBalanceItemViewModel()
+                    {
+                        AccountFullCode = notUsedItem.FullCode,
+                        AccountId = notUsedItem.Id,
+                        AccountName = notUsedItem.Name,
+                        BranchId = notUsedItem.BranchId,
+                        BranchName = notUsedItem.BranchName
+                    });
+                }
+            }
+            else
+            {
+                // Remove items with zero end balance...
+                var nonZeroItems = testBalance.Items
+                    .Where(item => !IsZeroBalanceItem(item))
+                    .ToArray();
+                testBalance.SetBalanceItems(nonZeroItems);
+            }
+
+            var sortedItems = testBalance.Items.OrderBy(item => item.AccountFullCode).ToArray();
+            testBalance.SetBalanceItems(sortedItems);
+        }
+
+        private bool IsZeroBalanceItem(TestBalanceItemViewModel item)
+        {
+            return item.StartBalanceDebit == 0.0M
+                && item.StartBalanceCredit == 0.0M
+                && item.TurnoverDebit == 0.0M
+                && item.TurnoverCredit == 0.0M
+                && item.OperationSumDebit == 0.0M
+                && item.OperationSumCredit == 0.0M
+                && item.EndBalanceDebit == 0.0M
+                && item.EndBalanceCredit == 0.0M;
         }
 
         private readonly IAppUnitOfWork _unitOfWork;

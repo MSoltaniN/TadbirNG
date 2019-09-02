@@ -189,6 +189,27 @@ namespace SPPC.Tadbir.Values
     }
 
     /// <summary>
+    /// داده شمارشی برای انواع آرتیکل های سند مالی
+    /// </summary>
+    public enum VoucherLineType
+    {
+        /// <summary>
+        /// آرتیکل عادی
+        /// </summary>
+        NormalLine = 0,
+
+        /// <summary>
+        /// آرتیکل مالیات و عوارض
+        /// </summary>
+        TaxAndToll = 1,
+
+        /// <summary>
+        /// آرتیکل اصلاحی
+        /// </summary>
+        Revised = 2
+    }
+
+    /// <summary>
     /// حالات ممکن برای محدودیت ثبت مالی را در سرفصل های حسابداری تعریف می کند
     /// </summary>
     public enum TurnoverMode

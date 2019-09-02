@@ -14,10 +14,18 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public TestBalanceParameters()
         {
+            Mode = TestBalanceMode.Ledger;
             Format = TestBalanceFormat.SixColumn;
             IsByBranch = false;
-            Options = TestBalanceOptions.None;
+            Options = TestBalanceOptions.UseClosingVoucher
+                | TestBalanceOptions.UseClosingTempVoucher
+                | TestBalanceOptions.OpeningVoucherAsInitBalance;
         }
+
+        /// <summary>
+        /// نوع مورد نظر برای گزارش تراز آزمایشی
+        /// </summary>
+        public TestBalanceMode Mode { get; set; }
 
         /// <summary>
         /// قالب مورد نیاز برای گزارش تراز آزمایشی
