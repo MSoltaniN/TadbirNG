@@ -635,8 +635,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 headerBand.Components.Clear();
             }
 
-            headerBand.Border = new StiBorder(StiBorderSides.All, Color.Red, 1, StiPenStyle.Dash);
-
             int dataCellIndex = visibleColumnCount;
             double pageWidth = report.Pages[0].Width;
             int gridWidth = columns.Where(p => p.Visible).Sum(c => c.Width);
