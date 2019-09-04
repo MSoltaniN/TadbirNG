@@ -10,7 +10,7 @@ namespace SPPC.Tadbir.Values
     public enum TestBalanceOptions
     {
         /// <summary>
-        /// عدم انتخاب گزینه
+        /// عدم انتخاب همه گزینه ها
         /// </summary>
         None = 0x0,
 

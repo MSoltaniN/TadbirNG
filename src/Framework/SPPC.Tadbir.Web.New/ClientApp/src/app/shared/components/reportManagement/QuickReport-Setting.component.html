@@ -24,7 +24,7 @@
       <button kendoButton (click)="showReport()"
               [icon]="'printer'" type="button"></button>
       <!--<button kendoButton (click)="saveReport()"
-          [icon]="'save'" type="button"></button>-->
+        [icon]="'save'" type="button"></button>-->
     </ng-template>
     <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of this.viewInfo.columns "
                        [width]="item.width" field="{{item.name}}">
@@ -39,6 +39,23 @@
         </kendo-switch>
       </ng-template>
     </kendo-grid-column>
+
+    <kendo-grid-column-group title="{{ gcn.groupName }}" *ngFor="let gcn of gridGroupColumnNames" media="(min-width: 450px)">
+      <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of getColumnRows(gcn)" [width]="item.width" field="{{item.name}}">
+
+        <ng-template kendoGridHeaderTemplate>
+          <span class="hdrQReport">{{item.userTitle}}</span>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem let-column="column" let-columnIndex="columnIndex" let-rowIndex="rowIndex">
+          <kendo-switch (valueChange)="switchChange($event,column)" *ngIf="rowIndex === 0"
+                        offLabel="{{ 'Report.No' | translate }}"
+                        checked="{{dataItem[column.field] === true ? 'checked' : ''}}"
+                        onLabel="{{ 'Report.Yes' | translate }}">
+          </kendo-switch>
+        </ng-template>
+
+      </kendo-grid-column>
+    </kendo-grid-column-group>
 
   </kendo-grid>
 </kendo-dialog>

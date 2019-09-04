@@ -564,7 +564,10 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<VoucherLine, JournalItemViewModel>();
             mapperConfig.CreateMap<VoucherLine, AccountBookItemViewModel>();
-        }
+            mapperConfig.CreateMap<VoucherLine, TestBalanceItemViewModel>()
+                .ForMember(dest => dest.TurnoverDebit, opts => opts.MapFrom(src => src.Debit))
+                .ForMember(dest => dest.TurnoverCredit, opts => opts.MapFrom(src => src.Credit));
+       }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)
         {

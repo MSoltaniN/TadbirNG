@@ -34,20 +34,12 @@ namespace SPPC.Tadbir.Persistence
         Task<TestBalanceViewModel> GetDetailBalanceAsync(TestBalanceParameters parameters);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی معین های یک حساب کل را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی زیرمجموعه های یک حساب را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های کل</param>
+        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های دارای زیرمجموعه</param>
         /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        Task<TestBalanceViewModel> GetLedgerItemsBalanceAsync(int accountId, TestBalanceParameters parameters);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی تفصیلی های یک حساب معین را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های معین</param>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        Task<TestBalanceViewModel> GetSubsidiaryItemsBalanceAsync(int accountId, TestBalanceParameters parameters);
+        Task<TestBalanceViewModel> GetChildrenBalanceAsync(int accountId, TestBalanceParameters parameters);
 
         /// <summary>
         /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند

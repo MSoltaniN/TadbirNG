@@ -174,111 +174,57 @@ namespace SPPC.Tadbir.Api
 
         #endregion
 
-        #region Ledger Items Level reports
+        #region Child Items Level reports
 
         /// <summary>
-        /// Client URL for two-column test balance report for all descendants of a ledger account
+        /// Client URL for two-column test balance report for all descendants of an account
         /// </summary>
-        public const string TwoColumnLedgerItemsBalance = "testbal/ledger/{0}/items/2-col";
+        public const string TwoColumnChildItemsBalance = "testbal/{0}/items/2-col";
 
         /// <summary>
-        /// Server route URL for two-column test balance report for all descendants of a ledger account
+        /// Server route URL for two-column test balance report for all descendants of an account
         /// </summary>
-        public const string TwoColumnLedgerItemsBalanceUrl = "testbal/ledger/{accountId:min(1)}/items/2-col";
+        public const string TwoColumnChildItemsBalanceUrl = "testbal/{accountId:min(1)}/items/2-col";
 
         /// <summary>
-        /// Client URL for four-column test balance report for all descendants of a ledger account
+        /// Client URL for four-column test balance report for all descendants of an account
         /// </summary>
-        public const string FourColumnLedgerItemsBalance = "testbal/ledger/{0}/items/4-col";
+        public const string FourColumnChildItemsBalance = "testbal/{0}/items/4-col";
 
         /// <summary>
-        /// Server route URL for four-column test balance report for all descendants of a ledger account
+        /// Server route URL for four-column test balance report for all descendants of an account
         /// </summary>
-        public const string FourColumnLedgerItemsBalanceUrl = "testbal/ledger/{accountId:min(1)}/items/4-col";
+        public const string FourColumnChildItemsBalanceUrl = "testbal/{accountId:min(1)}/items/4-col";
 
         /// <summary>
-        /// Client URL for six-column test balance report for all descendants of a ledger account
+        /// Client URL for six-column test balance report for all descendants of an account
         /// </summary>
-        public const string SixColumnLedgerItemsBalance = "testbal/ledger/{0}/items/6-col";
+        public const string SixColumnChildItemsBalance = "testbal/{0}/items/6-col";
 
         /// <summary>
-        /// Server route URL for six-column test balance report for all descendants of a ledger account
+        /// Server route URL for six-column test balance report for all descendants of an account
         /// </summary>
-        public const string SixColumnLedgerItemsBalanceUrl = "testbal/ledger/{accountId:min(1)}/items/6-col";
+        public const string SixColumnChildItemsBalanceUrl = "testbal/{accountId:min(1)}/items/6-col";
 
         /// <summary>
-        /// Client URL for eight-column test balance report for all descendants of a ledger account
+        /// Client URL for eight-column test balance report for all descendants of an account
         /// </summary>
-        public const string EightColumnLedgerItemsBalance = "testbal/ledger/{0}/items/8-col";
+        public const string EightColumnChildItemsBalance = "testbal/{0}/items/8-col";
 
         /// <summary>
-        /// Server route URL for eight-column test balance report for all descendants of a ledger account
+        /// Server route URL for eight-column test balance report for all descendants of an account
         /// </summary>
-        public const string EightColumnLedgerItemsBalanceUrl = "testbal/ledger/{accountId:min(1)}/items/8-col";
+        public const string EightColumnChildItemsBalanceUrl = "testbal/{accountId:min(1)}/items/8-col";
 
         /// <summary>
-        /// Client URL for ten-column test balance report for all descendants of a ledger account
+        /// Client URL for ten-column test balance report for all descendants of an account
         /// </summary>
-        public const string TenColumnLedgerItemsBalance = "testbal/ledger/{0}/items/10-col";
+        public const string TenColumnChildItemsBalance = "testbal/{0}/items/10-col";
 
         /// <summary>
-        /// Server route URL for ten-column test balance report for all descendants of a ledger account
+        /// Server route URL for ten-column test balance report for all descendants of an account
         /// </summary>
-        public const string TenColumnLedgerItemsBalanceUrl = "testbal/ledger/{accountId:min(1)}/items/10-col";
-
-        #endregion
-
-        #region Subsidiary Items Level reports
-
-        /// <summary>
-        /// Client URL for two-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string TwoColumnSubsidiaryItemsBalance = "testbal/subsid/{0}/items/2-col";
-
-        /// <summary>
-        /// Server route URL for two-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string TwoColumnSubsidiaryItemsBalanceUrl = "testbal/subsid/{accountId:min(1)}/items/2-col";
-
-        /// <summary>
-        /// Client URL for four-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string FourColumnSubsidiaryItemsBalance = "testbal/subsid/{0}/items/4-col";
-
-        /// <summary>
-        /// Server route URL for four-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string FourColumnSubsidiaryItemsBalanceUrl = "testbal/subsid/{accountId:min(1)}/items/4-col";
-
-        /// <summary>
-        /// Client URL for six-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string SixColumnSubsidiaryItemsBalance = "testbal/subsid/{0}/items/6-col";
-
-        /// <summary>
-        /// Server route URL for six-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string SixColumnSubsidiaryItemsBalanceUrl = "testbal/subsid/{accountId:min(1)}/items/6-col";
-
-        /// <summary>
-        /// Client URL for eight-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string EightColumnSubsidiaryItemsBalance = "testbal/subsid/{0}/items/8-col";
-
-        /// <summary>
-        /// Server route URL for eight-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string EightColumnSubsidiaryItemsBalanceUrl = "testbal/subsid/{accountId:min(1)}/items/8-col";
-
-        /// <summary>
-        /// Client URL for ten-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string TenColumnSubsidiaryItemsBalance = "testbal/subsid/{0}/items/10-col";
-
-        /// <summary>
-        /// Server route URL for ten-column test balance report for all descendants of a subsidiary account
-        /// </summary>
-        public const string TenColumnSubsidiaryItemsBalanceUrl = "testbal/subsid/{accountId:min(1)}/items/10-col";
+        public const string TenColumnChildItemsBalanceUrl = "testbal/{accountId:min(1)}/items/10-col";
 
         #endregion
     }
