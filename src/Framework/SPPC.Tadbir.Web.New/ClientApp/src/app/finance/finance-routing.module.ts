@@ -18,6 +18,8 @@ import { JournalComponent } from './components/reporting/journal/journal.compone
 import { MetaDataResolver } from '@sppc/shared/class/metadata/metadata.resolver';
 import { currencyRateComponent } from './components/base/currencyRate/currencyRate.component';
 import { TestBalanceComponent } from '@sppc/finance/components/reporting/testBalance/testBalance.component';
+import { CurrencyBookComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook.component';
+
 
 const routes: Routes = [{
   path: 'finance',
@@ -43,6 +45,7 @@ const routes: Routes = [{
     { path: 'journal', component: JournalComponent },
     { path: 'currency-rate/:id', component: currencyRateComponent },
     { path: 'balance', component: TestBalanceComponent },
+    { path: 'currency-book', component: CurrencyBookComponent },
   ]
 }];
 

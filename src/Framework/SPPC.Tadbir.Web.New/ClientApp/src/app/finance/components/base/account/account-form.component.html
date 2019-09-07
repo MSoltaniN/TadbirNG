@@ -1,5 +1,5 @@
 
-<div class="dialog-body">
+<div class="dialog-body acc-form">
 
   <div (keydown.esc)="escPress()">
     <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
@@ -128,8 +128,16 @@
                 <div class="form-group">
                   <label for="currencyId" class="control-label">{{ 'Account.DefaultCurrency' | translate }}</label>
 
-                  <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-acc"
-                                      [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'">
+                  <kendo-dropdownlist [data]="filteredCurrencies" class="ddl-acc"
+                                      [valuePrimitive]="true"
+                                      [filterable]="true"
+                                      formControlName="currencyId"                                      
+                                      [textField]="'value'"
+                                      [valueField]="'key'"
+                                      [value]="selectedCurrencyValue"
+                                      [(ngModel)]="selectedCurrencyValue"
+                                      (filterChange)="handleFilter($event)"
+                                      [defaultItem]="{ value: '', key: null }">
                   </kendo-dropdownlist>
 
                 </div>
@@ -139,8 +147,13 @@
                 <div class="form-group">
                   <label for="turnoverMode" class="control-label">{{ 'Account.EntryLimitation' | translate }}</label>
 
-                  <kendo-dropdownlist [data]="turnovermodes" [valuePrimitive]="true" formControlName="turnoverMode" class="ddl-acc"
-                                      [textField]="'value'" [value]="selectedTurnoverModeValue" [(ngModel)]="selectedTurnoverModeValue" [valueField]="'key'">
+                  <kendo-dropdownlist [data]="turnovermodes" class="ddl-acc"
+                                      [valuePrimitive]="true"
+                                      formControlName="turnoverMode" 
+                                      [textField]="'value'"
+                                      [valueField]="'key'"
+                                      [value]="selectedTurnoverModeValue"
+                                      [(ngModel)]="selectedTurnoverModeValue">
                   </kendo-dropdownlist>
                 </div>
               </div>

@@ -1030,7 +1030,7 @@
     <value>امکانات</value>
   </data>
   <data name="CurrencyName" xml:space="preserve">
-    <value>نوع ارز</value>
+    <value>نام ارز</value>
   </data>
   <data name="CurrencyRate" xml:space="preserve">
     <value>نرخ ارز</value>
@@ -2576,5 +2576,23 @@
   </data>
   <data name="CurrencyAlreadyExists" xml:space="preserve">
     <value>ارز با نمایه بین المللی {0} قبلاً ایجاد شده است.</value>
+  </data>
+  <data name="BaseCurrencyBalance" xml:space="preserve">
+    <value>مانده ارز پایه</value>
+  </data>
+  <data name="BaseCurrencyCredit" xml:space="preserve">
+    <value>بستانکاری ارز پایه</value>
+  </data>
+  <data name="BaseCurrencyDebit" xml:space="preserve">
+    <value>بدهکاری ارز پایه</value>
+  </data>
+  <data name="Currency_Free_Rows" xml:space="preserve">
+    <value>سطرهای بدون ارز</value>
+  </data>
+  <data name="CurrencyBook" xml:space="preserve">
+    <value>دفتر عملیات ارزی</value>
+  </data>
+  <data name="CurrencyBookReport" xml:space="preserve">
+    <value>دفتر عملیات ارزی</value>
   </data>
 </root>

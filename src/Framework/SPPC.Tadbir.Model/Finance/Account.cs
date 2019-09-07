@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -17,8 +15,8 @@ namespace SPPC.Tadbir.Model.Finance
         public int? ParentId { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی پول یا ارز مورد استفاده در این سرفصل حسابداری
+        /// مجموعه ای از ارزهای انتخاب شده در شعب مختلف برای این سرفصل حسابداری
         /// </summary>
-        public int? CurrencyId { get; set; }
+        public IList<AccountCurrency> AccountCurrencies { get; set; }
     }
 }

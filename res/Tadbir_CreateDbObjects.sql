@@ -219,7 +219,6 @@ CREATE TABLE [Finance].[Account] (
     [FiscalPeriodID]         INT              NOT NULL,
     [BranchID]               INT              NOT NULL,
     [GroupID]                INT              NULL,
-    [CurrencyID]             INT              CONSTRAINT [DF_Finance_Account_CurrencyID] DEFAULT (1) NOT NULL,
     [BranchScope]            SMALLINT         NOT NULL,
     [Code]                   NVARCHAR(16)     NOT NULL,
     [FullCode]               NVARCHAR(256)    NOT NULL,
@@ -236,7 +235,6 @@ CREATE TABLE [Finance].[Account] (
     , CONSTRAINT [FK_Finance_Account_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Account_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Finance_Account_Finance_Group] FOREIGN KEY ([GroupID]) REFERENCES [Finance].[AccountGroup]([GroupID])
-    , CONSTRAINT [FK_Finance_Account_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
 )
 GO
 
@@ -277,6 +275,21 @@ CREATE TABLE [Finance].[AccountCollectionAccount] (
     , CONSTRAINT [FK_Finance_AccountCollectionAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
 )
 GO
+
+CREATE TABLE [Finance].[AccountCurrency](
+	[AccountCurrencyID]    INT              IDENTITY(1,1) NOT NULL,
+	[AccountID]            INT              NOT NULL,
+	[CurrencyID]           INT              NOT NULL,
+	[BranchID]             INT              NOT NULL,
+	[RowGuid]              UNIQUEIDENTIFIER CONSTRAINT [DF_AccountCurrency_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+	[ModifiedDate]         DATETIME CONSTRAINT [DF_AccountCurrency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+, CONSTRAINT [PK_AccountCurrency] PRIMARY KEY CLUSTERED ([AccountCurrencyID] ASC)
+, CONSTRAINT [FK_Finance_AccountCurrency_Corporate_Branch] FOREIGN KEY([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+, CONSTRAINT [FK_Finance_AccountCurrency_Finance_Account] FOREIGN KEY([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+, CONSTRAINT [FK_Finance_AccountCurrency_Finance_Currency] FOREIGN KEY([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+)
+GO
+
 
 CREATE TABLE [Finance].[Voucher] (
     [VoucherID]       INT              IDENTITY (1, 1) NOT NULL,

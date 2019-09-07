@@ -37,5 +37,9 @@ export enum ViewName {
   TestBalance4Column = 33,
   TestBalance6Column = 34,
   TestBalance8Column = 35,
-  TestBalance10Column = 36
+  TestBalance10Column = 36,
+  CurrencyBook = 37,
+  CurrencyBookSingle = 38,
+  CurrencyBookSingleSummary = 39,
+  CurrencyBookSummary = 40
 }

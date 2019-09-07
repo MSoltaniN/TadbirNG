@@ -217,9 +217,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteBranchAsync(int branchId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branch = await repository.GetByIDAsync(branchId);
+            var branch = await repository.GetByIDWithTrackingAsync(branchId, bch => bch.AccountCurrencies);
             if (branch != null)
             {
+                branch.AccountCurrencies.Clear();
                 await DeleteAsync(repository, branch);
             }
         }

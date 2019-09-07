@@ -2586,4 +2586,22 @@
   <data name="CurrencyAlreadyExists" xml:space="preserve">
     <value>Currency with international code {0} already exists.</value>
   </data>
+  <data name="BaseCurrencyBalance" xml:space="preserve">
+    <value>Base currency balance</value>
+  </data>
+  <data name="BaseCurrencyCredit" xml:space="preserve">
+    <value>Base currency credit</value>
+  </data>
+  <data name="BaseCurrencyDebit" xml:space="preserve">
+    <value>Base currency debit</value>
+  </data>
+  <data name="Currency_Free_Rows" xml:space="preserve">
+    <value>Currency free rows</value>
+  </data>
+  <data name="CurrencyBook" xml:space="preserve">
+    <value>Currency Book</value>
+  </data>
+  <data name="CurrencyBookReport" xml:space="preserve">
+    <value>Currency Book Report</value>
+  </data>
 </root>
