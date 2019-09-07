@@ -105,7 +105,7 @@ namespace SPPC.Tadbir.Persistence
                 Func<TestBalanceItemViewModel, bool> lineFilter = line => line.AccountLevel >= groupLevel;
                 IEnumerable<TestBalanceItemViewModel> lines = await GetRawBalanceLinesAsync(parameters);
                 lines = lines.Where(line => line.AccountFullCode.StartsWith(account.FullCode));
-                foreach (var lineGroup in GetTurnoverGroups(lines, groupLevel, lineFilter, parameters.IsByBranch))
+                foreach (var lineGroup in GetTurnoverGroups(lines, groupLevel, lineFilter))
                 {
                     await AddTwoAndFourColumnBalanceItemAsync(
                         testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -163,7 +163,7 @@ namespace SPPC.Tadbir.Persistence
             var lines = await GetRawBalanceLinesAsync(parameters);
             if (mode == TestBalanceMode.Detail)
             {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter, parameters.IsByBranch))
+                foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter))
                 {
                     await AddTwoAndFourColumnBalanceItemAsync(
                         testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -172,7 +172,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (mode == TestBalanceMode.Detail || mode == TestBalanceMode.Subsidiary)
             {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter, parameters.IsByBranch))
+                foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter))
                 {
                     await AddTwoAndFourColumnBalanceItemAsync(
                         testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -181,7 +181,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (mode <= TestBalanceMode.Detail)
             {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter, parameters.IsByBranch))
+                foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter))
                 {
                     await AddTwoAndFourColumnBalanceItemAsync(
                         testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -246,7 +246,7 @@ namespace SPPC.Tadbir.Persistence
 
         private IEnumerable<IGrouping<string, TestBalanceItemViewModel>> GetTurnoverGroups(
             IEnumerable<TestBalanceItemViewModel> lines, int groupLevel,
-            Func<TestBalanceItemViewModel, bool> lineFilter, bool byBranch = false)
+            Func<TestBalanceItemViewModel, bool> lineFilter)
         {
             int codeLength = GetLevelCodeLength(ViewName.Account, groupLevel);
             return GetGroupByThenByItems(lines.Where(lineFilter),
@@ -353,7 +353,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(item => item.AccountId);
                 var notUsed = await _repository
                     .GetAllQuery<Account>(ViewName.Account, acc => acc.Branch)
-                    .Where(acc => !usedIds.Contains(acc.Id))
+                    .Where(acc => !usedIds.Contains(acc.Id) && acc.Level == (short)parameters.Mode)
                     .Select(acc => new { acc.Id, acc.Name, acc.FullCode, acc.BranchId, BranchName = acc.Branch.Name })
                     .ToListAsync();
                 foreach (var notUsedItem in notUsed)
@@ -401,23 +401,6 @@ namespace SPPC.Tadbir.Persistence
                 .GroupBy(firstSelector))
             {
                 yield return byFirst;
-            }
-        }
-
-        private IEnumerable<IGrouping<TKey2, TestBalanceItemViewModel>> GetGroupByThenByItems<TKey1, TKey2>(
-            IEnumerable<TestBalanceItemViewModel> lines, Func<TestBalanceItemViewModel, TKey1> firstSelector,
-            Func<TestBalanceItemViewModel, TKey2> secondSelector)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(firstSelector)
-                .GroupBy(firstSelector))
-            {
-                foreach (var bySecond in byFirst
-                    .OrderBy(secondSelector)
-                    .GroupBy(secondSelector))
-                {
-                    yield return bySecond;
-                }
             }
         }
 
