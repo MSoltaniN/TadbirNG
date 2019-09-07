@@ -567,7 +567,16 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<VoucherLine, TestBalanceItemViewModel>()
                 .ForMember(dest => dest.TurnoverDebit, opts => opts.MapFrom(src => src.Debit))
                 .ForMember(dest => dest.TurnoverCredit, opts => opts.MapFrom(src => src.Credit));
-       }
+            mapperConfig.CreateMap<VoucherLine, CurrencyBookItemViewModel>()
+                .ForMember(dest => dest.Credit, opts => opts.MapFrom(src => src.Credit > 0 ? src.CurrencyValue : 0))
+                .ForMember(dest => dest.Debit, opts => opts.MapFrom(src => src.Debit > 0 ? src.CurrencyValue : 0))
+                .ForMember(dest => dest.BaseCurrencyCredit, opts => opts.MapFrom(src => src.Credit))
+                .ForMember(dest => dest.BaseCurrencyDebit, opts => opts.MapFrom(src => src.Debit))
+                .ForMember(dest => dest.CurrencyName, opts => opts.MapFrom(src => src.Currency.Name))
+                .ForMember(dest => dest.Reference, opts => opts.MapFrom(src => src.Voucher.Reference))
+                .ForMember(dest => dest.CurrencyRate, opts => opts.MapFrom(
+                    src => src.CurrencyValue.HasValue && src.Credit > 0 ? src.Credit / src.CurrencyValue : src.Debit / src.CurrencyValue));
+        }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)
         {

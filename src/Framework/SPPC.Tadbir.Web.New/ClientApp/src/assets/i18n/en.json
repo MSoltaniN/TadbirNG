@@ -142,7 +142,8 @@
     "JournalByDateSummaryByDate": "Journal By Date Summary By Date",
     "AccountBook": "Account Book",
     "Currency": "Currency",
-    "CurrencyRate": "Currency Rate"
+    "CurrencyRate": "Currency Rate",
+    "CurrencyBook": "Currency Book"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -184,6 +185,14 @@
     "BranchName": "Branch Name",
     "Description": "Description",
     "BranchScope": "Branch Scope"
+  },
+  "CurrencyBook": {
+    "AllCurrencies": "All Currencies",
+    "BaseCurrencyDebitSum": "Base Currency Debit Sum",
+    "BaseCurrencyCreditSum": "Base Currency Credit Sum",
+    "BaseCurrencyBalanceSum": "Base Currency Balance Sum",
+    "CurrencyFreeRows": "Show Currency Free Rows",
+    "Currency": "Currency"
   },
   "AccountBook": {
     "DisplayByRow": "By Row",

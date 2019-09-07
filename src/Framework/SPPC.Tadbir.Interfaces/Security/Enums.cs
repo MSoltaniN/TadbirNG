@@ -883,4 +883,46 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         ByBranch = 0x10
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به دفتر عملیات ارزی را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CurrencyBookPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به دفتر عملیات ارزی
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده دفتر عملیات ارزی
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی جستجوی اطلاعات دفتر عملیات ارزی
+        /// </summary>
+        Lookup = 0x2,
+
+        /// <summary>
+        /// دسترسی فیلتر اطلاعات دفتر عملیات ارزی
+        /// </summary>
+        Filter = 0x4,
+
+        /// <summary>
+        /// دسترسی چاپ اطلاعات دفتر عملیات ارزی
+        /// </summary>
+        Print = 0x8,
+
+        /// <summary>
+        /// دسترسی علامتگذاری ردیف های دفتر عملیات ارزی
+        /// </summary>
+        Mark = 0x10,
+
+        /// <summary>
+        /// دسترسی مشاهده دفتر عملیات ارزی به تفکیک شعبه
+        /// </summary>
+        ByBranch = 0x20
+    }
 }

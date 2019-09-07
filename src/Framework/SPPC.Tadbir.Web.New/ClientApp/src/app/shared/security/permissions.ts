@@ -213,6 +213,15 @@ export enum CurrencyRatePermissions {
   All = 128
 }
 
+export enum CurrencyBookPermissions {
+  None = 0,
+  View = 1,
+  Lookup = 2,
+  Filter = 4,
+  Print = 8,
+  Mark = 16,
+  ByBranch = 32
+}
 
 
 @Injectable()
@@ -278,6 +287,9 @@ export class Permissions {
         break;
       case "currencyrate":
         id = <any>CurrencyRatePermissions[<any>premissionName];
+        break;
+      case "currencybook":
+        id = <any>CurrencyBookPermissions[<any>premissionName];
         break;
     }
 

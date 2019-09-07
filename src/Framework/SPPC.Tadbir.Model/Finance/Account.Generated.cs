@@ -85,17 +85,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual AccountGroup Group { get; set; }
 
-        /// <summary>
-        /// ارز پیش فرض حساب برای پیشنهاد در آرتیکل های ارزی
-        /// </summary>
-        public virtual Currency Currency { get; set; }
-
         private void InitReferences()
         {
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
             Children = new List<Account>();
-            //Currency = new Currency();
         }
     }
 }

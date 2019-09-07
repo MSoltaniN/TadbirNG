@@ -259,3 +259,27 @@ CREATE TABLE [Finance].[TaxCurrency] (
 )
 GO
 
+-- 1.1.702
+ALTER TABLE [Finance].[Account]
+	DROP CONSTRAINT [FK_Finance_Account_Finance_Currency]
+GO
+ALTER TABLE [Finance].[Account]
+	DROP CONSTRAINT [DF_Finance_Account_CurrencyID]
+GO
+ALTER TABLE [Finance].[Account]
+	DROP COLUMN [CurrencyID]
+GO
+
+CREATE TABLE [Finance].[AccountCurrency](
+	[AccountCurrencyID]    INT              IDENTITY(1,1) NOT NULL,
+	[AccountID]            INT              NOT NULL,
+	[CurrencyID]           INT              NOT NULL,
+	[BranchID]             INT              NOT NULL,
+	[RowGuid]              UNIQUEIDENTIFIER CONSTRAINT [DF_AccountCurrency_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+	[ModifiedDate]         DATETIME CONSTRAINT [DF_AccountCurrency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+, CONSTRAINT [PK_AccountCurrency] PRIMARY KEY CLUSTERED ([AccountCurrencyID] ASC)
+, CONSTRAINT [FK_Finance_AccountCurrency_Corporate_Branch] FOREIGN KEY([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+, CONSTRAINT [FK_Finance_AccountCurrency_Finance_Account] FOREIGN KEY([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+, CONSTRAINT [FK_Finance_AccountCurrency_Finance_Currency] FOREIGN KEY([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+)
+GO

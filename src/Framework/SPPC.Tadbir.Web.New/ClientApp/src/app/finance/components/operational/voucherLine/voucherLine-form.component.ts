@@ -135,6 +135,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   public onSave(e: any, isOpen: boolean): void {
     e.preventDefault();
+    debugger;
     if (this.editForm1.valid) {
       var model = this.editForm1.value;
 
@@ -211,7 +212,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     }
 
     if (this.selectedCurrencyValue == 0)
-      this.editForm1.patchValue({ currencyValue: undefined });
+      this.editForm1.patchValue({ currencyId: undefined, currencyValue: undefined });
   }
 
   changeCurrencyValue() {
@@ -331,6 +332,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
             this.selectedCurrencyValue = res.id;
             var currency = this.currenciesRows.find(f => f.id == res.id);
             this.currencyRate = currency.lastRate;
+            this.isDisplayCurrencyInfo = true;
           }
         })
       }

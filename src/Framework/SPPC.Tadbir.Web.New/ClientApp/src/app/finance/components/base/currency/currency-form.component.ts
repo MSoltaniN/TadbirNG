@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { String, DetailComponent } from '@sppc/shared/class';
 import { Currency } from '@sppc/finance/models';
-import { CurrencyService } from '@sppc/finance/service';
+import { CurrencyService, CurrencyEntity } from '@sppc/finance/service';
 import { CurrencyApi } from '@sppc/finance/service/api';
 import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/shared/services';
 import { Entities, MessageType } from '@sppc/env/environment';
@@ -59,6 +59,7 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
 
   progress: number = 0;
   message: string;
+  minorUnitKey: string;
   @ViewChild('myInput') myInputVariable: ElementRef;
 
   @Input() public isNew: boolean = false;
@@ -74,8 +75,13 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   //Events
   public onSave(e: any): void {
     e.preventDefault();
+    debugger;
     this.editForm.patchValue({ id: this.currencyId ? this.currencyId : 0 });
-    this.save.emit(this.editForm.value);
+    var model = new CurrencyEntity();
+    model = this.editForm.value;
+    model.minorUnit = this.minorUnitKey;
+    model.minorUnitKey = this.minorUnitKey;
+    this.save.emit(model);
   }
 
   public onCancel(e: any): void {
@@ -89,8 +95,7 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public lookupService: LookupService, public currencyService: CurrencyService, public renderer: Renderer2, public metadata: MetaDataService,
-    private http: HttpClient) {
+    public lookupService: LookupService, public currencyService: CurrencyService, public renderer: Renderer2, public metadata: MetaDataService) {
 
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.VoucherLine, ViewName.Currency);
 
@@ -118,10 +123,11 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   }
 
   onChangeCurrency(item: any) {
-    this.editForm.patchValue({ name: item });
     if (item)
       this.currencyService.getModels(String.Format(CurrencyApi.CurrencyInfoByName, item)).subscribe(res => {
         this.editForm.reset(res);
+        this.editForm.patchValue({ name: item });
+        this.minorUnitKey = res.minorUnitKey;
       }, error => {
         if (error.status == 404)
           this.showMessage(this.getText('App.RecordNotFound'), MessageType.Warning);

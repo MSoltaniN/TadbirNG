@@ -19,8 +19,8 @@ export function getLayoutModule(layout: Layout) {
 }
 
 interface Item {
-  Key: string,
-  Value: string
+  key: string,
+  value: string
 }
 
 
@@ -44,6 +44,7 @@ input[type=text],.ddl-acc { width: 100%; } /deep/ .k-dialog-buttongroup {border-
 /deep/ .k-switch[dir="rtl"] .k-switch-label-on { right: -22px; }
 /deep/ .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
 /deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }
+.acc-form { min-height: 386px; }
 `],
   templateUrl: './account-form.component.html',
   providers: [{
@@ -66,8 +67,9 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   branch_Id: number;
   branchName: string;
 
-  selectedCurrencyValue: string = "1";
+  selectedCurrencyValue: string;
   currenciesRows: Array<Item>;
+  filteredCurrencies: Array<Item>;
 
   selectedTurnoverModeValue: string = "-1";
   turnovermodes: Array<Item>;
@@ -124,8 +126,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.editForm.reset();
     this.getAccountGroups();
     this.getBranchName();
-    this.GetCurrencies();
-    this.GetTurnoverModes();
+    this.getCurrencies();
+    this.getTurnoverModes();
 
     this.parentScopeValue = 0;
     if (this.parent) {
@@ -181,21 +183,26 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
   }
 
-  GetCurrencies() {
+  getCurrencies() {
     this.lookupService.GetCurrenciesLookup().subscribe(res => {
       this.currenciesRows = res;
+      this.filteredCurrencies = res;
       if (this.model != undefined && this.model.currencyId != undefined) {
         this.selectedCurrencyValue = this.model.currencyId.toString();
       }
     })
   }
 
-  GetTurnoverModes() {
+  getTurnoverModes() {
     this.lookupService.GetLookup(LookupApi.AccountTurnovers).subscribe(res => {
       this.turnovermodes = res;
       if (this.model != undefined && this.model.turnoverMode != undefined) {
         this.selectedTurnoverModeValue = this.model.turnoverMode.toString();
       }
     })
+  }
+
+  handleFilter(value: any) {
+    this.filteredCurrencies = this.currenciesRows.filter((s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1);
   }
 }

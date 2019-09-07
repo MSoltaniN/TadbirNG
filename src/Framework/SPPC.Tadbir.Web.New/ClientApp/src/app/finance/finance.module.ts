@@ -34,6 +34,8 @@ import { JournalComponent } from '@sppc/finance/components/reporting/journal/jou
 import { currencyRateComponent } from '@sppc/finance/components/base/currencyRate/currencyRate.component';
 import { CurrencyRateFormComponent } from '@sppc/finance/components/base/currencyRate/currencyRate-form.component';
 import { TestBalanceComponent } from '@sppc/finance/components/reporting/testBalance/testBalance.component';
+import { CurrencyBookComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook.component';
+import { CurrencyBookDetailComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook-detail.component';
 
 @NgModule({
   imports: [
@@ -44,7 +46,7 @@ import { TestBalanceComponent } from '@sppc/finance/components/reporting/testBal
   declarations: [AccountComponent, AccountFormComponent, AccountCollectionComponent, AccountGroupsComponent, AccountGroupsFormComponent, AccountRelationsComponent,
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
     ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
-    currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent],
+    currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,

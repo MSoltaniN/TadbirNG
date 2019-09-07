@@ -84,6 +84,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 item = Mapper.Map<AccountViewModel>(account);
                 item.GroupId = GetAccountGroupId(repository, account);
+                item.CurrencyId = await GetAccountCurrencyIdAsync(account.Id);
             }
 
             return item;
@@ -191,6 +192,7 @@ namespace SPPC.Tadbir.Persistence
                 account = Mapper.Map<Account>(accountView);
                 await InsertAsync(repository, account);
                 await UpdateLevelUsageAsync(account.Level);
+                await InsertAccountCurrencyAsync(accountView, account);
             }
             else
             {
@@ -203,6 +205,8 @@ namespace SPPC.Tadbir.Persistence
                     {
                         await CascadeUpdateFullCodeAsync(account.Id);
                     }
+
+                    await UpdateAccountCurrencyAsync(accountView, account);
                 }
             }
 
@@ -216,9 +220,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDWithTrackingAsync(accountId);
+            var account = await repository.GetByIDWithTrackingAsync(accountId, acc => acc.AccountCurrencies);
             if (account != null)
             {
+                account.AccountCurrencies.Clear();
                 await DeleteAsync(repository, account);
                 await UpdateLevelUsageAsync(account.Level);
             }
@@ -234,10 +239,11 @@ namespace SPPC.Tadbir.Persistence
             int level = 0;
             foreach (int accountId in accountIds)
             {
-                var account = await repository.GetByIDWithTrackingAsync(accountId);
+                var account = await repository.GetByIDWithTrackingAsync(accountId, acc => acc.AccountCurrencies);
                 if (account != null)
                 {
                     level = Math.Max(level, account.Level);
+                    account.AccountCurrencies.Clear();
                     await DeleteAsync(repository, account);
                 }
             }
@@ -399,7 +405,6 @@ namespace SPPC.Tadbir.Persistence
             account.Name = accountViewModel.Name;
             account.Level = accountViewModel.Level;
             account.Description = accountViewModel.Description;
-            account.CurrencyId = accountViewModel.CurrencyId;
             account.IsActive = accountViewModel.IsActive;
             account.IsCurrencyAdjustable = accountViewModel.IsCurrencyAdjustable;
             account.TurnoverMode = accountViewModel.TurnoverMode;
@@ -518,8 +523,7 @@ namespace SPPC.Tadbir.Persistence
                 Code = newCode,
                 ParentId = parent?.Id,
                 FiscalPeriodId = _currentContext.FiscalPeriodId,
-                BranchId = _currentContext.BranchId,
-                CurrencyId = 1
+                BranchId = _currentContext.BranchId
             };
             childAccount.FullCode = (parent != null)
                 ? parent.FullCode + childAccount.Code
@@ -532,6 +536,74 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return childAccount;
+        }
+
+        private async Task InsertAccountCurrencyAsync(AccountViewModel accountViewModel, Account account)
+        {
+            if (accountViewModel.CurrencyId.HasValue)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
+                var accountCurrency = new AccountCurrency()
+                {
+                    Id = 0,
+                    AccountId = account.Id,
+                    CurrencyId = accountViewModel.CurrencyId.Value,
+                    BranchId = _currentContext.BranchId,
+                };
+
+                repository.Insert(accountCurrency);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task UpdateAccountCurrencyAsync(AccountViewModel accountViewModel, Account account)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
+            var accountCurrency = await repository.GetSingleByCriteriaAsync(accCurr => accCurr.AccountId == account.Id && accCurr.BranchId == _currentContext.BranchId);
+
+            if (accountViewModel.CurrencyId.HasValue)
+            {
+                if (accountCurrency != null)
+                {
+                    accountCurrency.CurrencyId = accountViewModel.CurrencyId.Value;
+                    repository.Update(accountCurrency);
+                }
+                else
+                {
+                    var accCurrency = new AccountCurrency()
+                    {
+                        Id = 0,
+                        AccountId = account.Id,
+                        CurrencyId = accountViewModel.CurrencyId.Value,
+                        BranchId = _currentContext.BranchId,
+                    };
+
+                    repository.Insert(accCurrency);
+                }
+            }
+            else
+            {
+                if (accountCurrency != null)
+                {
+                    repository.Delete(accountCurrency);
+                }
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        private async Task<int?> GetAccountCurrencyIdAsync(int accountId)
+        {
+            var accountCurrencyRepository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
+            var accCurrency = await accountCurrencyRepository.GetSingleByCriteriaAsync(
+                accCurr => accCurr.AccountId == accountId && accCurr.BranchId == _currentContext.BranchId);
+
+            if (accCurrency != null)
+            {
+                return accCurrency.CurrencyId;
+            }
+
+            return null;
         }
 
         private readonly ISecureRepository _repository;

@@ -17,6 +17,7 @@ export interface Currency {
   country: string;
   code: string;
   minorUnit: string;
+  minorUnitKey: string;
   multiplier: number;
   decimalCount: number;
   description?: string;

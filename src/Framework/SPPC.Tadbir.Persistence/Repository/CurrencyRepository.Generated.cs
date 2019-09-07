@@ -136,12 +136,13 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
-                var account = await accountRepository.GetFirstByCriteriaAsync(
-                    acc => acc.Id == accountId, acc => acc.Currency);
-                if (account != null && account.CurrencyId.HasValue)
+                var accountCurrencyRepository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
+                var accCurrency = await accountCurrencyRepository.GetSingleByCriteriaAsync(
+                    accCurr => accCurr.AccountId == accountId && accCurr.BranchId == _currentContext.BranchId,
+                    accCurr => accCurr.Currency);
+                if (accCurrency != null)
                 {
-                    currency = Mapper.Map<CurrencyInfoViewModel>(account.Currency);
+                    currency = Mapper.Map<CurrencyInfoViewModel>(accCurrency.Currency);
                 }
             }
 
@@ -306,10 +307,10 @@ Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLi
 
         private async Task<bool> IsUsedInAccounts(int currencyId)
         {
-            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
-            int usageCount = await accountRepository
+            var accountCurrencyRepository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
+            int usageCount = await accountCurrencyRepository
                 .GetEntityQuery()
-                .Where(acc => acc.CurrencyId == currencyId)
+                .Where(accCurr => accCurr.CurrencyId == currencyId)
                 .CountAsync();
             return (usageCount != 0);
         }

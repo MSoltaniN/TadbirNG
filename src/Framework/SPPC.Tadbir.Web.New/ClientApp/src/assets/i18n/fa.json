@@ -89,8 +89,8 @@
     "Cancel": "انصراف",
     "Yes": "بله",
     "No": "خیر",
-    "New": "جدید",
-    "Edit": "ویرایش",
+    "New": "ایجاد",
+    "Edit": "اصلاح",
     "Delete": "حذف",
     "GroupDelete": "حذف گروهی",
     "Setting": "تنظیمات",
@@ -142,7 +142,8 @@
     "AccountBook": "دفتر حساب",
     "Currency": "ارز",
     "CurrencyRate": "نرخ ارز",
-    "TestBalance": "تراز آزمایشی"
+    "TestBalance": "تراز آزمایشی",
+    "CurrencyBook": "دفتر عملیات ارزی"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -184,6 +185,14 @@
     "BranchName": "نام شعبه",
     "Description": "شرح",
     "BranchScope": "دسترسی شعب"
+  },
+  "CurrencyBook": {
+    "AllCurrencies": "کلیه ارزها",
+    "BaseCurrencyDebitSum": "مجموع بدهکاری ارز پایه",
+    "BaseCurrencyCreditSum": "مجموع بستانکاری ارز پایه",
+    "BaseCurrencyBalanceSum": "مانده ارز پایه",
+    "CurrencyFreeRows": "نمایش سطرهای بدون ارز",
+    "Currency": "ارز"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",
@@ -608,7 +617,7 @@
     "Description": "شرح",
     "New": "آرتیکل جدید",
     "Delete": "حذف آرتیکل",
-    "Currency": "واحد پول",
+    "Currency": "نوع ارز",
     "Account": "بردار حساب",
     "Sum": "مجموع",
     "Difference": "اختلاف",
