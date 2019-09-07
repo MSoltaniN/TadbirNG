@@ -10,4 +10,5 @@ export * from './journalApi';
 export * from './projectApi';
 export * from './voucherApi';
 export * from './voucherReportApi';
+export * from './currencyBookApi';
 //# sourceMappingURL=index.js.map

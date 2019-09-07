@@ -142,7 +142,8 @@
     "AccountBook": "دفتر حساب",
     "Currency": "ارز",
     "CurrencyRate": "نرخ ارز",
-    "TestBalance": "تراز آزمایشی"
+    "TestBalance": "تراز آزمایشی",
+    "CurrencyBook": "دفتر عملیات ارزی"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -184,6 +185,14 @@
     "BranchName": "نام شعبه",
     "Description": "شرح",
     "BranchScope": "دسترسی شعب"
+  },
+  "CurrencyBook": {
+    "AllCurrencies": "کلیه ارزها",
+    "BaseCurrencyDebitSum": "مجموع بدهکاری ارز پایه",
+    "BaseCurrencyCreditSum": "مجموع بستانکاری ارز پایه",
+    "BaseCurrencyBalanceSum": "مانده ارز پایه",
+    "CurrencyFreeRows": "نمایش سطرهای بدون ارز",
+    "Currency": "ارز"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",
