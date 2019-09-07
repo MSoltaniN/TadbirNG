@@ -564,6 +564,9 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<VoucherLine, JournalItemViewModel>();
             mapperConfig.CreateMap<VoucherLine, AccountBookItemViewModel>();
+            mapperConfig.CreateMap<VoucherLine, TestBalanceItemViewModel>()
+                .ForMember(dest => dest.TurnoverDebit, opts => opts.MapFrom(src => src.Debit))
+                .ForMember(dest => dest.TurnoverCredit, opts => opts.MapFrom(src => src.Credit));
             mapperConfig.CreateMap<VoucherLine, CurrencyBookItemViewModel>()
                 .ForMember(dest => dest.Credit, opts => opts.MapFrom(src => src.Credit > 0 ? src.CurrencyValue : 0))
                 .ForMember(dest => dest.Debit, opts => opts.MapFrom(src => src.Debit > 0 ? src.CurrencyValue : 0))
