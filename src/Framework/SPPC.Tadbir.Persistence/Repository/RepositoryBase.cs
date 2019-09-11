@@ -57,6 +57,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
+        /// </summary>
+        protected UserContextViewModel UserContext
+        {
+            get { return _context.UserContext; }
+        }
+
+        /// <summary>
         /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
         /// </summary>
         /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
@@ -68,17 +76,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 UnitOfWork.SwitchCompany(BuildConnectionString(company));
             }
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public virtual void SetCurrentContext(UserContextViewModel userContext)
-        {
-            Verify.ArgumentNotNull(userContext, "userContext");
-            _currentContext = userContext;
         }
 
         private static string BuildConnectionString(CompanyDb company)
@@ -97,11 +94,6 @@ namespace SPPC.Tadbir.Persistence
 
             return builder.ToString();
         }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
-        /// </summary>
-        protected UserContextViewModel _currentContext;
 
         private readonly IRepositoryContext _context;
     }

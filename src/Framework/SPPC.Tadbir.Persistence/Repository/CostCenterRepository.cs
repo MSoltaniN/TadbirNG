@@ -305,17 +305,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
-        }
-
-        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="costCenterViewModel">مدل نمایشی شامل آخرین تغییرات</param>
@@ -416,7 +405,7 @@ namespace SPPC.Tadbir.Persistence
             return await repository
                 .GetEntityQuery()
                 .Where(cc => cc.ParentId == parentId
-                    && cc.FiscalPeriodId <= _currentContext.FiscalPeriodId)
+                    && cc.FiscalPeriodId <= UserContext.FiscalPeriodId)
                 .Select(cc => cc.Code)
                 .ToListAsync();
         }
@@ -428,8 +417,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 Code = newCode,
                 ParentId = parent?.Id,
-                FiscalPeriodId = _currentContext.FiscalPeriodId,
-                BranchId = _currentContext.BranchId
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                BranchId = UserContext.BranchId
             };
             childCenter.FullCode = (parent != null)
                 ? parent.FullCode + childCenter.Code

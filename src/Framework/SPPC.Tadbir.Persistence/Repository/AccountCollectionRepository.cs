@@ -56,22 +56,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var accCollection = await _repository
                 .GetAllOperationQuery<AccountCollectionAccount>(ViewName.AccountCollectionAccount, col => col.Account, col => col.Account.Children)
-                .Where(col => col.CollectionId == collectionId && col.BranchId == _currentContext.BranchId && col.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .Where(col => col.CollectionId == collectionId && col.BranchId == UserContext.BranchId && col.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Select(col => Mapper.Map<AccountViewModel>(col))
                 .ToListAsync();
 
             return accCollection;
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
         }
 
         /// <summary>
@@ -98,7 +87,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             var existing = await repository.GetByCriteriaAsync(
                 f => f.CollectionId == collectionId &&
-                f.FiscalPeriodId == _currentContext.FiscalPeriodId);
+                f.FiscalPeriodId == UserContext.FiscalPeriodId);
 
             if (existing.Count > 0)
             {
@@ -136,7 +125,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
 
-            var branchID = _currentContext.BranchId;
+            var branchID = UserContext.BranchId;
             var accountItems = existing
                 .Where(item => item.BranchId == branchID)
                 .Select(item => item.AccountId);
@@ -175,7 +164,7 @@ namespace SPPC.Tadbir.Persistence
 
             var accountItems = accCollectionsList
                 .Select(item => item.AccountId);
-            var branchID = _currentContext.BranchId;
+            var branchID = UserContext.BranchId;
             var removedItems = existing
                 .Where(item => item.BranchId == branchID && !accountItems.Contains(item.AccountId))
                 .ToArray();

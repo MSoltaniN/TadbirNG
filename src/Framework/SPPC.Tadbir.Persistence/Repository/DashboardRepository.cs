@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<DashboardSummariesViewModel> GetSummariesAsync(Calendar calendar)
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var currentPeriod = await repository.GetByIDAsync(_currentContext.FiscalPeriodId);
+            var currentPeriod = await repository.GetByIDAsync(UserContext.FiscalPeriodId);
             var monthEnum = new MonthEnumerator(currentPeriod.StartDate, currentPeriod.EndDate, calendar);
             var months = monthEnum.GetMonths();
             return new DashboardSummariesViewModel()
@@ -54,16 +54,6 @@ namespace SPPC.Tadbir.Persistence
                 NetSales = await GetMonthlyNetSalesAsync(months),
                 GrossSales = await GetMonthlyGrossSalesAsync(months)
             };
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای فیلترهای سطری و شعب تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
         }
 
         private static decimal CalculateBalance(IEnumerable<VoucherLineAmountsViewModel> amounts)

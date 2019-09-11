@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -16,19 +15,15 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز در زیرساخت مدیریت گزارشات را پیاده سازی می کند
     /// </summary>
-    public class ReportSystemRepository : IReportSystemRepository
+    public class ReportSystemRepository : RepositoryBase, IReportSystemRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public ReportSystemRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper)
+        public ReportSystemRepository(IRepositoryContext context)
+            : base(context)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _unitOfWork.UseSystemContext();
+            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -47,10 +42,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات قالب گزارش فوری</returns>
         public async Task<LocalReportViewModel> GetQuickReportTemplateAsync(int localeId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+            var repository = UnitOfWork.GetAsyncRepository<LocalReport>();
             var localReport = await repository.GetSingleByCriteriaAsync(
                 rep => rep.ReportId == _quickReportId && rep.LocaleId == localeId);
-            return _mapper.Map<LocalReportViewModel>(localReport);
+            return Mapper.Map<LocalReportViewModel>(localReport);
         }
 
         /// <summary>
@@ -73,7 +68,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<TreeItemViewModel>> GetReportTreeByViewAsync(int localeId, int viewId)
         {
             var tree = new List<TreeItemViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
             var reports = await repository
                 .GetEntityWithTrackingQuery(rep => rep.Parent, rep => rep.LocalReports)
                 .Where(rep => rep.ViewId == viewId)
@@ -91,7 +86,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 tree = reports
-                    .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+                    .Select(rep => Mapper.Map<TreeItemViewModel>(rep))
                     .ToList();
                 Localize(localeId, reports, tree);
             }
@@ -140,11 +135,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ReportSummaryViewModel> GetReportSummaryAsync(int reportId)
         {
             var summary = default(ReportSummaryViewModel);
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
             var report = await repository.GetByIDAsync(reportId);
             if (report != null)
             {
-                summary = _mapper.Map<ReportSummaryViewModel>(report);
+                summary = Mapper.Map<ReportSummaryViewModel>(report);
             }
 
             return summary;
@@ -157,10 +152,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه گزارش پیش فرض</returns>
         public async Task<ReportSummaryViewModel> GetDefaultReportByViewAsync(int viewId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
             var report = await repository.GetSingleByCriteriaAsync(
                 rep => rep.ViewId == viewId && rep.IsDefault);
-            return _mapper.Map<ReportSummaryViewModel>(report);
+            return Mapper.Map<ReportSummaryViewModel>(report);
         }
 
         /// <summary>
@@ -171,7 +166,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetLocaleIdAsync(string localeCode)
         {
             Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
-            var repository = _unitOfWork.GetAsyncRepository<Locale>();
+            var repository = UnitOfWork.GetAsyncRepository<Locale>();
             var locale = await repository.GetSingleByCriteriaAsync(loc => loc.Code == localeCode);
             return (locale != null ? locale.Id : 0);
         }
@@ -185,22 +180,22 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(report, nameof(report));
             if (String.IsNullOrEmpty(report.Template))
             {
-                var repository = _unitOfWork.GetAsyncRepository<Report>();
+                var repository = UnitOfWork.GetAsyncRepository<Report>();
                 var existing = await repository.GetByIDAsync(
                     report.ReportId, rep => rep.LocalReports, rep => rep.Parameters);
                 if (existing != null)
                 {
-                    var userReport = _mapper.Map<Report>(existing);
+                    var userReport = Mapper.Map<Report>(existing);
                     userReport.Id = 0;
                     userReport.IsSystem = false;
                     userReport.IsDefault = false;
                     userReport.CreatedById = _currentContext.Id;
                     repository.Insert(userReport);
-                    await _unitOfWork.CommitAsync();
+                    await UnitOfWork.CommitAsync();
 
                     Array.ForEach(existing.LocalReports.ToArray(), rep =>
                     {
-                        var clone = _mapper.Map<LocalReport>(rep);
+                        var clone = Mapper.Map<LocalReport>(rep);
                         clone.Id = 0;
                         clone.Caption = (rep.LocaleId == report.LocaleId)
                             ? report.Caption
@@ -211,25 +206,25 @@ namespace SPPC.Tadbir.Persistence
                     });
                     Array.ForEach(existing.Parameters.ToArray(), param =>
                     {
-                        var clone = _mapper.Map<Parameter>(param);
+                        var clone = Mapper.Map<Parameter>(param);
                         clone.Id = 0;
                         clone.ReportId = 0;
                         userReport.Parameters.Add(clone);
                     });
                     repository.Update(userReport, rep => rep.LocalReports, rep => rep.Parameters);
-                    await _unitOfWork.CommitAsync();
+                    await UnitOfWork.CommitAsync();
                 }
             }
             else
             {
-                var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+                var repository = UnitOfWork.GetAsyncRepository<LocalReport>();
                 var existing = await repository.GetSingleByCriteriaAsync(
                     rep => rep.ReportId == report.ReportId && rep.LocaleId == report.LocaleId);
                 if (existing != null)
                 {
                     existing.Template = report.Template;
                     repository.Update(existing);
-                    await _unitOfWork.CommitAsync();
+                    await UnitOfWork.CommitAsync();
                 }
             }
         }
@@ -241,14 +236,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task SetUserReportCaptionAsync(LocalReportViewModel report)
         {
             Verify.ArgumentNotNull(report, nameof(report));
-            var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+            var repository = UnitOfWork.GetAsyncRepository<LocalReport>();
             var existing = await repository.GetSingleByCriteriaAsync(
                 rep => rep.ReportId == report.ReportId && rep.LocaleId == report.LocaleId);
             if (existing != null)
             {
                 existing.Caption = report.Caption;
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -258,7 +253,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
         public async Task DeleteUserReportAsync(int reportId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
             var report = await repository.GetByIDWithTrackingAsync(
                 reportId, rep => rep.LocalReports, rep => rep.Parameters);
             if (report != null)
@@ -274,7 +269,7 @@ namespace SPPC.Tadbir.Persistence
                     repository.Update(systemReport);
                 }
 
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -284,7 +279,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
         public async Task SetReportAsDefaultAsync(int reportId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
             var report = await repository.GetByIDAsync(reportId);
             if (report != null)
             {
@@ -295,7 +290,7 @@ namespace SPPC.Tadbir.Persistence
                     repository.Update(groupReport);
                 }
 
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -308,7 +303,7 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsDuplicateReportCaptionAsync(int localeId, LocalReportViewModel report)
         {
-            var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+            var repository = UnitOfWork.GetAsyncRepository<LocalReport>();
             int count = await repository.GetCountByCriteriaAsync(
                 rep => rep.LocaleId == localeId
                     && rep.Caption == report.Caption);
@@ -332,12 +327,12 @@ namespace SPPC.Tadbir.Persistence
         private async Task<IList<TreeItemViewModel>> GetReportTreeByCriteriaAsync(
             int localeId, Expression<Func<Report, bool>> criteria)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
             var reports = await repository.GetByCriteriaAsync(
                 criteria,
                 rep => rep.Parent, rep => rep.LocalReports);
             var tree = reports
-                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+                .Select(rep => Mapper.Map<TreeItemViewModel>(rep))
                 .ToList();
             Localize(localeId, reports.ToList(), tree);
             return tree;
@@ -347,7 +342,7 @@ namespace SPPC.Tadbir.Persistence
             int reportId, int localeId, bool withParams = true)
         {
             var reportView = default(PrintInfoViewModel);
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
             IQueryable<Report> reportQuery = repository
                 .GetEntityQuery()
                 .Include(rep => rep.LocalReports)
@@ -361,7 +356,7 @@ namespace SPPC.Tadbir.Persistence
             var report = await reportQuery.SingleOrDefaultAsync(rep => rep.Id == reportId);
             if (report != null)
             {
-                reportView = _mapper.Map<PrintInfoViewModel>(report);
+                reportView = Mapper.Map<PrintInfoViewModel>(report);
                 var localReport = report.LocalReports
                     .Where(rep => rep.LocaleId == localeId)
                     .FirstOrDefault();
@@ -372,8 +367,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private const int _quickReportId = 43;
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
         private UserContextViewModel _currentContext;
     }
 }

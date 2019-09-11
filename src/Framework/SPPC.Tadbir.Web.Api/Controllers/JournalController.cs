@@ -278,7 +278,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             Sanitize(ref from, ref to);
             var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
             var journal = isByBranch
                 ? await _repository.GetJournalByDateByBranchAsync(
                     journalMode, from.Value, to.Value, gridOptions)
@@ -302,7 +301,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool isLocalized, bool isSummary)
         {
             var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
             var journal = isByBranch
                 ? await _repository.GetJournalByNoByBranchAsync(journalMode, from, to, gridOptions)
                 : await _repository.GetJournalByNoAsync(journalMode, from, to, gridOptions);
@@ -324,7 +322,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (from == null || to == null)
             {
                 DateTime rangeFrom, rangeTo;
-                _configRepository.SetCurrentContext(SecurityContext.User);
                 _configRepository.GetCurrentFiscalDateRange(out rangeFrom, out rangeTo);
                 from = from ?? rangeFrom;
                 to = to ?? rangeTo;

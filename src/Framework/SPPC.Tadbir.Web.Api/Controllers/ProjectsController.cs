@@ -41,7 +41,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetEnvironmentProjectsAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _repository.GetCountAsync<ProjectViewModel>(GridOptions);
             SetItemCount(itemCount);
             var projects = await _repository.GetProjectsAsync(GridOptions);
@@ -53,7 +52,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetEnvironmentProjectsLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lookup = await _repository.GetProjectsLookupAsync(GridOptions);
             return Json(lookup);
         }
@@ -72,7 +70,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewProjectAsync(int projectId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var newProject = await _repository.GetNewChildProjectAsync(
                 projectId > 0 ? projectId : (int?)null);
             if (newProject == null)
@@ -93,7 +90,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetEnvironmentAccountsLedgerAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var projects = await _repository.GetProjectsLedgerAsync();
             return JsonReadResult(projects);
         }
@@ -103,7 +99,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectChildrenAsync(int projectId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetProjectChildrenAsync(projectId);
             return JsonReadResult(children);
         }
@@ -136,7 +131,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveProjectAsync(project);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -154,7 +148,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveProjectAsync(project);
             result = (outputItem != null)
                 ? Ok(outputItem)
@@ -174,7 +167,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteProjectAsync(projectId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -197,7 +189,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteProjectsAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

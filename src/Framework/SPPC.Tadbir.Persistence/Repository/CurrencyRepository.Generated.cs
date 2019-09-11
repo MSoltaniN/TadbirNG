@@ -135,7 +135,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var accountCurrencyRepository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
                 var accCurrency = await accountCurrencyRepository.GetSingleByCriteriaAsync(
-                    accCurr => accCurr.AccountId == accountId && accCurr.BranchId == _currentContext.BranchId,
+                    accCurr => accCurr.AccountId == accountId && accCurr.BranchId == UserContext.BranchId,
                     accCurr => accCurr.Currency);
                 if (accCurrency != null)
                 {

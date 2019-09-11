@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
@@ -18,18 +17,15 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای خواندن اطلاعات فراداده ای از دیتابیس را پیاده سازی می کند
     /// </summary>
-    public class MetadataRepository : IMetadataRepository
+    public class MetadataRepository : RepositoryBase, IMetadataRepository
     {
         /// <summary>
         /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public MetadataRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
+        public MetadataRepository(IRepositoryContext context)
+            : base(context)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _unitOfWork.UseSystemContext();
+            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -50,10 +46,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
         public async Task<ViewViewModel> GetViewMetadataAsync(string viewName)
         {
-            var repository = _unitOfWork.GetAsyncRepository<View>();
+            var repository = UnitOfWork.GetAsyncRepository<View>();
             var viewMetadata = await repository
                 .GetSingleByCriteriaAsync(vu => vu.Name == viewName, vu => vu.Columns);
-            var metadata = _mapper.Map<ViewViewModel>(viewMetadata);
+            var metadata = Mapper.Map<ViewViewModel>(viewMetadata);
             foreach (var column in metadata.Columns)
             {
                 column.Settings = GetDynamicColumnSettings(column);
@@ -72,10 +68,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
         public async Task<ViewViewModel> GetViewMetadataByIdAsync(int viewId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<View>();
+            var repository = UnitOfWork.GetAsyncRepository<View>();
             var viewMetadata = await repository
                 .GetSingleByCriteriaAsync(vu => vu.Id == viewId, vu => vu.Columns);
-            var metadata = _mapper.Map<ViewViewModel>(viewMetadata);
+            var metadata = Mapper.Map<ViewViewModel>(viewMetadata);
             foreach (var column in metadata.Columns)
             {
                 column.Settings = GetDynamicColumnSettings(column);
@@ -94,7 +90,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از دستورات در بالاترین سطح</returns>
         public async Task<IList<CommandViewModel>> GetTopLevelCommandsAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<Command>();
+            var repository = UnitOfWork.GetAsyncRepository<Command>();
             var topCommands = await repository
                 .GetEntityQuery()
                 .Include(cmd => cmd.Children)
@@ -103,7 +99,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(cmd => cmd.Parent == null && cmd.TitleKey != "Profile")
                 .ToListAsync();
             return topCommands
-                .Select(cmd => _mapper.Map<CommandViewModel>(cmd))
+                .Select(cmd => Mapper.Map<CommandViewModel>(cmd))
                 .ToList();
         }
 
@@ -113,11 +109,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه دستورات در منوی پیش فرض کاربران</returns>
         public async Task<IList<CommandViewModel>> GetDefaultCommandsAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<Command>();
+            var repository = UnitOfWork.GetAsyncRepository<Command>();
             var profileCommands = await repository.GetSingleByCriteriaAsync(
                 cmd => cmd.TitleKey == "Profile", cmd => cmd.Children);
             return profileCommands.Children
-                .Select(cmd => _mapper.Map<CommandViewModel>(cmd))
+                .Select(cmd => Mapper.Map<CommandViewModel>(cmd))
                 .ToList();
         }
 
@@ -130,13 +126,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<PermissionGroupViewModel>> GetPermissionGroupsAsync()
         {
             var viewModels = new List<PermissionGroupViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<PermissionGroup>();
+            var repository = UnitOfWork.GetAsyncRepository<PermissionGroup>();
             var permissions = await repository.GetAllAsync(grp => grp.Permissions);
             Array.ForEach(permissions.ToArray(), perm =>
             {
-                var viewModel = _mapper.Map<PermissionGroupViewModel>(perm);
+                var viewModel = Mapper.Map<PermissionGroupViewModel>(perm);
                 viewModel.Permissions.AddRange(
-                    perm.Permissions.Select(item => _mapper.Map<PermissionViewModel>(item)));
+                    perm.Permissions.Select(item => Mapper.Map<PermissionViewModel>(item)));
                 viewModels.Add(viewModel);
             });
             return viewModels;
@@ -162,8 +158,5 @@ namespace SPPC.Tadbir.Persistence
             columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
             return JsonHelper.From(columnConfig, false);
         }
-
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
     }
 }

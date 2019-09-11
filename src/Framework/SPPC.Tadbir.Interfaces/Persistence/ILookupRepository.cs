@@ -15,12 +15,6 @@ namespace SPPC.Tadbir.Persistence
     /// </summary>
     public interface ILookupRepository
     {
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را تنظیم می کند
-        /// </summary>
-        /// <param name="currentContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        void SetCurrentContext(UserContextViewModel currentContext);
-
         #region Finance Subsystem lookup
 
         /// <summary>

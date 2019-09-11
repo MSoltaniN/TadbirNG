@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
@@ -19,33 +18,20 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر روزنامه را پیاده سازی می کند
     /// </summary>
-    public class JournalRepository : IJournalRepository
+    public class JournalRepository : RepositoryBase, IJournalRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
         /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
-        public JournalRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecureRepository repository,
+        public JournalRepository(IRepositoryContext context, ISecureRepository repository,
             IConfigRepository configRepository)
+            : base(context)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _repository = repository;
             _configRepository = configRepository;
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
-        {
-            _currentContext = userContext;
-            _repository.SetCurrentContext(userContext);
         }
 
         /// <summary>
@@ -329,7 +315,7 @@ namespace SPPC.Tadbir.Persistence
             return voucherLines
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
-                .Select(art => _mapper.Map<JournalItemViewModel>(art));
+                .Select(art => Mapper.Map<JournalItemViewModel>(art));
         }
 
         #endregion
@@ -434,7 +420,7 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
                         .ThenBy(art => art.BranchId)
-                .Select(art => _mapper.Map<JournalItemViewModel>(art));
+                .Select(art => Mapper.Map<JournalItemViewModel>(art));
         }
 
         #endregion
@@ -516,7 +502,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return voucherLines
                 .OrderBy(art => art.Voucher.No)
-                .Select(art => _mapper.Map<JournalItemViewModel>(art));
+                .Select(art => Mapper.Map<JournalItemViewModel>(art));
         }
 
         #endregion
@@ -579,7 +565,7 @@ namespace SPPC.Tadbir.Persistence
             return voucherLines
                 .OrderBy(art => art.Voucher.No)
                     .ThenBy(art => art.BranchId)
-                .Select(art => _mapper.Map<JournalItemViewModel>(art));
+                .Select(art => Mapper.Map<JournalItemViewModel>(art));
         }
 
         #endregion
@@ -642,7 +628,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             Func<JournalItemViewModel, bool> allFilter = art => true;
             var items = lines
-                .Select(art => _mapper.Map<JournalItemViewModel>(art))
+                .Select(art => Mapper.Map<JournalItemViewModel>(art))
                 .Apply(gridOptions, false)
                 .ToList();
             foreach (var byLedger in GetAccountTurnoverGroups(items, true, 0, allFilter))
@@ -664,7 +650,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             Func<JournalItemViewModel, bool> allFilter = art => true;
             var items = lines
-                .Select(art => _mapper.Map<JournalItemViewModel>(art))
+                .Select(art => Mapper.Map<JournalItemViewModel>(art))
                 .Apply(gridOptions, false)
                 .ToList();
             foreach (var byLedger in GetAccountTurnoverGroups(items, true, 0, allFilter))
@@ -729,9 +715,9 @@ namespace SPPC.Tadbir.Persistence
         private async Task<JournalItemViewModel> GetJournalItemFromGroup(
             IEnumerable<VoucherLine> lineGroup, string fullCode)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
-            var journalItem = _mapper.Map<JournalItemViewModel>(lineGroup.First());
+            var journalItem = Mapper.Map<JournalItemViewModel>(lineGroup.First());
             journalItem.Id = 0;
             journalItem.AccountFullCode = fullCode;
             journalItem.AccountName = account.Name;
@@ -744,7 +730,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<JournalItemViewModel> GetJournalItemFromGroup(
             IEnumerable<JournalItemViewModel> itemGroup, string fullCode)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
             var item = itemGroup.First();
             var journalItem = new JournalItemViewModel()
@@ -838,10 +824,7 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;
         private readonly IConfigRepository _configRepository;
-        private UserContextViewModel _currentContext;
     }
 }

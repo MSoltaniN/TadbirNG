@@ -380,17 +380,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
-        }
-
-        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="accountViewModel">مدل نمایشی شامل آخرین تغییرات</param>
@@ -508,7 +497,7 @@ namespace SPPC.Tadbir.Persistence
             return await repository
                 .GetEntityQuery()
                 .Where(acc => acc.ParentId == parentId
-                    && acc.FiscalPeriodId <= _currentContext.FiscalPeriodId)
+                    && acc.FiscalPeriodId <= UserContext.FiscalPeriodId)
                 .Select(acc => acc.Code)
                 .ToListAsync();
         }
@@ -520,8 +509,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 Code = newCode,
                 ParentId = parent?.Id,
-                FiscalPeriodId = _currentContext.FiscalPeriodId,
-                BranchId = _currentContext.BranchId
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                BranchId = UserContext.BranchId
             };
             childAccount.FullCode = (parent != null)
                 ? parent.FullCode + childAccount.Code
@@ -546,7 +535,7 @@ namespace SPPC.Tadbir.Persistence
                     Id = 0,
                     AccountId = account.Id,
                     CurrencyId = accountViewModel.CurrencyId.Value,
-                    BranchId = _currentContext.BranchId,
+                    BranchId = UserContext.BranchId,
                 };
 
                 repository.Insert(accountCurrency);
@@ -557,7 +546,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task UpdateAccountCurrencyAsync(AccountViewModel accountViewModel, Account account)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
-            var accountCurrency = await repository.GetSingleByCriteriaAsync(accCurr => accCurr.AccountId == account.Id && accCurr.BranchId == _currentContext.BranchId);
+            var accountCurrency = await repository.GetSingleByCriteriaAsync(accCurr => accCurr.AccountId == account.Id && accCurr.BranchId == UserContext.BranchId);
 
             if (accountViewModel.CurrencyId.HasValue)
             {
@@ -573,7 +562,7 @@ namespace SPPC.Tadbir.Persistence
                         Id = 0,
                         AccountId = account.Id,
                         CurrencyId = accountViewModel.CurrencyId.Value,
-                        BranchId = _currentContext.BranchId,
+                        BranchId = UserContext.BranchId,
                     };
 
                     repository.Insert(accCurrency);
@@ -594,7 +583,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accountCurrencyRepository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
             var accCurrency = await accountCurrencyRepository.GetSingleByCriteriaAsync(
-                accCurr => accCurr.AccountId == accountId && accCurr.BranchId == _currentContext.BranchId);
+                accCurr => accCurr.AccountId == accountId && accCurr.BranchId == UserContext.BranchId);
 
             if (accCurrency != null)
             {

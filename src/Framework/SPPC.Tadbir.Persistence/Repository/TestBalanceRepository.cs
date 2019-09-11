@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
@@ -17,36 +16,23 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای خواندن اطلاعات گزارش تراز آزمایشی را پیاده سازی می کند
     /// </summary>
-    public class TestBalanceRepository : ITestBalanceRepository
+    public class TestBalanceRepository : RepositoryBase, ITestBalanceRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
         /// <param name="reportRepository">امکانات عمومی و مشترک در گزارش های مالی را تعریف می کند</param>
         /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         public TestBalanceRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecureRepository repository,
+            IRepositoryContext context, ISecureRepository repository,
             IReportRepository reportRepository, IConfigRepository configRepository)
+            : base(context)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _repository = repository;
             _reportRepository = reportRepository;
             _configRepository = configRepository;
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
-        {
-            _currentContext = userContext;
-            _repository.SetCurrentContext(userContext);
-            _reportRepository.SetCurrentContext(userContext);
         }
 
         /// <summary>
@@ -97,7 +83,7 @@ namespace SPPC.Tadbir.Persistence
             int accountId, TestBalanceParameters parameters)
         {
             var testBalance = new TestBalanceViewModel();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(accountId);
             if (account != null)
             {
@@ -218,7 +204,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else if (parameters.FromNo != null && parameters.ToNo != null)
             {
-                Expression<Func<VoucherLine, bool>> mainFilter = art => art.FiscalPeriodId == _currentContext.FiscalPeriodId
+                Expression<Func<VoucherLine, bool>> mainFilter = art => art.FiscalPeriodId == UserContext.FiscalPeriodId
                     && art.Voucher.No >= parameters.FromNo.Value
                     && art.Voucher.No <= parameters.ToNo.Value;
                 lines = await GetRawBalanceLinesAsync(mainFilter, parameters);
@@ -251,7 +237,7 @@ namespace SPPC.Tadbir.Persistence
 
             var lines = await query
                 .Where(mainFilter)
-                .Select(art => _mapper.Map<TestBalanceItemViewModel>(art))
+                .Select(art => Mapper.Map<TestBalanceItemViewModel>(art))
                 .ToListAsync();
             return lines.Apply(parameters.GridOptions, false).ToList();
         }
@@ -269,7 +255,7 @@ namespace SPPC.Tadbir.Persistence
             IEnumerable<TestBalanceItemViewModel> lines, TestBalanceFormat format, string fullCode)
         {
             var first = lines.First();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
             var balanceItem = new TestBalanceItemViewModel()
             {
@@ -404,11 +390,8 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;
         private readonly IConfigRepository _configRepository;
         private IReportRepository _reportRepository;
-        private UserContextViewModel _currentContext;
     }
 }

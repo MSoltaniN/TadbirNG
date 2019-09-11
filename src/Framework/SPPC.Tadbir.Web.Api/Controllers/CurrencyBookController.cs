@@ -112,7 +112,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrencyBookAllCurrenciesAsync(
              bool currFree, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var bookParams = new CurrencyBookParamViewModel()
             {
                 ByBranch = false,
@@ -137,7 +136,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var currencyBook = GetCurrencyBookDelegate(bookMode, bookParam.ByBranch);
             var gridOptions = GridOptions ?? new GridOptions();
-            _repository.SetCurrentContext(SecurityContext.User);
             var book = await currencyBook(bookParam, gridOptions);
             SetItemCount(book.TotalCount);
             Localize(book);
@@ -181,7 +179,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (from == null || to == null)
             {
                 DateTime rangeFrom, rangeTo;
-                _configRepository.SetCurrentContext(SecurityContext.User);
                 _configRepository.GetCurrentFiscalDateRange(out rangeFrom, out rangeTo);
                 from = from ?? rangeFrom;
                 to = to ?? rangeTo;

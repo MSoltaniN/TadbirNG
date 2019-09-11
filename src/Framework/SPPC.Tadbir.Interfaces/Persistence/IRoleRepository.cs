@@ -159,11 +159,5 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="permissions">تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش</param>
         Task SaveRowAccessSettingsAsync(RowPermissionsForRoleViewModel permissions);
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

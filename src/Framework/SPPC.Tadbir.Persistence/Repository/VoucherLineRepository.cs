@@ -179,7 +179,7 @@ namespace SPPC.Tadbir.Persistence
             if (lineView.Id == 0)
             {
                 line = Mapper.Map<VoucherLine>(lineView);
-                line.CreatedById = _currentContext.Id;
+                line.CreatedById = UserContext.Id;
                 if (await InsertAsync(repository, line))
                 {
                     await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
@@ -250,17 +250,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 await UpdateVoucherBalanceStatusAsync(voucherId);
             }
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
         }
 
         /// <summary>

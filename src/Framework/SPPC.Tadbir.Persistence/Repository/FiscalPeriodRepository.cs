@@ -107,7 +107,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriod = await repository.GetFirstByCriteriaAsync(
-                fp => fp.StartDate == start && fp.EndDate == end && fp.CompanyId == _currentContext.CompanyId);
+                fp => fp.StartDate == start && fp.EndDate == end && fp.CompanyId == UserContext.CompanyId);
             return (fiscalPeriod != null);
         }
 

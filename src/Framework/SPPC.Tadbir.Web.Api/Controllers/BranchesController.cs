@@ -81,7 +81,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveBranchAsync(branch);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -99,7 +98,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveBranchAsync(branch);
             return OkReadResult(outputItem);
         }
@@ -116,7 +114,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteBranchAsync(branchId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -139,7 +136,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteBranchesAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

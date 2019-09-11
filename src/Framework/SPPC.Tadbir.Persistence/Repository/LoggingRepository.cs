@@ -146,14 +146,14 @@ namespace SPPC.Tadbir.Persistence
             var log = new OperationLogViewModel()
             {
                 Action = action,
-                FiscalPeriodId = _currentContext.FiscalPeriodId,
-                BranchId = _currentContext.BranchId,
-                CompanyId = _currentContext.CompanyId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                BranchId = UserContext.BranchId,
+                CompanyId = UserContext.CompanyId,
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
                 Result = "Succeeded",
                 Entity = typeof(TEntity).Name,
-                UserId = _currentContext.Id
+                UserId = UserContext.Id
             };
             return log;
         }

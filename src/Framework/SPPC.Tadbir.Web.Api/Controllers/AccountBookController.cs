@@ -335,7 +335,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountBookApi.PreviousEnvironmentItemUrl)]
         public async Task<IActionResult> GetPreviousEnvironmentItemAsync(int viewId, int itemId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var previous = await _repository.GetPreviousAccountItemAsync(viewId, itemId);
             return JsonReadResult(previous);
         }
@@ -344,7 +343,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountBookApi.NextEnvironmentItemUrl)]
         public async Task<IActionResult> GetNextEnvironmentItemAsync(int viewId, int itemId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var next = await _repository.GetNextAccountItemAsync(viewId, itemId);
             return JsonReadResult(next);
         }
@@ -358,7 +356,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var accountBook = GetAccountBookDelegate(bookMode, byBranch);
             var gridOptions = GridOptions ?? new GridOptions();
             Sanitize(ref from, ref to);
-            _repository.SetCurrentContext(SecurityContext.User);
             var book = await accountBook(viewId, accountId, from.Value, to.Value, gridOptions);
             SetItemCount(book.TotalCount);
             Localize(book);
@@ -402,7 +399,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (from == null || to == null)
             {
                 DateTime rangeFrom, rangeTo;
-                _configRepository.SetCurrentContext(SecurityContext.User);
                 _configRepository.GetCurrentFiscalDateRange(out rangeFrom, out rangeTo);
                 from = from ?? rangeFrom;
                 to = to ?? rangeTo;

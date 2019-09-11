@@ -179,7 +179,7 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
             var filters = new List<FilterExpression>();
-            foreach (int roleId in _currentContext.Roles)
+            foreach (int roleId in UserContext.Roles)
             {
                 var permission = repository
                     .GetEntityQuery()
@@ -207,12 +207,12 @@ namespace SPPC.Tadbir.Persistence
             where TEntity : class, IBaseEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            var tree = GetParentTree(_currentContext.BranchId);
+            var tree = GetParentTree(UserContext.BranchId);
             var queryable = records
-                .Where(entity => entity.FiscalPeriodId <= _currentContext.FiscalPeriodId &&
+                .Where(entity => entity.FiscalPeriodId <= UserContext.FiscalPeriodId &&
                     (entity.BranchScope == (short)BranchScope.AllBranches ||
                     (entity.BranchScope == (short)BranchScope.CurrentBranch &&
-                        entity.BranchId == _currentContext.BranchId) ||
+                        entity.BranchId == UserContext.BranchId) ||
                     (entity.BranchScope == (short)BranchScope.CurrentBranchAndChildren &&
                         tree.Contains(entity.BranchId))));
             return queryable;
@@ -222,13 +222,13 @@ namespace SPPC.Tadbir.Persistence
             where TEntity : class, IBaseEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            var childTree = GetChildTree(_currentContext.BranchId);
-            var tree = GetParentTree(_currentContext.BranchId);
+            var childTree = GetChildTree(UserContext.BranchId);
+            var tree = GetParentTree(UserContext.BranchId);
             var queryable = records
-                .Where(entity => entity.FiscalPeriodId == _currentContext.FiscalPeriodId &&
+                .Where(entity => entity.FiscalPeriodId == UserContext.FiscalPeriodId &&
                     (entity.BranchScope == (short)BranchScope.AllBranches ||
                     (entity.BranchScope == (short)BranchScope.CurrentBranch &&
-                        entity.BranchId == _currentContext.BranchId) ||
+                        entity.BranchId == UserContext.BranchId) ||
                     (entity.BranchScope == (short)BranchScope.CurrentBranchAndChildren &&
                         (tree.Contains(entity.BranchId) || childTree.Contains(entity.BranchId)))));
             return queryable;
@@ -239,10 +239,10 @@ namespace SPPC.Tadbir.Persistence
             where TEntity : class, IFiscalEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            var childTree = GetChildTree(_currentContext.BranchId);
+            var childTree = GetChildTree(UserContext.BranchId);
             var queryable = records
-                .Where(entity => entity.FiscalPeriodId == _currentContext.FiscalPeriodId &&
-                    (entity.BranchId == _currentContext.BranchId || childTree.Contains(entity.BranchId)));
+                .Where(entity => entity.FiscalPeriodId == UserContext.FiscalPeriodId &&
+                    (entity.BranchId == UserContext.BranchId || childTree.Contains(entity.BranchId)));
             return queryable;
         }
 
@@ -282,7 +282,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else if (permission.AccessMode == RowAccessOptions.AllRecordsCreatedByUser)
             {
-                expression = GetCreatedByFilter(_currentContext.Id);
+                expression = GetCreatedByFilter(UserContext.Id);
             }
 
             return expression;

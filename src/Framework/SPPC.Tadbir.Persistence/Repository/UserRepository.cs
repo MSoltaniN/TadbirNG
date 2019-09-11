@@ -142,7 +142,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>نام کاربر جاری با قالب پیش فرض</returns>
         public async Task<string> GetCurrentUserDisplayNameAsync()
         {
-            var user = await GetUserAsync(_currentContext.Id);
+            var user = await GetUserAsync(UserContext.Id);
             return String.Format("{0}, {1}", user.PersonLastName, user.PersonFirstName);
         }
 

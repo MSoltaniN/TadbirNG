@@ -186,16 +186,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
-        }
-
-        /// <summary>
         /// به روش آسنکرون، تمام گروه های حساب را خوانده و برمیگرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه گروه های حساب</returns>

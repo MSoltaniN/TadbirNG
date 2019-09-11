@@ -104,7 +104,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _sysRepository.SetCurrentContext(SecurityContext.User);
             report.LocaleId = await GetCurrentLocaleIdAsync();
             await _sysRepository.SaveUserReportAsync(report);
             return StatusCode(StatusCodes.Status201Created);
@@ -261,7 +260,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVoucherSummaryByDateAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _repository.GetVoucherSummaryByDateCountAsync(GridOptions);
             SetItemCount(itemCount);
             var report = await _repository.GetVoucherSummaryByDateReportAsync(GridOptions);

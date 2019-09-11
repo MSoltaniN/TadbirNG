@@ -125,11 +125,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="level">شماره سطحی که وضعیت استفاده از آن باید تغییر کند</param>
         /// <param name="itemCount">تعداد سطرهای اطلاعاتی موجود در سطح مورد نظر</param>
         Task SaveTreeLevelUsageAsync(int viewId, int level, int itemCount);
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی کاربر جاری برنامه</param>
-        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

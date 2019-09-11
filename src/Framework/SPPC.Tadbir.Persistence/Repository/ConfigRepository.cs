@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
@@ -19,22 +18,20 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای ذخیره و بازیابی تنظیمات برنامه را پیاده سازی می کند
     /// </summary>
-    public class ConfigRepository : IConfigRepository
+    public class ConfigRepository : RepositoryBase, IConfigRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
         /// <remarks>برای استفاده از اطلاعات دوره مالی جاری لازم است اطلاعات محیطی از طریق متد زیر تنظیم شده باشد :
         /// SetCurrentContext</remarks>
-        public ConfigRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IFiscalPeriodRepository fiscalRepository)
+        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository)
+            : base(context)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _fiscalRepository = fiscalRepository;
-            _unitOfWork.UseSystemContext();
+            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -43,12 +40,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از تمام تنظیمات موجود برای برنامه</returns>
         public async Task<IList<SettingBriefViewModel>> GetAllConfigAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<Setting>();
+            var repository = UnitOfWork.GetAsyncRepository<Setting>();
             var allConfig = await repository
                 .GetAllAsync();
             return allConfig
                 .Where(cfg => !(cfg.Type == 3 && cfg.ScopeType == 2))
-                .Select(cfg => _mapper.Map<SettingBriefViewModel>(cfg))
+                .Select(cfg => Mapper.Map<SettingBriefViewModel>(cfg))
                 .ToList();
         }
 
@@ -59,7 +56,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveConfigAsync(IList<SettingBriefViewModel> configItems)
         {
             Verify.ArgumentNotNull(configItems, "configItems");
-            var repository = _unitOfWork.GetAsyncRepository<Setting>();
+            var repository = UnitOfWork.GetAsyncRepository<Setting>();
             var modifiedIds = configItems.Select(cfg => cfg.Id);
             var modified = await repository
                 .GetEntityWithTrackingQuery()
@@ -73,7 +70,7 @@ namespace SPPC.Tadbir.Persistence
                     cfg.Values = JsonHelper.From(configItem.Values, false);
                     repository.Update(cfg);
                 });
-            await _unitOfWork.CommitAsync();
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -84,11 +81,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<SettingBriefViewModel> GetConfigByIdAsync(int settingId)
         {
             var config = default(SettingBriefViewModel);
-            var repository = _unitOfWork.GetAsyncRepository<Setting>();
+            var repository = UnitOfWork.GetAsyncRepository<Setting>();
             var configById = await repository.GetByIDAsync(settingId);
             if (configById != null)
             {
-                config = _mapper.Map<SettingBriefViewModel>(configById);
+                config = Mapper.Map<SettingBriefViewModel>(configById);
             }
 
             return config;
@@ -102,13 +99,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<TConfig> GetConfigByTypeAsync<TConfig>()
         {
             var configByType = default(TConfig);
-            var repository = _unitOfWork.GetAsyncRepository<Setting>();
+            var repository = UnitOfWork.GetAsyncRepository<Setting>();
             var configItems = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(TConfig).Name);
             var config = configItems.SingleOrDefault();
             if (config != null)
             {
-                configByType = _mapper.Map<TConfig>(config);
+                configByType = Mapper.Map<TConfig>(config);
             }
 
             return configByType;
@@ -146,8 +143,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<ListFormViewConfig>> GetListViewConfigByUserAsync(int userId)
         {
             IList<ListFormViewConfig> configList = new List<ListFormViewConfig>();
-            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
-            var viewRepository = _unitOfWork.GetAsyncRepository<View>();
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
+            var viewRepository = UnitOfWork.GetAsyncRepository<View>();
             var configItems = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ListFormViewConfig).Name
                     && cfg.User.Id == userId);
@@ -160,7 +157,7 @@ namespace SPPC.Tadbir.Persistence
                 var userConfig = new ListFormViewConfig() { ViewId = view.Id };
                 foreach (var column in view.Columns)
                 {
-                    userConfig.ColumnViews.Add(_mapper.Map<ColumnViewConfig>(column));
+                    userConfig.ColumnViews.Add(Mapper.Map<ColumnViewConfig>(column));
                 }
 
                 configList.Add(userConfig);
@@ -168,7 +165,7 @@ namespace SPPC.Tadbir.Persistence
 
             foreach (var config in configItems)
             {
-                configList.Add(_mapper.Map<ListFormViewConfig>(config));
+                configList.Add(Mapper.Map<ListFormViewConfig>(config));
             }
 
             return configList;
@@ -183,7 +180,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ListFormViewConfig> GetListViewConfigByUserAsync(int userId, int viewId)
         {
             var userConfig = default(ListFormViewConfig);
-            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
             var items = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ListFormViewConfig).Name
                     && cfg.User.Id == userId
@@ -191,20 +188,20 @@ namespace SPPC.Tadbir.Persistence
             var config = items.SingleOrDefault();
             if (config == null)
             {
-                var viewRepository = _unitOfWork.GetAsyncRepository<View>();
+                var viewRepository = UnitOfWork.GetAsyncRepository<View>();
                 var entityView = await viewRepository.GetByIDAsync(viewId, ev => ev.Columns);
                 if (entityView != null)
                 {
                     userConfig = new ListFormViewConfig() { ViewId = entityView.Id };
                     foreach (var column in entityView.Columns)
                     {
-                        userConfig.ColumnViews.Add(_mapper.Map<ColumnViewConfig>(column));
+                        userConfig.ColumnViews.Add(Mapper.Map<ColumnViewConfig>(column));
                     }
                 }
             }
             else
             {
-                userConfig = _mapper.Map<ListFormViewConfig>(config);
+                userConfig = Mapper.Map<ListFormViewConfig>(config);
             }
 
             return userConfig;
@@ -218,8 +215,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveUserListConfigAsync(int userId, ListFormViewConfig userConfig)
         {
             Verify.ArgumentNotNull(userConfig, "userConfig");
-            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
-            var userRepository = _unitOfWork.GetAsyncRepository<User>();
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
+            var userRepository = UnitOfWork.GetAsyncRepository<User>();
             var existing = await repository
                 .GetEntityWithTrackingQuery()
                 .Where(cfg => cfg.User.Id == userId
@@ -244,7 +241,7 @@ namespace SPPC.Tadbir.Persistence
                 existing.Values = JsonHelper.From(userConfig, false);
             }
 
-            await _unitOfWork.CommitAsync();
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -257,7 +254,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<QuickSearchConfig> GetQuickSearchConfigAsync(int userId, int viewId)
         {
             var userConfig = default(QuickSearchConfig);
-            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
             var items = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(QuickSearchConfig).Name
                     && cfg.User.Id == userId
@@ -265,7 +262,7 @@ namespace SPPC.Tadbir.Persistence
             var config = items.SingleOrDefault();
             if (config == null)
             {
-                var viewRepository = _unitOfWork.GetAsyncRepository<View>();
+                var viewRepository = UnitOfWork.GetAsyncRepository<View>();
                 var entityView = await viewRepository.GetByIDAsync(viewId, ev => ev.Columns);
                 if (entityView != null)
                 {
@@ -278,13 +275,13 @@ namespace SPPC.Tadbir.Persistence
                         .Where(col => col.Visibility == ColumnVisibility.AlwaysVisible
                             || col.Visibility == null))
                     {
-                        userConfig.Columns.Add(_mapper.Map<QuickSearchColumnConfig>(column));
+                        userConfig.Columns.Add(Mapper.Map<QuickSearchColumnConfig>(column));
                     }
                 }
             }
             else
             {
-                userConfig = _mapper.Map<QuickSearchConfig>(config);
+                userConfig = Mapper.Map<QuickSearchConfig>(config);
             }
 
             return userConfig;
@@ -298,8 +295,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveQuickSearchConfigAsync(int userId, QuickSearchConfig userConfig)
         {
             Verify.ArgumentNotNull(userConfig, nameof(userConfig));
-            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
-            var userRepository = _unitOfWork.GetAsyncRepository<User>();
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
+            var userRepository = UnitOfWork.GetAsyncRepository<User>();
             var existing = await repository
                 .GetEntityWithTrackingQuery()
                 .Where(cfg => cfg.User.Id == userId
@@ -324,7 +321,7 @@ namespace SPPC.Tadbir.Persistence
                 existing.Values = JsonHelper.From(userConfig, false);
             }
 
-            await _unitOfWork.CommitAsync();
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -337,7 +334,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<QuickReportConfig> GetQuickReportConfigAsync(int userId, int viewId)
         {
             var userConfig = default(QuickReportConfig);
-            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
             var items = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(QuickReportConfig).Name
                     && cfg.User.Id == userId
@@ -345,7 +342,7 @@ namespace SPPC.Tadbir.Persistence
             var config = items.SingleOrDefault();
             if (config != null)
             {
-                userConfig = _mapper.Map<QuickReportConfig>(config);
+                userConfig = Mapper.Map<QuickReportConfig>(config);
             }
 
             return userConfig;
@@ -359,8 +356,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveQuickReportConfigAsync(int userId, QuickReportConfig userConfig)
         {
             Verify.ArgumentNotNull(userConfig, nameof(userConfig));
-            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
-            var userRepository = _unitOfWork.GetAsyncRepository<User>();
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
+            var userRepository = UnitOfWork.GetAsyncRepository<User>();
             var existing = await repository
                 .GetEntityWithTrackingQuery()
                 .Where(cfg => cfg.User.Id == userId
@@ -386,7 +383,7 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(existing);
             }
 
-            await _unitOfWork.CommitAsync();
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -396,18 +393,18 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<ViewTreeFullConfig>> GetAllViewTreeConfigAsync()
         {
             var allConfig = new List<ViewTreeFullConfig>();
-            _unitOfWork.UseCompanyContext();
-            var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
+            UnitOfWork.UseCompanyContext();
+            var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
             var configItems = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ViewTreeConfig).Name);
             foreach (var config in configItems)
             {
-                var treeConfig = _mapper.Map<ViewTreeFullConfig>(config);
+                var treeConfig = Mapper.Map<ViewTreeFullConfig>(config);
                 ClipUsableTreeLevels(treeConfig);
                 allConfig.Add(treeConfig);
             }
 
-            _unitOfWork.UseSystemContext();
+            UnitOfWork.UseSystemContext();
             return allConfig;
         }
 
@@ -420,18 +417,18 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ViewTreeFullConfig> GetViewTreeConfigByViewAsync(int viewId)
         {
             var viewConfig = default(ViewTreeFullConfig);
-            _unitOfWork.UseCompanyContext();
-            var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
+            UnitOfWork.UseCompanyContext();
+            var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
             var config = await repository
                 .GetSingleByCriteriaAsync(cfg => cfg.ViewId == viewId
                     && cfg.ModelType == typeof(ViewTreeConfig).Name);
             if (config != null)
             {
-                viewConfig = _mapper.Map<ViewTreeFullConfig>(config);
+                viewConfig = Mapper.Map<ViewTreeFullConfig>(config);
                 ClipUsableTreeLevels(viewConfig);
             }
 
-            _unitOfWork.UseSystemContext();
+            UnitOfWork.UseSystemContext();
             return viewConfig;
         }
 
@@ -442,8 +439,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveViewTreeConfigAsync(List<ViewTreeFullConfig> configItems)
         {
             Verify.ArgumentNotNull(configItems, "configItems");
-            _unitOfWork.UseCompanyContext();
-            var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
+            UnitOfWork.UseCompanyContext();
+            var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
             foreach (var configItem in configItems)
             {
                 var existing = await repository.GetSingleByCriteriaAsync(
@@ -455,8 +452,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            _unitOfWork.UseSystemContext();
+            await UnitOfWork.CommitAsync();
+            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -495,8 +492,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
         private readonly IFiscalPeriodRepository _fiscalRepository;
         private UserContextViewModel _currentContext;
     }
