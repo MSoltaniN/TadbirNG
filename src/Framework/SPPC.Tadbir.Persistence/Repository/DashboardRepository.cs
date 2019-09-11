@@ -23,15 +23,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی و شعب را تعریف می کند</param>
         /// <param name="setRepository">امکان کار با مجموعه حساب ها را فراهم می کند</param>
-        public DashboardRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+        public DashboardRepository(IRepositoryContext context,
             ISecureRepository repository, IAccountSetRepository setRepository)
-            : base(unitOfWork, mapper, metadata)
+            : base(context)
         {
             _repository = repository;
             _setRepository = setRepository;

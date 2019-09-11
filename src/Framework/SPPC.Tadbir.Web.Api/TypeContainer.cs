@@ -53,6 +53,13 @@ namespace SPPC.Tadbir.Web.Api
                 return new TadbirContext(connectionString);
             });
             _services.AddTransient<IDbContextAccessor, DbContextAccessor>();
+            _services.AddScoped(provider =>
+            {
+                var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
+                return httpContext.Request.CurrentSecurityContext()
+                    as ISecurityContext;
+            });
+            _services.AddTransient<IRepositoryContext, RepositoryContext>();
         }
 
         private void AddPersistenceTypes()

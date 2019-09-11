@@ -23,15 +23,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان اعمال فیلترهای سطری و شعبه را فراهم می کند</param>
-        public AccountGroupRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
+        public AccountGroupRepository(IRepositoryContext context, IOperationLogRepository log,
             ISecureRepository repository)
-            : base(unitOfWork, mapper, metadata, log)
+            : base(context, log)
         {
             _repository = repository;
         }

@@ -16,14 +16,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        protected RepositoryBase(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        protected RepositoryBase(IRepositoryContext context)
         {
-            UnitOfWork = unitOfWork;
-            Mapper = mapper;
-            Metadata = metadata;
+            _context = context;
         }
 
         /// <summary>
@@ -47,17 +43,18 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی
         /// </summary>
-        protected IAppUnitOfWork UnitOfWork { get; }
+        protected IAppUnitOfWork UnitOfWork
+        {
+            get { return _context.UnitOfWork; }
+        }
 
         /// <summary>
         /// نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی
         /// </summary>
-        protected IDomainMapper Mapper { get; }
-
-        /// <summary>
-        /// امکان خواندن متادیتا برای یک موجودیت را فراهم می کند
-        /// </summary>
-        protected IMetadataRepository Metadata { get; }
+        protected IDomainMapper Mapper
+        {
+            get { return _context.Mapper; }
+        }
 
         /// <summary>
         /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
@@ -105,5 +102,7 @@ namespace SPPC.Tadbir.Persistence
         /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
         /// </summary>
         protected UserContextViewModel _currentContext;
+
+        private readonly IRepositoryContext _context;
     }
 }

@@ -21,11 +21,8 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public OperationLogRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
-            : base(unitOfWork, mapper, metadata)
+        public OperationLogRepository(IRepositoryContext context)
+            : base(context)
         {
             UnitOfWork.UseSystemContext();
         }

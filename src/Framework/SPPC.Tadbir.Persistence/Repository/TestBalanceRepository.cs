@@ -153,6 +153,18 @@ namespace SPPC.Tadbir.Persistence
             testBalance.Total.EndBalanceCredit = testBalance.Items.Sum(item => item.EndBalanceCredit);
         }
 
+        private static bool IsZeroBalanceItem(TestBalanceItemViewModel item)
+        {
+            return item.StartBalanceDebit == 0.0M
+                && item.StartBalanceCredit == 0.0M
+                && item.TurnoverDebit == 0.0M
+                && item.TurnoverCredit == 0.0M
+                && item.OperationSumDebit == 0.0M
+                && item.OperationSumCredit == 0.0M
+                && item.EndBalanceDebit == 0.0M
+                && item.EndBalanceCredit == 0.0M;
+        }
+
         private async Task<TestBalanceViewModel> GetGeneralBalanceAsync(
             TestBalanceMode mode, TestBalanceParameters parameters,
             Func<TestBalanceItemViewModel, bool> ledgerFilter,
@@ -379,18 +391,6 @@ namespace SPPC.Tadbir.Persistence
 
             var sortedItems = testBalance.Items.OrderBy(item => item.AccountFullCode).ToArray();
             testBalance.SetBalanceItems(sortedItems);
-        }
-
-        private bool IsZeroBalanceItem(TestBalanceItemViewModel item)
-        {
-            return item.StartBalanceDebit == 0.0M
-                && item.StartBalanceCredit == 0.0M
-                && item.TurnoverDebit == 0.0M
-                && item.TurnoverCredit == 0.0M
-                && item.OperationSumDebit == 0.0M
-                && item.OperationSumCredit == 0.0M
-                && item.EndBalanceDebit == 0.0M
-                && item.EndBalanceCredit == 0.0M;
         }
 
         private IEnumerable<IGrouping<TKey1, TestBalanceItemViewModel>> GetGroupByThenByItems<TKey1>(
