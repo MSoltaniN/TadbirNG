@@ -17,12 +17,6 @@ namespace SPPC.Tadbir.Persistence
     public interface ISecureRepository
     {
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای اعمال فیلترهای سیستمی تنظیم می کند
-        /// </summary>
-        /// <param name="currentContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        void SetCurrentContext(UserContextViewModel currentContext);
-
-        /// <summary>
         /// به روش آسنکرون، کلیه سطرهای یک موجودیت پایه را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
         /// </summary>

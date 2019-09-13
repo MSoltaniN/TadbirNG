@@ -161,7 +161,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetDefaultCurrencyByFullAccountAsync(int accountId, int faccountId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var currencyInfo = await _repository.GetDefaultCurrencyAsync(accountId, faccountId);
             return Json(currencyInfo);
         }
@@ -184,7 +183,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCurrencyAsync(currency);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -207,7 +205,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _rateRepository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _rateRepository.SaveCurrencyRateAsync(currencyRate);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -230,7 +227,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCurrencyAsync(currency);
             return OkReadResult(outputItem);
         }
@@ -248,7 +244,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _rateRepository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _rateRepository.SaveCurrencyRateAsync(currencyRate);
             return OkReadResult(outputItem);
         }
@@ -265,7 +260,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteCurrencyAsync(currencyId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -282,7 +276,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            _rateRepository.SetCurrentContext(SecurityContext.User);
             await _rateRepository.DeleteCurrencyRateAsync(rateId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -305,7 +298,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteCurrenciesAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

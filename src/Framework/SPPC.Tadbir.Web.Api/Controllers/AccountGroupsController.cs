@@ -60,7 +60,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetGroupLedgerAccountsAsync(int groupId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _repository.GetSubItemCountAsync(groupId, GridOptions);
             SetItemCount(itemCount);
             var accounts = await _repository.GetGroupLedgerAccountsAsync(groupId, GridOptions);
@@ -72,7 +71,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetAccountGroupsBriefAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var accGroups = await _repository.GetAccountGroupsBriefAsync();
             return JsonReadResult(accGroups);
         }
@@ -90,7 +88,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveAccountGroupAsync(accountGroup);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -108,7 +105,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveAccountGroupAsync(accountGroup);
             result = (outputItem != null)
                 ? Ok(outputItem)
@@ -128,7 +124,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteAccountGroupAsync(groupId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -151,7 +146,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteAccountGroupsAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

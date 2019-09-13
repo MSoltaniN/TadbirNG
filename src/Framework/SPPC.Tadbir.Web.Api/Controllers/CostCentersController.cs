@@ -41,7 +41,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _repository.GetCountAsync<CostCenterViewModel>(GridOptions);
             SetItemCount(itemCount);
             var costCenters = await _repository.GetCostCentersAsync(GridOptions);
@@ -53,7 +52,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lookup = await _repository.GetCostCentersLookupAsync(GridOptions);
             return Json(lookup);
         }
@@ -72,7 +70,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewCostCenterAsync(int ccenterId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var newCenter = await _repository.GetNewChildCostCenterAsync(
                 ccenterId > 0 ? ccenterId : (int?)null);
             if (newCenter == null)
@@ -93,7 +90,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersLedgerAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var costCenters = await _repository.GetCostCentersLedgerAsync();
             return JsonReadResult(costCenters);
         }
@@ -103,7 +99,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCenterChildrenAsync(int ccenterId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetCostCenterChildrenAsync(ccenterId);
             return JsonReadResult(children);
         }
@@ -136,7 +131,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCostCenterAsync(costCenter);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -154,7 +148,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCostCenterAsync(costCenter);
             result = (outputItem != null)
                 ? Ok(outputItem)
@@ -174,7 +167,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteCostCenterAsync(ccenterId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -197,7 +189,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteCostCentersAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

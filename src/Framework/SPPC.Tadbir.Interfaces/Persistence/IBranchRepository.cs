@@ -98,11 +98,5 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر شعبه مورد نظر به یک یا چند نقش تخصیص داده شده باشد مقدار "درست" و
         /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> HasAssignedRolesAsync(int branchId);
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

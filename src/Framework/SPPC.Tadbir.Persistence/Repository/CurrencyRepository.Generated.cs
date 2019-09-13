@@ -23,14 +23,11 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="access">امکان کار با دیتابیس های برنامه اکسس را فراهم می کند</param>
-        public CurrencyRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper,
-            IMetadataRepository metadata, IOperationLogRepository log, IAccessRepository access)
-            : base(unitOfWork, mapper, metadata, log)
+        public CurrencyRepository(IRepositoryContext context, IOperationLogRepository log, IAccessRepository access)
+            : base(context, log)
         {
             _access = access;
         }
@@ -138,7 +135,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var accountCurrencyRepository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
                 var accCurrency = await accountCurrencyRepository.GetSingleByCriteriaAsync(
-                    accCurr => accCurr.AccountId == accountId && accCurr.BranchId == _currentContext.BranchId,
+                    accCurr => accCurr.AccountId == accountId && accCurr.BranchId == UserContext.BranchId,
                     accCurr => accCurr.Currency);
                 if (accCurrency != null)
                 {

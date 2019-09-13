@@ -28,28 +28,14 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن اطلاعات فراداده ای را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="report">پیاده سازی اینترفیس مربوط به عملیات گزارشی</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
-        public AccountBookRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper,
-            IMetadataRepository metadata, IReportRepository report, ISecureRepository repository)
-            : base(unitOfWork, mapper, metadata)
+        public AccountBookRepository(IRepositoryContext context, IReportRepository report, ISecureRepository repository)
+            : base(context)
         {
             _reportRepository = report;
             _repository = repository;
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
-            _reportRepository.SetCurrentContext(userContext);
         }
 
         /// <summary>
@@ -440,8 +426,8 @@ namespace SPPC.Tadbir.Persistence
             return new AccountBookItemViewModel()
             {
                 Balance = balance,
-                BranchId = _currentContext.BranchId,
-                BranchName = _currentContext.BranchName,
+                BranchId = UserContext.BranchId,
+                BranchName = UserContext.BranchName,
                 Description = "InitialBalance",
                 RowNo = 1,
                 VoucherDate = date.Date

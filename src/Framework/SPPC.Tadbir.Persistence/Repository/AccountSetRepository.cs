@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -13,17 +12,14 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات مجموعه حساب ها را پیاده سازی می کند
     /// </summary>
-    public class AccountSetRepository : IAccountSetRepository
+    public class AccountSetRepository : RepositoryBase, IAccountSetRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public AccountSetRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
+        public AccountSetRepository(IRepositoryContext context)
+            : base(context)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -35,11 +31,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountSetItemsAsync(
             AccountCollectionId collectionId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             var accounts = await repository
                 .GetEntityQuery(aca => aca.Account)
                 .Where(aca => aca.CollectionId == (int)collectionId)
-                .Select(aca => _mapper.Map<AccountItemBriefViewModel>(aca.Account))
+                .Select(aca => Mapper.Map<AccountItemBriefViewModel>(aca.Account))
                 .ToListAsync();
             return accounts;
         }
@@ -56,8 +52,5 @@ namespace SPPC.Tadbir.Persistence
             salesDeficit.AddRange(await GetAccountSetItemsAsync(AccountCollectionId.SalesDiscount));
             return salesDeficit;
         }
-
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
     }
 }

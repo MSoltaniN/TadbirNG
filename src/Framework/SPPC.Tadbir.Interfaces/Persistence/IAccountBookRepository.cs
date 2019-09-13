@@ -13,12 +13,6 @@ namespace SPPC.Tadbir.Persistence
     public interface IAccountBookRepository
     {
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        void SetCurrentContext(UserContextViewModel userContext);
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "ساده : مطابق ردیف های سند" را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>

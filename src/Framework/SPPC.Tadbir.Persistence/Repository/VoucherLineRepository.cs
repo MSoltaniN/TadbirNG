@@ -24,15 +24,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
-        public VoucherLineRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+        public VoucherLineRepository(IRepositoryContext context,
             IOperationLogRepository log, ISecureRepository repository)
-            : base(unitOfWork, mapper, metadata, log)
+            : base(context, log)
         {
             _repository = repository;
         }
@@ -182,7 +179,7 @@ namespace SPPC.Tadbir.Persistence
             if (lineView.Id == 0)
             {
                 line = Mapper.Map<VoucherLine>(lineView);
-                line.CreatedById = _currentContext.Id;
+                line.CreatedById = UserContext.Id;
                 if (await InsertAsync(repository, line))
                 {
                     await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
@@ -253,17 +250,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 await UpdateVoucherBalanceStatusAsync(voucherId);
             }
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
         }
 
         /// <summary>

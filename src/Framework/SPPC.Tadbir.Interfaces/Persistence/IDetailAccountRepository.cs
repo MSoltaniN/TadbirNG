@@ -125,11 +125,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="parentId">شناسه والد هر تفصیلی شناور</param>
         /// <returns>اگر تفصیلی شناور والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
         Task<string> GetDetailAccountFullCodeAsync(int parentId);
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

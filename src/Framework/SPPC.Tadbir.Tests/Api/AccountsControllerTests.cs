@@ -108,19 +108,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public async Task GetEnvironmentAccounts_SetsSecurityContextViaRepository()
-        {
-            // Arrange
-
-            // Act
-            await _controller.GetEnvironmentAccountsAsync();
-
-            // Assert
-            // NOTE: Ideally, we should verify context instance, but can't do that because of transient HTTP context
-            _mockRepository.Verify(repo => repo.SetCurrentContext(It.IsAny<UserContextViewModel>()));
-        }
-
-        [Test]
         public async Task GetEnvironmentAccounts_SetsTotalCountInHttpResponseHeader()
         {
             // Arrange
@@ -196,19 +183,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Value, Is.InstanceOf<IList<KeyValue>>());
-        }
-
-        [Test]
-        public async Task GetEnvironmentAccountsLookup_SetsSecurityContextViaRepository()
-        {
-            // Arrange
-
-            // Act
-            await _controller.GetEnvironmentAccountsLookupAsync();
-
-            // Assert
-            // NOTE: Ideally, we should verify context instance, but can't do that because of transient HTTP context
-            _mockRepository.Verify(repo => repo.SetCurrentContext(It.IsAny<UserContextViewModel>()));
         }
 
         #endregion
@@ -348,19 +322,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Value, Is.InstanceOf<IList<AccountItemBriefViewModel>>());
-        }
-
-        [Test]
-        public async Task GetAccountChildrenAsync_SetsSecurityContextViaRepository()
-        {
-            // Arrange
-
-            // Act
-            await _controller.GetAccountChildrenAsync(_existingAccountId);
-
-            // Assert
-            // NOTE: Ideally, we should verify context instance, but can't do that because of transient HTTP context
-            _mockRepository.Verify(repo => repo.SetCurrentContext(It.IsAny<UserContextViewModel>()));
         }
 
         #endregion

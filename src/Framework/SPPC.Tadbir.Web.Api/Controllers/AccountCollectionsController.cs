@@ -40,7 +40,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionAccountAsync(int collectionId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetCollectionAccountsAsync(collectionId);
             return Json(accounts);
         }
@@ -52,7 +51,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostAccountCollectionAccountAsync(
             int collectionId, [FromBody]List<AccountCollectionAccountViewModel> accCollections)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.AddCollectionAccountsAsync(collectionId, accCollections);
             return Ok();
         }

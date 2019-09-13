@@ -23,14 +23,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public LoggingRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
-            IOperationLogRepository logRepository)
-            : base(unitOfWork, mapper, metadata)
+        public LoggingRepository(IRepositoryContext context, IOperationLogRepository logRepository)
+            : base(context)
         {
             _logRepository = logRepository;
         }
@@ -150,14 +146,14 @@ namespace SPPC.Tadbir.Persistence
             var log = new OperationLogViewModel()
             {
                 Action = action,
-                FiscalPeriodId = _currentContext.FiscalPeriodId,
-                BranchId = _currentContext.BranchId,
-                CompanyId = _currentContext.CompanyId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                BranchId = UserContext.BranchId,
+                CompanyId = UserContext.CompanyId,
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
                 Result = "Succeeded",
                 Entity = typeof(TEntity).Name,
-                UserId = _currentContext.Id
+                UserId = UserContext.Id
             };
             return log;
         }

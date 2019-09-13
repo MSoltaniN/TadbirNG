@@ -27,14 +27,13 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="metadata">امکان خواندن اطلاعات فراداده ای برنامه را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public UserRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
-            IOperationLogRepository log)
-            : base(unitOfWork, mapper, metadata, log)
+        public UserRepository(IRepositoryContext context, IMetadataRepository metadata, IOperationLogRepository log)
+            : base(context, log)
         {
+            _metadata = metadata;
             UnitOfWork.UseSystemContext();
         }
 
@@ -143,7 +142,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>نام کاربر جاری با قالب پیش فرض</returns>
         public async Task<string> GetCurrentUserDisplayNameAsync()
         {
-            var user = await GetUserAsync(_currentContext.Id);
+            var user = await GetUserAsync(UserContext.Id);
             return String.Format("{0}, {1}", user.PersonLastName, user.PersonFirstName);
         }
 
@@ -176,7 +175,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از دستورات قابل دسترسی توسط کاربر</returns>
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId)
         {
-            var topCommands = await Metadata.GetTopLevelCommandsAsync();
+            var topCommands = await _metadata.GetTopLevelCommandsAsync();
             var userPermissions = await GetUserPermissionIdsAsync(userId);
             FilterInaccessibleCommands(userPermissions, topCommands);
             return topCommands;
@@ -188,7 +187,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>گزینه های منوی پیش فرض کاربران</returns>
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync()
         {
-            return await Metadata.GetDefaultCommandsAsync();
+            return await _metadata.GetDefaultCommandsAsync();
         }
 
         /// <summary>
@@ -545,5 +544,7 @@ namespace SPPC.Tadbir.Persistence
                         .ThenInclude(r => r.RolePermissions);
             return query;
         }
+
+        private readonly IMetadataRepository _metadata;
     }
 }

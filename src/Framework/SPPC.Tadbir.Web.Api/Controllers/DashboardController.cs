@@ -24,7 +24,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(DashboardApi.SummariesUrl)]
         public async Task<IActionResult> GetSummariesAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var summaries = await _repository.GetSummariesAsync(GetCurrentCalendar());
             Localize(summaries);
             return Json(summaries);

@@ -13,12 +13,6 @@ namespace SPPC.Tadbir.Persistence
     public interface IJournalRepository
     {
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        void SetCurrentContext(UserContextViewModel userContext);
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ را خوانده و برمی گرداند
         /// </summary>
         /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>

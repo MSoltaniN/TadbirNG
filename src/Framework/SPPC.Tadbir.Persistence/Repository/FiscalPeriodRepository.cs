@@ -24,13 +24,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public FiscalPeriodRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
-            IOperationLogRepository log)
-            : base(unitOfWork, mapper, metadata, log)
+        public FiscalPeriodRepository(IRepositoryContext context, IOperationLogRepository log)
+            : base(context, log)
         {
         }
 
@@ -110,7 +107,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriod = await repository.GetFirstByCriteriaAsync(
-                fp => fp.StartDate == start && fp.EndDate == end && fp.CompanyId == _currentContext.CompanyId);
+                fp => fp.StartDate == start && fp.EndDate == end && fp.CompanyId == UserContext.CompanyId);
             return (fiscalPeriod != null);
         }
 

@@ -1274,16 +1274,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
-        {
-            _repository.SetCurrentContext(userContext);
-            _itemRepository.SetCurrentContext(userContext);
-        }
-
         #region Account Vector Validation Methods
 
         private static FullAccountCriteriaViewModel GetFullAccountCriteria(Account account)

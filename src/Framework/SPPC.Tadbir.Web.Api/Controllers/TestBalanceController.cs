@@ -264,7 +264,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return NotFound();      // 10-column balance modes are temporarily disabled (until further notice)
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var gridOptions = GridOptions ?? new GridOptions();
             var parameters = GetParameters(from, to, mode, format, gridOptions, byBranch, options);
             var balance = default(TestBalanceViewModel);

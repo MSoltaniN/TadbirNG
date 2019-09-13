@@ -41,7 +41,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDetailAccountsAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _repository.GetCountAsync<DetailAccountViewModel>(GridOptions);
             SetItemCount(itemCount);
             var detailAccounts = await _repository.GetDetailAccountsAsync(GridOptions);
@@ -53,7 +52,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDetailAccountsLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lookup = await _repository.GetDetailAccountsLookupAsync(GridOptions);
             return Json(lookup);
         }
@@ -72,7 +70,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDetailAccountsLedgerAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var detailAccounts = await _repository.GetDetailAccountsLedgerAsync();
             return JsonReadResult(detailAccounts);
         }
@@ -82,7 +79,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetDetailAccountChildrenAsync(int faccountId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetDetailAccountChildrenAsync(faccountId);
             return JsonReadResult(children);
         }
@@ -92,7 +88,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewDetailAccountAsync(int faccountId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var newDetail = await _repository.GetNewChildDetailAccountAsync(
                 faccountId > 0 ? faccountId : (int?)null);
             if (newDetail == null)
@@ -136,7 +131,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveDetailAccountAsync(detailAccount);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -154,7 +148,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveDetailAccountAsync(detailAccount);
             result = (outputItem != null)
                 ? Ok(outputItem)
@@ -174,7 +167,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteDetailAccountAsync(faccountId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -197,7 +189,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteDetailAccountsAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

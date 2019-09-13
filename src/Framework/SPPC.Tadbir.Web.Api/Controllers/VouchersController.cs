@@ -45,7 +45,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVouchersAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
             SetItemCount(itemCount);
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
@@ -68,7 +67,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
         public async Task<IActionResult> GetNewVoucherAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var newVoucher = await _repository.GetNewVoucherAsync();
             return Json(newVoucher);
         }
@@ -78,7 +76,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVoucherByNoAsync(int voucherNo)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var voucherByNo = await _repository.GetVoucherByNoAsync(voucherNo);
             return JsonReadResult(voucherByNo);
         }
@@ -88,7 +85,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVoucherRnageAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var range = await _repository.GetVoucherRangeInfoAsync();
             return Json(range);
         }
@@ -98,7 +94,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetFirstVoucherAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var first = await _repository.GetFirstVoucherAsync();
             return JsonReadResult(first);
         }
@@ -108,7 +103,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousVoucherAsync(int voucherNo)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var previous = await _repository.GetPreviousVoucherAsync(voucherNo);
             return JsonReadResult(previous);
         }
@@ -118,7 +112,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetNextVoucherAsync(int voucherNo)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var next = await _repository.GetNextVoucherAsync(voucherNo);
             return JsonReadResult(next);
         }
@@ -128,7 +121,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetLastVoucherAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lastVoucher = await _repository.GetLastVoucherAsync();
             return JsonReadResult(lastVoucher);
         }
@@ -151,7 +143,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputVoucher = await _repository.SaveVoucherAsync(voucher);
             return StatusCode(StatusCodes.Status201Created, outputVoucher);
         }
@@ -181,7 +172,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             if (voucher.SaveCount == 0)
             {
                 await _repository.SetVoucherDailyNoAsync(voucher);
@@ -232,7 +222,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public async Task<IActionResult> PutExistingVoucherAsConfirmed(int voucherId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Confirm);
             if (result is BadRequestObjectResult)
             {
@@ -265,7 +254,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
         public async Task<IActionResult> PutExistingVoucherAsApproved(int voucherId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Approve);
             if (result is BadRequestObjectResult)
             {
@@ -331,7 +319,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteVoucherAsync(voucherId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -354,7 +341,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteVouchersAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -368,7 +354,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticlesAsync(int voucherId)
         {
-            _lineRepository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _lineRepository.GetArticleCountAsync<VoucherLineViewModel>(voucherId, GridOptions);
             SetItemCount(itemCount);
             var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
@@ -403,7 +388,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _relationRepository.SetCurrentContext(SecurityContext.User);
             result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
             if (result is BadRequestObjectResult)
             {
@@ -416,7 +400,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _lineRepository.SetCurrentContext(SecurityContext.User);
             var outputLine = await _lineRepository.SaveArticleAsync(article);
             return StatusCode(StatusCodes.Status201Created, outputLine);
         }
@@ -440,7 +423,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _lineRepository.SetCurrentContext(SecurityContext.User);
             var outputLine = await _lineRepository.SaveArticleAsync(article);
             result = (outputLine != null)
                 ? Ok(outputLine)
@@ -477,7 +459,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _lineRepository.SetCurrentContext(SecurityContext.User);
             await _lineRepository.DeleteArticleAsync(articleId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -500,7 +481,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _lineRepository.SetCurrentContext(SecurityContext.User);
             await _lineRepository.DeleteArticlesAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

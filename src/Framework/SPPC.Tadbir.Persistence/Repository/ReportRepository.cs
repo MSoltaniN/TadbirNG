@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
@@ -20,37 +19,24 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای تهیه و محاسبه اطلاعات گزارش های برنامه را پیاده سازی می کند
     /// </summary>
-    public partial class ReportRepository : IReportRepository
+    public partial class ReportRepository : RepositoryBase, IReportRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای نماهای اطلاعاتی گزارشی را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
         /// <param name="lookupRepository">امکان خواندن اطلاعات موجود را به صورت لوکاپ فراهم می کند</param>
         /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         public ReportRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository,
+            IRepositoryContext context, IMetadataRepository metadata, ISecureRepository repository,
             ILookupRepository lookupRepository, IConfigRepository configRepository)
+            : base(context)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _metadata = metadata;
             _repository = repository;
             _lookupRepository = lookupRepository;
             _configRepository = configRepository;
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
-        {
-            _currentContext = userContext;
-            _repository.SetCurrentContext(userContext);
         }
 
         /// <summary>
@@ -62,7 +48,7 @@ namespace SPPC.Tadbir.Persistence
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         public async Task<decimal> GetAccountBalanceAsync(int accountId, DateTime date)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(accountId);
             Verify.ArgumentNotNull(account, nameof(account));
             return await GetItemBalanceAsync(date, line => line.Account.FullCode.StartsWith(account.FullCode));
@@ -77,7 +63,7 @@ namespace SPPC.Tadbir.Persistence
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         public async Task<decimal> GetAccountBalanceAsync(int accountId, int number)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(accountId);
             Verify.ArgumentNotNull(account, nameof(account));
             return await GetItemBalanceAsync(number, line => line.Account.FullCode.StartsWith(account.FullCode));
@@ -163,7 +149,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<DateTime?> GetSpecialVoucherDateAsync(VoucherType type)
         {
             DateTime? voucherDate = null;
-            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var voucher = await repository.GetFirstByCriteriaAsync(v => v.Type == (short)type);
             if (voucher != null)
             {
@@ -182,14 +168,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task<decimal> GetSpecialVoucherBalanceAsync(VoucherType type, int accountId)
         {
             decimal balance = 0.0M;
-            var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
+            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await accountRepository.GetByIDAsync(accountId);
             if (account != null)
             {
                 balance = await _repository
                     .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
                     .Where(line => line.Voucher.Type == (short)type
-                        && line.FiscalPeriodId == _currentContext.FiscalPeriodId
+                        && line.FiscalPeriodId == UserContext.FiscalPeriodId
                         && line.Account.FullCode.StartsWith(account.FullCode))
                     .Select(line => line.Debit - line.Credit)
                     .SumAsync();
@@ -221,7 +207,7 @@ namespace SPPC.Tadbir.Persistence
             var vouchers = await _repository
                 .GetAllOperationQuery<Voucher>(
                     ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
-                .Select(voucher => _mapper.Map<VoucherSummaryViewModel>(voucher))
+                .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(vouchers.ToArray(),
@@ -239,7 +225,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             int count = await _repository
                 .GetAllOperationQuery<Voucher>(ViewName.Voucher, voucher => voucher.Lines)
-                .Select(voucher => _mapper.Map<VoucherSummaryViewModel>(voucher))
+                .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
                 .Apply(gridOptions, false)
                 .CountAsync();
             return count;
@@ -260,7 +246,7 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefaultAsync();
             if (voucher != null)
             {
-                standardForm = _mapper.Map<StandardVoucherViewModel>(voucher);
+                standardForm = Mapper.Map<StandardVoucherViewModel>(voucher);
                 var lineItems = new List<StandardVoucherLineViewModel>();
                 foreach (var line in voucher.Lines)
                 {
@@ -386,7 +372,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.CompareWith(date) < 0
-                    && line.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                    && line.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Where(itemCriteria)
                 .Select(line => line.Debit - line.Credit)
                 .SumAsync();
@@ -399,7 +385,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.No < number
-                    && line.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                    && line.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Where(itemCriteria)
                 .Select(line => line.Debit - line.Credit)
                 .SumAsync();
@@ -407,7 +393,7 @@ namespace SPPC.Tadbir.Persistence
 
         private IQueryable<Voucher> GetStandardVoucherFormQuery(bool withDetail = false)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             IQueryable<Voucher> query = repository
                 .GetEntityQuery()
                 .Include(v => v.Lines)
@@ -428,12 +414,9 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
         private readonly IMetadataRepository _metadata;
         private readonly ISecureRepository _repository;
         private readonly ILookupRepository _lookupRepository;
         private readonly IConfigRepository _configRepository;
-        private UserContextViewModel _currentContext;
     }
 }

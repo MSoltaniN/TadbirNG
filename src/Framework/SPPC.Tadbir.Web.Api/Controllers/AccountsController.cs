@@ -41,7 +41,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentAccountsAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _repository.GetCountAsync<AccountViewModel>(GridOptions);
             SetItemCount(itemCount);
             var accounts = await _repository.GetAccountsAsync(GridOptions);
@@ -53,7 +52,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentAccountsLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lookup = await _repository.GetAccountsLookupAsync(GridOptions);
             return Json(lookup);
         }
@@ -63,7 +61,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountAsync(int accountId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var account = await _repository.GetAccountAsync(accountId);
             return JsonReadResult(account);
         }
@@ -73,7 +70,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewAccountAsync(int accountId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var newAccount = await _repository.GetNewChildAccountAsync(accountId > 0 ? accountId : (int?)null);
             if (newAccount == null)
             {
@@ -93,7 +89,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentLedgerAccountsAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetLedgerAccountsAsync();
             return JsonReadResult(accounts);
         }
@@ -103,7 +98,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentLedgerAccountsByGroupIdAsync(int groupId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetLedgerAccountsByGroupIdAsync(groupId);
             return JsonReadResult(accounts);
         }
@@ -113,7 +107,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountChildrenAsync(int accountId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetAccountChildrenAsync(accountId);
             return JsonReadResult(children);
         }
@@ -146,7 +139,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputAccount = await _repository.SaveAccountAsync(account);
             return StatusCode(StatusCodes.Status201Created, outputAccount);
         }
@@ -163,7 +155,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputAccount = await _repository.SaveAccountAsync(account);
             result = (outputAccount != null)
                 ? Ok(outputAccount)
@@ -177,7 +168,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingAccountAsync(int accountId)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             string result = await ValidateDeleteAsync(accountId);
             if (!String.IsNullOrEmpty(result))
             {
@@ -199,7 +189,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var result = await ValidateGroupDeleteAsync(actionDetail.Items);
             if (result.Count() > 0)
             {

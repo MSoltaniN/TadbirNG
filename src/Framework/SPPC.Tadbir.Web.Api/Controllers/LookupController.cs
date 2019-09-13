@@ -35,7 +35,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountsLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var accountLookup = await _repository.GetAccountsAsync(GridOptions);
             return Json(accountLookup);
         }
@@ -45,7 +44,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetDetailAccountsLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lookup = await _repository.GetDetailAccountsAsync(GridOptions);
             return Json(lookup);
         }
@@ -55,7 +53,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCentersLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lookup = await _repository.GetCostCentersAsync(GridOptions);
             return Json(lookup);
         }
@@ -65,7 +62,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectsLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lookup = await _repository.GetProjectsAsync(GridOptions);
             return Json(lookup);
         }
@@ -75,7 +71,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetVouchersLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var lang = Request.Headers["Accept-Language"].ToString();
             lang = lang ?? "fa";
             var items = await _repository.GetVouchersAsync(GridOptions);
@@ -98,7 +93,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetVoucherLinesLookupAsync()
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var items = await _repository.GetVoucherLinesAsync(GridOptions);
             var lookup = items.ToList();
             foreach (var kv in lookup)

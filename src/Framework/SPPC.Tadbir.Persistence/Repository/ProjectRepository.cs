@@ -25,17 +25,14 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
         /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
-        public ProjectRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
+        public ProjectRepository(IRepositoryContext context, IOperationLogRepository log,
             ISecureRepository repository, IConfigRepository config, IRelationRepository relations)
-            : base(unitOfWork, mapper, metadata, log)
+            : base(context, log)
         {
             _repository = repository;
             _configRepository = config;
@@ -308,17 +305,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
-        }
-
-        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="projectViewModel">مدل نمایشی شامل آخرین تغییرات</param>
@@ -419,7 +405,7 @@ namespace SPPC.Tadbir.Persistence
             return await repository
                 .GetEntityQuery()
                 .Where(prj => prj.ParentId == parentId
-                    && prj.FiscalPeriodId <= _currentContext.FiscalPeriodId)
+                    && prj.FiscalPeriodId <= UserContext.FiscalPeriodId)
                 .Select(prj => prj.Code)
                 .ToListAsync();
         }
@@ -431,8 +417,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 Code = newCode,
                 ParentId = parent?.Id,
-                FiscalPeriodId = _currentContext.FiscalPeriodId,
-                BranchId = _currentContext.BranchId
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                BranchId = UserContext.BranchId
             };
             childProject.FullCode = (parent != null)
                 ? parent.FullCode + childProject.Code

@@ -40,11 +40,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
         Task<TestBalanceViewModel> GetChildrenBalanceAsync(int accountId, TestBalanceParameters parameters);
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

@@ -12,12 +12,6 @@ namespace SPPC.Tadbir.Persistence
     public interface IReportSystemRepository
     {
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        void SetCurrentContext(UserContextViewModel userContext);
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات قالب گزارش فوری را به زبان مورد نیاز خوانده و برمی گرداند
         /// </summary>
         /// <param name="localeId">شناسه دیتابیسی زبان مورد نظر</param>

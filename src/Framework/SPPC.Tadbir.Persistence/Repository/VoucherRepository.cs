@@ -25,16 +25,13 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
         /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
-        public VoucherRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+        public VoucherRepository(IRepositoryContext context,
             IOperationLogRepository log, ISecureRepository repository, IUserRepository userRepository)
-            : base(unitOfWork, mapper, metadata, log)
+            : base(context, log)
         {
             _repository = repository;
             _userRepository = userRepository;
@@ -89,8 +86,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 Date = lastDate,
                 No = lastNo + 1,
-                BranchId = _currentContext.BranchId,
-                FiscalPeriodId = _currentContext.FiscalPeriodId,
+                BranchId = UserContext.BranchId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
                 Type = 0,
                 SubjectType = 0,
                 SaveCount = 0
@@ -251,8 +248,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 voucher = Mapper.Map<Voucher>(voucherView);
                 voucher.StatusId = (int)DocumentStatusValue.Draft;
-                voucher.IssuedById = _currentContext.Id;
-                voucher.ModifiedById = _currentContext.Id;
+                voucher.IssuedById = UserContext.Id;
+                voucher.ModifiedById = UserContext.Id;
                 voucher.IssuerName = voucher.ModifierName = displayName;
                 await InsertAsync(repository, voucher);
             }
@@ -261,7 +258,7 @@ namespace SPPC.Tadbir.Persistence
                 voucher = await repository.GetByIDAsync(voucherView.Id);
                 if (voucher != null)
                 {
-                    voucher.ModifiedById = _currentContext.Id;
+                    voucher.ModifiedById = UserContext.Id;
                     voucher.ModifierName = displayName;
                     await UpdateAsync(repository, voucher, voucherView);
                 }
@@ -340,18 +337,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
-            _userRepository.SetCurrentContext(userContext);
-        }
-
-        /// <summary>
         /// وضعیت ثبتی سند مالی را به وضعیت داده شده تغییر می دهد
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
@@ -381,7 +366,7 @@ namespace SPPC.Tadbir.Persistence
             var voucher = await repository.GetByIDAsync(voucherId);
             if (voucher != null)
             {
-                voucher.ConfirmedById = isConfirmed ? _currentContext.Id : (int?)null;
+                voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
                 voucher.ConfirmerName = isConfirmed ? GetCurrentUserDisplayName() : null;
                 repository.Update(voucher);
                 await UnitOfWork.CommitAsync();
@@ -400,7 +385,7 @@ namespace SPPC.Tadbir.Persistence
             var voucher = await repository.GetByIDAsync(voucherId);
             if (voucher != null)
             {
-                voucher.ApprovedById = isApproved ? _currentContext.Id : (int?)null;
+                voucher.ApprovedById = isApproved ? UserContext.Id : (int?)null;
                 voucher.ApproverName = isApproved ? GetCurrentUserDisplayName() : null;
                 repository.Update(voucher);
                 await UnitOfWork.CommitAsync();
@@ -442,7 +427,7 @@ namespace SPPC.Tadbir.Persistence
             voucher.Date = voucherView.Date;
             voucher.Reference = voucherView.Reference;
             voucher.Association = voucherView.Association;
-            voucher.ModifiedById = _currentContext.Id;
+            voucher.ModifiedById = UserContext.Id;
             voucher.SaveCount++;
             voucher.Description = voucherView.Description;
         }
@@ -466,7 +451,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var lastByDate = await repository
                 .GetEntityQuery()
-                .Where(voucher => voucher.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .OrderByDescending(voucher => voucher.Date)
                 .FirstOrDefaultAsync();
             DateTime lastDate;
@@ -477,7 +462,7 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 var periodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-                var fiscalPeriod = await periodRepository.GetByIDAsync(_currentContext.FiscalPeriodId);
+                var fiscalPeriod = await periodRepository.GetByIDAsync(UserContext.FiscalPeriodId);
                 lastDate = (fiscalPeriod != null) ? fiscalPeriod.StartDate : DateTime.Now;
             }
 
@@ -489,7 +474,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var lastByNo = await repository
                 .GetEntityQuery()
-                .Where(voucher => voucher.FiscalPeriodId == _currentContext.FiscalPeriodId)
+                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .OrderByDescending(voucher => voucher.No)
                 .FirstOrDefaultAsync();
             return (lastByNo != null) ? lastByNo.No : 0;
@@ -532,8 +517,8 @@ namespace SPPC.Tadbir.Persistence
                     };
                     var action = new DocumentAction()
                     {
-                        CreatedById = _currentContext.Id,
-                        ModifiedById = _currentContext.Id,
+                        CreatedById = UserContext.Id,
+                        ModifiedById = UserContext.Id,
                         CreatedDate = DateTime.Now,
                         ModifiedDate = DateTime.Now
                     };
@@ -546,7 +531,7 @@ namespace SPPC.Tadbir.Persistence
                 else
                 {
                     var action = document.Actions.Single();
-                    action.ModifiedById = _currentContext.Id;
+                    action.ModifiedById = UserContext.Id;
                     action.ModifiedDate = DateTime.Now;
                     repository.Update(document, doc => doc.Actions);
                 }
@@ -557,7 +542,7 @@ namespace SPPC.Tadbir.Persistence
 
         private string GetCurrentUserDisplayName()
         {
-            return String.Format("{0}, {1}", _currentContext.PersonLastName, _currentContext.PersonFirstName);
+            return String.Format("{0}, {1}", UserContext.PersonLastName, UserContext.PersonFirstName);
         }
 
         private List<KeyValue> GetValidTransitions()

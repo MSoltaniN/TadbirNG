@@ -57,7 +57,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
         public async Task<IActionResult> PostNewFiscalPeriodAsync([FromBody] FiscalPeriodViewModel fiscalPeriod)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var result = await ValidationResultAsync(fiscalPeriod);
             if (result is BadRequestObjectResult)
             {
@@ -75,7 +74,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedFiscalPeriodAsync(
             int fpId, [FromBody] FiscalPeriodViewModel fiscalPeriod)
         {
-            _repository.SetCurrentContext(SecurityContext.User);
             var result = await ValidationResultAsync(fiscalPeriod, fpId);
             if (result is BadRequestObjectResult)
             {
@@ -101,7 +99,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteFiscalPeriodAsync(fpId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -124,7 +121,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteFiscalPeriodsAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }

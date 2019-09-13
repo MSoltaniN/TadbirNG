@@ -67,11 +67,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه پروژه ها در بالاترین سطح</returns>
         Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync(GridOptions gridOptions = null);
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

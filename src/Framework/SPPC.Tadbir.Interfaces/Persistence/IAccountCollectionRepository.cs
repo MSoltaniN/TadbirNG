@@ -26,12 +26,6 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<AccountViewModel>> GetCollectionAccountsAsync(int collectionId);
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
-
-        /// <summary>
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه جاری برنامه را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

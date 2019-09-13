@@ -29,11 +29,8 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public LookupRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
-            : base(unitOfWork, mapper, metadata)
+        public LookupRepository(IRepositoryContext context)
+            : base(context)
         {
         }
 
@@ -47,8 +44,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
         public async Task<IEnumerable<KeyValue>> GetAccountsAsync(GridOptions gridOptions = null)
         {
-            int fpId = _currentContext.FiscalPeriodId;
-            int branchId = _currentContext.BranchId;
+            int fpId = UserContext.FiscalPeriodId;
+            int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
                 .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id <= fpId
@@ -66,8 +63,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
         public async Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(GridOptions gridOptions = null)
         {
-            int fpId = _currentContext.FiscalPeriodId;
-            int branchId = _currentContext.BranchId;
+            int fpId = UserContext.FiscalPeriodId;
+            int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccounts = await repository
                 .GetByCriteriaAsync(det => det.FiscalPeriod.Id <= fpId
@@ -85,8 +82,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
         public async Task<IEnumerable<KeyValue>> GetCostCentersAsync(GridOptions gridOptions = null)
         {
-            int fpId = _currentContext.FiscalPeriodId;
-            int branchId = _currentContext.BranchId;
+            int fpId = UserContext.FiscalPeriodId;
+            int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenters = await repository
                 .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id <= fpId
@@ -104,8 +101,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
         public async Task<IEnumerable<KeyValue>> GetProjectsAsync(GridOptions gridOptions = null)
         {
-            int fpId = _currentContext.FiscalPeriodId;
-            int branchId = _currentContext.BranchId;
+            int fpId = UserContext.FiscalPeriodId;
+            int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             var projects = await repository
                 .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id <= fpId
@@ -123,8 +120,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه اسناد مالی تعریف شده در دوره و شعبه مشخص شده</returns>
         public async Task<IEnumerable<KeyValue>> GetVouchersAsync(GridOptions gridOptions = null)
         {
-            int fpId = _currentContext.FiscalPeriodId;
-            int branchId = _currentContext.BranchId;
+            int fpId = UserContext.FiscalPeriodId;
+            int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var vouchers = await repository
                 .GetByCriteriaAsync(voucher => voucher.FiscalPeriod.Id == fpId
@@ -142,8 +139,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه آرتیکل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
         public async Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(GridOptions gridOptions = null)
         {
-            int fpId = _currentContext.FiscalPeriodId;
-            int branchId = _currentContext.BranchId;
+            int fpId = UserContext.FiscalPeriodId;
+            int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var lines = await repository
                 .GetByCriteriaAsync(line => line.FiscalPeriod.Id == fpId

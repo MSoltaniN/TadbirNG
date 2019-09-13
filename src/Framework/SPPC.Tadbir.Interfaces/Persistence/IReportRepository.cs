@@ -15,12 +15,6 @@ namespace SPPC.Tadbir.Persistence
     public interface IReportRepository
     {
         /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        void SetCurrentContext(UserContextViewModel userContext);
-
-        /// <summary>
         /// به روش آسنکرون، مانده حساب مشخص شده را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>

@@ -303,11 +303,5 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="insertedProjectId">شناسه دیتابیسی پروژه ایجاد شده</param>
         Task OnProjectInsertedAsync(int insertedProjectId);
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

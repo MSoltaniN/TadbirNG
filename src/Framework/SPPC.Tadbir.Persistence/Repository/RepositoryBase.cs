@@ -16,14 +16,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        protected RepositoryBase(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        protected RepositoryBase(IRepositoryContext context)
         {
-            UnitOfWork = unitOfWork;
-            Mapper = mapper;
-            Metadata = metadata;
+            _context = context;
         }
 
         /// <summary>
@@ -47,17 +43,26 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی
         /// </summary>
-        protected IAppUnitOfWork UnitOfWork { get; }
+        protected IAppUnitOfWork UnitOfWork
+        {
+            get { return _context.UnitOfWork; }
+        }
 
         /// <summary>
         /// نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی
         /// </summary>
-        protected IDomainMapper Mapper { get; }
+        protected IDomainMapper Mapper
+        {
+            get { return _context.Mapper; }
+        }
 
         /// <summary>
-        /// امکان خواندن متادیتا برای یک موجودیت را فراهم می کند
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
         /// </summary>
-        protected IMetadataRepository Metadata { get; }
+        protected UserContextViewModel UserContext
+        {
+            get { return _context.UserContext; }
+        }
 
         /// <summary>
         /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
@@ -71,17 +76,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 UnitOfWork.SwitchCompany(BuildConnectionString(company));
             }
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public virtual void SetCurrentContext(UserContextViewModel userContext)
-        {
-            Verify.ArgumentNotNull(userContext, "userContext");
-            _currentContext = userContext;
         }
 
         private static string BuildConnectionString(CompanyDb company)
@@ -101,9 +95,6 @@ namespace SPPC.Tadbir.Persistence
             return builder.ToString();
         }
 
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
-        /// </summary>
-        protected UserContextViewModel _currentContext;
+        private readonly IRepositoryContext _context;
     }
 }

@@ -130,12 +130,6 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsDuplicateVoucherDailyNoAsync(VoucherViewModel voucher);
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
-
-        /// <summary>
         /// وضعیت ثبتی سند مالی را به وضعیت داده شده تغییر می دهد
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
