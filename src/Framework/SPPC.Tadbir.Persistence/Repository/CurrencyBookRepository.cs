@@ -6,13 +6,11 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -26,13 +24,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="report">پیاده سازی اینترفیس مربوط به عملیات گزارشی</param>
-        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
-        public CurrencyBookRepository(IRepositoryContext context, IReportRepository report, ISecureRepository repository)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public CurrencyBookRepository(IRepositoryContext context, ISystemRepository system)
             : base(context)
         {
-            _reportRepository = report;
-            _repository = repository;
+            _system = system;
         }
 
         /// <summary>
@@ -143,6 +139,16 @@ namespace SPPC.Tadbir.Persistence
             return await GetSummaryBookAsync(bookParam, gridOptions, true, false);
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private IReportRepository Report
+        {
+            get { return _system.Report; }
+        }
+
         private static IEnumerable<CurrencyBookItemViewModel> GetAggregatedBookItems(
             IEnumerable<CurrencyBookItemViewModel> items, bool singleMode, bool byCurrency = false)
         {
@@ -226,6 +232,38 @@ namespace SPPC.Tadbir.Persistence
             book.SetItems(book.Items.ApplyPaging(gridOptions).ToArray());
         }
 
+        private static IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParamViewModel bookParam)
+        {
+            var itemCriteria = new List<Expression<Func<VoucherLine, bool>>>();
+
+            if (bookParam.AccountId != null)
+            {
+                itemCriteria.Add(line => line.AccountId == bookParam.AccountId);
+            }
+
+            if (bookParam.FAccountId != null)
+            {
+                itemCriteria.Add(line => line.DetailId == bookParam.FAccountId);
+            }
+
+            if (bookParam.CCenterId != null)
+            {
+                itemCriteria.Add(line => line.CostCenterId == bookParam.CCenterId);
+            }
+
+            if (bookParam.ProjectId != null)
+            {
+                itemCriteria.Add(line => line.ProjectId == bookParam.ProjectId);
+            }
+
+            if (!bookParam.CurrFree)
+            {
+                itemCriteria.Add(line => line.CurrencyId != null);
+            }
+
+            return itemCriteria;
+        }
+
         private async Task<CurrencyBookViewModel> GetSimpleBookAsync(
             CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
         {
@@ -304,10 +342,10 @@ namespace SPPC.Tadbir.Persistence
         {
             if (voucherType != VoucherType.NormalVoucher)
             {
-                var date = await _reportRepository.GetSpecialVoucherDateAsync(voucherType);
+                var date = await Report.GetSpecialVoucherDateAsync(voucherType);
                 if (date.HasValue && date.Value.IsBetween(bookParam.From, bookParam.To))
                 {
-                    var query = _repository
+                    var query = Repository
                         .GetAllOperationQuery<VoucherLine>(
                             ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                         .Where(line => line.Voucher.Type == (short)voucherType);
@@ -344,7 +382,7 @@ namespace SPPC.Tadbir.Persistence
         private IQueryable<VoucherLine> GetRawAccountBookLines(
             IList<Expression<Func<VoucherLine, bool>>> itemCriteria, DateTime from, DateTime to)
         {
-            var query = _repository
+            var query = Repository
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                 .Where(line => line.Voucher.Date.IsBetween(from, to));
@@ -360,42 +398,10 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParamViewModel bookParam)
-        {
-            var itemCriteria = new List<Expression<Func<VoucherLine, bool>>>();
-
-            if (bookParam.AccountId != null)
-            {
-                itemCriteria.Add(line => line.AccountId == bookParam.AccountId);
-            }
-
-            if (bookParam.FAccountId != null)
-            {
-                itemCriteria.Add(line => line.DetailId == bookParam.FAccountId);
-            }
-
-            if (bookParam.CCenterId != null)
-            {
-                itemCriteria.Add(line => line.CostCenterId == bookParam.CCenterId);
-            }
-
-            if (bookParam.ProjectId != null)
-            {
-                itemCriteria.Add(line => line.ProjectId == bookParam.ProjectId);
-            }
-
-            if (!bookParam.CurrFree)
-            {
-                itemCriteria.Add(line => line.CurrencyId != null);
-            }
-
-            return itemCriteria;
-        }
-
         private IQueryable<VoucherLine> GetRawCurrencyBookLines(
             IList<Expression<Func<VoucherLine, bool>>> itemCriteria, DateTime from, DateTime to)
         {
-            var query = _repository
+            var query = Repository
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch, line => line.Currency)
                 .Where(line => line.Voucher.Date.IsBetween(from, to));
@@ -520,7 +526,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private readonly IReportRepository _reportRepository;
-        private readonly ISecureRepository _repository;
+        private readonly ISystemRepository _system;
     }
 }

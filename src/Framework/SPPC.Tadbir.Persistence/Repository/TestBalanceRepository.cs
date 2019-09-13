@@ -8,7 +8,6 @@ using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -22,17 +21,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
-        /// <param name="reportRepository">امکانات عمومی و مشترک در گزارش های مالی را تعریف می کند</param>
-        /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
-        public TestBalanceRepository(
-            IRepositoryContext context, ISecureRepository repository,
-            IReportRepository reportRepository, IConfigRepository configRepository)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public TestBalanceRepository(IRepositoryContext context, ISystemRepository system)
             : base(context)
         {
-            _repository = repository;
-            _reportRepository = reportRepository;
-            _configRepository = configRepository;
+            _system = system;
         }
 
         /// <summary>
@@ -103,6 +96,21 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return testBalance;
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private IReportRepository Report
+        {
+            get { return _system.Report; }
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
         }
 
         private static void UpdateEndBalances(TestBalanceViewModel testBalance)
@@ -216,7 +224,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(
             Expression<Func<VoucherLine, bool>> mainFilter, TestBalanceParameters parameters)
         {
-            var query = _repository
+            var query = Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch);
             var options = parameters.Options;
@@ -315,11 +323,11 @@ namespace SPPC.Tadbir.Persistence
             foreach (var item in testBalance.Items)
             {
                 decimal balance = parameters.FromDate.HasValue
-                    ? await _reportRepository.GetAccountBalanceAsync(item.AccountId, parameters.FromDate.Value)
-                    : await _reportRepository.GetAccountBalanceAsync(item.AccountId, parameters.FromNo.Value);
+                    ? await Report.GetAccountBalanceAsync(item.AccountId, parameters.FromDate.Value)
+                    : await Report.GetAccountBalanceAsync(item.AccountId, parameters.FromNo.Value);
                 if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
                 {
-                    balance += await _reportRepository.GetSpecialVoucherBalanceAsync(
+                    balance += await Report.GetSpecialVoucherBalanceAsync(
                         VoucherType.OpeningVoucher, item.AccountId);
                 }
 
@@ -330,7 +338,7 @@ namespace SPPC.Tadbir.Persistence
 
         private int GetLevelCodeLength(int viewId, int level)
         {
-            var fullConfig = _configRepository
+            var fullConfig = Config
                 .GetViewTreeConfigByViewAsync(viewId)
                 .Result;
             var treeConfig = fullConfig.Current;
@@ -349,7 +357,7 @@ namespace SPPC.Tadbir.Persistence
                 var usedIds = testBalance.Items
                     .Where(item => item.AccountLevel == (short)parameters.Mode)
                     .Select(item => item.AccountId);
-                var notUsed = await _repository
+                var notUsed = await Repository
                     .GetAllQuery<Account>(ViewName.Account, acc => acc.Branch)
                     .Where(acc => !usedIds.Contains(acc.Id) && acc.Level == (short)parameters.Mode)
                     .Select(acc => new { acc.Id, acc.Name, acc.FullCode, acc.BranchId, BranchName = acc.Branch.Name })
@@ -390,8 +398,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private readonly ISecureRepository _repository;
-        private readonly IConfigRepository _configRepository;
-        private IReportRepository _reportRepository;
+        private readonly ISystemRepository _system;
     }
 }

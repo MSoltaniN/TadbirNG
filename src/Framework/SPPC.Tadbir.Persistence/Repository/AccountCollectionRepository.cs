@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -24,13 +22,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
-        public AccountCollectionRepository(IRepositoryContext context,
-            IOperationLogRepository log, ISecureRepository repository)
-            : base(context, log)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public AccountCollectionRepository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system?.Logger)
         {
-            _repository = repository;
+            _system = system;
             UnitOfWork.UseCompanyContext();
         }
 
@@ -54,7 +50,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از حساب های انتخاب شده در یک مجموعه حساب</returns>
         public async Task<IList<AccountViewModel>> GetCollectionAccountsAsync(int collectionId)
         {
-            var accCollection = await _repository
+            var accCollection = await Repository
                 .GetAllOperationQuery<AccountCollectionAccount>(ViewName.AccountCollectionAccount, col => col.Account, col => col.Account.Children)
                 .Where(col => col.CollectionId == collectionId && col.BranchId == UserContext.BranchId && col.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Select(col => Mapper.Map<AccountViewModel>(col))
@@ -71,7 +67,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetCountAsync<Account, AccountViewModel>(
+            return await Repository.GetCountAsync<Account, AccountViewModel>(
                 ViewName.Account, gridOptions);
         }
 
@@ -117,6 +113,11 @@ namespace SPPC.Tadbir.Persistence
             AccountCollectionAccountViewModel accountViewModel, AccountCollectionAccount account)
         {
             throw new NotImplementedException();
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
         }
 
         private async Task AddNewAccountCollections(
@@ -193,6 +194,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private readonly ISecureRepository _repository;
+        private readonly ISystemRepository _system;
     }
 }

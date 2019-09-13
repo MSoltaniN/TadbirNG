@@ -10,7 +10,6 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Metadata;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -25,8 +24,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
-        /// <remarks>برای استفاده از اطلاعات دوره مالی جاری لازم است اطلاعات محیطی از طریق متد زیر تنظیم شده باشد :
-        /// SetCurrentContext</remarks>
         public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository)
             : base(context)
         {
@@ -119,7 +116,7 @@ namespace SPPC.Tadbir.Persistence
         public void GetCurrentFiscalDateRange(out DateTime start, out DateTime end)
         {
             var config = GetConfigByTypeAsync<DateRangeConfig>().Result;
-            Verify.ArgumentNotNull(_currentContext);
+            Verify.ArgumentNotNull(UserContext);
             if (config.DefaultDateRange == DateRangeOptions.CurrentToCurrent)
             {
                 start = DateTime.Now;
@@ -127,7 +124,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var fp = _fiscalRepository.GetFiscalPeriodAsync(_currentContext.FiscalPeriodId).Result;
+                var fp = _fiscalRepository.GetFiscalPeriodAsync(UserContext.FiscalPeriodId).Result;
                 start = fp.StartDate;
                 end = (config.DefaultDateRange == DateRangeOptions.FiscalStartToCurrent)
                     ? DateTime.Now
@@ -470,15 +467,6 @@ namespace SPPC.Tadbir.Persistence
             await SaveViewTreeConfigAsync(configItems);
         }
 
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی کاربر جاری برنامه</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
-        {
-            _currentContext = userContext;
-        }
-
         private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
         {
             while (fullConfig.Default.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
@@ -493,6 +481,5 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IFiscalPeriodRepository _fiscalRepository;
-        private UserContextViewModel _currentContext;
     }
 }

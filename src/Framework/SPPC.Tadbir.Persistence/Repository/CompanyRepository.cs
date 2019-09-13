@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;

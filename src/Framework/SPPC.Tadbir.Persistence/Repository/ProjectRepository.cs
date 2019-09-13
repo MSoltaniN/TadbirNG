@@ -6,14 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -26,16 +23,13 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
-        public ProjectRepository(IRepositoryContext context, IOperationLogRepository log,
-            ISecureRepository repository, IConfigRepository config, IRelationRepository relations)
-            : base(context, log)
+        public ProjectRepository(IRepositoryContext context, ISystemRepository system,
+            IRelationRepository relations)
+            : base(context, system?.Logger)
         {
-            _repository = repository;
-            _configRepository = config;
+            _system = system;
             _relationRepository = relations;
         }
 
@@ -47,7 +41,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<IList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null)
         {
-            var projects = await _repository.GetAllAsync<Project>(ViewName.Project, prj => prj.Children);
+            var projects = await Repository.GetAllAsync<Project>(ViewName.Project, prj => prj.Children);
             var filteredProjects = projects
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
                 .ToList();
@@ -65,7 +59,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<IList<KeyValue>> GetProjectsLookupAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetAllLookupAsync<Project>(ViewName.Project, gridOptions);
+            return await Repository.GetAllLookupAsync<Project>(ViewName.Project, gridOptions);
         }
 
         /// <summary>
@@ -78,7 +72,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
             where TViewModel : class, new()
         {
-            return await _repository.GetCountAsync<Project, TViewModel>(ViewName.Project, gridOptions);
+            return await Repository.GetCountAsync<Project, TViewModel>(ViewName.Project, gridOptions);
         }
 
         /// <summary>
@@ -114,7 +108,7 @@ namespace SPPC.Tadbir.Persistence
                 return null;
             }
 
-            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.Project);
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.Project);
             var treeConfig = fullConfig.Current;
             if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
             {
@@ -132,7 +126,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از مدل نمایشی خلاصه پروژه های سطح اول</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetProjectsLedgerAsync()
         {
-            var projects = await _repository
+            var projects = await Repository
                 .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
                 .Where(prj => prj.ParentId == null)
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
@@ -148,7 +142,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetProjectChildrenAsync(int projectId)
         {
-            var children = await _repository
+            var children = await Repository
                 .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
                 .Where(prj => prj.ParentId == projectId)
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
@@ -332,6 +326,16 @@ namespace SPPC.Tadbir.Persistence
                : null;
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
+        }
+
         private static string GetNewProjectCode(
             Project parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
         {
@@ -354,7 +358,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             int count = await repository.GetCountByCriteriaAsync(prj => prj.Level == level);
-            await _configRepository.SaveTreeLevelUsageAsync(ViewName.Project, level, count);
+            await Config.SaveTreeLevelUsageAsync(ViewName.Project, level, count);
         }
 
         /// <summary>
@@ -367,7 +371,7 @@ namespace SPPC.Tadbir.Persistence
             where TTreeEntity : ITreeEntityView
         {
             var childIds = children.Select(item => item.Id);
-            var grandchildren = await _repository
+            var grandchildren = await Repository
                 .GetAllQuery<Project>(ViewName.Project)
                 .Where(prj => prj.ParentId != null && childIds.Contains(prj.ParentId.Value))
                 .GroupBy(prj => prj.ParentId.Value)
@@ -433,8 +437,7 @@ namespace SPPC.Tadbir.Persistence
             return childProject;
         }
 
-        private readonly ISecureRepository _repository;
-        private readonly IConfigRepository _configRepository;
+        private readonly ISystemRepository _system;
         private readonly IRelationRepository _relationRepository;
     }
 }

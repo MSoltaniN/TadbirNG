@@ -6,14 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -26,16 +23,12 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
-        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
-        public CostCenterRepository(IRepositoryContext context, IOperationLogRepository log,
-            ISecureRepository repository, IConfigRepository config, IRelationRepository relations)
-            : base(context, log)
+        public CostCenterRepository(IRepositoryContext context, ISystemRepository system, IRelationRepository relations)
+            : base(context, system?.Logger)
         {
-            _repository = repository;
-            _configRepository = config;
+            _system = system;
             _relationRepository = relations;
         }
 
@@ -47,7 +40,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<IList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null)
         {
-            var costCenters = await _repository.GetAllAsync<CostCenter>(ViewName.CostCenter, cc => cc.Children);
+            var costCenters = await Repository.GetAllAsync<CostCenter>(ViewName.CostCenter, cc => cc.Children);
             var filteredCenters = costCenters
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
                 .ToList();
@@ -65,7 +58,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<IList<KeyValue>> GetCostCentersLookupAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetAllLookupAsync<CostCenter>(ViewName.CostCenter, gridOptions);
+            return await Repository.GetAllLookupAsync<CostCenter>(ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>
@@ -74,7 +67,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از مدل نمایشی خلاصه مراکز هزینه در سطح اول</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetCostCentersLedgerAsync()
         {
-            var costCenters = await _repository
+            var costCenters = await Repository
                 .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
                 .Where(cc => cc.ParentId == null)
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
@@ -93,7 +86,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
             where TViewModel : class, new()
         {
-            return await _repository.GetCountAsync<CostCenter, TViewModel>(ViewName.CostCenter, gridOptions);
+            return await Repository.GetCountAsync<CostCenter, TViewModel>(ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>
@@ -129,7 +122,7 @@ namespace SPPC.Tadbir.Persistence
                 return null;
             }
 
-            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.CostCenter);
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.CostCenter);
             var treeConfig = fullConfig.Current;
             if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
             {
@@ -148,7 +141,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مدل نمایشی مراکز هزینه زیرمجموعه</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetCostCenterChildrenAsync(int costCenterId)
         {
-            var children = await _repository
+            var children = await Repository
                 .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
                 .Where(cc => cc.ParentId == costCenterId)
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
@@ -332,6 +325,16 @@ namespace SPPC.Tadbir.Persistence
                : null;
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
+        }
+
         private static string GetNewCostCenterCode(
             CostCenter parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
         {
@@ -354,7 +357,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             int count = await repository.GetCountByCriteriaAsync(cc => cc.Level == level);
-            await _configRepository.SaveTreeLevelUsageAsync(ViewName.CostCenter, level, count);
+            await Config.SaveTreeLevelUsageAsync(ViewName.CostCenter, level, count);
         }
 
         /// <summary>
@@ -367,7 +370,7 @@ namespace SPPC.Tadbir.Persistence
             where TTreeEntity : ITreeEntityView
         {
             var childIds = children.Select(item => item.Id);
-            var grandchildren = await _repository
+            var grandchildren = await Repository
                 .GetAllQuery<CostCenter>(ViewName.CostCenter)
                 .Where(cc => cc.ParentId != null && childIds.Contains(cc.ParentId.Value))
                 .GroupBy(cc => cc.ParentId.Value)
@@ -433,8 +436,7 @@ namespace SPPC.Tadbir.Persistence
             return childCenter;
         }
 
-        private readonly ISecureRepository _repository;
-        private readonly IConfigRepository _configRepository;
+        private readonly ISystemRepository _system;
         private readonly IRelationRepository _relationRepository;
     }
 }

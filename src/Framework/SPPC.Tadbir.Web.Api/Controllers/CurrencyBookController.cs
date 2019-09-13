@@ -132,6 +132,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(book);
         }
 
+        private static void SortItems(CurrencyBookViewModel book)
+        {
+            var currencyFreeItem = new CurrencyBookItemViewModel();
+            var items = new List<CurrencyBookItemViewModel>();
+            items.AddRange(book.Items.Where(item => item.CurrencyId != null));
+            items = items.OrderBy(item => item.CurrencyName).ToList();
+            currencyFreeItem = book.Items.FirstOrDefault(curr => curr.CurrencyId == null);
+            if (currencyFreeItem != null)
+            {
+                items.Add(currencyFreeItem);
+            }
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                items[i].RowNo = i + 1;
+            }
+
+            book.Items.Clear();
+            book.Items.AddRange(items);
+        }
+
         private async Task<IActionResult> CurrencyBookResultAsync(AccountBookMode bookMode, CurrencyBookParamViewModel bookParam)
         {
             var currencyBook = GetCurrencyBookDelegate(bookMode, bookParam.ByBranch);
@@ -192,27 +213,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 item.Description = _strings[item.Description ?? String.Empty];
                 item.CurrencyName = _strings[item.CurrencyName ?? String.Empty];
             });
-        }
-
-        private void SortItems(CurrencyBookViewModel book)
-        {
-            var currencyFreeItem = new CurrencyBookItemViewModel();
-            var items = new List<CurrencyBookItemViewModel>();
-            items.AddRange(book.Items.Where(item => item.CurrencyId != null));
-            items = items.OrderBy(item => item.CurrencyName).ToList();
-            currencyFreeItem = book.Items.FirstOrDefault(curr => curr.CurrencyId == null);
-            if (currencyFreeItem != null)
-            {
-                items.Add(currencyFreeItem);
-            }
-
-            for (int i = 0; i < items.Count; i++)
-            {
-                items[i].RowNo = i + 1;
-            }
-
-            book.Items.Clear();
-            book.Items.AddRange(items);
         }
 
         private delegate Task<CurrencyBookViewModel> CurrencyBookDelegate(

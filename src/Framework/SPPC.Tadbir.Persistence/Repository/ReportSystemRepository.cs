@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -24,15 +23,6 @@ namespace SPPC.Tadbir.Persistence
             : base(context)
         {
             UnitOfWork.UseSystemContext();
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
-        {
-            _currentContext = userContext;
         }
 
         /// <summary>
@@ -189,7 +179,7 @@ namespace SPPC.Tadbir.Persistence
                     userReport.Id = 0;
                     userReport.IsSystem = false;
                     userReport.IsDefault = false;
-                    userReport.CreatedById = _currentContext.Id;
+                    userReport.CreatedById = UserContext.Id;
                     repository.Insert(userReport);
                     await UnitOfWork.CommitAsync();
 
@@ -367,6 +357,5 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private const int _quickReportId = 43;
-        private UserContextViewModel _currentContext;
     }
 }

@@ -10,7 +10,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -25,18 +24,14 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="lookupRepository">امکان خواندن اطلاعات موجود را به صورت لوکاپ فراهم می کند</param>
-        /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
-        public ReportRepository(
-            IRepositoryContext context, IMetadataRepository metadata, ISecureRepository repository,
-            ILookupRepository lookupRepository, IConfigRepository configRepository)
+        public ReportRepository(IRepositoryContext context, ISystemRepository system,
+            ILookupRepository lookupRepository)
             : base(context)
         {
-            _metadata = metadata;
-            _repository = repository;
+            _system = system;
             _lookupRepository = lookupRepository;
-            _configRepository = configRepository;
         }
 
         /// <summary>
@@ -172,7 +167,7 @@ namespace SPPC.Tadbir.Persistence
             var account = await accountRepository.GetByIDAsync(accountId);
             if (account != null)
             {
-                balance = await _repository
+                balance = await Repository
                     .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
                     .Where(line => line.Voucher.Type == (short)type
                         && line.FiscalPeriodId == UserContext.FiscalPeriodId
@@ -191,7 +186,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای نمای گزارشی</returns>
         public async Task<ViewViewModel> GetReportMetadataByViewAsync(int viewId)
         {
-            return await _metadata.GetViewMetadataByIdAsync(viewId);
+            return await Metadata.GetViewMetadataByIdAsync(viewId);
         }
 
         /// <summary>
@@ -204,7 +199,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var userMap = await _lookupRepository.GetUserPersonsAsync();
-            var vouchers = await _repository
+            var vouchers = await Repository
                 .GetAllOperationQuery<Voucher>(
                     ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
@@ -223,7 +218,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetVoucherSummaryByDateCountAsync(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
-            int count = await _repository
+            int count = await Repository
                 .GetAllOperationQuery<Voucher>(ViewName.Voucher, voucher => voucher.Lines)
                 .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
                 .Apply(gridOptions, false)
@@ -272,6 +267,16 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return standardForm;
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private IMetadataRepository Metadata
+        {
+            get { return _system.Metadata; }
         }
 
         private static void AddGeneralStandardLineItems(
@@ -368,7 +373,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<decimal> GetItemBalanceAsync(
             DateTime date, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
-            return await _repository
+            return await Repository
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.CompareWith(date) < 0
@@ -381,7 +386,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<decimal> GetItemBalanceAsync(
             int number, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
-            return await _repository
+            return await Repository
                 .GetAllOperationQuery<VoucherLine>(
                     ViewName.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.No < number
@@ -414,9 +419,7 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private readonly IMetadataRepository _metadata;
-        private readonly ISecureRepository _repository;
+        private readonly ISystemRepository _system;
         private readonly ILookupRepository _lookupRepository;
-        private readonly IConfigRepository _configRepository;
     }
 }
