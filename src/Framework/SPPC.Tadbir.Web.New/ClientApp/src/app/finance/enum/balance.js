@@ -95,4 +95,27 @@ export var BranchScopeResource;
     /**شعبه جاری و زیر مجموعه ها */
     BranchScopeResource["CurrentBranchAndSubsets"] = "BranchScope.CurrentBranchAndSubsets";
 })(BranchScopeResource || (BranchScopeResource = {}));
+export var TestBalanceOptions;
+(function (TestBalanceOptions) {
+    /// <summary>
+    /// عدم انتخاب همه گزینه ها
+    /// </summary>
+    TestBalanceOptions[TestBalanceOptions["None"] = 0] = "None";
+    /// <summary>
+    /// گزینه نمایش سند اختتامیه
+    /// </summary>
+    TestBalanceOptions[TestBalanceOptions["UseClosingVoucher"] = 1] = "UseClosingVoucher";
+    /// <summary>
+    /// گزینه نمایش سند بستن حساب ها
+    /// </summary>
+    TestBalanceOptions[TestBalanceOptions["UseClosingTempVoucher"] = 2] = "UseClosingTempVoucher";
+    /// <summary>
+    /// گزینه انعکاس افتتاحیه در ستون مانده ابتدا
+    /// </summary>
+    TestBalanceOptions[TestBalanceOptions["OpeningVoucherAsInitBalance"] = 4] = "OpeningVoucherAsInitBalance";
+    /// <summary>
+    /// گزینه نمایش سرفصل های با مانده صفر
+    /// </summary>
+    TestBalanceOptions[TestBalanceOptions["ShowZeroBalanceItems"] = 8] = "ShowZeroBalanceItems";
+})(TestBalanceOptions || (TestBalanceOptions = {}));
 //# sourceMappingURL=balance.js.map
