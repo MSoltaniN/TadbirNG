@@ -25,10 +25,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        public CurrencyBookRepository(IRepositoryContext context, ISystemRepository system)
+        /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
+        public CurrencyBookRepository(IRepositoryContext context, ISystemRepository system, IReportRepository report)
             : base(context)
         {
             _system = system;
+            _report = report;
         }
 
         /// <summary>
@@ -142,11 +144,6 @@ namespace SPPC.Tadbir.Persistence
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
-        }
-
-        private IReportRepository Report
-        {
-            get { return _system.Report; }
         }
 
         private static IEnumerable<CurrencyBookItemViewModel> GetAggregatedBookItems(
@@ -342,7 +339,7 @@ namespace SPPC.Tadbir.Persistence
         {
             if (voucherType != VoucherType.NormalVoucher)
             {
-                var date = await Report.GetSpecialVoucherDateAsync(voucherType);
+                var date = await _report.GetSpecialVoucherDateAsync(voucherType);
                 if (date.HasValue && date.Value.IsBetween(bookParam.From, bookParam.To))
                 {
                     var query = Repository
@@ -527,5 +524,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISystemRepository _system;
+        private readonly IReportRepository _report;
     }
 }

@@ -24,11 +24,6 @@ namespace SPPC.Tadbir.Persistence
         IConfigRepository Config { get; }
 
         /// <summary>
-        /// امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند
-        /// </summary>
-        IReportRepository Report { get; }
-
-        /// <summary>
         /// امکان خواندن و ایجاد لاگ های عملیاتی را فراهم می کند
         /// </summary>
         IOperationLogRepository Logger { get; }

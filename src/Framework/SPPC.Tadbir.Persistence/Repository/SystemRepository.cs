@@ -9,6 +9,22 @@ namespace SPPC.Tadbir.Persistence
     public class SystemRepository : ISystemRepository
     {
         /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="repository">امکان خواندن اطلاعات را با توجه به دسترسی های سطری و شعب فراهم می کند</param>
+        /// <param name="metadata">امکان خواندن اطلاعات فراداده ای برنامه را فراهم می کند</param>
+        /// <param name="config">امکان خواندن اطلاعات پیکربندی برنامه را فراهم می کند</param>
+        /// <param name="logger">امکان خواندن و ایجاد لاگ های عملیاتی را فراهم می کند</param>
+        public SystemRepository(ISecureRepository repository, IMetadataRepository metadata, IConfigRepository config,
+            IOperationLogRepository logger)
+        {
+            Repository = repository;
+            Metadata = metadata;
+            Config = config;
+            Logger = logger;
+        }
+
+        /// <summary>
         /// امکان خواندن اطلاعات را با توجه به دسترسی های سطری و شعب فراهم می کند
         /// </summary>
         public ISecureRepository Repository { get; }
@@ -22,11 +38,6 @@ namespace SPPC.Tadbir.Persistence
         /// امکان خواندن اطلاعات پیکربندی برنامه را فراهم می کند
         /// </summary>
         public IConfigRepository Config { get; }
-
-        /// <summary>
-        /// امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند
-        /// </summary>
-        public IReportRepository Report { get; }
 
         /// <summary>
         /// امکان خواندن و ایجاد لاگ های عملیاتی را فراهم می کند

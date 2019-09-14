@@ -22,10 +22,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        public TestBalanceRepository(IRepositoryContext context, ISystemRepository system)
+        /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
+        public TestBalanceRepository(IRepositoryContext context, ISystemRepository system, IReportRepository report)
             : base(context)
         {
             _system = system;
+            _report = report;
         }
 
         /// <summary>
@@ -101,11 +103,6 @@ namespace SPPC.Tadbir.Persistence
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
-        }
-
-        private IReportRepository Report
-        {
-            get { return _system.Report; }
         }
 
         private IConfigRepository Config
@@ -323,11 +320,11 @@ namespace SPPC.Tadbir.Persistence
             foreach (var item in testBalance.Items)
             {
                 decimal balance = parameters.FromDate.HasValue
-                    ? await Report.GetAccountBalanceAsync(item.AccountId, parameters.FromDate.Value)
-                    : await Report.GetAccountBalanceAsync(item.AccountId, parameters.FromNo.Value);
+                    ? await _report.GetAccountBalanceAsync(item.AccountId, parameters.FromDate.Value)
+                    : await _report.GetAccountBalanceAsync(item.AccountId, parameters.FromNo.Value);
                 if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
                 {
-                    balance += await Report.GetSpecialVoucherBalanceAsync(
+                    balance += await _report.GetSpecialVoucherBalanceAsync(
                         VoucherType.OpeningVoucher, item.AccountId);
                 }
 
@@ -399,5 +396,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISystemRepository _system;
+        private readonly IReportRepository _report;
     }
 }

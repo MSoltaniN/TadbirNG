@@ -28,10 +28,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        public AccountBookRepository(IRepositoryContext context, ISystemRepository system)
+        /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
+        public AccountBookRepository(IRepositoryContext context, ISystemRepository system, IReportRepository report)
             : base(context)
         {
             _system = system;
+            _report = report;
         }
 
         /// <summary>
@@ -207,11 +209,6 @@ namespace SPPC.Tadbir.Persistence
             get { return _system.Repository; }
         }
 
-        private IReportRepository Report
-        {
-            get { return _system.Report; }
-        }
-
         private static void PrepareAccountBook(AccountBookViewModel book, GridOptions gridOptions)
         {
             int rowNo = 2;
@@ -351,7 +348,7 @@ namespace SPPC.Tadbir.Persistence
         {
             if (voucherType != VoucherType.NormalVoucher)
             {
-                var date = await Report.GetSpecialVoucherDateAsync(voucherType);
+                var date = await _report.GetSpecialVoucherDateAsync(voucherType);
                 if (date.HasValue && date.Value.IsBetween(from, to))
                 {
                     var lines = Repository
@@ -414,16 +411,16 @@ namespace SPPC.Tadbir.Persistence
             switch (viewId)
             {
                 case ViewName.Account:
-                    balance = await Report.GetAccountBalanceAsync(accountId, date);
+                    balance = await _report.GetAccountBalanceAsync(accountId, date);
                     break;
                 case ViewName.DetailAccount:
-                    balance = await Report.GetDetailAccountBalanceAsync(accountId, date);
+                    balance = await _report.GetDetailAccountBalanceAsync(accountId, date);
                     break;
                 case ViewName.CostCenter:
-                    balance = await Report.GetCostCenterBalanceAsync(accountId, date);
+                    balance = await _report.GetCostCenterBalanceAsync(accountId, date);
                     break;
                 case ViewName.Project:
-                    balance = await Report.GetProjectBalanceAsync(accountId, date);
+                    balance = await _report.GetProjectBalanceAsync(accountId, date);
                     break;
                 default:
                     break;
@@ -604,5 +601,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISystemRepository _system;
+        private readonly IReportRepository _report;
     }
 }
