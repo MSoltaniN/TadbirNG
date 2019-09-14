@@ -58,14 +58,5 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="<#= entity.Name.ToLower() #>Id">شناسه عددی <#= entityInfo.SingularName #> مورد نظر برای حذف</param>
         Task Delete<#= entity.Name #>Async(int <#= entity.Name.ToLower() #>Id);
-<# if(entityInfo.IsFiscalEntity)
-   { #>
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
-<# } #>
     }
 }

@@ -266,28 +266,7 @@ var plural = GetPluralName(entity.Name);
             
             #line default
             #line hidden
-            this.Write("Id);\r\n");
-            
-            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
- if(entityInfo.IsFiscalEntity)
-   { 
-            
-            #line default
-            #line hidden
-            this.Write(@"
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را تنظیم می کند
-        /// </summary>
-        /// <param name=""userContext"">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        void SetCurrentContext(UserContextViewModel userContext);
-");
-            
-            #line 69 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("    }\r\n}\r\n");
+            this.Write("Id);\r\n    }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
