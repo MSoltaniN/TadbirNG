@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { String } from '@sppc/shared/class/source';
 import { LZStringService } from 'ng-lz-string';
 import { ContextInfo } from '@sppc/core';
+import { CurrencyBookDefault } from '@sppc/finance/models';
 
 export const SessionKeys = {
   CurrentContext: 'CurrentContext',
@@ -21,7 +22,8 @@ export const SessionKeys = {
   QuickSearchConfig: 'QuickSearchConfig_{0}_{1}',
   SelectForm: 'SelectForm',
   Lang: 'lang',
-  ViewTreeConfig: 'viewTreeConfig'
+  ViewTreeConfig: 'viewTreeConfig',
+  CurrencyBookDefault: 'CurrencyBookDefault'
 }
 
 
@@ -192,7 +194,7 @@ export class BrowserStorageService {
 
   getMetadata(metadataKey: string): string {
 
-    
+
 
     var compressedData = localStorage.getItem(metadataKey);
     if (compressedData) {
@@ -204,7 +206,7 @@ export class BrowserStorageService {
       return decompressed;
     }
 
-    return null;    
+    return null;
   }
 
   setMetadata(metadataKey: string, columns: any) {
@@ -281,5 +283,15 @@ export class BrowserStorageService {
   setQuickSearchConfig(viewId: number, userId: number, value: any) {
     var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
     localStorage.setItem(sessionKey, JSON.stringify(value));
+  }
+
+  setCurrencyBookDefault(model: CurrencyBookDefault) {
+    sessionStorage.setItem(SessionKeys.CurrencyBookDefault, JSON.stringify(model));
+  }
+
+  getCurrencyBookDefault(): CurrencyBookDefault | null {
+    var model = sessionStorage.getItem(SessionKeys.CurrencyBookDefault);
+
+    return model ? JSON.parse(model) : null;
   }
 }
