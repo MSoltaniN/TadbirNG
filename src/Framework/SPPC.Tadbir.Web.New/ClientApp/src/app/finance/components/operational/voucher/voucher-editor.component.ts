@@ -388,6 +388,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         this.searchVoucher();
         break;
       }
+      case VoucherOperations.CheckVoucher: {
+        this.checkHandler();
+        break;
+      }
       default:
     }
   }
