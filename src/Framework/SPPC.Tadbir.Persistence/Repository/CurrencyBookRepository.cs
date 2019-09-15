@@ -229,7 +229,7 @@ namespace SPPC.Tadbir.Persistence
             book.SetItems(book.Items.ApplyPaging(gridOptions).ToArray());
         }
 
-        private static IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParamViewModel bookParam)
+        private static IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParamViewModel bookParam, bool byCurrency = false)
         {
             var itemCriteria = new List<Expression<Func<VoucherLine, bool>>>();
 
@@ -253,7 +253,7 @@ namespace SPPC.Tadbir.Persistence
                 itemCriteria.Add(line => line.ProjectId == bookParam.ProjectId);
             }
 
-            if (!bookParam.CurrFree)
+            if (!bookParam.CurrFree && byCurrency)
             {
                 itemCriteria.Add(line => line.CurrencyId != null);
             }
@@ -279,7 +279,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var book = new CurrencyBookViewModel();
 
-            var itemCriteria = GetItemCriteria(bookParam);
+            var itemCriteria = GetItemCriteria(bookParam, byCurrency);
             var lines = await GetRawCurrencyBookLines(itemCriteria, bookParam.From, bookParam.To)
                 .ToListAsync();
             AggregateCurrencyBook(book, lines, gridOptions, byCurrency, byNo, bookParam.ByBranch);
