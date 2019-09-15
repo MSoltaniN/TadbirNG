@@ -8,12 +8,10 @@ lib/
 # Ignore generated files
 res/_codegen_
 .vs/
-/doc/Guides/روال پیاده سازی امکان جدید در سرویس وب.pptx
-/doc/Guides/meta-designer2.camrec
-/doc/Guides/meta-designer.camrec
-/doc/Guides/Intro.mp4
-/doc/Guides/entity-design.camrec
 
 # Ignore this to enable developer-specific connection string for API service
 src/Framework/SPPC.Tadbir.Web.Api/appsettings.Development.json
 /doc/**/~$*
+
+# Ignore all uploaded files
+/src/**/Upload/*.*

@@ -3,6 +3,7 @@ import { Response } from '@angular/http';
 import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { FiscalPeriodApi } from '@sppc/organization/service/api';
+import { CurrencyApi } from '@sppc/finance/service/api';
 import { String, BaseService } from '@sppc/shared/class';
 import { Currency, CurrencyRate } from '@sppc/finance/models';
 import { RelatedItems } from '@sppc/shared/models';
@@ -63,12 +64,11 @@ export class CurrencyService extends BaseService {
 
   postFile(file: File) {
     var currentContext = this.bStorageService.getCurrentUser();
-    const apiUrl = environment.BaseUrl + "/currencies/test-upload";
     const formData: FormData = new FormData();
     formData.append(file.name, file, file.name);
     formData.append("X-Tadbir-AuthTicket", currentContext ? currentContext.ticket : "");
 
-    const uploadReq = new HttpRequest('POST', apiUrl, formData, { reportProgress: true, });
+    const uploadReq = new HttpRequest('POST', CurrencyApi.TaxCurrencies, formData, { reportProgress: true, });
 
     return this.http.request(uploadReq);
   }

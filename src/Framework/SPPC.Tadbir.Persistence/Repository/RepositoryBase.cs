@@ -35,6 +35,7 @@ namespace SPPC.Tadbir.Persistence
                 if (!String.IsNullOrEmpty(value))
                 {
                     UnitOfWork.SwitchCompany(value);
+                    UnitOfWork.UseCompanyContext();
                 }
             }
         }

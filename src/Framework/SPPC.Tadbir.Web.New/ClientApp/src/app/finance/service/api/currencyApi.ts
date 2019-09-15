@@ -34,4 +34,7 @@ export class CurrencyApi {
 
     // currencies/default/account/{accountId:min(1)}/faccount/{faccountId:min(1)}
     public static DefaultCurrencyByFullAccount = environment.BaseUrl + "/currencies/default/account/{0}/faccount/{1}";
+
+    // currencies/tax
+    public static TaxCurrencies = environment.BaseUrl + "/currencies/tax";
 }
