@@ -51,7 +51,9 @@
     "Deleted": "{0} با موفقیت حذف شد",
     "DeleteConfirm": "آیا برای حذف {0} اطمینان دارید؟",
     "SelectedItems": "موارد انتخاب شده",
-    "TreeLevelsAreTooDeep": "تعداد سطوح بیشتر از {0} مجاز نیست"
+    "TreeLevelsAreTooDeep": "تعداد سطوح بیشتر از {0} مجاز نیست",
+    "IncorrectFileFormat": "فرمت فایل انتخابی صحیح نیست",
+    "UploadSuccessful": "آپلود با موفقیت انجام شد"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -174,7 +176,9 @@
     "branchScope": "دسترسی شعبه",
     "IsActive": "وضعیت",
     "BranchName": "نام شعبه",
-    "Rate": "نرخ ارز"
+    "Rate": "نرخ ارز",
+    "TaxCurrency": "ارز مرتبط مالیاتی",
+    "TaxCurrencyErrorMsg": "پیش از ایجاد ارز، لازم است ارزهای مرتبط مالیاتی از طریق بارگذاری فایل اکسس تعریف شده باشند."
   },
   "CurrencyRate": {
     "New": "نرخ ارز جدید",
@@ -947,6 +951,7 @@
     "Currency": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "TaxCodeIsRequired": "وارد کردن ارز مرتبط مالیاتی اجباری است.",
       "NoError": ""
     },
     "DetailAccount": {

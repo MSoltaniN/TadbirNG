@@ -15,3 +15,4 @@ export * from './voucherLine';
 export * from './currencyRate';
 export * from './currencyInfo';
 export * from './currencyBookDefault';
+export * from './taxCurrency';

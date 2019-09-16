@@ -9,6 +9,13 @@
       </div>
     </div>
 
+    <div *ngIf="TaxCurrencyErrorMsg">
+      <div class="alert alert-warning">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ TaxCurrencyErrorMsg }}
+      </div>
+    </div>
+
     <form novalidate [formGroup]="editForm">
 
 
@@ -36,7 +43,7 @@
           <div class="form-group">
             <label for="code" class="control-label">{{ 'Currency.Code' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="code" readonly/>
+            <input type="text" class="k-textbox" formControlName="code" readonly />
           </div>
         </div>
       </div>
@@ -44,21 +51,21 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 sppc-float">
           <div class="form-group">
-            <label for="" class="control-label">ارز مرتبط مالیاتی</label>
+            <label for="" class="control-label">{{ 'Currency.TaxCurrency' | translate }}</label>
 
-            <input type="text" class="k-textbox related-currency" readonly />
+            <kendo-dropdownlist [data]="taxCurrencyList" class="ddl-currency"
+                                [textField]="'name'"
+                                [valueField]="'code'"
+                                [valuePrimitive]="true"
+                                [filterable]="true"
+                                [value]="selectedTaxCode"
+                                (filterChange)="handleTaxCodeFilter($event)"
+                                formControlName="taxCode">
+            </kendo-dropdownlist>
 
-            <label for="file-upload" class="custom-file-upload">
-              <i class="fa fa-cloud-upload" *ngIf="progress == 0 || progress == 100" style="padding:2px 4px 2px !important;"></i>
-              <span class="upload-msg" *ngIf="progress > 0 && progress < 100">
-                {{progress}}%
-              </span>
-            </label>
-            <input #myInput id="file-upload" type="file" multiple (change)="onFileChange($event)" />
-
-            <span class="upload-msg" *ngIf="message">
-              {{message}}
-            </span>
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.taxCode.valid || editForm.controls.taxCode.pristine">
+              <span *ngIf="editForm.controls.taxCode.errors?.required">{{ 'AllValidations.Currency.TaxCodeIsRequired' | translate }}</span>
+            </div>
 
           </div>
         </div>
@@ -69,7 +76,7 @@
           <div class="form-group">
             <label for="minorUnit" class="control-label">{{ 'Currency.MinorUnit' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="minorUnit" readonly/>
+            <input type="text" class="k-textbox" formControlName="minorUnit" readonly />
 
           </div>
         </div>
@@ -78,7 +85,7 @@
           <div class="form-group">
             <label for="decimalCount" class="control-label">{{ 'Currency.DecimalCount' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="decimalCount" readonly/>
+            <input type="text" class="k-textbox" formControlName="decimalCount" readonly />
 
           </div>
         </div>
@@ -89,7 +96,7 @@
           <div class="form-group">
             <label for="branchName" class="control-label">{{ 'Currency.BranchName' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="branchName" readonly/>
+            <input type="text" class="k-textbox" formControlName="branchName" readonly />
 
           </div>
         </div>
