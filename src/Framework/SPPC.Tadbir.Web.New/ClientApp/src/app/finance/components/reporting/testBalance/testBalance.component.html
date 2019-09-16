@@ -203,7 +203,7 @@
 
   <div class="section-option col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <div class="row">
-      <div class="col-xs-12 col-sm-10" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+      <div class="col-xs-12 col-sm-9" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
         <div class="form-group">
           <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
             <label class="control-label">{{ 'Balance.BalanceType' | translate }}</label>
@@ -301,7 +301,34 @@
           </div>
         </div>
 
-      </div>      
+      </div>
+      <div class="col-xs-12 col-sm-3 acc-options">
+        <div class="col-xs-12 col-sm-12 form-group">
+          <div class="voucher-status-item">
+            <input type="checkbox" name="useClosingVoucher" id="useClosingVoucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" />
+            <label class="k-checkbox-label" for="closing">{{ 'Balance.Closing' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 form-group">
+          <div class="voucher-status-item">
+            <input type="checkbox" name="useClosingTempVoucher" id="useClosingTempVoucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" />
+            <label class="k-checkbox-label" for="useClosingTempVoucher">{{ 'Balance.CloseAccounts' | translate }}</label>
+          </div>
+        </div>
+        <!--<div class="col-xs-12 col-sm-12 form-group">
+      <div class="voucher-status-item">
+        <input type="checkbox" name="openingVoucherAsInitBalance" id="openingVoucherAsInitBalance" class="k-checkbox" [(ngModel)]="openingVoucherAsInitBalance" />
+        <label class="k-checkbox-label" for="openingVoucherAsInitBalance">{{ 'Balance.OpeningVoucher' | translate }}</label>
+      </div>
+    </div>
+    <hr />-->
+        <div class="col-xs-12 col-sm-12 form-group">
+          <div class="voucher-status-item">
+            <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" />
+            <label class="k-checkbox-label" for="showZeroBalanceItems">{{ 'Balance.ShowZeroRemains' | translate }}</label>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-xs-12 col-sm-4 form-group">
@@ -312,46 +339,7 @@
           {{ 'Buttons.Compute' | translate }}
         </button>
       </div>
-    </div>
+    </div>    
   </div>
-
   </div>
-<kendo-dialog *ngIf="activeOptions" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
-              (close)="closeOptions()">
-  <kendo-dialog-titlebar>
-    {{ 'Balance.Options' | translate }}
-  </kendo-dialog-titlebar>
-  <div class="col-xs-12 col-sm-12 acc-options">
-    <div class="col-xs-12 col-sm-12 form-group">
-      <div class="voucher-status-item">
-        <input type="checkbox" name="useClosingVoucher" id="useClosingVoucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" />
-        <label class="k-checkbox-label" for="closing">{{ 'Balance.Closing' | translate }}</label>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 form-group">
-      <div class="voucher-status-item">
-        <input type="checkbox" name="useClosingTempVoucher" id="useClosingTempVoucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" />
-        <label class="k-checkbox-label" for="useClosingTempVoucher">{{ 'Balance.CloseAccounts' | translate }}</label>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 form-group">
-      <div class="voucher-status-item">
-        <input type="checkbox" name="openingVoucherAsInitBalance" id="openingVoucherAsInitBalance" class="k-checkbox" [(ngModel)]="openingVoucherAsInitBalance" />
-        <label class="k-checkbox-label" for="openingVoucherAsInitBalance">{{ 'Balance.OpeningVoucher' | translate }}</label>
-      </div>
-    </div>
-    <hr />
-    <div class="col-xs-12 col-sm-12 form-group">
-      <div class="voucher-status-item">
-        <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" />
-        <label class="k-checkbox-label" for="showZeroBalanceItems">{{ 'Balance.ShowZeroRemains' | translate }}</label>
-      </div>
-    </div>
-  </div>
-  <kendo-dialog-actions>
-    <button class="k-button k-primary" (click)="okDialog($event)">
-      {{ 'Buttons.Ok' | translate }}
-    </button>
-    <button class="k-button" (click)="closeOptions()">{{ 'Buttons.Cancel' | translate }}</button>
-  </kendo-dialog-actions>
-</kendo-dialog>
+  
