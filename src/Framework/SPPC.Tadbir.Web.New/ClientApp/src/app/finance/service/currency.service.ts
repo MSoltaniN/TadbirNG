@@ -23,6 +23,9 @@ export class CurrencyEntity implements Currency {
   description?: string;
   branchScope: number = 0;
   isActive: boolean;
+  branchId: number;
+  branchName: string;
+  taxCode: number;
 }
 
 export class CurrencyRateInfo implements CurrencyRate {
@@ -42,24 +45,6 @@ export class CurrencyService extends BaseService {
 
   constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
     super(http, bStorageService);
-  }
-
-  getFiscalPeriodRoles(fPeriodId: number) {
-    var url = String.Format(FiscalPeriodApi.FiscalPeriodRoles, fPeriodId);
-    var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
-  }
-
-  modifiedFiscalPeriodRoles(fPeriodIdRoles: RelatedItems) {
-    var body = JSON.stringify(fPeriodIdRoles);
-
-    var options = { headers: this.httpHeaders };
-
-    var url = String.Format(FiscalPeriodApi.FiscalPeriodRoles, fPeriodIdRoles.id);
-    return this.http.put(url, body, options)
-      .map(res => res)
-      .catch(this.handleError);
   }
 
   postFile(file: File) {
