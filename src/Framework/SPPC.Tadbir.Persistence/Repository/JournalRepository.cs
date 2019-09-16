@@ -10,7 +10,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -24,14 +23,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
-        /// <param name="configRepository">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
-        public JournalRepository(IRepositoryContext context, ISecureRepository repository,
-            IConfigRepository configRepository)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public JournalRepository(IRepositoryContext context, ISystemRepository system)
             : base(context)
         {
-            _repository = repository;
-            _configRepository = configRepository;
+            _system = system;
         }
 
         /// <summary>
@@ -191,6 +187,16 @@ namespace SPPC.Tadbir.Persistence
             return journal;
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
+        }
+
         #region Journal Implementation
 
         private static JournalViewModel BuildJournal(IEnumerable<JournalItemViewModel> journalItems)
@@ -291,7 +297,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<IList<VoucherLine>> GetRawJournalByDateLinesAsync(
             DateTime from, DateTime to)
         {
-            return await _repository
+            return await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date.IsBetween(from, to))
@@ -301,7 +307,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<IList<VoucherLine>> GetRawJournalByDateWithDetailLinesAsync(
             DateTime from, DateTime to)
         {
-            return await _repository
+            return await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
@@ -479,7 +485,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<IList<VoucherLine>> GetRawJournalByNoLinesAsync(int from, int to)
         {
-            return await _repository
+            return await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.No >= from
@@ -489,7 +495,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<IList<VoucherLine>> GetRawJournalByNoWithDetailLinesAsync(int from, int to)
         {
-            return await _repository
+            return await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
@@ -811,7 +817,7 @@ namespace SPPC.Tadbir.Persistence
 
         private int GetLevelCodeLength(int level)
         {
-            var fullConfig = _configRepository
+            var fullConfig = Config
                 .GetViewTreeConfigByViewAsync(ViewName.Account)
                 .Result;
             var treeConfig = fullConfig.Current;
@@ -824,7 +830,6 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        private readonly ISecureRepository _repository;
-        private readonly IConfigRepository _configRepository;
+        private readonly ISystemRepository _system;
     }
 }

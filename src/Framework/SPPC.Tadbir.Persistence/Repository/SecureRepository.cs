@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;

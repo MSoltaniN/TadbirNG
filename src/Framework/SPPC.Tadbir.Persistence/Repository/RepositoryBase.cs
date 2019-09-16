@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -36,6 +35,7 @@ namespace SPPC.Tadbir.Persistence
                 if (!String.IsNullOrEmpty(value))
                 {
                     UnitOfWork.SwitchCompany(value);
+                    UnitOfWork.UseCompanyContext();
                 }
             }
         }

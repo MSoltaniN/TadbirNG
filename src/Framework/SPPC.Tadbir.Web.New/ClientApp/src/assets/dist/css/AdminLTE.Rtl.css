@@ -5267,10 +5267,13 @@ body.tRtl .modal-danger .modal-body {
 
 body.tRtl .bg-yellow,
 body.tRtl .callout.callout-warning,
-body.tRtl .alert-warning,
 body.tRtl .label-warning,
 body.tRtl .modal-warning .modal-body {
   background-color: #f39c12 !important;
+}
+
+body.tRtl .alert-warning {
+  color: #f39c12 !important;
 }
 
 body.tRtl .bg-aqua,

@@ -25,62 +25,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class CurrenciesController : ValidatingController<CurrencyViewModel>
     {
         public CurrenciesController(ICurrencyRepository repository, ICurrencyRateRepository rateRepository,
-            IHostingEnvironment host, IHostingEnvironment hostingEnvironment, IStringLocalizer<AppStrings> strings = null)
+            IHostingEnvironment host, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
             _rateRepository = rateRepository;
             _host = host;
-
-            _hostingEnvironment = hostingEnvironment;
         }
 
         protected override string EntityNameKey
         {
             get { return AppStrings.Currency; }
         }
-
-        #region برای تست آپلود فایل میباشد
-        private IHostingEnvironment _hostingEnvironment;
-
-        [Route("currencies/test-upload")]
-        [DisableRequestSizeLimit]
-        public async Task<IActionResult> PostUploadAsync()
-        {
-            try
-            {
-                var file = Request.Form.Files[0];
-                string folderName = "Upload";
-                string webRootPath = _hostingEnvironment.WebRootPath;
-                string newPath = Path.Combine(webRootPath, folderName);
-                if (!Directory.Exists(newPath))
-                {
-                    Directory.CreateDirectory(newPath);
-                }
-
-                if (file.Length > 0)
-                {
-                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    string fullPath = Path.Combine(newPath, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-
-                    var ticket = Request.Form[AppConstants.ContextHeaderName];
-                    var context = SecurityContextFromTicket(ticket);
-                    _repository.CompanyConnection = context.User.Connection;
-                    await _repository.UpdateTaxCurrenciesAsync(fullPath);
-                }
-
-                return Json("انجام شد");
-            }
-            catch (Exception ex)
-            {
-                return Json("خطا: " + ex.Message);
-            }
-        }
-        #endregion
 
         // GET: api/currencies
         [Route(CurrencyApi.CurrenciesUrl)]
@@ -104,6 +60,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrencyAsync(int currencyId)
         {
             var currency = await _repository.GetCurrencyAsync(currencyId);
+            Localize(currency);
             return JsonReadResult(currency);
         }
 
@@ -165,6 +122,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(currencyInfo);
         }
 
+        // GET: api/currencies/tax
+        [Route(CurrencyApi.TaxCurrenciesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
+        public async Task<IActionResult> GetTaxCurrenciesLookupAsync()
+        {
+            var taxCurrencies = await _repository.GetTaxCurrenciesAsync();
+            SetItemCount(taxCurrencies.Count);
+            return Json(taxCurrencies);
+        }
+
         // POST: api/currencies
         [HttpPost]
         [Route(CurrencyApi.CurrenciesUrl)]
@@ -207,6 +174,37 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var outputItem = await _rateRepository.SaveCurrencyRateAsync(currencyRate);
             return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
+        // POST: api/currencies/tax
+        [HttpPost]
+        [Route(CurrencyApi.TaxCurrenciesUrl)]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> PostTaxCurrenciesAsync()
+        {
+            var file = Request.Form.Files[0];
+            string newPath = Path.Combine(_host.WebRootPath, AppConstants.UserUploadFolderName);
+            if (!Directory.Exists(newPath))
+            {
+                Directory.CreateDirectory(newPath);
+            }
+
+            if (file.Length > 0)
+            {
+                string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                string fullPath = Path.Combine(newPath, fileName);
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                var ticket = Request.Form[AppConstants.ContextHeaderName];
+                var context = SecurityContextFromTicket(ticket);
+                _repository.CompanyConnection = context.User.Connection;
+                await _repository.UpdateTaxCurrenciesAsync(fullPath);
+            }
+
+            return Ok();
         }
 
         // PUT: api/currencies/{currencyId:min(1)}

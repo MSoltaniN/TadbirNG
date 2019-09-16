@@ -48,7 +48,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient(provider =>
             {
                 var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
-                var securityContext = httpContext.Request.CurrentSecurityContext();         // TODO: Set connection string in Company selection form
+                var securityContext = httpContext.Request.CurrentSecurityContext();
                 string connectionString = securityContext?.User.Connection;
                 return new TadbirContext(connectionString);
             });
@@ -96,6 +96,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ITestBalanceRepository, TestBalanceRepository>();
             _services.AddTransient<IAccessRepository, AccessRepository>();
             _services.AddTransient<ICurrencyBookRepository, CurrencyBookRepository>();
+            _services.AddTransient<ISystemRepository, SystemRepository>();
         }
 
         private void AddServiceTypes()

@@ -68,7 +68,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.Save<#= _model.EntityName #>Async(<#= _model.EntityName.ToLower() #>);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -85,7 +84,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.Save<#= _model.EntityName #>Async(<#= _model.EntityName.ToLower() #>);
             return OkReadResult(outputItem);
         }
@@ -102,7 +100,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.Delete<#= _model.EntityName #>Async(<#= _model.EntityName.ToLower() #>Id);
             return StatusCode(StatusCodes.Status204NoContent);
         }

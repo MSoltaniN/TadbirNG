@@ -5,14 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Helpers;
-using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -20,23 +16,20 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت ارتباطات بین مولفه های مختلف بردار حساب را پیاده سازی می کند
     /// </summary>
-    public class RelationRepository : IRelationRepository
+    public class RelationRepository : RepositoryBase, IRelationRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="itemRepository">پیاده سازی اینترفیس مربوط به عملیات بردار حساب</param>
-        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
         public RelationRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IAccountItemRepository itemRepository,
-            ISecureRepository repository)
+            IRepositoryContext context, ISystemRepository system, IAccountItemRepository itemRepository)
+            : base(context)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _system = system;
             _itemRepository = itemRepository;
-            _repository = repository;
         }
 
         /// <summary>
@@ -153,7 +146,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<string> LookupFullAccountAsync(FullAccountViewModel fullAccount)
         {
             Verify.ArgumentNotNull(fullAccount, nameof(fullAccount));
-            var account = await _repository
+            var account = await Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children,
                     acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters, acc => acc.AccountProjects)
                 .Where(acc => acc.Id == fullAccount.Account.Id)
@@ -197,7 +190,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountDetailAccountsAsync(
             int accountId, GridOptions gridOptions = null, bool leafOnly = true)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             var existingItemsQuery = relationRepository
                 .GetEntityQuery()
                 .Where(ada => ada.AccountId == accountId);
@@ -210,10 +203,10 @@ namespace SPPC.Tadbir.Persistence
             var relatedDetailIds = await existingItemsQuery
                 .Select(ada => ada.DetailId)
                 .ToListAsync();
-            var detailAccounts = await _repository
+            var detailAccounts = await Repository
                 .GetAllQuery<DetailAccount>(ViewName.DetailAccount)
                 .Where(facc => relatedDetailIds.Contains(facc.Id))
-                .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
+                .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(detailAccounts.ToArray(), facc => facc.IsSelected = true);
@@ -231,7 +224,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountCostCentersAsync(
             int accountId, GridOptions gridOptions = null, bool leafOnly = true)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             var existingItemsQuery = relationRepository
                 .GetEntityQuery()
                 .Where(ac => ac.AccountId == accountId);
@@ -244,10 +237,10 @@ namespace SPPC.Tadbir.Persistence
             var relatedCenterIds = await existingItemsQuery
                 .Select(ac => ac.CostCenterId)
                 .ToListAsync();
-            var costCenters = await _repository
+            var costCenters = await Repository
                 .GetAllQuery<CostCenter>(ViewName.CostCenter)
                 .Where(cc => relatedCenterIds.Contains(cc.Id))
-                .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
+                .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(costCenters.ToArray(), cc => cc.IsSelected = true);
@@ -265,7 +258,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountProjectsAsync(
             int accountId, GridOptions gridOptions = null, bool leafOnly = true)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
             var existingItemsQuery = relationRepository
                 .GetEntityQuery()
                 .Where(ap => ap.AccountId == accountId);
@@ -278,10 +271,10 @@ namespace SPPC.Tadbir.Persistence
             var relatedProjectIds = await existingItemsQuery
                 .Select(ap => ap.ProjectId)
                 .ToListAsync();
-            var projects = await _repository
+            var projects = await Repository
                 .GetAllQuery<Project>(ViewName.Project)
                 .Where(prj => relatedProjectIds.Contains(prj.Id))
-                .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
+                .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(projects.ToArray(), prj => prj.IsSelected = true);
@@ -298,17 +291,17 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountAccountsAsync(
             int detailId, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ada => ada.DetailId == detailId
                     && ada.Account.Children.Count == 0)
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
-            var accounts = await _repository
+            var accounts = await Repository
                 .GetAllQuery<Account>(ViewName.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
-                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
@@ -325,17 +318,17 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetCostCenterAccountsAsync(
             int costCenterId, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ac => ac.CostCenterId == costCenterId
                     && ac.Account.Children.Count == 0)
                 .Select(ac => ac.AccountId)
                 .ToListAsync();
-            var accounts = await _repository
+            var accounts = await Repository
                 .GetAllQuery<Account>(ViewName.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
-                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
@@ -352,17 +345,17 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetProjectAccountsAsync(
             int projectId, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ap => ap.ProjectId == projectId
                     && ap.Account.Children.Count == 0)
                 .Select(ap => ap.AccountId)
                 .ToListAsync();
-            var accounts = await _repository
+            var accounts = await Repository
                 .GetAllQuery<Account>(ViewName.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
-                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
@@ -378,14 +371,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task AddAccountDetailAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, nameof(relations));
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountDetailAccounts);
             if (existing != null)
             {
                 await AddNewAccountDetailAccountsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -408,7 +401,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccount = await repository.GetByIDWithTrackingAsync(detailId, facc => facc.Children);
             var accountDetailAccount = new AccountDetailAccount()
             {
@@ -431,14 +424,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task RemoveAccountDetailAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, nameof(relations));
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountDetailAccounts);
             if (existing != null)
             {
                 await RemoveDisconnectedDetailAccountsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -462,7 +455,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             existing.AccountDetailAccounts.Remove(existingRelation);
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccount = await repository.GetByIDWithTrackingAsync(detailId, facc => facc.Children);
             foreach (var child in detailAccount.Children)
             {
@@ -477,21 +470,21 @@ namespace SPPC.Tadbir.Persistence
         public async Task AddDetailAccountAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, facc => facc.AccountDetailAccounts, facc => facc.Children);
             if (existing != null)
             {
                 await AddConnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
         private async Task AddConnectedAccountsAsync(
             DetailAccount existing, AccountItemRelationsViewModel relations)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             foreach (int id in relations.RelatedItemIds)
             {
                 var account = await repository.GetByIDWithTrackingAsync(id, acc => acc.AccountDetailAccounts);
@@ -509,7 +502,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var accountDetailAccount = new AccountDetailAccount()
             {
                 Account = account,
@@ -533,14 +526,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task RemoveDetailAccountAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, facc => facc.AccountDetailAccounts, facc => facc.Children);
             if (existing != null)
             {
                 await RemoveDisconnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -563,7 +556,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             existing.AccountDetailAccounts.Remove(existingRelation);
             foreach (var child in existing.Children)
             {
@@ -584,14 +577,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task AddAccountCostCentersAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, nameof(relations));
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountCostCenters);
             if (existing != null)
             {
                 await AddNewAccountCostCentersAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -614,7 +607,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDWithTrackingAsync(centerId, cc => cc.Children);
             var accountCostCenter = new AccountCostCenter()
             {
@@ -637,14 +630,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task RemoveAccountCostCentersAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, nameof(relations));
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountCostCenters);
             if (existing != null)
             {
                 await RemoveDisconnectedCostCentersAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -668,7 +661,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             existing.AccountCostCenters.Remove(existingRelation);
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDWithTrackingAsync(centerId, cc => cc.Children);
             foreach (var child in costCenter.Children)
             {
@@ -683,21 +676,21 @@ namespace SPPC.Tadbir.Persistence
         public async Task AddCostCenterAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, cc => cc.AccountCostCenters, cc => cc.Children);
             if (existing != null)
             {
                 await AddConnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
         private async Task AddConnectedAccountsAsync(
             CostCenter existing, AccountItemRelationsViewModel relations)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             foreach (int id in relations.RelatedItemIds)
             {
                 var account = await repository.GetByIDWithTrackingAsync(id);
@@ -715,7 +708,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var accountCostCenter = new AccountCostCenter()
             {
                 Account = account,
@@ -739,14 +732,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task RemoveCostCenterAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, cc => cc.AccountCostCenters, cc => cc.Children);
             if (existing != null)
             {
                 await RemoveDisconnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -769,7 +762,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             existing.AccountCostCenters.Remove(existingRelation);
             foreach (var child in existing.Children)
             {
@@ -790,14 +783,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task AddAccountProjectsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, nameof(relations));
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountProjects);
             if (existing != null)
             {
                 await AddNewAccountProjectsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -819,7 +812,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDWithTrackingAsync(projectId, prj => prj.Children);
             var accountProject = new AccountProject()
             {
@@ -842,14 +835,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task RemoveAccountProjectsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, nameof(relations));
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountProjects);
             if (existing != null)
             {
                 await RemoveDisconnectedProjectsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -873,7 +866,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             existing.AccountProjects.Remove(existingRelation);
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDWithTrackingAsync(projectId, prj => prj.Children);
             foreach (var child in project.Children)
             {
@@ -888,21 +881,21 @@ namespace SPPC.Tadbir.Persistence
         public async Task AddProjectAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, prj => prj.AccountProjects, prj => prj.Children);
             if (existing != null)
             {
                 await AddConnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
         private async Task AddConnectedAccountsAsync(
             Project existing, AccountItemRelationsViewModel relations)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             foreach (int id in relations.RelatedItemIds)
             {
                 var account = await repository.GetByIDWithTrackingAsync(id);
@@ -920,7 +913,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var accountProject = new AccountProject()
             {
                 Account = account,
@@ -944,14 +937,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task RemoveProjectAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, prj => prj.AccountProjects, prj => prj.Children);
             if (existing != null)
             {
                 await RemoveDisconnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -974,7 +967,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             existing.AccountProjects.Remove(existingRelation);
             foreach (var child in existing.Children)
             {
@@ -997,13 +990,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             var relatedDetailIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ada => ada.AccountId == accountId)
                 .Select(ada => ada.DetailId)
                 .ToListAsync();
-            var query = _repository
+            var query = Repository
                 .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
                 .Where(facc => !relatedDetailIds.Contains(facc.Id));
             if (useLeafItems)
@@ -1012,7 +1005,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return await query
-                .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
+                .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
                 .Apply(gridOptions)
                 .ToListAsync();
         }
@@ -1028,13 +1021,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             var relatedCenterIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ac => ac.AccountId == accountId)
                 .Select(ac => ac.CostCenterId)
                 .ToListAsync();
-            var query = _repository
+            var query = Repository
                 .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
                 .Where(cc => !relatedCenterIds.Contains(cc.Id));
             if (useLeafItems)
@@ -1043,7 +1036,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return await query
-                .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
+                .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .Apply(gridOptions)
                 .ToListAsync();
         }
@@ -1059,13 +1052,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
             var relatedProjectIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ap => ap.AccountId == accountId)
                 .Select(ap => ap.ProjectId)
                 .ToListAsync();
-            var query = _repository
+            var query = Repository
                 .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
                 .Where(prj => !relatedProjectIds.Contains(prj.Id));
             if (useLeafItems)
@@ -1074,7 +1067,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return await query
-                .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
+                .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
                 .Apply(gridOptions)
                 .ToListAsync();
         }
@@ -1089,19 +1082,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForDetailAccountAsync(
             int detailId, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ada => ada.DetailId == detailId)
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
-            var query = _repository
+            var query = Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
             return await query
-                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
                 .ToListAsync();
         }
@@ -1116,19 +1109,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForCostCenterAsync(
             int costCenterId, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ac => ac.CostCenterId == costCenterId)
                 .Select(ac => ac.AccountId)
                 .ToListAsync();
-            var query = _repository
+            var query = Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
             return await query
-                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
                 .ToListAsync();
         }
@@ -1143,19 +1136,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForProjectAsync(
             int projectId, GridOptions gridOptions = null)
         {
-            var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+            var relationRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ap => ap.ProjectId == projectId)
                 .Select(ap => ap.AccountId)
                 .ToListAsync();
-            var query = _repository
+            var query = Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
             return await query
-                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
                 .ToListAsync();
         }
@@ -1166,7 +1159,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="insertedDetailId">شناسه دیتابیسی تفصیلی شناور ایجاد شده</param>
         public async Task OnDetailAccountInsertedAsync(int insertedDetailId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccount = await repository.GetByIDWithTrackingAsync(
                 insertedDetailId, facc => facc.AccountDetailAccounts);
             if (detailAccount != null && detailAccount.ParentId.HasValue)
@@ -1193,7 +1186,7 @@ namespace SPPC.Tadbir.Persistence
                 if (detailAccount.AccountDetailAccounts.Count != count)
                 {
                     repository.Update(detailAccount);
-                    await _unitOfWork.CommitAsync();
+                    await UnitOfWork.CommitAsync();
                 }
             }
         }
@@ -1204,7 +1197,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="insertedCenterId">شناسه دیتابیسی مرکز هزینه ایجاد شده</param>
         public async Task OnCostCenterInsertedAsync(int insertedCenterId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDWithTrackingAsync(
                 insertedCenterId, cc => cc.AccountCostCenters);
             if (costCenter != null && costCenter.ParentId.HasValue)
@@ -1231,7 +1224,7 @@ namespace SPPC.Tadbir.Persistence
                 if (costCenter.AccountCostCenters.Count != count)
                 {
                     repository.Update(costCenter);
-                    await _unitOfWork.CommitAsync();
+                    await UnitOfWork.CommitAsync();
                 }
             }
         }
@@ -1242,7 +1235,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="insertedProjectId">شناسه دیتابیسی پروژه ایجاد شده</param>
         public async Task OnProjectInsertedAsync(int insertedProjectId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDWithTrackingAsync(
                 insertedProjectId, prj => prj.AccountProjects);
             if (project != null && project.ParentId.HasValue)
@@ -1269,9 +1262,14 @@ namespace SPPC.Tadbir.Persistence
                 if (project.AccountProjects.Count != count)
                 {
                     repository.Update(project);
-                    await _unitOfWork.CommitAsync();
+                    await UnitOfWork.CommitAsync();
                 }
             }
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
         }
 
         #region Account Vector Validation Methods
@@ -1398,7 +1396,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<string> EnsureValidDetailAccountInFullAccountAsync(int detailId)
         {
             string errorKey = String.Empty;
-            var detailAccount = await _repository
+            var detailAccount = await Repository
                 .GetAllQuery<DetailAccount>(
                     ViewName.DetailAccount, facc => facc.Children, facc => facc.AccountDetailAccounts)
                 .Where(facc => facc.Id == detailId)
@@ -1418,7 +1416,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<string> EnsureValidCostCenterInFullAccountAsync(int costCenterId)
         {
             string errorKey = String.Empty;
-            var costCenter = await _repository
+            var costCenter = await Repository
                 .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children, cc => cc.AccountCostCenters)
                 .Where(cc => cc.Id == costCenterId)
                 .SingleOrDefaultAsync();
@@ -1437,7 +1435,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<string> EnsureValidProjectInFullAccountAsync(int projectId)
         {
             string errorKey = String.Empty;
-            var project = await _repository
+            var project = await Repository
                 .GetAllQuery<Project>(ViewName.Project, prj => prj.Children, prj => prj.AccountProjects)
                 .Where(prj => prj.Id == projectId)
                 .SingleOrDefaultAsync();
@@ -1455,9 +1453,7 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
+        private readonly ISystemRepository _system;
         private readonly IAccountItemRepository _itemRepository;
-        private readonly ISecureRepository _repository;
     }
 }

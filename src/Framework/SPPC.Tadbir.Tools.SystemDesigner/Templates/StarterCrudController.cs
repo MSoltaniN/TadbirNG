@@ -328,17 +328,17 @@ var name = String.Format("{0}Controller", plural);
             #line default
             #line hidden
             this.Write(");\r\n            if (result is BadRequestObjectResult)\r\n            {\r\n           " +
-                    "     return result;\r\n            }\r\n\r\n            _repository.SetCurrentContext(" +
-                    "SecurityContext.User);\r\n            var outputItem = await _repository.Save");
+                    "     return result;\r\n            }\r\n\r\n            var outputItem = await _reposi" +
+                    "tory.Save");
             
-            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -346,100 +346,100 @@ var name = String.Format("{0}Controller", plural);
             this.Write(");\r\n            return StatusCode(StatusCodes.Status201Created, outputItem);\r\n   " +
                     "     }\r\n\r\n        // PUT: api/");
             
-            #line 76 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("/{");
             
-            #line 76 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id:min(1)}\r\n        [HttpPut]\r\n        [Route(");
             
-            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Api.");
             
-            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Url)]\r\n        [AuthorizeRequest(SecureEntity.");
             
-            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write(", (int)");
             
-            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Permissions.Edit)]\r\n        public async Task<IActionResult> PutModified");
             
-            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id, [FromBody] ");
             
-            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("ViewModel ");
             
-            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(")\r\n        {\r\n            var result = BasicValidationResult(");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 81 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 81 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id);\r\n            if (result is BadRequestObjectResult)\r\n            {\r\n         " +
-                    "       return result;\r\n            }\r\n\r\n            _repository.SetCurrentContex" +
-                    "t(SecurityContext.User);\r\n            var outputItem = await _repository.Save");
+                    "       return result;\r\n            }\r\n\r\n            var outputItem = await _repo" +
+                    "sitory.Save");
             
-            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 87 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 87 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -447,79 +447,79 @@ var name = String.Format("{0}Controller", plural);
             this.Write(");\r\n            return OkReadResult(outputItem);\r\n        }\r\n\r\n        // DELETE:" +
                     " api/");
             
-            #line 93 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 91 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("/{");
             
-            #line 93 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 91 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id:min(1)}\r\n        [HttpDelete]\r\n        [Route(");
             
-            #line 95 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 93 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Api.");
             
-            #line 95 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 93 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Url)]\r\n        [AuthorizeRequest(SecureEntity.");
             
-            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 94 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write(", (int)");
             
-            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 94 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Permissions.Delete)]\r\n        public async Task<IActionResult> DeleteExisting");
             
-            #line 97 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 95 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 97 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 95 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id)\r\n        {\r\n            string message = await ValidateDeleteAsync(");
             
-            #line 99 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 97 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id);\r\n            if (!String.IsNullOrEmpty(message))\r\n            {\r\n           " +
-                    "     return BadRequest(message);\r\n            }\r\n\r\n            _repository.SetCu" +
-                    "rrentContext(SecurityContext.User);\r\n            await _repository.Delete");
+                    "     return BadRequest(message);\r\n            }\r\n\r\n            await _repository" +
+                    ".Delete");
             
-            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -528,21 +528,21 @@ var name = String.Format("{0}Controller", plural);
                     "\r\n        private async Task<string> ValidateDeleteAsync(int item)\r\n        {\r\n " +
                     "           string message = String.Empty;\r\n            var ");
             
-            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(" = await _repository.Get");
             
-            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(item);\r\n            if (");
             
-            #line 114 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 111 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -550,7 +550,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" == null)\r\n            {\r\n                message = _strings.Format(AppStrings.It" +
                     "emByIdNotFound, AppStrings.");
             
-            #line 116 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
@@ -558,7 +558,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(", item.ToString());\r\n            }\r\n\r\n            return message;\r\n        }\r\n\r\n " +
                     "       private readonly I");
             
-            #line 122 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
+            #line 119 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default

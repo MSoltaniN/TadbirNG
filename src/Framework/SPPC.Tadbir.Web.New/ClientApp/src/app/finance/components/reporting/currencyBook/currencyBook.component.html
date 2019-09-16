@@ -77,7 +77,7 @@
         <dl>
           <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
             <dt>{{ getColumnTitle(item) }}:</dt>
-            <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
+            <dd *ngIf="item.type == 'Money'" class="dl-value money-item">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
             <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
             <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate }}</dd>
           </ng-template>
@@ -198,7 +198,7 @@
         <input type="text" class="k-textbox acc-code" [ngModel]="selectedAccount?.fullCode" title="{{selectedAccount?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
         <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedAccount?.name" title="{{selectedAccount?.name}}" readonly />
 
-        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbAccount" (click)="openSelectForm('account')" type="button"></button>
+        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbAccount" SppcPermissionCheck="Account" EntityName="View" (sppcClick)="openSelectForm('account')" type="button"></button>
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
@@ -208,7 +208,7 @@
         <input type="text" class="k-textbox acc-code" [ngModel]="selectedDetailAccount?.fullCode" title="{{selectedDetailAccount?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
         <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedDetailAccount?.name" title="{{selectedDetailAccount?.name}}" readonly />
 
-        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbDetailAccount" (click)="openSelectForm('detailAccount')" type="button"></button>
+        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbDetailAccount" SppcPermissionCheck="DetailAccount" EntityName="View" (sppcClick)="openSelectForm('detailAccount')" type="button"></button>
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
@@ -218,7 +218,7 @@
         <input type="text" class="k-textbox acc-code" [ngModel]="selectedCostCenter?.fullCode" title="{{selectedCostCenter?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
         <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedCostCenter?.name" title="{{selectedCostCenter?.name}}" readonly />
 
-        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbCostCenter" (click)="openSelectForm('costCenter')" type="button"></button>
+        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbCostCenter" SppcPermissionCheck="CostCenter" EntityName="View" (sppcClick)="openSelectForm('costCenter')" type="button"></button>
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
@@ -228,7 +228,7 @@
         <input type="text" class="k-textbox acc-code" [ngModel]="selectedProject?.fullCode" title="{{selectedProject?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
         <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedProject?.name" title="{{selectedProject?.name}}" readonly />
 
-        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbProject" (click)="openSelectForm('project')" type="button"></button>
+        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbProject" SppcPermissionCheck="Project" EntityName="View" (sppcClick)="openSelectForm('project')" type="button"></button>
       </div>
 
     </div>

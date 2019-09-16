@@ -4,9 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence

@@ -51,7 +51,9 @@
     "Deleted": "{0} deleted successfully",
     "DeleteConfirm": "are you sure to delete {0} ?",
     "SelectedItems": "selected items",
-    "TreeLevelsAreTooDeep": "Tree levels deeper than {0} is not allowed."
+    "TreeLevelsAreTooDeep": "Tree levels deeper than {0} is not allowed.",
+    "IncorrectFileFormat": "The file format is incorrect",
+    "UploadSuccessful": "Upload Successful"
   },
   "Report": {
     "ReportViewer": "View of",
@@ -174,7 +176,9 @@
     "branchScope": "Branch Scope",
     "IsActive": "Active",
     "BranchName": "Branch Name",
-    "Rate": "Exchange Rate"
+    "Rate": "Exchange Rate",
+    "TaxCurrency": "Tax Currency",
+    "TaxCurrencyErrorMsg": "Before creating a currency, tax currencies need to be defined by uploading Access file"
   },
   "CurrencyRate": {
     "New": "New Currency Rate",
@@ -896,6 +900,7 @@
     "Currency": {
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 64 characters.",
+      "TaxCodeIsRequired": "Tax Currency is required.",
       "NoError": ""
     },
     "DetailAccount": {

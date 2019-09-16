@@ -5,14 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -25,13 +22,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
-        public VoucherLineRepository(IRepositoryContext context,
-            IOperationLogRepository log, ISecureRepository repository)
-            : base(context, log)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public VoucherLineRepository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system?.Logger)
         {
-            _repository = repository;
+            _system = system;
         }
 
         /// <summary>
@@ -43,7 +38,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null)
         {
             var query = GetVoucherLinesQuery(voucherId);
-            query = _repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
+            query = Repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
             var lines = await query
                 .Select(line => Mapper.Map<VoucherLineViewModel>(line))
                 .Apply(gridOptions)
@@ -84,7 +79,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var query = repository.GetEntityQuery()
                 .Where(line => line.Voucher.Id == voucherId);
-            query = _repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
+            query = Repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
             return await query
                 .Select(line => Mapper.Map<TViewModel>(line))
                 .Apply(gridOptions, false)
@@ -286,6 +281,11 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                 : null;
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
         private async Task UpdateVoucherBalanceStatusAsync(int voucherId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -319,6 +319,6 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
             return lineQuery;
         }
 
-        private readonly ISecureRepository _repository;
+        private readonly ISystemRepository _system;
     }
 }

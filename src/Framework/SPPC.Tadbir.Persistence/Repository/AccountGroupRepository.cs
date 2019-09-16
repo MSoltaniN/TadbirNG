@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -24,13 +22,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="repository">امکان اعمال فیلترهای سطری و شعبه را فراهم می کند</param>
-        public AccountGroupRepository(IRepositoryContext context, IOperationLogRepository log,
-            ISecureRepository repository)
-            : base(context, log)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public AccountGroupRepository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system?.Logger)
         {
-            _repository = repository;
+            _system = system;
         }
 
         /// <summary>
@@ -90,7 +86,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد حساب های کل زیرمجموعه گروه حساب</returns>
         public async Task<int> GetSubItemCountAsync(int groupId, GridOptions gridOptions = null)
         {
-            int count = await _repository
+            int count = await Repository
                 .GetAllQuery<Account>(ViewName.Account)
                 .Where(acc => acc.GroupId == groupId)
                 .Select(acc => Mapper.Map<AccountViewModel>(acc))
@@ -107,7 +103,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه حساب های کل زیرمجموعه</returns>
         public async Task<IList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions = null)
         {
-            var accounts = await _repository
+            var accounts = await Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Where(acc => acc.GroupId == groupId)
                 .Select(acc => Mapper.Map<AccountViewModel>(acc))
@@ -201,7 +197,7 @@ namespace SPPC.Tadbir.Persistence
 
             foreach (var item in accGroups)
             {
-                var accounts = _repository
+                var accounts = Repository
                     .GetAllQuery<Account>(ViewName.Account)
                     .Where(acc => acc.ParentId == null && acc.GroupId == item.Id);
 
@@ -237,6 +233,11 @@ namespace SPPC.Tadbir.Persistence
             accGroup.Description = accGroupView.Description;
         }
 
-        private readonly ISecureRepository _repository;
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private readonly ISystemRepository _system;
     }
 }

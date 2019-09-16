@@ -34,22 +34,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
-        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-<# if(entityInfo.IsFiscalEntity)
-   { #>
-        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
-<# } #>
-        public <#= entity.Name #>Repository(IAppUnitOfWork unitOfWork, IDomainMapper mapper,
-            IMetadataRepository metadata, IOperationLogRepository log<# if(entityInfo.IsFiscalEntity) { #>, ISecureRepository repository<# } #>)
-            : base(unitOfWork, mapper, metadata, log)
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public <#= entity.Name #>Repository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system.Logger)
         {
-<# if(entityInfo.IsFiscalEntity)
-   { #>
-            _repository = repository;
-<# } #>
+            _system = system;
         }
 
         /// <summary>
@@ -61,7 +51,7 @@ namespace SPPC.Tadbir.Persistence
         {
 <# if(entityInfo.IsFiscalEntity)
    { #>
-            var <#= plural.CamelCase() #> = await _repository.GetAllAsync<<#= entity.Name #>>(ViewName.<#= entity.Name #>);
+            var <#= plural.CamelCase() #> = await Repository.GetAllAsync<<#= entity.Name #>>(ViewName.<#= entity.Name #>);
             return <#= plural.CamelCase() #>
                 .Select(item => Mapper.Map<<#= entity.Name #>ViewModel>(item))
                 .Apply(gridOptions)
@@ -89,7 +79,7 @@ namespace SPPC.Tadbir.Persistence
         {
 <# if(entityInfo.IsFiscalEntity)
    { #>
-            return await _repository.GetCountAsync<<#= entity.Name #>, <#= entity.Name #>ViewModel>(
+            return await Repository.GetCountAsync<<#= entity.Name #>, <#= entity.Name #>ViewModel>(
                 ViewName.<#= entity.Name #>, gridOptions);
 <# }
    else
@@ -163,19 +153,6 @@ namespace SPPC.Tadbir.Persistence
                 await DeleteAsync(repository, <#= camelCase #>);
             }
         }
-<# if(entityInfo.IsFiscalEntity)
-   { #>
-
-        /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public override void SetCurrentContext(UserContextViewModel userContext)
-        {
-            base.SetCurrentContext(userContext);
-            _repository.SetCurrentContext(userContext);
-        }
-<# } #>
 
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
@@ -202,10 +179,12 @@ foreach(var property in entity.Properties
         {
             throw new NotImplementedException();
         }
-<# if(entityInfo.IsFiscalEntity)
-   { #>
 
-        private readonly ISecureRepository _repository;
-<# } #>
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private readonly ISystemRepository _system;
     }
 }

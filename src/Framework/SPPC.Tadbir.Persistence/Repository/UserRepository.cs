@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -28,12 +27,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="metadata">امکان خواندن اطلاعات فراداده ای برنامه را فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public UserRepository(IRepositoryContext context, IMetadataRepository metadata, IOperationLogRepository log)
-            : base(context, log)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public UserRepository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system?.Logger)
         {
-            _metadata = metadata;
+            _system = system;
             UnitOfWork.UseSystemContext();
         }
 
@@ -175,7 +173,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از دستورات قابل دسترسی توسط کاربر</returns>
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId)
         {
-            var topCommands = await _metadata.GetTopLevelCommandsAsync();
+            var topCommands = await Metadata.GetTopLevelCommandsAsync();
             var userPermissions = await GetUserPermissionIdsAsync(userId);
             FilterInaccessibleCommands(userPermissions, topCommands);
             return topCommands;
@@ -187,7 +185,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>گزینه های منوی پیش فرض کاربران</returns>
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync()
         {
-            return await _metadata.GetDefaultCommandsAsync();
+            return await Metadata.GetDefaultCommandsAsync();
         }
 
         /// <summary>
@@ -418,6 +416,11 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        private IMetadataRepository Metadata
+        {
+            get { return _system.Metadata; }
+        }
+
         private static bool AreRolesModified(User existing, RelatedItemsViewModel roleItems)
         {
             var existingItems = existing.UserRoles
@@ -545,6 +548,6 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private readonly IMetadataRepository _metadata;
+        private readonly ISystemRepository _system;
     }
 }

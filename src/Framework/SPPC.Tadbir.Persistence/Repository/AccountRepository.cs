@@ -6,14 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -27,16 +25,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
-        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
-        public AccountRepository(
-            IRepositoryContext context, IOperationLogRepository log,
-            ISecureRepository repository, IConfigRepository config)
-            : base(context, log)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public AccountRepository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system?.Logger)
         {
-            _repository = repository;
-            _configRepository = config;
+            _system = system;
         }
 
         /// <summary>
@@ -47,7 +40,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
         {
-            var accounts = await _repository.GetAllAsync<Account>(ViewName.Account, acc => acc.Children);
+            var accounts = await Repository.GetAllAsync<Account>(ViewName.Account, acc => acc.Children);
             var filteredAccounts = accounts
                 .Select(item => Mapper.Map<AccountViewModel>(item))
                 .ToList();
@@ -65,7 +58,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<KeyValue>> GetAccountsLookupAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetAllLookupAsync<Account>(ViewName.Account, gridOptions);
+            return await Repository.GetAllLookupAsync<Account>(ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -103,7 +96,7 @@ namespace SPPC.Tadbir.Persistence
                 return null;
             }
 
-            var fullConfig = await _configRepository.GetViewTreeConfigByViewAsync(ViewName.Account);
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.Account);
             var treeConfig = fullConfig.Current;
             if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
             {
@@ -121,7 +114,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از مدل نمایشی خلاصه سرفصل های حسابداری در سطح کل</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsAsync()
         {
-            var accounts = await _repository
+            var accounts = await Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Where(acc => acc.ParentId == null)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
@@ -137,7 +130,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از مدل نمایشی خلاصه سرفصل های حسابداری یک گروه حساب</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsByGroupIdAsync(int groupId)
         {
-            var accounts = await _repository
+            var accounts = await Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Where(acc => acc.ParentId == null && acc.GroupId == groupId)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
@@ -153,7 +146,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از سرفصل های حسابداری زیرمجموعه</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetAccountChildrenAsync(int accountId)
         {
-            var children = await _repository
+            var children = await Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Where(acc => acc.ParentId == accountId)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
@@ -172,7 +165,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
             where TViewModel : class, new()
         {
-            return await _repository.GetCountAsync<Account, TViewModel>(ViewName.Account, gridOptions);
+            return await Repository.GetCountAsync<Account, TViewModel>(ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -411,6 +404,16 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
+        }
+
         private static int GetAccountGroupId(IRepository<Account> repository, Account account)
         {
             repository.LoadReference(account, acc => acc.Parent);
@@ -446,7 +449,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             int count = await repository.GetCountByCriteriaAsync(acc => acc.Level == level);
-            await _configRepository.SaveTreeLevelUsageAsync(ViewName.Account, level, count);
+            await Config.SaveTreeLevelUsageAsync(ViewName.Account, level, count);
         }
 
         /// <summary>
@@ -459,7 +462,7 @@ namespace SPPC.Tadbir.Persistence
             where TTreeEntity : ITreeEntityView
         {
             var childIds = children.Select(item => item.Id);
-            var grandchildren = await _repository
+            var grandchildren = await Repository
                 .GetAllQuery<Account>(ViewName.Account)
                 .Where(acc => acc.ParentId != null && childIds.Contains(acc.ParentId.Value))
                 .GroupBy(acc => acc.ParentId.Value)
@@ -593,7 +596,6 @@ namespace SPPC.Tadbir.Persistence
             return null;
         }
 
-        private readonly ISecureRepository _repository;
-        private readonly IConfigRepository _configRepository;
+        private readonly ISystemRepository _system;
     }
 }

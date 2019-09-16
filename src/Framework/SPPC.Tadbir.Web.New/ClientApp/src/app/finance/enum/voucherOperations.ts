@@ -5,6 +5,7 @@ export enum VoucherOperations {
   Next = 3,
   Previous = 4,
   New = 5,
-  Search = 6
+  Search = 6,
+  CheckVoucher = 7
 }
 

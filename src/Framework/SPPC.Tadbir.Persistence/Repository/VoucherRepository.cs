@@ -6,13 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -26,14 +24,12 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
-        public VoucherRepository(IRepositoryContext context,
-            IOperationLogRepository log, ISecureRepository repository, IUserRepository userRepository)
-            : base(context, log)
+        public VoucherRepository(IRepositoryContext context, ISystemRepository system, IUserRepository userRepository)
+            : base(context, system?.Logger)
         {
-            _repository = repository;
+            _system = system;
             _userRepository = userRepository;
         }
 
@@ -45,7 +41,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<IList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null)
         {
-            var vouchers = await _repository.GetAllOperationAsync<Voucher>(
+            var vouchers = await Repository.GetAllOperationAsync<Voucher>(
                 ViewName.Voucher, v => v.Lines, v => v.Status);
             return vouchers
                 .Where(item => item.SubjectType == 0)
@@ -103,7 +99,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی مشخص شده با شماره</returns>
         public async Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo)
         {
-            var voucherByNo = await _repository
+            var voucherByNo = await Repository
                 .GetAllOperationQuery<Voucher>(ViewName.Voucher)
                 .Where(voucher => voucher.No == voucherNo)
                 .FirstOrDefaultAsync();
@@ -118,7 +114,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اولین سند مالی</returns>
         public async Task<VoucherViewModel> GetFirstVoucherAsync()
         {
-            var firstVoucher = await _repository
+            var firstVoucher = await Repository
                 .GetAllOperationQuery<Voucher>(ViewName.Voucher)
                 .OrderBy(voucher => voucher.No)
                 .FirstOrDefaultAsync();
@@ -134,7 +130,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی قبلی</returns>
         public async Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo)
         {
-            var previous = await _repository
+            var previous = await Repository
                 .GetAllOperationQuery<Voucher>(ViewName.Voucher)
                 .Where(voucher => voucher.No < currentNo)
                 .OrderByDescending(voucher => voucher.No)
@@ -151,7 +147,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی بعدی</returns>
         public async Task<VoucherViewModel> GetNextVoucherAsync(int currentNo)
         {
-            var next = await _repository
+            var next = await Repository
                 .GetAllOperationQuery<Voucher>(ViewName.Voucher)
                 .Where(voucher => voucher.No > currentNo)
                 .OrderBy(voucher => voucher.No)
@@ -167,7 +163,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>آخرین سند مالی</returns>
         public async Task<VoucherViewModel> GetLastVoucherAsync()
         {
-            var lastVoucher = await _repository
+            var lastVoucher = await Repository
                 .GetAllOperationQuery<Voucher>(ViewName.Voucher)
                 .OrderByDescending(voucher => voucher.No)
                 .FirstOrDefaultAsync();
@@ -186,7 +182,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
             where TViewModel : class, new()
         {
-            return await _repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
+            return await Repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
                 .Where(item => item.SubjectType == 0)
                 .Select(item => Mapper.Map<TViewModel>(item))
                 .Apply(gridOptions, false)
@@ -199,7 +195,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>محدوده سندهای قابل دسترسی توسط کاربر جاری</returns>
         public async Task<NumberedItemRangeViewModel> GetVoucherRangeInfoAsync()
         {
-            var query = _repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
+            var query = Repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
                 .OrderBy(voucher => voucher.No);
             var first = await query.FirstOrDefaultAsync();
             var last = await query.LastOrDefaultAsync();
@@ -446,6 +442,11 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
         private async Task<DateTime> GetLastVoucherDateAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -597,7 +598,7 @@ namespace SPPC.Tadbir.Persistence
             return status;
         }
 
-        private readonly ISecureRepository _repository;
+        private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;
     }
 }

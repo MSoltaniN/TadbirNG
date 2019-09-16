@@ -71,5 +71,10 @@ namespace SPPC.Tadbir.Values
         /// دقت پیش فرض در مقایسه مقادیر اعشاری - برای پیشگیری از خطاهای روند سازی
         /// </summary>
         public const decimal RoundingPrecision = 0.000001M;
+
+        /// <summary>
+        /// نام پوشه مورد استفاده برای دریافت فایل های بارگذاری شده توسط کاربر
+        /// </summary>
+        public const string UserUploadFolderName = "Upload";
     }
 }
