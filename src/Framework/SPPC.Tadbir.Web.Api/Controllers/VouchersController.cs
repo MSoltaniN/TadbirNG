@@ -83,7 +83,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers/range
         [Route(VoucherApi.EnvironmentItemRangeUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentVoucherRnageAsync()
+        public async Task<IActionResult> GetEnvironmentVoucherRangeAsync()
         {
             var range = await _repository.GetVoucherRangeInfoAsync();
             return Json(range);
@@ -608,7 +608,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (voucher.StatusId != (int)DocumentStatusValue.Draft)
             {
-                return BadRequest(_strings.Format(AppStrings.CantDeleteNonDraftDocument, AppStrings.Voucher, voucher.No.ToString()));
+                return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher, voucher.No.ToString()));
             }
 
             return Ok();

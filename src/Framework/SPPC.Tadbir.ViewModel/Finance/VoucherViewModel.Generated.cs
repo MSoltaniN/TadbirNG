@@ -34,6 +34,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
             ConfirmerName = String.Empty;
             ApproverName = String.Empty;
             Description = String.Empty;
+            IsBalanced = true;
         }
 
         /// <summary>
