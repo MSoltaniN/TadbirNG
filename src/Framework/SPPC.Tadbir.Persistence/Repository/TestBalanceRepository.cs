@@ -133,7 +133,7 @@ namespace SPPC.Tadbir.Persistence
         private static void SetSummaryItems(TestBalanceViewModel testBalance)
         {
             testBalance.Total.StartBalanceDebit = testBalance.Items.Sum(item => item.StartBalanceDebit);
-            testBalance.Total.StartBalanceCredit = testBalance.Items.Sum(item => item.StartBalanceDebit);
+            testBalance.Total.StartBalanceCredit = testBalance.Items.Sum(item => item.StartBalanceCredit);
             testBalance.Total.TurnoverDebit = testBalance.Items.Sum(item => item.TurnoverDebit);
             testBalance.Total.TurnoverCredit = testBalance.Items.Sum(item => item.TurnoverCredit);
             testBalance.Total.OperationSumDebit = testBalance.Items.Sum(item => item.OperationSumDebit);
