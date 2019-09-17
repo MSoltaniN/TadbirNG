@@ -697,6 +697,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
                             lastGroupName = string.Empty;
                         }
+                        else if (!string.IsNullOrEmpty(orderdColumns[i].GroupName) && orderdColumns.Count(cc => cc.GroupName == orderdColumns[i].GroupName) == 1)
+                        {
+                            StiText txtGroupText = (StiText)txtHeaderCell.Clone(true);
+                            txtGroupText.Width = txtHeaderCell.Width;
+                            txtGroupText.Text.Value = orderdColumns[i].GroupName;
+                            txtGroupText.CanShrink = false;
+                            txtGroupText.ClientRectangle = new RectangleD(left, top, txtGroupText.Width, txtGroupText.Height);
+                            headerBand.Components.Add(txtGroupText);
+
+                            lastGroupName = string.Empty;
+                        }
                         else
                         {
                             lastWidth = txtHeaderCell.Width;

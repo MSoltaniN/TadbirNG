@@ -49,6 +49,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   @Input() public Filter: FilterExpression;
   @Input() public RowData: any;
   @Input() public MetadataType: string;
+  @Input() public DefaultServiceUrl: string; //ServiceUrl from parent from
   @Input() public QuickReportSetting: QuickReportSettingComponent;
 
   @Output() public onDataBind: EventEmitter<any> = new EventEmitter();
@@ -511,7 +512,17 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   public previewReport(params: ParameterInfo[] = null) {
     this.showReportViewer = true;
     this.showReportDesigner = false;
-    var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;
+    var serviceUrl = environment.BaseUrl + "/";
+
+    var urlIsComplete: boolean = false;
+    if (this.DefaultServiceUrl)
+    {
+      serviceUrl = this.DefaultServiceUrl;
+      urlIsComplete = true;
+    }
+    else
+      serviceUrl += this.currentPrintInfo.serviceUrl;
+
     var filterExpression: FilterExpression;
     var urlParameters = new Array<ReportParamComponent>();
 
@@ -532,12 +543,14 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
     filterExpression = this.currentFilter;//this.createFilters(params, this.currentFilter);
 
-    if (params) {
-      serviceUrl = this.changeServiceUrl(serviceUrl, params);      
-    }
+    if (!urlIsComplete) {
+      if (params) {
+        serviceUrl = this.changeServiceUrl(serviceUrl, params);
+      }
 
-    if (urlParameters.length > 0) {
-      serviceUrl = this.replaceServiceUrlParams(serviceUrl, urlParameters);
+      if (urlParameters.length > 0) {
+        serviceUrl = this.replaceServiceUrlParams(serviceUrl, urlParameters);
+      }
     }
 
     var sort = this.currentSort;
