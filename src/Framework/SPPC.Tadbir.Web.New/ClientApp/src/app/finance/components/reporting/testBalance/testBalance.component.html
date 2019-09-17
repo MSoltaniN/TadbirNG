@@ -1,8 +1,8 @@
 <view-identifier [ViewID]="viewId">
-  <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="testBalanceType == '1'"></report-param>
-  <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="testBalanceType == '1'"></report-param>
-  <report-param ParamName='fromNo' [ParamValue]="fromVoucher" [ParamInFilter]="testBalanceType == '2'"></report-param>
-  <report-param ParamName='toNo' [ParamValue]="toVoucher" [ParamInFilter]="testBalanceType == '2'"></report-param>
+  <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="testBalanceType === '1'"></report-param>
+  <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="testBalanceType === '1'"></report-param>
+  <report-param ParamName='fromNo' [ParamValue]="fromVoucher" [ParamInFilter]="testBalanceType === '2'"></report-param>
+  <report-param ParamName='toNo' [ParamValue]="toVoucher" [ParamInFilter]="testBalanceType === '2'"></report-param>
   <report-param ParamName='VoucherStatus' [ParamValue]="voucherStatusSelected"
                 [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
 </view-identifier>
@@ -95,7 +95,7 @@
               [icon]="'form-element'" type="button"></button>
       <button kendoButton class="hidden-xs rm" title="{{ 'Report.Print' | translate }}" (click)="showReport()"
               [icon]="'printer'" type="button"></button>
-      <button kendoButton class="hidden-xs rm" title="{{ 'Report.SubBalance' | translate }}" (click)="showSubAccountsBalance()"
+      <button kendoButton class="hidden-xs rm" title="{{ 'Balance.SubBalance' | translate }}" (click)="showSubAccountsBalance()"
               [icon]="'filter-add-expression'" type="button"></button>      
     </ng-template>
 
@@ -184,7 +184,7 @@
         </ng-template>
 
         <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0" >
-          {{ getSumValue(gcn) | SppcNumConfig | async }}
+          {{ getSumValue(item) | SppcNumConfig | async }}
         </ng-template>
      
         <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">

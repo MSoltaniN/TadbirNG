@@ -191,6 +191,15 @@ export enum JournalPermissions {
   ByBranch = 32
 }
 
+export enum TestBalancePermissions {
+  None = 0,
+  View = 1,
+  Lookup = 2,
+  Filter = 4,
+  Print = 8,
+  ByBranch = 16  
+}
+
 export enum AccountBookPermissions {
   None = 0,
   View = 1,
