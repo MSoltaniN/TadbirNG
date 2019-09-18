@@ -314,7 +314,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     model1.reference = this.editForm.value.reference;
     model1.dailyNo = parseInt(this.editForm.value.dailyNo);
     model1.association = this.editForm.value.association;
-    model1.date = new Date(this.editForm.value.date);
+    model1.date = this.getDate(this.editForm.value.date);
     model1.description = this.editForm.value.description;
     model1.type = parseInt(this.editForm.value.type);
 
@@ -322,7 +322,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     model2.reference = this.voucherModel.reference;
     model2.dailyNo = this.voucherModel.dailyNo;
     model2.association = this.voucherModel.association;
-    model2.date = new Date(this.voucherModel.date);
+    model2.date = this.getDate(this.voucherModel.date);
     model2.description = this.voucherModel.description;
     model2.type = this.voucherModel.type;
 
@@ -360,6 +360,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.executeVoucherOperation(item);
     }
 
+  }
+
+  getDate(date: Date): Date {
+    var date = new Date(date)
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
   executeVoucherOperation(item: VoucherOperations) {

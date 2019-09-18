@@ -23,7 +23,8 @@ export const SessionKeys = {
   SelectForm: 'SelectForm',
   Lang: 'lang',
   ViewTreeConfig: 'viewTreeConfig',
-  CurrencyBookDefault: 'CurrencyBookDefault'
+  CurrencyBookDefault: 'CurrencyBookDefault',
+  TestBalance: 'testBalance'
 }
 
 
@@ -57,6 +58,17 @@ export class BrowserStorageService {
       localStorage.setItem(SessionKeys.FiscalPeriod, JSON.stringify(item));
     else
       sessionStorage.setItem(SessionKeys.FiscalPeriod, JSON.stringify(item));
+  }
+
+  setSession(key: any, value: any) {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  }
+
+  getSession(key: any) {
+    var value = sessionStorage.getItem(key);
+    if(value)
+      return JSON.parse(value);
+    return null;
   }
 
   getFiscalPeriod(): string {
