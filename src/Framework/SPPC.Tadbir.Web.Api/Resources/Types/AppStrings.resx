@@ -2074,13 +2074,13 @@
     <value>اوگوئیا موریتانی</value>
   </data>
   <data name="CUnit_MauritianRupee" xml:space="preserve">
-    <value>Mauritian rupee</value>
+    <value>روپیه موریسی</value>
   </data>
   <data name="CUnit_MexicanPeso" xml:space="preserve">
     <value>پزو مکزیک</value>
   </data>
   <data name="CUnit_MicronesianDollar" xml:space="preserve">
-    <value>Micronesian dollar</value>
+    <value>دلار میکرونزی</value>
   </data>
   <data name="CUnit_MoldovanLeu" xml:space="preserve">
     <value>لو مولدووا</value>
@@ -2594,5 +2594,8 @@
   </data>
   <data name="CurrencyBookReport" xml:space="preserve">
     <value>دفتر عملیات ارزی</value>
+  </data>
+  <data name="TestBalanceReport" xml:space="preserve">
+    <value>تراز آزمایشی</value>
   </data>
 </root>

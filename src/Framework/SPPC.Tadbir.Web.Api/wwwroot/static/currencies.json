@@ -49,7 +49,7 @@
       "nameKey": "CUnit_AngolanKwanza",
       "name": "Angolan kwanza",
       "code": "AOA",
-      "minorUnitKey": "CMUnit_Cêntimo",
+      "minorUnitKey": "CMUnit_Centimo",
       "minorUnit": "Cêntimo",
       "decimalCount": 2
     }
@@ -489,7 +489,7 @@
       "nameKey": "CUnit_CostaRicanColón",
       "name": "Costa Rican colón",
       "code": "CRC",
-      "minorUnitKey": "CMUnit_Céntimo",
+      "minorUnitKey": "CMUnit_Centimo",
       "minorUnit": "Céntimo",
       "decimalCount": 2
     }
@@ -1600,7 +1600,7 @@
       "nameKey": "CUnit_ParaguayanGuaraní",
       "name": "Paraguayan guaraní",
       "code": "PYG",
-      "minorUnitKey": "CMUnit_Céntimo",
+      "minorUnitKey": "CMUnit_Centimo",
       "minorUnit": "Céntimo",
       "decimalCount": 2
     }
@@ -1611,7 +1611,7 @@
       "nameKey": "CUnit_PeruvianSol",
       "name": "Peruvian sol",
       "code": "PEN",
-      "minorUnitKey": "CMUnit_Céntimo",
+      "minorUnitKey": "CMUnit_Centimo",
       "minorUnit": "Céntimo",
       "decimalCount": 2
     }
@@ -1798,7 +1798,7 @@
       "nameKey": "CUnit_SãoToméAndPríncipeDobra",
       "name": "São Tomé and Príncipe dobra",
       "code": "STN",
-      "minorUnitKey": "CMUnit_Cêntimo",
+      "minorUnitKey": "CMUnit_Centimo",
       "minorUnit": "Cêntimo",
       "decimalCount": 2
     }

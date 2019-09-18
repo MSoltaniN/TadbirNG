@@ -2604,4 +2604,7 @@
   <data name="CurrencyBookReport" xml:space="preserve">
     <value>Currency Book Report</value>
   </data>
+  <data name="TestBalanceReport" xml:space="preserve">
+    <value>Test balance</value>
+  </data>
 </root>
