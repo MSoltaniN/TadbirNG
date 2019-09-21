@@ -145,6 +145,7 @@
     "AccountBook": "Account Book",
     "Currency": "Currency",
     "CurrencyRate": "Currency Rate",
+    "TestBalance": "Balance",
     "CurrencyBook": "Currency Book"
   },
   "Balance": {
@@ -158,13 +159,13 @@
     "ToDate": "To date",
     "FromVoucher": "From voucher",
     "ToVoucher": "To voucher",
-    "Closing": "use Closing Voucher",
-    "CloseAccounts": "use Closing Temp Voucher",
+    "Closing": "Use closing voucher",
+    "CloseAccounts": "Use closing temp accounts",
     "DebitSum": "Debit sum",
     "CreditSum": "Credit sum",
     "Sum": "Sum",
     "SubBalance": "Sub balance",
-    "ShowZeroRemains": "Show Zero Balance Items",
+    "ShowZeroRemains": "Show zero balance items",
     "OpeningVoucher": "Opening voucher",
     "UserSettings": "User settings",
     "Options": "Settings",
@@ -175,6 +176,21 @@
       "Balance8Column": "8 Columns",
       "Balance10Column": "10 Columns"
     },
+    "DisplayTypes": {
+      "ByLedger": "Ledger Level",
+      "BySubsidiary": "Subsidiary Level",
+      "ByDetail": "Detail Level",
+      "BySubsidiaryOfLeader": "Subsidiaries of a ledger",
+      "ByDetailOfSubsidiary": "Details of a subsidiary"
+    },
+    "VoucherStatuses": {
+      "Committed": "Committed",
+      "Finalized": "Finalized",
+      "Accepted": "Accepted",
+      "Approved": "Approved",
+      "AllVouchers": "All Vouchers"
+    }
+  },
     "BranchScope": {
       "AllBranches": "All Branches",
       "CurrentBranchAndSubsets": "Current Branch And Subsets",
@@ -224,7 +240,8 @@
       "BaseCurrencyCreditSum": "Base Currency Credit Sum",
       "BaseCurrencyBalanceSum": "Base Currency Balance Sum",
       "CurrencyFreeRows": "Show Currency Free Rows",
-      "Currency": "Currency"
+      "Currency": "Currency",
+      "OperationsDetail": "Operations Detail"
     },
     "AccountBook": {
       "DisplayByRow": "By Row",
@@ -312,7 +329,7 @@
         "Finalized": "Finalized",
         "Accepted": "Accepted",
         "Approved": "Approved",
-        "AllVouchers": "AllVouchers"
+        "AllVouchers": "All Vouchers"
       },
       "ArticleTypes": {
         "AllVoucherLines": "All Voucher Lines",
@@ -1053,6 +1070,7 @@
         "UserNameIsTooLong": "Database username can have a maximum of 32 characters.",
         "PasswordIsTooLong": "Database password can have a maximum of 32 characters.",
         "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+        "DbNamePatternNotValid": "Only Latin letters and characters '_' and '-' are allowed.",
         "NoError": ""
       },
       "AccountGroup": {
@@ -1064,3 +1082,4 @@
       }
     }
   }
+
