@@ -268,7 +268,8 @@ namespace SPPC.Tadbir.Persistence
                 BranchName = first.BranchName,
                 AccountId = account.Id,
                 AccountName = account.Name,
-                AccountFullCode = account.FullCode
+                AccountFullCode = account.FullCode,
+                AccountLevel = account.Level
             };
             decimal turnoverDebit = lines.Sum(item => item.TurnoverDebit);
             decimal turnoverCredit = lines.Sum(item => item.TurnoverCredit);
@@ -291,7 +292,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 foreach (var branchGroup in GetGroupByThenByItems(lines, line => line.BranchId))
                 {
-                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(lines, format, fullCode));
+                    testBalance.Items.Add(await GetTwoAndFourColumnBalanceItemAsync(branchGroup, format, fullCode));
                 }
             }
             else
