@@ -5,10 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -229,28 +231,36 @@ namespace SPPC.Tadbir.Persistence
             book.SetItems(book.Items.ApplyPaging(gridOptions).ToArray());
         }
 
-        private static IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParamViewModel bookParam, bool byCurrency = false)
+        private IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParamViewModel bookParam, bool byCurrency = false)
         {
             var itemCriteria = new List<Expression<Func<VoucherLine, bool>>>();
 
             if (bookParam.AccountId != null)
             {
-                itemCriteria.Add(line => line.AccountId == bookParam.AccountId);
+                var account = GetAccountItem<Account>(bookParam.AccountId.Value);
+                Verify.ArgumentNotNull(account, nameof(account));
+                itemCriteria.Add(line => line.Account.FullCode.StartsWith(account.FullCode));
             }
 
             if (bookParam.FAccountId != null)
             {
-                itemCriteria.Add(line => line.DetailId == bookParam.FAccountId);
+                var detailAccount = GetAccountItem<DetailAccount>(bookParam.FAccountId.Value);
+                Verify.ArgumentNotNull(detailAccount, nameof(detailAccount));
+                itemCriteria.Add(line => line.Account.FullCode.StartsWith(detailAccount.FullCode));
             }
 
             if (bookParam.CCenterId != null)
             {
-                itemCriteria.Add(line => line.CostCenterId == bookParam.CCenterId);
+                var costCenter = GetAccountItem<CostCenter>(bookParam.CCenterId.Value);
+                Verify.ArgumentNotNull(costCenter, nameof(costCenter));
+                itemCriteria.Add(line => line.Account.FullCode.StartsWith(costCenter.FullCode));
             }
 
             if (bookParam.ProjectId != null)
             {
-                itemCriteria.Add(line => line.ProjectId == bookParam.ProjectId);
+                var project = GetAccountItem<Project>(bookParam.ProjectId.Value);
+                Verify.ArgumentNotNull(project, nameof(project));
+                itemCriteria.Add(line => line.Account.FullCode.StartsWith(project.FullCode));
             }
 
             if (!bookParam.CurrFree && byCurrency)
@@ -521,6 +531,13 @@ namespace SPPC.Tadbir.Persistence
                     }
                 }
             }
+        }
+
+        private TItem GetAccountItem<TItem>(int itemId)
+           where TItem : TreeEntity
+        {
+            var repository = UnitOfWork.GetRepository<TItem>();
+            return repository.GetByID(itemId);
         }
 
         private readonly ISystemRepository _system;
