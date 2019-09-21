@@ -580,13 +580,13 @@
     <value>Code length for {0} in level '{1}' must be exactly {2} characters.</value>
   </data>
   <data name="LevelAuxiliary" xml:space="preserve">
-    <value>Auxiliary</value>
+    <value>Subsidiary</value>
   </data>
   <data name="LevelDetail" xml:space="preserve">
     <value>Detail</value>
   </data>
   <data name="LevelGeneral" xml:space="preserve">
-    <value>General</value>
+    <value>Ledger</value>
   </data>
   <data name="CantCheckUnbalancedDocument" xml:space="preserve">
     <value>This {0} is either unbalanced or empty and cannot be checked.</value>
@@ -2606,5 +2606,14 @@
   </data>
   <data name="TestBalanceReport" xml:space="preserve">
     <value>Test balance</value>
+  </data>
+  <data name="ChildrenOfLevel" xml:space="preserve">
+    <value>Items of a {0} account</value>
+  </data>
+  <data name="DetailsOfSubsidiary" xml:space="preserve">
+    <value>Details of a subsidiary account</value>
+  </data>
+  <data name="SubsidiariesOfLedger" xml:space="preserve">
+    <value>Subsidiaries of a ledger account</value>
   </data>
 </root>

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
@@ -98,6 +99,58 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return testBalance;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، انواع مختلف تراز آزمایشی را با توجه به ساختار درختی سرفصل های حسابداری خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>انواع مختلف تراز آزمایشی</returns>
+        public async Task<IEnumerable<TestBalanceModeInfo>> GetBalanceTypesLookupAsync()
+        {
+            var lookup = new List<TestBalanceModeInfo>();
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.Account);
+            var usedLevels = fullConfig.Current
+                .Levels
+                .Where(level => level.IsEnabled && level.IsUsed)
+                .ToList();
+            int typeId = 0;
+            for (int index = 0; index < usedLevels.Count; index++)
+            {
+                lookup.Add(new TestBalanceModeInfo()
+                {
+                    Id = typeId++,
+                    Name = usedLevels[index].Name,
+                    Level = usedLevels[index].No,
+                    IsDetail = false
+                });
+            }
+
+            lookup.Add(new TestBalanceModeInfo()
+            {
+                Id = typeId++,
+                Name = "SubsidiariesOfLedger",
+                Level = 2,
+                IsDetail = true
+            });
+            lookup.Add(new TestBalanceModeInfo()
+            {
+                Id = typeId++,
+                Name = "DetailsOfSubsidiary",
+                Level = 3,
+                IsDetail = true
+            });
+            for (int index = 3; index < usedLevels.Count; index++)
+            {
+                lookup.Add(new TestBalanceModeInfo()
+                {
+                    Id = typeId++,
+                    Name = usedLevels[index].Name,
+                    Level = usedLevels[index].No,
+                    IsDetail = true
+                });
+            }
+
+            return lookup;
         }
 
         private ISecureRepository Repository

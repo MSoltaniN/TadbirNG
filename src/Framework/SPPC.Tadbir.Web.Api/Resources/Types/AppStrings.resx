@@ -2598,4 +2598,13 @@
   <data name="TestBalanceReport" xml:space="preserve">
     <value>تراز آزمایشی</value>
   </data>
+  <data name="ChildrenOfLevel" xml:space="preserve">
+    <value>زیرمجموعه های یک حساب {0}</value>
+  </data>
+  <data name="DetailsOfSubsidiary" xml:space="preserve">
+    <value>تفصیلی های یک حساب معین</value>
+  </data>
+  <data name="SubsidiariesOfLedger" xml:space="preserve">
+    <value>معین های یک حساب کل</value>
+  </data>
 </root>

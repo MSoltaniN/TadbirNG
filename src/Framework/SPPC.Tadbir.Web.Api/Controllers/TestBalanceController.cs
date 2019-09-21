@@ -12,6 +12,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Reporting;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -24,6 +25,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             : base(strings)
         {
             _repository = repository;
+        }
+
+        // GET: api/testbal/lookup/types
+        [Route(TestBalanceApi.TestBalanceTypeLookupUrl)]
+        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
+        public async Task<IActionResult> GetTestBalanceTypesLookupAsync()
+        {
+            var lookup = await _repository.GetBalanceTypesLookupAsync();
+            Localize(lookup);
+            return Json(lookup);
         }
 
         #region Ledger Level reports
@@ -292,6 +303,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Json(balance);
+        }
+
+        private void Localize(IEnumerable<TestBalanceModeInfo> lookup)
+        {
+            foreach (var info in lookup.Where(item => !item.IsDetail))
+            {
+                info.Name = _strings[info.Name];
+            }
+
+            foreach (var info in lookup.Where(item => item.IsDetail))
+            {
+                info.Name = info.Level <= 3
+                    ? _strings.Format(info.Name)
+                    : _strings.Format(AppStrings.ChildrenOfLevel, info.Name);
+            }
         }
 
         private readonly ITestBalanceRepository _repository;

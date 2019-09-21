@@ -12,6 +12,16 @@ namespace SPPC.Tadbir.Api
         {
         }
 
+        /// <summary>
+        /// Client URL for test balance types, based on account coding hierarchy
+        /// </summary>
+        public const string TestBalanceTypeLookup = "testbal/lookup/types";
+
+        /// <summary>
+        /// Server route URL for test balance types, based on account coding hierarchy
+        /// </summary>
+        public const string TestBalanceTypeLookupUrl = "testbal/lookup/types";
+
         #region Ledger Level reports
 
         /// <summary>
