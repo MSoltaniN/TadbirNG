@@ -169,6 +169,7 @@
 
     <ng-template kendoGridDetailTemplate let-dataItem [kendoGridDetailTemplateShowIf]="isShowDetailGrid">
       <currency-book-detail [currencyId]="dataItem.currencyId"
+                            [currencyName]="dataItem.currencyName"
                             [displayType]="displayTypeSelected"
                             [selectedBranchScope]="branchScopeSelected"
                             [selectedBranchSeparation]="selectedBranchSeparation"

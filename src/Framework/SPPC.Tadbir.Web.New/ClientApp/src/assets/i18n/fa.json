@@ -196,7 +196,8 @@
     "BaseCurrencyCreditSum": "مجموع بستانکاری ارز پایه",
     "BaseCurrencyBalanceSum": "مانده ارز پایه",
     "CurrencyFreeRows": "نمایش سطرهای بدون ارز",
-    "Currency": "ارز"
+    "Currency": "ارز",
+    "OperationsDetail": "ریز عملیات"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",
@@ -217,7 +218,6 @@
     "OnLabel": "بله",
     "OffLabel": "خیر",
     "ModelNotValid": "{0} معتبر نمیباشد"
-
   },
   "AccountBookSingle": {
     "RowNo": "ردیف",
@@ -264,7 +264,7 @@
     "Closing": "نمایش سند اختتامیه",
     "CloseAccounts": "نمایش سند بستن حسابها",
     "DebitSum": "جمع بدهکار",
-    "CreditSum": "جمع بستانکار",        
+    "CreditSum": "جمع بستانکار",
     "Sum": "مجموع",
     "SubBalance": "تراز زیرمجموعه",
     "ShowZeroRemains": "نمایش سرفصل های با مانده صفر",
@@ -283,13 +283,7 @@
       "BySubsidiary": "در سطح معین",
       "ByDetail": "در سطح تفصیلی",
       "BySubsidiaryOfLeader": "معین های یک حساب کل",
-      "ByDetailOfSubsidiary": "تفصیلی های یک حساب معین",
-      "ByDetailAccountLevel1": "تفصیلی شناور سطح 1",
-      "ByDetailAccountLevel2": "تفصیلی شناور سطح 2",
-      "ByDetailAccountLevel3": "تفصیلی شناور سطح 3",
-      "ByDetailAccountLevel4": "تفصیلی شناور سطح 4",
-      "ByCurrency": "ارزی"
-
+      "ByDetailOfSubsidiary": "تفصیلی های یک حساب معین"
     },
     "VoucherStatuses": {
       "Committed": "ثبت شده",
@@ -1077,6 +1071,7 @@
       "UserNameIsTooLong": "نام کاربری دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
       "PasswordIsTooLong": "کلمه عبور دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "DbNamePatternNotValid": "فقط حروف لاتین و کاراکتر '_' و '-' مجاز میباشد",
       "NoError": ""
     },
     "AccountGroup": {
