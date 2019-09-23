@@ -22,165 +22,57 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string TestBalanceTypeLookupUrl = "testbal/lookup/types";
 
-        #region Ledger Level reports
+        #region Specific Level reports
 
         /// <summary>
-        /// Client URL for two-column test balance report for all ledger level accounts
+        /// Client URL for two-column test balance report for accounts in specified level
         /// </summary>
-        public const string TwoColumnLedgerBalance = "testbal/ledger/2-col";
+        public const string TwoColumnLevelBalance = "testbal/levels/{0}/2-col";
 
         /// <summary>
-        /// Server route URL for two-column test balance report for all ledger level accounts
+        /// Server route URL for two-column test balance report for accounts in specified level
         /// </summary>
-        public const string TwoColumnLedgerBalanceUrl = "testbal/ledger/2-col";
+        public const string TwoColumnLevelBalanceUrl = "testbal/levels/{level:min(1)}/2-col";
 
         /// <summary>
-        /// Client URL for four-column test balance report for all ledger level accounts
+        /// Client URL for four-column test balance report for accounts in specified level
         /// </summary>
-        public const string FourColumnLedgerBalance = "testbal/ledger/4-col";
+        public const string FourColumnLevelBalance = "testbal/levels/{0}/4-col";
 
         /// <summary>
-        /// Server route URL for four-column test balance report for all ledger level accounts
+        /// Server route URL for four-column test balance report for accounts in specified level
         /// </summary>
-        public const string FourColumnLedgerBalanceUrl = "testbal/ledger/4-col";
+        public const string FourColumnLevelBalanceUrl = "testbal/levels/{level:min(1)}/4-col";
 
         /// <summary>
-        /// Client URL for six-column test balance report for all ledger level accounts
+        /// Client URL for six-column test balance report for accounts in specified level
         /// </summary>
-        public const string SixColumnLedgerBalance = "testbal/ledger/6-col";
+        public const string SixColumnLevelBalance = "testbal/levels/{0}/6-col";
 
         /// <summary>
-        /// Server route URL for six-column test balance report for all ledger level accounts
+        /// Server route URL for six-column test balance report for accounts in specified level
         /// </summary>
-        public const string SixColumnLedgerBalanceUrl = "testbal/ledger/6-col";
+        public const string SixColumnLevelBalanceUrl = "testbal/levels/{level:min(1)}/6-col";
 
         /// <summary>
-        /// Client URL for eight-column test balance report for all ledger level accounts
+        /// Client URL for eight-column test balance report for accounts in specified level
         /// </summary>
-        public const string EightColumnLedgerBalance = "testbal/ledger/8-col";
+        public const string EightColumnLevelBalance = "testbal/levels/{0}/8-col";
 
         /// <summary>
-        /// Server route URL for eight-column test balance report for all ledger level accounts
+        /// Server route URL for eight-column test balance report for accounts in specified level
         /// </summary>
-        public const string EightColumnLedgerBalanceUrl = "testbal/ledger/8-col";
+        public const string EightColumnLevelBalanceUrl = "testbal/levels/{level:min(1)}/8-col";
 
         /// <summary>
-        /// Client URL for ten-column test balance report for all ledger level accounts
+        /// Client URL for ten-column test balance report for accounts in specified level
         /// </summary>
-        public const string TenColumnLedgerBalance = "testbal/ledger/10-col";
+        public const string TenColumnLevelBalance = "testbal/levels/{0}/10-col";
 
         /// <summary>
-        /// Server route URL for ten-column test balance report for all ledger level accounts
+        /// Server route URL for ten-column test balance report for accounts in specified level
         /// </summary>
-        public const string TenColumnLedgerBalanceUrl = "testbal/ledger/10-col";
-
-        #endregion
-
-        #region Subsidiary Level reports
-
-        /// <summary>
-        /// Client URL for two-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string TwoColumnSubsidiaryBalance = "testbal/subsid/2-col";
-
-        /// <summary>
-        /// Server route URL for two-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string TwoColumnSubsidiaryBalanceUrl = "testbal/subsid/2-col";
-
-        /// <summary>
-        /// Client URL for four-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string FourColumnSubsidiaryBalance = "testbal/subsid/4-col";
-
-        /// <summary>
-        /// Server route URL for four-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string FourColumnSubsidiaryBalanceUrl = "testbal/subsid/4-col";
-
-        /// <summary>
-        /// Client URL for six-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string SixColumnSubsidiaryBalance = "testbal/subsid/6-col";
-
-        /// <summary>
-        /// Server route URL for six-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string SixColumnSubsidiaryBalanceUrl = "testbal/subsid/6-col";
-
-        /// <summary>
-        /// Client URL for eight-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string EightColumnSubsidiaryBalance = "testbal/subsid/8-col";
-
-        /// <summary>
-        /// Server route URL for eight-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string EightColumnSubsidiaryBalanceUrl = "testbal/subsid/8-col";
-
-        /// <summary>
-        /// Client URL for ten-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string TenColumnSubsidiaryBalance = "testbal/subsid/10-col";
-
-        /// <summary>
-        /// Server route URL for ten-column test balance report for all subsidiary level accounts
-        /// </summary>
-        public const string TenColumnSubsidiaryBalanceUrl = "testbal/subsid/10-col";
-
-        #endregion
-
-        #region Detail Level reports
-
-        /// <summary>
-        /// Client URL for two-column test balance report for all detail level accounts
-        /// </summary>
-        public const string TwoColumnDetailBalance = "testbal/detail/2-col";
-
-        /// <summary>
-        /// Server route URL for two-column test balance report for all detail level accounts
-        /// </summary>
-        public const string TwoColumnDetailBalanceUrl = "testbal/detail/2-col";
-
-        /// <summary>
-        /// Client URL for four-column test balance report for all detail level accounts
-        /// </summary>
-        public const string FourColumnDetailBalance = "testbal/detail/4-col";
-
-        /// <summary>
-        /// Server route URL for four-column test balance report for all detail level accounts
-        /// </summary>
-        public const string FourColumnDetailBalanceUrl = "testbal/detail/4-col";
-
-        /// <summary>
-        /// Client URL for six-column test balance report for all detail level accounts
-        /// </summary>
-        public const string SixColumnDetailBalance = "testbal/detail/6-col";
-
-        /// <summary>
-        /// Server route URL for six-column test balance report for all detail level accounts
-        /// </summary>
-        public const string SixColumnDetailBalanceUrl = "testbal/detail/6-col";
-
-        /// <summary>
-        /// Client URL for eight-column test balance report for all detail level accounts
-        /// </summary>
-        public const string EightColumnDetailBalance = "testbal/detail/8-col";
-
-        /// <summary>
-        /// Server route URL for eight-column test balance report for all detail level accounts
-        /// </summary>
-        public const string EightColumnDetailBalanceUrl = "testbal/detail/8-col";
-
-        /// <summary>
-        /// Client URL for ten-column test balance report for all detail level accounts
-        /// </summary>
-        public const string TenColumnDetailBalance = "testbal/detail/10-col";
-
-        /// <summary>
-        /// Server route URL for ten-column test balance report for all detail level accounts
-        /// </summary>
-        public const string TenColumnDetailBalanceUrl = "testbal/detail/10-col";
+        public const string TenColumnLevelBalanceUrl = "testbal/levels/{level:min(1)}/10-col";
 
         #endregion
 

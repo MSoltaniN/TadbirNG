@@ -9,23 +9,13 @@ namespace SPPC.Tadbir.Values
     public enum TestBalanceMode
     {
         /// <summary>
-        /// تراز آزمایشی در سطح کل
+        /// تراز آزمایشی در یکی از سطوح حساب
         /// </summary>
-        Ledger = 0,
-
-        /// <summary>
-        /// تراز آزمایشی در سطح معین
-        /// </summary>
-        Subsidiary = 1,
-
-        /// <summary>
-        /// تراز آزمایشی در سطح تفصیلی
-        /// </summary>
-        Detail = 2,
+        Level = 0,
 
         /// <summary>
         /// تراز آزمایشی زیرمجموعه های یک حساب
         /// </summary>
-        AccountItems = 3,
+        AccountItems = 1,
     }
 }

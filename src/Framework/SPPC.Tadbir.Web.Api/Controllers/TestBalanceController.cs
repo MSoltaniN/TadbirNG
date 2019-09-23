@@ -37,134 +37,56 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
-        #region Ledger Level reports
+        #region Specific Level reports
 
-        // GET: api/testbal/ledger/2-col
-        [Route(TestBalanceApi.TwoColumnLedgerBalanceUrl)]
+        // GET: api/testbal/levels/{level:min(1)}/2-col
+        [Route(TestBalanceApi.TwoColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTwoColumnLedgerBalanceAsync(string from, string to, bool? byBranch, int? options)
+        public async Task<IActionResult> GetTwoColumnLevelBalanceAsync(
+            int level, string from, string to, bool? byBranch, int? options)
         {
-            return await TestBalanceResultAsync(TestBalanceMode.Ledger, TestBalanceFormat.TwoColumn, from, to, byBranch, options);
+            return await TestBalanceResultAsync(TestBalanceMode.Level, TestBalanceFormat.TwoColumn,
+                from, to, byBranch, options, 0, level - 1);
         }
 
-        // GET: api/testbal/ledger/4-col
-        [Route(TestBalanceApi.FourColumnLedgerBalanceUrl)]
+        // GET: api/testbal/levels/{level:min(1)}/4-col
+        [Route(TestBalanceApi.FourColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetFourColumnLedgerBalanceAsync(string from, string to, bool? byBranch, int? options)
+        public async Task<IActionResult> GetFourColumnLevelBalanceAsync(
+            int level, string from, string to, bool? byBranch, int? options)
         {
-            return await TestBalanceResultAsync(TestBalanceMode.Ledger, TestBalanceFormat.FourColumn, from, to, byBranch, options);
+            return await TestBalanceResultAsync(TestBalanceMode.Level, TestBalanceFormat.FourColumn,
+                from, to, byBranch, options, 0, level - 1);
         }
 
-        // GET: api/testbal/ledger/6-col
-        [Route(TestBalanceApi.SixColumnLedgerBalanceUrl)]
+        // GET: api/testbal/levels/{level:min(1)}/6-col
+        [Route(TestBalanceApi.SixColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetSixColumnLedgerBalanceAsync(string from, string to, bool? byBranch, int? options)
+        public async Task<IActionResult> GetSixColumnLevelBalanceAsync(
+            int level, string from, string to, bool? byBranch, int? options)
         {
-            return await TestBalanceResultAsync(TestBalanceMode.Ledger, TestBalanceFormat.SixColumn, from, to, byBranch, options);
+            return await TestBalanceResultAsync(TestBalanceMode.Level, TestBalanceFormat.SixColumn,
+                from, to, byBranch, options, 0, level - 1);
         }
 
-        // GET: api/testbal/ledger/8-col
-        [Route(TestBalanceApi.EightColumnLedgerBalanceUrl)]
+        // GET: api/testbal/levels/{level:min(1)}/8-col
+        [Route(TestBalanceApi.EightColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetEightColumnLedgerBalanceAsync(string from, string to, bool? byBranch, int? options)
+        public async Task<IActionResult> GetEightColumnLevelBalanceAsync(
+            int level, string from, string to, bool? byBranch, int? options)
         {
-            return await TestBalanceResultAsync(TestBalanceMode.Ledger, TestBalanceFormat.EightColumn, from, to, byBranch, options);
+            return await TestBalanceResultAsync(TestBalanceMode.Level, TestBalanceFormat.EightColumn,
+                from, to, byBranch, options, 0, level - 1);
         }
 
-        // GET: api/testbal/ledger/10-col
-        [Route(TestBalanceApi.TenColumnLedgerBalanceUrl)]
+        // GET: api/testbal/levels/{level:min(1)}/10-col
+        [Route(TestBalanceApi.TenColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTenColumnLedgerBalanceAsync(string from, string to, bool? byBranch, int? options)
+        public async Task<IActionResult> GetTenColumnLevelBalanceAsync(
+            int level, string from, string to, bool? byBranch, int? options)
         {
-            return await TestBalanceResultAsync(TestBalanceMode.Ledger, TestBalanceFormat.TenColumn, from, to, byBranch, options);
-        }
-
-        #endregion
-
-        #region Subsidiary Level reports
-
-        // GET: api/testbal/subsid/2-col
-        [Route(TestBalanceApi.TwoColumnSubsidiaryBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTwoColumnSubsidiaryBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Subsidiary, TestBalanceFormat.TwoColumn, from, to, byBranch, options);
-        }
-
-        // GET: api/testbal/subsid/4-col
-        [Route(TestBalanceApi.FourColumnSubsidiaryBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetFourColumnSubsidiaryBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Subsidiary, TestBalanceFormat.FourColumn, from, to, byBranch, options);
-        }
-
-        // GET: api/testbal/subsid/6-col
-        [Route(TestBalanceApi.SixColumnSubsidiaryBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetSixColumnSubsidiaryBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Subsidiary, TestBalanceFormat.SixColumn, from, to, byBranch, options);
-        }
-
-        // GET: api/testbal/subsid/8-col
-        [Route(TestBalanceApi.EightColumnSubsidiaryBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetEightColumnSubsidiaryBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Subsidiary, TestBalanceFormat.EightColumn, from, to, byBranch, options);
-        }
-
-        // GET: api/testbal/subsid/10-col
-        [Route(TestBalanceApi.TenColumnSubsidiaryBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTenColumnSubsidiaryBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Subsidiary, TestBalanceFormat.TenColumn, from, to, byBranch, options);
-        }
-
-        #endregion
-
-        #region Detail Level reports
-
-        // GET: api/testbal/detail/2-col
-        [Route(TestBalanceApi.TwoColumnDetailBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTwoColumnDetailBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.TwoColumn, from, to, byBranch, options);
-        }
-
-        // GET: api/testbal/detail/4-col
-        [Route(TestBalanceApi.FourColumnDetailBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetFourColumnDetailBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.FourColumn, from, to, byBranch, options);
-        }
-
-        // GET: api/testbal/detail/6-col
-        [Route(TestBalanceApi.SixColumnDetailBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetSixColumnDetailBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.SixColumn, from, to, byBranch, options);
-        }
-
-        // GET: api/testbal/detail/8-col
-        [Route(TestBalanceApi.EightColumnDetailBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetEightColumnDetailBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.EightColumn, from, to, byBranch, options);
-        }
-
-        // GET: api/testbal/detail/10-col
-        [Route(TestBalanceApi.TenColumnDetailBalanceUrl)]
-        [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
-        public async Task<IActionResult> GetTenColumnDetailBalanceAsync(string from, string to, bool? byBranch, int? options)
-        {
-            return await TestBalanceResultAsync(TestBalanceMode.Detail, TestBalanceFormat.TenColumn, from, to, byBranch, options);
+            return await TestBalanceResultAsync(TestBalanceMode.Level, TestBalanceFormat.TenColumn,
+                from, to, byBranch, options, 0, level - 1);
         }
 
         #endregion
@@ -268,7 +190,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> TestBalanceResultAsync(TestBalanceMode mode, TestBalanceFormat format,
-            string from, string to, bool? byBranch, int? options, int itemId = 0)
+            string from, string to, bool? byBranch, int? options, int itemId = 0, int level = 0)
         {
             if (format == TestBalanceFormat.TenColumn)
             {
@@ -280,14 +202,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var balance = default(TestBalanceViewModel);
             switch (mode)
             {
-                case TestBalanceMode.Ledger:
-                    balance = await _repository.GetLedgerBalanceAsync(parameters);
-                    break;
-                case TestBalanceMode.Subsidiary:
-                    balance = await _repository.GetSubsidiaryBalanceAsync(parameters);
-                    break;
-                case TestBalanceMode.Detail:
-                    balance = await _repository.GetDetailBalanceAsync(parameters);
+                case TestBalanceMode.Level:
+                    balance = await _repository.GetLevelBalanceAsync(level, parameters);
                     break;
                 case TestBalanceMode.AccountItems:
                     balance = await _repository.GetChildrenBalanceAsync(itemId, parameters);

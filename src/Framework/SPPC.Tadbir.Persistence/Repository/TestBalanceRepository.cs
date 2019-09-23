@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
@@ -32,41 +31,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی در سطح کل را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی برای یکی از سطوح حساب را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="level">شماره یکی از سطوح حساب</param>
         /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        public async Task<TestBalanceViewModel> GetLedgerBalanceAsync(TestBalanceParameters parameters)
+        public async Task<TestBalanceViewModel> GetLevelBalanceAsync(int level, TestBalanceParameters parameters)
         {
-            Func<TestBalanceItemViewModel, bool> ledgerFilter = line => true;
-            return await GetGeneralBalanceAsync(TestBalanceMode.Ledger, parameters, ledgerFilter);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی در سطح معین را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        public async Task<TestBalanceViewModel> GetSubsidiaryBalanceAsync(TestBalanceParameters parameters)
-        {
-            Func<TestBalanceItemViewModel, bool> ledgerFilter = line => line.AccountLevel == 0;
-            Func<TestBalanceItemViewModel, bool> subsidiaryFilter = line => line.AccountLevel >= 1;
-            return await GetGeneralBalanceAsync(TestBalanceMode.Subsidiary, parameters,
-                ledgerFilter, subsidiaryFilter);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی در سطح تفصیلی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        public async Task<TestBalanceViewModel> GetDetailBalanceAsync(TestBalanceParameters parameters)
-        {
-            Func<TestBalanceItemViewModel, bool> ledgerFilter = line => line.AccountLevel == 0;
-            Func<TestBalanceItemViewModel, bool> subsidiaryFilter = line => line.AccountLevel == 1;
-            Func<TestBalanceItemViewModel, bool> detailFilter = line => line.AccountLevel >= 2;
-            return await GetGeneralBalanceAsync(TestBalanceMode.Detail, parameters,
-                ledgerFilter, subsidiaryFilter, detailFilter);
+            return await GetGeneralBalanceAsync(level, parameters);
         }
 
         /// <summary>
@@ -139,13 +111,13 @@ namespace SPPC.Tadbir.Persistence
                 Level = 3,
                 IsDetail = true
             });
-            for (int index = 3; index < usedLevels.Count; index++)
+            for (int index = 2; index < usedLevels.Count - 1; index++)
             {
                 lookup.Add(new TestBalanceModeInfo()
                 {
                     Id = typeId++,
                     Name = usedLevels[index].Name,
-                    Level = usedLevels[index].No,
+                    Level = usedLevels[index].No + 1,
                     IsDetail = true
                 });
             }
@@ -209,39 +181,29 @@ namespace SPPC.Tadbir.Persistence
                 && item.EndBalanceCredit == 0.0M;
         }
 
-        private async Task<TestBalanceViewModel> GetGeneralBalanceAsync(
-            TestBalanceMode mode, TestBalanceParameters parameters,
-            Func<TestBalanceItemViewModel, bool> ledgerFilter,
-            Func<TestBalanceItemViewModel, bool> subsidiaryFilter = null,
-            Func<TestBalanceItemViewModel, bool> detailFilter = null)
+        private async Task<TestBalanceViewModel> GetGeneralBalanceAsync(int level, TestBalanceParameters parameters)
         {
             var testBalance = new TestBalanceViewModel();
             var lines = await GetRawBalanceLinesAsync(parameters);
-            if (mode == TestBalanceMode.Detail)
+            Func<TestBalanceItemViewModel, bool> filter;
+            int index = 0;
+            while (index < level)
             {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 2, detailFilter))
+                filter = line => line.AccountLevel == index;
+                foreach (var lineGroup in GetTurnoverGroups(lines, index, filter))
                 {
                     await AddTwoAndFourColumnBalanceItemAsync(
                         testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
                 }
+
+                index++;
             }
 
-            if (mode == TestBalanceMode.Detail || mode == TestBalanceMode.Subsidiary)
+            filter = line => line.AccountLevel >= index;
+            foreach (var lineGroup in GetTurnoverGroups(lines, index, filter))
             {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 1, subsidiaryFilter))
-                {
-                    await AddTwoAndFourColumnBalanceItemAsync(
-                        testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
-                }
-            }
-
-            if (mode <= TestBalanceMode.Detail)
-            {
-                foreach (var lineGroup in GetTurnoverGroups(lines, 0, ledgerFilter))
-                {
-                    await AddTwoAndFourColumnBalanceItemAsync(
-                        testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
-                }
+                await AddTwoAndFourColumnBalanceItemAsync(
+                    testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
             }
 
             await AddSixAndEightColumnBalanceItemsAsync(testBalance, parameters);

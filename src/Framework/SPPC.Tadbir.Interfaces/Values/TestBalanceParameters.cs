@@ -14,12 +14,10 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public TestBalanceParameters()
         {
-            Mode = TestBalanceMode.Ledger;
+            Mode = TestBalanceMode.Level;
             Format = TestBalanceFormat.SixColumn;
             IsByBranch = false;
-            Options = TestBalanceOptions.UseClosingVoucher
-                | TestBalanceOptions.UseClosingTempVoucher
-                | TestBalanceOptions.OpeningVoucherAsInitBalance;
+            Options = TestBalanceOptions.None;
         }
 
         /// <summary>

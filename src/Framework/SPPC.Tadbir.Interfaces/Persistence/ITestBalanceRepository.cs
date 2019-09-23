@@ -12,25 +12,12 @@ namespace SPPC.Tadbir.Persistence
     public interface ITestBalanceRepository
     {
         /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی در سطح کل را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی برای یکی از سطوح حساب را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="level">شماره یکی از سطوح حساب</param>
         /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        Task<TestBalanceViewModel> GetLedgerBalanceAsync(TestBalanceParameters parameters);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی در سطح معین را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        Task<TestBalanceViewModel> GetSubsidiaryBalanceAsync(TestBalanceParameters parameters);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی در سطح تفصیلی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        Task<TestBalanceViewModel> GetDetailBalanceAsync(TestBalanceParameters parameters);
+        Task<TestBalanceViewModel> GetLevelBalanceAsync(int level, TestBalanceParameters parameters);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش تراز آزمایشی زیرمجموعه های یک حساب را خوانده و برمی گرداند
