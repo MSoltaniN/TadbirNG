@@ -53,7 +53,8 @@
     "SelectedItems": "موارد انتخاب شده",
     "TreeLevelsAreTooDeep": "تعداد سطوح بیشتر از {0} مجاز نیست",
     "IncorrectFileFormat": "فرمت فایل انتخابی صحیح نیست",
-    "UploadSuccessful": "آپلود با موفقیت انجام شد"
+    "UploadSuccessful": "آپلود با موفقیت انجام شد",
+    "VoucherNumberByStatus": "سیستم دارای {0} عدد سند {1} میباشد"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -330,7 +331,11 @@
       "Finalized": "ثبت قطعی شده",
       "Accepted": "تایید شده",
       "Approved": "تصویب شده",
-      "AllVouchers": "کلیه اسناد"
+      "AllVouchers": "کلیه اسناد",
+      "NotCommitted": "ثبت نشده",
+      "NotFinalized": "ثبت قطعی نشده",
+      "NotConfirmed": "تایید نشده",
+      "NotApproved": "تصویب نشده"
     },
     "ArticleTypes": {
       "AllVoucherLines": "کلیه آرتیکل ها",

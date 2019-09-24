@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
 import { BrowserStorageService } from '@sppc/shared/services';
 import { Voucher } from '@sppc/finance/models';
-import { BaseService } from '@sppc/shared/class';
+import { BaseService, FilterExpression } from '@sppc/shared/class';
 
 
 export class VoucherInfo implements Voucher {
@@ -47,6 +47,22 @@ export class VoucherService extends BaseService {
     return this.http.put(apiUrl, null, this.option)
       .map(res => res)
       .catch(this.handleError);
+  }
+
+
+  public getVoucherNumberByStatus(apiUrl: string, filter?: FilterExpression) {
+    var intMaxValue = 2147483647
+    var gridPaging = { pageIndex: 1, pageSize: intMaxValue };
+    var postItem = { Paging: gridPaging, filter: filter, sortColumns: null };
+    var searchHeaders = this.httpHeaders;
+    var postBody = JSON.stringify(postItem);
+    var base64Body = btoa(encodeURIComponent(postBody));
+    if (searchHeaders)
+      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+    var options = { headers: searchHeaders };
+
+    return this.http.get(apiUrl, options)
+      .map(response => <any>(<Response>response));
   }
 
 }

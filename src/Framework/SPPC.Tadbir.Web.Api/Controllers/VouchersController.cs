@@ -125,6 +125,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(lastVoucher);
         }
 
+        // GET: api/vouchers/count/by-status
+        [Route(VoucherApi.VoucherCountByStatusUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetVouchersCountByStatusIdAsync()
+        {
+             int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
+
+            return Ok(itemCount);
+        }
+
         // POST: api/vouchers
         [HttpPost]
         [Route(VoucherApi.EnvironmentVouchersUrl)]

@@ -53,7 +53,8 @@
     "SelectedItems": "selected items",
     "TreeLevelsAreTooDeep": "Tree levels deeper than {0} is not allowed.",
     "IncorrectFileFormat": "The file format is incorrect",
-    "UploadSuccessful": "Upload Successful"
+    "UploadSuccessful": "Upload Successful",
+    "VoucherNumberByStatus": "The system has {0} {1} vouchers."
   },
   "Report": {
     "ReportViewer": "View of",
@@ -329,7 +330,11 @@
         "Finalized": "Finalized",
         "Accepted": "Accepted",
         "Approved": "Approved",
-        "AllVouchers": "All Vouchers"
+        "AllVouchers": "All Vouchers",
+        "NotCommitted": "Not Committed",
+        "NotFinalized": "Not Finalized",
+        "NotConfirmed": "Not Confirmed",
+        "NotApproved": "Not Approved"
       },
       "ArticleTypes": {
         "AllVoucherLines": "All Voucher Lines",

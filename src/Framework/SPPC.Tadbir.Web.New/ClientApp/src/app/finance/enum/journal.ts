@@ -58,7 +58,19 @@ export enum VoucherStatusResource {
   Approved = "Journal.VoucherStatuses.Approved",
 
   /** کلیه اسناد*/
-  AllVouchers = "Journal.VoucherStatuses.AllVouchers"
+  AllVouchers = "Journal.VoucherStatuses.AllVouchers",
+
+  /** ثبت نشده*/
+  NotCommitted = "Journal.VoucherStatuses.NotCommitted",
+
+  /** ثبت قطعی نشده*/
+  NotFinalized = "Journal.VoucherStatuses.NotFinalized",
+
+  /** تایید نشده*/
+  NotConfirmed = "Journal.VoucherStatuses.NotConfirmed",
+
+  /** تصویب نشده*/
+  NotApproved = "Journal.VoucherStatuses.NotApproved",
 }
 
 export enum BranchScopeResource {
