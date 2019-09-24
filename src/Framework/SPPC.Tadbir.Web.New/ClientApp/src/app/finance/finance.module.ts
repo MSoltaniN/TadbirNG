@@ -7,7 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import {
   AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
-  FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService
+  FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService
 } from '@sppc/finance/service/index';
 
 import { AccountComponent } from '@sppc/finance/components/base/account/account.component';
@@ -50,7 +50,7 @@ import { CurrencyBookDetailComponent } from '@sppc/finance/components/reporting/
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
-    FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService],
+    FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class FinanceModule { }

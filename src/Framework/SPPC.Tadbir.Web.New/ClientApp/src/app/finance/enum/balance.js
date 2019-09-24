@@ -6,25 +6,25 @@ export var BalanceType;
 export var BalanceDisplayType;
 (function (BalanceDisplayType) {
     /**تراز آزمایشی در سطح کل */
-    BalanceDisplayType[BalanceDisplayType["ByLedger"] = 1] = "ByLedger";
+    BalanceDisplayType[BalanceDisplayType["ByLedger"] = 0] = "ByLedger";
     /**تراز آزمایشی در سطح معین */
-    BalanceDisplayType[BalanceDisplayType["BySubsidiary"] = 2] = "BySubsidiary";
+    BalanceDisplayType[BalanceDisplayType["BySubsidiary"] = 1] = "BySubsidiary";
     /**تراز آزمایشی در سطح تفصیلی */
-    BalanceDisplayType[BalanceDisplayType["ByDetail"] = 3] = "ByDetail";
+    BalanceDisplayType[BalanceDisplayType["ByDetail"] = 2] = "ByDetail";
     /**تراز معین های یک حساب کل  */
-    BalanceDisplayType[BalanceDisplayType["BySubsidiaryOfLeader"] = 4] = "BySubsidiaryOfLeader";
+    BalanceDisplayType[BalanceDisplayType["BySubsidiaryOfLeader"] = 3] = "BySubsidiaryOfLeader";
     /**تراز تفصیلی های یک حساب معین*/
-    BalanceDisplayType[BalanceDisplayType["ByDetailOfSubsidiary"] = 5] = "ByDetailOfSubsidiary";
+    BalanceDisplayType[BalanceDisplayType["ByDetailOfSubsidiary"] = 4] = "ByDetailOfSubsidiary";
     /**تراز تفصیلی شناور سطح 1 */
-    BalanceDisplayType[BalanceDisplayType["ByDetailAccountLevel1"] = 6] = "ByDetailAccountLevel1";
+    BalanceDisplayType[BalanceDisplayType["ByDetailAccountLevel1"] = 5] = "ByDetailAccountLevel1";
     /**تراز تفصیلی شناور سطح 2 */
-    BalanceDisplayType[BalanceDisplayType["ByDetailAccountLevel2"] = 7] = "ByDetailAccountLevel2";
+    BalanceDisplayType[BalanceDisplayType["ByDetailAccountLevel2"] = 6] = "ByDetailAccountLevel2";
     /**تراز تفصیلی شناور سطح 3 */
-    BalanceDisplayType[BalanceDisplayType["ByDetailAccountLevel3"] = 8] = "ByDetailAccountLevel3";
+    BalanceDisplayType[BalanceDisplayType["ByDetailAccountLevel3"] = 7] = "ByDetailAccountLevel3";
     /**تراز تفصیلی شناور سطح 4 */
-    BalanceDisplayType[BalanceDisplayType["ByDetailAccountLevel4"] = 9] = "ByDetailAccountLevel4";
+    BalanceDisplayType[BalanceDisplayType["ByDetailAccountLevel4"] = 8] = "ByDetailAccountLevel4";
     /**ارزی */
-    BalanceDisplayType[BalanceDisplayType["ByCurrency"] = 10] = "ByCurrency";
+    BalanceDisplayType[BalanceDisplayType["ByCurrency"] = 9] = "ByCurrency";
 })(BalanceDisplayType || (BalanceDisplayType = {}));
 export var BalanceFormatType;
 (function (BalanceFormatType) {

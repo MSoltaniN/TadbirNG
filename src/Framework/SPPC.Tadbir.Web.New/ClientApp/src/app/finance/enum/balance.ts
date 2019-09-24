@@ -5,25 +5,25 @@ export enum BalanceType {
 
 export enum BalanceDisplayType {
   /**تراز آزمایشی در سطح کل */
-  ByLedger = 1,
+  ByLedger = 0,
   /**تراز آزمایشی در سطح معین */
-  BySubsidiary = 2,
+  BySubsidiary = 1,
   /**تراز آزمایشی در سطح تفصیلی */
-  ByDetail = 3,
+  ByDetail = 2,
   /**تراز معین های یک حساب کل  */
-  BySubsidiaryOfLeader = 4,
+  BySubsidiaryOfLeader = 3,
   /**تراز تفصیلی های یک حساب معین*/
-  ByDetailOfSubsidiary = 5,
+  ByDetailOfSubsidiary = 4,
   /**تراز تفصیلی شناور سطح 1 */
-  ByDetailAccountLevel1 = 6,
+  ByDetailAccountLevel1 = 5,
   /**تراز تفصیلی شناور سطح 2 */
-  ByDetailAccountLevel2 = 7, 
+  ByDetailAccountLevel2 = 6, 
   /**تراز تفصیلی شناور سطح 3 */
-  ByDetailAccountLevel3 = 8,
+  ByDetailAccountLevel3 = 7,
   /**تراز تفصیلی شناور سطح 4 */
-  ByDetailAccountLevel4 = 9,
+  ByDetailAccountLevel4 = 8,
   /**ارزی */
-  ByCurrency = 10
+  ByCurrency = 9
 }
 
 export enum BalanceFormatType {

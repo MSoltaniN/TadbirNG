@@ -204,18 +204,12 @@
             <label class="control-label">{{ 'Balance.BalanceType' | translate }}</label>
 
             <kendo-dropdownlist [data]="displayType"
-                                [textField]="'value'"
-                                [valueField]="'key'"
+                                [textField]="'name'"
+                                [valueField]="'id'"
                                 [valuePrimitive]="true"
                                 [value]="displayTypeSelected"
                                 [(ngModel)]="displayTypeSelected"
-                                (ngModelChange)="changeType()">
-              <ng-template kendoDropDownListValueTemplate let-dataItem>
-                {{ dataItem?.value | translate }}
-              </ng-template>
-              <ng-template kendoDropDownListItemTemplate let-dataItem>
-                {{ dataItem?.value | translate }}
-              </ng-template>
+                                (ngModelChange)="changeType()">              
             </kendo-dropdownlist>
           </div>
           <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
