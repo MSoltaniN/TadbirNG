@@ -1,9 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;
@@ -20,10 +27,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log)
+        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log, IHostingEnvironment host)
             : base(context, log)
         {
             UnitOfWork.UseSystemContext();
+            _host = host;
         }
 
         /// <summary>
@@ -87,6 +95,9 @@ namespace SPPC.Tadbir.Persistence
             if (companyView.Id == 0)
             {
                 company = Mapper.Map<CompanyDb>(companyView);
+
+                //CreateDatabase(company);
+
                 await InsertAsync(repository, company);
             }
             else
@@ -155,5 +166,36 @@ namespace SPPC.Tadbir.Persistence
                     Environment.NewLine, entity.Name, entity.Server, entity.UserName, entity.Password, entity.Description)
                 : null;
         }
+
+        private void CreateDatabase(CompanyDb entity)
+        {
+            string sqlConnectionString = "Server=.;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+            SqlConnection connection = new SqlConnection(sqlConnectionString);
+            Server server = new Server(new ServerConnection(connection));
+            // چک کردن تکراری نبودن نام کاربر
+            // ساخت کاربر دیتابیس
+            // چک کردن تکراری نبودن نام دیتابیس
+            // ساخت دیتابیس
+            // var createDbScript = string.Format("CREATE DATABASE {0}", entity.DbName);
+            // repository.ExecuteCommand(createDbScript);
+            // اجرای اسکریپ
+
+            var ds = server.ConnectionContext.ExecuteWithResults("SELECT name FROM master.dbo.sysdatabases");
+            var test = ds.Tables[0].Rows.Find(entity.DbName);
+            //DataRow dataRow = ds.Tables["NewDataSet"].Rows[0];
+
+            var scriptPath = Path.Combine(_host.WebRootPath, @"script\Tadbir_CreateDbObjects.sql");
+            if (!File.Exists(scriptPath))
+            {
+                throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
+            }
+
+            string companyScript = File.ReadAllText(scriptPath);
+
+            server.ConnectionContext.ExecuteNonQuery(companyScript);
+        }
+
+        private readonly IHostingEnvironment _host;
     }
 }
