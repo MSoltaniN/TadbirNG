@@ -114,5 +114,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// شناسه دیتابیسی کاربر تصویب کننده سند مالی
         /// </summary>
         public int? VoucherApprovedById { get; set; }
+
+        /// <summary>
+        /// رفرنس سند مالی
+        /// </summary>
+        public string VoucherReference { get; set; }
     }
 }
