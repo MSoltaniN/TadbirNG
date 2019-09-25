@@ -29,8 +29,9 @@
             <input type="text" class="k-textbox" formControlName="dbName" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dbName.valid || editForm.controls.dbName.pristine">
-                <span *ngIf="editForm.controls.dbName.errors?.required">{{ 'AllValidations.CompanyDb.DbNameIsRequired' | translate }}</span>
-                <span *ngIf="editForm.controls.dbName.errors?.maxlength">{{ 'AllValidations.CompanyDb.DbNameIsTooLong' | translate }}</span>
+              <span *ngIf="editForm.controls.dbName.errors?.required">{{ 'AllValidations.CompanyDb.DbNameIsRequired' | translate }}</span>
+              <span *ngIf="editForm.controls.dbName.errors?.maxlength">{{ 'AllValidations.CompanyDb.DbNameIsTooLong' | translate }}</span>
+              <span *ngIf="editForm.controls.dbName.errors?.pattern">{{ 'AllValidations.CompanyDb.DbNamePatternNotValid' | translate }}</span>
             </div>
         </div>
 
@@ -48,7 +49,7 @@
         <div class="form-group">
             <label class="control-label">{{ 'Company.UserName' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="userName" />
+            <input type="text" class="k-textbox" formControlName="userName"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.userName.valid || editForm.controls.userName.pristine">               
                 <span *ngIf="editForm.controls.userName.errors?.maxlength">{{ 'AllValidations.CompanyDb.UserNameIsTooLong' | translate }}</span>

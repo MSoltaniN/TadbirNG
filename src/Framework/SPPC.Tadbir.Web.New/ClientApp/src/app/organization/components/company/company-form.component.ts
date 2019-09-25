@@ -7,6 +7,7 @@ import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { CompanyDb } from '@sppc/organization/models';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
+import { FormControl, Validators } from '@angular/forms';
 
 
 
@@ -39,8 +40,9 @@ export class CompanyFormComponent extends DetailComponent {
 
   @Input() public set model(company: CompanyDb) {
     this.editForm.reset(company);
-
     this.active = company !== undefined || this.isNew;
+
+    this.editForm.get('dbName').setValidators([Validators.required, Validators.maxLength(128), Validators.pattern("^[a-zA-Z-_]+$")]);
   }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
