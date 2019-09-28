@@ -41,7 +41,7 @@ namespace SPPC.Tadbir.Persistence
             var allConfig = await repository
                 .GetAllAsync();
             return allConfig
-                .Where(cfg => !(cfg.Type == 3 && cfg.ScopeType == 2))
+                .Where(cfg => !(cfg.Type == 3 && cfg.ScopeType == 2) && cfg.IsStandalone)
                 .Select(cfg => Mapper.Map<SettingBriefViewModel>(cfg))
                 .ToList();
         }

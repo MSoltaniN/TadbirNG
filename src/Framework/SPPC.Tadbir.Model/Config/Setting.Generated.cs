@@ -74,6 +74,11 @@ namespace SPPC.Tadbir.Model.Config
         public virtual string DescriptionKey { get; set; }
 
         /// <summary>
+        /// آیا این تنظیمات مستقل از سایر تنظیمات است یا خیر؟
+        /// </summary>
+        public virtual bool IsStandalone { get; set; }
+
+        /// <summary>
         /// تنظیمات والد برای این تنظیمات در ساختار درختی
         /// </summary>
         public virtual Setting Parent { get; set; }

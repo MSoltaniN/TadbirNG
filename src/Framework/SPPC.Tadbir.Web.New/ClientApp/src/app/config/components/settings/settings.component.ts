@@ -42,11 +42,22 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
   public settingsCategories: any[];
   public settingModel: any[];
   public itemSelectedModel: SettingBriefInfo;
-  public itemUpdatedModel: SettingBriefInfo;
+  public itemUpdatedModel: SettingBriefInfo;  
+
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
+    private settingsService: SettingService, public renderer: Renderer2, public metadata: MetaDataService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, settingsService, Entities.Setting, undefined);
+  }
 
   ngOnInit(): void {
 
+    this.getSettings();
+
+  }
+
+  getSettings() {
     this.settingsService.getSettingsCategories(SettingsApi.AllSettings).subscribe(res => {
+
       this.settingsCategories = res;
       var treeData = new Array<SettingTreeNodeInfo>();
       if (this.settingsCategories != undefined) {
@@ -62,18 +73,12 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
       }
       this.settingModel = JSON.parse(JSON.stringify(treeData));
     });
-
-  }
-
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    private settingsService: SettingService, public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, settingsService, Entities.Setting, undefined);
   }
 
   public handleSelection(item: TreeItem): void {
     this.itemSelectedModel = this.settingsCategories.find(f => f.id == item.dataItem.id);
 
-    if (this.lastSelectedType && this.lastSelectedType != 'ViewTreeConfig') {
+    if (this.lastSelectedType && this.lastSelectedType != 'SystemConfig') {
       this.settingForm.updateListHandler();
       this.updateList(this.lastSelectedType);
     }

@@ -2616,4 +2616,10 @@
   <data name="SubsidiariesOfLedger" xml:space="preserve">
     <value>Subsidiaries of a ledger account</value>
   </data>
+  <data name="SystemConfigurationDescription" xml:space="preserve">
+    <value>Available options for defining system configuration</value>
+  </data>
+  <data name="SystemConfigurationSettings" xml:space="preserve">
+    <value>System Configuration</value>
+  </data>
 </root>

@@ -56,7 +56,7 @@
 
             </div>
 
-            <div *ngIf="lastSelectedType && lastSelectedType != 'ViewTreeConfig'" id="btn-section" class="btn-setting" [ngClass]="{'btn-setting-rtl': currentlang == 'fa', 'btn-setting-ltr' : currentlang == 'en' }">
+            <div *ngIf="lastSelectedType && lastSelectedType != 'SystemConfig'" id="btn-section" class="btn-setting" [ngClass]="{'btn-setting-rtl': currentlang == 'fa', 'btn-setting-ltr' : currentlang == 'en' }">
               <button class="k-button k-primary" SppcPermissionCheck="ManageSettings" (sppcClick)="onDefaultSettings()">{{ 'Settings.DefaultBtn' | translate }}</button>
               <button class="k-button k-primary" SppcPermissionCheck="ManageSettings" (sppcClick)="onSaveSettingsList()">{{ 'ViewTreeConfig.Save' | translate }}</button>
             </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -84,18 +84,18 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
   public errorMessage = String.Empty;
 
-
-
-  public ngOnInit(): void {
-    this.loadEntity();
-  }
-
+  @Output() viewTreeValue: EventEmitter<Array<any>> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private formBuilder: FormBuilder,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Setting, undefined);
     
   }
+
+  public ngOnInit(): void {
+    this.loadEntity();
+  }
+
 
   /**
    * عملیات مربوط به وقتی که بر روی سلولی کلیک میشود
@@ -273,6 +273,9 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    * ذخیره موقت تنظیمات یک موجودیت
    */
   saveLocalChengesView() {
+
+    debugger;
+
     if (this.viewTreeConfig) {
       var config = this.finalViewTreeConfig.find(f => f.viewId == this.viewTreeConfig.viewId);
       if (config) {
@@ -283,37 +286,51 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
       else {
         this.finalViewTreeConfig.push(this.viewTreeConfig);
       }
+
+
+      this.emitViewTreeValue();
+
     }
   }
 
 
-  /**
-   * ذخیره تمام تنظیمات
-   */
-  saveAllConfig() {
-
+  emitViewTreeValue() {
     let myList: Array<{ current: ViewTreeConfig, default: ViewTreeConfig }> = [];
 
     for (let item of this.finalViewTreeConfig) {
       myList.push({ current: item, default: item });
     }
 
-    this.settingService.putViewTreeConfig(SettingsApi.ViewTreeSettings, myList).subscribe(res => {
-      this.maxDepthValue = undefined;
-      this.ddlEntitySelected = undefined;
-      this.viewTreeConfig = undefined;
-      this.viewTreeLevels = [];
-      this.finalViewTreeConfig = [];
-
-      localStorage.removeItem("viewTreeConfig");
-
-      this.showMessage(this.updateMsg, MessageType.Succes);
-
-    }, (error => {
-      this.errorMessage = error;
-    }));
-
+    this.viewTreeValue.emit(myList);
   }
+
+  ///**
+  // * ذخیره تمام تنظیمات
+  // */
+  //saveAllConfig() {
+
+  //  let myList: Array<{ current: ViewTreeConfig, default: ViewTreeConfig }> = [];
+
+  //  for (let item of this.finalViewTreeConfig) {
+  //    myList.push({ current: item, default: item });
+  //  }
+
+  //  this.settingService.putViewTreeConfig(SettingsApi.ViewTreeSettings, myList).subscribe(res => {
+  //    this.maxDepthValue = undefined;
+  //    this.ddlEntitySelected = undefined;
+  //    this.viewTreeConfig = undefined;
+  //    this.viewTreeLevels = [];
+  //    this.finalViewTreeConfig = [];
+
+  //    localStorage.removeItem("viewTreeConfig");
+
+  //    this.showMessage(this.updateMsg, MessageType.Succes);
+
+  //  }, (error => {
+  //    this.errorMessage = error;
+  //  }));
+
+  //}
 
   /**
    * اعمال تنظیمات پیش فرض

@@ -144,7 +144,6 @@ export class SettingsFormComponent extends DetailComponent {
         }
       default:
         {
-
           break;
         }
     }

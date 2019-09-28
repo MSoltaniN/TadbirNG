@@ -555,3 +555,17 @@ VALUES (365, 35, N'VoucherReference', NULL, N'System.String', N'nvarchar', N'str
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
 VALUES (366, 36, N'VoucherReference', NULL, N'System.String', N'nvarchar', N'string', 64, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+-- 1.1.723
+ALTER TABLE Config.Setting 
+ADD IsStandalone bit NOT NULL DEFAULT 1
+GO
+
+UPDATE Config.Setting
+SET IsStandalone=0
+WHERE TitleKey='ViewTreeSettings'
+
+SET IDENTITY_INSERT [Config].[Setting] ON
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
+VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{}', N'{}', 'SystemConfigurationDescription', 1)
+SET IDENTITY_INSERT [Config].[Setting] OFF

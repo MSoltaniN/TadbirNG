@@ -2607,4 +2607,10 @@
   <data name="SubsidiariesOfLedger" xml:space="preserve">
     <value>معین های یک حساب کل</value>
   </data>
+  <data name="SystemConfigurationDescription" xml:space="preserve">
+    <value>گزینه های موجود برای تعریف پیکربندی سیستم</value>
+  </data>
+  <data name="SystemConfigurationSettings" xml:space="preserve">
+    <value>پیکربندی سیستم</value>
+  </data>
 </root>

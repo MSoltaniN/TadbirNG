@@ -90,5 +90,11 @@ namespace SPPC.Tadbir.ViewModel.Config
         /// </summary>
         [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string DescriptionKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the آیا این تنظیمات مستقل از تنظیمات دیگر است یا خیر؟
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        public bool IsStandalone { get; set; }
     }
 }

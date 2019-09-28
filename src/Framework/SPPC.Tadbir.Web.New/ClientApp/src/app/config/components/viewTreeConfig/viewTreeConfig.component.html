@@ -66,12 +66,16 @@
 
 </kendo-grid>
 
-<button class="k-button k-primary btn-setting" [ngClass]="{'btn-setting-rtl': currentlang == 'fa', 'btn-setting-ltr' : currentlang == 'en' }"
-        [disabled]="finalViewTreeConfig.length == 0"
-        SppcPermissionCheck="ManageSettings"
-        (sppcClick)="saveAllConfig()">
-  {{ 'ViewTreeConfig.Save' | translate }}
-</button>
+<!--<div class="btn-setting">
+  <button class="k-button k-primary" [ngClass]="{'btn-setting-rtl': currentlang == 'fa', 'btn-setting-ltr' : currentlang == 'en' }"
+          [disabled]="finalViewTreeConfig.length == 0"
+          SppcPermissionCheck="ManageSettings"
+          (sppcClick)="saveAllConfig()">
+    {{ 'ViewTreeConfig.Save' | translate }}
+  </button>
+</div>-->
+
+
 
 
 

@@ -10,6 +10,7 @@ import { SettingService } from '@sppc/config/service';
 import { SettingsComponent } from '@sppc/config/components/settings/settings.component';
 import { SettingsFormComponent } from '@sppc/config/components/settings/settings-form.component';
 import { ViewTreeConfigComponent } from '@sppc/config/components/viewTreeConfig/viewTreeConfig.component';
+import { SystemConfigurationComponent } from '@sppc/config/components/systemConfiguration/systemConfiguration.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { ViewTreeConfigComponent } from '@sppc/config/components/viewTreeConfig/
     ConfigRoutingModule,
     SharedModule
   ],
-  declarations: [SettingsComponent, SettingsFormComponent, ViewTreeConfigComponent],
+  declarations: [SettingsComponent, SettingsFormComponent, ViewTreeConfigComponent, SystemConfigurationComponent],
   providers: [SettingService]
 })
 export class ConfigModule { }
