@@ -96,7 +96,9 @@
       <button kendoButton class="hidden-xs rm" title="{{ 'Report.Print' | translate }}" (click)="showReport()"
               [icon]="'printer'" type="button"></button>
       <button kendoButton class="hidden-xs rm" title="{{ 'Balance.SubBalance' | translate }}" (click)="showSubAccountsBalance()"
-              [icon]="'filter-add-expression'" type="button"></button>      
+              [icon]="'filter-add-expression'" type="button"></button>
+      <button kendoButton class="hidden-xs rm" title="{{ 'Balance.AccountBook' | translate }}" (click)="showAccountBook()"
+              [icon]="'dictionary-add'" type="button"></button>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="66">
