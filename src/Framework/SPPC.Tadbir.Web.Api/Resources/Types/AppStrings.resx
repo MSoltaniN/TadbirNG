@@ -2613,4 +2613,10 @@
   <data name="SystemConfigurationSettings" xml:space="preserve">
     <value>پیکربندی سیستم</value>
   </data>
+  <data name="TestBalanceSettings" xml:space="preserve">
+    <value>تراز آزمایشی</value>
+  </data>
+  <data name="TestBalanceSettingsDescription" xml:space="preserve">
+    <value>گزینه های موجود برای محاسبه اطلاعات گزارش تراز آزمایشی</value>
+  </data>
 </root>
