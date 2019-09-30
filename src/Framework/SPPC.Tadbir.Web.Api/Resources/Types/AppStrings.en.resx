@@ -2622,4 +2622,10 @@
   <data name="SystemConfigurationSettings" xml:space="preserve">
     <value>System Configuration</value>
   </data>
+  <data name="TestBalanceSettings" xml:space="preserve">
+    <value>Test balance</value>
+  </data>
+  <data name="TestBalanceSettingsDescription" xml:space="preserve">
+    <value>Available options that affect calculation of test balance report</value>
+  </data>
 </root>
