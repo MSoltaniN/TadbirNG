@@ -273,6 +273,8 @@
     "UserSettings": "تنظیمات کاربر",
     "Options": "تنظیمات",
     "AccountBook": "دفتر حساب",
+    "Title": "تراز",
+    "Ledger": "کل",
     "Format": {
       "Balance2Column": "2 ستونی",
       "Balance4Column": "4 ستونی",
