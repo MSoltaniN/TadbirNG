@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
@@ -64,6 +65,14 @@ namespace SPPC.Tadbir.Web.Api
 
         private void AddPersistenceTypes()
         {
+            _services.AddTransient<ISqlConsole>(provider =>
+            {
+                return new SqlServerConsole()
+                {
+                    ConnectionString = _configuration.GetConnectionString("TadbirSysApi")
+                };
+            });
+
             _services.AddTransient<IAppUnitOfWork, AppUnitOfWork>();
             _services.AddTransient<IAccountRepository, AccountRepository>();
             _services.AddTransient<IDetailAccountRepository, DetailAccountRepository>();
