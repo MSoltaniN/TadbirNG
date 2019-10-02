@@ -2628,4 +2628,7 @@
   <data name="TestBalanceSettingsDescription" xml:space="preserve">
     <value>Available options that affect calculation of test balance report</value>
   </data>
+  <data name="InvalidEmptyVoucherAction" xml:space="preserve">
+    <value>Action '{0}' cannot be done on a voucher that has no lines.</value>
+  </data>
 </root>

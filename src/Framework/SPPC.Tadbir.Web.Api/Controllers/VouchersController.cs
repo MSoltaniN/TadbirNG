@@ -528,6 +528,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 || Math.Abs(voucher.DebitSum - voucher.CreditSum) >= 1.0M;
         }
 
+        private static bool IsVoucherMainAction(string action)
+        {
+            return action == VoucherAction.Check
+                || action == VoucherAction.Confirm
+                || action == VoucherAction.Approve
+                || action == VoucherAction.Finalize;
+        }
+
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
         {
             if (model == null)
@@ -630,6 +638,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!String.IsNullOrEmpty(error))
             {
                 return BadRequest(_strings.Format(AppStrings.InvalidVoucherAction, action, error));
+            }
+
+            if (IsVoucherMainAction(action))
+            {
+                int lineCount = await _lineRepository.GetArticleCountAsync<VoucherLineViewModel>(voucherId);
+                if (lineCount == 0)
+                {
+                    return BadRequest(_strings.Format(AppStrings.InvalidEmptyVoucherAction, action));
+                }
             }
 
             return Ok();

@@ -2619,4 +2619,7 @@
   <data name="TestBalanceSettingsDescription" xml:space="preserve">
     <value>گزینه های موجود برای محاسبه اطلاعات گزارش تراز آزمایشی</value>
   </data>
+  <data name="InvalidEmptyVoucherAction" xml:space="preserve">
+    <value>عمل '{0}' روی سند بدون آرتیکل امکان پذیر نیست.</value>
+  </data>
 </root>
