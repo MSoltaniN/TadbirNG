@@ -170,6 +170,11 @@
     "OpeningVoucher": "Opening voucher",
     "UserSettings": "User settings",
     "Options": "Settings",
+    "AccountBook": "Account Book",
+    "Title": "Test Balance",
+    "Ledger": "Ledger",
+    "ShowAccountBookHint": "To view the account book, please set filter by date",
+    "LevelIsNotExists": "No account with turnover could be found at lower levels",
     "Format": {
       "Balance2Column": "2 Columns",
       "Balance4Column": "4 Columns",

@@ -275,6 +275,8 @@
     "AccountBook": "دفتر حساب",
     "Title": "تراز",
     "Ledger": "کل",
+    "ShowAccountBookHint": "برای مشاهده دفتر حساب لطفا فیلتر تراز براساس تاریخ قرار دهید",
+    "LevelIsNotExists": "حساب دارای گردشی در سطوح پایین تر نیست",
     "Format": {
       "Balance2Column": "2 ستونی",
       "Balance4Column": "4 ستونی",
