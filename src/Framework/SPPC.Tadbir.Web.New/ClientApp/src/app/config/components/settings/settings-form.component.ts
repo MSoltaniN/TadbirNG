@@ -69,13 +69,17 @@ export class SettingsFormComponent extends DetailComponent {
     separatorMode: new FormControl(),
     separatorSymbol: new FormControl()
   });
+
+  public testBalanceForm = new FormGroup({
+    addOpeningVoucherToInitBalance: new FormControl()    
+  });
+
   public ddlNumberPrecision: Array<Item2>;
   public ddlSeparatorMode: Array<Item>;
   public selectedDDLDecimalPrecisionValue: string;
   public selectedDDLMaxPrecisionValue: string;
   public selectedDDLSeparatorModeValue: string;
-
-
+   
 
   @Input() public set model(setting: SettingBriefInfo) {
     this.selectedItemModel = setting;
@@ -142,6 +146,12 @@ export class SettingsFormComponent extends DetailComponent {
           this.updateList.emit(this.selectedItemModel);
           break;
         }
+      case SettingsType.TestBalanceConfig:
+        {
+          this.selectedItemModel.values = this.testBalanceForm.value;
+          this.updateList.emit(this.selectedItemModel);
+          break;
+        }
       default:
         {
           break;
@@ -176,6 +186,11 @@ export class SettingsFormComponent extends DetailComponent {
           this.selectedDDLMaxPrecisionValue = defaultValue.maxPrecision;
           this.selectedDDLSeparatorModeValue = defaultValue.separatorMode;
           this.numberDisplayForm.reset(objectValue);
+          break;
+        }
+      case SettingsType.TestBalanceConfig:
+        {
+          this.testBalanceForm.reset(objectValue);
           break;
         }
       case SettingsType.RelationsConfig:
