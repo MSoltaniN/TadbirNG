@@ -135,6 +135,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>محدودیت های ثبت قابل استفاده در تعریف حساب</returns>
         IList<KeyValue> GetAccountTurnoverModes();
 
+        /// <summary>
+        /// به روش آسنکرون، سطوح قابل استفاده برای دفتر حساب را از تنظیمات درختی خوانده و برمی گرداند
+        /// </summary>
+        /// <returns></returns>
+        Task<IList<AccountLevelViewModel>> GetAccountBookLevelsAsync();
+
         #endregion
 
         #region Security Subsystem lookup

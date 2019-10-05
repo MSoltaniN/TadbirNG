@@ -251,39 +251,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(LookupApi.AccountBookLevelsUrl)]
         public async Task<IActionResult> GetAccountBookLevelsAsync()
         {
-            var levels = new List<AccountLevelViewModel>();
-            var allConfig = await _configRepository.GetAllViewTreeConfigAsync();
-            int key = 0;
-            foreach (var config in allConfig)
+            var levels = await _repository.GetAccountBookLevelsAsync();
+            foreach (var level in levels)
             {
-                int viewId = config.Current.ViewId;
-                if (viewId == ViewName.Account)
-                {
-                    Array.ForEach(config.Current.Levels.Where(lvl => lvl.IsUsed).ToArray(), level =>
-                    {
-                        levels.Add(new AccountLevelViewModel()
-                        {
-                            Key = key++,
-                            Level = level.No - 1,
-                            Title = LocalizeLevelTitle(level.Name, level.No),
-                            ViewId = viewId
-                        });
-                    });
-                }
-                else
-                {
-                    var lastUsed = config.Current.Levels
-                        .Where(lvl => lvl.IsUsed)
-                        .OrderByDescending(lvl => lvl.No)
-                        .First();
-                    levels.Add(new AccountLevelViewModel()
-                    {
-                        Key = key++,
-                        Level = lastUsed.No - 1,
-                        Title = LocalizeLevelTitle(lastUsed.Name, lastUsed.No),
-                        ViewId = viewId
-                    });
-                }
+                level.Title = LocalizeLevelTitle(level.Title, level.Level);
             }
 
             return Json(levels);
