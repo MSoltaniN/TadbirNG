@@ -8,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -28,9 +29,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        public LookupRepository(IRepositoryContext context)
+        public LookupRepository(IRepositoryContext context, ISystemRepository system)
             : base(context)
         {
+            _system = system;
         }
 
         #region Finance Subsystem Lookup
@@ -390,6 +392,53 @@ namespace SPPC.Tadbir.Persistence
             return turnovers;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سطوح قابل استفاده برای دفتر حساب را از تنظیمات درختی خوانده و برمی گرداند
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IList<AccountLevelViewModel>> GetAccountBookLevelsAsync()
+        {
+            var levels = new List<AccountLevelViewModel>();
+            var allConfig = await Config.GetAllViewTreeConfigAsync();
+            int key = 0;
+            foreach (var config in allConfig)
+            {
+                int viewId = config.Current.ViewId;
+                if (viewId == ViewName.Account)
+                {
+                    Array.ForEach(config.Current.Levels.Where(lvl => lvl.IsUsed).ToArray(), level =>
+                    {
+                        levels.Add(new AccountLevelViewModel()
+                        {
+                            Key = key++,
+                            Level = level.No,
+                            Title = level.Name,
+                            ViewId = viewId
+                        });
+                    });
+                }
+                else
+                {
+                    var lastUsed = config.Current.Levels
+                        .Where(lvl => lvl.IsUsed)
+                        .OrderByDescending(lvl => lvl.No)
+                        .FirstOrDefault();
+                    if (lastUsed != null)
+                    {
+                        levels.Add(new AccountLevelViewModel()
+                        {
+                            Key = key++,
+                            Level = lastUsed.No,
+                            Title = lastUsed.Name,
+                            ViewId = viewId
+                        });
+                    }
+                }
+            }
+
+            return levels;
+        }
+
         #endregion
 
         #region Security Subsystem lookup
@@ -475,6 +524,14 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
+        private IConfigRepository Config
+        {
+            get
+            {
+                return _system.Config;
+            }
+        }
+
         private static async Task<double> GetLastCurrencyRateAsync(
             IAsyncRepository<Currency> repository, Currency currency)
         {
@@ -512,5 +569,7 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseCompanyContext();
             return lookup;
         }
+
+        private readonly ISystemRepository _system;
     }
 }
