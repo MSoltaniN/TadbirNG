@@ -81,6 +81,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            if (!await _repository.IsValidBranchAsync(branch))
+            {
+                return BadRequest(_strings.Format(AppStrings.RootBranchAlreadyDefined));
+            }
+
             var outputItem = await _repository.SaveBranchAsync(branch);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }

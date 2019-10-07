@@ -2622,4 +2622,7 @@
   <data name="InvalidEmptyVoucherAction" xml:space="preserve">
     <value>عمل '{0}' روی سند بدون آرتیکل امکان پذیر نیست.</value>
   </data>
+  <data name="RootBranchAlreadyDefined" xml:space="preserve">
+    <value>فقط یک شعبه در بالاترین سطح قابل تعریف است.</value>
+  </data>
 </root>

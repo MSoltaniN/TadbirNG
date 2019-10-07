@@ -263,6 +263,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، قواعد کاری تعریف شده را برای شعبه داده شده بررسی می کند
+        /// </summary>
+        /// <param name="branch">مدل نمایشی شعبه مورد بررسی</param>
+        /// <returns>در صورت نبود اشکال، مقدار بولی "درست" و در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsValidBranchAsync(BranchViewModel branch)
+        {
+            bool isValid = branch.Level > 0;
+            if (!isValid)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Branch>();
+                int count = await repository.GetCountByCriteriaAsync(
+                    br => br.Level == 0);
+                isValid = count == 0;
+            }
+
+            return isValid;
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="branchViewModel">مدل نمایشی شامل آخرین تغییرات</param>
