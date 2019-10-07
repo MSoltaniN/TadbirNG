@@ -253,12 +253,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var accounts = await repository
-                .GetByCriteriaAsync(
-                    acc => acc.Id != accountViewModel.Id
-                        && acc.FiscalPeriod.Id <= accountViewModel.FiscalPeriodId
-                        && acc.FullCode == accountViewModel.FullCode);
-            return (accounts.Count > 0);
+            int count = await repository
+                .GetCountByCriteriaAsync(acc => acc.Id != accountViewModel.Id
+                    && acc.FullCode == accountViewModel.FullCode);
+            return count > 0;
         }
 
         /// <summary>
@@ -499,8 +497,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             return await repository
                 .GetEntityQuery()
-                .Where(acc => acc.ParentId == parentId
-                    && acc.FiscalPeriodId <= UserContext.FiscalPeriodId)
+                .Where(acc => acc.ParentId == parentId)
                 .Select(acc => acc.Code)
                 .ToListAsync();
         }
