@@ -576,6 +576,9 @@
       "UseDefault": "تنظیمات سیستم عامل",
       "UseCustom": "تنظیمات برنامه"
     },
+    "TestBalance": {
+      "OpeningVoucherAsInitBalance" :  "انعکاس افتتاحیه در ستون مانده ابتدا"
+    },
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",
     "DefaultBtn": "تنظیمات پیش فرض",

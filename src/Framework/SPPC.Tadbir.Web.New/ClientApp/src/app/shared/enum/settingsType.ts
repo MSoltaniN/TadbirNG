@@ -4,6 +4,7 @@ export enum SettingsType {
   DateRangeConfig = "DateRangeConfig",
   NumberDisplayConfig = "NumberDisplayConfig",
   ViewTreeConfig = "ViewTreeConfig",
-  EntityRowAccessConfig = "EntityRowAccessConfig"
+  EntityRowAccessConfig = "EntityRowAccessConfig",
+  TestBalanceConfig = "TestBalanceConfig"
 }
 

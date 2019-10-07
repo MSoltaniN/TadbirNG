@@ -2631,4 +2631,7 @@
   <data name="InvalidEmptyVoucherAction" xml:space="preserve">
     <value>Action '{0}' cannot be done on a voucher that has no lines.</value>
   </data>
+  <data name="RootBranchAlreadyDefined" xml:space="preserve">
+    <value>Only one branch can be defined at root level.</value>
+  </data>
 </root>

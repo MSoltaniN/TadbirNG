@@ -96,6 +96,17 @@
     </form>
 </div>
 
+<div *ngIf="selectedItemType == 'TestBalanceConfig'" class="settings-form col-md-5" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+  <form novalidate [formGroup]="testBalanceForm">
+    <div class="form-group">
+      <label for="addOpeningVoucherToInitBalance" class="control-label">
+        <input type="checkbox" formControlName="addOpeningVoucherToInitBalance" />
+        {{ 'Settings.TestBalance.OpeningVoucherAsInitBalance' | translate }}
+      </label>
+    </div>
+  </form>
+</div>
+
 <div *ngIf="selectedItemType == 'SystemConfig'" class="settings-form">
   <system-configuration [model]="selectedItemModel"></system-configuration>
 </div>

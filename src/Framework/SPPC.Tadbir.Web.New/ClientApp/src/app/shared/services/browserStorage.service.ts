@@ -16,6 +16,7 @@ export const SessionKeys = {
   CurrentRoute: 'currentRoute',
   CurrentSkin: 'currentSkin',
   NumberConfig: 'numberConfig',
+  TestBalanceConfig: 'testBalanceConfig',
   DateRangeConfig: 'DateRangeConfig',
   SelectedDateRange: 'SelectedDateRange',
   MetadataKey: 'metadata_view_{0}_{1}',
@@ -245,6 +246,10 @@ export class BrowserStorageService {
     return localStorage.getItem(SessionKeys.NumberConfig);
   }
 
+  getTestBalanceConfig(): string {
+    return localStorage.getItem(SessionKeys.NumberConfig);
+  }
+
   removeNumberConfig() {
     if (localStorage.getItem(SessionKeys.NumberConfig))
       localStorage.removeItem(SessionKeys.NumberConfig);
@@ -253,6 +258,11 @@ export class BrowserStorageService {
   setNumberConfig(numConfig: any) {
     localStorage.setItem(SessionKeys.NumberConfig, JSON.stringify(numConfig));
   }
+
+  setTestBalanceConfig(numConfig: any) {
+    localStorage.setItem(SessionKeys.TestBalanceConfig, JSON.stringify(numConfig));
+  }
+
 
   removeDateRangeConfig() {
     if (localStorage.getItem(SessionKeys.DateRangeConfig))

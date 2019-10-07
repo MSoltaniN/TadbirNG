@@ -229,12 +229,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(costCenter, "costCenter");
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenters = await repository
-                .GetByCriteriaAsync(
-                    cc => cc.Id != costCenter.Id
-                        && cc.FiscalPeriod.Id <= costCenter.FiscalPeriodId
-                        && cc.FullCode == costCenter.FullCode);
-            return (costCenters.Count > 0);
+            int count = await repository
+                .GetCountByCriteriaAsync(cc => cc.Id != costCenter.Id
+                    && cc.FullCode == costCenter.FullCode);
+            return count > 0;
         }
 
         /// <summary>
@@ -407,8 +405,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             return await repository
                 .GetEntityQuery()
-                .Where(cc => cc.ParentId == parentId
-                    && cc.FiscalPeriodId <= UserContext.FiscalPeriodId)
+                .Where(cc => cc.ParentId == parentId)
                 .Select(cc => cc.Code)
                 .ToListAsync();
         }

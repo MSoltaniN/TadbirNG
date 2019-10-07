@@ -98,5 +98,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر شعبه مورد نظر به یک یا چند نقش تخصیص داده شده باشد مقدار "درست" و
         /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> HasAssignedRolesAsync(int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، قواعد کاری تعریف شده را برای شعبه داده شده بررسی می کند
+        /// </summary>
+        /// <param name="branch">مدل نمایشی شعبه مورد بررسی</param>
+        /// <returns>در صورت نبود اشکال، مقدار بولی "درست" و در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsValidBranchAsync(BranchViewModel branch);
     }
 }

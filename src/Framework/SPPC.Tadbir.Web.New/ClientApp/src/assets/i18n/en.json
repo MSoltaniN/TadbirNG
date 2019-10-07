@@ -575,6 +575,9 @@
       "UseDefault": "Operating system settings",
       "UseCustom": "Application settings"
     },
+    "TestBalance": {
+      "OpeningVoucherAsInitBalance": "Opening Voucher As Init Balance"
+    },
     "Description": "Description",
     "TitleText": "Settings List",
     "DefaultBtn": "Default Settings",

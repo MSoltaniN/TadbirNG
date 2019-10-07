@@ -230,12 +230,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(detailAccount, "detailAccount");
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccounts = await repository
-                .GetByCriteriaAsync(
-                    facc => facc.Id != detailAccount.Id
-                        && facc.FiscalPeriod.Id <= detailAccount.FiscalPeriodId
-                        && facc.FullCode == detailAccount.FullCode);
-            return (detailAccounts.Count > 0);
+            int count = await repository
+                .GetCountByCriteriaAsync(facc => facc.Id != detailAccount.Id
+                    && facc.FullCode == detailAccount.FullCode);
+            return count > 0;
         }
 
         /// <summary>
@@ -409,8 +407,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             return await repository
                 .GetEntityQuery()
-                .Where(facc => facc.ParentId == parentId
-                    && facc.FiscalPeriodId <= UserContext.FiscalPeriodId)
+                .Where(facc => facc.ParentId == parentId)
                 .Select(facc => facc.Code)
                 .ToListAsync();
         }

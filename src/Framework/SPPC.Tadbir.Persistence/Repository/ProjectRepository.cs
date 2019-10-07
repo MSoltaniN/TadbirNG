@@ -230,12 +230,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(project, "project");
             var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var projects = await repository
-                .GetByCriteriaAsync(
-                    prj => prj.Id != project.Id
-                        && prj.FiscalPeriod.Id <= project.FiscalPeriodId
-                        && prj.FullCode == project.FullCode);
-            return (projects.Count > 0);
+            int count = await repository
+                .GetCountByCriteriaAsync(prj => prj.Id != project.Id
+                    && prj.FullCode == project.FullCode);
+            return count > 0;
         }
 
         /// <summary>
@@ -408,8 +406,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             return await repository
                 .GetEntityQuery()
-                .Where(prj => prj.ParentId == parentId
-                    && prj.FiscalPeriodId <= UserContext.FiscalPeriodId)
+                .Where(prj => prj.ParentId == parentId)
                 .Select(prj => prj.Code)
                 .ToListAsync();
         }
