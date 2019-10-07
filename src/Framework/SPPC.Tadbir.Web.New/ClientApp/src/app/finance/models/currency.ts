@@ -26,4 +26,5 @@ export interface Currency {
     decimalCount: number;
     isActive: boolean;
     description?: string;
+    isDefaultCurrency: boolean;
 }

@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
@@ -263,6 +265,42 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات یک ارز پایه را ایجاد می کند
+        /// </summary>
+        /// <param name="currency">ارز مورد نظر برای ایجاد</param>
+        /// <returns>اطلاعات نمایشی ارز ایجاد شده</returns>
+        public async Task<CurrencyViewModel> InsertDefaultCurrencyAsync(CurrencyViewModel currency)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Currency>();
+            CurrencyViewModel currencyViewModel = default(CurrencyViewModel);
+            var existingDefaultCurrency = await repository.GetFirstByCriteriaAsync(
+                curr => curr.IsDefaultCurrency);
+
+            if (existingDefaultCurrency != null)
+            {
+                if (existingDefaultCurrency.Code != currency.Code)
+                {
+                    currencyViewModel = Mapper.Map<CurrencyViewModel>(existingDefaultCurrency);
+                    currencyViewModel.IsDefaultCurrency = false;
+
+                    await UpdateAsync(repository, existingDefaultCurrency, currencyViewModel);
+
+                    currencyViewModel = await SaveDefaultCurrencyAsync(currency);
+                }
+                else
+                {
+                    currencyViewModel = Mapper.Map<CurrencyViewModel>(existingDefaultCurrency);
+                }
+            }
+            else
+            {
+                currencyViewModel = await SaveDefaultCurrencyAsync(currency);
+            }
+
+            return currencyViewModel;
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="currencyViewModel">مدل نمایشی شامل آخرین تغییرات</param>
@@ -279,6 +317,7 @@ namespace SPPC.Tadbir.Persistence
             currency.DecimalCount = currencyViewModel.DecimalCount;
             currency.IsActive = currencyViewModel.IsActive;
             currency.Description = currencyViewModel.Description;
+            currency.IsDefaultCurrency = currencyViewModel.IsDefaultCurrency;
         }
 
         /// <summary>
@@ -319,6 +358,26 @@ Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLi
                 .Where(line => line.CurrencyId == currencyId)
                 .CountAsync();
             return (usageCount != 0);
+        }
+
+        private async Task<CurrencyViewModel> SaveDefaultCurrencyAsync(CurrencyViewModel currency)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Currency>();
+            Currency currencyModel = default(Currency);
+            var existingCurrency = await repository.GetFirstByCriteriaAsync(
+                          curr => curr.Code == currency.Code);
+
+            if (existingCurrency != null)
+            {
+                await UpdateAsync(repository, existingCurrency, currency);
+            }
+            else
+            {
+                currencyModel = Mapper.Map<Currency>(currency);
+                await InsertAsync(repository, currencyModel);
+            }
+
+            return Mapper.Map<CurrencyViewModel>(currencyModel);
         }
 
         private readonly IAccessRepository _access;

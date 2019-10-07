@@ -291,5 +291,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for voucher article metadata
         /// </summary>
         public const string VoucherArticleMetadataUrl = "vouchers/articles/metadata";
+
+        /// <summary>
+        /// API client URL for count of all articles
+        /// </summary>
+        public const string VoucherArticlesCount = "vouchers/articles/count";
+
+        /// <summary>
+        /// API server route URL for count of all articles
+        /// </summary>
+        public const string VoucherArticlesCountUrl = "vouchers/articles/count";
     }
 }

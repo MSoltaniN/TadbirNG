@@ -373,6 +373,17 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تعداد کل حساب های ثبت شده را برمیگرداند
+        /// </summary>
+        /// <returns>تعداد کل حساب ها</returns>
+        public async Task<int> GetAllAccountsCountAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            var query = repository.GetEntityQuery();
+            return await query.CountAsync();
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="accountViewModel">مدل نمایشی شامل آخرین تغییرات</param>

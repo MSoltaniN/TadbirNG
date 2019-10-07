@@ -101,5 +101,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
+
+        /// <summary>
+        /// آیا این ارز، ارز پایه میباشد؟
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        public virtual bool IsDefaultCurrency { get; set; }
+
     }
 }

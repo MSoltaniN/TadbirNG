@@ -78,5 +78,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// شرح تکمیلی برای نگهداری جزئیات بیشتر در مورد ارز
         /// </summary>
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// آیا این ارز، ارز پایه میباشد؟
+        /// </summary>
+        public virtual bool IsDefaultCurrency { get; set; }
+
     }
 }

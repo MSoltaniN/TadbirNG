@@ -14,27 +14,30 @@ import { environment } from "@sppc/env/environment";
 
 export class AccountApi {
 
-    // accounts
-    public static EnvironmentAccounts = environment.BaseUrl + "/accounts";
+  // accounts
+  public static EnvironmentAccounts = environment.BaseUrl + "/accounts";
 
-    // accounts/lookup
-    public static EnvironmentAccountsLookup = environment.BaseUrl + "/accounts/lookup";
+  // accounts/lookup
+  public static EnvironmentAccountsLookup = environment.BaseUrl + "/accounts/lookup";
 
-    // accounts/ledger
-    public static EnvironmentLedgerAccounts = environment.BaseUrl + "/accounts/ledger";
+  // accounts/ledger
+  public static EnvironmentLedgerAccounts = environment.BaseUrl + "/accounts/ledger";
 
-    // accounts/ledger/{groupId:min(1)}
-    public static EnvironmentLedgerAccountsByGroupId = environment.BaseUrl + "/accounts/ledger/{0}";
+  // accounts/ledger/{groupId:min(1)}
+  public static EnvironmentLedgerAccountsByGroupId = environment.BaseUrl + "/accounts/ledger/{0}";
 
-    // accounts/{accountId:min(1)}
-    public static Account = environment.BaseUrl + "/accounts/{0}";
+  // accounts/{accountId:min(1)}
+  public static Account = environment.BaseUrl + "/accounts/{0}";
 
-    // accounts/{accountId:min(1)}/children
-    public static AccountChildren = environment.BaseUrl + "/accounts/{0}/children";
+  // accounts/{accountId:min(1)}/children
+  public static AccountChildren = environment.BaseUrl + "/accounts/{0}/children";
 
-    // accounts/{accountId:int}/children/new
-    public static EnvironmentNewChildAccount = environment.BaseUrl + "/accounts/{0}/children/new";
+  // accounts/{accountId:int}/children/new
+  public static EnvironmentNewChildAccount = environment.BaseUrl + "/accounts/{0}/children/new";
 
-    // accounts/fullcode/{parentId}
-    public static AccountFullCode = environment.BaseUrl + "/accounts/fullcode/{0}";
+  // accounts/fullcode/{parentId}
+  public static AccountFullCode = environment.BaseUrl + "/accounts/fullcode/{0}";
+
+  // accounts/count
+  public static AccountsCount = environment.BaseUrl + "/accounts/count";
 }

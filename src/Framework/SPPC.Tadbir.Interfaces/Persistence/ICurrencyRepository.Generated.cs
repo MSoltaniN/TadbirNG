@@ -104,5 +104,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر ارز مشخص شده قبلاً تعریف شده باشد مقدار بولی "درست" و در غیر این صورت
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
         Task<bool> IsDuplicateCurrencyAsync(string code, int currencyId = 0);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات یک ارز پایه را ایجاد می کند
+        /// </summary>
+        /// <param name="currency">ارز مورد نظر برای ایجاد</param>
+        /// <returns>اطلاعات نمایشی ارز ایجاد شده</returns>
+        Task<CurrencyViewModel> InsertDefaultCurrencyAsync(CurrencyViewModel currency);
     }
 }

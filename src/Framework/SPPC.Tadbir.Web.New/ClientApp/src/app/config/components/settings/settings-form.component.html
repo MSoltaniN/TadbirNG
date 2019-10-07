@@ -97,8 +97,7 @@
 </div>
 
 <div *ngIf="selectedItemType == 'SystemConfig'" class="settings-form">
-    <!--<view-tree-config></view-tree-config>-->
-  <system-configuration></system-configuration>
+  <system-configuration [model]="selectedItemModel"></system-configuration>
 </div>
 
 

@@ -283,3 +283,8 @@ CREATE TABLE [Finance].[AccountCurrency](
 , CONSTRAINT [FK_Finance_AccountCurrency_Finance_Currency] FOREIGN KEY([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
 )
 GO
+
+-- 1.1.730
+ALTER TABLE Finance.Currency ADD
+	IsDefaultCurrency bit NOT NULL  DEFAULT 0
+GO

@@ -47,4 +47,7 @@ export class SettingsApi {
 
     // settings/views/{viewId:min(1)}/tree
     public static ViewTreeSettingsByView = environment.BaseUrl + "/settings/views/{0}/tree";
+
+    // settings/sysconfig
+    public static SystemConfig = environment.BaseUrl + "/settings/sysconfig";
 }

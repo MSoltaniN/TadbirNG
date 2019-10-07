@@ -97,4 +97,7 @@ export class VoucherApi {
 
     // vouchers/articles/metadata
     public static VoucherArticleMetadata = environment.BaseUrl + "/vouchers/articles/metadata";
+
+    // vouchers/articles/count
+    public static VoucherArticlesCount = environment.BaseUrl + "/vouchers/articles/count";
 }

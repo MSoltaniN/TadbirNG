@@ -553,32 +553,35 @@
       "SelectedAccount": "This account is selected",
       "AccountViewAccess": "You do not have access to viewing selected accounts"
     },
-    "Settings": {
-      "AccountRelation": {
-        "LeafAccounts": "Create relations at the latest account level",
-        "LeafDetails": "Create relations at the latest floating account level",
-        "LeafCostCenters": "Create relations at the latest cost center level",
-        "LeafProjects": "Create relations at the latest project level"
-      },
-      "DateRanges": {
-        "DefaultDateRanges": "Historical Default Range",
-        "FiscalStartToCurrent": "The beginning of the fiscal period till today",
-        "FiscalStartToFiscalEnd": "Initially until the end of the fiscal period",
-        "CurrentToCurrent": "Current to current"
-      },
-      "NumberDisplay": {
-        "decimalPrecision": "Number of decimal precision",
-        "maxPrecision": "Maximum decimal precision",
-        "useSeparator": "Use the separator",
-        "separatorMode": "Separator settings",
-        "separatorSymbol": "Separator symbol",
-        "UseDefault": "Operating system settings",
-        "UseCustom": "Application settings"
-      },
-      "Description": "Description",
-      "TitleText": "Settings List",
-      "DefaultBtn": "Default Settings"
+  "Settings": {
+    "AccountRelation": {
+      "LeafAccounts": "Create relations at the latest account level",
+      "LeafDetails": "Create relations at the latest floating account level",
+      "LeafCostCenters": "Create relations at the latest cost center level",
+      "LeafProjects": "Create relations at the latest project level"
     },
+    "DateRanges": {
+      "DefaultDateRanges": "Historical Default Range",
+      "FiscalStartToCurrent": "The beginning of the fiscal period till today",
+      "FiscalStartToFiscalEnd": "Initially until the end of the fiscal period",
+      "CurrentToCurrent": "Current to current"
+    },
+    "NumberDisplay": {
+      "decimalPrecision": "Number of decimal precision",
+      "maxPrecision": "Maximum decimal precision",
+      "useSeparator": "Use the separator",
+      "separatorMode": "Separator settings",
+      "separatorSymbol": "Separator symbol",
+      "UseDefault": "Operating system settings",
+      "UseCustom": "Application settings"
+    },
+    "Description": "Description",
+    "TitleText": "Settings List",
+    "DefaultBtn": "Default Settings",
+    "PersianCalendar": "Persian Calendar",
+    "ADCalendar": "AD Calendar",
+    "DefaultCoding": "Basic coding suggested by the system (If selected, all Accounting will be automatically defined)"
+  },
     "ViewRowPermission": {
       "DdlPermissionItems": {
         "Default": "Default",

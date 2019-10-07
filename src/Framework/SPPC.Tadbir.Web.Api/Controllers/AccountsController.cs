@@ -127,6 +127,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok(fullCode);
         }
 
+        // GET: api/accounts/count
+        [HttpGet]
+        [Route(AccountApi.AccountsCount)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetAccountsCountAsync()
+        {
+            int itemsCount = await _repository.GetAllAccountsCountAsync();
+            return Ok(itemsCount);
+        }
+
         // POST: api/accounts
         [HttpPost]
         [Route(AccountApi.EnvironmentAccountsUrl)]

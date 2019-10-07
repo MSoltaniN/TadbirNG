@@ -14,27 +14,30 @@ import { environment } from "@sppc/env/environment";
 
 export class CurrencyApi {
 
-    // currencies
-    public static Currencies = environment.BaseUrl + "/currencies";
+  // currencies
+  public static Currencies = environment.BaseUrl + "/currencies";
 
-    // currencies/{currencyId:min(1)}
-    public static Currency = environment.BaseUrl + "/currencies/{0}";
+  // currencies/{currencyId:min(1)}
+  public static Currency = environment.BaseUrl + "/currencies/{0}";
 
-    // currencies/{currencyId:min(1)}/rates
-    public static CurrencyRates = environment.BaseUrl + "/currencies/{0}/rates";
+  // currencies/{currencyId:min(1)}/rates
+  public static CurrencyRates = environment.BaseUrl + "/currencies/{0}/rates";
 
-    // currencies/rates/{rateId:min(1)}
-    public static CurrencyRate = environment.BaseUrl + "/currencies/rates/{0}";
+  // currencies/rates/{rateId:min(1)}
+  public static CurrencyRate = environment.BaseUrl + "/currencies/rates/{0}";
 
-    // currencies/info/{nameKey}
-    public static CurrencyInfoByName = environment.BaseUrl + "/currencies/info/{0}";
+  // currencies/info/{nameKey}
+  public static CurrencyInfoByName = environment.BaseUrl + "/currencies/info/{0}";
 
-    // currencies/names/lookup
-    public static CurrencyNamesLookup = environment.BaseUrl + "/currencies/names/lookup";
+  // currencies/names/lookup
+  public static CurrencyNamesLookup = environment.BaseUrl + "/currencies/names/lookup";
 
-    // currencies/default/account/{accountId:min(1)}/faccount/{faccountId:min(1)}
-    public static DefaultCurrencyByFullAccount = environment.BaseUrl + "/currencies/default/account/{0}/faccount/{1}";
+  // currencies/default/account/{accountId:min(1)}/faccount/{faccountId:min(1)}
+  public static DefaultCurrencyByFullAccount = environment.BaseUrl + "/currencies/default/account/{0}/faccount/{1}";
 
-    // currencies/tax
-    public static TaxCurrencies = environment.BaseUrl + "/currencies/tax";
+  // currencies/tax
+  public static TaxCurrencies = environment.BaseUrl + "/currencies/tax";
+
+  // currencies/default/{nameKey}
+  public static DefaultCurrency = environment.BaseUrl + "/currencies/default/{0}";
 }

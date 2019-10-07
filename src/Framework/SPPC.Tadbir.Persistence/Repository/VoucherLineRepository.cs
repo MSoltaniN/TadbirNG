@@ -248,6 +248,17 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تعداد کل آرتیکل های ثبت شده را برمیگرداند
+        /// </summary>
+        /// <returns>تعداد کل آرتیکل ها</returns>
+        public async Task<int> GetAllArticlesCountAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            var query = repository.GetEntityQuery();
+            return await query.CountAsync();
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="lineView">مدل نمایشی شامل آخرین تغییرات</param>

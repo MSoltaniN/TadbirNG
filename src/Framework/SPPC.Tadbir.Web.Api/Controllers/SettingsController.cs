@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
@@ -19,10 +20,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class SettingsController : ApiControllerBase
     {
-        public SettingsController(IConfigRepository repository, IStringLocalizer<AppStrings> strings)
+        public SettingsController(IConfigRepository repository, IStringLocalizer<AppStrings> strings, IHostingEnvironment host)
             : base(strings)
         {
             _repository = repository;
+            _host = host;
         }
 
         // GET: api/settings
@@ -84,6 +86,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var listSettings = await _repository.GetListViewConfigByUserAsync(userId, viewId);
             Localize(listSettings);
             return Json(listSettings);
+        }
+
+        // PUT: api/settings/sysconfig
+        [HttpPut]
+        [Route(SettingsApi.SystemConfigUrl)]
+        public async Task<IActionResult> PutSystemConfigAsync([FromBody]SettingBriefViewModel setting)
+        {
+            if (setting == null)
+            {
+                return BadRequest();
+            }
+
+            await _repository.SaveSystemConfigAsync(setting, _host.WebRootPath);
+
+            return Ok();
         }
 
         // PUT: api/settings/list/users/{userId:min(1)}
@@ -257,5 +274,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IConfigRepository _repository;
+        private readonly IHostingEnvironment _host;
     }
 }

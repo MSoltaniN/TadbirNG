@@ -57,7 +57,6 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
 
   getSettings() {
     this.settingsService.getSettingsCategories(SettingsApi.AllSettings).subscribe(res => {
-
       this.settingsCategories = res;
       var treeData = new Array<SettingTreeNodeInfo>();
       if (this.settingsCategories != undefined) {
@@ -77,7 +76,6 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
 
   public handleSelection(item: TreeItem): void {
     this.itemSelectedModel = this.settingsCategories.find(f => f.id == item.dataItem.id);
-
     if (this.lastSelectedType && this.lastSelectedType != 'SystemConfig') {
       this.settingForm.updateListHandler();
       this.updateList(this.lastSelectedType);

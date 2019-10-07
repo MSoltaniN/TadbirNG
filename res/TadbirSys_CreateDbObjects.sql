@@ -936,9 +936,10 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (7, 'QuickReportSettings', 3, 2, 'QuickReportConfig', N'{}', N'{}', 'QuickReportSettingsDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
-    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{}', N'{}', 'SystemConfigurationDescription', 1)
+    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"DefaultCurrencyNameKey":"CUnit_IranianRial","DefaultDecimalCount":2,"DefaultCalendar":0,"IsUseDefaultCoding":true}', N'{"DefaultCurrencyNameKey":"CUnit_IranianRial","DefaultDecimalCount":2,"DefaultCalendar":0,"IsUseDefaultCoding":true}', 'SystemConfigurationDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (9, 'TestBalanceSettings', 2, 1, 'TestBalanceConfig', N'{"addOpeningVoucherToInitBalance": false}', N'{"addOpeningVoucherToInitBalance": false}', 'TestBalanceSettingsDescription', 1)
+
 SET IDENTITY_INSERT [Config].[Setting] OFF
 
 

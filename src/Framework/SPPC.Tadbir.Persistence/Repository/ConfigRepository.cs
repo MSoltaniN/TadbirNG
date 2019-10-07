@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.ViewModel.Config;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -24,10 +30,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
-        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository)
+        /// <param name="host">برای دسترسی به فایل های استاتیک</param>
+        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository, ISqlConsole sqlConsole)
             : base(context)
         {
             _fiscalRepository = fiscalRepository;
+            _sqlConsole = sqlConsole;
             UnitOfWork.UseSystemContext();
         }
 
@@ -467,6 +475,132 @@ namespace SPPC.Tadbir.Persistence
             await SaveViewTreeConfigAsync(configItems);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت پیکربندی سیستم را ذخیره می کند
+        /// </summary>
+        /// <param name="configItem">تنظیمات پیکربندی سیستم</param>
+        /// <param name="rootPath">آدرس ریشه نرم افزار در سرور</param>
+        public async Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath)
+        {
+            Verify.ArgumentNotNull(configItem, "configItem");
+            var repository = UnitOfWork.GetAsyncRepository<Setting>();
+
+            _webRootPath = rootPath;
+
+            var systemConfig = await repository
+                .GetByIDWithTrackingAsync(configItem.Id);
+            systemConfig.Values = JsonHelper.From(configItem.Values, false);
+            repository.Update(systemConfig);
+
+            await UnitOfWork.CommitAsync();
+
+            var configValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
+
+            if (configValues.IsUseDefaultCoding && !await IsDefineAccountAsync())
+            {
+                await InitialDefaultAccount();
+            }
+        }
+
+        private async Task<bool> IsDefineAccountAsync()
+        {
+            UnitOfWork.UseCompanyContext();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            var query = repository.GetEntityQuery();
+            return await query.CountAsync() > 0 ? true : false;
+        }
+
+        private async Task InitialDefaultAccount()
+        {
+            var accountTreeConfig = await GetViewTreeConfigByViewAsync(ViewName.Account);
+
+            var jsonPath = Path.Combine(_webRootPath, @"static\defaultAccount.json");
+            var defaultAcc = JsonHelper.To<List<DefaultAccountViewModel>>(File.ReadAllText(jsonPath));
+
+            UpdateDefaultAccountCodeRecursive(defaultAcc, accountTreeConfig, string.Empty);
+
+            var accounts = defaultAcc.Select(f => Mapper.Map<Account>(f)).ToList();
+            InsertDefaultAccount(accounts);
+
+            await UpdateTreeLevelUsage(accountTreeConfig);
+        }
+
+        private void UpdateDefaultAccountCodeRecursive(IList<DefaultAccountViewModel> defaultAccounts,
+            ViewTreeFullConfig accountTreeConfig,
+            string accParentFullCode,
+            int? parentId = null)
+        {
+            foreach (var item in defaultAccounts.Where(f => f.ParentId == parentId))
+            {
+                int accCodeLength = item.Code.Length;
+                int configCodeLength = accountTreeConfig.Current.Levels[item.Level].CodeLength;
+                if (accCodeLength != configCodeLength)
+                {
+                    if (configCodeLength == 2)
+                    {
+                        item.Code = item.TwoDigitCode;
+                    }
+                    else
+                    {
+                        var diffLength = 0;
+                        if (accCodeLength > configCodeLength)
+                        {
+                            diffLength = accCodeLength - configCodeLength;
+                            item.Code = item.Code.Substring(diffLength);
+                        }
+                        else
+                        {
+                            diffLength = configCodeLength - accCodeLength;
+
+                            string format = String.Format("D{0}", configCodeLength);
+                            item.Code = Convert.ToInt64(item.Code).ToString(format);
+                        }
+                    }
+                }
+
+                item.FullCode = string.Format("{0}{1}", accParentFullCode, item.Code);
+
+                UpdateDefaultAccountCodeRecursive(defaultAccounts, accountTreeConfig, item.FullCode, item.Id);
+            }
+        }
+
+        private void InsertDefaultAccount(IList<Account> accounts)
+        {
+            UnitOfWork.UseCompanyContext();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+
+            string script = "SET IDENTITY_INSERT [Finance].[Account] ON\r\n";
+
+            foreach (var item in accounts)
+            {
+                script += string.Format(@"INSERT INTO [Finance].[Account] (AccountID, ParentID, GroupID, FiscalPeriodID, BranchID, BranchScope, Code, FullCode, Name, [Level])
+                                          VALUES({0}, {1}, {2}, {3}, {4}, {5}, N'{6}', N'{7}', N'{8}', {9})",
+                                          item.Id, item.ParentId.HasValue ? item.ParentId.Value.ToString() : "NULL", item.GroupId.HasValue ? item.GroupId.Value.ToString() : "NULL",
+                                          UserContext.FiscalPeriodId, UserContext.BranchId, item.BranchScope, item.Code, item.FullCode, item.Name, item.Level);
+                script += Environment.NewLine;
+            }
+
+            script += "SET IDENTITY_INSERT [Finance].[Account] OFF";
+
+            _sqlConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            _sqlConsole.ExecuteNonQuery(script);
+
+            var accCollections = Path.Combine(_webRootPath, @"static\accountCollection.txt");
+            script = File.ReadAllText(accCollections);
+            script = script.Replace("%branchId%", UserContext.BranchId.ToString())
+                .Replace("%fiscalPeriodId%", UserContext.FiscalPeriodId.ToString());
+            _sqlConsole.ExecuteNonQuery(script);
+        }
+
+        private async Task UpdateTreeLevelUsage(ViewTreeFullConfig accountTreeConfig)
+        {
+            accountTreeConfig.Current.Levels[0].IsUsed = true;
+            accountTreeConfig.Current.Levels[1].IsUsed = true;
+            accountTreeConfig.Current.Levels[2].IsUsed = true;
+            var configItems = new List<ViewTreeFullConfig> { accountTreeConfig };
+            await SaveViewTreeConfigAsync(configItems);
+        }
+
         private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
         {
             while (fullConfig.Default.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
@@ -481,5 +615,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IFiscalPeriodRepository _fiscalRepository;
+        private readonly IHostingEnvironment _host;
+        private readonly ISqlConsole _sqlConsole;
+        private string _webRootPath;
     }
 }

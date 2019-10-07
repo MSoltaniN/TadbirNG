@@ -578,7 +578,10 @@
     },
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",
-    "DefaultBtn": "تنظیمات پیش فرض"
+    "DefaultBtn": "تنظیمات پیش فرض",
+    "PersianCalendar": "تقویم شمسی",
+    "ADCalendar": "تقویم میلادی",
+    "DefaultCoding": "پیشنهاد کدینگ پایه توسط سیستم (در صورت انتخاب این سیستم کلیه سرفصل ها به صورت خودکار تعریف خواهند شد)"
   },
   "ViewRowPermission": {
     "DdlPermissionItems": {

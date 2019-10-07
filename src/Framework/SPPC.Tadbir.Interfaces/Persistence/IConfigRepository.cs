@@ -125,5 +125,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="level">شماره سطحی که وضعیت استفاده از آن باید تغییر کند</param>
         /// <param name="itemCount">تعداد سطرهای اطلاعاتی موجود در سطح مورد نظر</param>
         Task SaveTreeLevelUsageAsync(int viewId, int level, int itemCount);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت پیکربندی سیستم را ذخیره می کند
+        /// </summary>
+        /// <param name="configItem">تنظیمات پیکربندی سیستم</param>
+        /// <param name="rootPath">آدرس ریشه نرم افزار در سرور</param>
+        Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath);
     }
 }

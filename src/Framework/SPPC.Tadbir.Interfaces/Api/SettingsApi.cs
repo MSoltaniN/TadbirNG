@@ -125,5 +125,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for hierarcy settings of a view specified by unique identifier
         /// </summary>
         public const string ViewTreeSettingsByViewUrl = "settings/views/{viewId:min(1)}/tree";
+
+        /// <summary>
+        /// API client URL for system config
+        /// </summary>
+        public const string SystemConfig = "settings/sysconfig";
+
+        /// <summary>
+        /// API server route URL for system config
+        /// </summary>
+        public const string SystemConfigUrl = "settings/sysconfig";
     }
 }

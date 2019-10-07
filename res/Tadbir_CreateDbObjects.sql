@@ -1,5 +1,4 @@
-﻿USE [NGTadbir]
-GO
+﻿
 
 SET ANSI_NULLS ON
 GO
@@ -35,6 +34,19 @@ CREATE TABLE [Core].[Version] (
 )
 GO
 
+CREATE TABLE [Corporate].[Branch] (
+    [BranchID]       INT              IDENTITY (1, 1) NOT NULL,
+	[CompanyID]      INT              NOT NULL,
+	[ParentID]       INT              NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+	[Level]          INT              CONSTRAINT [DF_Corporate_Branch_Level] DEFAULT (0) NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_Branch_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_Branch_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Corporate_Branch] PRIMARY KEY CLUSTERED ([BranchID] ASC)
+)
+GO
+
 CREATE TABLE [Finance].[Currency] (
     [CurrencyID]     INT              IDENTITY (1, 1) NOT NULL,
 	[FiscalPeriodID] INT              CONSTRAINT [DF_Finance_Currency_FiscalPeriodID] DEFAULT (0) NOT NULL,
@@ -48,6 +60,7 @@ CREATE TABLE [Finance].[Currency] (
     [Multiplier]     INT              NOT NULL,
     [DecimalCount]   SMALLINT         NOT NULL,
     [IsActive]       BIT              NOT NULL,
+	[IsDefaultCurrency] BIT           NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -162,19 +175,6 @@ CREATE TABLE [Finance].[VoucherOrigin] (
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_VoucherOrigin_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_VoucherOrigin_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_VoucherOrigin] PRIMARY KEY CLUSTERED ([OriginID] ASC)
-)
-GO
-
-CREATE TABLE [Corporate].[Branch] (
-    [BranchID]       INT              IDENTITY (1, 1) NOT NULL,
-	[CompanyID]      INT              NOT NULL,
-	[ParentID]       INT              NULL,
-    [Name]           NVARCHAR(128)    NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-	[Level]          INT              CONSTRAINT [DF_Corporate_Branch_Level] DEFAULT (0) NOT NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_Branch_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_Branch_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Corporate_Branch] PRIMARY KEY CLUSTERED ([BranchID] ASC)
 )
 GO
 

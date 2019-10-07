@@ -384,6 +384,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(article);
         }
 
+        // GET: api/vouchers/articles/count
+        [Route(VoucherApi.VoucherArticlesCountUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GerArticlesCountAsync()
+        {
+            int itemsCount = await _lineRepository.GetAllArticlesCountAsync();
+            return Ok(itemsCount);
+        }
+
         // POST: api/vouchers/{voucherId:min(1)}/articles
         [HttpPost]
         [Route(VoucherApi.VoucherArticlesUrl)]

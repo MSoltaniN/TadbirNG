@@ -132,6 +132,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(taxCurrencies);
         }
 
+        // POST: api/currencies/default/{nameKey}
+        [HttpPost]
+        [Route(CurrencyApi.DefaultCurrencyUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Create)]
+        public async Task<IActionResult> PostDefaultCurrencyAsync(string nameKey)
+        {
+            var path = GetLocalCurrencyDbPath();
+            var currency = _repository.GetCurrencyByName(path, nameKey);
+            currency.BranchId = SecurityContext.User.BranchId;
+            currency.IsDefaultCurrency = true;
+
+            var outputItem = await _repository.InsertDefaultCurrencyAsync(currency);
+            return JsonReadResult(outputItem);
+        }
+
         // POST: api/currencies
         [HttpPost]
         [Route(CurrencyApi.CurrenciesUrl)]

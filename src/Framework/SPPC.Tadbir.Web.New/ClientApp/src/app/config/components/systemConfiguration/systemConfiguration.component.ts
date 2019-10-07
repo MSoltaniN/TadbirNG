@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -9,12 +9,12 @@ import { String, DefaultComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { ViewTreeLevelConfig, ViewTreeConfig } from '@sppc/config/models';
-import { SettingService } from '@sppc/config/service';
+import { SettingService, SettingBriefInfo } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 import { CurrencyService } from '@sppc/finance/service';
-import { CurrencyApi } from '@sppc/finance/service/api';
+import { CurrencyApi, VoucherApi, AccountApi } from '@sppc/finance/service/api';
 
 
 
@@ -42,21 +42,36 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
 
   public errorMessage = String.Empty;
 
+  systemConfigModel: SettingBriefInfo;
+
   currencyNameLookup: Array<Item> = [];
   currencyNameData: Array<Item> = [];
   selectedCurrencyName: string;
   decimalCount: number;
   selectedCalendar: number = 0;
   calendarList: Array<Item> = [
-    { key: 0, value: "شمسی" },
-    { key: 1, value: "میلادی" }
+    { key: 0, value: "Settings.PersianCalendar" },
+    { key: 1, value: "Settings.ADCalendar" }
   ];
 
+  isRefreshTreeView: boolean = false;
+
   //TODO باید از سمت سرویس خوانده شود
-  isDefineAccount: boolean = true;
+  isExistAccount: boolean = false;
+  isExistArticle: boolean = false;
   useDefaultCoding: boolean;
 
   viewTreeValue: Array<any>;
+
+  @Input() public set model(setting: SettingBriefInfo) {
+    this.systemConfigModel = setting;
+    var configValue = JSON.parse(JSON.stringify(setting.values));
+    this.selectedCalendar = configValue.defaultCalendar;
+    this.selectedCurrencyName = configValue.defaultCurrencyNameKey;
+    this.useDefaultCoding = configValue.isUseDefaultCoding;
+    this.decimalCount = configValue.defaultDecimalCount;
+  }
+
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private formBuilder: FormBuilder, public currencyService: CurrencyService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
@@ -65,13 +80,26 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
 
   public ngOnInit(): void {
     this.getCurrencyNames();
+    this.getAccountsCount();
+    this.getVoucherArticlesCount();
   }
-
 
   getCurrencyNames() {
     this.currencyService.getModels(CurrencyApi.CurrencyNamesLookup).subscribe(res => {
       this.currencyNameLookup = res;
       this.currencyNameData = res;
+    })
+  }
+
+  getVoucherArticlesCount() {
+    this.settingService.getModels(VoucherApi.VoucherArticlesCount).subscribe(res => {
+      this.isExistArticle = res ? true : false;
+    })
+  }
+
+  getAccountsCount() {
+    this.settingService.getModels(AccountApi.AccountsCount).subscribe(res => {
+      this.isExistAccount = res ? true : false;
     })
   }
 
@@ -97,19 +125,40 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
   }
 
   saveSystemConfig() {
+    this.isRefreshTreeView = false;
+    if (this.viewTreeValue)
+      this.saveViewTreeConfig();
+    else
+      this.saveDefaultCurrency();
+  }
 
-    //TODO  باید کامل شود
-    this.settingService.putViewTreeConfig(SettingsApi.ViewTreeSettings, this.viewTreeValue).subscribe(res => {
-      //this.maxDepthValue = undefined;
-      //this.ddlEntitySelected = undefined;
-      //this.viewTreeConfig = undefined;
-      //this.viewTreeLevels = [];
-      //this.finalViewTreeConfig = [];
 
-      localStorage.removeItem("viewTreeConfig");
+  saveDefaultCurrency() {
+    this.currencyService.insertDefaultCurrency(String.Format(CurrencyApi.DefaultCurrency, this.selectedCurrencyName)).subscribe(res => {
+      this.saveConfig();
+    })
+  }
 
+  saveConfig() {
+    var configValue = JSON.parse(JSON.stringify(this.systemConfigModel.values));
+    configValue.defaultCalendar = this.selectedCalendar;
+    configValue.defaultCurrencyNameKey = this.selectedCurrencyName;
+    configValue.isUseDefaultCoding = this.useDefaultCoding;
+    configValue.defaultDecimalCount = this.decimalCount;
+
+    this.systemConfigModel.values = configValue;
+
+    this.settingService.edit<SettingBriefInfo>(SettingsApi.SystemConfig, this.systemConfigModel).subscribe(res => {
       this.showMessage(this.updateMsg, MessageType.Succes);
+      this.isRefreshTreeView = true;
+    })
+  }
 
+  saveViewTreeConfig() {
+    this.settingService.putViewTreeConfig(SettingsApi.ViewTreeSettings, this.viewTreeValue).subscribe(res => {
+      this.saveDefaultCurrency();
+
+      localStorage.removeItem("viewTreeConfig");      
     }, (error => {
       this.errorMessage = error;
     }));

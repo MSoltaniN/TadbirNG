@@ -575,3 +575,10 @@ SET IDENTITY_INSERT [Config].[Setting] ON
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (9, 'TestBalanceSettings', 2, 1, 'TestBalanceConfig', N'{"addOpeningVoucherToInitBalance": false}', N'{"addOpeningVoucherToInitBalance": false}', 'TestBalanceSettingsDescription', 1)
 SET IDENTITY_INSERT [Config].[Setting] OFF
+
+-- 1.1.730
+
+ UPDATE [Config].[Setting]
+ SET DefaultValues=N'{"DefaultCurrencyNameKey":"CUnit_IranianRial","DefaultDecimalCount":2,"DefaultCalendar":0,"IsUseDefaultCoding":true}',
+     [Values]=N'{"DefaultCurrencyNameKey":"CUnit_IranianRial","DefaultDecimalCount":2,"DefaultCalendar":0,"IsUseDefaultCoding":true}'
+ where ModelType='SystemConfig'

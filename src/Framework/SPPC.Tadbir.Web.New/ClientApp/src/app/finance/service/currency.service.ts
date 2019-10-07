@@ -9,6 +9,7 @@ import { Currency, CurrencyRate } from '@sppc/finance/models';
 import { RelatedItems } from '@sppc/shared/models';
 import { Time } from '@angular/common';
 import { environment } from '@sppc/env/environment';
+import { Observable } from 'rxjs';
 
 
 export class CurrencyEntity implements Currency {
@@ -26,6 +27,7 @@ export class CurrencyEntity implements Currency {
   branchId: number;
   branchName: string;
   taxCode: number;
+  isDefaultCurrency: boolean = false;
 }
 
 export class CurrencyRateInfo implements CurrencyRate {
@@ -56,6 +58,13 @@ export class CurrencyService extends BaseService {
     const uploadReq = new HttpRequest('POST', CurrencyApi.TaxCurrencies, formData, { reportProgress: true, });
 
     return this.http.request(uploadReq);
+  }
+
+  public insertDefaultCurrency(apiUrl: string): Observable<string> {
+
+    return this.http.post(apiUrl, {},this.option)
+      .map(res => res)
+      .catch(this.handleError);
   }
 
 }

@@ -23,7 +23,7 @@
                             [(ngModel)]="selectedCurrencyName"
                             (valueChange)="onChangeCurrency($event)"
                             (filterChange)="handleFilter($event)"
-                            [disabled]="selectedCurrencyName && isDefineAccount">
+                            [disabled]="isExistArticle">
         </kendo-dropdownlist>
       </div>
     </div>
@@ -46,6 +46,12 @@
                             [valuePrimitive]="true"
                             [value]="selectedCalendar"
                             [(ngModel)]="selectedCalendar">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
         </kendo-dropdownlist>
 
       </div>
@@ -53,8 +59,8 @@
 
     <div class="col-xs-12">
       <div class="form-group">
-        <input type="checkbox" name="committed" id="committed" class="k-checkbox" [(ngModel)]="useDefaultCoding" [disabled]="isDefineAccount" />
-        <label class="k-checkbox-label" for="committed"> پیشنهاد کدینگ پایه توسط سیستم (در صورت انتخاب این سیستم کلیه سرفصل ها به صورت خودکار تعریف خواهند شد)</label>
+        <input type="checkbox" name="committed" id="committed" class="k-checkbox" [(ngModel)]="useDefaultCoding" [disabled]="isExistAccount" />
+        <label class="k-checkbox-label" for="committed">{{ 'Settings.DefaultCoding' | translate }}</label>
       </div>
     </div>
 
@@ -62,7 +68,7 @@
 
 
   <div>
-    <view-tree-config (viewTreeValue)="onChangeViewTreeValue($event)"></view-tree-config>
+    <view-tree-config [reloadComponent]="isRefreshTreeView" (viewTreeValue)="onChangeViewTreeValue($event)"></view-tree-config>
   </div>
 
   <div style="position: absolute; bottom: 5px; right:0; left:0">

@@ -94,5 +94,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
         Task DeleteArticlesAsync(IEnumerable<int> items);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد کل آرتیکل های ثبت شده را برمیگرداند
+        /// </summary>
+        /// <returns>تعداد کل آرتیکل ها</returns>
+        Task<int> GetAllArticlesCountAsync();
     }
 }

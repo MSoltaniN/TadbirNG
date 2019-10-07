@@ -7,11 +7,12 @@
   </div>
 </div>
 
+
+<!-- (add)="saveAllConfig()" -->
 <kendo-grid id="levelsGrid" [rowClass]="rowCallback"
             (cellClick)="cellClickHandler($event)"
             (cellClose)="cellCloseHandler($event)"
-            [data]="viewTreeLevels"
-            (add)="saveAllConfig()">
+            [data]="viewTreeLevels">
   <ng-template kendoGridNoRecordsTemplate>
     {{ 'ViewTreeConfig.SelectEntity' | translate }}
   </ng-template>
@@ -74,9 +75,3 @@
     {{ 'ViewTreeConfig.Save' | translate }}
   </button>
 </div>-->
-
-
-
-
-
-

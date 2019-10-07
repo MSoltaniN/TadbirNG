@@ -87,5 +87,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all tax currencies (as defined by formal authorities)
         /// </summary>
         public const string TaxCurrenciesUrl = "currencies/tax";
+
+        /// <summary>
+        /// API client URL for default currency
+        /// </summary>
+        public const string DefaultCurrency = "currencies/default/{0}";
+
+        /// <summary>
+        /// API server route URL for default currency
+        /// </summary>
+        public const string DefaultCurrencyUrl = "currencies/default/{nameKey}";
     }
 }

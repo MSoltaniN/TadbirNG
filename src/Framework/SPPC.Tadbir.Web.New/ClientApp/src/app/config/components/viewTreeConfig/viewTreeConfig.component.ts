@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Renderer2, Output, EventEmitter, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -13,6 +13,7 @@ import { SettingService } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
+import { publicDecrypt } from 'crypto';
 
 
 
@@ -84,12 +85,22 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
   public errorMessage = String.Empty;
 
+  @Input() public set reloadComponent(isReload: boolean) {
+    if (isReload) {
+      this.maxDepthValue = undefined;
+      this.ddlEntitySelected = undefined;
+      this.viewTreeConfig = undefined;
+      this.viewTreeLevels = [];
+      this.finalViewTreeConfig = [];
+    }
+  }
+
   @Output() viewTreeValue: EventEmitter<Array<any>> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private formBuilder: FormBuilder,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Setting, undefined);
-    
+
   }
 
   public ngOnInit(): void {
@@ -273,9 +284,6 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    * ذخیره موقت تنظیمات یک موجودیت
    */
   saveLocalChengesView() {
-
-    debugger;
-
     if (this.viewTreeConfig) {
       var config = this.finalViewTreeConfig.find(f => f.viewId == this.viewTreeConfig.viewId);
       if (config) {
@@ -287,9 +295,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
         this.finalViewTreeConfig.push(this.viewTreeConfig);
       }
 
-
       this.emitViewTreeValue();
-
     }
   }
 

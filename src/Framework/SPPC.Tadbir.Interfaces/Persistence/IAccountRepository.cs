@@ -150,5 +150,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="parentId">شناسه والد هر حساب</param>
         /// <returns>اگر حساب والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
         Task<string> GetAccountFullCodeAsync(int parentId);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد کل حساب های ثبت شده را برمیگرداند
+        /// </summary>
+        /// <returns>تعداد کل حساب ها</returns>
+        Task<int> GetAllAccountsCountAsync();
     }
 }
