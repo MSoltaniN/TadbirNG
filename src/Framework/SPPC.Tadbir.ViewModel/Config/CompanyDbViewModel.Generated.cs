@@ -28,7 +28,6 @@ namespace SPPC.Tadbir.ViewModel.Config
         {
             Name = String.Empty;
             DbName = String.Empty;
-            DbPath = String.Empty;
             Server = String.Empty;
             UserName = String.Empty;
             Password = String.Empty;
@@ -53,13 +52,6 @@ namespace SPPC.Tadbir.ViewModel.Config
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string DbName { get; set; }
-
-        /// <summary>
-        /// مسیر کامل فایل اصلی بانک اطلاعاتی روی ایستگاه کاری سرور
-        /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string DbPath { get; set; }
 
         /// <summary>
         /// نام یا آدرس آی پی سرور دیتابیس

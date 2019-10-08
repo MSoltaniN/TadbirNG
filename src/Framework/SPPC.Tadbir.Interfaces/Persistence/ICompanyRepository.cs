@@ -36,8 +36,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک شرکت را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="company">شرکت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="webHostPath">مسیر ریشه نرم افزار</param>
         /// <returns>اطلاعات نمایشی شرکت ایجاد یا اصلاح شده</returns>
-        Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel company);
+        Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel company, string webHostPath);
 
         /// <summary>
         /// به روش آسنکرون، شرکت مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
@@ -50,5 +51,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
         Task DeleteCompaniesAsync(IEnumerable<int> items);
+
+        /// <summary>
+        /// به روش آسنکرون، نام وارد شده برای دیتابیس تکرای میباشد یا خیر
+        /// </summary>
+        /// <param name="company">شرکت مورد نظر</param>
+        /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
+        Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company);
     }
 }

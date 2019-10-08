@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -19,10 +20,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class CompaniesController : ValidatingController<CompanyDbViewModel>
     {
         public CompaniesController(
-            ICompanyRepository repository, IStringLocalizer<AppStrings> strings = null)
+            ICompanyRepository repository, IHostingEnvironment host, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
+            _host = host;
         }
 
         protected override string EntityNameKey
@@ -56,13 +58,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Create)]
         public async Task<IActionResult> PostNewCompanyAsync([FromBody] CompanyDbViewModel company)
         {
-            var result = BasicValidationResult(company);
+            var result = await ValidationResultAsync(company);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputItem = await _repository.SaveCompanyAsync(company);
+            var outputItem = await _repository.SaveCompanyAsync(company, _host.WebRootPath);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -73,13 +75,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedCompanyAsync(
             int companyId, [FromBody] CompanyDbViewModel company)
         {
-            var result = BasicValidationResult(company, companyId);
+            var result = await ValidationResultAsync(company, companyId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputItem = await _repository.SaveCompanyAsync(company);
+            var outputItem = await _repository.SaveCompanyAsync(company, _host.WebRootPath);
             return OkReadResult(outputItem);
         }
 
@@ -133,6 +135,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return message;
         }
 
+        private async Task<IActionResult> ValidationResultAsync(CompanyDbViewModel company, int companyId = 0)
+        {
+            var result = BasicValidationResult(company, companyId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsDuplicateCompanyAsync(company))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DbName));
+            }
+
+            return Ok();
+        }
+
+        private readonly IHostingEnvironment _host;
         private ICompanyRepository _repository;
     }
 }

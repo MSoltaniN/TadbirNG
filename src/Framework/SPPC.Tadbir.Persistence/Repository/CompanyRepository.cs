@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;
+
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -27,11 +24,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log, IHostingEnvironment host)
+        /// <param name="sqlConsole">امکان ارتباط مستقیم با بانک اطلاعاتی</param>
+        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log, ISqlConsole sqlConsole)
             : base(context, log)
         {
+            _sqlConsole = sqlConsole;
             UnitOfWork.UseSystemContext();
-            _host = host;
         }
 
         /// <summary>
@@ -86,18 +84,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک شرکت را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="companyView">شرکت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="webHostPath">مسیر ریشه نرم افزار</param>
         /// <returns>اطلاعات نمایشی شرکت ایجاد یا اصلاح شده</returns>
-        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView)
+        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView, string webHostPath)
         {
+            _webRootPath = webHostPath;
             Verify.ArgumentNotNull(companyView, "companyView");
             var company = default(CompanyDb);
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             if (companyView.Id == 0)
             {
+                CreateDatabase(companyView);
                 company = Mapper.Map<CompanyDb>(companyView);
-
-                //CreateDatabase(company);
-
                 await InsertAsync(repository, company);
             }
             else
@@ -140,6 +138,27 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، نام وارد شده برای دیتابیس تکرای میباشد یا خیر
+        /// </summary>
+        /// <param name="company">شرکت مورد نظر</param>
+        /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
+        public async Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company)
+        {
+            Verify.ArgumentNotNull(company, "company");
+
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var items = await repository
+                .GetByCriteriaAsync(comp => comp.DbName == company.DbName);
+
+            if (items.Count == 0)
+            {
+                return IsDuplicateDatabaseName(company.DbName);
+            }
+
+            return (items.SingleOrDefault(comp => comp.Id != company.Id) != null);
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="companyViewModel">مدل نمایشی شامل آخرین تغییرات</param>
@@ -167,35 +186,47 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private void CreateDatabase(CompanyDb entity)
+        private void CreateDatabase(CompanyDbViewModel companyViewModel)
         {
-            string sqlConnectionString = "Server=.;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=true";
-
-            SqlConnection connection = new SqlConnection(sqlConnectionString);
-            Server server = new Server(new ServerConnection(connection));
-            // چک کردن تکراری نبودن نام کاربر
-            // ساخت کاربر دیتابیس
-            // چک کردن تکراری نبودن نام دیتابیس
-            // ساخت دیتابیس
-            // var createDbScript = string.Format("CREATE DATABASE {0}", entity.DbName);
-            // repository.ExecuteCommand(createDbScript);
-            // اجرای اسکریپ
-
-            var ds = server.ConnectionContext.ExecuteWithResults("SELECT name FROM master.dbo.sysdatabases");
-            var test = ds.Tables[0].Rows.Find(entity.DbName);
-            //DataRow dataRow = ds.Tables["NewDataSet"].Rows[0];
-
-            var scriptPath = Path.Combine(_host.WebRootPath, @"script\Tadbir_CreateDbObjects.sql");
+            var scriptPath = Path.Combine(_webRootPath, @"static\Tadbir_CreateDbObjects.sql");
             if (!File.Exists(scriptPath))
             {
                 throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
             }
 
-            string companyScript = File.ReadAllText(scriptPath);
+            string companyScript = string.Format(@"USE master
+                                                  GO
+                                                  CREATE DATABASE {0}
+                                                  GO
+                                                  USE {0}
+                                                  GO",
+                                                  companyViewModel.DbName);
 
-            server.ConnectionContext.ExecuteNonQuery(companyScript);
+            companyScript += Environment.NewLine;
+            companyScript += File.ReadAllText(scriptPath);
+
+            _sqlConsole.ExecuteNonQuery(companyScript);
+
+            string serverInfoScript = @"SELECT 
+                                        @@servername AS 'ServerName',
+                                        @@servicename AS 'InstanceName',
+                                        DB_NAME() AS 'DatabaseName',
+                                        HOST_NAME() AS 'HostName'";
+
+            var serverInfo = _sqlConsole.ExecuteQuery(serverInfoScript);
+            string serverName = serverInfo.Rows[0].ItemArray[0].ToString();
+            companyViewModel.Server = serverName;
         }
 
-        private readonly IHostingEnvironment _host;
+        private bool IsDuplicateDatabaseName(string dbName)
+        {
+            string dbNameScript = @"SELECT [name] FROM sys.databases";
+            DataTable dt = _sqlConsole.ExecuteQuery(dbNameScript);
+            List<DataRow> drList = dt.AsEnumerable().ToList();
+            return drList.Any(dataRow => dataRow["name"].Equals(dbName));
+        }
+
+        private readonly ISqlConsole _sqlConsole;
+        private string _webRootPath;
     }
 }

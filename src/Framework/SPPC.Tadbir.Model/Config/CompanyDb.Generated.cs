@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.Model.Config
         {
             Name = String.Empty;
             DbName = String.Empty;
-            DbPath = String.Empty;
             Server = String.Empty;
             UserName = String.Empty;
             Password = String.Empty;
@@ -45,11 +44,6 @@ namespace SPPC.Tadbir.Model.Config
         /// نام بانک اطلاعاتی شرکت به صورتی که در لیست بانک های اطلاعاتی سرور نمایش داده می شود
         /// </summary>
         public virtual string DbName { get; set; }
-
-        /// <summary>
-        /// مسیر کامل فایل اصلی بانک اطلاعاتی روی ایستگاه کاری سرور
-        /// </summary>
-        public virtual string DbPath { get; set; }
 
         /// <summary>
         /// نام یا آدرس آی پی سرور دیتابیس

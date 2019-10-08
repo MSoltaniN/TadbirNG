@@ -24,7 +24,7 @@ import { FiscalPeriodRolesFormComponent } from '@sppc/organization/components/fi
   ],
   declarations: [BranchComponent, BranchFormComponent, BranchRolesFormComponent, CompanyComponent, CompanyFormComponent, FiscalPeriodComponent,
     FiscalPeriodFormComponent, FiscalPeriodRolesFormComponent],
-  entryComponents: [BranchFormComponent, BranchRolesFormComponent],
+  entryComponents: [BranchFormComponent, BranchRolesFormComponent, CompanyFormComponent],
   providers: [BranchService, CompanyService, FiscalPeriodService]
 })
 export class OrganizationModule { }

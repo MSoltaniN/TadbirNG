@@ -99,10 +99,10 @@
   </kendo-grid>
 </div>
 
-<company-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+<!--<company-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
                         (save)="saveHandler($event)"
                         (cancel)="cancelHandler()">
-</company-form-component>
+</company-form-component>-->
 
 <kendo-dialog title="{{'Company.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
   <p>

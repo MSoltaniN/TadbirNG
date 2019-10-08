@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
@@ -30,7 +29,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
-        /// <param name="host">برای دسترسی به فایل های استاتیک</param>
+        /// <param name="sqlConsole">امکان ارتباط مستقیم با بانک اطلاعاتی</param>
         public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository, ISqlConsole sqlConsole)
             : base(context)
         {
@@ -615,7 +614,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IFiscalPeriodRepository _fiscalRepository;
-        private readonly IHostingEnvironment _host;
         private readonly ISqlConsole _sqlConsole;
         private string _webRootPath;
     }

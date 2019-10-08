@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -31,30 +31,36 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class CompanyFormComponent extends DetailComponent {
+export class CompanyFormComponent extends DetailComponent implements OnInit {
 
-  //create properties
-  active: boolean = false;
+  @Input() public model: CompanyDb;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public set model(company: CompanyDb) {
-    this.editForm.reset(company);
-    this.active = company !== undefined || this.isNew;
-
-    this.editForm.get('dbName').setValidators([Validators.required, Validators.maxLength(128), Validators.pattern("^[a-zA-Z-_]+$")]);
-  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<CompanyDb> = new EventEmitter();
-  //create properties
 
-  //Events
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
+    public renderer: Renderer2, public metadata: MetaDataService) {
+
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Company, ViewName.Company);
+  }
+
+  ngOnInit(): void {
+    this.editForm.reset();
+
+    setTimeout(() => {
+      this.editForm.reset(this.model);
+      this.editForm.get('dbName').setValidators([Validators.required, Validators.maxLength(128), Validators.pattern("^[a-zA-Z-_]+$")]);
+      this.editForm.patchValue({ server: "." });
+    })
+  }
+
   public onSave(e: any): void {
     e.preventDefault();
     if (this.editForm.valid) {
       this.save.emit(this.editForm.value);
-      this.active = true;
     }
   }
 
@@ -64,20 +70,11 @@ export class CompanyFormComponent extends DetailComponent {
   }
 
   private closeForm(): void {
-    this.isNew = false;
-    this.active = false;
     this.cancel.emit();
   }
 
   escPress() {
     this.closeForm();
-  }
-  //Events
-
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
-
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Company, ViewName.Company);
   }
 
 

@@ -577,8 +577,15 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 SET IDENTITY_INSERT [Config].[Setting] OFF
 
 -- 1.1.730
-
  UPDATE [Config].[Setting]
  SET DefaultValues=N'{"DefaultCurrencyNameKey":"CUnit_IranianRial","DefaultDecimalCount":2,"DefaultCalendar":0,"IsUseDefaultCoding":true}',
      [Values]=N'{"DefaultCurrencyNameKey":"CUnit_IranianRial","DefaultDecimalCount":2,"DefaultCalendar":0,"IsUseDefaultCoding":true}'
  where ModelType='SystemConfig'
+
+-- 1.1.731
+ALTER TABLE Config.CompanyDb
+DROP COLUMN DbPath
+GO
+
+DELETE Metadata.[Column]
+WHERE ColumnID=72

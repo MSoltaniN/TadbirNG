@@ -31,9 +31,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.DbName)
                 .IsRequired()
                 .HasMaxLength(128);
-            builder.Property(e => e.DbPath)
-                .IsRequired()
-                .HasMaxLength(512);
             builder.Property(e => e.Server)
                 .IsRequired()
                 .HasMaxLength(64);
