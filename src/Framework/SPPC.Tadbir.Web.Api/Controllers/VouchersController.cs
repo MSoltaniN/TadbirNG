@@ -635,7 +635,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (voucher.StatusId != (int)DocumentStatusValue.Draft)
             {
-                return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher, voucher.No.ToString()));
+                return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher));
             }
 
             return Ok();

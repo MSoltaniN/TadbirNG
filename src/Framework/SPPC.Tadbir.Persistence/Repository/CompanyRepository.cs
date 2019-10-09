@@ -11,7 +11,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;
 
-
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>

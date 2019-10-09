@@ -103,6 +103,14 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsOverlapFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod);
 
         /// <summary>
+        /// مشخص می کند که آیا دوره مالی داده شده از نظر تاریخ شروع رو به جلو است یا نه؟
+        /// </summary>
+        /// <param name="fiscalPeriod">مدل نمایشی دوره مالی مورد نظر</param>
+        /// <returns>در صورتی که تاریخ شروع دوره بعد از تاریخ پایان دوره قبل باشد مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsProgressiveFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا دوره مالی مشخص شده قابل حذف است یا نه؟
         /// </summary>
         /// <param name="fperiodId">شناسه دیتابیسی دوره مالی مورد نظر</param>

@@ -501,6 +501,19 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
+        {
+            while (fullConfig.Default.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
+            {
+                fullConfig.Default.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
+            }
+
+            while (fullConfig.Current.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
+            {
+                fullConfig.Current.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
+            }
+        }
+
         private async Task<bool> IsDefineAccountAsync()
         {
             UnitOfWork.UseCompanyContext();
@@ -598,19 +611,6 @@ namespace SPPC.Tadbir.Persistence
             accountTreeConfig.Current.Levels[2].IsUsed = true;
             var configItems = new List<ViewTreeFullConfig> { accountTreeConfig };
             await SaveViewTreeConfigAsync(configItems);
-        }
-
-        private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
-        {
-            while (fullConfig.Default.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
-            {
-                fullConfig.Default.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
-            }
-
-            while (fullConfig.Current.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
-            {
-                fullConfig.Current.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
-            }
         }
 
         private readonly IFiscalPeriodRepository _fiscalRepository;
