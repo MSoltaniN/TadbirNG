@@ -7,7 +7,6 @@ using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Api;
-using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;

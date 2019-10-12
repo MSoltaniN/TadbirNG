@@ -382,11 +382,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var turnovers = new List<KeyValue>()
             {
-                new KeyValue { Key = "-1", Value = "Unlimited" },
-                new KeyValue { Key = "0", Value = "DebtorDuringPeriod" },
-                new KeyValue { Key = "1", Value = "CreditorDuringPeriod" },
-                new KeyValue { Key = "2", Value = "DebtorEndPeriod" },
-                new KeyValue { Key = "3", Value = "CreditorEndPeriod" },
+                new KeyValue { Key = TurnoverModeTitle.Unlimited, Value = TurnoverModeTitle.Unlimited },
+                new KeyValue { Key = TurnoverModeTitle.DebtorDuringPeriod, Value = TurnoverModeTitle.DebtorDuringPeriod },
+                new KeyValue { Key = TurnoverModeTitle.CreditorDuringPeriod, Value = TurnoverModeTitle.CreditorDuringPeriod },
+                new KeyValue { Key = TurnoverModeTitle.DebtorEndPeriod, Value = TurnoverModeTitle.DebtorEndPeriod },
+                new KeyValue { Key = TurnoverModeTitle.CreditorEndPeriod, Value = TurnoverModeTitle.CreditorEndPeriod },
             };
 
             return turnovers;

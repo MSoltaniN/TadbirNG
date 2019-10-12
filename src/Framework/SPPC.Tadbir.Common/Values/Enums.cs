@@ -212,7 +212,7 @@ namespace SPPC.Tadbir.Values
     /// <summary>
     /// حالات ممکن برای محدودیت ثبت مالی را در سرفصل های حسابداری تعریف می کند
     /// </summary>
-    public enum TurnoverMode
+    public enum TurnoverMode : short
     {
         /// <summary>
         /// نداشتن محدودیت برای ثبت مالی

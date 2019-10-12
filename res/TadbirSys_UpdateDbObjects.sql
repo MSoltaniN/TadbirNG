@@ -589,3 +589,8 @@ GO
 
 DELETE Metadata.[Column]
 WHERE ColumnID=72
+
+-- 1.1.733
+UPDATE [Metadata].[Column]
+SET DotNetType = N'System.String', ScriptType = N'string', StorageType = N'nvarchar', [Length] = 32
+WHERE ViewID = 1 AND [Name] = 'TurnoverMode'

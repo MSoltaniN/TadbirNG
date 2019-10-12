@@ -12,7 +12,7 @@ export class AccountInfo implements Account {
   currencyId: number = 1;
   isActive: boolean = true;
   isCurrencyAdjustable: boolean = true;
-  turnoverMode: number = -1;
+  turnoverMode: string;
   parentId?: number;
   groupId?: number;
   fiscalPeriodId: number;

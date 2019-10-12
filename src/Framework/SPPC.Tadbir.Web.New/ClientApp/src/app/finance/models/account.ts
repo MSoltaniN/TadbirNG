@@ -27,6 +27,6 @@ export interface Account {
   level: number;
   isActive: boolean;
   isCurrencyAdjustable: boolean;
-  turnoverMode: number;
+  turnoverMode: string;
   description?: string;
 }
