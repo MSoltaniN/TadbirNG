@@ -24,3 +24,4 @@ export * from './reportSummary';
 export * from './treeItem';
 export * from './treeNodeInfo';
 export * from './userProfile';
+export * from './filterColumn';

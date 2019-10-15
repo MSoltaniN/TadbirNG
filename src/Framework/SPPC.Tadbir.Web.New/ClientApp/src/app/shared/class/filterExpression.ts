@@ -9,4 +9,5 @@ export class FilterExpression {
     operator: string;
     parent: FilterExpression;
     children: FilterExpression[] = [];
+    totalfilter: FilterExpression;
 }

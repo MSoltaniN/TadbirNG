@@ -1,0 +1,123 @@
+<div class="panel-body">
+  <div class="sppc-dialog-md sppc-filter-form" (keydown.esc)="escPress()">
+  <div class="col-md-12 new-filter">
+    <div class="col-xs-12 col-md-3 pad10 sppc-float">
+      <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-12 ">{{ 'AdvanceFilter.Fields' | translate }}</label>
+
+        <kendo-dropdownlist [data]="columnsList" class="sppc-width-100"
+                            [textField]="'title'"
+                            [valueField]="'name'"
+                            [valuePrimitive]="true"
+                            [value]="selectedColumn"
+                            [(ngModel)]="selectedColumn"
+                            (ngModelChange)="selectedColumnChange($event)"
+                            [disabled]="colsIsDisabled">
+        </kendo-dropdownlist>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-2 pad10  sppc-float">
+      <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-12 ">{{ 'AdvanceFilter.Operators' | translate }}</label>
+
+        <kendo-dropdownlist [data]="operatorsList" class="sppc-width-100"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="selectedOperator"
+                            [(ngModel)]="selectedOperator"
+                            [disabled]="opIsDisabled">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-3 pad10  sppc-float">
+      <div class="form-group ">
+        <label class="control-label col-xs-12 col-sm-12">{{ 'AdvanceFilter.Value' | translate }}</label>
+
+        <input class="k-textbox col-xs-12 col-sm-12 sppc-input-num sppc-float" [disabled]="valueIsDisabled" [(ngModel)]="selectedValue" />
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-2 pad10  sppc-float">
+      <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-12 ">{{ 'AdvanceFilter.LogicOperator' | translate }}</label>
+
+        <kendo-dropdownlist [data]="logicalOperatorList" class="sppc-width-100"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="selectedLogicalOperator"
+                            [(ngModel)]="selectedLogicalOperator"
+                            [disabled]="lgoIsDisabled">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-2 pad10  sppc-float">
+      <div class="form-group ins">
+        <button *ngIf="formMode == 'insert'" kendoButton title="{{ 'AdvanceFilter.Insert' | translate }}" (click)="insertNewFilter()"
+                [icon]="'plus-outline'" type="button"></button>
+        <button *ngIf="formMode == 'edit'" kendoButton title="{{ 'AdvanceFilter.Save' | translate }}" (click)="saveFilter()"
+                [icon]="'save'" type="button"></button>
+        <button *ngIf="formMode == 'edit'" kendoButton title="{{ 'AdvanceFilter.Cancel' | translate }}" (click)="cancelEditMode()"
+                [icon]="'close-outline'" type="button"></button>
+      </div>
+    </div>
+  </div>
+  <kendo-grid id="filter_{{viewId}}"
+              style="width:100%;"
+              #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              [data]="filters"
+              [sortable]="{ allowUnsort: false, mode: 'multiple' }"
+              [pageable]="false"
+              [resizable]="true"
+              [selectable]="{enabled: true, mode:'multiple'}"
+              [filterable]="false"
+              [selectedKeys]="selectedRows"
+              [kendoGridSelectBy]="selectionKey"
+              [scrollable]="'scrollable'"
+              (remove)="removeHandler($event)"
+              [loading]="false"
+              (dataStateChange)="onDataStateChange()">
+    <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                         pagerOf="{{ 'Paging.Of' | translate }}"
+                         pagerItems="{{ 'Paging.Record' | translate }}">
+    </kendo-grid-messages>
+    <ng-template kendoGridNoRecordsTemplate>
+      {{ showloadingMessage  ? '' : ('AdvanceFilter.RecordNotFound' | translate) }}
+    </ng-template>
+    <ng-template kendoGridToolbarTemplate>
+      <div class="form-group sppc-float">
+        <button kendoButton class="hidden-xs rm lm" title="{{ 'AdvanceFilter.RemoveFilter' | translate }}" (click)="removeFilter()"
+                [icon]="'delete'" type="button" [disabled]="removeIsDisable()"></button>
+        <button kendoButton class="hidden-xs rm lm" title="{{ 'AdvanceFilter.EditFilter' | translate }}" (click)="editFilter()"
+                [icon]="'edit'" type="button" [disabled]="editIsDisable()"></button>
+        <button kendoButton class="hidden-xs rm lm" title="{{ 'AdvanceFilter.Braces' | translate }}" (click)="braces()"
+                [icon]="'css'" type="button"></button>
+      </div>
+    </ng-template>
+
+    <kendo-grid-checkbox-column showSelectAll="true" width="50"></kendo-grid-checkbox-column>
+    <kendo-grid-column media="(min-width: 450px)" title="شرط" field="filterTitle">
+    </kendo-grid-column>
+  </kendo-grid>
+  <div class="col-md-12 exp-filter">
+    <input class="k-textbox col-md-12 " [ngModel]="totalFilterExpression" readonly />
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button k-primary" (click)="onOk()">{{ 'Buttons.Ok' | translate }}</button> <!--[disabled]="!selectedRows.length"-->
+    <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
+
+</div>
+</div>

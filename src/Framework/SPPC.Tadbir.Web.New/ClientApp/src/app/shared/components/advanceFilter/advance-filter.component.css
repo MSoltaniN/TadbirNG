@@ -1,0 +1,44 @@
+.sppc-filter-form > .k-grid {
+  min-height: 350px
+}
+
+/*.sppc-dialog-md
+{
+  width:810px!important;
+}*/
+
+.new-filter {
+  background-color: #f6f6f6;
+  border: solid 1px #dadde2;
+}
+
+.exp-filter {
+  padding:5px!important;
+  background-color: #f6f6f6;
+  border: solid 1px #dadde2; 
+}
+
+  .exp-filter input {
+    width: 100%;
+    padding-right: 0px !important;
+    float: left !important;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+.pad10
+{
+  padding-top:7px;
+  padding-right:2px;
+  padding-left:2px;
+}
+
+.pad15 {
+  padding-right: 15px;
+  padding-left:15px;
+}
+
+.sppc-filter-form .ins
+{
+  margin-top:24px;
+}

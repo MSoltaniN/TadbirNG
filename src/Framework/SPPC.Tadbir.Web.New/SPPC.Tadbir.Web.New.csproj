@@ -81,6 +81,7 @@
     <None Remove="ClientApp\src\app\core\index.ts" />
     <None Remove="ClientApp\src\app\finance\index.ts" />
     <None Remove="ClientApp\src\app\shared\index.ts" />
+    <None Remove="ClientApp\src\app\shared\models\columnFilter.ts" />
     <None Remove="ClientApp\src\app\shared\models\index.ts" />
     <None Remove="ClientApp\src\app\shared\services\api\index.ts" />
     <None Remove="ClientApp\src\app\shared\services\index.ts" />

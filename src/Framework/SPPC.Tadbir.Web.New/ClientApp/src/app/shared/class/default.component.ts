@@ -355,6 +355,17 @@ export class DefaultComponent extends BaseComponent {
 
   }
 
+  andFilterToFilterExpression(filterExp: FilterExpression, advanceFilter: FilterExpression): FilterExpression {
+    if (filterExp != null) {
+      filterExp.children.push(advanceFilter);
+      return filterExp;
+    }
+    else {      
+      return advanceFilter;
+    }
+
+  }
+
 
 
 
