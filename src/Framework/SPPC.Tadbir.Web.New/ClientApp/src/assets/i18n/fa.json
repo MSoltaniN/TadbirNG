@@ -167,6 +167,41 @@
     "SearchType": "نوع جستجو",
     "SearchTitle": "جستجو"
   },
+  "AdvanceFilter": {
+    "Braces": "پرانتز گذاری",
+    "EditFilter": "ویرایش فیلتر",
+    "RemoveFilter": "حذف فیلتر",
+    "Insert": "درج",
+    "Save": "ذخیره",
+    "Cancel": "انصراف",
+    "Fields": "فیلد",
+    "Operators": "عملگر",
+    "Value": "مقدار",
+    "LogicOperator": "عملگر منطقی",
+    "EQ": "برابر با",
+    "GT": "بزرگتر از",
+    "GTE": "بزگتر مساوی",
+    "LT": "کوچکتر از",
+    "LTE": "کوچکتر مساوی",
+    "NEQ": "مخالف با",
+    "NotLike": "شامل نشود",
+    "Like": "شامل شود",
+    "And": "'و'",
+    "Or": "'یا'",
+    "StartWith": "شروع با",
+    "EndsWith": "پایان با",
+    "Contains": "شامل شود",
+    "DoesNotContain": "شامل نشود",
+    "RecordNotFound": "هیچ فیلتری درج نشده است!",
+    "InsertFilter": "درج فیلتر",
+    "PlaeseSelectField": "لطفا یک فیلد را انتخاب کنید",
+    "PlaeseEnterValue": "مقدار فیلتر را را وارد کنید",
+    "PlaeseSelectOperator": "عملگر مورد نظر را انتخاب کنید",
+    "PlaeseSelectLogicOperator": "عملگر منطقی را انتخاب کنید",
+    "FilterInsertedSuccess": "فیلتر با موفقیت درج شد",
+    "FilterEditedSuccess": "فیلتر با موفقیت ذخیره شد",
+    "FilterDeletedSuccess": "فیلتر با موفقیت حذف شد"
+  },
   "Currency": {
     "New": "ارز جدید",
     "Name": "نام ارز",
@@ -579,7 +614,7 @@
       "UseCustom": "تنظیمات برنامه"
     },
     "TestBalance": {
-      "OpeningVoucherAsInitBalance" :  "انعکاس افتتاحیه در ستون مانده ابتدا"
+      "OpeningVoucherAsInitBalance": "انعکاس افتتاحیه در ستون مانده ابتدا"
     },
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",
