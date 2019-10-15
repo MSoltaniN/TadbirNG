@@ -11,7 +11,7 @@
                             [valuePrimitive]="true"
                             [value]="selectedColumn"
                             [(ngModel)]="selectedColumn"
-                            (ngModelChange)="selectedColumnChange($event)"
+                            (ngModelChange)="selectedColumnChange()"
                             [disabled]="colsIsDisabled">
         </kendo-dropdownlist>
       </div>
@@ -40,7 +40,7 @@
       <div class="form-group ">
         <label class="control-label col-xs-12 col-sm-12">{{ 'AdvanceFilter.Value' | translate }}</label>
 
-        <input class="k-textbox col-xs-12 col-sm-12 sppc-input-num sppc-float" [disabled]="valueIsDisabled" [(ngModel)]="selectedValue" />
+        <input class="k-textbox col-xs-12 col-sm-12 sppc-input-num sppc-float"  [(ngModel)]="selectedValue" />
       </div>
     </div>
     <div class="col-xs-12 col-md-2 pad10  sppc-float">
@@ -74,21 +74,19 @@
       </div>
     </div>
   </div>
-  <kendo-grid id="filter_{{viewId}}"
+  <kendo-grid id="filter_{{viewId}}" 
               style="width:100%;"
               #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="filters"
               [sortable]="{ allowUnsort: false, mode: 'multiple' }"
               [pageable]="false"
-              [resizable]="true"
+              [resizable]="true"              
+              [scrollable]="'scrollable'"
               [selectable]="{enabled: true, mode:'multiple'}"
               [filterable]="false"
               [selectedKeys]="selectedRows"
               [kendoGridSelectBy]="selectionKey"
-              [scrollable]="'scrollable'"
-              (remove)="removeHandler($event)"
-              [loading]="false"
-              (dataStateChange)="onDataStateChange()">
+              [loading]="false" >
     <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                          pagerOf="{{ 'Paging.Of' | translate }}"
                          pagerItems="{{ 'Paging.Record' | translate }}">

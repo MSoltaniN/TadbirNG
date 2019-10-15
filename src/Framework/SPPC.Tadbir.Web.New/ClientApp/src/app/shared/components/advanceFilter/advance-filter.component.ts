@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from '@sppc/config/service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { MessageType } from '@sppc/env/environment.prod';
+import { RowArgs } from '@progress/kendo-angular-grid';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -149,7 +150,11 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.revertToDefaultValues()      
       this.showMessage(this.getText('AdvanceFilter.FilterEditedSuccess'), MessageType.Succes);
     }
-  } 
+  }
+
+  selectionKey(context: RowArgs): any {
+    return context.dataItem;
+  }
 
   editIsDisable() {
     if (this.selectedRows && this.selectedRows.length == 1)
