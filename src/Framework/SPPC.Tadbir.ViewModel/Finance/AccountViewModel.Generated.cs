@@ -13,6 +13,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
@@ -33,7 +34,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
             Description = String.Empty;
             IsActive = true;
             IsCurrencyAdjustable = true;
-            TurnoverMode = -1;
+            TurnoverMode = TurnoverModeTitle.Unlimited;
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// محدودیت ثبت های مالی حساب را مشخص می کند
         /// </summary>
-        public short TurnoverMode { get; set; }
+        public string TurnoverMode { get; set; }
 
         /// <summary>
         /// شرحی که اطلاعات تکمیلی برای این سرفصل حسابداری را مشخص می کند

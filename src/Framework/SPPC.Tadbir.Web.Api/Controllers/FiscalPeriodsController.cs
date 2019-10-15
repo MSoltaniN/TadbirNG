@@ -200,6 +200,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
             }
 
+            if (await _repository.IsOverlapFiscalPeriodAsync(fiscalPeriod))
+            {
+                return BadRequest(_strings.Format(AppStrings.DateOverlap));
+            }
+
+            if (!await _repository.IsProgressiveFiscalPeriodAsync(fiscalPeriod))
+            {
+                return BadRequest(_strings.Format(AppStrings.FiscalPeriodMustBeProgressive));
+            }
+
             return Ok();
         }
 

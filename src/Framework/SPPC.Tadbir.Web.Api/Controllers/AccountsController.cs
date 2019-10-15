@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -44,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync<AccountViewModel>(GridOptions);
             SetItemCount(itemCount);
             var accounts = await _repository.GetAccountsAsync(GridOptions);
+            Localize(accounts);
             return Json(accounts);
         }
 
@@ -287,6 +289,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private void Localize(IEnumerable<AccountViewModel> accounts)
+        {
+            foreach (var account in accounts)
+            {
+                account.TurnoverMode = _strings[account.TurnoverMode];
+            }
         }
 
         private readonly IAccountRepository _repository;

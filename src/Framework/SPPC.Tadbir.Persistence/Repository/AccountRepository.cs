@@ -396,7 +396,7 @@ namespace SPPC.Tadbir.Persistence
             account.Description = accountViewModel.Description;
             account.IsActive = accountViewModel.IsActive;
             account.IsCurrencyAdjustable = accountViewModel.IsCurrencyAdjustable;
-            account.TurnoverMode = accountViewModel.TurnoverMode;
+            account.TurnoverMode = (short)Enum.Parse(typeof(TurnoverMode), accountViewModel.TurnoverMode);
         }
 
         /// <summary>

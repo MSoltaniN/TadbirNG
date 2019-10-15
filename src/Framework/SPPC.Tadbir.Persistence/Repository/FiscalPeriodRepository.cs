@@ -255,6 +255,52 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// مشخص می کند که آیا دوره مالی داده شده از نظر تاریخ شروع رو به جلو است یا نه؟
+        /// </summary>
+        /// <param name="fiscalPeriod">مدل نمایشی دوره مالی مورد نظر</param>
+        /// <returns>در صورتی که تاریخ شروع دوره بعد از تاریخ پایان دوره قبل باشد مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsProgressiveFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod)
+        {
+            bool isProgressive = true;
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            if (fiscalPeriod.Id == 0)
+            {
+                var last = await repository
+                    .GetEntityQuery()
+                    .LastOrDefaultAsync();
+                if (last != null)
+                {
+                    isProgressive = fiscalPeriod.StartDate.Date > last.EndDate.Date;
+                }
+            }
+            else
+            {
+                var before = await repository
+                    .GetEntityQuery()
+                    .Where(fp => fp.Id < fiscalPeriod.Id)
+                    .OrderByDescending(fp => fp.Id)
+                    .FirstOrDefaultAsync();
+                if (before != null)
+                {
+                    isProgressive = isProgressive && (fiscalPeriod.StartDate > before.EndDate);
+                }
+
+                var after = await repository
+                    .GetEntityQuery()
+                    .Where(fp => fp.Id > fiscalPeriod.Id)
+                    .OrderBy(fp => fp.Id)
+                    .FirstOrDefaultAsync();
+                if (after != null)
+                {
+                    isProgressive = isProgressive && (fiscalPeriod.EndDate < after.StartDate);
+                }
+            }
+
+            return isProgressive;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا دوره مالی مشخص شده قابل حذف است یا نه؟
         /// </summary>
         /// <param name="fperiodId">شناسه دیتابیسی دوره مالی مورد نظر</param>

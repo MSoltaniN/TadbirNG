@@ -2976,6 +2976,11 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         public const string FiscalPeriodAlreadyDefined = "FiscalPeriodAlreadyDefined";
 
         /// <summary>
+        /// Default text : محدوده تاریخی دوره مالی باید بعد از پایان دوره قبل و پیش از شروع دوره بعد قرار بگیرد.
+        /// </summary>
+        public const string FiscalPeriodMustBeProgressive = "FiscalPeriodMustBeProgressive";
+
+        /// <summary>
         /// Default text : دوره های مالی
         /// </summary>
         public const string FiscalPeriods = "FiscalPeriods";

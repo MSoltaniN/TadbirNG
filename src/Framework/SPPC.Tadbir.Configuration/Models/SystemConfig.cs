@@ -1,5 +1,4 @@
-﻿
-namespace SPPC.Tadbir.Configuration.Models
+﻿namespace SPPC.Tadbir.Configuration.Models
 {
     /// <summary>
     /// تنظیمات مربوط به پیکربندی سیستم را نگهداری میکند

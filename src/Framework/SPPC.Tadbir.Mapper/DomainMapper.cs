@@ -176,12 +176,14 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<AccountGroup, AccountItemBriefViewModel>();
 
             mapperConfig.CreateMap<Account, AccountViewModel>()
+                .ForMember(dest => dest.TurnoverMode, opts => opts.MapFrom(src => ((TurnoverMode)src.TurnoverMode).ToString()))
                 .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.Description ?? String.Empty))
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<Account, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count))
                 .ForMember(dest => dest.ParentId, opts => opts.MapFrom(src => src.ParentId));
-            mapperConfig.CreateMap<AccountViewModel, Account>();
+            mapperConfig.CreateMap<AccountViewModel, Account>()
+                .ForMember(dest => dest.TurnoverMode, opts => opts.MapFrom(src => (short)Enum.Parse(typeof(TurnoverMode), src.TurnoverMode)));
             mapperConfig.CreateMap<Account, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
