@@ -36,6 +36,7 @@
     <Compile Remove="ClientApp\src\app\pipes\**" />
     <Compile Remove="ClientApp\src\app\security\**" />
     <Compile Remove="ClientApp\src\app\service\**" />
+    <Compile Remove="ClientApp\src\app\shared\components\initialWizard\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\src\app\class\**" />
     <Content Remove="ClientApp\src\app\directive\**" />
@@ -44,6 +45,7 @@
     <Content Remove="ClientApp\src\app\pipes\**" />
     <Content Remove="ClientApp\src\app\security\**" />
     <Content Remove="ClientApp\src\app\service\**" />
+    <Content Remove="ClientApp\src\app\shared\components\initialWizard\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -55,6 +57,7 @@
     <EmbeddedResource Remove="ClientApp\src\app\pipes\**" />
     <EmbeddedResource Remove="ClientApp\src\app\security\**" />
     <EmbeddedResource Remove="ClientApp\src\app\service\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\shared\components\initialWizard\**" />
     <None Remove="ClientApp\src\app\class\**" />
     <None Remove="ClientApp\src\app\directive\**" />
     <None Remove="ClientApp\src\app\enum\**" />
@@ -62,6 +65,7 @@
     <None Remove="ClientApp\src\app\pipes\**" />
     <None Remove="ClientApp\src\app\security\**" />
     <None Remove="ClientApp\src\app\service\**" />
+    <None Remove="ClientApp\src\app\shared\components\initialWizard\**" />
   </ItemGroup>
 
   <ItemGroup>

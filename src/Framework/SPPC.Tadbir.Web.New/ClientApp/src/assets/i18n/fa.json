@@ -109,7 +109,9 @@
     "Subset": "زیر مجموعه",
     "Compute": "محاسبه",
     "Next": "بعدی",
-    "Previous": "قبلی"
+    "Previous": "قبلی",
+    "NextStep": "مرحله بعد",
+    "PreviousStep": "مرحله قبل"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -691,7 +693,9 @@
     "UserName": "نام کاربری دیتابیس",
     "Password": "کلمه عبور",
     "Description": "شرح",
-    "NotFoundData": "شرکتی وجود ندارد"
+    "NotFoundData": "شرکتی وجود ندارد",
+    "SuccessInitialCompany": "شرکت، شعبه و دوره مالی با موفقیت ثبت شدند.",
+    "CreateCompany": "ایجاد شرکت"
   },
   "AccountGroup": {
     "New": "گروه حساب جدید",
@@ -719,7 +723,8 @@
     "UpdateRoles": "نقش های شعبه با موفقیت ویرایش شد",
     "RolesTitle": "لیست نقش های قابل دسترس به شعبه",
     "NotFoundData": "شعبه ای وجود ندارد",
-    "LedgerBranch": "شعب سطح اول"
+    "LedgerBranch": "شعب سطح اول",
+    "CreateBranch": "ایجاد شعبه"
   },
   "Voucher": {
     "New": "سند جدید",
@@ -888,7 +893,8 @@
     "Description": "شرح",
     "UpdateRoles": "نقش های دوره مالی با موفقیت ویرایش شد",
     "Roles": "نقش ها",
-    "RolesTitle": "لیست نقش های دوره مالی"
+    "RolesTitle": "لیست نقش های دوره مالی",
+    "CreateFiscalPeriod": "ایجاد دوره مالی"
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی",

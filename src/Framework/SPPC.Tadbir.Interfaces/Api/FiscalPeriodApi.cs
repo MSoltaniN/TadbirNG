@@ -48,5 +48,15 @@
         /// API server route URL for all roles that can access a fiscal period item specified by unique identifier
         /// </summary>
         public const string FiscalPeriodRolesUrl = "fperiods/{fpId:min(1)}/roles";
+
+        /// <summary>
+        /// API client URL for validation a fiscal period
+        /// </summary>
+        public const string FiscalPeriodValidation = "fperiods/validation";
+
+        /// <summary>
+        /// API server route URL for validation a fiscal period
+        /// </summary>
+        public const string FiscalPeriodValidationUrl = "fperiods/validation";
     }
 }

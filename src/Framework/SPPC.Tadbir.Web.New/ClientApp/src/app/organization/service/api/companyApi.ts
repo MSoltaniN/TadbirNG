@@ -25,4 +25,11 @@ export class CompanyApi {
 
     // companies/metadata
     public static CompanyMetadata = environment.BaseUrl + "/companies/metadata";
+
+    // companies/validation
+    public static CompanyValidation = environment.BaseUrl + "/companies/validation";
+
+    // companies/initial
+    public static InitialCompany = environment.BaseUrl + "/companies/initial";
+
 }

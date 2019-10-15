@@ -108,11 +108,6 @@
   </kendo-grid>
 </div>
 
-<fiscalPeriod-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
-                             (save)="saveHandler($event)"
-                             (cancel)="cancelHandler()">
-</fiscalPeriod-form-component>
-
 <fiscalPeriod-roles-form-component [rolesList]="rolesList" [fiscalPeriodRoles]="fiscalPeriodRolesData" [errorMessage]="errorMessage"
                                    (saveFiscalPeriodRoles)="saveFiscalPeriodRolesHandler($event)"
                                    (cancelFiscalPeriodRoles)="cancelFiscalPeriodRolesHandler()">

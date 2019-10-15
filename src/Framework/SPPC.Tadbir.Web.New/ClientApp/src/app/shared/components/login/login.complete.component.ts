@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { Renderer2 } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -11,6 +10,9 @@ import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { UserService } from '@sppc/admin/service';
 import { Command, ListFormViewConfig } from '@sppc/shared/models';
+import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
+import { DefaultComponent } from '@sppc/shared/class';
+import { InitialWizardComponent } from '@sppc/organization/components/initialWizard/initialWizard.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -57,6 +59,10 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   currentRoute: string;
 
+
+
+  public dialogRef: DialogRef;
+  public dialogModel: any;
   //#endregion
 
   //#region Constructor
@@ -70,7 +76,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     public metadata: MetaDataService,
     public userService: UserService,
     public settingService: SettingService,
-    public bStorageService: BrowserStorageService) {
+    public bStorageService: BrowserStorageService,
+    public dialogService: DialogService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
 
   }
@@ -79,7 +86,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   //#region Events
 
-  ngOnInit() {    
+  ngOnInit() {
     this.currentRoute = this.bStorageService.getCurrentRoute();
     this.disabledCompany = true;
     this.getCompany();
@@ -314,7 +321,19 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   //#endregion
 
 
+  createCompany() {
+      this.dialogRef = this.dialogService.open({
+        content: InitialWizardComponent,
+      });
 
+      this.dialogModel = this.dialogRef.content.instance;
+
+      this.dialogRef.dialog.location.nativeElement.classList.add('dialog-style-wizard');
+
+      const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+        this.dialogRef.close();
+      });
+  }
 
 
 }

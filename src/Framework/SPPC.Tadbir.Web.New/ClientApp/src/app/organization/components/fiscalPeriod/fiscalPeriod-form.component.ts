@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -33,36 +33,44 @@ interface Item {
   }]
 })
 
-export class FiscalPeriodFormComponent extends DetailComponent {
+export class FiscalPeriodFormComponent extends DetailComponent implements OnInit {
 
-  //create properties
   public fiscalPeriod_Id: number;
-  active: boolean = false;
+
+  @Input() public model: FiscalPeriod;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
-
-  @Input() public set model(fiscalPeriod: FiscalPeriod) {
-
-    if (fiscalPeriod && this.isNew) {
-      fiscalPeriod.startDate = this.getStartDate();
-      fiscalPeriod.endDate = this.getEndDate();
-      new Date()
-    }
-
-    this.editForm.reset(fiscalPeriod);
-
-    this.active = fiscalPeriod !== undefined || this.isNew;
-
-    if (fiscalPeriod != undefined) {
-      this.fiscalPeriod_Id = fiscalPeriod.id;
-    }
-
-  }
+  @Input() public isWizard: boolean = false;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<FiscalPeriod> = new EventEmitter();
-  //create properties
+  @Output() previousStep: EventEmitter<any> = new EventEmitter();
 
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
+    public renderer: Renderer2, public metadata: MetaDataService) {
+
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.FiscalPeriod, ViewName.FiscalPeriod);
+
+  }
+
+  ngOnInit(): void {
+    this.editForm.reset();
+
+    setTimeout(() => {
+
+      if (this.model && this.isNew) {
+        this.model.startDate = this.getStartDate();
+        this.model.endDate = this.getEndDate();
+      }
+
+      this.editForm.reset(this.model);
+
+      if (this.model) {
+        this.fiscalPeriod_Id = this.model.id;
+      }
+
+    })
+  }
 
   getStartDate(): Date {
     if (this.CurrentLanguage == "fa") {
@@ -82,12 +90,10 @@ export class FiscalPeriodFormComponent extends DetailComponent {
     }
   }
 
-  //Events
   public onSave(e: any): void {
     e.preventDefault();
     if (this.editForm.valid) {
       this.save.emit(this.editForm.value);
-      this.active = true;
     }
   }
 
@@ -97,8 +103,6 @@ export class FiscalPeriodFormComponent extends DetailComponent {
   }
 
   private closeForm(): void {
-    this.isNew = false;
-    this.active = false;
     this.cancel.emit();
   }
 
@@ -109,13 +113,8 @@ export class FiscalPeriodFormComponent extends DetailComponent {
   public onDeleteData() {
     alert("Data deleted.");
   }
-  //Events
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
-
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.FiscalPeriod, ViewName.FiscalPeriod);
-
+  onPreviousStep() {
+    this.previousStep.emit();
   }
-
 }

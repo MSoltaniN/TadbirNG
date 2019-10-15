@@ -67,6 +67,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        // POST: api/fperiods/validation
+        [HttpPost]
+        [Route(FiscalPeriodApi.FiscalPeriodValidationUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
+        public async Task<IActionResult> PostFiscalPeriodValidationAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
+        {
+            var result = await ValidationResultAsync(fiscalPeriod);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            return Ok();
+        }
+
         // PUT: api/fperiods/{fpId:min(1)}
         [HttpPut]
         [Route(FiscalPeriodApi.FiscalPeriodUrl)]
@@ -180,19 +195,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (await _repository.ExistsFiscalPeriodInRange(fiscalPeriod.StartDate, fiscalPeriod.EndDate))
-            {
-                return BadRequest(_strings.Format(AppStrings.FiscalPeriodAlreadyDefined));
-            }
-
             if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
             {
                 return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
-            }
-
-            if (await _repository.IsOverlapFiscalPeriodAsync(fiscalPeriod))
-            {
-                return BadRequest(_strings.Format(AppStrings.DateOverlap));
             }
 
             return Ok();

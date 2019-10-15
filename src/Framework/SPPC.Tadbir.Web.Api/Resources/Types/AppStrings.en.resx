@@ -2634,4 +2634,7 @@
   <data name="RootBranchAlreadyDefined" xml:space="preserve">
     <value>Only one branch can be defined at root level.</value>
   </data>
+  <data name="InvalidDatabaseUserName" xml:space="preserve">
+    <value>Username is duplicate.</value>
+  </data>
 </root>

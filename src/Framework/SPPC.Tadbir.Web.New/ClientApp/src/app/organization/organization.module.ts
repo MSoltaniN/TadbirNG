@@ -15,6 +15,7 @@ import { CompanyFormComponent } from '@sppc/organization/components/company/comp
 import { FiscalPeriodComponent } from '@sppc/organization/components/fiscalPeriod/fiscalPeriod.component';
 import { FiscalPeriodFormComponent } from '@sppc/organization/components/fiscalPeriod/fiscalPeriod-form.component';
 import { FiscalPeriodRolesFormComponent } from '@sppc/organization/components/fiscalPeriod/fiscalPeriod-roles-form.component';
+import { InitialWizardComponent } from '@sppc/organization/components/initialWizard/initialWizard.component';
 
 @NgModule({
   imports: [
@@ -23,8 +24,8 @@ import { FiscalPeriodRolesFormComponent } from '@sppc/organization/components/fi
     SharedModule
   ],
   declarations: [BranchComponent, BranchFormComponent, BranchRolesFormComponent, CompanyComponent, CompanyFormComponent, FiscalPeriodComponent,
-    FiscalPeriodFormComponent, FiscalPeriodRolesFormComponent],
-  entryComponents: [BranchFormComponent, BranchRolesFormComponent, CompanyFormComponent],
+    FiscalPeriodFormComponent, FiscalPeriodRolesFormComponent, InitialWizardComponent],
+  entryComponents: [BranchFormComponent, BranchRolesFormComponent, CompanyFormComponent, InitialWizardComponent, FiscalPeriodFormComponent],
   providers: [BranchService, CompanyService, FiscalPeriodService]
 })
 export class OrganizationModule { }

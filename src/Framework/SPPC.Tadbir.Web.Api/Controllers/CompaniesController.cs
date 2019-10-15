@@ -68,6 +68,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        // POST: api/companies/validation
+        [HttpPost]
+        [Route(CompanyApi.CompanyValidationUrl)]
+        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Create)]
+        public async Task<IActionResult> PostValidationCompanyAsync([FromBody]CompanyDbViewModel company)
+        {
+            var result = await ValidationResultAsync(company);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            return Ok();
+        }
+
+        // POST: api/companies/initial
+        [HttpPost]
+        [Route(CompanyApi.InitialCompanyUrl)]
+        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Create)]
+        public async Task<IActionResult> PostInitialCompanyAsync([FromBody]InitialCompanyViewModel initialCompany)
+        {
+            var outputItem = await _repository.SaveInitialCompanyAsync(initialCompany, _host.WebRootPath);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
         // PUT: api/companies/{companyId:min(1)}
         [HttpPut]
         [Route(CompanyApi.CompanyUrl)]
@@ -146,6 +171,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (await _repository.IsDuplicateCompanyAsync(company))
             {
                 return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DbName));
+            }
+
+            if (_repository.IsDuplicateCompanyUserNameAsync(company))
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidDatabaseUserName));
             }
 
             return Ok();

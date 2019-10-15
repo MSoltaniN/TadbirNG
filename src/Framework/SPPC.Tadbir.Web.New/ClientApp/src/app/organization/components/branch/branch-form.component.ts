@@ -37,10 +37,12 @@ export class BranchFormComponent extends DetailComponent implements OnInit {
   @Input() public model: Branch;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
+  @Input() public isWizard: boolean = false;
 
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<Branch> = new EventEmitter();
+  @Output() previousStep: EventEmitter<any> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, public metadata: MetaDataService) {
@@ -82,5 +84,9 @@ export class BranchFormComponent extends DetailComponent implements OnInit {
 
   escPress() {
     this.closeForm();
+  }
+
+  onPreviousStep() {
+    this.previousStep.emit();
   }
 }

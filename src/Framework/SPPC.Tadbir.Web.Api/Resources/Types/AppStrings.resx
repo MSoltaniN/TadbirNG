@@ -2625,4 +2625,7 @@
   <data name="RootBranchAlreadyDefined" xml:space="preserve">
     <value>فقط یک شعبه در بالاترین سطح قابل تعریف است.</value>
   </data>
+  <data name="InvalidDatabaseUserName" xml:space="preserve">
+    <value>نام کاربری تکراری میباشد.</value>
+  </data>
 </root>
