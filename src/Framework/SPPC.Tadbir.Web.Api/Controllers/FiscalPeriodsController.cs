@@ -73,10 +73,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
         public async Task<IActionResult> PostFiscalPeriodValidationAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
         {
-            var result = await ValidationResultAsync(fiscalPeriod);
+            var result = BasicValidationResult(fiscalPeriod);
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
             }
 
             return Ok();
