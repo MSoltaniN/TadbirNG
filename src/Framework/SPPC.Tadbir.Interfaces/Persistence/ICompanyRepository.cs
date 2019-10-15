@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -9,7 +8,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت شرکت را پیاده سازی میکند.
     /// </summary>
-    public interface ICompanyRepository
+    public interface ICompanyRepository : IRepositoryBase
     {
         /// <summary>
         /// به روش آسنکرون، کلیه شرکت هایی را که در برنامه تعریف شده اند خوانده و برمی گرداند
@@ -53,10 +52,25 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteCompaniesAsync(IEnumerable<int> items);
 
         /// <summary>
-        /// به روش آسنکرون، نام وارد شده برای دیتابیس تکرای میباشد یا خیر
+        /// به روش آسنکرون، مشخص میکند که نام وارد شده برای دیتابیس تکرای میباشد یا خیر
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
         /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
         Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company);
+
+        /// <summary>
+        /// به روش آسنکرون، شرکت، شعبه و دوره مالی را ایجاد میکند
+        /// </summary>
+        /// <param name="initialCompany">اطلاعات شرکت، شعبه و دوره مالی برای ایجاد شرکت</param>
+        /// <param name="webHostPath">مسیر ریشه نرم افزار</param>
+        /// <returns>اطلاعات نمایشی شرکت ایجاد شده</returns>
+        Task<CompanyDbViewModel> SaveInitialCompanyAsync(InitialCompanyViewModel initialCompany, string webHostPath);
+
+        /// <summary>
+        /// مشخص میکند که نام کاربری وارد شده تکرای میباشد یا خیر
+        /// </summary>
+        /// <param name="company">شرکت مورد نظر</param>
+        /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
+        bool IsDuplicateCompanyUserNameAsync(CompanyDbViewModel company);
     }
 }

@@ -37,6 +37,7 @@ export class CompanyFormComponent extends DetailComponent implements OnInit {
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
+  @Input() public isWizard: boolean = false;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<CompanyDb> = new EventEmitter();

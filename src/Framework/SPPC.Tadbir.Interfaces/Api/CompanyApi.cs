@@ -38,5 +38,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a company specified by unique identifier
         /// </summary>
         public const string CompanyUrl = "companies/{companyId:min(1)}";
+
+        /// <summary>
+        /// API client URL for validation a company
+        /// </summary>
+        public const string CompanyValidation = "companies/validation";
+
+        /// <summary>
+        /// API server route URL for validation a company
+        /// </summary>
+        public const string CompanyValidationUrl = "companies/validation";
+
+        /// <summary>
+        /// API client URL for initial company, branch and fiscal period
+        /// </summary>
+        public const string InitialCompany = "companies/initial";
+
+        /// <summary>
+        /// API server route URL for initial company, branch and fiscal period
+        /// </summary>
+        public const string InitialCompanyUrl = "companies/initial";
     }
 }

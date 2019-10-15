@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     ///  عملیات مورد نیاز برای مدیریت اطلاعات دوره مالی را تعریف می کند.
     /// </summary>
-    public interface IFiscalPeriodRepository
+    public interface IFiscalPeriodRepository : IRepositoryBase
     {
         /// <summary>
         /// به روش آسنکرون، کلیه دوره های مالی را که در شرکت مشخص شده تعریف شده اند،

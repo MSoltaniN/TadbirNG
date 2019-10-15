@@ -7,9 +7,9 @@
     </div>
   </div>
 
-  <div *ngIf="errorMessage">
-    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+  <div *ngIf="errorMessage">    
     <div class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
       {{ errorMessage }}
     </div>
   </div>
@@ -40,6 +40,7 @@
 </div>
 
 <kendo-dialog-actions>
-  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ isWizard ? ('Buttons.NextStep' | translate) : ('Buttons.Ok' | translate) }}</button>
+  <button class="k-button" *ngIf="isWizard" (click)="onPreviousStep()">{{ 'Buttons.PreviousStep' | translate }}</button>
   <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
 </kendo-dialog-actions>

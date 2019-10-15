@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Config;
+using SPPC.Tadbir.ViewModel.Corporate;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -137,7 +142,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، نام وارد شده برای دیتابیس تکرای میباشد یا خیر
+        /// به روش آسنکرون، مشخص میکند که نام وارد شده برای دیتابیس تکرای میباشد یا خیر
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
         /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
@@ -155,6 +160,48 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return (items.SingleOrDefault(comp => comp.Id != company.Id) != null);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، شرکت، شعبه و دوره مالی را ایجاد میکند
+        /// </summary>
+        /// <param name="initialCompany">اطلاعات شرکت، شعبه و دوره مالی برای ایجاد شرکت</param>
+        /// <param name="webHostPath">مسیر ریشه نرم افزار</param>
+        /// <returns>اطلاعات نمایشی شرکت ایجاد شده</returns>
+        public async Task<CompanyDbViewModel> SaveInitialCompanyAsync(InitialCompanyViewModel initialCompany, string webHostPath)
+        {
+            _webRootPath = webHostPath;
+            Verify.ArgumentNotNull(initialCompany, "initialCompany");
+            var company = default(CompanyDb);
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+
+            CreateDatabase(initialCompany.Company);
+            company = Mapper.Map<CompanyDb>(initialCompany.Company);
+            await InsertAsync(repository, company);
+
+            UnitOfWork.UseCompanyContext();
+            CompanyConnection = BuildConnectionString(company);
+
+            SaveBranch(initialCompany.Branch, company.Id);
+            SaveFiscalPeriod(initialCompany.FiscalPeriod, company.Id);
+            await UnitOfWork.CommitAsync();
+
+            return Mapper.Map<CompanyDbViewModel>(company);
+        }
+
+        /// <summary>
+        /// مشخص میکند که نام کاربری وارد شده تکرای میباشد یا خیر
+        /// </summary>
+        /// <param name="company">شرکت مورد نظر</param>
+        /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
+        public bool IsDuplicateCompanyUserNameAsync(CompanyDbViewModel company)
+        {
+            Verify.ArgumentNotNull(company, "company");
+
+            string userScript = @"SELECT name FROM sys.sql_logins";
+            DataTable dt = _sqlConsole.ExecuteQuery(userScript);
+            List<DataRow> drList = dt.AsEnumerable().ToList();
+            return drList.Any(dataRow => dataRow["name"].Equals(company.UserName));
         }
 
         /// <summary>
@@ -206,6 +253,8 @@ namespace SPPC.Tadbir.Persistence
 
             _sqlConsole.ExecuteNonQuery(companyScript);
 
+            CreateDatabaseLogin(companyViewModel);
+
             string serverInfoScript = @"SELECT 
                                         @@servername AS 'ServerName',
                                         @@servicename AS 'InstanceName',
@@ -217,12 +266,74 @@ namespace SPPC.Tadbir.Persistence
             companyViewModel.Server = serverName;
         }
 
+        private void CreateDatabaseLogin(CompanyDbViewModel companyViewModel)
+        {
+            string loginScript = string.Format(@"CREATE LOGIN [{0}] WITH PASSWORD = '{1}', CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF;
+                                                 GO
+                                                 Use [{2}];
+                                                 GO
+                                                 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'{0}')
+                                                 BEGIN
+                                                    CREATE USER [{0}] FOR LOGIN [{0}]
+                                                    EXEC sp_addrolemember N'db_owner', N'{0}'    
+                                                 END;
+                                                 GO",
+                                                 companyViewModel.UserName,
+                                                 companyViewModel.Password,
+                                                 companyViewModel.DbName);
+
+            _sqlConsole.ExecuteNonQuery(loginScript);
+        }
+
         private bool IsDuplicateDatabaseName(string dbName)
         {
             string dbNameScript = @"SELECT [name] FROM sys.databases";
             DataTable dt = _sqlConsole.ExecuteQuery(dbNameScript);
             List<DataRow> drList = dt.AsEnumerable().ToList();
             return drList.Any(dataRow => dataRow["name"].Equals(dbName));
+        }
+
+        private void SaveBranch(BranchViewModel branchView, int companyId)
+        {
+            Verify.ArgumentNotNull(branchView, "branchView");
+            Branch branch = default(Branch);
+
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+
+            branchView.CompanyId = companyId;
+            branch = Mapper.Map<Branch>(branchView);
+            repository.Insert(branch);
+            //await InsertAsync(repository, branch);
+        }
+
+        private void SaveFiscalPeriod(FiscalPeriodViewModel fiscalPeriodView, int companyId)
+        {
+            Verify.ArgumentNotNull(fiscalPeriodView, "fiscalPeriodView");
+            FiscalPeriod fiscalPeriod = default(FiscalPeriod);
+
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+
+            fiscalPeriodView.CompanyId = companyId;
+            fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
+            repository.Insert(fiscalPeriod);
+            //await InsertAsync(repository, fiscalPeriod);
+        }
+
+        private string BuildConnectionString(CompanyDb company)
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
+            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
+            {
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                    company.UserName, company.Password);
+            }
+            else
+            {
+                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
+            }
+
+            return builder.ToString();
         }
 
         private readonly ISqlConsole _sqlConsole;
