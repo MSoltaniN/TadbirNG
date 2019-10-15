@@ -312,6 +312,8 @@
     "AccountBook": "دفتر حساب",
     "Title": "تراز",
     "Ledger": "کل",
+    "Reference": "رفرنس",
+    "FilterByRef": "فیلتر براساس رفرنس",
     "ShowAccountBookHint": "برای مشاهده دفتر حساب لطفا فیلتر تراز براساس تاریخ قرار دهید",
     "LevelIsNotExists": "حساب دارای گردشی در سطوح پایین تر نیست",
     "Format": {
