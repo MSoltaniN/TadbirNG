@@ -436,4 +436,15 @@ export class DefaultComponent extends BaseComponent {
 
 
   }
+
+  async metadataResolver(viewId: number) {
+    var lang = this.currentlang;
+
+    var metadataKey = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', lang ? lang : "fa");
+    var metadata = this.bStorageService.getMetadata(metadataKey);
+    if (metadata == null) {
+      const response = await this.metadataService.getMetaDataById(viewId).toPromise();
+      this.bStorageService.setMetadata(metadataKey, (<any>response).columns);
+    }
+  }
 }

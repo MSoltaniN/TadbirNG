@@ -2,9 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Renderer2 } from '@angular/core';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, SessionKeys } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
-import { DefaultComponent } from '@sppc/shared/class';
+import { DefaultComponent, String } from '@sppc/shared/class';
 import { DialogRef, DialogService, DialogCloseResult } from '@progress/kendo-angular-dialog';
 import { CompanyFormComponent } from '../company/company-form.component';
 import { CompanyDbInfo, BranchInfo, FiscalPeriodInfo, CompanyService, BranchService, FiscalPeriodService } from '@sppc/organization/service';
@@ -13,6 +13,7 @@ import { FiscalPeriodFormComponent } from '../fiscalPeriod/fiscalPeriod-form.com
 import { CompanyDb, Branch, FiscalPeriod } from '@sppc/organization/models';
 import { CompanyApi, FiscalPeriodApi } from '@sppc/organization/service/api';
 import { MessageType } from '@sppc/env/environment';
+import { ViewName } from '@sppc/shared/security';
 
 
 
@@ -40,7 +41,12 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    await this.metadataResolver(ViewName.Company);
+    await this.metadataResolver(ViewName.Branch);
+    await this.metadataResolver(ViewName.FiscalPeriod);
+
     this.openCompanyEditor(new CompanyDbInfo());
   }
 
@@ -80,7 +86,8 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
   /**
    *عملیات مربوط به باز و بسته شدن فرم شعبه
    * */
-  openBranchEditor(dataItem: BranchInfo) {
+  openBranchEditor(dataItem: BranchInfo) {    
+
     this.dialogRef = this.dialogService.open({
       title: this.getText('Branch.CreateBranch'),
       content: BranchFormComponent,
@@ -96,7 +103,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
 
     this.dialogRef.content.instance.save.subscribe((res) => {
       this.branch = res;
-      this.dialogRef.close();
+      this.dialogRef.close();      
       this.openFiscalPeriodEditor();
     });
 
