@@ -12,7 +12,7 @@ export class EnviromentComponent {
 
   }
 
-  public version: string = '1.0.723';
+  public version: string = '1.0.742';
 
   public get CurrentLanguage(): string {
 
