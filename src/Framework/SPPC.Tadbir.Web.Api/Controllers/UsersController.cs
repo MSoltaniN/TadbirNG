@@ -258,7 +258,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/users/login/company
         [HttpPut]
         [Route(UserApi.UserCompanyLoginStatusUrl)]
-        public async Task<IActionResult> PutUserCompanyLoginStatus([FromBody] CompanyLoginViewModel companyLogin)
+        public async Task<IActionResult> PutUserCompanyLoginStatusAsync([FromBody] CompanyLoginViewModel companyLogin)
         {
             if (companyLogin == null)
             {
@@ -272,6 +272,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var userContext = SecurityContext.User;
             await _repository.UpdateUserCompanyLoginAsync(companyLogin, userContext);
+            Response.Headers[AppConstants.ContextHeaderName] = GetEncodedTicket(userContext);
+            return Ok(userContext);
+        }
+
+        // PUT: api/users/current/env
+        [HttpPut]
+        [Route(UserApi.CurrentUserEnvironmentUrl)]
+        public async Task<IActionResult> PutCurrentUserEnvironmentAsync([FromBody] CompanyLoginViewModel env)
+        {
+            if (env == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.AppEnvironment));
+            }
+
+            var userContext = SecurityContext.User;
+            await _repository.UpdateUserEnvironmentAsync(env, userContext);
             Response.Headers[AppConstants.ContextHeaderName] = GetEncodedTicket(userContext);
             return Ok(userContext);
         }

@@ -2640,4 +2640,7 @@
   <data name="InvalidDatabaseUserName" xml:space="preserve">
     <value>Username is duplicate.</value>
   </data>
+  <data name="AppEnvironment" xml:space="preserve">
+    <value>App environment</value>
+  </data>
 </root>

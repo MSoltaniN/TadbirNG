@@ -15,6 +15,7 @@ using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -198,16 +199,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<KeyValue>> GetUserAccessibleCompaniesAsync(int userId)
         {
             UnitOfWork.UseSystemContext();
+            var companies = new List<int>();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
-            var companies = new List<int>();
             if (user != null)
             {
+                var roleIds = user.UserRoles.Select(ur => ur.RoleId);
                 var relatedRepository = UnitOfWork.GetAsyncRepository<RoleCompany>();
-                Array.ForEach(
-                    user.UserRoles
-                        .Select(ur => ur.RoleId)
-                        .ToArray(),
+                Array.ForEach(roleIds.ToArray(),
                     roleId =>
                     {
                         var roleCompanies = relatedRepository.GetByCriteria(
@@ -246,24 +245,33 @@ namespace SPPC.Tadbir.Persistence
             if (user != null)
             {
                 UnitOfWork.UseCompanyContext();
-                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
-                Array.ForEach(
-                    user.UserRoles
-                        .Select(ur => ur.RoleId)
-                        .ToArray(),
-                    roleId =>
-                    {
-                        var rolePeriods = relatedRepository.GetByCriteria(
-                            rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
-                        fiscalPeriods.AddRange(
-                            rolePeriods
-                                .Select(rfp => rfp.FiscalPeriod)
-                                .Where(fp => fp.CompanyId == companyId));
-                    });
-                fiscalPeriods = fiscalPeriods
-                    .Distinct(new EntityEqualityComparer())
-                    .Cast<FiscalPeriod>()
-                    .ToList();
+                var roleIds = user.UserRoles.Select(ur => ur.RoleId);
+                if (roleIds.Contains(AppConstants.AdminRoleId))
+                {
+                    var fiscalRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+                    fiscalPeriods.AddRange(await fiscalRepository.GetAllAsync());
+                }
+                else
+                {
+                    var relatedRepository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
+                    Array.ForEach(
+                        user.UserRoles
+                            .Select(ur => ur.RoleId)
+                            .ToArray(),
+                        roleId =>
+                        {
+                            var rolePeriods = relatedRepository.GetByCriteria(
+                                rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
+                            fiscalPeriods.AddRange(
+                                rolePeriods
+                                    .Select(rfp => rfp.FiscalPeriod)
+                                    .Where(fp => fp.CompanyId == companyId));
+                        });
+                    fiscalPeriods = fiscalPeriods
+                        .Distinct(new EntityEqualityComparer())
+                        .Cast<FiscalPeriod>()
+                        .ToList();
+                }
             }
 
             return fiscalPeriods
@@ -288,24 +296,30 @@ namespace SPPC.Tadbir.Persistence
             if (user != null)
             {
                 UnitOfWork.UseCompanyContext();
-                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleBranch>();
-                Array.ForEach(
-                    user.UserRoles
-                        .Select(ur => ur.RoleId)
-                        .ToArray(),
-                    roleId =>
-                    {
-                        var roleBranches = relatedRepository.GetByCriteria(
-                            rb => rb.RoleId == roleId, rb => rb.Branch);
-                        branches.AddRange(
-                            roleBranches
-                                .Select(rb => rb.Branch)
-                                .Where(br => br.CompanyId == companyId));
-                    });
-                branches = branches
-                    .Distinct(new EntityEqualityComparer())
-                    .Cast<Branch>()
-                    .ToList();
+                var roleIds = user.UserRoles.Select(ur => ur.RoleId);
+                if (roleIds.Contains(AppConstants.AdminRoleId))
+                {
+                    var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+                    branches.AddRange(await branchRepository.GetAllAsync());
+                }
+                else
+                {
+                    var relatedRepository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+                    Array.ForEach(roleIds.ToArray(),
+                        roleId =>
+                        {
+                            var roleBranches = relatedRepository.GetByCriteria(
+                                rb => rb.RoleId == roleId, rb => rb.Branch);
+                            branches.AddRange(
+                                roleBranches
+                                    .Select(rb => rb.Branch)
+                                    .Where(br => br.CompanyId == companyId));
+                        });
+                    branches = branches
+                        .Distinct(new EntityEqualityComparer())
+                        .Cast<Branch>()
+                        .ToList();
+                }
             }
 
             return branches
