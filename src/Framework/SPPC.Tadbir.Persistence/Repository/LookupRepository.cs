@@ -198,34 +198,45 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از شرکت های قابل دسترسی</returns>
         public async Task<IList<KeyValue>> GetUserAccessibleCompaniesAsync(int userId)
         {
+            var userCompanies = new List<CompanyDb>();
             UnitOfWork.UseSystemContext();
             var companies = new List<int>();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             if (user != null)
             {
+                var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
                 var roleIds = user.UserRoles.Select(ur => ur.RoleId);
-                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleCompany>();
-                Array.ForEach(roleIds.ToArray(),
-                    roleId =>
-                    {
-                        var roleCompanies = relatedRepository.GetByCriteria(
-                            rc => rc.RoleId == roleId);
-                        companies.AddRange(
-                            roleCompanies.Select(rc => rc.CompanyId));
-                    });
+                if (roleIds.Contains(AppConstants.AdminRoleId))
+                {
+                    userCompanies.AddRange(await repository.GetAllAsync());
+                }
+                else
+                {
+                    var relatedRepository = UnitOfWork.GetAsyncRepository<RoleCompany>();
+                    Array.ForEach(roleIds.ToArray(),
+                        roleId =>
+                        {
+                            var roleCompanies = relatedRepository.GetByCriteria(
+                                rc => rc.RoleId == roleId);
+                            companies.AddRange(
+                                roleCompanies.Select(rc => rc.CompanyId));
+                        });
+
+                    userCompanies = await repository
+                        .GetEntityQuery()
+                        .Where(c => companies
+                            .Distinct()
+                            .Contains(c.Id))
+                        .ToListAsync();
+                }
             }
 
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var userCompanies = await repository
-                .GetEntityQuery()
-                .Where(c => companies
-                    .Distinct()
-                    .Contains(c.Id))
-                .Select(c => Mapper.Map<KeyValue>(c))
-                .ToListAsync();
             UnitOfWork.UseCompanyContext();
-            return userCompanies;
+            return userCompanies
+                .OrderBy(c => c.Name)
+                .Select(c => Mapper.Map<KeyValue>(c))
+                .ToList();
         }
 
         /// <summary>
@@ -254,10 +265,7 @@ namespace SPPC.Tadbir.Persistence
                 else
                 {
                     var relatedRepository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
-                    Array.ForEach(
-                        user.UserRoles
-                            .Select(ur => ur.RoleId)
-                            .ToArray(),
+                    Array.ForEach(roleIds.ToArray(),
                         roleId =>
                         {
                             var rolePeriods = relatedRepository.GetByCriteria(
@@ -274,6 +282,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
+            UnitOfWork.UseCompanyContext();
             return fiscalPeriods
                 .OrderBy(fp => fp.Name)
                 .Select(fp => Mapper.Map<KeyValue>(fp));
@@ -322,6 +331,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
+            UnitOfWork.UseCompanyContext();
             return branches
                 .OrderBy(br => br.Name)
                 .Select(br => Mapper.Map<KeyValue>(br));

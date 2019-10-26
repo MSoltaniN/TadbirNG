@@ -594,3 +594,10 @@ WHERE ColumnID=72
 UPDATE [Metadata].[Column]
 SET DotNetType = N'System.String', ScriptType = N'string', StorageType = N'nvarchar', [Length] = 32
 WHERE ViewID = 1 AND [Name] = 'TurnoverMode'
+
+-- 1.1.737
+DELETE FROM [Auth].[RolePermission]
+WHERE RoleID = 1
+
+DELETE FROM [Auth].[RoleCompany]
+WHERE RoleID = 1
