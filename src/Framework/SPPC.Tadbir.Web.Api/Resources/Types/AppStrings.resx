@@ -2631,4 +2631,7 @@
   <data name="InvalidDatabaseUserName" xml:space="preserve">
     <value>نام کاربری تکراری میباشد.</value>
   </data>
+  <data name="AppEnvironment" xml:space="preserve">
+    <value>محیط برنامه</value>
+  </data>
 </root>

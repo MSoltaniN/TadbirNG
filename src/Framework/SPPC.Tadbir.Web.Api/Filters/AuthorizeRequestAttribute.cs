@@ -72,8 +72,8 @@ namespace SPPC.Tadbir.Web.Api.Filters
         private bool IsAuthorized(string authTicket)
         {
             var securityContext = _contextDecoder.Decode(authTicket);
-            return (securityContext.User.Id == AppConstants.AdminUserId
-                || securityContext.HasPermissions(_requiredPermissions));
+            return securityContext.IsInRole(AppConstants.AdminRoleId)
+                || securityContext.HasPermissions(_requiredPermissions);
         }
 
         private readonly PermissionBriefViewModel[] _requiredPermissions;

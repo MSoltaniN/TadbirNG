@@ -288,3 +288,10 @@ GO
 ALTER TABLE Finance.Currency ADD
 	IsDefaultCurrency bit NOT NULL  DEFAULT 0
 GO
+
+-- 1.1.737
+DELETE FROM [Auth].[RoleBranch]
+WHERE RoleID = 1
+
+DELETE FROM [Auth].[RoleFiscalPeriod]
+WHERE RoleID = 1

@@ -12,6 +12,7 @@ using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -105,9 +106,16 @@ namespace SPPC.Tadbir.Persistence
             if (user != null)
             {
                 userContext = Mapper.Map<UserContextViewModel>(user);
+                var roleIds = user.UserRoles.Select(ur => ur.RoleId);
+                if (roleIds.Contains(AppConstants.AdminRoleId))
+                {
+                    Array.ForEach(roleIds.ToArray(), id => userContext.Roles.Add(id));
+                    return userContext;
+                }
+
                 var permissions = new List<PermissionBriefViewModel>();
                 var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
-                foreach (var roleId in user.UserRoles.Select(ur => ur.RoleId))
+                foreach (var roleId in roleIds)
                 {
                     var role = await roleRepository.GetByIDAsync(roleId, r => r.RolePermissions);
                     userContext.Roles.Add(roleId);
@@ -363,6 +371,44 @@ namespace SPPC.Tadbir.Persistence
             userContext.BranchName = branch?.Name;
             var fiscalPeriod = await fiscalRepo.GetByIDAsync((int)companyLogin.FiscalPeriodId);
             userContext.FiscalPeriodName = fiscalPeriod?.Name;
+            UnitOfWork.UseSystemContext();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات محیطی کاربر جاری را بروزرسانی می کند
+        /// </summary>
+        /// <param name="environment">اطلاعات محیطی مورد درخواست کاربر</param>
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر پیش از درخواست</param>
+        public async Task UpdateUserEnvironmentAsync(
+            CompanyLoginViewModel environment, UserContextViewModel userContext)
+        {
+            Verify.ArgumentNotNull(environment, nameof(environment));
+            Verify.ArgumentNotNull(userContext, nameof(userContext));
+
+            if (environment.FiscalPeriodId.HasValue)
+            {
+                UnitOfWork.UseCompanyContext();
+                var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+                var fiscalPeriod = await repository.GetByIDAsync(environment.FiscalPeriodId.Value);
+                if (fiscalPeriod != null)
+                {
+                    userContext.FiscalPeriodId = fiscalPeriod.Id;
+                    userContext.FiscalPeriodName = fiscalPeriod.Name;
+                }
+            }
+
+            if (environment.BranchId.HasValue)
+            {
+                UnitOfWork.UseCompanyContext();
+                var repository = UnitOfWork.GetAsyncRepository<Branch>();
+                var branch = await repository.GetByIDAsync(environment.BranchId.Value);
+                if (branch != null)
+                {
+                    userContext.BranchId = branch.Id;
+                    userContext.BranchName = branch.Name;
+                }
+            }
+
             UnitOfWork.UseSystemContext();
         }
 
