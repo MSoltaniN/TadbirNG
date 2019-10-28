@@ -12,8 +12,7 @@ import { IEntity } from "./IEntity";
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-export interface Command extends IEntity{
-    hasPermission: boolean;
+export interface Command extends IEntity {
     permissionId?: number;
     children: Array<Command>;
     id: number;
