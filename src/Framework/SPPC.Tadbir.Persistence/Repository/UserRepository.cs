@@ -182,8 +182,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId)
         {
             var topCommands = await Metadata.GetTopLevelCommandsAsync();
-            var userPermissions = await GetUserPermissionIdsAsync(userId);
-            FilterInaccessibleCommands(userPermissions, topCommands);
+            bool isAdmin = UserContext.Roles.Contains(AppConstants.AdminRoleId);
+            if (!isAdmin)
+            {
+                var userPermissions = await GetUserPermissionIdsAsync(userId);
+                FilterInaccessibleCommands(userPermissions, topCommands);
+            }
+
             return topCommands;
         }
 
@@ -531,7 +536,18 @@ namespace SPPC.Tadbir.Persistence
                 }
                 else if (IsInaccessibleCommand(command, permissions))
                 {
-                    command.HasPermission = false;
+                    int index = commands.IndexOf(command);
+                    commands.RemoveAt(index);
+                    count--;
+                    i--;
+                }
+
+                if (IsTopLevelCommand(command) && command.Children.Count == 0)
+                {
+                    int index = commands.IndexOf(command);
+                    commands.RemoveAt(index);
+                    count--;
+                    i--;
                 }
             }
         }

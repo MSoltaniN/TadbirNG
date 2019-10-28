@@ -12,4 +12,5 @@ export interface Context extends IEntity {
   branchId: number;
   companyId: number;
   permissions: Array<PermissionBrief>;
+  roles: Array<number>;
 }

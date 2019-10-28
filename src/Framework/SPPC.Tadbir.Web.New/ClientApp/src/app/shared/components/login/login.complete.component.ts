@@ -292,7 +292,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
       if (res.headers != null) {
         let newTicket = res.headers.get('X-Tadbir-AuthTicket');
         let contextInfo = <ContextInfo>res.body;
-
         var currentUser = this.bStorageService.getCurrentUser();
         if (currentUser != null) {
 
@@ -304,6 +303,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           currentUser.branchName = contextInfo.branchName;
           currentUser.companyName = contextInfo.companyName;
           currentUser.ticket = newTicket;
+          currentUser.roles = contextInfo.roles;
 
           this.bStorageService.setCurrentContext(currentUser);
           this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.companyId, this.branchId, this.fiscalPeriodId);

@@ -27,6 +27,7 @@ export class ContextInfo implements Context {
   companyName: string;
   fiscalPeriodName: string;
   permissions: PermissionBrief[];
+  roles: number[];
 }
 
 export class CompanyLoginInfo implements CompanyLogin {
