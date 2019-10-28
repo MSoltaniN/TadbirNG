@@ -162,7 +162,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           contextIsEmpty = false;
         }
 
-        if (!contextIsEmpty) {
+        if (contextIsEmpty) {
           var fps = this.authenticationService.getFiscalPeriod(companyId, ticket);
           if (fps != null) {
             fps.subscribe(res => {
