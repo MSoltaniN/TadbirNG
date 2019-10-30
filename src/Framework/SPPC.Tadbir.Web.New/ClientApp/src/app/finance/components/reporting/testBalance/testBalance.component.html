@@ -316,7 +316,7 @@
             <kendo-switch [onLabel]="('Journal.OnLabel' | translate)"
                           [offLabel]="('Journal.OffLabel' | translate)"
                           [(ngModel)]="selectedBranchSeparation"
-                          (ngModelChange)="changeBranchSeparation();saveStates();">
+                          (valueChange)="valueChangeBranchSeparation($event);" >
             </kendo-switch>
           </div>
         </div>
