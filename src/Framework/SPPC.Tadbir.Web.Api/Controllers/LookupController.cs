@@ -288,7 +288,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private string LocalizeLevelTitle(string title, int level)
         {
             return title == "LevelX"
-                ? _strings.Format(title, level.ToString())
+                ? _strings.Format(title, (level + 1).ToString())
                 : _strings.Format(title);
         }
 

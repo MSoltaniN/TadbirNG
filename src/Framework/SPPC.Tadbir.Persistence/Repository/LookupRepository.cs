@@ -435,7 +435,7 @@ namespace SPPC.Tadbir.Persistence
                         levels.Add(new AccountLevelViewModel()
                         {
                             Key = key++,
-                            Level = level.No,
+                            Level = level.No - 1,
                             Title = level.Name,
                             ViewId = viewId
                         });
@@ -452,7 +452,7 @@ namespace SPPC.Tadbir.Persistence
                         levels.Add(new AccountLevelViewModel()
                         {
                             Key = key++,
-                            Level = lastUsed.No,
+                            Level = lastUsed.No - 1,
                             Title = lastUsed.Name,
                             ViewId = viewId
                         });
