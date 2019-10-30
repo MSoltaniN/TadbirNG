@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using SPPC.Framework.Common;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Framework.Service.Security
 {
@@ -58,6 +61,69 @@ namespace SPPC.Framework.Service.Security
             return (hexDataHash == hexHash);
         }
 
+        /// <summary>
+        /// Converts input string data to encrypted form with a string representation
+        /// </summary>
+        /// <param name="data">String data to encrypt</param>
+        /// <returns>String representation of encrypted data</returns>
+        public string Encrypt(string data)
+        {
+            byte[] cipher;
+            byte[] wrappedCipher;
+            using (Aes aes = Aes.Create())
+            {
+                ICryptoTransform encryptor = aes.CreateEncryptor();
+                using (MemoryStream memStream = new MemoryStream())
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter cryptoWriter = new StreamWriter(cryptoStream))
+                        {
+                            cryptoWriter.Write(data);
+                        }
+
+                        cipher = memStream.ToArray();
+                    }
+                }
+
+                wrappedCipher = WrapCipher(cipher, aes.Key, aes.IV);
+            }
+
+            return Transform.ToBase64String(wrappedCipher);
+        }
+
+        /// <summary>
+        /// Converts string representation of previously encrypted data to original data
+        /// </summary>
+        /// <param name="cipher">Previously encrypted data as a string representation</param>
+        /// <returns>Original data retrieved from encrypted form</returns>
+        public string Decrypt(string cipher)
+        {
+            byte[] key, iv;
+            byte[] cipherBytes = Transform.FromBase64String(cipher);
+            byte[] unwrappedCipher = UnwrapCipher(cipherBytes, out key, out iv);
+            string data;
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = key;
+                aes.IV = iv;
+
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                using (MemoryStream memStream = new MemoryStream(unwrappedCipher))
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader cryptoReader = new StreamReader(cryptoStream))
+                        {
+                            data = cryptoReader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+
+            return data;
+        }
+
         #region IDisposable Support
 
         /// <summary>
@@ -88,6 +154,27 @@ namespace SPPC.Framework.Service.Security
         }
 
         #endregion
+
+        private static byte[] WrapCipher(byte[] cipher, byte[] key, byte[] iv)
+        {
+            return cipher
+                .Concat(iv)
+                .Concat(key)
+                .ToArray();
+        }
+
+        private static byte[] UnwrapCipher(byte[] cipher, out byte[] key, out byte[] iv)
+        {
+            int keyLength = AppConstants.CryptoKeySize;
+            int ivLength = AppConstants.CryptoIvSize;
+            key = new byte[keyLength];
+            iv = new byte[ivLength];
+            Array.Copy(cipher, cipher.Length - keyLength, key, 0, keyLength);
+            Array.Copy(cipher, cipher.Length - keyLength - ivLength, iv, 0, ivLength);
+            byte[] unwrappedCipher = new byte[cipher.Length - keyLength - ivLength];
+            Array.Copy(cipher, 0, unwrappedCipher, 0, unwrappedCipher.Length);
+            return unwrappedCipher;
+        }
 
         private SHA256CryptoServiceProvider _hashProvider;
         private bool _disposed = false;

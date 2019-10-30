@@ -76,5 +76,15 @@ namespace SPPC.Tadbir.Values
         /// نام پوشه مورد استفاده برای دریافت فایل های بارگذاری شده توسط کاربر
         /// </summary>
         public const string UserUploadFolderName = "Upload";
+
+        /// <summary>
+        /// اندازه کلید سری مورد استفاده در عملیات رمزنگاری اطلاعات، بر حسب بایت
+        /// </summary>
+        public const int CryptoKeySize = 32;
+
+        /// <summary>
+        /// اندازه بردار اولیه مورد استفاده در عملیات رمزنگاری اطلاعات، بر حسب بایت
+        /// </summary>
+        public const int CryptoIvSize = 16;
     }
 }
