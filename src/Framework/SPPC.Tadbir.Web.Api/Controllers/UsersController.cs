@@ -272,6 +272,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var userContext = SecurityContext.User;
             await _repository.UpdateUserCompanyLoginAsync(companyLogin, userContext);
+            userContext.Connection = _crypto.Encrypt(userContext.Connection);
             Response.Headers[AppConstants.ContextHeaderName] = GetEncodedTicket(userContext);
             return Ok(userContext);
         }

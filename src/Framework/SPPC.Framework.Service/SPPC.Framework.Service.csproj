@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
   </ItemGroup>
 
 </Project>

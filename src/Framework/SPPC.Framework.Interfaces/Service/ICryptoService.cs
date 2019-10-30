@@ -32,5 +32,19 @@ namespace SPPC.Framework.Service.Security
         /// <param name="hash">Hash value to use for validation</param>
         /// <returns>True if input data is valid, otherwise false.</returns>
         bool ValidateHash(byte[] data, byte[] hash);
+
+        /// <summary>
+        /// Converts input string data to encrypted form with a string representation
+        /// </summary>
+        /// <param name="data">String data to encrypt</param>
+        /// <returns>String representation of encrypted data</returns>
+        string Encrypt(string data);
+
+        /// <summary>
+        /// Converts string representation of previously encrypted data to original data
+        /// </summary>
+        /// <param name="cipher">Previously encrypted data as a string representation</param>
+        /// <returns>Original data retrieved from encrypted form</returns>
+        string Decrypt(string cipher);
     }
 }
