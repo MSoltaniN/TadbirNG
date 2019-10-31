@@ -40,6 +40,27 @@ namespace SPPC.Framework.Common
         }
 
         /// <summary>
+        /// Checks given array argument for null reference or empty collection. If argument is null,
+        /// throws a new instance of ArgumentNullException. If argument is an empty array,
+        /// throws a new instance of ArgumentException. If an exception is generated, argument
+        /// name of the exception instance is set to argName.
+        /// </summary>
+        /// <param name="argValue">Array argument to check for null reference or empty collection</param>
+        /// <param name="argName">Name of the array argument to check</param>
+        public static void ArgumentNotNullOrEmpty(Array argValue, string argName)
+        {
+            if (argValue == null)
+            {
+                throw (ExceptionBuilder.NewArgumentNullException(argName));
+            }
+
+            if (argValue.Length == 0)
+            {
+                throw (ExceptionBuilder.NewArgumentException());
+            }
+        }
+
+        /// <summary>
         /// Checks given string argument for null reference or empty value. If argument is null,
         /// throws a new instance of ArgumentNullException. If argument is empty string,
         /// throws a new instance of ArgumentException.

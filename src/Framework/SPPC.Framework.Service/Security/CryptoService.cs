@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using SPPC.Framework.Common;
-using SPPC.Tadbir.Values;
 
 namespace SPPC.Framework.Service.Security
 {
@@ -12,14 +11,13 @@ namespace SPPC.Framework.Service.Security
     /// Provides cryptographic operations required for protecting sensitive data using relatively strong
     /// cryptographic algorithms.
     /// </summary>
-    public class CryptoService : ICryptoService, IDisposable
+    public class CryptoService : ICryptoService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CryptoService"/> class.
         /// </summary>
         public CryptoService()
         {
-            _hashProvider = new SHA256CryptoServiceProvider();
         }
 
         /// <summary>
@@ -30,7 +28,10 @@ namespace SPPC.Framework.Service.Security
         /// <returns>SHA256 hash of given data</returns>
         public byte[] CreateHash(byte[] data)
         {
-            return _hashProvider.ComputeHash(data);
+            using (var sha256 = SHA256.Create())
+            {
+                return sha256.ComputeHash(data);
+            }
         }
 
         /// <summary>
@@ -41,10 +42,13 @@ namespace SPPC.Framework.Service.Security
         /// <returns>SHA256 hash of given data in Hexadecimal form</returns>
         public string CreateHash(string data)
         {
-            Verify.ArgumentNotNullOrEmptyString(data, "data");
-            var dataBytes = Encoding.UTF8.GetBytes(data);
-            var dataHashBytes = _hashProvider.ComputeHash(dataBytes);
-            return Transform.ToHexString(dataHashBytes);
+            Verify.ArgumentNotNullOrEmptyString(data, nameof(data));
+            using (var sha256 = SHA256.Create())
+            {
+                var dataBytes = Encoding.UTF8.GetBytes(data);
+                var dataHashBytes = sha256.ComputeHash(dataBytes);
+                return Transform.ToHexString(dataHashBytes);
+            }
         }
 
         /// <summary>
@@ -55,10 +59,15 @@ namespace SPPC.Framework.Service.Security
         /// <returns>True if input data is valid, otherwise false.</returns>
         public bool ValidateHash(byte[] data, byte[] hash)
         {
-            byte[] dataHash = _hashProvider.ComputeHash(data);
-            string hexDataHash = Transform.ToHexString(dataHash);
-            string hexHash = Transform.ToHexString(hash);
-            return (hexDataHash == hexHash);
+            Verify.ArgumentNotNullOrEmpty(data, nameof(data));
+            Verify.ArgumentNotNullOrEmpty(hash, nameof(hash));
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] dataHash = sha256.ComputeHash(data);
+                string hexDataHash = Transform.ToHexString(dataHash);
+                string hexHash = Transform.ToHexString(hash);
+                return hexDataHash == hexHash;
+            }
         }
 
         /// <summary>
@@ -124,37 +133,6 @@ namespace SPPC.Framework.Service.Security
             return data;
         }
 
-        #region IDisposable Support
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Supports correct implementation of the Disposable pattern for this class.
-        /// </summary>
-        /// <param name="disposing">Indicates if this instance is currently being disposed</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                _hashProvider.Dispose();
-                _disposed = true;
-            }
-        }
-
-        #endregion
-
         private static byte[] WrapCipher(byte[] cipher, byte[] key, byte[] iv)
         {
             return cipher
@@ -165,18 +143,16 @@ namespace SPPC.Framework.Service.Security
 
         private static byte[] UnwrapCipher(byte[] cipher, out byte[] key, out byte[] iv)
         {
-            int keyLength = AppConstants.CryptoKeySize;
-            int ivLength = AppConstants.CryptoIvSize;
-            key = new byte[keyLength];
-            iv = new byte[ivLength];
-            Array.Copy(cipher, cipher.Length - keyLength, key, 0, keyLength);
-            Array.Copy(cipher, cipher.Length - keyLength - ivLength, iv, 0, ivLength);
-            byte[] unwrappedCipher = new byte[cipher.Length - keyLength - ivLength];
+            key = new byte[_KeySize];
+            iv = new byte[_IvSize];
+            Array.Copy(cipher, cipher.Length - _KeySize, key, 0, _KeySize);
+            Array.Copy(cipher, cipher.Length - _KeySize - _IvSize, iv, 0, _IvSize);
+            byte[] unwrappedCipher = new byte[cipher.Length - _KeySize - _IvSize];
             Array.Copy(cipher, 0, unwrappedCipher, 0, unwrappedCipher.Length);
             return unwrappedCipher;
         }
 
-        private SHA256CryptoServiceProvider _hashProvider;
-        private bool _disposed = false;
+        private const int _KeySize = 32;
+        private const int _IvSize = 16;
     }
 }
