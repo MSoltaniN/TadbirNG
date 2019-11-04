@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای ذخیره و بازیابی تنظیمات برنامه را پیاده سازی می کند
     /// </summary>
-    public class ConfigRepository : RepositoryBase, IConfigRepository
+    public class ConfigRepository : BaseConfigRepository, IConfigRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -35,84 +35,6 @@ namespace SPPC.Tadbir.Persistence
         {
             _fiscalRepository = fiscalRepository;
             _sqlConsole = sqlConsole;
-            UnitOfWork.UseSystemContext();
-        }
-
-        /// <summary>
-        /// تمام تنظیمات موجود برای برنامه را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ای از تمام تنظیمات موجود برای برنامه</returns>
-        public async Task<IList<SettingBriefViewModel>> GetAllConfigAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Setting>();
-            var allConfig = await repository
-                .GetAllAsync();
-            return allConfig
-                .Where(cfg => !(cfg.Type == 3 && cfg.ScopeType == 2) && cfg.IsStandalone)
-                .Select(cfg => Mapper.Map<SettingBriefViewModel>(cfg))
-                .ToList();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت داده شده برای تنظیمات را ذخیره می کند
-        /// </summary>
-        /// <param name="configItems">مجموعه ای از تنظیمات اصلاح شده</param>
-        public async Task SaveConfigAsync(IList<SettingBriefViewModel> configItems)
-        {
-            Verify.ArgumentNotNull(configItems, "configItems");
-            var repository = UnitOfWork.GetAsyncRepository<Setting>();
-            var modifiedIds = configItems.Select(cfg => cfg.Id);
-            var modified = await repository
-                .GetEntityWithTrackingQuery()
-                .Where(cfg => modifiedIds.Contains(cfg.Id))
-                .ToListAsync();
-            Array.ForEach(modified.ToArray(), cfg =>
-                {
-                    var configItem = configItems
-                        .Where(item => item.Id == cfg.Id)
-                        .Single();
-                    cfg.Values = JsonHelper.From(configItem.Values, false);
-                    repository.Update(cfg);
-                });
-            await UnitOfWork.CommitAsync();
-        }
-
-        /// <summary>
-        /// اطلاعات تنظیمات مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="settingId">شناسه دیتابیسی تنظیمات مورد نظر</param>
-        /// <returns>اطلاعات نمایشی برای تنظیمات مورد نظر</returns>
-        public async Task<SettingBriefViewModel> GetConfigByIdAsync(int settingId)
-        {
-            var config = default(SettingBriefViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Setting>();
-            var configById = await repository.GetByIDAsync(settingId);
-            if (configById != null)
-            {
-                config = Mapper.Map<SettingBriefViewModel>(configById);
-            }
-
-            return config;
-        }
-
-        /// <summary>
-        /// تنظیمات موجود برای کلاس تنظیمات مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TConfig">نوع تنظیمات مورد نیاز</typeparam>
-        /// <returns>تنظیمات موجود برای کلاس تنظیمات مشخص شده</returns>
-        public async Task<TConfig> GetConfigByTypeAsync<TConfig>()
-        {
-            var configByType = default(TConfig);
-            var repository = UnitOfWork.GetAsyncRepository<Setting>();
-            var configItems = await repository
-                .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(TConfig).Name);
-            var config = configItems.SingleOrDefault();
-            if (config != null)
-            {
-                configByType = Mapper.Map<TConfig>(config);
-            }
-
-            return configByType;
         }
 
         /// <summary>
@@ -137,115 +59,6 @@ namespace SPPC.Tadbir.Persistence
                     ? DateTime.Now
                     : fp.EndDate;
             }
-        }
-
-        /// <summary>
-        /// تمام تنظیمات کاربری موجود برای فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
-        /// <returns>تنظیمات کاربری موجود برای فرم های لیستی</returns>
-        public async Task<IList<ListFormViewConfig>> GetListViewConfigByUserAsync(int userId)
-        {
-            IList<ListFormViewConfig> configList = new List<ListFormViewConfig>();
-            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
-            var viewRepository = UnitOfWork.GetAsyncRepository<View>();
-            var configItems = await repository
-                .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ListFormViewConfig).Name
-                    && cfg.User.Id == userId);
-            var userViewIds = configItems.Select(cfg => cfg.ViewId.Value);
-            var entityViews = await viewRepository.GetByCriteriaAsync(
-                ev => !userViewIds.Contains(ev.Id),
-                ev => ev.Columns);
-            foreach (var view in entityViews)
-            {
-                var userConfig = new ListFormViewConfig() { ViewId = view.Id };
-                foreach (var column in view.Columns)
-                {
-                    userConfig.ColumnViews.Add(Mapper.Map<ColumnViewConfig>(column));
-                }
-
-                configList.Add(userConfig);
-            }
-
-            foreach (var config in configItems)
-            {
-                configList.Add(Mapper.Map<ListFormViewConfig>(config));
-            }
-
-            return configList;
-        }
-
-        /// <summary>
-        /// تنظیمات کاربری موجود برای یکی از فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
-        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
-        /// <returns>تنظیمات کاربری موجود برای یکی از فرم های لیستی</returns>
-        public async Task<ListFormViewConfig> GetListViewConfigByUserAsync(int userId, int viewId)
-        {
-            var userConfig = default(ListFormViewConfig);
-            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
-            var items = await repository
-                .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ListFormViewConfig).Name
-                    && cfg.User.Id == userId
-                    && cfg.View.Id == viewId);
-            var config = items.SingleOrDefault();
-            if (config == null)
-            {
-                var viewRepository = UnitOfWork.GetAsyncRepository<View>();
-                var entityView = await viewRepository.GetByIDAsync(viewId, ev => ev.Columns);
-                if (entityView != null)
-                {
-                    userConfig = new ListFormViewConfig() { ViewId = entityView.Id };
-                    foreach (var column in entityView.Columns)
-                    {
-                        userConfig.ColumnViews.Add(Mapper.Map<ColumnViewConfig>(column));
-                    }
-                }
-            }
-            else
-            {
-                userConfig = Mapper.Map<ListFormViewConfig>(config);
-            }
-
-            return userConfig;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تنظیمات کاربری برای یکی از فرم های لیستی را ذخیره می کند
-        /// </summary>
-        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
-        /// <param name="userConfig">تنظیمات کاربری برای فرم لیستی</param>
-        public async Task SaveUserListConfigAsync(int userId, ListFormViewConfig userConfig)
-        {
-            Verify.ArgumentNotNull(userConfig, "userConfig");
-            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
-            var userRepository = UnitOfWork.GetAsyncRepository<User>();
-            var existing = await repository
-                .GetEntityWithTrackingQuery()
-                .Where(cfg => cfg.User.Id == userId
-                    && cfg.ViewId == userConfig.ViewId
-                    && cfg.ModelType == typeof(ListFormViewConfig).Name)
-                .SingleOrDefaultAsync();
-            if (existing == null)
-            {
-                var newUserConfig = new UserSetting()
-                {
-                    SettingId = 4,      // TODO: Remove this hard-coded value
-                    ViewId = userConfig.ViewId,
-                    User = await userRepository.GetByIDAsync(userId),
-                    ModelType = typeof(ListFormViewConfig).Name,
-                    Values = JsonHelper.From(userConfig, false)
-                };
-
-                repository.Insert(newUserConfig);
-            }
-            else
-            {
-                existing.Values = JsonHelper.From(userConfig, false);
-            }
-
-            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -329,75 +142,12 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، تنظیمات کاربری موجود برای گزارش فوری برای یکی از فرم های لیستی را
-        /// برای کاربر مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
-        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
-        /// <returns>تنظیمات کاربری موجود برای گزارش فوری</returns>
-        public async Task<QuickReportConfig> GetQuickReportConfigAsync(int userId, int viewId)
-        {
-            var userConfig = default(QuickReportConfig);
-            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
-            var items = await repository
-                .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(QuickReportConfig).Name
-                    && cfg.User.Id == userId
-                    && cfg.View.Id == viewId);
-            var config = items.SingleOrDefault();
-            if (config != null)
-            {
-                userConfig = Mapper.Map<QuickReportConfig>(config);
-            }
-
-            return userConfig;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تنظیمات کاربری برای گزارش فوری برای یکی از فرم های لیستی را ذخیره می کند
-        /// </summary>
-        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
-        /// <param name="userConfig">تنظیمات کاربری برای گزارش فوری</param>
-        public async Task SaveQuickReportConfigAsync(int userId, QuickReportConfig userConfig)
-        {
-            Verify.ArgumentNotNull(userConfig, nameof(userConfig));
-            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
-            var userRepository = UnitOfWork.GetAsyncRepository<User>();
-            var existing = await repository
-                .GetEntityWithTrackingQuery()
-                .Where(cfg => cfg.User.Id == userId
-                    && cfg.ViewId == userConfig.ViewId
-                    && cfg.ModelType == typeof(QuickReportConfig).Name)
-                .SingleOrDefaultAsync();
-            if (existing == null)
-            {
-                var newUserConfig = new UserSetting()
-                {
-                    SettingId = 7,      // TODO: Remove this hard-coded value
-                    ViewId = userConfig.ViewId,
-                    User = await userRepository.GetByIDAsync(userId),
-                    ModelType = typeof(QuickReportConfig).Name,
-                    Values = JsonHelper.From(userConfig, false)
-                };
-
-                repository.Insert(newUserConfig);
-            }
-            else
-            {
-                existing.Values = JsonHelper.From(userConfig, false);
-                repository.Update(existing);
-            }
-
-            await UnitOfWork.CommitAsync();
-        }
-
-        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای ساختار همه نماهای درختی را خوانده و برمی گرداند
         /// </summary>
         /// <returns>تنظیمات موجود برای ساختار همه نماهای درختی</returns>
         public async Task<IList<ViewTreeFullConfig>> GetAllViewTreeConfigAsync()
         {
             var allConfig = new List<ViewTreeFullConfig>();
-            UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
             var configItems = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ViewTreeConfig).Name);
@@ -408,7 +158,6 @@ namespace SPPC.Tadbir.Persistence
                 allConfig.Add(treeConfig);
             }
 
-            UnitOfWork.UseSystemContext();
             return allConfig;
         }
 
@@ -421,7 +170,6 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ViewTreeFullConfig> GetViewTreeConfigByViewAsync(int viewId)
         {
             var viewConfig = default(ViewTreeFullConfig);
-            UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
             var config = await repository
                 .GetSingleByCriteriaAsync(cfg => cfg.ViewId == viewId
@@ -432,7 +180,6 @@ namespace SPPC.Tadbir.Persistence
                 ClipUsableTreeLevels(viewConfig);
             }
 
-            UnitOfWork.UseSystemContext();
             return viewConfig;
         }
 
@@ -443,7 +190,6 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveViewTreeConfigAsync(List<ViewTreeFullConfig> configItems)
         {
             Verify.ArgumentNotNull(configItems, "configItems");
-            UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
             foreach (var configItem in configItems)
             {
@@ -457,7 +203,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await UnitOfWork.CommitAsync();
-            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -482,6 +227,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath)
         {
             Verify.ArgumentNotNull(configItem, "configItem");
+            UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<Setting>();
 
             _webRootPath = rootPath;
