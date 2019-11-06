@@ -111,6 +111,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IAccessRepository, AccessRepository>();
             _services.AddTransient<ICurrencyBookRepository, CurrencyBookRepository>();
             _services.AddTransient<ISystemRepository, SystemRepository>();
+            _services.AddTransient<ISystemConfigRepository, SystemConfigRepository>();
         }
 
         private void AddServiceTypes()

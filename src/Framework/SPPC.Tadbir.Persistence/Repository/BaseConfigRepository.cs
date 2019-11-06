@@ -22,7 +22,6 @@ namespace SPPC.Tadbir.Persistence
         public BaseConfigRepository(IRepositoryContext context)
             : base(context)
         {
-            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>

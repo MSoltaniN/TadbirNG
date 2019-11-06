@@ -79,8 +79,10 @@ namespace SPPC.Tadbir.Persistence
             var config = items.SingleOrDefault();
             if (config == null)
             {
+                UnitOfWork.UseSystemContext();
                 var viewRepository = UnitOfWork.GetAsyncRepository<View>();
                 var entityView = await viewRepository.GetByIDAsync(viewId, ev => ev.Columns);
+                UnitOfWork.UseCompanyContext();
                 if (entityView != null)
                 {
                     userConfig = new QuickSearchConfig()
@@ -113,7 +115,6 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(userConfig, nameof(userConfig));
             var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
-            var userRepository = UnitOfWork.GetAsyncRepository<User>();
             var existing = await repository
                 .GetEntityWithTrackingQuery()
                 .Where(cfg => cfg.User.Id == userId
@@ -122,11 +123,15 @@ namespace SPPC.Tadbir.Persistence
                 .SingleOrDefaultAsync();
             if (existing == null)
             {
+                UnitOfWork.UseSystemContext();
+                var userRepository = UnitOfWork.GetAsyncRepository<User>();
+                var user = await userRepository.GetByIDAsync(userId);
+                UnitOfWork.UseCompanyContext();
                 var newUserConfig = new UserSetting()
                 {
                     SettingId = 6,      // TODO: Remove this hard-coded value
                     ViewId = userConfig.ViewId,
-                    User = await userRepository.GetByIDAsync(userId),
+                    User = user,
                     ModelType = typeof(QuickSearchConfig).Name,
                     Values = JsonHelper.From(userConfig, false)
                 };
@@ -238,6 +243,7 @@ namespace SPPC.Tadbir.Persistence
             repository.Update(systemConfig);
 
             await UnitOfWork.CommitAsync();
+            UnitOfWork.UseCompanyContext();
 
             var configValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
 
@@ -262,7 +268,6 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<bool> IsDefineAccountAsync()
         {
-            UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery();
             return await query.CountAsync() > 0 ? true : false;
@@ -324,7 +329,6 @@ namespace SPPC.Tadbir.Persistence
 
         private void InsertDefaultAccount(IList<Account> accounts)
         {
-            UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<Account>();
 
             string script = "SET IDENTITY_INSERT [Finance].[Account] ON\r\n";
