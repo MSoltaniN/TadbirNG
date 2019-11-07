@@ -253,27 +253,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا شعبه مورد نظر به نقشی تخصیص داده شده یا نه
+        /// به روش آسنکرون، مشخص می کند که آیا شعبه مشخص شده قابل حذف است یا نه؟
         /// </summary>
         /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
-        /// <returns>اگر شعبه مورد نظر به یک یا چند نقش تخصیص داده شده باشد مقدار "درست" و
-        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool> HasAssignedRolesAsync(int branchId)
+        /// <returns>اگر شعبه مورد نظر در برنامه به طور مستقیم استفاده شده باشد
+        /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
+        public async Task<bool> CanDeleteBranchAsync(int branchId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
-            int roleCount = await repository.GetCountByCriteriaAsync(rb => rb.BranchId == branchId);
-            return roleCount > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا اطلاعات سیستم به شعبه مورد نظر وابسته شده اند یا نه؟
-        /// </summary>
-        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
-        /// <returns>اگر اطلاعات سیستم به شعبه مورد نظر وابسته شده باشند مقدار "درست" و
-        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
-        public bool IsReferenced(int branchId)
-        {
-            bool isReferenced = false;
+            bool canDelete = true;
             var fiscalTypes = ModelCatalogue.GetAllOfType<FiscalEntity>();
 
             // TODO: The types AccountCurrency and CurrencyRate also reference Branch but are
@@ -289,12 +276,19 @@ namespace SPPC.Tadbir.Persistence
             {
                 if (HasBranchReference(type, branchId))
                 {
-                    isReferenced = true;
+                    canDelete = false;
                     break;
                 }
             }
 
-            return isReferenced;
+            if (canDelete)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+                int roleCount = await repository.GetCountByCriteriaAsync(rb => rb.BranchId == branchId);
+                canDelete = (roleCount == 0);
+            }
+
+            return canDelete;
         }
 
         /// <summary>

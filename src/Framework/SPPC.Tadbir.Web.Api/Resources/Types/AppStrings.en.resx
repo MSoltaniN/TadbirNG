@@ -2664,4 +2664,7 @@
   <data name="CannotDeleteReferencedItem" xml:space="preserve">
     <value>The {0} by name '{1}' is being used by other data in current company and cannot be deleted.</value>
   </data>
+  <data name="CantDeleteBranchWithData" xml:space="preserve">
+    <value>This branch '{0}' has one or more records defined and cannot be deleted.</value>
+  </data>
 </root>

@@ -2655,4 +2655,7 @@
   <data name="CannotDeleteReferencedItem" xml:space="preserve">
     <value>{0} '{1}' در سایر اطلاعات شرکت جاری استفاده شده و قابل حذف نیست.</value>
   </data>
+  <data name="CantDeleteBranchWithData" xml:space="preserve">
+    <value>در شعبه '{0}' یک یا چند سطر اطلاعاتی ایجاد شده و قابل حذف نیست.</value>
+  </data>
 </root>
