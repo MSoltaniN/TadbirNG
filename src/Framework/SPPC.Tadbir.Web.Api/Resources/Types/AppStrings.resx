@@ -817,7 +817,7 @@
     <value>پایان محدوده تاریخی مورد استفاده در این گزارش</value>
   </data>
   <data name="SetDefault" xml:space="preserve">
-    <value>تعیین {0} به عنوان پیش فرض</value>
+    <value>تعیین پیش فرض</value>
   </data>
   <data name="UserReports" xml:space="preserve">
     <value>گزارشات کاربری</value>
@@ -2636,5 +2636,11 @@
   </data>
   <data name="InvalidPermissionsInRole" xml:space="preserve">
     <value>نقش داده شده دارای یک یا چند دسترسی غیرمجاز بوده و قابل ذخیره نیست.</value>
+  </data>
+  <data name="Manage" xml:space="preserve">
+    <value>مدیریت</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>ذخیره</value>
   </data>
 </root>
