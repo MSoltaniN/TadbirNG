@@ -633,3 +633,7 @@ WHERE [Name] LIKE N'SaveEntity%'
 UPDATE [Auth].[Permission]
 SET [Name] = N'SetDefault'
 WHERE [Name] LIKE N'SetDefault%'
+
+-- 1.1.746
+DELETE FROM [Auth].[ViewRowPermission]
+WHERE RoleID = 1

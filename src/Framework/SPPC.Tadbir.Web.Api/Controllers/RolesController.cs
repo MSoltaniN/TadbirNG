@@ -232,7 +232,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // GET: api/roles/{roleId:min(1)}/rowaccess
+        // GET: api/roles/{roleId:min(2)}/rowaccess
         [Route(RoleApi.RowAccessSettingsUrl)]
         [AuthorizeRequest(SecureEntity.RowAccess, (int)RowAccessPermissions.ViewRowAccess)]
         public async Task<IActionResult> GetRowAccessSettingsForRoleAsync(int roleId)
@@ -241,7 +241,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(settings);
         }
 
-        // PUT: api/roles/{roleId:min(1)}/rowaccess
+        // PUT: api/roles/{roleId:min(2)}/rowaccess
         [HttpPut]
         [Route(RoleApi.RowAccessSettingsUrl)]
         [AuthorizeRequest(SecureEntity.RowAccess, (int)RowAccessPermissions.ManageRowAccess)]
