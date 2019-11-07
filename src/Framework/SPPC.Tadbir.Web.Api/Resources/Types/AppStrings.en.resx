@@ -2652,4 +2652,13 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="MaxMoneyValueNotSelected" xml:space="preserve">
+    <value>No maximum money or currency value is specified to filter {0} items.</value>
+  </data>
+  <data name="MaxQuantityValueNotSelected" xml:space="preserve">
+    <value>No maximum quantity value is specified to filter {0} items.</value>
+  </data>
+  <data name="SpecificRecordsNotSelected" xml:space="preserve">
+    <value>No records are specified to filter {0} items.</value>
+  </data>
 </root>

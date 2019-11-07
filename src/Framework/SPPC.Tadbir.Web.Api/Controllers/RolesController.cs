@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
@@ -254,6 +255,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = PermissionValidationResult(permissions);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             await _repository.SaveRowAccessSettingsAsync(permissions);
             return Ok();
         }
@@ -281,6 +288,46 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private IActionResult PermissionValidationResult(RowPermissionsForRoleViewModel permissions)
+        {
+            var messages = new List<string>();
+            foreach (var permission in permissions.RowPermissions)
+            {
+                messages.Add(ValidateRowPermission(permission));
+            }
+
+            if (messages.Any(msg => !String.IsNullOrEmpty(msg)))
+            {
+                return BadRequest(messages.Where(msg => !String.IsNullOrEmpty(msg)).ToArray());
+            }
+
+            return Ok();
+        }
+
+        private string ValidateRowPermission(ViewRowPermissionViewModel rowPermission)
+        {
+            if (rowPermission.Items.Count == 0
+                && (rowPermission.AccessMode == RowAccessOptions.SpecificRecords
+                    || rowPermission.AccessMode == RowAccessOptions.AllExceptSpecificRecords))
+            {
+                return _strings.Format(AppStrings.SpecificRecordsNotSelected, rowPermission.ViewName);
+            }
+
+            if (rowPermission.Value == 0.0F && rowPermission.Value2 == 0.0F
+                && rowPermission.AccessMode == RowAccessOptions.MaxMoneyValue)
+            {
+                return _strings.Format(AppStrings.MaxMoneyValueNotSelected, rowPermission.ViewName);
+            }
+
+            if (rowPermission.Value == 0.0F
+                && rowPermission.AccessMode == RowAccessOptions.MaxQuantityValue)
+            {
+                return _strings.Format(AppStrings.MaxQuantityValueNotSelected, rowPermission.ViewName);
+            }
+
+            return String.Empty;
         }
 
         private void Localize(IList<RoleViewModel> roles)

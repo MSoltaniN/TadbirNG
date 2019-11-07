@@ -2643,4 +2643,13 @@
   <data name="Save" xml:space="preserve">
     <value>ذخیره</value>
   </data>
+  <data name="MaxMoneyValueNotSelected" xml:space="preserve">
+    <value>برای فیلتر سطرهای موجودیت {0} سقف پولی یا ارزی تعیین نشده است.</value>
+  </data>
+  <data name="MaxQuantityValueNotSelected" xml:space="preserve">
+    <value>برای فیلتر سطرهای موجودیت {0} سقف مقداری تعیین نشده است.</value>
+  </data>
+  <data name="SpecificRecordsNotSelected" xml:space="preserve">
+    <value>برای فیلتر سطرهای موجودیت {0} سطری تعیین نشده است.</value>
+  </data>
 </root>
