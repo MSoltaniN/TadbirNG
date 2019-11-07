@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -237,9 +239,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه یکتای یکی از شعب سازمانی موجود</param>
         /// <returns>در حالتی که شعبه سازمانی مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool?> HasChildrenAsync(int branchId)
+        public async Task<bool> HasChildrenAsync(int branchId)
         {
-            bool? hasChildren = null;
+            bool hasChildren = false;
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var branch = await repository.GetByIDAsync(branchId, b => b.Children);
             if (branch != null)
@@ -261,6 +263,39 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
             int roleCount = await repository.GetCountByCriteriaAsync(rb => rb.BranchId == branchId);
             return roleCount > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا اطلاعات سیستم به شعبه مورد نظر وابسته شده اند یا نه؟
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <returns>اگر اطلاعات سیستم به شعبه مورد نظر وابسته شده باشند مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        public bool IsReferenced(int branchId)
+        {
+            var catalogue = new ModelCatalogue();
+            bool isReferenced = false;
+            var fiscalTypes = catalogue.GetAllOfType<FiscalEntity>();
+
+            // TODO: The types AccountCurrency and CurrencyRate also reference Branch but are
+            // currently not returned by catalogue, because they don't have FiscalPeriodID and
+            // so CANNOT be derived from FiscalEntity.
+            // The following block can be removed when the two types are upgraded to FiscalEntity.
+            var dependentTypes = new List<Type>(fiscalTypes)
+            {
+                typeof(AccountCurrency),
+                typeof(CurrencyRate)
+            };
+            foreach (var type in dependentTypes)
+            {
+                if (HasBranchReference(type, branchId))
+                {
+                    isReferenced = true;
+                    break;
+                }
+            }
+
+            return isReferenced;
         }
 
         /// <summary>

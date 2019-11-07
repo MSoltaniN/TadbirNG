@@ -2661,4 +2661,7 @@
   <data name="SpecificRecordsNotSelected" xml:space="preserve">
     <value>No records are specified to filter {0} items.</value>
   </data>
+  <data name="CannotDeleteReferencedItem" xml:space="preserve">
+    <value>The {0} by name '{1}' is being used by other data in current company and cannot be deleted.</value>
+  </data>
 </root>

@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه یکتای یکی از شعب سازمانی موجود</param>
         /// <returns>در حالتی که شعبه سازمانی مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
-        Task<bool?> HasChildrenAsync(int branchId);
+        Task<bool> HasChildrenAsync(int branchId);
 
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا شعبه مورد نظر به نقشی تخصیص داده شده یا نه
@@ -98,6 +98,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر شعبه مورد نظر به یک یا چند نقش تخصیص داده شده باشد مقدار "درست" و
         /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> HasAssignedRolesAsync(int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا اطلاعات سیستم به شعبه مورد نظر وابسته شده اند یا نه؟
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <returns>اگر اطلاعات سیستم به شعبه مورد نظر وابسته شده باشند مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        bool IsReferenced(int branchId);
 
         /// <summary>
         /// به روش آسنکرون، قواعد کاری تعریف شده را برای شعبه داده شده بررسی می کند

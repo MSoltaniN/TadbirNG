@@ -2652,4 +2652,7 @@
   <data name="SpecificRecordsNotSelected" xml:space="preserve">
     <value>برای فیلتر سطرهای موجودیت {0} سطری تعیین نشده است.</value>
   </data>
+  <data name="CannotDeleteReferencedItem" xml:space="preserve">
+    <value>{0} '{1}' در سایر اطلاعات شرکت جاری استفاده شده و قابل حذف نیست.</value>
+  </data>
 </root>

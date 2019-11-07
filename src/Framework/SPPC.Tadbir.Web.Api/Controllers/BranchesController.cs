@@ -189,6 +189,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                    String.Format("'{0}'", branch.Name));
             }
 
+            var isReferenced = _repository.IsReferenced(item);
+            if (isReferenced == true)
+            {
+                return _strings.Format(AppStrings.CannotDeleteReferencedItem,
+                    AppStrings.Branch, branch.Name);
+            }
+
             var hasRoles = await _repository.HasAssignedRolesAsync(item);
             if (hasRoles == true)
             {
