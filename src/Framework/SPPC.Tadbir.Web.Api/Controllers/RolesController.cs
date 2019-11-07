@@ -275,6 +275,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (role.Permissions.Any(perm => !_repository.IsPublicPermission(perm)))
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidPermissionsInRole));
+            }
+
             return Ok();
         }
 
@@ -291,9 +296,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             role.Role.Name = _strings[role.Role.Name];
             role.Role.Description = _strings[role.Role.Description ?? String.Empty];
-            role.Role.Permissions = role.Role.Permissions
-                .Select(name => GetLocalName(name))
-                .ToList();
             Array.ForEach(role.Permissions.ToArray(), perm =>
             {
                 perm.Name = GetLocalName(perm.Name);
@@ -305,9 +307,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             role.Role.Name = _strings[role.Role.Name];
             role.Role.Description = _strings[role.Role.Description ?? String.Empty];
-            role.Role.Permissions = role.Role.Permissions
-                .Select(name => GetLocalName(name))
-                .ToList();
             Array.ForEach(role.Permissions.ToArray(), perm =>
             {
                 perm.Name = GetLocalName(perm.Name);

@@ -2634,4 +2634,7 @@
   <data name="AppEnvironment" xml:space="preserve">
     <value>محیط برنامه</value>
   </data>
+  <data name="InvalidPermissionsInRole" xml:space="preserve">
+    <value>نقش داده شده دارای یک یا چند دسترسی غیرمجاز بوده و قابل ذخیره نیست.</value>
+  </data>
 </root>

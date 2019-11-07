@@ -601,3 +601,7 @@ WHERE RoleID = 1
 
 DELETE FROM [Auth].[RoleCompany]
 WHERE RoleID = 1
+
+-- 1.1.744
+DELETE FROM [Auth].[RolePermission]
+WHERE PermissionID IN(42, 43, 44)

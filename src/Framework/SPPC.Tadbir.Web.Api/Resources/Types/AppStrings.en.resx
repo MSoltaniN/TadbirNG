@@ -2643,4 +2643,7 @@
   <data name="AppEnvironment" xml:space="preserve">
     <value>App environment</value>
   </data>
+  <data name="InvalidPermissionsInRole" xml:space="preserve">
+    <value>Given role contains one or more invalid permissions and cannot be saved.</value>
+  </data>
 </root>
