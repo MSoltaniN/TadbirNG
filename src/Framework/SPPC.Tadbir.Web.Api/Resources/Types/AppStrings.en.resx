@@ -817,7 +817,7 @@
     <value>End of date range used in this report</value>
   </data>
   <data name="SetDefault" xml:space="preserve">
-    <value>Set {0} as default</value>
+    <value>Set default</value>
   </data>
   <data name="UserReports" xml:space="preserve">
     <value>User reports</value>
@@ -2645,5 +2645,11 @@
   </data>
   <data name="InvalidPermissionsInRole" xml:space="preserve">
     <value>Given role contains one or more invalid permissions and cannot be saved.</value>
+  </data>
+  <data name="Manage" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>
