@@ -28,11 +28,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="sqlConsole">امکان ارتباط مستقیم با بانک اطلاعاتی</param>
-        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log, ISqlConsole sqlConsole)
+        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log)
             : base(context, log)
         {
-            _sqlConsole = sqlConsole;
             UnitOfWork.UseSystemContext();
         }
 
@@ -199,7 +197,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(company, "company");
 
             string userScript = @"SELECT name FROM sys.sql_logins";
-            DataTable dt = _sqlConsole.ExecuteQuery(userScript);
+            DataTable dt = DbConsole.ExecuteQuery(userScript);
             List<DataRow> drList = dt.AsEnumerable().ToList();
             return drList.Any(dataRow => dataRow["name"].Equals(company.UserName));
         }
@@ -251,7 +249,7 @@ namespace SPPC.Tadbir.Persistence
             companyScript += Environment.NewLine;
             companyScript += File.ReadAllText(scriptPath);
 
-            _sqlConsole.ExecuteNonQuery(companyScript);
+            DbConsole.ExecuteNonQuery(companyScript);
 
             CreateDatabaseLogin(companyViewModel);
 
@@ -261,7 +259,7 @@ namespace SPPC.Tadbir.Persistence
                                         DB_NAME() AS 'DatabaseName',
                                         HOST_NAME() AS 'HostName'";
 
-            var serverInfo = _sqlConsole.ExecuteQuery(serverInfoScript);
+            var serverInfo = DbConsole.ExecuteQuery(serverInfoScript);
             string serverName = serverInfo.Rows[0].ItemArray[0].ToString();
             companyViewModel.Server = serverName;
         }
@@ -282,13 +280,13 @@ namespace SPPC.Tadbir.Persistence
                                                  companyViewModel.Password,
                                                  companyViewModel.DbName);
 
-            _sqlConsole.ExecuteNonQuery(loginScript);
+            DbConsole.ExecuteNonQuery(loginScript);
         }
 
         private bool IsDuplicateDatabaseName(string dbName)
         {
             string dbNameScript = @"SELECT [name] FROM sys.databases";
-            DataTable dt = _sqlConsole.ExecuteQuery(dbNameScript);
+            DataTable dt = DbConsole.ExecuteQuery(dbNameScript);
             List<DataRow> drList = dt.AsEnumerable().ToList();
             return drList.Any(dataRow => dataRow["name"].Equals(dbName));
         }
@@ -336,7 +334,6 @@ namespace SPPC.Tadbir.Persistence
             return builder.ToString();
         }
 
-        private readonly ISqlConsole _sqlConsole;
         private string _webRootPath;
     }
 }

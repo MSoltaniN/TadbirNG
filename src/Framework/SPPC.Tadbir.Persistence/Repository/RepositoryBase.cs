@@ -24,10 +24,6 @@ namespace SPPC.Tadbir.Persistence
         protected RepositoryBase(IRepositoryContext context)
         {
             _context = context;
-            _dbConsole = new SqlServerConsole
-            {
-                ConnectionString = context.UnitOfWork.CompanyConnection
-            };        // TODO: !! CARDINAL SIN !! Inject this later
         }
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی
+        /// امکان دسترسی به دیتابیس ها و انجام تراکنش های دیتابیسی را فراهم می کند
         /// </summary>
         protected IAppUnitOfWork UnitOfWork
         {
@@ -58,11 +54,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی
+        /// امکان تبدیل کلاس های مختلف به یکدیگر را فراهم می کند
         /// </summary>
         protected IDomainMapper Mapper
         {
             get { return _context.Mapper; }
+        }
+
+        /// <summary>
+        /// امکان اجرای مستقیم دستورات دیتابیسی را فراهم می کند
+        /// </summary>
+        protected ISqlConsole DbConsole
+        {
+            get { return _context.DbConsole; }
         }
 
         /// <summary>
@@ -119,7 +123,8 @@ namespace SPPC.Tadbir.Persistence
             if (idItems != null)
             {
                 string command = String.Format(_branchReferenceScript, idItems[0], idItems[1], branchId);
-                var result = _dbConsole.ExecuteQuery(command);
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+                var result = DbConsole.ExecuteQuery(command);
                 if (result != null && result.Rows.Count > 0 && result.Rows[0].ItemArray.Length > 0)
                 {
                     referenceCount = Int32.Parse(result.Rows[0].ItemArray[0].ToString());
@@ -143,7 +148,8 @@ namespace SPPC.Tadbir.Persistence
             if (idItems != null)
             {
                 string command = String.Format(_fiscalPeriodReferenceScript, idItems[0], idItems[1], fiscalPeriodId);
-                var result = _dbConsole.ExecuteQuery(command);
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+                var result = DbConsole.ExecuteQuery(command);
                 if (result != null && result.Rows.Count > 0 && result.Rows[0].ItemArray.Length > 0)
                 {
                     referenceCount = Int32.Parse(result.Rows[0].ItemArray[0].ToString());
@@ -190,6 +196,5 @@ SELECT COUNT(*) FROM [{0}].[{1}] WHERE BranchID = {2}";
         private const string _fiscalPeriodReferenceScript = @"
 SELECT COUNT(*) FROM [{0}].[{1}] WHERE FiscalPeriodID = {2}";
         private readonly IRepositoryContext _context;
-        private readonly ISqlConsole _dbConsole;
     }
 }

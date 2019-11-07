@@ -273,9 +273,8 @@ namespace SPPC.Tadbir.Persistence
         /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         public bool IsReferenced(int branchId)
         {
-            var catalogue = new ModelCatalogue();
             bool isReferenced = false;
-            var fiscalTypes = catalogue.GetAllOfType<FiscalEntity>();
+            var fiscalTypes = ModelCatalogue.GetAllOfType<FiscalEntity>();
 
             // TODO: The types AccountCurrency and CurrencyRate also reference Branch but are
             // currently not returned by catalogue, because they don't have FiscalPeriodID and
