@@ -13,7 +13,7 @@ import { GridService, MetaDataService, BrowserStorageService } from '@sppc/share
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { SettingService } from '@sppc/config/service';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
-import { ViewName } from '@sppc/shared/security';
+import { ViewName, DetailAccountPermissions } from '@sppc/shared/security';
 
 
 
@@ -59,6 +59,39 @@ export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAcco
 
   }
 
+  public onSelectContextmenu({ item }): void {
+
+    let hasPermission: boolean = false;
+
+    switch (item.mode) {
+      case 'Remove': {
+        hasPermission = this.isAccess(Entities.DetailAccount, DetailAccountPermissions.Delete);
+        if (hasPermission)
+          this.contextMenuRemoveHandler();
+        break;
+      }
+      case 'Edit': {
+        hasPermission = this.isAccess(Entities.DetailAccount, DetailAccountPermissions.Edit);
+        if (hasPermission) {
+          this.contextMenuEditHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      case 'New': {
+        hasPermission = this.isAccess(Entities.DetailAccount, DetailAccountPermissions.Create);
+        if (hasPermission) {
+          this.contextMenuAddNewHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      default:
+    }
+
+    if (!hasPermission)
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+  }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {

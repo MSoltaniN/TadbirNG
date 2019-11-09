@@ -13,7 +13,7 @@ import { BranchApi, } from '@sppc/organization/service/api';
 import { Branch } from '@sppc/organization/models';
 import { GridService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
-import { ViewName } from '@sppc/shared/security';
+import { ViewName, BranchPermissions } from '@sppc/shared/security';
 import { RelatedItems, Command } from '@sppc/shared/models';
 import { ViewIdentifierComponent, ReportViewerComponent } from '@sppc/shared/components';
 import { GridComponent } from '@progress/kendo-angular-grid';
@@ -87,6 +87,39 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     });
   }
 
+  public onSelectContextmenu({ item }): void {
+
+    let hasPermission: boolean = false;
+
+    switch (item.mode) {
+      case 'Remove': {
+        hasPermission = this.isAccess(Entities.Branch, BranchPermissions.Delete);
+        if (hasPermission)
+          this.contextMenuRemoveHandler();
+        break;
+      }
+      case 'Edit': {
+        hasPermission = this.isAccess(Entities.Branch, BranchPermissions.Edit);
+        if (hasPermission) {
+          this.contextMenuEditHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      case 'New': {
+        hasPermission = this.isAccess(Entities.Branch, BranchPermissions.Create);
+        if (hasPermission) {
+          this.contextMenuAddNewHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      default:
+    }
+
+    if (!hasPermission)
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+  }
 
   addNew() {
     this.editDataItem = new BranchInfo();

@@ -13,7 +13,7 @@ import { QuickReportSettingComponent } from '@sppc/shared/components/reportManag
 import { GridService, MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ProjectFormComponent } from './project-form.component';
-import { ViewName } from '@sppc/shared/security';
+import { ViewName, ProjectPermissions } from '@sppc/shared/security';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -55,6 +55,40 @@ export class ProjectComponent extends AutoGridExplorerComponent<Project> impleme
     this.reloadGrid();
 
     //this.cdref.detectChanges();
+  }
+
+  public onSelectContextmenu({ item }): void {
+
+    let hasPermission: boolean = false;
+
+    switch (item.mode) {
+      case 'Remove': {
+        hasPermission = this.isAccess(Entities.Project, ProjectPermissions.Delete);
+        if (hasPermission)
+          this.contextMenuRemoveHandler();
+        break;
+      }
+      case 'Edit': {
+        hasPermission = this.isAccess(Entities.Project, ProjectPermissions.Edit);
+        if (hasPermission) {
+          this.contextMenuEditHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      case 'New': {
+        hasPermission = this.isAccess(Entities.Project, ProjectPermissions.Create);
+        if (hasPermission) {
+          this.contextMenuAddNewHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      default:
+    }
+
+    if (!hasPermission)
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */

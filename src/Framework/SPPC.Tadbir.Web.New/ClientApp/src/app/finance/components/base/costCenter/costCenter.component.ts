@@ -13,7 +13,7 @@ import { QuickReportSettingComponent } from '@sppc/shared/components/reportManag
 import { SettingService } from '@sppc/config/service';
 import { CostCenterFormComponent } from './costCenter-form.component';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
-import { ViewName } from '@sppc/shared/security';
+import { ViewName, CostCenterPermissions } from '@sppc/shared/security';
 
 
 
@@ -57,6 +57,40 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
     this.getTreeNode();
     this.reloadGrid();
 
+  }
+
+  public onSelectContextmenu({ item }): void {
+
+    let hasPermission: boolean = false;
+
+    switch (item.mode) {
+      case 'Remove': {
+        hasPermission = this.isAccess(Entities.CostCenter, CostCenterPermissions.Delete);
+        if (hasPermission)
+          this.contextMenuRemoveHandler();
+        break;
+      }
+      case 'Edit': {
+        hasPermission = this.isAccess(Entities.CostCenter, CostCenterPermissions.Edit);
+        if (hasPermission) {
+          this.contextMenuEditHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      case 'New': {
+        hasPermission = this.isAccess(Entities.CostCenter, CostCenterPermissions.Create);
+        if (hasPermission) {
+          this.contextMenuAddNewHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      default:
+    }
+
+    if (!hasPermission)
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
