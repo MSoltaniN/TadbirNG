@@ -16,7 +16,6 @@ import { LookupApi } from '@sppc/shared/services/api';
 
 export class ContextInfo implements Context {
   userName: string = "";
-  password: string = "";
   firstName: string = "";
   lastName: string = "";
   ticket: string = "";
@@ -27,6 +26,7 @@ export class ContextInfo implements Context {
   companyName: string;
   fiscalPeriodName: string;
   permissions: PermissionBrief[];
+  roles: number[];
 }
 
 export class CompanyLoginInfo implements CompanyLogin {
@@ -40,21 +40,22 @@ export class CompanyLoginInfo implements CompanyLogin {
 export class AuthenticationService {
 
 
-  constructor(private http: HttpClient, public bStorageService: BrowserStorageService) {
-
-  }
+  constructor(private http: HttpClient, public bStorageService: BrowserStorageService) {}
 
   login(username: string, password: string, remember: boolean) {
     return this.http.put(environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/, { observe: "response" })
       .map((response) => {
-        // login successful if there's a jwt token in the response   
-
         if (response.headers != null) {
           let ticket = response.headers.get('X-Tadbir-AuthTicket');
+
+          var contextInfo = JSON.parse(atob(ticket));
+
           if (response.status == 200 && ticket != null) {
             var user = new ContextInfo();
+
             user.ticket = ticket;
             user.userName = username;
+            user.roles = contextInfo.user.roles;
 
             this.bStorageService.setCurrentContext(user);
           }

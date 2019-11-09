@@ -91,13 +91,26 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<CommandViewModel>> GetTopLevelCommandsAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Command>();
-            var topCommands = await repository
+            var topCommands = new List<Command>();
+            if (UserContext.FiscalPeriodId > 0 && UserContext.BranchId > 0)
+            {
+                topCommands = await repository
                 .GetEntityQuery()
                 .Include(cmd => cmd.Children)
                     .ThenInclude(cmd => cmd.Children)
                         .ThenInclude(cmd => cmd.Children)
                 .Where(cmd => cmd.Parent == null && cmd.TitleKey != "Profile")
                 .ToListAsync();
+            }
+            else
+            {
+                topCommands = await repository
+                .GetEntityQuery()
+                .Include(cmd => cmd.Children)
+                .Where(cmd => cmd.Parent == null && cmd.TitleKey == "Organization")
+                .ToListAsync();
+            }
+
             return topCommands
                 .Select(cmd => Mapper.Map<CommandViewModel>(cmd))
                 .ToList();

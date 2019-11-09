@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
@@ -46,6 +47,59 @@ namespace SPPC.Tadbir.Persistence
             return dataSet.Tables.Count > 0
                 ? dataSet.Tables[0]
                 : null;
+        }
+
+        /// <summary>
+        /// اجزا تشکیل دهنده رشته اتصال به دیتابیس را برمیگرداند
+        /// </summary>
+        /// <returns>دیکشنری از کلید و مقدار اجزاء تشکیل دهنده رشته اتصال دیتابیس</returns>
+        public IDictionary<string, string> GetConnectionStringProperties()
+        {
+            var builder = new SqlConnectionStringBuilder(ConnectionString);
+
+            Dictionary<string, string> csDictionary = new Dictionary<string, string>();
+
+            foreach (var item in builder.Keys)
+            {
+                string key = item.ToString();
+                csDictionary.Add(key, builder[key].ToString());
+            }
+
+            return csDictionary;
+        }
+
+        /// <summary>
+        /// ارتباط رشته اتصال را با دیتابیس بررسی میکند
+        /// </summary>
+        /// <returns>در صورت برقراری ارتباط مقدار درست و در غیر این صورت مقدار غلط را برمیگرداند</returns>
+        public bool TestConnection()
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// رشته اتصال را تغییر میدهد
+        /// </summary>
+        /// <param name="dbName">نام دیتابیس</param>
+        public void BuildConnectionString(string dbName)
+        {
+            SqlConnectionStringBuilder builder =
+            new SqlConnectionStringBuilder(ConnectionString);
+
+            builder.InitialCatalog = dbName;
+
+            ConnectionString = builder.ConnectionString;
         }
     }
 }

@@ -1,15 +1,16 @@
 import { PermissionBrief } from "./permissionBrief";
-import { IEntity } from "@sppc/shared/models";
 
-
-export interface Context extends IEntity {
+export interface Context {
   userName: string;
-  password: string;
   firstName: string;
   lastName: string;
   ticket: string;
   fpId: number;
   branchId: number;
   companyId: number;
+  branchName: string;
+  companyName: string;
+  fiscalPeriodName: string;
   permissions: Array<PermissionBrief>;
+  roles: Array<number>;
 }

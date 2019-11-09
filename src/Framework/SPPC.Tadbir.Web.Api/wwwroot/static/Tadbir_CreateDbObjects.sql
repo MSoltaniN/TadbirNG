@@ -1,4 +1,5 @@
 ﻿
+
 SET ANSI_NULLS ON
 GO
 
@@ -59,6 +60,7 @@ CREATE TABLE [Finance].[Currency] (
     [Multiplier]     INT              NOT NULL,
     [DecimalCount]   SMALLINT         NOT NULL,
     [IsActive]       BIT              NOT NULL,
+	[IsDefaultCurrency] BIT           NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL

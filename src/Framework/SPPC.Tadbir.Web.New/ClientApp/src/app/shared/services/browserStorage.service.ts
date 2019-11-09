@@ -25,7 +25,9 @@ export const SessionKeys = {
   Lang: 'lang',
   ViewTreeConfig: 'viewTreeConfig',
   CurrencyBookDefault: 'CurrencyBookDefault',
-  TestBalance: 'testBalance'
+  TestBalance: 'testBalance',
+  SelectedBranch: 'SelectedBranch',
+  SelectedFiscalPeriod: 'SelectedFiscalPeriod'
 }
 
 
@@ -67,7 +69,7 @@ export class BrowserStorageService {
 
   getSession(key: any) {
     var value = sessionStorage.getItem(key);
-    if(value)
+    if (value)
       return JSON.parse(value);
     return null;
   }
@@ -139,12 +141,14 @@ export class BrowserStorageService {
     return localStorage.getItem(String.Format(SessionKeys.Setting, userId));
   }
 
-  getLastUserBranch(userId: number, companyId: string): string {
-    return localStorage.getItem(String.Format(SessionKeys.LastUserBranch, userId, companyId));
+  getLastUserBranch(userId: number, companyId: string): string | undefined {
+    var branchId = localStorage.getItem(String.Format(SessionKeys.LastUserBranch, userId, companyId));
+    return branchId != "undefined" ? branchId : undefined;
   }
 
-  getLastUserFpId(userId: number, companyId: string): string {
-    return localStorage.getItem(String.Format(SessionKeys.LastUserFpId, userId, companyId));
+  getLastUserFpId(userId: number, companyId: string): string | undefined {
+    var fpId = localStorage.getItem(String.Format(SessionKeys.LastUserFpId, userId, companyId));
+    return fpId != "undefined" ? fpId : undefined;
   }
 
   getCurrentUser(): ContextInfo | null {
@@ -315,5 +319,28 @@ export class BrowserStorageService {
     var model = sessionStorage.getItem(SessionKeys.CurrencyBookDefault);
 
     return model ? JSON.parse(model) : null;
+  }
+
+  setSelectedBranchId(branchId: number) {
+    sessionStorage.setItem(SessionKeys.SelectedBranch, branchId.toString());
+  }
+
+  getSelectedBranchId(): number {
+    var branchId = sessionStorage.getItem(SessionKeys.SelectedBranch);
+    return branchId ? parseInt(branchId) : 0;
+  }
+
+  setSelectedFiscalPeriodId(fpId: number) {
+    sessionStorage.setItem(SessionKeys.SelectedFiscalPeriod, fpId.toString());
+  }
+
+  getSelectedFiscalPeriodId(): number {
+    var fpId = sessionStorage.getItem(SessionKeys.SelectedFiscalPeriod);
+    return fpId ? parseInt(fpId) : 0;
+  }
+
+  removeSelectedBranchAndFiscalPeriod() {
+    sessionStorage.removeItem(SessionKeys.SelectedBranch);
+    sessionStorage.removeItem(SessionKeys.SelectedFiscalPeriod);
   }
 }

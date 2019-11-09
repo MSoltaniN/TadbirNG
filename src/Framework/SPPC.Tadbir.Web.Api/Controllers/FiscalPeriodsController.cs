@@ -67,11 +67,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        // POST: api/fperiods/init
+        [HttpPost]
+        [Route(FiscalPeriodApi.FiscalPeriodInitialUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
+        public async Task<IActionResult> PostInitialFiscalPeriodAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
+        {
+            var result = BasicValidationResult(fiscalPeriod);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
+            }
+
+            var outputItem = await _repository.SaveInitialFiscalPeriodAsync(fiscalPeriod);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
         // POST: api/fperiods/validation
         [HttpPost]
         [Route(FiscalPeriodApi.FiscalPeriodValidationUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
-        public async Task<IActionResult> PostFiscalPeriodValidationAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
+        public IActionResult PostFiscalPeriodValidation([FromBody]FiscalPeriodViewModel fiscalPeriod)
         {
             var result = BasicValidationResult(fiscalPeriod);
             if (result is BadRequestObjectResult)

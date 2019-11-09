@@ -78,6 +78,18 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، رشته اتصال شرکت را ایجاد میکند
+        /// </summary>
+        /// <param name="companyId">شناسه یکتای شرکت</param>
+        /// <returns>رشته اتصال</returns>
+        public async Task<string> BuildConnectionString(int companyId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync(companyId);
+            return BuildConnectionString(company);
+        }
+
         private static string BuildConnectionString(CompanyDb company)
         {
             var builder = new StringBuilder();

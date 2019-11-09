@@ -28,5 +28,23 @@ namespace SPPC.Framework.Persistence
         /// <param name="sqlCommand">دستور دیتابیسی برای خواندن اطلاعات</param>
         /// <returns>اطلاعات به دست آمده از دستور دیتابیسی با ساختار جدولی</returns>
         DataTable ExecuteQuery(string sqlCommand);
+
+        /// <summary>
+        /// اجزا تشکیل دهنده رشته اتصال به دیتابیس را برمیگرداند
+        /// </summary>
+        /// <returns>دیکشنری از کلید و مقدار اجزاء تشکیل دهنده رشته اتصال دیتابیس</returns>
+        IDictionary<string, string> GetConnectionStringProperties();
+
+        /// <summary>
+        /// ارتباط رشته اتصال را با دیتابیس بررسی میکند
+        /// </summary>
+        /// <returns>در صورت برقراری ارتباط مقدار درست و در غیر این صورت مقدار غلط را برمیگرداند</returns>
+        bool TestConnection();
+
+        /// <summary>
+        /// رشته اتصال را تغییر میدهد
+        /// </summary>
+        /// <param name="dbName">نام دیتابیس</param>
+        void BuildConnectionString(string dbName);
     }
 }

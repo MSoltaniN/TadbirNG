@@ -43,7 +43,7 @@ export class CompanyService extends BaseService {
   }
 
 
-  public insertInitialCompany(apiUrl: string, company: CompanyDb, branch: Branch, fiscalperiod: FiscalPeriod): Observable<string> {
+  public insertInitialCompany(apiUrl: string, company: CompanyDb, branch: Branch, fiscalperiod: FiscalPeriod): Observable<any> {
     var body = JSON.stringify({ company: company, branch: branch, fiscalperiod: fiscalperiod });
     return this.http.post(apiUrl, body, this.option)
       .map(res => res)

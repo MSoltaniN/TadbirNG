@@ -63,7 +63,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     @Inject(DOCUMENT) public document,
     public dashboadService: DashboardService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
-
+    
     this.currentContext = this.bStorageService.getCurrentUser();
 
     var language = this.bStorageService.getLanguage();

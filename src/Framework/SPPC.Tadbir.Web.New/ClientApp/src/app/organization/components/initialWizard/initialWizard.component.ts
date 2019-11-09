@@ -11,7 +11,7 @@ import { CompanyDbInfo, BranchInfo, FiscalPeriodInfo, CompanyService, BranchServ
 import { BranchFormComponent } from '../branch/branch-form.component';
 import { FiscalPeriodFormComponent } from '../fiscalPeriod/fiscalPeriod-form.component';
 import { CompanyDb, Branch, FiscalPeriod } from '@sppc/organization/models';
-import { CompanyApi, FiscalPeriodApi } from '@sppc/organization/service/api';
+import { CompanyApi, FiscalPeriodApi, BranchApi } from '@sppc/organization/service/api';
 import { MessageType } from '@sppc/env/environment';
 import { ViewName } from '@sppc/shared/security';
 
@@ -28,6 +28,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
   branch: Branch;
   fiscalPeriod: FiscalPeriod;
 
+  @Output() save: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
 
   public dialogRef: DialogRef;
@@ -86,7 +87,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
   /**
    *عملیات مربوط به باز و بسته شدن فرم شعبه
    * */
-  openBranchEditor(dataItem: BranchInfo) {    
+  openBranchEditor(dataItem: BranchInfo) {
 
     this.dialogRef = this.dialogService.open({
       title: this.getText('Branch.CreateBranch'),
@@ -103,7 +104,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
 
     this.dialogRef.content.instance.save.subscribe((res) => {
       this.branch = res;
-      this.dialogRef.close();      
+      this.dialogRef.close();
       this.openFiscalPeriodEditor();
     });
 
@@ -143,7 +144,10 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
     this.dialogRef.dialog.location.nativeElement.classList.add('dialog-wizard');
 
     this.dialogRef.content.instance.save.subscribe((res) => {
-      this.fiscalPeriodValidation(res);
+      if (res)
+        this.fiscalPeriodValidation(res);
+      else
+        this.insertCompany();
     });
 
     this.dialogRef.result.subscribe((result) => {
@@ -185,23 +189,60 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
   fiscalPeriodValidation(dataItem: FiscalPeriod) {
     this.fiscalPeriodService.fiscalPeriodValidation(FiscalPeriodApi.FiscalPeriodValidation, dataItem).subscribe(res => {
       this.fiscalPeriod = dataItem;
-      this.insertData();
+
+      this.insertCompany();
+
     }, error => {
       this.dialogModel.errorMessage = error;
     })
   }
 
   /**
-   * شرکت، شعبه و دوره مالی را ذخیره میکند
+   * ذخیره شرکت
    * */
-  insertData() {
-    this.companyService.insertInitialCompany(CompanyApi.InitialCompany, this.company, this.branch, this.fiscalPeriod).subscribe(res => {
-
-      this.showMessage(this.getText('Company.SuccessInitialCompany'), MessageType.Succes);
-
-      this.dialogRef.close();
-      this.cancel.emit();
+  insertCompany() {
+    this.companyService.insert<CompanyDb>(CompanyApi.Companies, this.company).subscribe(res => {
+      this.insertBranch(res);
     })
+  }
+
+  /**
+   * ذخیره شعبه
+   * */
+  insertBranch(company: any) {
+    if (this.branch) {
+      this.branch.companyId = company.id;
+      this.branchService.insert<Branch>(BranchApi.BrancheInitial, this.branch).subscribe(res => {
+        this.insertFiscalPeriod(company, res);
+      })
+    }
+    else {
+      this.insertFiscalPeriod(company, undefined);
+    }
+  }
+
+  /**
+   * ذخیره دوره مالی
+   * */
+  insertFiscalPeriod(company: any, branch: any) {
+    if (this.fiscalPeriod) {
+      this.fiscalPeriod.companyId = company.id;
+      this.fiscalPeriodService.insert<FiscalPeriod>(FiscalPeriodApi.FiscalPeriodInitial, this.fiscalPeriod).subscribe(res => {
+        this.emitData(company, branch, res);
+      })
+    }
+    else {
+      this.emitData(company, branch, undefined);
+    }
+  }
+
+  /**
+   * ارسال اطلاعات ذخیره شده از فرم ویزارد به فرم لاگین
+   * */
+  emitData(company: any, branch: any, fiscalPeriod: any) {
+    this.showMessage(this.getText('Company.SuccessInitialCompany'), MessageType.Succes);
+    this.save.emit({ company: company, branch: branch, fiscalPeriod: fiscalPeriod });
+    this.dialogRef.close();
   }
 
 }

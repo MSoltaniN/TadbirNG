@@ -283,6 +283,27 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات اواین شعبه سازمانی یک شرکت  را در محل ذخیره ایجاد می کند
+        /// </summary>
+        /// <param name="branchView">شعبه سازمانی مورد نظر برای ایجاد</param>
+        /// <returns>اطلاعات نمایشی شعبه سازمانی ایجاد شده</returns>
+        public async Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branchView)
+        {
+            Verify.ArgumentNotNull(branchView, "branchView");
+            Branch branch = default(Branch);
+
+            UnitOfWork.UseSystemContext();
+            CompanyConnection = await BuildConnectionString(branchView.CompanyId);
+
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            branch = Mapper.Map<Branch>(branchView);
+
+            await InsertAsync(repository, branch);
+
+            return Mapper.Map<BranchViewModel>(branch);
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="branchViewModel">مدل نمایشی شامل آخرین تغییرات</param>

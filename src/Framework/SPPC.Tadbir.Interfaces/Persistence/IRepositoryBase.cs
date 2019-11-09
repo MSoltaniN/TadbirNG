@@ -19,5 +19,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
         Task SetCurrentCompanyAsync(int companyId);
+
+        /// <summary>
+        /// به روش آسنکرون، رشته اتصال شرکت را ایجاد میکند
+        /// </summary>
+        /// <param name="companyId">شناسه یکتای شرکت</param>
+        /// <returns>رشته اتصال</returns>
+        Task<string> BuildConnectionString(int companyId);
     }
 }

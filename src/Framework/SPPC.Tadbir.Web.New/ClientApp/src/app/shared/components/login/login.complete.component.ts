@@ -90,17 +90,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.currentRoute = this.bStorageService.getCurrentRoute();
     this.disabledCompany = true;
     this.getCompany();
-
-
-    // var currentLang = localStorage.getItem('lang')
-    // if(currentLang == 'fa')
-    //      this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.Rtl.css');
-    // else
-    //      this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.min.css');
-
-    // this.document.getElementById('adminlteSkin').setAttribute('href', 'assets/dist/css/skins/_all-skins.min.css');
-
-
   }
 
   //#endregion
@@ -108,7 +97,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   //#region Methods
 
   public companyChange(value: any): void {
-
     this.disabledBranch = true;
     this.disabledFiscalPeriod = true;
 
@@ -135,17 +123,21 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   getCompany() {
     this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
       this.compenies = res;
-      this.disabledCompany = false;
 
-      //#region load current setting
-      if (this.CompanyId) {
-        this.companyId = this.CompanyId.toString();
-        this.companyChange(this.companyId);
-      }
-      //#endregion
-    });;
+      //if (this.compenies.length == 0 && this.IsAdmin) {
+        // create new company, branch and fiscalperiod
+        this.createCompany();
+      //}
+      //else {
+      //  this.disabledCompany = false;
+      //  //load current setting
+      //  if (this.CompanyId) {
+      //    this.companyId = this.CompanyId.toString();
+      //    this.companyChange(this.companyId);
+      //  }
+      //}           
+    });
   }
-
 
   getBranch(companyId: number) {
     this.authenticationService.getBranches(companyId, this.Ticket).subscribe(res => {
@@ -167,36 +159,30 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     if (this.companyId == '') {
       this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-      this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-      this.showMessage(this.getText("AllValidations.Login.CompanyIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+      //this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+      //this.showMessage(this.getText("AllValidations.Login.CompanyIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
 
       isValidate = false;
       return isValidate;
     }
 
-    if (this.branchId == '') {
-      this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-      isValidate = false;
-    }
+    //if (this.branchId == '') {
+    //  this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+    //  isValidate = false;
+    //}
 
-    if (this.fiscalPeriodId == '') {
-      this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-      isValidate = false;
-    }
+    //if (this.fiscalPeriodId == '') {
+    //  this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+    //  isValidate = false;
+    //}
 
     return isValidate;
   }
 
   selectParams() {
-
-    //sessionStorage.removeItem("viewTreeConfig");
-
     if (this.isValidate()) {
-
       if (this.authenticationService.islogin()) {
-
         this.getCompanyTicket();
-
       }
     }
   }
@@ -229,19 +215,13 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   loadMenuAndRoute(currentUser: ContextInfo) {
     //#region load menu
-    var menuList: Array<Command> = new Array<Command>();
-
-    var commands: any;
-
-    this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
-
-      this.bStorageService.setFiscalPeriod(res);
-
-    })
+    if (currentUser.fpId) {
+      this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
+        this.bStorageService.setFiscalPeriod(res);
+      })
+    }
 
     this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
-      var list: Array<Command> = res;
-
       this.bStorageService.setCurrentContext(currentUser);
       this.bStorageService.setMenu(res);
 
@@ -264,8 +244,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     });
 
     this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
-      var list: Array<Command> = res;
-
       this.bStorageService.setProfile(res);
 
     });
@@ -284,26 +262,26 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     var companyLoginModel = new CompanyLoginInfo();
     companyLoginModel.companyId = parseInt(this.companyId);
-    companyLoginModel.branchId = parseInt(this.branchId);
-    companyLoginModel.fiscalPeriodId = parseInt(this.fiscalPeriodId);
+    companyLoginModel.branchId = this.branchId ? parseInt(this.branchId) : 0;
+    companyLoginModel.fiscalPeriodId = this.fiscalPeriodId ? parseInt(this.fiscalPeriodId) : 0;
 
     this.authenticationService.getCompanyTicket(companyLoginModel, this.Ticket).subscribe(res => {
-
       if (res.headers != null) {
         let newTicket = res.headers.get('X-Tadbir-AuthTicket');
-        let contextInfo = <ContextInfo>res.body;
+
+        let contextInfo = res.body;
 
         var currentUser = this.bStorageService.getCurrentUser();
-        if (currentUser != null) {
-
-          currentUser.branchId = parseInt(this.branchId);
-          currentUser.companyId = parseInt(this.companyId);
-          currentUser.fpId = parseInt(this.fiscalPeriodId);
+        if (currentUser != null) {          
+          currentUser.branchId = contextInfo.branchId;
+          currentUser.companyId = contextInfo.companyId;
+          currentUser.fpId = contextInfo.fiscalPeriodId;
           currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
           currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;
           currentUser.branchName = contextInfo.branchName;
           currentUser.companyName = contextInfo.companyName;
           currentUser.ticket = newTicket;
+          currentUser.roles = contextInfo.roles;
 
           this.bStorageService.setCurrentContext(currentUser);
           this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.companyId, this.branchId, this.fiscalPeriodId);
@@ -322,17 +300,32 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
 
   createCompany() {
-      this.dialogRef = this.dialogService.open({
-        content: InitialWizardComponent,
-      });
+    this.dialogRef = this.dialogService.open({
+      content: InitialWizardComponent,
+    });
 
-      this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel = this.dialogRef.content.instance;
 
-      this.dialogRef.dialog.location.nativeElement.classList.add('dialog-style-wizard');
+    this.dialogRef.dialog.location.nativeElement.classList.add('dialog-style-wizard');
 
-      const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
-        this.dialogRef.close();
-      });
+    this.dialogRef.content.instance.save.subscribe((res) => {
+
+      debugger;
+
+      if (res) {
+        this.companyId = res.company ? res.company.id : 0;
+        this.branchId = res.branch ? res.branch.id : 0;
+        this.fiscalPeriodId = res.fiscalPeriod ? res.fiscalPeriod.id : 0;
+
+        this.getCompanyTicket();
+      }
+    });
+
+
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+      this.dialogRef.close();
+    });
   }
 
 

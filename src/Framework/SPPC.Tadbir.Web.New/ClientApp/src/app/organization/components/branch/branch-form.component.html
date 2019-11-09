@@ -40,7 +40,7 @@
 </div>
 
 <kendo-dialog-actions>
-  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ isWizard ? ('Buttons.NextStep' | translate) : ('Buttons.Ok' | translate) }}</button>
+  <button class="k-button k-primary" [disabled]="!editForm.valid && !isWizard" (click)="onSave($event)">{{ isWizard ? ('Buttons.NextStep' | translate) : ('Buttons.Ok' | translate) }}</button>
   <button class="k-button" *ngIf="isWizard" (click)="onPreviousStep()">{{ 'Buttons.PreviousStep' | translate }}</button>
   <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
 </kendo-dialog-actions>

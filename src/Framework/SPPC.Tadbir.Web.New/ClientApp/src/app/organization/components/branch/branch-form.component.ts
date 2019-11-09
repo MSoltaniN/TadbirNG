@@ -71,6 +71,9 @@ export class BranchFormComponent extends DetailComponent implements OnInit {
       }
       this.save.emit(model);
     }
+    else if (this.isWizard) {
+      this.save.emit(null);
+    }
   }
 
   public onCancel(e: any): void {

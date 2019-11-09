@@ -105,5 +105,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branch">مدل نمایشی شعبه مورد بررسی</param>
         /// <returns>در صورت نبود اشکال، مقدار بولی "درست" و در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
         Task<bool> IsValidBranchAsync(BranchViewModel branch);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اواین شعبه سازمانی یک شرکت  را در محل ذخیره ایجاد می کند
+        /// </summary>
+        /// <param name="branchView">شعبه سازمانی مورد نظر برای ایجاد</param>
+        /// <returns>اطلاعات نمایشی شعبه سازمانی ایجاد شده</returns>
+        Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branchView);
     }
 }

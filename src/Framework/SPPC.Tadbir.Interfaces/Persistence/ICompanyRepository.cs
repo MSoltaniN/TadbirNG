@@ -59,14 +59,6 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company);
 
         /// <summary>
-        /// به روش آسنکرون، شرکت، شعبه و دوره مالی را ایجاد میکند
-        /// </summary>
-        /// <param name="initialCompany">اطلاعات شرکت، شعبه و دوره مالی برای ایجاد شرکت</param>
-        /// <param name="webHostPath">مسیر ریشه نرم افزار</param>
-        /// <returns>اطلاعات نمایشی شرکت ایجاد شده</returns>
-        Task<CompanyDbViewModel> SaveInitialCompanyAsync(InitialCompanyViewModel initialCompany, string webHostPath);
-
-        /// <summary>
         /// مشخص میکند که نام کاربری وارد شده تکرای میباشد یا خیر
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>

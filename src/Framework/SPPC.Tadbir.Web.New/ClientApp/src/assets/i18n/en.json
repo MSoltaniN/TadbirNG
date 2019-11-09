@@ -693,7 +693,7 @@
     "Password": "Password",
     "Description": "Description",
     "NotFoundData": "Not Found Company",
-    "SuccessInitialCompany": "The company, branch and fiscal period were successfully registered.",
+    "SuccessInitialCompany": "The company creation process was completed successfully.",
     "CreateCompany": "Create Company"
   },
   "AccountGroup": {
@@ -723,7 +723,8 @@
     "RolesTitle": "List of available roles to the branch",
     "NotFoundData": "Not Found Branch",
     "LedgerBranch": "Ledger Branch",
-    "CreateBranch": "Create Branch"
+    "CreateBranch": "Create Branch",
+    "ChangeBranch": "Change Branch"
   },
   "Voucher": {
     "New": "New Voucher",
@@ -893,7 +894,8 @@
     "UpdateRoles": "Fiscal period roles have been successfully edited",
     "Roles": "Roles",
     "RolesTitle": "Fiscal Period Roles List",
-    "CreateFiscalPeriod": "Create FiscalPeriod"
+    "CreateFiscalPeriod": "Create Fiscal Period",
+    "ChangeFiscalPeriod": "Change Fiscal Period"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period",

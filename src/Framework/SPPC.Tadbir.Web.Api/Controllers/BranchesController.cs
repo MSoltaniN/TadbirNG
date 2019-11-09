@@ -90,6 +90,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        // POST: api/branches/init
+        [HttpPost]
+        [Route(BranchApi.BrancheInitialUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Create)]
+        public async Task<IActionResult> PostInitialBranchAsync([FromBody]BranchViewModel branch)
+        {
+            var result = BasicValidationResult(branch);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var outputItem = await _repository.SaveInitialBranchAsync(branch);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
         // PUT: api/branches/{branchId:min(1)}
         [HttpPut]
         [Route(BranchApi.BranchUrl)]

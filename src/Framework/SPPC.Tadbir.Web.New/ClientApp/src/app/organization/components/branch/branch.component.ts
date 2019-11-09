@@ -14,11 +14,14 @@ import { Branch } from '@sppc/organization/models';
 import { GridService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ViewName } from '@sppc/shared/security';
-import { RelatedItems } from '@sppc/shared/models';
+import { RelatedItems, Command } from '@sppc/shared/models';
 import { ViewIdentifierComponent, ReportViewerComponent } from '@sppc/shared/components';
 import { GridComponent } from '@progress/kendo-angular-grid';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { CompanyLoginInfo, AuthenticationService, ContextInfo } from '@sppc/core';
+import { UserService } from '@sppc/admin/service';
+import { Router } from '@angular/router';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -46,7 +49,8 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
-    public branchService: BranchService, public cdref: ChangeDetectorRef, public ngZone: NgZone) {
+    public userService: UserService, private router: Router, private authenticationService: AuthenticationService, public branchService: BranchService,
+    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Branch,
       "Branch.LedgerBranch", "", "",
       BranchApi.Branches, BranchApi.RootBranches, BranchApi.Branch, BranchApi.BranchChildren,
@@ -164,6 +168,64 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
       }, (error => {
         this.dialogModel.errorMessage = error;
       }));
+  }
+
+  /**
+   *عملیات تغییر شرکت
+   * */
+  onChangeBranch() {
+    var branchId = this.selectedRows[0].id;
+    this.bStorageService.setSelectedBranchId(branchId);
+
+    var fiscalPeriodId = this.FiscalPeriodId ? this.FiscalPeriodId : this.bStorageService.getSelectedFiscalPeriodId();
+
+    if (fiscalPeriodId) {
+      this.getNewTicket(branchId, fiscalPeriodId);
+    }
+    else {
+      this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info);
+    }
+  }
+
+  getNewTicket(branchId: number, fpId: number) {
+    var companyLoginModel = new CompanyLoginInfo();
+    companyLoginModel.companyId = this.CompanyId;
+    companyLoginModel.branchId = branchId;
+    companyLoginModel.fiscalPeriodId = fpId;
+
+    this.authenticationService.getCompanyTicket(companyLoginModel, this.Ticket).subscribe(res => {
+      if (res.headers != null) {
+        let newTicket = res.headers.get('X-Tadbir-AuthTicket');
+
+        let contextInfo = res.body;
+        var currentUser = this.bStorageService.getCurrentUser();
+        if (currentUser != null) {
+          currentUser.branchId = contextInfo.branchId;
+          currentUser.companyId = contextInfo.companyId;
+          currentUser.fpId = contextInfo.fiscalPeriodId;
+          currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
+          currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;
+          currentUser.branchName = contextInfo.branchName;
+          currentUser.companyName = contextInfo.companyName;
+          currentUser.ticket = newTicket;
+          currentUser.roles = contextInfo.roles;
+          this.bStorageService.setCurrentContext(currentUser);
+          this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.CompanyId.toString(), branchId.toString(), fpId.toString());
+
+          this.getMenuAndReloadPage(newTicket);
+        }
+
+      }
+
+    })
+  }
+
+  getMenuAndReloadPage(ticket: string) {
+    this.userService.getCurrentUserCommands(ticket).subscribe((res: Array<Command>) => {
+      this.bStorageService.setMenu(res);
+      this.bStorageService.removeSelectedBranchAndFiscalPeriod();
+      this.router.navigate(['/tadbir/dashboard']);
+    });
   }
 }
 

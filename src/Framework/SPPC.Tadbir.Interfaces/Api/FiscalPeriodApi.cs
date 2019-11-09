@@ -58,5 +58,15 @@
         /// API server route URL for validation a fiscal period
         /// </summary>
         public const string FiscalPeriodValidationUrl = "fperiods/validation";
+
+        /// <summary>
+        /// API client URL for initial fiscal period
+        /// </summary>
+        public const string FiscalPeriodInitial = "fperiods/init";
+
+        /// <summary>
+        /// API server route URL for initial fiscal period
+        /// </summary>
+        public const string FiscalPeriodInitialUrl = "fperiods/init";
     }
 }
