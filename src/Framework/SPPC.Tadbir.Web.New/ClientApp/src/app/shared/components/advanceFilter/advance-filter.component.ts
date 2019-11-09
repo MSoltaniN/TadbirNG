@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow } from '@sppc/shared/models';
+import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces } from '@sppc/shared/models';
 import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { BrowserStorageService, GridService, MetaDataService } from '@sppc/shared/services';
@@ -10,6 +10,7 @@ import { SettingService } from '@sppc/config/service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { MessageType } from '@sppc/env/environment.prod';
 import { RowArgs } from '@progress/kendo-angular-grid';
+import { guid } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -30,7 +31,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   public title: string;
   public columnsList: Array<FilterColumn>;
   public operatorsList: Array<Item>;
-  public selectedRows: any[] = [];
+  public selectedRows: any[] = [];  
 
   public colsIsDisabled: boolean;
   public opIsDisabled: boolean;
@@ -44,6 +45,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   selectedValue: string;
   formMode: string;
   currentEditIndex: number;
+
+  
 
   @Output() result: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -81,16 +84,40 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
   ngOnInit(): void {
     //throw new Error("Method not implemented.");
+    (async () => {
+      var columns = await this.getAllMetaDataByViewIdAsync(this.viewId);
+      columns.forEach((item) => {
+        if (item.name == "RowNo")
+          return;
+
+        var fcol = new FilterColumn();
+        fcol.dataType = item.dotNetType;
+        fcol.scriptType = item.scriptType;
+        fcol.name = item.name;
+        var setting = JSON.parse(item.settings);
+        var title = setting.large.title + (item.groupName != "" ? " (" + item.groupName + ")" : "");        
+        fcol.title = title;
+
+        if (setting.large.visibility != "AlwaysHidden") {
+          if (!this.columnsList)
+            this.columnsList = new Array<FilterColumn>();
+          this.columnsList.push(fcol);
+        }
+      });
+    })();
+
     this.computeTotalExpression();
     this.selectedColumnChange();
-    this.formMode = "insert"; 
+    this.formMode = "insert";
+
+    
   }
 
   selectedColumnChange() {
 
     if (this.selectedColumn) {
       var selected = this.columnsList.filter(p => p.name === this.selectedColumn)[0];
-      switch (selected.dataType) {
+      switch (selected.scriptType) {
         case "string":
           this.operatorsList = this.stringOperators;
           break;
@@ -111,12 +138,13 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   editFilter() {
     if (this.selectedRows && this.selectedRows.length == 1) {
       this.formMode = 'edit';
-      var filter = this.filters[this.selectedRows[0]];
+      var filter = this.selectedRows[0];
       this.selectedOperator = filter.operator;
       this.selectedColumn = filter.columnName;
       this.selectedLogicalOperator = filter.logicOperator;
       this.selectedValue = filter.value;
-      this.currentEditIndex = this.selectedRows[0];
+      this.currentEditIndex = this.filters.findIndex(f => f === this.selectedRows[0]);
+      this.selectedColumnChange();
     }
   }
 
@@ -147,7 +175,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.filters[this.currentEditIndex].filterTitle = selectedCol.title + " " + this.filters[this.currentEditIndex].operatorTitle
         + " " + this.selectedValue + " " + this.filters[this.currentEditIndex].logicalOperatorTitle;
             
-      this.revertToDefaultValues()      
+      this.revertToDefaultValues()
+      this.computeTotalExpression();
       this.showMessage(this.getText('AdvanceFilter.FilterEditedSuccess'), MessageType.Succes);
     }
   }
@@ -221,22 +250,27 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
   createFilterExpression():FilterExpression {
 
-    var totalfilter : FilterExpression;
+    var totalfilter: FilterExpression;
+    var lastOperatorUsed = " && ";
     this.filters.forEach((item) => {
-      var currentfilter = new Filter(item.columnName, item.value, this.getStandardOperator(item.operator, "System.String"), "System.String");
+
+      var column = this.columnsList.filter(col => col.name === item.columnName)[0];
+      var currentfilter = new Filter(item.columnName, item.value, this.getStandardOperator(item.operator, column.dataType), column.dataType, item.braces, item.id);
 
       var newFilter = new FilterExpression();
       newFilter.filter = currentfilter;
-      newFilter.operator = item.logicOperator == 'or' ? ' || ' : ' && '
+      newFilter.operator = lastOperatorUsed ? lastOperatorUsed : (item.logicOperator == 'or' ? ' || ' : ' && ')
 
       if (totalfilter) {
-        totalfilter.children.push(newFilter);        
+        totalfilter.children.push(newFilter);
+        lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
       }
       else {
         //var fbuilder = new FilterExpressionBuilder();
         totalfilter = new FilterExpression();
         totalfilter.filter = currentfilter;
-        totalfilter.operator = item.logicOperator == 'or' ? ' || ' : ' && ';
+        totalfilter.operator = ' && ';
+        lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
         //return filterExpBuilder.New(filter).Build();
       }
     });
@@ -257,6 +291,78 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.cancel.emit();
   }
 
+
+
+  braces() {
+    if (this.selectedRows && this.selectedRows.length > 1) {
+
+      var orderdSelected = this.selectedRows.sort((a, b) => parseFloat(a.order) - parseFloat(b.order));
+
+      var startIndex = this.filters.findIndex(f => f === orderdSelected[0]);
+      var endIndex = this.filters.findIndex(f => f === orderdSelected[orderdSelected.length - 1]);
+
+      if (!this.filters[startIndex].braces)
+        this.filters[startIndex].braces = new Array<Braces>();      
+
+      if (!this.filters[endIndex].braces)
+        this.filters[endIndex].braces = new Array<Braces>();
+
+      
+
+      if (this.filters[startIndex].braces.findIndex(b => b.outerId === this.filters[endIndex].id && b.brace === "(") >= 0
+        && this.filters[endIndex].braces.findIndex(b => b.outerId === this.filters[startIndex].id && b.brace === ")") >= 0) {
+
+        var dStartIndex = this.filters[startIndex].braces.findIndex(b => b.outerId === this.filters[endIndex].id && b.brace === "(");
+        var dEndIndex = this.filters[endIndex].braces.findIndex(b => b.outerId === this.filters[startIndex].id && b.brace === ")");
+
+        this.filters[startIndex].braces.splice(dStartIndex);
+        this.filters[endIndex].braces.splice(dEndIndex);
+        this.computeTotalExpression();
+
+        return;
+      }
+
+
+      var index = 0;
+      var showMsg = false;
+      this.filters.forEach((fi) => {
+        if (showMsg) return;
+        if (fi.braces) {
+          fi.braces.forEach((br) => {
+            var anotherBraces = this.filters.findIndex(f => f.id === br.outerId);
+            if (!((startIndex >= index && endIndex <= anotherBraces)
+              || (startIndex < index && endIndex < index)
+              || (startIndex > anotherBraces && endIndex > anotherBraces))) {
+              showMsg = true;
+              return;
+            }
+
+          });
+        }
+
+        index++;
+      });
+
+      if (showMsg) {
+        this.showMessage('err');
+        return;
+      }
+
+      var startBrace = new Braces();
+      startBrace.brace = "(";
+      startBrace.outerId = this.filters[endIndex].id;
+    
+      var endBrace = new Braces();
+      endBrace.brace = ")";
+      endBrace.outerId = this.filters[startIndex].id;
+
+      this.filters[startIndex].braces.push(startBrace);
+      this.filters[endIndex].braces.push(endBrace);
+
+      this.computeTotalExpression();
+    };    
+  }
+
   insertNewFilter()
   {
     if (this.isValidate()) {
@@ -266,6 +372,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var selectedlogOp = this.logicalOperatorList.filter(p => p.key === this.selectedLogicalOperator)[0];
 
       var row: FilterRow = new FilterRow();
+      row.id = Guid.newGuid();
       row.columnName = this.selectedColumn;
       row.logicOperator = this.selectedLogicalOperator;
       row.operator = this.selectedOperator;
@@ -274,6 +381,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       row.columnTitle = selectedCol.title;
       row.logicalOperatorTitle = this.getText(selectedlogOp.value);      
       row.filterTitle = selectedCol.title + " " + row.operatorTitle + " " + this.selectedValue + " " + row.logicalOperatorTitle
+      row.order = this.filters ? this.filters.length : 0;
 
       if (!this.filters) this.filters = new Array<FilterRow>();
       this.filters.push(row);
@@ -295,7 +403,24 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       this.filters.forEach((item) => {
         i++;
-        this.totalFilterExpression += " " + item.columnTitle + " " + item.operatorTitle + " " + item.value + "  ";
+
+        if (item.braces) {
+          item.braces.forEach((br) =>
+          {
+            if (br.brace == "(")
+              this.totalFilterExpression += " " + br.brace;
+          });
+        }
+
+        this.totalFilterExpression += " " + item.columnTitle + " " + item.operatorTitle + " " + item.value + " ";
+
+        if (item.braces) {
+          item.braces.forEach((br) => {
+            if (br.brace == ")")
+              this.totalFilterExpression += br.brace + " ";
+          });
+        }
+
         if (i < count)
           this.totalFilterExpression += item.logicalOperatorTitle + " ";
       });

@@ -1,5 +1,7 @@
 export class FilterColumn {
 }
+export class Braces {
+}
 export class FilterRow {
 }
 export var NumberOperatorResource;
@@ -20,16 +22,22 @@ export var StringOperatorResource;
 (function (StringOperatorResource) {
     StringOperatorResource["EQ"] = "AdvanceFilter.EQ";
     StringOperatorResource["NEQ"] = "AdvanceFilter.NEQ";
-    StringOperatorResource["GT"] = "AdvanceFilter.GT";
-    StringOperatorResource["GTE"] = "AdvanceFilter.GTE";
-    StringOperatorResource["LTE"] = "AdvanceFilter.LTE";
-    StringOperatorResource["LT"] = "AdvanceFilter.LT";
-    StringOperatorResource["Like"] = "AdvanceFilter.Like";
-    StringOperatorResource["NotLike"] = "AdvanceFilter.NotLike";
+    StringOperatorResource["StartWith"] = "AdvanceFilter.StartWith";
+    StringOperatorResource["EndsWith"] = "AdvanceFilter.EndsWith";
+    StringOperatorResource["Like"] = "AdvanceFilter.Contains";
+    StringOperatorResource["NotLike"] = "AdvanceFilter.DoesNotContain";
 })(StringOperatorResource || (StringOperatorResource = {}));
 export var BooleanOperatorResource;
 (function (BooleanOperatorResource) {
     BooleanOperatorResource["EQ"] = "AdvanceFilter.EQ";
     BooleanOperatorResource["NEQ"] = "AdvanceFilter.NEQ";
 })(BooleanOperatorResource || (BooleanOperatorResource = {}));
+export class Guid {
+    static newGuid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+}
 //# sourceMappingURL=filterColumn.js.map

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SPPC.Framework.Presentation
@@ -15,6 +16,11 @@ namespace SPPC.Framework.Presentation
         {
             Operator = GridFilterOperator.True;
         }
+
+        /// <summary>
+        /// شناسه فیلتر
+        /// </summary>
+        public string Id { get; set; }
 
         /// <summary>
         /// نام فیلد اطلاعاتی مورد استفاده در فیلتر
@@ -39,6 +45,11 @@ namespace SPPC.Framework.Presentation
         /// مقدار مورد استفاده برای فیلتر که باید برای فیلد اطلاعاتی انتخاب شده یک مقدار مجاز باشد
         /// </summary>
         public string Value { get; set; }
+
+        /// <summary>
+        /// پرانتز مورد استفاده برای ترکیب این فیلتر با فیلترهای عبارت والد
+        /// </summary>
+        public IList<Braces> Braces { get; set; }
 
         /// <summary>
         /// نمایش متنی برای این نمونه را برمی گرداند
