@@ -95,6 +95,9 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
     if (this.editForm.valid) {
       this.save.emit(this.editForm.value);
     }
+    else if (this.isWizard) {
+      this.save.emit(null);
+    }
   }
 
   public onCancel(e: any): void {

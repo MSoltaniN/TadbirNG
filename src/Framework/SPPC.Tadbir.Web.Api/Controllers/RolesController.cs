@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
@@ -232,7 +233,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // GET: api/roles/{roleId:min(1)}/rowaccess
+        // GET: api/roles/{roleId:min(2)}/rowaccess
         [Route(RoleApi.RowAccessSettingsUrl)]
         [AuthorizeRequest(SecureEntity.RowAccess, (int)RowAccessPermissions.ViewRowAccess)]
         public async Task<IActionResult> GetRowAccessSettingsForRoleAsync(int roleId)
@@ -241,7 +242,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(settings);
         }
 
-        // PUT: api/roles/{roleId:min(1)}/rowaccess
+        // PUT: api/roles/{roleId:min(2)}/rowaccess
         [HttpPut]
         [Route(RoleApi.RowAccessSettingsUrl)]
         [AuthorizeRequest(SecureEntity.RowAccess, (int)RowAccessPermissions.ManageRowAccess)]
@@ -249,6 +250,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int roleId, [FromBody] RowPermissionsForRoleViewModel permissions)
         {
             var result = BasicValidationResult(permissions, roleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = PermissionValidationResult(permissions);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -275,7 +282,52 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (role.Permissions.Any(perm => !_repository.IsPublicPermission(perm)))
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidPermissionsInRole));
+            }
+
             return Ok();
+        }
+
+        private IActionResult PermissionValidationResult(RowPermissionsForRoleViewModel permissions)
+        {
+            var messages = new List<string>();
+            foreach (var permission in permissions.RowPermissions)
+            {
+                messages.Add(ValidateRowPermission(permission));
+            }
+
+            if (messages.Any(msg => !String.IsNullOrEmpty(msg)))
+            {
+                return BadRequest(messages.Where(msg => !String.IsNullOrEmpty(msg)).ToArray());
+            }
+
+            return Ok();
+        }
+
+        private string ValidateRowPermission(ViewRowPermissionViewModel rowPermission)
+        {
+            if (rowPermission.Items.Count == 0
+                && (rowPermission.AccessMode == RowAccessOptions.SpecificRecords
+                    || rowPermission.AccessMode == RowAccessOptions.AllExceptSpecificRecords))
+            {
+                return _strings.Format(AppStrings.SpecificRecordsNotSelected, rowPermission.ViewName);
+            }
+
+            if (rowPermission.Value == 0.0F && rowPermission.Value2 == 0.0F
+                && rowPermission.AccessMode == RowAccessOptions.MaxMoneyValue)
+            {
+                return _strings.Format(AppStrings.MaxMoneyValueNotSelected, rowPermission.ViewName);
+            }
+
+            if (rowPermission.Value == 0.0F
+                && rowPermission.AccessMode == RowAccessOptions.MaxQuantityValue)
+            {
+                return _strings.Format(AppStrings.MaxQuantityValueNotSelected, rowPermission.ViewName);
+            }
+
+            return String.Empty;
         }
 
         private void Localize(IList<RoleViewModel> roles)
@@ -291,9 +343,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             role.Role.Name = _strings[role.Role.Name];
             role.Role.Description = _strings[role.Role.Description ?? String.Empty];
-            role.Role.Permissions = role.Role.Permissions
-                .Select(name => GetLocalName(name))
-                .ToList();
             Array.ForEach(role.Permissions.ToArray(), perm =>
             {
                 perm.Name = GetLocalName(perm.Name);
@@ -305,9 +354,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             role.Role.Name = _strings[role.Role.Name];
             role.Role.Description = _strings[role.Role.Description ?? String.Empty];
-            role.Role.Permissions = role.Role.Permissions
-                .Select(name => GetLocalName(name))
-                .ToList();
             Array.ForEach(role.Permissions.ToArray(), perm =>
             {
                 perm.Name = GetLocalName(perm.Name);

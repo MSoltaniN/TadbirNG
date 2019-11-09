@@ -32,4 +32,7 @@ export class BranchApi {
 
     // branches/{branchId:min(1)}/roles
     public static BranchRoles = environment.BaseUrl + "/branches/{0}/roles";
+
+    // branches/init
+    public static BrancheInitial = environment.BaseUrl + "/branches/init";
 }

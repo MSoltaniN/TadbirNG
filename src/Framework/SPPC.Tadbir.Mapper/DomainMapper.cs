@@ -110,11 +110,7 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => String.Format("{0} {1}", src.Person.FirstName, src.Person.LastName)));
 
-            mapperConfig.CreateMap<Role, RoleViewModel>()
-                .ForMember(
-                    dest => dest.Permissions,
-                    opts => opts.MapFrom(
-                        src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name).ToList()));
+            mapperConfig.CreateMap<Role, RoleViewModel>();
             mapperConfig.CreateMap<RoleViewModel, Role>()
                 .ForMember(dest => dest.RolePermissions, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RelatedItemsViewModel>()

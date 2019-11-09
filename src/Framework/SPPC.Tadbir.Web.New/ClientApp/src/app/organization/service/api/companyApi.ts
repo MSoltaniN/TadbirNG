@@ -28,8 +28,4 @@ export class CompanyApi {
 
     // companies/validation
     public static CompanyValidation = environment.BaseUrl + "/companies/validation";
-
-    // companies/initial
-    public static InitialCompany = environment.BaseUrl + "/companies/initial";
-
 }

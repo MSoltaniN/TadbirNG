@@ -68,6 +68,16 @@ export class EnviromentComponent {
     return userId;
   }
 
+  public get IsAdmin(): boolean {
+    var currentContext = this.bStorageService.getCurrentUser();
+    let isAdmin: boolean = false;
+    if (currentContext) {
+      var adminRole = currentContext.roles.find(f => f == 1);
+      isAdmin = adminRole ? true : false;
+    }
+    return isAdmin;
+  }
+
   public get UserName(): string {
     var currentContext = this.bStorageService.getCurrentUser();
     return currentContext ? currentContext.userName : '';

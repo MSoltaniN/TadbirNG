@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -237,9 +239,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه یکتای یکی از شعب سازمانی موجود</param>
         /// <returns>در حالتی که شعبه سازمانی مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool?> HasChildrenAsync(int branchId)
+        public async Task<bool> HasChildrenAsync(int branchId)
         {
-            bool? hasChildren = null;
+            bool hasChildren = false;
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var branch = await repository.GetByIDAsync(branchId, b => b.Children);
             if (branch != null)
@@ -251,16 +253,42 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا شعبه مورد نظر به نقشی تخصیص داده شده یا نه
+        /// به روش آسنکرون، مشخص می کند که آیا شعبه مشخص شده قابل حذف است یا نه؟
         /// </summary>
         /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
-        /// <returns>اگر شعبه مورد نظر به یک یا چند نقش تخصیص داده شده باشد مقدار "درست" و
-        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool> HasAssignedRolesAsync(int branchId)
+        /// <returns>اگر شعبه مورد نظر در برنامه به طور مستقیم استفاده شده باشد
+        /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
+        public async Task<bool> CanDeleteBranchAsync(int branchId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
-            int roleCount = await repository.GetCountByCriteriaAsync(rb => rb.BranchId == branchId);
-            return roleCount > 0;
+            bool canDelete = true;
+            var fiscalTypes = ModelCatalogue.GetAllOfType<FiscalEntity>();
+
+            // TODO: The types AccountCurrency and CurrencyRate also reference Branch but are
+            // currently not returned by catalogue, because they don't have FiscalPeriodID and
+            // so CANNOT be derived from FiscalEntity.
+            // The following block can be removed when the two types are upgraded to FiscalEntity.
+            var dependentTypes = new List<Type>(fiscalTypes)
+            {
+                typeof(AccountCurrency),
+                typeof(CurrencyRate)
+            };
+            foreach (var type in dependentTypes)
+            {
+                if (HasBranchReference(type, branchId))
+                {
+                    canDelete = false;
+                    break;
+                }
+            }
+
+            if (canDelete)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+                int roleCount = await repository.GetCountByCriteriaAsync(rb => rb.BranchId == branchId);
+                canDelete = (roleCount == 0);
+            }
+
+            return canDelete;
         }
 
         /// <summary>
@@ -280,6 +308,27 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return isValid;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اواین شعبه سازمانی یک شرکت  را در محل ذخیره ایجاد می کند
+        /// </summary>
+        /// <param name="branchView">شعبه سازمانی مورد نظر برای ایجاد</param>
+        /// <returns>اطلاعات نمایشی شعبه سازمانی ایجاد شده</returns>
+        public async Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branchView)
+        {
+            Verify.ArgumentNotNull(branchView, "branchView");
+            Branch branch = default(Branch);
+
+            UnitOfWork.UseSystemContext();
+            CompanyConnection = await BuildConnectionString(branchView.CompanyId);
+
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            branch = Mapper.Map<Branch>(branchView);
+
+            await InsertAsync(repository, branch);
+
+            return Mapper.Map<BranchViewModel>(branch);
         }
 
         /// <summary>

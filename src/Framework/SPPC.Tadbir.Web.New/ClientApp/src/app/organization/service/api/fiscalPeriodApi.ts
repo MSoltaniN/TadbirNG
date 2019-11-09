@@ -31,4 +31,7 @@ export class FiscalPeriodApi {
 
     // fperiods/validation
     public static FiscalPeriodValidation = environment.BaseUrl + "/fperiods/validation";
+
+    // fperiods/init
+    public static FiscalPeriodInitial = environment.BaseUrl + "/fperiods/init";
 }

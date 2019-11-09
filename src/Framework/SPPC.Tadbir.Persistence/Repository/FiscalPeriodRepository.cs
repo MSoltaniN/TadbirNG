@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Finance;
@@ -308,20 +309,47 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
         public async Task<bool> CanDeleteFiscalPeriodAsync(int fperiodId)
         {
-            bool isUsed = await IsFiscalPeriodUsedBy<Account>(fperiodId)
-                || await IsFiscalPeriodUsedBy<DetailAccount>(fperiodId)
-                || await IsFiscalPeriodUsedBy<CostCenter>(fperiodId)
-                || await IsFiscalPeriodUsedBy<Project>(fperiodId)
-                || await IsFiscalPeriodUsedBy<Voucher>(fperiodId);
-            if (!isUsed)
+            bool canDelete = true;
+            var fiscalTypes = ModelCatalogue.GetAllOfType<FiscalEntity>();
+            foreach (var type in fiscalTypes)
             {
-                var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
-                int count = await repository.GetCountByCriteriaAsync(
-                    rfp => rfp.FiscalPeriodId == fperiodId);
-                isUsed = count > 0;
+                if (HasFiscalPeriodReference(type, fperiodId))
+                {
+                    canDelete = false;
+                    break;
+                }
             }
 
-            return !isUsed;
+            if (canDelete)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
+                int roleCount = await repository.GetCountByCriteriaAsync(
+                    rfp => rfp.FiscalPeriodId == fperiodId);
+                canDelete = (roleCount == 0);
+            }
+
+            return canDelete;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین دوره مالی را در محل ذخیره ایجاد می کند
+        /// </summary>
+        /// <param name="fiscalPeriodView">دوره مالی مورد نظر برای ایجاد</param>
+        /// <returns>اطلاعات نمایشی دوره مالی ایجاد شده</returns>
+        public async Task<FiscalPeriodViewModel> SaveInitialFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriodView)
+        {
+            Verify.ArgumentNotNull(fiscalPeriodView, "fiscalPeriodView");
+            FiscalPeriod fiscalPeriod = default(FiscalPeriod);
+
+            UnitOfWork.UseSystemContext();
+            CompanyConnection = await BuildConnectionString(fiscalPeriodView.CompanyId);
+
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+
+            fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
+            await InsertAsync(repository, fiscalPeriod);
+
+            return Mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
         }
 
         /// <summary>
@@ -403,15 +431,6 @@ namespace SPPC.Tadbir.Persistence
                 };
                 existing.RoleFiscalPeriods.Add(roleFiscalPeriod);
             }
-        }
-
-        private async Task<bool> IsFiscalPeriodUsedBy<TFiscalEntity>(int fperiodId)
-            where TFiscalEntity : class, IFiscalEntity
-        {
-            var repository = UnitOfWork.GetAsyncRepository<TFiscalEntity>();
-            int count = await repository.GetCountByCriteriaAsync(
-                entity => entity.FiscalPeriodId == fperiodId);
-            return (count > 0);
         }
     }
 }

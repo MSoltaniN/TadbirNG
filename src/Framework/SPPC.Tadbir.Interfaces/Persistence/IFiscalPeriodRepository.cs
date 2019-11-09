@@ -117,5 +117,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر دوره مالی مورد نظر در برنامه به طور مستقیم استفاده شده باشد
         /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
         Task<bool> CanDeleteFiscalPeriodAsync(int fperiodId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین دوره مالی را در محل ذخیره ایجاد می کند
+        /// </summary>
+        /// <param name="fiscalPeriod">دوره مالی مورد نظر برای ایجاد</param>
+        /// <returns>اطلاعات نمایشی دوره مالی ایجاد شده</returns>
+        Task<FiscalPeriodViewModel> SaveInitialFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod);
     }
 }

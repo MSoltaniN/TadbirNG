@@ -89,15 +89,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه یکتای یکی از شعب سازمانی موجود</param>
         /// <returns>در حالتی که شعبه سازمانی مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
-        Task<bool?> HasChildrenAsync(int branchId);
+        Task<bool> HasChildrenAsync(int branchId);
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا شعبه مورد نظر به نقشی تخصیص داده شده یا نه
+        /// به روش آسنکرون، مشخص می کند که آیا شعبه مشخص شده قابل حذف است یا نه؟
         /// </summary>
         /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
-        /// <returns>اگر شعبه مورد نظر به یک یا چند نقش تخصیص داده شده باشد مقدار "درست" و
-        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
-        Task<bool> HasAssignedRolesAsync(int branchId);
+        /// <returns>اگر شعبه مورد نظر در برنامه به طور مستقیم استفاده شده باشد
+        /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
+        Task<bool> CanDeleteBranchAsync(int branchId);
 
         /// <summary>
         /// به روش آسنکرون، قواعد کاری تعریف شده را برای شعبه داده شده بررسی می کند
@@ -105,5 +105,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branch">مدل نمایشی شعبه مورد بررسی</param>
         /// <returns>در صورت نبود اشکال، مقدار بولی "درست" و در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
         Task<bool> IsValidBranchAsync(BranchViewModel branch);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اواین شعبه سازمانی یک شرکت  را در محل ذخیره ایجاد می کند
+        /// </summary>
+        /// <param name="branchView">شعبه سازمانی مورد نظر برای ایجاد</param>
+        /// <returns>اطلاعات نمایشی شعبه سازمانی ایجاد شده</returns>
+        Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branchView);
     }
 }

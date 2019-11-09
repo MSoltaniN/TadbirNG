@@ -67,11 +67,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        // POST: api/fperiods/init
+        [HttpPost]
+        [Route(FiscalPeriodApi.FiscalPeriodInitialUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
+        public async Task<IActionResult> PostInitialFiscalPeriodAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
+        {
+            var result = BasicValidationResult(fiscalPeriod);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
+            }
+
+            var outputItem = await _repository.SaveInitialFiscalPeriodAsync(fiscalPeriod);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
         // POST: api/fperiods/validation
         [HttpPost]
         [Route(FiscalPeriodApi.FiscalPeriodValidationUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
-        public async Task<IActionResult> PostFiscalPeriodValidationAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
+        public IActionResult PostFiscalPeriodValidation([FromBody]FiscalPeriodViewModel fiscalPeriod)
         {
             var result = BasicValidationResult(fiscalPeriod);
             if (result is BadRequestObjectResult)
@@ -174,22 +195,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
-            string message = String.Empty;
             var fperiod = await _repository.GetFiscalPeriodAsync(item);
             if (fperiod == null)
             {
-                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.FiscalPeriod, item.ToString());
-            }
-            else
-            {
-                bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
-                if (!canDelete)
-                {
-                    message = _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
-                }
+                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.FiscalPeriod, item.ToString());
             }
 
-            return message;
+            bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
+            if (!canDelete)
+            {
+                return _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
+            }
+
+            return String.Empty;
         }
 
         private async Task<IActionResult> ValidationResultAsync(FiscalPeriodViewModel fiscalPeriod, int fperiodId = 0)

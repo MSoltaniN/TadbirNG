@@ -175,6 +175,11 @@ namespace SPPC.Tadbir.Persistence
             ref IQueryable<TEntity> records, int viewId)
             where TEntity : class, IEntity
         {
+            if (UserContext.Roles.Contains(AppConstants.AdminRoleId))
+            {
+                return records;
+            }
+
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
             var filters = new List<FilterExpression>();

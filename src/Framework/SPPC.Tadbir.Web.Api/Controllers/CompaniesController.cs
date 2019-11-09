@@ -83,16 +83,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // POST: api/companies/initial
-        [HttpPost]
-        [Route(CompanyApi.InitialCompanyUrl)]
-        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Create)]
-        public async Task<IActionResult> PostInitialCompanyAsync([FromBody]InitialCompanyViewModel initialCompany)
-        {
-            var outputItem = await _repository.SaveInitialCompanyAsync(initialCompany, _host.WebRootPath);
-            return StatusCode(StatusCodes.Status201Created, outputItem);
-        }
-
         // PUT: api/companies/{companyId:min(1)}
         [HttpPut]
         [Route(CompanyApi.CompanyUrl)]
@@ -100,7 +90,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedCompanyAsync(
             int companyId, [FromBody] CompanyDbViewModel company)
         {
-            var result = await ValidationResultAsync(company, companyId);
+            var result = BasicValidationResult(company, companyId);
             if (result is BadRequestObjectResult)
             {
                 return result;

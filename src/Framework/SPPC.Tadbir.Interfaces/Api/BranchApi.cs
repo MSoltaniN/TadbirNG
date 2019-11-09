@@ -64,5 +64,15 @@
         /// API server route URL for all roles who can access a branch item specified by unique identifier
         /// </summary>
         public const string BranchRolesUrl = "branches/{branchId:min(1)}/roles";
+
+        /// <summary>
+        /// API client URL for initial branch
+        /// </summary>
+        public const string BrancheInitial = "branches/init";
+
+        /// <summary>
+        /// API server route URL for initial branch
+        /// </summary>
+        public const string BrancheInitialUrl = "branches/init";
     }
 }

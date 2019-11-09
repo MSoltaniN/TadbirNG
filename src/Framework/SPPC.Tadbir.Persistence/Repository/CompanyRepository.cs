@@ -10,11 +10,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
-using SPPC.Tadbir.Model.Corporate;
-using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Config;
-using SPPC.Tadbir.ViewModel.Corporate;
-using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -28,11 +24,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="sqlConsole">امکان ارتباط مستقیم با بانک اطلاعاتی</param>
-        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log, ISqlConsole sqlConsole)
+        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log)
             : base(context, log)
         {
-            _sqlConsole = sqlConsole;
             UnitOfWork.UseSystemContext();
         }
 
@@ -154,39 +148,19 @@ namespace SPPC.Tadbir.Persistence
             var items = await repository
                 .GetByCriteriaAsync(comp => comp.DbName == company.DbName);
 
-            if (items.Count == 0)
+            if (items.Count > 0)
             {
-                return IsDuplicateDatabaseName(company.DbName);
+                return (items.SingleOrDefault(comp => comp.Id != company.Id) != null);
             }
 
-            return (items.SingleOrDefault(comp => comp.Id != company.Id) != null);
-        }
+            var isDuplicateDB = IsDuplicateDatabaseName(company.DbName);
 
-        /// <summary>
-        /// به روش آسنکرون، شرکت، شعبه و دوره مالی را ایجاد میکند
-        /// </summary>
-        /// <param name="initialCompany">اطلاعات شرکت، شعبه و دوره مالی برای ایجاد شرکت</param>
-        /// <param name="webHostPath">مسیر ریشه نرم افزار</param>
-        /// <returns>اطلاعات نمایشی شرکت ایجاد شده</returns>
-        public async Task<CompanyDbViewModel> SaveInitialCompanyAsync(InitialCompanyViewModel initialCompany, string webHostPath)
-        {
-            _webRootPath = webHostPath;
-            Verify.ArgumentNotNull(initialCompany, "initialCompany");
-            var company = default(CompanyDb);
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            if (isDuplicateDB)
+            {
+                return !CheckIsTadbirDatabase(company.DbName);
+            }
 
-            CreateDatabase(initialCompany.Company);
-            company = Mapper.Map<CompanyDb>(initialCompany.Company);
-            await InsertAsync(repository, company);
-
-            UnitOfWork.UseCompanyContext();
-            CompanyConnection = BuildConnectionString(company);
-
-            SaveBranch(initialCompany.Branch, company.Id);
-            SaveFiscalPeriod(initialCompany.FiscalPeriod, company.Id);
-            await UnitOfWork.CommitAsync();
-
-            return Mapper.Map<CompanyDbViewModel>(company);
+            return false;
         }
 
         /// <summary>
@@ -199,9 +173,9 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(company, "company");
 
             string userScript = @"SELECT name FROM sys.sql_logins";
-            DataTable dt = _sqlConsole.ExecuteQuery(userScript);
+            DataTable dt = DbConsole.ExecuteQuery(userScript);
             List<DataRow> drList = dt.AsEnumerable().ToList();
-            return drList.Any(dataRow => dataRow["name"].Equals(company.UserName));
+            return drList.Any(dataRow => dataRow["name"].ToString().ToLower().Equals(company.UserName.ToLower()));
         }
 
         /// <summary>
@@ -234,109 +208,99 @@ namespace SPPC.Tadbir.Persistence
 
         private void CreateDatabase(CompanyDbViewModel companyViewModel)
         {
-            var scriptPath = Path.Combine(_webRootPath, @"static\Tadbir_CreateDbObjects.sql");
-            if (!File.Exists(scriptPath))
+            if (!IsDuplicateDatabaseName(companyViewModel.DbName))
             {
-                throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
+                var scriptPath = Path.Combine(_webRootPath, @"static\Tadbir_CreateDbObjects.sql");
+                if (!File.Exists(scriptPath))
+                {
+                    throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
+                }
+
+                string companyScript = string.Format(@"CREATE DATABASE {0}
+                                                      GO
+                                                      USE {0}
+                                                      GO",
+                                                      companyViewModel.DbName);
+
+                companyScript += Environment.NewLine;
+                companyScript += File.ReadAllText(scriptPath);
+
+                DbConsole.ExecuteNonQuery(companyScript);
             }
 
-            string companyScript = string.Format(@"USE master
-                                                  GO
-                                                  CREATE DATABASE {0}
-                                                  GO
-                                                  USE {0}
-                                                  GO",
-                                                  companyViewModel.DbName);
-
-            companyScript += Environment.NewLine;
-            companyScript += File.ReadAllText(scriptPath);
-
-            _sqlConsole.ExecuteNonQuery(companyScript);
 
             CreateDatabaseLogin(companyViewModel);
 
-            string serverInfoScript = @"SELECT 
-                                        @@servername AS 'ServerName',
-                                        @@servicename AS 'InstanceName',
-                                        DB_NAME() AS 'DatabaseName',
-                                        HOST_NAME() AS 'HostName'";
-
-            var serverInfo = _sqlConsole.ExecuteQuery(serverInfoScript);
-            string serverName = serverInfo.Rows[0].ItemArray[0].ToString();
-            companyViewModel.Server = serverName;
+            SetServerName(companyViewModel);
         }
 
         private void CreateDatabaseLogin(CompanyDbViewModel companyViewModel)
         {
             string loginScript = string.Format(@"CREATE LOGIN [{0}] WITH PASSWORD = '{1}', CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF;
-                                                 GO
-                                                 Use [{2}];
-                                                 GO
-                                                 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'{0}')
-                                                 BEGIN
-                                                    CREATE USER [{0}] FOR LOGIN [{0}]
-                                                    EXEC sp_addrolemember N'db_owner', N'{0}'    
-                                                 END;
-                                                 GO",
+                                                     GO
+                                                     Use [{2}];
+                                                     GO
+                                                     IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'{0}')
+                                                     BEGIN
+                                                        CREATE USER [{0}] FOR LOGIN [{0}]
+                                                        EXEC sp_addrolemember N'db_owner', N'{1}'    
+                                                     END;
+                                                     GO",
                                                  companyViewModel.UserName,
                                                  companyViewModel.Password,
                                                  companyViewModel.DbName);
 
-            _sqlConsole.ExecuteNonQuery(loginScript);
+            DbConsole.ExecuteNonQuery(loginScript);
+        }
+
+        private void SetServerName(CompanyDbViewModel companyViewModel)
+        {
+            string serverInfoScript = @"SELECT 
+                                            @@servername AS 'ServerName',
+                                            @@servicename AS 'InstanceName',
+                                            DB_NAME() AS 'DatabaseName',
+                                            HOST_NAME() AS 'HostName'";
+
+            var serverInfo = DbConsole.ExecuteQuery(serverInfoScript);
+            string serverName = serverInfo.Rows[0].ItemArray[0].ToString();
+            companyViewModel.Server = serverName;
         }
 
         private bool IsDuplicateDatabaseName(string dbName)
         {
             string dbNameScript = @"SELECT [name] FROM sys.databases";
-            DataTable dt = _sqlConsole.ExecuteQuery(dbNameScript);
+            DataTable dt = DbConsole.ExecuteQuery(dbNameScript);
             List<DataRow> drList = dt.AsEnumerable().ToList();
-            return drList.Any(dataRow => dataRow["name"].Equals(dbName));
+            return drList.Any(dataRow => dataRow["name"].ToString().ToLower().Equals(dbName.ToLower()));
         }
 
-        private void SaveBranch(BranchViewModel branchView, int companyId)
+        private bool CheckIsTadbirDatabase(string dbName)
         {
-            Verify.ArgumentNotNull(branchView, "branchView");
-            Branch branch = default(Branch);
+            string sysConnectionString = DbConsole.ConnectionString;
 
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            DbConsole.ConnectionString = DbConsole.BuildConnectionString(dbName);
 
-            branchView.CompanyId = companyId;
-            branch = Mapper.Map<Branch>(branchView);
-            repository.Insert(branch);
-            //await InsertAsync(repository, branch);
-        }
-
-        private void SaveFiscalPeriod(FiscalPeriodViewModel fiscalPeriodView, int companyId)
-        {
-            Verify.ArgumentNotNull(fiscalPeriodView, "fiscalPeriodView");
-            FiscalPeriod fiscalPeriod = default(FiscalPeriod);
-
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-
-            fiscalPeriodView.CompanyId = companyId;
-            fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
-            repository.Insert(fiscalPeriod);
-            //await InsertAsync(repository, fiscalPeriod);
-        }
-
-        private string BuildConnectionString(CompanyDb company)
-        {
-            var builder = new StringBuilder();
-            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
-            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
+            if (DbConsole.TestConnection())
             {
-                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
-                    company.UserName, company.Password);
+                string tableScript = string.Format(@"SELECT *
+                                                     FROM {0}.INFORMATION_SCHEMA.TABLES 
+                                                     WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME='Account' AND TABLE_SCHEMA='Finance'",
+                                                     dbName);
+
+                DataTable dt = DbConsole.ExecuteQuery(tableScript);
+
+                DbConsole.ConnectionString = sysConnectionString;
+                return dt.Rows.Count == 1;
             }
             else
             {
-                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
+                // امکان دارد دیتابیس تدبیر نباشد باید یوزر به آن اضافه شود سپس دیتابیس چک شود
             }
 
-            return builder.ToString();
+            DbConsole.ConnectionString = sysConnectionString;
+            return false;
         }
 
-        private readonly ISqlConsole _sqlConsole;
         private string _webRootPath;
     }
 }

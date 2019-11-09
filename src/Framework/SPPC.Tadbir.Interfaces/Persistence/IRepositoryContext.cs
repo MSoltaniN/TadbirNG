@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
@@ -19,6 +20,11 @@ namespace SPPC.Tadbir.Persistence
         /// امکان تبدیل کلاس های مختلف به یکدیگر را فراهم می کند
         /// </summary>
         IDomainMapper Mapper { get; }
+
+        /// <summary>
+        /// امکان اجرای مستقیم دستورات دیتابیسی را فراهم می کند
+        /// </summary>
+        ISqlConsole DbConsole { get; }
 
         /// <summary>
         /// امکان دسترسی به اطلاعات محیطی کاربر جاری برنامه را فراهم می کند

@@ -500,6 +500,7 @@ namespace SPPC.Tadbir.Persistence
             var lookup = roles
                 .OrderBy(role => role.Name)
                 .Select(role => Mapper.Map<KeyValue>(role))
+                .Where(role => role.Key != AppConstants.AdminRoleId.ToString())
                 .Apply(gridOptions)
                 .ToList();
             UnitOfWork.UseCompanyContext();

@@ -732,7 +732,7 @@
     "Password": "کلمه عبور",
     "Description": "شرح",
     "NotFoundData": "شرکتی وجود ندارد",
-    "SuccessInitialCompany": "شرکت، شعبه و دوره مالی با موفقیت ثبت شدند.",
+    "SuccessInitialCompany": "مراحل ایجاد شرکت با موفقیت انجام شد.",
     "CreateCompany": "ایجاد شرکت"
   },
   "AccountGroup": {
@@ -762,7 +762,8 @@
     "RolesTitle": "لیست نقش های قابل دسترس به شعبه",
     "NotFoundData": "شعبه ای وجود ندارد",
     "LedgerBranch": "شعب سطح اول",
-    "CreateBranch": "ایجاد شعبه"
+    "CreateBranch": "ایجاد شعبه",
+    "ChangeBranch": "تغییر شرکت"
   },
   "Voucher": {
     "New": "سند جدید",
@@ -932,7 +933,8 @@
     "UpdateRoles": "نقش های دوره مالی با موفقیت ویرایش شد",
     "Roles": "نقش ها",
     "RolesTitle": "لیست نقش های دوره مالی",
-    "CreateFiscalPeriod": "ایجاد دوره مالی"
+    "CreateFiscalPeriod": "ایجاد دوره مالی",
+    "ChangeFiscalPeriod": "تغییر دوره مالی"
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی",

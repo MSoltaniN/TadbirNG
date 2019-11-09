@@ -15,5 +15,10 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// شناسه دیتابیسی موجودیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود
         /// </summary>
         public int ViewId { get; set; }
+
+        /// <summary>
+        /// نام موجودیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود
+        /// </summary>
+        public string ViewName { get; set; }
     }
 }

@@ -13,7 +13,7 @@ import { QuickReportSettingComponent } from '@sppc/shared/components/reportManag
 import { SettingService } from '@sppc/config/service';
 import { AccountApi } from '@sppc/finance/service/api';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
-import { ViewName } from '@sppc/shared/security';
+import { ViewName, AccountPermissions } from '@sppc/shared/security';
 import { SelectFormComponent } from '@sppc/shared/controls';
 import { Account } from '@sppc/finance/models';
 
@@ -66,6 +66,40 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
     this.reloadGrid();
 
     //this.cdref.detectChanges();
+  }
+
+  public onSelectContextmenu({ item }): void {
+
+    let hasPermission: boolean = false;
+
+    switch (item.mode) {
+      case 'Remove': {
+        hasPermission = this.isAccess(Entities.Account, AccountPermissions.Delete);
+        if (hasPermission)
+          this.contextMenuRemoveHandler();
+        break;
+      }
+      case 'Edit': {
+        hasPermission = this.isAccess(Entities.Account, AccountPermissions.Edit);
+        if (hasPermission) {
+          this.contextMenuEditHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      case 'New': {
+        hasPermission = this.isAccess(Entities.Account, AccountPermissions.Create);
+        if (hasPermission) {
+          this.contextMenuAddNewHandler();
+          this.selectedContextmenu = undefined;
+        }
+        break;
+      }
+      default:
+    }
+
+    if (!hasPermission)
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */

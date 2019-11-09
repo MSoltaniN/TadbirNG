@@ -29,12 +29,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
-        /// <param name="sqlConsole">امکان ارتباط مستقیم با بانک اطلاعاتی</param>
-        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository, ISqlConsole sqlConsole)
+        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository)
             : base(context)
         {
             _fiscalRepository = fiscalRepository;
-            _sqlConsole = sqlConsole;
         }
 
         /// <summary>
@@ -344,14 +342,14 @@ namespace SPPC.Tadbir.Persistence
 
             script += "SET IDENTITY_INSERT [Finance].[Account] OFF";
 
-            _sqlConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            _sqlConsole.ExecuteNonQuery(script);
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            DbConsole.ExecuteNonQuery(script);
 
             var accCollections = Path.Combine(_webRootPath, @"static\accountCollection.txt");
             script = File.ReadAllText(accCollections);
             script = script.Replace("%branchId%", UserContext.BranchId.ToString())
                 .Replace("%fiscalPeriodId%", UserContext.FiscalPeriodId.ToString());
-            _sqlConsole.ExecuteNonQuery(script);
+            DbConsole.ExecuteNonQuery(script);
         }
 
         private async Task UpdateTreeLevelUsage(ViewTreeFullConfig accountTreeConfig)
@@ -364,7 +362,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IFiscalPeriodRepository _fiscalRepository;
-        private readonly ISqlConsole _sqlConsole;
         private string _webRootPath;
     }
 }
