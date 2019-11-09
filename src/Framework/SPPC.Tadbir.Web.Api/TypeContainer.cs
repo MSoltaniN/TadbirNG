@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,13 +46,17 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddDbContext<TadbirContext>();
             _services.AddDbContext<SystemContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("TadbirSysApi")));
-            _services.AddTransient<SystemContext>();
-            _services.AddTransient(provider =>
+            _services.AddScoped<SystemContext>();
+            _services.AddScoped(provider =>
             {
+                var crypto = new CryptoService();
                 var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
                 var securityContext = httpContext.Request.CurrentSecurityContext();
                 string connectionString = securityContext?.User.Connection;
-                return new TadbirContext(connectionString);
+                var companyConnection = String.IsNullOrEmpty(connectionString)
+                    ? connectionString
+                    : crypto.Decrypt(connectionString);
+                return new TadbirContext(companyConnection);
             });
             _services.AddTransient<IDbContextAccessor, DbContextAccessor>();
             _services.AddScoped(provider =>
@@ -106,6 +111,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IAccessRepository, AccessRepository>();
             _services.AddTransient<ICurrencyBookRepository, CurrencyBookRepository>();
             _services.AddTransient<ISystemRepository, SystemRepository>();
+            _services.AddTransient<ISystemConfigRepository, SystemConfigRepository>();
         }
 
         private void AddServiceTypes()

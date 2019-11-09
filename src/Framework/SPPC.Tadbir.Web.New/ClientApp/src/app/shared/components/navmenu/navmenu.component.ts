@@ -72,18 +72,14 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
 
   onClickMenu(item: Command) {
-    if (item.hasPermission) {
-      //for show report manager
-      if (item.routeUrl == '/tadbir/reports') {
-        this.reportManager.showDialog();
-        return;
-      }
-
-      if (item.routeUrl)
-        this.router.navigate([item.routeUrl])
+    //for show report manager
+    if (item.routeUrl == '/tadbir/reports') {
+      this.reportManager.showDialog();
+      return;
     }
-    else
-      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+
+    if (item.routeUrl)
+      this.router.navigate([item.routeUrl])
   }
 
   onMenuClick(event: any, id: number) {

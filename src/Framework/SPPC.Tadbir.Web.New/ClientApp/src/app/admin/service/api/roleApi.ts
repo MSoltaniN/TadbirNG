@@ -40,6 +40,6 @@ export class RoleApi {
     // roles/metadata
     public static RoleMetadata = environment.BaseUrl + "/roles/metadata";
 
-    // roles/{roleId:min(1)}/rowaccess
+    // roles/{roleId:min(2)}/rowaccess
     public static RowAccessSettings = environment.BaseUrl + "/roles/{0}/rowaccess";
 }

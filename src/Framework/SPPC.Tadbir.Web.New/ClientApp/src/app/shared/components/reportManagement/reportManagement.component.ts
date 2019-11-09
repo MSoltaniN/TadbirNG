@@ -922,7 +922,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
         if (printInfo.parameters.length > 0) {
           var reportParameters = printInfo.parameters;
           params.forEach(function (p) {
-            if (p.ParamReportVisible == false) {
+            if (p.ParamReportVisible == false || !p.ParamInFilter) {
               var index = reportParameters.findIndex(f => f.name === p.ParamName);
               if (index >= 0)
                 reportParameters.splice(index, 1);

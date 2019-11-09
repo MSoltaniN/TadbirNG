@@ -240,7 +240,7 @@
                                 [valuePrimitive]="true"
                                 [value]="displayTypeSelected"
                                 [(ngModel)]="displayTypeSelected"
-                                (ngModelChange)="changeType()">              
+                                (ngModelChange)="changeType();showSelectForm()">              
             </kendo-dropdownlist>
           </div>
           <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
@@ -316,13 +316,13 @@
             <kendo-switch [onLabel]="('Journal.OnLabel' | translate)"
                           [offLabel]="('Journal.OffLabel' | translate)"
                           [(ngModel)]="selectedBranchSeparation"
-                          (ngModelChange)="changeBranchSeparation();saveStates();">
+                          (valueChange)="valueChangeBranchSeparation($event);" >
             </kendo-switch>
           </div>
         </div>
 
       </div>
-      <div class="col-xs-12 col-sm-3 acc-options">
+      <div class="col-xs-12 col-sm-3">
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
             <input type="checkbox" name="useClosingVoucher" id="useClosingVoucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" (ngModelChange)="saveStates()"/>
@@ -346,6 +346,15 @@
           <div class="voucher-status-item">
             <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="saveStates()"/>
             <label class="k-checkbox-label" for="showZeroBalanceItems">{{ 'Balance.ShowZeroRemains' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 form-group">
+          <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
+            <input type="text" class="k-textbox ref"  [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
+          </div>
+          <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
+            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="showFilterByRefChange()" />
+            <label class="k-checkbox-label" for="showFilterByRef">{{ 'Balance.FilterByRef' | translate }}</label>
           </div>
         </div>
       </div>

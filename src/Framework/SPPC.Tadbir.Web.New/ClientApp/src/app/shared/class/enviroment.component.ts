@@ -121,13 +121,19 @@ export class EnviromentComponent {
    */
   public isAccess(entityName: string, action: number): boolean {
     let access: boolean = false;
-    let permissions: Array<PermissionBrief> = this.Permissions;
-    let permission: PermissionBrief;
-    let permissionIndex = permissions.findIndex(f => f.entityName == entityName);
-    if (permissionIndex >= 0) {
-      permission = permissions[permissionIndex];
-      if ((permission.flags & action) == action)
-        access = true;
+    var currentContext = this.bStorageService.getCurrentUser();
+    var adminRole = currentContext.roles.find(f => f == 1);
+    if (adminRole)
+      access = true;
+    else {
+      let permissions: Array<PermissionBrief> = this.Permissions;
+      let permission: PermissionBrief;
+      let permissionIndex = permissions.findIndex(f => f.entityName == entityName);
+      if (permissionIndex >= 0) {
+        permission = permissions[permissionIndex];
+        if ((permission.flags & action) == action)
+          access = true;
+      }
     }
     return access;
   }

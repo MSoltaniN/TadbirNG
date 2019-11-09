@@ -594,3 +594,46 @@ WHERE ColumnID=72
 UPDATE [Metadata].[Column]
 SET DotNetType = N'System.String', ScriptType = N'string', StorageType = N'nvarchar', [Length] = 32
 WHERE ViewID = 1 AND [Name] = 'TurnoverMode'
+
+-- 1.1.737
+DELETE FROM [Auth].[RolePermission]
+WHERE RoleID = 1
+
+DELETE FROM [Auth].[RoleCompany]
+WHERE RoleID = 1
+
+-- 1.1.744
+DELETE FROM [Auth].[RolePermission]
+WHERE PermissionID IN(42, 43, 44)
+
+UPDATE [Auth].[Permission]
+SET [Name] = N'View'
+WHERE [Name] LIKE N'ViewEntities%'
+
+UPDATE [Auth].[Permission]
+SET [Name] = N'Create'
+WHERE [Name] LIKE N'CreateEntity%'
+
+UPDATE [Auth].[Permission]
+SET [Name] = N'Edit'
+WHERE [Name] LIKE N'EditEntity%'
+
+UPDATE [Auth].[Permission]
+SET [Name] = N'Delete'
+WHERE [Name] LIKE N'DeleteEntity%'
+
+UPDATE [Auth].[Permission]
+SET [Name] = N'Manage'
+WHERE [Name] LIKE N'ManageEntities%'
+
+UPDATE [Auth].[Permission]
+SET [Name] = N'Save'
+WHERE [Name] LIKE N'SaveEntity%'
+
+UPDATE [Auth].[Permission]
+SET [Name] = N'SetDefault'
+WHERE [Name] LIKE N'SetDefault%'
+
+-- 1.1.746
+DELETE FROM [Auth].[ViewRowPermission]
+WHERE RoleID = 1

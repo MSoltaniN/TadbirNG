@@ -103,14 +103,24 @@ namespace SPPC.Tadbir.Api
         public const string UserCompanyLoginStatusUrl = "users/login/company";
 
         /// <summary>
-        /// API client URL for commands accessible to a user specified by unique identifier.
+        /// API client URL for commands accessible to current application user.
         /// </summary>
         public const string CurrentUserCommands = "users/current/commands";
 
         /// <summary>
-        /// API server route URL for commands accessible to a user specified by unique identifier.
+        /// API server route URL for commands accessible to current application user.
         /// </summary>
         public const string CurrentUserCommandsUrl = "users/current/commands";
+
+        /// <summary>
+        /// API client URL for application environment set by current user.
+        /// </summary>
+        public const string CurrentUserEnvironment = "users/current/env";
+
+        /// <summary>
+        /// API server route URL for application environment set by current user.
+        /// </summary>
+        public const string CurrentUserEnvironmentUrl = "users/current/env";
 
         /// <summary>
         /// API client URL for commands accessible to all users.

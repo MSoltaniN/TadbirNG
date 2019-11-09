@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -159,5 +158,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="permissions">تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش</param>
         Task SaveRowAccessSettingsAsync(RowPermissionsForRoleViewModel permissions);
+
+        /// <summary>
+        /// مشخص می کند که آیا دسترسی داده شده قابل تخصیص به نقش های عمومی (غیر مدیر سیستم) هست یا نه؟
+        /// </summary>
+        /// <param name="permission">نقش مورد نظر برای بررسی</param>
+        /// <returns>در صورت عمومی بودن نقش، مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        bool IsPublicPermission(PermissionViewModel permission);
     }
 }

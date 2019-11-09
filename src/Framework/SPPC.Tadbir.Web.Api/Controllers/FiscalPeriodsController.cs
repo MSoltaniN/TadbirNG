@@ -195,22 +195,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
-            string message = String.Empty;
             var fperiod = await _repository.GetFiscalPeriodAsync(item);
             if (fperiod == null)
             {
-                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.FiscalPeriod, item.ToString());
-            }
-            else
-            {
-                bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
-                if (!canDelete)
-                {
-                    message = _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
-                }
+                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.FiscalPeriod, item.ToString());
             }
 
-            return message;
+            bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
+            if (!canDelete)
+            {
+                return _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
+            }
+
+            return String.Empty;
         }
 
         private async Task<IActionResult> ValidationResultAsync(FiscalPeriodViewModel fiscalPeriod, int fperiodId = 0)

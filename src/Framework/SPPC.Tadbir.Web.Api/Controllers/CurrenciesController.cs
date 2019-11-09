@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -25,12 +26,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class CurrenciesController : ValidatingController<CurrencyViewModel>
     {
         public CurrenciesController(ICurrencyRepository repository, ICurrencyRateRepository rateRepository,
-            IHostingEnvironment host, IStringLocalizer<AppStrings> strings = null)
+            IHostingEnvironment host, ICryptoService crypto, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
             _rateRepository = rateRepository;
             _host = host;
+            _crypto = crypto;
         }
 
         protected override string EntityNameKey
@@ -215,7 +217,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
                 var ticket = Request.Form[AppConstants.ContextHeaderName];
                 var context = SecurityContextFromTicket(ticket);
-                _repository.CompanyConnection = context.User.Connection;
+                _repository.CompanyConnection = _crypto.Decrypt(context.User.Connection);
                 await _repository.UpdateTaxCurrenciesAsync(fullPath);
             }
 
@@ -369,5 +371,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private readonly ICurrencyRepository _repository;
         private readonly ICurrencyRateRepository _rateRepository;
         private readonly IHostingEnvironment _host;
+        private readonly ICryptoService _crypto;
     }
 }

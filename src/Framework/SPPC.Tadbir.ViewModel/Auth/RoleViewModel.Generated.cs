@@ -30,7 +30,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
         {
             this.Name = String.Empty;
             this.Description = String.Empty;
-            this.Permissions = new List<string>();
         }
 
         /// <summary>

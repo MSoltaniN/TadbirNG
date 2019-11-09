@@ -20,10 +20,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class SettingsController : ApiControllerBase
     {
-        public SettingsController(IConfigRepository repository, IStringLocalizer<AppStrings> strings, IHostingEnvironment host)
+        public SettingsController(IConfigRepository repository, ISystemConfigRepository system,
+            IStringLocalizer<AppStrings> strings, IHostingEnvironment host)
             : base(strings)
         {
             _repository = repository;
+            _systemRepository = system;
             _host = host;
         }
 
@@ -74,7 +76,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(SettingsApi.ListSettingsByUserUrl)]
         public async Task<IActionResult> GetListSettingsByUserAsync(int userId)
         {
-            var listSettings = await _repository.GetListViewConfigByUserAsync(userId);
+            var listSettings = await _systemRepository.GetListViewConfigByUserAsync(userId);
             Array.ForEach(listSettings.ToArray(), item => Localize(item));
             return Json(listSettings);
         }
@@ -83,7 +85,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(SettingsApi.ListSettingsByUserAndViewUrl)]
         public async Task<IActionResult> GetListSettingsByUserAndViewAsync(int userId, int viewId)
         {
-            var listSettings = await _repository.GetListViewConfigByUserAsync(userId, viewId);
+            var listSettings = await _systemRepository.GetListViewConfigByUserAsync(userId, viewId);
             Localize(listSettings);
             return Json(listSettings);
         }
@@ -114,7 +116,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest();        // TODO: Add error message
             }
 
-            await _repository.SaveUserListConfigAsync(userId, settings);
+            await _systemRepository.SaveUserListConfigAsync(userId, settings);
             return Ok();
         }
 
@@ -146,7 +148,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(SettingsApi.QuickReportSettingsByUserAndViewUrl)]
         public async Task<IActionResult> GetQReportSettingsByUserAndViewAsync(int userId, int viewId)
         {
-            var reportSettings = await _repository.GetQuickReportConfigAsync(userId, viewId);
+            var reportSettings = await _systemRepository.GetQuickReportConfigAsync(userId, viewId);
             Localize(reportSettings);
             return Json(reportSettings);
         }
@@ -162,7 +164,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest();        // TODO: Add error message
             }
 
-            await _repository.SaveQuickReportConfigAsync(userId, settings);
+            await _systemRepository.SaveQuickReportConfigAsync(userId, settings);
             return Ok();
         }
 
@@ -274,6 +276,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IConfigRepository _repository;
+        private readonly ISystemConfigRepository _systemRepository;
         private readonly IHostingEnvironment _host;
     }
 }

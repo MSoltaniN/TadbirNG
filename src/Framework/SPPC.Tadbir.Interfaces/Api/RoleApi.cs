@@ -90,6 +90,6 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for row access settings configured for a role specified by unique identifier
         /// </summary>
-        public const string RowAccessSettingsUrl = "roles/{roleId:min(1)}/rowaccess";
+        public const string RowAccessSettingsUrl = "roles/{roleId:min(2)}/rowaccess";
     }
 }

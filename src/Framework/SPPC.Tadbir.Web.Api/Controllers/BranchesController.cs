@@ -190,7 +190,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
-            string message = String.Empty;
             var branch = await _repository.GetBranchAsync(item);
             if (branch == null)
             {
@@ -200,18 +199,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
-                return String.Format(
-                   _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Branch],
-                   String.Format("'{0}'", branch.Name));
+                return _strings.Format(AppStrings.CannotDeleteNonLeafItem, AppStrings.Branch, branch.Name);
             }
 
-            var hasRoles = await _repository.HasAssignedRolesAsync(item);
-            if (hasRoles == true)
+            var canDelete = await _repository.CanDeleteBranchAsync(item);
+            if (canDelete == false)
             {
-                return _strings.Format(AppStrings.CannotDeleteAssignedBranch, branch.Name);
+                return _strings.Format(AppStrings.CantDeleteBranchWithData, branch.Name);
             }
 
-            return message;
+            return String.Empty;
         }
 
         private void Localize(RelatedItemsViewModel roles)

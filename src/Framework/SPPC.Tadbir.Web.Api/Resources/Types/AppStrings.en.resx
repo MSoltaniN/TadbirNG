@@ -817,7 +817,7 @@
     <value>End of date range used in this report</value>
   </data>
   <data name="SetDefault" xml:space="preserve">
-    <value>Set {0} as default</value>
+    <value>Set default</value>
   </data>
   <data name="UserReports" xml:space="preserve">
     <value>User reports</value>
@@ -2639,5 +2639,32 @@
   </data>
   <data name="InvalidDatabaseUserName" xml:space="preserve">
     <value>Username is duplicate.</value>
+  </data>
+  <data name="AppEnvironment" xml:space="preserve">
+    <value>App environment</value>
+  </data>
+  <data name="InvalidPermissionsInRole" xml:space="preserve">
+    <value>Given role contains one or more invalid permissions and cannot be saved.</value>
+  </data>
+  <data name="Manage" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MaxMoneyValueNotSelected" xml:space="preserve">
+    <value>No maximum money or currency value is specified to filter {0} items.</value>
+  </data>
+  <data name="MaxQuantityValueNotSelected" xml:space="preserve">
+    <value>No maximum quantity value is specified to filter {0} items.</value>
+  </data>
+  <data name="SpecificRecordsNotSelected" xml:space="preserve">
+    <value>No records are specified to filter {0} items.</value>
+  </data>
+  <data name="CannotDeleteReferencedItem" xml:space="preserve">
+    <value>The {0} by name '{1}' is being used by other data in current company and cannot be deleted.</value>
+  </data>
+  <data name="CantDeleteBranchWithData" xml:space="preserve">
+    <value>This branch '{0}' has one or more records defined and cannot be deleted.</value>
   </data>
 </root>

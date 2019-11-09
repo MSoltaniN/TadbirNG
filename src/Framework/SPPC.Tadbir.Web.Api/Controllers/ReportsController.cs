@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
@@ -29,12 +28,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class ReportsController : ApiControllerBase
     {
         public ReportsController(IReportRepository repository, IReportSystemRepository sysRepository,
-            IConfigRepository config, IStringLocalizer<AppStrings> strings)
+            ISystemConfigRepository system, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
             _sysRepository = sysRepository;
-            _configRepository = config;
+            _configRepository = system;
         }
 
         #region Report Management API
@@ -1006,6 +1005,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private readonly IReportRepository _repository;
         private readonly IReportSystemRepository _sysRepository;
-        private readonly IConfigRepository _configRepository;
+        private readonly ISystemConfigRepository _configRepository;
     }
 }

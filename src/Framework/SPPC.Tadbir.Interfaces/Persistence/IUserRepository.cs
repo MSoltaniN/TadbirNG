@@ -117,6 +117,13 @@ namespace SPPC.Tadbir.Persistence
         Task UpdateUserCompanyLoginAsync(CompanyLoginViewModel companyLogin, UserContextViewModel userContext);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات محیطی کاربر جاری را بروزرسانی می کند
+        /// </summary>
+        /// <param name="environment">اطلاعات محیطی مورد درخواست کاربر</param>
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر پیش از درخواست</param>
+        Task UpdateUserEnvironmentAsync(CompanyLoginViewModel environment, UserContextViewModel userContext);
+
+        /// <summary>
         /// Asynchronously determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
         /// by a different user.
         /// </summary>

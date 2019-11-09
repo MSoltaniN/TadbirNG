@@ -15,6 +15,7 @@ using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -197,36 +198,45 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از شرکت های قابل دسترسی</returns>
         public async Task<IList<KeyValue>> GetUserAccessibleCompaniesAsync(int userId)
         {
+            var userCompanies = new List<CompanyDb>();
             UnitOfWork.UseSystemContext();
+            var companies = new List<int>();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
-            var companies = new List<int>();
             if (user != null)
             {
-                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleCompany>();
-                Array.ForEach(
-                    user.UserRoles
-                        .Select(ur => ur.RoleId)
-                        .ToArray(),
-                    roleId =>
-                    {
-                        var roleCompanies = relatedRepository.GetByCriteria(
-                            rc => rc.RoleId == roleId);
-                        companies.AddRange(
-                            roleCompanies.Select(rc => rc.CompanyId));
-                    });
+                var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+                var roleIds = user.UserRoles.Select(ur => ur.RoleId);
+                if (roleIds.Contains(AppConstants.AdminRoleId))
+                {
+                    userCompanies.AddRange(await repository.GetAllAsync());
+                }
+                else
+                {
+                    var relatedRepository = UnitOfWork.GetAsyncRepository<RoleCompany>();
+                    Array.ForEach(roleIds.ToArray(),
+                        roleId =>
+                        {
+                            var roleCompanies = relatedRepository.GetByCriteria(
+                                rc => rc.RoleId == roleId);
+                            companies.AddRange(
+                                roleCompanies.Select(rc => rc.CompanyId));
+                        });
+
+                    userCompanies = await repository
+                        .GetEntityQuery()
+                        .Where(c => companies
+                            .Distinct()
+                            .Contains(c.Id))
+                        .ToListAsync();
+                }
             }
 
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var userCompanies = await repository
-                .GetEntityQuery()
-                .Where(c => companies
-                    .Distinct()
-                    .Contains(c.Id))
-                .Select(c => Mapper.Map<KeyValue>(c))
-                .ToListAsync();
             UnitOfWork.UseCompanyContext();
-            return userCompanies;
+            return userCompanies
+                .OrderBy(c => c.Name)
+                .Select(c => Mapper.Map<KeyValue>(c))
+                .ToList();
         }
 
         /// <summary>
@@ -246,26 +256,33 @@ namespace SPPC.Tadbir.Persistence
             if (user != null)
             {
                 UnitOfWork.UseCompanyContext();
-                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
-                Array.ForEach(
-                    user.UserRoles
-                        .Select(ur => ur.RoleId)
-                        .ToArray(),
-                    roleId =>
-                    {
-                        var rolePeriods = relatedRepository.GetByCriteria(
-                            rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
-                        fiscalPeriods.AddRange(
-                            rolePeriods
-                                .Select(rfp => rfp.FiscalPeriod)
-                                .Where(fp => fp.CompanyId == companyId));
-                    });
-                fiscalPeriods = fiscalPeriods
-                    .Distinct(new EntityEqualityComparer())
-                    .Cast<FiscalPeriod>()
-                    .ToList();
+                var roleIds = user.UserRoles.Select(ur => ur.RoleId);
+                if (roleIds.Contains(AppConstants.AdminRoleId))
+                {
+                    var fiscalRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+                    fiscalPeriods.AddRange(await fiscalRepository.GetAllAsync());
+                }
+                else
+                {
+                    var relatedRepository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
+                    Array.ForEach(roleIds.ToArray(),
+                        roleId =>
+                        {
+                            var rolePeriods = relatedRepository.GetByCriteria(
+                                rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
+                            fiscalPeriods.AddRange(
+                                rolePeriods
+                                    .Select(rfp => rfp.FiscalPeriod)
+                                    .Where(fp => fp.CompanyId == companyId));
+                        });
+                    fiscalPeriods = fiscalPeriods
+                        .Distinct(new EntityEqualityComparer())
+                        .Cast<FiscalPeriod>()
+                        .ToList();
+                }
             }
 
+            UnitOfWork.UseCompanyContext();
             return fiscalPeriods
                 .OrderBy(fp => fp.Name)
                 .Select(fp => Mapper.Map<KeyValue>(fp));
@@ -288,26 +305,33 @@ namespace SPPC.Tadbir.Persistence
             if (user != null)
             {
                 UnitOfWork.UseCompanyContext();
-                var relatedRepository = UnitOfWork.GetAsyncRepository<RoleBranch>();
-                Array.ForEach(
-                    user.UserRoles
-                        .Select(ur => ur.RoleId)
-                        .ToArray(),
-                    roleId =>
-                    {
-                        var roleBranches = relatedRepository.GetByCriteria(
-                            rb => rb.RoleId == roleId, rb => rb.Branch);
-                        branches.AddRange(
-                            roleBranches
-                                .Select(rb => rb.Branch)
-                                .Where(br => br.CompanyId == companyId));
-                    });
-                branches = branches
-                    .Distinct(new EntityEqualityComparer())
-                    .Cast<Branch>()
-                    .ToList();
+                var roleIds = user.UserRoles.Select(ur => ur.RoleId);
+                if (roleIds.Contains(AppConstants.AdminRoleId))
+                {
+                    var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+                    branches.AddRange(await branchRepository.GetAllAsync());
+                }
+                else
+                {
+                    var relatedRepository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+                    Array.ForEach(roleIds.ToArray(),
+                        roleId =>
+                        {
+                            var roleBranches = relatedRepository.GetByCriteria(
+                                rb => rb.RoleId == roleId, rb => rb.Branch);
+                            branches.AddRange(
+                                roleBranches
+                                    .Select(rb => rb.Branch)
+                                    .Where(br => br.CompanyId == companyId));
+                        });
+                    branches = branches
+                        .Distinct(new EntityEqualityComparer())
+                        .Cast<Branch>()
+                        .ToList();
+                }
             }
 
+            UnitOfWork.UseCompanyContext();
             return branches
                 .OrderBy(br => br.Name)
                 .Select(br => Mapper.Map<KeyValue>(br));
@@ -411,7 +435,7 @@ namespace SPPC.Tadbir.Persistence
                         levels.Add(new AccountLevelViewModel()
                         {
                             Key = key++,
-                            Level = level.No,
+                            Level = level.No - 1,
                             Title = level.Name,
                             ViewId = viewId
                         });
@@ -428,7 +452,7 @@ namespace SPPC.Tadbir.Persistence
                         levels.Add(new AccountLevelViewModel()
                         {
                             Key = key++,
-                            Level = lastUsed.No,
+                            Level = lastUsed.No - 1,
                             Title = lastUsed.Name,
                             ViewId = viewId
                         });
@@ -476,6 +500,7 @@ namespace SPPC.Tadbir.Persistence
             var lookup = roles
                 .OrderBy(role => role.Name)
                 .Select(role => Mapper.Map<KeyValue>(role))
+                .Where(role => role.Key != AppConstants.AdminRoleId.ToString())
                 .Apply(gridOptions)
                 .ToList();
             UnitOfWork.UseCompanyContext();
