@@ -227,7 +227,7 @@ namespace SPPC.Tadbir.Persistence
 
                 DbConsole.ExecuteNonQuery(companyScript);
             }
-            
+
 
             CreateDatabaseLogin(companyViewModel);
 
@@ -261,7 +261,7 @@ namespace SPPC.Tadbir.Persistence
                                             DB_NAME() AS 'DatabaseName',
                                             HOST_NAME() AS 'HostName'";
 
-            var serverInfo = _sqlConsole.ExecuteQuery(serverInfoScript);
+            var serverInfo = DbConsole.ExecuteQuery(serverInfoScript);
             string serverName = serverInfo.Rows[0].ItemArray[0].ToString();
             companyViewModel.Server = serverName;
         }
@@ -276,20 +276,20 @@ namespace SPPC.Tadbir.Persistence
 
         private bool CheckIsTadbirDatabase(string dbName)
         {
-            string sysConnectionString = _sqlConsole.ConnectionString;
+            string sysConnectionString = DbConsole.ConnectionString;
 
-            _sqlConsole.BuildConnectionString(dbName);
+            DbConsole.ConnectionString = DbConsole.BuildConnectionString(dbName);
 
-            if (_sqlConsole.TestConnection())
+            if (DbConsole.TestConnection())
             {
                 string tableScript = string.Format(@"SELECT *
                                                      FROM {0}.INFORMATION_SCHEMA.TABLES 
                                                      WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME='Account' AND TABLE_SCHEMA='Finance'",
                                                      dbName);
 
-                DataTable dt = _sqlConsole.ExecuteQuery(tableScript);
+                DataTable dt = DbConsole.ExecuteQuery(tableScript);
 
-                _sqlConsole.ConnectionString = sysConnectionString;
+                DbConsole.ConnectionString = sysConnectionString;
                 return dt.Rows.Count == 1;
             }
             else
@@ -297,25 +297,8 @@ namespace SPPC.Tadbir.Persistence
                 // امکان دارد دیتابیس تدبیر نباشد باید یوزر به آن اضافه شود سپس دیتابیس چک شود
             }
 
-            _sqlConsole.ConnectionString = sysConnectionString;
+            DbConsole.ConnectionString = sysConnectionString;
             return false;
-        }
-
-        private string BuildConnectionString(CompanyDb company)
-        {
-            var builder = new StringBuilder();
-            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
-            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
-            {
-                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
-                    company.UserName, company.Password);
-            }
-            else
-            {
-                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
-            }
-
-            return builder.ToString();
         }
 
         private string _webRootPath;

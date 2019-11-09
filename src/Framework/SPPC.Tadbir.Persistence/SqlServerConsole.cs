@@ -89,17 +89,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// رشته اتصال را تغییر میدهد
+        /// نام دیتابیس رشته اتصال را تغییر میدهد
         /// </summary>
         /// <param name="dbName">نام دیتابیس</param>
-        public void BuildConnectionString(string dbName)
+        /// <returns>رشته اتصال جدید</returns>
+        public string BuildConnectionString(string dbName)
         {
             SqlConnectionStringBuilder builder =
             new SqlConnectionStringBuilder(ConnectionString);
 
             builder.InitialCatalog = dbName;
 
-            ConnectionString = builder.ConnectionString;
+            return builder.ConnectionString;
         }
     }
 }

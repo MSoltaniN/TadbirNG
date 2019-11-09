@@ -42,9 +42,10 @@ namespace SPPC.Framework.Persistence
         bool TestConnection();
 
         /// <summary>
-        /// رشته اتصال را تغییر میدهد
+        /// نام دیتابیس رشته اتصال را تغییر میدهد
         /// </summary>
         /// <param name="dbName">نام دیتابیس</param>
-        void BuildConnectionString(string dbName);
+        /// <returns>رشته اتصال جدید</returns>
+        string BuildConnectionString(string dbName);
     }
 }
