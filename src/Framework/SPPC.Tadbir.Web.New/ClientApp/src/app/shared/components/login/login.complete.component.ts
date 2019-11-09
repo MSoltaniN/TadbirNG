@@ -124,18 +124,18 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
       this.compenies = res;
 
-      //if (this.compenies.length == 0 && this.IsAdmin) {
+      if (this.compenies.length == 0 && this.IsAdmin) {
         // create new company, branch and fiscalperiod
         this.createCompany();
-      //}
-      //else {
-      //  this.disabledCompany = false;
-      //  //load current setting
-      //  if (this.CompanyId) {
-      //    this.companyId = this.CompanyId.toString();
-      //    this.companyChange(this.companyId);
-      //  }
-      //}           
+      }
+      else {
+        this.disabledCompany = false;
+        //load current setting
+        if (this.CompanyId) {
+          this.companyId = this.CompanyId.toString();
+          this.companyChange(this.companyId);
+        }
+      }
     });
   }
 
@@ -272,7 +272,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         let contextInfo = res.body;
 
         var currentUser = this.bStorageService.getCurrentUser();
-        if (currentUser != null) {          
+        if (currentUser != null) {
           currentUser.branchId = contextInfo.branchId;
           currentUser.companyId = contextInfo.companyId;
           currentUser.fpId = contextInfo.fiscalPeriodId;
