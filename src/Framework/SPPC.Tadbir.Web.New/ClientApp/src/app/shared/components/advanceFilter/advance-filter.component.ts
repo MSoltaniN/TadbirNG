@@ -322,7 +322,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         return;
       }
 
-
+      /*
       var index = 0;
       var showMsg = false;
       this.filters.forEach((fi) => {
@@ -346,7 +346,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       if (showMsg) {
         this.showMessage('err');
         return;
-      }
+      }*/
 
       var startBrace = new Braces();
       startBrace.brace = "(";
@@ -456,14 +456,53 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   removeFilter() {
     if (this.selectedRows) {
       var deleted: Array<FilterRow> = [];
+
       this.selectedRows.forEach((item) => {
         //this.filters.splice(item,1);
         deleted.push(this.filters[item]);
+
       });
 
-      deleted.forEach((del) => {
+      var sortDeleted = this.selectedRows.sort((a, b) => parseFloat(a.order) - parseFloat(b.order));
+
+      sortDeleted.forEach((del) => {
         var index = this.filters.findIndex(fi => fi === del);
-        this.filters.splice(index,1);
+
+        //if (this.filters[index].braces && this.filters[index + 1]) {
+          var deleteBraces = this.filters[index].braces;
+          deleteBraces.forEach((b) => {
+            if (this.filters[index + 1]) {
+              var nextFilter = this.filters[index + 1];
+              if (!nextFilter.braces)
+                nextFilter.braces = new Array<Braces>();
+              nextFilter.braces.push(b);
+            }
+            else {
+              if (this.filters[index].braces) {
+                var deletedBrace = new Array<Braces>();
+
+                this.filters[index].braces.forEach((br) => {
+                  var outerBraces = this.filters.filter(f => f.id === br.outerId)[0].braces;
+
+                  outerBraces.forEach((obr) => {
+                    if (obr.outerId == this.filters[index].id) {
+                      deleteBraces.push(obr);
+                    }
+                  })
+
+                  deleteBraces.forEach((dbr) => {
+                    var dindex = outerBraces.findIndex(br => br == dbr);
+                    outerBraces.splice(dindex);
+                  });
+
+                })
+              }
+            }
+
+          });          
+        
+
+        this.filters.splice(index, 1);
       });
 
       this.computeTotalExpression();
