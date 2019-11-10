@@ -83,21 +83,23 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
     Chart.defaults.global.defaultFontFamily = "'SPPC'";
 
-    this.dashboadService.getDashboardInfo().subscribe((res: DashboardSummaries) => {
+    if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
+      this.dashboadService.getDashboardInfo().subscribe((res: DashboardSummaries) => {
 
-      this.cashierBalance = res.cashierBalance;
-      this.bankBalance = res.bankBalance;
-      this.liquidRatio = res.liquidRatio;
-      this.unbalancedVoucherCount = res.unbalancedVoucherCount;
-      // this.grossSales = res.grossSales;
-      // this.netSales = res.netSales;
-      this.dashboardInfo = res;
+        this.cashierBalance = res.cashierBalance;
+        this.bankBalance = res.bankBalance;
+        this.liquidRatio = res.liquidRatio;
+        this.unbalancedVoucherCount = res.unbalancedVoucherCount;
+        // this.grossSales = res.grossSales;
+        // this.netSales = res.netSales;
+        this.dashboardInfo = res;
 
-      this.drawNetSalesChart();
+        this.drawNetSalesChart();
 
-      this.drawGrossSalesChart();
+        this.drawGrossSalesChart();
 
-    });
+      });
+    }
 
     //#endregion
 
