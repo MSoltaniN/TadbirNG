@@ -35,7 +35,7 @@
     <div class="form-group">
       <label class="control-label">{{ 'Company.UserName' | translate }}</label>
 
-      <input type="text" class="k-textbox" formControlName="userName" />
+      <input type="text" class="k-textbox" formControlName="userName"/>
 
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.userName.valid || editForm.controls.userName.pristine">
         <span *ngIf="editForm.controls.userName.errors?.maxlength">{{ 'AllValidations.CompanyDb.UserNameIsTooLong' | translate }}</span>
@@ -45,7 +45,7 @@
     <div class="form-group">
       <label class="control-label">{{ 'Company.Password' | translate }}</label>
 
-      <input type="password" class="k-textbox" formControlName="password" />
+      <input type="password" class="k-textbox" formControlName="password" autocomplete="new-password"/>
 
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.password.valid || editForm.controls.password.pristine">
         <span *ngIf="editForm.controls.password.errors?.maxlength">{{ 'AllValidations.CompanyDb.PasswordIsTooLong' | translate }}</span>
