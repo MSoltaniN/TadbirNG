@@ -350,3 +350,7 @@ ALTER TABLE [Config].[ViewSetting]
 ADD CONSTRAINT [FK_Config_ViewSetting_Config_Setting] FOREIGN KEY ([SettingID])
     REFERENCES [Config].[Setting]([SettingID]);
 GO
+
+
+--1.1.751
+Update Finance.Voucher Set Reference = NULL Where Reference = ''
