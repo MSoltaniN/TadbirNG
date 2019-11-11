@@ -72,6 +72,7 @@ export class HomeComponent extends DefaultComponent implements OnInit {
   public close() {
     if (this.dialog) {
       this.dialog.close();
+        this.router.navigate(['/finance/voucher']);
     }
   }
 }

@@ -14,6 +14,7 @@ export const SessionKeys = {
   LastUserBranch: 'lastUserBranch_{0}_{1}',
   LastUserFpId: 'lastUserFpId_{0}_{1}',
   CurrentRoute: 'currentRoute',
+  PreviousRoute:'PreviousRoute',
   CurrentSkin: 'currentSkin',
   NumberConfig: 'numberConfig',
   TestBalanceConfig: 'testBalanceConfig',
@@ -96,12 +97,28 @@ export class BrowserStorageService {
       sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(item));
   }
 
+  setCurrentRoute(currentUrl: string) {
+    sessionStorage.setItem(SessionKeys.CurrentRoute, currentUrl);
+  }
+
   getCurrentRoute(): string {
     return sessionStorage.getItem(SessionKeys.CurrentRoute);
   }
 
   removeCurrentRoute() {
     sessionStorage.removeItem(SessionKeys.CurrentRoute);
+  }
+
+  setPreviousRoute(previousUrl: string) {
+    sessionStorage.setItem(SessionKeys.PreviousRoute, previousUrl);
+  }
+
+  getPreviousRoute(): string {
+    return sessionStorage.getItem(SessionKeys.PreviousRoute);
+  }
+
+  removePreviousRoute() {
+    sessionStorage.removeItem(SessionKeys.PreviousRoute);
   }
 
   getProfile(): string {
@@ -190,10 +207,6 @@ export class BrowserStorageService {
       return localStorage.getItem(SessionKeys.Menu);
     else
       return sessionStorage.getItem(SessionKeys.Menu);
-  }
-
-  setCurrentRoute(currentUrl: string) {
-    sessionStorage.setItem(SessionKeys.CurrentRoute, currentUrl);
   }
 
   islogin(): boolean {

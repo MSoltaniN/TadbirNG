@@ -63,7 +63,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     @Inject(DOCUMENT) public document,
     public dashboadService: DashboardService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
-    
+
     this.currentContext = this.bStorageService.getCurrentUser();
 
     var language = this.bStorageService.getLanguage();
@@ -146,7 +146,12 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         var ticket: string = "";
 
         //set current route to session
+        var currentRoute = this.bStorageService.getCurrentRoute();
         var currentUrl = location.path().toLowerCase();
+
+        if (currentRoute && currentRoute != currentUrl)
+          this.bStorageService.setPreviousRoute(currentRoute);
+
         if (currentUrl != '/logout' && currentUrl != '/login')
           this.bStorageService.setCurrentRoute(currentUrl);
 

@@ -146,7 +146,12 @@ export class AppComponent implements AfterViewInit, OnInit {
       //#endregion
 
       //#region set current route to session
+      var currentRoute = this.bStorageService.getCurrentRoute();      
       var currentUrl = location.path().toLowerCase();
+
+      if (currentRoute && currentRoute != currentUrl)
+        this.bStorageService.setPreviousRoute(currentRoute);
+
       if (currentUrl != '/logout' && currentUrl != '/login')
         this.bStorageService.setCurrentRoute(currentUrl);
       //#endregion
