@@ -2,10 +2,17 @@
 export class FilterColumn  {
   name: string;
   title: string;        
-  dataType: string;  
+  dataType: string;
+  scriptType: string;
+}
+
+export class Braces {
+  outerId: string;
+  brace: string;  
 }
 
 export class FilterRow {
+  id: string;
   columnName: string;
   columnTitle: string;
   value: string;
@@ -15,6 +22,8 @@ export class FilterRow {
   logicOperator: string;
   index: number;
   filterTitle: string;
+  order: number;
+  braces: Array<Braces>;
 }
 
 export enum NumberOperatorResource {  
@@ -43,6 +52,16 @@ export enum StringOperatorResource {
 export enum BooleanOperatorResource {
   EQ = "AdvanceFilter.EQ",
   NEQ = "AdvanceFilter.NEQ"  
+}
+
+export class Guid {
+  static newGuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
 }
 
 

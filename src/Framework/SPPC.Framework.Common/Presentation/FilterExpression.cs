@@ -49,7 +49,46 @@ namespace SPPC.Framework.Presentation
             foreach (var item in Children)
             {
                 builder.Append(item.Operator);
+                if (item.Filter.Braces != null)
+                {
+                    foreach (var brace in item.Filter.Braces)
+                    {
+                        builder.Append(brace.Brace.ToString());
+                    }
+                }
+
                 builder.Append(item.Filter.ToString());
+
+                if (item.Children != null && item.Children.Count > 0)
+                {
+                    foreach (var childItem in item.Children)
+                    {
+                        builder.Append(childItem.Operator);
+                        if (childItem.Filter.Braces != null)
+                        {
+                            foreach (var brace in childItem.Filter.Braces)
+                            {
+                                if (brace.Brace == "(")
+                                {
+                                    builder.Append(brace.Brace.ToString());
+                                }
+                            }
+                        }
+
+                        builder.Append(childItem.Filter.ToString());
+
+                        if (childItem.Filter.Braces != null)
+                        {
+                            foreach (var brace in childItem.Filter.Braces)
+                            {
+                                if (brace.Brace == ")")
+                                {
+                                    builder.Append(brace.Brace.ToString());
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             if (Children.Count > 0)

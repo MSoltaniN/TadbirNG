@@ -33,6 +33,9 @@
           <ng-template kendoDropDownListItemTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
+          <ng-template kendoDropDownListNoDataTemplate>
+            <h5>{{ 'AdvanceFilter.NoDataForOperators' | translate }}</h5>
+          </ng-template>
         </kendo-dropdownlist>
       </div>
     </div>
@@ -59,7 +62,7 @@
           </ng-template>
           <ng-template kendoDropDownListItemTemplate let-dataItem>
             {{ dataItem?.value | translate }}
-          </ng-template>
+          </ng-template>          
         </kendo-dropdownlist>
       </div>
     </div>

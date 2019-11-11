@@ -1,4 +1,4 @@
-﻿import { Filter } from "./filter";
+import { Filter } from "./filter";
 
 
 //*** this class add for filter values for gridview */
@@ -10,4 +10,5 @@ export class FilterExpression {
     parent: FilterExpression;
     children: FilterExpression[] = [];
     totalfilter: FilterExpression;
+
 }

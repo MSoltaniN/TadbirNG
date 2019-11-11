@@ -200,7 +200,8 @@
     "PlaeseSelectLogicOperator": "عملگر منطقی را انتخاب کنید",
     "FilterInsertedSuccess": "فیلتر با موفقیت درج شد",
     "FilterEditedSuccess": "فیلتر با موفقیت ذخیره شد",
-    "FilterDeletedSuccess": "فیلتر با موفقیت حذف شد"
+    "FilterDeletedSuccess": "فیلتر با موفقیت حذف شد",
+    "NoDataForOperators": "لطفا یک فیلد را انتخاب کنید"
   },
   "Currency": {
     "New": "ارز جدید",
