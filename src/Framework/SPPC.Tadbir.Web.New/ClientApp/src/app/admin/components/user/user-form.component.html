@@ -50,7 +50,7 @@
         <div class="form-group">
             <label for="password" class="control-label">{{ 'User.Password' | translate }}</label>
 
-            <input type="password" class="k-textbox" formControlName="password" />
+            <input type="password" class="k-textbox" formControlName="password" autocomplete="new-password"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.password.valid || editForm.controls.password.pristine">
                 <span *ngIf="editForm.controls.password.errors?.required">{{ 'AllValidations.User.PasswordIsRequired' | translate }}</span>
