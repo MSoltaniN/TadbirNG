@@ -466,10 +466,10 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var sortDeleted = this.selectedRows.sort((a, b) => parseFloat(a.order) - parseFloat(b.order));
 
       sortDeleted.forEach((del) => {
-        var index = this.filters.findIndex(fi => fi === del);
+        var index = this.filters.findIndex(fi => fi === del);        
 
-        //if (this.filters[index].braces && this.filters[index + 1]) {
-          var deleteBraces = this.filters[index].braces;
+        var deleteBraces = this.filters[index].braces;
+        if (deleteBraces) {
           deleteBraces.forEach((b) => {
             if (this.filters[index + 1]) {
               var nextFilter = this.filters[index + 1];
@@ -499,7 +499,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
               }
             }
 
-          });          
+          });
+        }
+                  
         
 
         this.filters.splice(index, 1);
