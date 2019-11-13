@@ -228,7 +228,6 @@ namespace SPPC.Tadbir.Persistence
                 DbConsole.ExecuteNonQuery(companyScript);
             }
 
-
             CreateDatabaseLogin(companyViewModel);
 
             SetServerName(companyViewModel);

@@ -572,17 +572,24 @@ namespace SPPC.Tadbir.Persistence
                 perm => rowSettings.RowPermissions.Add(perm));
 
             var viewRepository = UnitOfWork.GetAsyncRepository<View>();
-            var viewIds = await viewRepository
+            var views = await viewRepository
                 .GetEntityQuery()
-                .Select(view => view.Id)
+                .Where(view => !String.IsNullOrEmpty(view.FetchUrl))
                 .ToArrayAsync();
             Array.ForEach(
-                viewIds
-                    .Except(settings.Select(perm => perm.View.Id))
+                views
+                    .Where(view => !settings
+                        .Select(item => item.View.Id)
+                        .Contains(view.Id))
                     .ToArray(),
-                id =>
+                view =>
                 {
-                    var permission = new ViewRowPermissionViewModel() { RoleId = roleId, ViewId = id };
+                    var permission = new ViewRowPermissionViewModel()
+                    {
+                        RoleId = roleId,
+                        ViewId = view.Id,
+                        ViewName = view.Name
+                    };
                     rowSettings.RowPermissions.Add(permission);
                 });
 

@@ -213,12 +213,29 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteBranchAsync(int branchId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branch = await repository.GetByIDWithTrackingAsync(branchId, bch => bch.AccountCurrencies);
+            var branch = await repository.GetByIDAsync(branchId);
             if (branch != null)
             {
-                branch.AccountCurrencies.Clear();
                 await DeleteAsync(repository, branch);
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، شعبه سازمانی مشخص شده با شناسه عددی را به همراه کلیه اطلاعات وابسته به آن حذف می کند
+        /// </summary>
+        /// <param name="branchId">شناسه عددی شعبه سازمانی مورد نظر برای حذف</param>
+        public async Task DeleteBranchWithDataAsync(int branchId)
+        {
+            var dependentTypes = ModelCatalogue
+                .GetBranchDependentTypes()
+                .OrderByDescending(type => type, new EntityComparerByDependency())
+                .ToArray();
+            foreach (var type in dependentTypes)
+            {
+                DeleteBranchData(type, branchId);
+            }
+
+            await DeleteBranchAsync(branchId);
         }
 
         /// <summary>
@@ -261,17 +278,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> CanDeleteBranchAsync(int branchId)
         {
             bool canDelete = true;
-            var fiscalTypes = ModelCatalogue.GetAllOfType<FiscalEntity>();
-
-            // TODO: The types AccountCurrency and CurrencyRate also reference Branch but are
-            // currently not returned by catalogue, because they don't have FiscalPeriodID and
-            // so CANNOT be derived from FiscalEntity.
-            // The following block can be removed when the two types are upgraded to FiscalEntity.
-            var dependentTypes = new List<Type>(fiscalTypes)
-            {
-                typeof(AccountCurrency),
-                typeof(CurrencyRate)
-            };
+            var dependentTypes = ModelCatalogue.GetBranchDependentTypes();
             foreach (var type in dependentTypes)
             {
                 if (HasBranchReference(type, branchId))
@@ -321,7 +328,7 @@ namespace SPPC.Tadbir.Persistence
             Branch branch = default(Branch);
 
             UnitOfWork.UseSystemContext();
-            CompanyConnection = await BuildConnectionString(branchView.CompanyId);
+            CompanyConnection = await BuildConnectionStringAsync(branchView.CompanyId);
 
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
             branch = Mapper.Map<Branch>(branchView);
@@ -392,6 +399,17 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private void DeleteBranchData(Type dependentType, int branchId)
+        {
+            var idItems = ModelCatalogue.GetModelTypeItems(dependentType);
+            if (idItems != null)
+            {
+                string command = String.Format(_deleteBranchDataScript, idItems[0], idItems[1], branchId);
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+                DbConsole.ExecuteNonQuery(command);
+            }
+        }
+
         private void AddNewRoles(Branch existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.RoleBranches.Select(rb => rb.RoleId);
@@ -409,5 +427,8 @@ namespace SPPC.Tadbir.Persistence
                 existing.RoleBranches.Add(roleBranch);
             }
         }
+
+        private const string _deleteBranchDataScript =
+            @"DELETE FROM [{0}].[{1}] WHERE BranchID = {2}";
     }
 }

@@ -214,6 +214,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه عددی را به همراه کلیه اطلاعات وابسته به آن حذف می کند
+        /// </summary>
+        /// <param name="fperiodId">شناسه عددی دوره مالی مورد نظر برای حذف</param>
+        public async Task DeleteFiscalPeriodWithDataAsync(int fperiodId)
+        {
+            var dependentTypes = ModelCatalogue.GetAllOfType<FiscalEntity>();
+            foreach (var type in dependentTypes)
+            {
+                DeleteFiscalPeriodData(type, fperiodId);
+            }
+
+            await DeleteFiscalPeriodAsync(fperiodId);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، دوره های مالی مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
@@ -342,7 +357,7 @@ namespace SPPC.Tadbir.Persistence
             FiscalPeriod fiscalPeriod = default(FiscalPeriod);
 
             UnitOfWork.UseSystemContext();
-            CompanyConnection = await BuildConnectionString(fiscalPeriodView.CompanyId);
+            CompanyConnection = await BuildConnectionStringAsync(fiscalPeriodView.CompanyId);
 
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
 
@@ -415,6 +430,17 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private void DeleteFiscalPeriodData(Type dependentType, int fperiodId)
+        {
+            var idItems = ModelCatalogue.GetModelTypeItems(dependentType);
+            if (idItems != null)
+            {
+                string command = String.Format(_deleteFiscalPeriodDataScript, idItems[0], idItems[1], fperiodId);
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+                DbConsole.ExecuteNonQuery(command);
+            }
+        }
+
         private void AddNewRoles(FiscalPeriod existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.RoleFiscalPeriods.Select(rfp => rfp.RoleId);
@@ -432,5 +458,8 @@ namespace SPPC.Tadbir.Persistence
                 existing.RoleFiscalPeriods.Add(roleFiscalPeriod);
             }
         }
+
+        private const string _deleteFiscalPeriodDataScript =
+            @"DELETE FROM [{0}].[{1}] WHERE FiscalPeriodID = {2}";
     }
 }

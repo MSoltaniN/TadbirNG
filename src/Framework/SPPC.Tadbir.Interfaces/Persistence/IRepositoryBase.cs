@@ -25,6 +25,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="companyId">شناسه یکتای شرکت</param>
         /// <returns>رشته اتصال</returns>
-        Task<string> BuildConnectionString(int companyId);
+        Task<string> BuildConnectionStringAsync(int companyId);
     }
 }

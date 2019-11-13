@@ -139,6 +139,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // DELETE: api/branches/{branchId:min(1)}/data
+        [HttpDelete]
+        [Route(BranchApi.BranchWithDataUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingBranchWithDataAsync(int branchId)
+        {
+            string result = await BasicValidateDeleteAsync(branchId);
+            if (!String.IsNullOrEmpty(result))
+            {
+                return BadRequest(result);
+            }
+
+            await _repository.DeleteBranchWithDataAsync(branchId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         // PUT: api/branches
         [HttpPut]
         [Route(BranchApi.BranchesUrl)]
@@ -190,6 +206,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
+            string error = await BasicValidateDeleteAsync(item);
+            if (!String.IsNullOrEmpty(error))
+            {
+                return error;
+            }
+
+            var canDelete = await _repository.CanDeleteBranchAsync(item);
+            if (canDelete == false)
+            {
+                var branch = await _repository.GetBranchAsync(item);
+                return _strings.Format(AppStrings.CantDeleteBranchWithData, branch.Name);
+            }
+
+            return String.Empty;
+        }
+
+        private async Task<string> BasicValidateDeleteAsync(int item)
+        {
+            if (item == SecurityContext.User.BranchId)
+            {
+                return _strings[AppStrings.CantDeleteCurrentBranch];
+            }
+
             var branch = await _repository.GetBranchAsync(item);
             if (branch == null)
             {
@@ -200,12 +239,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (hasChildren == true)
             {
                 return _strings.Format(AppStrings.CannotDeleteNonLeafItem, AppStrings.Branch, branch.Name);
-            }
-
-            var canDelete = await _repository.CanDeleteBranchAsync(item);
-            if (canDelete == false)
-            {
-                return _strings.Format(AppStrings.CantDeleteBranchWithData, branch.Name);
             }
 
             return String.Empty;

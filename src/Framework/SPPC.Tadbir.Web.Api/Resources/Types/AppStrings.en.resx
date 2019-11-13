@@ -2667,4 +2667,10 @@
   <data name="CantDeleteBranchWithData" xml:space="preserve">
     <value>This branch '{0}' has one or more records defined and cannot be deleted.</value>
   </data>
+  <data name="CantDeleteCurrentBranch" xml:space="preserve">
+    <value>Cannot delete current branch.</value>
+  </data>
+  <data name="CantDeleteCurrentFiscalPeriod" xml:space="preserve">
+    <value>Cannot delete current fiscal period.</value>
+  </data>
 </root>

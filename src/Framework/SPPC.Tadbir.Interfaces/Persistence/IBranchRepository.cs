@@ -72,10 +72,16 @@ namespace SPPC.Tadbir.Persistence
         Task<BranchViewModel> SaveBranchAsync(BranchViewModel branch);
 
         /// <summary>
-        /// به روش آسنکرون، شعبه سازمانی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، شعبه سازمانی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="branchId">شناسه عددی شعبه سازمانی مورد نظر برای حذف</param>
         Task DeleteBranchAsync(int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، شعبه سازمانی مشخص شده با شناسه عددی را به همراه کلیه اطلاعات وابسته به آن حذف می کند
+        /// </summary>
+        /// <param name="branchId">شناسه عددی شعبه سازمانی مورد نظر برای حذف</param>
+        Task DeleteBranchWithDataAsync(int branchId);
 
         /// <summary>
         /// به روش آسنکرون، شعبه های مشخص شده با شناسه دیتابیسی را حذف می کند

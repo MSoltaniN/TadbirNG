@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -80,6 +78,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fperiodId">شناسه عددی دوره مالی مورد نظر برای حذف</param>
         Task DeleteFiscalPeriodAsync(int fperiodId);
+
+        /// <summary>
+        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه عددی را به همراه کلیه اطلاعات وابسته به آن حذف می کند
+        /// </summary>
+        /// <param name="branchId">شناسه عددی دوره مالی مورد نظر برای حذف</param>
+        Task DeleteFiscalPeriodWithDataAsync(int branchId);
 
         /// <summary>
         /// به روش آسنکرون، دوره های مالی مشخص شده با شناسه دیتابیسی را حذف می کند

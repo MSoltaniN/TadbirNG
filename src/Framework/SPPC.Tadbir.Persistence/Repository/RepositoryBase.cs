@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model;
@@ -92,13 +91,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، رشته اتصال شرکت را ایجاد میکند
+        /// </summary>
+        /// <param name="companyId">شناسه یکتای شرکت</param>
+        /// <returns>رشته اتصال</returns>
+        public async Task<string> BuildConnectionStringAsync(int companyId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync(companyId);
+            return BuildConnectionString(company);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا موجودیت مالی داده شده به شعبه مورد نظر وابسته است یا نه؟
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیت مورد بررسی</typeparam>
         /// <param name="branchId">شناسه دیتابیسی شعبه سازمانی مورد نظر</param>
         /// <returns>اگر وابستگی وجود داشته باشد مقدار بولی "درست" و در غیر این صورت
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
-        protected async Task<bool> HasBranchReference<TEntity>(int branchId)
+        protected async Task<bool> HasBranchReferenceAsync<TEntity>(int branchId)
             where TEntity : FiscalEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
@@ -119,7 +130,7 @@ namespace SPPC.Tadbir.Persistence
         protected bool HasBranchReference(Type entityType, int branchId)
         {
             int referenceCount = 0;
-            var idItems = GetModelTypeItems(entityType);
+            var idItems = ModelCatalogue.GetModelTypeItems(entityType);
             if (idItems != null)
             {
                 string command = String.Format(_branchReferenceScript, idItems[0], idItems[1], branchId);
@@ -144,7 +155,7 @@ namespace SPPC.Tadbir.Persistence
         protected bool HasFiscalPeriodReference(Type entityType, int fiscalPeriodId)
         {
             int referenceCount = 0;
-            var idItems = GetModelTypeItems(entityType);
+            var idItems = ModelCatalogue.GetModelTypeItems(entityType);
             if (idItems != null)
             {
                 string command = String.Format(_fiscalPeriodReferenceScript, idItems[0], idItems[1], fiscalPeriodId);
@@ -157,33 +168,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return referenceCount > 0;
-        }
-
-        private static string[] GetModelTypeItems(Type entityType)
-        {
-            Verify.ArgumentNotNull(entityType, nameof(entityType));
-            var idItems = entityType.FullName.Split('.');
-
-            // Subsystem-specific model types are expected to have full type name like below :
-            // SPPC.Tadbir.Model.[Schema].[Table]
-            if (idItems.Count() != 5)
-            {
-                return null;
-            }
-
-            return idItems.Skip(3).ToArray();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، رشته اتصال شرکت را ایجاد میکند
-        /// </summary>
-        /// <param name="companyId">شناسه یکتای شرکت</param>
-        /// <returns>رشته اتصال</returns>
-        public async Task<string> BuildConnectionString(int companyId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await repository.GetByIDAsync(companyId);
-            return BuildConnectionString(company);
         }
 
         private static string BuildConnectionString(CompanyDb company)
