@@ -168,6 +168,7 @@
     "SearchTitle": "جستجو"
   },
   "AdvanceFilter": {
+    "Title": "فیلتر پیشرفته",
     "Braces": "پرانتز گذاری",
     "EditFilter": "ویرایش فیلتر",
     "RemoveFilter": "حذف فیلتر",
@@ -318,6 +319,7 @@
     "FilterByRefMsg": "فیلتر رفرنس را وارد کنید",
     "ShowAccountBookHint": "برای مشاهده دفتر حساب لطفا فیلتر تراز براساس تاریخ قرار دهید",
     "LevelIsNotExists": "حساب دارای گردشی در سطوح پایین تر نیست",
+    "PlaeseSelectAnAccount": "لطفا یک حساب را انتخاب کنید",
     "Format": {
       "Balance2Column": "2 ستونی",
       "Balance4Column": "4 ستونی",

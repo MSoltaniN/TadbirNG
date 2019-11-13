@@ -231,6 +231,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.statusId = this.voucherModel.statusId;
       model.saveCount = this.voucherModel.saveCount;
+      if (model.reference == '')
+        model.reference = null;
+
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model).subscribe(res => {
         this.editForm.reset(res);
         this.voucherModel = res;
