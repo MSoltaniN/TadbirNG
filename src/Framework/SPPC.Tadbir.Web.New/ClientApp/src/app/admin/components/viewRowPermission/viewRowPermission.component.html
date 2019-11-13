@@ -1,6 +1,8 @@
 <app-bread-cumb></app-bread-cumb>
 <div class="panel-body">
 
+  <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
+
     <div *ngIf="errorMessage != ''">
       <div class="alert alert-danger">
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -8,121 +10,118 @@
       </div>
     </div>
 
-    <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
+    <div class="form-group">
+      <label class="control-label">{{ 'ViewRowPermission.Role' | translate }}</label>
 
-        <div class="form-group">
-            <label class="control-label">{{ 'ViewRowPermission.Role' | translate }}</label>
-
-            <kendo-dropdownlist [data]="ddlRolesData" class="input-frm"
-                                [filterable]="true"
-                                [textField]="'value'"
-                                [valueField]="'key'"
-                                [(ngModel)]="ddlRoleSelected"
-                                [value]="ddlRoleSelected"
-                                [valuePrimitive]="true"
-                                (valueChange)="handleRoleChange($event)"
-                                (filterChange)="handleFilter($event)">
-            </kendo-dropdownlist>
-
-        </div>
-
-        <div class="form-group">
-            <label class="control-label">{{ 'ViewRowPermission.Entity' | translate }}</label>
-
-            <input type="text" class="k-textbox input-frm-btn" [(ngModel)]="singleFormSelectedValue" disabled />
-
-            <button class="k-button k-primary" [disabled]="ddlRoleSelected == 0" (click)="openSingleForm()">{{ 'ViewRowPermission.Select' | translate }}</button>
-        </div>
-
-
-        <div class="form-group">
-            <label class="control-label">{{ 'ViewRowPermission.PremissionType' | translate }}</label>
-
-            <kendo-dropdownlist [data]="ddlPermissionTypeData" class="input-frm" [disabled]="!singleFormSelectedValue"
-                                [textField]="'value'"
-                                [valueField]="'key'"
-                                [valuePrimitive]="true"
-                                [(ngModel)]="ddlPermissionTypeSelected"
-                                [value]="ddlPermissionTypeSelected"
-                                (valueChange)="handlePermissionTypeChange($event)">
-                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                    {{ dataItem?.value | translate }}
-                </ng-template>
-                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                    {{ dataItem?.value | translate }}
-                </ng-template>
-            </kendo-dropdownlist>
-
-            <div id="permission-type-panle">
-
-                <div class="panel-type-btn" *ngIf="ddlPermissionTypeSelected == 3">
-                    <label class="control-label">{{ 'ViewRowPermission.SpecificRecords' | translate }}</label>
-                    <input type="text" class="k-textbox input-frm-btn" [(ngModel)]="permissionValue3" readonly />
-                    <button class="k-button k-primary" (click)="openMultipleForm()">{{ 'ViewRowPermission.Select' | translate }}</button>
-                </div>
-
-                <div class="panel-type-btn" *ngIf="ddlPermissionTypeSelected == 4">
-                    <label class="control-label">{{ 'ViewRowPermission.AllExceptSpecificRecords' | translate }}</label>
-                    <input type="text" class="k-textbox input-frm-btn" [(ngModel)]="permissionValue4" readonly />
-                    <button class="k-button k-primary" (click)="openMultipleForm()">{{ 'ViewRowPermission.Select' | translate }}</button>
-                </div>
-
-                <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 5">
-                    <label class="control-label">{{ 'ViewRowPermission.SpecificReference' | translate }}</label>
-                    <input type="text" class="k-textbox input-frm" [(ngModel)]="permissionValue5" />
-                </div>
-
-                <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 6">
-                    <label class="control-label">{{ 'ViewRowPermission.AllExceptSpecificReference' | translate }}</label>
-                    <input type="text" class="k-textbox input-frm" [(ngModel)]="permissionValue6" />
-                </div>
-
-                <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 8">
-                    <label class="control-label">{{ 'ViewRowPermission.MaxQuantityValue' | translate }}</label>
-                    <!--<kendo-numerictextbox [(ngModel)]="numberValue" [spinners]="false" [format]="''" class="input-frm">
-                    </kendo-numerictextbox>-->
-                    <sppc-numerictextbox [spinners]="false" [(ngModel)]="numberValue" [format]="n1" class="input-frm"></sppc-numerictextbox>
-                </div>
-
-                <div class="panel-type-multiple" *ngIf="ddlPermissionTypeSelected == 7">
-                    <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                        <label class="control-label">{{ 'ViewRowPermission.MaxMoneyValue' | translate }}</label>
-                        <!--<kendo-numerictextbox [(ngModel)]="numberValue1" [spinners]="false" [format]="''" class="input-frm">
-                        </kendo-numerictextbox>-->
-                        <sppc-numerictextbox [spinners]="false" [(ngModel)]="numberValue1" [format]="n" class="input-frm"></sppc-numerictextbox>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <label class="control-label">{{ 'ViewRowPermission.MaxCurencyValue' | translate }}</label>
-                        <!--<kendo-numerictextbox [(ngModel)]="numberValue2" [spinners]="false" [format]="''" class="input-frm">
-                        </kendo-numerictextbox>-->
-                        <sppc-numerictextbox [spinners]="false" [(ngModel)]="numberValue2" [format]="n" class="input-frm"></sppc-numerictextbox>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
-            <button class="k-button k-primary" [disabled]="ddlPermissionTypeSelected == 0 || ddlPermissionTypeSelected == null" SppcPermissionCheck="ManageRowAccess" (sppcClick)="saveRowPermission()">{{ 'Buttons.Ok' | translate }}</button>
-            <button class="k-button" (click)="cancelRowPermission()">{{ 'Buttons.Cancel' | translate }}</button>
-        </div>
+      <kendo-dropdownlist [data]="ddlRolesData" class="input-frm"
+                          [filterable]="true"
+                          [textField]="'value'"
+                          [valueField]="'key'"
+                          [(ngModel)]="ddlRoleSelected"
+                          [value]="ddlRoleSelected"
+                          [valuePrimitive]="true"
+                          (valueChange)="handleRoleChange($event)"
+                          (filterChange)="handleFilter($event)">
+      </kendo-dropdownlist>
 
     </div>
-    <div class="clearfix"></div>
 
-    <viewRowPermission-single-form-component [active]="isActiveSingleForm" [errorMessage]="errorMessage"
-                                                [model]="singleFormSelectedModel"
-                                                (save)="saveSingleFormHandler($event)"
-                                                (cancel)="cancelSingleFormHandler()">
-    </viewRowPermission-single-form-component>
+    <div class="form-group">
+      <label class="control-label">{{ 'ViewRowPermission.Entity' | translate }}</label>
 
-    <viewRowPermission-multiple-form-component [active]="isActiveMultipleForm" [errorMessage]="errorMessage"
-                                                [entity]="entity"
-                                                [dataItem]="dataRowPermission"
-                                                (save)="saveMultipleFormHandler($event)"
-                                                (cancel)="cancelMultipleFormHandler()">
-    </viewRowPermission-multiple-form-component>
+      <input type="text" class="k-textbox input-frm-btn" [(ngModel)]="singleFormSelectedValue" disabled />
+
+      <button class="k-button k-primary" [disabled]="ddlRoleSelected == 0" (click)="openSingleForm()">{{ 'ViewRowPermission.Select' | translate }}</button>
+    </div>
+
+
+    <div class="form-group">
+      <label class="control-label">{{ 'ViewRowPermission.PremissionType' | translate }}</label>
+
+      <kendo-dropdownlist [data]="ddlPermissionTypeData" class="input-frm" [disabled]="!singleFormSelectedValue"
+                          [textField]="'value'"
+                          [valueField]="'key'"
+                          [valuePrimitive]="true"
+                          [(ngModel)]="ddlPermissionTypeSelected"
+                          [value]="ddlPermissionTypeSelected">
+        <ng-template kendoDropDownListValueTemplate let-dataItem>
+          {{ dataItem?.value | translate }}
+        </ng-template>
+        <ng-template kendoDropDownListItemTemplate let-dataItem>
+          {{ dataItem?.value | translate }}
+        </ng-template>
+      </kendo-dropdownlist>
+
+      <div id="permission-type-panle">
+
+        <div class="panel-type-btn" *ngIf="ddlPermissionTypeSelected == 3">
+          <label class="control-label">{{ 'ViewRowPermission.SpecificRecords' | translate }}</label>
+          <input type="text" class="k-textbox input-frm-btn" [(ngModel)]="permissionValue3" readonly />
+          <button class="k-button k-primary" (click)="openMultipleForm()">{{ 'ViewRowPermission.Select' | translate }}</button>
+        </div>
+
+        <div class="panel-type-btn" *ngIf="ddlPermissionTypeSelected == 4">
+          <label class="control-label">{{ 'ViewRowPermission.AllExceptSpecificRecords' | translate }}</label>
+          <input type="text" class="k-textbox input-frm-btn" [(ngModel)]="permissionValue4" readonly />
+          <button class="k-button k-primary" (click)="openMultipleForm()">{{ 'ViewRowPermission.Select' | translate }}</button>
+        </div>
+
+        <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 5">
+          <label class="control-label">{{ 'ViewRowPermission.SpecificReference' | translate }}</label>
+          <input type="text" class="k-textbox input-frm" [(ngModel)]="permissionValue5" />
+        </div>
+
+        <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 6">
+          <label class="control-label">{{ 'ViewRowPermission.AllExceptSpecificReference' | translate }}</label>
+          <input type="text" class="k-textbox input-frm" [(ngModel)]="permissionValue6" />
+        </div>
+
+        <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 8">
+          <label class="control-label">{{ 'ViewRowPermission.MaxQuantityValue' | translate }}</label>
+          <!--<kendo-numerictextbox [(ngModel)]="numberValue" [spinners]="false" [format]="''" class="input-frm">
+          </kendo-numerictextbox>-->
+          <sppc-numerictextbox [spinners]="false" [(ngModel)]="numberValue" [format]="n1" class="input-frm"></sppc-numerictextbox>
+        </div>
+
+        <div class="panel-type-multiple" *ngIf="ddlPermissionTypeSelected == 7">
+          <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+            <label class="control-label">{{ 'ViewRowPermission.MaxMoneyValue' | translate }}</label>
+            <!--<kendo-numerictextbox [(ngModel)]="numberValue1" [spinners]="false" [format]="''" class="input-frm">
+            </kendo-numerictextbox>-->
+            <sppc-numerictextbox [spinners]="false" [(ngModel)]="numberValue1" [format]="n" class="input-frm"></sppc-numerictextbox>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <label class="control-label">{{ 'ViewRowPermission.MaxCurencyValue' | translate }}</label>
+            <!--<kendo-numerictextbox [(ngModel)]="numberValue2" [spinners]="false" [format]="''" class="input-frm">
+            </kendo-numerictextbox>-->
+            <sppc-numerictextbox [spinners]="false" [(ngModel)]="numberValue2" [format]="n" class="input-frm"></sppc-numerictextbox>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
+      <button class="k-button k-primary" [disabled]="ddlPermissionTypeSelected == 0 || ddlPermissionTypeSelected == null" SppcPermissionCheck="ManageRowAccess" (sppcClick)="saveRowPermission()">{{ 'Buttons.Ok' | translate }}</button>
+      <button class="k-button" (click)="cancelRowPermission()">{{ 'Buttons.Cancel' | translate }}</button>
+    </div>
+
+  </div>
+  <div class="clearfix"></div>
+
+  <viewRowPermission-single-form-component [active]="isActiveSingleForm" [errorMessage]="errorMessage"
+                                           [model]="singleFormSelectedModel"
+                                           (save)="saveSingleFormHandler($event)"
+                                           (cancel)="cancelSingleFormHandler()">
+  </viewRowPermission-single-form-component>
+
+  <viewRowPermission-multiple-form-component [active]="isActiveMultipleForm" [errorMessage]="errorMessage"
+                                             [entity]="entity"
+                                             [dataItem]="dataRowPermission"
+                                             (save)="saveMultipleFormHandler($event)"
+                                             (cancel)="cancelMultipleFormHandler()">
+  </viewRowPermission-multiple-form-component>
 
 </div>
 
