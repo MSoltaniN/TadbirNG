@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Model;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
@@ -129,6 +132,26 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="entity">سطر اطلاعاتی موجود</param>
         protected abstract void UpdateExisting(TEntityView entityView, TEntity entity);
 
+        /// <summary>
+        /// به روش آسنکرون، رکورد مشخص شده با شناسه دیتابیسی داده شده را
+        /// به همراه کلیه اطلاعات وابسته به آن از دیتابیس حذف می کند
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی رکورد مورد نظر برای حذف</param>
+        protected async Task DeleteWithCascadeAsync(int id)
+        {
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            var dependentTypes = ModelCatalogue.GetAllDependentsOfType(typeof(TEntity));
+            foreach (var dependentType in dependentTypes)
+            {
+                var items = GetReferencedItems(id, typeof(TEntity), dependentType);
+                DeleteWithCascade(typeof(TEntity), id, dependentType, items);
+            }
+
+            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            var entity = await repository.GetByIDAsync(id);
+            await DeleteAsync(repository, entity);
+        }
+
         private static void DisconnectEntity(TEntity entity)
         {
             var relations = Reflector
@@ -137,6 +160,32 @@ namespace SPPC.Tadbir.Persistence
                     .Namespace.StartsWith(ModelNamespace))
                 .ToArray();
             Array.ForEach(relations, prop => Reflector.SetProperty(entity, prop, null));
+        }
+
+        private void DeleteWithCascade(Type parentType, int parentId, Type type, IEnumerable<int> ids)
+        {
+            if (ids.Count() == 0)
+            {
+                return;
+            }
+
+            var dependentTypes = ModelCatalogue.GetAllDependentsOfType(type);
+            foreach (var dependentType in dependentTypes)
+            {
+                foreach (int id in ids)
+                {
+                    var items = GetReferencedItems(id, type, dependentType);
+                    DeleteWithCascade(type, id, dependentType, items);
+                }
+            }
+
+            string keyName = parentType == typeof(DetailAccount)
+                ? "Detail"
+                : parentType.Name;
+            var idItems = ModelCatalogue.GetModelTypeItems(type);
+            string command = String.Format("DELETE FROM [{0}].[{1}] WHERE {2}ID = {3}",
+                idItems[0], idItems[1], keyName, parentId);
+            DbConsole.ExecuteNonQuery(command);
         }
 
         private OperationLogViewModel GetOperationLog(string action)

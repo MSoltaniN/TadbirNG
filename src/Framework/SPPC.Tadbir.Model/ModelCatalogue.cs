@@ -33,24 +33,15 @@ namespace SPPC.Tadbir.Model
         }
 
         /// <summary>
-        /// انواع دات نتی مدل های اطلاعاتی وابسته به شعبه را برمی گرداند
+        /// انواع دات نتی مدل های اطلاعاتی وابسته به نوع داده شده را برمی گرداند
         /// </summary>
-        /// <returns>مجموعه انواع دات نتی وابسته به شعبه</returns>
-        public static Type[] GetBranchDependentTypes()
+        /// <returns>مجموعه انواع دات نتی وابسته به نوع داده شده</returns>
+        public static Type[] GetAllDependentsOfType(Type type)
         {
-            var fiscalTypes = GetAllOfType<FiscalEntity>();
-
-            // TODO: The types AccountCurrency and CurrencyRate also reference Branch but are
-            // currently not returned by catalogue, because they don't have FiscalPeriodID and
-            // so CANNOT be derived from FiscalEntity.
-            // The following block can be removed when the two types are upgraded to FiscalEntity.
-            var dependentTypes = new List<Type>(fiscalTypes)
-            {
-                typeof(AccountCurrency),
-                typeof(CurrencyRate)
-            };
-
-            return dependentTypes.ToArray();
+            return Assembly.GetExecutingAssembly()
+                .GetExportedTypes()
+                .Where(t => IsDomainEntity(t) && HasPropertyReference(t, type) && t != type)
+                .ToArray();
         }
 
         /// <summary>
@@ -72,6 +63,18 @@ namespace SPPC.Tadbir.Model
             }
 
             return idItems.Skip(3).ToArray();
+        }
+
+        private static bool HasPropertyReference(Type type, Type referenceType)
+        {
+            return type.GetProperties()
+                .Select(prop => prop.PropertyType)
+                .Contains(referenceType);
+        }
+
+        private static bool IsDomainEntity(Type type)
+        {
+            return GetModelTypeItems(type) != null;
         }
     }
 }

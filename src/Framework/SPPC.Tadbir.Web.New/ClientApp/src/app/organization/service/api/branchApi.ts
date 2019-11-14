@@ -27,6 +27,9 @@ export class BranchApi {
     // branches/{branchId:min(1)}
     public static Branch = environment.BaseUrl + "/branches/{0}";
 
+    // branches/{branchId:min(1)}/data
+    public static BranchData = environment.BaseUrl + "/branches/{0}/data";
+
     // branches/{branchId:min(1)}/children
     public static BranchChildren = environment.BaseUrl + "/branches/{0}/children";
 

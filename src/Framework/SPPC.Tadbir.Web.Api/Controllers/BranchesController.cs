@@ -141,7 +141,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // DELETE: api/branches/{branchId:min(1)}/data
         [HttpDelete]
-        [Route(BranchApi.BranchWithDataUrl)]
+        [Route(BranchApi.BranchDataUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingBranchWithDataAsync(int branchId)
         {

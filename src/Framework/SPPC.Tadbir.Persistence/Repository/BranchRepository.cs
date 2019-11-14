@@ -9,7 +9,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
-using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -226,16 +225,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی شعبه سازمانی مورد نظر برای حذف</param>
         public async Task DeleteBranchWithDataAsync(int branchId)
         {
-            var dependentTypes = ModelCatalogue
-                .GetBranchDependentTypes()
-                .OrderByDescending(type => type, new EntityComparerByDependency())
-                .ToArray();
-            foreach (var type in dependentTypes)
-            {
-                DeleteBranchData(type, branchId);
-            }
-
-            await DeleteBranchAsync(branchId);
+            await DeleteWithCascadeAsync(branchId);
         }
 
         /// <summary>
@@ -278,7 +268,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> CanDeleteBranchAsync(int branchId)
         {
             bool canDelete = true;
-            var dependentTypes = ModelCatalogue.GetBranchDependentTypes();
+            var dependentTypes = ModelCatalogue.GetAllDependentsOfType(typeof(Branch));
             foreach (var type in dependentTypes)
             {
                 if (HasBranchReference(type, branchId))

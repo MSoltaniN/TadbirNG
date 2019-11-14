@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
@@ -168,6 +170,29 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return referenceCount > 0;
+        }
+
+        /// <summary>
+        /// شناسه های دیتابیسی کلیه رکوردهای وابسته به رکورد اطلاعاتی مشخص شده
+        /// با شناسه دیتابیسی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی رکورد اطلاعاتی اصلی</param>
+        /// <param name="type">نوع دات نتی موجودیت اصلی</param>
+        /// <param name="dependentType">نوع دات نتی موجودیت وابسته به موجودیت اصلی</param>
+        /// <returns>مجموعهای از شناسه های دیتابیسی موجودیت وابسته</returns>
+        protected int[] GetReferencedItems(int id, Type type, Type dependentType)
+        {
+            string keyName = (type != typeof(DetailAccount))
+                ? type.Name
+                : "Detail";
+            var idItems = ModelCatalogue.GetModelTypeItems(dependentType);
+            string command = String.Format("SELECT {0}ID FROM [{1}].[{2}] WHERE {3}ID = {4}",
+                dependentType.Name, idItems[0], idItems[1], keyName, id);
+            var result = DbConsole.ExecuteQuery(command);
+            return result.Rows
+                .Cast<DataRow>()
+                .Select(row => Int32.Parse(row.ItemArray[0].ToString()))
+                .ToArray();
         }
 
         private static string BuildConnectionString(CompanyDb company)

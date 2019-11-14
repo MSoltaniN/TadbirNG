@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.ToTable("DetailAccount", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("DetailID");
+                .HasColumnName("DetailAccountID");
             builder.Property(e => e.BranchScope)
                 .IsRequired();
             builder.Property(e => e.Code)

@@ -48,12 +48,12 @@
         /// <summary>
         /// API client URL for a branch item specified by unique identifier and every data that depends on it
         /// </summary>
-        public const string BranchWithData = "branches/{0}/data";
+        public const string BranchData = "branches/{0}/data";
 
         /// <summary>
         /// API server route URL for a branch item specified by unique identifier and every data that depends on it
         /// </summary>
-        public const string BranchWithDataUrl = "branches/{branchId:min(1)}/data";
+        public const string BranchDataUrl = "branches/{branchId:min(1)}/data";
 
         /// <summary>
         /// API client URL for all children of a branch item specified by unique identifier

@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.ToTable("VoucherLine", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("LineID");
+                .HasColumnName("VoucherLineID");
             builder.Property(e => e.RowNo)
                 .IsRequired();
             builder.Property(e => e.Debit)
