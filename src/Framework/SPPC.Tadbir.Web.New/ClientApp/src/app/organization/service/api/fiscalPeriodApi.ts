@@ -23,6 +23,9 @@ export class FiscalPeriodApi {
     // fperiods/{fpId:min(1)}
     public static FiscalPeriod = environment.BaseUrl + "/fperiods/{0}";
 
+    // fperiods/{fpId:min(1)}/data
+    public static FiscalPeriodData = environment.BaseUrl + "/fperiods/{0}/data";
+
     // fperiods/metadata
     public static FiscalPeriodMetadata = environment.BaseUrl + "/fperiods/metadata";
 

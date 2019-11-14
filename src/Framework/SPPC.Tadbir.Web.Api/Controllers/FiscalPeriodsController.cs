@@ -144,6 +144,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // DELETE: api/fperiods/{fpId:min(1)}/data
+        [HttpDelete]
+        [Route(FiscalPeriodApi.FiscalPeriodDataUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingFiscalPeriodWithDataAsync(int fpId)
+        {
+            string result = await BasicValidateDeleteAsync(fpId);
+            if (!String.IsNullOrEmpty(result))
+            {
+                return BadRequest(result);
+            }
+
+            await _repository.DeleteFiscalPeriodWithDataAsync(fpId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         // PUT: api/fperiods
         [HttpPut]
         [Route(FiscalPeriodApi.FiscalPeriodsUrl)]
