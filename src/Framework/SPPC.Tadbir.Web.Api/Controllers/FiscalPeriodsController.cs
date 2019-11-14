@@ -204,6 +204,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
             if (!canDelete)
             {
+                var fperiod = await _repository.GetFiscalPeriodAsync(item);
                 return _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
             }
 
