@@ -722,7 +722,7 @@
     "UpdateRoles": "Branch roles have been successfully edited",
     "RolesTitle": "List of available roles to the branch",
     "NotFoundData": "Not Found Branch",
-    "LedgerBranch": "Ledger Branch",
+    "LedgerBranch": "Branches",
     "CreateBranch": "Create Branch",
     "ChangeBranch": "Change Branch"
   },
@@ -832,7 +832,7 @@
     "Description": "Description",
     "Delete": "Delete Detail Account",
     "BranchScope": "Branch Scope",
-    "LedgerDetailAccount": "First Level Detail Accounts",
+    "LedgerDetailAccount": "Detail Accounts",
     "EditorTitleEdit": "Edit detail account in level {0}",
     "EditorTitleNew": "New detail account in level {0}",
     "DefaultCurrency": "Default Currency"
@@ -847,7 +847,7 @@
     "Description": "Description",
     "Delete": "Delete Cost Center",
     "BranchScope": "Branch Scope",
-    "LedgerCostCenter": "First Level Cost Centers",
+    "LedgerCostCenter": "Cost Centers",
     "EditorTitleEdit": "Edit cost center in level {0}",
     "EditorTitleNew": "New cost center in level {0}"
   },
@@ -861,7 +861,7 @@
     "Description": "Description",
     "Delete": "Delete Project",
     "BranchScope": "Branch Scope",
-    "LedgerProject": "First Level Projects",
+    "LedgerProject": "Projects",
     "EditorTitleEdit": "Edit project in level {0}",
     "EditorTitleNew": "New project in level {0}"
   },
