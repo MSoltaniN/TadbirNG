@@ -140,14 +140,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
-            string message = String.Empty;
+            if (item == SecurityContext.User.CompanyId)
+            {
+                return _strings.Format(AppStrings.CantDeleteCurrentItem, EntityNameKey);
+            }
+
             var company = await _repository.GetCompanyAsync(item);
             if (company == null)
             {
-                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Company, item.ToString());
+                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Company, item.ToString());
             }
 
-            return message;
+            return String.Empty;
         }
 
         private async Task<IActionResult> ValidationResultAsync(CompanyDbViewModel company, int companyId = 0)

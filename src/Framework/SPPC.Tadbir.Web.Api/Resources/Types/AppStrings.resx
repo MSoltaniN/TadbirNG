@@ -633,9 +633,6 @@
   <data name="NetMonthlySalesChartTitle" xml:space="preserve">
     <value>نمودار فروش خالص ماهانه در سال مالی جاری</value>
   </data>
-  <data name="CantDeleteFiscalPeriodWithData" xml:space="preserve">
-    <value>در دوره مالی '{0}' یک یا چند سطر اطلاعاتی ایجاد شده و قابل حذف نیست.</value>
-  </data>
   <data name="InvalidAccountInFullAccount" xml:space="preserve">
     <value>حساب انتخاب شده نامعتبر یا غیر قابل دسترس است.</value>
   </data>
@@ -2655,13 +2652,10 @@
   <data name="CannotDeleteReferencedItem" xml:space="preserve">
     <value>{0} '{1}' در سایر اطلاعات شرکت جاری استفاده شده و قابل حذف نیست.</value>
   </data>
-  <data name="CantDeleteBranchWithData" xml:space="preserve">
-    <value>در شعبه '{0}' یک یا چند سطر اطلاعاتی ایجاد شده و قابل حذف نیست.</value>
+  <data name="CantDeleteCurrentItem" xml:space="preserve">
+    <value>حذف {0} جاری امکانپذیر نیست.</value>
   </data>
-  <data name="CantDeleteCurrentBranch" xml:space="preserve">
-    <value>حذف شعبه جاری امکانپذیر نیست.</value>
-  </data>
-  <data name="CantDeleteCurrentFiscalPeriod" xml:space="preserve">
-    <value>حذف دوره مالی جاری امکانپذیر نیست.</value>
+  <data name="CantDeleteItemWithData" xml:space="preserve">
+    <value>در {0} '{1}' یک یا چند سطر اطلاعاتی ایجاد شده و قابل حذف نیست.</value>
   </data>
 </root>
