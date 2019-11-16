@@ -37,6 +37,13 @@ export class BrowserStorageService {
 
   constructor(private lz: LZStringService) { }
 
+  setContext(currentUser: ContextInfo, rememberMe: boolean) {
+    if (rememberMe)
+      localStorage.setItem(SessionKeys.CurrentContext, JSON.stringify(currentUser));
+    else
+      sessionStorage.setItem(SessionKeys.CurrentContext, JSON.stringify(currentUser));
+  }
+
   setCurrentContext(currentUser: ContextInfo) {
     if (this.isRememberMe())
       localStorage.setItem(SessionKeys.CurrentContext, JSON.stringify(currentUser));
