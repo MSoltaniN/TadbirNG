@@ -112,7 +112,6 @@ namespace SPPC.Tadbir.Persistence
             var children = await repository
                 .GetEntityQuery(br => br.Children)
                 .Where(br => br.ParentId == branchId)
-                .OrderBy(br => br.Name)
                 .Select(br => Mapper.Map<AccountItemBriefViewModel>(br))
                 .ToListAsync();
             return children;
