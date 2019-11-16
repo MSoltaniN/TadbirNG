@@ -17,8 +17,8 @@
                           [filterable]="true"
                           [textField]="'value'"
                           [valueField]="'key'"
-                          [(ngModel)]="ddlRoleSelected"
-                          [value]="ddlRoleSelected"
+                          [(ngModel)]="ddlSelectedRole"
+                          [value]="ddlSelectedRole"
                           [valuePrimitive]="true"
                           (valueChange)="handleRoleChange($event)"
                           (filterChange)="handleFilter($event)">
@@ -31,7 +31,7 @@
 
       <input type="text" class="k-textbox input-frm-btn" [(ngModel)]="singleFormSelectedValue" disabled />
 
-      <button class="k-button k-primary" [disabled]="ddlRoleSelected == 0" (click)="openSingleForm()">{{ 'ViewRowPermission.Select' | translate }}</button>
+      <button class="k-button k-primary" [disabled]="ddlSelectedRole == 0" (click)="openSingleForm()">{{ 'ViewRowPermission.Select' | translate }}</button>
     </div>
 
 

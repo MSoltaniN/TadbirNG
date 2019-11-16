@@ -54,7 +54,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
   public ddlPermissionTypeData: Array<Item>;
 
-  public ddlRoleSelected: number = 0;
+  public ddlSelectedRole: number = 0;
   public ddlPermissionTypeSelected: number | undefined;
 
   public entity: ItemInfo | undefined;
@@ -241,11 +241,10 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   saveRowPermission() {    
     this.errorMessage = '';
     this.updateDataItem();
-    this.viewRowPermissionService.edit<RowPermissionsForRoleInfo>(String.Format(RoleApi.RowAccessSettings, this.ddlRoleSelected), this.dataItem).subscribe(res => {
+    this.viewRowPermissionService.edit<RowPermissionsForRoleInfo>(String.Format(RoleApi.RowAccessSettings, this.ddlSelectedRole), this.dataItem).subscribe(res => {
 
       this.showMessage(this.updateMsg, MessageType.Succes);
 
-      this.ddlRoleSelected = 0;
       this.singleFormSelectedValue = '';
       this.ddlPermissionTypeSelected = 0;
 
@@ -342,7 +341,6 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   }
 
   cancelRowPermission() {
-    this.ddlRoleSelected = 0;
     this.singleFormSelectedValue = '';
     this.view_Id = -1;
     this.ddlPermissionTypeSelected = 0;
