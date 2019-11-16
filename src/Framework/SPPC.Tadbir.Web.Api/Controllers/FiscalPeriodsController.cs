@@ -220,8 +220,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
             if (!canDelete)
             {
+                string name = _strings[EntityNameKey].ToString().ToLower();
                 var fperiod = await _repository.GetFiscalPeriodAsync(item);
-                return _strings.Format(AppStrings.CantDeleteFiscalPeriodWithData, fperiod.Name);
+                return _strings.Format(AppStrings.CantDeleteItemWithData, name, fperiod.Name);
             }
 
             return String.Empty;
@@ -231,7 +232,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (item == SecurityContext.User.FiscalPeriodId)
             {
-                return _strings[AppStrings.CantDeleteCurrentFiscalPeriod];
+                string name = _strings[EntityNameKey].ToString().ToLower();
+                return _strings.Format(AppStrings.CantDeleteCurrentItem, name);
             }
 
             var fperiod = await _repository.GetFiscalPeriodAsync(item);

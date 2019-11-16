@@ -216,7 +216,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (canDelete == false)
             {
                 var branch = await _repository.GetBranchAsync(item);
-                return _strings.Format(AppStrings.CantDeleteBranchWithData, branch.Name);
+                return _strings.Format(AppStrings.CantDeleteItemWithData, EntityNameKey, branch.Name);
             }
 
             return String.Empty;
@@ -226,7 +226,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (item == SecurityContext.User.BranchId)
             {
-                return _strings[AppStrings.CantDeleteCurrentBranch];
+                return _strings.Format(AppStrings.CantDeleteCurrentItem, EntityNameKey);
             }
 
             var branch = await _repository.GetBranchAsync(item);

@@ -633,9 +633,6 @@
   <data name="NetMonthlySalesChartTitle" xml:space="preserve">
     <value>Net Monthly Sales Chart</value>
   </data>
-  <data name="CantDeleteFiscalPeriodWithData" xml:space="preserve">
-    <value>This fiscal period '{0}' has one or more records defined and cannot be deleted.</value>
-  </data>
   <data name="InvalidAccountInFullAccount" xml:space="preserve">
     <value>Selected account is invalid or inaccessible.</value>
   </data>
@@ -2664,13 +2661,10 @@
   <data name="CannotDeleteReferencedItem" xml:space="preserve">
     <value>The {0} by name '{1}' is being used by other data in current company and cannot be deleted.</value>
   </data>
-  <data name="CantDeleteBranchWithData" xml:space="preserve">
-    <value>This branch '{0}' has one or more records defined and cannot be deleted.</value>
+  <data name="CantDeleteCurrentItem" xml:space="preserve">
+    <value>Cannot delete current {0}.</value>
   </data>
-  <data name="CantDeleteCurrentBranch" xml:space="preserve">
-    <value>Cannot delete current branch.</value>
-  </data>
-  <data name="CantDeleteCurrentFiscalPeriod" xml:space="preserve">
-    <value>Cannot delete current fiscal period.</value>
+  <data name="CantDeleteItemWithData" xml:space="preserve">
+    <value>The {0} '{1}' has one or more records defined and cannot be deleted.</value>
   </data>
 </root>
