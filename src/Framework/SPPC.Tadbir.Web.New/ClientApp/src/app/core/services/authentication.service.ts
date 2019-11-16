@@ -57,7 +57,7 @@ export class AuthenticationService {
             user.userName = username;
             user.roles = contextInfo.user.roles;
 
-            this.bStorageService.setCurrentContext(user);
+            this.bStorageService.setContext(user, remember);
           }
         }
       })
