@@ -19,6 +19,11 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: 'selectForm-grid-setting',
   templateUrl: './selectForm-grid-setting.component.html',
+styles:[`
+.setting-section { padding:0 }
+.setting-section th { border-bottom-color: #e2e2e2; }
+.setting-mid-section { border-left: solid 1px #e2e2e2; border-right: solid 1px #e2e2e2; }
+`],
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,
@@ -284,8 +289,18 @@ export class SelectFormGridSettingComponent extends BaseComponent implements OnI
     this.emitGridColumns();
   }
 
-  changeIsSearched(dataItem: SettingViewModelInfo, event: any) {
+  chackIsSearchable(dataItem: SettingViewModelInfo): boolean {
+    debugger;
+    var column = this.allGridColumn.find(f => f.name.toLowerCase() == dataItem.name.toLowerCase());
+    if (column && (column.scriptType == "string" || column.scriptType == "number")) {
+      return true
+    }
+    return false;
+  }
 
+
+  changeIsSearched(dataItem: SettingViewModelInfo, event: any) {
+    debugger;
     if (!this.viewId)
       return;
 
@@ -325,7 +340,7 @@ export class SelectFormGridSettingComponent extends BaseComponent implements OnI
     return false;
   }
 
-  onChangeTxtSearchMode(mode: string) {    
+  onChangeTxtSearchMode(mode: string) {
     this.currentSetting.searchMode = mode;
 
     this.quickSearch.emit(this.currentSetting);
