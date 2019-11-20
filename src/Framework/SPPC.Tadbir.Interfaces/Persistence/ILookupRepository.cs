@@ -137,8 +137,9 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، سطوح قابل استفاده برای دفتر حساب را از تنظیمات درختی خوانده و برمی گرداند
         /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
         /// <returns></returns>
-        Task<IList<AccountLevelViewModel>> GetAccountBookLevelsAsync();
+        Task<IList<AccountLevelViewModel>> GetAccountBookLevelsAsync(int viewId);
 
         #endregion
 
