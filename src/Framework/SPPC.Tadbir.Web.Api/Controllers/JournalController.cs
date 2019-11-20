@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.ByRows;
-            return await JournalByDateResultAsync(from, to, mode, false, false, false);
+            return await JournalByDateResultAsync(from, to, mode, false, false);
         }
 
         // GET: api/reports/journal/by-date/by-row-detail
@@ -45,7 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.ByRowsWithDetail;
-            return await JournalByDateResultAsync(from, to, mode, false, false, false);
+            return await JournalByDateResultAsync(from, to, mode, false, false);
         }
 
         // GET: api/reports/journal/by-date/by-ledger
@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.ByLedger;
-            return await JournalByDateResultAsync(from, to, mode, false, true, false);
+            return await JournalByDateResultAsync(from, to, mode, false, true);
         }
 
         // GET: api/reports/journal/by-date/by-subsid
@@ -65,7 +65,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.BySubsidiary;
-            return await JournalByDateResultAsync(from, to, mode, false, true, false);
+            return await JournalByDateResultAsync(from, to, mode, false, true);
         }
 
         // GET: api/reports/journal/by-date/summary
@@ -75,7 +75,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.LedgerSummary;
-            return await JournalByDateResultAsync(from, to, mode, false, true, true);
+            return await JournalByDateResultAsync(from, to, mode, false, true);
         }
 
         // GET: api/reports/journal/by-date/sum-by-date
@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.LedgerSummaryByDate;
-            return await JournalByDateResultAsync(from, to, mode, false, true, false);
+            return await JournalByDateResultAsync(from, to, mode, false, true);
         }
 
         // GET: api/reports/journal/by-date/sum-by-month
@@ -95,7 +95,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.MonthlyLedgerSummary;
-            return await JournalByDateResultAsync(from, to, mode, false, true, true);
+            return await JournalByDateResultAsync(from, to, mode, false, true);
         }
 
         #endregion
@@ -109,7 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.ByRows;
-            return await JournalByDateResultAsync(from, to, mode, true, false, false);
+            return await JournalByDateResultAsync(from, to, mode, true, false);
         }
 
         // GET: api/reports/journal/by-date/by-row-detail/by-branch
@@ -119,7 +119,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.ByRowsWithDetail;
-            return await JournalByDateResultAsync(from, to, mode, true, false, false);
+            return await JournalByDateResultAsync(from, to, mode, true, false);
         }
 
         // GET: api/reports/journal/by-date/by-ledger/by-branch
@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.ByLedger;
-            return await JournalByDateResultAsync(from, to, mode, true, true, false);
+            return await JournalByDateResultAsync(from, to, mode, true, true);
         }
 
         // GET: api/reports/journal/by-date/by-subsid/by-branch
@@ -139,7 +139,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.BySubsidiary;
-            return await JournalByDateResultAsync(from, to, mode, true, true, false);
+            return await JournalByDateResultAsync(from, to, mode, true, true);
         }
 
         // GET: api/reports/journal/by-date/summary/by-branch
@@ -149,7 +149,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.LedgerSummary;
-            return await JournalByDateResultAsync(from, to, mode, true, true, true);
+            return await JournalByDateResultAsync(from, to, mode, true, true);
         }
 
         // GET: api/reports/journal/by-date/sum-by-date/by-branch
@@ -159,7 +159,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.LedgerSummaryByDate;
-            return await JournalByDateResultAsync(from, to, mode, true, true, false);
+            return await JournalByDateResultAsync(from, to, mode, true, true);
         }
 
         // GET: api/reports/journal/by-date/sum-by-month/by-branch
@@ -169,7 +169,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime? from, DateTime? to)
         {
             var mode = JournalMode.MonthlyLedgerSummary;
-            return await JournalByDateResultAsync(from, to, mode, true, true, true);
+            return await JournalByDateResultAsync(from, to, mode, true, true);
         }
 
         #endregion
@@ -182,7 +182,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoByRowAsync(int from, int to)
         {
             var mode = JournalMode.ByRows;
-            return await JournalByNumberResultAsync(from, to, mode, false, false, false);
+            return await JournalByNumberResultAsync(from, to, mode, false, false);
         }
 
         // GET: api/reports/journal/by-no/by-row-detail
@@ -191,7 +191,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoByRowDetailAsync(int from, int to)
         {
             var mode = JournalMode.ByRowsWithDetail;
-            return await JournalByNumberResultAsync(from, to, mode, false, false, false);
+            return await JournalByNumberResultAsync(from, to, mode, false, false);
         }
 
         // GET: api/reports/journal/by-no/by-ledger
@@ -200,7 +200,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoByLedgerAsync(int from, int to)
         {
             var mode = JournalMode.ByLedger;
-            return await JournalByNumberResultAsync(from, to, mode, false, true, false);
+            return await JournalByNumberResultAsync(from, to, mode, false, true);
         }
 
         // GET: api/reports/journal/by-no/by-subsid
@@ -209,7 +209,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoBySubsidiaryAsync(int from, int to)
         {
             var mode = JournalMode.BySubsidiary;
-            return await JournalByNumberResultAsync(from, to, mode, false, true, false);
+            return await JournalByNumberResultAsync(from, to, mode, false, true);
         }
 
         // GET: api/reports/journal/by-no/summary
@@ -218,7 +218,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoLedgerSummaryAsync(int from, int to)
         {
             var mode = JournalMode.LedgerSummary;
-            return await JournalByNumberResultAsync(from, to, mode, false, true, true);
+            return await JournalByNumberResultAsync(from, to, mode, false, true);
         }
 
         #endregion
@@ -231,7 +231,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoByRowByBranchAsync(int from, int to)
         {
             var mode = JournalMode.ByRows;
-            return await JournalByNumberResultAsync(from, to, mode, true, false, false);
+            return await JournalByNumberResultAsync(from, to, mode, true, false);
         }
 
         // GET: api/reports/journal/by-no/by-row-detail/by-branch
@@ -240,7 +240,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoByRowDetailByBranchAsync(int from, int to)
         {
             var mode = JournalMode.ByRowsWithDetail;
-            return await JournalByNumberResultAsync(from, to, mode, true, false, false);
+            return await JournalByNumberResultAsync(from, to, mode, true, false);
         }
 
         // GET: api/reports/journal/by-no/by-ledger/by-branch
@@ -249,7 +249,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoByLedgerByBranchAsync(int from, int to)
         {
             var mode = JournalMode.ByLedger;
-            return await JournalByNumberResultAsync(from, to, mode, true, true, false);
+            return await JournalByNumberResultAsync(from, to, mode, true, true);
         }
 
         // GET: api/reports/journal/by-no/by-subsid/by-branch
@@ -258,7 +258,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoBySubsidiaryByBranchAsync(int from, int to)
         {
             var mode = JournalMode.BySubsidiary;
-            return await JournalByNumberResultAsync(from, to, mode, true, true, false);
+            return await JournalByNumberResultAsync(from, to, mode, true, true);
         }
 
         // GET: api/reports/journal/by-no/summary/by-branch
@@ -267,26 +267,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetJournalByNoLedgerSummaryByBranchAsync(int from, int to)
         {
             var mode = JournalMode.LedgerSummary;
-            return await JournalByNumberResultAsync(from, to, mode, true, true, true);
+            return await JournalByNumberResultAsync(from, to, mode, true, true);
         }
 
         #endregion
 
         private async Task<IActionResult> JournalByDateResultAsync(
             DateTime? from, DateTime? to, JournalMode journalMode,
-            bool isByBranch, bool isLocalized, bool isSummary)
+            bool isByBranch, bool isLocalized)
         {
             Sanitize(ref from, ref to);
-            var gridOptions = GridOptions ?? new GridOptions();
+            var parameters = new JournalParameters()
+            {
+                Mode = journalMode,
+                FromDate = from.Value,
+                ToDate = to.Value,
+                GridOptions = GridOptions ?? new GridOptions()
+            };
             var journal = isByBranch
-                ? await _repository.GetJournalByDateByBranchAsync(
-                    journalMode, from.Value, to.Value, gridOptions)
-                : await _repository.GetJournalByDateAsync(
-                    journalMode, from.Value, to.Value, gridOptions);
-            PrepareDelegate prepareJournal = isSummary
-                ? (PrepareDelegate)PrepareSummaryJournal
-                : PrepareJournal;
-            prepareJournal(journal, gridOptions);
+                ? await _repository.GetJournalByDateByBranchAsync(parameters)
+                : await _repository.GetJournalByDateAsync(parameters);
+            PrepareJournal(journal, parameters.GridOptions);
 
             if (isLocalized)
             {
@@ -298,16 +299,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IActionResult> JournalByNumberResultAsync(
             int from, int to, JournalMode journalMode, bool isByBranch,
-            bool isLocalized, bool isSummary)
+            bool isLocalized)
         {
-            var gridOptions = GridOptions ?? new GridOptions();
+            var parameters = new JournalParameters()
+            {
+                Mode = journalMode,
+                FromNo = from,
+                ToNo = to,
+                GridOptions = GridOptions ?? new GridOptions()
+            };
             var journal = isByBranch
-                ? await _repository.GetJournalByNoByBranchAsync(journalMode, from, to, gridOptions)
-                : await _repository.GetJournalByNoAsync(journalMode, from, to, gridOptions);
-            PrepareDelegate prepareJournal = isSummary
-                ? (PrepareDelegate)PrepareSummaryJournal
-                : PrepareJournal;
-            prepareJournal(journal, gridOptions);
+                ? await _repository.GetJournalByNoByBranchAsync(parameters)
+                : await _repository.GetJournalByNoAsync(parameters);
+            PrepareJournal(journal, parameters.GridOptions);
 
             if (isLocalized)
             {
@@ -338,32 +342,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void PrepareJournal(JournalViewModel journal, GridOptions gridOptions)
         {
-            var userItems = journal.Items.Apply(gridOptions, false);
-            journal.DebitSum = userItems.Sum(item => item.Debit);
-            journal.CreditSum = userItems.Sum(item => item.Credit);
-            SetItemCount(userItems.Count());
-            journal.SetItems(journal.Items.Apply(gridOptions).ToList());
-            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
-            foreach (var journalItem in journal.Items)
-            {
-                journalItem.RowNo = rowNo++;
-            }
-        }
-
-        private void PrepareSummaryJournal(JournalViewModel journal, GridOptions gridOptions)
-        {
-            journal.DebitSum = journal.Items.Sum(item => item.Debit);
-            journal.CreditSum = journal.Items.Sum(item => item.Credit);
             SetItemCount(journal.Items.Count());
-            journal.SetItems(journal.Items.Apply(gridOptions).ToList());
+            journal.SetItems(journal.Items.ApplyPaging(gridOptions).ToList());
             int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
             foreach (var journalItem in journal.Items)
             {
                 journalItem.RowNo = rowNo++;
             }
         }
-
-        private delegate void PrepareDelegate(JournalViewModel journal, GridOptions gridOptions);
 
         private readonly IJournalRepository _repository;
         private readonly IConfigRepository _configRepository;
