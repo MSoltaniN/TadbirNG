@@ -419,18 +419,14 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، سطوح قابل استفاده برای دفتر حساب را از تنظیمات درختی خوانده و برمی گرداند
         /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
         /// <returns></returns>
-        public async Task<IList<AccountLevelViewModel>> GetAccountBookLevelsAsync()
+        public async Task<IList<AccountLevelViewModel>> GetAccountBookLevelsAsync(int viewId)
         {
             var levels = new List<AccountLevelViewModel>();
-            var allConfig = await Config.GetAllViewTreeConfigAsync();
+            var config = await Config.GetViewTreeConfigByViewAsync(viewId);
             int key = 0;
-            foreach (var config in allConfig)
-            {
-                int viewId = config.Current.ViewId;
-                if (viewId == ViewName.Account)
-                {
-                    Array.ForEach(config.Current.Levels.Where(lvl => lvl.IsUsed).ToArray(), level =>
+            Array.ForEach(config.Current.Levels.Where(lvl => lvl.IsUsed).ToArray(), level =>
                     {
                         levels.Add(new AccountLevelViewModel()
                         {
@@ -440,26 +436,6 @@ namespace SPPC.Tadbir.Persistence
                             ViewId = viewId
                         });
                     });
-                }
-                else
-                {
-                    var lastUsed = config.Current.Levels
-                        .Where(lvl => lvl.IsUsed)
-                        .OrderByDescending(lvl => lvl.No)
-                        .FirstOrDefault();
-                    if (lastUsed != null)
-                    {
-                        levels.Add(new AccountLevelViewModel()
-                        {
-                            Key = key++,
-                            Level = lastUsed.No - 1,
-                            Title = lastUsed.Name,
-                            ViewId = viewId
-                        });
-                    }
-                }
-            }
-
             return levels;
         }
 
