@@ -264,7 +264,8 @@
     "ArticleType": "وضعیت علامت گذاری",
     "OnLabel": "بله",
     "OffLabel": "خیر",
-    "ModelNotValid": "{0} معتبر نمیباشد"
+    "ModelNotValid": "{0} معتبر نمیباشد",
+    "Report": "گزارش"
   },
   "AccountBookSingle": {
     "RowNo": "ردیف",

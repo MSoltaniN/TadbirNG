@@ -246,11 +246,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(treesLookup);
         }
 
-        // GET: api/lookup/accbook/levels
+        // GET: api/lookup/accbook/views/{viewId:min(1)}/levels
         [Route(LookupApi.AccountBookLevelsUrl)]
-        public async Task<IActionResult> GetAccountBookLevelsAsync()
+        public async Task<IActionResult> GetAccountBookLevelsAsync(int viewId)
         {
-            var levels = await _repository.GetAccountBookLevelsAsync();
+            var levels = await _repository.GetAccountBookLevelsAsync(viewId);
             foreach (var level in levels)
             {
                 level.Title = LocalizeLevelTitle(level.Title, level.Level);

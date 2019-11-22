@@ -310,7 +310,8 @@
     "ArticleType": "Mark Status",
     "OnLabel": "Yes",
     "OffLabel": "No",
-    "ModelNotValid": "The {0} is not valid"
+    "ModelNotValid": "The {0} is not valid",
+    "Report": "Report"
   },
   "AccountBookSingle": {
     "RowNo": "Row No",

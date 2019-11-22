@@ -172,12 +172,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for all applicable tree levels in Account Book report
         /// </summary>
-        public const string AccountBookLevels = "lookup/accbook/levels";
+        public const string AccountBookLevels = "lookup/accbook/views/{viewId:min(1)}/levels";
 
         /// <summary>
         /// API server route URL for all applicable tree levels in Account Book report
         /// </summary>
-        public const string AccountBookLevelsUrl = "lookup/accbook/levels";
+        public const string AccountBookLevelsUrl = "lookup/accbook/views/{viewId:min(1)}/levels";
 
         #endregion
     }
