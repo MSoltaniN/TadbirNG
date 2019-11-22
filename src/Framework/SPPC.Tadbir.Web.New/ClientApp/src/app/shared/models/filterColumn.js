@@ -4,6 +4,8 @@ export class Braces {
 }
 export class FilterRow {
 }
+export class GroupFilter {
+}
 export var NumberOperatorResource;
 (function (NumberOperatorResource) {
     NumberOperatorResource["EQ"] = "AdvanceFilter.EQ";

@@ -10,12 +10,22 @@
 .new-filter {
   background-color: #f6f6f6;
   border: solid 1px #dadde2;
+  margin-bottom: 5px;
+  padding-top: 1px;
+  padding-bottom: 5px;
+  padding-right: 6px;
+}
+
+.group-filter .form-group
+{
+   padding:10px;
+   margin-bottom:22px;
 }
 
 .exp-filter {
-  padding:5px!important;
+  padding: 5px !important;
   background-color: #f6f6f6;
-  border: solid 1px #dadde2; 
+  border: solid 1px #dadde2;
 }
 
   .exp-filter input {

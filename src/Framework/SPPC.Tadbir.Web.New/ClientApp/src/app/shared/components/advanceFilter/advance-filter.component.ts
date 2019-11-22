@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces } from '@sppc/shared/models';
+import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces, GroupFilter } from '@sppc/shared/models';
 import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { BrowserStorageService, GridService, MetaDataService } from '@sppc/shared/services';
@@ -11,6 +11,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { MessageType } from '@sppc/env/environment.prod';
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { guid } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
+
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -110,7 +111,17 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.selectedColumnChange();
     this.formMode = "insert";
 
-    
+    if (!this.groupFilters) {
+      this.groupFilters = new Array<GroupFilter>();
+      var firstItem = new GroupFilter();
+      firstItem.id = "-1";
+      firstItem.name = "---";
+      this.gFilterSelected = "-1";
+      this.groupFilters.push(firstItem);
+    }
+    //if(this.groupFilters)
+      //this.selectedGroupRows.push(this.groupFilters.findIndex(gf => gf.isDefault));
+
   }
 
   selectedColumnChange() {
@@ -159,6 +170,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   saveFilter() {
     if (this.isValidate()) {
 
+      var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+      this.filters = this.groupFilters[index].filters;
 
       this.filters[this.currentEditIndex].columnName = this.selectedColumn;
       this.filters[this.currentEditIndex].operator = this.selectedOperator;
@@ -177,6 +190,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
             
       this.revertToDefaultValues()
       this.computeTotalExpression();
+
+      this.groupFilters[index].filters = this.filters;      
       this.showMessage(this.getText('AdvanceFilter.FilterEditedSuccess'), MessageType.Succes);
     }
   }
@@ -246,8 +261,6 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     return operator;
   }
 
-
-
   createFilterExpression():FilterExpression {
 
     var totalfilter: FilterExpression;
@@ -278,9 +291,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     return totalfilter;
   }
 
-  onOk() {
-
-    this.result.emit({ filters: this.createFilterExpression(),filterList: this.filters });
+  onOk() {    
+    this.result.emit({ filters: this.createFilterExpression(),filterList: this.filters,groupFilter:this.groupFilters });
   }
 
   onCancel(): void {
@@ -294,82 +306,107 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
 
   braces() {
+
+    var filters = new Array<FilterRow>();
+    //filters = this.filters.copyWithin(0, this.filters.length);
+    filters = <Array<FilterRow>>JSON.parse(JSON.stringify(this.filters));
+
     if (this.selectedRows && this.selectedRows.length > 1) {
 
       var orderdSelected = this.selectedRows.sort((a, b) => parseFloat(a.order) - parseFloat(b.order));
 
-      var startIndex = this.filters.findIndex(f => f === orderdSelected[0]);
-      var endIndex = this.filters.findIndex(f => f === orderdSelected[orderdSelected.length - 1]);
+      var startIndex = filters.findIndex(f => f.id === orderdSelected[0].id);
+      var endIndex = filters.findIndex(f => f.id === orderdSelected[orderdSelected.length - 1].id);
 
-      if (!this.filters[startIndex].braces)
-        this.filters[startIndex].braces = new Array<Braces>();      
+      if (!filters[startIndex].braces)
+        filters[startIndex].braces = new Array<Braces>();      
 
-      if (!this.filters[endIndex].braces)
-        this.filters[endIndex].braces = new Array<Braces>();
+      if (!filters[endIndex].braces)
+        filters[endIndex].braces = new Array<Braces>();      
 
-      
+      if (filters[startIndex].braces.findIndex(b => b.outerId === filters[endIndex].id && b.brace === "(") >= 0
+        && filters[endIndex].braces.findIndex(b => b.outerId === filters[startIndex].id && b.brace === ")") >= 0) {
 
-      if (this.filters[startIndex].braces.findIndex(b => b.outerId === this.filters[endIndex].id && b.brace === "(") >= 0
-        && this.filters[endIndex].braces.findIndex(b => b.outerId === this.filters[startIndex].id && b.brace === ")") >= 0) {
+         //remove braces to temp array and check expression
+        var dStartIndex = filters[startIndex].braces.findIndex(b => b.outerId === filters[endIndex].id && b.brace === "(");
+        var dEndIndex = filters[endIndex].braces.findIndex(b => b.outerId === filters[startIndex].id && b.brace === ")");
 
-        var dStartIndex = this.filters[startIndex].braces.findIndex(b => b.outerId === this.filters[endIndex].id && b.brace === "(");
-        var dEndIndex = this.filters[endIndex].braces.findIndex(b => b.outerId === this.filters[startIndex].id && b.brace === ")");
+        filters[startIndex].braces.splice(dStartIndex);
+        filters[endIndex].braces.splice(dEndIndex);
 
-        this.filters[startIndex].braces.splice(dStartIndex);
-        this.filters[endIndex].braces.splice(dEndIndex);
-        this.computeTotalExpression();
-
-        return;
-      }
-
-      /*
-      var index = 0;
-      var showMsg = false;
-      this.filters.forEach((fi) => {
-        if (showMsg) return;
-        if (fi.braces) {
-          fi.braces.forEach((br) => {
-            var anotherBraces = this.filters.findIndex(f => f.id === br.outerId);
-            if (!((startIndex >= index && endIndex <= anotherBraces)
-              || (startIndex < index && endIndex < index)
-              || (startIndex > anotherBraces && endIndex > anotherBraces))) {
-              showMsg = true;
-              return;
-            }
-
-          });
+        if (!this.checkExpression(filters)) {          
+          this.showMessage(this.getText('AdvanceFilter.RemoveBracesMsg'));
+          return;
         }
 
-        index++;
-      });
+         //remove braces from real array
+        this.filters[startIndex].braces.splice(dStartIndex);
+        this.filters[endIndex].braces.splice(dEndIndex);
+      }
+      else {
 
-      if (showMsg) {
-        this.showMessage('err');
-        return;
-      }*/
+        //add braces to temp array and check expression
+        var startBrace = new Braces();
+        startBrace.brace = "(";
+        startBrace.outerId = filters[endIndex].id;
 
-      var startBrace = new Braces();
-      startBrace.brace = "(";
-      startBrace.outerId = this.filters[endIndex].id;
-    
-      var endBrace = new Braces();
-      endBrace.brace = ")";
-      endBrace.outerId = this.filters[startIndex].id;
+        var endBrace = new Braces();
+        endBrace.brace = ")";
+        endBrace.outerId = filters[startIndex].id;
 
-      this.filters[startIndex].braces.push(startBrace);
-      this.filters[endIndex].braces.push(endBrace);
+        filters[startIndex].braces.push(startBrace);
+        filters[endIndex].braces.push(endBrace);
+
+        if (!this.checkExpression(filters)) {
+          this.showMessage(this.getText('AdvanceFilter.AddBracesMsg'));
+          return;
+        }
+
+        //add braces to real array
+        if (!this.filters[startIndex].braces)
+          this.filters[startIndex].braces = new Array<Braces>();
+        if (!this.filters[endIndex].braces)
+          this.filters[endIndex].braces = new Array<Braces>();
+
+        this.filters[startIndex].braces.push(startBrace);
+        this.filters[endIndex].braces.push(endBrace);
+      }       
+
+      var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);      
+      this.groupFilters[index].filters = this.filters;      
 
       this.computeTotalExpression();
     };    
   }
 
+  checkExpression(filters: Array<FilterRow>):boolean {
+    let result = false;
+    try {
+      result = eval(this.computeExpressionWithBraces(filters)) === eval('true');
+    }
+    catch (e) {
+      result = false;
+    }
+
+    return result;
+  }
+
   insertNewFilter()
-  {
+  {   
+
     if (this.isValidate()) {
 
       var selectedCol = this.columnsList.filter(p => p.name === this.selectedColumn)[0];
       var selectedOp = this.operatorsList.filter(p => p.key === this.selectedOperator)[0];
       var selectedlogOp = this.logicalOperatorList.filter(p => p.key === this.selectedLogicalOperator)[0];
+
+      var index = -1;
+      if (this.groupFilters) {
+        index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+        this.filters = this.groupFilters[index].filters;
+      }
+      else
+        this.filters = new Array<FilterRow>();
 
       var row: FilterRow = new FilterRow();
       row.id = Guid.newGuid();
@@ -383,30 +420,72 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       row.filterTitle = selectedCol.title + " " + row.operatorTitle + " " + this.selectedValue + " " + row.logicalOperatorTitle
       row.order = this.filters ? this.filters.length : 0;
 
-      if (!this.filters) this.filters = new Array<FilterRow>();
+      if (!this.filters)
+        this.filters = new Array<FilterRow>();
+
       this.filters.push(row);
       this.selectedValue = "";
 
+      this.groupFilters[index].filters = this.filters;      
       this.showMessage(this.getText('AdvanceFilter.FilterInsertedSuccess'), MessageType.Succes)
       this.computeTotalExpression();
     }
   }
 
- 
+  computeExpressionWithBraces(filters: Array<FilterRow>) {    
 
-  computeTotalExpression() {
-
-    if (this.filters) {
+    var expression = "";
+    if (filters) {
       var i = 0;
-      var count = this.filters.length;
-      this.totalFilterExpression = "";
+      var count = filters.length;    
 
-      this.filters.forEach((item) => {
+      filters.forEach((item) => {
         i++;
 
         if (item.braces) {
-          item.braces.forEach((br) =>
-          {
+          item.braces.forEach((br) => {
+            if (br.brace == "(")
+              expression += " " + br.brace;
+          });
+        }
+
+        expression += " true ";
+
+        if (item.braces) {
+          item.braces.forEach((br) => {
+            if (br.brace == ")")
+              expression += br.brace + " ";
+          });
+        }
+
+        if (i < count)
+          expression += item.logicOperator == 'or' ? ' || ' : ' && ';
+      });
+    }
+    else {
+      expression = "true";
+    }
+
+    return expression;
+  }
+  
+  computeTotalExpression() {
+
+    if (!this.groupFilters) return;
+
+    var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    var filters = this.groupFilters[index].filters;;
+
+    if (filters) {
+      var i = 0;
+      var count = filters.length;
+      this.totalFilterExpression = "";
+
+      filters.forEach((item) => {
+        i++;
+
+        if (item.braces) {
+          item.braces.forEach((br) => {
             if (br.brace == "(")
               this.totalFilterExpression += " " + br.brace;
           });
@@ -424,6 +503,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         if (i < count)
           this.totalFilterExpression += item.logicalOperatorTitle + " ";
       });
+    }
+    else {
+      this.totalFilterExpression = "";  
     }
     
   }
@@ -457,35 +539,38 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     if (this.selectedRows) {
       var deleted: Array<FilterRow> = [];
 
+      var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+      var filters = this.groupFilters[index].filters;;
+
       this.selectedRows.forEach((item) => {
-        //this.filters.splice(item,1);
-        deleted.push(this.filters[item]);
+        //filters.splice(item,1);
+        deleted.push(filters[item]);
 
       });
 
       var sortDeleted = this.selectedRows.sort((a, b) => parseFloat(a.order) - parseFloat(b.order));
 
       sortDeleted.forEach((del) => {
-        var index = this.filters.findIndex(fi => fi === del);        
+        var index = filters.findIndex(fi => fi === del);        
 
-        var deleteBraces = this.filters[index].braces;
+        var deleteBraces = filters[index].braces;
         if (deleteBraces) {
           deleteBraces.forEach((b) => {
-            if (this.filters[index + 1]) {
-              var nextFilter = this.filters[index + 1];
+            if (filters[index + 1]) {
+              var nextFilter = filters[index + 1];
               if (!nextFilter.braces)
                 nextFilter.braces = new Array<Braces>();
               nextFilter.braces.push(b);
             }
             else {
-              if (this.filters[index].braces) {
+              if (filters[index].braces) {
                 var deletedBrace = new Array<Braces>();
 
-                this.filters[index].braces.forEach((br) => {
-                  var outerBraces = this.filters.filter(f => f.id === br.outerId)[0].braces;
+                filters[index].braces.forEach((br) => {
+                  var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
 
                   outerBraces.forEach((obr) => {
-                    if (obr.outerId == this.filters[index].id) {
+                    if (obr.outerId == filters[index].id) {
                       deleteBraces.push(obr);
                     }
                   })
@@ -504,7 +589,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
                   
         
 
-        this.filters.splice(index, 1);
+        filters.splice(index, 1);
       });
 
       this.computeTotalExpression();
@@ -512,10 +597,52 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       this.revertToDefaultValues();
 
+      this.groupFilters[index].filters = filters;
+
       this.showMessage(this.getText('AdvanceFilter.FilterDeletedSuccess'), MessageType.Succes)
     }
 
     
+  }
+
+  gFilterSelected: string;
+  activeGroupFilter: boolean = false;  
+  filterGroupName: string;
+  public groupFilters: Array<GroupFilter>;
+  selectedGroupRows: any[] = [];
+
+  addGroupFilter() {
+    this.activeGroupFilter = true;  
+  }
+
+  onGroupFilterOk() {
+    var gf = new GroupFilter();
+    gf.id = Guid.newGuid();   
+    gf.name = this.filterGroupName;
+
+    this.gFilterSelected = gf.id;
+    this.groupFilters.push(gf);
+    this.gFilterSelectChange(gf.id);
+    this.activeGroupFilter = false;  
+  }
+
+  onGroupFilterCancel() {
+    this.activeGroupFilter = false;  
+  }
+
+  public gFilterSelectChange(id) {
+    var index = this.groupFilters.findIndex(gf => gf.id === id);
+    this.filters = this.groupFilters[index].filters;    
+    this.selectedRows = [];
+    //this.groupFilters.forEach((gf) => {
+    //  if (i == e.index)
+    //    gf.isDefault = true;
+    //  else
+    //    gf.isDefault = false;
+    //  i++;
+    //});    
+
+    this.computeTotalExpression();
   }
 
 }

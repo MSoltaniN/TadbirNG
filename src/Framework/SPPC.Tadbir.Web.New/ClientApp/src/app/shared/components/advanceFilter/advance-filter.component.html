@@ -1,5 +1,24 @@
 <div class="panel-body">
   <div class="sppc-dialog-md sppc-filter-form" (keydown.esc)="escPress()">
+
+      <div class="col-md-12 new-filter">
+        <div class="col-md-9 pad10">
+          <button kendoButton class="hidden-xs rm lm" title="add" (click)="addGroupFilter()"
+                  [icon]="'file-add'" type="button"></button>
+          <button kendoButton class="hidden-xs rm lm" title="delete" (click)="removeGroupFilter()"
+                  [icon]="'delete'" type="button"></button>
+        </div>
+        <div class="col-md-3 pad10">
+          <kendo-dropdownlist [data]="groupFilters" class="sppc-width-100"
+                              [textField]="'name'"
+                              [valueField]="'id'"
+                              [valuePrimitive]="true"
+                              [(ngModel)]="gFilterSelected"
+                              (ngModelChange)="gFilterSelectChange($event)">
+          </kendo-dropdownlist>
+        </div>
+      </div>
+     
   <div class="col-md-12 new-filter">
     <div class="col-xs-12 col-md-3 pad10 sppc-float">
       <div class="form-group">
@@ -62,7 +81,7 @@
           </ng-template>
           <ng-template kendoDropDownListItemTemplate let-dataItem>
             {{ dataItem?.value | translate }}
-          </ng-template>          
+          </ng-template>
         </kendo-dropdownlist>
       </div>
     </div>
@@ -77,13 +96,13 @@
       </div>
     </div>
   </div>
-  <kendo-grid id="filter_{{viewId}}" 
+  <kendo-grid id="filter_{{viewId}}" [style.min-height.px]="190"
               style="width:100%;"
               #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="filters"
               [sortable]="{ allowUnsort: false, mode: 'multiple' }"
               [pageable]="false"
-              [resizable]="true"              
+              [resizable]="true"
               [scrollable]="'scrollable'"
               [selectable]="{enabled: true, mode:'multiple'}"
               [filterable]="false"
@@ -114,11 +133,36 @@
   </kendo-grid>
   <div class="col-md-12 exp-filter">
     <input class="k-textbox col-md-12 " [ngModel]="totalFilterExpression" readonly />
-  </div>
+  </div>      
   <kendo-dialog-actions>
     <button class="k-button k-primary" (click)="onOk()">{{ 'Buttons.Ok' | translate }}</button> <!--[disabled]="!selectedRows.length"-->
     <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
   </kendo-dialog-actions>
 
 </div>
-</div>
+  </div>
+<kendo-dialog *ngIf="activeGroupFilter" class="pdialog" id="advancefilter-name" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()">
+  <kendo-dialog-titlebar>
+    {{ 'AdvanceFilter.GroupFilter' | translate }}
+  </kendo-dialog-titlebar>
+  <div class="group-filter">
+    <div class="form-group">
+      <div class="col-md-12">
+        <label for="groupFilter" class="control-label">{{ 'AdvanceFilter.Name' | translate }}</label>
+        <input type="text" class="k-textbox" name="groupFilter" [(ngModel)]="filterGroupName" />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12">
+        <input type="checkbox" name="saveFilter" id="saveFilter" class="k-checkbox" />
+        <label class="k-checkbox-label" for="saveFilter">{{ 'AdvanceFilter.SaveFilter' | translate }}</label>
+      </div>
+    </div>
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button k-primary" (click)="onGroupFilterOk()">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="onGroupFilterCancel()">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+

@@ -194,6 +194,8 @@
     "Contains": "شامل شود",
     "DoesNotContain": "شامل نشود",
     "RecordNotFound": "هیچ فیلتری درج نشده است!",
+    "GroupFilterNotFound": "هیچ گروه فیلتری درج نشده است!",
+    "PleaseInsertGroupFilter": "لطفا ابتدا گروه فیلتر انتخاب شود",
     "InsertFilter": "درج فیلتر",
     "PlaeseSelectField": "لطفا یک فیلد را انتخاب کنید",
     "PlaeseEnterValue": "مقدار فیلتر را را وارد کنید",
@@ -202,7 +204,12 @@
     "FilterInsertedSuccess": "فیلتر با موفقیت درج شد",
     "FilterEditedSuccess": "فیلتر با موفقیت ذخیره شد",
     "FilterDeletedSuccess": "فیلتر با موفقیت حذف شد",
-    "NoDataForOperators": "لطفا یک فیلد را انتخاب کنید"
+    "NoDataForOperators": "لطفا یک فیلد را انتخاب کنید",
+    "RemoveBracesMsg": "حذف پرانتز های انتخاب شده از فیلترهای انتخاب شده امکان پذیر نمی باشد ",
+    "AddBracesMsg": "درج پرانتز برای فیلترهای انتخاب شده امکان پذیر نمی باشد",
+    "Name": "نام",
+    "GroupFilter": "گروه فیلتر",
+    "SaveFilter": "ذخیره فیلتر"
   },
   "Currency": {
     "New": "ارز جدید",
