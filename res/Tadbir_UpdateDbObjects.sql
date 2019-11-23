@@ -351,6 +351,13 @@ ADD CONSTRAINT [FK_Config_ViewSetting_Config_Setting] FOREIGN KEY ([SettingID])
     REFERENCES [Config].[Setting]([SettingID]);
 GO
 
-
 --1.1.751
-Update Finance.Voucher Set Reference = NULL Where Reference = ''
+UPDATE [Finance].[Voucher]
+SET Reference = NULL
+WHERE Reference = ''
+
+-- 1.1.762
+SET IDENTITY_INSERT [Config].[Setting] ON
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
+VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":2,"defaultCalendar":0,"usesDefaultCoding":true}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":2,"defaultCalendar":0,"usesDefaultCoding":true}', 'SystemConfigurationDescription', 1)
+SET IDENTITY_INSERT [Config].[Setting] OFF
