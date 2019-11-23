@@ -67,6 +67,9 @@ namespace SPPC.Tadbir.Persistence
 
                 await AddSixAndEightColumnBalanceItemsAsync(testBalance, parameters);
                 await ApplyZeroBalanceOptionAsync(testBalance, parameters);
+                testBalance.SetBalanceItems(testBalance.Items
+                    .Apply(parameters.GridOptions, false)
+                    .ToArray());
                 SetSummaryItems(testBalance);
             }
 
@@ -208,6 +211,9 @@ namespace SPPC.Tadbir.Persistence
 
             await AddSixAndEightColumnBalanceItemsAsync(testBalance, parameters);
             await ApplyZeroBalanceOptionAsync(testBalance, parameters);
+            testBalance.SetBalanceItems(testBalance.Items
+                .Apply(parameters.GridOptions, false)
+                .ToArray());
             SetSummaryItems(testBalance);
             return testBalance;
         }
@@ -259,7 +265,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(mainFilter)
                 .Select(art => Mapper.Map<TestBalanceItemViewModel>(art))
                 .ToListAsync();
-            return lines.Apply(parameters.GridOptions, false).ToList();
+            return lines;
         }
 
         private IEnumerable<IGrouping<string, TestBalanceItemViewModel>> GetTurnoverGroups(

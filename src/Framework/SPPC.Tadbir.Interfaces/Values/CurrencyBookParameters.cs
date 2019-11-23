@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace SPPC.Tadbir.ViewModel.Reporting
+namespace SPPC.Tadbir.Values
 {
     /// <summary>
     /// اطلاعات مورد نیاز برای گزارش دفتر عملیاتی ارز
     /// </summary>
-    public class CurrencyBookParamViewModel
+    public class CurrencyBookParameters
     {
         /// <summary>
         /// گزارش به تفکیک شعبه است یا خیر؟

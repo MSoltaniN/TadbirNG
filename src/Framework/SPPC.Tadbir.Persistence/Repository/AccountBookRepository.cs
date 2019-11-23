@@ -276,7 +276,10 @@ namespace SPPC.Tadbir.Persistence
             var itemCriteria = GetItemCriteria(viewId, accountId);
             var bookItems = await GetRawAccountBookLines(itemCriteria, from, to)
                 .ToListAsync();
-            AddBookItems(book, bookItems, gridOptions);
+            book.Items.AddRange(bookItems
+                .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
+                .Apply(gridOptions, false));
+            PrepareAccountBook(book, gridOptions);
             return book;
         }
 
@@ -289,7 +292,9 @@ namespace SPPC.Tadbir.Persistence
 
             var itemCriteria = GetItemCriteria(viewId, accountId);
             var lines = await GetRawAccountBookLines(itemCriteria, from, to).ToListAsync();
-            AggregateAccountBook(book, lines, gridOptions, byNo, byBranch);
+            AggregateAccountBook(book, lines, byNo, byBranch);
+            book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
+            PrepareAccountBook(book, gridOptions);
             return book;
         }
 
@@ -302,7 +307,7 @@ namespace SPPC.Tadbir.Persistence
 
             var itemCriteria = GetItemCriteria(viewId, accountId);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.OpeningVoucher, from, to, gridOptions, byBranch);
+                VoucherType.OpeningVoucher, from, to, byBranch);
 
             var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
@@ -310,7 +315,6 @@ namespace SPPC.Tadbir.Persistence
                 var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
                     .Where(art => art.Voucher.Type == (short)VoucherType.NormalVoucher)
                     .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
-                    .Apply(gridOptions, false)
                     .ToList();
                 if (monthLines.Count > 0)
                 {
@@ -333,18 +337,18 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingTempAccounts, from, to, gridOptions, byBranch);
+                VoucherType.ClosingTempAccounts, from, to, byBranch);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingVoucher, from, to, gridOptions, byBranch);
+                VoucherType.ClosingVoucher, from, to, byBranch);
 
+            book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
             PrepareAccountBook(book, gridOptions);
             return book;
         }
 
         private async Task AddSpecialBookItemsAsync(
             AccountBookViewModel book, Expression<Func<VoucherLine, bool>> itemCriteria,
-            VoucherType voucherType, DateTime from, DateTime to, GridOptions gridOptions,
-            bool byBranch = false)
+            VoucherType voucherType, DateTime from, DateTime to, bool byBranch = false)
         {
             if (voucherType != VoucherType.NormalVoucher)
             {
@@ -357,7 +361,6 @@ namespace SPPC.Tadbir.Persistence
                         .Where(line => line.Voucher.Type == (short)voucherType)
                         .Where(itemCriteria)
                         .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
-                        .Apply(gridOptions, false)
                         .ToList();
                     if (byBranch)
                     {
@@ -437,15 +440,6 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private void AddBookItems(AccountBookViewModel book,
-            IList<VoucherLine> items, GridOptions gridOptions)
-        {
-            book.Items.AddRange(items
-                .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
-                .Apply(gridOptions, false));
-            PrepareAccountBook(book, gridOptions);
-        }
-
         private IQueryable<VoucherLine> GetRawAccountBookLines(
             Expression<Func<VoucherLine, bool>> itemCriteria, DateTime from, DateTime to)
         {
@@ -461,19 +455,15 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private void AggregateAccountBook(
-            AccountBookViewModel book, IEnumerable<VoucherLine> lines, GridOptions gridOptions,
-            bool byNo, bool byBranch = false)
+            AccountBookViewModel book, IEnumerable<VoucherLine> lines, bool byNo, bool byBranch = false)
         {
             var items = lines
-                .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
-                .Apply(gridOptions, false);
+                .Select(line => Mapper.Map<AccountBookItemViewModel>(line));
             foreach (var bookGroup in GetAccountBookGroups(items, byNo, byBranch))
             {
                 var aggregates = GetAggregatedBookItems(bookGroup, byNo || byBranch);
                 book.Items.AddRange(aggregates);
             }
-
-            PrepareAccountBook(book, gridOptions);
         }
 
         private TreeEntity GetAccountItem(int viewId, int itemId)

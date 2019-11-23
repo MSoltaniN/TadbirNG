@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookByRowAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookVoucherSumAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookDailySumAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookMonthlySumAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookByRowByBranchAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookVoucherSumByBranchAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookDailySumByBranchAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookMonthlySumByBranchAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns></returns>
         Task<CurrencyBookViewModel> GetCurrencyBookAllCurrenciesAsync(
-            CurrencyBookParamViewModel bookParam,
+            CurrencyBookParameters bookParam,
             GridOptions gridOptions);
     }
 }

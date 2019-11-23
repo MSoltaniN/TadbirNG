@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrencyBookByRowAsync(
             bool byBranch, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
         {
-            var bookParams = new CurrencyBookParamViewModel()
+            var bookParams = new CurrencyBookParameters()
             {
                 ByBranch = byBranch,
                 From = from,
@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrencyBookVoucherSumAsync(
             bool byBranch, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
         {
-            var bookParams = new CurrencyBookParamViewModel()
+            var bookParams = new CurrencyBookParameters()
             {
                 ByBranch = byBranch,
                 From = from,
@@ -72,7 +72,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrencyBookDailySumAsync(
             bool byBranch, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
         {
-            var bookParams = new CurrencyBookParamViewModel()
+            var bookParams = new CurrencyBookParameters()
             {
                 ByBranch = byBranch,
                 From = from,
@@ -92,7 +92,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrencyBookMonthlySumAsync(
             bool byBranch, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
         {
-            var bookParams = new CurrencyBookParamViewModel()
+            var bookParams = new CurrencyBookParameters()
             {
                 ByBranch = byBranch,
                 From = from,
@@ -112,7 +112,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrencyBookAllCurrenciesAsync(
              bool currFree, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
         {
-            var bookParams = new CurrencyBookParamViewModel()
+            var bookParams = new CurrencyBookParameters()
             {
                 ByBranch = false,
                 From = from,
@@ -153,7 +153,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             book.Items.AddRange(items);
         }
 
-        private async Task<IActionResult> CurrencyBookResultAsync(AccountBookMode bookMode, CurrencyBookParamViewModel bookParam)
+        private async Task<IActionResult> CurrencyBookResultAsync(AccountBookMode bookMode, CurrencyBookParameters bookParam)
         {
             var currencyBook = GetCurrencyBookDelegate(bookMode, bookParam.ByBranch);
             var gridOptions = GridOptions ?? new GridOptions();
@@ -216,7 +216,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private delegate Task<CurrencyBookViewModel> CurrencyBookDelegate(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions);
+            CurrencyBookParameters bookParam, GridOptions gridOptions);
 
         private readonly ICurrencyBookRepository _repository;
         private readonly IConfigRepository _configRepository;

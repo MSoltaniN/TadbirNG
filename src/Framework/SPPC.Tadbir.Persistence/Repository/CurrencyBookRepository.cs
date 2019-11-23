@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookByRowAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetSimpleBookAsync(bookParam, gridOptions);
         }
@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookVoucherSumAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetSummaryBookAsync(bookParam, gridOptions, false, true);
         }
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookDailySumAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetSummaryBookAsync(bookParam, gridOptions, false, false);
         }
@@ -78,7 +78,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookMonthlySumAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetMonthlySummaryBookAsync(bookParam, gridOptions);
         }
@@ -90,7 +90,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookByRowByBranchAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetSimpleBookAsync(bookParam, gridOptions);
         }
@@ -102,7 +102,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookVoucherSumByBranchAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetSummaryBookAsync(bookParam, gridOptions, false, true);
         }
@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookDailySumByBranchAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetSummaryBookAsync(bookParam, gridOptions, false, false);
         }
@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookMonthlySumByBranchAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetMonthlySummaryBookAsync(bookParam, gridOptions);
         }
@@ -138,7 +138,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns></returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookAllCurrenciesAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             return await GetSummaryBookAsync(bookParam, gridOptions, true, false);
         }
@@ -231,7 +231,7 @@ namespace SPPC.Tadbir.Persistence
             book.SetItems(book.Items.ApplyPaging(gridOptions).ToArray());
         }
 
-        private IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParamViewModel bookParam, bool byCurrency = false)
+        private IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParameters bookParam, bool byCurrency = false)
         {
             var itemCriteria = new List<Expression<Func<VoucherLine, bool>>>();
 
@@ -272,19 +272,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<CurrencyBookViewModel> GetSimpleBookAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             var book = new CurrencyBookViewModel();
 
             var itemCriteria = GetItemCriteria(bookParam);
             var bookItems = await GetRawCurrencyBookLines(itemCriteria, bookParam.From, bookParam.To)
                 .ToListAsync();
-            AddBookItems(book, bookItems, gridOptions);
+            book.Items.AddRange(bookItems
+                .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
+                .Apply(gridOptions, false));
+            PrepareCurrencyBook(book, gridOptions);
             return book;
         }
 
         private async Task<CurrencyBookViewModel> GetSummaryBookAsync(
-           CurrencyBookParamViewModel bookParam, GridOptions gridOptions,
+           CurrencyBookParameters bookParam, GridOptions gridOptions,
            bool byCurrency, bool byNo)
         {
             var book = new CurrencyBookViewModel();
@@ -292,19 +295,20 @@ namespace SPPC.Tadbir.Persistence
             var itemCriteria = GetItemCriteria(bookParam, byCurrency);
             var lines = await GetRawCurrencyBookLines(itemCriteria, bookParam.From, bookParam.To)
                 .ToListAsync();
-            AggregateCurrencyBook(book, lines, gridOptions, byCurrency, byNo, bookParam.ByBranch);
-
+            AggregateCurrencyBook(book, lines, byCurrency, byNo, bookParam.ByBranch);
+            book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
+            PrepareCurrencyBook(book, gridOptions);
             return book;
         }
 
         private async Task<CurrencyBookViewModel> GetMonthlySummaryBookAsync(
-            CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             var book = new CurrencyBookViewModel();
 
             var itemCriteria = GetItemCriteria(bookParam);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.OpeningVoucher, bookParam, gridOptions);
+                VoucherType.OpeningVoucher, bookParam);
 
             var monthEnum = new MonthEnumerator(bookParam.From, bookParam.To, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
@@ -312,7 +316,6 @@ namespace SPPC.Tadbir.Persistence
                 var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
                     .Where(art => art.Voucher.Type == (short)VoucherType.NormalVoucher)
                     .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
-                    .Apply(gridOptions, false)
                     .ToList();
                 if (monthLines.Count > 0)
                 {
@@ -335,17 +338,18 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingTempAccounts, bookParam, gridOptions);
+                VoucherType.ClosingTempAccounts, bookParam);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingVoucher, bookParam, gridOptions);
+                VoucherType.ClosingVoucher, bookParam);
 
+            book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
             PrepareCurrencyBook(book, gridOptions);
             return book;
         }
 
         private async Task AddSpecialBookItemsAsync(
            CurrencyBookViewModel book, IList<Expression<Func<VoucherLine, bool>>> itemCriteria,
-           VoucherType voucherType, CurrencyBookParamViewModel bookParam, GridOptions gridOptions)
+           VoucherType voucherType, CurrencyBookParameters bookParam)
         {
             if (voucherType != VoucherType.NormalVoucher)
             {
@@ -364,8 +368,7 @@ namespace SPPC.Tadbir.Persistence
 
                     var lines = query
                     .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
-                        .Apply(gridOptions, false)
-                        .ToList();
+                    .ToList();
 
                     if (bookParam.ByBranch)
                     {
@@ -426,32 +429,19 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private void AddBookItems(CurrencyBookViewModel book,
-            IList<VoucherLine> items, GridOptions gridOptions)
-        {
-            book.Items.AddRange(items
-                .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
-                .Apply(gridOptions, false));
-            PrepareCurrencyBook(book, gridOptions);
-        }
-
         private void AggregateCurrencyBook(
             CurrencyBookViewModel book,
             IEnumerable<VoucherLine> lines,
-            GridOptions gridOptions,
            bool byCurrency, bool byNo, bool byBranch = false)
         {
             var items = lines
-                .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
-                .Apply(gridOptions, false);
+                .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line));
 
             foreach (var bookGroup in GetCurrencyBookGroups(items, byCurrency, byNo, byBranch))
             {
                 var aggregates = GetAggregatedBookItems(bookGroup, byNo || byBranch, byCurrency);
                 book.Items.AddRange(aggregates);
             }
-
-            PrepareCurrencyBook(book, gridOptions);
         }
 
         private IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetCurrencyBookGroups(
