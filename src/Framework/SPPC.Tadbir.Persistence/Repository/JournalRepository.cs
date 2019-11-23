@@ -33,37 +33,33 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ</returns>
-        public async Task<JournalViewModel> GetJournalByDateAsync(
-            JournalMode journalMode, DateTime from, DateTime to, GridOptions gridOptions = null)
+        public async Task<JournalViewModel> GetJournalByDateAsync(JournalParameters parameters)
         {
             var journal = default(JournalViewModel);
-            switch (journalMode)
+            switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
-                    journal = await GetJournalByDateByRowAsync(from, to);
+                    journal = await GetJournalByDateByRowAsync(parameters);
                     break;
                 case JournalMode.ByRowsWithDetail:
-                    journal = await GetJournalByDateByRowWithDetailAsync(from, to);
+                    journal = await GetJournalByDateByRowWithDetailAsync(parameters);
                     break;
                 case JournalMode.ByLedger:
-                    journal = await GetJournalByDateByLedgerAsync(from, to);
+                    journal = await GetJournalByDateByLedgerAsync(parameters);
                     break;
                 case JournalMode.BySubsidiary:
-                    journal = await GetJournalByDateBySubsidiaryAsync(from, to);
+                    journal = await GetJournalByDateBySubsidiaryAsync(parameters);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalByDateLedgerSummaryAsync(from, to, gridOptions);
+                    journal = await GetJournalByDateLedgerSummaryAsync(parameters);
                     break;
                 case JournalMode.LedgerSummaryByDate:
-                    journal = await GetJournalByDateLedgerSummaryByDateAsync(from, to);
+                    journal = await GetJournalByDateLedgerSummaryByDateAsync(parameters);
                     break;
                 case JournalMode.MonthlyLedgerSummary:
-                    journal = await GetJournalByDateMonthlyLedgerSummaryAsync(from, to, gridOptions);
+                    journal = await GetJournalByDateMonthlyLedgerSummaryAsync(parameters);
                     break;
                 default:
                     break;
@@ -75,38 +71,33 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب تاریخ و به تفکیک شعبه را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
-        /// <param name="from">تاریخ ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">تاریخ انتها در دوره گزارشگیری مورد نظر</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ و به تفکیک شعبه</returns>
-        public async Task<JournalViewModel> GetJournalByDateByBranchAsync(
-            JournalMode journalMode, DateTime from, DateTime to, GridOptions gridOptions = null)
+        public async Task<JournalViewModel> GetJournalByDateByBranchAsync(JournalParameters parameters)
         {
             var journal = default(JournalViewModel);
-            switch (journalMode)
+            switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
-                    journal = await GetJournalByDateByRowByBranchAsync(from, to);
+                    journal = await GetJournalByDateByRowByBranchAsync(parameters);
                     break;
                 case JournalMode.ByRowsWithDetail:
-                    journal = await GetJournalByDateByRowDetailByBranchAsync(from, to);
+                    journal = await GetJournalByDateByRowDetailByBranchAsync(parameters);
                     break;
                 case JournalMode.ByLedger:
-                    journal = await GetJournalByDateByLedgerByBranchAsync(from, to);
+                    journal = await GetJournalByDateByLedgerByBranchAsync(parameters);
                     break;
                 case JournalMode.BySubsidiary:
-                    journal = await GetJournalByDateBySubsidiaryByBranchAsync(from, to);
+                    journal = await GetJournalByDateBySubsidiaryByBranchAsync(parameters);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalByDateLedgerSummaryByBranchAsync(
-                        from, to, gridOptions);
+                    journal = await GetJournalByDateLedgerSummaryByBranchAsync(parameters);
                     break;
                 case JournalMode.LedgerSummaryByDate:
-                    journal = await GetJournalByDateLedgerSummaryByDateByBranchAsync(from, to);
+                    journal = await GetJournalByDateLedgerSummaryByDateByBranchAsync(parameters);
                     break;
                 case JournalMode.MonthlyLedgerSummary:
-                    journal = await GetJournalByDateMonthlyLedgerSummaryAsync(from, to, gridOptions);
+                    journal = await GetJournalByDateMonthlyLedgerSummaryAsync(parameters);
                     break;
                 default:
                     break;
@@ -118,31 +109,27 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
-        /// <param name="from">شماره ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">شماره انتها در دوره گزارشگیری مورد نظر</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند</returns>
-        public async Task<JournalViewModel> GetJournalByNoAsync(
-            JournalMode journalMode, int from, int to, GridOptions gridOptions = null)
+        public async Task<JournalViewModel> GetJournalByNoAsync(JournalParameters parameters)
         {
             var journal = default(JournalViewModel);
-            switch (journalMode)
+            switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
-                    journal = await GetJournalByNoByRowAsync(from, to);
+                    journal = await GetJournalByNoByRowAsync(parameters);
                     break;
                 case JournalMode.ByRowsWithDetail:
-                    journal = await GetJournalByNoByRowDetailAsync(from, to);
+                    journal = await GetJournalByNoByRowDetailAsync(parameters);
                     break;
                 case JournalMode.ByLedger:
-                    journal = await GetJournalByNoByLedgerAsync(from, to);
+                    journal = await GetJournalByNoByLedgerAsync(parameters);
                     break;
                 case JournalMode.BySubsidiary:
-                    journal = await GetJournalByNoBySubsidiaryAsync(from, to);
+                    journal = await GetJournalByNoBySubsidiaryAsync(parameters);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalByNoLedgerSummaryAsync(from, to, gridOptions);
+                    journal = await GetJournalByNoLedgerSummaryAsync(parameters);
                     break;
                 default:
                     break;
@@ -154,31 +141,27 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات گزارش دفتر روزنامه بر حسب شماره سند و به تفکیک شعبه را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="journalMode">حالت مورد نظر برای نمایش و جمع بندی اطلاعات</param>
-        /// <param name="from">شماره ابتدا در دوره گزارشگیری مورد نظر</param>
-        /// <param name="to">شماره انتها در دوره گزارشگیری مورد نظر</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند و به تفکیک شعبه</returns>
-        public async Task<JournalViewModel> GetJournalByNoByBranchAsync(
-            JournalMode journalMode, int from, int to, GridOptions gridOptions = null)
+        public async Task<JournalViewModel> GetJournalByNoByBranchAsync(JournalParameters parameters)
         {
             var journal = default(JournalViewModel);
-            switch (journalMode)
+            switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
-                    journal = await GetJournalByNoByRowByBranchAsync(from, to);
+                    journal = await GetJournalByNoByRowByBranchAsync(parameters);
                     break;
                 case JournalMode.ByRowsWithDetail:
-                    journal = await GetJournalByNoByRowDetailByBranchAsync(from, to);
+                    journal = await GetJournalByNoByRowDetailByBranchAsync(parameters);
                     break;
                 case JournalMode.ByLedger:
-                    journal = await GetJournalByNoByLedgerByBranchAsync(from, to);
+                    journal = await GetJournalByNoByLedgerByBranchAsync(parameters);
                     break;
                 case JournalMode.BySubsidiary:
-                    journal = await GetJournalByNoBySubsidiaryByBranchAsync(from, to);
+                    journal = await GetJournalByNoBySubsidiaryByBranchAsync(parameters);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalByNoLedgerSummaryByBranchAsync(from, to, gridOptions);
+                    journal = await GetJournalByNoLedgerSummaryByBranchAsync(parameters);
                     break;
                 default:
                     break;
@@ -199,99 +182,102 @@ namespace SPPC.Tadbir.Persistence
 
         #region Journal Implementation
 
-        private static JournalViewModel BuildJournal(IEnumerable<JournalItemViewModel> journalItems)
+        private static JournalViewModel BuildJournal(
+            IEnumerable<JournalItemViewModel> journalItems, GridOptions gridOptions)
         {
             var journal = new JournalViewModel();
-            journal.Items.AddRange(journalItems);
+            journal.Items.AddRange(journalItems.Apply(gridOptions, false));
+            journal.DebitSum = journal.Items.Sum(item => item.Debit);
+            journal.CreditSum = journal.Items.Sum(item => item.Credit);
             return journal;
         }
 
         #region Journal By Date Implementation
 
         private async Task<JournalViewModel> GetJournalByDateByRowAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
             var journalItems = GetJournalByDateByRowItems(lines);
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateByRowWithDetailAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
-            var lines = await GetRawJournalByDateWithDetailLinesAsync(from, to);
+            var lines = await GetRawJournalByDateWithDetailLinesAsync(parameters.FromDate, parameters.ToDate);
             var journalItems = GetJournalByDateByRowItems(lines);
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateByLedgerAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
             foreach (var byDateByNo in GetGroupByThenByItems(
                 lines, art => art.Voucher.Date, art => art.Voucher.No))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateBySubsidiaryAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
             foreach (var byDateByNo in GetGroupByThenByItems(
                 lines, art => art.Voucher.Date, art => art.Voucher.No))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byDateByNo));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateLedgerSummaryAsync(
-            DateTime from, DateTime to, GridOptions gridOptions)
+            JournalParameters parameters)
         {
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
-            var journalItems = await GetJournalLedgerSummaryItemsAsync(lines, gridOptions);
-            return BuildJournal(journalItems);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
+            var journalItems = await GetJournalLedgerSummaryItemsAsync(lines);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
             foreach (var byDateByNo in GetGroupByThenByItems(
                 lines, art => art.Voucher.Date))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryAsync(
-            DateTime from, DateTime to, GridOptions gridOptions)
+            JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
             var monthJournal = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
-            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
+            var monthEnum = new MonthEnumerator(parameters.FromDate, parameters.ToDate, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
             {
                 var monthLines = lines
                     .Where(art => art.Voucher.Date.IsBetween(month.Start, month.End));
-                monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(monthLines, gridOptions));
+                monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(monthLines));
                 Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
                 journalItems.AddRange(monthJournal);
                 monthJournal.Clear();
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<IList<VoucherLine>> GetRawJournalByDateLinesAsync(
@@ -329,26 +315,26 @@ namespace SPPC.Tadbir.Persistence
         #region Journal By Date By Branch Implementation
 
         private async Task<JournalViewModel> GetJournalByDateByRowByBranchAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
             var journalItems = GetJournalByDateByRowByBranchItems(lines);
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateByRowDetailByBranchAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
-            var lines = await GetRawJournalByDateWithDetailLinesAsync(from, to);
+            var lines = await GetRawJournalByDateWithDetailLinesAsync(parameters.FromDate, parameters.ToDate);
             var journalItems = GetJournalByDateByRowByBranchItems(lines);
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateByLedgerByBranchAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
             foreach (var byDateByNoByBranch in GetGroupByThenByItems(
                 lines, art => art.Voucher.Date, art => art.Voucher.No,
                 art => art.BranchId))
@@ -356,14 +342,14 @@ namespace SPPC.Tadbir.Persistence
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNoByBranch));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateBySubsidiaryByBranchAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
             foreach (var byDateByNoByBranch in GetGroupByThenByItems(
                 lines, art => art.Voucher.Date, art => art.Voucher.No,
                 art => art.BranchId))
@@ -371,52 +357,52 @@ namespace SPPC.Tadbir.Persistence
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byDateByNoByBranch));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateLedgerSummaryByBranchAsync(
-            DateTime from, DateTime to, GridOptions gridOptions)
+            JournalParameters parameters)
         {
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
-            var journalItems = await GetJournalLedgerSummaryByBranchItemsAsync(lines, gridOptions);
-            return BuildJournal(journalItems);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
+            var journalItems = await GetJournalLedgerSummaryByBranchItemsAsync(lines);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateLedgerSummaryByDateByBranchAsync(
-            DateTime from, DateTime to)
+            JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
             foreach (var byDateByNo in GetGroupByThenByItems(
                 lines, art => art.Voucher.Date, art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<JournalViewModel> GetJournalByDateMonthlyLedgerSummaryByBranchAsync(
-            DateTime from, DateTime to, GridOptions gridOptions)
+            JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
             var monthJournal = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByDateLinesAsync(from, to);
-            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
+            var lines = await GetRawJournalByDateLinesAsync(parameters.FromDate, parameters.ToDate);
+            var monthEnum = new MonthEnumerator(parameters.FromDate, parameters.ToDate, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
             {
                 var monthLines = lines
                     .Where(art => art.Voucher.Date.IsBetween(month.Start, month.End));
                 foreach (var byBranch in GetGroupByThenByItems(monthLines, art => art.BranchId))
                 {
-                    monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(byBranch, gridOptions));
+                    monthJournal.AddRange(await GetJournalLedgerSummaryItemsAsync(byBranch));
                     Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
                     journalItems.AddRange(monthJournal);
                     monthJournal.Clear();
                 }
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private IEnumerable<JournalItemViewModel> GetJournalByDateByRowByBranchItems(
@@ -433,54 +419,51 @@ namespace SPPC.Tadbir.Persistence
 
         #region Journal By No Implementation
 
-        private async Task<JournalViewModel> GetJournalByNoByRowAsync(int from, int to)
+        private async Task<JournalViewModel> GetJournalByNoByRowAsync(JournalParameters parameters)
         {
-            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            var lines = await GetRawJournalByNoLinesAsync(parameters.FromNo, parameters.ToNo);
             var journalItems = GetJournalByNoByRowItems(lines);
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
-        private async Task<JournalViewModel> GetJournalByNoByRowDetailAsync(int from, int to)
+        private async Task<JournalViewModel> GetJournalByNoByRowDetailAsync(JournalParameters parameters)
         {
-            var lines = await GetRawJournalByNoWithDetailLinesAsync(from, to);
+            var lines = await GetRawJournalByNoWithDetailLinesAsync(parameters.FromNo, parameters.ToNo);
             var journalItems = GetJournalByNoByRowItems(lines);
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
-        private async Task<JournalViewModel> GetJournalByNoByLedgerAsync(
-            int from, int to)
+        private async Task<JournalViewModel> GetJournalByNoByLedgerAsync(JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            var lines = await GetRawJournalByNoLinesAsync(parameters.FromNo, parameters.ToNo);
             foreach (var byNo in GetGroupByThenByItems(
                 lines, art => art.Voucher.No))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byNo));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
-        private async Task<JournalViewModel> GetJournalByNoBySubsidiaryAsync(
-            int from, int to)
+        private async Task<JournalViewModel> GetJournalByNoBySubsidiaryAsync(JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            var lines = await GetRawJournalByNoLinesAsync(parameters.FromNo, parameters.ToNo);
             foreach (var byNo in GetGroupByThenByItems(
                 lines, art => art.Voucher.No))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byNo));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
-        private async Task<JournalViewModel> GetJournalByNoLedgerSummaryAsync(
-            int from, int to, GridOptions gridOptions)
+        private async Task<JournalViewModel> GetJournalByNoLedgerSummaryAsync(JournalParameters parameters)
         {
-            var lines = await GetRawJournalByNoLinesAsync(from, to);
-            var journalItems = await GetJournalLedgerSummaryItemsAsync(lines, gridOptions);
-            return BuildJournal(journalItems);
+            var lines = await GetRawJournalByNoLinesAsync(parameters.FromNo, parameters.ToNo);
+            var journalItems = await GetJournalLedgerSummaryItemsAsync(lines);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private async Task<IList<VoucherLine>> GetRawJournalByNoLinesAsync(int from, int to)
@@ -515,54 +498,51 @@ namespace SPPC.Tadbir.Persistence
 
         #region Journal By No By Branch Implementation
 
-        private async Task<JournalViewModel> GetJournalByNoByRowByBranchAsync(int from, int to)
+        private async Task<JournalViewModel> GetJournalByNoByRowByBranchAsync(JournalParameters parameters)
         {
-            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            var lines = await GetRawJournalByNoLinesAsync(parameters.FromNo, parameters.ToNo);
             var journalItems = GetJournalByNoByRowByBranchItems(lines);
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
-        private async Task<JournalViewModel> GetJournalByNoByRowDetailByBranchAsync(int from, int to)
+        private async Task<JournalViewModel> GetJournalByNoByRowDetailByBranchAsync(JournalParameters parameters)
         {
-            var lines = await GetRawJournalByNoWithDetailLinesAsync(from, to);
+            var lines = await GetRawJournalByNoWithDetailLinesAsync(parameters.FromNo, parameters.ToNo);
             var journalItems = GetJournalByNoByRowByBranchItems(lines);
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
-        private async Task<JournalViewModel> GetJournalByNoByLedgerByBranchAsync(
-            int from, int to)
+        private async Task<JournalViewModel> GetJournalByNoByLedgerByBranchAsync(JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            var lines = await GetRawJournalByNoLinesAsync(parameters.FromNo, parameters.ToNo);
             foreach (var byNo in GetGroupByThenByItems(
                 lines, art => art.Voucher.No, art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byNo));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
-        private async Task<JournalViewModel> GetJournalByNoBySubsidiaryByBranchAsync(
-            int from, int to)
+        private async Task<JournalViewModel> GetJournalByNoBySubsidiaryByBranchAsync(JournalParameters parameters)
         {
             var journalItems = new List<JournalItemViewModel>();
-            var lines = await GetRawJournalByNoLinesAsync(from, to);
+            var lines = await GetRawJournalByNoLinesAsync(parameters.FromNo, parameters.ToNo);
             foreach (var byNo in GetGroupByThenByItems(
                 lines, art => art.Voucher.No, art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byNo));
             }
 
-            return BuildJournal(journalItems);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
-        private async Task<JournalViewModel> GetJournalByNoLedgerSummaryByBranchAsync(
-            int from, int to, GridOptions gridOptions)
+        private async Task<JournalViewModel> GetJournalByNoLedgerSummaryByBranchAsync(JournalParameters parameters)
         {
-            var lines = await GetRawJournalByNoLinesAsync(from, to);
-            var journalItems = await GetJournalLedgerSummaryByBranchItemsAsync(lines, gridOptions);
-            return BuildJournal(journalItems);
+            var lines = await GetRawJournalByNoLinesAsync(parameters.FromNo, parameters.ToNo);
+            var journalItems = await GetJournalLedgerSummaryByBranchItemsAsync(lines);
+            return BuildJournal(journalItems, parameters.GridOptions);
         }
 
         private IEnumerable<JournalItemViewModel> GetJournalByNoByRowByBranchItems(
@@ -629,13 +609,12 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IList<JournalItemViewModel>> GetJournalLedgerSummaryItemsAsync(
-            IEnumerable<VoucherLine> lines, GridOptions gridOptions)
+            IEnumerable<VoucherLine> lines)
         {
             var journalItems = new List<JournalItemViewModel>();
             Func<JournalItemViewModel, bool> allFilter = art => true;
             var items = lines
                 .Select(art => Mapper.Map<JournalItemViewModel>(art))
-                .Apply(gridOptions, false)
                 .ToList();
             foreach (var byLedger in GetAccountTurnoverGroups(items, true, 0, allFilter))
             {
@@ -651,13 +630,12 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IList<JournalItemViewModel>> GetJournalLedgerSummaryByBranchItemsAsync(
-            IEnumerable<VoucherLine> lines, GridOptions gridOptions)
+            IEnumerable<VoucherLine> lines)
         {
             var journalItems = new List<JournalItemViewModel>();
             Func<JournalItemViewModel, bool> allFilter = art => true;
             var items = lines
                 .Select(art => Mapper.Map<JournalItemViewModel>(art))
-                .Apply(gridOptions, false)
                 .ToList();
             foreach (var byLedger in GetAccountTurnoverGroups(items, true, 0, allFilter))
             {

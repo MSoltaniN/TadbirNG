@@ -26,6 +26,12 @@ export class FilterRow {
   braces: Array<Braces>;
 }
 
+export class GroupFilter {
+  id: string;
+  name: string;
+  filters: Array<FilterRow>;  
+}
+
 export enum NumberOperatorResource {  
   EQ = "AdvanceFilter.EQ",  
   NEQ = "AdvanceFilter.NEQ",
