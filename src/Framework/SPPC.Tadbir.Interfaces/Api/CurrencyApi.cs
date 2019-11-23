@@ -97,5 +97,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for default currency
         /// </summary>
         public const string DefaultCurrencyUrl = "currencies/default/{nameKey}";
+
+        /// <summary>
+        /// API client URL for for a currency has rate
+        /// </summary>
+        public const string CurrencyHasRates = "currencies/{0}/has-rates";
+
+        /// <summary>
+        /// API server route URL for a currency has rate
+        /// </summary>
+        public const string CurrencyHasRatesUrl = "currencies/{currencyId:min(1)}/has-rates";
     }
 }

@@ -43,5 +43,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
         Task DeleteCurrencyRatesAsync(IEnumerable<int> items);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص میکند که آیا برای ارز مشخص شده نرخ تعریف شده است یا خیر؟
+        /// </summary>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر</param>
+        /// <returns>اگر برای ارز مشخص شده نرخ تعریف شده باشد مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> CurrencyHasRatesAsync(int currencyId);
     }
 }

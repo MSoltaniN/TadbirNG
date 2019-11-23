@@ -40,4 +40,7 @@ export class CurrencyApi {
 
   // currencies/default/{nameKey}
   public static DefaultCurrency = environment.BaseUrl + "/currencies/default/{0}";
+
+  // currencies/{currencyId:min(1)}/has-rates
+  public static CurrencyHasRates = environment.BaseUrl + "/currencies/{0}/has-rates";
 }

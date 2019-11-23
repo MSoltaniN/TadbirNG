@@ -134,6 +134,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(taxCurrencies);
         }
 
+        // GET: api/currencies/{currencyId:min(1)}/has-rates
+        [Route(CurrencyApi.CurrencyHasRatesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Edit)]
+        public async Task<IActionResult> GetCurrencyHasRateAsync(int currencyId)
+        {
+            bool hasRate = await _rateRepository.CurrencyHasRatesAsync(currencyId);
+            return Ok(hasRate);
+        }
+
         // POST: api/currencies/default/{nameKey}
         [HttpPost]
         [Route(CurrencyApi.DefaultCurrencyUrl)]

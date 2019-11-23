@@ -230,7 +230,10 @@
     "BranchName": "Branch Name",
     "Rate": "Exchange Rate",
     "TaxCurrency": "Tax Currency",
-    "TaxCurrencyErrorMsg": "Before creating a currency, tax currencies need to be defined by uploading Access file"
+    "TaxCurrencyErrorMsg": "Before creating a currency, tax currencies need to be defined by uploading Access file",
+    "EditCurrency": "Edit Currency",
+    "Delete": "Delete Currency",
+    "EditConfirmMsg": "This currency has rate, Are you sure to edit currency"
   },
   "CurrencyRate": {
     "New": "New Currency Rate",
@@ -240,7 +243,8 @@
     "Name": "Name",
     "BranchName": "Branch Name",
     "Description": "Description",
-    "BranchScope": "Branch Scope"
+    "BranchScope": "Branch Scope",
+    "Delete": "Delete Currency Rate"
   },
   "CurrencyBook": {
     "AllCurrencies": "All Currencies",
