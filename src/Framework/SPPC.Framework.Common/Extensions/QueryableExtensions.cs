@@ -21,7 +21,7 @@ namespace SPPC.Framework.Extensions
         /// <returns>This object</returns>
         public static IQueryable<T> Apply<T>(this IQueryable<T> queryable, GridOptions gridOptions, bool withPaging = true)
         {
-            Verify.ArgumentNotNull(queryable, "queryable");
+            Verify.ArgumentNotNull(queryable, nameof(queryable));
             var options = gridOptions ?? new GridOptions();
             if (options.Filter != null)
             {
@@ -42,6 +42,25 @@ namespace SPPC.Framework.Extensions
                     .Skip((options.Paging.PageIndex - 1) * options.Paging.PageSize)
                     .Take(options.Paging.PageSize)
                 : queryable;
+
+            return queryable;
+        }
+
+        /// <summary>
+        /// Applies filtering specified as quick filter to items in a queryable instance
+        /// </summary>
+        /// <typeparam name="T">Type of items in queryable instance</typeparam>
+        /// <param name="queryable">Self reference (this) of queryable instance</param>
+        /// <param name="gridOptions">Options for filtering, sorting and paging items</param>
+        /// <returns>This object</returns>
+        public static IQueryable<T> ApplyQuickFilter<T>(this IQueryable<T> queryable, GridOptions gridOptions)
+        {
+            Verify.ArgumentNotNull(queryable, nameof(queryable));
+            var options = gridOptions ?? new GridOptions();
+            if (options.QuickFilter != null)
+            {
+                queryable = queryable.Where(options.QuickFilter.ToString());
+            }
 
             return queryable;
         }

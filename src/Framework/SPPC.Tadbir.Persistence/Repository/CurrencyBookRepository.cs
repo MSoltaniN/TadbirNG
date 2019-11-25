@@ -281,6 +281,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             book.Items.AddRange(bookItems
                 .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
+                .ApplyQuickFilter(gridOptions)
                 .Apply(gridOptions, false));
             PrepareCurrencyBook(book, gridOptions);
             return book;
@@ -294,6 +295,8 @@ namespace SPPC.Tadbir.Persistence
 
             var itemCriteria = GetItemCriteria(bookParam, byCurrency);
             var lines = await GetRawCurrencyBookLines(itemCriteria, bookParam.From, bookParam.To)
+                .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
+                .ApplyQuickFilter(gridOptions)
                 .ToListAsync();
             AggregateCurrencyBook(book, lines, byCurrency, byNo, bookParam.ByBranch);
             book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
@@ -308,7 +311,7 @@ namespace SPPC.Tadbir.Persistence
 
             var itemCriteria = GetItemCriteria(bookParam);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.OpeningVoucher, bookParam);
+                VoucherType.OpeningVoucher, bookParam, gridOptions);
 
             var monthEnum = new MonthEnumerator(bookParam.From, bookParam.To, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
@@ -316,6 +319,7 @@ namespace SPPC.Tadbir.Persistence
                 var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
                     .Where(art => art.Voucher.Type == (short)VoucherType.NormalVoucher)
                     .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
+                    .ApplyQuickFilter(gridOptions)
                     .ToList();
                 if (monthLines.Count > 0)
                 {
@@ -338,9 +342,9 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingTempAccounts, bookParam);
+                VoucherType.ClosingTempAccounts, bookParam, gridOptions);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingVoucher, bookParam);
+                VoucherType.ClosingVoucher, bookParam, gridOptions);
 
             book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
             PrepareCurrencyBook(book, gridOptions);
@@ -349,7 +353,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task AddSpecialBookItemsAsync(
            CurrencyBookViewModel book, IList<Expression<Func<VoucherLine, bool>>> itemCriteria,
-           VoucherType voucherType, CurrencyBookParameters bookParam)
+           VoucherType voucherType, CurrencyBookParameters bookParam, GridOptions gridOptions)
         {
             if (voucherType != VoucherType.NormalVoucher)
             {
@@ -367,8 +371,9 @@ namespace SPPC.Tadbir.Persistence
                     }
 
                     var lines = query
-                    .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
-                    .ToList();
+                        .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
+                        .ApplyQuickFilter(gridOptions)
+                        .ToList();
 
                     if (bookParam.ByBranch)
                     {
@@ -431,13 +436,10 @@ namespace SPPC.Tadbir.Persistence
 
         private void AggregateCurrencyBook(
             CurrencyBookViewModel book,
-            IEnumerable<VoucherLine> lines,
+            IEnumerable<CurrencyBookItemViewModel> lines,
            bool byCurrency, bool byNo, bool byBranch = false)
         {
-            var items = lines
-                .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line));
-
-            foreach (var bookGroup in GetCurrencyBookGroups(items, byCurrency, byNo, byBranch))
+            foreach (var bookGroup in GetCurrencyBookGroups(lines, byCurrency, byNo, byBranch))
             {
                 var aggregates = GetAggregatedBookItems(bookGroup, byNo || byBranch, byCurrency);
                 book.Items.AddRange(aggregates);

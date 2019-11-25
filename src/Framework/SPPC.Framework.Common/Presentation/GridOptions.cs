@@ -23,9 +23,14 @@ namespace SPPC.Framework.Presentation
         public GridPaging Paging { get; set; }
 
         /// <summary>
-        /// عبارت فیلتر ترکیبی مورد نظر برای اعمال روی اطلاعات در نمای جدولی
+        /// عبارت فیلتر ترکیبی مورد نظر برای اعمال روی اطلاعات نمای جدولی پس از خواندن یا محاسبه اطلاعات
         /// </summary>
         public FilterExpression Filter { get; set; }
+
+        /// <summary>
+        /// عبارت فیلتر ترکیبی مورد نظر برای اعمال روی اطلاعات نمای جدولی پیش از خواندن یا محاسبه اطلاعات
+        /// </summary>
+        public FilterExpression QuickFilter { get; set; }
 
         /// <summary>
         /// مجموعه ای از ستون های انتخاب شده برای مرتب سازی اطلاعات در نمای جدولی

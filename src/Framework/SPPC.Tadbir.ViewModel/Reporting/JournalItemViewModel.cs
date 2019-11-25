@@ -39,6 +39,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string AccountName { get; set; }
 
         /// <summary>
+        /// شماره سطح سرفصل حسابداری در ساختار درختی
+        /// </summary>
+        public short AccountLevel { get; set; }
+
+        /// <summary>
         /// کد کامل تفصیلی شناور مورد استفاده در ردیف سند
         /// </summary>
         public string DetailAccountFullCode { get; set; }

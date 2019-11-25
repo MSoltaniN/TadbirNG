@@ -56,9 +56,10 @@ export class BaseService extends EnviromentComponent{
    * @param start شماره شروع رکورد
    * @param count تعداد رکورد
    * @param orderby مرتب سازی
-   * @param filters فیلتر
+   * @param filter فیلتر اطلاعات گرید
+   * @param quickFilter فیلتر سریع
    */
-  public getAll(apiUrl: string, start?: number, count?: number, orderby?: any, filter?: FilterExpression) {
+  public getAll(apiUrl: string, start?: number, count?: number, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression) {
 
     var gridPaging = { pageIndex: start, pageSize: count };
     var sort = new Array<GridOrderBy>();
@@ -67,7 +68,7 @@ export class BaseService extends EnviromentComponent{
         sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
       }
     }
-    var postItem = { Paging: gridPaging, filter: filter, sortColumns: sort };
+    var postItem = { paging: gridPaging, filter: filter, quickFilter: quickFilter, sortColumns: sort };
     var searchHeaders = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));

@@ -265,7 +265,9 @@ namespace SPPC.Tadbir.Persistence
                 .Where(mainFilter)
                 .Select(art => Mapper.Map<TestBalanceItemViewModel>(art))
                 .ToListAsync();
-            return lines;
+            return lines
+                .ApplyQuickFilter(parameters.GridOptions)
+                .ToList();
         }
 
         private IEnumerable<IGrouping<string, TestBalanceItemViewModel>> GetTurnoverGroups(
