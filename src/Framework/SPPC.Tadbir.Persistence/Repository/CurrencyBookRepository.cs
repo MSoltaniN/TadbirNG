@@ -296,8 +296,10 @@ namespace SPPC.Tadbir.Persistence
             var itemCriteria = GetItemCriteria(bookParam, byCurrency);
             var lines = await GetRawCurrencyBookLines(itemCriteria, bookParam.From, bookParam.To)
                 .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
-                .ApplyQuickFilter(gridOptions)
                 .ToListAsync();
+            lines = lines
+                .ApplyQuickFilter(gridOptions)
+                .ToList();
             AggregateCurrencyBook(book, lines, byCurrency, byNo, bookParam.ByBranch);
             book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
             PrepareCurrencyBook(book, gridOptions);
@@ -319,6 +321,8 @@ namespace SPPC.Tadbir.Persistence
                 var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
                     .Where(art => art.Voucher.Type == (short)VoucherType.NormalVoucher)
                     .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
+                    .ToList();
+                monthLines = monthLines
                     .ApplyQuickFilter(gridOptions)
                     .ToList();
                 if (monthLines.Count > 0)
@@ -370,11 +374,12 @@ namespace SPPC.Tadbir.Persistence
                         query = query.Where(item);
                     }
 
-                    var lines = query
+                    var lines = await query
                         .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
+                        .ToListAsync();
+                    lines = lines
                         .ApplyQuickFilter(gridOptions)
                         .ToList();
-
                     if (bookParam.ByBranch)
                     {
                         Array.ForEach(GetGroupByThenByItems(lines, item => item.BranchId).ToArray(), group =>

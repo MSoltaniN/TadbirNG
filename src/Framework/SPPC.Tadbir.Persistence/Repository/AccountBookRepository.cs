@@ -294,8 +294,10 @@ namespace SPPC.Tadbir.Persistence
             var itemCriteria = GetItemCriteria(viewId, accountId);
             var lines = await GetRawAccountBookLines(itemCriteria, from, to)
                 .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
-                .ApplyQuickFilter(gridOptions)
                 .ToListAsync();
+            lines = lines
+                .ApplyQuickFilter(gridOptions)
+                .ToList();
             AggregateAccountBook(book, lines, byNo, byBranch);
             book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
             PrepareAccountBook(book, gridOptions);
@@ -319,6 +321,8 @@ namespace SPPC.Tadbir.Persistence
                 var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
                     .Where(art => art.Voucher.Type == (short)VoucherType.NormalVoucher)
                     .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
+                    .ToList();
+                monthLines = monthLines
                     .ApplyQuickFilter(gridOptions)
                     .ToList();
                 if (monthLines.Count > 0)
@@ -360,12 +364,14 @@ namespace SPPC.Tadbir.Persistence
                 var date = await _report.GetSpecialVoucherDateAsync(voucherType);
                 if (date.HasValue && date.Value.IsBetween(from, to))
                 {
-                    var lines = Repository
+                    var lines = await Repository
                         .GetAllOperationQuery<VoucherLine>(
                             ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                         .Where(line => line.Voucher.Type == (short)voucherType)
                         .Where(itemCriteria)
                         .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
+                        .ToListAsync();
+                    lines = lines
                         .ApplyQuickFilter(gridOptions)
                         .ToList();
                     if (byBranch)

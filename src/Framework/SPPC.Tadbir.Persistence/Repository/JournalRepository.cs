@@ -211,9 +211,10 @@ namespace SPPC.Tadbir.Persistence
         private async Task<JournalViewModel> GetJournalByDateByLedgerAsync(
             JournalParameters parameters)
         {
-            var journalItems = await GetRawJournalByDateLinesAsync(parameters);
+            var lines = await GetRawJournalByDateLinesAsync(parameters);
+            var journalItems = new List<JournalItemViewModel>();
             foreach (var byDateByNo in GetGroupByThenByItems(
-                journalItems, art => art.VoucherDate, art => art.VoucherNo))
+                lines, art => art.VoucherDate.Date, art => art.VoucherNo))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
             }
@@ -224,9 +225,10 @@ namespace SPPC.Tadbir.Persistence
         private async Task<JournalViewModel> GetJournalByDateBySubsidiaryAsync(
             JournalParameters parameters)
         {
-            var journalItems = await GetRawJournalByDateLinesAsync(parameters);
+            var lines = await GetRawJournalByDateLinesAsync(parameters);
+            var journalItems = new List<JournalItemViewModel>();
             foreach (var byDateByNo in GetGroupByThenByItems(
-                journalItems, art => art.VoucherDate, art => art.VoucherNo))
+                lines, art => art.VoucherDate.Date, art => art.VoucherNo))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byDateByNo));
             }
@@ -248,7 +250,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByDateLinesAsync(parameters);
             foreach (var byDateByNo in GetGroupByThenByItems(
-                lines, art => art.VoucherDate))
+                lines, art => art.VoucherDate.Date))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
             }
@@ -279,30 +281,34 @@ namespace SPPC.Tadbir.Persistence
         private async Task<List<JournalItemViewModel>> GetRawJournalByDateLinesAsync(
             JournalParameters parameters)
         {
-            return await Repository
+            var lines = await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date.IsBetween(parameters.FromDate, parameters.ToDate))
                 .Select(art => Mapper.Map<JournalItemViewModel>(art))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(parameters.GridOptions)
                 .OrderBy(art => art.VoucherDate)
                     .ThenBy(art => art.VoucherNo)
-                .ToListAsync();
+                .ToList();
         }
 
         private async Task<IList<JournalItemViewModel>> GetRawJournalByDateWithDetailLinesAsync(
             JournalParameters parameters)
         {
-            return await Repository
+            var lines = await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
                 .Where(art => art.Voucher.Date.IsBetween(parameters.FromDate, parameters.ToDate))
                 .Select(art => Mapper.Map<JournalItemViewModel>(art))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(parameters.GridOptions)
                 .OrderBy(art => art.VoucherDate)
                     .ThenBy(art => art.VoucherNo)
-                .ToListAsync();
+                .ToList();
         }
 
         #endregion
@@ -329,8 +335,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByDateLinesAsync(parameters);
             foreach (var byDateByNoByBranch in GetGroupByThenByItems(
-                lines, art => art.VoucherDate, art => art.VoucherNo,
-                art => art.BranchId))
+                lines, art => art.VoucherDate.Date, art => art.VoucherNo, art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNoByBranch));
             }
@@ -344,8 +349,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByDateLinesAsync(parameters);
             foreach (var byDateByNoByBranch in GetGroupByThenByItems(
-                lines, art => art.VoucherDate, art => art.VoucherNo,
-                art => art.BranchId))
+                lines, art => art.VoucherDate.Date, art => art.VoucherNo, art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalBySubsidiaryItemsAsync(byDateByNoByBranch));
             }
@@ -367,7 +371,7 @@ namespace SPPC.Tadbir.Persistence
             var journalItems = new List<JournalItemViewModel>();
             var lines = await GetRawJournalByDateLinesAsync(parameters);
             foreach (var byDateByNo in GetGroupByThenByItems(
-                lines, art => art.VoucherDate, art => art.BranchId))
+                lines, art => art.VoucherDate.Date, art => art.BranchId))
             {
                 journalItems.AddRange(await GetJournalByLedgerItemsAsync(byDateByNo));
             }
@@ -401,32 +405,36 @@ namespace SPPC.Tadbir.Persistence
         private async Task<List<JournalItemViewModel>> GetRawJournalByDateByBranchLinesAsync(
             JournalParameters parameters)
         {
-            return await Repository
+            var lines = await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.Date.IsBetween(parameters.FromDate, parameters.ToDate))
                 .Select(art => Mapper.Map<JournalItemViewModel>(art))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(parameters.GridOptions)
                 .OrderBy(art => art.VoucherDate)
                     .ThenBy(art => art.VoucherNo)
                         .ThenBy(art => art.BranchId)
-                .ToListAsync();
+                .ToList();
         }
 
         private async Task<IList<JournalItemViewModel>> GetRawJournalByDateByBranchWithDetailLinesAsync(
             JournalParameters parameters)
         {
-            return await Repository
+            var lines = await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
                 .Where(art => art.Voucher.Date.IsBetween(parameters.FromDate, parameters.ToDate))
                 .Select(art => Mapper.Map<JournalItemViewModel>(art))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(parameters.GridOptions)
                 .OrderBy(art => art.VoucherDate)
                     .ThenBy(art => art.VoucherNo)
                         .ThenBy(art => art.BranchId)
-                .ToListAsync();
+                .ToList();
         }
 
         #endregion
@@ -481,30 +489,34 @@ namespace SPPC.Tadbir.Persistence
         private async Task<IList<JournalItemViewModel>> GetRawJournalByNoLinesAsync(
             JournalParameters parameters)
         {
-            return await Repository
+            var lines = await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch)
                 .Where(art => art.Voucher.No >= parameters.FromNo
                     && art.Voucher.No <= parameters.ToNo)
                 .Select(art => Mapper.Map<JournalItemViewModel>(art))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(parameters.GridOptions)
                 .OrderBy(art => art.VoucherNo)
-                .ToListAsync();
+                .ToList();
         }
 
         private async Task<IList<JournalItemViewModel>> GetRawJournalByNoWithDetailLinesAsync(
             JournalParameters parameters)
         {
-            return await Repository
+            var lines = await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch)
                 .Where(art => art.Voucher.No >= parameters.FromNo
                     && art.Voucher.No <= parameters.ToNo)
                 .Select(art => Mapper.Map<JournalItemViewModel>(art))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(parameters.GridOptions)
                 .OrderBy(art => art.VoucherNo)
-                .ToListAsync();
+                .ToList();
         }
 
         #endregion
@@ -681,6 +693,8 @@ namespace SPPC.Tadbir.Persistence
             var item = itemGroup.First();
             var journalItem = new JournalItemViewModel()
             {
+                VoucherDate = item.VoucherDate,
+                VoucherNo = item.VoucherNo,
                 AccountFullCode = fullCode,
                 AccountName = account.Name,
                 BranchName = item.BranchName,
