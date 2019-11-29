@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces, GroupFilter } from '@sppc/shared/models';
 import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -11,7 +11,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { MessageType } from '@sppc/env/environment.prod';
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { guid } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
-
+import { String } from '@sppc/shared/class';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -21,6 +21,7 @@ export function getLayoutModule(layout: Layout) {
   selector: 'app-advance-filter',
   templateUrl: './advance-filter.component.html',
   styleUrls: ['./advance-filter.component.css'],
+  encapsulation: ViewEncapsulation.None,
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,
@@ -41,6 +42,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   public selectedLogicalOperator: string = "and";
   public selectedOperator: string = "eq";
   public selectedColumn: string;
+  selectScriptType: string = "";
 
   totalFilterExpression: string;
   selectedValue: string;
@@ -128,6 +130,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     if (this.selectedColumn) {
       var selected = this.columnsList.filter(p => p.name === this.selectedColumn)[0];
+      this.selectScriptType = selected.scriptType;
       switch (selected.scriptType) {
         case "string":
           this.operatorsList = this.stringOperators;
@@ -303,7 +306,20 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.cancel.emit();
   }
 
+  removeAllBraces() {
+    var filters = new Array<FilterRow>();    
+    filters = <Array<FilterRow>>JSON.parse(JSON.stringify(this.filters));
 
+    filters.forEach((f) => {
+      f.braces = [];
+    });
+
+    var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    this.groupFilters[index].filters = filters;
+    this.filters = filters;
+
+    this.computeTotalExpression();
+  }
 
   braces() {
 
@@ -468,10 +484,17 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     return expression;
   }
+
+
+  //statusColor: string[] = ['#F1512F', '#FCE900', '#A0FC00', '#00FCE9', '#00ACFC', '#0026FC', '#BB00FC', '#0C0000', '#D5BDD6', '#6C8972','#F4F2AA'];
   
+
   computeTotalExpression() {
 
     if (!this.groupFilters) return;
+    var usedColors = new Array<string>();
+    var usedId = new Array<string>();
+    var colorCount: number = 0;
 
     var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
     var filters = this.groupFilters[index].filters;;
@@ -486,8 +509,20 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
         if (item.braces) {
           item.braces.forEach((br) => {
-            if (br.brace == "(")
-              this.totalFilterExpression += " " + br.brace;
+            if (br.brace == "(") {
+              var html = "";
+              if (usedId.findIndex(f => f === br.outerId + item.id) == -1) {
+                usedId.push(br.outerId + item.id);                
+                html = '<span class="color' + colorCount + '">';
+                colorCount++;
+              }
+              else {
+                var colorindex = usedId.findIndex(f => f === br.outerId + item.id)                
+                html = '<span class="color' + colorindex + '">';
+              }
+              
+              this.totalFilterExpression += " " + html + br.brace + "</span>";
+            }
           });
         }
 
@@ -495,8 +530,20 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
         if (item.braces) {
           item.braces.forEach((br) => {
-            if (br.brace == ")")
-              this.totalFilterExpression += br.brace + " ";
+            if (br.brace == ")") {
+              var html = "";
+              if (usedId.findIndex(f => f === item.id + br.outerId) == -1) {
+                usedId.push(item.id + br.outerId);                
+                html = '<span class="color' + colorCount + '">';
+                colorCount++;
+              }
+              else {
+                var colorindex = usedId.findIndex(f => f === item.id + br.outerId)
+                html = '<span class="color' + colorindex + '">';
+              }
+
+              this.totalFilterExpression += " " + html + br.brace + "</span>";;
+            }
           });
         }
 
@@ -506,7 +553,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     }
     else {
       this.totalFilterExpression = "";  
-    }
+    }   
     
   }
   
@@ -628,6 +675,11 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
   onGroupFilterCancel() {
     this.activeGroupFilter = false;  
+  }
+
+  gDeleteIsDisable() {
+    if (this.gFilterSelected == "-1") return true;
+    return false;
   }
 
   public gFilterSelectChange(id) {

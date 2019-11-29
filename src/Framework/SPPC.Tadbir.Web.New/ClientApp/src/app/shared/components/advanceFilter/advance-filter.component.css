@@ -16,10 +16,16 @@
   padding-right: 6px;
 }
 
-.group-filter .form-group
-{
-   padding:10px;
-   margin-bottom:22px;
+.hint {
+  border: solid 1px #dadde2;
+  height: 30px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.group-filter .form-group {
+  padding: 10px;
+  margin-bottom: 22px;
 }
 
 .exp-filter {
@@ -51,4 +57,48 @@
 .sppc-filter-form .ins
 {
   margin-top:24px;
+}
+
+.color0 {
+  color: #F1512F!important;
+}
+
+.color1 {
+  color: #FCE900 !important;
+}
+
+.color2 {
+  color: #A0FC00 !important;
+}
+
+.color3 {
+  color: #00FCE9 !important;
+}
+
+.color4 {
+  color: #00ACFC !important;
+}
+
+.color5 {
+  color: #BB00FC !important;
+}
+
+.color6 {
+  color: #0026FC !important;
+}
+
+.color7 {
+  color: #0C0000 !important;
+}
+
+.color8 {
+  color: #D5BDD6 !important;
+}
+
+.color9 {
+  color: #6C8972 !important;
+}
+
+.color10 {
+  color: #F4F2AA !important;
 }

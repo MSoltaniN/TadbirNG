@@ -209,7 +209,12 @@
     "AddBracesMsg": "درج پرانتز برای فیلترهای انتخاب شده امکان پذیر نمی باشد",
     "Name": "نام",
     "GroupFilter": "گروه فیلتر",
-    "SaveFilter": "ذخیره فیلتر"
+    "SaveFilter": "ذخیره فیلتر",
+    "RemoveAllBraces": "حذف همه پرانتز ها",
+    "Condition": "شرط",
+    "PleaseSelectField": "یک فیلد را انتخاب کنید",
+    "AddGroupfilter": "درج فیلتر جدید",
+    "DeleteGroupfilter": "حذف فیلترها"
   },
   "Currency": {
     "New": "ارز جدید",
