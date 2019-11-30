@@ -317,7 +317,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
     this.groupFilters[index].filters = filters;
     this.filters = filters;
-
+    this.selectedRows = [];
     this.computeTotalExpression();
   }
 
@@ -508,29 +508,51 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         i++;
 
         if (item.braces) {
-          item.braces.forEach((br) => {
-            if (br.brace == "(") {
+
+          for (var i = item.braces.length; i >= 0; i--) {
+            var br = item.braces[i];
+            if (br && br.brace == "(") {
               var html = "";
               if (usedId.findIndex(f => f === br.outerId + item.id) == -1) {
-                usedId.push(br.outerId + item.id);                
+                usedId.push(br.outerId + item.id);
                 html = '<span class="color' + colorCount + '">';
                 colorCount++;
               }
               else {
-                var colorindex = usedId.findIndex(f => f === br.outerId + item.id)                
+                var colorindex = usedId.findIndex(f => f === br.outerId + item.id)
                 html = '<span class="color' + colorindex + '">';
               }
-              
+
               this.totalFilterExpression += " " + html + br.brace + "</span>";
             }
-          });
+          }
+
+          //item.braces.forEach((br) => {
+          //  if (br.brace == "(") {
+          //    var html = "";
+          //    if (usedId.findIndex(f => f === br.outerId + item.id) == -1) {
+          //      usedId.push(br.outerId + item.id);                
+          //      html = '<span class="color' + colorCount + '">';
+          //      colorCount++;
+          //    }
+          //    else {
+          //      var colorindex = usedId.findIndex(f => f === br.outerId + item.id)                
+          //      html = '<span class="color' + colorindex + '">';
+          //    }
+              
+          //    this.totalFilterExpression += " " + html + br.brace + "</span>";
+          //  }
+          //});
         }
 
-        this.totalFilterExpression += " " + item.columnTitle + " " + item.operatorTitle + " " + item.value + " ";
+        this.totalFilterExpression += " " + "<span class='column-name'>" + item.columnTitle + "</span>" + " " 
+          + " " + "<span class='operator'>" + item.operatorTitle + "</span>" + " " + "<span class='value'>" + item.value + "</span>" + " " ;
 
         if (item.braces) {
-          item.braces.forEach((br) => {
-            if (br.brace == ")") {
+
+          for (var i = item.braces.length; i >= 0; i--) {
+            var br = item.braces[i];
+            if (br && br.brace == ")") {
               var html = "";
               if (usedId.findIndex(f => f === item.id + br.outerId) == -1) {
                 usedId.push(item.id + br.outerId);                
@@ -544,11 +566,27 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
               this.totalFilterExpression += " " + html + br.brace + "</span>";;
             }
-          });
+          }
+          //item.braces.forEach((br) => {
+          //  if (br.brace == ")") {
+          //    var html = "";
+          //    if (usedId.findIndex(f => f === item.id + br.outerId) == -1) {
+          //      usedId.push(item.id + br.outerId);                
+          //      html = '<span class="color' + colorCount + '">';
+          //      colorCount++;
+          //    }
+          //    else {
+          //      var colorindex = usedId.findIndex(f => f === item.id + br.outerId)
+          //      html = '<span class="color' + colorindex + '">';
+          //    }
+
+          //    this.totalFilterExpression += " " + html + br.brace + "</span>";;
+          //  }
+          //});
         }
 
         if (i < count)
-          this.totalFilterExpression += item.logicalOperatorTitle + " ";
+          this.totalFilterExpression += " <span class='logic-operator'>" + item.logicalOperatorTitle +  "</span> ";
       });
     }
     else {
@@ -610,23 +648,22 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
               nextFilter.braces.push(b);
             }
             else {
-              if (filters[index].braces) {
-                var deletedBrace = new Array<Braces>();
-
+              if (filters[index].braces) {               
                 filters[index].braces.forEach((br) => {
-                  var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
+                  if (filters.findIndex(f => f.id === br.outerId) >= 0) {
+                      var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
 
-                  outerBraces.forEach((obr) => {
-                    if (obr.outerId == filters[index].id) {
-                      deleteBraces.push(obr);
-                    }
-                  })
+                      outerBraces.forEach((obr) => {
+                      if (obr.outerId == filters[index].id) {
+                        deleteBraces.push(obr);
+                      }
+                      })
 
-                  deleteBraces.forEach((dbr) => {
-                    var dindex = outerBraces.findIndex(br => br == dbr);
-                    outerBraces.splice(dindex);
-                  });
-
+                      deleteBraces.forEach((dbr) => {
+                      var dindex = outerBraces.findIndex(br => br == dbr);
+                      outerBraces.splice(dindex);
+                      });
+                  }
                 })
               }
             }

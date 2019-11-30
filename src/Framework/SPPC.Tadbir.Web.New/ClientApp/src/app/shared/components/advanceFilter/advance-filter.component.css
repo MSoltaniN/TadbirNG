@@ -102,3 +102,21 @@
 .color10 {
   color: #F4F2AA !important;
 }
+
+.logic-operator {
+  color: #a9aeb2;
+}
+
+.value
+{
+  color:#8d1515;
+}
+
+.operator {
+  color: #4e2929;
+}
+
+.column-name
+{
+  color:#4397ff;
+}
