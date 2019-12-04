@@ -23,7 +23,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
-        public TestBalanceRepository(IRepositoryContext context, ISystemRepository system, IReportRepository report)
+        public TestBalanceRepository(IRepositoryContext context,
+            ISystemRepository system, IReportRepository report)
             : base(context)
         {
             _system = system;
@@ -36,9 +37,39 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="level">شماره یکی از سطوح حساب</param>
         /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
         /// <returns>اطلاعات گزارش با توجه به پارامترهای داده شده</returns>
-        public async Task<TestBalanceViewModel> GetLevelBalanceAsync(int level, TestBalanceParameters parameters)
+        public async Task<TestBalanceViewModel> GetLevelBalanceAsync(
+            int level, TestBalanceParameters parameters)
         {
-            return await GetGeneralBalanceAsync(level, parameters);
+            var testBalance = new TestBalanceViewModel();
+            var lines = await GetRawBalanceLinesAsync(parameters);
+            Func<TestBalanceItemViewModel, bool> filter;
+            int index = 0;
+            while (index < level)
+            {
+                filter = line => line.AccountLevel == index;
+                foreach (var lineGroup in GetTurnoverGroups(lines, index, filter))
+                {
+                    await AddTwoAndFourColumnBalanceItemAsync(
+                        testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
+                }
+
+                index++;
+            }
+
+            filter = line => line.AccountLevel >= index;
+            foreach (var lineGroup in GetTurnoverGroups(lines, index, filter))
+            {
+                await AddTwoAndFourColumnBalanceItemAsync(
+                    testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
+            }
+
+            await AddSixAndEightColumnBalanceItemsAsync(testBalance, parameters);
+            await ApplyZeroBalanceOptionAsync(testBalance, parameters);
+            testBalance.SetBalanceItems(testBalance.Items
+                .Apply(parameters.GridOptions, false)
+                .ToArray());
+            SetSummaryItems(testBalance);
+            return testBalance;
         }
 
         /// <summary>
@@ -184,38 +215,28 @@ namespace SPPC.Tadbir.Persistence
                 && item.EndBalanceCredit == 0.0M;
         }
 
-        private async Task<TestBalanceViewModel> GetGeneralBalanceAsync(int level, TestBalanceParameters parameters)
+        private static IQueryable<VoucherLine> IncludeVoucherLineReference(
+            int viewId, IQueryable<VoucherLine> query)
         {
-            var testBalance = new TestBalanceViewModel();
-            var lines = await GetRawBalanceLinesAsync(parameters);
-            Func<TestBalanceItemViewModel, bool> filter;
-            int index = 0;
-            while (index < level)
+            var queryWithRef = query;
+            switch (viewId)
             {
-                filter = line => line.AccountLevel == index;
-                foreach (var lineGroup in GetTurnoverGroups(lines, index, filter))
-                {
-                    await AddTwoAndFourColumnBalanceItemAsync(
-                        testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
-                }
-
-                index++;
+                case ViewName.DetailAccount:
+                    queryWithRef = query.Include(line => line.DetailAccount);
+                    break;
+                case ViewName.CostCenter:
+                    queryWithRef = query.Include(line => line.CostCenter);
+                    break;
+                case ViewName.Project:
+                    queryWithRef = query.Include(line => line.Project);
+                    break;
+                case ViewName.Account:
+                default:
+                    queryWithRef = query.Include(line => line.Account);
+                    break;
             }
 
-            filter = line => line.AccountLevel >= index;
-            foreach (var lineGroup in GetTurnoverGroups(lines, index, filter))
-            {
-                await AddTwoAndFourColumnBalanceItemAsync(
-                    testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
-            }
-
-            await AddSixAndEightColumnBalanceItemsAsync(testBalance, parameters);
-            await ApplyZeroBalanceOptionAsync(testBalance, parameters);
-            testBalance.SetBalanceItems(testBalance.Items
-                .Apply(parameters.GridOptions, false)
-                .ToArray());
-            SetSummaryItems(testBalance);
-            return testBalance;
+            return queryWithRef;
         }
 
         private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(
@@ -244,7 +265,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
-                    art => art.Voucher, art => art.Account, art => art.Branch);
+                    art => art.Voucher, art => art.Branch);
+            query = IncludeVoucherLineReference(parameters.ViewId, query);
             var options = parameters.Options;
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
             {

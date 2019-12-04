@@ -1,5 +1,6 @@
 ﻿using System;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Values
 {
@@ -13,11 +14,17 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public TestBalanceParameters()
         {
+            ViewId = ViewName.Account;
             Mode = TestBalanceMode.Level;
             Format = TestBalanceFormat.SixColumn;
             IsByBranch = false;
             Options = TestBalanceOptions.None;
         }
+
+        /// <summary>
+        /// شناسه مولفه حساب مورد نظر برای محاسبه گردش و مانده
+        /// </summary>
+        public int ViewId { get; set; }
 
         /// <summary>
         /// نوع مورد نظر برای گزارش تراز آزمایشی
