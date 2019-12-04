@@ -278,9 +278,26 @@ export class DefaultComponent extends BaseComponent {
       for (let i = 0; i < filter.filters.length; i++) {
         if (filter.filters[i].value != "") {
           var operator = "";
+
+          var dataType = '';
+          var field = filter.filters[i].field;
+          //var metadata = this.getMeta(filter.filters[i].field);
+
+          var properties = this.getAllMetaData(this.viewId);
+          var property = properties.filter(p => p.name.toLowerCase() === field.toLowerCase());
+          if (property && property.length > 0) {
+            dataType = property[0].dotNetType;               
+          }         
+
+          //if (metadata != undefined) {
+          //  dataType = metadata.dotNetType;
+          //  if (metadata.expression)
+          //    field = metadata.expression;
+          //}
+
           switch (filter.filters[i].operator) {
-            case "eq":
-              operator = " == {0}";
+            case "eq":              
+              operator = " == {0}";              
               break;
             case "neq":
               operator = " != {0}";
@@ -310,18 +327,10 @@ export class DefaultComponent extends BaseComponent {
               operator = ".EndsWith({0})";
               break;
             default:
-              operator = " == {0}";
+              operator = " == {0}";              
           }
 
-          var metadata = this.getMeta(filter.filters[i].field);
-          var dataType = '';
-          var field = filter.filters[i].field;
-
-          if (metadata != undefined) {
-            dataType = metadata.dotNetType;
-            if (metadata.expression)
-              field = metadata.expression;
-          }
+          
 
           var filterValue = filter.filters[i].value;
 

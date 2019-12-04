@@ -332,7 +332,7 @@
     "Title": "تراز",
     "Ledger": "کل",
     "Reference": "رفرنس",
-    "FilterByRef": "فیلتر رفرنس",
+    "FilterByRef": "رفرنس برابر با",
     "FilterByRefMsg": "فیلتر رفرنس را وارد کنید",
     "ShowAccountBookHint": "برای مشاهده دفتر حساب لطفا فیلتر تراز براساس تاریخ قرار دهید",
     "LevelIsNotExists": "حساب دارای گردشی در سطوح پایین تر نیست",
