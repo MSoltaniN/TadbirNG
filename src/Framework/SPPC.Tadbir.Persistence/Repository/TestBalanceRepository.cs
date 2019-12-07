@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -24,11 +25,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
         public TestBalanceRepository(IRepositoryContext context,
-            ISystemRepository system, IReportRepository report)
+            ISystemRepository system, IReportRepository report, ITestBalanceUtilityFactory factory)
             : base(context)
         {
             _system = system;
             _report = report;
+            _factory = factory;
         }
 
         /// <summary>
@@ -40,14 +42,15 @@ namespace SPPC.Tadbir.Persistence
         public async Task<TestBalanceViewModel> GetLevelBalanceAsync(
             int level, TestBalanceParameters parameters)
         {
+            var utility = _factory.Create(parameters.ViewId);
             var testBalance = new TestBalanceViewModel();
             var lines = await GetRawBalanceLinesAsync(parameters);
             Func<TestBalanceItemViewModel, bool> filter;
             int index = 0;
             while (index < level)
             {
-                filter = line => line.AccountLevel == index;
-                foreach (var lineGroup in GetTurnoverGroups(lines, index, filter))
+                filter = utility.GetCurrentlevelFilter(index);
+                foreach (var lineGroup in utility.GetTurnoverGroups(lines, index, filter))
                 {
                     await AddTwoAndFourColumnBalanceItemAsync(
                         testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -56,8 +59,8 @@ namespace SPPC.Tadbir.Persistence
                 index++;
             }
 
-            filter = line => line.AccountLevel >= index;
-            foreach (var lineGroup in GetTurnoverGroups(lines, index, filter))
+            filter = utility.GetUpperlevelFilter(index);
+            foreach (var lineGroup in utility.GetTurnoverGroups(lines, index, filter))
             {
                 await AddTwoAndFourColumnBalanceItemAsync(
                     testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -81,6 +84,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<TestBalanceViewModel> GetChildrenBalanceAsync(
             int accountId, TestBalanceParameters parameters)
         {
+            var utility = _factory.Create(parameters.ViewId);
             var testBalance = new TestBalanceViewModel();
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(accountId);
@@ -90,7 +94,7 @@ namespace SPPC.Tadbir.Persistence
                 Func<TestBalanceItemViewModel, bool> lineFilter = line => line.AccountLevel >= groupLevel;
                 IEnumerable<TestBalanceItemViewModel> lines = await GetRawBalanceLinesAsync(parameters);
                 lines = lines.Where(line => line.AccountFullCode.StartsWith(account.FullCode));
-                foreach (var lineGroup in GetTurnoverGroups(lines, groupLevel, lineFilter))
+                foreach (var lineGroup in utility.GetTurnoverGroups(lines, groupLevel, lineFilter))
                 {
                     await AddTwoAndFourColumnBalanceItemAsync(
                         testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -215,58 +219,16 @@ namespace SPPC.Tadbir.Persistence
                 && item.EndBalanceCredit == 0.0M;
         }
 
-        private static IQueryable<VoucherLine> IncludeVoucherLineReference(
-            int viewId, IQueryable<VoucherLine> query)
-        {
-            var queryWithRef = query;
-            switch (viewId)
-            {
-                case ViewName.DetailAccount:
-                    queryWithRef = query.Include(line => line.DetailAccount);
-                    break;
-                case ViewName.CostCenter:
-                    queryWithRef = query.Include(line => line.CostCenter);
-                    break;
-                case ViewName.Project:
-                    queryWithRef = query.Include(line => line.Project);
-                    break;
-                case ViewName.Account:
-                default:
-                    queryWithRef = query.Include(line => line.Account);
-                    break;
-            }
-
-            return queryWithRef;
-        }
-
         private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(
             TestBalanceParameters parameters)
-        {
-            IList<TestBalanceItemViewModel> lines = null;
-            if (parameters.FromDate != null && parameters.ToDate != null)
-            {
-                Expression<Func<VoucherLine, bool>> mainFilter = art => art.Voucher.Date.IsBetween(
-                    parameters.FromDate.Value, parameters.ToDate.Value);
-                lines = await GetRawBalanceLinesAsync(mainFilter, parameters);
-            }
-            else if (parameters.FromNo != null && parameters.ToNo != null)
-            {
-                Expression<Func<VoucherLine, bool>> mainFilter = art => art.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && art.Voucher.No >= parameters.FromNo.Value
-                    && art.Voucher.No <= parameters.ToNo.Value;
-                lines = await GetRawBalanceLinesAsync(mainFilter, parameters);
-            }
-
-            return lines;
-        }
-
-        private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(
-            Expression<Func<VoucherLine, bool>> mainFilter, TestBalanceParameters parameters)
         {
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                     art => art.Voucher, art => art.Branch);
-            query = IncludeVoucherLineReference(parameters.ViewId, query);
+
+            var utility = _factory.Create(parameters.ViewId);
+            query = utility.IncludeVoucherLineReference(query);
+
             var options = parameters.Options;
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
             {
@@ -283,22 +245,19 @@ namespace SPPC.Tadbir.Persistence
                 query = query.Where(art => art.Voucher.Type != (short)VoucherType.OpeningVoucher);
             }
 
-            var lines = await query
-                .Where(mainFilter)
-                .Select(art => Mapper.Map<TestBalanceItemViewModel>(art))
-                .ToListAsync();
-            return lines
-                .ApplyQuickFilter(parameters.GridOptions)
-                .ToList();
-        }
+            IList<TestBalanceItemViewModel> lines = null;
+            if (parameters.FromDate != null && parameters.ToDate != null)
+            {
+                lines = await utility.GetRawReportByDateLinesAsync<TestBalanceItemViewModel>(
+                    query, parameters.FromDate.Value, parameters.ToDate.Value, parameters.GridOptions);
+            }
+            else if (parameters.FromNo != null && parameters.ToNo != null)
+            {
+                lines = await utility.GetRawReportByNumberLinesAsync<TestBalanceItemViewModel>(
+                    query, parameters.FromNo.Value, parameters.ToNo.Value, parameters.GridOptions);
+            }
 
-        private IEnumerable<IGrouping<string, TestBalanceItemViewModel>> GetTurnoverGroups(
-            IEnumerable<TestBalanceItemViewModel> lines, int groupLevel,
-            Func<TestBalanceItemViewModel, bool> lineFilter)
-        {
-            int codeLength = GetLevelCodeLength(ViewName.Account, groupLevel);
-            return GetGroupByThenByItems(lines.Where(lineFilter),
-                    item => item.AccountFullCode.Substring(0, codeLength));
+            return lines;
         }
 
         private async Task<TestBalanceItemViewModel> GetTwoAndFourColumnBalanceItemAsync(
@@ -379,18 +338,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private int GetLevelCodeLength(int viewId, int level)
-        {
-            var fullConfig = Config
-                .GetViewTreeConfigByViewAsync(viewId)
-                .Result;
-            var treeConfig = fullConfig.Current;
-            int codeLength = treeConfig.Levels
-                .Where(cfg => cfg.No <= level + 1)
-                .Sum(cfg => cfg.CodeLength);
-            return codeLength;
-        }
-
         private async Task ApplyZeroBalanceOptionAsync(
             TestBalanceViewModel testBalance, TestBalanceParameters parameters)
         {
@@ -443,5 +390,6 @@ namespace SPPC.Tadbir.Persistence
 
         private readonly ISystemRepository _system;
         private readonly IReportRepository _report;
+        private readonly ITestBalanceUtilityFactory _factory;
     }
 }

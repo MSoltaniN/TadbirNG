@@ -125,6 +125,7 @@ namespace SPPC.Tadbir.Web.Api
         {
             _services.AddTransient<IDomainMapper, DomainMapper>();
             _services.AddTransient<IReportUtility, ReportUtilityBase>();
+            _services.AddTransient<ITestBalanceUtilityFactory, TestBalanceUtilityFactory>();
             _services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
         }
 

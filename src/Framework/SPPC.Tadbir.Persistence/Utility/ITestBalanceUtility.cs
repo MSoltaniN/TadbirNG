@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
-    internal interface ITestBalanceUtility
+    public interface ITestBalanceUtility : IReportUtility
     {
-        //IEnumerable<IGrouping<string, TestBalanceItemViewModel>> GetTurnoverGroups(
-        //    IEnumerable<TestBalanceItemViewModel> lines, int groupLevel,
-        //    Func<TestBalanceItemViewModel, bool> lineFilter);
+        IQueryable<VoucherLine> IncludeVoucherLineReference(IQueryable<VoucherLine> query);
         Func<TestBalanceItemViewModel, bool> GetUpperlevelFilter(int level);
         Func<TestBalanceItemViewModel, bool> GetCurrentlevelFilter(int level);
     }

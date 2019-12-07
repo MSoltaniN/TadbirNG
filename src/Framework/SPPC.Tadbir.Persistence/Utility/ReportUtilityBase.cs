@@ -77,13 +77,13 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .ApplyQuickFilter(gridOptions)
                 .ToList();
         }
+
         public IEnumerable<IGrouping<string, TModel>> GetTurnoverGroups<TModel>(
             IEnumerable<TModel> lines, int groupLevel, Func<TModel, bool> lineFilter)
             where TModel : class, IAccountView
         {
-            int codeLength = GetLevelCodeLength(ViewName.Account, groupLevel);
-            return GetGroupByItems(lines.Where(lineFilter),
-                    item => item.AccountFullCode.Substring(0, codeLength));
+            var selector = GetGroupSelector<TModel>(groupLevel);
+            return GetGroupByItems(lines.Where(lineFilter), selector);
         }
 
         public int GetLevelCodeLength(int viewId, int level)
@@ -146,6 +146,13 @@ namespace SPPC.Tadbir.Persistence.Utility
                     }
                 }
             }
+        }
+
+        protected virtual Func<TModel, string> GetGroupSelector<TModel>(int groupLevel)
+            where TModel : class, IAccountView
+        {
+            int codeLength = GetLevelCodeLength(ViewName.Account, groupLevel);
+            return item => item.AccountFullCode.Substring(0, codeLength);
         }
 
         private readonly IConfigRepository _config;
