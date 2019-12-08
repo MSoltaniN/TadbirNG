@@ -8,6 +8,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Web.Api.Extensions;
 
@@ -123,6 +124,8 @@ namespace SPPC.Tadbir.Web.Api
         private void AddUtilityTypes()
         {
             _services.AddTransient<IDomainMapper, DomainMapper>();
+            _services.AddTransient<IReportUtility, ReportUtilityBase>();
+            _services.AddTransient<ITestBalanceUtilityFactory, TestBalanceUtilityFactory>();
             _services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
         }
 
