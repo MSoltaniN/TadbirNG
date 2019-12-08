@@ -214,7 +214,8 @@
     "Condition": "شرط",
     "PleaseSelectField": "یک فیلد را انتخاب کنید",
     "AddGroupfilter": "درج فیلتر جدید",
-    "DeleteGroupfilter": "حذف فیلترها"
+    "DeleteGroupfilter": "حذف فیلترها",
+    "UseForOthers": "قابل استفاده برای همه کاربران"
   },
   "Currency": {
     "New": "ارز جدید",

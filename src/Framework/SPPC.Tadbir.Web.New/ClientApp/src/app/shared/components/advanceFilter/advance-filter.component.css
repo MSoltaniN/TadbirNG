@@ -16,6 +16,10 @@
   padding-right: 6px;
 }
 
+.exp-view{
+  min-height:80px;
+}
+
 .hint {
   border: solid 1px #dadde2;
   height: 30px;

@@ -117,9 +117,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.groupFilters = new Array<GroupFilter>();
       var firstItem = new GroupFilter();
       firstItem.id = "-1";
-      firstItem.name = "---";
-      this.gFilterSelected = "-1";
+      firstItem.name = "---";      
       this.groupFilters.push(firstItem);
+      this.gFilterSelected = "-1";
     }
     //if(this.groupFilters)
       //this.selectedGroupRows.push(this.groupFilters.findIndex(gf => gf.isDefault));
@@ -164,9 +164,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
   revertToDefaultValues() {
     this.selectedValue = "";
-    this.selectedOperator = "eq";
-    this.selectedLogicalOperator = "or";
-    this.selectedColumn = this.columnsList[0].name;
+    this.selectedOperator = "";
+    this.selectedLogicalOperator = "and";
+    this.selectedColumn = "";
     this.formMode = 'insert';
   }
 
@@ -295,7 +295,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   onOk() {    
-    this.result.emit({ filters: this.createFilterExpression(),filterList: this.filters,groupFilter:this.groupFilters });
+    this.result.emit({ filters: this.createFilterExpression(), filterList: this.filters, groupFilter: this.groupFilters, gFilterSelected:this.gFilterSelected });
   }
 
   onCancel(): void {
@@ -500,12 +500,12 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     var filters = this.groupFilters[index].filters;;
 
     if (filters) {
-      var i = 0;
+      var counter = 0;
       var count = filters.length;
       this.totalFilterExpression = "";
 
       filters.forEach((item) => {
-        i++;
+        counter++;
 
         if (item.braces) {
 
@@ -525,24 +525,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
               this.totalFilterExpression += " " + html + br.brace + "</span>";
             }
-          }
-
-          //item.braces.forEach((br) => {
-          //  if (br.brace == "(") {
-          //    var html = "";
-          //    if (usedId.findIndex(f => f === br.outerId + item.id) == -1) {
-          //      usedId.push(br.outerId + item.id);                
-          //      html = '<span class="color' + colorCount + '">';
-          //      colorCount++;
-          //    }
-          //    else {
-          //      var colorindex = usedId.findIndex(f => f === br.outerId + item.id)                
-          //      html = '<span class="color' + colorindex + '">';
-          //    }
-              
-          //    this.totalFilterExpression += " " + html + br.brace + "</span>";
-          //  }
-          //});
+          }         
         }
 
         this.totalFilterExpression += " " + "<span class='column-name'>" + item.columnTitle + "</span>" + " " 
@@ -566,26 +549,10 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
               this.totalFilterExpression += " " + html + br.brace + "</span>";;
             }
-          }
-          //item.braces.forEach((br) => {
-          //  if (br.brace == ")") {
-          //    var html = "";
-          //    if (usedId.findIndex(f => f === item.id + br.outerId) == -1) {
-          //      usedId.push(item.id + br.outerId);                
-          //      html = '<span class="color' + colorCount + '">';
-          //      colorCount++;
-          //    }
-          //    else {
-          //      var colorindex = usedId.findIndex(f => f === item.id + br.outerId)
-          //      html = '<span class="color' + colorindex + '">';
-          //    }
-
-          //    this.totalFilterExpression += " " + html + br.brace + "</span>";;
-          //  }
-          //});
+          }          
         }
 
-        if (i < count)
+        if (counter < count)
           this.totalFilterExpression += " <span class='logic-operator'>" + item.logicalOperatorTitle +  "</span> ";
       });
     }
@@ -690,24 +657,40 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   gFilterSelected: string;
-  activeGroupFilter: boolean = false;  
+  activeGroupFilter: boolean = false;
+  filterUseForOthers: boolean = false;
+  isEditMode: boolean = false;
   filterGroupName: string;
   public groupFilters: Array<GroupFilter>;
   selectedGroupRows: any[] = [];
 
   addGroupFilter() {
+    this.isEditMode = false;
+    this.filterGroupName = "";
+    this.filterUseForOthers = false;
     this.activeGroupFilter = true;  
   }
 
   onGroupFilterOk() {
-    var gf = new GroupFilter();
-    gf.id = Guid.newGuid();   
-    gf.name = this.filterGroupName;
+    if (!this.isEditMode) {
+      var gf = new GroupFilter();
+      gf.id = Guid.newGuid();
+      gf.name = this.filterGroupName;
+      gf.useForOthers = this.filterUseForOthers;
+      this.groupFilters.push(gf);
 
-    this.gFilterSelected = gf.id;
-    this.groupFilters.push(gf);
-    this.gFilterSelectChange(gf.id);
-    this.activeGroupFilter = false;  
+      this.gFilterSelected = gf.id;
+      this.gFilterSelectChange(gf.id);
+      this.activeGroupFilter = false;
+    }
+    else {
+      var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+      this.groupFilters[index].name = this.filterGroupName;
+      this.groupFilters[index].useForOthers = this.filterUseForOthers;        
+      this.activeGroupFilter = false;
+      this.gFilterSelected = this.groupFilters[index].id;
+    }
+
   }
 
   onGroupFilterCancel() {
@@ -719,19 +702,30 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     return false;
   }
 
+  gEditIsDisable() {
+    if (this.gFilterSelected == "-1") return true;
+    return false;
+  }
+
   public gFilterSelectChange(id) {
     var index = this.groupFilters.findIndex(gf => gf.id === id);
     this.filters = this.groupFilters[index].filters;    
-    this.selectedRows = [];
-    //this.groupFilters.forEach((gf) => {
-    //  if (i == e.index)
-    //    gf.isDefault = true;
-    //  else
-    //    gf.isDefault = false;
-    //  i++;
-    //});    
+    this.selectedRows = [];   
 
     this.computeTotalExpression();
   }
 
+  editGroupFilter() {
+    var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    this.filterGroupName = this.groupFilters[index].name;
+    this.filterUseForOthers = this.groupFilters[index].useForOthers;
+    this.isEditMode = true;
+    this.activeGroupFilter = true;  
+  }
+
+  removeGroupFilter() {    
+    var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    this.groupFilters.splice(index, 1);
+    this.gFilterSelected = "-1";     
+  }
 }
