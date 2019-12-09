@@ -19,7 +19,7 @@
               [pageSize]="pageSize"
               [skip]="skip"
               [filter]="state.filter"
-              [pageable]="true"
+              [pageable]="false"
               [resizable]="true"
               [filterable]="true"
               [scrollable]="'scrollable'"
@@ -301,7 +301,7 @@
                                 [valuePrimitive]="true"
                                 [value]="voucherStatusSelected"
                                 [(ngModel)]="voucherStatusSelected"
-                                (ngModelChange)="changeParam();saveStates();">
+                                (ngModelChange)="changeParam();saveStates();" PersistState>
               <ng-template kendoDropDownListValueTemplate let-dataItem>
                 {{ dataItem?.value | translate }}
               </ng-template>

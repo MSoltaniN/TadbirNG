@@ -120,6 +120,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// رفرنس سند عملیاتی در سند مالی
         /// </summary>
-        public string Reference { get; set; }
+        public string VoucherReference { get; set; }
     }
 }

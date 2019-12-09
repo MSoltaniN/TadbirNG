@@ -6,7 +6,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// <summary>
     /// اطلاعات یکی از سطرهای گزارش تراز آزمایشی را نگهداری می کند
     /// </summary>
-    public class TestBalanceItemViewModel
+    public class TestBalanceItemViewModel : IAccountView
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -39,6 +39,36 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// شماره سطح که عمق حساب به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
         /// </summary>
         public short AccountLevel { get; set; }
+
+        /// <summary>
+        /// کد کامل تفصیلی شناور مورد استفاده در سطر گزارش
+        /// </summary>
+        public string DetailAccountFullCode { get; set; }
+
+        /// <summary>
+        /// شماره سطح که عمق تفصیلی شناور به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
+        /// </summary>
+        public short DetailAccountLevel { get; set; }
+
+        /// <summary>
+        /// کد کامل مرکز هزینه مورد استفاده در سطر گزارش
+        /// </summary>
+        public string CostCenterFullCode { get; set; }
+
+        /// <summary>
+        /// شماره سطح که عمق مرکز هزینه به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
+        /// </summary>
+        public short CostCenterLevel { get; set; }
+
+        /// <summary>
+        /// کد کامل پروژه مورد استفاده در سطر گزارش
+        /// </summary>
+        public string ProjectFullCode { get; set; }
+
+        /// <summary>
+        /// شماره سطح که عمق پروژه به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
+        /// </summary>
+        public short ProjectLevel { get; set; }
 
         /// <summary>
         /// مانده ابتدای دوره - بدهکار

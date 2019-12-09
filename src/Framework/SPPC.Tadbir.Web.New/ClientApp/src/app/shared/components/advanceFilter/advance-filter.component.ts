@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces, GroupFilter } from '@sppc/shared/models';
 import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -11,7 +11,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { MessageType } from '@sppc/env/environment.prod';
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { guid } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
-
+import { String } from '@sppc/shared/class';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -21,6 +21,7 @@ export function getLayoutModule(layout: Layout) {
   selector: 'app-advance-filter',
   templateUrl: './advance-filter.component.html',
   styleUrls: ['./advance-filter.component.css'],
+  encapsulation: ViewEncapsulation.None,
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,
@@ -41,6 +42,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   public selectedLogicalOperator: string = "and";
   public selectedOperator: string = "eq";
   public selectedColumn: string;
+  selectScriptType: string = "";
 
   totalFilterExpression: string;
   selectedValue: string;
@@ -115,9 +117,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.groupFilters = new Array<GroupFilter>();
       var firstItem = new GroupFilter();
       firstItem.id = "-1";
-      firstItem.name = "---";
-      this.gFilterSelected = "-1";
+      firstItem.name = "---";      
       this.groupFilters.push(firstItem);
+      this.gFilterSelected = "-1";
     }
     //if(this.groupFilters)
       //this.selectedGroupRows.push(this.groupFilters.findIndex(gf => gf.isDefault));
@@ -128,6 +130,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     if (this.selectedColumn) {
       var selected = this.columnsList.filter(p => p.name === this.selectedColumn)[0];
+      this.selectScriptType = selected.scriptType;
       switch (selected.scriptType) {
         case "string":
           this.operatorsList = this.stringOperators;
@@ -161,9 +164,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
   revertToDefaultValues() {
     this.selectedValue = "";
-    this.selectedOperator = "eq";
-    this.selectedLogicalOperator = "or";
-    this.selectedColumn = this.columnsList[0].name;
+    this.selectedOperator = "";
+    this.selectedLogicalOperator = "and";
+    this.selectedColumn = "";
     this.formMode = 'insert';
   }
 
@@ -292,7 +295,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   onOk() {    
-    this.result.emit({ filters: this.createFilterExpression(),filterList: this.filters,groupFilter:this.groupFilters });
+    this.result.emit({ filters: this.createFilterExpression(), filterList: this.filters, groupFilter: this.groupFilters, gFilterSelected:this.gFilterSelected });
   }
 
   onCancel(): void {
@@ -303,7 +306,20 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.cancel.emit();
   }
 
+  removeAllBraces() {
+    var filters = new Array<FilterRow>();    
+    filters = <Array<FilterRow>>JSON.parse(JSON.stringify(this.filters));
 
+    filters.forEach((f) => {
+      f.braces = [];
+    });
+
+    var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    this.groupFilters[index].filters = filters;
+    this.filters = filters;
+    this.selectedRows = [];
+    this.computeTotalExpression();
+  }
 
   braces() {
 
@@ -468,45 +484,81 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     return expression;
   }
+
+
+  //statusColor: string[] = ['#F1512F', '#FCE900', '#A0FC00', '#00FCE9', '#00ACFC', '#0026FC', '#BB00FC', '#0C0000', '#D5BDD6', '#6C8972','#F4F2AA'];
   
+
   computeTotalExpression() {
 
     if (!this.groupFilters) return;
+    var usedColors = new Array<string>();
+    var usedId = new Array<string>();
+    var colorCount: number = 0;
 
     var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
     var filters = this.groupFilters[index].filters;;
 
     if (filters) {
-      var i = 0;
+      var counter = 0;
       var count = filters.length;
       this.totalFilterExpression = "";
 
       filters.forEach((item) => {
-        i++;
+        counter++;
 
         if (item.braces) {
-          item.braces.forEach((br) => {
-            if (br.brace == "(")
-              this.totalFilterExpression += " " + br.brace;
-          });
+
+          for (var i = item.braces.length; i >= 0; i--) {
+            var br = item.braces[i];
+            if (br && br.brace == "(") {
+              var html = "";
+              if (usedId.findIndex(f => f === br.outerId + item.id) == -1) {
+                usedId.push(br.outerId + item.id);
+                html = '<span class="color' + colorCount + '">';
+                colorCount++;
+              }
+              else {
+                var colorindex = usedId.findIndex(f => f === br.outerId + item.id)
+                html = '<span class="color' + colorindex + '">';
+              }
+
+              this.totalFilterExpression += " " + html + br.brace + "</span>";
+            }
+          }         
         }
 
-        this.totalFilterExpression += " " + item.columnTitle + " " + item.operatorTitle + " " + item.value + " ";
+        this.totalFilterExpression += " " + "<span class='column-name'>" + item.columnTitle + "</span>" + " " 
+          + " " + "<span class='operator'>" + item.operatorTitle + "</span>" + " " + "<span class='value'>" + item.value + "</span>" + " " ;
 
         if (item.braces) {
-          item.braces.forEach((br) => {
-            if (br.brace == ")")
-              this.totalFilterExpression += br.brace + " ";
-          });
+
+          for (var i = item.braces.length; i >= 0; i--) {
+            var br = item.braces[i];
+            if (br && br.brace == ")") {
+              var html = "";
+              if (usedId.findIndex(f => f === item.id + br.outerId) == -1) {
+                usedId.push(item.id + br.outerId);                
+                html = '<span class="color' + colorCount + '">';
+                colorCount++;
+              }
+              else {
+                var colorindex = usedId.findIndex(f => f === item.id + br.outerId)
+                html = '<span class="color' + colorindex + '">';
+              }
+
+              this.totalFilterExpression += " " + html + br.brace + "</span>";;
+            }
+          }          
         }
 
-        if (i < count)
-          this.totalFilterExpression += item.logicalOperatorTitle + " ";
+        if (counter < count)
+          this.totalFilterExpression += " <span class='logic-operator'>" + item.logicalOperatorTitle +  "</span> ";
       });
     }
     else {
       this.totalFilterExpression = "";  
-    }
+    }   
     
   }
   
@@ -563,23 +615,22 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
               nextFilter.braces.push(b);
             }
             else {
-              if (filters[index].braces) {
-                var deletedBrace = new Array<Braces>();
-
+              if (filters[index].braces) {               
                 filters[index].braces.forEach((br) => {
-                  var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
+                  if (filters.findIndex(f => f.id === br.outerId) >= 0) {
+                      var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
 
-                  outerBraces.forEach((obr) => {
-                    if (obr.outerId == filters[index].id) {
-                      deleteBraces.push(obr);
-                    }
-                  })
+                      outerBraces.forEach((obr) => {
+                      if (obr.outerId == filters[index].id) {
+                        deleteBraces.push(obr);
+                      }
+                      })
 
-                  deleteBraces.forEach((dbr) => {
-                    var dindex = outerBraces.findIndex(br => br == dbr);
-                    outerBraces.splice(dindex);
-                  });
-
+                      deleteBraces.forEach((dbr) => {
+                      var dindex = outerBraces.findIndex(br => br == dbr);
+                      outerBraces.splice(dindex);
+                      });
+                  }
                 })
               }
             }
@@ -606,43 +657,75 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   gFilterSelected: string;
-  activeGroupFilter: boolean = false;  
+  activeGroupFilter: boolean = false;
+  filterUseForOthers: boolean = false;
+  isEditMode: boolean = false;
   filterGroupName: string;
   public groupFilters: Array<GroupFilter>;
   selectedGroupRows: any[] = [];
 
   addGroupFilter() {
+    this.isEditMode = false;
+    this.filterGroupName = "";
+    this.filterUseForOthers = false;
     this.activeGroupFilter = true;  
   }
 
   onGroupFilterOk() {
-    var gf = new GroupFilter();
-    gf.id = Guid.newGuid();   
-    gf.name = this.filterGroupName;
+    if (!this.isEditMode) {
+      var gf = new GroupFilter();
+      gf.id = Guid.newGuid();
+      gf.name = this.filterGroupName;
+      gf.useForOthers = this.filterUseForOthers;
+      this.groupFilters.push(gf);
 
-    this.gFilterSelected = gf.id;
-    this.groupFilters.push(gf);
-    this.gFilterSelectChange(gf.id);
-    this.activeGroupFilter = false;  
+      this.gFilterSelected = gf.id;
+      this.gFilterSelectChange(gf.id);
+      this.activeGroupFilter = false;
+    }
+    else {
+      var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+      this.groupFilters[index].name = this.filterGroupName;
+      this.groupFilters[index].useForOthers = this.filterUseForOthers;        
+      this.activeGroupFilter = false;
+      this.gFilterSelected = this.groupFilters[index].id;
+    }
+
   }
 
   onGroupFilterCancel() {
     this.activeGroupFilter = false;  
   }
 
+  gDeleteIsDisable() {
+    if (this.gFilterSelected == "-1") return true;
+    return false;
+  }
+
+  gEditIsDisable() {
+    if (this.gFilterSelected == "-1") return true;
+    return false;
+  }
+
   public gFilterSelectChange(id) {
     var index = this.groupFilters.findIndex(gf => gf.id === id);
     this.filters = this.groupFilters[index].filters;    
-    this.selectedRows = [];
-    //this.groupFilters.forEach((gf) => {
-    //  if (i == e.index)
-    //    gf.isDefault = true;
-    //  else
-    //    gf.isDefault = false;
-    //  i++;
-    //});    
+    this.selectedRows = [];   
 
     this.computeTotalExpression();
   }
 
+  editGroupFilter() {
+    var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    this.filterGroupName = this.groupFilters[index].name;
+    this.filterUseForOthers = this.groupFilters[index].useForOthers;
+    this.isEditMode = true;
+    this.activeGroupFilter = true;  
+  }
+
+  removeGroupFilter() {    
+    var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    this.groupFilters.splice(index, 1);
+    this.gFilterSelected = "-1";     
+  }
 }

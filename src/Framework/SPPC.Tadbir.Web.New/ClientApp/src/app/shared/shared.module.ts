@@ -98,6 +98,7 @@ import { ReportParamComponent } from '@sppc/shared/components/viewIdentifier/rep
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { GridMessageService } from '@sppc/shared/services/grid-messages.service';
 import { AdvanceFilterComponent } from '@sppc/shared/components/advanceFilter/advance-filter.component';
+import { PersistStateDirective } from './directive/persistState/PersistState';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -133,7 +134,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReplaceLineBreaksPipe, DialogComponent, GridFilterComponent, SppcBranchScope, SppcDatepicker, SppcDateRangeSelector, SppcDropDownList, SppcDisplayFullAccountComponent,
     SppcFullAccountComponent, SppcGridDatepicker, SppcGridDateFilter, FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective,
     TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput, SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective,
-    FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent],
+    FullCodeTestDirective, SpccOnlyNumberDirective,PersistStateDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent],
 
   entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent,AdvanceFilterComponent],
 
@@ -149,7 +150,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PopupModule, TreeViewModule, ContextMenuModule, LayoutModule, ToastrModule, DpDatePickerModule, TranslateModule, DashboardComponent, NavMenuComponent, GridFilterComponent,
     SppcBranchScope, SppcDatepicker, SppcDateRangeSelector, SppcDropDownList, SppcDisplayFullAccountComponent, SppcFullAccountComponent, SppcGridDatepicker, SppcGridDateFilter,
     FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective, TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput,
-    SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,
+    SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,PersistStateDirective,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
     ReportViewerComponent, SppcTimepicker]
 })

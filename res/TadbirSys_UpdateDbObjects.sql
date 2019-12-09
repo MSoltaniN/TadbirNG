@@ -442,8 +442,6 @@ VALUES (361, 40, N'BranchName', NULL, N'System.String', N'nvarchar', N'string', 
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 -- 1.1.714
-
-
 SET IDENTITY_INSERT [Reporting].Report ON
 
 insert into Reporting.Report(ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
@@ -637,6 +635,13 @@ WHERE [Name] LIKE N'SetDefault%'
 -- 1.1.746
 DELETE FROM [Auth].[ViewRowPermission]
 WHERE RoleID = 1
+
+-- 1.1.762
+DELETE FROM [Config].[UserSetting]
+WHERE SettingID NOT IN(4,7)
+
+DELETE FROM [Config].[Setting]
+WHERE SettingID NOT IN(4,7)
 
 -- 1.1.768
 SET IDENTITY_INSERT [Metadata].[Command] ON

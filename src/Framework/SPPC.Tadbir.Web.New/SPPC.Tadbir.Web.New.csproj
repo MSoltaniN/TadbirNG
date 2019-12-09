@@ -84,6 +84,7 @@
     <None Remove="ClientApp\src\app\shared\components\login\logout.component.ts" />
     <None Remove="ClientApp\src\app\core\index.ts" />
     <None Remove="ClientApp\src\app\finance\index.ts" />
+    <None Remove="ClientApp\src\app\shared\directive\persistState\PersistState.ts" />
     <None Remove="ClientApp\src\app\shared\index.ts" />
     <None Remove="ClientApp\src\app\shared\models\columnFilter.ts" />
     <None Remove="ClientApp\src\app\shared\models\index.ts" />
@@ -841,6 +842,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\login\logout.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\directive\persistState\persistState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\api\index.ts" />
@@ -848,7 +850,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\shared\directive\" />
     <Folder Include="ClientApp\src\app\shared\security\" />
     <Folder Include="ClientApp\src\assets\resources\fonts\IranSans-En\" />
     <Folder Include="Properties\PublishProfiles\" />

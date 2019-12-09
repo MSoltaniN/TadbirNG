@@ -30,6 +30,6 @@
         /// <summary>
         /// آیا از کدینگ پیش فرض استفاده شود؟
         /// </summary>
-        public bool IsUseDefaultCoding { get; set; }
+        public bool UsesDefaultCoding { get; set; }
     }
 }

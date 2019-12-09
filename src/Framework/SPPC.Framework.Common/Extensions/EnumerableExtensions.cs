@@ -21,10 +21,25 @@ namespace SPPC.Framework.Extensions
         /// <returns>This object</returns>
         public static IEnumerable<T> Apply<T>(this IEnumerable<T> enumerable, GridOptions gridOptions, bool withPaging = true)
         {
-            Verify.ArgumentNotNull(enumerable, "enumerable");
+            Verify.ArgumentNotNull(enumerable, nameof(enumerable));
             return enumerable
                 .AsQueryable()
                 .Apply(gridOptions, withPaging);
+        }
+
+        /// <summary>
+        /// Applies optional filtering specified as quick filter to items in an enumerable instance
+        /// </summary>
+        /// <typeparam name="T">Type of items in enumerable instance</typeparam>
+        /// <param name="enumerable">Self reference (this) of enumerable instance</param>
+        /// <param name="gridOptions">Options for filtering, sorting and paging items</param>
+        /// <returns>This object</returns>
+        public static IEnumerable<T> ApplyQuickFilter<T>(this IEnumerable<T> enumerable, GridOptions gridOptions)
+        {
+            Verify.ArgumentNotNull(enumerable, nameof(enumerable));
+            return enumerable
+                .AsQueryable()
+                .ApplyQuickFilter(gridOptions);
         }
 
         /// <summary>
@@ -36,7 +51,7 @@ namespace SPPC.Framework.Extensions
         /// <returns>This object</returns>
         public static IEnumerable<T> ApplyPaging<T>(this IEnumerable<T> enumerable, GridOptions gridOptions)
         {
-            Verify.ArgumentNotNull(enumerable, "enumerable");
+            Verify.ArgumentNotNull(enumerable, nameof(enumerable));
             return enumerable
                 .AsQueryable()
                 .ApplyPaging(gridOptions);

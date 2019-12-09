@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
@@ -230,24 +229,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath)
         {
             Verify.ArgumentNotNull(configItem, "configItem");
-            UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<Setting>();
-
             _webRootPath = rootPath;
 
             var systemConfig = await repository
                 .GetByIDWithTrackingAsync(configItem.Id);
             systemConfig.Values = JsonHelper.From(configItem.Values, false);
             repository.Update(systemConfig);
-
             await UnitOfWork.CommitAsync();
-            UnitOfWork.UseCompanyContext();
 
             var configValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
-
-            if (configValues.IsUseDefaultCoding && !await IsDefineAccountAsync())
+            if (configValues.UsesDefaultCoding && !await IsDefinedAccountAsync())
             {
-                await InitialDefaultAccount();
+                await InitializeDefaultAccounts();
             }
         }
 
@@ -264,14 +258,14 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<bool> IsDefineAccountAsync()
+        private async Task<bool> IsDefinedAccountAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery();
             return await query.CountAsync() > 0 ? true : false;
         }
 
-        private async Task InitialDefaultAccount()
+        private async Task InitializeDefaultAccounts()
         {
             var accountTreeConfig = await GetViewTreeConfigByViewAsync(ViewName.Account);
 
@@ -281,7 +275,7 @@ namespace SPPC.Tadbir.Persistence
             UpdateDefaultAccountCodeRecursive(defaultAcc, accountTreeConfig, string.Empty);
 
             var accounts = defaultAcc.Select(f => Mapper.Map<Account>(f)).ToList();
-            InsertDefaultAccount(accounts);
+            InsertDefaultAccounts(accounts);
 
             await UpdateTreeLevelUsage(accountTreeConfig);
         }
@@ -325,7 +319,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void InsertDefaultAccount(IList<Account> accounts)
+        private void InsertDefaultAccounts(IList<Account> accounts)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
 

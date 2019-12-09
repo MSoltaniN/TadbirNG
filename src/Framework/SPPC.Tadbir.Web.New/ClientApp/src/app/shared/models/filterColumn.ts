@@ -29,6 +29,7 @@ export class FilterRow {
 export class GroupFilter {
   id: string;
   name: string;
+  useForOthers: boolean;
   filters: Array<FilterRow>;  
 }
 
