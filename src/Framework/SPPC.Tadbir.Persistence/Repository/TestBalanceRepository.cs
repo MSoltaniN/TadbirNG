@@ -42,15 +42,15 @@ namespace SPPC.Tadbir.Persistence
         public async Task<TestBalanceViewModel> GetLevelBalanceAsync(
             int level, TestBalanceParameters parameters)
         {
-            var utility = _factory.Create(parameters.ViewId);
+            _utility = _factory.Create(parameters.ViewId);
             var testBalance = new TestBalanceViewModel();
             var lines = await GetRawBalanceLinesAsync(parameters);
             Func<TestBalanceItemViewModel, bool> filter;
             int index = 0;
             while (index < level)
             {
-                filter = utility.GetCurrentlevelFilter(index);
-                foreach (var lineGroup in utility.GetTurnoverGroups(lines, index, filter))
+                filter = _utility.GetCurrentlevelFilter(index);
+                foreach (var lineGroup in _utility.GetTurnoverGroups(lines, index, filter))
                 {
                     await AddTwoAndFourColumnBalanceItemAsync(
                         testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -59,8 +59,8 @@ namespace SPPC.Tadbir.Persistence
                 index++;
             }
 
-            filter = utility.GetUpperlevelFilter(index);
-            foreach (var lineGroup in utility.GetTurnoverGroups(lines, index, filter))
+            filter = _utility.GetUpperlevelFilter(index);
+            foreach (var lineGroup in _utility.GetTurnoverGroups(lines, index, filter))
             {
                 await AddTwoAndFourColumnBalanceItemAsync(
                     testBalance, lineGroup, lineGroup.Key, parameters.Format, parameters.IsByBranch);
@@ -264,17 +264,7 @@ namespace SPPC.Tadbir.Persistence
             IEnumerable<TestBalanceItemViewModel> lines, TestBalanceFormat format, string fullCode)
         {
             var first = lines.First();
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
-            var balanceItem = new TestBalanceItemViewModel()
-            {
-                BranchId = first.BranchId,
-                BranchName = first.BranchName,
-                AccountId = account.Id,
-                AccountName = account.Name,
-                AccountFullCode = account.FullCode,
-                AccountLevel = account.Level
-            };
+            var balanceItem = await _utility.GetItemFromVoucherLineAsync(lines.First(), fullCode);
             decimal turnoverDebit = lines.Sum(item => item.TurnoverDebit);
             decimal turnoverCredit = lines.Sum(item => item.TurnoverCredit);
             decimal balance = turnoverDebit - turnoverCredit;
@@ -391,5 +381,6 @@ namespace SPPC.Tadbir.Persistence
         private readonly ISystemRepository _system;
         private readonly IReportRepository _report;
         private readonly ITestBalanceUtilityFactory _factory;
+        private ITestBalanceUtility _utility;
     }
 }

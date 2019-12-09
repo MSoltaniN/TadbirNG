@@ -7,10 +7,11 @@ namespace SPPC.Tadbir.Persistence.Utility
 {
     public class TestBalanceUtilityFactory : ITestBalanceUtilityFactory
     {
-        public TestBalanceUtilityFactory(IConfigRepository config, IDomainMapper mapper)
+        public TestBalanceUtilityFactory(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IConfigRepository config)
         {
-            _config = config;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _config = config;
         }
 
         public ITestBalanceUtility Create(int viewId)
@@ -19,24 +20,25 @@ namespace SPPC.Tadbir.Persistence.Utility
             switch (viewId)
             {
                 case ViewName.DetailAccount:
-                    utility = new DetailAccountBalanceUtility(_config, _mapper);
+                    utility = new DetailAccountBalanceUtility(_unitOfWork, _mapper, _config);
                     break;
                 case ViewName.CostCenter:
-                    utility = new CostCenterBalanceUtility(_config, _mapper);
+                    utility = new CostCenterBalanceUtility(_unitOfWork, _mapper, _config);
                     break;
                 case ViewName.Project:
-                    utility = new ProjectBalanceUtility(_config, _mapper);
+                    utility = new ProjectBalanceUtility(_unitOfWork, _mapper, _config);
                     break;
                 case ViewName.Account:
                 default:
-                    utility = new AccountBalanceUtility(_config, _mapper);
+                    utility = new AccountBalanceUtility(_unitOfWork, _mapper, _config);
                     break;
             }
 
             return utility;
         }
 
-        private readonly IConfigRepository _config;
+        private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
+        private readonly IConfigRepository _config;
     }
 }

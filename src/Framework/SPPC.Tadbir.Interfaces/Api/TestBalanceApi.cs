@@ -47,12 +47,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// Client URL for six-column test balance report for accounts in specified level
         /// </summary>
-        public const string SixColumnLevelBalance = "testbal/views/{0}/levels/{0}/6-col";
+        public const string SixColumnLevelBalance = "testbal/levels/{0}/6-col";
 
         /// <summary>
         /// Server route URL for six-column test balance report for accounts in specified level
         /// </summary>
-        public const string SixColumnLevelBalanceUrl = "testbal/views/{viewId:min(1)}/levels/{level:min(1)}/6-col";
+        public const string SixColumnLevelBalanceUrl = "testbal/levels/{level:min(1)}/6-col";
 
         /// <summary>
         /// Client URL for eight-column test balance report for accounts in specified level
