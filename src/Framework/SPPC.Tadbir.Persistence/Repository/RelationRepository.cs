@@ -180,6 +180,61 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش سنکرون، معتبر بودن بردار حساب را با توجه به سرفصل های حسابداری داده شده بررسی میکند
+        /// </summary>
+        /// <param name="account">اطلاعات نمایشی خلاصه حساب</param>
+        /// <param name="detailAccount">اطلاعات نمایشی خلاصه تفصیلی شناور</param>
+        /// <param name="costCenter">اطلاعات نمایشی خلاصه مرکز هزینه</param>
+        /// <param name="project">اطلاعات نمایشی خلاصه پروژه</param>
+        /// <returns>در صورت معتبر بودن بردارحساب مقدار درست در غیر اینصورت مقدار نادرست برمیگرداند</returns>
+        public bool LookupFullAccount(
+            AccountItemBriefViewModel account,
+            AccountItemBriefViewModel detailAccount,
+            AccountItemBriefViewModel costCenter,
+            AccountItemBriefViewModel project)
+        {
+            var fullAccount = new FullAccountViewModel()
+            {
+                Account = account,
+                DetailAccount = detailAccount,
+                CostCenter = costCenter,
+                Project = project
+            };
+
+            var accountModel = Repository
+                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children,
+                    acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters, acc => acc.AccountProjects)
+                .Where(acc => acc.Id == fullAccount.Account.Id)
+                .SingleOrDefault();
+            string errorKey = EnsureValidAccountInFullAccount(accountModel);
+            if (!String.IsNullOrEmpty(errorKey))
+            {
+                return false;
+            }
+
+            var criteria = GetFullAccountCriteria(accountModel);
+            errorKey = EnsureNoMissingItemInFullAccount(criteria, fullAccount);
+            if (!String.IsNullOrEmpty(errorKey))
+            {
+                return false;
+            }
+
+            errorKey = EnsureValidItemsInFullAccount(criteria, fullAccount);
+            if (!String.IsNullOrEmpty(errorKey))
+            {
+                return false;
+            }
+
+            errorKey = EnsureValidRelationsInFullAccount(accountModel, fullAccount, criteria);
+            if (!String.IsNullOrEmpty(errorKey))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
         /// خوانده و برمی گرداند
         /// </summary>
@@ -1285,7 +1340,7 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private static string EnsureValidAccountInFullAccount(Account account)
+        private string EnsureValidAccountInFullAccount(Account account)
         {
             string errorKey = String.Empty;
             if (account == null)
@@ -1300,7 +1355,7 @@ namespace SPPC.Tadbir.Persistence
             return errorKey;
         }
 
-        private static string EnsureNoMissingItemInFullAccount(
+        private string EnsureNoMissingItemInFullAccount(
             FullAccountCriteriaViewModel criteria, FullAccountViewModel fullAccount)
         {
             string errorKey = String.Empty;
@@ -1320,7 +1375,7 @@ namespace SPPC.Tadbir.Persistence
             return errorKey;
         }
 
-        private static string EnsureValidRelationsInFullAccount(
+        private string EnsureValidRelationsInFullAccount(
             Account account, FullAccountViewModel fullAccount, FullAccountCriteriaViewModel criteria)
         {
             if (criteria.RequiresDetailAccount || fullAccount.DetailAccount.Id > 0)
@@ -1393,6 +1448,40 @@ namespace SPPC.Tadbir.Persistence
             return errorKey;
         }
 
+        private string EnsureValidItemsInFullAccount(
+            FullAccountCriteriaViewModel criteria, FullAccountViewModel fullAccount)
+        {
+            string errorKey = String.Empty;
+            if (criteria.RequiresDetailAccount || fullAccount.DetailAccount.Id > 0)
+            {
+                errorKey = EnsureValidDetailAccountInFullAccount(fullAccount.DetailAccount.Id);
+                if (!String.IsNullOrEmpty(errorKey))
+                {
+                    return errorKey;
+                }
+            }
+
+            if (criteria.RequiresCostCenter || fullAccount.CostCenter.Id > 0)
+            {
+                errorKey = EnsureValidCostCenterInFullAccount(fullAccount.CostCenter.Id);
+                if (!String.IsNullOrEmpty(errorKey))
+                {
+                    return errorKey;
+                }
+            }
+
+            if (criteria.RequiresProject || fullAccount.Project.Id > 0)
+            {
+                errorKey = EnsureValidProjectInFullAccount(fullAccount.Project.Id);
+                if (!String.IsNullOrEmpty(errorKey))
+                {
+                    return errorKey;
+                }
+            }
+
+            return errorKey;
+        }
+
         private async Task<string> EnsureValidDetailAccountInFullAccountAsync(int detailId)
         {
             string errorKey = String.Empty;
@@ -1439,6 +1528,64 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<Project>(ViewName.Project, prj => prj.Children, prj => prj.AccountProjects)
                 .Where(prj => prj.Id == projectId)
                 .SingleOrDefaultAsync();
+            if (project == null)
+            {
+                errorKey = FullAccountError.InvalidProjectInFullAccount;
+            }
+            else if (project.Children.Count > 0)
+            {
+                errorKey = FullAccountError.NonLeafProjectInFullAccount;
+            }
+
+            return errorKey;
+        }
+
+        private string EnsureValidDetailAccountInFullAccount(int detailId)
+        {
+            string errorKey = String.Empty;
+            var detailAccount = Repository
+                .GetAllQuery<DetailAccount>(
+                    ViewName.DetailAccount, facc => facc.Children, facc => facc.AccountDetailAccounts)
+                .Where(facc => facc.Id == detailId)
+                .SingleOrDefault();
+            if (detailAccount == null)
+            {
+                errorKey = FullAccountError.InvalidDetailAccountInFullAccount;
+            }
+            else if (detailAccount.Children.Count > 0)
+            {
+                errorKey = FullAccountError.NonLeafDetailAccountInFullAccount;
+            }
+
+            return errorKey;
+        }
+
+        private string EnsureValidCostCenterInFullAccount(int costCenterId)
+        {
+            string errorKey = String.Empty;
+            var costCenter = Repository
+                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children, cc => cc.AccountCostCenters)
+                .Where(cc => cc.Id == costCenterId)
+                .SingleOrDefault();
+            if (costCenter == null)
+            {
+                errorKey = FullAccountError.InvalidCostCenterInFullAccount;
+            }
+            else if (costCenter.Children.Count > 0)
+            {
+                errorKey = FullAccountError.NonLeafCostCenterInFullAccount;
+            }
+
+            return errorKey;
+        }
+
+        private string EnsureValidProjectInFullAccount(int projectId)
+        {
+            string errorKey = String.Empty;
+            var project = Repository
+                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children, prj => prj.AccountProjects)
+                .Where(prj => prj.Id == projectId)
+                .SingleOrDefault();
             if (project == null)
             {
                 errorKey = FullAccountError.InvalidProjectInFullAccount;

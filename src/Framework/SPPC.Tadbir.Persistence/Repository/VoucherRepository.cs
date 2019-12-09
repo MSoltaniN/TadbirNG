@@ -12,6 +12,7 @@ using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -411,6 +412,84 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، لیست و تعداد اسناد فاقد آرتیکل را برمیگرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="from">تاریخ شروع گزارش</param>
+        /// <param name="to">تاریخ پایان گزارش</param>
+        /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
+        public async Task<(IList<VoucherViewModel>, int)> GetVouchersWithNoArticleAsync(GridOptions gridOptions, DateTime from, DateTime to)
+        {
+            var vouchers = Repository.GetAllOperationQuery<Voucher>(
+                ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
+                .Where(voucher => voucher.Lines.Count == 0 && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
+                .Select(item => Mapper.Map<VoucherViewModel>(item));
+
+            return await GetListAndCountAsync(gridOptions, vouchers);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، لیست و تعداد اسناد دارای نا تراز را برمیگرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="from">تاریخ شروع گزارش</param>
+        /// <param name="to">تاریخ پایان گزارش</param>
+        /// <returns>لیست و تعداد اسناد نا تراز</returns>
+        public async Task<(IList<VoucherViewModel>, int)> GetUnbalancedVouchersAsync(GridOptions gridOptions, DateTime from, DateTime to)
+        {
+            var vouchers = Repository.GetAllOperationQuery<Voucher>(
+                ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
+                .Where(voucher => !voucher.IsBalanced && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
+                .Select(item => Mapper.Map<VoucherViewModel>(item));
+
+            return await GetListAndCountAsync(gridOptions, vouchers);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، لیست و تعداد شماره اسناد جا افتاده را برمیگرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="from">تاریخ شروع گزارش</param>
+        /// <param name="to">تاریخ پایان گزارش</param>
+        /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
+        public async Task<(IList<NumberListViewModel>, int)> GetMissingVoucherNumbersAsync(GridOptions gridOptions, DateTime from, DateTime to)
+        {
+            var missNumberList = new List<NumberListViewModel>();
+            var vouchers = await Repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .Where(voucher => voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
+                .Select(item => Mapper.Map<VoucherViewModel>(item))
+                .Apply(gridOptions, false)
+                .ToListAsync();
+
+            if (vouchers.Count() > 0)
+            {
+                var existNumber = vouchers.Select(voucher => voucher.No);
+
+                var minNumber = existNumber.Min();
+                var maxNumber = existNumber.Max();
+
+                var numRange = Enumerable.Range(minNumber, maxNumber - minNumber + 1);
+
+                var missNumber = numRange
+                    .Where(num => !existNumber.Contains(num));
+
+                int count = missNumber.Count();
+
+                missNumber = missNumber
+                    .ApplyPaging(gridOptions);
+
+                foreach (var item in missNumber)
+                {
+                    missNumberList.Add(new NumberListViewModel() { Number = item });
+                }
+
+                return (missNumberList, count);
+            }
+
+            return (missNumberList, 0);
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="voucherView">مدل نمایشی شامل آخرین تغییرات</param>
@@ -440,6 +519,18 @@ namespace SPPC.Tadbir.Persistence
                     "Name : {1}{0}Date : {2}{0}Description : {3}{0}Reference : {4}{0}Association : {5}{0}",
                     Environment.NewLine, entity.No, entity.Date, entity.Description, entity.Reference, entity.Association)
                 : null;
+        }
+
+        private async Task<(IList<VoucherViewModel>, int)> GetListAndCountAsync(GridOptions gridOptions, IQueryable<VoucherViewModel> vouchers)
+        {
+            var filteredList = vouchers
+                .Apply(gridOptions, false);
+
+            var vouchersList = await filteredList
+                .ApplyPaging(gridOptions)
+                .ToListAsync();
+
+            return (vouchersList, await filteredList.CountAsync());
         }
 
         private ISecureRepository Repository

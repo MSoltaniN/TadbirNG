@@ -100,5 +100,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>تعداد کل آرتیکل ها</returns>
         Task<int> GetAllArticlesCountAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، لیست و تعداد آرتیکل ها را بر اساس نوع کنترل سیستم برمیگرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="issueType">نوع کنترل سیستم</param>
+        /// <param name="from">تاریخ شروع گزارش</param>
+        /// <param name="to">تاریخ پایان گزارش</param>
+        /// <returns>لیست و تعداد آرتیکل ها</returns>
+        Task<(IList<VoucherLineDetailViewModel>, int)> GetSystemIssueArticlesAsync(GridOptions gridOptions, string issueType, DateTime from, DateTime to);
     }
 }

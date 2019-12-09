@@ -149,7 +149,8 @@
     "Currency": "Currency",
     "CurrencyRate": "Currency Rate",
     "TestBalance": "Balance",
-    "CurrencyBook": "Currency Book"
+    "CurrencyBook": "Currency Book",
+    "SystemIssue": "System Control"
   },
   "Balance": {
     "ByDate": "By date",
@@ -256,6 +257,10 @@
     "AddBracesMsg": "Inserting parentheses is not possible for the selected filters",
     "Name": "Name",
     "SaveFilter": "Save filter"
+  },
+  "SystemIssue": {
+    "ListTitle": "Systems",
+    "SelectBranch": "Select Branch"
   },
   "Currency": {
     "New": "New Currency",

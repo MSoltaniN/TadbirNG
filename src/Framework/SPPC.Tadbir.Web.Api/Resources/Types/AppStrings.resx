@@ -2658,4 +2658,40 @@
   <data name="CantDeleteItemWithData" xml:space="preserve">
     <value>در {0} '{1}' یک یا چند سطر اطلاعاتی ایجاد شده و قابل حذف نیست.</value>
   </data>
+  <data name="SystemIssue" xml:space="preserve">
+    <value>کنترل سیستم</value>
+  </data>
+  <data name="AccountIssues" xml:space="preserve">
+    <value>کنترل حساب ها</value>
+  </data>
+  <data name="AccountsWithInvalidBalance" xml:space="preserve">
+    <value>حساب های دارای مانده نامعتبر</value>
+  </data>
+  <data name="ArticlesWithInvalidAccountItems" xml:space="preserve">
+    <value>آرتیکل های دارای بردار حساب نامعتبر</value>
+  </data>
+  <data name="ArticlesWithMissingAccount" xml:space="preserve">
+    <value>آرتیکل های فاقد حساب</value>
+  </data>
+  <data name="MissingVoucherNumbers" xml:space="preserve">
+    <value>شماره اسناد جا افتاده</value>
+  </data>
+  <data name="UnbalancedVouchers" xml:space="preserve">
+    <value>اسنادی که تراز نیستند</value>
+  </data>
+  <data name="VoucherIssues" xml:space="preserve">
+    <value>کنترل اسناد</value>
+  </data>
+  <data name="ArticlesHavingZeroAmount" xml:space="preserve">
+    <value>آرتیکل های دارای مبلغ صفر</value>
+  </data>
+  <data name="VouchersWithNoArticle" xml:space="preserve">
+    <value>اسناد فاقد آرتیکل</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>شماره</value>
+  </data>
+  <data name="VoucherReference" xml:space="preserve">
+    <value>رفرنس</value>
+  </data>
 </root>

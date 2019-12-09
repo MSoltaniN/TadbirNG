@@ -148,7 +148,8 @@
     "Currency": "ارز",
     "CurrencyRate": "نرخ ارز",
     "TestBalance": "تراز آزمایشی",
-    "CurrencyBook": "دفتر عملیات ارزی"
+    "CurrencyBook": "دفتر عملیات ارزی",
+    "SystemIssue": "کنترل سیستم"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -210,6 +211,10 @@
     "Name": "نام",
     "GroupFilter": "گروه فیلتر",
     "SaveFilter": "ذخیره فیلتر"
+  },
+  "SystemIssue": {
+    "ListTitle": "سیستم ها",
+    "SelectBranch": "انتخاب شعبه"
   },
   "Currency": {
     "New": "ارز جدید",

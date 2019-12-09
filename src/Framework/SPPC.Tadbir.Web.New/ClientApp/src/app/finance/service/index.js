@@ -11,4 +11,5 @@ export * from './project.service';
 export * from './voucher-line.service';
 export * from './voucher.service';
 export * from './testBalance.service';
+export * from './systemIssue.service';
 //# sourceMappingURL=index.js.map

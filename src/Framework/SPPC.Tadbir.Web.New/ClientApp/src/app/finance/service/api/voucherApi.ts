@@ -100,4 +100,7 @@ export class VoucherApi {
 
     // vouchers/articles/count
     public static VoucherArticlesCount = environment.BaseUrl + "/vouchers/articles/count";
+
+    // vouchers/no-article
+    public static VoucherWithNoArticleUrl = environment.BaseUrl + "/vouchers/no-article";
 }

@@ -89,6 +89,20 @@ namespace SPPC.Tadbir.Persistence
         Task<string> LookupFullAccountAsync(FullAccountViewModel fullAccount);
 
         /// <summary>
+        /// به روش سنکرون، معتبر بودن بردار حساب را با توجه به سرفصل های حسابداری داده شده بررسی میکند
+        /// </summary>
+        /// <param name="account">اطلاعات نمایشی خلاصه حساب</param>
+        /// <param name="detailAccount">اطلاعات نمایشی خلاصه تفصیلی شناور</param>
+        /// <param name="costCenter">اطلاعات نمایشی خلاصه مرکز هزینه</param>
+        /// <param name="project">اطلاعات نمایشی خلاصه پروژه</param>
+        /// <returns>در صورت معتبر بودن بردارحساب مقدار درست در غیر اینصورت مقدار نادرست برمیگرداند</returns>
+        bool LookupFullAccount(
+            AccountItemBriefViewModel account,
+            AccountItemBriefViewModel detailAccount,
+            AccountItemBriefViewModel costCenter,
+            AccountItemBriefViewModel project);
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

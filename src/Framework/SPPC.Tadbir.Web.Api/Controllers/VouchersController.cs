@@ -12,6 +12,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
@@ -130,9 +131,41 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVouchersCountByStatusIdAsync()
         {
-             int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
+            int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
 
             return Ok(itemCount);
+        }
+
+        // GET: api/vouchers/no-article
+        [Route(VoucherApi.VoucherWithNoArticleUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetVouchersWithNoArticleAsync(DateTime from, DateTime to)
+        {
+            var (vouchers, itemCount) = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
+            SetItemCount(itemCount);
+            Localize(vouchers.ToArray());
+            return Json(vouchers);
+        }
+
+        // GET: api/vouchers/unbalanced
+        [Route(VoucherApi.UnbalancedVouchers)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
+        {
+            var (vouchers, itemCount) = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
+            SetItemCount(itemCount);
+            Localize(vouchers.ToArray());
+            return Json(vouchers);
+        }
+
+        // GET: api/vouchers/miss-number
+        [Route(VoucherApi.MissingVoucherNumberUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetMissingVoucherNumbersAsync(DateTime from, DateTime to)
+        {
+            var (voucherNumbers, itemCount) = await _repository.GetMissingVoucherNumbersAsync(GridOptions, from, to);
+            SetItemCount(itemCount);
+            return Json(voucherNumbers);
         }
 
         // POST: api/vouchers
@@ -387,10 +420,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers/articles/count
         [Route(VoucherApi.VoucherArticlesCountUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GerArticlesCountAsync()
+        public async Task<IActionResult> GetArticlesCountAsync()
         {
             int itemsCount = await _lineRepository.GetAllArticlesCountAsync();
             return Ok(itemsCount);
+        }
+
+        // GET: api/vouchers/articles/sys-issue/{issueType}
+        [Route(VoucherApi.SystemIssueArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetSystemIssueArticlesAsync(string issueType, DateTime from, DateTime to)
+        {
+            var (articles, itemCount) = await _lineRepository.GetSystemIssueArticlesAsync(GridOptions, issueType, from, to);
+            SetItemCount(itemCount);
+            return Json(articles);
         }
 
         // POST: api/vouchers/{voucherId:min(1)}/articles

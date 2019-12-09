@@ -1,7 +1,7 @@
 
 <div class="row">
     <form novalidate [formGroup]="myForm">
-        <div id="drs-content" [ngClass]="{'pull-right' : rtl ,'pull-left' : !rtl}">
+        <div id="drs-content" class="sppc-width-100" [ngClass]="{'pull-right' : rtl ,'pull-left' : !rtl}">
             <div class="form-group col-sm-12 col-md-6" [ngClass]="{'float-right' : rtl}">
                 <label class="control-label">{{ 'Sppc-DateRange.FromDate' | translate }}</label>
                 <sppc-datepicker formControlName="fromDate" 

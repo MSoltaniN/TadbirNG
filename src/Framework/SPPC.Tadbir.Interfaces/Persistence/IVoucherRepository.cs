@@ -5,6 +5,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -160,5 +161,32 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
         /// آخرین وضعیت سند را برمی گرداند</returns>
         Task<string> ValidateVoucherActionAsync(int voucherId, string action);
+
+        /// <summary>
+        /// به روش آسنکرون، لیست و تعداد اسناد فاقد آرتیکل را برمیگرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="from">تاریخ شروع گزارش</param>
+        /// <param name="to">تاریخ پایان گزارش</param>
+        /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
+        Task<(IList<VoucherViewModel>, int)> GetVouchersWithNoArticleAsync(GridOptions gridOptions, DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، لیست و تعداد اسناد دارای نا تراز را برمیگرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="from">تاریخ شروع گزارش</param>
+        /// <param name="to">تاریخ پایان گزارش</param>
+        /// <returns>لیست و تعداد اسناد نا تراز</returns>
+        Task<(IList<VoucherViewModel>, int)> GetUnbalancedVouchersAsync(GridOptions gridOptions, DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، لیست و تعداد شماره اسناد جا افتاده را برمیگرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="from">تاریخ شروع گزارش</param>
+        /// <param name="to">تاریخ پایان گزارش</param>
+        /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
+        Task<(IList<NumberListViewModel>, int)> GetMissingVoucherNumbersAsync(GridOptions gridOptions, DateTime from, DateTime to);
     }
 }
