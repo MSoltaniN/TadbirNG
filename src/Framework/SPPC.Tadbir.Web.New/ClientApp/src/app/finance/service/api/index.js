@@ -11,4 +11,5 @@ export * from './projectApi';
 export * from './voucherApi';
 export * from './voucherReportApi';
 export * from './currencyBookApi';
+export * from './systemIssueApi';
 //# sourceMappingURL=index.js.map

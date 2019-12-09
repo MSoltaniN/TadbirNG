@@ -131,5 +131,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت گزارش عملیات ارزی
         /// </summary>
         public const string CurrencyBook = "CurrencyBook";
+
+        /// <summary>
+        /// نام موجودیت کنترل سیستم
+        /// </summary>
+        public const string SystemIssue = "SystemIssue";
     }
 }

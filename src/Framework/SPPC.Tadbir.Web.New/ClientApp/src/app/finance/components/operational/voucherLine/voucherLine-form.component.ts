@@ -165,7 +165,6 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   getCurrencies() {
     this.lookupService.GetLookup(LookupApi.CurrenciesInfo).subscribe(res => {
       this.currenciesRows = res;
-
       if (this.model != undefined && this.model.currencyId != undefined) {
         this.isDisplayCurrencyInfo = true;
         this.selectedCurrencyValue = this.model.currencyId;

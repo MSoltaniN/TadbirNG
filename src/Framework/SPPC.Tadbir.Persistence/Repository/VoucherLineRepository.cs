@@ -23,10 +23,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        public VoucherLineRepository(IRepositoryContext context, ISystemRepository system)
+        /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
+        public VoucherLineRepository(IRepositoryContext context, ISystemRepository system, IRelationRepository relations)
             : base(context, system?.Logger)
         {
             _system = system;
+            _relationRepository = relations;
         }
 
         /// <summary>
@@ -259,6 +261,61 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، لیست و تعداد آرتیکل ها را بر اساس نوع کنترل سیستم برمیگرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="issueType">نوع کنترل سیستم</param>
+        /// <param name="from">تاریخ شروع گزارش</param>
+        /// <param name="to">تاریخ پایان گزارش</param>
+        /// <returns>لیست و تعداد آرتیکل ها</returns>
+        public async Task<(IList<VoucherLineDetailViewModel>, int)> GetSystemIssueArticlesAsync(GridOptions gridOptions, string issueType, DateTime from, DateTime to)
+        {
+            var lines = Repository.GetAllOperationQuery<VoucherLine>(
+                ViewName.VoucherLine,
+                line => line.Voucher,
+                line => line.Account,
+                line => line.DetailAccount,
+                line => line.CostCenter,
+                line => line.Project,
+                line => line.Currency)
+                .Where(line => line.Voucher.Date.Date >= from.Date && line.Voucher.Date.Date <= to.Date);
+
+            (IList<VoucherLineDetailViewModel>, int) result;
+
+            switch (issueType)
+            {
+                case "miss-acc":
+                    {
+                        lines = GetArticlesWithMissingAccount(lines);
+                        result = await GetListAndCountAsync(gridOptions, lines);
+                        break;
+                    }
+
+                case "zero-amount":
+                    {
+                        lines = GetArticleHavingZeroAmount(lines);
+                        result = await GetListAndCountAsync(gridOptions, lines);
+                        break;
+                    }
+
+                case "invalid-acc":
+                    {
+                        var enumerableLines = GetArticleWithInvalidAccount(lines);
+                        result = GetListAndCount(gridOptions, enumerableLines);
+                        break;
+                    }
+
+                default:
+                    {
+                        result = (new List<VoucherLineDetailViewModel>(), 0);
+                        break;
+                    }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="lineView">مدل نمایشی شامل آخرین تغییرات</param>
@@ -290,6 +347,64 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                     Environment.NewLine, entity.AccountId, entity.DetailId, entity.CostCenterId, entity.ProjectId,
                     entity.CurrencyId, entity.Debit, entity.Credit, entity.Description)
                 : null;
+        }
+
+        private IQueryable<VoucherLine> GetArticlesWithMissingAccount(IQueryable<VoucherLine> voucherLines)
+        {
+            var lines = voucherLines
+                 .Where(line => line.Account == null);
+
+            return lines;
+        }
+
+        private IQueryable<VoucherLine> GetArticleHavingZeroAmount(IQueryable<VoucherLine> voucherLines)
+        {
+            var lines = voucherLines
+                 .Where(line => line.Debit == 0 && line.Credit == 0);
+
+            return lines;
+        }
+
+        private IEnumerable<VoucherLine> GetArticleWithInvalidAccount(IQueryable<VoucherLine> voucherLines)
+        {
+            var lines = voucherLines.ToList();
+
+            var lineList = lines.Where(
+                line => !_relationRepository.LookupFullAccount(
+                    Mapper.Map<AccountItemBriefViewModel>(line.Account),
+                    Mapper.Map<AccountItemBriefViewModel>(line.DetailAccount),
+                    Mapper.Map<AccountItemBriefViewModel>(line.CostCenter),
+                    Mapper.Map<AccountItemBriefViewModel>(line.Project)));
+
+            return lineList;
+        }
+
+        private async Task<(IList<VoucherLineDetailViewModel>, int)> GetListAndCountAsync(GridOptions gridOptions, IQueryable<VoucherLine> lines)
+        {
+            var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
+
+            var filteredList = voucherLines
+                .Apply(gridOptions, false);
+
+            var vouchersList = await filteredList
+                .ApplyPaging(gridOptions)
+                .ToListAsync();
+
+            return (vouchersList, await filteredList.CountAsync());
+        }
+
+        private (IList<VoucherLineDetailViewModel>, int) GetListAndCount(GridOptions gridOptions, IEnumerable<VoucherLine> lines)
+        {
+            var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
+
+            var filteredList = voucherLines
+               .Apply(gridOptions, false);
+
+            var vouchersList = filteredList
+               .ApplyPaging(gridOptions)
+               .ToList();
+
+            return (vouchersList, filteredList.Count());
         }
 
         private ISecureRepository Repository
@@ -331,5 +446,6 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
         }
 
         private readonly ISystemRepository _system;
+        private readonly IRelationRepository _relationRepository;
     }
 }

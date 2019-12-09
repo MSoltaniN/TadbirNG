@@ -9,6 +9,7 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Utility;
+using SPPC.Tadbir.Persistence.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Web.Api.Extensions;
 
@@ -113,6 +114,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ICurrencyBookRepository, CurrencyBookRepository>();
             _services.AddTransient<ISystemRepository, SystemRepository>();
             _services.AddTransient<ISystemConfigRepository, SystemConfigRepository>();
+            _services.AddTransient<ISystemIssueRepository, SystemIssueRepository>();
         }
 
         private void AddServiceTypes()

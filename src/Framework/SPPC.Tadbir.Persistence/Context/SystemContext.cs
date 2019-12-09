@@ -8,6 +8,7 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Mapping;
+using SPPC.Tadbir.Persistence.Mapping.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -48,6 +49,7 @@ namespace SPPC.Tadbir.Persistence
             RoleCompanyMap.BuildMapping(modelBuilder.Entity<RoleCompany>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
+            SystemIssueMap.BuildMapping(modelBuilder.Entity<SystemIssue>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());

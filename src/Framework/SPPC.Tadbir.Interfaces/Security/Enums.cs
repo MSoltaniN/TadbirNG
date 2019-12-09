@@ -925,4 +925,21 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         ByBranch = 0x20
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به کنترل سیستم را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum SystemIssuePermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به کنترل سیستم
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده کنترل سیستم
+        /// </summary>
+        View = 0x1
+    }
 }

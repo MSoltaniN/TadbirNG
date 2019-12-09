@@ -576,6 +576,11 @@ namespace SPPC.Tadbir.Mapper
                     src => src.CurrencyValue.HasValue && src.Credit > 0
                         ? src.Credit / src.CurrencyValue
                         : src.Debit / src.CurrencyValue));
+                    
+            mapperConfig.CreateMap<VoucherLine, VoucherLineDetailViewModel>();
+
+            mapperConfig.CreateMap<SystemIssue, SystemIssueViewModel>()
+                .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

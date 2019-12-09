@@ -232,6 +232,10 @@ export enum CurrencyBookPermissions {
   ByBranch = 32
 }
 
+export enum SystemIssuePermissions {
+  None = 0,
+  View = 1
+}
 
 @Injectable()
 export class Permissions {
@@ -299,6 +303,9 @@ export class Permissions {
         break;
       case "currencybook":
         id = <any>CurrencyBookPermissions[<any>premissionName];
+        break;
+      case "systemissue":
+        id = <any>SystemIssuePermissions[<any>premissionName];
         break;
     }
 
