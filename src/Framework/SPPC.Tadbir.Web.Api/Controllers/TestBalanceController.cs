@@ -239,6 +239,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     ? _strings.Format(info.Name)
                     : _strings.Format(AppStrings.ChildrenOfLevel, info.Name);
             }
+
+            int id = 0;
+            foreach (var info in lookup)
+            {
+                info.Id = id++;
+            }
         }
 
         private readonly ITestBalanceRepository _repository;
