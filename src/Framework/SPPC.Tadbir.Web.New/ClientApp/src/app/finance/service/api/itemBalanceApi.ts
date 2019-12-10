@@ -10,8 +10,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-import { environment } from "../../../environments/environment";
-
+import { environment } from "@sppc/env/environment";
 export class ItemBalanceApi {
 
     // itembal/views/{viewId:min(2)}/lookup/types
