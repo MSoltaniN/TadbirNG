@@ -27,10 +27,8 @@
           <label class="control-label col-xs-12 col-sm-12 ">{{ 'AdvanceFilter.Fields' | translate }}</label>
 
           <kendo-dropdownlist [data]="columnsList" class="sppc-width-100"
-                              [textField]="'title'"
-                              [valueField]="'name'"
-                              [valuePrimitive]="true"
-                              [value]="selectedColumn"
+                              textField="title"
+                              valueField="name"                                                   
                               [(ngModel)]="selectedColumn"
                               (ngModelChange)="selectedColumnChange()"
                               [disabled]="colsIsDisabled">
@@ -43,9 +41,7 @@
 
           <kendo-dropdownlist [data]="operatorsList" class="sppc-width-100"
                               [textField]="'value'"
-                              [valueField]="'key'"
-                              [valuePrimitive]="true"
-                              [value]="selectedOperator"
+                              [valueField]="'key'"                                                           
                               [(ngModel)]="selectedOperator"
                               [disabled]="opIsDisabled">
             <ng-template kendoDropDownListValueTemplate let-dataItem>

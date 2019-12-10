@@ -40,8 +40,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   public lgoIsDisabled: boolean;  
 
   public selectedLogicalOperator: string = "and";
-  public selectedOperator: string = "eq";
-  public selectedColumn: string;
+  public selectedOperator: Item;
+  public selectedColumn: FilterColumn;
   selectScriptType: string = "";
 
   totalFilterExpression: string;
@@ -128,21 +128,23 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
   selectedColumnChange() {
 
-    if (this.selectedColumn) {
-      var selected = this.columnsList.filter(p => p.name === this.selectedColumn)[0];
-      this.selectScriptType = selected.scriptType;
-      switch (selected.scriptType) {
+    if (this.selectedColumn) {    
+      switch (this.selectedColumn.scriptType) {
         case "string":
-          this.operatorsList = this.stringOperators;
+          this.operatorsList = this.stringOperators;          
           break;
         case "number":
           this.operatorsList = this.numberOperators;
+          break;
+        case "boolean":
+          //this.operatorsList = this.bool
           break;
         default:
           this.operatorsList = this.stringOperators;
           break;
       }
 
+      this.selectScriptType = this.selectedColumn.scriptType;
       //TODO:
       //decision for show releted input box for value ==> dropdown or checkbox or textbox or numberbox
     }
@@ -152,9 +154,11 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   editFilter() {
     if (this.selectedRows && this.selectedRows.length == 1) {
       this.formMode = 'edit';
-      var filter = this.selectedRows[0];
-      this.selectedOperator = filter.operator;
-      this.selectedColumn = filter.columnName;
+      var filter : FilterRow = this.selectedRows[0];
+      var selectedCol = this.columnsList.filter(p => p.name === filter.columnName)[0];
+      var selectedOp = this.operatorsList.filter(p => p.key === filter.operator)[0];
+      this.selectedOperator = selectedOp;
+      this.selectedColumn = selectedCol;
       this.selectedLogicalOperator = filter.logicOperator;
       this.selectedValue = filter.value;
       this.currentEditIndex = this.filters.findIndex(f => f === this.selectedRows[0]);
@@ -163,11 +167,13 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   revertToDefaultValues() {
-    this.selectedValue = "";
-    this.selectedOperator = "";
-    this.selectedLogicalOperator = "and";
-    this.selectedColumn = "";
-    this.formMode = 'insert';
+    setTimeout(() => {
+      this.selectedValue = "";
+      this.selectedOperator = undefined;
+      this.selectedLogicalOperator = "and";
+      this.selectedColumn = undefined;
+      this.formMode = 'insert';
+    }, 1);    
   }
 
   saveFilter() {
@@ -176,13 +182,13 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
       this.filters = this.groupFilters[index].filters;
 
-      this.filters[this.currentEditIndex].columnName = this.selectedColumn;
-      this.filters[this.currentEditIndex].operator = this.selectedOperator;
+      this.filters[this.currentEditIndex].columnName = this.selectedColumn.name;
+      this.filters[this.currentEditIndex].operator = this.selectedOperator.key;
       this.filters[this.currentEditIndex].value = this.selectedValue;
       this.filters[this.currentEditIndex].logicOperator = this.selectedLogicalOperator;
 
-      var selectedCol = this.columnsList.filter(p => p.name === this.selectedColumn)[0];
-      var selectedOp = this.operatorsList.filter(p => p.key === this.selectedOperator)[0];
+      var selectedCol = this.columnsList.filter(p => p.name === this.selectedColumn.name)[0];
+      var selectedOp = this.operatorsList.filter(p => p.key === this.selectedOperator.key)[0];
       var selectedlogOp = this.logicalOperatorList.filter(p => p.key === this.selectedLogicalOperator)[0];
 
       this.filters[this.currentEditIndex].operatorTitle = this.getText(selectedOp.value);
@@ -412,8 +418,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     if (this.isValidate()) {
 
-      var selectedCol = this.columnsList.filter(p => p.name === this.selectedColumn)[0];
-      var selectedOp = this.operatorsList.filter(p => p.key === this.selectedOperator)[0];
+      var selectedCol = this.columnsList.filter(p => p.name === this.selectedColumn.name)[0];
+      var selectedOp = this.operatorsList.filter(p => p.key === this.selectedOperator.key)[0];
       var selectedlogOp = this.logicalOperatorList.filter(p => p.key === this.selectedLogicalOperator)[0];
 
       var index = -1;
@@ -426,9 +432,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       var row: FilterRow = new FilterRow();
       row.id = Guid.newGuid();
-      row.columnName = this.selectedColumn;
+      row.columnName = this.selectedColumn.name;
       row.logicOperator = this.selectedLogicalOperator;
-      row.operator = this.selectedOperator;
+      row.operator = this.selectedOperator.key;
       row.value = this.selectedValue;
       row.operatorTitle = this.getText(selectedOp.value);
       row.columnTitle = selectedCol.title;
@@ -445,6 +451,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.groupFilters[index].filters = this.filters;      
       this.showMessage(this.getText('AdvanceFilter.FilterInsertedSuccess'), MessageType.Succes)
       this.computeTotalExpression();
+      this.revertToDefaultValues();
     }
   }
 
@@ -649,6 +656,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.revertToDefaultValues();
 
       this.groupFilters[index].filters = filters;
+      this.revertToDefaultValues();
 
       this.showMessage(this.getText('AdvanceFilter.FilterDeletedSuccess'), MessageType.Succes)
     }
@@ -672,6 +680,11 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   onGroupFilterOk() {
+    if (!this.filterGroupName) {
+      this.showMessage("نام برای ذخیره فیلتر اجباری می باشد");
+      return;
+    }
+
     if (!this.isEditMode) {
       var gf = new GroupFilter();
       gf.id = Guid.newGuid();
