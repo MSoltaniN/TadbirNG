@@ -2703,4 +2703,10 @@
   <data name="VoucherReference" xml:space="preserve">
     <value>Voucher reference</value>
   </data>
+  <data name="ItemBalance" xml:space="preserve">
+    <value>Item turnover and balance</value>
+  </data>
+  <data name="ItemBalanceReport" xml:space="preserve">
+    <value>Item turnover and balance</value>
+  </data>
 </root>

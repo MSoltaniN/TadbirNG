@@ -123,6 +123,11 @@ namespace SPPC.Tadbir.Security
         public const string TestBalance = "TestBalance";
 
         /// <summary>
+        /// نام موجودیت گردش و مانده سطوح شناور
+        /// </summary>
+        public const string ItemBalance = "TestBalance";
+
+        /// <summary>
         /// نام موجودیت گزارش
         /// </summary>
         public const string Report = "Report";
