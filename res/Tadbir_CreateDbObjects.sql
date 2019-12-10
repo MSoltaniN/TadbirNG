@@ -493,6 +493,19 @@ CREATE TABLE [Finance].[AccountProject] (
 )
 GO
 
+CREATE TABLE [Core].[Filter] (
+    [FilterID]       INT              IDENTITY (1, 1) NOT NULL,
+    [ViewId]         INT              NOT NULL,
+    [UserId]         INT              NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [IsPublic]       BIT              NOT NULL,
+    [Values]         NVARCHAR(2048)   NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Filter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Core_Filter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_Filter] PRIMARY KEY CLUSTERED ([FilterID] ASC)
+)
+GO
+
 CREATE TABLE [Workflow].[WorkItem] (
     [WorkItemID]     INT              IDENTITY (1, 1) NOT NULL,
 	[CreatedByID]    INT              NOT NULL,

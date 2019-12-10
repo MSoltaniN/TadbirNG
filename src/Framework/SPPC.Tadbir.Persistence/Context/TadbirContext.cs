@@ -7,11 +7,9 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
-using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Persistence.Mapping;
 using SPPC.Tadbir.Persistence.Mapping.Finance;
-using SPPC.Tadbir.Persistence.Mapping.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -60,6 +58,7 @@ namespace SPPC.Tadbir.Persistence
             DocumentActionMap.BuildMapping(modelBuilder.Entity<DocumentAction>());
             DocumentStatusMap.BuildMapping(modelBuilder.Entity<DocumentStatus>());
             DocumentTypeMap.BuildMapping(modelBuilder.Entity<DocumentType>());
+            FilterMap.BuildMapping(modelBuilder.Entity<Filter>());
             FiscalPeriodMap.BuildMapping(modelBuilder.Entity<FiscalPeriod>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());

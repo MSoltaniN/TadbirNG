@@ -453,6 +453,8 @@ namespace SPPC.Tadbir.Mapper
                     viewModel.Actions.ToArray(),
                     act => model.Actions.Add(_autoMapper.Map<DocumentAction>(act))))
                 .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId);
+            mapperConfig.CreateMap<Filter, FilterViewModel>();
+            mapperConfig.CreateMap<FilterViewModel, Filter>();
         }
 
         private static void MapConfigTypes(IMapperConfigurationExpression mapperConfig)

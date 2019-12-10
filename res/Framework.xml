@@ -936,6 +936,59 @@
       </Properties>
       <Relations />
     </Entity>
+    <Entity name="Filter" area="Core" identifier="Id" type="CoreEntity" description="اطلاعات یک فیلتر پیشرفته را برای یک فرم و یک کاربر نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="FilterID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="ViewId" type="Int32" isValidated="True" description="شناسه دیتابیسی نمای اطلاعاتی (فرم) مرتبط با این فیلتر" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnViewId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ViewId" type="int" nullable="False" />
+          <ColumnView name="View Id" visible="True" width="120" />
+          <ValidationRule name="ViewId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="UserId" type="Int32" isValidated="True" description="شناسه اطلاعاتی کاربر ایجادکننده فیلتر" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnUserId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="UserId" type="int" nullable="False" />
+          <ColumnView name="User Id" visible="True" width="120" />
+          <ValidationRule name="UserId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="عنوان نمایشی تعیین شده توسط کاربر برای فیلتر" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="IsPublic" type="Boolean" isValidated="True" description="مشخص می کند که فیلتر برای کاربران دیگر هم باید در دسترس باشد یا نه؟" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkIsPublic" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="IsPublic" type="bit" nullable="False" />
+          <ColumnView name="Is Public" visible="True" width="120" />
+          <ValidationRule name="IsPublic_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Values" type="String" isValidated="True" description="ریز اطلاعات فیلتر که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtValues" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Values" type="nvarchar(2048)" nullable="False" />
+          <ColumnView name="Values" visible="True" width="120" />
+          <ValidationRule name="Values_Validation" required="True" minimum="" maximum="4096" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations />
+    </Entity>
     <Entity name="FiscalPeriod" area="Finance" identifier="Id" type="CoreEntity" description="Represents a date period used for partitioning financial events of a business unit" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
