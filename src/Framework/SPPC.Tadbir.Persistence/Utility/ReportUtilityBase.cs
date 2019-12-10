@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
@@ -9,7 +8,6 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 
 namespace SPPC.Tadbir.Persistence.Utility
@@ -18,7 +16,7 @@ namespace SPPC.Tadbir.Persistence.Utility
     {
         public ReportUtilityBase(IConfigRepository config, IDomainMapper mapper)
         {
-            _config = config;
+            Config = config;
             _mapper = mapper;
         }
 
@@ -90,7 +88,7 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         public int GetLevelCodeLength(int viewId, int level)
         {
-            var fullConfig = _config
+            var fullConfig = Config
                 .GetViewTreeConfigByViewAsync(viewId)
                 .Result;
             var treeConfig = fullConfig.Current;
@@ -150,6 +148,8 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
         }
 
+        protected IConfigRepository Config { get; }
+
         protected virtual Func<TModel, string> GetGroupSelector<TModel>(int groupLevel)
             where TModel : class, IAccountView
         {
@@ -157,7 +157,6 @@ namespace SPPC.Tadbir.Persistence.Utility
             return item => item.AccountFullCode.Substring(0, codeLength);
         }
 
-        private readonly IConfigRepository _config;
         private readonly IDomainMapper _mapper;
     }
 }

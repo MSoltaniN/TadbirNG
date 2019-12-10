@@ -31,6 +31,6 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، انواع مختلف تراز آزمایشی را با توجه به ساختار درختی سرفصل های حسابداری خوانده و برمی گرداند
         /// </summary>
         /// <returns>انواع مختلف تراز آزمایشی</returns>
-        Task<IEnumerable<TestBalanceModeInfo>> GetBalanceTypesLookupAsync();
+        Task<IEnumerable<TestBalanceModeInfo>> GetBalanceTypesLookupAsync(int viewId);
     }
 }

@@ -155,31 +155,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مانده سرفصل حسابداری مشخص شده را در سند مالی از نوع داده شده محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="type">نوع سیستمی مورد نظر برای محاسبه مانده</param>
-        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر</param>
-        /// <returns>مانده محاسبه شده برای سرفصل حسابداری</returns>
-        public async Task<decimal> GetSpecialVoucherBalanceAsync(VoucherType type, int accountId)
-        {
-            decimal balance = 0.0M;
-            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await accountRepository.GetByIDAsync(accountId);
-            if (account != null)
-            {
-                balance = await Repository
-                    .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
-                    .Where(line => line.Voucher.Type == (short)type
-                        && line.FiscalPeriodId == UserContext.FiscalPeriodId
-                        && line.Account.FullCode.StartsWith(account.FullCode))
-                    .Select(line => line.Debit - line.Credit)
-                    .SumAsync();
-            }
-
-            return balance;
-        }
-
-        /// <summary>
         /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر</param>

@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTestBalanceTypesLookupAsync()
         {
-            var lookup = await _repository.GetBalanceTypesLookupAsync();
+            var lookup = await _repository.GetBalanceTypesLookupAsync(ViewName.Account);
             Localize(lookup);
             return Json(lookup);
         }
