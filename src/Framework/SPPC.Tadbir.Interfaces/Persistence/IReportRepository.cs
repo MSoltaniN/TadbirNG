@@ -93,14 +93,6 @@ namespace SPPC.Tadbir.Persistence
         Task<DateTime?> GetSpecialVoucherDateAsync(VoucherType type);
 
         /// <summary>
-        /// مانده سرفصل حسابداری مشخص شده را در سنتد مالی از نوع داده شده محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="type">نوع سیستمی مورد نظر برای محاسبه مانده</param>
-        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر</param>
-        /// <returns>مانده محاسبه شده برای سرفصل حسابداری</returns>
-        Task<decimal> GetSpecialVoucherBalanceAsync(VoucherType type, int accountId);
-
-        /// <summary>
         /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر</param>

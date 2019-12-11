@@ -361,3 +361,18 @@ SET IDENTITY_INSERT [Config].[Setting] ON
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
 VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":2,"defaultCalendar":0,"usesDefaultCoding":true}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":2,"defaultCalendar":0,"usesDefaultCoding":true}', 'SystemConfigurationDescription', 1)
 SET IDENTITY_INSERT [Config].[Setting] OFF
+
+-- 1.1.772
+CREATE TABLE [Core].[Filter] (
+    [FilterID]       INT              IDENTITY (1, 1) NOT NULL,
+    [ViewId]         INT              NOT NULL,
+    [UserId]         INT              NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [IsPublic]       BIT              NOT NULL,
+    [Values]         NVARCHAR(2048)   NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Filter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Core_Filter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_Filter] PRIMARY KEY CLUSTERED ([FilterID] ASC)
+)
+GO
+

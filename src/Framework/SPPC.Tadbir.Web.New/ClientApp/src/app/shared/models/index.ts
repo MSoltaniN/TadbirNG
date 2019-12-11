@@ -25,3 +25,5 @@ export * from './treeItem';
 export * from './treeNodeInfo';
 export * from './userProfile';
 export * from './filterColumn';
+export * from './filterViewModel';
+

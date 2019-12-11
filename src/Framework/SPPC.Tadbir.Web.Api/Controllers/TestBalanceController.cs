@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTestBalanceTypesLookupAsync()
         {
-            var lookup = await _repository.GetBalanceTypesLookupAsync();
+            var lookup = await _repository.GetBalanceTypesLookupAsync(ViewName.Account);
             Localize(lookup);
             return Json(lookup);
         }
@@ -60,15 +60,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, 0, level - 1);
         }
 
-        // GET: api/testbal/views/{viewId:min(1)}/levels/{level:min(1)}/6-col
+        // GET: api/testbal/levels/{level:min(1)}/6-col
         [Route(TestBalanceApi.SixColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetSixColumnLevelBalanceAsync(
-            int viewId, int level, string from, string to, bool? byBranch, int? options)
+            int level, string from, string to, bool? byBranch, int? options)
         {
             return await TestBalanceResultAsync(
                 TestBalanceMode.Level, TestBalanceFormat.SixColumn,
-                from, to, byBranch, options, 0, level - 1, viewId);
+                from, to, byBranch, options, 0, level - 1);
         }
 
         // GET: api/testbal/levels/{level:min(1)}/8-col
@@ -149,12 +149,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private static TestBalanceParameters GetParameters(
             string from, string to, TestBalanceMode mode, TestBalanceFormat format,
-            GridOptions gridOptions, bool? byBranch, int? options, int viewId)
+            GridOptions gridOptions, bool? byBranch, int? options)
         {
-            int currentViewId = Math.Max(viewId, ViewName.Account);     // TEMPORARY: Default to account if view was not given
             var parameters = new TestBalanceParameters()
             {
-                ViewId = currentViewId,
+                ViewId = ViewName.Account,
                 Mode = mode,
                 Format = format,
                 GridOptions = gridOptions
@@ -196,7 +195,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> TestBalanceResultAsync(
             TestBalanceMode mode, TestBalanceFormat format,
             string from, string to, bool? byBranch, int? options,
-            int itemId = 0, int level = 0, int viewId = ViewName.Account)
+            int itemId = 0, int level = 0)
         {
             if (format == TestBalanceFormat.TenColumn)
             {
@@ -204,7 +203,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var gridOptions = GridOptions ?? new GridOptions();
-            var parameters = GetParameters(from, to, mode, format, gridOptions, byBranch, options, viewId);
+            var parameters = GetParameters(from, to, mode, format, gridOptions, byBranch, options);
             var balance = default(TestBalanceViewModel);
             switch (mode)
             {
@@ -239,6 +238,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 info.Name = info.Level <= 3
                     ? _strings.Format(info.Name)
                     : _strings.Format(AppStrings.ChildrenOfLevel, info.Name);
+            }
+
+            int id = 0;
+            foreach (var info in lookup)
+            {
+                info.Id = id++;
             }
         }
 

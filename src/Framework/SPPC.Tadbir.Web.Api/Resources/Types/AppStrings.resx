@@ -2694,4 +2694,10 @@
   <data name="VoucherReference" xml:space="preserve">
     <value>رفرنس</value>
   </data>
+  <data name="ItemBalance" xml:space="preserve">
+    <value>گردش و مانده سطوح شناور</value>
+  </data>
+  <data name="ItemBalanceReport" xml:space="preserve">
+    <value>گردش و مانده سطوح شناور</value>
+  </data>
 </root>

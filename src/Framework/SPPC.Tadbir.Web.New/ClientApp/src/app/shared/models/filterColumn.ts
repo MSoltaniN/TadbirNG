@@ -1,4 +1,6 @@
 
+//#region client models for advance filter
+
 export class FilterColumn  {
   name: string;
   title: string;        
@@ -26,10 +28,13 @@ export class FilterRow {
   braces: Array<Braces>;
 }
 
+//#endregion
+
 export class GroupFilter {
-  id: string;
+  id: number;  
   name: string;
-  useForOthers: boolean;
+  isNew: boolean;
+  isPublic: boolean;
   filters: Array<FilterRow>;  
 }
 
