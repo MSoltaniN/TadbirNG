@@ -6,4 +6,5 @@ export * from './lookup.service';
 export * from './metadata.service';
 export * from './reporting.service';
 export * from './sppc-message.service';
+export * from './advance-filter.service';
 //# sourceMappingURL=index.js.map

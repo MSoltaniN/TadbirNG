@@ -1,8 +1,8 @@
 import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
-import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces, GroupFilter } from '@sppc/shared/models';
+import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces, GroupFilter, FilterViewModel } from '@sppc/shared/models';
 import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { BrowserStorageService, GridService, MetaDataService } from '@sppc/shared/services';
+import { BrowserStorageService, GridService, MetaDataService, AdvanceFilterService } from '@sppc/shared/services';
 import { DefaultComponent, Filter, FilterExpression, FilterExpressionBuilder } from '@sppc/shared/class';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -47,8 +47,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   totalFilterExpression: string;
   selectedValue: string;
   formMode: string;
-  currentEditIndex: number;
-
+  currentEditIndex: number;  
   
 
   @Output() result: EventEmitter<any> = new EventEmitter();
@@ -81,7 +80,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public gridService: GridService,
     public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
-    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
+    public cdref: ChangeDetectorRef, public ngZone: NgZone,public advanceFilterService:AdvanceFilterService) {
     super(toastrService, translate, bStorageService, renderer, metadataService, settingService, '', undefined);
   }
 
@@ -113,16 +112,41 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.selectedColumnChange();
     this.formMode = "insert";
 
-    if (!this.groupFilters) {
-      this.groupFilters = new Array<GroupFilter>();
-      var firstItem = new GroupFilter();
-      firstItem.id = "-1";
-      firstItem.name = "---";      
-      this.groupFilters.push(firstItem);
-      this.gFilterSelected = "-1";
+    //insert first item
+    this.groupFilters = new Array<GroupFilter>();
+    var firstItem = new GroupFilter();
+    firstItem.id = -1;
+    firstItem.name = "---";
+    if (this.bStorageService.getSession('unSaveFilter')) {
+      var unsavedFilters = <Array<FilterRow>>JSON.parse(this.bStorageService.getSession('unSaveFilter'))
+      firstItem.filters = unsavedFilters;
     }
-    //if(this.groupFilters)
-      //this.selectedGroupRows.push(this.groupFilters.findIndex(gf => gf.isDefault));
+    this.groupFilters.push(firstItem);
+    //insert first item
+
+    this.advanceFilterService.getFilters(this.viewId).subscribe((res:FilterViewModel[]) => {      
+      //insert db item
+      res.forEach((fi) => {        
+        var item = new GroupFilter();
+        item.id = fi.id;
+        item.name = fi.name;
+        item.isPublic = fi.isPublic;
+        item.filters = <FilterRow[]>JSON.parse(fi.values);
+        this.groupFilters.push(item);
+      });
+
+      //insert db item
+      if (this.gFilterSelected == undefined) {
+        this.gFilterSelected = -1
+        this.currentGFilter = this.groupFilters[0];
+        this.filters = firstItem.filters;
+      }
+      else {
+        this.currentGFilter = this.groupFilters.filter(p => p.id === this.gFilterSelected)[0];
+      }
+
+      this.computeTotalExpression();
+    });  
 
   }
 
@@ -156,9 +180,12 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.formMode = 'edit';
       var filter : FilterRow = this.selectedRows[0];
       var selectedCol = this.columnsList.filter(p => p.name === filter.columnName)[0];
+      this.selectedColumn = selectedCol;
+      this.selectedColumnChange();
+
       var selectedOp = this.operatorsList.filter(p => p.key === filter.operator)[0];
       this.selectedOperator = selectedOp;
-      this.selectedColumn = selectedCol;
+      
       this.selectedLogicalOperator = filter.logicOperator;
       this.selectedValue = filter.value;
       this.currentEditIndex = this.filters.findIndex(f => f === this.selectedRows[0]);
@@ -271,8 +298,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   createFilterExpression():FilterExpression {
-
-    var totalfilter: FilterExpression;
+        var totalfilter: FilterExpression;
     var lastOperatorUsed = " && ";
     this.filters.forEach((item) => {
 
@@ -300,7 +326,39 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     return totalfilter;
   }
 
-  onOk() {    
+  onOk() {
+
+    this.groupFilters.forEach((gf) => {
+      if (gf.filters) {
+        if (gf.id == -1) {
+          this.bStorageService.setSession('unSaveFilter', JSON.stringify(gf.filters));
+        }
+        else {
+          var filterModel = new FilterViewModel();
+          filterModel.id = gf.isNew ? 0 : gf.id;
+          filterModel.isPublic = gf.isPublic;
+          filterModel.name = gf.name;
+          filterModel.viewId = this.viewId;
+          filterModel.userId = this.UserId;
+          filterModel.values = JSON.stringify(gf.filters);
+          if (filterModel.id == 0)
+            this.advanceFilterService.insertFilter(filterModel).subscribe((res) =>
+            {
+              if (this.gFilterSelected == gf.id)
+                this.gFilterSelected = res.id;
+            });
+          else
+            this.advanceFilterService.saveFilter(filterModel.id, filterModel).subscribe();
+        }
+      }    
+    });
+
+    if (this.deletedGroupFilters) {
+      this.deletedGroupFilters.forEach((filterModel) => {
+        this.advanceFilterService.deleteFilter(filterModel.id).subscribe();
+      });
+    }
+    
     this.result.emit({ filters: this.createFilterExpression(), filterList: this.filters, groupFilter: this.groupFilters, gFilterSelected:this.gFilterSelected });
   }
 
@@ -447,7 +505,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       this.filters.push(row);
       this.selectedValue = "";
-
+      
       this.groupFilters[index].filters = this.filters;      
       this.showMessage(this.getText('AdvanceFilter.FilterInsertedSuccess'), MessageType.Succes)
       this.computeTotalExpression();
@@ -664,12 +722,17 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     
   }
 
-  gFilterSelected: string;
+  currentGFilter: GroupFilter;
+  gFilterSelected: number;
   activeGroupFilter: boolean = false;
   filterUseForOthers: boolean = false;
   isEditMode: boolean = false;
   filterGroupName: string;
+
+  public unSaveFilter: FilterRow[];
   public groupFilters: Array<GroupFilter>;
+  public deletedGroupFilters: Array<GroupFilter>;
+
   selectedGroupRows: any[] = [];
 
   addGroupFilter() {
@@ -687,19 +750,29 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     if (!this.isEditMode) {
       var gf = new GroupFilter();
-      gf.id = Guid.newGuid();
+
+      var max = 0;
+      this.groupFilters.forEach(it => {
+        if (it.id > max) {
+          max = it.id;
+        }
+      });
+
+      gf.id = max + 1;
+      gf.isNew = true;
       gf.name = this.filterGroupName;
-      gf.useForOthers = this.filterUseForOthers;
+      gf.isPublic = this.filterUseForOthers;
       this.groupFilters.push(gf);
 
+      this.currentGFilter = gf;
       this.gFilterSelected = gf.id;
-      this.gFilterSelectChange(gf.id);
+      this.gFilterSelectChange(gf);
       this.activeGroupFilter = false;
     }
     else {
       var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
       this.groupFilters[index].name = this.filterGroupName;
-      this.groupFilters[index].useForOthers = this.filterUseForOthers;        
+      this.groupFilters[index].isPublic = this.filterUseForOthers;        
       this.activeGroupFilter = false;
       this.gFilterSelected = this.groupFilters[index].id;
     }
@@ -711,19 +784,20 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   gDeleteIsDisable() {
-    if (this.gFilterSelected == "-1") return true;
+    if (this.gFilterSelected == -1) return true;
     return false;
   }
 
   gEditIsDisable() {
-    if (this.gFilterSelected == "-1") return true;
+    if (this.gFilterSelected == -1) return true;
     return false;
   }
 
-  public gFilterSelectChange(id) {
-    var index = this.groupFilters.findIndex(gf => gf.id === id);
+  public gFilterSelectChange(groupFilter:GroupFilter) {
+    var index = this.groupFilters.findIndex(gf => gf.id === groupFilter.id);
     this.filters = this.groupFilters[index].filters;    
     this.selectedRows = [];   
+    this.gFilterSelected = groupFilter.id;
 
     this.computeTotalExpression();
   }
@@ -731,14 +805,21 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   editGroupFilter() {
     var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
     this.filterGroupName = this.groupFilters[index].name;
-    this.filterUseForOthers = this.groupFilters[index].useForOthers;
+    this.filterUseForOthers = this.groupFilters[index].isPublic;
     this.isEditMode = true;
     this.activeGroupFilter = true;  
   }
 
   removeGroupFilter() {    
     var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    if (!this.deletedGroupFilters)
+      this.deletedGroupFilters = new Array<GroupFilter>();
+
+    this.deletedGroupFilters.push(this.groupFilters[index]);
     this.groupFilters.splice(index, 1);
-    this.gFilterSelected = "-1";     
+    this.gFilterSelected = -1;
+    this.currentGFilter = this.groupFilters[this.groupFilters.length - 1];
+    this.gFilterSelectChange(this.currentGFilter);
+    this.computeTotalExpression();
   }
 }

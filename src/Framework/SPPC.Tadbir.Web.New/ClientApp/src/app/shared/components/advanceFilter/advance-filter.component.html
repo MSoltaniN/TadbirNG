@@ -12,10 +12,9 @@
       </div>
       <div class="col-md-3 pad10">
         <kendo-dropdownlist [data]="groupFilters" class="sppc-width-100"
-                            [textField]="'name'"
-                            [valueField]="'id'"
-                            [valuePrimitive]="true"
-                            [(ngModel)]="gFilterSelected"
+                            textField="name"
+                            valueField="id"                            
+                            [(ngModel)]="currentGFilter"
                             (ngModelChange)="gFilterSelectChange($event)">
         </kendo-dropdownlist>
       </div>
@@ -135,7 +134,7 @@
       </kendo-grid-column>
     </kendo-grid>
     <div class="col-md-12 exp-filter">      
-      <div class="col-md-12 exp-view"  [innerHtml]="totalFilterExpression"></div>
+      <div class="col-md-12 exp-view" *ngIf="totalFilterExpression != ''"  [innerHtml]="totalFilterExpression"></div>
     </div>
     <kendo-dialog-actions>
       <button class="k-button k-primary" (click)="onOk()">{{ 'Buttons.Ok' | translate }}</button> <!--[disabled]="!selectedRows.length"-->

@@ -87,7 +87,9 @@
     <None Remove="ClientApp\src\app\shared\directive\persistState\PersistState.ts" />
     <None Remove="ClientApp\src\app\shared\index.ts" />
     <None Remove="ClientApp\src\app\shared\models\columnFilter.ts" />
+    <None Remove="ClientApp\src\app\shared\models\filterViewModel.ts" />
     <None Remove="ClientApp\src\app\shared\models\index.ts" />
+    <None Remove="ClientApp\src\app\shared\services\advance-filter.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\api\index.ts" />
     <None Remove="ClientApp\src\app\shared\services\index.ts" />
     <None Remove="ClientApp\src\assets\i18n\en.json" />
@@ -844,7 +846,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\finance\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\directive\persistState\persistState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\filterViewModel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\advance-filter.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\api\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\index.ts" />
   </ItemGroup>
