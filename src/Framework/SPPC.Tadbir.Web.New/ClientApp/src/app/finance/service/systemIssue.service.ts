@@ -14,6 +14,7 @@ export class SystemIssueInfo implements SystemIssue {
   children: SystemIssue[];
   title: string;
   apiUrl: string;
+  deleteApiUrl: string;
 }
 
 @Injectable()

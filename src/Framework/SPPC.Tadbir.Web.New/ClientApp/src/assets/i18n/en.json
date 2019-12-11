@@ -54,7 +54,8 @@
     "TreeLevelsAreTooDeep": "Tree levels deeper than {0} is not allowed.",
     "IncorrectFileFormat": "The file format is incorrect",
     "UploadSuccessful": "Upload Successful",
-    "VoucherNumberByStatus": "The system has {0} {1} vouchers."
+    "VoucherNumberByStatus": "The system has {0} {1} vouchers.",
+    "OperationSuccessful": "Operation successful"
   },
   "Report": {
     "ReportViewer": "View of",

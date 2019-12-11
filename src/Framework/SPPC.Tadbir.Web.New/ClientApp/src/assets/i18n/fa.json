@@ -54,7 +54,8 @@
     "TreeLevelsAreTooDeep": "تعداد سطوح بیشتر از {0} مجاز نیست",
     "IncorrectFileFormat": "فرمت فایل انتخابی صحیح نیست",
     "UploadSuccessful": "آپلود با موفقیت انجام شد",
-    "VoucherNumberByStatus": "سیستم دارای {0} عدد سند {1} میباشد"
+    "VoucherNumberByStatus": "سیستم دارای {0} عدد سند {1} میباشد",
+    "OperationSuccessful": "عملیات با موفقیت انجام شد"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
