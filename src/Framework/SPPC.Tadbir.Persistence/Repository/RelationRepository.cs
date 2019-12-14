@@ -1340,7 +1340,7 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private string EnsureValidAccountInFullAccount(Account account)
+        private static string EnsureValidAccountInFullAccount(Account account)
         {
             string errorKey = String.Empty;
             if (account == null)
@@ -1355,7 +1355,7 @@ namespace SPPC.Tadbir.Persistence
             return errorKey;
         }
 
-        private string EnsureNoMissingItemInFullAccount(
+        private static string EnsureNoMissingItemInFullAccount(
             FullAccountCriteriaViewModel criteria, FullAccountViewModel fullAccount)
         {
             string errorKey = String.Empty;
@@ -1375,7 +1375,7 @@ namespace SPPC.Tadbir.Persistence
             return errorKey;
         }
 
-        private string EnsureValidRelationsInFullAccount(
+        private static string EnsureValidRelationsInFullAccount(
             Account account, FullAccountViewModel fullAccount, FullAccountCriteriaViewModel criteria)
         {
             if (criteria.RequiresDetailAccount || fullAccount.DetailAccount.Id > 0)

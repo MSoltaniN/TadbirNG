@@ -10,7 +10,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     public class NumberListViewModel
     {
         /// <summary>
-        /// شماره 
+        /// شماره
         /// </summary>
         public int Number { get; set; }
     }

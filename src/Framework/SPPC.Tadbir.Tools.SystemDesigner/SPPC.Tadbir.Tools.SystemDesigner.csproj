@@ -84,6 +84,7 @@
     <Compile Include="Forms\GenerateControllerForm.Designer.cs">
       <DependentUpon>GenerateControllerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
     <Compile Include="MainWindow.cs">
