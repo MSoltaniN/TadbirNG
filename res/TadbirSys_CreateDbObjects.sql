@@ -357,7 +357,8 @@ CREATE TABLE [Reporting].[SystemIssue] (
     [PermissionID]    INT              NULL,
     [ViewID]          INT              NULL,
     [TitleKey]        NVARCHAR(64)     NOT NULL,
-    [ApiUrl]      NVARCHAR(128)    NULL,	
+    [ApiUrl]          NVARCHAR(128)    NULL,	
+	[DeleteApiUrl]    NVARCHAR(128)    NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_SystemIssue_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Reporting_SystemIssue_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Reporting_SystemIssue] PRIMARY KEY CLUSTERED ([SystemIssueID] ASC)
@@ -2048,6 +2049,40 @@ GO
 SET QUOTED_IDENTIFIER OFF
 GO
 
+SET IDENTITY_INSERT [Reporting].[SystemIssue] ON 
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (1, NULL, NULL, NULL, N'Accounting', NULL, NULL)
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (2, 1, NULL, NULL, N'VoucherIssues', NULL, NULL)
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (3, 1, NULL, NULL, N'AccountIssues', NULL, NULL)
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (4, 2, 26, 2, N'UnbalancedVouchers', N'/vouchers/unbalanced', N'/vouchers')
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (5, 2, 26, 2, N'VouchersWithNoArticle', N'/vouchers/no-article', N'/vouchers')
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (6, 2, 26, 42, N'ArticlesHavingZeroAmount', N'/vouchers/articles/sys-issue/zero-amount', N'/vouchers/articles')
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (7, 2, 26, 42, N'ArticlesWithMissingAccount', N'/vouchers/articles/sys-issue/miss-acc', N'/vouchers/articles')
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (8, 2, 26, 42, N'ArticlesWithInvalidAccountItems', N'/vouchers/articles/sys-issue/invalid-acc', N'/vouchers/articles')
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (9, 2, NULL, 41, N'MissingVoucherNumbers', N'/vouchers/miss-number', NULL)
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
+VALUES (10, 3, 26, 42, N'AccountsWithInvalidBalance', NULL, NULL)
+GO
+SET IDENTITY_INSERT [Reporting].[SystemIssue] OFF
+GO
 
 --create report parameters
 delete [Reporting].[Parameter]

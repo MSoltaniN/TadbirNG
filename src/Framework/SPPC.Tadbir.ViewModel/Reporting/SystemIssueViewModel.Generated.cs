@@ -46,5 +46,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// </summary>
         [StringLength(128, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
         public string ApiUrl { get; set; }
+
+        /// <summary>
+        /// آدرس سرویس برای حذف گروهی
+        /// </summary>
+        [StringLength(128, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        public virtual string DeleteApiUrl { get; set; }
     }
 }

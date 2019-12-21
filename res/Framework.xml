@@ -2545,6 +2545,12 @@
           <ColumnView name="Api Url" visible="True" width="120" />
           <ValidationRule name="ApiUrl_Validation" required="False" minimum="0" maximum="128" format="" type="Length" />
         </Property>
+        <Property name="DeleteApiUrl" type="String" isValidated="True" description="آدرس سرویس برای حذف گروهی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDeleteApiUrl" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="DeleteApiUrl" type="nvarchar(128)" nullable="True" />
+          <ColumnView name="Delete Api Url" visible="True" width="120" />
+          <ValidationRule name="DeleteApiUrl_Validation" required="False" minimum="" maximum="128" format="" type="Length" />
+        </Property>
       </Properties>
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="SystemIssue" hasKey="True" isRequired="False" joinTable="" description="والد در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />

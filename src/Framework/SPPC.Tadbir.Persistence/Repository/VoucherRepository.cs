@@ -476,6 +476,7 @@ namespace SPPC.Tadbir.Persistence
                 int count = missNumber.Count();
 
                 missNumber = missNumber
+                    .OrderBy(num => num)
                     .ApplyPaging(gridOptions);
 
                 foreach (var item in missNumber)
@@ -527,6 +528,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions, false);
 
             var vouchersList = await filteredList
+                .OrderBy(voucher => voucher.Date)
+                .ThenBy(voucher => voucher.No)
                 .ApplyPaging(gridOptions)
                 .ToListAsync();
 

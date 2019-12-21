@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Model.Reporting
         public virtual string ApiUrl { get; set; }
 
         /// <summary>
+        /// آدرس سرویس برای حذف گروهی
+        /// </summary>
+        public virtual string DeleteApiUrl { get; set; }
+
+        /// <summary>
         /// Gets or sets the والد در ساختار درختی
         /// </summary>
         public virtual SystemIssue Parent { get; set; }

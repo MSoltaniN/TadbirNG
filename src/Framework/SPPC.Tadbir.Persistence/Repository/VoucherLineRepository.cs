@@ -387,6 +387,8 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                 .Apply(gridOptions, false);
 
             var vouchersList = await filteredList
+                .OrderBy(line => line.VoucherDate)
+                .ThenBy(line => line.VoucherNo)
                 .ApplyPaging(gridOptions)
                 .ToListAsync();
 
@@ -401,8 +403,10 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                .Apply(gridOptions, false);
 
             var vouchersList = filteredList
-               .ApplyPaging(gridOptions)
-               .ToList();
+                .OrderBy(line => line.VoucherDate)
+                .ThenBy(line => line.VoucherNo)
+                .ApplyPaging(gridOptions)
+                .ToList();
 
             return (vouchersList, filteredList.Count());
         }

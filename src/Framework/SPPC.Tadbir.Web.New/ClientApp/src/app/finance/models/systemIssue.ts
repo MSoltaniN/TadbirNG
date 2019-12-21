@@ -20,4 +20,5 @@ export interface SystemIssue {
     id: number;
     title: string;
     apiUrl: string;
+    deleteApiUrl: string;
 }
