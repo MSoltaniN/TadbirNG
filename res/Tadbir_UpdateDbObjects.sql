@@ -434,3 +434,56 @@ CREATE TABLE [Core].[OperationLog] (
     , CONSTRAINT [FK_Core_OperationLog_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
 )
 GO
+
+-- 1.1.777
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (1, N'Account')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (2, N'AccountCollectionAccount')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (3, N'AccountRelations')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (4, N'AccountGroup')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (5, N'Branch')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (6, N'CostCenter')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (7, N'Currency')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (8, N'CurrencyRate')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (9, N'DetailAccount')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (10, N'FiscalPeriod')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (11, N'OperationLog')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (12, N'Project')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (13, N'RoleBranch')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (14, N'RoleFiscalPeriod')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (15, N'Setting')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (16, N'TaxCurrency')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (17, N'Voucher')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (18, N'VoucherLine')
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (1, N'View')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (2, N'Create')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (3, N'Edit')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (4, N'Delete')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (5, N'Filter')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (6, N'Print')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (7, N'Save')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (8, N'Archive')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (9, N'SetDefault')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (10, N'Design')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (11, N'Check')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (12, N'UndoCheck')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (13, N'Confirm')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (14, N'UndoConfirm')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (15, N'Approve')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (16, N'UndoApprove')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (17, N'Finalize')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (18, N'UndoFinalize')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (19, N'Mark')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (20, N'QuickReportDesign')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (1, N'Journal')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (2, N'AccountBook')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (3, N'CurrencyBook')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (4, N'TestBalance')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (5, N'ItemBalance')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
