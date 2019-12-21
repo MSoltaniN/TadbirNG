@@ -349,7 +349,7 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                 : null;
         }
 
-        private IQueryable<VoucherLine> GetArticlesWithMissingAccount(IQueryable<VoucherLine> voucherLines)
+        private static IQueryable<VoucherLine> GetArticlesWithMissingAccount(IQueryable<VoucherLine> voucherLines)
         {
             var lines = voucherLines
                  .Where(line => line.Account == null);
@@ -357,7 +357,7 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
             return lines;
         }
 
-        private IQueryable<VoucherLine> GetArticleHavingZeroAmount(IQueryable<VoucherLine> voucherLines)
+        private static IQueryable<VoucherLine> GetArticleHavingZeroAmount(IQueryable<VoucherLine> voucherLines)
         {
             var lines = voucherLines
                  .Where(line => line.Debit == 0 && line.Credit == 0);

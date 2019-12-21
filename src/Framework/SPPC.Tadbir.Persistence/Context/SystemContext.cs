@@ -35,9 +35,11 @@ namespace SPPC.Tadbir.Persistence
             ColumnMap.BuildMapping(modelBuilder.Entity<Column>());
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyDbMap.BuildMapping(modelBuilder.Entity<CompanyDb>());
+            EntityTypeMap.BuildMapping(modelBuilder.Entity<EntityType>());
             LocaleMap.BuildMapping(modelBuilder.Entity<Locale>());
             LocalReportMap.BuildMapping(modelBuilder.Entity<LocalReport>());
-            OperationLogMap.BuildMapping(modelBuilder.Entity<OperationLog>());
+            OperationMap.BuildMapping(modelBuilder.Entity<Operation>());
+            OperationSourceMap.BuildMapping(modelBuilder.Entity<OperationSource>());
             ParameterMap.BuildMapping(modelBuilder.Entity<Parameter>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
@@ -48,6 +50,7 @@ namespace SPPC.Tadbir.Persistence
             RoleCompanyMap.BuildMapping(modelBuilder.Entity<RoleCompany>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
+            SysOperationLogMap.BuildMapping(modelBuilder.Entity<SysOperationLog>());
             SystemIssueMap.BuildMapping(modelBuilder.Entity<SystemIssue>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());

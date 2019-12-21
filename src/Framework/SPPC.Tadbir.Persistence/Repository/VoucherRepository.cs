@@ -522,7 +522,8 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private async Task<(IList<VoucherViewModel>, int)> GetListAndCountAsync(GridOptions gridOptions, IQueryable<VoucherViewModel> vouchers)
+        private static async Task<(IList<VoucherViewModel>, int)> GetListAndCountAsync(
+            GridOptions gridOptions, IQueryable<VoucherViewModel> vouchers)
         {
             var filteredList = vouchers
                 .Apply(gridOptions, false);

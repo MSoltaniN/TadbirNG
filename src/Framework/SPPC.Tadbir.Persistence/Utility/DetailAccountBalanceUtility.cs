@@ -96,17 +96,17 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         public IQueryable<VoucherLine> IncludeVoucherLineReference(IQueryable<VoucherLine> query)
         {
-            return query.Include(line => line.Account);
+            return query.Include(line => line.DetailAccount);
         }
 
         public Func<TestBalanceItemViewModel, bool> GetCurrentlevelFilter(int level)
         {
-            return line => line.DetailAccountLevel == level;
+            return line => line.DetailAccountId > 0 && line.DetailAccountLevel == level;
         }
 
         public Func<TestBalanceItemViewModel, bool> GetUpperlevelFilter(int level)
         {
-            return line => line.DetailAccountLevel >= level;
+            return line => line.DetailAccountId > 0 && line.DetailAccountLevel >= level;
         }
 
         public async Task<TestBalanceItemViewModel> GetItemFromVoucherLineAsync(TestBalanceItemViewModel line, string fullCode)

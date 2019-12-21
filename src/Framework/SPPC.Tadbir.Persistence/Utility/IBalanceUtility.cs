@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
-using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
+    /// <summary>
+    /// امکانات مشترک مرتبط با محاسبه مانده مولفه های حساب را تعریف می کند
+    /// </summary>
     public interface IBalanceUtility : IReportUtility
     {
         /// <summary>
@@ -39,8 +38,19 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <returns>مانده محاسبه شده برای سرفصل حسابداری</returns>
         Task<decimal> GetSpecialVoucherBalanceAsync(int itemId, VoucherType type);
 
+        /// <summary>
+        /// اطلاعات مولفه حساب با شناسه داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="itemId">شناسه مولفه حساب مورد نظر</param>
+        /// <returns>اطلاعات مولفه حساب مورد نظر</returns>
+        /// <remarks>این متد قاعدتاً باید توسط کلاسی پیاده سازی شود که اطلاعات داخلی درباره نوع مولفه حساب را داشته باشد</remarks>
         Task<TreeEntity> GetAccountItemAsync(int itemId);
 
+        /// <summary>
+        /// اطلاعات مولفه حساب با شناسه داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="itemId">شناسه مولفه حساب مورد نظر</param>
+        /// <returns>اطلاعات مولفه حساب مورد نظر</returns>
         Task<TModel> GetAccountItemAsync<TModel>(int itemId)
             where TModel : class, ITreeEntity;
     }
