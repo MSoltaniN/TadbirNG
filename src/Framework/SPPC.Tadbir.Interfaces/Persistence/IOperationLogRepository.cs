@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="companyId">شناسه دیتابیسی اختیاری برای فیلتر لاگ های عملیاتی برای یکی از شرکت ها</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
-        Task<IList<OperationLogViewModel>> GetLogsAsync(
+        Task<IList<SysOperationLogViewModel>> GetLogsAsync(
             int? userId, int? companyId, GridOptions gridOptions = null);
 
         /// <summary>

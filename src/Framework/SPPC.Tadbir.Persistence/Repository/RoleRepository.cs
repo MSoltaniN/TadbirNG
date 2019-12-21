@@ -228,7 +228,6 @@ namespace SPPC.Tadbir.Persistence
                     var clone = Mapper.Map<Role>(role);
                     OnAction("Edit", clone, null);
                     UpdateExisting(roleView, role);
-                    Log.AfterState = GetState(role);
                     repository.UpdateWithTracking(role);
                     await FinalizeActionAsync();
                 }

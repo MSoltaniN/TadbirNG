@@ -376,3 +376,61 @@ CREATE TABLE [Core].[Filter] (
 )
 GO
 
+-- 1.1.776
+CREATE SCHEMA [Metadata]
+GO
+
+CREATE TABLE [Metadata].[EntityType] (
+    [EntityTypeID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_EntityType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_EntityType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_EntityType] PRIMARY KEY CLUSTERED ([EntityTypeID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[Operation] (
+    [OperationID]    INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Operation_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Operation_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Operation] PRIMARY KEY CLUSTERED ([OperationID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[OperationSource] (
+    [OperationSourceID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                NVARCHAR(128)    NOT NULL,
+    [Description]         NVARCHAR(512)    NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_OperationSource_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Metadata_OperationSource_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_OperationSource] PRIMARY KEY CLUSTERED ([OperationSourceID] ASC)
+)
+GO
+
+CREATE TABLE [Core].[OperationLog] (
+    [OperationLogID]   INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]         INT              NOT NULL,
+    [FiscalPeriodID]   INT              NOT NULL,
+    [OperationID]      INT              NOT NULL,
+    [SourceID]         INT              NOT NULL,
+    [EntityTypeID]     INT              NOT NULL,
+    [Date]             DATETIME         NOT NULL,
+    [Time]             TIME(7)          NOT NULL,
+    [UserId]           INT              NOT NULL,
+    [CompanyId]        INT              NOT NULL,
+    [SourceListId]     INT              NULL,
+    [EntityId]         INT              NULL,
+    [Description]      NVARCHAR(MAX)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Core_OperationLog_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Core_OperationLog_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_OperationLog] PRIMARY KEY CLUSTERED ([OperationLogID] ASC)
+    , CONSTRAINT [FK_Core_OperationLog_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Core_OperationLog_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Core_OperationLog_Metadata_Operation] FOREIGN KEY ([OperationID]) REFERENCES [Metadata].[Operation]([OperationID])
+    , CONSTRAINT [FK_Core_OperationLog_Metadata_Source] FOREIGN KEY ([SourceID]) REFERENCES [Metadata].[OperationSource]([OperationSourceID])
+    , CONSTRAINT [FK_Core_OperationLog_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
+)
+GO
