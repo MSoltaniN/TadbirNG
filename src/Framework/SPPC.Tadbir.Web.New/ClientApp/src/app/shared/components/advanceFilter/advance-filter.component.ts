@@ -199,6 +199,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.selectedOperator = undefined;
       this.selectedLogicalOperator = "and";
       this.selectedColumn = undefined;
+      this.selectScriptType = "";
       this.formMode = 'insert';
     }, 1);    
   }
@@ -326,14 +327,52 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     return totalfilter;
   }
 
-  onOk() {
+  copyGroupFilter() {
+    this.activeCopyFilter = true;
+  }
 
+  saveAllFilter() {
+    this.groupFilters.forEach((gf) => {
+      if (gf.filters && gf.filters.length > 0) {
+        if (gf.id == -1) {          
+          this.activeSaveFilter = true;
+          return;
+        }        
+      }
+    });
+
+    if (!this.activeSaveFilter) {
+      this.saveFiltersToDB();
+    }
+  }
+
+  copyFiltersToDB(groupFilter) {
+
+    var gf = groupFilter
+    var filterModel = new FilterViewModel();
+    filterModel.id = 0
+    filterModel.isPublic = gf.isPublic;
+    filterModel.name = gf.name;
+    filterModel.viewId = this.viewId;
+    filterModel.userId = this.UserId;
+    filterModel.values = JSON.stringify(this.currentGFilter.filters);
+    if (filterModel.id == 0) {
+      this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {        
+        this.gFilterSelected = res.id;
+        this.currentGFilter = res;
+        var index = this.groupFilters.findIndex(gf => gf.id === res.id);
+        this.groupFilters[index].filters = res.filters;
+
+        this.gFilterSelectChange(res); 
+        this.showMessage(this.getText('AdvanceFilter.FilterCopiedSuccess'), MessageType.Succes);
+      });
+    }    
+  }
+
+  saveFiltersToDB() {
     this.groupFilters.forEach((gf) => {
       if (gf.filters) {
-        if (gf.id == -1) {
-          this.bStorageService.setSession('unSaveFilter', JSON.stringify(gf.filters));
-        }
-        else {
+        if (gf.id > -1) {          
           var filterModel = new FilterViewModel();
           filterModel.id = gf.isNew ? 0 : gf.id;
           filterModel.isPublic = gf.isPublic;
@@ -342,22 +381,29 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           filterModel.userId = this.UserId;
           filterModel.values = JSON.stringify(gf.filters);
           if (filterModel.id == 0)
-            this.advanceFilterService.insertFilter(filterModel).subscribe((res) =>
-            {
+            this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {
               if (this.gFilterSelected == gf.id)
                 this.gFilterSelected = res.id;
             });
           else
             this.advanceFilterService.saveFilter(filterModel.id, filterModel).subscribe();
         }
-      }    
+      }
     });
 
-    if (this.deletedGroupFilters) {
-      this.deletedGroupFilters.forEach((filterModel) => {
-        this.advanceFilterService.deleteFilter(filterModel.id).subscribe();
-      });
-    }
+    this.showMessage(this.getText('AdvanceFilter.FilterSavedSuccess'), MessageType.Succes);
+  }
+
+  onOk() {
+    
+    this.groupFilters.forEach((gf) => {
+      if (gf.filters) {
+        if (gf.id == -1) {
+          this.bStorageService.setSession('unSaveFilter', JSON.stringify(gf.filters));
+          return;
+        }        
+      }    
+    });        
     
     this.result.emit({ filters: this.createFilterExpression(), filterList: this.filters, groupFilter: this.groupFilters, gFilterSelected:this.gFilterSelected });
   }
@@ -387,8 +433,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
   braces() {
 
-    var filters = new Array<FilterRow>();
-    //filters = this.filters.copyWithin(0, this.filters.length);
+    var filters = new Array<FilterRow>();    
     filters = <Array<FilterRow>>JSON.parse(JSON.stringify(this.filters));
 
     if (this.selectedRows && this.selectedRows.length > 1) {
@@ -549,11 +594,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     return expression;
   }
-
-
-  //statusColor: string[] = ['#F1512F', '#FCE900', '#A0FC00', '#00FCE9', '#00ACFC', '#0026FC', '#BB00FC', '#0C0000', '#D5BDD6', '#6C8972','#F4F2AA'];
   
-
   computeTotalExpression() {
 
     if (!this.groupFilters) return;
@@ -728,6 +769,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   currentGFilter: GroupFilter;
   gFilterSelected: number;
   activeGroupFilter: boolean = false;
+  activeSaveFilter: boolean = false;
+  activeCopyFilter: boolean = false;
   filterUseForOthers: boolean = false;
   isEditMode: boolean = false;
   filterGroupName: string;
@@ -751,8 +794,14 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       return;
     }
 
+    if (this.activeSaveFilter) {
+      this.isEditMode = false;
+    }
+
     if (!this.isEditMode) {
       var gf = new GroupFilter();
+
+     
 
       var max = 0;
       this.groupFilters.forEach(it => {
@@ -764,13 +813,32 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       gf.id = max + 1;
       gf.isNew = true;
       gf.name = this.filterGroupName;
-      gf.isPublic = this.filterUseForOthers;
+      gf.isPublic = this.filterUseForOthers;      
+
+      if (this.activeSaveFilter) {
+        gf.filters = this.groupFilters[0].filters;
+        this.groupFilters[0].filters = undefined;
+      }
+
       this.groupFilters.push(gf);
+
+      if (this.activeSaveFilter) {
+        this.saveFiltersToDB();
+        this.activeSaveFilter = false;
+      }
+
+      if (this.activeCopyFilter) {
+        this.copyFiltersToDB(gf);
+        this.activeCopyFilter = false;
+        return;
+      }
 
       this.currentGFilter = gf;
       this.gFilterSelected = gf.id;
-      this.gFilterSelectChange(gf);
-      this.activeGroupFilter = false;
+      this.gFilterSelectChange(gf);      
+
+      this.activeGroupFilter = false;     
+      
     }
     else {
       var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
@@ -778,12 +846,16 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.groupFilters[index].isPublic = this.filterUseForOthers;        
       this.activeGroupFilter = false;
       this.gFilterSelected = this.groupFilters[index].id;
+      this.activeSaveFilter = false;
+      this.activeCopyFilter = false;
     }
 
   }
 
   onGroupFilterCancel() {
-    this.activeGroupFilter = false;  
+    this.activeGroupFilter = false;
+    this.activeSaveFilter = false;
+    this.activeCopyFilter = false;
   }
 
   gDeleteIsDisable() {
@@ -824,5 +896,14 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.currentGFilter = this.groupFilters[this.groupFilters.length - 1];
     this.gFilterSelectChange(this.currentGFilter);
     this.computeTotalExpression();
+
+    if (this.deletedGroupFilters) {
+      this.deletedGroupFilters.forEach((filterModel) => {
+        if(!filterModel.isNew)
+          this.advanceFilterService.deleteFilter(filterModel.id).subscribe();
+      });
+    }
+
+    this.showMessage(this.getText('AdvanceFilter.FilterRemovedSuccess'), MessageType.Succes)
   }
 }
