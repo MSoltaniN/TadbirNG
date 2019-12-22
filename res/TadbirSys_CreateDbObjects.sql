@@ -407,6 +407,30 @@ INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName, Code) VALUES (3, 'Ar
 INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName, Code) VALUES (4, 'French', N'Français', 'fr')
 SET IDENTITY_INSERT [Metadata].[Locale] OFF
 
+
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (1, N'CompanyDb')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (2, N'Role')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (3, N'RoleCompany')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (4, N'Setting')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (5, N'SysOperationLog')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (6, N'User')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (7, N'UserRole')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (8, N'ViewRowPermission')
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (1, N'View')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (2, N'Create')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (3, N'Edit')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (4, N'Delete')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (5, N'Filter')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (6, N'Print')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (7, N'Save')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (8, N'Archive')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (1, 'Account', 1, 1, N'/lookup/accounts')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (2, 'Voucher', 0, 1, N'/lookup/vouchers')

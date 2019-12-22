@@ -541,7 +541,7 @@
     <value>ناموفق</value>
   </data>
   <data name="OperationLog" xml:space="preserve">
-    <value>لاگ عملیاتی</value>
+    <value>رویداد عملیاتی</value>
   </data>
   <data name="Result" xml:space="preserve">
     <value>نتیجه</value>
@@ -2699,5 +2699,29 @@
   </data>
   <data name="ItemBalanceReport" xml:space="preserve">
     <value>گردش و مانده سطوح شناور</value>
+  </data>
+  <data name="AccountCollectionAccount" xml:space="preserve">
+    <value>مجموعه حساب</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>بایگانی</value>
+  </data>
+  <data name="RoleBranch" xml:space="preserve">
+    <value>دسترسی نقش به شعبه</value>
+  </data>
+  <data name="RoleCompany" xml:space="preserve">
+    <value>دسترسی نقش به شرکت</value>
+  </data>
+  <data name="RoleFiscalPeriod" xml:space="preserve">
+    <value>دسترسی نقش به دوره مالی</value>
+  </data>
+  <data name="SysOperationLog" xml:space="preserve">
+    <value>رویداد سیستمی</value>
+  </data>
+  <data name="TaxCurrency" xml:space="preserve">
+    <value>ارز مالیاتی</value>
+  </data>
+  <data name="UserRole" xml:space="preserve">
+    <value>ارتباط نقش و کاربر</value>
   </data>
 </root>
