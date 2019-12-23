@@ -57,7 +57,6 @@ namespace SPPC.Tadbir.Persistence
             var clone = Mapper.Map<TEntity>(entity);
             OnAction("Edit", clone, null);
             UpdateExisting(entityView, entity);
-            Log.AfterState = GetState(entity);
             repository.Update(entity);
             return await FinalizeActionAsync();
         }
@@ -96,8 +95,6 @@ namespace SPPC.Tadbir.Persistence
             }
             catch (Exception ex)
             {
-                Log.Result = "Failed";
-                Log.ErrorMessage = ex.Message;
                 await TrySaveLogAsync();
                 throw;
             }
@@ -114,8 +111,6 @@ namespace SPPC.Tadbir.Persistence
         protected void OnAction(string action, TEntity before, TEntity after)
         {
             Log = GetOperationLog(action);
-            Log.BeforeState = GetState(before);
-            Log.AfterState = GetState(after);
         }
 
         /// <summary>
@@ -192,14 +187,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var log = new OperationLogViewModel()
             {
-                Action = action,
-                FiscalPeriodId = UserContext.FiscalPeriodId,
-                BranchId = UserContext.BranchId,
                 CompanyId = UserContext.CompanyId,
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
-                Result = "Succeeded",
-                Entity = typeof(TEntity).Name,
                 UserId = UserContext.Id
             };
             return log;

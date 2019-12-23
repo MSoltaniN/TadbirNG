@@ -58,8 +58,12 @@ namespace SPPC.Tadbir.Persistence
             DocumentActionMap.BuildMapping(modelBuilder.Entity<DocumentAction>());
             DocumentStatusMap.BuildMapping(modelBuilder.Entity<DocumentStatus>());
             DocumentTypeMap.BuildMapping(modelBuilder.Entity<DocumentType>());
+            EntityTypeMap.BuildMapping(modelBuilder.Entity<EntityType>());
             FilterMap.BuildMapping(modelBuilder.Entity<Filter>());
             FiscalPeriodMap.BuildMapping(modelBuilder.Entity<FiscalPeriod>());
+            OperationMap.BuildMapping(modelBuilder.Entity<Operation>());
+            OperationLogMap.BuildMapping(modelBuilder.Entity<OperationLog>());
+            OperationSourceMap.BuildMapping(modelBuilder.Entity<OperationSource>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());

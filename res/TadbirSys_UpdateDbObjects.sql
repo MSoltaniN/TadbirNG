@@ -1101,6 +1101,82 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 ALTER TABLE Reporting.SystemIssue
 Add DeleteApiUrl nvarchar(128) null
 
+-- 1.1.776
+CREATE TABLE [Metadata].[EntityType] (
+    [EntityTypeID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_EntityType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_EntityType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_EntityType] PRIMARY KEY CLUSTERED ([EntityTypeID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[Operation] (
+    [OperationID]    INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Operation_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Operation_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Operation] PRIMARY KEY CLUSTERED ([OperationID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[OperationSource] (
+    [OperationSourceID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                NVARCHAR(128)    NOT NULL,
+    [Description]         NVARCHAR(512)    NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_OperationSource_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Metadata_OperationSource_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_OperationSource] PRIMARY KEY CLUSTERED ([OperationSourceID] ASC)
+)
+GO
+
+CREATE TABLE [Core].[SysOperationLog] (
+    [SysOperationLogID]   INT              IDENTITY (1, 1) NOT NULL,
+    [OperationID]         INT              NOT NULL,
+    [SourceID]            INT              NOT NULL,
+    [EntityTypeID]        INT              NOT NULL,
+    [SourceListID]        INT              NOT NULL,
+    [UserID]              INT              NOT NULL,
+    [Date]                DATETIME         NOT NULL,
+    [Time]                TIME(7)          NOT NULL,
+    [EntityId]            INT              NULL,
+    [Description]         NVARCHAR(MAX)    NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Core_SysOperationLog_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Core_SysOperationLog_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_SysOperationLog] PRIMARY KEY CLUSTERED ([SysOperationLogID] ASC)
+    , CONSTRAINT [FK_Core_SysOperationLog_Metadata_Operation] FOREIGN KEY ([OperationID]) REFERENCES [Metadata].[Operation]([OperationID])
+    , CONSTRAINT [FK_Core_SysOperationLog_Metadata_Source] FOREIGN KEY ([SourceID]) REFERENCES [Metadata].[OperationSource]([OperationSourceID])
+    , CONSTRAINT [FK_Core_SysOperationLog_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
+    , CONSTRAINT [FK_Core_SysOperationLog_Metadata_SourceList] FOREIGN KEY ([SourceListID]) REFERENCES [Metadata].[View]([ViewID])
+    , CONSTRAINT [FK_Core_SysOperationLog_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
+)
+GO
+
+-- 1.1.777
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (1, N'CompanyDb')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (2, N'Role')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (3, N'RoleCompany')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (4, N'Setting')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (5, N'SysOperationLog')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (6, N'User')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (7, N'UserRole')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (8, N'ViewRowPermission')
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (1, N'View')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (2, N'Create')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (3, N'Edit')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (4, N'Delete')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (5, N'Filter')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (6, N'Print')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (7, N'Save')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (8, N'Archive')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
 -- 1.1.778
 DROP TABLE [Reporting].[SystemIssue]
 

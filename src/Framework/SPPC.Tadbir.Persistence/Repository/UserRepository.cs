@@ -302,7 +302,6 @@ namespace SPPC.Tadbir.Persistence
                     var clone = Mapper.Map<User>(user);
                     OnAction("Edit", clone, null);
                     UpdateExisting(userView, user);
-                    Log.AfterState = GetState(user);
                     repository.Update(user, usr => usr.Person);
                     await FinalizeActionAsync();
                 }

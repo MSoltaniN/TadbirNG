@@ -11,19 +11,20 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Model.Core
 {
     /// <summary>
-    /// اطلاعات سوابق عملیاتی برنامه را در هر شرکت نگهداری می کند
+    /// اطلاعات سوابق عملیات سیستمی را نگهداری می کند
     /// </summary>
-    public partial class OperationLog : FiscalEntity
+    public partial class SysOperationLog : CoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        public OperationLog()
+        public SysOperationLog()
         {
             Description = String.Empty;
             Date = DateTime.Now;
@@ -39,21 +40,6 @@ namespace SPPC.Tadbir.Model.Core
         /// زمان انجام عملیات
         /// </summary>
         public virtual TimeSpan Time { get; set; }
-
-        /// <summary>
-        /// شناسه کاربری که عملیات توسط او در برنامه انجام شده
-        /// </summary>
-        public virtual int UserId { get; set; }
-
-        /// <summary>
-        /// شناسه شرکتی که عملیات روی دیتابیس آن انجام شده
-        /// </summary>
-        public virtual int CompanyId { get; set; }
-
-        /// <summary>
-        /// شناسه نمای اطلاعاتی لیستی به کار رفته حین انجام عملیات
-        /// </summary>
-        public virtual int? SourceListId { get; set; }
 
         /// <summary>
         /// شناسه موجودیت ایجاد، اصلاح یا حذف شده
@@ -79,5 +65,15 @@ namespace SPPC.Tadbir.Model.Core
         /// اطلاعات فراداده ای موجودیت مورد استفاده در عملیات
         /// </summary>
         public virtual EntityType EntityType { get; set; }
+
+        /// <summary>
+        /// نمای اطلاعاتی لیستی به کار رفته حین انجام عملیات
+        /// </summary>
+        public virtual View SourceList { get; set; }
+
+        /// <summary>
+        /// کاربری که عملیات سیستمی توسط او انجام شده
+        /// </summary>
+        public virtual User User { get; set; }
     }
 }

@@ -394,31 +394,8 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<OperationLog, OperationLogViewModel>()
-                .ForMember(
-                    dest => dest.Entity,
-                    opts => opts.MapFrom(src => src.View))
-                .ForMember(
-                    dest => dest.Result,
-                    opts => opts.MapFrom(src => src.Succeeded ? "Succeeded" : "Failed"))
-                .ForMember(
-                    dest => dest.ErrorMessage,
-                    opts => opts.MapFrom(src => src.FailReason))
-                .ForMember(
-                    dest => dest.UserName,
-                    opts => opts.MapFrom(src => src.User.UserName));
-            mapperConfig.CreateMap<OperationLogViewModel, OperationLog>()
-                .ForMember(
-                    dest => dest.View,
-                    opts => opts.MapFrom(src => src.Entity))
-                .ForMember(
-                    dest => dest.Succeeded,
-                    opts => opts.MapFrom(src => src.Result == "Succeeded"))
-                .ForMember(
-                    dest => dest.FailReason,
-                    opts => opts.MapFrom(src => src.ErrorMessage))
-                .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId)
-                .AfterMap((viewModel, model) => model.User.Id = viewModel.UserId);
+            mapperConfig.CreateMap<OperationLog, OperationLogViewModel>();
+            mapperConfig.CreateMap<OperationLogViewModel, OperationLog>();
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(
                     dest => dest.LineId,

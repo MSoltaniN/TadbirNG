@@ -61,14 +61,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(operationLogs);
         }
 
-        private void Localize(IList<OperationLogViewModel> logs)
+        private void Localize(IList<SysOperationLogViewModel> logs)
         {
-            Array.ForEach(logs.ToArray(), log =>
-            {
-                log.Action = _strings[log.Action];
-                log.Entity = _strings[log.Entity];
-                log.Result = _strings[log.Result];
-            });
+            // TODO: Re-implement this method
         }
 
         private readonly IOperationLogRepository _repository;

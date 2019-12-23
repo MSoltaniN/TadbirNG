@@ -217,7 +217,14 @@
     "PleaseSelectField": "یک فیلد را انتخاب کنید",
     "AddGroupfilter": "درج فیلتر جدید",
     "DeleteGroupfilter": "حذف فیلترها",
-    "UseForOthers": "قابل استفاده برای همه کاربران"
+    "UseForOthers": "قابل استفاده برای همه کاربران",
+    "FilterSavedSuccess": "تغییرات با موفقیت ذخیره شد",
+    "SaveChanges": "ذخیره فیلتر",
+    "FilterRemovedSuccess": "فیلتر با موفقیت حذف شد",
+    "CopyFilter": "کپی فیلتر با نام جدید",
+    "FilterCopiedSuccess": "فیلتر با موفقیت کپی شد",
+    "EditGroupfilter": "ویرایش"
+
   },
   "SystemIssue": {
     "ListTitle": "سیستم ها",

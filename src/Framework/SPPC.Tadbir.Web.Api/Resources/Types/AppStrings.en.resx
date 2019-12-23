@@ -2709,6 +2709,30 @@
   <data name="ItemBalanceReport" xml:space="preserve">
     <value>Item turnover and balance</value>
   </data>
+  <data name="AccountCollectionAccount" xml:space="preserve">
+    <value>Account collection</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="RoleBranch" xml:space="preserve">
+    <value>Role access to branch</value>
+  </data>
+  <data name="RoleCompany" xml:space="preserve">
+    <value>Role access to company</value>
+  </data>
+  <data name="RoleFiscalPeriod" xml:space="preserve">
+    <value>Role access to fiscal period</value>
+  </data>
+  <data name="SysOperationLog" xml:space="preserve">
+    <value>System log</value>
+  </data>
+  <data name="TaxCurrency" xml:space="preserve">
+    <value>Tax currency</value>
+  </data>
+  <data name="UserRole" xml:space="preserve">
+    <value>User / Role relation</value>
+  </data>
   <data name="AccountsWithInvalidPeriodTurnover" xml:space="preserve">
     <value>Accounts with invalid period turnover</value>
   </data>

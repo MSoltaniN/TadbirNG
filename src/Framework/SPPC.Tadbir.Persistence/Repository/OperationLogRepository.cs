@@ -32,16 +32,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="companyId">شناسه دیتابیسی اختیاری برای فیلتر لاگ های عملیاتی برای یکی از شرکت ها</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
-        public async Task<IList<OperationLogViewModel>> GetLogsAsync(
+        public async Task<IList<SysOperationLogViewModel>> GetLogsAsync(
             int? userId, int? companyId, GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
-            var query = repository.GetEntityQuery(log => log.User, log => log.Company);
-            if (companyId.HasValue)
-            {
-                query = query.Where(log => log.Company.Id == companyId.Value);
-            }
-
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var query = repository.GetEntityQuery(log => log.User);
             if (userId.HasValue)
             {
                 query = query.Where(log => log.User.Id == userId.Value);
@@ -50,7 +45,7 @@ namespace SPPC.Tadbir.Persistence
             return await query
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
+                .Select(log => Mapper.Map<SysOperationLogViewModel>(log))
                 .Apply(gridOptions)
                 .ToListAsync();
         }
