@@ -2709,4 +2709,7 @@
   <data name="ItemBalanceReport" xml:space="preserve">
     <value>Item turnover and balance</value>
   </data>
+  <data name="AccountsWithInvalidPeriodTurnover" xml:space="preserve">
+    <value>Accounts with invalid period turnover</value>
+  </data>
 </root>

@@ -2700,4 +2700,7 @@
   <data name="ItemBalanceReport" xml:space="preserve">
     <value>گردش و مانده سطوح شناور</value>
   </data>
+  <data name="AccountsWithInvalidPeriodTurnover" xml:space="preserve">
+    <value>حساب های دارای گردش دوره نامعتبر</value>
+  </data>
 </root>

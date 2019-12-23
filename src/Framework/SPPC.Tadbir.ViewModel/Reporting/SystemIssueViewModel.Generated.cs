@@ -52,5 +52,12 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// </summary>
         [StringLength(128, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
         public virtual string DeleteApiUrl { get; set; }
+
+
+        /// <summary>
+        /// آیا در گزارشگیری انتخاب سطح دسترسی شعب قابل انتخاب باشد یا خیر؟
+        /// </summary>
+        [Required(ErrorMessage = "{0} is required.")]
+        public virtual bool BranchScope { get; set; }
     }
 }

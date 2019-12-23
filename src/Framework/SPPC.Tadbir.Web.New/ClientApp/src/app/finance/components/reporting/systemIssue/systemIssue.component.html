@@ -15,6 +15,7 @@
                             [valuePrimitive]="true"
                             [value]="selectedBranchScope"
                             [(ngModel)]="selectedBranchScope"
+                            [disabled]="!isEnabledBranchScope"
                             (ngModelChange)="changeParam()">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
@@ -30,11 +31,6 @@
   <div class="row">
     <div class="col-xs-12">
 
-      <div *ngIf="errorMessage">
-        <div class="alert alert-danger">
-          {{ errorMessage }}
-        </div>
-      </div>
       <div>
         <div class="row" id="setting-form">
           <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
@@ -56,7 +52,7 @@
                                 [(checkedKeys)]="checkedIssues"
                                 [(selectedKeys)]="selectedIssue"
                                 [checkBy]="checkById"
-                                (checkedKeysChange)="handleChecked($event)"
+                                (checkedKeysChange)="handleChecked()"
                                 (selectionChange)="handleSelection($event)">
                   <ng-template kendoTreeViewNodeTemplate let-dataItem>
                     <span class="sppc-width-100">
@@ -95,7 +91,7 @@
                             (pageChange)="pageChange($event)"
                             (sortChange)="sortChange($event)"
                             (edit)="editHandler($event)"
-                            (remove)="removeHandler($event)"
+                            (remove)="removeHandler()"
                             [loading]="false"
                             [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                             [selectedKeys]="selectedRows"

@@ -9,6 +9,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -270,22 +271,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست و تعداد آرتیکل ها</returns>
         public async Task<(IList<VoucherLineDetailViewModel>, int)> GetSystemIssueArticlesAsync(GridOptions gridOptions, string issueType, DateTime from, DateTime to)
         {
-            var lines = Repository.GetAllOperationQuery<VoucherLine>(
-                ViewName.VoucherLine,
-                line => line.Voucher,
-                line => line.Account,
-                line => line.DetailAccount,
-                line => line.CostCenter,
-                line => line.Project,
-                line => line.Currency)
-                .Where(line => line.Voucher.Date.Date >= from.Date && line.Voucher.Date.Date <= to.Date);
-
             (IList<VoucherLineDetailViewModel>, int) result;
 
             switch (issueType)
             {
                 case "miss-acc":
                     {
+                        var lines = GetArticlesAsync(from, to);
                         lines = GetArticlesWithMissingAccount(lines);
                         result = await GetListAndCountAsync(gridOptions, lines);
                         break;
@@ -293,6 +285,7 @@ namespace SPPC.Tadbir.Persistence
 
                 case "zero-amount":
                     {
+                        var lines = GetArticlesAsync(from, to);
                         lines = GetArticleHavingZeroAmount(lines);
                         result = await GetListAndCountAsync(gridOptions, lines);
                         break;
@@ -300,8 +293,22 @@ namespace SPPC.Tadbir.Persistence
 
                 case "invalid-acc":
                     {
+                        var lines = GetArticlesAsync(from, to);
                         var enumerableLines = GetArticleWithInvalidAccount(lines);
                         result = GetListAndCount(gridOptions, enumerableLines);
+                        break;
+                    }
+
+                case "invalid-acc-balance":
+                    {
+                        result = await GetArticleWithInvalidBalance(gridOptions, to);
+                        break;
+                    }
+
+                case "invalid-acc-turnover":
+                    {
+                        var lines = GetArticleWithInvalidTurnover(from, to);
+                        result = await GetListAndCountAsync(gridOptions, lines);
                         break;
                     }
 
@@ -362,6 +369,81 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
             var lines = voucherLines
                  .Where(line => line.Debit == 0 && line.Credit == 0);
 
+            return lines;
+        }
+
+        private IQueryable<VoucherLine> GetArticleWithInvalidTurnover(DateTime from, DateTime to)
+        {
+            var lines = GetArticlesAsync(from, to);
+
+            lines = lines
+                .Where(line =>
+                (line.Account.TurnoverMode == (short)TurnoverMode.CreditorDuringPeriod && line.Debit != 0)
+                || (line.Account.TurnoverMode == (short)TurnoverMode.DebtorDuringPeriod && line.Credit != 0));
+
+            return lines;
+        }
+
+        private async Task<(IList<VoucherLineDetailViewModel>, int)> GetArticleWithInvalidBalance(GridOptions gridOptions, DateTime to)
+        {
+            List<VoucherLine> result = new List<VoucherLine>();
+
+            var lines = await Repository.GetAllOperationQuery<VoucherLine>(
+                ViewName.VoucherLine,
+                line => line.Voucher,
+                line => line.Account,
+                line => line.DetailAccount,
+                line => line.CostCenter,
+                line => line.Project,
+                line => line.Currency)
+                .Where(line => line.Voucher.Date.Date <= to.Date
+                && (line.Account.TurnoverMode == (short)TurnoverMode.CreditorEndPeriod || line.Account.TurnoverMode == (short)TurnoverMode.DebtorEndPeriod))
+                .OrderBy(line => line.Voucher.Date)
+                .ThenBy(line => line.Voucher.No)
+                .ToListAsync();
+
+            var accountGroup = lines.GroupBy(line => line.Account);
+
+            foreach (var group in accountGroup)
+            {
+                decimal balancedValue = 0;
+
+                foreach (var line in group)
+                {
+                    balancedValue += line.Debit - line.Credit;
+                    if (line.Account.TurnoverMode == (short)TurnoverMode.CreditorEndPeriod && balancedValue > 0)
+                    {
+                        result.Add(line);
+                        break;
+                    }
+
+                    if (line.Account.TurnoverMode == (short)TurnoverMode.DebtorEndPeriod && balancedValue < 0)
+                    {
+                        result.Add(line);
+                        break;
+                    }
+                }
+            }
+
+            var voucherLines = result.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
+
+            voucherLines = voucherLines
+                .ApplyPaging(gridOptions);
+
+            return (voucherLines.ToList(), result.Count());
+        }
+
+        private IQueryable<VoucherLine> GetArticlesAsync(DateTime from, DateTime to)
+        {
+            var lines = Repository.GetAllOperationQuery<VoucherLine>(
+                ViewName.VoucherLine,
+                line => line.Voucher,
+                line => line.Account,
+                line => line.DetailAccount,
+                line => line.CostCenter,
+                line => line.Project,
+                line => line.Currency)
+                .Where(line => line.Voucher.Date.Date >= from.Date && line.Voucher.Date.Date <= to.Date);
             return lines;
         }
 

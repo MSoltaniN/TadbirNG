@@ -358,6 +358,7 @@ CREATE TABLE [Reporting].[SystemIssue] (
     [ViewID]          INT              NULL,
     [TitleKey]        NVARCHAR(64)     NOT NULL,
     [ApiUrl]          NVARCHAR(128)    NULL,	
+	[BranchScope]     BIT              NOT NULL,
 	[DeleteApiUrl]    NVARCHAR(128)    NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_SystemIssue_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Reporting_SystemIssue_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -2051,35 +2052,38 @@ GO
 
 SET IDENTITY_INSERT [Reporting].[SystemIssue] ON 
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (1, NULL, NULL, NULL, N'Accounting', NULL, NULL)
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (1, NULL, NULL, NULL, N'Accounting', NULL, NULL, 0)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (2, 1, NULL, NULL, N'VoucherIssues', NULL, NULL)
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (2, 1, NULL, NULL, N'VoucherIssues', NULL, NULL, 0)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (3, 1, NULL, NULL, N'AccountIssues', NULL, NULL)
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (3, 1, NULL, NULL, N'AccountIssues', NULL, NULL, 0)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (4, 2, 26, 2, N'UnbalancedVouchers', N'/vouchers/unbalanced', N'/vouchers')
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (4, 2, 26, 2, N'UnbalancedVouchers', N'/vouchers/unbalanced', N'/vouchers', 1)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (5, 2, 26, 2, N'VouchersWithNoArticle', N'/vouchers/no-article', N'/vouchers')
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (5, 2, 26, 2, N'VouchersWithNoArticle', N'/vouchers/no-article', N'/vouchers', 1)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (6, 2, 26, 42, N'ArticlesHavingZeroAmount', N'/vouchers/articles/sys-issue/zero-amount', N'/vouchers/articles')
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (6, 2, 26, 42, N'ArticlesHavingZeroAmount', N'/vouchers/articles/sys-issue/zero-amount', N'/vouchers/articles', 1)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (7, 2, 26, 42, N'ArticlesWithMissingAccount', N'/vouchers/articles/sys-issue/miss-acc', N'/vouchers/articles')
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (7, 2, 26, 42, N'ArticlesWithMissingAccount', N'/vouchers/articles/sys-issue/miss-acc', N'/vouchers/articles', 1)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (8, 2, 26, 42, N'ArticlesWithInvalidAccountItems', N'/vouchers/articles/sys-issue/invalid-acc', N'/vouchers/articles')
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (8, 2, 26, 42, N'ArticlesWithInvalidAccountItems', N'/vouchers/articles/sys-issue/invalid-acc', N'/vouchers/articles', 1)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (9, 2, NULL, 41, N'MissingVoucherNumbers', N'/vouchers/miss-number', NULL)
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (9, 2, NULL, 41, N'MissingVoucherNumbers', N'/vouchers/miss-number', NULL, 0)
 GO
-INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl]) 
-VALUES (10, 3, 26, 42, N'AccountsWithInvalidBalance', NULL, NULL)
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (10, 3, 26, 42, N'AccountsWithInvalidBalance', N'/vouchers/articles/sys-issue/invalid-acc-balance', NULL, 0)
+GO
+INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
+VALUES (11, 3, 26, 42, N'AccountsWithInvalidPeriodTurnover', N'/vouchers/articles/sys-issue/invalid-acc-turnover', NULL, 0)
 GO
 SET IDENTITY_INSERT [Reporting].[SystemIssue] OFF
 GO

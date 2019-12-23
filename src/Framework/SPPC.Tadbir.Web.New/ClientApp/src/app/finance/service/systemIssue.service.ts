@@ -15,6 +15,7 @@ export class SystemIssueInfo implements SystemIssue {
   title: string;
   apiUrl: string;
   deleteApiUrl: string;
+  branchScope: boolean;
 }
 
 @Injectable()
