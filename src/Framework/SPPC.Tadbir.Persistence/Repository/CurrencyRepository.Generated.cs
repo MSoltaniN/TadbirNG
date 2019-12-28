@@ -5,10 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
@@ -298,6 +296,11 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return currencyViewModel;
+        }
+
+        internal override int EntityType
+        {
+            get { return (int)EntityTypeId.Currency; }
         }
 
         /// <summary>

@@ -322,6 +322,11 @@ namespace SPPC.Tadbir.Persistence
             return result;
         }
 
+        internal override int EntityType
+        {
+            get { return (int)EntityTypeId.VoucherLine; }
+        }
+
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>

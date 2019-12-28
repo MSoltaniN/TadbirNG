@@ -61,12 +61,12 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// شناسه نمای اطلاعاتی لیستی به کار رفته حین انجام عملیات
         /// </summary>
-        public int SourceListId { get; set; }
+        public int? SourceListId { get; set; }
 
         /// <summary>
         /// شناسه موجودیت ایجاد، اصلاح یا حذف شده
         /// </summary>
-        public int EntityId { get; set; }
+        public int? EntityId { get; set; }
 
         /// <summary>
         /// جزئیات تکمیلی درباره لاگ عملیاتی
