@@ -2733,4 +2733,7 @@
   <data name="UserRole" xml:space="preserve">
     <value>User / Role relation</value>
   </data>
+  <data name="AccountsWithInvalidPeriodTurnover" xml:space="preserve">
+    <value>Accounts with invalid period turnover</value>
+  </data>
 </root>

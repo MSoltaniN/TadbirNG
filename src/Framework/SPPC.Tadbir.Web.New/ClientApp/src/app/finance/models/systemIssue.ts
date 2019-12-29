@@ -21,4 +21,5 @@ export interface SystemIssue {
     title: string;
     apiUrl: string;
     deleteApiUrl: string;
+    branchScope: boolean;
 }

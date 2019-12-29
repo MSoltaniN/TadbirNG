@@ -5,6 +5,16 @@ namespace SPPC.Tadbir.ViewModel.Core
 {
     public partial class OperationLogViewModel
     {
+        public int FiscalPeriodId { get; set; }
+
+        public int BranchId { get; set; }
+
+        public int OperationId { get; set; }
+
+        public int? SourceId { get; set; }
+
+        public int? EntityTypeId { get; set; }
+
         /// <summary>
         /// نام شرکتی که عملیات مورد نظر روی دیتابیس آن انجام شده
         /// </summary>

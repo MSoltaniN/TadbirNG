@@ -45,27 +45,27 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Branch)
                 .WithMany()
-                .HasForeignKey("BranchID")
+                .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_OperationLog_Corporate_Branch");
             builder.HasOne(e => e.FiscalPeriod)
                 .WithMany()
-                .HasForeignKey("FiscalPeriodID")
+                .HasForeignKey(e => e.FiscalPeriodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_OperationLog_Finance_FiscalPeriod");
             builder.HasOne(e => e.Operation)
                 .WithMany()
-                .HasForeignKey("OperationID")
+                .HasForeignKey(e => e.OperationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_OperationLog_Metadata_Operation");
             builder.HasOne(e => e.Source)
                 .WithMany()
-                .HasForeignKey("SourceID")
+                .HasForeignKey(e => e.SourceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_OperationLog_Metadata_Source");
             builder.HasOne(e => e.EntityType)
                 .WithMany()
-                .HasForeignKey("EntityTypeID")
+                .HasForeignKey(e => e.EntityTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_OperationLog_Metadata_EntityType");
         }

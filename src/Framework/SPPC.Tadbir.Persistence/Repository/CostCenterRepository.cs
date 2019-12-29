@@ -295,6 +295,11 @@ namespace SPPC.Tadbir.Persistence
             return costCenter.FullCode;
         }
 
+        internal override int EntityType
+        {
+            get { return (int)EntityTypeId.CostCenter; }
+        }
+
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>

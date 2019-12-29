@@ -296,6 +296,11 @@ namespace SPPC.Tadbir.Persistence
             return detailAccount.FullCode;
         }
 
+        internal override int EntityType
+        {
+            get { return (int)EntityTypeId.DetailAccount; }
+        }
+
         /// <summary>
         /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
         /// </summary>

@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence
         public OperationLogRepository(IRepositoryContext context)
             : base(context)
         {
-            UnitOfWork.UseSystemContext();
+            //UnitOfWork.UseSystemContext();
         }
 
         /// <summary>

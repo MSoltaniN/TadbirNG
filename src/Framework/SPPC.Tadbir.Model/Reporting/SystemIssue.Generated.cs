@@ -48,6 +48,11 @@ namespace SPPC.Tadbir.Model.Reporting
         public virtual string DeleteApiUrl { get; set; }
 
         /// <summary>
+        /// آیا در گزارشگیری انتخاب سطح دسترسی شعب قابل انتخاب باشد یا خیر؟
+        /// </summary>
+        public virtual bool BranchScope { get; set; }
+
+        /// <summary>
         /// Gets or sets the والد در ساختار درختی
         /// </summary>
         public virtual SystemIssue Parent { get; set; }

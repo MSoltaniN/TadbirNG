@@ -126,6 +126,11 @@ namespace SPPC.Tadbir.Persistence
             return currencyRates > 0 ? true : false;
         }
 
+        internal override int EntityType
+        {
+            get { return (int)EntityTypeId.CurrencyRate; }
+        }
+
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>

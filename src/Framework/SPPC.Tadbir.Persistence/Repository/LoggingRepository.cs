@@ -40,9 +40,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="entity">سطر اطلاعاتی که باید ذخیره شود</param>
         public async Task<bool> InsertAsync(IRepository<TEntity> repository, TEntity entity)
         {
-            OnAction("Create", null, entity);
+            OnAction(OperationId.Create);
             repository.Insert(entity);
-            return await FinalizeActionAsync();
+            return await FinalizeActionAsync(entity);
         }
 
         /// <summary>
@@ -55,10 +55,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView)
         {
             var clone = Mapper.Map<TEntity>(entity);
-            OnAction("Edit", clone, null);
+            OnAction(OperationId.Edit);
             UpdateExisting(entityView, entity);
             repository.Update(entity);
-            return await FinalizeActionAsync();
+            return await FinalizeActionAsync(entity);
         }
 
         /// <summary>
@@ -70,10 +70,15 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> DeleteAsync(IRepository<TEntity> repository, TEntity entity)
         {
             var clone = Mapper.Map<TEntity>(entity);
-            OnAction("Delete", clone, null);
+            OnAction(OperationId.Delete);
             DisconnectEntity(entity);
             repository.Delete(entity);
-            return await FinalizeActionAsync();
+            return await FinalizeActionAsync(entity);
+        }
+
+        internal virtual int EntityType
+        {
+            get { return (int)EntityTypeId.None; }
         }
 
         /// <summary>
@@ -84,33 +89,25 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// تغییرات انجام شده را اعمال کرده و در صورت امکان لاگ عملیاتی را ایجاد می کند
         /// </summary>
-        protected async Task<bool> FinalizeActionAsync()
+        /// <param name="entity">موجودیتی که عملیات روی آن در حال انجام است</param>
+        protected async Task<bool> FinalizeActionAsync(TEntity entity)
         {
-            bool succeeded = false;
+            bool succeeded = true;
             try
             {
                 await UnitOfWork.CommitAsync();
-                succeeded = true;
+                Log.EntityId = entity.Id;
+                Log.Description = GetState(entity);
                 await TrySaveLogAsync();
             }
             catch (Exception ex)
             {
+                succeeded = false;
                 await TrySaveLogAsync();
                 throw;
             }
 
             return succeeded;
-        }
-
-        /// <summary>
-        /// رکورد لاگ عملیاتی را با توجه به وضعیت قدیم و جدید سطر اطلاعاتی آماده می کند
-        /// </summary>
-        /// <param name="action">نوع عملیات مورد استفاده در لاگ عملیاتی</param>
-        /// <param name="before">وضعیت قدیم سطر اطلاعاتی</param>
-        /// <param name="after">وضعیت جدید سطر اطلاعاتی</param>
-        protected void OnAction(string action, TEntity before, TEntity after)
-        {
-            Log = GetOperationLog(action);
         }
 
         /// <summary>
@@ -157,6 +154,11 @@ namespace SPPC.Tadbir.Persistence
             Array.ForEach(relations, prop => Reflector.SetProperty(entity, prop, null));
         }
 
+        private void OnAction(OperationId operation)
+        {
+            Log = GetOperationLog(operation);
+        }
+
         private void DeleteWithCascade(Type parentType, int parentId, Type type, IEnumerable<int> ids)
         {
             if (ids.Count() == 0)
@@ -183,14 +185,18 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ExecuteNonQuery(command);
         }
 
-        private OperationLogViewModel GetOperationLog(string action)
+        private OperationLogViewModel GetOperationLog(OperationId operation)
         {
             var log = new OperationLogViewModel()
             {
+                BranchId = UserContext.BranchId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
                 CompanyId = UserContext.CompanyId,
+                UserId = UserContext.Id,
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
-                UserId = UserContext.Id
+                OperationId = (int)operation,
+                EntityTypeId = EntityType
             };
             return log;
         }

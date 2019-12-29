@@ -2724,4 +2724,7 @@
   <data name="UserRole" xml:space="preserve">
     <value>ارتباط نقش و کاربر</value>
   </data>
+  <data name="AccountsWithInvalidPeriodTurnover" xml:space="preserve">
+    <value>حساب های دارای گردش دوره نامعتبر</value>
+  </data>
 </root>
