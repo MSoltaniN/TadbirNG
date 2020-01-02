@@ -74,9 +74,11 @@
     <None Remove="ClientApp\src\app\core\services\index.ts" />
     <None Remove="ClientApp\src\app\finance\enum\balance.ts" />
     <None Remove="ClientApp\src\app\finance\models\index.ts" />
+    <None Remove="ClientApp\src\app\finance\models\ItemBalanceModeInfo.ts" />
     <None Remove="ClientApp\src\app\finance\models\testBalanceModeInfo.ts" />
     <None Remove="ClientApp\src\app\finance\service\api\index.ts" />
     <None Remove="ClientApp\src\app\finance\service\index.ts" />
+    <None Remove="ClientApp\src\app\finance\service\ItemBalance.service.ts" />
     <None Remove="ClientApp\src\app\finance\service\testBalance.service.ts" />
     <None Remove="ClientApp\src\app\shared\components\login\login.complete.component.ts" />
     <None Remove="ClientApp\src\app\shared\components\login\login.component.ts" />
@@ -834,9 +836,11 @@
     <TypeScriptCompile Include="ClientApp\src\app\core\services\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\enum\balance.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\finance\models\ItemBalanceModeInfo.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\testBalanceModeInfo.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\api\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\finance\service\ItemBalance.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\testBalance.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\login\login.complete.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\login\login.component.ts" />

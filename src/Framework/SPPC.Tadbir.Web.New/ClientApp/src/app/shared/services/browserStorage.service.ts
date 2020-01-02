@@ -28,7 +28,8 @@ export const SessionKeys = {
   CurrencyBookDefault: 'CurrencyBookDefault',
   TestBalance: 'testBalance',
   SelectedBranch: 'SelectedBranch',
-  SelectedFiscalPeriod: 'SelectedFiscalPeriod'
+  SelectedFiscalPeriod: 'SelectedFiscalPeriod',
+  ItemBalance: 'itemBalance',
 }
 
 

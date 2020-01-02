@@ -47,7 +47,8 @@ export const Metadatas = {
   JournalByNoBySubsidiary: "journalbynobysubsidiary",
   JournalByNoSummary: "journalbynosummary",
   NumberList: 'NumberList',
-  VoucherLineDetail: 'VoucherLineDetail'
+  VoucherLineDetail: 'VoucherLineDetail',
+  ItemBalance:'ItemBalance'
 }
 
 
@@ -101,7 +102,23 @@ export const Entities = {
   CurrencyBookSummary: 'CurrencyBookSummary',
   SystemIssue: 'SystemIssue',
   NumberList: 'NumberList',
-  VoucherLineDetail: 'VoucherLineDetail'
+  VoucherLineDetail: 'VoucherLineDetail',
+  ItemBalance: 'ItemBalance',
+  DetailAccountBalance2Column : 'DetailAccountBalance2Column',
+  DetailAccountBalance4Column : 'DetailAccountBalance4Column',
+  DetailAccountBalance6Column : 'DetailAccountBalance6Column',
+  DetailAccountBalance8Column : 'DetailAccountBalance8Column',
+  DetailAccountBalance10Column : 'DetailAccountBalance10Column',
+  CostCenterBalance2Column : 'CostCenterBalance2Column',
+  CostCenterBalance4Column : 'CostCenterBalance4Column',
+  CostCenterBalance6Column : 'CostCenterBalance6Column',
+  CostCenterBalance8Column : 'CostCenterBalance8Column',
+  CostCenterBalance10Column : 'CostCenterBalance10Column',
+  ProjectBalance2Column : 'ProjectBalance2Column',
+  ProjectBalance4Column : 'ProjectBalance4Column',
+  ProjectBalance6Column : 'ProjectBalance6Column',
+  ProjectBalance8Column: 'ProjectBalance8Column',
+  ProjectBalance10Column : 'ProjectBalance10Column'
 }
 
 export const ColumnVisibility =

@@ -43,5 +43,20 @@ export enum ViewName {
   CurrencyBookSingleSummary = 39,
   CurrencyBookSummary = 40,
   NumberList = 41,
-  VoucherLineDetail = 42
+  VoucherLineDetail = 42,
+  DetailAccountBalance2Column = 43,
+  DetailAccountBalance4Column = 44,
+  DetailAccountBalance6Column = 45,
+  DetailAccountBalance8Column = 46,
+  DetailAccountBalance10Column = 47,
+  CostCenterBalance2Column = 48,
+  CostCenterBalance4Column = 49,
+  CostCenterBalance6Column = 50,
+  CostCenterBalance8Column = 51,
+  CostCenterBalance10Column = 52,
+  ProjectBalance2Column = 53,
+  ProjectBalance4Column = 54,
+  ProjectBalance6Column = 55,
+  ProjectBalance8Column = 56,
+  ProjectBalance10Column = 57
 }

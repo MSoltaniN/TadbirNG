@@ -7,7 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import {
   AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
-  FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService, SystemIssueService
+  FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService, SystemIssueService, ItemBalanceService
 } from '@sppc/finance/service/index';
 
 import { AccountComponent } from '@sppc/finance/components/base/account/account.component';
@@ -34,6 +34,7 @@ import { JournalComponent } from '@sppc/finance/components/reporting/journal/jou
 import { currencyRateComponent } from '@sppc/finance/components/base/currencyRate/currencyRate.component';
 import { CurrencyRateFormComponent } from '@sppc/finance/components/base/currencyRate/currencyRate-form.component';
 import { TestBalanceComponent } from '@sppc/finance/components/reporting/testBalance/testBalance.component';
+import { ItemBalanceComponent } from '@sppc/finance/components/reporting/itemBalance/itemBalance.component';
 import { CurrencyBookComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook.component';
 import { CurrencyBookDetailComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook-detail.component';
 import { SystemIssueComponent } from '@sppc/finance//components/reporting/systemIssue/systemIssue.component';
@@ -47,11 +48,11 @@ import { SystemIssueComponent } from '@sppc/finance//components/reporting/system
   declarations: [AccountComponent, AccountFormComponent, AccountCollectionComponent, AccountGroupsComponent, AccountGroupsFormComponent, AccountRelationsComponent,
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
     ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
-    currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent],
+    currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent,ItemBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
-    FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService, SystemIssueService],
+    FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService,ItemBalanceService, SystemIssueService],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class FinanceModule { }
