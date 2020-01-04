@@ -71,8 +71,8 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .Levels
                 .Where(level => level.IsEnabled && level.IsUsed)
                 .ToList();
-            int typeId = 0;
-            for (int index = 2; index < usedLevels.Count - 1; index++)
+            int typeId = usedLevels.Count;
+            for (int index = 0; index < usedLevels.Count - 1; index++)
             {
                 lookup.Add(new TestBalanceModeInfo()
                 {
