@@ -349,49 +349,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        private AccountBookParameters GetParameters(
+            AccountBookMode bookMode, int viewId, int accountId, DateTime? from, DateTime? to, bool byBranch)
+        {
+            Sanitize(ref from, ref to);
+            var gridOptions = GridOptions ?? new GridOptions();
+            return new AccountBookParameters()
+            {
+                Mode = bookMode,
+                FromDate = from.Value,
+                ToDate = to.Value,
+                ViewId = viewId,
+                ItemId = accountId,
+                IsByBranch = byBranch,
+                GridOptions = gridOptions
+            };
+        }
+
         private async Task<IActionResult> AccountBookResultAsync(
             AccountBookMode bookMode, int viewId, int accountId, DateTime? from, DateTime? to,
             bool byBranch = false)
         {
-            var accountBook = GetAccountBookDelegate(bookMode, byBranch);
-            var gridOptions = GridOptions ?? new GridOptions();
-            Sanitize(ref from, ref to);
-            var book = await accountBook(viewId, accountId, from.Value, to.Value, gridOptions);
+            var parameters = GetParameters(bookMode, viewId, accountId, from, to, byBranch);
+            var book = byBranch
+                ? await _repository.GetAccountBookByBranchAsync(parameters)
+                : await _repository.GetAccountBookAsync(parameters);
             SetItemCount(book.TotalCount);
             Localize(book);
             return Json(book);
-        }
-
-        private AccountBookDelegate GetAccountBookDelegate(AccountBookMode bookMode, bool byBranch = false)
-        {
-            var bookDelegate = default(AccountBookDelegate);
-            switch (bookMode)
-            {
-                case AccountBookMode.ByRows:
-                    bookDelegate = byBranch
-                        ? _repository.GetAccountBookByRowByBranchAsync
-                        : (AccountBookDelegate)_repository.GetAccountBookByRowAsync;
-                    break;
-                case AccountBookMode.VoucherSum:
-                    bookDelegate = byBranch
-                        ? _repository.GetAccountBookVoucherSumByBranchAsync
-                        : (AccountBookDelegate)_repository.GetAccountBookVoucherSumAsync;
-                    break;
-                case AccountBookMode.DailySum:
-                    bookDelegate = byBranch
-                        ? _repository.GetAccountBookDailySumByBranchAsync
-                        : (AccountBookDelegate)_repository.GetAccountBookDailySumAsync;
-                    break;
-                case AccountBookMode.MonthlySum:
-                    bookDelegate = byBranch
-                        ? _repository.GetAccountBookMonthlySumByBranchAsync
-                        : (AccountBookDelegate)_repository.GetAccountBookMonthlySumAsync;
-                    break;
-                default:
-                    break;
-            }
-
-            return bookDelegate;
         }
 
         private void Sanitize(ref DateTime? from, ref DateTime? to)

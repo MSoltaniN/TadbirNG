@@ -5,10 +5,19 @@ namespace SPPC.Tadbir.Model.Core
 {
     public partial class OperationLog
     {
+        /// <summary>
+        /// شناسه دیتابیسی عملیات انجام شده
+        /// </summary>
         public int OperationId { get; set; }
 
+        /// <summary>
+        /// شناسه دیتابیسی نوع موجودیتی که عملیات روی آن انجام شده است
+        /// </summary>
         public int? EntityTypeId { get; set; }
 
+        /// <summary>
+        /// شناسه دیتابیسی فرم عملیاتی به کار رفته
+        /// </summary>
         public int? SourceId { get; set; }
     }
 }

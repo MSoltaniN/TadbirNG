@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر عملیات ارزی را تعریف می کند
     /// </summary>
-    public class CurrencyBookRepository : RepositoryBase, ICurrencyBookRepository
+    public class CurrencyBookRepository : SimpleLoggingRepository, ICurrencyBookRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -29,118 +29,46 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
         public CurrencyBookRepository(IRepositoryContext context, ISystemRepository system, IReportRepository report)
-            : base(context)
+            : base(context, system.Logger)
         {
             _system = system;
             _report = report;
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "ساده : مطابق ردیف های سند" را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <param name="parameters">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        public async Task<CurrencyBookViewModel> GetCurrencyBookByRowAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
+        public async Task<CurrencyBookViewModel> GetCurrencyBookAsync(CurrencyBookParameters parameters)
         {
-            return await GetSimpleBookAsync(bookParam, gridOptions);
+            return await GetCurrencyBookDataAsync(parameters);
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ هر سند" را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی به تفکیک شعبه را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        public async Task<CurrencyBookViewModel> GetCurrencyBookVoucherSumAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
+        /// <param name="parameters">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
+        /// <returns>اطلاعات دفتر عملیات ارزی به تفکیک شعبه</returns>
+        public async Task<CurrencyBookViewModel> GetCurrencyBookByBranchAsync(CurrencyBookParameters parameters)
         {
-            return await GetSummaryBookAsync(bookParam, gridOptions, false, true);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ اسناد در هر روز" را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        public async Task<CurrencyBookViewModel> GetCurrencyBookDailySumAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
-        {
-            return await GetSummaryBookAsync(bookParam, gridOptions, false, false);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ اسناد در هر ماه" را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        public async Task<CurrencyBookViewModel> GetCurrencyBookMonthlySumAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
-        {
-            return await GetMonthlySummaryBookAsync(bookParam, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "ساده : مطابق ردیف های سند" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        public async Task<CurrencyBookViewModel> GetCurrencyBookByRowByBranchAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
-        {
-            return await GetSimpleBookAsync(bookParam, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ هر سند" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        public async Task<CurrencyBookViewModel> GetCurrencyBookVoucherSumByBranchAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
-        {
-            return await GetSummaryBookAsync(bookParam, gridOptions, false, true);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ اسناد در هر روز" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        public async Task<CurrencyBookViewModel> GetCurrencyBookDailySumByBranchAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
-        {
-            return await GetSummaryBookAsync(bookParam, gridOptions, false, false);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ اسناد در هر ماه" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        public async Task<CurrencyBookViewModel> GetCurrencyBookMonthlySumByBranchAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
-        {
-            return await GetMonthlySummaryBookAsync(bookParam, gridOptions);
+            return await GetCurrencyBookDataAsync(parameters);
         }
 
         /// <summary>
         /// به روش آسنکرون، تمامی ارزهای استفاده شده در آرتیکل های سند را به همراه مجموع بدهکار و بستانکار برمی گرداند
         /// </summary>
         /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns></returns>
+        /// <returns>اطلاعات دفتر عملیات ارزی برای کلیه ارزها</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookAllCurrenciesAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam)
         {
-            return await GetSummaryBookAsync(bookParam, gridOptions, true, false);
+            return await GetSummaryBookAsync(bookParam, true, false);
+        }
+
+        internal override int OperationSource
+        {
+            get { return (int)OperationSourceId.CurrencyBook; }
         }
 
         private ISecureRepository Repository
@@ -231,7 +159,39 @@ namespace SPPC.Tadbir.Persistence
             book.SetItems(book.Items.ApplyPaging(gridOptions).ToArray());
         }
 
-        private IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(CurrencyBookParameters bookParam, bool byCurrency = false)
+        private async Task<CurrencyBookViewModel> GetCurrencyBookDataAsync(
+            CurrencyBookParameters parameters)
+        {
+            var currencyBook = default(CurrencyBookViewModel);
+            var sourceList = SourceListId.None;
+            switch (parameters.Mode)
+            {
+                case AccountBookMode.ByRows:
+                    currencyBook = await GetSimpleBookAsync(parameters);
+                    sourceList = SourceListId.CurrencyBookByRow;
+                    break;
+                case AccountBookMode.VoucherSum:
+                    currencyBook = await GetSummaryBookAsync(parameters, false, true);
+                    sourceList = SourceListId.CurrencyBookVoucherSum;
+                    break;
+                case AccountBookMode.DailySum:
+                    currencyBook = await GetSummaryBookAsync(parameters, false, false);
+                    sourceList = SourceListId.CurrencyBookDailySum;
+                    break;
+                case AccountBookMode.MonthlySum:
+                    currencyBook = await GetMonthlySummaryBookAsync(parameters);
+                    sourceList = SourceListId.CurrencyBookMonthlySum;
+                    break;
+                default:
+                    break;
+            }
+
+            await OnSourceActionAsync(OperationId.View, sourceList);
+            return currencyBook;
+        }
+
+        private IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(
+            CurrencyBookParameters bookParam, bool byCurrency = false)
         {
             var itemCriteria = new List<Expression<Func<VoucherLine, bool>>>();
 
@@ -272,7 +232,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<CurrencyBookViewModel> GetSimpleBookAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam)
         {
             var book = new CurrencyBookViewModel();
 
@@ -281,15 +241,14 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             book.Items.AddRange(bookItems
                 .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
-                .ApplyQuickFilter(gridOptions)
-                .Apply(gridOptions, false));
-            PrepareCurrencyBook(book, gridOptions);
+                .ApplyQuickFilter(bookParam.GridOptions)
+                .Apply(bookParam.GridOptions, false));
+            PrepareCurrencyBook(book, bookParam.GridOptions);
             return book;
         }
 
         private async Task<CurrencyBookViewModel> GetSummaryBookAsync(
-           CurrencyBookParameters bookParam, GridOptions gridOptions,
-           bool byCurrency, bool byNo)
+           CurrencyBookParameters bookParam, bool byCurrency, bool byNo)
         {
             var book = new CurrencyBookViewModel();
 
@@ -298,22 +257,22 @@ namespace SPPC.Tadbir.Persistence
                 .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
                 .ToListAsync();
             lines = lines
-                .ApplyQuickFilter(gridOptions)
+                .ApplyQuickFilter(bookParam.GridOptions)
                 .ToList();
             AggregateCurrencyBook(book, lines, byCurrency, byNo, bookParam.ByBranch);
-            book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
-            PrepareCurrencyBook(book, gridOptions);
+            book.SetItems(book.Items.Apply(bookParam.GridOptions, false).ToArray());
+            PrepareCurrencyBook(book, bookParam.GridOptions);
             return book;
         }
 
         private async Task<CurrencyBookViewModel> GetMonthlySummaryBookAsync(
-            CurrencyBookParameters bookParam, GridOptions gridOptions)
+            CurrencyBookParameters bookParam)
         {
             var book = new CurrencyBookViewModel();
 
             var itemCriteria = GetItemCriteria(bookParam);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.OpeningVoucher, bookParam, gridOptions);
+                VoucherType.OpeningVoucher, bookParam);
 
             var monthEnum = new MonthEnumerator(bookParam.From, bookParam.To, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
@@ -323,7 +282,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
                     .ToList();
                 monthLines = monthLines
-                    .ApplyQuickFilter(gridOptions)
+                    .ApplyQuickFilter(bookParam.GridOptions)
                     .ToList();
                 if (monthLines.Count > 0)
                 {
@@ -346,18 +305,18 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingTempAccounts, bookParam, gridOptions);
+                VoucherType.ClosingTempAccounts, bookParam);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingVoucher, bookParam, gridOptions);
+                VoucherType.ClosingVoucher, bookParam);
 
-            book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
-            PrepareCurrencyBook(book, gridOptions);
+            book.SetItems(book.Items.Apply(bookParam.GridOptions, false).ToArray());
+            PrepareCurrencyBook(book, bookParam.GridOptions);
             return book;
         }
 
         private async Task AddSpecialBookItemsAsync(
            CurrencyBookViewModel book, IList<Expression<Func<VoucherLine, bool>>> itemCriteria,
-           VoucherType voucherType, CurrencyBookParameters bookParam, GridOptions gridOptions)
+           VoucherType voucherType, CurrencyBookParameters bookParam)
         {
             if (voucherType != VoucherType.NormalVoucher)
             {
@@ -378,7 +337,7 @@ namespace SPPC.Tadbir.Persistence
                         .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
                         .ToListAsync();
                     lines = lines
-                        .ApplyQuickFilter(gridOptions)
+                        .ApplyQuickFilter(bookParam.GridOptions)
                         .ToList();
                     if (bookParam.ByBranch)
                     {

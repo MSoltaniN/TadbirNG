@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Core;
@@ -40,7 +41,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="entity">سطر اطلاعاتی که باید ذخیره شود</param>
         public async Task<bool> InsertAsync(IRepository<TEntity> repository, TEntity entity)
         {
-            OnAction(OperationId.Create);
+            OnEntityAction(OperationId.Create);
+            Log.Description = GetState(entity);
             repository.Insert(entity);
             return await FinalizeActionAsync(entity);
         }
@@ -54,9 +56,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="entityView">مدل نمایشی شامل آخرین تغییرات سطر اطلاعاتی</param>
         public async Task<bool> UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView)
         {
-            var clone = Mapper.Map<TEntity>(entity);
-            OnAction(OperationId.Edit);
+            var clone = GetEntityCopy(entity);
+            OnEntityAction(OperationId.Edit);
             UpdateExisting(entityView, entity);
+            Log.Description = String.Format("(Old) => {1}{0}(New) => {2}",
+                Environment.NewLine, GetState(clone), GetState(entity));
             repository.Update(entity);
             return await FinalizeActionAsync(entity);
         }
@@ -70,7 +74,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> DeleteAsync(IRepository<TEntity> repository, TEntity entity)
         {
             var clone = Mapper.Map<TEntity>(entity);
-            OnAction(OperationId.Delete);
+            OnEntityAction(OperationId.Delete);
+            Log.Description = GetState(entity);
             DisconnectEntity(entity);
             repository.Delete(entity);
             return await FinalizeActionAsync(entity);
@@ -93,20 +98,9 @@ namespace SPPC.Tadbir.Persistence
         protected async Task<bool> FinalizeActionAsync(TEntity entity)
         {
             bool succeeded = true;
-            try
-            {
-                await UnitOfWork.CommitAsync();
-                Log.EntityId = entity.Id;
-                Log.Description = GetState(entity);
-                await TrySaveLogAsync();
-            }
-            catch (Exception ex)
-            {
-                succeeded = false;
-                await TrySaveLogAsync();
-                throw;
-            }
-
+            await UnitOfWork.CommitAsync();
+            Log.EntityId = entity.Id;
+            await TrySaveLogAsync();
             return succeeded;
         }
 
@@ -144,6 +138,51 @@ namespace SPPC.Tadbir.Persistence
             await DeleteAsync(repository, entity);
         }
 
+        /// <summary>
+        /// یک رکورد لاگ عملیاتی برای عملیات تغییر وضعیت موجودیت عملیاتی ایجاد می کند
+        /// </summary>
+        /// <param name="status">وضعیت ثبتی جدید برای موجودیت عملیاتی</param>
+        protected void OnDocumentStatus(DocumentStatusValue status)
+        {
+            OperationId operation = OperationId.None;
+            switch (status)
+            {
+                case DocumentStatusValue.Draft:
+                    operation = OperationId.UndoCheck;
+                    break;
+                case DocumentStatusValue.Checked:
+                    operation = OperationId.Check;
+                    break;
+                case DocumentStatusValue.Finalized:
+                    operation = OperationId.Finalize;
+                    break;
+                default:
+                    break;
+            }
+
+            OnEntityAction(operation);
+        }
+
+        /// <summary>
+        /// یک رکورد لاگ عملیاتی برای عملیات تایید یا برگشت از تایید موجودیت عملیاتی ایجاد می کند
+        /// </summary>
+        /// <param name="isConfirmed">مشخص می کند که وضعیت تایید جدید، تایید شده است یا نه؟</param>
+        protected void OnDocumentConfirmation(bool isConfirmed)
+        {
+            OperationId operation = isConfirmed ? OperationId.Confirm : OperationId.UndoConfirm;
+            OnEntityAction(operation);
+        }
+
+        /// <summary>
+        /// یک رکورد لاگ عملیاتی برای عملیات تصویب یا برگشت از تصویب موجودیت عملیاتی ایجاد می کند
+        /// </summary>
+        /// <param name="isApproved">مشخص می کند که وضعیت تصویب جدید، تصویب شده است یا نه؟</param>
+        protected void OnDocumentApproval(bool isApproved)
+        {
+            OperationId operation = isApproved ? OperationId.Approve : OperationId.UndoApprove;
+            OnEntityAction(operation);
+        }
+
         private static void DisconnectEntity(TEntity entity)
         {
             var relations = Reflector
@@ -154,9 +193,25 @@ namespace SPPC.Tadbir.Persistence
             Array.ForEach(relations, prop => Reflector.SetProperty(entity, prop, null));
         }
 
-        private void OnAction(OperationId operation)
+        private TEntity GetEntityCopy(TEntity entity)
         {
-            Log = GetOperationLog(operation);
+            var mapped = Mapper.Map<TEntityView>(entity);
+            return Mapper.Map<TEntity>(mapped);
+        }
+
+        private void OnEntityAction(OperationId operation)
+        {
+            Log = new OperationLogViewModel()
+            {
+                BranchId = UserContext.BranchId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                CompanyId = UserContext.CompanyId,
+                UserId = UserContext.Id,
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                OperationId = (int)operation,
+                EntityTypeId = EntityType
+            };
         }
 
         private void DeleteWithCascade(Type parentType, int parentId, Type type, IEnumerable<int> ids)
@@ -183,22 +238,6 @@ namespace SPPC.Tadbir.Persistence
             string command = String.Format("DELETE FROM [{0}].[{1}] WHERE {2}ID = {3}",
                 idItems[0], idItems[1], keyName, parentId);
             DbConsole.ExecuteNonQuery(command);
-        }
-
-        private OperationLogViewModel GetOperationLog(OperationId operation)
-        {
-            var log = new OperationLogViewModel()
-            {
-                BranchId = UserContext.BranchId,
-                FiscalPeriodId = UserContext.FiscalPeriodId,
-                CompanyId = UserContext.CompanyId,
-                UserId = UserContext.Id,
-                Date = DateTime.Now.Date,
-                Time = DateTime.Now.TimeOfDay,
-                OperationId = (int)operation,
-                EntityTypeId = EntityType
-            };
-            return log;
         }
 
         private async Task TrySaveLogAsync()

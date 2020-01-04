@@ -347,7 +347,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 voucher.StatusId = (int)status;
                 repository.Update(voucher);
-                await UnitOfWork.CommitAsync();
+                OnDocumentStatus(status);
+                await FinalizeActionAsync(voucher);
             }
         }
 
@@ -366,7 +367,8 @@ namespace SPPC.Tadbir.Persistence
                 voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
                 voucher.ConfirmerName = isConfirmed ? GetCurrentUserDisplayName() : null;
                 repository.Update(voucher);
-                await UnitOfWork.CommitAsync();
+                OnDocumentConfirmation(isConfirmed);
+                await FinalizeActionAsync(voucher);
             }
         }
 
@@ -385,7 +387,8 @@ namespace SPPC.Tadbir.Persistence
                 voucher.ApprovedById = isApproved ? UserContext.Id : (int?)null;
                 voucher.ApproverName = isApproved ? GetCurrentUserDisplayName() : null;
                 repository.Update(voucher);
-                await UnitOfWork.CommitAsync();
+                OnDocumentApproval(isApproved);
+                await FinalizeActionAsync(voucher);
             }
         }
 
@@ -522,7 +525,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "Name : {1}{0}Date : {2}{0}Description : {3}{0}Reference : {4}{0}Association : {5}{0}",
+                    "No : {1}{0}Date : {2}{0}Description : {3}{0}Reference : {4}{0}Association : {5}{0}",
                     Environment.NewLine, entity.No, entity.Date, entity.Description, entity.Reference, entity.Association)
                 : null;
         }

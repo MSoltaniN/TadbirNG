@@ -11,93 +11,25 @@ namespace SPPC.Tadbir.Persistence
     public interface ICurrencyBookRepository
     {
         /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "ساده : مطابق ردیف های سند" را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookByRowAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
+        Task<CurrencyBookViewModel> GetCurrencyBookAsync(CurrencyBookParameters bookParam);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ هر سند" را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی به تفکیک شعبه را خوانده و برمی گرداند
         /// </summary>
         /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookVoucherSumAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ اسناد در هر روز" را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookDailySumAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ اسناد در هر ماه" را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookMonthlySumAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "ساده : مطابق ردیف های سند" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookByRowByBranchAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ هر سند" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookVoucherSumByBranchAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ اسناد در هر روز" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookDailySumByBranchAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر عملیات ارزی با نمایش "مرکب : جمع مبالغ اسناد در هر ماه" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر عملیات ارزی با مشخصات داده شده</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookMonthlySumByBranchAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
+        /// <returns>اطلاعات دفتر عملیات ارزی به تفکیک شعبه</returns>
+        Task<CurrencyBookViewModel> GetCurrencyBookByBranchAsync(CurrencyBookParameters bookParam);
 
         /// <summary>
         /// به روش آسنکرون، تمامی ارزهای استفاده شده در آرتیکل های سند را به همراه مجموع بدهکار و بستانکار برمی گرداند
         /// </summary>
         /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns></returns>
+        /// <returns>اطلاعات دفتر عملیات ارزی برای کلیه ارزها</returns>
         Task<CurrencyBookViewModel> GetCurrencyBookAllCurrenciesAsync(
-            CurrencyBookParameters bookParam,
-            GridOptions gridOptions);
+            CurrencyBookParameters bookParam);
     }
 }
