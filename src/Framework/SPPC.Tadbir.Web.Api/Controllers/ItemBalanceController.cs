@@ -238,14 +238,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             foreach (var info in lookup.Where(item => !item.IsDetail))
             {
-                info.Name = _strings[info.Name];
+                info.Name = _strings.Format(info.Name, info.Level.ToString());
             }
 
             foreach (var info in lookup.Where(item => item.IsDetail))
             {
-                info.Name = info.Level <= 3
-                    ? _strings.Format(info.Name)
-                    : _strings.Format(AppStrings.ChildrenOfLevel, info.Name);
+                info.Name = _strings.Format(info.Name, (info.Level - 1).ToString());
+                info.Name = _strings.Format(AppStrings.ChildrenOfLevel, info.Name);
             }
         }
 
