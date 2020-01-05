@@ -112,6 +112,13 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.selectedColumnChange();
     this.formMode = "insert";
 
+    this.firstLoadFilters(undefined);
+
+  }
+
+
+  firstLoadFilters(groupFilterSelected) {
+
     //insert first item
     this.groupFilters = new Array<GroupFilter>();
     var firstItem = new GroupFilter();
@@ -124,9 +131,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.groupFilters.push(firstItem);
     //insert first item
 
-    this.advanceFilterService.getFilters(this.viewId).subscribe((res:FilterViewModel[]) => {      
+    this.advanceFilterService.getFilters(this.viewId).subscribe((res: FilterViewModel[]) => {
       //insert db item
-      res.forEach((fi) => {        
+      res.forEach((fi) => {
         var item = new GroupFilter();
         item.id = fi.id;
         item.name = fi.name;
@@ -136,18 +143,24 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       });
 
       //insert db item
-      if (this.gFilterSelected == undefined) {
-        this.gFilterSelected = -1
-        this.currentGFilter = this.groupFilters[0];
-        this.filters = firstItem.filters;
+      if (!groupFilterSelected) {
+        if (this.gFilterSelected == undefined) {
+          this.gFilterSelected = -1
+          this.currentGFilter = this.groupFilters[0];
+          this.filters = firstItem.filters;
+        }
+        else {
+          this.currentGFilter = this.groupFilters.filter(p => p.id === this.gFilterSelected)[0];
+        }
       }
       else {
-        this.currentGFilter = this.groupFilters.filter(p => p.id === this.gFilterSelected)[0];
+        this.currentGFilter = groupFilterSelected;
+        var item = this.groupFilters.filter(p => p.id === groupFilterSelected.id)[0];
+        this.filters = item.filters;
       }
 
       this.computeTotalExpression();
     });  
-
   }
 
   selectedColumnChange() {
@@ -363,13 +376,19 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     if (filterModel.id == 0) {
       this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {        
         this.gFilterSelected = res.id;
-        
+        var fil = this.groupFilters.filter(f => f.id === gf.id);
+        if (fil.length > 0) {          
+          fil[0].id = res.id;
+        }
+        else
+          this.groupFilters.push(res);
+
         gf.id = res.id;
         this.currentGFilter = gf;
-        this.groupFilters.push(gf);
-        this.filters = res.filters;
 
-        this.gFilterSelectChange(res); 
+        this.firstLoadFilters(gf);
+
+        //this.gFilterSelectChange(res); 
         this.showMessage(this.getText('AdvanceFilter.FilterCopiedSuccess'), MessageType.Succes);
       });
     }    
@@ -389,7 +408,12 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           if (filterModel.id == 0)
             this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {              
               this.gFilterSelected = res.id;
-              this.groupFilters.push(res);
+
+              var fil = this.groupFilters.filter(f => f.id === gf.id);
+              if (fil.length > 0)
+                fil[0].id = res.id;
+              else
+                this.groupFilters.push(res);
             });
           else
             this.advanceFilterService.saveFilter(filterModel.id, filterModel).subscribe();
@@ -857,8 +881,24 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.gFilterSelected = this.groupFilters[index].id;
       this.activeSaveFilter = false;
       this.activeCopyFilter = false;
+
+      this.saveGroupFilterToDB(this.groupFilters[index]);
     }
 
+  }
+
+  saveGroupFilterToDB(gf) {
+    var filterModel = new FilterViewModel();
+    filterModel.id = gf.id
+    filterModel.isPublic = gf.isPublic;
+    filterModel.name = gf.name;
+    filterModel.viewId = this.viewId;
+    filterModel.userId = this.UserId;
+    filterModel.values = JSON.stringify(gf.filters);
+
+    this.advanceFilterService.saveFilter(gf.id, filterModel).subscribe(res => {
+
+    });
   }
 
   onGroupFilterCancel() {
