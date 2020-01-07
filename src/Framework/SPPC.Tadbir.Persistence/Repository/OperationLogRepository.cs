@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.ViewModel.Core;
 
@@ -27,26 +29,25 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، کلیه لاگ های عملیاتی موجود را برای شرکت و کاربر مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userId">شناسه دیتابیسی اختیاری برای فیلتر لاگ های عملیاتی برای یکی از کاربران</param>
-        /// <param name="companyId">شناسه دیتابیسی اختیاری برای فیلتر لاگ های عملیاتی برای یکی از شرکت ها</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
-        public async Task<IList<SysOperationLogViewModel>> GetLogsAsync(
-            int? userId, int? companyId, GridOptions gridOptions = null)
+        public async Task<IList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
-            var query = repository.GetEntityQuery(log => log.User);
-            if (userId.HasValue)
-            {
-                query = query.Where(log => log.User.Id == userId.Value);
-            }
-
-            return await query
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
+            var list = await repository.GetEntityQuery(
+                log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
+                log => log.Operation, log => log.Source, log => log.SourceList)
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
-                .Select(log => Mapper.Map<SysOperationLogViewModel>(log))
+                .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .Apply(gridOptions)
                 .ToListAsync();
+            foreach (var item in list)
+            {
+                await SetSystemValues(item);
+            }
+
+            return list;
         }
 
         /// <summary>
@@ -75,6 +76,18 @@ namespace SPPC.Tadbir.Persistence
             var newLog = Mapper.Map<OperationLog>(operationLog);
             repository.Insert(newLog);
             await UnitOfWork.CommitAsync();
+        }
+
+        private async Task SetSystemValues(OperationLogViewModel log)
+        {
+            UnitOfWork.UseSystemContext();
+            var userRepository = UnitOfWork.GetAsyncRepository<User>();
+            var user = await userRepository.GetByIDAsync(log.UserId);
+            log.UserName = user?.UserName;
+            var companyRepository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await companyRepository.GetByIDAsync(log.CompanyId);
+            log.CompanyName = company?.Name;
+            UnitOfWork.UseCompanyContext();
         }
     }
 }

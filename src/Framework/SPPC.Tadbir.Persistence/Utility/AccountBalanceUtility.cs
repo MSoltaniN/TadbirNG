@@ -214,5 +214,10 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .OrderBy(item => item.AccountFullCode)
                 .ToArray();
         }
+
+        public int GetSourceList(TestBalanceFormat format)
+        {
+            return GetSourceList(format, "Account");
+        }
     }
 }

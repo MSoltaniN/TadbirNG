@@ -100,9 +100,9 @@ namespace SPPC.Tadbir.Persistence
             return next;
         }
 
-        internal override int OperationSource
+        internal override OperationSourceId OperationSource
         {
-            get { return (int)OperationSourceId.AccountBook; }
+            get { return OperationSourceId.AccountBook; }
         }
 
         private ISecureRepository Repository

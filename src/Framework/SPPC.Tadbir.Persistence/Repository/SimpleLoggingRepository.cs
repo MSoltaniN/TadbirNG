@@ -21,14 +21,15 @@ namespace SPPC.Tadbir.Persistence
             _logRepository = logRepository;
         }
 
-        internal abstract int OperationSource { get; }
+        internal abstract OperationSourceId OperationSource { get; }
 
         /// <summary>
         /// مدل نمایشی لاگ عملیاتی برای عملیات جاری
         /// </summary>
         protected OperationLogViewModel Log { get; private set; }
 
-        internal async Task OnSourceActionAsync(OperationId operation, SourceListId list = SourceListId.None)
+        internal async Task OnSourceActionAsync(
+            OperationId operation, OperationSourceId source, SourceListId list = SourceListId.None)
         {
             int? listId = (list != SourceListId.None) ? (int?)list : null;
             Log = new OperationLogViewModel()
@@ -40,10 +41,15 @@ namespace SPPC.Tadbir.Persistence
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
                 OperationId = (int)operation,
-                SourceId = OperationSource,
+                SourceId = (int)source,
                 SourceListId = listId
             };
             await TrySaveLogAsync();
+        }
+
+        internal async Task OnSourceActionAsync(OperationId operation, SourceListId list = SourceListId.None)
+        {
+            await OnSourceActionAsync(operation, OperationSource, list);
         }
 
         /// <summary>

@@ -19,5 +19,10 @@ namespace SPPC.Tadbir.Model.Core
         /// شناسه دیتابیسی فرم عملیاتی به کار رفته
         /// </summary>
         public int? SourceId { get; set; }
+
+        /// <summary>
+        /// شناسه نمای اطلاعاتی لیستی به کار رفته حین انجام عملیات
+        /// </summary>
+        public virtual int? SourceListId { get; set; }
     }
 }

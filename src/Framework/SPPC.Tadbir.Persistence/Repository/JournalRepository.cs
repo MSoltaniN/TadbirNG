@@ -204,9 +204,9 @@ namespace SPPC.Tadbir.Persistence
             return journal;
         }
 
-        internal override int OperationSource
+        internal override OperationSourceId OperationSource
         {
-            get { return (int)OperationSourceId.Journal; }
+            get { return OperationSourceId.Journal; }
         }
 
         private ISecureRepository Repository
