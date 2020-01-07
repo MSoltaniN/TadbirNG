@@ -2736,4 +2736,154 @@
   <data name="AccountsWithInvalidPeriodTurnover" xml:space="preserve">
     <value>Accounts with invalid period turnover</value>
   </data>
+  <data name="AccountBookByRow" xml:space="preserve">
+    <value>By row</value>
+  </data>
+  <data name="AccountBookDailySum" xml:space="preserve">
+    <value>Daily sum</value>
+  </data>
+  <data name="AccountBookMonthlySum" xml:space="preserve">
+    <value>Monthly sum</value>
+  </data>
+  <data name="AccountBookVoucherSum" xml:space="preserve">
+    <value>Voucher sum</value>
+  </data>
+  <data name="CostCenterBalance10Column" xml:space="preserve">
+    <value>Cost center : 10-Column</value>
+  </data>
+  <data name="CostCenterBalance2Column" xml:space="preserve">
+    <value>Cost center : 2-Column</value>
+  </data>
+  <data name="CostCenterBalance4Column" xml:space="preserve">
+    <value>Cost center : 4-Column</value>
+  </data>
+  <data name="CostCenterBalance6Column" xml:space="preserve">
+    <value>Cost center : 6-Column</value>
+  </data>
+  <data name="CostCenterBalance8Column" xml:space="preserve">
+    <value>Cost center : 8-Column</value>
+  </data>
+  <data name="CurrencyBookAllCurrencies" xml:space="preserve">
+    <value>All currencies</value>
+  </data>
+  <data name="CurrencyBookByRow" xml:space="preserve">
+    <value>By row</value>
+  </data>
+  <data name="CurrencyBookDailySum" xml:space="preserve">
+    <value>Daily sum</value>
+  </data>
+  <data name="CurrencyBookMonthlySum" xml:space="preserve">
+    <value>Monthly sum</value>
+  </data>
+  <data name="CurrencyBookVoucherSum" xml:space="preserve">
+    <value>Voucher sum</value>
+  </data>
+  <data name="DetailAccountBalance10Column" xml:space="preserve">
+    <value>Detail account : 10-Column</value>
+  </data>
+  <data name="DetailAccountBalance2Column" xml:space="preserve">
+    <value>Detail account : 2-Column</value>
+  </data>
+  <data name="DetailAccountBalance4Column" xml:space="preserve">
+    <value>Detail account : 4-Column</value>
+  </data>
+  <data name="DetailAccountBalance6Column" xml:space="preserve">
+    <value>Detail account : 6-Column</value>
+  </data>
+  <data name="DetailAccountBalance8Column" xml:space="preserve">
+    <value>Detail account : 8-Column</value>
+  </data>
+  <data name="EntityCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="EntityNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="EntityRef" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="EntityTypeName" xml:space="preserve">
+    <value>Entity</value>
+  </data>
+  <data name="FiscalPeriodName" xml:space="preserve">
+    <value>Fiscal period name</value>
+  </data>
+  <data name="Journal" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="JournalByDateByLedger" xml:space="preserve">
+    <value>By date - By ledger</value>
+  </data>
+  <data name="JournalByDateByRow" xml:space="preserve">
+    <value>By date - By row</value>
+  </data>
+  <data name="JournalByDateByRowDetail" xml:space="preserve">
+    <value>By date - By row with detail</value>
+  </data>
+  <data name="JournalByDateBySubsidiary" xml:space="preserve">
+    <value>By date - By subsidiary</value>
+  </data>
+  <data name="JournalByDateSummary" xml:space="preserve">
+    <value>By date - Summary</value>
+  </data>
+  <data name="JournalByDateSummaryByDate" xml:space="preserve">
+    <value>By dte - Summary by date</value>
+  </data>
+  <data name="JournalByDateSummaryByMonth" xml:space="preserve">
+    <value>By date - Summary by month</value>
+  </data>
+  <data name="JournalByNoByLedger" xml:space="preserve">
+    <value>By no - By ledger</value>
+  </data>
+  <data name="JournalByNoByRow" xml:space="preserve">
+    <value>By no - By row</value>
+  </data>
+  <data name="JournalByNoByRowDetail" xml:space="preserve">
+    <value>By no - By row with detail</value>
+  </data>
+  <data name="JournalByNoBySubsidiary" xml:space="preserve">
+    <value>By no - By Subsidiary</value>
+  </data>
+  <data name="JournalByNoSummary" xml:space="preserve">
+    <value>By no - Summary</value>
+  </data>
+  <data name="OperationName" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="ProjectBalance10Column" xml:space="preserve">
+    <value>Project : 10-Column</value>
+  </data>
+  <data name="ProjectBalance2Column" xml:space="preserve">
+    <value>Project : 2-Column</value>
+  </data>
+  <data name="ProjectBalance4Column" xml:space="preserve">
+    <value>Project : 4-Column</value>
+  </data>
+  <data name="ProjectBalance6Column" xml:space="preserve">
+    <value>Project : 6-Column</value>
+  </data>
+  <data name="ProjectBalance8Column" xml:space="preserve">
+    <value>Project : 8-Column</value>
+  </data>
+  <data name="SourceListName" xml:space="preserve">
+    <value>List view</value>
+  </data>
+  <data name="SourceName" xml:space="preserve">
+    <value>Form</value>
+  </data>
+  <data name="TestBalance10Column" xml:space="preserve">
+    <value>10-Column</value>
+  </data>
+  <data name="TestBalance2Column" xml:space="preserve">
+    <value>2-Column</value>
+  </data>
+  <data name="TestBalance4Column" xml:space="preserve">
+    <value>4-Column</value>
+  </data>
+  <data name="TestBalance6Column" xml:space="preserve">
+    <value>6-Column</value>
+  </data>
+  <data name="TestBalance8Column" xml:space="preserve">
+    <value>8-Column</value>
+  </data>
 </root>

@@ -29,41 +29,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             int itemCount = await _repository.GetLogCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var operationLogs = await _repository.GetLogsAsync(null, null, GridOptions);
+            var operationLogs = await _repository.GetLogsAsync(GridOptions);
             Localize(operationLogs);
             return Json(operationLogs);
         }
 
-        // GET: api/system/oplog/company/{companyId:int}
-        [Route(SystemApi.CompanyOperationLogsUrl)]
-        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
-        public async Task<IActionResult> GetCompanyOperationLogsAsync(int companyId)
+        private void Localize(IList<OperationLogViewModel> logs)
         {
-            var operationLogs = await _repository.GetLogsAsync(null, companyId, GridOptions);
-            return Json(operationLogs);
-        }
-
-        // GET: api/system/oplog/user/{userId:int}
-        [Route(SystemApi.UserOperationLogsUrl)]
-        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
-        public async Task<IActionResult> GetUserOperationLogsAsync(int userId)
-        {
-            var operationLogs = await _repository.GetLogsAsync(userId, null, GridOptions);
-            return Json(operationLogs);
-        }
-
-        // GET: api/system/oplog/user/{userId:int}/company/{companyId:int}
-        [Route(SystemApi.UserCompanyOperationLogsUrl)]
-        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
-        public async Task<IActionResult> GetUserCompanyOperationLogsAsync(int userId, int companyId)
-        {
-            var operationLogs = await _repository.GetLogsAsync(userId, companyId, GridOptions);
-            return Json(operationLogs);
-        }
-
-        private void Localize(IList<SysOperationLogViewModel> logs)
-        {
-            // TODO: Re-implement this method
+            foreach (var log in logs)
+            {
+                log.EntityTypeName = _strings[log.EntityTypeName ?? String.Empty];
+                log.OperationName = _strings[log.OperationName];
+                log.SourceListName = _strings[log.SourceListName ?? String.Empty];
+                log.SourceName = _strings[log.SourceName ?? String.Empty];
+            }
         }
 
         private readonly IOperationLogRepository _repository;

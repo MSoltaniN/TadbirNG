@@ -2727,4 +2727,154 @@
   <data name="AccountsWithInvalidPeriodTurnover" xml:space="preserve">
     <value>حساب های دارای گردش دوره نامعتبر</value>
   </data>
+  <data name="AccountBookByRow" xml:space="preserve">
+    <value>مطابق ردیف های سند</value>
+  </data>
+  <data name="AccountBookDailySum" xml:space="preserve">
+    <value>جمع مبالغ اسناد در هر روز</value>
+  </data>
+  <data name="AccountBookMonthlySum" xml:space="preserve">
+    <value>جمع مبالغ اسناد در هر ماه</value>
+  </data>
+  <data name="AccountBookVoucherSum" xml:space="preserve">
+    <value>جمع مبالغ هر سند</value>
+  </data>
+  <data name="CostCenterBalance10Column" xml:space="preserve">
+    <value>مرکز هزینه - دو ستونی</value>
+  </data>
+  <data name="CostCenterBalance2Column" xml:space="preserve">
+    <value>مرکز هزینه - دو ستونی</value>
+  </data>
+  <data name="CostCenterBalance4Column" xml:space="preserve">
+    <value>مرکز هزینه - چهار ستونی</value>
+  </data>
+  <data name="CostCenterBalance6Column" xml:space="preserve">
+    <value>مرکز هزینه - شش ستونی</value>
+  </data>
+  <data name="CostCenterBalance8Column" xml:space="preserve">
+    <value>مرکز هزینه - هشت ستونی</value>
+  </data>
+  <data name="CurrencyBookAllCurrencies" xml:space="preserve">
+    <value>کلیه ارزها</value>
+  </data>
+  <data name="CurrencyBookByRow" xml:space="preserve">
+    <value>مطابق ردیف های سند</value>
+  </data>
+  <data name="CurrencyBookDailySum" xml:space="preserve">
+    <value>جمع مبالغ اسناد در هر روز</value>
+  </data>
+  <data name="CurrencyBookMonthlySum" xml:space="preserve">
+    <value>جمع مبالغ اسناد در هر ماه</value>
+  </data>
+  <data name="CurrencyBookVoucherSum" xml:space="preserve">
+    <value>جمع مبالغ هر سند</value>
+  </data>
+  <data name="DetailAccountBalance10Column" xml:space="preserve">
+    <value>تفصیلی شناور - ده ستونی</value>
+  </data>
+  <data name="DetailAccountBalance2Column" xml:space="preserve">
+    <value>تفصیلی شناور - دو ستونی</value>
+  </data>
+  <data name="DetailAccountBalance4Column" xml:space="preserve">
+    <value>تفصیلی شناور - چهار ستونی</value>
+  </data>
+  <data name="DetailAccountBalance6Column" xml:space="preserve">
+    <value>تفصیلی شناور - شش ستونی</value>
+  </data>
+  <data name="DetailAccountBalance8Column" xml:space="preserve">
+    <value>تفصیلی شناور - هشت ستونی</value>
+  </data>
+  <data name="EntityCode" xml:space="preserve">
+    <value>کد</value>
+  </data>
+  <data name="EntityNo" xml:space="preserve">
+    <value>شماره</value>
+  </data>
+  <data name="EntityRef" xml:space="preserve">
+    <value>رفرنس</value>
+  </data>
+  <data name="EntityTypeName" xml:space="preserve">
+    <value>موجودیت</value>
+  </data>
+  <data name="FiscalPeriodName" xml:space="preserve">
+    <value>نام دوره مالی</value>
+  </data>
+  <data name="Journal" xml:space="preserve">
+    <value>دفتر روزنامه</value>
+  </data>
+  <data name="JournalByDateByLedger" xml:space="preserve">
+    <value>تاریخ - در سطح کل</value>
+  </data>
+  <data name="JournalByDateByRow" xml:space="preserve">
+    <value>تاریخ - مطابق ردیف های سند</value>
+  </data>
+  <data name="JournalByDateByRowDetail" xml:space="preserve">
+    <value>تاریخ - مطابق ردیف های سند با سطوح شناور</value>
+  </data>
+  <data name="JournalByDateBySubsidiary" xml:space="preserve">
+    <value>تاریخ - در سطح معین</value>
+  </data>
+  <data name="JournalByDateSummary" xml:space="preserve">
+    <value>تاریخ - سند خلاصه</value>
+  </data>
+  <data name="JournalByDateSummaryByDate" xml:space="preserve">
+    <value>تاریخ - سند خلاصه بر حسب تاریخ</value>
+  </data>
+  <data name="JournalByDateSummaryByMonth" xml:space="preserve">
+    <value>تاریخ - سند خلاصه ماهیانه</value>
+  </data>
+  <data name="JournalByNoByLedger" xml:space="preserve">
+    <value>شماره - در سطح کل</value>
+  </data>
+  <data name="JournalByNoByRow" xml:space="preserve">
+    <value>شماره - مطابق ردیف های سند</value>
+  </data>
+  <data name="JournalByNoByRowDetail" xml:space="preserve">
+    <value>شماره - مطابق ردیف های سند با سطوح شناور</value>
+  </data>
+  <data name="JournalByNoBySubsidiary" xml:space="preserve">
+    <value>شماره - در سطح معین</value>
+  </data>
+  <data name="JournalByNoSummary" xml:space="preserve">
+    <value>شماره - سند خلاصه</value>
+  </data>
+  <data name="OperationName" xml:space="preserve">
+    <value>عملیات</value>
+  </data>
+  <data name="ProjectBalance10Column" xml:space="preserve">
+    <value>پروژه - دو ستونی</value>
+  </data>
+  <data name="ProjectBalance2Column" xml:space="preserve">
+    <value>پروژه - دو ستونی</value>
+  </data>
+  <data name="ProjectBalance4Column" xml:space="preserve">
+    <value>پروژه - چهار ستونی</value>
+  </data>
+  <data name="ProjectBalance6Column" xml:space="preserve">
+    <value>پروژه - شش ستونی</value>
+  </data>
+  <data name="ProjectBalance8Column" xml:space="preserve">
+    <value>پروژه - هشت ستونی</value>
+  </data>
+  <data name="SourceListName" xml:space="preserve">
+    <value>نمای لیستی</value>
+  </data>
+  <data name="SourceName" xml:space="preserve">
+    <value>فرم</value>
+  </data>
+  <data name="TestBalance10Column" xml:space="preserve">
+    <value>ده ستونی</value>
+  </data>
+  <data name="TestBalance2Column" xml:space="preserve">
+    <value>دو ستونی</value>
+  </data>
+  <data name="TestBalance4Column" xml:space="preserve">
+    <value>چهار ستونی</value>
+  </data>
+  <data name="TestBalance6Column" xml:space="preserve">
+    <value>شش ستونی</value>
+  </data>
+  <data name="TestBalance8Column" xml:space="preserve">
+    <value>هشت ستونی</value>
+  </data>
 </root>
