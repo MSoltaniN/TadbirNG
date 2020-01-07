@@ -94,5 +94,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="items">سطرهای داده شده برای گزارش</param>
         /// <returns>سطرهای مرتب شده بر اساس کد کامل مولفه حساب</returns>
         IEnumerable<TestBalanceItemViewModel> GetSortedItems(IEnumerable<TestBalanceItemViewModel> items);
+
+        int GetSourceList(TestBalanceFormat format);
     }
 }

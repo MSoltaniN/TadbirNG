@@ -66,9 +66,9 @@ namespace SPPC.Tadbir.Persistence
             return await GetSummaryBookAsync(bookParam, true, false);
         }
 
-        internal override int OperationSource
+        internal override OperationSourceId OperationSource
         {
-            get { return (int)OperationSourceId.CurrencyBook; }
+            get { return OperationSourceId.CurrencyBook; }
         }
 
         private ISecureRepository Repository
