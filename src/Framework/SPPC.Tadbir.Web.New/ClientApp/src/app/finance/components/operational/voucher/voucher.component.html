@@ -58,7 +58,11 @@
     </ng-template>
 
     <ng-template kendoGridToolbarTemplate>
-      <sppc-dateRangeSelector [viewName]="'voucher'" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 sppc-float">
+          <sppc-dateRangeSelector [viewName]="'voucher'" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+        </div>
+      </div>
 
       <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Voucher.New' | translate }}"></button>
 
