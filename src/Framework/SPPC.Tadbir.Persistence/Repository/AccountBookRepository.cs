@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر حساب را پیاده سازی می کند
     /// </summary>
-    public class AccountBookRepository : RepositoryBase, IAccountBookRepository
+    public class AccountBookRepository : SimpleLoggingRepository, IAccountBookRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -30,134 +30,30 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
         public AccountBookRepository(IRepositoryContext context, ISystemRepository system, IReportRepository report)
-            : base(context)
+            : base(context, system.Logger)
         {
             _system = system;
             _report = report;
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "ساده : مطابق ردیف های سند" را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات گزارش دفتر حساب را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
-        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        public async Task<AccountBookViewModel> GetAccountBookByRowAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
+        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
+        /// <returns>اطلاعات دفتر حساب بر حسب تاریخ</returns>
+        public async Task<AccountBookViewModel> GetAccountBookAsync(AccountBookParameters parameters)
         {
-            return await GetSimpleBookAsync(viewId, accountId, from, to, gridOptions);
+            return await GetAccountBookDataAsync(parameters);
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ هر سند" را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات گزارش دفتر حساب به تفکیک شعبه را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
-        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        public async Task<AccountBookViewModel> GetAccountBookVoucherSumAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
+        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
+        /// <returns>اطلاعات دفتر حساب به تفکیک شعبه</returns>
+        public async Task<AccountBookViewModel> GetAccountBookByBranchAsync(AccountBookParameters parameters)
         {
-            return await GetSummaryBookAsync(viewId, accountId, from, to, gridOptions, true, false);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ اسناد در هر روز" را
-        /// خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
-        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        public async Task<AccountBookViewModel> GetAccountBookDailySumAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
-        {
-            return await GetSummaryBookAsync(viewId, accountId, from, to, gridOptions, false, false);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ اسناد در هر ماه" را
-        /// خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
-        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        public async Task<AccountBookViewModel> GetAccountBookMonthlySumAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
-        {
-            return await GetMonthlySummaryBookAsync(viewId, accountId, from, to, gridOptions, false);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "ساده : مطابق ردیف های سند" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
-        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        public async Task<AccountBookViewModel> GetAccountBookByRowByBranchAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
-        {
-            return await GetSimpleBookAsync(viewId, accountId, from, to, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ هر سند" را به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
-        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        public async Task<AccountBookViewModel> GetAccountBookVoucherSumByBranchAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
-        {
-            return await GetSummaryBookAsync(viewId, accountId, from, to, gridOptions, true, true);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ اسناد در هر روز" را
-        /// به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
-        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        public async Task<AccountBookViewModel> GetAccountBookDailySumByBranchAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
-        {
-            return await GetSummaryBookAsync(viewId, accountId, from, to, gridOptions, false, true);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دفتر حساب با نمایش "مرکب : جمع مبالغ اسناد در هر ماه" را
-        /// به تفکیک شعبه خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر - حساب، شناور، مرکز هزینه یا پروژه</param>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
-        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
-        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>اطلاعات دفتر حساب با مشخصات داده شده</returns>
-        public async Task<AccountBookViewModel> GetAccountBookMonthlySumByBranchAsync(int viewId, int accountId,
-            DateTime from, DateTime to, GridOptions gridOptions)
-        {
-            return await GetMonthlySummaryBookAsync(viewId, accountId, from, to, gridOptions, true);
+            return await GetAccountBookDataAsync(parameters);
         }
 
         /// <summary>
@@ -202,6 +98,11 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return next;
+        }
+
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.AccountBook; }
         }
 
         private ISecureRepository Repository
@@ -267,55 +168,83 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private async Task<AccountBookViewModel> GetSimpleBookAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions)
+        private async Task<AccountBookViewModel> GetAccountBookDataAsync(AccountBookParameters parameters)
+        {
+            Verify.ArgumentNotNull(parameters, nameof(parameters));
+            var book = default(AccountBookViewModel);
+            var sourceList = SourceListId.None;
+            switch (parameters.Mode)
+            {
+                case AccountBookMode.ByRows:
+                    book = await GetSimpleBookAsync(parameters);
+                    sourceList = SourceListId.AccountBookByRow;
+                    break;
+                case AccountBookMode.VoucherSum:
+                    book = await GetSummaryBookAsync(parameters, true);
+                    sourceList = SourceListId.AccountBookVoucherSum;
+                    break;
+                case AccountBookMode.DailySum:
+                    book = await GetSummaryBookAsync(parameters, false);
+                    sourceList = SourceListId.AccountBookDailySum;
+                    break;
+                case AccountBookMode.MonthlySum:
+                    book = await GetMonthlySummaryBookAsync(parameters);
+                    sourceList = SourceListId.AccountBookMonthlySum;
+                    break;
+                default:
+                    break;
+            }
+
+            await OnSourceActionAsync(OperationId.View, sourceList);
+            return book;
+        }
+
+        private async Task<AccountBookViewModel> GetSimpleBookAsync(AccountBookParameters parameters)
         {
             var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
+            book.Items.Add(await GetFirstBookItemAsync(parameters.ViewId, parameters.ItemId, parameters.FromDate));
 
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            var bookItems = await GetRawAccountBookLines(itemCriteria, from, to)
+            var itemCriteria = GetItemCriteria(parameters.ViewId, parameters.ItemId);
+            var bookItems = await GetRawAccountBookLines(itemCriteria, parameters.FromDate, parameters.ToDate)
                 .ToListAsync();
             book.Items.AddRange(bookItems
                 .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
-                .ApplyQuickFilter(gridOptions)
-                .Apply(gridOptions, false));
-            PrepareAccountBook(book, gridOptions);
+                .ApplyQuickFilter(parameters.GridOptions)
+                .Apply(parameters.GridOptions, false));
+            PrepareAccountBook(book, parameters.GridOptions);
             return book;
         }
 
         private async Task<AccountBookViewModel> GetSummaryBookAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions,
-            bool byNo, bool byBranch = false)
+            AccountBookParameters parameters, bool byNo)
         {
             var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
+            book.Items.Add(await GetFirstBookItemAsync(parameters.ViewId, parameters.ItemId, parameters.FromDate));
 
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            var lines = await GetRawAccountBookLines(itemCriteria, from, to)
+            var itemCriteria = GetItemCriteria(parameters.ViewId, parameters.ItemId);
+            var lines = await GetRawAccountBookLines(itemCriteria, parameters.FromDate, parameters.ToDate)
                 .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
                 .ToListAsync();
             lines = lines
-                .ApplyQuickFilter(gridOptions)
+                .ApplyQuickFilter(parameters.GridOptions)
                 .ToList();
-            AggregateAccountBook(book, lines, byNo, byBranch);
-            book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
-            PrepareAccountBook(book, gridOptions);
+            AggregateAccountBook(book, lines, byNo, parameters.IsByBranch);
+            book.SetItems(book.Items.Apply(parameters.GridOptions, false).ToArray());
+            PrepareAccountBook(book, parameters.GridOptions);
             return book;
         }
 
-        private async Task<AccountBookViewModel> GetMonthlySummaryBookAsync(
-            int viewId, int accountId, DateTime from, DateTime to, GridOptions gridOptions,
-            bool byBranch = false)
+        private async Task<AccountBookViewModel> GetMonthlySummaryBookAsync(AccountBookParameters parameters)
         {
             var book = new AccountBookViewModel();
-            book.Items.Add(await GetFirstBookItemAsync(viewId, accountId, from));
+            book.Items.Add(await GetFirstBookItemAsync(parameters.ViewId, parameters.ItemId, parameters.FromDate));
 
-            var itemCriteria = GetItemCriteria(viewId, accountId);
-            await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.OpeningVoucher, from, to, gridOptions, byBranch);
+            var itemCriteria = GetItemCriteria(parameters.ViewId, parameters.ItemId);
+            await AddSpecialBookItemsAsync(
+                book, itemCriteria, VoucherType.OpeningVoucher, parameters.FromDate, parameters.ToDate,
+                parameters.GridOptions, parameters.IsByBranch);
 
-            var monthEnum = new MonthEnumerator(from, to, new PersianCalendar());
+            var monthEnum = new MonthEnumerator(parameters.FromDate, parameters.ToDate, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
             {
                 var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
@@ -323,11 +252,11 @@ namespace SPPC.Tadbir.Persistence
                     .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
                     .ToList();
                 monthLines = monthLines
-                    .ApplyQuickFilter(gridOptions)
+                    .ApplyQuickFilter(parameters.GridOptions)
                     .ToList();
                 if (monthLines.Count > 0)
                 {
-                    if (byBranch)
+                    if (parameters.IsByBranch)
                     {
                         Array.ForEach(GetGroupByThenByItems(monthLines, item => item.BranchId).ToArray(), group =>
                             {
@@ -345,13 +274,15 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingTempAccounts, from, to, gridOptions, byBranch);
-            await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherType.ClosingVoucher, from, to, gridOptions, byBranch);
+            await AddSpecialBookItemsAsync(
+                book, itemCriteria, VoucherType.ClosingTempAccounts, parameters.FromDate, parameters.ToDate,
+                parameters.GridOptions, parameters.IsByBranch);
+            await AddSpecialBookItemsAsync(
+                book, itemCriteria, VoucherType.ClosingVoucher, parameters.FromDate, parameters.ToDate,
+                parameters.GridOptions, parameters.IsByBranch);
 
-            book.SetItems(book.Items.Apply(gridOptions, false).ToArray());
-            PrepareAccountBook(book, gridOptions);
+            book.SetItems(book.Items.Apply(parameters.GridOptions, false).ToArray());
+            PrepareAccountBook(book, parameters.GridOptions);
             return book;
         }
 

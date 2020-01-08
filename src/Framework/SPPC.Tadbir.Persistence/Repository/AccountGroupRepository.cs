@@ -207,6 +207,11 @@ namespace SPPC.Tadbir.Persistence
             return accGroups;
         }
 
+        internal override int EntityType
+        {
+            get { return (int)EntityTypeId.AccountGroup; }
+        }
+
         /// <summary>
         /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
         /// </summary>

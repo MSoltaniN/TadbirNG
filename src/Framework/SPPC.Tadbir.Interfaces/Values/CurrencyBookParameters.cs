@@ -1,4 +1,5 @@
 ﻿using System;
+using SPPC.Framework.Presentation;
 
 namespace SPPC.Tadbir.Values
 {
@@ -7,6 +8,11 @@ namespace SPPC.Tadbir.Values
     /// </summary>
     public class CurrencyBookParameters
     {
+        /// <summary>
+        /// نوع نمایش انتخاب شده برای گزارش
+        /// </summary>
+        public AccountBookMode Mode { get; set; }
+
         /// <summary>
         /// گزارش به تفکیک شعبه است یا خیر؟
         /// </summary>
@@ -46,5 +52,10 @@ namespace SPPC.Tadbir.Values
         /// در حالت کلیه ارزها سطرهای بدون ارز هم آورده شود یا خیر؟
         /// </summary>
         public bool CurrFree { get; set; } = false;
+
+        /// <summary>
+        /// گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات
+        /// </summary>
+        public GridOptions GridOptions { get; set; }
     }
 }

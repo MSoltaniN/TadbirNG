@@ -381,6 +381,11 @@ namespace SPPC.Tadbir.Persistence
             return await query.CountAsync();
         }
 
+        internal override int EntityType
+        {
+            get { return (int)EntityTypeId.Account; }
+        }
+
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>

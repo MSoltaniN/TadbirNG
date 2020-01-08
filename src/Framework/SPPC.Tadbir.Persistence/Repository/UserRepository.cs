@@ -290,9 +290,8 @@ namespace SPPC.Tadbir.Persistence
             if (userView.Id == 0)
             {
                 user = GetNewUser(userView);
-                OnAction("Create", null, user);
                 repository.Insert(user, usr => usr.Person);
-                await FinalizeActionAsync();
+                await FinalizeActionAsync(user);
             }
             else
             {
@@ -300,10 +299,9 @@ namespace SPPC.Tadbir.Persistence
                 if (user != null)
                 {
                     var clone = Mapper.Map<User>(user);
-                    OnAction("Edit", clone, null);
                     UpdateExisting(userView, user);
                     repository.Update(user, usr => usr.Person);
-                    await FinalizeActionAsync();
+                    await FinalizeActionAsync(user);
                 }
             }
 

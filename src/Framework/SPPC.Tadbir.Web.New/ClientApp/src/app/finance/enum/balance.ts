@@ -102,7 +102,7 @@ export enum BranchScopeResource {
   CurrentBranchAndSubsets = "BranchScope.CurrentBranchAndSubsets"
 }
 
-export enum TestBalanceOptions {
+export enum BalanceOptions {
   /// <summary>
   /// عدم انتخاب همه گزینه ها
   /// </summary>

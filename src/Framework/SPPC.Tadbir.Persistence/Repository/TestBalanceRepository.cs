@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای خواندن اطلاعات گزارش تراز آزمایشی را پیاده سازی می کند
     /// </summary>
-    public class TestBalanceRepository : RepositoryBase, ITestBalanceRepository
+    public class TestBalanceRepository : SimpleLoggingRepository, ITestBalanceRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -24,10 +24,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="factory">امکان ساختن کلاس های کمکی محاسبات تراز را برای مولفه های مختلف حساب فراهم می کند</param>
         public TestBalanceRepository(IRepositoryContext context, ISystemRepository system,
             ITestBalanceUtilityFactory factory)
-            : base(context)
+            : base(context, system.Logger)
         {
             _system = system;
             _factory = factory;
+        }
+
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.TestBalance; }
         }
 
         /// <summary>
@@ -69,6 +74,12 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(parameters.GridOptions, false)
                 .ToArray());
             SetSummaryItems(testBalance);
+
+            var source = (parameters.ViewId == ViewName.Account)
+                ? OperationSourceId.TestBalance
+                : OperationSourceId.ItemBalance;
+            await OnSourceActionAsync(OperationId.View, source,
+                (SourceListId)_utility.GetSourceList(parameters.Format));
             return testBalance;
         }
 
@@ -104,6 +115,11 @@ namespace SPPC.Tadbir.Persistence
                 SetSummaryItems(testBalance);
             }
 
+            var source = (parameters.ViewId == ViewName.Account)
+                ? OperationSourceId.TestBalance
+                : OperationSourceId.ItemBalance;
+            await OnSourceActionAsync(OperationId.View, source,
+                (SourceListId)_utility.GetSourceList(parameters.Format));
             return testBalance;
         }
 

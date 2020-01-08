@@ -104,6 +104,9 @@ export class BreadCumbComponent implements OnInit {
       case "testbalance":
         this.getText("Entity.TestBalance");
         break;
+      case "itembalance":
+        this.getText("Entity.ItemBalance");
+        break;
       case "currencybook":
         this.getText("Entity.CurrencyBook");
         break;

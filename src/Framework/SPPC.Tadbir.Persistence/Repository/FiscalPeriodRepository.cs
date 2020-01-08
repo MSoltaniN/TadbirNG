@@ -358,6 +358,11 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
         }
 
+        internal override int EntityType
+        {
+            get { return (int)EntityTypeId.FiscalPeriod; }
+        }
+
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>

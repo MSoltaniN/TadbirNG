@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر روزنامه را پیاده سازی می کند
     /// </summary>
-    public class JournalRepository : RepositoryBase, IJournalRepository
+    public class JournalRepository : SimpleLoggingRepository, IJournalRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="report">امکانات عمومی مورد نیاز برای گزارشگیری را فراهم می کند</param>
         public JournalRepository(IRepositoryContext context, ISystemRepository system, IReportUtility report)
-            : base(context)
+            : base(context, system.Logger)
         {
             _system = system;
             _report = report;
@@ -40,33 +40,42 @@ namespace SPPC.Tadbir.Persistence
         public async Task<JournalViewModel> GetJournalByDateAsync(JournalParameters parameters)
         {
             var journal = default(JournalViewModel);
+            var sourceList = SourceListId.None;
             switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
                     journal = await GetJournalByDateByRowAsync(parameters);
+                    sourceList = SourceListId.JournalByDateByRow;
                     break;
                 case JournalMode.ByRowsWithDetail:
                     journal = await GetJournalByDateByRowWithDetailAsync(parameters);
+                    sourceList = SourceListId.JournalByDateByRowDetail;
                     break;
                 case JournalMode.ByLedger:
                     journal = await GetJournalByDateByLedgerAsync(parameters);
+                    sourceList = SourceListId.JournalByDateByLedger;
                     break;
                 case JournalMode.BySubsidiary:
                     journal = await GetJournalByDateBySubsidiaryAsync(parameters);
+                    sourceList = SourceListId.JournalByDateBySubsidiary;
                     break;
                 case JournalMode.LedgerSummary:
                     journal = await GetJournalByDateLedgerSummaryAsync(parameters);
+                    sourceList = SourceListId.JournalByDateSummary;
                     break;
                 case JournalMode.LedgerSummaryByDate:
                     journal = await GetJournalByDateLedgerSummaryByDateAsync(parameters);
+                    sourceList = SourceListId.JournalByDateSummaryByDate;
                     break;
                 case JournalMode.MonthlyLedgerSummary:
                     journal = await GetJournalByDateMonthlyLedgerSummaryAsync(parameters);
+                    sourceList = SourceListId.JournalByDateSummaryByMonth;
                     break;
                 default:
                     break;
             }
 
+            await OnSourceActionAsync(OperationId.View, sourceList);
             return journal;
         }
 
@@ -78,33 +87,42 @@ namespace SPPC.Tadbir.Persistence
         public async Task<JournalViewModel> GetJournalByDateByBranchAsync(JournalParameters parameters)
         {
             var journal = default(JournalViewModel);
+            var sourceList = SourceListId.None;
             switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
                     journal = await GetJournalByDateByRowByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByDateByRow;
                     break;
                 case JournalMode.ByRowsWithDetail:
                     journal = await GetJournalByDateByRowDetailByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByDateByRowDetail;
                     break;
                 case JournalMode.ByLedger:
                     journal = await GetJournalByDateByLedgerByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByDateByLedger;
                     break;
                 case JournalMode.BySubsidiary:
                     journal = await GetJournalByDateBySubsidiaryByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByDateBySubsidiary;
                     break;
                 case JournalMode.LedgerSummary:
                     journal = await GetJournalByDateLedgerSummaryByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByDateSummary;
                     break;
                 case JournalMode.LedgerSummaryByDate:
                     journal = await GetJournalByDateLedgerSummaryByDateByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByDateSummaryByDate;
                     break;
                 case JournalMode.MonthlyLedgerSummary:
                     journal = await GetJournalByDateMonthlyLedgerSummaryByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByDateSummaryByMonth;
                     break;
                 default:
                     break;
             }
 
+            await OnSourceActionAsync(OperationId.View, sourceList);
             return journal;
         }
 
@@ -116,27 +134,34 @@ namespace SPPC.Tadbir.Persistence
         public async Task<JournalViewModel> GetJournalByNoAsync(JournalParameters parameters)
         {
             var journal = default(JournalViewModel);
+            var sourceList = SourceListId.None;
             switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
                     journal = await GetJournalByNoByRowAsync(parameters);
+                    sourceList = SourceListId.JournalByNoByRow;
                     break;
                 case JournalMode.ByRowsWithDetail:
                     journal = await GetJournalByNoByRowDetailAsync(parameters);
+                    sourceList = SourceListId.JournalByNoByRowDetail;
                     break;
                 case JournalMode.ByLedger:
                     journal = await GetJournalByNoByLedgerAsync(parameters);
+                    sourceList = SourceListId.JournalByNoByLedger;
                     break;
                 case JournalMode.BySubsidiary:
                     journal = await GetJournalByNoBySubsidiaryAsync(parameters);
+                    sourceList = SourceListId.JournalByNoBySubsidiary;
                     break;
                 case JournalMode.LedgerSummary:
                     journal = await GetJournalByNoLedgerSummaryAsync(parameters);
+                    sourceList = SourceListId.JournalByNoSummary;
                     break;
                 default:
                     break;
             }
 
+            await OnSourceActionAsync(OperationId.View, sourceList);
             return journal;
         }
 
@@ -148,28 +173,40 @@ namespace SPPC.Tadbir.Persistence
         public async Task<JournalViewModel> GetJournalByNoByBranchAsync(JournalParameters parameters)
         {
             var journal = default(JournalViewModel);
+            var sourceList = SourceListId.None;
             switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
                     journal = await GetJournalByNoByRowByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByNoByRow;
                     break;
                 case JournalMode.ByRowsWithDetail:
                     journal = await GetJournalByNoByRowDetailByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByNoByRowDetail;
                     break;
                 case JournalMode.ByLedger:
                     journal = await GetJournalByNoByLedgerByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByNoByLedger;
                     break;
                 case JournalMode.BySubsidiary:
                     journal = await GetJournalByNoBySubsidiaryByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByNoBySubsidiary;
                     break;
                 case JournalMode.LedgerSummary:
                     journal = await GetJournalByNoLedgerSummaryByBranchAsync(parameters);
+                    sourceList = SourceListId.JournalByNoSummary;
                     break;
                 default:
                     break;
             }
 
+            await OnSourceActionAsync(OperationId.View, sourceList);
             return journal;
+        }
+
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.Journal; }
         }
 
         private ISecureRepository Repository

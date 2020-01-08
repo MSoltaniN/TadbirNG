@@ -206,9 +206,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 role = Mapper.Map<Role>(roleView.Role);
                 AddRolePermissions(role, roleView);
-                OnAction("Create", null, role);
                 repository.Insert(role, r => r.RolePermissions);
-                await FinalizeActionAsync();
+                await FinalizeActionAsync(role);
             }
             else
             {
@@ -226,10 +225,9 @@ namespace SPPC.Tadbir.Persistence
                     }
 
                     var clone = Mapper.Map<Role>(role);
-                    OnAction("Edit", clone, null);
                     UpdateExisting(roleView, role);
                     repository.UpdateWithTracking(role);
-                    await FinalizeActionAsync();
+                    await FinalizeActionAsync(role);
                 }
             }
 
@@ -248,10 +246,9 @@ namespace SPPC.Tadbir.Persistence
             if (role != null)
             {
                 var clone = Mapper.Map<Role>(role);
-                OnAction("Delete", clone, null);
                 role.RolePermissions.Clear();
                 repository.Delete(role);
-                await FinalizeActionAsync();
+                await FinalizeActionAsync(role);
             }
         }
 
