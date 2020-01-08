@@ -150,7 +150,8 @@
     "CurrencyRate": "نرخ ارز",
     "TestBalance": "تراز آزمایشی",
     "CurrencyBook": "دفتر عملیات ارزی",
-    "SystemIssue": "کنترل سیستم"
+    "SystemIssue": "کنترل سیستم",
+    "BalanceByAccount": "مانده به تفکیک حساب"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",

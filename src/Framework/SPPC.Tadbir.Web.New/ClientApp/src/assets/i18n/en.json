@@ -151,7 +151,8 @@
     "CurrencyRate": "Currency Rate",
     "TestBalance": "Balance",
     "CurrencyBook": "Currency Book",
-    "SystemIssue": "System Control"
+    "SystemIssue": "System Control",
+    "BalanceByAccount": "Balance By Account"
   },
   "Balance": {
     "ByDate": "By date",

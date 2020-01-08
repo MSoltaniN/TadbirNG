@@ -53,6 +53,11 @@ namespace SPPC.Tadbir.Values
         public const string TotalCountHeaderName = "X-Total-Count";
 
         /// <summary>
+        /// نام هدر برای گرفتن پارامترها از درخواست
+        /// </summary>
+        public const string ParametersHeaderName = "X-Tadbir-Parameters";
+
+        /// <summary>
         /// اندازه پیش فرض صفحه در فهرست های اطلاعاتی
         /// </summary>
         public const int DefaultPageSize = 10;

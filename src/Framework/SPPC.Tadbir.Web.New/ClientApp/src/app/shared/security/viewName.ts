@@ -43,5 +43,6 @@ export enum ViewName {
   CurrencyBookSingleSummary = 39,
   CurrencyBookSummary = 40,
   NumberList = 41,
-  VoucherLineDetail = 42
+  VoucherLineDetail = 42,
+  BalanceByAccount = 58
 }

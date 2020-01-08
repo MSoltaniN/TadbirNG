@@ -101,7 +101,8 @@ export const Entities = {
   CurrencyBookSummary: 'CurrencyBookSummary',
   SystemIssue: 'SystemIssue',
   NumberList: 'NumberList',
-  VoucherLineDetail: 'VoucherLineDetail'
+  VoucherLineDetail: 'VoucherLineDetail',
+  BalanceByAccount: 'BalanceByAccount'
 }
 
 export const ColumnVisibility =

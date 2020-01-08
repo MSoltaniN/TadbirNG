@@ -556,6 +556,7 @@ namespace SPPC.Tadbir.Mapper
                         ? src.Credit / src.CurrencyValue
                         : src.Debit / src.CurrencyValue));
             mapperConfig.CreateMap<VoucherLine, VoucherLineDetailViewModel>();
+            mapperConfig.CreateMap<VoucherLine, BalanceByAccountItemViewModel>();
 
             mapperConfig.CreateMap<SystemIssue, SystemIssueViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));

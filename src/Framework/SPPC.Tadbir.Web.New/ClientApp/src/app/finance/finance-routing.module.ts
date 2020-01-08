@@ -19,7 +19,8 @@ import { MetaDataResolver } from '@sppc/shared/class/metadata/metadata.resolver'
 import { currencyRateComponent } from './components/base/currencyRate/currencyRate.component';
 import { TestBalanceComponent } from '@sppc/finance/components/reporting/testBalance/testBalance.component';
 import { CurrencyBookComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook.component';
-import { SystemIssueComponent } from '@sppc/finance//components/reporting/systemIssue/systemIssue.component';
+import { SystemIssueComponent } from '@sppc/finance/components/reporting/systemIssue/systemIssue.component';
+import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/balanceByAccount/balanceByAccount.component';
 
 
 const routes: Routes = [{
@@ -48,6 +49,7 @@ const routes: Routes = [{
     { path: 'balance', component: TestBalanceComponent },
     { path: 'currency-book', component: CurrencyBookComponent },
     { path: 'system-issue', component: SystemIssueComponent },
+    { path: 'balance-by-account', component: BalanceByAccountComponent },
   ]
 }];
 

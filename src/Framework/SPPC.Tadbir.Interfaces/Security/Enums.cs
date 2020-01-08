@@ -979,4 +979,41 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         View = 0x1
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به مانده به تفکیک حساب را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum BalanceByAccountPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به مانده به تفکیک حساب
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده مانده به تفکیک حساب
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی جستجوی اطلاعات مانده به تفکیک حساب
+        /// </summary>
+        Lookup = 0x2,
+
+        /// <summary>
+        /// دسترسی فیلتر اطلاعات مانده به تفکیک حساب
+        /// </summary>
+        Filter = 0x4,
+
+        /// <summary>
+        /// دسترسی چاپ اطلاعات مانده به تفکیک حساب
+        /// </summary>
+        Print = 0x8,
+
+        /// <summary>
+        /// دسترسی مشاهده مانده به تفکیک حساب به تفکیک شعبه
+        /// </summary>
+        ViewByBranch = 0x10
+    }
 }

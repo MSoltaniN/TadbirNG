@@ -2736,4 +2736,13 @@
   <data name="AccountsWithInvalidPeriodTurnover" xml:space="preserve">
     <value>Accounts with invalid period turnover</value>
   </data>
+  <data name="BalanceByAccount" xml:space="preserve">
+    <value>Balance by account</value>
+  </data>
+  <data name="BalanceByAccountReport" xml:space="preserve">
+    <value>Balance by account</value>
+  </data>
+  <data name="SystemIssueReport" xml:space="preserve">
+    <value>System issue</value>
+  </data>
 </root>

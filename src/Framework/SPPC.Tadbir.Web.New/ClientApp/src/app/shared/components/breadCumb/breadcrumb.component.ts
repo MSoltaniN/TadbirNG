@@ -110,6 +110,9 @@ export class BreadCumbComponent implements OnInit {
       case "systemissue":
         this.getText("Entity.SystemIssue");
         break;
+      case "balancebyaccount":
+        this.getText("Entity.BalanceByAccount");
+        break;
     }
   }
 }
