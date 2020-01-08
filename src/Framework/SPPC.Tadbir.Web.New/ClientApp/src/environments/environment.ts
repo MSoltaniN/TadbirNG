@@ -118,7 +118,7 @@ export const Entities = {
   ProjectBalance4Column : 'ProjectBalance4Column',
   ProjectBalance6Column : 'ProjectBalance6Column',
   ProjectBalance8Column: 'ProjectBalance8Column',
-  ProjectBalance10Column : 'ProjectBalance10Column'
+  ProjectBalance10Column : 'ProjectBalance10Column',
   BalanceByAccount: 'BalanceByAccount'
 }
 

@@ -224,7 +224,7 @@
             <input type="checkbox" name="account" id="account" class="k-checkbox"
                    [(ngModel)]="chbAccount"
                    (ngModelChange)="getAccountItemLevels($event,1)"
-                   [disabled]="selectedReportBy == 1" />
+                   [disabled]="selectedReportBy == '1'" />
             <label class="k-checkbox-label" for="account">حساب</label>
 
             <kendo-dropdownlist [data]="accountLevelList" class="ddl-account-item"
@@ -247,7 +247,7 @@
             <input type="checkbox" name="detailAccount" id="detailAccount" class="k-checkbox"
                    [(ngModel)]="chbDetailAccount"
                    (ngModelChange)="getAccountItemLevels($event,6)"
-                   [disabled]="selectedReportBy == 6" />
+                   [disabled]="selectedReportBy == '6'" />
             <label class="k-checkbox-label" for="detailAccount">تفصیلی شناور</label>
 
             <kendo-dropdownlist [data]="detailAccountLevelList" class="ddl-account-item"
@@ -270,7 +270,7 @@
             <input type="checkbox" name="cost-center" id="cost-center" class="k-checkbox"
                    [(ngModel)]="chbCCenter"
                    (ngModelChange)="getAccountItemLevels($event,7)"
-                   [disabled]="selectedReportBy == 7" />
+                   [disabled]="selectedReportBy == '7'" />
             <label class="k-checkbox-label" for="cost-center">مرکز هزینه</label>
 
             <kendo-dropdownlist [data]="cCenterLevelList" class="ddl-account-item"
@@ -293,7 +293,7 @@
             <input type="checkbox" name="project" id="project" class="k-checkbox"
                    [(ngModel)]="chbProject"
                    (ngModelChange)="getAccountItemLevels($event,8)"
-                   [disabled]="selectedReportBy == 8" />
+                   [disabled]="selectedReportBy == '8'" />
             <label class="k-checkbox-label" for="project">پروژه</label>
 
             <kendo-dropdownlist [data]="projectLevelList" class="ddl-account-item"
