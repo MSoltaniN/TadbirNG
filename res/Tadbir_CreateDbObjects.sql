@@ -67,6 +67,43 @@ CREATE TABLE [Metadata].[OperationSource] (
 )
 GO
 
+CREATE TABLE [Metadata].[Subsystem] (
+    [SubsystemID]    INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Subsystem_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Subsystem_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Subsystem] PRIMARY KEY CLUSTERED ([SubsystemID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[OperationSourceType] (
+    [OperationSourceTypeID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                    NVARCHAR(64)     NOT NULL,
+    [rowguid]                 UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_OperationSourceType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]            DATETIME         CONSTRAINT [DF_Metadata_OperationSourceType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_OperationSourceType] PRIMARY KEY CLUSTERED ([OperationSourceTypeID] ASC)
+)
+GO
+
+CREATE TABLE [Config].[LogSetting] (
+    [LogSettingID]   INT              IDENTITY (1, 1) NOT NULL,
+    [SubsystemID]    INT              NOT NULL,
+    [SourceTypeID]   INT              NOT NULL,
+    [SourceID]       INT              NULL,
+    [EntityTypeID]   INT              NULL,
+    [OperationID]    INT              NOT NULL,
+    [IsEnabled]      BIT              NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_LogSetting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_LogSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Config_LogSetting] PRIMARY KEY CLUSTERED ([LogSettingID] ASC)
+    , CONSTRAINT [FK_Config_LogSetting_Metadata_Subsystem] FOREIGN KEY ([SubsystemID]) REFERENCES [Metadata].[Subsystem]([SubsystemID])
+    , CONSTRAINT [FK_Config_LogSetting_Metadata_SourceType] FOREIGN KEY ([SourceTypeID]) REFERENCES [Metadata].[OperationSourceType]([OperationSourceTypeID])
+    , CONSTRAINT [FK_Config_LogSetting_Metadata_Source] FOREIGN KEY ([SourceID]) REFERENCES [Metadata].[OperationSource]([OperationSourceID])
+    , CONSTRAINT [FK_Config_LogSetting_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
+    , CONSTRAINT [FK_Config_LogSetting_Metadata_Operation] FOREIGN KEY ([OperationID]) REFERENCES [Metadata].[Operation]([OperationID])
+)
+GO
+
 CREATE TABLE [Corporate].[Branch] (
     [BranchID]       INT              IDENTITY (1, 1) NOT NULL,
 	[CompanyID]      INT              NOT NULL,
@@ -701,6 +738,16 @@ INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (3,
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (4, N'TestBalance')
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (5, N'ItemBalance')
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
+
+SET IDENTITY_INSERT [Metadata].[Subsystem] ON
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (1, N'Accounting')
+SET IDENTITY_INSERT [Metadata].[Subsystem] OFF
+
+SET IDENTITY_INSERT [Metadata].[OperationSourceType] ON
+INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) VALUES (1, N'BaseData')
+INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) VALUES (2, N'OperationalForms')
+INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) VALUES (3, N'Reports')
+SET IDENTITY_INSERT [Metadata].[OperationSourceType] OFF
 
 
 -- Insert suggested account groups...
