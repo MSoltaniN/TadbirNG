@@ -397,7 +397,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   saveFiltersToDB(showMessage:boolean = true) {
     this.groupFilters.forEach((gf) => {
       if (gf.filters) {
-        if (gf.id > -1) {          
+        if (gf.id > -1) {
           var filterModel = new FilterViewModel();
           filterModel.id = gf.isNew ? 0 : gf.id;
           filterModel.isPublic = gf.isPublic;
@@ -406,7 +406,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           filterModel.userId = this.UserId;
           filterModel.values = JSON.stringify(gf.filters);
           if (filterModel.id == 0)
-            this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {              
+            this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {
               this.gFilterSelected = res.id;
 
               var fil = this.groupFilters.filter(f => f.id === gf.id);
@@ -418,11 +418,32 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           else
             this.advanceFilterService.saveFilter(filterModel.id, filterModel).subscribe();
         }
-      }
+              }
     });
 
     if (showMessage)
       this.showMessage(this.getText('AdvanceFilter.FilterSavedSuccess'), MessageType.Succes);
+  }
+
+  saveFil(gf) {
+    var filterModel = new FilterViewModel();
+    filterModel.id = 0;
+    filterModel.isPublic = gf.isPublic;
+    filterModel.name = gf.name;
+    filterModel.viewId = this.viewId;
+    filterModel.userId = this.UserId;
+    filterModel.values = JSON.stringify(gf.filters);
+    if (filterModel.id == 0)
+      this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {
+        this.gFilterSelected = res.id;
+
+        var fil = this.groupFilters.filter(f => f.id === gf.id);
+        if (fil.length > 0)
+          fil[0].id = res.id;
+
+        gf.id = res.id;
+        this.firstLoadFilters(gf);
+      });
   }
 
   onOk() {
@@ -848,15 +869,17 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       gf.isPublic = this.filterUseForOthers;      
 
       if (this.activeSaveFilter) {
-        gf.filters = this.groupFilters[0].filters;
-        this.groupFilters[0].filters = undefined;
+        gf.filters = this.groupFilters[0].filters;        
       }
 
       
 
-      if (this.activeSaveFilter) {
-        this.saveFiltersToDB();
+      if (this.activeSaveFilter) {        
+
+        this.saveFil(gf);
         this.activeSaveFilter = false;
+        this.groupFilters[0].filters = undefined;
+        return;
       }
 
       if (this.activeCopyFilter) {
