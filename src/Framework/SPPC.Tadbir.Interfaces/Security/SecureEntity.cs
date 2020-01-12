@@ -141,5 +141,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت کنترل سیستم
         /// </summary>
         public const string SystemIssue = "SystemIssue";
+
+        /// <summary>
+        /// نام موجودیت مانده به تفکیک حساب
+        /// </summary>
+        public const string BalanceByAccount = "BalanceByAccount";
     }
 }

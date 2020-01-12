@@ -246,6 +246,15 @@ export enum SystemIssuePermissions {
   View = 1
 }
 
+export enum BalanceByAccountPermissions {
+  None = 0,
+  View = 1,
+  Lookup = 2,
+  Filter = 4,
+  Print = 8,
+  ViewByBranch = 16
+}
+
 @Injectable()
 export class Permissions {
   getPermission(entity: string, premissionName: string): number {
@@ -315,6 +324,9 @@ export class Permissions {
         break;
       case "systemissue":
         id = <any>SystemIssuePermissions[<any>premissionName];
+        break;
+      case "balancebyaccount":
+        id = <any>BalanceByAccountPermissions[<any>premissionName];
         break;
     }
 

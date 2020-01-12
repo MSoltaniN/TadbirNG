@@ -77,6 +77,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return acceptLanguages;
         }
 
+        protected T GetHeaderParameters<T>()
+        {
+            var parameters = Request.Headers[AppConstants.ParametersHeaderName];
+            if (String.IsNullOrEmpty(parameters))
+            {
+                return default(T);
+            }
+
+            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(parameters));
+            var json = WebUtility.UrlDecode(urlEncoded);
+            return JsonHelper.To<T>(json);
+        }
+
         private SecurityContext GetSecurityContext()
         {
             var context = Request.Headers[AppConstants.ContextHeaderName];

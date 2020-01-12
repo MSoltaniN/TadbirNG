@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LocalReport, QuickReportConfigInfo, Parameter, QuickReportColumnModel, QuickReportViewModel } from '@sppc/shared/models';
 import { ReportBaseService } from '@sppc/shared/class/report.base.service';
@@ -11,6 +11,18 @@ export class ReportingService extends ReportBaseService {
 
   constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
     super(http, bStorageService);
+  }
+
+
+  public getBalanceByAccountData(apiUrl: string, postItem: any) {
+    var searchHeaders = this.httpHeaders;
+    var postBody = JSON.stringify(postItem);
+    var base64Body = btoa(encodeURIComponent(postBody));
+    if (searchHeaders)
+      searchHeaders = searchHeaders.append('X-Tadbir-Parameters', base64Body);
+
+    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .map(response => <any>(<HttpResponse<any>>response));
   }
 
   public saveReport(apiUrl: string, report: LocalReport): Observable<string> {

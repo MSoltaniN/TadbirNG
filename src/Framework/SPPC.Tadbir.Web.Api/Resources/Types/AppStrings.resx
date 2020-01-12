@@ -2877,4 +2877,16 @@
   <data name="TestBalance8Column" xml:space="preserve">
     <value>هشت ستونی</value>
   </data>
+  <data name="BalanceByAccount" xml:space="preserve">
+    <value>مانده به تفکیک حساب</value>
+  </data>
+  <data name="BalanceByAccountReport" xml:space="preserve">
+    <value>مانده به تفکیک حساب</value>
+  </data>
+  <data name="SystemIssueReport" xml:space="preserve">
+    <value>کنترل سیستم</value>
+  </data>
+  <data name="OperationalForms" xml:space="preserve">
+    <value>فرم های عملیاتی</value>
+  </data>
 </root>

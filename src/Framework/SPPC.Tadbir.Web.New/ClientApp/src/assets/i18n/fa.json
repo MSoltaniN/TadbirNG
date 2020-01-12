@@ -151,7 +151,8 @@
     "TestBalance": "تراز آزمایشی",
     "ItemBalance": "گردش و مانده سطوح شناور",
     "CurrencyBook": "دفتر عملیات ارزی",
-    "SystemIssue": "کنترل سیستم"
+    "SystemIssue": "کنترل سیستم",
+    "BalanceByAccount": "مانده به تفکیک حساب"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",

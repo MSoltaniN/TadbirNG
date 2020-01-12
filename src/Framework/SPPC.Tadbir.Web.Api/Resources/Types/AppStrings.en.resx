@@ -2886,4 +2886,16 @@
   <data name="TestBalance8Column" xml:space="preserve">
     <value>8-Column</value>
   </data>
+  <data name="BalanceByAccount" xml:space="preserve">
+    <value>Balance by account</value>
+  </data>
+  <data name="BalanceByAccountReport" xml:space="preserve">
+    <value>Balance by account</value>
+  </data>
+  <data name="SystemIssueReport" xml:space="preserve">
+    <value>System issue</value>
+  </data>
+  <data name="OperationalForms" xml:space="preserve">
+    <value>Operational forms</value>
+  </data>
 </root>

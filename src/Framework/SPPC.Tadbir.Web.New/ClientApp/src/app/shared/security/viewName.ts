@@ -58,5 +58,6 @@ export enum ViewName {
   ProjectBalance4Column = 54,
   ProjectBalance6Column = 55,
   ProjectBalance8Column = 56,
-  ProjectBalance10Column = 57
+  ProjectBalance10Column = 57,
+  BalanceByAccount = 58
 }

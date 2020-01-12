@@ -37,7 +37,8 @@ import { TestBalanceComponent } from '@sppc/finance/components/reporting/testBal
 import { ItemBalanceComponent } from '@sppc/finance/components/reporting/itemBalance/itemBalance.component';
 import { CurrencyBookComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook.component';
 import { CurrencyBookDetailComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook-detail.component';
-import { SystemIssueComponent } from '@sppc/finance//components/reporting/systemIssue/systemIssue.component';
+import { SystemIssueComponent } from '@sppc/finance/components/reporting/systemIssue/systemIssue.component';
+import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/balanceByAccount/balanceByAccount.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { SystemIssueComponent } from '@sppc/finance//components/reporting/system
   declarations: [AccountComponent, AccountFormComponent, AccountCollectionComponent, AccountGroupsComponent, AccountGroupsFormComponent, AccountRelationsComponent,
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
     ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
-    currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent,ItemBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent],
+    currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent, BalanceByAccountComponent,
+ItemBalanceComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,

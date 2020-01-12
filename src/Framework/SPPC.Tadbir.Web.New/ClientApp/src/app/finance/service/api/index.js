@@ -12,4 +12,5 @@ export * from './voucherApi';
 export * from './voucherReportApi';
 export * from './currencyBookApi';
 export * from './systemIssueApi';
+export * from './balanceByAccountApi';
 //# sourceMappingURL=index.js.map
