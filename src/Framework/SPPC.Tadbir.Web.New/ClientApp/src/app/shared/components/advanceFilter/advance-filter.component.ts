@@ -242,7 +242,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.computeTotalExpression();
 
       this.groupFilters[index].filters = this.filters;
-      this.saveFiltersToDB(false);
+      //this.saveFiltersToDB(false);
       this.showMessage(this.getText('AdvanceFilter.FilterEditedSuccess'), MessageType.Succes);
     }
   }
@@ -607,7 +607,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.showMessage(this.getText('AdvanceFilter.FilterInsertedSuccess'), MessageType.Succes)
       this.computeTotalExpression();
       this.revertToDefaultValues();
-      this.saveFiltersToDB(false);
+      //this.saveFiltersToDB(false);
     }
   }
 
@@ -812,7 +812,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       this.groupFilters[index].filters = filters;
       this.revertToDefaultValues();
-      this.saveFiltersToDB(false);
+      //this.saveFiltersToDB(false);
       this.showMessage(this.getText('AdvanceFilter.FilterDeletedSuccess'), MessageType.Succes)
     }
 
@@ -870,9 +870,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       if (this.activeSaveFilter) {
         gf.filters = this.groupFilters[0].filters;        
-      }
-
-      
+      }      
 
       if (this.activeSaveFilter) {        
 
