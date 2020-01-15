@@ -178,16 +178,15 @@ namespace SPPC.Tadbir.Persistence
             {
                 line = Mapper.Map<VoucherLine>(lineView);
                 line.CreatedById = UserContext.Id;
-                if (await InsertAsync(repository, line))
-                {
-                    await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
-                }
+                await InsertAsync(repository, line);
+                await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
             }
             else
             {
                 line = await repository.GetByIDAsync(lineView.Id);
-                if (line != null && await UpdateAsync(repository, line, lineView))
+                if (line != null)
                 {
+                    await UpdateAsync(repository, line, lineView);
                     await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
                 }
             }
@@ -220,8 +219,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var article = await repository.GetByIDAsync(articleId);
-            if (article != null && await DeleteAsync(repository, article))
+            if (article != null)
             {
+                await DeleteAsync(repository, article);
                 await UpdateVoucherBalanceStatusAsync(article.VoucherId);
             }
         }
