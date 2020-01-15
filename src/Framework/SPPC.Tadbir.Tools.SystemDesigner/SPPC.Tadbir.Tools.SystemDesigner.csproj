@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -84,6 +86,12 @@
     <Compile Include="Forms\GenerateControllerForm.Designer.cs">
       <DependentUpon>GenerateControllerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LogCatalogueForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LogCatalogueForm.Designer.cs">
+      <DependentUpon>LogCatalogueForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
@@ -100,6 +108,7 @@
     <Compile Include="Models\CurrencyInfo.cs" />
     <Compile Include="Models\EntityActionsModel.cs" />
     <Compile Include="Models\EntityInfoModel.cs" />
+    <Compile Include="Models\LogSettingModel.cs" />
     <Compile Include="NamespaceUtil.cs" />
     <Compile Include="PermissionCheckedEventArgs.cs" />
     <Compile Include="Program.cs" />
@@ -227,6 +236,9 @@
     <EmbeddedResource Include="Forms\GenerateControllerForm.resx">
       <DependentUpon>GenerateControllerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LogCatalogueForm.resx">
+      <DependentUpon>LogCatalogueForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -294,7 +306,6 @@
       <Name>SPPC.Tadbir.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Templates\BlankController.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

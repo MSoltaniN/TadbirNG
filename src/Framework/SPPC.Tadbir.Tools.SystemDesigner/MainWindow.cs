@@ -47,5 +47,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void ManageLogCatalog_Click(object sender, EventArgs e)
+        {
+            var form = new LogCatalogueForm();
+            form.ShowDialog(this);
+        }
     }
 }
