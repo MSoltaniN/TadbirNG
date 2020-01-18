@@ -396,6 +396,9 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<OperationLog, OperationLogViewModel>();
             mapperConfig.CreateMap<OperationLogViewModel, OperationLog>();
+            mapperConfig.CreateMap<SysOperationLog, OperationLogViewModel>();
+            mapperConfig.CreateMap<OperationLogViewModel, SysOperationLog>();
+
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(
                     dest => dest.LineId,

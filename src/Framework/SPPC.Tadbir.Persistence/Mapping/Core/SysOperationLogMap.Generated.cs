@@ -40,27 +40,32 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Operation)
                 .WithMany()
-                .HasForeignKey("OperationID")
+                .HasForeignKey(e => e.OperationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_SysOperationLog_Metadata_Operation");
             builder.HasOne(e => e.Source)
                 .WithMany()
-                .HasForeignKey("SourceID")
+                .HasForeignKey(e => e.SourceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_SysOperationLog_Metadata_Source");
             builder.HasOne(e => e.EntityType)
                 .WithMany()
-                .HasForeignKey("EntityTypeID")
+                .HasForeignKey(e => e.EntityTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_SysOperationLog_Metadata_EntityType");
             builder.HasOne(e => e.SourceList)
                 .WithMany()
-                .HasForeignKey("SourceListID")
+                .HasForeignKey(e => e.SourceListId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_SysOperationLog_Metadata_SourceList");
+            builder.HasOne(e => e.Company)
+                .WithMany()
+                .HasForeignKey(e => e.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Core_SysOperationLog_Config_Company");
             builder.HasOne(e => e.User)
                 .WithMany()
-                .HasForeignKey("UserID")
+                .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_SysOperationLog_Auth_User");
         }

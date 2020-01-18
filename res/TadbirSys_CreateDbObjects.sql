@@ -362,9 +362,10 @@ GO
 CREATE TABLE [Core].[SysOperationLog] (
     [SysOperationLogID]   INT              IDENTITY (1, 1) NOT NULL,
     [OperationID]         INT              NOT NULL,
-    [SourceID]            INT              NOT NULL,
-    [EntityTypeID]        INT              NOT NULL,
-    [SourceListID]        INT              NOT NULL,
+    [SourceID]            INT              NULL,
+    [EntityTypeID]        INT              NULL,
+    [SourceListID]        INT              NULL,
+    [CompanyID]           INT              NOT NULL,
     [UserID]              INT              NOT NULL,
     [Date]                DATETIME         NOT NULL,
     [Time]                TIME(7)          NOT NULL,
@@ -377,6 +378,7 @@ CREATE TABLE [Core].[SysOperationLog] (
     , CONSTRAINT [FK_Core_SysOperationLog_Metadata_Source] FOREIGN KEY ([SourceID]) REFERENCES [Metadata].[OperationSource]([OperationSourceID])
     , CONSTRAINT [FK_Core_SysOperationLog_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
     , CONSTRAINT [FK_Core_SysOperationLog_Metadata_SourceList] FOREIGN KEY ([SourceListID]) REFERENCES [Metadata].[View]([ViewID])
+    , CONSTRAINT [FK_Core_SysOperationLog_Config_CompanyDb] FOREIGN KEY ([CompanyID]) REFERENCES [Config].[CompanyDb]([CompanyID])
     , CONSTRAINT [FK_Core_SysOperationLog_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
 )
 GO

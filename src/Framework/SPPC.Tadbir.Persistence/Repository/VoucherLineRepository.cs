@@ -322,7 +322,7 @@ namespace SPPC.Tadbir.Persistence
             return result;
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.VoucherLine; }
         }

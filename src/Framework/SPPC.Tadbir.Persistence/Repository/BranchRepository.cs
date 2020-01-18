@@ -327,7 +327,7 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<BranchViewModel>(branch);
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.Branch; }
         }

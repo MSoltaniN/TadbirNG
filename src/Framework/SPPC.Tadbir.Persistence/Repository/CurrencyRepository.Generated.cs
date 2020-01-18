@@ -298,7 +298,7 @@ namespace SPPC.Tadbir.Persistence
             return currencyViewModel;
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.Currency; }
         }

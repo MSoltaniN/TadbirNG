@@ -12,6 +12,7 @@
 
 using System;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Model.Core
@@ -70,6 +71,11 @@ namespace SPPC.Tadbir.Model.Core
         /// نمای اطلاعاتی لیستی به کار رفته حین انجام عملیات
         /// </summary>
         public virtual View SourceList { get; set; }
+
+        /// <summary>
+        /// شرکتی که عملیات سیستمی در دیتابیس آن انجام شده
+        /// </summary>
+        public virtual CompanyDb Company { get; set; }
 
         /// <summary>
         /// کاربری که عملیات سیستمی توسط او انجام شده

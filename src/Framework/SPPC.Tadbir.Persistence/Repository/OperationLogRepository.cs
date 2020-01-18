@@ -26,6 +26,8 @@ namespace SPPC.Tadbir.Persistence
         {
         }
 
+        #region Company Log Operations
+
         /// <summary>
         /// به روش آسنکرون، کلیه لاگ های عملیاتی موجود را برای شرکت و کاربر مشخص شده خوانده و برمی گرداند
         /// </summary>
@@ -77,6 +79,66 @@ namespace SPPC.Tadbir.Persistence
             repository.Insert(newLog);
             await UnitOfWork.CommitAsync();
         }
+
+        #endregion
+
+        #region System Log Operations
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه لاگ های عملیات سیستمی موجود را  خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه لاگ های سیستمی موجود</returns>
+        public async Task<IList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions = null)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var list = await repository.GetEntityQuery(
+                    log => log.Operation, log => log.EntityType,
+                    log => log.Source, log => log.SourceList,
+                    log => log.Company, log => log.User)
+                .OrderByDescending(log => log.Date)
+                .ThenByDescending(log => log.Time)
+                .Select(log => Mapper.Map<OperationLogViewModel>(log))
+                .Apply(gridOptions)
+                .ToListAsync();
+            UnitOfWork.UseCompanyContext();
+            return list;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای لاگ های عملیات سیستمی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد سطرهای لاگ های سیستمی</returns>
+        public async Task<int> GetSystemLogCountAsync(GridOptions gridOptions = null)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            int count = await repository.GetEntityQuery()
+                .Select(log => Mapper.Map<OperationLogViewModel>(log))
+                .Apply(gridOptions, false)
+                .CountAsync();
+            UnitOfWork.UseCompanyContext();
+            return count;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیات سیستمی جدید را ذخیره می کند
+        /// </summary>
+        /// <param name="operationLog">اطلاعات لاگ عملیاتی جدید</param>
+        public async Task SaveSystemLogAsync(OperationLogViewModel operationLog)
+        {
+            Verify.ArgumentNotNull(operationLog, "operationLog");
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var newLog = Mapper.Map<SysOperationLog>(operationLog);
+            repository.Insert(newLog);
+            await UnitOfWork.CommitAsync();
+            UnitOfWork.UseCompanyContext();
+        }
+
+        #endregion
 
         private async Task SetSystemValues(OperationLogViewModel log)
         {

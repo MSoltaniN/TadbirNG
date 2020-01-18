@@ -296,7 +296,7 @@ namespace SPPC.Tadbir.Persistence
             return detailAccount.FullCode;
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.DetailAccount; }
         }
