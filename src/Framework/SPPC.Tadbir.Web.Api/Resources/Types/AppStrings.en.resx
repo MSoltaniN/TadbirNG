@@ -2895,4 +2895,7 @@
   <data name="SystemIssueReport" xml:space="preserve">
     <value>System issue</value>
   </data>
+  <data name="OperationalForms" xml:space="preserve">
+    <value>Operational forms</value>
+  </data>
 </root>

@@ -95,6 +95,11 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <returns>سطرهای مرتب شده بر اساس کد کامل مولفه حساب</returns>
         IEnumerable<TestBalanceItemViewModel> GetSortedItems(IEnumerable<TestBalanceItemViewModel> items);
 
+        /// <summary>
+        /// شناسه دیتابیسی نمای لیستی گزارش تراز یا گردش و مانده را با توجه به تعداد ستون های گزارش مشخص می کند
+        /// </summary>
+        /// <param name="format">قالب گزارش تراز یا گردش و مانده مورد نظر</param>
+        /// <returns>شناسه نمای لیستی گزارش</returns>
         int GetSourceList(TestBalanceFormat format);
     }
 }

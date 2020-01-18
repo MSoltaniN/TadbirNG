@@ -39,12 +39,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید ذخیره شود</param>
-        public async Task<bool> InsertAsync(IRepository<TEntity> repository, TEntity entity)
+        public async Task InsertAsync(IRepository<TEntity> repository, TEntity entity)
         {
             OnEntityAction(OperationId.Create);
             Log.Description = GetState(entity);
             repository.Insert(entity);
-            return await FinalizeActionAsync(entity);
+            await FinalizeActionAsync(entity);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که تغییرات آن باید ذخیره شود</param>
         /// <param name="entityView">مدل نمایشی شامل آخرین تغییرات سطر اطلاعاتی</param>
-        public async Task<bool> UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView)
+        public async Task UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView)
         {
             var clone = GetEntityCopy(entity);
             OnEntityAction(OperationId.Edit);
@@ -62,7 +62,7 @@ namespace SPPC.Tadbir.Persistence
             Log.Description = String.Format("(Old) => {1}{0}(New) => {2}",
                 Environment.NewLine, GetState(clone), GetState(entity));
             repository.Update(entity);
-            return await FinalizeActionAsync(entity);
+            await FinalizeActionAsync(entity);
         }
 
         /// <summary>
@@ -71,14 +71,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید حذف شود</param>
-        public async Task<bool> DeleteAsync(IRepository<TEntity> repository, TEntity entity)
+        public async Task DeleteAsync(IRepository<TEntity> repository, TEntity entity)
         {
             var clone = Mapper.Map<TEntity>(entity);
             OnEntityAction(OperationId.Delete);
             Log.Description = GetState(entity);
             DisconnectEntity(entity);
             repository.Delete(entity);
-            return await FinalizeActionAsync(entity);
+            await FinalizeActionAsync(entity);
         }
 
         internal virtual int EntityType
