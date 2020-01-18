@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// مجموعه سطرهای محاسبه شده در گزارش
         /// </summary>
-        public List<BalanceByAccountItemViewModel> Items { get; set; }
+        public List<BalanceByAccountItemViewModel> Items { get; }
 
         /// <summary>
         /// سطر پایانی گزارش شامل مقادیر جمع کل محاسبه شده برای ستون های گزارش
@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// سطرهای اطلاعاتی فعلی را با سطرهای داده شده جایگزین می کند
         /// </summary>
         /// <param name="items">مجموعه سطرهای اطلاعاتی جدید برای گزارش</param>
-        public void SetBalanceItems(IEnumerable<BalanceByAccountItemViewModel> items)
+        public void SetItems(IEnumerable<BalanceByAccountItemViewModel> items)
         {
             Items.Clear();
             Items.AddRange(items);

@@ -5,10 +5,11 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Repository
@@ -22,10 +23,13 @@ namespace SPPC.Tadbir.Persistence.Repository
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        public BalanceByAccountRepository(IRepositoryContext context, ISystemRepository system)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        /// <param name="report">امکانات عمومی مورد نیاز برای گزارشگیری را فراهم می کند</param>
+        public BalanceByAccountRepository(IRepositoryContext context, ISystemRepository system, IReportUtility report)
             : base(context)
         {
             _system = system;
+            _report = report;
         }
 
         /// <summary>
@@ -49,6 +53,16 @@ namespace SPPC.Tadbir.Persistence.Repository
                         break;
                     }
 
+                case ViewName.CostCenter:
+                    {
+                        break;
+                    }
+
+                case ViewName.Project:
+                    {
+                        break;
+                    }
+
                 default:
                     break;
             }
@@ -68,54 +82,235 @@ namespace SPPC.Tadbir.Persistence.Repository
 
         private async Task<BalanceByAccountViewModel> ReportByAccount(BalanceByAccountParameters parameters)
         {
-            var items = new List<BalanceByAccountItemViewModel>();
-            var item = new BalanceByAccountItemViewModel();
-
-            var lines = await GetVoucherLinesAsync(parameters);
-
-            item = lines.First();
-
-            item.StartBalance = await GetInitialBalanceAsync(parameters);
-            item.Debit = lines.Sum(f => f.Debit);
-            item.Credit = lines.Sum(f => f.Credit);
-
-            items.Add(item);
-
-            return new BalanceByAccountViewModel
+            if (parameters.AccountId.HasValue)
             {
-                Items = items
-            };
+                return await GetReportBySelectedAccountAsync(parameters);
+            }
+            else
+            {
+                if (!parameters.AccountId.HasValue && parameters.AccountLevel.HasValue)
+                {
+                    return await GetReportBySelectedAccountlevelAsync(parameters);
+                }
+                else
+                {
+                    if (!parameters.AccountId.HasValue && !parameters.AccountLevel.HasValue)
+                    {
+                        return await GetReportBySelectedViewAsync(parameters);
+                    }
+                }
+            }
+
+            return null;
         }
 
-        private async Task<List<BalanceByAccountItemViewModel>> GetVoucherLinesAsync(BalanceByAccountParameters parameters)
+        private async Task<BalanceByAccountViewModel> GetReportBySelectedAccountAsync(BalanceByAccountParameters parameters)
+        {
+            var balanceByAccount = new BalanceByAccountViewModel();
+            var accountItem = await GetAccountAsync(parameters.AccountId.Value);
+            if (accountItem != null)
+            {
+                var lines = await GetVoucherLinesAsync(parameters);
+                lines = lines.Where(line => line.AccountFullCode.StartsWith(accountItem.FullCode)).ToList();
+
+                await AddBalanceByAccountItemsAsync(balanceByAccount, lines, parameters, accountItem);
+
+                //foreach (var lineGroup in lines.GroupBy(line => line.AccountFullCode))
+                //{
+                //    balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(lineGroup, lineGroup.Key, parameters));
+                //}
+            }
+
+            var sortedList = balanceByAccount.Items.OrderBy(item => item.AccountFullCode);
+            balanceByAccount.SetItems(sortedList
+                .Apply(parameters.GridOptions, false)
+                .ToArray());
+
+            SetSummaryItems(balanceByAccount);
+
+            return balanceByAccount;
+        }
+
+        private async Task<BalanceByAccountViewModel> GetReportBySelectedAccountlevelAsync(BalanceByAccountParameters parameters)
+        {
+            var balanceByAccount = new BalanceByAccountViewModel();
+            var lines = await GetVoucherLinesAsync(parameters);
+
+            Func<BalanceByAccountItemViewModel, bool> filter;
+            int index = 0;
+            while (index < parameters.AccountLevel)
+            {
+                filter = line => line.AccountLevel == index;
+                foreach (var lineGroup in _report.GetTurnoverGroups(lines, index, filter))
+                {
+                    await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters);
+                }
+
+                index++;
+            }
+
+            filter = line => line.AccountLevel >= index;
+            foreach (var lineGroup in _report.GetTurnoverGroups(lines, index, filter))
+            {
+                await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters);
+            }
+
+            var sortedList = balanceByAccount.Items.OrderBy(item => item.AccountFullCode);
+            balanceByAccount.SetItems(sortedList
+                .Apply(parameters.GridOptions, false)
+                .ToArray());
+
+            SetSummaryItems(balanceByAccount);
+
+            return balanceByAccount;
+        }
+
+        private async Task<BalanceByAccountViewModel> GetReportBySelectedViewAsync(BalanceByAccountParameters parameters)
+        {
+            var balanceByAccount = new BalanceByAccountViewModel();
+            var lines = await GetVoucherLinesAsync(parameters);
+
+            Func<BalanceByAccountItemViewModel, bool> filter;
+            int index = 0;
+            while (index < GetMaxDepth(parameters.ViewId))
+            {
+                filter = line => line.AccountLevel == index;
+                foreach (var lineGroup in _report.GetTurnoverGroups(lines, index, filter))
+                {
+                    await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters);
+                }
+
+                index++;
+            }
+
+            var sortedList = balanceByAccount.Items.OrderBy(item => item.AccountFullCode);
+            balanceByAccount.SetItems(sortedList
+                .Apply(parameters.GridOptions, false)
+                .ToArray());
+
+            SetSummaryItems(balanceByAccount);
+
+            return balanceByAccount;
+        }
+
+        private void SetSummaryItems(BalanceByAccountViewModel balanceByAccount)
+        {
+            balanceByAccount.Total.StartBalance = balanceByAccount.Items.Sum(item => item.StartBalance);
+            balanceByAccount.Total.Credit = balanceByAccount.Items.Sum(item => item.Credit);
+            balanceByAccount.Total.Debit = balanceByAccount.Items.Sum(item => item.Debit);
+            balanceByAccount.Total.EndBalance = balanceByAccount.Items.Sum(item => item.EndBalance);
+        }
+
+        private async Task<IList<BalanceByAccountItemViewModel>> GetVoucherLinesAsync(BalanceByAccountParameters parameters)
         {
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                 line => line.Voucher,
-                line => line.Account)
-                .Where(line => line.AccountId == parameters.AccountId);
+                line => line.Branch,
+                line => line.Account);
 
+            var options = (TestBalanceOptions)parameters.Options;
+            if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
+            {
+                query = query.Where(art => art.Voucher.Type != (short)VoucherType.ClosingVoucher);
+            }
+
+            if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
+            {
+                query = query.Where(art => art.Voucher.Type != (short)VoucherType.ClosingTempAccounts);
+            }
+
+            if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+            {
+                query = query.Where(art => art.Voucher.Type != (short)VoucherType.OpeningVoucher);
+            }
+
+            IList<BalanceByAccountItemViewModel> lines = null;
             if (parameters.IsByDate)
             {
-                query = query
-                    .Where(line => line.Voucher.Date.IsBetween(parameters.FromDate.Value, parameters.ToDate.Value))
-                    .OrderBy(line => line.Voucher.No);
+                lines = await GetRawReportByDateLinesAsync(
+                    query, parameters.FromDate.Value, parameters.ToDate.Value, parameters.GridOptions);
             }
             else
             {
-                query = query
-                    .Where(line => line.Voucher.No >= parameters.FromNo && line.Voucher.No <= parameters.ToNo)
-                    .OrderBy(line => line.Voucher.No);
+                lines = await GetRawReportByNumberLinesAsync(
+                     query, parameters.FromNo.Value, parameters.ToNo.Value, parameters.GridOptions);
             }
 
-            return await query.Select(line => Mapper.Map<BalanceByAccountItemViewModel>(line)).ToListAsync();
+            return lines;
         }
 
-        private async Task<decimal> GetInitialBalanceAsync(BalanceByAccountParameters parameters)
+        private async Task<List<BalanceByAccountItemViewModel>> GetRawReportByDateLinesAsync(IQueryable<VoucherLine> query,
+            DateTime from, DateTime to, GridOptions gridOptions)
+        {
+            var lines = await query
+                .Where(art => art.Voucher.Date.IsBetween(from, to))
+                .OrderBy(art => art.Voucher.Date)
+                    .ThenBy(art => art.Voucher.No)
+                .Select(art => Mapper.Map<BalanceByAccountItemViewModel>(art))
+                .ToListAsync();
+            return lines
+                .ApplyQuickFilter(gridOptions)
+                .ToList();
+        }
+
+        private async Task<List<BalanceByAccountItemViewModel>> GetRawReportByNumberLinesAsync(IQueryable<VoucherLine> query,
+           int from, int to, GridOptions gridOptions)
+        {
+            var lines = await query
+                .Where(art => art.Voucher.No >= from
+                    && art.Voucher.No <= to)
+                .OrderBy(art => art.Voucher.No)
+                .Select(art => Mapper.Map<BalanceByAccountItemViewModel>(art))
+                .ToListAsync();
+            return lines
+                .ApplyQuickFilter(gridOptions)
+                .ToList();
+        }
+
+        private async Task AddBalanceByAccountItemsAsync(
+            BalanceByAccountViewModel balanceByAccount,
+            IEnumerable<BalanceByAccountItemViewModel> lines,
+            BalanceByAccountParameters parameters,
+            Account account = null)
+        {
+            if (parameters.IsByBranch)
+            {
+                foreach (var branchGroup in lines.GroupBy(item => item.BranchId))
+                {
+                    balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(branchGroup, parameters, account));
+                }
+            }
+            else
+            {
+                balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(lines, parameters, account));
+            }
+        }
+
+        private async Task<BalanceByAccountItemViewModel> GetBalanceByAccountItemAsync(
+            IEnumerable<BalanceByAccountItemViewModel> lines, BalanceByAccountParameters parameters, Account account = null)
+        {
+            var first = lines.First();
+            var accountId = account != null ? account.Id : first.AccountId;
+
+            if (account != null)
+            {
+                first.AccountFullCode = account.FullCode;
+                first.AccountName = account.Name;
+            }
+
+            first.StartBalance = await GetInitialBalanceAsync(accountId, parameters);
+            first.Debit = lines.Sum(line => line.Debit);
+            first.Credit = lines.Sum(line => line.Credit);
+            first.EndBalance = first.StartBalance + first.Debit - first.Credit;
+            return first;
+        }
+
+        private async Task<decimal> GetInitialBalanceAsync(int accountId, BalanceByAccountParameters parameters)
         {
             decimal balance = parameters.IsByDate
-                ? await GetBalanceAsync(parameters.AccountId.Value, parameters.FromDate.Value)
-                : await GetBalanceAsync(parameters.AccountId.Value, parameters.FromNo.Value);
+                ? await GetBalanceAsync(accountId, parameters.FromDate.Value)
+                : await GetBalanceAsync(accountId, parameters.FromNo.Value);
 
             return balance;
         }
@@ -179,6 +374,18 @@ namespace SPPC.Tadbir.Persistence.Repository
                 .SumAsync();
         }
 
+        private int GetMaxDepth(int viewId)
+        {
+            var fullConfig = Config
+               .GetViewTreeConfigByViewAsync(viewId)
+               .Result;
+
+            return fullConfig.Current.Levels
+                .Where(f => f.IsUsed)
+                .Count();
+        }
+
         private readonly ISystemRepository _system;
+        private readonly IReportUtility _report;
     }
 }
