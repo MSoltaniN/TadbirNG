@@ -93,6 +93,5 @@ namespace SPPC.Tadbir.Values
         /// گزینه های مختلف برای کنترل نمایش سطرهای اطلاعاتی در یک نمای جدولی را نگهداری می کند
         /// </summary>
         public GridOptions GridOptions { get; set; }
-
     }
 }
