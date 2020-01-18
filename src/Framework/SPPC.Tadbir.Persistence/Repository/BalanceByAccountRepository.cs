@@ -113,7 +113,7 @@ namespace SPPC.Tadbir.Persistence.Repository
                 var lines = await GetVoucherLinesAsync(parameters);
                 lines = lines.Where(line => line.AccountFullCode.StartsWith(accountItem.FullCode)).ToList();
 
-                await AddBalanceByAccountItemsAsync(balanceByAccount, lines, parameters, accountItem.Id);
+                await AddBalanceByAccountItemsAsync(balanceByAccount, lines, parameters, accountItem);
 
                 //foreach (var lineGroup in lines.GroupBy(line => line.AccountFullCode))
                 //{
@@ -272,27 +272,33 @@ namespace SPPC.Tadbir.Persistence.Repository
             BalanceByAccountViewModel balanceByAccount,
             IEnumerable<BalanceByAccountItemViewModel> lines,
             BalanceByAccountParameters parameters,
-            int? accId = null)
+            Account account = null)
         {
             if (parameters.IsByBranch)
             {
                 foreach (var branchGroup in lines.GroupBy(item => item.BranchId))
                 {
-                    var accountId = accId.HasValue ? accId.Value : branchGroup.First().AccountId;
-                    balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(branchGroup, accountId, parameters));
+                    balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(branchGroup, parameters, account));
                 }
             }
             else
             {
-                var accountId = accId.HasValue ? accId.Value : lines.First().AccountId;
-                balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(lines, accountId, parameters));
+                balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(lines, parameters, account));
             }
         }
 
         private async Task<BalanceByAccountItemViewModel> GetBalanceByAccountItemAsync(
-            IEnumerable<BalanceByAccountItemViewModel> lines, int accountId, BalanceByAccountParameters parameters)
+            IEnumerable<BalanceByAccountItemViewModel> lines, BalanceByAccountParameters parameters, Account account = null)
         {
             var first = lines.First();
+            var accountId = account != null ? account.Id : first.AccountId;
+
+            if (account != null)
+            {
+                first.AccountFullCode = account.FullCode;
+                first.AccountName = account.Name;
+            }
+
             first.StartBalance = await GetInitialBalanceAsync(accountId, parameters);
             first.Debit = lines.Sum(line => line.Debit);
             first.Credit = lines.Sum(line => line.Credit);
