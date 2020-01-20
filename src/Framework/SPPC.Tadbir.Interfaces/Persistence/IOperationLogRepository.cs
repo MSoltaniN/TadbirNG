@@ -33,6 +33,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="operationLog">اطلاعات لاگ عملیاتی جدید</param>
         Task SaveLogAsync(OperationLogViewModel operationLog);
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای شرکتی ثبت شده در محدوده تاریخی داده شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
+        Task MoveLogsToArchiveAsync(DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای بایگانی شده در محدوده تاریخی داده شده را
+        /// در لاگ های شرکتی بازیابی می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بازیابی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بازیابی</param>
+        Task RecoverLogsFromArchive(DateTime from, DateTime to);
+
         #endregion
 
         #region System Log Operations
@@ -56,6 +71,21 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="operationLog">اطلاعات لاگ عملیاتی جدید</param>
         Task SaveSystemLogAsync(OperationLogViewModel operationLog);
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای سیستمی ثبت شده در محدوده تاریخی داده شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
+        Task MoveSystemLogsToArchiveAsync(DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای بایگانی شده در محدوده تاریخی داده شده را
+        /// در لاگ های سیستمی بازیابی می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بازیابی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بازیابی</param>
+        Task RecoverSystemLogsFromArchive(DateTime from, DateTime to);
 
         #endregion
 

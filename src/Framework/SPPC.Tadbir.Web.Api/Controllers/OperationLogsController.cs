@@ -46,6 +46,64 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(operationLogs);
         }
 
+        // PUT: api/system/oplog/archive
+        [HttpPut]
+        [Route(OperationLogApi.OperationLogsArchiveUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.Archive)]
+        public async Task<IActionResult> PutSelectedLogsAsArchived(DateTime from, DateTime to)
+        {
+            if (from == DateTime.MinValue || to == DateTime.MinValue)
+            {
+                return BadRequest(_strings[AppStrings.InvalidArchiveRange]);
+            }
+
+            await _repository.MoveLogsToArchiveAsync(from, to);
+            return Ok();
+        }
+
+        // PUT: api/system/oplog
+        [HttpPut]
+        [Route(OperationLogApi.AllOperationLogsUrl)]
+        public async Task<IActionResult> PutSelectedLogsAsRecovered(DateTime from, DateTime to)
+        {
+            if (from == DateTime.MinValue || to == DateTime.MinValue)
+            {
+                return BadRequest(_strings[AppStrings.InvalidArchiveRange]);
+            }
+
+            await _repository.RecoverLogsFromArchive(from, to);
+            return Ok();
+        }
+
+        // PUT: api/system/sys-oplog/archive
+        [HttpPut]
+        [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
+        [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.Archive)]
+        public async Task<IActionResult> PutSelectedSysLogsAsArchived(DateTime from, DateTime to)
+        {
+            if (from == DateTime.MinValue || to == DateTime.MinValue)
+            {
+                return BadRequest(_strings[AppStrings.InvalidArchiveRange]);
+            }
+
+            await _repository.MoveSystemLogsToArchiveAsync(from, to);
+            return Ok();
+        }
+
+        // PUT: api/system/sys-oplog
+        [HttpPut]
+        [Route(OperationLogApi.AllSysOperationLogsUrl)]
+        public async Task<IActionResult> PutSelectedSysLogsAsRecovered(DateTime from, DateTime to)
+        {
+            if (from == DateTime.MinValue || to == DateTime.MinValue)
+            {
+                return BadRequest(_strings[AppStrings.InvalidArchiveRange]);
+            }
+
+            await _repository.RecoverSystemLogsFromArchive(from, to);
+            return Ok();
+        }
+
         private void Localize(IList<OperationLogViewModel> logs)
         {
             foreach (var log in logs)

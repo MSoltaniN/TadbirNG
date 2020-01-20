@@ -80,6 +80,48 @@ namespace SPPC.Tadbir.Persistence
             await UnitOfWork.CommitAsync();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای شرکتی ثبت شده در محدوده تاریخی داده شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
+        public async Task MoveLogsToArchiveAsync(DateTime from, DateTime to)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
+            var logs = await repository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            foreach (var log in logs)
+            {
+                var archive = Mapper.Map<OperationLogArchive>(log);
+                archiveRepository.Insert(archive);
+                repository.Delete(log);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای بایگانی شده در محدوده تاریخی داده شده را
+        /// در لاگ های شرکتی بازیابی می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بازیابی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بازیابی</param>
+        public async Task RecoverLogsFromArchive(DateTime from, DateTime to)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
+            var archived = await archiveRepository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            foreach (var item in archived)
+            {
+                var log = Mapper.Map<OperationLog>(item);
+                log.Id = 0;
+                repository.Insert(log);
+                archiveRepository.Delete(item);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
         #endregion
 
         #region System Log Operations
@@ -136,6 +178,48 @@ namespace SPPC.Tadbir.Persistence
             repository.Insert(newLog);
             await UnitOfWork.CommitAsync();
             UnitOfWork.UseCompanyContext();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای سیستمی ثبت شده در محدوده تاریخی داده شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
+        public async Task MoveSystemLogsToArchiveAsync(DateTime from, DateTime to)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
+            var logs = await repository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            foreach (var log in logs)
+            {
+                var archive = Mapper.Map<SysOperationLogArchive>(log);
+                archiveRepository.Insert(archive);
+                repository.Delete(log);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای بایگانی شده در محدوده تاریخی داده شده را
+        /// در لاگ های سیستمی بازیابی می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بازیابی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بازیابی</param>
+        public async Task RecoverSystemLogsFromArchive(DateTime from, DateTime to)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
+            var archived = await archiveRepository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            foreach (var item in archived)
+            {
+                var log = Mapper.Map<SysOperationLog>(item);
+                log.Id = 0;
+                repository.Insert(log);
+                archiveRepository.Delete(item);
+            }
+
+            await UnitOfWork.CommitAsync();
         }
 
         #endregion

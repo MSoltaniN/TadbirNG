@@ -1393,3 +1393,28 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], 
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (583, 59, N'CompanyName', NULL, N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL, 8, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+-- 1.1.792
+CREATE TABLE [Core].[SysOperationLogArchive] (
+    [SysOperationLogArchiveID]   INT              NOT NULL,
+    [OperationID]                INT              NOT NULL,
+    [SourceID]                   INT              NULL,
+    [SourceListID]               INT              NULL,
+    [EntityTypeID]               INT              NULL,
+    [UserID]                     INT              NOT NULL,
+    [CompanyID]                  INT              NOT NULL,
+    [Date]                       DATETIME         NOT NULL,
+    [Time]                       TIME(7)          NOT NULL,
+    [EntityId]                   INT              NULL,
+    [Description]                NVARCHAR(MAX)    NULL,
+    [rowguid]                    UNIQUEIDENTIFIER CONSTRAINT [DF_Core_SysOperationLogArchive_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]               DATETIME         CONSTRAINT [DF_Core_SysOperationLogArchive_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_SysOperationLogArchive] PRIMARY KEY CLUSTERED ([SysOperationLogArchiveID] ASC)
+    , CONSTRAINT [FK_Core_SysOperationLogArchive_Metadata_Operation] FOREIGN KEY ([OperationID]) REFERENCES [Metadata].[Operation]([OperationID])
+    , CONSTRAINT [FK_Core_SysOperationLogArchive_Metadata_Source] FOREIGN KEY ([SourceID]) REFERENCES [Metadata].[OperationSource]([OperationSourceID])
+    , CONSTRAINT [FK_Core_SysOperationLogArchive_Metadata_SourceList] FOREIGN KEY ([SourceListID]) REFERENCES [Metadata].[View]([ViewID])
+    , CONSTRAINT [FK_Core_SysOperationLogArchive_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
+    , CONSTRAINT [FK_Core_SysOperationLogArchive_Config_CompanyDb] FOREIGN KEY ([CompanyID]) REFERENCES [Config].[CompanyDb]([CompanyID])
+    , CONSTRAINT [FK_Core_SysOperationLogArchive_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
+)
+GO

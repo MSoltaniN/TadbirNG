@@ -323,13 +323,13 @@ CREATE TABLE [Core].[OperationLog] (
     [BranchID]         INT              NOT NULL,
     [FiscalPeriodID]   INT              NOT NULL,
     [OperationID]      INT              NOT NULL,
-    [SourceID]         INT              NOT NULL,
-    [EntityTypeID]     INT              NOT NULL,
+    [SourceID]         INT              NULL,
+    [SourceListId]     INT              NULL,
+    [EntityTypeID]     INT              NULL,
     [Date]             DATETIME         NOT NULL,
     [Time]             TIME(7)          NOT NULL,
     [UserId]           INT              NOT NULL,
     [CompanyId]        INT              NOT NULL,
-    [SourceListId]     INT              NULL,
     [EntityId]         INT              NULL,
     [Description]      NVARCHAR(MAX)    NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Core_OperationLog_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
@@ -339,7 +339,34 @@ CREATE TABLE [Core].[OperationLog] (
     , CONSTRAINT [FK_Core_OperationLog_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Core_OperationLog_Metadata_Operation] FOREIGN KEY ([OperationID]) REFERENCES [Metadata].[Operation]([OperationID])
     , CONSTRAINT [FK_Core_OperationLog_Metadata_Source] FOREIGN KEY ([SourceID]) REFERENCES [Metadata].[OperationSource]([OperationSourceID])
+    , CONSTRAINT [FK_Core_OperationLog_Metadata_SourceList] FOREIGN KEY ([SourceListID]) REFERENCES [Metadata].[OperationSourceList]([OperationSourceListID])
     , CONSTRAINT [FK_Core_OperationLog_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
+)
+GO
+
+CREATE TABLE [Core].[OperationLogArchive] (
+    [OperationLogArchiveID]   INT              NOT NULL,
+    [BranchID]                INT              NOT NULL,
+    [FiscalPeriodID]          INT              NOT NULL,
+    [OperationID]             INT              NOT NULL,
+    [SourceID]                INT              NULL,
+    [SourceListID]            INT              NULL,
+    [EntityTypeID]            INT              NULL,
+    [Date]                    DATETIME         NOT NULL,
+    [Time]                    TIME(7)          NOT NULL,
+    [UserId]                  INT              NOT NULL,
+    [CompanyId]               INT              NOT NULL,
+    [EntityId]                INT              NULL,
+    [Description]             NVARCHAR(MAX)    NULL,
+    [rowguid]                 UNIQUEIDENTIFIER CONSTRAINT [DF_Core_OperationLogArchive_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]            DATETIME         CONSTRAINT [DF_Core_OperationLogArchive_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_OperationLogArchive] PRIMARY KEY CLUSTERED ([OperationLogArchiveID] ASC)
+    , CONSTRAINT [FK_Core_OperationLogArchive_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Core_OperationLogArchive_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Core_OperationLogArchive_Metadata_Operation] FOREIGN KEY ([OperationID]) REFERENCES [Metadata].[Operation]([OperationID])
+    , CONSTRAINT [FK_Core_OperationLogArchive_Metadata_Source] FOREIGN KEY ([SourceID]) REFERENCES [Metadata].[OperationSource]([OperationSourceID])
+    , CONSTRAINT [FK_Core_OperationLogArchive_Metadata_SourceList] FOREIGN KEY ([SourceListID]) REFERENCES [Metadata].[OperationSourceList]([OperationSourceListID])
+    , CONSTRAINT [FK_Core_OperationLogArchive_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
 )
 GO
 

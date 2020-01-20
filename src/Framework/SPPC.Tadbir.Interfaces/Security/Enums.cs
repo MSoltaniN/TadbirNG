@@ -484,6 +484,16 @@ namespace SPPC.Tadbir.Security
         /// دسترسی مشاهده لاگ های عملیاتی شرکتی
         /// </summary>
         View = 0x1,
+
+        /// <summary>
+        /// دسترسی بایگانی لاگ های عملیاتی شرکتی
+        /// </summary>
+        Archive = 0x2,
+
+        /// <summary>
+        /// دسترسی حذف لاگ های عملیاتی شرکتی از بایگانی
+        /// </summary>
+        Delete = 0x4
     }
 
     /// <summary>
@@ -501,6 +511,16 @@ namespace SPPC.Tadbir.Security
         /// دسترسی مشاهده لاگ های عملیاتی سیستمی
         /// </summary>
         View = 0x1,
+
+        /// <summary>
+        /// دسترسی بایگانی لاگ های عملیاتی سیستمی
+        /// </summary>
+        Archive = 0x2,
+
+        /// <summary>
+        /// دسترسی حذف لاگ های عملیاتی سیستمی از بایگانی
+        /// </summary>
+        Delete = 0x4
     }
 
     /// <summary>
