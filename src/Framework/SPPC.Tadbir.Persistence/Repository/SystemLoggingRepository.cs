@@ -24,6 +24,10 @@ namespace SPPC.Tadbir.Persistence
             _logRepository = logRepository;
         }
 
+        /// <summary>
+        /// رکورد لاگ عملیاتی را در جدول مرتبط ایجاد می کند.
+        /// </summary>
+        /// <remarks>توجه : هر گونه خطای زمان اجرا حین عملیات، نادیده گرفته می‌شود</remarks>
         protected override async Task TrySaveLogAsync()
         {
             try

@@ -9,6 +9,11 @@ using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    /// عملیات پایه مورد نیاز برای ایجاد لاگ های عملیاتی را پیاده سازی می کند
+    /// </summary>
+    /// <typeparam name="TEntity">نوع مدل دیتابیسی که برای آن لاگ عملیاتی ایجاد می شود</typeparam>
+    /// <typeparam name="TEntityView">نوع مدل نمایشی که برای آن لاگ عملیاتی ایجاد می شود</typeparam>
     public abstract class LoggingRepositoryBase<TEntity, TEntityView> : RepositoryBase, ILoggingRepository<TEntity, TEntityView>
         where TEntity : class, IEntity
         where TEntityView : class, new()
@@ -94,6 +99,10 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
+        /// <summary>
+        /// تمام ارتباطات موجود در نمونه داده شده را پاک کرده و در عمل، این ارتباطات را قطع می کند
+        /// </summary>
+        /// <param name="entity">نمونه ای که ارتباطات آن باید قطع شوند</param>
         protected static void DisconnectEntity(object entity)
         {
             var relations = Reflector
@@ -118,6 +127,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="entity">سطر اطلاعاتی موجود</param>
         protected abstract void UpdateExisting(TEntityView entityView, TEntity entity);
 
+        /// <summary>
+        /// رکورد لاگ عملیاتی را در جدول مرتبط ایجاد می کند.
+        /// </summary>
+        /// <remarks>توجه : هر گونه خطای زمان اجرا حین عملیات، نادیده گرفته می‌شود</remarks>
         protected abstract Task TrySaveLogAsync();
 
         /// <summary>
@@ -131,6 +144,10 @@ namespace SPPC.Tadbir.Persistence
             await TrySaveLogAsync();
         }
 
+        /// <summary>
+        /// در صورت بروز خطا هنگام ایجاد رکورد لاگ، جزییات خطا را در کنسول ویژوال استودیو گزارش می دهد
+        /// </summary>
+        /// <param name="ex">خطای ایجاد شده</param>
         protected void ReportLoggingError(Exception ex)
         {
 #if DEBUG
@@ -140,6 +157,11 @@ namespace SPPC.Tadbir.Persistence
 #endif
         }
 
+        /// <summary>
+        /// از آبجکت داده شده یک رونوشت تهیه کرده و رونوشت را به صورت آبجکت جدیدی برمی گرداند
+        /// </summary>
+        /// <param name="entity">آبجکتی که باید از آن رونوشت یا کپی تهیه شود</param>
+        /// <returns>رونوشت تهیه شده از آبجکت داده شده</returns>
         protected TEntity GetEntityCopy(TEntity entity)
         {
             var mapped = Mapper.Map<TEntityView>(entity);

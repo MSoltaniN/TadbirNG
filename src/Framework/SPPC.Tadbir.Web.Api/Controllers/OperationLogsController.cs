@@ -23,13 +23,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/system/oplog
-        [Route(SystemApi.AllOperationLogsUrl)]
+        [Route(OperationLogApi.AllOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetAllOperationLogsAsync()
         {
             int itemCount = await _repository.GetLogCountAsync(GridOptions);
             SetItemCount(itemCount);
             var operationLogs = await _repository.GetLogsAsync(GridOptions);
+            Localize(operationLogs);
+            return Json(operationLogs);
+        }
+
+        // GET: api/system/sys-oplog
+        [Route(OperationLogApi.AllSysOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.View)]
+        public async Task<IActionResult> GetAllSysOperationLogsAsync()
+        {
+            int itemCount = await _repository.GetSystemLogCountAsync(GridOptions);
+            SetItemCount(itemCount);
+            var operationLogs = await _repository.GetSystemLogsAsync(GridOptions);
             Localize(operationLogs);
             return Json(operationLogs);
         }
