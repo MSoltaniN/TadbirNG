@@ -358,7 +358,7 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.FiscalPeriod; }
         }

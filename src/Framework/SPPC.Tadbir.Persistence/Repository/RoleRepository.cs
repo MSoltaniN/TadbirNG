@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات نقش ها را پیاده سازی می کند
     /// </summary>
-    public class RoleRepository : LoggingRepository<Role, RoleFullViewModel>, IRoleRepository
+    public class RoleRepository : SystemLoggingRepository<Role, RoleFullViewModel>, IRoleRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -206,8 +206,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 role = Mapper.Map<Role>(roleView.Role);
                 AddRolePermissions(role, roleView);
-                repository.Insert(role, r => r.RolePermissions);
-                await FinalizeActionAsync(role);
+                await InsertAsync(repository, role);
             }
             else
             {
@@ -224,10 +223,7 @@ namespace SPPC.Tadbir.Persistence
                         AddNewPermissions(role, roleView);
                     }
 
-                    var clone = Mapper.Map<Role>(role);
-                    UpdateExisting(roleView, role);
-                    repository.UpdateWithTracking(role);
-                    await FinalizeActionAsync(role);
+                    await UpdateAsync(repository, role, roleView);
                 }
             }
 
@@ -245,10 +241,8 @@ namespace SPPC.Tadbir.Persistence
             var role = await repository.GetByIDWithTrackingAsync(roleId, r => r.RolePermissions);
             if (role != null)
             {
-                var clone = Mapper.Map<Role>(role);
                 role.RolePermissions.Clear();
-                repository.Delete(role);
-                await FinalizeActionAsync(role);
+                await DeleteAsync(repository, role);
             }
         }
 
@@ -622,6 +616,41 @@ namespace SPPC.Tadbir.Persistence
         {
             return permission.GroupId != 9
                 || (permission.GroupId == 9 && permission.Flag == 1);
+        }
+
+        /// <inheritdoc/>
+        public override async Task InsertAsync(IRepository<Role> repository, Role entity)
+        {
+            OnEntityAction(OperationId.Create);
+            Log.Description = GetState(entity);
+            repository.Insert(entity, role => role.RolePermissions);
+            await FinalizeActionAsync(entity);
+        }
+
+        /// <inheritdoc/>
+        public override async Task UpdateAsync(IRepository<Role> repository, Role entity, RoleFullViewModel entityView)
+        {
+            var clone = new Role() { Id = entity.Id, Name = entity.Name, Description = entity.Description };
+            OnEntityAction(OperationId.Edit);
+            UpdateExisting(entityView, entity);
+            Log.Description = String.Format("(Old) => {1}{0}(New) => {2}",
+                Environment.NewLine, GetState(clone), GetState(entity));
+            repository.UpdateWithTracking(entity);
+            await FinalizeActionAsync(entity);
+        }
+
+        /// <inheritdoc/>
+        public override async Task DeleteAsync(IRepository<Role> repository, Role entity)
+        {
+            OnEntityAction(OperationId.Delete);
+            Log.Description = GetState(entity);
+            repository.Delete(entity);
+            await FinalizeActionAsync(entity);
+        }
+
+        internal override int? EntityType
+        {
+            get { return (int)SysEntityTypeId.Role; }
         }
 
         /// <summary>

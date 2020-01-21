@@ -30,6 +30,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public DateTime VoucherDate { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی حساب مورد استفاده در سطر گزارش
+        /// </summary>
+        public int AccountId { get; set; }
+
+        /// <summary>
         /// کد کامل حساب مورد استفاده در سطر گزارش
         /// </summary>
         public string AccountFullCode { get; set; }
@@ -38,6 +43,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام حساب مورد استفاده در سطر گزارش
         /// </summary>
         public string AccountName { get; set; }
+
+        /// <summary>
+        /// شماره سطح که عمق حساب به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
+        /// </summary>
+        public short AccountLevel { get; set; }
 
         /// <summary>
         /// کد کامل تفصیلی شناور مورد استفاده در سطر گزارش
@@ -98,5 +108,30 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام شعبه ایجادکننده آرتیکل
         /// </summary>
         public string BranchName { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی شعبه ایجادکننده آرتیکل
+        /// </summary>
+        public int BranchId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی وضعیت ثبتی سند مالی
+        /// </summary>
+        public int VoucherStatusId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربر تاییدکننده سند مالی
+        /// </summary>
+        public int? VoucherConfirmedById { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربر تصویب کننده سند مالی
+        /// </summary>
+        public int? VoucherApprovedById { get; set; }
+
+        /// <summary>
+        /// رفرنس سند مالی
+        /// </summary>
+        public string VoucherReference { get; set; }
     }
 }

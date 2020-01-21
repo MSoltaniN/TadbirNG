@@ -295,7 +295,7 @@ namespace SPPC.Tadbir.Persistence
             return costCenter.FullCode;
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.CostCenter; }
         }

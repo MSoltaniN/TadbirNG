@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -22,7 +23,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات کاربران را پیاده سازی می کند
     /// </summary>
-    public class UserRepository : LoggingRepository<User, UserViewModel>, IUserRepository
+    public class UserRepository : SystemLoggingRepository<User, UserViewModel>, IUserRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -290,18 +291,14 @@ namespace SPPC.Tadbir.Persistence
             if (userView.Id == 0)
             {
                 user = GetNewUser(userView);
-                repository.Insert(user, usr => usr.Person);
-                await FinalizeActionAsync(user);
+                await InsertAsync(repository, user);
             }
             else
             {
                 user = await repository.GetByIDAsync(userView.Id, u => u.Person);
                 if (user != null)
                 {
-                    var clone = Mapper.Map<User>(user);
-                    UpdateExisting(userView, user);
-                    repository.Update(user, usr => usr.Person);
-                    await FinalizeActionAsync(user);
+                    await UpdateAsync(repository, user, userView);
                 }
             }
 
@@ -429,6 +426,32 @@ namespace SPPC.Tadbir.Persistence
                     && usr.UserName == user.UserName);
             var existing = items.SingleOrDefault();
             return (existing != null);
+        }
+
+        /// <inheritdoc/>
+        public override async Task InsertAsync(IRepository<User> repository, User entity)
+        {
+            OnEntityAction(OperationId.Create);
+            Log.Description = GetState(entity);
+            repository.Insert(entity, usr => usr.Person);
+            await FinalizeActionAsync(entity);
+        }
+
+        /// <inheritdoc/>
+        public override async Task UpdateAsync(IRepository<User> repository, User entity, UserViewModel entityView)
+        {
+            var clone = CloneUser(entity);
+            OnEntityAction(OperationId.Edit);
+            UpdateExisting(entityView, entity);
+            Log.Description = String.Format("(Old) => {1}{0}(New) => {2}",
+                Environment.NewLine, GetState(clone), GetState(entity));
+            repository.Update(entity, usr => usr.Person);
+            await FinalizeActionAsync(entity);
+        }
+
+        internal override int? EntityType
+        {
+            get { return (int)SysEntityTypeId.User; }
         }
 
         /// <summary>
@@ -605,6 +628,22 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RolePermissions);
             return query;
+        }
+
+        private User CloneUser(User user)
+        {
+            return new User()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                IsEnabled = user.IsEnabled,
+                Person = new Person()
+                {
+                    Id = user.Person.Id,
+                    FirstName = user.Person.FirstName,
+                    LastName = user.Person.LastName
+                }
+            };
         }
 
         private readonly ISystemRepository _system;

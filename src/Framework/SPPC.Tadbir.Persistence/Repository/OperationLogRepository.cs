@@ -26,6 +26,8 @@ namespace SPPC.Tadbir.Persistence
         {
         }
 
+        #region Company Log Operations
+
         /// <summary>
         /// به روش آسنکرون، کلیه لاگ های عملیاتی موجود را برای شرکت و کاربر مشخص شده خوانده و برمی گرداند
         /// </summary>
@@ -77,6 +79,150 @@ namespace SPPC.Tadbir.Persistence
             repository.Insert(newLog);
             await UnitOfWork.CommitAsync();
         }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای شرکتی ثبت شده در محدوده تاریخی داده شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
+        public async Task MoveLogsToArchiveAsync(DateTime from, DateTime to)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
+            var logs = await repository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            foreach (var log in logs)
+            {
+                var archive = Mapper.Map<OperationLogArchive>(log);
+                archiveRepository.Insert(archive);
+                repository.Delete(log);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای بایگانی شده در محدوده تاریخی داده شده را
+        /// در لاگ های شرکتی بازیابی می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بازیابی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بازیابی</param>
+        public async Task RecoverLogsFromArchive(DateTime from, DateTime to)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
+            var archived = await archiveRepository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            foreach (var item in archived)
+            {
+                var log = Mapper.Map<OperationLog>(item);
+                log.Id = 0;
+                repository.Insert(log);
+                archiveRepository.Delete(item);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        #endregion
+
+        #region System Log Operations
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه لاگ های عملیات سیستمی موجود را  خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه لاگ های سیستمی موجود</returns>
+        public async Task<IList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions = null)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var list = await repository.GetEntityQuery(
+                    log => log.Operation, log => log.EntityType,
+                    log => log.Source, log => log.SourceList,
+                    log => log.Company, log => log.User)
+                .OrderByDescending(log => log.Date)
+                .ThenByDescending(log => log.Time)
+                .Select(log => Mapper.Map<OperationLogViewModel>(log))
+                .Apply(gridOptions)
+                .ToListAsync();
+            UnitOfWork.UseCompanyContext();
+            return list;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای لاگ های عملیات سیستمی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد سطرهای لاگ های سیستمی</returns>
+        public async Task<int> GetSystemLogCountAsync(GridOptions gridOptions = null)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            int count = await repository.GetEntityQuery()
+                .Select(log => Mapper.Map<OperationLogViewModel>(log))
+                .Apply(gridOptions, false)
+                .CountAsync();
+            UnitOfWork.UseCompanyContext();
+            return count;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیات سیستمی جدید را ذخیره می کند
+        /// </summary>
+        /// <param name="operationLog">اطلاعات لاگ عملیاتی جدید</param>
+        public async Task SaveSystemLogAsync(OperationLogViewModel operationLog)
+        {
+            Verify.ArgumentNotNull(operationLog, "operationLog");
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var newLog = Mapper.Map<SysOperationLog>(operationLog);
+            repository.Insert(newLog);
+            await UnitOfWork.CommitAsync();
+            UnitOfWork.UseCompanyContext();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای سیستمی ثبت شده در محدوده تاریخی داده شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
+        public async Task MoveSystemLogsToArchiveAsync(DateTime from, DateTime to)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
+            var logs = await repository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            foreach (var log in logs)
+            {
+                var archive = Mapper.Map<SysOperationLogArchive>(log);
+                archiveRepository.Insert(archive);
+                repository.Delete(log);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه رویدادهای بایگانی شده در محدوده تاریخی داده شده را
+        /// در لاگ های سیستمی بازیابی می کند
+        /// </summary>
+        /// <param name="from">ابتدای محدوده تاریخی برای بازیابی</param>
+        /// <param name="to">انتهای محدوده تاریخی برای بازیابی</param>
+        public async Task RecoverSystemLogsFromArchive(DateTime from, DateTime to)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
+            var archived = await archiveRepository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            foreach (var item in archived)
+            {
+                var log = Mapper.Map<SysOperationLog>(item);
+                log.Id = 0;
+                repository.Insert(log);
+                archiveRepository.Delete(item);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        #endregion
 
         private async Task SetSystemValues(OperationLogViewModel log)
         {

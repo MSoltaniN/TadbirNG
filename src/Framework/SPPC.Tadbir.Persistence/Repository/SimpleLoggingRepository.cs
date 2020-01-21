@@ -52,15 +52,6 @@ namespace SPPC.Tadbir.Persistence
             await OnSourceActionAsync(operation, OperationSource, list);
         }
 
-        /// <summary>
-        /// تغییرات انجام شده را اعمال کرده و در صورت امکان لاگ عملیاتی را ایجاد می کند
-        /// </summary>
-        protected async Task FinalizeActionAsync()
-        {
-            await UnitOfWork.CommitAsync();
-            await TrySaveLogAsync();
-        }
-
         private async Task TrySaveLogAsync()
         {
             try

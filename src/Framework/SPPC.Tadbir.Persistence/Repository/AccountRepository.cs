@@ -381,7 +381,7 @@ namespace SPPC.Tadbir.Persistence
             return await query.CountAsync();
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.Account; }
         }

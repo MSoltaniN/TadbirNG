@@ -207,7 +207,7 @@ namespace SPPC.Tadbir.Persistence
             return accGroups;
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.AccountGroup; }
         }

@@ -40,6 +40,38 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         protected ISecureRepository Repository { get; }
 
+        protected static int GetSourceList(TestBalanceFormat format, string itemTypeName)
+        {
+            string enumStringTemplate = "{0}Balance{1}Column";
+            string itemType = (itemTypeName == "Account")
+                ? "Test"
+                : itemTypeName;
+            string formatString = format.ToString();
+            string enumValue = null;
+            if (formatString.StartsWith("Two"))
+            {
+                enumValue = String.Format(enumStringTemplate, itemType, 2);
+            }
+            else if (formatString.StartsWith("Four"))
+            {
+                enumValue = String.Format(enumStringTemplate, itemType, 4);
+            }
+            else if (formatString.StartsWith("Six"))
+            {
+                enumValue = String.Format(enumStringTemplate, itemType, 6);
+            }
+            else if (formatString.StartsWith("Eight"))
+            {
+                enumValue = String.Format(enumStringTemplate, itemType, 8);
+            }
+            else
+            {
+                enumValue = String.Format(enumStringTemplate, itemType, 10);
+            }
+
+            return (int)Enum.Parse(typeof(SourceListId), enumValue);
+        }
+
         protected async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync(int viewId)
         {
             var lookup = new List<TestBalanceModeInfo>();
@@ -105,38 +137,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         {
             return await GetBalanceAsync(
                 line => line.Voucher.Type == (short)type, itemCriteria);
-        }
-
-        protected int GetSourceList(TestBalanceFormat format, string itemTypeName)
-        {
-            string enumStringTemplate = "{0}Balance{1}Column";
-            string itemType = (itemTypeName == "Account")
-                ? "Test"
-                : itemTypeName;
-            string formatString = format.ToString();
-            string enumValue = null;
-            if (formatString.StartsWith("Two"))
-            {
-                enumValue = String.Format(enumStringTemplate, itemType, 2);
-            }
-            else if (formatString.StartsWith("Four"))
-            {
-                enumValue = String.Format(enumStringTemplate, itemType, 4);
-            }
-            else if (formatString.StartsWith("Six"))
-            {
-                enumValue = String.Format(enumStringTemplate, itemType, 6);
-            }
-            else if (formatString.StartsWith("Eight"))
-            {
-                enumValue = String.Format(enumStringTemplate, itemType, 8);
-            }
-            else
-            {
-                enumValue = String.Format(enumStringTemplate, itemType, 10);
-            }
-
-            return (int)Enum.Parse(typeof(SourceListId), enumValue);
         }
 
         private async Task<decimal> GetBalanceAsync(

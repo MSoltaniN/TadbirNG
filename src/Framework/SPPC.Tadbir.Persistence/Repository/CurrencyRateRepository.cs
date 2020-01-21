@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Persistence
             return currencyRates > 0 ? true : false;
         }
 
-        internal override int EntityType
+        internal override int? EntityType
         {
             get { return (int)EntityTypeId.CurrencyRate; }
         }
