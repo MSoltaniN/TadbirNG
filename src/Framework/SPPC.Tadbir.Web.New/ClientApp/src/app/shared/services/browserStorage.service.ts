@@ -364,4 +364,8 @@ export class BrowserStorageService {
     sessionStorage.removeItem(SessionKeys.SelectedBranch);
     sessionStorage.removeItem(SessionKeys.SelectedFiscalPeriod);
   }
+
+  removeSessionStorage(key:string) {
+    sessionStorage.removeItem(key);    
+  }
 }
