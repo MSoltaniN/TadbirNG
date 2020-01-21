@@ -28,8 +28,8 @@ export function getLayoutModule(layout: Layout) {
     deps: [Layout]
   }]
 })
-export class AdvanceFilterComponent extends DefaultComponent implements OnInit, OnDestroy {  
-  
+export class AdvanceFilterComponent extends DefaultComponent implements OnInit {  
+   
   public title: string;
   public columnsList: Array<FilterColumn>;
   public operatorsList: Array<Item>;
