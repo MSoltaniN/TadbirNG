@@ -808,45 +808,43 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var sortDeleted = this.selectedRows.sort((a, b) => parseFloat(a.order) - parseFloat(b.order));
 
       sortDeleted.forEach((del) => {
-        var index = filters.findIndex(fi => fi === del);        
-
-        if (filters[index].braces) {
-          var deleteBraces = filters[index].braces;
-          if (deleteBraces) {
-            deleteBraces.forEach((b) => {
-              if (filters[index + 1]) {
-                var nextFilter = filters[index + 1];
-                if (!nextFilter.braces)
-                  nextFilter.braces = new Array<Braces>();
-                nextFilter.braces.push(b);
-              }
-              else {
-                if (filters[index].braces) {
-                  filters[index].braces.forEach((br) => {
-                    if (filters.findIndex(f => f.id === br.outerId) >= 0) {
-                      var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
-
-                      outerBraces.forEach((obr) => {
-                        if (obr.outerId == filters[index].id) {
-                          deleteBraces.push(obr);
-                        }
-                      })
-
-                      deleteBraces.forEach((dbr) => {
-                        var dindex = outerBraces.findIndex(br => br == dbr);
-                        outerBraces.splice(dindex);
-                      });
-                    }
-                  })
+        var index = filters.findIndex(fi => fi.id === del.id);
+        if (index > -1) {
+          if (filters[index].braces) {
+            var deleteBraces = filters[index].braces;
+            if (deleteBraces) {
+              deleteBraces.forEach((b) => {
+                if (filters[index + 1]) {
+                  var nextFilter = filters[index + 1];
+                  if (!nextFilter.braces)
+                    nextFilter.braces = new Array<Braces>();
+                  nextFilter.braces.push(b);
                 }
-              }
+                else {
+                  if (filters[index].braces) {
+                    filters[index].braces.forEach((br) => {
+                      if (filters.findIndex(f => f.id === br.outerId) >= 0) {
+                        var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
 
-            });
+                        outerBraces.forEach((obr) => {
+                          if (obr.outerId == filters[index].id) {
+                            deleteBraces.push(obr);
+                          }
+                        })
+
+                        deleteBraces.forEach((dbr) => {
+                          var dindex = outerBraces.findIndex(br => br == dbr);
+                          outerBraces.splice(dindex);
+                        });
+                      }
+                    })
+                  }
+                }
+
+              });
+            }
           }
-        }
-
-                  
-        
+        }       
 
         filters.splice(index, 1);
       });
