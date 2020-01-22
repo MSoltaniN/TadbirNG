@@ -789,3 +789,8 @@ CREATE TABLE [Core].[OperationLogArchive] (
     , CONSTRAINT [FK_Core_OperationLogArchive_Metadata_EntityType] FOREIGN KEY ([EntityTypeID]) REFERENCES [Metadata].[EntityType]([EntityTypeID])
 )
 GO
+
+-- 1.1.795
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (21, N'GroupDelete')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF

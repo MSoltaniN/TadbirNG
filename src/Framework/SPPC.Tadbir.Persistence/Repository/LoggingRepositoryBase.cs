@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -74,6 +75,18 @@ namespace SPPC.Tadbir.Persistence
             await FinalizeActionAsync(entity);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سطر اطلاعاتی قابل حذف را از دیتابیس جاری برنامه حذف می کند
+        /// </summary>
+        /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
+        /// <param name="entity">سطر اطلاعاتی که باید حذف شود</param>
+        public virtual async Task DeleteNoLogAsync(IRepository<TEntity> repository, TEntity entity)
+        {
+            DisconnectEntity(entity);
+            repository.Delete(entity);
+            await UnitOfWork.CommitAsync();
+        }
+
         internal virtual int? EntityType
         {
             get { return null; }
@@ -97,6 +110,14 @@ namespace SPPC.Tadbir.Persistence
                 OperationId = (int)operation,
                 EntityTypeId = EntityType
             };
+        }
+
+        internal virtual async Task OnEntityGroupDeleted(IEnumerable<int> deletedIds)
+        {
+            OnEntityAction(OperationId.GroupDelete);
+            Log.Description = String.Format(
+                "Deleted items :{0}{1}", Environment.NewLine, String.Join(",", deletedIds));
+            await TrySaveLogAsync();
         }
 
         /// <summary>

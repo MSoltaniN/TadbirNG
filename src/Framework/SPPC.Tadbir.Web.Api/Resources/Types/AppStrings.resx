@@ -2892,4 +2892,7 @@
   <data name="InvalidArchiveRange" xml:space="preserve">
     <value>محدوده تاریخی داده شده برای بایگانی رویدادها معتبر نیست.</value>
   </data>
+  <data name="GroupDelete" xml:space="preserve">
+    <value>حذف گروهی</value>
+  </data>
 </root>

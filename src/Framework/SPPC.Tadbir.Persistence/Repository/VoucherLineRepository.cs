@@ -240,7 +240,7 @@ namespace SPPC.Tadbir.Persistence
                 if (article != null)
                 {
                     voucherId = article.VoucherId;
-                    await DeleteAsync(repository, article);
+                    await DeleteNoLogAsync(repository, article);
                 }
             }
 
@@ -248,6 +248,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 await UpdateVoucherBalanceStatusAsync(voucherId);
             }
+
+            await OnEntityGroupDeleted(items);
         }
 
         /// <summary>

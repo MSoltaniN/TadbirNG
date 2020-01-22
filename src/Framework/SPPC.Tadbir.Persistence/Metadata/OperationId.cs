@@ -25,6 +25,7 @@ namespace SPPC.Tadbir.Persistence
         Finalize = 17,
         UndoFinalize = 18,
         Mark = 19,
-        QuickReportDesign = 20
+        QuickReportDesign = 20,
+        GroupDelete = 21
     }
 }

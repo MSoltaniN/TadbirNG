@@ -756,6 +756,7 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (17, N'Finalize
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (18, N'UndoFinalize')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (19, N'Mark')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (20, N'QuickReportDesign')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (21, N'GroupDelete')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON

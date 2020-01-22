@@ -214,11 +214,12 @@ namespace SPPC.Tadbir.Persistence
                 if (detailAccount != null)
                 {
                     level = Math.Max(level, detailAccount.Level);
-                    await DeleteAsync(repository, detailAccount);
+                    await DeleteNoLogAsync(repository, detailAccount);
                 }
             }
 
             await UpdateLevelUsageAsync(level);
+            await OnEntityGroupDeleted(detailIds);
         }
 
         /// <summary>

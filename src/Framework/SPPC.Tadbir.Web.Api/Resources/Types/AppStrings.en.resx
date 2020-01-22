@@ -2901,4 +2901,7 @@
   <data name="InvalidArchiveRange" xml:space="preserve">
     <value>A valid date range is required for archiving operation logs.</value>
   </data>
+  <data name="GroupDelete" xml:space="preserve">
+    <value>Group delete</value>
+  </data>
 </root>

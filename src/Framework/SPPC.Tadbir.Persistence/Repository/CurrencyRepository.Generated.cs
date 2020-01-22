@@ -224,10 +224,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
         public async Task DeleteCurrenciesAsync(IEnumerable<int> items)
         {
+            var repository = UnitOfWork.GetAsyncRepository<Currency>();
             foreach (int item in items)
             {
-                await DeleteCurrencyAsync(item);
+                var currency = await repository.GetByIDWithTrackingAsync(item, curr => curr.Rates);
+                if (currency != null)
+                {
+                    currency.Rates.Clear();
+                    await DeleteNoLogAsync(repository, currency);
+                }
             }
+
+            await OnEntityGroupDeleted(items);
         }
 
         /// <summary>

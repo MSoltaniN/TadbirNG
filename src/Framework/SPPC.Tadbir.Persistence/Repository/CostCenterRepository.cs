@@ -213,11 +213,12 @@ namespace SPPC.Tadbir.Persistence
                 if (costCenter != null)
                 {
                     level = Math.Max(level, costCenter.Level);
-                    await DeleteAsync(repository, costCenter);
+                    await DeleteNoLogAsync(repository, costCenter);
                 }
             }
 
             await UpdateLevelUsageAsync(level);
+            await OnEntityGroupDeleted(centerIds);
         }
 
         /// <summary>
