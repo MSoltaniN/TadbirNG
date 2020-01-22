@@ -161,6 +161,22 @@ namespace SPPC.Tadbir.Persistence
             await UnitOfWork.CommitAsync();
         }
 
+        /// <summary>
+        /// مجموعه ای از لاگ های شرکتی بایگانی شده را به صورت گروهی حذف می کند
+        /// </summary>
+        /// <param name="deletedIds">مجموعه شناسه های دیتابیسی رکوردهای انتخاب شده برای حذف</param>
+        public async Task DeleteArchivedLogsAsync(IEnumerable<int> deletedIds)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
+            var archived = await repository.GetByCriteriaAsync(ar => deletedIds.Contains(ar.Id));
+            foreach (var item in archived)
+            {
+                repository.Delete(item);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
         #endregion
 
         #region System Log Operations
@@ -298,6 +314,24 @@ namespace SPPC.Tadbir.Persistence
                 log.Id = 0;
                 repository.Insert(log);
                 archiveRepository.Delete(item);
+            }
+
+            await UnitOfWork.CommitAsync();
+            UnitOfWork.UseCompanyContext();
+        }
+
+        /// <summary>
+        /// مجموعه ای از لاگ های سیستمی بایگانی شده را به صورت گروهی حذف می کند
+        /// </summary>
+        /// <param name="deletedIds">مجموعه شناسه های دیتابیسی رکوردهای انتخاب شده برای حذف</param>
+        public async Task DeleteArchivedSystemLogsAsync(IEnumerable<int> deletedIds)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
+            var archived = await repository.GetByCriteriaAsync(ar => deletedIds.Contains(ar.Id));
+            foreach (var item in archived)
+            {
+                repository.Delete(item);
             }
 
             await UnitOfWork.CommitAsync();

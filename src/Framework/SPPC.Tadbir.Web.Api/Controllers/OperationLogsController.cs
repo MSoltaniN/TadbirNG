@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -70,11 +72,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(logArchive);
         }
 
-        // PUT: api/system/oplog/archive
-        [HttpPut]
+        // POST: api/system/oplog/archive
+        [HttpPost]
         [Route(OperationLogApi.OperationLogsArchiveUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.Archive)]
-        public async Task<IActionResult> PutSelectedLogsAsArchived(DateTime from, DateTime to)
+        public async Task<IActionResult> PostSelectedLogsAsArchived(DateTime from, DateTime to)
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
             {
@@ -85,11 +87,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // PUT: api/system/oplog
-        [HttpPut]
+        // POST: api/system/oplog
+        [HttpPost]
         [Route(OperationLogApi.AllOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.Recover)]
-        public async Task<IActionResult> PutSelectedLogsAsRecovered(DateTime from, DateTime to)
+        public async Task<IActionResult> PostSelectedLogsAsRecovered(DateTime from, DateTime to)
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
             {
@@ -100,11 +102,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // PUT: api/system/sys-oplog/archive
-        [HttpPut]
+        // POST: api/system/sys-oplog/archive
+        [HttpPost]
         [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.Archive)]
-        public async Task<IActionResult> PutSelectedSysLogsAsArchived(DateTime from, DateTime to)
+        public async Task<IActionResult> PostSelectedSysLogsAsArchived(DateTime from, DateTime to)
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
             {
@@ -115,11 +117,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // PUT: api/system/sys-oplog
-        [HttpPut]
+        // POST: api/system/sys-oplog
+        [HttpPost]
         [Route(OperationLogApi.AllSysOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.Recover)]
-        public async Task<IActionResult> PutSelectedSysLogsAsRecovered(DateTime from, DateTime to)
+        public async Task<IActionResult> PostSelectedSysLogsAsRecovered(DateTime from, DateTime to)
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
             {
@@ -128,6 +130,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.RecoverSystemLogsFromArchive(from, to);
             return Ok();
+        }
+
+        // PUT: api/system/oplog/archive
+        [HttpPut]
+        [Route(OperationLogApi.OperationLogsArchiveUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.Delete)]
+        public async Task<IActionResult> PutSelectedArchivedLogsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            await _repository.DeleteArchivedLogsAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // PUT: api/system/sys-oplog/archive
+        [HttpPut]
+        [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
+        [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.Delete)]
+        public async Task<IActionResult> PutSelectedArchivedSysLogsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            await _repository.DeleteArchivedSystemLogsAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         private void Localize(IList<OperationLogViewModel> logs)
