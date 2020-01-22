@@ -180,6 +180,7 @@
     "Ledger": "Ledger",
     "ShowAccountBookHint": "To view the account book, please set filter by date",
     "LevelIsNotExists": "No account with turnover could be found at lower levels",
+    "AllDocsSelectHint": "Selecting all documents may be a not balance report",
     "Format": {
       "Balance2Column": "2 Columns",
       "Balance4Column": "4 Columns",
