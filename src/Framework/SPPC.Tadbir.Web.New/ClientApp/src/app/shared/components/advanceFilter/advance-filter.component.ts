@@ -348,28 +348,33 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   createFilterExpression():FilterExpression {
         var totalfilter: FilterExpression;
     var lastOperatorUsed = " && ";
-    this.filters.forEach((item) => {
+    if (this.filters) {
+      this.filters.forEach((item) => {
 
-      var column = this.columnsList.filter(col => col.name === item.columnName)[0];
-      var currentfilter = new Filter(item.columnName, item.value, this.getStandardOperator(item.operator, column.dataType), column.dataType, item.braces, item.id);
+        var column = this.columnsList.filter(col => col.name === item.columnName)[0];
+        var currentfilter = new Filter(item.columnName, item.value, this.getStandardOperator(item.operator, column.dataType), column.dataType, item.braces, item.id);
 
-      var newFilter = new FilterExpression();
-      newFilter.filter = currentfilter;
-      newFilter.operator = lastOperatorUsed ? lastOperatorUsed : (item.logicOperator == 'or' ? ' || ' : ' && ')
+        var newFilter = new FilterExpression();
+        newFilter.filter = currentfilter;
+        newFilter.operator = lastOperatorUsed ? lastOperatorUsed : (item.logicOperator == 'or' ? ' || ' : ' && ')
 
-      if (totalfilter) {
-        totalfilter.children.push(newFilter);
-        lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
-      }
-      else {
-        //var fbuilder = new FilterExpressionBuilder();
-        totalfilter = new FilterExpression();
-        totalfilter.filter = currentfilter;
-        totalfilter.operator = ' && ';
-        lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
-        //return filterExpBuilder.New(filter).Build();
-      }
-    });
+        if (totalfilter) {
+          totalfilter.children.push(newFilter);
+          lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
+        }
+        else {
+          //var fbuilder = new FilterExpressionBuilder();
+          totalfilter = new FilterExpression();
+          totalfilter.filter = currentfilter;
+          totalfilter.operator = ' && ';
+          lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
+          //return filterExpBuilder.New(filter).Build();
+        }
+      });
+    }
+    else {
+      return new FilterExpression();
+    }
 
     return totalfilter;
   }
@@ -432,7 +437,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     var unsavedFilters = <Array<GroupFilter>>JSON.parse(this.bStorageService.getSession('unSaveFilter' + this.viewId))
 
     this.groupFilters.forEach((gf) => {
-      if (gf.filters) {
+
+      //if (gf.filters) {
         if (gf.id > -1) {
           var filterModel = new FilterViewModel();
           filterModel.id = gf.isNew ? 0 : gf.id;
@@ -440,32 +446,37 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           filterModel.name = gf.name;
           filterModel.viewId = this.viewId;
           filterModel.userId = this.UserId;
+          if (!gf.filters)
+            gf.filters = new Array<FilterRow>();
           filterModel.values = JSON.stringify(gf.filters);
+          
           if (filterModel.id == 0)
             this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {
               this.gFilterSelected = res.id;
 
               var fil = this.groupFilters.filter(f => f.id === gf.id);
-              if (fil.length > 0)
+              if (fil.length > 0) {
                 fil[0].id = res.id;
+                fil[0].isNew = false;
+              }
               else
                 this.groupFilters.push(res);
 
-              var unsaveIndex = unsavedFilters.findIndex(f => f.name == gf.name);
-              if (unsaveIndex >= 0) {
-                unsavedFilters.splice(unsaveIndex, 1);
-                this.bStorageService.setSession('unSaveFilter' + this.viewId, JSON.stringify(unsavedFilters));
-              }              
+              //var unsaveIndex = unsavedFilters.findIndex(f => f.name == gf.name);
+              //if (unsaveIndex >= 0) {
+              //  unsavedFilters.splice(unsaveIndex, 1);
+              //  this.bStorageService.setSession('unSaveFilter' + this.viewId, JSON.stringify(unsavedFilters));
+              //}              
 
             });
           else
             this.advanceFilterService.saveFilter(filterModel.id, filterModel).subscribe();
         }
 
-      }
+      //}
     });
 
-    
+    this.bStorageService.removeSessionStorage('unSaveFilter' + this.viewId);
 
     if (showMessage)
       this.showMessage(this.getText('AdvanceFilter.FilterSavedSuccess'), MessageType.Succes);
@@ -808,45 +819,43 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var sortDeleted = this.selectedRows.sort((a, b) => parseFloat(a.order) - parseFloat(b.order));
 
       sortDeleted.forEach((del) => {
-        var index = filters.findIndex(fi => fi === del);        
-
-        if (filters[index].braces) {
-          var deleteBraces = filters[index].braces;
-          if (deleteBraces) {
-            deleteBraces.forEach((b) => {
-              if (filters[index + 1]) {
-                var nextFilter = filters[index + 1];
-                if (!nextFilter.braces)
-                  nextFilter.braces = new Array<Braces>();
-                nextFilter.braces.push(b);
-              }
-              else {
-                if (filters[index].braces) {
-                  filters[index].braces.forEach((br) => {
-                    if (filters.findIndex(f => f.id === br.outerId) >= 0) {
-                      var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
-
-                      outerBraces.forEach((obr) => {
-                        if (obr.outerId == filters[index].id) {
-                          deleteBraces.push(obr);
-                        }
-                      })
-
-                      deleteBraces.forEach((dbr) => {
-                        var dindex = outerBraces.findIndex(br => br == dbr);
-                        outerBraces.splice(dindex);
-                      });
-                    }
-                  })
+        var index = filters.findIndex(fi => fi.id === del.id);
+        if (index > -1) {
+          if (filters[index].braces) {
+            var deleteBraces = filters[index].braces;
+            if (deleteBraces) {
+              deleteBraces.forEach((b) => {
+                if (filters[index + 1]) {
+                  var nextFilter = filters[index + 1];
+                  if (!nextFilter.braces)
+                    nextFilter.braces = new Array<Braces>();
+                  nextFilter.braces.push(b);
                 }
-              }
+                else {
+                  if (filters[index].braces) {
+                    filters[index].braces.forEach((br) => {
+                      if (filters.findIndex(f => f.id === br.outerId) >= 0) {
+                        var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
 
-            });
+                        outerBraces.forEach((obr) => {
+                          if (obr.outerId == filters[index].id) {
+                            deleteBraces.push(obr);
+                          }
+                        })
+
+                        deleteBraces.forEach((dbr) => {
+                          var dindex = outerBraces.findIndex(br => br == dbr);
+                          outerBraces.splice(dindex);
+                        });
+                      }
+                    })
+                  }
+                }
+
+              });
+            }
           }
-        }
-
-                  
-        
+        }       
 
         filters.splice(index, 1);
       });
@@ -857,6 +866,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.revertToDefaultValues();
 
       this.groupFilters[index].filters = filters;
+      this.filters = filters;
       this.revertToDefaultValues();
       //this.saveFiltersToDB(false);
       this.showMessage(this.getText('AdvanceFilter.FilterDeletedSuccess'), MessageType.Succes)
