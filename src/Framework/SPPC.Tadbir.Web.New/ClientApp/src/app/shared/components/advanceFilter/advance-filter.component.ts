@@ -855,6 +855,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.revertToDefaultValues();
 
       this.groupFilters[index].filters = filters;
+      this.filters = filters;
       this.revertToDefaultValues();
       //this.saveFiltersToDB(false);
       this.showMessage(this.getText('AdvanceFilter.FilterDeletedSuccess'), MessageType.Succes)
