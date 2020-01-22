@@ -402,9 +402,11 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(src => src.User.UserName));
             mapperConfig.CreateMap<OperationLogViewModel, SysOperationLog>();
             mapperConfig.CreateMap<OperationLog, OperationLogArchive>();
+            mapperConfig.CreateMap<OperationLogArchive, OperationLogViewModel>();
             mapperConfig.CreateMap<OperationLogArchive, OperationLog>();
             mapperConfig.CreateMap<SysOperationLog, SysOperationLogArchive>();
             mapperConfig.CreateMap<SysOperationLogArchive, SysOperationLog>();
+            mapperConfig.CreateMap<SysOperationLogArchive, OperationLogViewModel>();
 
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(

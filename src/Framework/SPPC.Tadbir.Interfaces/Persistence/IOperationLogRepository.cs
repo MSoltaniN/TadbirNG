@@ -21,11 +21,25 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، کلیه لاگ های شرکتی بایگانی شده را  خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه لاگ های شرکتی بایگانی شده</returns>
+        Task<IList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions = null);
+
+        /// <summary>
         /// به روش آسنکرون، تعداد سطرهای لاگ های عملیات شرکتی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای لاگ های شرکتی</returns>
         Task<int> GetLogCountAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای لاگ های شرکتی بایگانی شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد سطرهای لاگ های شرکتی بایگانی شده</returns>
+        Task<int> GetLogArchiveCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیات شرکتی جدید را ذخیره می کند
@@ -48,6 +62,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="to">انتهای محدوده تاریخی برای بازیابی</param>
         Task RecoverLogsFromArchive(DateTime from, DateTime to);
 
+        /// <summary>
+        /// مجموعه ای از لاگ های شرکتی بایگانی شده را به صورت گروهی حذف می کند
+        /// </summary>
+        /// <param name="deletedIds">مجموعه شناسه های دیتابیسی رکوردهای انتخاب شده برای حذف</param>
+        Task DeleteArchivedLogsAsync(IEnumerable<int> deletedIds);
+
         #endregion
 
         #region System Log Operations
@@ -60,11 +80,25 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، کلیه لاگ های سیستمی بایگانی شده را  خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه لاگ های سیستمی بایگانی شده</returns>
+        Task<IList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions = null);
+
+        /// <summary>
         /// به روش آسنکرون، تعداد سطرهای لاگ های عملیات سیستمی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای لاگ های سیستمی</returns>
         Task<int> GetSystemLogCountAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای لاگ های سیستمی بایگانی شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد سطرهای لاگ های سیستمی بایگانی شده</returns>
+        Task<int> GetSystemLogArchiveCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیات سیستمی جدید را ذخیره می کند
@@ -86,6 +120,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">ابتدای محدوده تاریخی برای بازیابی</param>
         /// <param name="to">انتهای محدوده تاریخی برای بازیابی</param>
         Task RecoverSystemLogsFromArchive(DateTime from, DateTime to);
+
+        /// <summary>
+        /// مجموعه ای از لاگ های سیستمی بایگانی شده را به صورت گروهی حذف می کند
+        /// </summary>
+        /// <param name="deletedIds">مجموعه شناسه های دیتابیسی رکوردهای انتخاب شده برای حذف</param>
+        Task DeleteArchivedSystemLogsAsync(IEnumerable<int> deletedIds);
 
         #endregion
 
