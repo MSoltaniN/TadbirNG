@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/system/oplog
         [Route(OperationLogApi.AllOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
-        public async Task<IActionResult> GetAllOperationLogsAsync()
+        public async Task<IActionResult> GetOperationLogsAsync()
         {
             int itemCount = await _repository.GetLogCountAsync(GridOptions);
             SetItemCount(itemCount);
@@ -37,13 +37,37 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/system/sys-oplog
         [Route(OperationLogApi.AllSysOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.View)]
-        public async Task<IActionResult> GetAllSysOperationLogsAsync()
+        public async Task<IActionResult> GetSysOperationLogsAsync()
         {
             int itemCount = await _repository.GetSystemLogCountAsync(GridOptions);
             SetItemCount(itemCount);
             var operationLogs = await _repository.GetSystemLogsAsync(GridOptions);
             Localize(operationLogs);
             return Json(operationLogs);
+        }
+
+        // GET: api/system/oplog/archive
+        [Route(OperationLogApi.OperationLogsArchiveUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.ViewArchive)]
+        public async Task<IActionResult> GetOperationLogArchiveAsync()
+        {
+            int itemCount = await _repository.GetLogArchiveCountAsync(GridOptions);
+            SetItemCount(itemCount);
+            var logArchive = await _repository.GetLogsArchiveAsync(GridOptions);
+            Localize(logArchive);
+            return Json(logArchive);
+        }
+
+        // GET: api/system/sys-oplog/archive
+        [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
+        [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.ViewArchive)]
+        public async Task<IActionResult> GetSysOperationLogArchiveAsync()
+        {
+            int itemCount = await _repository.GetSystemLogArchiveCountAsync(GridOptions);
+            SetItemCount(itemCount);
+            var logArchive = await _repository.GetSystemLogsArchiveAsync(GridOptions);
+            Localize(logArchive);
+            return Json(logArchive);
         }
 
         // PUT: api/system/oplog/archive
@@ -64,6 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/system/oplog
         [HttpPut]
         [Route(OperationLogApi.AllOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.Recover)]
         public async Task<IActionResult> PutSelectedLogsAsRecovered(DateTime from, DateTime to)
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
@@ -93,6 +118,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/system/sys-oplog
         [HttpPut]
         [Route(OperationLogApi.AllSysOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.Recover)]
         public async Task<IActionResult> PutSelectedSysLogsAsRecovered(DateTime from, DateTime to)
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
