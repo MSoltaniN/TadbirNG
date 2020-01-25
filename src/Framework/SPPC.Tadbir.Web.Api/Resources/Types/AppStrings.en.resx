@@ -2898,4 +2898,7 @@
   <data name="OperationalForms" xml:space="preserve">
     <value>Operational forms</value>
   </data>
+  <data name="AccountDescription" xml:space="preserve">
+    <value>Account description</value>
+  </data>
 </root>

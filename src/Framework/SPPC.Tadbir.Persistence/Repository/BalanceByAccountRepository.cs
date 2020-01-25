@@ -88,20 +88,8 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
             else
             {
-                if (!parameters.AccountId.HasValue && parameters.AccountLevel.HasValue)
-                {
-                    return await GetReportBySelectedAccountlevelAsync(parameters);
-                }
-                else
-                {
-                    if (!parameters.AccountId.HasValue && !parameters.AccountLevel.HasValue)
-                    {
-                        return await GetReportBySelectedViewAsync(parameters);
-                    }
-                }
+                return await GetReportByAllAccountAsync(parameters);
             }
-
-            return null;
         }
 
         private async Task<BalanceByAccountViewModel> GetReportBySelectedAccountAsync(BalanceByAccountParameters parameters)
@@ -111,9 +99,53 @@ namespace SPPC.Tadbir.Persistence.Repository
             if (accountItem != null)
             {
                 var lines = await GetVoucherLinesAsync(parameters);
+
                 lines = lines.Where(line => line.AccountFullCode.StartsWith(accountItem.FullCode)).ToList();
 
-                await AddBalanceByAccountItemsAsync(balanceByAccount, lines, parameters, accountItem);
+                //Func<BalanceByAccountItemViewModel, bool> filter;
+
+
+                //int groupLevel = parameters.AccountLevel.Value + 1;
+                //filter = line => line.AccountLevel >= groupLevel;
+                //foreach (var lineGroup in _report.GetTurnoverGroups(lines, groupLevel, filter))
+                //{
+                //    await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters, lineGroup.Key);
+                //}
+
+
+                Func<BalanceByAccountItemViewModel, bool> filter;
+                int index = 0;
+                while (index < parameters.AccountLevel)
+                {
+                    filter = line => line.AccountLevel == index;
+                    foreach (var lineGroup in _report.GetTurnoverGroups(lines, index, filter))
+                    {
+                        await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters, lineGroup.Key);
+                    }
+
+                    index++;
+                }
+
+                filter = line => line.AccountLevel >= index;
+                foreach (var lineGroup in _report.GetTurnoverGroups(lines, index, filter))
+                {
+                    await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters, lineGroup.Key);
+                }
+
+
+
+
+
+                //await AddBalanceByAccountItemsAsync(balanceByAccount, lines, parameters, accountItem.FullCode);
+
+                //lines = await GetFilteredLinesAsync(lines, parameters);
+
+                //foreach (var item in SeparationLinesAsync(lines, parameters))
+                //{
+                //    await AddBalanceByAccountItemsAsync(balanceByAccount, item, parameters, accountItem.FullCode);
+                //}
+
+
 
                 //foreach (var lineGroup in lines.GroupBy(line => line.AccountFullCode))
                 //{
@@ -131,7 +163,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             return balanceByAccount;
         }
 
-        private async Task<BalanceByAccountViewModel> GetReportBySelectedAccountlevelAsync(BalanceByAccountParameters parameters)
+        private async Task<BalanceByAccountViewModel> GetReportByAllAccountAsync(BalanceByAccountParameters parameters)
         {
             var balanceByAccount = new BalanceByAccountViewModel();
             var lines = await GetVoucherLinesAsync(parameters);
@@ -143,7 +175,7 @@ namespace SPPC.Tadbir.Persistence.Repository
                 filter = line => line.AccountLevel == index;
                 foreach (var lineGroup in _report.GetTurnoverGroups(lines, index, filter))
                 {
-                    await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters);
+                    await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters, lineGroup.Key);
                 }
 
                 index++;
@@ -152,35 +184,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             filter = line => line.AccountLevel >= index;
             foreach (var lineGroup in _report.GetTurnoverGroups(lines, index, filter))
             {
-                await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters);
-            }
-
-            var sortedList = balanceByAccount.Items.OrderBy(item => item.AccountFullCode);
-            balanceByAccount.SetItems(sortedList
-                .Apply(parameters.GridOptions, false)
-                .ToArray());
-
-            SetSummaryItems(balanceByAccount);
-
-            return balanceByAccount;
-        }
-
-        private async Task<BalanceByAccountViewModel> GetReportBySelectedViewAsync(BalanceByAccountParameters parameters)
-        {
-            var balanceByAccount = new BalanceByAccountViewModel();
-            var lines = await GetVoucherLinesAsync(parameters);
-
-            Func<BalanceByAccountItemViewModel, bool> filter;
-            int index = 0;
-            while (index < GetMaxDepth(parameters.ViewId))
-            {
-                filter = line => line.AccountLevel == index;
-                foreach (var lineGroup in _report.GetTurnoverGroups(lines, index, filter))
-                {
-                    await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters);
-                }
-
-                index++;
+                await AddBalanceByAccountItemsAsync(balanceByAccount, lineGroup, parameters, lineGroup.Key);
             }
 
             var sortedList = balanceByAccount.Items.OrderBy(item => item.AccountFullCode);
@@ -206,8 +210,9 @@ namespace SPPC.Tadbir.Persistence.Repository
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
                 line => line.Voucher,
-                line => line.Branch,
-                line => line.Account);
+                line => line.Branch);
+
+            query = IncludeLineReference(query, parameters);
 
             var options = (TestBalanceOptions)parameters.Options;
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
@@ -238,6 +243,31 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
 
             return lines;
+        }
+
+        private IQueryable<VoucherLine> IncludeLineReference(IQueryable<VoucherLine> query, BalanceByAccountParameters parameters)
+        {
+            if (parameters.ViewId == ViewName.Account || parameters.AccountLevel.HasValue)
+            {
+                query = query.Include(line => line.Account);
+            }
+
+            if (parameters.ViewId == ViewName.DetailAccount || parameters.DetailAccountLevel.HasValue)
+            {
+                query = query.Include(line => line.DetailAccount);
+            }
+
+            if (parameters.ViewId == ViewName.CostCenter || parameters.CostCenterLevel.HasValue)
+            {
+                query = query.Include(line => line.CostCenter);
+            }
+
+            if (parameters.ViewId == ViewName.Project || parameters.ProjectLevel.HasValue)
+            {
+                query = query.Include(line => line.Project);
+            }
+
+            return query;
         }
 
         private async Task<List<BalanceByAccountItemViewModel>> GetRawReportByDateLinesAsync(IQueryable<VoucherLine> query,
@@ -272,38 +302,94 @@ namespace SPPC.Tadbir.Persistence.Repository
             BalanceByAccountViewModel balanceByAccount,
             IEnumerable<BalanceByAccountItemViewModel> lines,
             BalanceByAccountParameters parameters,
-            Account account = null)
+            string fullCode)
         {
             if (parameters.IsByBranch)
             {
                 foreach (var branchGroup in lines.GroupBy(item => item.BranchId))
                 {
-                    balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(branchGroup, parameters, account));
+                    balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(branchGroup, parameters, fullCode));
                 }
             }
             else
             {
-                balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(lines, parameters, account));
+                balanceByAccount.Items.Add(await GetBalanceByAccountItemAsync(lines, parameters, fullCode));
             }
         }
 
         private async Task<BalanceByAccountItemViewModel> GetBalanceByAccountItemAsync(
-            IEnumerable<BalanceByAccountItemViewModel> lines, BalanceByAccountParameters parameters, Account account = null)
+            IEnumerable<BalanceByAccountItemViewModel> lines, BalanceByAccountParameters parameters, string fullCode)
         {
-            var first = lines.First();
-            var accountId = account != null ? account.Id : first.AccountId;
+            var balanceByAccountItem = await GetAccountFromVoucherLineAsync(lines.First(), fullCode);
 
-            if (account != null)
+            balanceByAccountItem.StartBalance = await GetInitialBalanceAsync(balanceByAccountItem.AccountId, parameters);
+            balanceByAccountItem.Debit = lines.Sum(line => line.Debit);
+            balanceByAccountItem.Credit = lines.Sum(line => line.Credit);
+            balanceByAccountItem.EndBalance = balanceByAccountItem.StartBalance + balanceByAccountItem.Debit - balanceByAccountItem.Credit;
+            return balanceByAccountItem;
+        }
+
+        private async Task<IList<BalanceByAccountItemViewModel>> GetFilteredLinesAsync(
+            IEnumerable<BalanceByAccountItemViewModel> lines,
+            BalanceByAccountParameters parameters)
+        {
+            if (parameters.ViewId != ViewName.Account)
             {
-                first.AccountFullCode = account.FullCode;
-                first.AccountName = account.Name;
+                if (parameters.AccountId.HasValue)
+                {
+                    var accountItem = await GetAccountAsync(parameters.AccountId.Value);
+                    lines = lines.Where(line => line.AccountFullCode.StartsWith(accountItem.FullCode));
+                }
+
+                if (!parameters.AccountId.HasValue && parameters.AccountLevel.HasValue)
+                {
+                    lines = lines.Where(line => line.AccountLevel == parameters.AccountLevel.Value);
+                }
             }
 
-            first.StartBalance = await GetInitialBalanceAsync(accountId, parameters);
-            first.Debit = lines.Sum(line => line.Debit);
-            first.Credit = lines.Sum(line => line.Credit);
-            first.EndBalance = first.StartBalance + first.Debit - first.Credit;
-            return first;
+            //if (parameters.ViewId != ViewName.DetailAccount)
+            //{
+            //    if (parameters.DetailAccountId.HasValue)
+            //    {
+            //        var detailAccountItem = await GetDetailAccountAsync(parameters.DetailAccountId.Value);
+            //        lines = lines.Where(line => line.DetailAccountFullCode.StartsWith(detailAccountItem.FullCode));
+            //    }
+
+            //    if (!parameters.DetailAccountId.HasValue && parameters.DetailAccountLevel.HasValue)
+            //    {
+            //        lines = lines.Where(line => line.DetailAccountLevel == parameters.DetailAccountLevel.Value);
+            //    }
+            //}
+
+            //if (parameters.ViewId != ViewName.CostCenter)
+            //{
+            //    if (parameters.CostCenterId.HasValue)
+            //    {
+            //        var costcenterItem = await GetCostCenterAsync(parameters.CostCenterId.Value);
+            //        lines = lines.Where(line => line.CostCenterFullCode.StartsWith(costcenterItem.FullCode));
+            //    }
+
+            //    if (!parameters.CostCenterId.HasValue && parameters.CostCenterLevel.HasValue)
+            //    {
+            //        lines = lines.Where(line => line.CostCenterLevel == parameters.CostCenterLevel.Value);
+            //    }
+            //}
+
+            //if (parameters.ViewId != ViewName.Project)
+            //{
+            //    if (parameters.ProjectId.HasValue)
+            //    {
+            //        var projectItem = await GetProjectAsync(parameters.ProjectId.Value);
+            //        lines = lines.Where(line => line.ProjectFullCode.StartsWith(projectItem.FullCode));
+            //    }
+
+            //    if (!parameters.ProjectId.HasValue && parameters.ProjectLevel.HasValue)
+            //    {
+            //        lines = lines.Where(line => line.ProjectLevel == parameters.ProjectLevel.Value);
+            //    }
+            //}
+
+            return lines.ToList();
         }
 
         private async Task<decimal> GetInitialBalanceAsync(int accountId, BalanceByAccountParameters parameters)
@@ -345,6 +431,39 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             return await repository.GetByIDAsync(accountId);
+        }
+
+        private async Task<DetailAccount> GetDetailAccountAsync(int dAccountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
+            return await repository.GetByIDAsync(dAccountId);
+        }
+
+        private async Task<CostCenter> GetCostCenterAsync(int cCenterId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
+            return await repository.GetByIDAsync(cCenterId);
+        }
+
+        private async Task<Project> GetProjectAsync(int projectId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            return await repository.GetByIDAsync(projectId);
+        }
+
+        private async Task<BalanceByAccountItemViewModel> GetAccountFromVoucherLineAsync(BalanceByAccountItemViewModel line, string fullCode)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetSingleByCriteriaAsync(acc => acc.FullCode == fullCode);
+            return new BalanceByAccountItemViewModel()
+            {
+                BranchId = line.BranchId,
+                BranchName = line.BranchName,
+                AccountId = account.Id,
+                AccountName = account.Name,
+                AccountFullCode = account.FullCode,
+                AccountLevel = account.Level
+            };
         }
 
         private async Task<decimal> GetItemBalanceAsync(

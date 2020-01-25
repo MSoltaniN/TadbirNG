@@ -234,11 +234,11 @@
                                 [value]="selectedAccountLevel"
                                 [(ngModel)]="selectedAccountLevel"
                                 [disabled]="!chbAccount"
-                                (ngModelChange)="changeParam(); selectedAccount = undefined">
+                                (ngModelChange)="changeParam()">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedAccount?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />
-            <input type="text" class="k-textbox sppc-float" [ngModel]="selectedAccount?.name" title="{{selectedAccount?.name}}" readonly />
+            <input type="text" class="k-textbox sppc-float" [ngModel]="selectedAccountName" title="{{selectedAccountName}}" readonly />
 
             <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbAccount" SppcPermissionCheck="View" EntityName="Account" (sppcClick)="openSelectForm(1)" type="button"></button>
           </div>
@@ -257,11 +257,11 @@
                                 [value]="selectedDetailAccountLevel"
                                 [(ngModel)]="selectedDetailAccountLevel"
                                 [disabled]="!chbDetailAccount"
-                                (ngModelChange)="changeParam(); selectedDetailAccount = undefined">
+                                (ngModelChange)="changeParam();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedDetailAccount?.fullCode" title="{{selectedDetailAccount?.fullCode}}" readonly />
-            <input type="text" class="k-textbox sppc-float" [ngModel]="selectedDetailAccount?.name" title="{{selectedDetailAccount?.name}}" readonly />
+            <input type="text" class="k-textbox sppc-float" [ngModel]="selectedDetailAccountName" title="{{selectedDetailAccountName}}" readonly />
 
             <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbDetailAccount" SppcPermissionCheck="View" EntityName="DetailAccount" (sppcClick)="openSelectForm(6)" type="button"></button>
           </div>
@@ -280,11 +280,11 @@
                                 [value]="selectedCCenterLevel"
                                 [(ngModel)]="selectedCCenterLevel"
                                 [disabled]="!chbCCenter"
-                                (ngModelChange)="changeParam(); selectedCCenter = undefined">
+                                (ngModelChange)="changeParam()">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedCCenter?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />
-            <input type="text" class="k-textbox sppc-float" [ngModel]="selectedCCenter?.name" title="{{selectedAccount?.name}}" readonly />
+            <input type="text" class="k-textbox sppc-float" [ngModel]="selectedCCenterName" title="{{selectedCCenterName}}" readonly />
 
             <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbCCenter" SppcPermissionCheck="View" EntityName="CostCenter" (sppcClick)="openSelectForm(7)" type="button"></button>
           </div>
@@ -303,11 +303,11 @@
                                 [value]="selectedProjectLevel"
                                 [(ngModel)]="selectedProjectLevel"
                                 [disabled]="!chbProject"
-                                (ngModelChange)="changeParam(); selectedProject = undefined">
+                                (ngModelChange)="changeParam()">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedProject?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />
-            <input type="text" class="k-textbox sppc-float" [ngModel]="selectedProject?.name" title="{{selectedAccount?.name}}" readonly />
+            <input type="text" class="k-textbox sppc-float" [ngModel]="selectedProjectName" title="{{selectedProjectName}}" readonly />
 
             <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbProject" SppcPermissionCheck="View" EntityName="Project" (sppcClick)="openSelectForm(8)" type="button"></button>
           </div>

@@ -45,6 +45,11 @@ namespace SPPC.Tadbir.Values
         public bool IsByBranch { get; set; }
 
         /// <summary>
+        /// در صورتی که گزارش بر اساس حساب نباشد تفکیک بر اساس حساب انجام میشود
+        /// </summary>
+        public bool IsSelectedAccount { get; set; }
+
+        /// <summary>
         /// سطح حساب انتخاب شده
         /// </summary>
         public int? AccountLevel { get; set; }
@@ -53,6 +58,11 @@ namespace SPPC.Tadbir.Values
         /// شناسه دیتابیسی حساب انتخاب شده
         /// </summary>
         public int? AccountId { get; set; }
+
+        /// <summary>
+        /// در صورتی که گزارش بر اساس تفصیلی شناور نباشد تفکیک بر اساس تفصیلی شناور انجام میشود
+        /// </summary>
+        public bool IsSelectedDetailAccount { get; set; }
 
         /// <summary>
         /// سطح تفصیلی شناور انتخاب شده
@@ -65,6 +75,11 @@ namespace SPPC.Tadbir.Values
         public int? DetailAccountId { get; set; }
 
         /// <summary>
+        /// در صورتی که گزارش بر اساس مرکز هزینه نباشد تفکیک بر اساس مرکز هزینه انجام میشود
+        /// </summary>
+        public bool IsSelectedCostCenter { get; set; }
+
+        /// <summary>
         /// سطح مرکز هزینه انتخاب شده
         /// </summary>
         public int? CostCenterLevel { get; set; }
@@ -73,6 +88,11 @@ namespace SPPC.Tadbir.Values
         /// شناسه دیتابیسی مرکز هزینه انتخاب شده
         /// </summary>
         public int? CostCenterId { get; set; }
+
+        /// <summary>
+        /// در صورتی که گزارش بر اساس پروژه نباشد تفکیک بر اساس پروژه انجام میشود
+        /// </summary>
+        public bool IsSelectedProject { get; set; }
 
         /// <summary>
         /// سطح پروژه انتخاب شده

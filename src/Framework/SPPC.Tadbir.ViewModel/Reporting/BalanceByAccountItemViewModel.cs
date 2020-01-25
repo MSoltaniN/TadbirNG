@@ -50,6 +50,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public short AccountLevel { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی تفصیلی شناور مورد استفاده در سطر گزارش
+        /// </summary>
+        public int DetailAccountId { get; set; }
+
+        /// <summary>
         /// کد کامل تفصیلی شناور مورد استفاده در سطر گزارش
         /// </summary>
         public string DetailAccountFullCode { get; set; }
@@ -58,6 +63,16 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام تفصیلی شناور مورد استفاده در سطر گزارش
         /// </summary>
         public string DetailAccountName { get; set; }
+
+        /// <summary>
+        /// شماره سطح که عمق تفصیلی شناور به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
+        /// </summary>
+        public short DetailAccountLevel { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی مرکز هزینه مورد استفاده در سطر گزارش
+        /// </summary>
+        public int CostCenterId { get; set; }
 
         /// <summary>
         /// کد کامل مرکز هزینه مورد استفاده در سطر گزارش
@@ -70,6 +85,16 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string CostCenterName { get; set; }
 
         /// <summary>
+        /// شماره سطح که عمق مرکز هزینه به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
+        /// </summary>
+        public short CostCenterLevel { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی پروژه مورد استفاده در سطر گزارش
+        /// </summary>
+        public int ProjectId { get; set; }
+
+        /// <summary>
         /// کد کامل پروژه مورد استفاده در سطر گزارش
         /// </summary>
         public string ProjectFullCode { get; set; }
@@ -80,9 +105,14 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string ProjectName { get; set; }
 
         /// <summary>
-        /// شرح سند 
+        /// شماره سطح که عمق پروژه به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
         /// </summary>
-        public string Description { get; set; }
+        public short ProjectLevel { get; set; }
+
+        /// <summary>
+        /// شرح حساب
+        /// </summary>
+        public string AccountDescription { get; set; }
 
         /// <summary>
         /// مانده ابتدای دوره گزارشگیری

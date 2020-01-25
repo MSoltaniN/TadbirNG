@@ -2889,4 +2889,7 @@
   <data name="OperationalForms" xml:space="preserve">
     <value>فرم های عملیاتی</value>
   </data>
+  <data name="AccountDescription" xml:space="preserve">
+    <value>شرح حساب</value>
+  </data>
 </root>
