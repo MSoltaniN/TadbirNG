@@ -3281,6 +3281,11 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         public const string GroupAction = "GroupAction";
 
         /// <summary>
+        /// Default text : حذف گروهی
+        /// </summary>
+        public const string GroupDelete = "GroupDelete";
+
+        /// <summary>
         /// Default text : گروه حساب
         /// </summary>
         public const string GroupId = "GroupId";
@@ -3304,6 +3309,11 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         /// Default text : حساب انتخاب شده نامعتبر یا غیر قابل دسترس است.
         /// </summary>
         public const string InvalidAccountInFullAccount = "InvalidAccountInFullAccount";
+
+        /// <summary>
+        /// Default text : محدوده تاریخی داده شده برای بایگانی رویدادها معتبر نیست.
+        /// </summary>
+        public const string InvalidArchiveRange = "InvalidArchiveRange";
 
         /// <summary>
         /// Default text : مرکز هزینه انتخاب شده نامعتبر یا غیر قابل دسترس است.

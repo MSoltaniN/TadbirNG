@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter, ViewChild, ElementRef, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces, GroupFilter, FilterViewModel } from '@sppc/shared/models';
 import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -29,7 +29,7 @@ export function getLayoutModule(layout: Layout) {
   }]
 })
 export class AdvanceFilterComponent extends DefaultComponent implements OnInit {  
-
+   
   public title: string;
   public columnsList: Array<FilterColumn>;
   public operatorsList: Array<Item>;
@@ -48,7 +48,23 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   selectedValue: string;
   formMode: string;
   currentEditIndex: number;  
-  
+
+  currentGFilter: GroupFilter;
+  gFilterSelected: number;
+  activeGroupFilter: boolean = false;
+  activeSaveFilter: boolean = false;
+  activeCopyFilter: boolean = false;
+  filterUseForOthers: boolean = false;
+  isEditMode: boolean = false;
+  filterGroupName: string;
+
+  public unSaveFilter: FilterRow[];
+  public groupFilters: Array<GroupFilter>; 
+  public deletedGroupFilters: Array<GroupFilter>;
+
+  public filters: Array<FilterRow>;
+
+  selectedGroupRows: any[] = [];
 
   @Output() result: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -76,7 +92,6 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     { value: StringOperatorResource.NotLike, key: "doesnotcontain" },
   ]  
 
-  public filters: Array<FilterRow>;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public gridService: GridService,
     public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
@@ -114,33 +129,51 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     this.firstLoadFilters(undefined);
 
-  }
+  }  
 
 
   firstLoadFilters(groupFilterSelected) {
 
-    //insert first item
+    //insert first and unsaved items
     this.groupFilters = new Array<GroupFilter>();
     var firstItem = new GroupFilter();
     firstItem.id = -1;
     firstItem.name = "---";
-    if (this.bStorageService.getSession('unSaveFilter')) {
-      var unsavedFilters = <Array<FilterRow>>JSON.parse(this.bStorageService.getSession('unSaveFilter'))
-      firstItem.filters = unsavedFilters;
+    var init = false;
+    if (this.bStorageService.getSession('unSaveFilter' + this.viewId)) {
+      var unsavedFilters = <Array<GroupFilter>>JSON.parse(this.bStorageService.getSession('unSaveFilter' + this.viewId))
+      //unsavedFilters.forEach((gf) => {
+      //  if (gf.id == -1) {
+      //    firstItem.filters = gf.filters;
+      //    this.groupFilters.push(firstItem);
+      //  }
+      //  else {
+      //    this.groupFilters.push(gf);
+      //  }
+      //});
+      
+      this.groupFilters = unsavedFilters;
+      if (unsavedFilters.length > 1)
+        init = true;
     }
-    this.groupFilters.push(firstItem);
+    else {
+      this.groupFilters.push(firstItem);
+    }
+    
     //insert first item
-
+    
     this.advanceFilterService.getFilters(this.viewId).subscribe((res: FilterViewModel[]) => {
-      //insert db item
-      res.forEach((fi) => {
-        var item = new GroupFilter();
-        item.id = fi.id;
-        item.name = fi.name;
-        item.isPublic = fi.isPublic;
-        item.filters = <FilterRow[]>JSON.parse(fi.values);
-        this.groupFilters.push(item);
-      });
+      if (!init) {
+        //insert db item
+        res.forEach((fi) => {
+          var item = new GroupFilter();
+          item.id = fi.id;
+          item.name = fi.name;
+          item.isPublic = fi.isPublic;
+          item.filters = <FilterRow[]>JSON.parse(fi.values);
+          this.groupFilters.push(item);
+        });
+      }
 
       //insert db item
       if (!groupFilterSelected) {
@@ -315,28 +348,33 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   createFilterExpression():FilterExpression {
         var totalfilter: FilterExpression;
     var lastOperatorUsed = " && ";
-    this.filters.forEach((item) => {
+    if (this.filters) {
+      this.filters.forEach((item) => {
 
-      var column = this.columnsList.filter(col => col.name === item.columnName)[0];
-      var currentfilter = new Filter(item.columnName, item.value, this.getStandardOperator(item.operator, column.dataType), column.dataType, item.braces, item.id);
+        var column = this.columnsList.filter(col => col.name === item.columnName)[0];
+        var currentfilter = new Filter(item.columnName, item.value, this.getStandardOperator(item.operator, column.dataType), column.dataType, item.braces, item.id);
 
-      var newFilter = new FilterExpression();
-      newFilter.filter = currentfilter;
-      newFilter.operator = lastOperatorUsed ? lastOperatorUsed : (item.logicOperator == 'or' ? ' || ' : ' && ')
+        var newFilter = new FilterExpression();
+        newFilter.filter = currentfilter;
+        newFilter.operator = lastOperatorUsed ? lastOperatorUsed : (item.logicOperator == 'or' ? ' || ' : ' && ')
 
-      if (totalfilter) {
-        totalfilter.children.push(newFilter);
-        lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
-      }
-      else {
-        //var fbuilder = new FilterExpressionBuilder();
-        totalfilter = new FilterExpression();
-        totalfilter.filter = currentfilter;
-        totalfilter.operator = ' && ';
-        lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
-        //return filterExpBuilder.New(filter).Build();
-      }
-    });
+        if (totalfilter) {
+          totalfilter.children.push(newFilter);
+          lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
+        }
+        else {
+          //var fbuilder = new FilterExpressionBuilder();
+          totalfilter = new FilterExpression();
+          totalfilter.filter = currentfilter;
+          totalfilter.operator = ' && ';
+          lastOperatorUsed = item.logicOperator == 'or' ? ' || ' : ' && ';
+          //return filterExpBuilder.New(filter).Build();
+        }
+      });
+    }
+    else {
+      return new FilterExpression();
+    }
 
     return totalfilter;
   }
@@ -395,8 +433,12 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   saveFiltersToDB(showMessage:boolean = true) {
+
+    var unsavedFilters = <Array<GroupFilter>>JSON.parse(this.bStorageService.getSession('unSaveFilter' + this.viewId))
+
     this.groupFilters.forEach((gf) => {
-      if (gf.filters) {
+
+      //if (gf.filters) {
         if (gf.id > -1) {
           var filterModel = new FilterViewModel();
           filterModel.id = gf.isNew ? 0 : gf.id;
@@ -404,22 +446,37 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           filterModel.name = gf.name;
           filterModel.viewId = this.viewId;
           filterModel.userId = this.UserId;
+          if (!gf.filters)
+            gf.filters = new Array<FilterRow>();
           filterModel.values = JSON.stringify(gf.filters);
+          
           if (filterModel.id == 0)
             this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {
               this.gFilterSelected = res.id;
 
               var fil = this.groupFilters.filter(f => f.id === gf.id);
-              if (fil.length > 0)
+              if (fil.length > 0) {
                 fil[0].id = res.id;
+                fil[0].isNew = false;
+              }
               else
                 this.groupFilters.push(res);
+
+              //var unsaveIndex = unsavedFilters.findIndex(f => f.name == gf.name);
+              //if (unsaveIndex >= 0) {
+              //  unsavedFilters.splice(unsaveIndex, 1);
+              //  this.bStorageService.setSession('unSaveFilter' + this.viewId, JSON.stringify(unsavedFilters));
+              //}              
+
             });
           else
             this.advanceFilterService.saveFilter(filterModel.id, filterModel).subscribe();
         }
-              }
+
+      //}
     });
+
+    this.bStorageService.removeSessionStorage('unSaveFilter' + this.viewId);
 
     if (showMessage)
       this.showMessage(this.getText('AdvanceFilter.FilterSavedSuccess'), MessageType.Succes);
@@ -447,15 +504,14 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   onOk() {
-    
+    var unSavedGroupFilters = new Array<GroupFilter>();
     this.groupFilters.forEach((gf) => {
-      if (gf.filters) {
-        if (gf.id == -1) {
-          this.bStorageService.setSession('unSaveFilter', JSON.stringify(gf.filters));
-          return;
-        }        
-      }    
-    });        
+        if (gf.id == -1 || gf.isNew) {
+          unSavedGroupFilters.push(gf);          
+      }
+    });
+
+    this.bStorageService.setSession('unSaveFilter' + this.viewId, JSON.stringify(this.groupFilters));
     
     this.result.emit({ filters: this.createFilterExpression(), filterList: this.filters, groupFilter: this.groupFilters, gFilterSelected:this.gFilterSelected });
   }
@@ -656,6 +712,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     var colorCount: number = 0;
 
     var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);
+    if (index == -1) return;
     var filters = this.groupFilters[index].filters;;
 
     if (filters) {
@@ -762,45 +819,43 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var sortDeleted = this.selectedRows.sort((a, b) => parseFloat(a.order) - parseFloat(b.order));
 
       sortDeleted.forEach((del) => {
-        var index = filters.findIndex(fi => fi === del);        
-
-        if (filters[index].braces) {
-          var deleteBraces = filters[index].braces;
-          if (deleteBraces) {
-            deleteBraces.forEach((b) => {
-              if (filters[index + 1]) {
-                var nextFilter = filters[index + 1];
-                if (!nextFilter.braces)
-                  nextFilter.braces = new Array<Braces>();
-                nextFilter.braces.push(b);
-              }
-              else {
-                if (filters[index].braces) {
-                  filters[index].braces.forEach((br) => {
-                    if (filters.findIndex(f => f.id === br.outerId) >= 0) {
-                      var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
-
-                      outerBraces.forEach((obr) => {
-                        if (obr.outerId == filters[index].id) {
-                          deleteBraces.push(obr);
-                        }
-                      })
-
-                      deleteBraces.forEach((dbr) => {
-                        var dindex = outerBraces.findIndex(br => br == dbr);
-                        outerBraces.splice(dindex);
-                      });
-                    }
-                  })
+        var index = filters.findIndex(fi => fi.id === del.id);
+        if (index > -1) {
+          if (filters[index].braces) {
+            var deleteBraces = filters[index].braces;
+            if (deleteBraces) {
+              deleteBraces.forEach((b) => {
+                if (filters[index + 1]) {
+                  var nextFilter = filters[index + 1];
+                  if (!nextFilter.braces)
+                    nextFilter.braces = new Array<Braces>();
+                  nextFilter.braces.push(b);
                 }
-              }
+                else {
+                  if (filters[index].braces) {
+                    filters[index].braces.forEach((br) => {
+                      if (filters.findIndex(f => f.id === br.outerId) >= 0) {
+                        var outerBraces = filters.filter(f => f.id === br.outerId)[0].braces;
 
-            });
+                        outerBraces.forEach((obr) => {
+                          if (obr.outerId == filters[index].id) {
+                            deleteBraces.push(obr);
+                          }
+                        })
+
+                        deleteBraces.forEach((dbr) => {
+                          var dindex = outerBraces.findIndex(br => br == dbr);
+                          outerBraces.splice(dindex);
+                        });
+                      }
+                    })
+                  }
+                }
+
+              });
+            }
           }
-        }
-
-                  
-        
+        }       
 
         filters.splice(index, 1);
       });
@@ -811,6 +866,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.revertToDefaultValues();
 
       this.groupFilters[index].filters = filters;
+      this.filters = filters;
       this.revertToDefaultValues();
       //this.saveFiltersToDB(false);
       this.showMessage(this.getText('AdvanceFilter.FilterDeletedSuccess'), MessageType.Succes)
@@ -818,21 +874,6 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     
   }
-
-  currentGFilter: GroupFilter;
-  gFilterSelected: number;
-  activeGroupFilter: boolean = false;
-  activeSaveFilter: boolean = false;
-  activeCopyFilter: boolean = false;
-  filterUseForOthers: boolean = false;
-  isEditMode: boolean = false;
-  filterGroupName: string;
-
-  public unSaveFilter: FilterRow[];
-  public groupFilters: Array<GroupFilter>;
-  public deletedGroupFilters: Array<GroupFilter>;
-
-  selectedGroupRows: any[] = [];
 
   addGroupFilter() {
     this.isEditMode = false;
@@ -973,6 +1014,13 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           this.advanceFilterService.deleteFilter(filterModel.id).subscribe();
       });
     }
+
+    var unsavedFilters = <Array<GroupFilter>>JSON.parse(this.bStorageService.getSession('unSaveFilter' + this.viewId));
+    var unsaveIndex = unsavedFilters.findIndex(f => f.name == this.groupFilters[index].name);
+    if (unsaveIndex >= 0) {
+      unsavedFilters.splice(unsaveIndex, 1);
+      this.bStorageService.setSession('unSaveFilter' + this.viewId, JSON.stringify(unsavedFilters));
+    }   
 
     this.showMessage(this.getText('AdvanceFilter.FilterRemovedSuccess'), MessageType.Succes)
   }

@@ -2889,6 +2889,12 @@
   <data name="OperationalForms" xml:space="preserve">
     <value>فرم های عملیاتی</value>
   </data>
+  <data name="InvalidArchiveRange" xml:space="preserve">
+    <value>محدوده تاریخی داده شده برای بایگانی رویدادها معتبر نیست.</value>
+  </data>
+  <data name="GroupDelete" xml:space="preserve">
+    <value>حذف گروهی</value>
+  </data>
   <data name="AccountDescription" xml:space="preserve">
     <value>شرح حساب</value>
   </data>

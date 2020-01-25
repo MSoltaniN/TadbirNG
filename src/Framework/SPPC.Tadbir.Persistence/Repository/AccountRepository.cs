@@ -235,11 +235,12 @@ namespace SPPC.Tadbir.Persistence
                 {
                     level = Math.Max(level, account.Level);
                     account.AccountCurrencies.Clear();
-                    await DeleteAsync(repository, account);
+                    await DeleteNoLogAsync(repository, account);
                 }
             }
 
             await UpdateLevelUsageAsync(level);
+            await OnEntityGroupDeleted(accountIds);
         }
 
         /// <summary>

@@ -129,10 +129,17 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
         public async Task DeleteCompaniesAsync(IEnumerable<int> items)
         {
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             foreach (int item in items)
             {
-                await DeleteCompanyAsync(item);
+                var company = await repository.GetByIDAsync(item);
+                if (company != null)
+                {
+                    await DeleteNoLogAsync(repository, company);
+                }
             }
+
+            await OnEntityGroupDeleted(items);
         }
 
         /// <summary>

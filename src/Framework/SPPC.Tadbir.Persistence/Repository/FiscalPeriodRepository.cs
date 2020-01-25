@@ -225,10 +225,17 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
         public async Task DeleteFiscalPeriodsAsync(IEnumerable<int> items)
         {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             foreach (int item in items)
             {
-                await DeleteFiscalPeriodAsync(item);
+                var fiscalPeriod = await repository.GetByIDAsync(item);
+                if (fiscalPeriod != null)
+                {
+                    await DeleteNoLogAsync(repository, fiscalPeriod);
+                }
             }
+
+            await OnEntityGroupDeleted(items);
         }
 
         /// <summary>
