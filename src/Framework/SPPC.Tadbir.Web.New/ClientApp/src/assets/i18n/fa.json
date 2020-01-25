@@ -172,6 +172,9 @@
     "SearchTitle": "جستجو"
   },
   "ItemBalance": {
+    "DetailAccount": "تفصیلی شناور",
+    "CostCenter": "مرکز هزینه",
+    "Project": "پروژه",
     "Report": "گزارش",
     "ByDate": "بر اساس تاریخ",
     "ByVoucher": "بر اساس سند",
