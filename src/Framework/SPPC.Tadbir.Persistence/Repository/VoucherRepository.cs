@@ -356,6 +356,7 @@ namespace SPPC.Tadbir.Persistence
                 voucher.StatusId = (int)status;
                 repository.Update(voucher);
                 OnDocumentStatus(status);
+                Log.Description = GetState(voucher);
                 await FinalizeActionAsync(voucher);
             }
         }
@@ -376,6 +377,7 @@ namespace SPPC.Tadbir.Persistence
                 voucher.ConfirmerName = isConfirmed ? GetCurrentUserDisplayName() : null;
                 repository.Update(voucher);
                 OnDocumentConfirmation(isConfirmed);
+                Log.Description = GetState(voucher);
                 await FinalizeActionAsync(voucher);
             }
         }
@@ -396,6 +398,7 @@ namespace SPPC.Tadbir.Persistence
                 voucher.ApproverName = isApproved ? GetCurrentUserDisplayName() : null;
                 repository.Update(voucher);
                 OnDocumentApproval(isApproved);
+                Log.Description = GetState(voucher);
                 await FinalizeActionAsync(voucher);
             }
         }
