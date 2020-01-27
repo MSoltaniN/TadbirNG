@@ -172,6 +172,9 @@
     "SearchTitle": "جستجو"
   },
   "ItemBalance": {
+    "DetailAccount": "تفصیلی شناور",
+    "CostCenter": "مرکز هزینه",
+    "Project": "پروژه",
     "Report": "گزارش",
     "ByDate": "بر اساس تاریخ",
     "ByVoucher": "بر اساس سند",
@@ -189,7 +192,7 @@
     "CreditSum": "جمع بستانکار",
     "Sum": "مجموع",
     "SubBalance": "تراز زیرمجموعه",
-    "ShowZeroRemains": "نمایش سرفصل های با مانده صفر",
+    "ShowZeroRemains": "نمایش سطرهای با مبلغ صفر",
     "OpeningVoucher": "انعکاس افتتاحیه در ستون مانده ابتدا",
     "UserSettings": "تنظیمات کاربر",
     "Options": "تنظیمات",
@@ -393,7 +396,7 @@
     "CreditSum": "جمع بستانکار",
     "Sum": "مجموع",
     "SubBalance": "تراز زیرمجموعه",
-    "ShowZeroRemains": "نمایش سرفصل های با مانده صفر",
+    "ShowZeroRemains": "نمایش سطرهای با مبلغ صفر",
     "OpeningVoucher": "انعکاس افتتاحیه در ستون مانده ابتدا",
     "UserSettings": "تنظیمات کاربر",
     "Options": "تنظیمات",
