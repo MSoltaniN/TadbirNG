@@ -9,6 +9,9 @@ using System.Windows.Forms;
 using HAP = HtmlAgilityPack;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using BabakSoft.Platform.Data;
+using SPPC.Tadbir.ViewModel.Metadata;
+using System.Text;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner
 {
@@ -259,6 +262,77 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
                 .ToArray();
             return String.Join(String.Empty, items);
         }
+
+        #endregion
+
+        #region List Metadata Organizer
+
+        private static void OrganizeListMetadata()
+        {
+            var all = new List<ColumnMetaModel>();
+            var metadata = GetListColumnsMetadata();
+            foreach (var group in metadata.GroupBy(col => col.ViewId))
+            {
+                all.AddRange(UpdateListColumnsMetadata(group.ToList()));
+            }
+
+            int id = 1;
+            var builder = new StringBuilder("SET IDENTITY_INSERT [Metadata].[Column] ON");
+            builder.AppendLine();
+            foreach (var column in all)
+            {
+                column.Column.Id = id++;
+                builder.AppendLine(ScriptColumnAsInsert(column));
+            }
+
+            builder.AppendLine();
+            builder.AppendLine("SET IDENTITY_INSERT [Metadata].[Column] OFF");
+        }
+
+        private static IEnumerable<ColumnMetaModel> GetListColumnsMetadata()
+        {
+            return null;
+        }
+
+        private static IList<ColumnMetaModel> UpdateListColumnsMetadata(IList<ColumnMetaModel> columns)
+        {
+            // TODO: Add RowNo column (if not present) here...
+            var rowNo = new ColumnMetaModel()
+            {
+                ViewId = columns.First().ViewId,
+                Column = new ColumnViewModel()
+                {
+                    AllowFiltering = true,
+                    AllowSorting = true,
+                    DisplayIndex = 0,
+                    DotNetType = "System.Int32",
+                    Name = "RowNo",
+                    ScriptType = "number",
+                    StorageType = "int",
+                    Visibility = "AlwaysVisible"
+                }
+            };
+
+            foreach (var column in columns.Where(col => col.Column.DisplayIndex != -1))
+            {
+                column.Column.DisplayIndex++;
+            }
+
+            columns.Add(rowNo);
+            return columns
+                .OrderBy(col => col.Column.DisplayIndex)
+                .ToList();
+        }
+
+        private static string ScriptColumnAsInsert(ColumnMetaModel column)
+        {
+            return String.Format(
+                @"INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES ({0}, {1}, N'{2}', {3}, {4}, N'{5}', N'{6}', N'{7}', {8}, {9}, {10}, {11}, {12}, {13}, N'{14}', {15}, {16})\r\n");
+        }
+
+        private static readonly DataLayerBase _dal = new SqlDataLayer(_connection, ProviderType.SqlClient);
+        private const string _connection = "Server=.;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         #endregion
     }

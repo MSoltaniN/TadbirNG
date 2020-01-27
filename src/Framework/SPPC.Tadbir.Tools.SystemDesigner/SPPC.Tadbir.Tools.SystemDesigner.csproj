@@ -101,6 +101,7 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\ColumnMetaModel.cs" />
     <Compile Include="Models\ControllerModel.cs" />
     <Compile Include="Models\CrudWizardModel.cs" />
     <Compile Include="Models\CrudWizardOptionsModel.cs" />
