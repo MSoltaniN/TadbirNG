@@ -63,6 +63,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   public deletedGroupFilters: Array<GroupFilter>;
 
   public filters: Array<FilterRow>;
+  usedColors = new Array<any>();
+  maxColorCount: number = 10;
 
   selectedGroupRows: any[] = [];
 
@@ -586,9 +588,14 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         var endBrace = new Braces();
         endBrace.brace = ")";
         endBrace.outerId = filters[startIndex].id;
+        
+        //filters[startIndex].braces.push(startBrace);
+        //filters[endIndex].braces.push(endBrace);
+        var bestStartIndex = this.findBestBraceStartIndex(filters, startIndex, endIndex);
+        var bestEndIndex = this.findBestBraceStartIndex(filters, startIndex, endIndex);
 
-        filters[startIndex].braces.push(startBrace);
-        filters[endIndex].braces.push(endBrace);
+        filters[startIndex].braces.splice(bestStartIndex, 0, startBrace);
+        filters[endIndex].braces.splice(bestEndIndex, 0, endBrace);
 
         if (!this.checkExpression(filters)) {
           this.showMessage(this.getText('AdvanceFilter.AddBracesMsg'));
@@ -601,8 +608,11 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         if (!this.filters[endIndex].braces)
           this.filters[endIndex].braces = new Array<Braces>();
 
-        this.filters[startIndex].braces.push(startBrace);
-        this.filters[endIndex].braces.push(endBrace);
+        //this.filters[startIndex].braces.push(startBrace);
+        //this.filters[endIndex].braces.push(endBrace);
+
+        this.filters[startIndex].braces.splice(bestStartIndex, 0, startBrace);
+        this.filters[endIndex].braces.splice(bestEndIndex, 0, endBrace);
       }       
 
       var index = this.groupFilters.findIndex(gf => gf.id === this.gFilterSelected);      
@@ -611,6 +621,31 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.computeTotalExpression();
     };    
   }
+
+  findBestBraceStartIndex(filters:FilterRow[],startIndex,endIndex) {    
+    var counter = 0;
+    filters[startIndex].braces.forEach((it) => {
+      if (filters.findIndex(f => f.id === it.outerId) > endIndex)
+        return counter;
+
+      counter++;
+    });
+
+    return counter; 
+  }
+
+  findBestBraceEndIndex(filters: FilterRow[], startIndex, endIndex) {
+    var counter = 0;
+    filters[endIndex].braces.forEach((it) => {
+      if (filters.findIndex(f => f.id === it.outerId) > startIndex)
+        return counter;
+
+      counter++;
+    });
+
+    return counter;
+  }
+
 
   checkExpression(filters: Array<FilterRow>):boolean {
     let result = false;
@@ -703,11 +738,29 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     return expression;
   }
+
+  getColor(filtersId) {
+    var i = 0;
+    if (this.usedColors && this.usedColors.length > 0) {
+      if (this.usedColors.findIndex(p => p.id === filtersId) > -1) {
+        return this.usedColors.findIndex(p => p.id === filtersId);
+      }      
+    }
+   
+    for (i = 0; i <= this.maxColorCount; i++)
+    {
+      if (this.usedColors[i] == undefined) {
+        this.usedColors[i] = { id: filtersId }; 
+        return i;
+      }
+    }
+        
+  }
   
   computeTotalExpression() {
 
     if (!this.groupFilters) return;
-    var usedColors = new Array<string>();
+    
     var usedId = new Array<string>();
     var colorCount: number = 0;
 
@@ -729,14 +782,16 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
             var br = item.braces[i];
             if (br && br.brace == "(") {
               var html = "";
-              if (usedId.findIndex(f => f === br.outerId + item.id) == -1) {
+              if (usedId.findIndex(f => f === br.outerId + item.id) == -1) {                
+                var color = this.getColor(br.outerId + item.id);
+                html = '<span class="color' + color + '">';
                 usedId.push(br.outerId + item.id);
-                html = '<span class="color' + colorCount + '">';
-                colorCount++;
+                //colorCount++;
               }
               else {
-                var colorindex = usedId.findIndex(f => f === br.outerId + item.id)
-                html = '<span class="color' + colorindex + '">';
+                //var colorindex = usedId.findIndex(f => f === br.outerId + item.id)
+                //html = '<span class="color' + colorindex + '">';
+                html = '<span class="color' + this.getColor(br.outerId + item.id) + '">';
               }
 
               this.totalFilterExpression += " " + html + br.brace + "</span>";
@@ -749,18 +804,20 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
         if (item.braces) {
 
-          for (var i = item.braces.length; i >= 0; i--) {
+          //for (var i = item.braces.length; i >= 0; i--) {
+          for (var i = 0; i < item.braces.length; i++) {
             var br = item.braces[i];
             if (br && br.brace == ")") {
               var html = "";
               if (usedId.findIndex(f => f === item.id + br.outerId) == -1) {
-                usedId.push(item.id + br.outerId);                
-                html = '<span class="color' + colorCount + '">';
-                colorCount++;
+                usedId.push(item.id + br.outerId);
+                var color = this.getColor(br.outerId + item.id);
+                html = '<span class="color' + color + '">';
+                //colorCount++;
               }
               else {
-                var colorindex = usedId.findIndex(f => f === item.id + br.outerId)
-                html = '<span class="color' + colorindex + '">';
+                //var colorindex = usedId.findIndex(f => f === item.id + br.outerId)
+                html = '<span class="color' + this.getColor(item.id + br.outerId) + '">';
               }
 
               this.totalFilterExpression += " " + html + br.brace + "</span>";;

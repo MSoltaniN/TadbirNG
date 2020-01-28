@@ -45,7 +45,24 @@ namespace SPPC.Framework.Presentation
         /// <returns>یک رشته متنی شامل مقادیر این نمونه</returns>
         public override string ToString()
         {
-            var builder = new StringBuilder(Filter.ToString());
+            var builder = new StringBuilder();
+            if (Filter.Braces != null)
+            {
+                foreach (var brace in Filter.Braces)
+                {
+                    if (brace.Brace == "(")
+                    {
+                        builder.Append(brace.Brace.ToString());
+                    }
+                }
+
+                builder = builder.Append(Filter.ToString());
+            }
+            else
+            {
+                builder = new StringBuilder(Filter.ToString());
+            }
+
             foreach (var item in Children)
             {
                 builder.Append(item.Operator);
@@ -53,7 +70,10 @@ namespace SPPC.Framework.Presentation
                 {
                     foreach (var brace in item.Filter.Braces)
                     {
-                        builder.Append(brace.Brace.ToString());
+                        if (brace.Brace == "(")
+                        {
+                            builder.Append(brace.Brace.ToString());
+                        }
                     }
                 }
 
@@ -86,6 +106,17 @@ namespace SPPC.Framework.Presentation
                                     builder.Append(brace.Brace.ToString());
                                 }
                             }
+                        }
+                    }
+                }
+
+                if (item.Filter.Braces != null)
+                {
+                    foreach (var brace in item.Filter.Braces)
+                    {
+                        if (brace.Brace == ")")
+                        {
+                            builder.Append(brace.Brace.ToString());
                         }
                     }
                 }
