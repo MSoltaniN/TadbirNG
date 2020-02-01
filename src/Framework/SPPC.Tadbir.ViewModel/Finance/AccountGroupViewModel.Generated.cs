@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
     /// <summary>
     /// اطلاعات یکی از گروه های حساب را نگهداری می کند
     /// </summary>
-    public partial class AccountGroupViewModel
+    public partial class AccountGroupViewModel : ViewModelBase
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

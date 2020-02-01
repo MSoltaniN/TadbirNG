@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class FiscalPeriodViewModel
+    public partial class FiscalPeriodViewModel : ViewModelBase
     {
         /// <summary>
         /// Returns a string that represents the current object.

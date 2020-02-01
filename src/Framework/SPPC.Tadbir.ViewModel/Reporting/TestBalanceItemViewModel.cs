@@ -6,7 +6,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// <summary>
     /// اطلاعات یکی از سطرهای گزارش تراز آزمایشی را نگهداری می کند
     /// </summary>
-    public class TestBalanceItemViewModel : IAccountView
+    public class TestBalanceItemViewModel : ViewModelBase, IAccountView
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -14,11 +14,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public TestBalanceItemViewModel()
         {
         }
-
-        /// <summary>
-        /// شماره ردیف سطر در گزارش
-        /// </summary>
-        public int RowNo { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی حساب مورد استفاده در سطر گزارش

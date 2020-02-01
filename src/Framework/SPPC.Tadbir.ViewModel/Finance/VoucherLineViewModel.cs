@@ -7,7 +7,7 @@ using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class VoucherLineViewModel : IFiscalEntityView
+    public partial class VoucherLineViewModel : ViewModelBase, IFiscalEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی سند مالی که این آرتیکل برای آن ایجاد شده است

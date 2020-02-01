@@ -6,7 +6,7 @@ using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Auth
 {
-    public partial class UserViewModel
+    public partial class UserViewModel : ViewModelBase
     {
         /// <summary>
         /// Gets or sets the first name of the organization person related to this user.

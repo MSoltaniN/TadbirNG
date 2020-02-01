@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {
-    public partial class OperationLogViewModel
+    public partial class OperationLogViewModel : ViewModelBase
     {
         /// <summary>
         /// نام و نام خانوادگی کاربری که عملیات برنامه توسط او انجام شده

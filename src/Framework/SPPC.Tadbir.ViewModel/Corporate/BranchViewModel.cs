@@ -1,6 +1,6 @@
 ﻿namespace SPPC.Tadbir.ViewModel.Corporate
 {
-    public partial class BranchViewModel
+    public partial class BranchViewModel : ViewModelBase
     {
         /// <summary>
         /// Gets or sets the unique identifier of the company related to this branch.

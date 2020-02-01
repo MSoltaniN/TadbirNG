@@ -5,7 +5,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// <summary>
     /// اطلاعات یکی از سطرهای گزارش مانده به تفکیک حساب را نگهداری می کند
     /// </summary>
-    public class BalanceByAccountItemViewModel : IAccountView
+    public class BalanceByAccountItemViewModel : ViewModelBase, IAccountView
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -13,11 +13,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public BalanceByAccountItemViewModel()
         {
         }
-
-        /// <summary>
-        /// شماره ردیف سطر در گزارش
-        /// </summary>
-        public int RowNo { get; set; }
 
         /// <summary>
         /// شماره سند آرتیکل

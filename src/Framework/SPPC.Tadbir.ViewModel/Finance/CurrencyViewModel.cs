@@ -5,7 +5,7 @@ using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CurrencyViewModel
+    public partial class CurrencyViewModel : ViewModelBase
     {
         /// <summary>
         /// شناسه دیتابیسی شعبه ای که ارز در آن تعریف شده است

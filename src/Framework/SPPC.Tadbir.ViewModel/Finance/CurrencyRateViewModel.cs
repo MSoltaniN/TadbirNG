@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CurrencyRateViewModel
+    public partial class CurrencyRateViewModel : ViewModelBase
     {
         /// <summary>
         /// شناسه دیتابیسی ارز مرتبط با این نرخ

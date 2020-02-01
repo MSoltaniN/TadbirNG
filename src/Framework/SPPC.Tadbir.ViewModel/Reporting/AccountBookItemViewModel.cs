@@ -8,17 +8,12 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// لازم به یادآوری است که مفهوم حساب در اینجا عمومی تر از سرفصل حسابداری بوده
     /// و شامل همه مولفه های بردار حساب می شود.
     /// </summary>
-    public class AccountBookItemViewModel
+    public class AccountBookItemViewModel : ViewModelBase
     {
         /// <summary>
         /// شناسه دیتابیسی آرتیکل مالی
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// شماره ردیف سطر اطلاعاتی در گزارش با مرتب سازی پیش فرض گزارش
-        /// </summary>
-        public int RowNo { get; set; }
 
         /// <summary>
         /// تاریخ سند مالی

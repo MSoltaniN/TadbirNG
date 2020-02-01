@@ -4,7 +4,7 @@ using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CostCenterViewModel : IFiscalEntityView, ITreeEntityView
+    public partial class CostCenterViewModel : ViewModelBase, IFiscalEntityView, ITreeEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این مرکز هزینه در آن تعریف شده است

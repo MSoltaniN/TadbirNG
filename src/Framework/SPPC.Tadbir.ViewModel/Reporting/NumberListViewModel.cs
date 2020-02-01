@@ -7,7 +7,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// <summary>
     /// لیستی از اعداد
     /// </summary>
-    public class NumberListViewModel
+    public class NumberListViewModel : ViewModelBase
     {
         /// <summary>
         /// شماره

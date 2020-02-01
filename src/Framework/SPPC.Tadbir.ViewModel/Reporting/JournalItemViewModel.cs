@@ -6,17 +6,12 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// <summary>
     /// اطلاعاتی نمایشی یک آرتیکل مالی را جهت استفاده در گزارش دفتر روزنامه نگهداری می کند
     /// </summary>
-    public class JournalItemViewModel : IAccountView
+    public class JournalItemViewModel : ViewModelBase, IAccountView
     {
         /// <summary>
         /// شناسه دیتابیسی آرتیکل مالی
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// شماره ردیف سطر اطلاعاتی در گزارش با مرتب سازی پیش فرض گزارش
-        /// </summary>
-        public int RowNo { get; set; }
 
         /// <summary>
         /// تاریخ سند مالی

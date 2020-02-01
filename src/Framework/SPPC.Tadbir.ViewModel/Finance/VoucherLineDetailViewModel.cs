@@ -5,7 +5,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
     /// <summary>
     /// TODO: Add comment
     /// </summary>
-    public class VoucherLineDetailViewModel
+    public class VoucherLineDetailViewModel : ViewModelBase
     {
         /// <summary>
         /// TODO: Add comment

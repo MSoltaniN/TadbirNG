@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
     /// <summary>
     /// Represents a logical authority used in a role-based security subsystem.
     /// </summary>
-    public partial class RoleViewModel
+    public partial class RoleViewModel : ViewModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoleViewModel"/> class.

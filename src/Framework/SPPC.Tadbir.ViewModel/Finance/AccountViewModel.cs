@@ -4,7 +4,7 @@ using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class AccountViewModel : IFiscalEntityView, ITreeEntityView
+    public partial class AccountViewModel : ViewModelBase, IFiscalEntityView, ITreeEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی حساب والد این حساب در ساختار درختی
