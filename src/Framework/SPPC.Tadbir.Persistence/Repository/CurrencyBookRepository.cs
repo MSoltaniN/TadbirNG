@@ -160,12 +160,10 @@ namespace SPPC.Tadbir.Persistence
 
         private static void PrepareCurrencyBook(CurrencyBookViewModel book, GridOptions gridOptions)
         {
-            int rowNo = 1;
             Array.ForEach(book.Items.ToArray(), item =>
             {
                 item.Balance = item.Debit - item.Credit;
                 item.BaseCurrencyBalance = item.BaseCurrencyDebit - item.BaseCurrencyCredit;
-                item.RowNo = rowNo++;
             });
             book.DebitSum = book.Items.Sum(item => item.Debit);
             book.CreditSum = book.Items.Sum(item => item.Credit);

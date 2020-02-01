@@ -112,13 +112,11 @@ namespace SPPC.Tadbir.Persistence
 
         private static void PrepareAccountBook(AccountBookViewModel book, GridOptions gridOptions)
         {
-            int rowNo = 2;
             decimal balance = book.Items[0].Balance;
             Array.ForEach(book.Items.Skip(1).ToArray(), item =>
             {
                 balance = balance + item.Debit - item.Credit;
                 item.Balance = balance;
-                item.RowNo = rowNo++;
             });
             book.DebitSum = book.Items.Sum(item => item.Debit);
             book.CreditSum = book.Items.Sum(item => item.Credit);

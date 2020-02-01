@@ -225,12 +225,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             SetItemCount(balance.Items.Count);
             balance.SetBalanceItems(balance.Items.ApplyPaging(gridOptions).ToList());
-            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
-            foreach (var balanceItem in balance.Items)
-            {
-                balanceItem.RowNo = rowNo++;
-            }
-
+            SetRowNumbers(balance.Items);
             return Json(balance);
         }
 

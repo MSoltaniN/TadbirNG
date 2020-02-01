@@ -375,6 +375,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ? await _repository.GetAccountBookByBranchAsync(parameters)
                 : await _repository.GetAccountBookAsync(parameters);
             SetItemCount(book.TotalCount);
+            SetRowNumbers(book.Items);
             Localize(book);
             return Json(book);
         }

@@ -344,11 +344,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             SetItemCount(journal.Items.Count());
             journal.SetItems(journal.Items.ApplyPaging(gridOptions).ToList());
-            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
-            foreach (var journalItem in journal.Items)
-            {
-                journalItem.RowNo = rowNo++;
-            }
+            SetRowNumbers(journal.Items);
         }
 
         private readonly IJournalRepository _repository;
