@@ -63,6 +63,26 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CurrencyBookViewModel> GetCurrencyBookAllCurrenciesAsync(
             CurrencyBookParameters bookParam)
         {
+            var sourceList = SourceListId.None;
+            switch (bookParam.Mode)
+            {
+                case AccountBookMode.ByRows:
+                    sourceList = SourceListId.CurrencyBookByRow;
+                    break;
+                case AccountBookMode.VoucherSum:
+                    sourceList = SourceListId.CurrencyBookVoucherSum;
+                    break;
+                case AccountBookMode.DailySum:
+                    sourceList = SourceListId.CurrencyBookDailySum;
+                    break;
+                case AccountBookMode.MonthlySum:
+                    sourceList = SourceListId.CurrencyBookMonthlySum;
+                    break;
+                default:
+                    break;
+            }
+
+            await OnSourceActionAsync(OperationId.View, sourceList);
             return await GetSummaryBookAsync(bookParam, true, false);
         }
 
