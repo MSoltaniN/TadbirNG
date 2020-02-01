@@ -37,6 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
             var accountGroups = await _repository.GetAccountGroupsAsync(GridOptions);
+            SetRowNumbers(accountGroups);
             Localize(accountGroups.ToArray());
             return Json(accountGroups);
         }
@@ -63,6 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetSubItemCountAsync(groupId, GridOptions);
             SetItemCount(itemCount);
             var accounts = await _repository.GetGroupLedgerAccountsAsync(groupId, GridOptions);
+            SetRowNumbers(accounts);
             return Json(accounts);
         }
 

@@ -32,6 +32,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetLogCountAsync(GridOptions);
             SetItemCount(itemCount);
             var operationLogs = await _repository.GetLogsAsync(GridOptions);
+            SetRowNumbers(operationLogs);
             Localize(operationLogs);
             return Json(operationLogs);
         }
@@ -44,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetSystemLogCountAsync(GridOptions);
             SetItemCount(itemCount);
             var operationLogs = await _repository.GetSystemLogsAsync(GridOptions);
+            SetRowNumbers(operationLogs);
             Localize(operationLogs);
             return Json(operationLogs);
         }
@@ -56,6 +58,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetLogArchiveCountAsync(GridOptions);
             SetItemCount(itemCount);
             var logArchive = await _repository.GetLogsArchiveAsync(GridOptions);
+            SetRowNumbers(logArchive);
             Localize(logArchive);
             return Json(logArchive);
         }
@@ -68,6 +71,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetSystemLogArchiveCountAsync(GridOptions);
             SetItemCount(itemCount);
             var logArchive = await _repository.GetSystemLogsArchiveAsync(GridOptions);
+            SetRowNumbers(logArchive);
             Localize(logArchive);
             return Json(logArchive);
         }

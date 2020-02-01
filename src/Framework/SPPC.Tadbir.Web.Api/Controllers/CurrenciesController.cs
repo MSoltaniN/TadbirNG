@@ -53,6 +53,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 Localize(currency);
             }
 
+            SetRowNumbers(currencies);
             return Json(currencies);
         }
 
@@ -77,6 +78,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var rates = allRates
                 .Apply(gridOptions)
                 .ToList();
+            SetRowNumbers(rates);
             return Json(rates);
         }
 

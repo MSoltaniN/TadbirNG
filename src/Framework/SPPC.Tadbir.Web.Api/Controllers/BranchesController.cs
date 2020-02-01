@@ -39,6 +39,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync(companyId, GridOptions);
             SetItemCount(itemCount);
             var branches = await _repository.GetBranchesAsync(companyId, GridOptions);
+            SetRowNumbers(branches);
             return Json(branches);
         }
 

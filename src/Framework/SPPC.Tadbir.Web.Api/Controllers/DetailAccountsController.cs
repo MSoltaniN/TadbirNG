@@ -44,6 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync<DetailAccountViewModel>(GridOptions);
             SetItemCount(itemCount);
             var detailAccounts = await _repository.GetDetailAccountsAsync(GridOptions);
+            SetRowNumbers(detailAccounts);
             return Json(detailAccounts);
         }
 

@@ -44,6 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync<CostCenterViewModel>(GridOptions);
             SetItemCount(itemCount);
             var costCenters = await _repository.GetCostCentersAsync(GridOptions);
+            SetRowNumbers(costCenters);
             return Json(costCenters);
         }
 

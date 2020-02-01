@@ -49,6 +49,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
             SetItemCount(itemCount);
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
+            SetRowNumbers(vouchers);
             Localize(vouchers.ToArray());
             return Json(vouchers);
         }

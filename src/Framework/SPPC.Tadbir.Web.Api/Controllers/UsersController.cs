@@ -48,6 +48,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetUserCountAsync(GridOptions);
             SetItemCount(itemCount);
             var users = await _repository.GetUsersAsync(GridOptions);
+            SetRowNumbers(users);
             return Json(users);
         }
 

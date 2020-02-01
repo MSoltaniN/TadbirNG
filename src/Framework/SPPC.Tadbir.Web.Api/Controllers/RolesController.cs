@@ -40,6 +40,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetRoleCountAsync(GridOptions);
             SetItemCount(itemCount);
             var roles = await _repository.GetRolesAsync(GridOptions);
+            SetRowNumbers(roles);
             Localize(roles);
             return Json(roles);
         }

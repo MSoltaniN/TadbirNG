@@ -39,6 +39,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync(companyId, GridOptions);
             SetItemCount(itemCount);
             var fiscalPeriods = await _repository.GetFiscalPeriodsAsync(companyId, GridOptions);
+            SetRowNumbers(fiscalPeriods);
             return Json(fiscalPeriods);
         }
 

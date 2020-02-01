@@ -41,6 +41,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountCollectionAccountAsync(int collectionId)
         {
             var accounts = await _repository.GetCollectionAccountsAsync(collectionId);
+            SetRowNumbers(accounts);
             return Json(accounts);
         }
 

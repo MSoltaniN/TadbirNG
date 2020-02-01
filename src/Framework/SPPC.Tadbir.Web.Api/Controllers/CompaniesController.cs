@@ -40,6 +40,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
             var companies = await _repository.GetCompaniesAsync(GridOptions);
+            SetRowNumbers(companies);
             return Json(companies);
         }
 

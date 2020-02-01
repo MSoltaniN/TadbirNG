@@ -44,6 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync<ProjectViewModel>(GridOptions);
             SetItemCount(itemCount);
             var projects = await _repository.GetProjectsAsync(GridOptions);
+            SetRowNumbers(projects);
             return Json(projects);
         }
 

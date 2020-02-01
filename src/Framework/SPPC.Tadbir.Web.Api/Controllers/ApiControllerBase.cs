@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -39,6 +40,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected void SetItemCount(int count)
         {
             Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
+        }
+
+        protected void SetRowNumbers<TModel>(IEnumerable<TModel> items)
+            where TModel : ViewModelBase
+        {
+            var gridOptions = GridOptions ?? new GridOptions();
+            int rowNo = (gridOptions.Paging.PageSize * (gridOptions.Paging.PageIndex - 1)) + 1;
+            foreach (var item in items)
+            {
+                item.RowNo = rowNo++;
+            }
         }
 
         protected IActionResult JsonReadResult(object data)
