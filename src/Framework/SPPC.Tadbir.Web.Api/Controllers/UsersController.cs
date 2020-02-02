@@ -234,7 +234,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _repository.GetUserAsync(login.UserName);
+            var user = await _repository.GetUserAsync(login);
             if (user == null)
             {
                 return BadRequest(_strings.Format(AppStrings.InvalidUserName));
@@ -274,22 +274,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var userContext = SecurityContext.User;
             await _repository.UpdateUserCompanyLoginAsync(companyLogin, userContext);
             userContext.Connection = _crypto.Encrypt(userContext.Connection);
-            Response.Headers[AppConstants.ContextHeaderName] = GetEncodedTicket(userContext);
-            return Ok(userContext);
-        }
-
-        // PUT: api/users/current/env
-        [HttpPut]
-        [Route(UserApi.CurrentUserEnvironmentUrl)]
-        public async Task<IActionResult> PutCurrentUserEnvironmentAsync([FromBody] CompanyLoginViewModel env)
-        {
-            if (env == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.AppEnvironment));
-            }
-
-            var userContext = SecurityContext.User;
-            await _repository.UpdateUserEnvironmentAsync(env, userContext);
             Response.Headers[AppConstants.ContextHeaderName] = GetEncodedTicket(userContext);
             return Ok(userContext);
         }

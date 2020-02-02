@@ -2907,4 +2907,13 @@
   <data name="AccountDescription" xml:space="preserve">
     <value>Account description</value>
   </data>
+  <data name="FailedLogin" xml:space="preserve">
+    <value>Failed login</value>
+  </data>
+  <data name="SwitchBranch" xml:space="preserve">
+    <value>Switch branch</value>
+  </data>
+  <data name="SwitchFiscalPeriod" xml:space="preserve">
+    <value>Switch fiscal period</value>
+  </data>
 </root>

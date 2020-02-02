@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
@@ -118,6 +119,59 @@ namespace SPPC.Tadbir.Persistence
             Log.Description = String.Format(
                 "Deleted items :{0}{1}", Environment.NewLine, String.Join(",", deletedIds));
             await TrySaveLogAsync();
+        }
+
+        internal async Task OnSystemLoginAsync()
+        {
+            Log = new OperationLogViewModel()
+            {
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                OperationId = (int)OperationId.FailedLogin
+            };
+            await TrySaveLogAsync();
+        }
+
+        internal async Task OnEnvironmentChangeAsync(
+            CompanyLoginViewModel currentLogin, CompanyLoginViewModel newLogin)
+        {
+            Log = new OperationLogViewModel()
+            {
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                CompanyId = currentLogin.CompanyId > 0
+                    ? currentLogin.CompanyId
+                    : null,
+                UserId = currentLogin.UserId
+            };
+
+            if (currentLogin.CompanyId == 0
+                || currentLogin.CompanyId != newLogin.CompanyId)
+            {
+                Log.OperationId = (int)OperationId.CompanyLogin;
+                Log.Description = String.Format(
+                    "Company : '{0}', Fiscal period : '{1}', Branch : '{2}'",
+                    newLogin.CompanyName, newLogin.FiscalPeriodName, newLogin.BranchName);
+                await TrySaveLogAsync();
+            }
+            else
+            {
+                if (currentLogin.FiscalPeriodId != newLogin.FiscalPeriodId)
+                {
+                    Log.OperationId = (int)OperationId.SwitchFiscalPeriod;
+                    Log.Description = String.Format(
+                        "Current : '{0}', New : '{1}'", currentLogin.FiscalPeriodName, newLogin.FiscalPeriodName);
+                    await TrySaveLogAsync();
+                }
+
+                if (currentLogin.BranchId != newLogin.BranchId)
+                {
+                    Log.OperationId = (int)OperationId.SwitchBranch;
+                    Log.Description = String.Format(
+                        "Current : '{0}', New = '{1}'", currentLogin.BranchName, newLogin.BranchName);
+                    await TrySaveLogAsync();
+                }
+            }
         }
 
         /// <summary>

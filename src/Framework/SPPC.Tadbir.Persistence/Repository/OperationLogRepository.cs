@@ -344,10 +344,10 @@ namespace SPPC.Tadbir.Persistence
         {
             UnitOfWork.UseSystemContext();
             var userRepository = UnitOfWork.GetAsyncRepository<User>();
-            var user = await userRepository.GetByIDAsync(log.UserId);
+            var user = await userRepository.GetByIDAsync(log.UserId ?? 0);
             log.UserName = user?.UserName;
             var companyRepository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await companyRepository.GetByIDAsync(log.CompanyId);
+            var company = await companyRepository.GetByIDAsync(log.CompanyId ?? 0);
             log.CompanyName = company?.Name;
             UnitOfWork.UseCompanyContext();
         }

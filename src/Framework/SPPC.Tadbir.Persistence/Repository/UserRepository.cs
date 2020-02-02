@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
@@ -30,10 +31,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        public UserRepository(IRepositoryContext context, ISystemRepository system)
+        /// <param name="crypto">امکان رمزنگاری اطلاعات را فراهم می کند</param>
+        public UserRepository(IRepositoryContext context, ISystemRepository system, ICryptoService crypto)
             : base(context, system?.Logger)
         {
             _system = system;
+            _crypto = crypto;
             UnitOfWork.UseSystemContext();
         }
 
@@ -63,9 +66,8 @@ namespace SPPC.Tadbir.Persistence
         {
             UserViewModel userViewModel = null;
             var repository = UnitOfWork.GetAsyncRepository<User>();
-            var users = await repository
-                .GetByCriteriaAsync(usr => usr.UserName == userName, usr => usr.Person);
-            var user = users.SingleOrDefault();
+            var user = await repository
+                .GetSingleByCriteriaAsync(usr => usr.UserName == userName, usr => usr.Person);
             if (user != null)
             {
                 userViewModel = Mapper.Map<UserViewModel>(user);
@@ -91,6 +93,23 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return userViewModel;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات یک کاربر را از روی داده های ورود کاربر به برنامه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="login">اطلاعات ورود کاربر به برنامه</param>
+        /// <returns>اطلاعات به دست آمده برای کاربر</returns>
+        public async Task<UserViewModel> GetUserAsync(LoginViewModel login)
+        {
+            Verify.ArgumentNotNull(login, nameof(login));
+            var user = await GetUserAsync(login.UserName);
+            if (user == null || !user.IsEnabled || !CheckPassword(user.Password, login.Password))
+            {
+                await OnSystemLoginAsync();
+            }
+
+            return user;
         }
 
         /// <summary>
@@ -348,67 +367,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task UpdateUserCompanyLoginAsync(
             CompanyLoginViewModel companyLogin, UserContextViewModel userContext)
         {
-            Verify.ArgumentNotNull(companyLogin, "companyLogin");
-            Verify.ArgumentNotNull(userContext, "userContext");
+            Verify.ArgumentNotNull(companyLogin, nameof(companyLogin));
+            Verify.ArgumentNotNull(userContext, nameof(userContext));
+            var currentLogin = await GetCurrentLoginAsync(
+                userContext.CompanyId, userContext.FiscalPeriodId, userContext.BranchId);
+            currentLogin.UserId = userContext.Id;
+
             userContext.CompanyId = (int)companyLogin.CompanyId;
             userContext.BranchId = (int)companyLogin.BranchId;
             userContext.FiscalPeriodId = (int)companyLogin.FiscalPeriodId;
 
-            var companyRepo = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await companyRepo.GetByIDAsync((int)companyLogin.CompanyId);
-            if (company != null)
-            {
-                userContext.CompanyName = company.Name;
-                userContext.Connection = BuildConnectionString(company);
-            }
-
-            await SetCurrentCompanyAsync((int)companyLogin.CompanyId);
-            UnitOfWork.UseCompanyContext();
-            var branchRepo = UnitOfWork.GetAsyncRepository<Branch>();
-            var fiscalRepo = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var branch = await branchRepo.GetByIDAsync((int)companyLogin.BranchId);
-            userContext.BranchName = branch?.Name;
-            var fiscalPeriod = await fiscalRepo.GetByIDAsync((int)companyLogin.FiscalPeriodId);
-            userContext.FiscalPeriodName = fiscalPeriod?.Name;
-            UnitOfWork.UseSystemContext();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات محیطی کاربر جاری را بروزرسانی می کند
-        /// </summary>
-        /// <param name="environment">اطلاعات محیطی مورد درخواست کاربر</param>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر پیش از درخواست</param>
-        public async Task UpdateUserEnvironmentAsync(
-            CompanyLoginViewModel environment, UserContextViewModel userContext)
-        {
-            Verify.ArgumentNotNull(environment, nameof(environment));
-            Verify.ArgumentNotNull(userContext, nameof(userContext));
-
-            if (environment.FiscalPeriodId.HasValue)
-            {
-                UnitOfWork.UseCompanyContext();
-                var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-                var fiscalPeriod = await repository.GetByIDAsync(environment.FiscalPeriodId.Value);
-                if (fiscalPeriod != null)
-                {
-                    userContext.FiscalPeriodId = fiscalPeriod.Id;
-                    userContext.FiscalPeriodName = fiscalPeriod.Name;
-                }
-            }
-
-            if (environment.BranchId.HasValue)
-            {
-                UnitOfWork.UseCompanyContext();
-                var repository = UnitOfWork.GetAsyncRepository<Branch>();
-                var branch = await repository.GetByIDAsync(environment.BranchId.Value);
-                if (branch != null)
-                {
-                    userContext.BranchId = branch.Id;
-                    userContext.BranchName = branch.Name;
-                }
-            }
-
-            UnitOfWork.UseSystemContext();
+            await SetCurrentCompanyAsync(userContext.CompanyId);
+            var newLogin = await GetCurrentLoginAsync(
+                userContext.CompanyId, userContext.FiscalPeriodId, userContext.BranchId);
+            userContext.Connection = newLogin.Connection;
+            userContext.CompanyName = newLogin.CompanyName;
+            userContext.FiscalPeriodName = newLogin.FiscalPeriodName;
+            userContext.BranchName = newLogin.BranchName;
+            await OnEnvironmentChangeAsync(currentLogin, newLogin);
         }
 
         /// <summary>
@@ -529,6 +505,11 @@ namespace SPPC.Tadbir.Persistence
 
         private static string BuildConnectionString(CompanyDb company)
         {
+            if (company == null)
+            {
+                return null;
+            }
+
             var builder = new StringBuilder();
             builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
             if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
@@ -646,6 +627,45 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
+        private bool CheckPassword(string passwordHash, string password)
+        {
+            byte[] passwordHashBytes = Transform.FromHexString(passwordHash);
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            return _crypto.ValidateHash(passwordBytes, passwordHashBytes);
+        }
+
+        private async Task<CompanyLoginViewModel> GetCurrentLoginAsync(
+            int companyId, int fiscalPeriodId, int branchId)
+        {
+            var login = new CompanyLoginViewModel()
+            {
+                CompanyId = companyId,
+                FiscalPeriodId = fiscalPeriodId,
+                BranchId = branchId
+            };
+
+            var companyRepo = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await companyRepo.GetByIDAsync(companyId);
+            login.CompanyName = company?.Name;
+            login.Connection = BuildConnectionString(company);
+            if (!String.IsNullOrEmpty(login.Connection))
+            {
+                UnitOfWork.UseCompanyContext();
+                var fiscalPeriodRepo = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+                var fiscalPeriod = await fiscalPeriodRepo.GetByIDAsync(fiscalPeriodId);
+                login.FiscalPeriodName = fiscalPeriod?.Name;
+
+                var branchRepo = UnitOfWork.GetAsyncRepository<Branch>();
+                var branch = await branchRepo.GetByIDAsync(branchId);
+                login.BranchName = branch?.Name;
+
+                UnitOfWork.UseSystemContext();
+            }
+
+            return login;
+        }
+
         private readonly ISystemRepository _system;
+        private readonly ICryptoService _crypto;
     }
 }
