@@ -27,8 +27,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
-        public VoucherRepository(IRepositoryContext context, ISystemRepository system, IUserRepository userRepository)
-            : base(context, system?.Logger)
+        public VoucherRepository(IRepositoryContext context, ISystemRepository system,
+            IUserRepository userRepository, ILogConfigRepository config)
+            : base(context, config, system?.Logger)
         {
             _system = system;
             _userRepository = userRepository;

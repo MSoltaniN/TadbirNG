@@ -2898,6 +2898,12 @@
   <data name="AccountDescription" xml:space="preserve">
     <value>شرح حساب</value>
   </data>
+  <data name="AllEntities" xml:space="preserve">
+    <value>(کلیه موجودیت ها)</value>
+  </data>
+  <data name="AllUsers" xml:space="preserve">
+    <value>(کلیه کاربران)</value>
+  </data>
   <data name="FailedLogin" xml:space="preserve">
     <value>ورود ناموفق</value>
   </data>
