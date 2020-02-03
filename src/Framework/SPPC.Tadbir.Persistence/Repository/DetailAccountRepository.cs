@@ -26,8 +26,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
         public DetailAccountRepository(IRepositoryContext context, ISystemRepository system,
-            IRelationRepository relations)
-            : base(context, system?.Logger)
+            IRelationRepository relations, ILogConfigRepository config)
+            : base(context, config, system?.Logger)
         {
             _system = system;
             _relationRepository = relations;

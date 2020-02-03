@@ -23,8 +23,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="factory">امکان ساختن کلاس های کمکی محاسبات تراز را برای مولفه های مختلف حساب فراهم می کند</param>
         public TestBalanceRepository(IRepositoryContext context, ISystemRepository system,
-            ITestBalanceUtilityFactory factory)
-            : base(context, system.Logger)
+            ITestBalanceUtilityFactory factory, ILogConfigRepository config)
+            : base(context, system.Logger, config)
         {
             _system = system;
             _factory = factory;

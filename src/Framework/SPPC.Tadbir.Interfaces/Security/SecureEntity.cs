@@ -98,6 +98,11 @@ namespace SPPC.Tadbir.Security
         public const string Setting = "Setting";
 
         /// <summary>
+        /// نام موجودیت تنظیمات لاگ
+        /// </summary>
+        public const string LogSetting = "LogSetting";
+
+        /// <summary>
         /// نام موجودیت لاگ عملیاتی شرکتی
         /// </summary>
         public const string OperationLog = "OperationLog";

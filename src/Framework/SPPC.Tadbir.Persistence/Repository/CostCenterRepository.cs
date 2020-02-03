@@ -25,8 +25,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
-        public CostCenterRepository(IRepositoryContext context, ISystemRepository system, IRelationRepository relations)
-            : base(context, system?.Logger)
+        public CostCenterRepository(IRepositoryContext context, ISystemRepository system,
+            IRelationRepository relations, ILogConfigRepository config)
+            : base(context, config, system?.Logger)
         {
             _system = system;
             _relationRepository = relations;
