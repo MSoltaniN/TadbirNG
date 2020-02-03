@@ -382,7 +382,7 @@
     <value>Confirm {0}</value>
   </data>
   <data name="Currency" xml:space="preserve">
-    <value>currency</value>
+    <value>Currency</value>
   </data>
   <data name="ExportEntityToIssueVoucher" xml:space="preserve">
     <value>Export {0} to issue voucher</value>
@@ -2906,5 +2906,11 @@
   </data>
   <data name="AccountDescription" xml:space="preserve">
     <value>Account description</value>
+  </data>
+  <data name="AllEntities" xml:space="preserve">
+    <value>(All entities)</value>
+  </data>
+  <data name="AllUsers" xml:space="preserve">
+    <value>(All users)</value>
   </data>
 </root>
