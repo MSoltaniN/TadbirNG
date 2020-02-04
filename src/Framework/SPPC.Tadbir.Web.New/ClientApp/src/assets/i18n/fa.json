@@ -1081,8 +1081,8 @@
     "Archive": "آرشیو",
     "SystemLog": "رویداد های سیستمی",
     "ShowLog": "نمایش رویداد",
-    "AllFiscalPeriod": "کلیه دوره های مالی",
-    "AllCompanies": "کلیه شرکت ها",
+    "AllFiscalPeriod": "(کلیه دوره های مالی)",
+    "AllCompanies": "(کلیه شرکت ها)",
     "LogArchived": "لاگ های موجود در بازه تاریخ انتخابی آرشیو شد"
 
   },

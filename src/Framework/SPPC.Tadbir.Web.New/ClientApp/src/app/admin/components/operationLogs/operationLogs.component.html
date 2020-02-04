@@ -118,7 +118,7 @@
                             [valuePrimitive]="true"
                             [value]="branchSelected"
                             [(ngModel)]="branchSelected"
-                            (ngModelChange)="changeParam();saveStates();">
+                            (ngModelChange)="saveStates();">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -137,7 +137,7 @@
                             [valuePrimitive]="true"
                             [value]="fiscalsPeriodSelected"
                             [(ngModel)]="fiscalsPeriodSelected"
-                            (ngModelChange)="changeParam();">
+                            (ngModelChange)="saveStates();">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -155,7 +155,7 @@
                             [valuePrimitive]="true"
                             [value]="companySelected"
                             [(ngModel)]="companySelected"
-                            (ngModelChange)="changeParam();">
+                            (ngModelChange)="saveStates();">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -183,7 +183,7 @@
                             [valuePrimitive]="true"
                             [value]="userSelected"
                             [(ngModel)]="userSelected"
-                            (ngModelChange)="changeParam();">
+                            (ngModelChange)="saveStates();">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -201,7 +201,7 @@
                             [valuePrimitive]="true"
                             [value]="entitySelected"
                             [(ngModel)]="entitySelected"
-                            (ngModelChange)="changeParam();">
+                            (ngModelChange)="saveStates();">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>

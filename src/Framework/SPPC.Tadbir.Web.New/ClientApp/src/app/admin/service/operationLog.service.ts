@@ -39,4 +39,12 @@ export class OperationLogService extends BaseService {
       .map(res => res)
       .catch(this.handleError);
   }
+
+  postSelectedSysLogsAsArchived(fromDate: string, toDate: string) {
+    var options = { headers: this.httpHeaders };
+    var url = OperationLogApi.SysOperationLogsArchiveUrl + String.Format("?from={0}&to={1}", fromDate, toDate);
+    return this.http.post(url, undefined, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
 }

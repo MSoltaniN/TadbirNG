@@ -51,6 +51,30 @@ export class LookupService extends BaseService {
 
   }
 
+  GetUserLookupAsync() {
+
+    var url = LookupApi.Users;    
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
+
+  GetEntityLookupAsync() {
+
+    var url = LookupApi.EntityTypes;    
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
+
+  GetSystemEntityLookupAsync() {
+
+    var url = LookupApi.SystemEntityTypes;    
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
+
   GetDetailAccountsLookup() {
 
     var url = AccountRelationApi.EnvironmentDetailAccountsLookup;
