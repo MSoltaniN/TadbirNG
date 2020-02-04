@@ -34,6 +34,9 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   @Input() isDisplayFromDate: boolean = true;
   @Input() isDisplayToDate: boolean = true;
 
+  @Input() InitializeDate: boolean = true;
+  @Input() ValidateFPDate: boolean = true;
+
   public displayFromDate: any;
   public displayToDate: any;
 
@@ -48,15 +51,15 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.fpStartDate = this.FiscalPeriodStartDate;
-    this.fpEndDate = this.FiscalPeriodEndDate;
+    if (this.InitializeDate) {
+      this.fpStartDate = this.FiscalPeriodStartDate;
+      this.fpEndDate = this.FiscalPeriodEndDate;
+      this.displayFromDate = await this.settingService.getDateConfigAsync("start");
+      this.displayToDate = await this.settingService.getDateConfigAsync("end");
 
-    this.displayFromDate = await this.settingService.getDateConfigAsync("start");
-    this.displayToDate = await this.settingService.getDateConfigAsync("end");
-
-    this.getFromDate();
-    this.getToDate();
-
+      this.getFromDate();
+      this.getToDate();
+    }
 
     var lang: string = "fa";
     var item: string | null;
@@ -77,12 +80,13 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       if (val.fromDate && val.toDate) {
 
         if (this.compareDate(val.fromDate, val.toDate) != 1) {
-          if (this.compareDate(val.fromDate, this.fpStartDate) == -1) {
+          
+          if (this.compareDate(val.fromDate, this.fpStartDate) == -1 && this.ValidateFPDate) {
             this.showMessage("تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد", MessageType.Warning);
             this.myForm.patchValue({ 'fromDate': this.fpStartDate });
           }
           else
-            if (this.compareDate(val.toDate, this.fpEndDate) == 1) {
+            if (this.compareDate(val.toDate, this.fpEndDate) == 1 && this.ValidateFPDate) {
               this.showMessage("تاریخ انتها بزرگتر از انتهای دوره مالی میباشد", MessageType.Warning);
               this.myForm.patchValue({ 'toDate': this.fpEndDate });
             }
@@ -95,6 +99,8 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
               this.saveTemporarilyDate(val.fromDate, val.toDate);
             }
+          
+          
         }
         else {
           this.showMessage("محدوده تاریخی انتخابی معتبر نیست", MessageType.Warning);

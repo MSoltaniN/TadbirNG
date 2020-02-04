@@ -6,7 +6,7 @@ import { AccountRelationApi } from '@sppc/finance/service/api';
 import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
 import { LookupApi } from '@sppc/shared/services/api';
 import { BaseService } from '@sppc/shared/class/base.service';
-
+import { String } from '@sppc/shared/class/source';
 
 
 @Injectable()
@@ -25,6 +25,26 @@ export class LookupService extends BaseService {
   GetAccountsLookup() {
 
     var url = AccountRelationApi.EnvironmentAccountsLookup;
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+
+  }
+
+  GetFiscalPeriodsLookupAsync(companyId:number,userId:number) {
+
+    var url = LookupApi.UserAccessibleCompanyFiscalPeriods;
+    url = String.Format(url, companyId, userId);
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+
+  }
+
+  GetCompanyLookupAsync(userId: number) {
+
+    var url = LookupApi.UserAccessibleCompanies;
+    url = String.Format(url, userId);
     var options = { headers: this.httpHeaders };
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));

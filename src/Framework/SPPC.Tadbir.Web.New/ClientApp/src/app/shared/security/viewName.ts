@@ -59,5 +59,8 @@ export enum ViewName {
   ProjectBalance6Column = 55,
   ProjectBalance8Column = 56,
   ProjectBalance10Column = 57,
-  BalanceByAccount = 58
+  BalanceByAccount = 58,
+  SysOperationLog = 59,
+  SysOperationLogArchive = 60,
+  OperationLogArchive = 61
 }

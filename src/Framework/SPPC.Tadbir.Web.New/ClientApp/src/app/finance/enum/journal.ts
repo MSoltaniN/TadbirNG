@@ -81,6 +81,14 @@ export enum BranchScopeResource {
   CurrentBranchAndSubsets = "BranchScope.CurrentBranchAndSubsets"
 }
 
+export enum OperationLogResource {
+  /**شعبه جاری */
+  AllFiscalPeriod = "OperationLog.AllFiscalPeriod",
+
+  /**شعبه جاری و زیر مجموعه ها */
+  AllCompanies = "OperationLog.AllCompanies"
+}
+
 export enum ArticleTypesResource {
   /** کلیه آرتیکل ها*/
   AllVoucherLines = "Journal.ArticleTypes.AllVoucherLines",

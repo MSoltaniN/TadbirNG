@@ -119,7 +119,10 @@ export const Entities = {
   ProjectBalance6Column : 'ProjectBalance6Column',
   ProjectBalance8Column: 'ProjectBalance8Column',
   ProjectBalance10Column : 'ProjectBalance10Column',
-  BalanceByAccount: 'BalanceByAccount'
+  BalanceByAccount: 'BalanceByAccount',
+  SysOperationLog: 'SysOperationLog',
+  SysOperationLogArchive: 'SysOperationLogArchive',
+  OperationLogArchive:'OperationLogArchive'
 }
 
 export const ColumnVisibility =
