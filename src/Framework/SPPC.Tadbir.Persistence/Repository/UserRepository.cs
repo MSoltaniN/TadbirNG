@@ -32,6 +32,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="crypto">امکان رمزنگاری اطلاعات را فراهم می کند</param>
+        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
         public UserRepository(IRepositoryContext context, ISystemRepository system,
             ICryptoService crypto, ILogConfigRepository config)
             : base(context, config, system?.Logger)
