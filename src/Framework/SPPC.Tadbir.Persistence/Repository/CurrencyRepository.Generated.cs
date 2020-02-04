@@ -25,8 +25,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="access">امکان کار با دیتابیس های برنامه اکسس را فراهم می کند</param>
-        public CurrencyRepository(IRepositoryContext context, IOperationLogRepository log, IAccessRepository access)
-            : base(context, log)
+        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
+        public CurrencyRepository(IRepositoryContext context, IOperationLogRepository log,
+            IAccessRepository access, ILogConfigRepository config)
+            : base(context, config, log)
         {
             _access = access;
         }

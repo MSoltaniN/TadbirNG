@@ -50,13 +50,13 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// شناسه کاربری که عملیات توسط او در برنامه انجام شده
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// شناسه شرکتی که عملیات روی دیتابیس آن انجام شده
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
 
         /// <summary>
         /// شناسه موجودیت ایجاد، اصلاح یا حذف شده

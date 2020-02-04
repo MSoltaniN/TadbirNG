@@ -37,6 +37,13 @@ namespace SPPC.Tadbir.Persistence
         Task<UserViewModel> GetUserAsync(int userId);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات یک کاربر را از روی داده های ورود کاربر به برنامه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="login">اطلاعات ورود کاربر به برنامه</param>
+        /// <returns>اطلاعات به دست آمده برای کاربر</returns>
+        Task<UserViewModel> GetUserAsync(LoginViewModel login);
+
+        /// <summary>
         /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
         /// </summary>
         /// <param name="userId">Unique identifier of the user to search for</param>
@@ -115,13 +122,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="companyLogin">اطلاعات ورود کاربر به شرکت</param>
         /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر</param>
         Task UpdateUserCompanyLoginAsync(CompanyLoginViewModel companyLogin, UserContextViewModel userContext);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات محیطی کاربر جاری را بروزرسانی می کند
-        /// </summary>
-        /// <param name="environment">اطلاعات محیطی مورد درخواست کاربر</param>
-        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر پیش از درخواست</param>
-        Task UpdateUserEnvironmentAsync(CompanyLoginViewModel environment, UserContextViewModel userContext);
 
         /// <summary>
         /// Asynchronously determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used

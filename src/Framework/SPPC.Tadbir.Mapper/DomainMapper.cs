@@ -511,6 +511,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CompanyDb, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+
+            mapperConfig.CreateMap<LogSetting, LogSettingViewModel>();
         }
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)

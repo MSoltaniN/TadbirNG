@@ -28,11 +28,11 @@ namespace SPPC.Tadbir.Model.Core
         /// <summary>
         /// شناسه دیتابیسی شرکتی که هنگام انجام عملیات، کاربر وارد آن شده بوده است
         /// </summary>
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی کاربر انجام دهنده عملیات
         /// </summary>
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
     }
 }
