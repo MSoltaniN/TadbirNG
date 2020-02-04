@@ -20,7 +20,7 @@
               (edit)="editHandler($event)"
               (remove)="removeHandler($event)"
               [loading]="false"
-              [selectable]="{ checkboxOnly: true, mode: 'single' }"
+              [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
               [selectedKeys]="selectedRows"
               [kendoGridSelectBy]="selectionKey"
               (filterChange)="filterChange($event)"
@@ -210,24 +210,31 @@
           </ng-template>
         </kendo-dropdownlist>
       </div>
-      <div class="col-xs-12 col-sm-4 form-group">
-        <div class="col-xs-12 col-sm-4">
-          <button class="k-button btn-compute-default sppc-float-diff"
-                  EntityName="TestBalance" (click)="archiveData();"
+      <div class="col-xs-12 col-sm-4">
+        <div *ngIf="!archiveSelected" class="col-xs-12 col-sm-3 form-group">
+          <button  class="k-button btn-compute-default sppc-float-diff"
+                  (click)="archiveData();"
                   [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
             {{ 'OperationLog.Archive' | translate }}
           </button>
         </div>
-        <div class="col-xs-12 col-sm-4">
+        <div *ngIf="archiveSelected" class="col-xs-12 col-sm-5 form-group">
+          <button  class="k-button btn-compute-default sppc-float-diff"
+                  (click)="deleteArchiveData();"
+                  [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
+            {{ 'OperationLog.DeleteArchive' | translate }}
+          </button>
+        </div>        
+        <div class="col-xs-12 col-sm-7 form-group sppc-float">
           <button class="k-button btn-compute-default sppc-float-diff"
-                  EntityName="TestBalance" (click)="getReportData();"
+                  (click)="getReportData();"
                   [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
             {{ 'OperationLog.ShowLog' | translate }}
           </button>
-        </div>      
-        
-      </div>     
-    </div>    
+        </div>
+
+        </div>
+      </div>    
   </div>
 </div>
 

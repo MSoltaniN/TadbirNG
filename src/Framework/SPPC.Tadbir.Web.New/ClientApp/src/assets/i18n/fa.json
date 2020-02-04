@@ -1083,8 +1083,9 @@
     "ShowLog": "نمایش رویداد",
     "AllFiscalPeriod": "(کلیه دوره های مالی)",
     "AllCompanies": "(کلیه شرکت ها)",
-    "LogArchived": "لاگ های موجود در بازه تاریخ انتخابی آرشیو شد"
-
+    "LogArchived": "لاگ های موجود در بازه تاریخ انتخابی آرشیو شد",
+    "DeleteArchive": "حذف آرشیو",
+    "DeleteArchivedMsg": "حذف از آرشیو با موفقیت انجام شد"
   },
     "MetaDataValidation": {
       "CodeLength": "طول کد مجاز نمیباشد."

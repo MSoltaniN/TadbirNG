@@ -47,4 +47,22 @@ export class OperationLogService extends BaseService {
       .map(res => res)
       .catch(this.handleError);
   }
+
+  PutSelectedArchivedLogsAsDeleted(ids: number[]) {
+    var options = { headers: this.httpHeaders };
+    let body = JSON.stringify({ paraph: '', items: ids });
+    var url = OperationLogApi.OperationLogsArchive;
+    return this.http.put(url, body, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
+  PutSelectedArchivedSysLogsAsDeleted(ids: number[]) {
+    let body = JSON.stringify({ paraph: '', items: ids });
+    var options = { headers: this.httpHeaders };
+    var url = OperationLogApi.SysOperationLogsArchiveUrl;
+    return this.http.put(url, body, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
 }
