@@ -158,12 +158,6 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>
         Task<IList<KeyValue>> GetRolesAsync(GridOptions gridOptions = null);
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه کاربران را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه کاربران</returns>
-        Task<IList<KeyValue>> GetUsersAsync();
-
         #endregion
 
         #region Metadata Subsystem lookup
@@ -185,18 +179,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>مجموعه موجودیت های درختی</returns>
         Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions = null);
-
-        /// <summary>
-        /// به روش آسنکرون، موجودیت های برنامه را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه موجودیت های برنامه</returns>
-        Task<IList<KeyValue>> GetEntityTypesAsync();
-
-        /// <summary>
-        /// به روش آسنکرون، موجودیت های سیستمی را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه موجودیت های برنامه</returns>
-        Task<IList<KeyValue>> GetSystemEntityTypesAsync();
 
         #endregion
     }

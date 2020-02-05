@@ -483,26 +483,6 @@ namespace SPPC.Tadbir.Persistence
             return lookup;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه کاربران را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه کاربران</returns>
-        public async Task<IList<KeyValue>> GetUsersAsync()
-        {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<User>();
-            var lookup = new List<KeyValue>
-            {
-                new KeyValue("0", "AllUsers")
-            };
-            lookup.AddRange(await repository
-                .GetEntityQuery(user => user.Person)
-                .Select(user => new KeyValue(user.Id.ToString(), GetFullName(user)))
-                .ToListAsync());
-            UnitOfWork.UseCompanyContext();
-            return lookup;
-        }
-
         #endregion
 
         #region Metadata Subsystem lookup
@@ -543,47 +523,7 @@ namespace SPPC.Tadbir.Persistence
             return await GetViewsByCriteriaAsync(view => view.IsHierarchy, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، موجودیت های برنامه را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه موجودیت های برنامه</returns>
-        public async Task<IList<KeyValue>> GetEntityTypesAsync()
-        {
-            var lookup = new List<KeyValue>
-            {
-                new KeyValue("0", "AllEntities")
-            };
-            var repository = UnitOfWork.GetAsyncRepository<EntityType>();
-            lookup.AddRange(await repository
-                .GetEntityQuery()
-                .Select(entity => new KeyValue(entity.Id.ToString(), entity.Name))
-                .ToListAsync());
-            var sourceRepository = UnitOfWork.GetAsyncRepository<OperationSource>();
-            lookup.AddRange(await sourceRepository
-                .GetEntityQuery()
-                .Select(source => new KeyValue(source.Id.ToString(), source.Name))
-                .ToListAsync());
-            return lookup;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، موجودیت های سیستمی را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه موجودیت های برنامه</returns>
-        public async Task<IList<KeyValue>> GetSystemEntityTypesAsync()
-        {
-            UnitOfWork.UseSystemContext();
-            var lookup = await GetEntityTypesAsync();
-            UnitOfWork.UseCompanyContext();
-            return lookup;
-        }
-
         #endregion
-
-        private static string GetFullName(User user)
-        {
-            return String.Format("{0}, {1}", user.Person.LastName, user.Person.FirstName);
-        }
 
         private IConfigRepository Config
         {
