@@ -42,8 +42,10 @@ namespace SPPC.Tadbir.Persistence
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .Apply(gridOptions)
                 .ToListAsync();
+
+            list = list.Apply(gridOptions).ToList();
+
             foreach (var item in list)
             {
                 await SetSystemValues(item);

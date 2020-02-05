@@ -212,23 +212,20 @@
       </div>
       <div class="col-xs-12 col-sm-4">
         <div *ngIf="!archiveSelected" class="col-xs-12 col-sm-3 form-group">
-          <button  class="k-button btn-compute-default sppc-float-diff"
-                  (click)="archiveData();"
-                  [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
+          <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff"
+                  (click)="archiveData();">                  
             {{ 'OperationLog.Archive' | translate }}
           </button>
         </div>
         <div *ngIf="archiveSelected" class="col-xs-12 col-sm-5 form-group">
-          <button  class="k-button btn-compute-default sppc-float-diff"
-                  (click)="deleteArchiveData();"
-                  [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
+          <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff"
+                  (click)="deleteArchiveData();">
             {{ 'OperationLog.DeleteArchive' | translate }}
           </button>
         </div>        
         <div class="col-xs-12 col-sm-7 form-group sppc-float">
-          <button class="k-button btn-compute-default sppc-float-diff"
-                  (click)="getReportData();"
-                  [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
+          <button class="k-button btn-compute-default btn-compute-selectable sppc-float-diff"
+                  (click)="getReportData();">
             {{ 'OperationLog.ShowLog' | translate }}
           </button>
         </div>
