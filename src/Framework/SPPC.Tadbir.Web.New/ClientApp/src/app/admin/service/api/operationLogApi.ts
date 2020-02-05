@@ -14,12 +14,59 @@ import { environment } from "@sppc/env/environment";
 
 export class OperationLogApi {
 
-    // system/oplog
+  //  // system/oplog
+  //  public static AllOperationLogs = environment.BaseUrl + "/system/oplog";
+
+  //  // system/sys-oplog
+  //  public static AllSysOperationLogs = environment.BaseUrl + "/system/sys-oplog";
+
+  //  // system/oplog/metadata
+  //public static OperationLogMetadata = environment.BaseUrl + "/system/oplog/metadata";
+
     public static AllOperationLogs = environment.BaseUrl + "/system/oplog";
 
-    // system/sys-oplog
+    /// <summary>
+    /// API server route URL for all operation logs
+    /// </summary>
+    public static AllOperationLogsUrl = environment.BaseUrl + "/system/oplog";
+
+    /// <summary>
+    /// API client URL for all system operation logs
+    /// </summary>
     public static AllSysOperationLogs = environment.BaseUrl + "/system/sys-oplog";
 
-    // system/oplog/metadata
+    /// <summary>
+    /// API server route URL for all system operation logs
+    /// </summary>
+    public static AllSysOperationLogsUrl = environment.BaseUrl + "/system/sys-oplog";
+
+    /// <summary>
+    /// API client URL for all operation logs
+    /// </summary>
+    public static OperationLogsArchive = environment.BaseUrl + "/system/oplog/archive";
+
+    /// <summary>
+    /// API server route URL for all operation logs
+    /// </summary>
+    public static OperationLogsArchiveUrl = environment.BaseUrl + "/system/oplog/archive";
+
+    /// <summary>
+    /// API client URL for all system operation logs
+    /// </summary>
+    public static SysOperationLogsArchive = environment.BaseUrl + "/system/sys-oplog/archive";
+
+    /// <summary>
+    /// API server route URL for all system operation logs
+    /// </summary>
+    public static SysOperationLogsArchiveUrl = environment.BaseUrl + "/system/sys-oplog/archive";
+
+    /// <summary>
+    /// API client URL for operation log metadata
+    /// </summary>
     public static OperationLogMetadata = environment.BaseUrl + "/system/oplog/metadata";
+
+    /// <summary>
+    /// API server route URL for all operation log metadata
+    /// </summary>
+    public static OperationLogMetadataUrl = environment.BaseUrl + "/system/oplog/metadata";
 }

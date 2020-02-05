@@ -71,5 +71,35 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for lookup collection of all hierarchy views
         /// </summary>
         public const string TreeViewsUrl = "lookup/views/tree";
+
+        /// <summary>
+        /// API client URL for all application entity types
+        /// </summary>
+        public const string EntityTypes = "lookup/entities";
+
+        /// <summary>
+        /// API server route URL for all application entity types
+        /// </summary>
+        public const string EntityTypesUrl = "lookup/entities";
+
+        /// <summary>
+        /// API client URL for all system entity types
+        /// </summary>
+        public const string SystemEntityTypes = "lookup/sys/entities";
+
+        /// <summary>
+        /// API server route URL for all system entity types
+        /// </summary>
+        public const string SystemEntityTypesUrl = "lookup/sys/entities";
+
+        /// <summary>
+        /// API client URL for all application users
+        /// </summary>
+        public const string Users = "lookup/users";
+
+        /// <summary>
+        /// API server route URL for all application users
+        /// </summary>
+        public const string UsersUrl = "lookup/users";
     }
 }

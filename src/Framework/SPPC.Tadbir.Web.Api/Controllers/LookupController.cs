@@ -212,6 +212,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(sortedLookup);
         }
 
+        // GET: api/lookup/users
+        [Route(LookupApi.UsersUrl)]
+        public async Task<IActionResult> GetUsersLookupAsync()
+        {
+            var lookup = await _repository.GetUsersAsync();
+            Array.ForEach(lookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
+            var sortedLookup = lookup.OrderBy(item => item.Value).ToList();
+            return Json(sortedLookup);
+        }
+
         #endregion
 
         #region Metadata Subsystem API
@@ -257,6 +267,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Json(levels);
+        }
+
+        // GET: api/lookup/entities
+        [Route(LookupApi.EntityTypesUrl)]
+        public async Task<IActionResult> GetEntityTypesLookupAsync()
+        {
+            var lookup = await _repository.GetEntityTypesAsync();
+            Array.ForEach(lookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
+            var sortedLookup = lookup.OrderBy(item => item.Value).ToList();
+            return Json(sortedLookup);
+        }
+
+        // GET: api/lookup/sys/entities
+        [Route(LookupApi.SystemEntityTypesUrl)]
+        public async Task<IActionResult> GetSystemEntityTypesLookupAsync()
+        {
+            var lookup = await _repository.GetSystemEntityTypesAsync();
+            Array.ForEach(lookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
+            var sortedLookup = lookup.OrderBy(item => item.Value).ToList();
+            return Json(sortedLookup);
         }
 
         #endregion

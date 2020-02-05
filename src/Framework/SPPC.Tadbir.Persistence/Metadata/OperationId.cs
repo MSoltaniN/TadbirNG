@@ -26,6 +26,10 @@ namespace SPPC.Tadbir.Persistence
         UndoFinalize = 18,
         Mark = 19,
         QuickReportDesign = 20,
-        GroupDelete = 21
+        GroupDelete = 21,
+        FailedLogin = 22,
+        CompanyLogin = 23,
+        SwitchFiscalPeriod = 24,
+        SwitchBranch = 25
     }
 }

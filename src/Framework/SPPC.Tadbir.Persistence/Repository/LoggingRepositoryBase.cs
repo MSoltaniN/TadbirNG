@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
@@ -23,9 +24,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        public LoggingRepositoryBase(IRepositoryContext context)
+        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
+        public LoggingRepositoryBase(IRepositoryContext context, ILogConfigRepository config)
             : base(context)
         {
+            _config = config;
         }
 
         /// <summary>
@@ -120,6 +123,59 @@ namespace SPPC.Tadbir.Persistence
             await TrySaveLogAsync();
         }
 
+        internal async Task OnSystemLoginAsync()
+        {
+            Log = new OperationLogViewModel()
+            {
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                OperationId = (int)OperationId.FailedLogin
+            };
+            await TrySaveLogAsync();
+        }
+
+        internal async Task OnEnvironmentChangeAsync(
+            CompanyLoginViewModel currentLogin, CompanyLoginViewModel newLogin)
+        {
+            Log = new OperationLogViewModel()
+            {
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                CompanyId = currentLogin.CompanyId > 0
+                    ? currentLogin.CompanyId
+                    : null,
+                UserId = currentLogin.UserId
+            };
+
+            if (currentLogin.CompanyId == 0
+                || currentLogin.CompanyId != newLogin.CompanyId)
+            {
+                Log.OperationId = (int)OperationId.CompanyLogin;
+                Log.Description = String.Format(
+                    "Company : '{0}', Fiscal period : '{1}', Branch : '{2}'",
+                    newLogin.CompanyName, newLogin.FiscalPeriodName, newLogin.BranchName);
+                await TrySaveLogAsync();
+            }
+            else
+            {
+                if (currentLogin.FiscalPeriodId != newLogin.FiscalPeriodId)
+                {
+                    Log.OperationId = (int)OperationId.SwitchFiscalPeriod;
+                    Log.Description = String.Format(
+                        "Current : '{0}', New : '{1}'", currentLogin.FiscalPeriodName, newLogin.FiscalPeriodName);
+                    await TrySaveLogAsync();
+                }
+
+                if (currentLogin.BranchId != newLogin.BranchId)
+                {
+                    Log.OperationId = (int)OperationId.SwitchBranch;
+                    Log.Description = String.Format(
+                        "Current : '{0}', New = '{1}'", currentLogin.BranchName, newLogin.BranchName);
+                    await TrySaveLogAsync();
+                }
+            }
+        }
+
         /// <summary>
         /// تمام ارتباطات موجود در نمونه داده شده را پاک کرده و در عمل، این ارتباطات را قطع می کند
         /// </summary>
@@ -162,7 +218,12 @@ namespace SPPC.Tadbir.Persistence
         {
             await UnitOfWork.CommitAsync();
             Log.EntityId = entity.Id;
-            await TrySaveLogAsync();
+            var config = await _config.GetEntityLogConfigByOperationAsync(
+                Log.OperationId, (int)Log.EntityTypeId);
+            if (config.IsEnabled)
+            {
+                await TrySaveLogAsync();
+            }
         }
 
         /// <summary>
@@ -190,5 +251,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private const string ModelNamespace = "SPPC.Tadbir.Model";
+        private readonly ILogConfigRepository _config;
     }
 }

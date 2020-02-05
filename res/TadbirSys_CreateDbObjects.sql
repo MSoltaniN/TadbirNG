@@ -365,8 +365,8 @@ CREATE TABLE [Core].[SysOperationLog] (
     [SourceID]            INT              NULL,
     [SourceListID]        INT              NULL,
     [EntityTypeID]        INT              NULL,
-    [CompanyID]           INT              NOT NULL,
-    [UserID]              INT              NOT NULL,
+    [CompanyID]           INT              NULL,
+    [UserID]              INT              NULL,
     [Date]                DATETIME         NOT NULL,
     [Time]                TIME(7)          NOT NULL,
     [EntityId]            INT              NULL,
@@ -389,8 +389,8 @@ CREATE TABLE [Core].[SysOperationLogArchive] (
     [SourceID]                   INT              NULL,
     [SourceListID]               INT              NULL,
     [EntityTypeID]               INT              NULL,
-    [UserID]                     INT              NOT NULL,
-    [CompanyID]                  INT              NOT NULL,
+    [CompanyID]                  INT              NULL,
+    [UserID]                     INT              NULL,
     [Date]                       DATETIME         NOT NULL,
     [Time]                       TIME(7)          NOT NULL,
     [EntityId]                   INT              NULL,
@@ -455,6 +455,11 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (5, N'Filter')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (6, N'Print')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (7, N'Save')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (8, N'Archive')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(21, N'GroupDelete')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(22, N'FailedLogin')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(23, N'CompanyLogin')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(24, N'SwitchFiscalPeriod')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(25, N'SwitchBranch')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 
