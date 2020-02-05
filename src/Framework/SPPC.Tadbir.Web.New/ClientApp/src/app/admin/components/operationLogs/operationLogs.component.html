@@ -223,7 +223,7 @@
             {{ 'OperationLog.DeleteArchive' | translate }}
           </button>
         </div>        
-        <div class="col-xs-12 col-sm-7 form-group sppc-float">
+        <div class="col-xs-12  form-group sppc-float btn-show-log" [ngClass]="{'col-sm-8' : !archiveSelected,'col-sm-7' : archiveSelected}">
           <button class="k-button btn-compute-default btn-compute-selectable sppc-float-diff"
                   (click)="getReportData();">
             {{ 'OperationLog.ShowLog' | translate }}

@@ -29,6 +29,7 @@ export function getLayoutModule(layout: Layout) {
 .btn-compute-default {margin-top: 25px; border: 2px solid #337ab7; color: #337ab7; padding: 5px 25px;}
 .btn-compute { color: #337ab7; transition: All 0.3s 0.1s ease-out;}
 .check-item { margin-top: 20px;}
+.btn-show-log {padding-left:0px;}
 .btn-compute-selectable{ color: #fff; background-image: linear-gradient(#c1e3ff, #337ab7);}
 `],
   providers: [{
