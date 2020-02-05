@@ -135,29 +135,5 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for system config
         /// </summary>
         public const string SystemConfigUrl = "settings/sysconfig";
-
-        #region Log Settings API
-
-        /// <summary>
-        /// API client URL for all application log settings
-        /// </summary>
-        public const string LogSettings = "settings/log";
-
-        /// <summary>
-        /// API server route URL for all application log settings
-        /// </summary>
-        public const string LogSettingsUrl = "settings/log";
-
-        /// <summary>
-        /// API client URL for all system log settings
-        /// </summary>
-        public const string SystemLogSettings = "settings/sys/log";
-
-        /// <summary>
-        /// API server route URL for all system log settings
-        /// </summary>
-        public const string SystemLogSettingsUrl = "settings/sys/log";
-
-        #endregion
     }
 }

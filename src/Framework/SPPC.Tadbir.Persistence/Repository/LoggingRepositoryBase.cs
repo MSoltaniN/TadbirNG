@@ -23,10 +23,9 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        public LoggingRepositoryBase(IRepositoryContext context, ILogConfigRepository config)
+        public LoggingRepositoryBase(IRepositoryContext context)
             : base(context)
         {
-            _config = config;
         }
 
         /// <summary>
@@ -163,12 +162,7 @@ namespace SPPC.Tadbir.Persistence
         {
             await UnitOfWork.CommitAsync();
             Log.EntityId = entity.Id;
-            var config = await _config.GetEntityLogConfigByOperationAsync(
-                Log.OperationId, (int)Log.EntityTypeId);
-            if (config.IsEnabled)
-            {
-                await TrySaveLogAsync();
-            }
+            await TrySaveLogAsync();
         }
 
         /// <summary>
@@ -196,6 +190,5 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private const string ModelNamespace = "SPPC.Tadbir.Model";
-        private readonly ILogConfigRepository _config;
     }
 }

@@ -193,42 +193,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // GET: api/settings/log
-        [Route(SettingsApi.LogSettingsUrl)]
-        [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ViewSettings)]
-        public async Task<IActionResult> GetLogSettingsAsync()
-        {
-            var result = await _repository.GetAllConfigAsync();     // !!TEMPORARY!!
-            return Ok();
-        }
-
-        // GET: api/settings/sys/log
-        [Route(SettingsApi.SystemLogSettingsUrl)]
-        [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ViewSettings)]
-        public async Task<IActionResult> GetSystemLogSettingsAsync()
-        {
-            var result = await _repository.GetAllConfigAsync();     // !!TEMPORARY!!
-            return Ok();
-        }
-
-        // PUT: api/settings/log
-        [Route(SettingsApi.LogSettingsUrl)]
-        [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ManageSettings)]
-        public async Task<IActionResult> PutModifiedLogSettingsAsync()
-        {
-            var result = await _repository.GetAllConfigAsync();     // !!TEMPORARY!!
-            return Ok();
-        }
-
-        // PUT: api/settings/sys/log
-        [Route(SettingsApi.SystemLogSettingsUrl)]
-        [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ManageSettings)]
-        public async Task<IActionResult> PutModifiedSystemLogSettingsAsync()
-        {
-            var result = await _repository.GetAllConfigAsync();     // !!TEMPORARY!!
-            return Ok();
-        }
-
         private void Localize(ViewTreeFullConfig viewSettings, int viewId)
         {
             if (viewId == ViewName.Account)

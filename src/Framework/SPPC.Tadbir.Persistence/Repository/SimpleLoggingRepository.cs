@@ -15,12 +15,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public SimpleLoggingRepository(IRepositoryContext context, IOperationLogRepository logRepository,
-            ILogConfigRepository config)
+        public SimpleLoggingRepository(IRepositoryContext context, IOperationLogRepository logRepository)
             : base(context)
         {
             _logRepository = logRepository;
-            _logConfig = config;
         }
 
         internal abstract OperationSourceId OperationSource { get; }
@@ -34,23 +32,19 @@ namespace SPPC.Tadbir.Persistence
             OperationId operation, OperationSourceId source, SourceListId list = SourceListId.None)
         {
             int? listId = (list != SourceListId.None) ? (int?)list : null;
-            var config = await _logConfig.GetSourceLogConfigByOperationAsync((int)operation, (int)source);
-            if (config.IsEnabled)
+            Log = new OperationLogViewModel()
             {
-                Log = new OperationLogViewModel()
-                {
-                    BranchId = UserContext.BranchId,
-                    FiscalPeriodId = UserContext.FiscalPeriodId,
-                    CompanyId = UserContext.CompanyId,
-                    UserId = UserContext.Id,
-                    Date = DateTime.Now.Date,
-                    Time = DateTime.Now.TimeOfDay,
-                    OperationId = (int)operation,
-                    SourceId = (int)source,
-                    SourceListId = listId
-                };
-                await TrySaveLogAsync();
-            }
+                BranchId = UserContext.BranchId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                CompanyId = UserContext.CompanyId,
+                UserId = UserContext.Id,
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                OperationId = (int)operation,
+                SourceId = (int)source,
+                SourceListId = listId
+            };
+            await TrySaveLogAsync();
         }
 
         internal async Task OnSourceActionAsync(OperationId operation, SourceListId list = SourceListId.None)
@@ -77,6 +71,5 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IOperationLogRepository _logRepository;
-        private readonly ILogConfigRepository _logConfig;
     }
 }

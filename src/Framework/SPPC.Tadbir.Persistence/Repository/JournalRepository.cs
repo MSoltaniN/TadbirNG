@@ -25,9 +25,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="report">امکانات عمومی مورد نیاز برای گزارشگیری را فراهم می کند</param>
-        public JournalRepository(IRepositoryContext context, ISystemRepository system,
-            IReportUtility report, ILogConfigRepository config)
-            : base(context, system.Logger, config)
+        public JournalRepository(IRepositoryContext context, ISystemRepository system, IReportUtility report)
+            : base(context, system.Logger)
         {
             _system = system;
             _report = report;

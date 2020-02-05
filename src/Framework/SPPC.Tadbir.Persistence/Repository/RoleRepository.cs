@@ -27,8 +27,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public RoleRepository(IRepositoryContext context, IOperationLogRepository log, ILogConfigRepository config)
-            : base(context, config, log)
+        public RoleRepository(IRepositoryContext context, IOperationLogRepository log)
+            : base(context, log)
         {
             UnitOfWork.UseSystemContext();
         }

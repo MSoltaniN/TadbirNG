@@ -277,28 +277,6 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
-    /// فلگ های تعریف شده برای دسترسی های امنیتی در مدیریت تنظیمات لاگ را تعریف می کند
-    /// </summary>
-    [Flags]
-    public enum LogSettingPermissions
-    {
-        /// <summary>
-        /// عدم دسترسی به تنظیمات لاگ
-        /// </summary>
-        None = 0x0,
-
-        /// <summary>
-        /// دسترسی مشاهده تنظیمات لاگ
-        /// </summary>
-        ViewSettings = 0x1,
-
-        /// <summary>
-        /// دسترسی مدیریت تنظیمات لاگ
-        /// </summary>
-        ManageSettings = 0x2,
-    }
-
-    /// <summary>
     /// فلگ های تعریف شده برای دسترسی های امنیتی به ارزها را تعریف می کند
     /// </summary>
     [Flags]
