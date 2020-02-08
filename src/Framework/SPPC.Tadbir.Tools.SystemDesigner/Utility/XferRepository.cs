@@ -6,7 +6,7 @@ using BabakSoft.Platform.Data;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.ViewModel.Finance;
 
-namespace SPPC.Tadbir.Tools.SystemDesigner
+namespace SPPC.Tadbir.Tools.SystemDesigner.Utility
 {
     public class XferRepository
     {
