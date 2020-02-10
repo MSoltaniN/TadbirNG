@@ -108,16 +108,22 @@
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
         <table>
           <tr>
-            <td>{{ 'AccountBook.DebitSum' | translate }}</td>
-            <td>{{ debitSum | SppcNumConfig | async }}</td>
+            <td>مجموع مانده ابتدای دوره</td>
+            <td>{{ totalRow?.startBalance | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <td>{{ 'AccountBook.CreditSum' | translate }}</td>
-            <td>{{ creditSum | SppcNumConfig | async }}</td>
+            <!--<td>{{ 'AccountBook.DebitSum' | translate }}</td>-->
+            <td>مجموع بدهکار</td>
+            <td>{{ totalRow?.debit | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <td>{{ 'AccountBook.Remained' | translate }}</td>
-            <td>{{ balance | SppcNumConfig | async }}</td>
+            <!--<td>{{ 'AccountBook.CreditSum' | translate }}</td>-->
+            <td>مجموع بستانکار</td>
+            <td>{{ totalRow?.credit | SppcNumConfig | async }}</td>
+          </tr>
+          <tr>
+            <td>مجموع مانده انتهای دوره</td>
+            <td>{{ totalRow?.endBalance | SppcNumConfig | async }}</td>
           </tr>
         </table>
       </ng-template>
@@ -143,16 +149,20 @@
         </div>
       </ng-template>
 
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'StartBalance'">
+          {{ totalRow?.startBalance | SppcNumConfig | async }}
+      </ng-template>
+
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Credit'">
-        {{ creditSum | SppcNumConfig | async }}
+          {{ totalRow?.credit | SppcNumConfig | async }}
       </ng-template>
 
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Debit'">
-        {{ debitSum | SppcNumConfig | async }}
+          {{ totalRow?.debit | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Balance'">
-        {{ balance | SppcNumConfig | async }}
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'EndBalance'">
+          {{ totalRow?.endBalance | SppcNumConfig | async }}
       </ng-template>
 
       <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">
@@ -176,7 +186,7 @@
                                 [valuePrimitive]="true"
                                 [value]="selectedReportBy"
                                 [(ngModel)]="selectedReportBy"
-                                (ngModelChange)="onChangeReportBy()">
+                                (ngModelChange)="onChangeReportBy();changeParam()">
             </kendo-dropdownlist>
           </div>
 
@@ -189,7 +199,7 @@
                                 [valuePrimitive]="true"
                                 [value]="selectedVoucherStatus"
                                 [(ngModel)]="selectedVoucherStatus"
-                                (ngModelChange)="changeParam()">
+                                (ngModelChange)="onChangeVoucherStatus()">
               <ng-template kendoDropDownListValueTemplate let-dataItem>
                 {{ dataItem?.value | translate }}
               </ng-template>
@@ -223,7 +233,7 @@
           <div class="col-xs-12 col-sm-6 account-item sppc-float">
             <input type="checkbox" name="account" id="account" class="k-checkbox"
                    [(ngModel)]="chbAccount"
-                   (ngModelChange)="getAccountItemLevels($event,1)"
+                   (ngModelChange)="getAccountItemLevels($event,1);changeParam()"
                    [disabled]="selectedReportBy == '1'" />
             <label class="k-checkbox-label" for="account">حساب</label>
 
@@ -246,7 +256,7 @@
           <div class="col-xs-12 col-sm-6 account-item sppc-float">
             <input type="checkbox" name="detailAccount" id="detailAccount" class="k-checkbox"
                    [(ngModel)]="chbDetailAccount"
-                   (ngModelChange)="getAccountItemLevels($event,6)"
+                   (ngModelChange)="getAccountItemLevels($event,6);changeParam()"
                    [disabled]="selectedReportBy == '6'" />
             <label class="k-checkbox-label" for="detailAccount">تفصیلی شناور</label>
 
@@ -269,7 +279,7 @@
           <div class="col-xs-12 col-sm-6 account-item sppc-float">
             <input type="checkbox" name="cost-center" id="cost-center" class="k-checkbox"
                    [(ngModel)]="chbCCenter"
-                   (ngModelChange)="getAccountItemLevels($event,7)"
+                   (ngModelChange)="getAccountItemLevels($event,7);changeParam()"
                    [disabled]="selectedReportBy == '7'" />
             <label class="k-checkbox-label" for="cost-center">مرکز هزینه</label>
 
@@ -292,7 +302,7 @@
           <div class="col-xs-12 col-sm-6 account-item sppc-float">
             <input type="checkbox" name="project" id="project" class="k-checkbox"
                    [(ngModel)]="chbProject"
-                   (ngModelChange)="getAccountItemLevels($event,8)"
+                   (ngModelChange)="getAccountItemLevels($event,8);changeParam()"
                    [disabled]="selectedReportBy == '8'" />
             <label class="k-checkbox-label" for="project">پروژه</label>
 
@@ -318,21 +328,21 @@
       <div class="col-xs-12 col-sm-3">
         <div class="row">
           <div class="col-xs-12 sppc-float">
-            <input type="checkbox" id="filter-by-ref" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="onChangeFilterByRef()"/>
+            <input type="checkbox" id="filter-by-ref" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="onChangeFilterByRef();changeParam()"/>
             <label class="k-checkbox-label" for="filter-by-ref">رفرنس</label>
-            <input type="text" class="k-textbox" [disabled]="!showFilterByRef" [(ngModel)]="filterByRef"/>
+            <input type="text" class="k-textbox" [disabled]="!showFilterByRef" [(ngModel)]="filterByRef" (ngModelChange)="changeParam()"/>
           </div>
 
         </div>
         <div class="row">
           <div class="col-xs-12 sppc-float report-items">
-            <input type="checkbox" id="zero-balance" class="k-checkbox" [(ngModel)]="showZeroBalanceItems"/>
+            <input type="checkbox" id="zero-balance" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="changeParam()"/>
             <label class="k-checkbox-label" for="zero-balance">نمایش سرفصل های با مانده صفر</label>
 
-            <input type="checkbox" id="closing-voucher" class="k-checkbox" [(ngModel)]="showClosingVoucher"/>
+            <input type="checkbox" id="closing-voucher" class="k-checkbox" [(ngModel)]="showClosingVoucher" (ngModelChange)="changeParam()"/>
             <label class="k-checkbox-label" for="closing-voucher">نمایش سند اختتامیه</label>
 
-            <input type="checkbox" id="temp-voucher" class="k-checkbox" [(ngModel)]="showTemporaryVoucher"/>
+            <input type="checkbox" id="temp-voucher" class="k-checkbox" [(ngModel)]="showTemporaryVoucher" (ngModelChange)="changeParam()"/>
             <label class="k-checkbox-label" for="temp-voucher">نمایش سند بستن حساب ها</label>
 
             <label class="control-label">به تفکیک شعبه</label>
