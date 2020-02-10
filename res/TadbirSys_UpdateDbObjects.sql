@@ -2814,3 +2814,15 @@ CREATE TABLE [Core].[SysOperationLogArchive] (
     , CONSTRAINT [FK_Core_SysOperationLogArchive_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
 )
 GO
+
+-- 1.1.813
+update [Metadata].[Column]
+set [Name]=N'AccountDescription'
+where ColumnId=581
+
+update [Metadata].[Column]
+set [Visibility] = N'AlwaysVisible'
+where ColumnId in (573,574,575,576,577,578,579,580)
+
+delete [Config].[UserSetting]
+where ViewID=58
