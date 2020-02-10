@@ -8,24 +8,26 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
     /// <summary>
     /// امکانات مشترک مرتبط با محاسبات گزارشی را پیاده سازی می کند
     /// </summary>
-    public class ReportUtilityBase : IReportUtility
+    public class ReportUtility : IReportUtility
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="config">امکان مدیریت تنظیمات شرکتی را فراهم می کند</param>
         /// <param name="mapper">امکان تبدیل کلاس های مختلف به یکدیگر را فراهم می کند</param>
-        public ReportUtilityBase(IConfigRepository config, IDomainMapper mapper)
+        public ReportUtility(IRepositoryContext context, IConfigRepository config)
         {
             Config = config;
-            _mapper = mapper;
+            _context = context;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .Where(art => art.Voucher.Date.IsBetween(from, to))
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
-                .Select(art => _mapper.Map<TModel>(art))
+                .Select(art => Mapper.Map<TModel>(art))
                 .ToListAsync();
             return lines
                 .ApplyQuickFilter(gridOptions)
@@ -68,7 +70,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .OrderBy(art => art.Voucher.Date)
                     .ThenBy(art => art.Voucher.No)
                         .ThenBy(art => art.BranchId)
-                .Select(art => _mapper.Map<TModel>(art))
+                .Select(art => Mapper.Map<TModel>(art))
                 .ToListAsync();
             return lines
                 .ApplyQuickFilter(gridOptions)
@@ -91,7 +93,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .Where(art => art.Voucher.No >= from
                     && art.Voucher.No <= to)
                 .OrderBy(art => art.Voucher.No)
-                .Select(art => _mapper.Map<TModel>(art))
+                .Select(art => Mapper.Map<TModel>(art))
                 .ToListAsync();
             return lines
                 .ApplyQuickFilter(gridOptions)
@@ -115,11 +117,29 @@ namespace SPPC.Tadbir.Persistence.Utility
                     && art.Voucher.No <= to)
                 .OrderBy(art => art.Voucher.No)
                     .ThenBy(art => art.BranchId)
-                .Select(art => _mapper.Map<TModel>(art))
+                .Select(art => Mapper.Map<TModel>(art))
                 .ToListAsync();
             return lines
                 .ApplyQuickFilter(gridOptions)
                 .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تاریخ سند سیستمی با نوع داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">یکی از انواع تعریف شده برای سندهای سیستمی</param>
+        /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
+        public async Task<DateTime?> GetSpecialVoucherDateAsync(VoucherType type)
+        {
+            DateTime? voucherDate = null;
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetFirstByCriteriaAsync(v => v.Type == (short)type);
+            if (voucher != null)
+            {
+                voucherDate = voucher.Date;
+            }
+
+            return voucherDate;
         }
 
         /// <summary>
@@ -236,6 +256,21 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
         }
 
+        protected IAppUnitOfWork UnitOfWork
+        {
+            get { return _context.UnitOfWork; }
+        }
+
+        protected IDomainMapper Mapper
+        {
+            get { return _context.Mapper; }
+        }
+
+        protected UserContextViewModel UserContext
+        {
+            get { return _context.UserContext; }
+        }
+
         /// <summary>
         /// امکان مدیریت تنظیمات شرکتی را فراهم می کند
         /// </summary>
@@ -254,6 +289,6 @@ namespace SPPC.Tadbir.Persistence.Utility
             return item => item.AccountFullCode.Substring(0, codeLength);
         }
 
-        private readonly IDomainMapper _mapper;
+        private readonly IRepositoryContext _context;
     }
 }

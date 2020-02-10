@@ -12,6 +12,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -31,11 +32,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
         public AccountBookRepository(IRepositoryContext context, ISystemRepository system,
-            IReportRepository report, ILogConfigRepository config)
+            ILogConfigRepository config, IAccountItemUtilityFactory factory)
             : base(context, system.Logger, config)
         {
             _system = system;
-            _report = report;
+            _factory = factory;
+            _report = _factory.Create(ViewName.Account);
         }
 
         /// <summary>
@@ -67,7 +69,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountItemBriefViewModel> GetPreviousAccountItemAsync(int viewId, int itemId)
         {
             var previous = default(AccountItemBriefViewModel);
-            var accountItem = GetAccountItem(viewId, itemId);
+            var utility = _factory.Create(viewId);
+            var accountItem = await utility.GetItemAsync(itemId);
             var previousItem = await GetAccountItemQuery(viewId)
                 .Where(item => item.Id < itemId && item.Level == accountItem.Level)
                 .OrderByDescending(item => item.Id)
@@ -89,7 +92,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountItemBriefViewModel> GetNextAccountItemAsync(int viewId, int itemId)
         {
             var next = default(AccountItemBriefViewModel);
-            var accountItem = GetAccountItem(viewId, itemId);
+            var utility = _factory.Create(viewId);
+            var accountItem = await utility.GetItemAsync(itemId);
             var nextItem = await GetAccountItemQuery(viewId)
                 .Where(item => item.Id > itemId && item.Level == accountItem.Level)
                 .OrderBy(item => item.Id)
@@ -204,7 +208,7 @@ namespace SPPC.Tadbir.Persistence
             var book = new AccountBookViewModel();
             book.Items.Add(await GetFirstBookItemAsync(parameters.ViewId, parameters.ItemId, parameters.FromDate));
 
-            var itemCriteria = GetItemCriteria(parameters.ViewId, parameters.ItemId);
+            var itemCriteria = await GetItemCriteriaAsync(parameters.ViewId, parameters.ItemId);
             var bookItems = await GetRawAccountBookLines(itemCriteria, parameters.FromDate, parameters.ToDate)
                 .ToListAsync();
             book.Items.AddRange(bookItems
@@ -221,7 +225,7 @@ namespace SPPC.Tadbir.Persistence
             var book = new AccountBookViewModel();
             book.Items.Add(await GetFirstBookItemAsync(parameters.ViewId, parameters.ItemId, parameters.FromDate));
 
-            var itemCriteria = GetItemCriteria(parameters.ViewId, parameters.ItemId);
+            var itemCriteria = await GetItemCriteriaAsync(parameters.ViewId, parameters.ItemId);
             var lines = await GetRawAccountBookLines(itemCriteria, parameters.FromDate, parameters.ToDate)
                 .Select(line => Mapper.Map<AccountBookItemViewModel>(line))
                 .ToListAsync();
@@ -239,7 +243,7 @@ namespace SPPC.Tadbir.Persistence
             var book = new AccountBookViewModel();
             book.Items.Add(await GetFirstBookItemAsync(parameters.ViewId, parameters.ItemId, parameters.FromDate));
 
-            var itemCriteria = GetItemCriteria(parameters.ViewId, parameters.ItemId);
+            var itemCriteria = await GetItemCriteriaAsync(parameters.ViewId, parameters.ItemId);
             await AddSpecialBookItemsAsync(
                 book, itemCriteria, VoucherType.OpeningVoucher, parameters.FromDate, parameters.ToDate,
                 parameters.GridOptions, parameters.IsByBranch);
@@ -258,7 +262,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     if (parameters.IsByBranch)
                     {
-                        Array.ForEach(GetGroupByThenByItems(monthLines, item => item.BranchId).ToArray(), group =>
+                        Array.ForEach(_report.GetGroupByItems(monthLines, item => item.BranchId).ToArray(), group =>
                             {
                                 var aggregates = GetAggregatedBookItems(group, true);
                                 Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
@@ -307,7 +311,7 @@ namespace SPPC.Tadbir.Persistence
                         .ToList();
                     if (byBranch)
                     {
-                        Array.ForEach(GetGroupByThenByItems(lines, item => item.BranchId).ToArray(), group =>
+                        Array.ForEach(_report.GetGroupByItems(lines, item => item.BranchId).ToArray(), group =>
                         {
                             var aggregates = GetAggregatedBookItems(group, true);
                             Array.ForEach(aggregates.ToArray(), item => item.Description = voucherType.ToString());
@@ -324,54 +328,18 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private Expression<Func<VoucherLine, bool>> GetItemCriteria(int viewId, int itemId)
+        private async Task<Expression<Func<VoucherLine, bool>>> GetItemCriteriaAsync(int viewId, int itemId)
         {
-            Expression<Func<VoucherLine, bool>> itemCriteria = null;
-            switch (viewId)
-            {
-                case ViewName.Account:
-                    var account = GetAccountItem<Account>(itemId);
-                    Verify.ArgumentNotNull(account, nameof(account));
-                    itemCriteria = (line => line.Account.FullCode.StartsWith(account.FullCode));
-                    break;
-                case ViewName.DetailAccount:
-                    itemCriteria = (line => line.DetailId == itemId);
-                    break;
-                case ViewName.CostCenter:
-                    itemCriteria = (line => line.CostCenterId == itemId);
-                    break;
-                case ViewName.Project:
-                    itemCriteria = (line => line.ProjectId == itemId);
-                    break;
-                default:
-                    break;
-            }
-
-            return itemCriteria;
+            var utility = _factory.Create(viewId);
+            var accountItem = await utility.GetItemAsync(itemId);
+            return utility.GetItemCriteria(accountItem);
         }
 
         private async Task<AccountBookItemViewModel> GetFirstBookItemAsync(
             int viewId, int accountId, DateTime date)
         {
-            decimal balance = 0.0M;
-            switch (viewId)
-            {
-                case ViewName.Account:
-                    balance = await _report.GetAccountBalanceAsync(accountId, date);
-                    break;
-                case ViewName.DetailAccount:
-                    balance = await _report.GetDetailAccountBalanceAsync(accountId, date);
-                    break;
-                case ViewName.CostCenter:
-                    balance = await _report.GetCostCenterBalanceAsync(accountId, date);
-                    break;
-                case ViewName.Project:
-                    balance = await _report.GetProjectBalanceAsync(accountId, date);
-                    break;
-                default:
-                    break;
-            }
-
+            var utility = _factory.Create(viewId);
+            decimal balance = await utility.GetBalanceAsync(accountId, date);
             return new AccountBookItemViewModel()
             {
                 Balance = balance,
@@ -408,36 +376,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private TreeEntity GetAccountItem(int viewId, int itemId)
-        {
-            var item = default(TreeEntity);
-            if (viewId == ViewName.Account)
-            {
-                item = GetAccountItem<Account>(itemId);
-            }
-            else if (viewId == ViewName.DetailAccount)
-            {
-                item = GetAccountItem<DetailAccount>(itemId);
-            }
-            else if (viewId == ViewName.CostCenter)
-            {
-                item = GetAccountItem<CostCenter>(itemId);
-            }
-            else if (viewId == ViewName.Project)
-            {
-                item = GetAccountItem<Project>(itemId);
-            }
-
-            return item;
-        }
-
-        private TItem GetAccountItem<TItem>(int itemId)
-            where TItem : TreeEntity
-        {
-            var repository = UnitOfWork.GetRepository<TItem>();
-            return repository.GetByID(itemId);
-        }
-
         private IQueryable<TreeEntity> GetAccountItemQuery(int viewId)
         {
             IQueryable<TreeEntity> items = null;
@@ -468,71 +406,23 @@ namespace SPPC.Tadbir.Persistence
             if (byNo)
             {
                 groups = byBranch
-                    ? GetGroupByThenByItems(
+                    ? _report.GetGroupByItems(
                         items, item => item.VoucherDate, item => item.VoucherNo, item => item.BranchId)
-                    : GetGroupByThenByItems(items, item => item.VoucherDate, item => item.VoucherNo);
+                    : _report.GetGroupByItems(items, item => item.VoucherDate, item => item.VoucherNo);
             }
             else
             {
                 groups = byBranch
-                    ? GetGroupByThenByItems(items, item => item.VoucherDate, item => item.BranchId)
-                    : GetGroupByThenByItems(items, item => item.VoucherDate);
+                    ? _report.GetGroupByItems(items, item => item.VoucherDate, item => item.BranchId)
+                    : _report.GetGroupByItems(items, item => item.VoucherDate)
+                          as IEnumerable<IEnumerable<AccountBookItemViewModel>>;
             }
 
             return groups;
         }
 
-        private IEnumerable<IEnumerable<AccountBookItemViewModel>> GetGroupByThenByItems<TKey1>(
-            IEnumerable<AccountBookItemViewModel> lines, Func<AccountBookItemViewModel, TKey1> selector1)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(selector1)
-                .GroupBy(selector1))
-            {
-                yield return byFirst;
-            }
-        }
-
-        private IEnumerable<IEnumerable<AccountBookItemViewModel>> GetGroupByThenByItems<TKey1, TKey2>(
-            IEnumerable<AccountBookItemViewModel> lines, Func<AccountBookItemViewModel, TKey1> selector1,
-            Func<AccountBookItemViewModel, TKey2> selector2)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(selector1)
-                .GroupBy(selector1))
-            {
-                foreach (var bySecond in byFirst
-                    .OrderBy(selector2)
-                    .GroupBy(selector2))
-                {
-                    yield return bySecond;
-                }
-            }
-        }
-
-        private IEnumerable<IEnumerable<AccountBookItemViewModel>> GetGroupByThenByItems<TKey1, TKey2, TKey3>(
-            IEnumerable<AccountBookItemViewModel> lines, Func<AccountBookItemViewModel, TKey1> selector1,
-            Func<AccountBookItemViewModel, TKey2> selector2, Func<AccountBookItemViewModel, TKey3> selector3)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(selector1)
-                .GroupBy(selector1))
-            {
-                foreach (var bySecond in byFirst
-                    .OrderBy(selector2)
-                    .GroupBy(selector2))
-                {
-                    foreach (var byThird in bySecond
-                        .OrderBy(selector3)
-                        .GroupBy(selector3))
-                    {
-                        yield return byThird;
-                    }
-                }
-            }
-        }
-
         private readonly ISystemRepository _system;
-        private readonly IReportRepository _report;
+        private readonly IAccountItemUtilityFactory _factory;
+        private readonly IReportUtility _report;
     }
 }

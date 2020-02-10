@@ -129,8 +129,10 @@ namespace SPPC.Tadbir.Web.Api
         private void AddUtilityTypes()
         {
             _services.AddTransient<IDomainMapper, DomainMapper>();
-            _services.AddTransient<IReportUtility, ReportUtilityBase>();
+            _services.AddTransient<IReportUtility, ReportUtility>();
+            _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
             _services.AddTransient<ITestBalanceUtilityFactory, TestBalanceUtilityFactory>();
+            _services.AddTransient<ITestBalanceHelper, TestBalanceHelper>();
             _services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
         }
 

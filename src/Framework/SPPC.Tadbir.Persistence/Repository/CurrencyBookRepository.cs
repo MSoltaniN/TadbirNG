@@ -12,6 +12,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -27,14 +28,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
         public CurrencyBookRepository(IRepositoryContext context, ISystemRepository system,
-            IReportRepository report, ILogConfigRepository config)
+            ILogConfigRepository config, IAccountItemUtilityFactory factory)
             : base(context, system.Logger, config)
         {
             _system = system;
-            _report = report;
+            _factory = factory;
+            _report = _factory.Create(ViewName.Account);
         }
 
         /// <summary>
@@ -517,6 +518,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISystemRepository _system;
-        private readonly IReportRepository _report;
+        private readonly IAccountItemUtilityFactory _factory;
+        private readonly IReportUtility _report;
     }
 }

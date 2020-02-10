@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Persistence.Utility
     /// <summary>
     /// امکانات مشترک مرتبط با محاسبه گردش و مانده برای یک مولفه حساب را تعریف می کند
     /// </summary>
-    public interface ITestBalanceUtility : IBalanceUtility
+    public interface ITestBalanceUtility : IAccountItemUtility
     {
         /// <summary>
         /// اطلاعات سطوح درختی مورد استفاده را در یک مولفه حساب خوانده و برمی گرداند

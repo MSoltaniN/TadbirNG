@@ -14,10 +14,10 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="repository"></param>
         /// <param name="config">امکان مدیریت تنظیمات شرکتی را فراهم می کند</param>
         public TestBalanceUtilityFactory(IRepositoryContext context,
-            ISecureRepository repository, IConfigRepository config)
+            IConfigRepository config, ITestBalanceHelper helper)
         {
             _context = context;
-            _repository = repository;
+            _helper = helper;
             _config = config;
         }
 
@@ -32,17 +32,17 @@ namespace SPPC.Tadbir.Persistence.Utility
             switch (viewId)
             {
                 case ViewName.DetailAccount:
-                    utility = new DetailAccountBalanceUtility(_context, _repository, _config);
+                    utility = new DetailAccountBalanceUtility(_context, _config, _helper);
                     break;
                 case ViewName.CostCenter:
-                    utility = new CostCenterBalanceUtility(_context, _repository, _config);
+                    utility = new CostCenterBalanceUtility(_context, _config, _helper);
                     break;
                 case ViewName.Project:
-                    utility = new ProjectBalanceUtility(_context, _repository, _config);
+                    utility = new ProjectBalanceUtility(_context, _config, _helper);
                     break;
                 case ViewName.Account:
                 default:
-                    utility = new AccountBalanceUtility(_context, _repository, _config);
+                    utility = new AccountBalanceUtility(_context, _config, _helper);
                     break;
             }
 
@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         }
 
         private readonly IRepositoryContext _context;
-        private readonly ISecureRepository _repository;
         private readonly IConfigRepository _config;
+        private readonly ITestBalanceHelper _helper;
     }
 }

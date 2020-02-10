@@ -11,87 +11,23 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
-    internal class ProjectBalanceUtility : BalanceUtilityBase, ITestBalanceUtility
+    internal class ProjectBalanceUtility : ProjectUtility, ITestBalanceUtility
     {
-        public ProjectBalanceUtility(IRepositoryContext context, ISecureRepository repository, IConfigRepository config)
-            : base(context, repository, config)
+        public ProjectBalanceUtility(IRepositoryContext context, IConfigRepository config,
+            ITestBalanceHelper helper)
+            : base(context, config)
         {
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetBalanceAsync(int itemId, DateTime date)
-        {
-            decimal balance = 0.0M;
-            var project = await GetAccountItemAsync<Project>(itemId);
-            if (project != null)
-            {
-                balance = await GetItemBalanceAsync(
-                    date, line => line.Project.FullCode.StartsWith(project.FullCode));
-            }
-
-            return balance;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetBalanceAsync(int itemId, int number)
-        {
-            decimal balance = 0.0M;
-            var project = await GetAccountItemAsync<Project>(itemId);
-            if (project != null)
-            {
-                balance = await GetItemBalanceAsync(
-                    number, line => line.Project.FullCode.StartsWith(project.FullCode));
-            }
-
-            return balance;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را در سند مالی از نوع داده شده
-        /// محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="type">نوع سیستمی مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده محاسبه شده برای سرفصل حسابداری</returns>
-        public async Task<decimal> GetSpecialVoucherBalanceAsync(int itemId, VoucherType type)
-        {
-            decimal balance = 0.0M;
-            var project = await GetAccountItemAsync<Project>(itemId);
-            if (project != null)
-            {
-                balance = await GetSpecialVoucherBalanceAsync(
-                    type, line => line.Project.FullCode.StartsWith(project.FullCode));
-            }
-
-            return balance;
-        }
-
-        public async Task<TreeEntity> GetAccountItemAsync(int itemId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            return await repository.GetByIDAsync(itemId);
+            _helper = helper;
         }
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync()
         {
-            return await GetLevelBalanceTypesAsync(ViewName.Project);
+            return await _helper.GetLevelBalanceTypesAsync(ViewName.Project);
         }
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync()
         {
-            return await GetChildBalanceTypesAsync(ViewName.Project);
+            return await _helper.GetChildBalanceTypesAsync(ViewName.Project);
         }
 
         public IQueryable<VoucherLine> IncludeVoucherLineReference(IQueryable<VoucherLine> query)
@@ -131,7 +67,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 : await GetBalanceAsync(itemId, parameters.FromNo.Value);
             if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
-                balance += await GetSpecialVoucherBalanceAsync(itemId, VoucherType.OpeningVoucher);
+                balance += await GetBalanceAsync(itemId, VoucherType.OpeningVoucher);
             }
 
             return balance;
@@ -141,11 +77,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             IEnumerable<TestBalanceItemViewModel> items, TestBalanceMode mode)
         {
             var zeroItems = new List<TestBalanceItemViewModel>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var usedIds = items
                 .Where(item => item.ProjectLevel == (short)mode)
                 .Select(item => item.ProjectId);
-            var notUsed = await Repository
-                .GetAllQuery<Project>(ViewName.Project, prj => prj.Branch)
+            var notUsed = await repository
+                .GetEntityQuery(prj => prj.Branch)
                 .Where(prj => !usedIds.Contains(prj.Id) && prj.Level == (short)mode)
                 .Select(prj => new { prj.Id, prj.Name, prj.FullCode, prj.BranchId, BranchName = prj.Branch.Name })
                 .ToListAsync();
@@ -184,7 +121,7 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         public int GetSourceList(TestBalanceFormat format)
         {
-            return GetSourceList(format, "Project");
+            return _helper.GetSourceList(format, "Project");
         }
 
         protected override Func<TModel, string> GetGroupSelector<TModel>(int groupLevel)
@@ -192,5 +129,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             int codeLength = GetLevelCodeLength(ViewName.Project, groupLevel);
             return item => item.ProjectFullCode.Substring(0, codeLength);
         }
+
+        private readonly ITestBalanceHelper _helper;
     }
 }

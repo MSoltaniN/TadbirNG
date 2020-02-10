@@ -95,7 +95,7 @@ namespace SPPC.Tadbir.Persistence
         {
             _utility = _factory.Create(parameters.ViewId);
             var testBalance = new TestBalanceViewModel();
-            var accountItem = await _utility.GetAccountItemAsync(accountId);
+            var accountItem = await _utility.GetItemAsync(accountId);
             if (accountItem != null)
             {
                 int groupLevel = accountItem.Level + 1;

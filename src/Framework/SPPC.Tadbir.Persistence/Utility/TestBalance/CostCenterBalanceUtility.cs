@@ -11,87 +11,23 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
-    internal class CostCenterBalanceUtility : BalanceUtilityBase, ITestBalanceUtility
+    internal class CostCenterBalanceUtility : CostCenterUtility, ITestBalanceUtility
     {
-        public CostCenterBalanceUtility(IRepositoryContext context, ISecureRepository repository, IConfigRepository config)
-            : base(context, repository, config)
+        public CostCenterBalanceUtility(IRepositoryContext context, IConfigRepository config,
+            ITestBalanceHelper helper)
+            : base(context, config)
         {
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetBalanceAsync(int itemId, DateTime date)
-        {
-            decimal balance = 0.0M;
-            var costCenter = await GetAccountItemAsync<CostCenter>(itemId);
-            if (costCenter != null)
-            {
-                balance = await GetItemBalanceAsync(
-                    date, line => line.CostCenter.FullCode.StartsWith(costCenter.FullCode));
-            }
-
-            return balance;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetBalanceAsync(int itemId, int number)
-        {
-            decimal balance = 0.0M;
-            var costCenter = await GetAccountItemAsync<CostCenter>(itemId);
-            if (costCenter != null)
-            {
-                balance = await GetItemBalanceAsync(
-                    number, line => line.CostCenter.FullCode.StartsWith(costCenter.FullCode));
-            }
-
-            return balance;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را در سند مالی از نوع داده شده
-        /// محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="type">نوع سیستمی مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده محاسبه شده برای سرفصل حسابداری</returns>
-        public async Task<decimal> GetSpecialVoucherBalanceAsync(int itemId, VoucherType type)
-        {
-            decimal balance = 0.0M;
-            var costCenter = await GetAccountItemAsync<CostCenter>(itemId);
-            if (costCenter != null)
-            {
-                balance = await GetSpecialVoucherBalanceAsync(
-                    type, line => line.CostCenter.FullCode.StartsWith(costCenter.FullCode));
-            }
-
-            return balance;
-        }
-
-        public async Task<TreeEntity> GetAccountItemAsync(int itemId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            return await repository.GetByIDAsync(itemId);
+            _helper = helper;
         }
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync()
         {
-            return await GetLevelBalanceTypesAsync(ViewName.CostCenter);
+            return await _helper.GetLevelBalanceTypesAsync(ViewName.CostCenter);
         }
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync()
         {
-            return await GetChildBalanceTypesAsync(ViewName.CostCenter);
+            return await _helper.GetChildBalanceTypesAsync(ViewName.CostCenter);
         }
 
         public IQueryable<VoucherLine> IncludeVoucherLineReference(IQueryable<VoucherLine> query)
@@ -131,7 +67,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 : await GetBalanceAsync(itemId, parameters.FromNo.Value);
             if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
-                balance += await GetSpecialVoucherBalanceAsync(itemId, VoucherType.OpeningVoucher);
+                balance += await GetBalanceAsync(itemId, VoucherType.OpeningVoucher);
             }
 
             return balance;
@@ -141,11 +77,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             IEnumerable<TestBalanceItemViewModel> items, TestBalanceMode mode)
         {
             var zeroItems = new List<TestBalanceItemViewModel>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var usedIds = items
                 .Where(item => item.CostCenterLevel == (short)mode)
                 .Select(item => item.CostCenterId);
-            var notUsed = await Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Branch)
+            var notUsed = await repository
+                .GetEntityQuery(cc => cc.Branch)
                 .Where(cc => !usedIds.Contains(cc.Id) && cc.Level == (short)mode)
                 .Select(cc => new { cc.Id, cc.Name, cc.FullCode, cc.BranchId, BranchName = cc.Branch.Name })
                 .ToListAsync();
@@ -184,7 +121,7 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         public int GetSourceList(TestBalanceFormat format)
         {
-            return GetSourceList(format, "CostCenter");
+            return _helper.GetSourceList(format, "CostCenter");
         }
 
         protected override Func<TModel, string> GetGroupSelector<TModel>(int groupLevel)
@@ -192,5 +129,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             int codeLength = GetLevelCodeLength(ViewName.CostCenter, groupLevel);
             return item => item.CostCenterFullCode.Substring(0, codeLength);
         }
+
+        private readonly ITestBalanceHelper _helper;
     }
 }

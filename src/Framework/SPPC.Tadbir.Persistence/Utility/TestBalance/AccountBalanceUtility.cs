@@ -11,82 +11,18 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
-    internal class AccountBalanceUtility : BalanceUtilityBase, ITestBalanceUtility
+    internal class AccountBalanceUtility : AccountUtility, ITestBalanceUtility
     {
-        public AccountBalanceUtility(IRepositoryContext context, ISecureRepository repository, IConfigRepository config)
-            : base(context, repository, config)
+        public AccountBalanceUtility(IRepositoryContext context, IConfigRepository config,
+            ITestBalanceHelper helper)
+            : base(context, config)
         {
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetBalanceAsync(int itemId, DateTime date)
-        {
-            decimal balance = 0.0M;
-            var account = await GetAccountItemAsync<Account>(itemId);
-            if (account != null)
-            {
-                balance = await GetItemBalanceAsync(
-                    date, line => line.Account.FullCode.StartsWith(account.FullCode));
-            }
-
-            return balance;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="number">شماره سندی که مانده با توجه به کلیه سندهای پیش از آن در دوره مالی جاری محاسبه می شود</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
-        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetBalanceAsync(int itemId, int number)
-        {
-            decimal balance = 0.0M;
-            var account = await GetAccountItemAsync<Account>(itemId);
-            if (account != null)
-            {
-                balance = await GetItemBalanceAsync(
-                    number, line => line.Account.FullCode.StartsWith(account.FullCode));
-            }
-
-            return balance;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را در سند مالی از نوع داده شده
-        /// محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="type">نوع سیستمی مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده محاسبه شده برای سرفصل حسابداری</returns>
-        public async Task<decimal> GetSpecialVoucherBalanceAsync(int itemId, VoucherType type)
-        {
-            decimal balance = 0.0M;
-            var account = await GetAccountItemAsync<Account>(itemId);
-            if (account != null)
-            {
-                balance = await GetSpecialVoucherBalanceAsync(
-                    type, line => line.Account.FullCode.StartsWith(account.FullCode));
-            }
-
-            return balance;
-        }
-
-        public async Task<TreeEntity> GetAccountItemAsync(int itemId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            return await repository.GetByIDAsync(itemId);
+            _helper = helper;
         }
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync()
         {
-            return await GetLevelBalanceTypesAsync(ViewName.Account);
+            return await _helper.GetLevelBalanceTypesAsync(ViewName.Account);
         }
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync()
@@ -164,7 +100,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 : await GetBalanceAsync(itemId, parameters.FromNo.Value);
             if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
-                balance += await GetSpecialVoucherBalanceAsync(itemId, VoucherType.OpeningVoucher);
+                balance += await GetBalanceAsync(itemId, VoucherType.OpeningVoucher);
             }
 
             return balance;
@@ -174,11 +110,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             IEnumerable<TestBalanceItemViewModel> items, TestBalanceMode mode)
         {
             var zeroItems = new List<TestBalanceItemViewModel>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var usedIds = items
                 .Where(item => item.AccountLevel == (short)mode)
                 .Select(item => item.AccountId);
-            var notUsed = await Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Branch)
+            var notUsed = await repository
+                .GetEntityQuery(acc => acc.Branch)
                 .Where(acc => !usedIds.Contains(acc.Id) && acc.Level == (short)mode)
                 .Select(acc => new { acc.Id, acc.Name, acc.FullCode, acc.BranchId, BranchName = acc.Branch.Name })
                 .ToListAsync();
@@ -217,7 +154,9 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         public int GetSourceList(TestBalanceFormat format)
         {
-            return GetSourceList(format, "Account");
+            return _helper.GetSourceList(format, "Account");
         }
+
+        private readonly ITestBalanceHelper _helper;
     }
 }
