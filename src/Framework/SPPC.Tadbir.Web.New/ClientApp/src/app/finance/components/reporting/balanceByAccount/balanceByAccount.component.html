@@ -82,8 +82,9 @@
                                    (columnsList)="getColumns($event)">
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-      <!--<button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'AccountBook.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>
-      <button kendoButton class="sppc-float-diff" (click)="openSelectForm()" [icon]="'search'" type="button"></button>-->
+
+      <button kendoButton class="sppc-float-diff" [disabled]="selectedRows.length != 1" EntityName="AccountBook" SppcPermissionCheck="View" (sppcClick)="showAccountBook()"
+              [icon]="'dictionary-add'" title="{{ 'Balance.AccountBook' | translate }}" type="button"></button>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="66">
@@ -108,21 +109,19 @@
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
         <table>
           <tr>
-            <td>مجموع مانده ابتدای دوره</td>
+            <td>{{ 'BalanceByAccount.SumStartBalance' | translate }}</td>
             <td>{{ totalRow?.startBalance | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <!--<td>{{ 'AccountBook.DebitSum' | translate }}</td>-->
-            <td>مجموع بدهکار</td>
+            <td>{{ 'BalanceByAccount.SumDebit' | translate }}</td>
             <td>{{ totalRow?.debit | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <!--<td>{{ 'AccountBook.CreditSum' | translate }}</td>-->
-            <td>مجموع بستانکار</td>
+            <td>{{ 'BalanceByAccount.SumCredit' | translate }}</td>
             <td>{{ totalRow?.credit | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <td>مجموع مانده انتهای دوره</td>
+            <td>{{ 'BalanceByAccount.SumEndBalance' | translate }}</td>
             <td>{{ totalRow?.endBalance | SppcNumConfig | async }}</td>
           </tr>
         </table>
@@ -179,7 +178,7 @@
       <div class="col-xs-12 col-sm-9 sppc-float">
         <div class="row">
           <div class="col-xs-12 col-sm-4 sppc-float">
-            <label class="control-label">گزارش بر اساس</label>
+            <label class="control-label">{{ 'BalanceByAccount.ReportBy' | translate }}</label>
             <kendo-dropdownlist [data]="reportBy" class="ddl-option"
                                 [textField]="'value'"
                                 [valueField]="'key'"
@@ -235,7 +234,7 @@
                    [(ngModel)]="chbAccount"
                    (ngModelChange)="getAccountItemLevels($event,1);changeParam()"
                    [disabled]="selectedReportBy == '1'" />
-            <label class="k-checkbox-label" for="account">حساب</label>
+            <label class="k-checkbox-label" for="account">{{ 'Entity.Account' | translate }}</label>
 
             <kendo-dropdownlist [data]="accountLevelList" class="ddl-account-item"
                                 [textField]="'title'"
@@ -258,7 +257,7 @@
                    [(ngModel)]="chbDetailAccount"
                    (ngModelChange)="getAccountItemLevels($event,6);changeParam()"
                    [disabled]="selectedReportBy == '6'" />
-            <label class="k-checkbox-label" for="detailAccount">تفصیلی شناور</label>
+            <label class="k-checkbox-label" for="detailAccount">{{ 'Entity.DetailAccount' | translate }}</label>
 
             <kendo-dropdownlist [data]="detailAccountLevelList" class="ddl-account-item"
                                 [textField]="'title'"
@@ -281,7 +280,7 @@
                    [(ngModel)]="chbCCenter"
                    (ngModelChange)="getAccountItemLevels($event,7);changeParam()"
                    [disabled]="selectedReportBy == '7'" />
-            <label class="k-checkbox-label" for="cost-center">مرکز هزینه</label>
+            <label class="k-checkbox-label" for="cost-center">{{ 'Entity.CostCenter' | translate }}</label>
 
             <kendo-dropdownlist [data]="cCenterLevelList" class="ddl-account-item"
                                 [textField]="'title'"
@@ -304,7 +303,7 @@
                    [(ngModel)]="chbProject"
                    (ngModelChange)="getAccountItemLevels($event,8);changeParam()"
                    [disabled]="selectedReportBy == '8'" />
-            <label class="k-checkbox-label" for="project">پروژه</label>
+            <label class="k-checkbox-label" for="project">{{ 'Entity.Project' | translate }}</label>
 
             <kendo-dropdownlist [data]="projectLevelList" class="ddl-account-item"
                                 [textField]="'title'"
@@ -329,23 +328,23 @@
         <div class="row">
           <div class="col-xs-12 sppc-float">
             <input type="checkbox" id="filter-by-ref" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="onChangeFilterByRef();changeParam()"/>
-            <label class="k-checkbox-label" for="filter-by-ref">رفرنس</label>
+            <label class="k-checkbox-label" for="filter-by-ref">{{ 'Balance.FilterByRef' | translate }}</label>
             <input type="text" class="k-textbox" [disabled]="!showFilterByRef" [(ngModel)]="filterByRef" (ngModelChange)="changeParam()"/>
           </div>
 
         </div>
         <div class="row">
           <div class="col-xs-12 sppc-float report-items">
-            <input type="checkbox" id="zero-balance" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="changeParam()"/>
-            <label class="k-checkbox-label" for="zero-balance">نمایش سرفصل های با مانده صفر</label>
+            <!--<input type="checkbox" id="zero-balance" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="changeParam()"/>
+            <label class="k-checkbox-label" for="zero-balance">نمایش سرفصل های با مانده صفر</label>-->
 
-            <input type="checkbox" id="closing-voucher" class="k-checkbox" [(ngModel)]="showClosingVoucher" (ngModelChange)="changeParam()"/>
-            <label class="k-checkbox-label" for="closing-voucher">نمایش سند اختتامیه</label>
+            <input type="checkbox" id="closing-voucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" (ngModelChange)="changeParam()"/>
+            <label class="k-checkbox-label" for="closing-voucher">{{ 'Balance.Closing' | translate }}</label>
 
-            <input type="checkbox" id="temp-voucher" class="k-checkbox" [(ngModel)]="showTemporaryVoucher" (ngModelChange)="changeParam()"/>
-            <label class="k-checkbox-label" for="temp-voucher">نمایش سند بستن حساب ها</label>
+            <input type="checkbox" id="temp-voucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" (ngModelChange)="changeParam()"/>
+            <label class="k-checkbox-label" for="temp-voucher">{{ 'Balance.CloseAccounts' | translate }}</label>
 
-            <label class="control-label">به تفکیک شعبه</label>
+            <label class="control-label">{{ 'Journal.BranchSeparation' | translate }}</label>
             <kendo-switch [onLabel]="('AccountBook.OnLabel' | translate)"
                           [offLabel]="('AccountBook.OffLabel' | translate)"
                           [(ngModel)]="selectedBranchSeparation"

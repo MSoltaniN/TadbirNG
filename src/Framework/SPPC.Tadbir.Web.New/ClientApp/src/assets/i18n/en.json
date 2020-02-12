@@ -304,6 +304,18 @@
     "Currency": "Currency",
     "OperationsDetail": "Operations Detail"
   },
+  "BalanceByAccount": {
+    "ReportBy": "Report By",
+    "SumStartBalance": "Start Balance Sum",
+    "SumEndBalance": "End Balance Sum",
+    "SumDebit": "Debit Sum",
+    "SumCredit": "Credit Sum",
+    "AllAccount": "All Account",
+    "AllDetailAccount": "All DetailAccount",
+    "AllCostCenter": "All CostCenter",
+    "AllProject": "All Project",
+    "SelectLevelErrorMsg": "It is not possible to select a level above the level of the selected {0}"
+  },
   "AccountBook": {
     "DisplayByRow": "By Row",
     "DisplayByVoucherSum": "Voucher Sum",
