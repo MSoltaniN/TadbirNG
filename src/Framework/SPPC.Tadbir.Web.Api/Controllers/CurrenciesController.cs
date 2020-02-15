@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -328,6 +329,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // PUT: api/currency/rates
+        [HttpPut]
+        [Route(CurrencyApi.DeleteCurrencyRatesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyRatePermissions.Delete)]
+        public async Task<IActionResult> PutExistingCurrencyRatesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupRatesDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            await _rateRepository.DeleteCurrencyRatesAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
@@ -366,6 +389,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private async Task<IEnumerable<string>> ValidateGroupRatesDeleteAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                messages.Add(await ValidateRateDeleteAsync(item));
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
         private void Localize(CurrencyViewModel currency)
