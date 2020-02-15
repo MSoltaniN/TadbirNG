@@ -22,8 +22,8 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="config">امکان مدیریت تنظیمات شرکتی را فراهم می کند</param>
-        /// <param name="mapper">امکان تبدیل کلاس های مختلف به یکدیگر را فراهم می کند</param>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         public ReportUtility(IRepositoryContext context, IConfigRepository config)
         {
             Config = config;
@@ -256,16 +256,25 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
         }
 
+        /// <summary>
+        /// امکان دسترسی به دیتابیس ها و انجام تراکنش های دیتابیسی را فراهم می کند
+        /// </summary>
         protected IAppUnitOfWork UnitOfWork
         {
             get { return _context.UnitOfWork; }
         }
 
+        /// <summary>
+        /// امکان تبدیل کلاس های مختلف به یکدیگر را فراهم می کند
+        /// </summary>
         protected IDomainMapper Mapper
         {
             get { return _context.Mapper; }
         }
 
+        /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
+        /// </summary>
         protected UserContextViewModel UserContext
         {
             get { return _context.UserContext; }

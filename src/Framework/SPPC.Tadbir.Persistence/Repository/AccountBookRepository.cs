@@ -29,8 +29,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        /// <param name="report">امکان انجام محاسبات مشترک در گزارشات برنامه را فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
+        /// <param name="factory">امکان ساختن کلاس کمکی محاسبات مالی را فراهم می کند</param>
         public AccountBookRepository(IRepositoryContext context, ISystemRepository system,
             ILogConfigRepository config, IAccountItemUtilityFactory factory)
             : base(context, system.Logger, config)

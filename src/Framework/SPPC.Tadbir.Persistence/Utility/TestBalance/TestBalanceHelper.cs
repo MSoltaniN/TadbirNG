@@ -6,13 +6,26 @@ using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
+    /// <summary>
+    /// امکانات مشترک مرتبط با محاسبه مانده مولفه های حساب را پیاده سازی می کند
+    /// </summary>
     public class TestBalanceHelper : ITestBalanceHelper
     {
+        /// <summary>
+        /// نمونه جدیدی از این حساب می سازد
+        /// </summary>
+        /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         public TestBalanceHelper(IConfigRepository config)
         {
             _config = config;
         }
 
+        /// <summary>
+        /// کد داخلی نمای لیستی گزارش تراز آزمایشی را با توجه به قالب و نوع مولفه حساب به دست می آورد
+        /// </summary>
+        /// <param name="format">قالب نمایشی داده شده برای گزارش</param>
+        /// <param name="itemTypeName">نوع مولفه حساب</param>
+        /// <returns>کد نمای لیستی به دست آمده</returns>
         public int GetSourceList(TestBalanceFormat format, string itemTypeName)
         {
             string enumStringTemplate = "{0}Balance{1}Column";
@@ -45,6 +58,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             return (int)Enum.Parse(typeof(SourceListId), enumValue);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، فهرست سطوح قابل استفاده برای گزارشگیری را
+        /// برای مولفه حساب داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه مولفه حساب</param>
+        /// <returns>فهرست سطوح قابل استفاده</returns>
         public async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync(int viewId)
         {
             var lookup = new List<TestBalanceModeInfo>();
@@ -68,6 +87,11 @@ namespace SPPC.Tadbir.Persistence.Utility
             return lookup;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، فهرست سطوح زیرمجموعه قابل انتخاب برای گزارشگیری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه مولفه حساب</param>
+        /// <returns>فهرست سطوح زیرمجموعه قابل انتخاب</returns>
         public async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync(int viewId)
         {
             var lookup = new List<TestBalanceModeInfo>();

@@ -434,7 +434,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
-        public async Task<(IList<VoucherViewModel>, int)> GetVouchersWithNoArticleAsync(GridOptions gridOptions, DateTime from, DateTime to)
+        public async Task<ValueTuple<IList<VoucherViewModel>, int>> GetVouchersWithNoArticleAsync(
+            GridOptions gridOptions, DateTime from, DateTime to)
         {
             var vouchers = Repository.GetAllOperationQuery<Voucher>(
                 ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
@@ -451,7 +452,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد نا تراز</returns>
-        public async Task<(IList<VoucherViewModel>, int)> GetUnbalancedVouchersAsync(GridOptions gridOptions, DateTime from, DateTime to)
+        public async Task<ValueTuple<IList<VoucherViewModel>, int>> GetUnbalancedVouchersAsync(
+            GridOptions gridOptions, DateTime from, DateTime to)
         {
             var vouchers = Repository.GetAllOperationQuery<Voucher>(
                 ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
@@ -468,7 +470,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
-        public async Task<(IList<NumberListViewModel>, int)> GetMissingVoucherNumbersAsync(GridOptions gridOptions, DateTime from, DateTime to)
+        public async Task<ValueTuple<IList<NumberListViewModel>, int>> GetMissingVoucherNumbersAsync(
+            GridOptions gridOptions, DateTime from, DateTime to)
         {
             var missNumberList = new List<NumberListViewModel>();
             var vouchers = await Repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
@@ -543,7 +546,7 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private static async Task<(IList<VoucherViewModel>, int)> GetListAndCountAsync(
+        private static async Task<ValueTuple<IList<VoucherViewModel>, int>> GetListAndCountAsync(
             GridOptions gridOptions, IQueryable<VoucherViewModel> vouchers)
         {
             var filteredList = vouchers

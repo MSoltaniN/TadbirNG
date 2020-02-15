@@ -169,7 +169,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
-        Task<(IList<VoucherViewModel>, int)> GetVouchersWithNoArticleAsync(GridOptions gridOptions, DateTime from, DateTime to);
+        Task<ValueTuple<IList<VoucherViewModel>, int>> GetVouchersWithNoArticleAsync(
+            GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، لیست و تعداد اسناد دارای نا تراز را برمیگرداند
@@ -178,7 +179,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد نا تراز</returns>
-        Task<(IList<VoucherViewModel>, int)> GetUnbalancedVouchersAsync(GridOptions gridOptions, DateTime from, DateTime to);
+        Task<ValueTuple<IList<VoucherViewModel>, int>> GetUnbalancedVouchersAsync(
+            GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، لیست و تعداد شماره اسناد جا افتاده را برمیگرداند
@@ -187,6 +189,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
-        Task<(IList<NumberListViewModel>, int)> GetMissingVoucherNumbersAsync(GridOptions gridOptions, DateTime from, DateTime to);
+        Task<ValueTuple<IList<NumberListViewModel>, int>> GetMissingVoucherNumbersAsync(
+            GridOptions gridOptions, DateTime from, DateTime to);
     }
 }
