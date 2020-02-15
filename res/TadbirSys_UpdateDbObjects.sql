@@ -2826,3 +2826,9 @@ where ColumnId in (573,574,575,576,577,578,579,580)
 
 delete [Config].[UserSetting]
 where ViewID=58
+
+-- 1.1.816
+UPDATE [Metadata].[Column]
+SET [IsNullable] = 1
+WHERE [Name] = 'RowNo'
+
