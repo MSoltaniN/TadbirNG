@@ -145,6 +145,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var (vouchers, itemCount) = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
             SetItemCount(itemCount);
             Localize(vouchers.ToArray());
+            SetRowNumbers(vouchers);
             return Json(vouchers);
         }
 
@@ -156,6 +157,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var (vouchers, itemCount) = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
             SetItemCount(itemCount);
             Localize(vouchers.ToArray());
+            SetRowNumbers(vouchers);
             return Json(vouchers);
         }
 
@@ -166,6 +168,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var (voucherNumbers, itemCount) = await _repository.GetMissingVoucherNumbersAsync(GridOptions, from, to);
             SetItemCount(itemCount);
+            SetRowNumbers(voucherNumbers);
             return Json(voucherNumbers);
         }
 
@@ -434,6 +437,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var (articles, itemCount) = await _lineRepository.GetSystemIssueArticlesAsync(GridOptions, issueType, from, to);
             SetItemCount(itemCount);
+            if (issueType != "invalid-acc")
+            {
+                SetRowNumbers(articles);
+            }
+
             return Json(articles);
         }
 
