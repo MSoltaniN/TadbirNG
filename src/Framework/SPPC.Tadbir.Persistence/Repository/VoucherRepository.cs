@@ -550,7 +550,7 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions, false);
 
             var vouchersList = await filteredList
-                .OrderBy(voucher => voucher.Date)
+                .OrderBy(voucher => voucher.Date.Date)
                 .ThenBy(voucher => voucher.No)
                 .ApplyPaging(gridOptions)
                 .ToListAsync();

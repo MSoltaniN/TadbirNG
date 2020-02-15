@@ -103,6 +103,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Utility
                     AllowSorting = true,
                     DisplayIndex = 0,
                     DotNetType = "System.Int32",
+                    IsNullable = true,
                     Name = "RowNo",
                     ScriptType = "number",
                     StorageType = "int",
