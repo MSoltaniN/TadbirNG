@@ -40,7 +40,7 @@ export class DetailComponent extends BaseComponent {
           this.fillFormValidators();
           return this.form;
         }).subscribe((res1: any) => {
-          this.properties.set(this.metadataKey, res1.columns);          
+          this.properties.set(this.metadataKey, res1.columns);
           this.bStorageService.setMetadata(this.metadataKey, res1.columns);
           return
         });
@@ -70,7 +70,7 @@ export class DetailComponent extends BaseComponent {
 
       if (!entry.isNullable) validators.push(Validators.required);
 
-      if (!this.form.contains(name)) {
+      if (!this.form.contains(name) && name.toLowerCase() != "rowno") {
         this.form.addControl(name, new FormControl("", validators));
       }
     }
@@ -86,7 +86,7 @@ export class DetailComponent extends BaseComponent {
 
       }).subscribe((res1: any) => {
 
-        this.properties[this.metadataKey] = res1.properties;        
+        this.properties[this.metadataKey] = res1.properties;
         this.bStorageService.setMetadata(this.metadataKey, this.properties[this.metadataKey]);
 
         return
