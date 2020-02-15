@@ -45,6 +45,9 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   minorUnitKey: string;
   TaxCurrencyErrorMsg: string;
 
+  editConfirm: boolean = false;
+  selectedCurrencyItem: any;
+
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
   @Input() public model: Currency;
@@ -106,17 +109,37 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   }
 
   onChangeCurrency(item: any) {
-    if (item)
-      this.currencyService.getModels(String.Format(CurrencyApi.CurrencyInfoByName, item)).subscribe(res => {
+    if (item) {
+      this.selectedCurrencyItem = item;
+
+      this.currencyService.getModels(String.Format(CurrencyApi.CurrencyHasRates, this.currencyId)).subscribe(res => {
+        this.editConfirm = res;
+        if (!this.editConfirm) {
+          this.getCurrencyInfo(true);
+        }
+      })
+    }
+  }
+
+  getCurrencyInfo(confirm: boolean) {
+    if (confirm) {
+      this.currencyService.getModels(String.Format(CurrencyApi.CurrencyInfoByName, this.selectedCurrencyItem)).subscribe(res => {
         var result = res;
         result.taxCode = undefined;
         this.editForm.reset(result);
-        this.editForm.patchValue({ name: item });
+        this.editForm.patchValue({ name: this.selectedCurrencyItem, taxCode: this.model.taxCode });
         this.minorUnitKey = res.minorUnitKey;
       }, error => {
         if (error.status == 404)
           this.showMessage(this.getText('App.RecordNotFound'), MessageType.Warning);
       })
+    }
+    else {
+      var currencyItem = this.currencyNameData.find(f => f.value == this.model.name);
+      this.selectedCurrencyName = currencyItem ? currencyItem.key : undefined;
+    }
+      
+    this.editConfirm = false;
   }
 
   handleFilter(value: any) {
@@ -131,11 +154,11 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
     this.currencyService.getModels(CurrencyApi.TaxCurrencies).subscribe(res => {
       if (res && res.length > 0) {
         this.taxCurrencyData = res;
-        this.taxCurrencyList = res;   
+        this.taxCurrencyList = res;
       }
       else {
         this.TaxCurrencyErrorMsg = this.getText("Currency.TaxCurrencyErrorMsg");
-      }         
+      }
     })
   }
 }
