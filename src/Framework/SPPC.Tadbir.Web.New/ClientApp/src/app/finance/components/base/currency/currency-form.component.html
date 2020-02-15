@@ -58,7 +58,6 @@
                                 [valueField]="'code'"
                                 [valuePrimitive]="true"
                                 [filterable]="true"
-                                
                                 (filterChange)="handleTaxCodeFilter($event)"
                                 formControlName="taxCode">
             </kendo-dropdownlist>
@@ -125,11 +124,21 @@
         </div>
       </div>
 
-
     </form>
+
   </div>
   <kendo-dialog-actions>
     <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
     <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
   </kendo-dialog-actions>
 </div>
+
+<kendo-dialog title="{{'Currency.EditCurrency' | translate}}" *ngIf="editConfirm" (close)="editModel(false)" [minWidth]="250" [width]="450">
+  <p style="margin: 25px 10px;">
+    {{'Currency.EditConfirmMsg' | translate}}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="getCurrencyInfo(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="getCurrencyInfo(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

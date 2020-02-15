@@ -120,13 +120,3 @@
     <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
   </kendo-dialog-actions>
 </kendo-dialog>
-
-<kendo-dialog title="{{'Currency.EditCurrency' | translate}}" *ngIf="editConfirm" (close)="editModel(false)" [minWidth]="250" [width]="450">
-  <p>
-    {{'Currency.EditConfirmMsg' | translate}}
-  </p>
-  <kendo-dialog-actions>
-    <button class="k-button" (click)="editModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-    <button class="k-button" (click)="editModel(false)">{{ 'Buttons.No' | translate }}</button>
-  </kendo-dialog-actions>
-</kendo-dialog>
