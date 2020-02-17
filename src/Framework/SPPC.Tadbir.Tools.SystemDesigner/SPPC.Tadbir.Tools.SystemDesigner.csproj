@@ -92,6 +92,12 @@
     <Compile Include="Forms\LogCatalogueForm.Designer.cs">
       <DependentUpon>LogCatalogueForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TicketManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TicketManager.Designer.cs">
+      <DependentUpon>TicketManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Utility\HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
@@ -242,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LogCatalogueForm.resx">
       <DependentUpon>LogCatalogueForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TicketManager.resx">
+      <DependentUpon>TicketManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

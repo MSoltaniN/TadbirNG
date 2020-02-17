@@ -9,18 +9,32 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
+    /// <summary>
+    /// امکانات مشترک مرتبط با محاسبات گردش و مانده را برای مولفه های مختلف حساب فراهم می کند
+    /// </summary>
     public abstract class AccountItemUtilityBase : ReportUtility
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         public AccountItemUtilityBase(IRepositoryContext context, IConfigRepository config)
             : base(context, config)
         {
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مبلغ مانده در تاریخ داده شده را برای یکی از مولفه های حساب محاسبه می کند
+        /// </summary>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب</param>
+        /// <param name="date">تاریخ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده مولفه حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         public async Task<decimal> GetBalanceAsync(int itemId, DateTime date)
         {
             decimal balance = 0.0M;
@@ -33,6 +47,13 @@ namespace SPPC.Tadbir.Persistence.Utility
             return balance;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مبلغ مانده تا پیش از شماره سند داده شده را برای یکی از مولفه های حساب محاسبه می کند
+        /// </summary>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب</param>
+        /// <param name="number">شماره سند مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده مولفه حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         public async Task<decimal> GetBalanceAsync(int itemId, int number)
         {
             decimal balance = 0.0M;
@@ -51,7 +72,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
         /// <param name="type">نوع سند سیستمی مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// <returns>مانده مولفه حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         public async Task<decimal> GetBalanceAsync(int itemId, VoucherType type)
         {
@@ -65,6 +86,14 @@ namespace SPPC.Tadbir.Persistence.Utility
             return balance;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مبالغ گردش بدهکار و بستانکار برای مولفه حساب مورد نظر را
+        /// در محدوده تاریخی داده شده محاسبه می کند
+        /// </summary>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای محدوده تاریخی مورد نظر</param>
+        /// <param name="to">تاریخ انتهای محدوده تاریخی مورد نظر</param>
+        /// <returns>مبالغ گردش محاسبه شده برای مولفه حساب</returns>
         public async Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(int itemId, DateTime from, DateTime to)
         {
             var turnover = default(ValueTuple<decimal, decimal>);
@@ -77,6 +106,14 @@ namespace SPPC.Tadbir.Persistence.Utility
             return turnover;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مبالغ گردش بدهکار و بستانکار برای مولفه حساب مورد نظر را
+        /// در محدوده اسناد داده شده محاسبه می کند
+        /// </summary>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">اولین سند در محدوده مورد نظر</param>
+        /// <param name="to">آخرین سند در محدوده مورد نظر</param>
+        /// <returns>مبالغ گردش محاسبه شده برای مولفه حساب</returns>
         public async Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(int itemId, int from, int to)
         {
             var turnover = default(ValueTuple<decimal, decimal>);
@@ -89,10 +126,26 @@ namespace SPPC.Tadbir.Persistence.Utility
             return turnover;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات مولفه حساب داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <returns>اطلاعات خوانده شده برای مولفه حساب</returns>
         public abstract Task<TreeEntity> GetItemAsync(int itemId);
 
+        /// <summary>
+        /// عبارت شرطی مورد نیاز برای انجام محاسبات مولفه حساب را برمی گرداند
+        /// </summary>
+        /// <param name="account">اطلاعات مولفه حساب مورد نظر</param>
+        /// <returns>عبارت شرطی</returns>
         public abstract Expression<Func<VoucherLine, bool>> GetItemCriteria(TreeEntity account);
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات مولفه حساب داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <typeparam name="TModel">نوع دات نتی مدل اطلاعاتی مولفه حساب</typeparam>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <returns>اطلاعات خوانده شده برای مولفه حساب</returns>
         protected async Task<TModel> GetAccountItemAsync<TModel>(int itemId)
             where TModel : class, ITreeEntity
         {

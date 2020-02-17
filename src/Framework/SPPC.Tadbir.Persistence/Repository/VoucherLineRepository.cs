@@ -273,7 +273,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد آرتیکل ها</returns>
-        public async Task<(IList<VoucherLineDetailViewModel>, int)> GetSystemIssueArticlesAsync(GridOptions gridOptions, string issueType, DateTime from, DateTime to)
+        public async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetSystemIssueArticlesAsync(GridOptions gridOptions, string issueType, DateTime from, DateTime to)
         {
             (IList<VoucherLineDetailViewModel>, int) result;
 
@@ -318,7 +318,8 @@ namespace SPPC.Tadbir.Persistence
 
                 default:
                     {
-                        result = (new List<VoucherLineDetailViewModel>(), 0);
+                        result = new ValueTuple<IList<VoucherLineDetailViewModel>, int>(
+                            new List<VoucherLineDetailViewModel>(), 0);
                         break;
                     }
             }
@@ -393,7 +394,8 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
             return lines;
         }
 
-        private async Task<(IList<VoucherLineDetailViewModel>, int)> GetArticleWithInvalidBalance(GridOptions gridOptions, DateTime to)
+        private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetArticleWithInvalidBalance(
+            GridOptions gridOptions, DateTime to)
         {
             List<VoucherLine> result = new List<VoucherLine>();
 
@@ -470,7 +472,8 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
             return lineList;
         }
 
-        private async Task<(IList<VoucherLineDetailViewModel>, int)> GetListAndCountAsync(GridOptions gridOptions, IQueryable<VoucherLine> lines)
+        private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetListAndCountAsync(
+            GridOptions gridOptions, IQueryable<VoucherLine> lines)
         {
             var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
 
@@ -486,7 +489,8 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
             return (vouchersList, await filteredList.CountAsync());
         }
 
-        private (IList<VoucherLineDetailViewModel>, int) GetListAndCount(GridOptions gridOptions, IEnumerable<VoucherLine> lines)
+        private ValueTuple<IList<VoucherLineDetailViewModel>, int> GetListAndCount(
+            GridOptions gridOptions, IEnumerable<VoucherLine> lines)
         {
             var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
 

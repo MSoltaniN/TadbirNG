@@ -53,5 +53,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             var form = new LogCatalogueForm();
             form.ShowDialog(this);
         }
+
+        private void ManageSecurityTicket_Click(object sender, EventArgs e)
+        {
+            var form = new TicketManager();
+            form.ShowDialog(this);
+        }
     }
 }

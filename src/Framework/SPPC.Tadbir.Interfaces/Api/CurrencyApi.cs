@@ -107,5 +107,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a currency has rate
         /// </summary>
         public const string CurrencyHasRatesUrl = "currencies/{currencyId:min(1)}/has-rates";
+
+        /// <summary>
+        /// API client URL for delete selected rates of a currency
+        /// </summary>
+        public const string DeleteCurrencyRates = "currency/rates";
+
+        /// <summary>
+        /// API server route URL for delete selected rates of a currency
+        /// </summary>
+        public const string DeleteCurrencyRatesUrl = "currency/rates";
     }
 }

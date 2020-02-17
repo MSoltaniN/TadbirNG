@@ -8,10 +8,13 @@ using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
+    /// <summary>
+    /// امکانات مشترک مرتبط با محاسبات گردش و مانده را برای مولفه های مختلف حساب تعریف می کند
+    /// </summary>
     public interface IAccountItemUtility : IReportUtility
     {
         /// <summary>
-        /// اطلاعات مولفه حساب با شناسه داده شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات مولفه حساب با شناسه داده شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="itemId">شناسه مولفه حساب مورد نظر</param>
         /// <returns>اطلاعات مولفه حساب مورد نظر</returns>
@@ -46,10 +49,31 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
         Task<decimal> GetBalanceAsync(int itemId, VoucherType type);
 
+        /// <summary>
+        /// به روش آسنکرون، مبالغ گردش بدهکار و بستانکار برای مولفه حساب مورد نظر را
+        /// در محدوده تاریخی داده شده محاسبه می کند
+        /// </summary>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ ابتدای محدوده تاریخی مورد نظر</param>
+        /// <param name="to">تاریخ انتهای محدوده تاریخی مورد نظر</param>
+        /// <returns>مبالغ گردش محاسبه شده برای مولفه حساب</returns>
         Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(int itemId, DateTime from, DateTime to);
 
+        /// <summary>
+        /// به روش آسنکرون، مبالغ گردش بدهکار و بستانکار برای مولفه حساب مورد نظر را
+        /// در محدوده اسناد داده شده محاسبه می کند
+        /// </summary>
+        /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">اولین سند در محدوده مورد نظر</param>
+        /// <param name="to">آخرین سند در محدوده مورد نظر</param>
+        /// <returns>مبالغ گردش محاسبه شده برای مولفه حساب</returns>
         Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(int itemId, int from, int to);
 
+        /// <summary>
+        /// عبارت شرطی مورد نیاز برای انجام محاسبات مولفه حساب را برمی گرداند
+        /// </summary>
+        /// <param name="accountItem">اطلاعات مولفه حساب مورد نظر</param>
+        /// <returns>عبارت شرطی</returns>
         Expression<Func<VoucherLine, bool>> GetItemCriteria(TreeEntity accountItem);
     }
 }

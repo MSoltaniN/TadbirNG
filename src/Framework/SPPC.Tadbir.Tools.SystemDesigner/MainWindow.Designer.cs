@@ -38,6 +38,7 @@
             this.menuWizardsCrudManager = new System.Windows.Forms.ToolStripMenuItem();
             this.menuManage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuManageLogCatalog = new System.Windows.Forms.ToolStripMenuItem();
+            this.securityTicketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +84,7 @@
             // menuGenerateBlankController
             // 
             this.menuGenerateBlankController.Name = "menuGenerateBlankController";
-            this.menuGenerateBlankController.Size = new System.Drawing.Size(180, 22);
+            this.menuGenerateBlankController.Size = new System.Drawing.Size(157, 22);
             this.menuGenerateBlankController.Text = "API Controller...";
             this.menuGenerateBlankController.Click += new System.EventHandler(this.GenerateApiController_Click);
             // 
@@ -113,7 +114,8 @@
             // menuManage
             // 
             this.menuManage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuManageLogCatalog});
+            this.menuManageLogCatalog,
+            this.securityTicketToolStripMenuItem});
             this.menuManage.Name = "menuManage";
             this.menuManage.Size = new System.Drawing.Size(62, 20);
             this.menuManage.Text = "&Manage";
@@ -124,6 +126,13 @@
             this.menuManageLogCatalog.Size = new System.Drawing.Size(180, 22);
             this.menuManageLogCatalog.Text = "Log Catalog";
             this.menuManageLogCatalog.Click += new System.EventHandler(this.ManageLogCatalog_Click);
+            // 
+            // securityTicketToolStripMenuItem
+            // 
+            this.securityTicketToolStripMenuItem.Name = "securityTicketToolStripMenuItem";
+            this.securityTicketToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.securityTicketToolStripMenuItem.Text = "Security Ticket";
+            this.securityTicketToolStripMenuItem.Click += new System.EventHandler(this.ManageSecurityTicket_Click);
             // 
             // MainWindow
             // 
@@ -154,6 +163,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuWizardsCrudManager;
         private System.Windows.Forms.ToolStripMenuItem menuManage;
         private System.Windows.Forms.ToolStripMenuItem menuManageLogCatalog;
+        private System.Windows.Forms.ToolStripMenuItem securityTicketToolStripMenuItem;
     }
 }
 

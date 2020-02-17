@@ -11,8 +11,8 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="repository"></param>
         /// <param name="config">امکان مدیریت تنظیمات شرکتی را فراهم می کند</param>
+        /// <param name="helper">امکانات کمکی برای محاسبات مانده را فراهم می کند</param>
         public TestBalanceUtilityFactory(IRepositoryContext context,
             IConfigRepository config, ITestBalanceHelper helper)
         {
