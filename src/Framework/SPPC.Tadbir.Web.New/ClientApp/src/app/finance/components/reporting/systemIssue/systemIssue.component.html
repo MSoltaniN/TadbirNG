@@ -16,7 +16,7 @@
                             [value]="selectedBranchScope"
                             [(ngModel)]="selectedBranchScope"
                             [disabled]="!isEnabledBranchScope"
-                            (ngModelChange)="changeParam()">
+                            (ngModelChange)="onChangeBranchScope()">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
