@@ -1097,7 +1097,14 @@
     "AllCompanies": "(کلیه شرکت ها)",
     "LogArchived": "لاگ های موجود در بازه تاریخ انتخابی آرشیو شد",
     "DeleteArchive": "حذف آرشیو",
-    "DeleteArchivedMsg": "حذف از آرشیو با موفقیت انجام شد"
+    "DeleteArchivedMsg": "حذف از آرشیو با موفقیت انجام شد",
+    "ReportLog": "نوع رویداد",
+    "ReportTypeLog": "نوع گزارش",
+    "AllLogs": "کلیه رویدادها",
+    "ActiveLogs": "رویداد های فعال",
+    "ArchivedLogs": "رویداد های آرشیو",
+    "OperationalLogs": "رویداد های عملیاتی",
+    "SystemLogs": "رویداد های سیستمی"
   },
   "MetaDataValidation": {
     "CodeLength": "طول کد مجاز نمیباشد."

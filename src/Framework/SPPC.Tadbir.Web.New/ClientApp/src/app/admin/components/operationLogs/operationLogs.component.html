@@ -102,11 +102,22 @@
   <div class="section-option col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <div class="row">
 
-      <div class="col-xs-12 col-sm-2 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-        <div class="check-item">
-          <input type="checkbox" name="chkArchive" id="chkArchive" class="k-checkbox" [(ngModel)]="archiveSelected" (ngModelChange)="saveStates()" />
-          <label class="k-checkbox-label" for="chkArchive">{{ 'OperationLog.Archive' | translate }}</label>
-        </div>
+      <div class="col-xs-12 col-sm-2 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">                  
+          <label class="control-label" >{{ 'OperationLog.ReportLog' | translate }}</label>
+          <kendo-dropdownlist [data]="LogTypes"
+                              [textField]="'value'"
+                              [valueField]="'key'"                              
+                              [valuePrimitive]="true"
+                              [value]="logType"
+                              [(ngModel)]="logType"
+                              (ngModelChange)="saveStates();">
+            <ng-template kendoDropDownListValueTemplate let-dataItem>
+              {{ dataItem?.value | translate }}
+            </ng-template>
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              {{ dataItem?.value | translate }}
+            </ng-template>
+          </kendo-dropdownlist>        
       </div>
       <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
         <label class="control-label">{{ 'OperationLog.SelectBranch' | translate }}</label>
@@ -168,11 +179,22 @@
     </div>
     <div class="row">
 
-      <div class="col-xs-12 col-sm-2 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-        <div class="check-item">
-          <input type="checkbox" name="chkSystemLog" id="chkSystemLog" class="k-checkbox" [(ngModel)]="isSystemLog" (ngModelChange)="systemLogChanged()" />
-          <label class="k-checkbox-label" for="chkSystemLog">{{ 'OperationLog.SystemLog' | translate }}</label>
-        </div>
+      <div class="col-xs-12 col-sm-2 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">                  
+          <label class="control-label">{{ 'OperationLog.ReportTypeLog' | translate }}</label>
+          <kendo-dropdownlist [data]="LogReportTypes"
+                              [textField]="'value'"
+                              [valueField]="'key'"
+                              [valuePrimitive]="true"
+                              [value]="logReportType"
+                              [(ngModel)]="logReportType"
+                              (ngModelChange)="systemLogChanged();saveStates();">
+            <ng-template kendoDropDownListValueTemplate let-dataItem>
+              {{ dataItem?.value | translate }}
+            </ng-template>
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              {{ dataItem?.value | translate }}
+            </ng-template>
+          </kendo-dropdownlist>        
       </div>
       <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
         <label class="control-label">{{ 'OperationLog.SelectUser' | translate }}</label>

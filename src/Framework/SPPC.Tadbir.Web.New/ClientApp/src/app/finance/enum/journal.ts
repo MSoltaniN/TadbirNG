@@ -81,6 +81,42 @@ export enum BranchScopeResource {
   CurrentBranchAndSubsets = "BranchScope.CurrentBranchAndSubsets"
 }
 
+export enum LogTypeResource {
+  /**لاگ ها  */
+  AllLogs = "OperationLog.AllLogs",
+  /**لاگ های فعال */
+  ActiveLogs = "OperationLog.ActiveLogs",
+
+  /**لاگ های بایگانی */
+  ArchivedLogs = "OperationLog.ArchivedLogs"
+}
+
+export enum LogReportTypeResource { 
+  /**لاگ های فعال */
+  OperationalLogs = "OperationLog.OperationalLogs",
+
+  /**لاگ های بایگانی */
+  SystemLogs = "OperationLog.SystemLogs"
+}
+
+export enum LogTypeKeys {
+  /**لاگ ها  */
+  AllLogs = "1",
+  /**لاگ های فعال */
+  ActiveLogs = "2",
+
+  /**لاگ های بایگانی */
+  ArchivedLogs = "3"
+}
+
+export enum LogReportTypeKeys {
+  /**لاگ های فعال */
+  OperationalLogs = "1",
+
+  /**لاگ های بایگانی */
+  SystemLogs = "2"
+}
+
 export enum OperationLogResource {
   /**شعبه جاری */
   AllFiscalPeriod = "OperationLog.AllFiscalPeriod",
