@@ -10,6 +10,9 @@ namespace SPPC.Tadbir.Persistence
         AccountBook = 2,
         CurrencyBook = 3,
         TestBalance = 4,
-        ItemBalance = 5
+        ItemBalance = 5,
+        BalanceByAccount = 6,
+        AppLogin = 7,
+        AppEnvironment = 8
     }
 }

@@ -79,8 +79,4 @@
     <ProjectReference Include="..\SPPC.Workflow.Persistence\SPPC.Workflow.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mapping\Config\" />
-  </ItemGroup>
-
 </Project>

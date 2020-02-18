@@ -2922,4 +2922,22 @@
   <data name="SwitchFiscalPeriod" xml:space="preserve">
     <value>Switch fiscal period</value>
   </data>
+  <data name="AppLogin" xml:space="preserve">
+    <value>App login</value>
+  </data>
+  <data name="AssignRole" xml:space="preserve">
+    <value>Assign role</value>
+  </data>
+  <data name="AssignUser" xml:space="preserve">
+    <value>Assign user</value>
+  </data>
+  <data name="BranchAccess" xml:space="preserve">
+    <value>Branch access</value>
+  </data>
+  <data name="FiscalPeriodAccess" xml:space="preserve">
+    <value>Fiscal period access</value>
+  </data>
+  <data name="SystemLog" xml:space="preserve">
+    <value>System log</value>
+  </data>
 </root>

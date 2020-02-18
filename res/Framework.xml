@@ -2030,6 +2030,39 @@
       </Properties>
       <Relations />
     </Entity>
+    <Entity name="SysLogSetting" area="Config" identifier="Id" type="CoreEntity" description="اطلاعات تنظیمات لاگ سیستمی را برای یک عملیات، یک موجودیت یا یک فرم عملیاتی نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property isValidated="False" description="" name="Id" type="Int32" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="LogSettingID" type="int" nullable="False" />
+        </Property>
+        <Property isValidated="True" description="مشخص می کند که آیا لاگ عملیاتی برای عملیات مورد نظر باید ایجاد شود یا نه؟" name="IsEnabled" type="Boolean" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <ColumnView name="Is Enabled" visible="True" width="120" />
+          <ValidationRule name="IsEnabled_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <PropertyView name="chkIsEnabled" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="IsEnabled" type="bit" nullable="False" />
+        </Property>
+        <Property isValidated="False" description="" name="RowGuid" type="Guid" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+        </Property>
+        <Property isValidated="False" description="" name="ModifiedDate" type="DateTime" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="10/13/9378" format="yyyy-MM-dd" type="Value" />
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Source" entityName="OperationSource" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای فرم عملیاتی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="EntityType" entityName="EntityType" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای موجودیت مورد استفاده در عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Operation" entityName="Operation" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
     <Entity name="SysOperationLog" area="Core" identifier="Id" type="CoreEntity" description="اطلاعات سوابق عملیات سیستمی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property isValidated="False" description="" name="Id" type="Int32" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

@@ -2913,4 +2913,22 @@
   <data name="SwitchFiscalPeriod" xml:space="preserve">
     <value>تغییر دوره مالی</value>
   </data>
+  <data name="AppLogin" xml:space="preserve">
+    <value>ورود به برنامه</value>
+  </data>
+  <data name="AssignRole" xml:space="preserve">
+    <value>تخصیص نقش</value>
+  </data>
+  <data name="AssignUser" xml:space="preserve">
+    <value>تخصیص کاربر</value>
+  </data>
+  <data name="BranchAccess" xml:space="preserve">
+    <value>دسترسی به شعبه</value>
+  </data>
+  <data name="FiscalPeriodAccess" xml:space="preserve">
+    <value>دسترسی به دوره مالی</value>
+  </data>
+  <data name="SystemLog" xml:space="preserve">
+    <value>رویدادهای سیستمی</value>
+  </data>
 </root>

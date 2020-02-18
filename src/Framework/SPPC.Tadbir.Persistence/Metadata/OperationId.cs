@@ -30,6 +30,10 @@ namespace SPPC.Tadbir.Persistence
         FailedLogin = 22,
         CompanyLogin = 23,
         SwitchFiscalPeriod = 24,
-        SwitchBranch = 25
+        SwitchBranch = 25,
+        AssignRole = 26,
+        AssignUser = 27,
+        BranchAccess = 28,
+        FiscalPeriodAccess = 29
     }
 }
