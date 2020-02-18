@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SPPC.Tadbir.Model.Config;
@@ -25,7 +26,82 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه تنظیمات لاگ های عملیاتی را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه تنظیمات تعریف شده برای لاگ های عملیاتی</returns>
-        public Task<IList<LogSettingViewModel>> GetAllConfigAsync()
+        public async Task<IList<LogSettingNodeViewModel>> GetAllConfigAsync()
+        {
+            var allConfig = new List<LogSettingNodeViewModel>();
+            var repository = UnitOfWork.GetAsyncRepository<LogSetting>();
+            var all = await repository.GetAllAsync(cfg => cfg.EntityType, cfg => cfg.Operation,
+                cfg => cfg.Source, cfg => cfg.SourceType, cfg => cfg.Subsystem);
+
+            int id = 1;
+            foreach (var bySubsys in all
+                .OrderBy(cfg => cfg.Subsystem.Id)
+                .GroupBy(cfg => cfg.Subsystem.Id))
+            {
+                var first = bySubsys.First();
+                var subsystem = new LogSettingNodeViewModel()
+                {
+                    Id = id++,
+                    Name = first.Subsystem.Name,
+                    ParentId = null
+                };
+                allConfig.Add(subsystem);
+                foreach (var bySourceType in bySubsys
+                    .OrderBy(cfg => cfg.SourceType.Id)
+                    .GroupBy(cfg => cfg.SourceType.Id))
+                {
+                    first = bySourceType.First();
+                    var sourceType = new LogSettingNodeViewModel()
+                    {
+                        Id = id++,
+                        Name = first.SourceType.Name,
+                        ParentId = subsystem.Id
+                    };
+                    allConfig.Add(sourceType);
+                    foreach (var byEntity in bySourceType
+                        .Where(cfg => cfg.EntityType != null)
+                        .GroupBy(cfg => cfg.EntityType.Id))
+                    {
+                        first = byEntity.First();
+                        var entityType = new LogSettingNodeViewModel()
+                        {
+                            Id = id++,
+                            Name = first.EntityType.Name,
+                            ParentId = sourceType.Id
+                        };
+                        entityType.Items.AddRange(byEntity
+                            .OrderBy(cfg => cfg.Operation.Id)
+                            .Select(cfg => Mapper.Map<LogSettingItemViewModel>(cfg)));
+                        allConfig.Add(entityType);
+                    }
+
+                    foreach (var bySource in bySourceType
+                        .Where(cfg => cfg.Source != null)
+                        .GroupBy(cfg => cfg.Source.Id))
+                    {
+                        first = bySource.First();
+                        var source = new LogSettingNodeViewModel()
+                        {
+                            Id = id++,
+                            Name = first.Source.Name,
+                            ParentId = sourceType.Id
+                        };
+                        source.Items.AddRange(bySource
+                            .OrderBy(cfg => cfg.Operation.Id)
+                            .Select(cfg => Mapper.Map<LogSettingItemViewModel>(cfg)));
+                        allConfig.Add(source);
+                    }
+                }
+            }
+
+            return allConfig;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه تنظیمات لاگ های سیستمی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه تنظیمات تعریف شده برای لاگ های سیستمی</returns>
+        public async Task<IList<LogSettingNodeViewModel>> GetAllSystemConfigAsync()
         {
             throw new NotImplementedException();
         }
@@ -58,7 +134,16 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تغییرات داده شده برای تنظیمات لاگ های عملیاتی را ذخیره می کند
         /// </summary>
         /// <param name="modified">تنظیمات تغییر یافته مورد نظر برای ذخیره</param>
-        public Task SaveModifiedLogConfigAsync(IList<LogSettingViewModel> modified)
+        public async Task SaveModifiedConfigAsync(IList<LogSettingItemViewModel> modified)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تغییرات داده شده برای تنظیمات لاگ های سیستمی را ذخیره می کند
+        /// </summary>
+        /// <param name="modified">تنظیمات تغییر یافته مورد نظر برای ذخیره</param>
+        public async Task SaveModifiedSystemConfigAsync(IList<LogSettingItemViewModel> modified)
         {
             throw new NotImplementedException();
         }

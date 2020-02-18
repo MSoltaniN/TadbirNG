@@ -20,11 +20,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class SettingsController : ApiControllerBase
     {
-        public SettingsController(IConfigRepository repository, ISystemConfigRepository system,
-            IStringLocalizer<AppStrings> strings, IHostingEnvironment host)
+        public SettingsController(IConfigRepository repository, ILogConfigRepository log,
+            ISystemConfigRepository system, IStringLocalizer<AppStrings> strings, IHostingEnvironment host)
             : base(strings)
         {
             _repository = repository;
+            _logRepository = log;
             _systemRepository = system;
             _host = host;
         }
@@ -198,8 +199,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ViewSettings)]
         public async Task<IActionResult> GetLogSettingsAsync()
         {
-            var result = await _repository.GetAllConfigAsync();     // !!TEMPORARY!!
-            return Ok();
+            var result = await _logRepository.GetAllConfigAsync();
+            Localize(result);
+            return Json(result);
         }
 
         // GET: api/settings/sys/log
@@ -212,6 +214,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/settings/log
+        [HttpPut]
         [Route(SettingsApi.LogSettingsUrl)]
         [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ManageSettings)]
         public async Task<IActionResult> PutModifiedLogSettingsAsync()
@@ -221,6 +224,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/settings/sys/log
+        [HttpPut]
         [Route(SettingsApi.SystemLogSettingsUrl)]
         [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ManageSettings)]
         public async Task<IActionResult> PutModifiedSystemLogSettingsAsync()
@@ -311,7 +315,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
+        private void Localize(IEnumerable<LogSettingNodeViewModel> settings)
+        {
+            foreach (var node in settings)
+            {
+                node.Name = _strings[node.Name];
+                foreach (var item in node.Items)
+                {
+                    item.OperationName = _strings[item.OperationName];
+                }
+            }
+        }
+
         private readonly IConfigRepository _repository;
+        private readonly ILogConfigRepository _logRepository;
         private readonly ISystemConfigRepository _systemRepository;
         private readonly IHostingEnvironment _host;
     }

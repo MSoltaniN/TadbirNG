@@ -513,6 +513,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
             mapperConfig.CreateMap<LogSetting, LogSettingViewModel>();
+            mapperConfig.CreateMap<LogSetting, LogSettingItemViewModel>();
         }
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)

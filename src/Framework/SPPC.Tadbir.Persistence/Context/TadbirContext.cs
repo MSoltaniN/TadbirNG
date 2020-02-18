@@ -67,6 +67,7 @@ namespace SPPC.Tadbir.Persistence
             OperationLogArchiveMap.BuildMapping(modelBuilder.Entity<OperationLogArchive>());
             OperationSourceMap.BuildMapping(modelBuilder.Entity<OperationSource>());
             OperationSourceListMap.BuildMapping(modelBuilder.Entity<OperationSourceList>());
+            OperationSourceTypeMap.BuildMapping(modelBuilder.Entity<OperationSourceType>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());
@@ -76,6 +77,7 @@ namespace SPPC.Tadbir.Persistence
             RoleFiscalPeriodMap.BuildMapping(modelBuilder.Entity<RoleFiscalPeriod>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
+            SubsystemMap.BuildMapping(modelBuilder.Entity<Subsystem>());
             TaxCurrencyMap.BuildMapping(modelBuilder.Entity<TaxCurrency>());
             VoucherMap.BuildMapping(modelBuilder.Entity<Voucher>());
             VoucherLineMap.BuildMapping(modelBuilder.Entity<VoucherLine>());
