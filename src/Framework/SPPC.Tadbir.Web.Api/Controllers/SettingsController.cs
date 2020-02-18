@@ -209,8 +209,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ViewSettings)]
         public async Task<IActionResult> GetSystemLogSettingsAsync()
         {
-            var result = await _repository.GetAllConfigAsync();     // !!TEMPORARY!!
-            return Ok();
+            var result = await _logRepository.GetAllSystemConfigAsync();
+            Localize(result);
+            return Json(result);
         }
 
         // PUT: api/settings/log

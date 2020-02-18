@@ -103,7 +103,58 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه تنظیمات تعریف شده برای لاگ های سیستمی</returns>
         public async Task<IList<LogSettingNodeViewModel>> GetAllSystemConfigAsync()
         {
-            throw new NotImplementedException();
+            var allConfig = new List<LogSettingNodeViewModel>();
+            UnitOfWork.UseSystemContext();
+
+            var repository = UnitOfWork.GetAsyncRepository<SysLogSetting>();
+            var all = await repository.GetAllAsync(cfg => cfg.EntityType, cfg => cfg.Operation,
+                cfg => cfg.Source);
+
+            int id = 1;
+            var rootNode = new LogSettingNodeViewModel()
+            {
+                Id = id++,
+                Name = "SystemLog",
+                ParentId = null
+            };
+            allConfig.Add(rootNode);
+
+            foreach (var byEntity in all
+                .Where(cfg => cfg.EntityType != null)
+                .GroupBy(cfg => cfg.EntityType.Id))
+            {
+                var first = byEntity.First();
+                var entityType = new LogSettingNodeViewModel()
+                {
+                    Id = id++,
+                    Name = first.EntityType.Name,
+                    ParentId = rootNode.Id
+                };
+                entityType.Items.AddRange(byEntity
+                    .OrderBy(cfg => cfg.Operation.Id)
+                    .Select(cfg => Mapper.Map<LogSettingItemViewModel>(cfg)));
+                allConfig.Add(entityType);
+            }
+
+            foreach (var bySource in all
+                .Where(cfg => cfg.Source != null)
+                .GroupBy(cfg => cfg.Source.Id))
+            {
+                var first = bySource.First();
+                var source = new LogSettingNodeViewModel()
+                {
+                    Id = id++,
+                    Name = first.Source.Name,
+                    ParentId = rootNode.Id
+                };
+                source.Items.AddRange(bySource
+                    .OrderBy(cfg => cfg.Operation.Id)
+                    .Select(cfg => Mapper.Map<LogSettingItemViewModel>(cfg)));
+                allConfig.Add(source);
+            }
+
+            UnitOfWork.UseCompanyContext();
+            return allConfig;
         }
 
         /// <summary>

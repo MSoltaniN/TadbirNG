@@ -15,3 +15,4 @@ src/Framework/SPPC.Tadbir.Web.Api/appsettings.Development.json
 
 # Ignore all uploaded files
 /src/**/Upload/*.*
+/src/Framework/SPPC.Tadbir.Web.Api/test.json
