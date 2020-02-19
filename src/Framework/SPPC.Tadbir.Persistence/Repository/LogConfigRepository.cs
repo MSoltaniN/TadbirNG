@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;
 
@@ -187,7 +188,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modified">تنظیمات تغییر یافته مورد نظر برای ذخیره</param>
         public async Task SaveModifiedConfigAsync(IList<LogSettingItemViewModel> modified)
         {
-            throw new NotImplementedException();
+            var repository = UnitOfWork.GetAsyncRepository<LogSetting>();
+            var modifiedConfig = await repository
+                .GetEntityQuery()
+                .Where(cfg => modified.Select(item => item.Id).Contains(cfg.Id))
+                .ToListAsync();
+            foreach (var config in modifiedConfig)
+            {
+                var modifiedItem = modified
+                    .Where(cfg => cfg.Id == config.Id)
+                    .Single();
+                config.IsEnabled = modifiedItem.IsEnabled;
+                repository.Update(config);
+            }
+
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -196,7 +211,23 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modified">تنظیمات تغییر یافته مورد نظر برای ذخیره</param>
         public async Task SaveModifiedSystemConfigAsync(IList<LogSettingItemViewModel> modified)
         {
-            throw new NotImplementedException();
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysLogSetting>();
+            var modifiedConfig = await repository
+                .GetEntityQuery()
+                .Where(cfg => modified.Select(item => item.Id).Contains(cfg.Id))
+                .ToListAsync();
+            foreach (var config in modifiedConfig)
+            {
+                var modifiedItem = modified
+                    .Where(cfg => cfg.Id == config.Id)
+                    .Single();
+                config.IsEnabled = modifiedItem.IsEnabled;
+                repository.Update(config);
+            }
+
+            await UnitOfWork.CommitAsync();
+            UnitOfWork.UseCompanyContext();
         }
 
         private async Task<LogSettingViewModel> GetLogConfigAsync(Expression<Func<LogSetting, bool>> criteria)

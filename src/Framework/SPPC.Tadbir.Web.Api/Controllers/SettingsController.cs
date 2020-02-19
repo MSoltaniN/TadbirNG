@@ -200,6 +200,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetLogSettingsAsync()
         {
             var result = await _logRepository.GetAllConfigAsync();
+            SetItemCount(result.Count);
             Localize(result);
             return Json(result);
         }
@@ -210,6 +211,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetSystemLogSettingsAsync()
         {
             var result = await _logRepository.GetAllSystemConfigAsync();
+            SetItemCount(result.Count);
             Localize(result);
             return Json(result);
         }
@@ -218,9 +220,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(SettingsApi.LogSettingsUrl)]
         [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ManageSettings)]
-        public async Task<IActionResult> PutModifiedLogSettingsAsync()
+        public async Task<IActionResult> PutModifiedLogSettingsAsync(
+            [FromBody] List<LogSettingItemViewModel> modifiedItems)
         {
-            var result = await _repository.GetAllConfigAsync();     // !!TEMPORARY!!
+            await _logRepository.SaveModifiedConfigAsync(modifiedItems);
             return Ok();
         }
 
@@ -228,9 +231,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(SettingsApi.SystemLogSettingsUrl)]
         [AuthorizeRequest(SecureEntity.LogSetting, (int)LogSettingPermissions.ManageSettings)]
-        public async Task<IActionResult> PutModifiedSystemLogSettingsAsync()
+        public async Task<IActionResult> PutModifiedSystemLogSettingsAsync(
+            [FromBody] List<LogSettingItemViewModel> modifiedItems)
         {
-            var result = await _repository.GetAllConfigAsync();     // !!TEMPORARY!!
+            await _logRepository.SaveModifiedSystemConfigAsync(modifiedItems);
             return Ok();
         }
 
