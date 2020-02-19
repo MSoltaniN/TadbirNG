@@ -50,7 +50,7 @@
     <ng-template kendoGridToolbarTemplate>
       <div class="row">
         <div class="col-xs-12 col-sm-6 sppc-float">
-          <sppc-dateRangeSelector [viewName]="'voucher'" [InitializeDate]="false"  [ValidateFPDate]="false" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+          <sppc-dateRangeSelector [viewName]="'voucher'" [InitializeDate]="false" [ValidateFPDate]="false" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
         </div>
         <div class="col-xs-12 col-sm-6">
           <button (click)="editHandler()" class="k-button k-button-icon  pull-left" [disabled]="selectedRows.length != 1" title="{{ 'OperationLog.Detail' | translate }}"><span class="k-icon k-i-info"></span></button>
@@ -59,12 +59,16 @@
                                        (columnsList)="getColumns($event)">
           </auto-generated-grid-setting>
           <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-        </div>          
         </div>
-</ng-template>
+      </div>
+    </ng-template>
 
-    <kendo-grid-checkbox-column showSelectAll="true" width="66"></kendo-grid-checkbox-column>
-
+    <kendo-grid-checkbox-column showSelectAll="true"
+                                [headerClass]="{'chb-column-m': true}"
+                                [class]="{'chb-column-m': true}"
+                                [resizable]="false"
+                                [reorderable]="false">
+    </kendo-grid-checkbox-column>
 
     <kendo-grid-column media="(max-width: 450px)" title="">
       <ng-template kendoGridCellTemplate let-dataItem>

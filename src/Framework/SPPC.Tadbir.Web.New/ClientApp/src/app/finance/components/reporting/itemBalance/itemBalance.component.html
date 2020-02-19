@@ -35,7 +35,7 @@
               (selectedKeysChange)="onSelectedKeysChange($event)"
               (cellClick)="onCellClick($event)"
               (dblclick)="onDblClick($event)"
-              (dataStateChange)="onDataStateChange()"              
+              (dataStateChange)="onDataStateChange()"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
 
@@ -130,7 +130,10 @@
 
     </ng-template>
 
-    <kendo-grid-checkbox-column showSelectAll="true" width="66">
+    <kendo-grid-checkbox-column showSelectAll="true"
+                                width="55"
+                                [resizable]="false"
+                                [reorderable]="false">
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
         {{ 'ItemBalance.Sum' | translate }}
       </ng-template>
@@ -194,7 +197,7 @@
 
     </kendo-grid-column>
 
-    <kendo-grid-column-group title="{{ gcn.groupName }}" *ngFor="let gcn of gridGroupColumnNames"  media="(min-width: 450px)">
+    <kendo-grid-column-group title="{{ gcn.groupName }}" *ngFor="let gcn of gridGroupColumnNames" media="(min-width: 450px)">
       <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of getColumnRows(gcn)"
                          sppc-auto-grid-column="{{ item.settings }}">
 
@@ -214,10 +217,10 @@
           {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
         </ng-template>
 
-        <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0" >
+        <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
           {{ getSumValue(item) | SppcNumConfig | async }}
         </ng-template>
-     
+
         <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">
           <input class="k-textbox" [formControl]="formGroup.get(column.field)">
         </ng-template>

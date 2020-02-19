@@ -92,14 +92,17 @@
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
       <button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'Journal.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>
       <!--<button kendoButton class="hidden-xs reportMargin" (click)="showReport()"
-      [icon]="'printer'" type="button"></button>-->
+    [icon]="'printer'" type="button"></button>-->
       <button kendoButton class="hidden-xs rm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showReportSetting()"
               [icon]="'form-element'" type="button"></button>
       <button kendoButton class="hidden-xs rm" title="{{ 'Report.Print' | translate }}" (click)="showReport()"
               [icon]="'printer'" type="button"></button>
     </ng-template>
 
-    <kendo-grid-checkbox-column showSelectAll="true" width="66">
+    <kendo-grid-checkbox-column showSelectAll="true"
+                                width="55"
+                                [resizable]="false"
+                                [reorderable]="false">
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
         {{ 'Journal.Sum' | translate }}
       </ng-template>

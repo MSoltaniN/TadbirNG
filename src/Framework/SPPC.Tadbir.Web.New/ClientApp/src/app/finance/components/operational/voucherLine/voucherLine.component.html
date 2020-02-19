@@ -72,8 +72,12 @@
         <button kendoButton SppcPermissionCheck="Print" EntityName="Voucher" (sppcClick)="showReport()" class="hidden-xs rm" type="button" [icon]="'printer'"></button>
       </ng-template>
 
-      <kendo-grid-checkbox-column showSelectAll="true" width="50"></kendo-grid-checkbox-column>
-
+      <kendo-grid-checkbox-column showSelectAll="true"
+                                  [headerClass]="{'chb-column': true}"
+                                  [class]="{'chb-column': true}"
+                                  [resizable]="false"
+                                  [reorderable]="false">
+      </kendo-grid-checkbox-column>
 
       <kendo-grid-column media="(max-width: 450px)" title="">
         <ng-template kendoGridCellTemplate let-dataItem>

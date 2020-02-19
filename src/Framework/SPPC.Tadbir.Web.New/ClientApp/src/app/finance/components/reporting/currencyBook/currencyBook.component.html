@@ -65,7 +65,10 @@
       <button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'AccountBook.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>
     </ng-template>
 
-    <kendo-grid-checkbox-column showSelectAll="true" width="66">
+    <kendo-grid-checkbox-column showSelectAll="true"
+                                width="22"
+                                [resizable]="false"
+                                [reorderable]="false">
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue">
         {{ 'AccountBook.Sum' | translate }}
       </ng-template>

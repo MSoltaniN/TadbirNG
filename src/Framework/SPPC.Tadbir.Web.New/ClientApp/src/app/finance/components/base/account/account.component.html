@@ -142,8 +142,12 @@
                       [icon]="'printer'" type="button"></button>
             </ng-template>
 
-            <kendo-grid-checkbox-column showSelectAll="true" width="66"></kendo-grid-checkbox-column>
-
+            <kendo-grid-checkbox-column showSelectAll="true"
+                                        [headerClass]="{'chb-column-explore': true}"
+                                        [class]="{'chb-column-explore': true}"
+                                        [resizable]="false"
+                                        [reorderable]="false">
+            </kendo-grid-checkbox-column>
 
             <kendo-grid-column media="(max-width: 450px)" title="">
               <ng-template kendoGridCellTemplate let-dataItem>

@@ -4,3 +4,23 @@
 .dl-value{
   margin:15px;
 }
+
+.chb-column-explore {
+  width: 25px !important
+}
+
+.chb-column {
+  width: 32px !important
+}
+
+.chb-column-explore-s {
+  width: 15px !important
+}
+
+.chb-column-s {
+  width: 20px !important
+}
+
+.chb-column-m {
+  width: 45px !important
+}

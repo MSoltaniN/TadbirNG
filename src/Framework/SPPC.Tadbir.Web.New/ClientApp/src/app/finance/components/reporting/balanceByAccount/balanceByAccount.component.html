@@ -87,7 +87,10 @@
               [icon]="'dictionary-add'" title="{{ 'Balance.AccountBook' | translate }}" type="button"></button>
     </ng-template>
 
-    <kendo-grid-checkbox-column showSelectAll="true" width="66">
+    <kendo-grid-checkbox-column showSelectAll="true"
+                                width="50"
+                                [resizable]="false"
+                                [reorderable]="false">
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
         {{ 'AccountBook.Sum' | translate }}
       </ng-template>
@@ -149,19 +152,19 @@
       </ng-template>
 
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'StartBalance'">
-          {{ totalRow?.startBalance | SppcNumConfig | async }}
+        {{ totalRow?.startBalance | SppcNumConfig | async }}
       </ng-template>
 
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Credit'">
-          {{ totalRow?.credit | SppcNumConfig | async }}
+        {{ totalRow?.credit | SppcNumConfig | async }}
       </ng-template>
 
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Debit'">
-          {{ totalRow?.debit | SppcNumConfig | async }}
+        {{ totalRow?.debit | SppcNumConfig | async }}
       </ng-template>
 
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'EndBalance'">
-          {{ totalRow?.endBalance | SppcNumConfig | async }}
+        {{ totalRow?.endBalance | SppcNumConfig | async }}
       </ng-template>
 
       <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">
