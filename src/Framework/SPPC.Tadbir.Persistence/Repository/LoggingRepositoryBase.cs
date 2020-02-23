@@ -220,7 +220,7 @@ namespace SPPC.Tadbir.Persistence
             Log.EntityId = entity.Id;
             var config = await _config.GetEntityLogConfigByOperationAsync(
                 Log.OperationId, (int)Log.EntityTypeId);
-            if (config.IsEnabled)
+            if (config != null && config.IsEnabled)
             {
                 await TrySaveLogAsync();
             }

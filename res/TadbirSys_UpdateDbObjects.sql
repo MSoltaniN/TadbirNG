@@ -2916,3 +2916,12 @@ INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, O
 INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (27, 8, NULL, 25, 0)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
+
+-- 1.1.826
+UPDATE [Metadata].[Column]
+SET [DotNetType] = 'System.Int32', [StorageType] = 'int', [ScriptType] = 'number', [Length] = 0
+WHERE ViewID = 2 AND [Name] = 'No'
+
+UPDATE [Metadata].[Column]
+SET [AllowFiltering] = 0, [AllowSorting] = 0
+WHERE [Name] = 'RowNo'
