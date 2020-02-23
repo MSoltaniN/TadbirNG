@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر عملیات ارزی را تعریف می کند
     /// </summary>
-    public class CurrencyBookRepository : SimpleLoggingRepository, ICurrencyBookRepository
+    public class CurrencyBookRepository : LoggingRepository<Account, object>, ICurrencyBookRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="factory">امکان ساختن کلاس کمکی محاسبات مالی را فراهم می کند</param>
         public CurrencyBookRepository(IRepositoryContext context, ISystemRepository system,
             ILogConfigRepository config, IAccountItemUtilityFactory factory)
-            : base(context, system.Logger, config)
+            : base(context, config, system.Logger)
         {
             _system = system;
             _factory = factory;

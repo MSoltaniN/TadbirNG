@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر حساب را پیاده سازی می کند
     /// </summary>
-    public class AccountBookRepository : SimpleLoggingRepository, IAccountBookRepository
+    public class AccountBookRepository : LoggingRepository<Account, object>, IAccountBookRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="factory">امکان ساختن کلاس کمکی محاسبات مالی را فراهم می کند</param>
         public AccountBookRepository(IRepositoryContext context, ISystemRepository system,
             ILogConfigRepository config, IAccountItemUtilityFactory factory)
-            : base(context, system.Logger, config)
+            : base(context, config, system.Logger)
         {
             _system = system;
             _factory = factory;

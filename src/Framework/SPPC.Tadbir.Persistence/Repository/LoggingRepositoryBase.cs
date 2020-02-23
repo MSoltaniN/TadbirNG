@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
@@ -95,6 +96,11 @@ namespace SPPC.Tadbir.Persistence
             get { return null; }
         }
 
+        internal virtual OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.None; }
+        }
+
         /// <summary>
         /// مدل نمایشی لاگ عملیاتی برای عملیات جاری
         /// </summary>
@@ -115,6 +121,34 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
+        internal async Task OnSourceActionAsync(
+            OperationId operation, OperationSourceId source, SourceListId list = SourceListId.None)
+        {
+            int? listId = (list != SourceListId.None) ? (int?)list : null;
+            var config = await GetSourceLogConfigByOperationAsync((int)operation, (int)source);
+            if (config.IsEnabled)
+            {
+                Log = new OperationLogViewModel()
+                {
+                    BranchId = UserContext.BranchId,
+                    FiscalPeriodId = UserContext.FiscalPeriodId,
+                    CompanyId = UserContext.CompanyId,
+                    UserId = UserContext.Id,
+                    Date = DateTime.Now.Date,
+                    Time = DateTime.Now.TimeOfDay,
+                    OperationId = (int)operation,
+                    SourceId = (int)source,
+                    SourceListId = listId
+                };
+                await TrySaveLogAsync();
+            }
+        }
+
+        internal async Task OnSourceActionAsync(OperationId operation, SourceListId list = SourceListId.None)
+        {
+            await OnSourceActionAsync(operation, OperationSource, list);
+        }
+
         internal virtual async Task OnEntityGroupDeleted(IEnumerable<int> deletedIds)
         {
             OnEntityAction(OperationId.GroupDelete);
@@ -129,9 +163,10 @@ namespace SPPC.Tadbir.Persistence
             {
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
+                SourceId = (int)OperationSourceId.AppLogin,
                 OperationId = (int)OperationId.FailedLogin
             };
-            await TrySaveLogAsync();
+            await FinalizeActionAsync();
         }
 
         internal async Task OnEnvironmentChangeAsync(
@@ -141,6 +176,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
+                SourceId = (int)OperationSourceId.AppEnvironment,
                 CompanyId = currentLogin.CompanyId > 0
                     ? currentLogin.CompanyId
                     : null,
@@ -154,7 +190,7 @@ namespace SPPC.Tadbir.Persistence
                 Log.Description = String.Format(
                     "Company : '{0}', Fiscal period : '{1}', Branch : '{2}'",
                     newLogin.CompanyName, newLogin.FiscalPeriodName, newLogin.BranchName);
-                await TrySaveLogAsync();
+                await FinalizeActionAsync();
             }
             else
             {
@@ -163,7 +199,7 @@ namespace SPPC.Tadbir.Persistence
                     Log.OperationId = (int)OperationId.SwitchFiscalPeriod;
                     Log.Description = String.Format(
                         "Current : '{0}', New : '{1}'", currentLogin.FiscalPeriodName, newLogin.FiscalPeriodName);
-                    await TrySaveLogAsync();
+                    await FinalizeActionAsync();
                 }
 
                 if (currentLogin.BranchId != newLogin.BranchId)
@@ -171,7 +207,7 @@ namespace SPPC.Tadbir.Persistence
                     Log.OperationId = (int)OperationId.SwitchBranch;
                     Log.Description = String.Format(
                         "Current : '{0}', New = '{1}'", currentLogin.BranchName, newLogin.BranchName);
-                    await TrySaveLogAsync();
+                    await FinalizeActionAsync();
                 }
             }
         }
@@ -195,14 +231,37 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
-        protected abstract string GetState(TEntity entity);
+        protected virtual string GetState(TEntity entity)
+        {
+            return String.Empty;
+        }
 
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="entityView">مدل نمایشی شامل آخرین تغییرات</param>
         /// <param name="entity">سطر اطلاعاتی موجود</param>
-        protected abstract void UpdateExisting(TEntityView entityView, TEntity entity);
+        protected virtual void UpdateExisting(TEntityView entityView, TEntity entity)
+        {
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات لاگ را برای موجودیت و عملیات داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="operation">عملیات مورد نظر برای خواندن تنظیمات لاگ</param>
+        /// <param name="entity">موجودیت مورد نظر برای تنظیمات لاگ</param>
+        /// <returns>تنظیمات لاگ برای موجودیت و عملیات مورد نظر</returns>
+        protected abstract Task<LogSettingViewModel> GetEntityLogConfigByOperationAsync(
+                    int operation, int entity);
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات لاگ را برای فرم و عملیات داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="operation">عملیات مورد نظر برای خواندن تنظیمات لاگ</param>
+        /// <param name="source">فرم عملیاتی مورد نظر برای تنظیمات لاگ</param>
+        /// <returns>تنظیمات لاگ برای فرم و عملیات مورد نظر</returns>
+        protected abstract Task<LogSettingViewModel> GetSourceLogConfigByOperationAsync(
+                    int operation, int source);
 
         /// <summary>
         /// رکورد لاگ عملیاتی را در جدول مرتبط ایجاد می کند.
@@ -211,15 +270,28 @@ namespace SPPC.Tadbir.Persistence
         protected abstract Task TrySaveLogAsync();
 
         /// <summary>
-        /// تغییرات انجام شده را اعمال کرده و در صورت امکان لاگ عملیاتی را ایجاد می کند
+        /// تغییرات انجام شده را اعمال کرده و در صورت نیاز، لاگ عملیاتی را ایجاد می کند
         /// </summary>
         /// <param name="entity">موجودیتی که عملیات روی آن در حال انجام است</param>
         protected async Task FinalizeActionAsync(TEntity entity)
         {
             await UnitOfWork.CommitAsync();
             Log.EntityId = entity.Id;
-            var config = await _config.GetEntityLogConfigByOperationAsync(
+            var config = await GetEntityLogConfigByOperationAsync(
                 Log.OperationId, (int)Log.EntityTypeId);
+            if (config != null && config.IsEnabled)
+            {
+                await TrySaveLogAsync();
+            }
+        }
+
+        /// <summary>
+        /// تغییرات انجام شده را اعمال کرده و در صورت نیاز، لاگ عملیاتی را ایجاد می کند
+        /// </summary>
+        protected async Task FinalizeActionAsync()
+        {
+            var config = await GetSourceLogConfigByOperationAsync(
+                Log.OperationId, (int)Log.SourceId);
             if (config != null && config.IsEnabled)
             {
                 await TrySaveLogAsync();

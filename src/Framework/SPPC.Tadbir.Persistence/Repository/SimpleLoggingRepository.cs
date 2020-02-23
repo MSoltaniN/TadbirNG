@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Persistence
             OperationId operation, OperationSourceId source, SourceListId list = SourceListId.None)
         {
             int? listId = (list != SourceListId.None) ? (int?)list : null;
-            var config = await _logConfig.GetSourceLogConfigByOperationAsync((int)operation, (int)source);
+            var config = await GetSourceLogConfigByOperationAsync((int)operation, (int)source);
             if (config.IsEnabled)
             {
                 Log = new OperationLogViewModel()

@@ -23,22 +23,6 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<LogSettingNodeViewModel>> GetAllSystemConfigAsync();
 
         /// <summary>
-        /// به روش آسنکرون، تنظیمات لاگ را برای موجودیت و عملیات داده شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="operation">عملیات مورد نظر برای خواندن تنظیمات لاگ</param>
-        /// <param name="entity">موجودیت مورد نظر برای تنظیمات لاگ</param>
-        /// <returns>تنظیمات لاگ برای موجودیت و عملیات مورد نظر</returns>
-        Task<LogSettingViewModel> GetEntityLogConfigByOperationAsync(int operation, int entity);
-
-        /// <summary>
-        /// به روش آسنکرون، تنظیمات لاگ را برای فرم و عملیات داده شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="operation">عملیات مورد نظر برای خواندن تنظیمات لاگ</param>
-        /// <param name="source">فرم عملیاتی مورد نظر برای تنظیمات لاگ</param>
-        /// <returns>تنظیمات لاگ برای فرم و عملیات مورد نظر</returns>
-        Task<LogSettingViewModel> GetSourceLogConfigByOperationAsync(int operation, int source);
-
-        /// <summary>
         /// به روش آسنکرون، تغییرات داده شده برای تنظیمات لاگ های عملیاتی را ذخیره می کند
         /// </summary>
         /// <param name="modified">تنظیمات تغییر یافته مورد نظر برای ذخیره</param>
