@@ -2925,3 +2925,37 @@ WHERE ViewID = 2 AND [Name] = 'No'
 UPDATE [Metadata].[Column]
 SET [AllowFiltering] = 0, [AllowSorting] = 0
 WHERE [Name] = 'RowNo'
+
+-- 1.1.828
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (45, 27, 125, N'LogSettings', N'/admin/log-settings', N'list', NULL)
+SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName])
+    VALUES (28, N'SysOperationLog', N'SysOperationLog')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName])
+    VALUES (29, N'LogSetting', N'LogSetting')
+SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
+
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (125, 17, N'Archive', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (126, 17, N'ViewArchive', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (127, 17, N'Delete', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (128, 28, N'View', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (129, 28, N'Archive', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (130, 28, N'ViewArchive', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (131, 28, N'Delete', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (132, 29, N'View', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
+    VALUES (133, 29, N'Manage', 2)
+SET IDENTITY_INSERT [Auth].[Permission] OFF
