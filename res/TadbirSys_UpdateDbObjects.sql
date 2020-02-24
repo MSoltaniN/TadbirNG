@@ -2927,11 +2927,6 @@ SET [AllowFiltering] = 0, [AllowSorting] = 0
 WHERE [Name] = 'RowNo'
 
 -- 1.1.828
-SET IDENTITY_INSERT [Metadata].[Command] ON
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
-    VALUES (45, 27, 125, N'LogSettings', N'/admin/log-settings', N'list', NULL)
-SET IDENTITY_INSERT [Metadata].[Command] OFF
-
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName])
     VALUES (28, N'SysOperationLog', N'SysOperationLog')
@@ -2959,3 +2954,9 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag])
     VALUES (133, 29, N'Manage', 2)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (45, 27, 125, N'LogSettings', N'/admin/log-settings', N'list', NULL)
+SET IDENTITY_INSERT [Metadata].[Command] OFF
+
