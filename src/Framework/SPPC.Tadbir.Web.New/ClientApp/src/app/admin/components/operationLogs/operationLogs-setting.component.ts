@@ -53,6 +53,7 @@ export class LogSettingComponent extends DefaultComponent implements OnInit {
   ngOnInit(): void {
     this.chkIsSystemChanged();
     this.selectedItems = new Array<LogCheckItem>();
+    
   }
 
   chkIsSystemChanged() {
@@ -67,7 +68,8 @@ export class LogSettingComponent extends DefaultComponent implements OnInit {
       });      
     }
     this.selectedItems = new Array<LogCheckItem>(); 
-
+    this.detailItem = [];
+    this.selectedNodeId = 0;
   }
 
   handleSelection(item: any): void {    
@@ -86,8 +88,8 @@ export class LogSettingComponent extends DefaultComponent implements OnInit {
     
   }
 
-  chkItemClick(id: number,event:any) {
-    var checkItem = new LogCheckItem(this.selectedNodeId, id, event.target.checked);
+  chkItemClick(id: number, operationId:number,event:any) {
+    var checkItem = new LogCheckItem(this.selectedNodeId, id, operationId, event.target.checked);
     this.selectedItems.push(checkItem);
   }
 
@@ -96,7 +98,22 @@ export class LogSettingComponent extends DefaultComponent implements OnInit {
 
   //#region Methods
   saveSettings() {
-
+    var arrayLogSetting: LogSettingItemViewModel[] = [];
+    if (this.selectedItems.length > 0) {
+      this.selectedItems.forEach((si) => {
+        var item = new LogSettingItemViewModel(si.detailId, si.operationId, "", si.isEnabled);
+        arrayLogSetting.push(item);
+      });
+    }
+    if (!this.isSystem)
+      this.settingService.putLogSettings(arrayLogSetting).subscribe(() =>
+      {
+        this.showMessage(this.getText("Messages.OperationSuccessful"));
+      });
+    else
+      this.settingService.putSystemLogSettings(arrayLogSetting).subscribe(() => {
+        this.showMessage(this.getText("Messages.OperationSuccessful"));
+      });
   }
 
   //#endregion

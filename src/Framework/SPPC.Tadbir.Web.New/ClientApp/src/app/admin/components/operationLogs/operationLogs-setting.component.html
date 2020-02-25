@@ -20,7 +20,7 @@
     </div>
     <div class="col-md-6 col-xs-12 col-sm-6 section-border">
       <div class="form-group" *ngFor="let item of detailItem">
-        <input type="checkbox" name="chkItem{{ item.id }}" id="chkItem{{ item.id }}" class="k-checkbox" [checked]="item.isEnabled" (change)="chkItemClick(item.id,$event)"  />
+        <input type="checkbox" name="chkItem{{ item.id }}" id="chkItem{{ item.id }}" class="k-checkbox" [checked]="item.isEnabled" (change)="chkItemClick(item.id,item.operationId,$event)"  />
         <label class="k-checkbox-label" for="chkItem{{ item.id }}">{{ item.operationName }}</label>
       </div>
     </div>

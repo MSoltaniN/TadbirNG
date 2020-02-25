@@ -93,7 +93,8 @@ export class LogSettingItemViewModel {
 export class LogCheckItem {
 
   constructor(public nodeId: number = 0,
-    public detailId: number = 0,    
+    public detailId: number = 0,
+    public operationId: number = 0, 
     public isEnabled: boolean = false) { }
 }
 
