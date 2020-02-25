@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -97,6 +100,32 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تنظیمات لاگ را برای موجودیت و عملیات داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="operation">عملیات مورد نظر برای خواندن تنظیمات لاگ</param>
+        /// <param name="entity">موجودیت مورد نظر برای تنظیمات لاگ</param>
+        /// <returns>تنظیمات لاگ برای موجودیت و عملیات مورد نظر</returns>
+        protected override async Task<LogSettingViewModel> GetEntityLogConfigByOperationAsync(
+            int operation, int entity)
+        {
+            return await GetLogConfigAsync(
+                cfg => cfg.Operation.Id == operation && cfg.EntityType.Id == entity);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات لاگ را برای فرم و عملیات داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="operation">عملیات مورد نظر برای خواندن تنظیمات لاگ</param>
+        /// <param name="source">فرم عملیاتی مورد نظر برای تنظیمات لاگ</param>
+        /// <returns>تنظیمات لاگ برای فرم و عملیات مورد نظر</returns>
+        protected override async Task<LogSettingViewModel> GetSourceLogConfigByOperationAsync(
+            int operation, int source)
+        {
+            return await GetLogConfigAsync(
+                cfg => cfg.Operation.Id == operation && cfg.Source.Id == source);
+        }
+
+        /// <summary>
         /// رکورد لاگ عملیاتی را در جدول مرتبط ایجاد می کند.
         /// </summary>
         /// <remarks>توجه : هر گونه خطای زمان اجرا حین عملیات، نادیده گرفته می‌شود</remarks>
@@ -138,6 +167,19 @@ namespace SPPC.Tadbir.Persistence
             string command = String.Format("DELETE FROM [{0}].[{1}] WHERE {2}ID = {3}",
                 idItems[0], idItems[1], keyName, parentId);
             DbConsole.ExecuteNonQuery(command);
+        }
+
+        private async Task<LogSettingViewModel> GetLogConfigAsync(Expression<Func<LogSetting, bool>> criteria)
+        {
+            var configResult = default(LogSettingViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<LogSetting>();
+            var config = await repository.GetSingleByCriteriaAsync(criteria);
+            if (config != null)
+            {
+                configResult = Mapper.Map<LogSettingViewModel>(config);
+            }
+
+            return configResult;
         }
 
         private readonly IOperationLogRepository _logRepository;

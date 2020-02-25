@@ -228,6 +228,10 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     var allowKey = false;
 
     switch (event) {
+      case KeyCode.Tab: {
+        allowKey = true;
+        break;
+      }
       case KeyCode.Space: {
         this.dateObject = moment();
         this.LimitationDate(new Date());

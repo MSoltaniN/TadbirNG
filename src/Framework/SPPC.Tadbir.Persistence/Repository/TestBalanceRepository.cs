@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای خواندن اطلاعات گزارش تراز آزمایشی را پیاده سازی می کند
     /// </summary>
-    public class TestBalanceRepository : SimpleLoggingRepository, ITestBalanceRepository
+    public class TestBalanceRepository : LoggingRepository<Account, object>, ITestBalanceRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
         public TestBalanceRepository(IRepositoryContext context, ISystemRepository system,
             ITestBalanceUtilityFactory factory, ILogConfigRepository config)
-            : base(context, system.Logger, config)
+            : base(context, config, system.Logger)
         {
             _system = system;
             _factory = factory;

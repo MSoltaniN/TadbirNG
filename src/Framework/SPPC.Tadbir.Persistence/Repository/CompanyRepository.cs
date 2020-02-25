@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;
@@ -17,7 +15,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت شرکت را پیاده سازی میکند.
     /// </summary>
-    public class CompanyRepository : LoggingRepository<CompanyDb, CompanyDbViewModel>, ICompanyRepository
+    public class CompanyRepository : SystemLoggingRepository<CompanyDb, CompanyDbViewModel>, ICompanyRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -184,6 +182,11 @@ namespace SPPC.Tadbir.Persistence
             DataTable dt = DbConsole.ExecuteQuery(userScript);
             List<DataRow> drList = dt.AsEnumerable().ToList();
             return drList.Any(dataRow => dataRow["name"].ToString().ToLower().Equals(company.UserName.ToLower()));
+        }
+
+        internal override int? EntityType
+        {
+            get { return (int)SysEntityTypeId.CompanyDb; }
         }
 
         /// <summary>

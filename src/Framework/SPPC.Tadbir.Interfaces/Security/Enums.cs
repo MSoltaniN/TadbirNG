@@ -513,19 +513,14 @@ namespace SPPC.Tadbir.Security
         Archive = 0x2,
 
         /// <summary>
-        /// دسترسی برگشت از بایگانی لاگ های عملیاتی شرکتی
-        /// </summary>
-        Recover = 0x4,
-
-        /// <summary>
         /// دسترسی مشاهده لاگ های شرکتی بایگانی شده
         /// </summary>
-        ViewArchive = 0x8,
+        ViewArchive = 0x4,
 
         /// <summary>
         /// دسترسی حذف لاگ های عملیاتی شرکتی از بایگانی
         /// </summary>
-        Delete = 0x10
+        Delete = 0x8
     }
 
     /// <summary>
@@ -550,19 +545,14 @@ namespace SPPC.Tadbir.Security
         Archive = 0x2,
 
         /// <summary>
-        /// دسترسی برگشت از بایگانی لاگ های عملیاتی سیستمی
-        /// </summary>
-        Recover = 0x4,
-
-        /// <summary>
         /// دسترسی مشاهده لاگ های سیستمی بایگانی شده
         /// </summary>
-        ViewArchive = 0x8,
+        ViewArchive = 0x4,
 
         /// <summary>
         /// دسترسی حذف لاگ های عملیاتی سیستمی از بایگانی
         /// </summary>
-        Delete = 0x10
+        Delete = 0x8
     }
 
     /// <summary>

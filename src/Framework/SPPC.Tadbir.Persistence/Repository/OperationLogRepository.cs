@@ -126,16 +126,39 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
         /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
-        public async Task MoveLogsToArchiveAsync(DateTime from, DateTime to)
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        public async Task MoveLogsToArchiveAsync(DateTime from, DateTime to, GridOptions gridOptions)
         {
             var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
             var archiveRepository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
             var logs = await repository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            logs = logs
+                .Apply(gridOptions, false)
+                .ToList();
             foreach (var log in logs)
             {
                 var archive = Mapper.Map<OperationLogArchive>(log);
                 archiveRepository.Insert(archive);
                 repository.Delete(log);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، رویدادهای شرکتی انتخاب شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="archivedIds">مجموعه شناسه های دیتابیسی رکوردهای انتخاب شده برای بایگانی</param>
+        public async Task MoveLogsToArchiveAsync(IEnumerable<int> archivedIds)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
+            var archived = await repository.GetByCriteriaAsync(ar => archivedIds.Contains(ar.Id));
+            foreach (var item in archived)
+            {
+                var archive = Mapper.Map<OperationLogArchive>(item);
+                archiveRepository.Insert(archive);
+                repository.Delete(item);
             }
 
             await UnitOfWork.CommitAsync();
@@ -281,17 +304,42 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
         /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
-        public async Task MoveSystemLogsToArchiveAsync(DateTime from, DateTime to)
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        public async Task MoveSystemLogsToArchiveAsync(DateTime from, DateTime to, GridOptions gridOptions)
         {
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
             var archiveRepository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
             var logs = await repository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            logs = logs
+                .Apply(gridOptions, false)
+                .ToList();
             foreach (var log in logs)
             {
                 var archive = Mapper.Map<SysOperationLogArchive>(log);
                 archiveRepository.Insert(archive);
                 repository.Delete(log);
+            }
+
+            await UnitOfWork.CommitAsync();
+            UnitOfWork.UseCompanyContext();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، رویدادهای سیستمی انتخاب شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="archivedIds">مجموعه شناسه های دیتابیسی رکوردهای انتخاب شده برای بایگانی</param>
+        public async Task MoveSystemLogsToArchiveAsync(IEnumerable<int> archivedIds)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+            var archiveRepository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
+            var archived = await repository.GetByCriteriaAsync(ar => archivedIds.Contains(ar.Id));
+            foreach (var item in archived)
+            {
+                var archive = Mapper.Map<SysOperationLogArchive>(item);
+                archiveRepository.Insert(archive);
+                repository.Delete(item);
             }
 
             await UnitOfWork.CommitAsync();

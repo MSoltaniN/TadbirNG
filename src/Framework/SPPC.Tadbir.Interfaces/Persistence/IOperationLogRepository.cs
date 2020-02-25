@@ -52,7 +52,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
         /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
-        Task MoveLogsToArchiveAsync(DateTime from, DateTime to);
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        Task MoveLogsToArchiveAsync(DateTime from, DateTime to, GridOptions gridOptions);
+
+        /// <summary>
+        /// به روش آسنکرون، رویدادهای شرکتی انتخاب شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="archivedIds">مجموعه شناسه های دیتابیسی رکوردهای انتخاب شده برای بایگانی</param>
+        Task MoveLogsToArchiveAsync(IEnumerable<int> archivedIds);
 
         /// <summary>
         /// به روش آسنکرون، کلیه رویدادهای بایگانی شده در محدوده تاریخی داده شده را
@@ -111,7 +118,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="from">ابتدای محدوده تاریخی برای بایگانی</param>
         /// <param name="to">انتهای محدوده تاریخی برای بایگانی</param>
-        Task MoveSystemLogsToArchiveAsync(DateTime from, DateTime to);
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        Task MoveSystemLogsToArchiveAsync(DateTime from, DateTime to, GridOptions gridOptions);
+
+        /// <summary>
+        /// به روش آسنکرون، رویدادهای سیستمی انتخاب شده را به بایگانی منتقل می کند
+        /// </summary>
+        /// <param name="archivedIds">مجموعه شناسه های دیتابیسی رکوردهای انتخاب شده برای بایگانی</param>
+        Task MoveSystemLogsToArchiveAsync(IEnumerable<int> archivedIds);
 
         /// <summary>
         /// به روش آسنکرون، کلیه رویدادهای بایگانی شده در محدوده تاریخی داده شده را

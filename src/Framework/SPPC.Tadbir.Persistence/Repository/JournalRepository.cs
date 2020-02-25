@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر روزنامه را پیاده سازی می کند
     /// </summary>
-    public class JournalRepository : SimpleLoggingRepository, IJournalRepository
+    public class JournalRepository : LoggingRepository<Account, object>, IJournalRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
         public JournalRepository(IRepositoryContext context, ISystemRepository system,
             IReportUtility report, ILogConfigRepository config)
-            : base(context, system.Logger, config)
+            : base(context, config, system.Logger)
         {
             _system = system;
             _report = report;
