@@ -8325,18 +8325,19 @@ th.k-sorted {
         display: block;
     }
 
-    .k-treeview .k-in {
-        border-radius: 2px;
-        margin: 0;
-        padding: 4px 8px;
-        border: 1px solid transparent;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        align-content: center;
-        vertical-align: middle;
-        position: relative;
-    }
+  .k-treeview .k-in {
+    border-radius: 2px;
+    margin: 0;
+    margin-right: 12px !important;
+    padding: 4px 8px;
+    border: 1px solid transparent;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    align-content: center;
+    vertical-align: middle;
+    position: relative;
+  }
 
     .k-treeview .k-i-expand,
     .k-treeview .k-i-collapse {

@@ -74,6 +74,28 @@ export class SettingViewModelInfo {
 
 }
 
+export class LogSettingNodeViewModelInfo {
+
+  constructor(public id: number = 0,
+    public parentId: number = 0,
+    public name: string | undefined = "",
+    public items: Array<LogSettingItemViewModel> | undefined) { }
+}
+
+export class LogSettingItemViewModel {
+
+  constructor(public id: number = 0,
+    public operationId: number = 0,
+    public operationName: string | undefined = "",
+    public isEnabled: boolean | undefined = false) { }
+}
+
+export class LogCheckItem {
+
+  constructor(public nodeId: number = 0,
+    public detailId: number = 0,    
+    public isEnabled: boolean = false) { }
+}
 
 export class ViewTreeConfigInfo implements ViewTreeConfig {
   viewId: number;
@@ -385,4 +407,50 @@ export class SettingService extends BaseService {
   }
 
   //#endregion
+
+  /**
+ * تنظیمات لاگ شرکت را برمیگرداند
+ */
+  getLogSettings() {
+    var url = SettingsApi.LogSettings;
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
+  /**
+ * تنظیمات لاگ سیستمی را برمیگرداند
+ */
+  getSystemLogSettings() {
+    var url = SettingsApi.SystemLogSettings;
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
+  /**
+ * تنظیمات لاگ شرکت ها را ذخیره میکند
+ */
+  putLogSettings(items:Array<LogSettingItemViewModel>) {
+    var url = SettingsApi.LogSettings;
+    var body = JSON.stringify(items);
+    var options = { headers: this.httpHeaders };
+    return this.http.put(url,body, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
+  /**
+ * تنظیمات لاگ سیستمی را ذخیره میکند
+ */
+  putSystemLogSettings(items: Array<LogSettingItemViewModel>) {
+    var url = SettingsApi.SystemLogSettings;
+    var body = JSON.stringify(items);
+    var options = { headers: this.httpHeaders };
+    return this.http.put(url,body, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
 }

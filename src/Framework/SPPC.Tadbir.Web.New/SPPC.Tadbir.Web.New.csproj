@@ -69,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\admin\components\operationLogs\operationLogs-setting.component.ts" />
     <None Remove="ClientApp\src\app\config\models\testBalanceConfig.ts" />
     <None Remove="ClientApp\src\app\core\models\index.ts" />
     <None Remove="ClientApp\src\app\core\services\index.ts" />
@@ -831,6 +832,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\admin\components\operationLogs\operationLogs-setting.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\config\models\testBalanceConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\services\index.ts" />

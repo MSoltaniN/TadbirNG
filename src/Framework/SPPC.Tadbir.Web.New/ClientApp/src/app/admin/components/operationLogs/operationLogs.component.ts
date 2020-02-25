@@ -32,6 +32,7 @@ export function getLayoutModule(layout: Layout) {
 .check-item { margin-top: 20px;}
 .btn-show-log {padding-left:0px;}
 .btn-compute-selectable{ color: #fff; background-image: linear-gradient(#c1e3ff, #337ab7);}
+/deep/ .k-treeview .k-in {margin-right:12px!important;}
 `],
   providers: [{
     provide: RTL,

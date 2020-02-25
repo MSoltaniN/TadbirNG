@@ -22,6 +22,8 @@ import { ChangePasswordComponent } from '@sppc/admin/components/user/changePassw
 import { ViewRowPermissionComponent } from '@sppc/admin/components/viewRowPermission/viewRowPermission.component';
 import { ViewRowPermissionSingleFormComponent } from '@sppc/admin/components/viewRowPermission/viewRowPermission-single-form.component';
 import { ViewRowPermissionMultipleFormComponent } from '@sppc/admin/components/viewRowPermission/viewRowPermission-multiple-form.component';
+import { LogSettingComponent } from '@sppc/admin/components/operationLogs/operationLogs-setting.component';
+
 
 
 @NgModule({
@@ -32,7 +34,7 @@ import { ViewRowPermissionMultipleFormComponent } from '@sppc/admin/components/v
   ],
   declarations: [OperationLogsComponent, OperationLogsDetailComponent, OperationLogsDetailComponent, RoleComponent, RoleFormComponent, RoleBranchFormComponent, RoleDetailFormComponent,
     RoleFiscalPeriodFormComponent, RoleUserFormComponent, UserComponent, UserFormComponent, UserRolesFormComponent, ChangePasswordComponent, ViewRowPermissionComponent,
-    ViewRowPermissionSingleFormComponent, ViewRowPermissionMultipleFormComponent],
+    ViewRowPermissionSingleFormComponent, ViewRowPermissionMultipleFormComponent, LogSettingComponent],
   entryComponents: [],
   providers: [OperationLogService, RoleService, UserService, ViewRowPermissionService]
 })

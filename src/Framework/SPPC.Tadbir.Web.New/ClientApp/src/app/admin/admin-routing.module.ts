@@ -7,6 +7,7 @@ import { RoleComponent } from '@sppc/admin/components/role/role.component';
 import { UserComponent } from '@sppc/admin/components/user/user.component';
 import { ChangePasswordComponent } from '@sppc/admin/components/user/changePassword.component';
 import { ViewRowPermissionComponent } from '@sppc/admin/components/viewRowPermission/viewRowPermission.component';
+import { LogSettingComponent } from '@sppc/admin/components/operationLogs/operationLogs-setting.component';
 
 
 
@@ -16,6 +17,7 @@ const routes: Routes = [{
   canActivate: [AuthGuard],
   children: [
     { path: 'operation-log', component: OperationLogsComponent },
+    { path: 'operation-logsetting', component: LogSettingComponent },
     { path: 'roles', component: RoleComponent },
     { path: 'users', component: UserComponent },
     { path: 'changePassword', component: ChangePasswordComponent },
