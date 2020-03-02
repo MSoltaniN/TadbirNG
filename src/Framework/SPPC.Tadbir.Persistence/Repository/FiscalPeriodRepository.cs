@@ -42,6 +42,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriods = await repository
                 .GetByCriteriaAsync(fp => fp.CompanyId == companyId);
+            await ReadAsync(gridOptions);
             return fiscalPeriods
                 .Select(item => Mapper.Map<FiscalPeriodViewModel>(item))
                 .Apply(gridOptions)

@@ -44,6 +44,7 @@ namespace SPPC.Tadbir.Persistence
             var branches = await repository
                 .GetByCriteriaAsync(
                     br => br.CompanyId == companyId, br => br.Parent, br => br.Children);
+            await ReadAsync(gridOptions);
             return branches
                 .Select(item => Mapper.Map<BranchViewModel>(item))
                 .Apply(gridOptions)

@@ -199,7 +199,7 @@ namespace SPPC.Tadbir.Persistence
                     break;
             }
 
-            await OnSourceActionAsync(OperationId.View, sourceList);
+            await OnSourceActionAsync(parameters.GridOptions, sourceList);
             return book;
         }
 

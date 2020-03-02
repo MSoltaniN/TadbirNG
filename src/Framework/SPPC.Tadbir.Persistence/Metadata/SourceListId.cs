@@ -46,6 +46,14 @@ namespace SPPC.Tadbir.Persistence
         ProjectBalance4Column = 38,
         ProjectBalance6Column = 39,
         ProjectBalance8Column = 40,
-        ProjectBalance10Column = 41
+        ProjectBalance10Column = 41,
+        BalanceByOneAccount = 42,
+        BalanceByAllAccounts = 43,
+        BalanceByOneDetailAccount = 44,
+        BalanceByAllDetailAccounts = 45,
+        BalanceByOneCostCenter = 46,
+        BalanceByAllCostCenters = 47,
+        BalanceByOneProject = 48,
+        BalanceByAllProjects = 49
     }
 }

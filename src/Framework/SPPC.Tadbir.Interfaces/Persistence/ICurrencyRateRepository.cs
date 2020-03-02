@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -16,7 +16,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر</param>
         /// <returns>مجموعه نرخ های ثبت شده برای ارز مورد نظر</returns>
-        Task<IList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId);
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        Task<IList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات نرخ ارز با شناسه عددی مشخص شده را خوانده و برمی گرداند

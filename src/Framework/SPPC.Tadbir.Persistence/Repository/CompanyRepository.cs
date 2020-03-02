@@ -38,6 +38,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var companies = await repository.GetAllAsync();
+            await ReadAsync(gridOptions);
             return companies
                 .Select(c => Mapper.Map<CompanyDbViewModel>(c))
                 .Apply(gridOptions)

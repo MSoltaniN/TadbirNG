@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var vouchers = await Repository.GetAllOperationAsync<Voucher>(
                 ViewName.Voucher, v => v.Lines, v => v.Status);
+            await ReadAsync(gridOptions);
             return vouchers
                 .Where(item => item.SubjectType == 0)
                 .OrderBy(item => item.Date)

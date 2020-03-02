@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(item => Mapper.Map<AccountViewModel>(item))
                 .ToList();
             await FilterGrandchildrenAsync(filteredAccounts);
+            await ReadAsync(gridOptions);
             return filteredAccounts
                 .Apply(gridOptions)
                 .ToList();

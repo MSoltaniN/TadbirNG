@@ -86,7 +86,7 @@ namespace SPPC.Tadbir.Persistence
                     break;
             }
 
-            await OnSourceActionAsync(OperationId.View, sourceList);
+            await OnSourceActionAsync(bookParam.GridOptions, sourceList);
             return await GetSummaryBookAsync(bookParam, true, false);
         }
 
@@ -208,7 +208,7 @@ namespace SPPC.Tadbir.Persistence
                     break;
             }
 
-            await OnSourceActionAsync(OperationId.View, sourceList);
+            await OnSourceActionAsync(parameters.GridOptions, sourceList);
             return currencyBook;
         }
 
