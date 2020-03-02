@@ -17,7 +17,7 @@ const routes: Routes = [{
   canActivate: [AuthGuard],
   children: [
     { path: 'operation-log', component: OperationLogsComponent },
-    { path: 'operation-logsetting', component: LogSettingComponent },
+    { path: 'log-settings', component: LogSettingComponent },
     { path: 'roles', component: RoleComponent },
     { path: 'users', component: UserComponent },
     { path: 'changePassword', component: ChangePasswordComponent },
