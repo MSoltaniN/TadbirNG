@@ -1096,6 +1096,7 @@
     "AllFiscalPeriod": "(کلیه دوره های مالی)",
     "AllCompanies": "(کلیه شرکت ها)",
     "LogArchived": "لاگ های موجود در بازه تاریخ انتخابی آرشیو شد",
+    "SelectedLogArchived": "لاگ های انتخاب شده آرشیو شد",
     "DeleteArchive": "حذف آرشیو",
     "DeleteArchivedMsg": "حذف از آرشیو با موفقیت انجام شد",
     "ReportLog": "نوع رویداد",
