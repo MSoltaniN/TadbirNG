@@ -52,6 +52,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<User>();
             var users = await repository
                 .GetAllAsync(u => u.Person);
+            await ReadAsync(gridOptions);
             return users
                 .Select(user => Mapper.Map<UserViewModel>(user))
                 .Apply(gridOptions)

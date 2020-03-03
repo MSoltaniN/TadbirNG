@@ -2931,4 +2931,7 @@
   <data name="SystemLog" xml:space="preserve">
     <value>رویدادهای سیستمی</value>
   </data>
+  <data name="LogSettings" xml:space="preserve">
+    <value>تنظیمات رویدادها</value>
+  </data>
 </root>

@@ -79,7 +79,7 @@ namespace SPPC.Tadbir.Persistence
             var source = (parameters.ViewId == ViewName.Account)
                 ? OperationSourceId.TestBalance
                 : OperationSourceId.ItemBalance;
-            await OnSourceActionAsync(OperationId.View, source,
+            await OnSourceActionAsync(parameters.GridOptions, source,
                 (SourceListId)_utility.GetSourceList(parameters.Format));
             return testBalance;
         }
@@ -119,7 +119,7 @@ namespace SPPC.Tadbir.Persistence
             var source = (parameters.ViewId == ViewName.Account)
                 ? OperationSourceId.TestBalance
                 : OperationSourceId.ItemBalance;
-            await OnSourceActionAsync(OperationId.View, source,
+            await OnSourceActionAsync(parameters.GridOptions, source,
                 (SourceListId)_utility.GetSourceList(parameters.Format));
             return testBalance;
         }

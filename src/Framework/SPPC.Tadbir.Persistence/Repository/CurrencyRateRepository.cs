@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -30,16 +31,27 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر</param>
         /// <returns>مجموعه نرخ های ثبت شده برای ارز مورد نظر</returns>
-        public async Task<IList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId)
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        public async Task<IList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId, GridOptions gridOptions)
         {
             var repository = UnitOfWork.GetAsyncRepository<CurrencyRate>();
-            return await repository
-                .GetEntityQuery(rate => rate.Branch)
-                .Where(rate => rate.CurrencyId == currencyId)
-                .OrderByDescending(rate => rate.Date)
-                .ThenByDescending(rate => rate.Time)
-                .Select(rate => Mapper.Map<CurrencyRateViewModel>(rate))
-                .ToListAsync();
+            var parentRepository = UnitOfWork.GetAsyncRepository<Currency>();
+            var currency = await parentRepository.GetByIDAsync(currencyId);
+            if (currency != null)
+            {
+                var all = await repository
+                    .GetEntityQuery(rate => rate.Branch)
+                    .Where(rate => rate.CurrencyId == currencyId)
+                    .OrderByDescending(rate => rate.Date)
+                    .ThenByDescending(rate => rate.Time)
+                    .Select(rate => Mapper.Map<CurrencyRateViewModel>(rate))
+                    .ToListAsync();
+                Log.Description = String.Format("Currency : {0}", currency.Name);
+                await ReadAsync(gridOptions);
+                return all;
+            }
+
+            return null;
         }
 
         /// <summary>

@@ -73,12 +73,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.View)]
         public async Task<IActionResult> GetCurrencyRatesAsync(int currencyId)
         {
-            var allRates = await _rateRepository.GetCurrencyRatesAsync(currencyId);
-            SetItemCount(allRates.Count);
             var gridOptions = GridOptions ?? new GridOptions();
-            var rates = allRates
-                .Apply(gridOptions)
-                .ToList();
+            var allRates = await _rateRepository.GetCurrencyRatesAsync(currencyId, gridOptions);
+            SetItemCount(allRates.Count);
             SetRowNumbers(rates);
             return Json(rates);
         }

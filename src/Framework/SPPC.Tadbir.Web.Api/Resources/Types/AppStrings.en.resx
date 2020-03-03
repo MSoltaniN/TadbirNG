@@ -2940,4 +2940,7 @@
   <data name="SystemLog" xml:space="preserve">
     <value>System log</value>
   </data>
+  <data name="LogSettings" xml:space="preserve">
+    <value>Log settings</value>
+  </data>
 </root>

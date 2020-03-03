@@ -15,6 +15,8 @@ namespace SPPC.Framework.Presentation
         {
             Paging = GridPaging.NoPaging;
             SortColumns = new List<GridOrderBy>();
+            ListChanged = true;
+            Operation = 6;      // TEMPORARY : Remove later
         }
 
         /// <summary>
@@ -36,5 +38,20 @@ namespace SPPC.Framework.Presentation
         /// مجموعه ای از ستون های انتخاب شده برای مرتب سازی اطلاعات در نمای جدولی
         /// </summary>
         public IList<GridOrderBy> SortColumns { get; private set; }
+
+        /// <summary>
+        /// کد عملیات مورد نظر برای خواندن اطلاعات، مانند مشاهده، چاپ، ارسال به فایل اکسل و غیره
+        /// </summary>
+        public int Operation { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا لیست اطلاعاتی جاری تغییر کرده یا نه؟
+        /// </summary>
+        /// <remarks>
+        /// با توجه به فراخوانی مکرر متدهای خواندن اطلاعات با تغییر صفحه، لازم است
+        /// پیش از اولین بار که اطلاعات خوانده می شود، مقدار این ویژگی "درست" و بلافاصله پس از
+        /// خواندن اولین صفحه، مقدار این ویژگی "نادرست" باشد
+        /// </remarks>
+        public bool ListChanged { get; set; }
     }
 }

@@ -47,6 +47,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
                 .ToList();
             await FilterGrandchildrenAsync(filteredProjects);
+            await ReadAsync(gridOptions);
             return filteredProjects
                 .Apply(gridOptions)
                 .ToList();

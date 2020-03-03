@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence.Repository
     /// <summary>
     /// عملیات مورد نیاز برای خواندن اطلاعات گزارش مانده به تفکیک حساب را پیاده سازی می کند
     /// </summary>
-    public class BalanceByAccountRepository : RepositoryBase, IBalanceByAccountRepository
+    public class BalanceByAccountRepository : LoggingRepository<Account, object>, IBalanceByAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -25,8 +25,10 @@ namespace SPPC.Tadbir.Persistence.Repository
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="report">امکانات عمومی مورد نیاز برای گزارشگیری را فراهم می کند</param>
-        public BalanceByAccountRepository(IRepositoryContext context, ISystemRepository system, IReportUtility report)
-            : base(context)
+        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
+        public BalanceByAccountRepository(IRepositoryContext context, ISystemRepository system,
+            IReportUtility report, ILogConfigRepository config)
+            : base(context, config, system.Logger)
         {
             _system = system;
             _report = report;
@@ -73,6 +75,11 @@ namespace SPPC.Tadbir.Persistence.Repository
             return result;
         }
 
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.BalanceByAccount; }
+        }
+
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
@@ -84,6 +91,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         }
 
         #region report by Account
+
         private async Task<BalanceByAccountViewModel> ReportByAccountAsync(BalanceByAccountParameters parameters)
         {
             if (parameters.AccountId.HasValue)
@@ -129,6 +137,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             SortAndSetItems(balanceByAccount, parameters.GridOptions);
             SetSummaryItems(balanceByAccount);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceByOneAccount);
             return balanceByAccount;
         }
 
@@ -159,12 +168,14 @@ namespace SPPC.Tadbir.Persistence.Repository
             SortAndSetItems(balanceByAccount, parameters.GridOptions);
             SetSummaryItems(balanceByAccount);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceByAllAccounts);
             return balanceByAccount;
         }
 
         #endregion
 
         #region report by DetailAccount
+
         private async Task<BalanceByAccountViewModel> ReportByDetailAccountAsync(BalanceByAccountParameters parameters)
         {
             if (parameters.DetailAccountId.HasValue)
@@ -210,6 +221,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             SortAndSetItems(balanceByAccount, parameters.GridOptions);
             SetSummaryItems(balanceByAccount);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceByOneDetailAccount);
             return balanceByAccount;
         }
 
@@ -241,11 +253,14 @@ namespace SPPC.Tadbir.Persistence.Repository
             SortAndSetItems(balanceByAccount, parameters.GridOptions);
             SetSummaryItems(balanceByAccount);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceByAllDetailAccounts);
             return balanceByAccount;
         }
+
         #endregion
 
         #region report by CostCenter
+
         private async Task<BalanceByAccountViewModel> ReportByCostCenterAsync(BalanceByAccountParameters parameters)
         {
             if (parameters.CostCenterId.HasValue)
@@ -291,6 +306,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             SortAndSetItems(balanceByAccount, parameters.GridOptions);
             SetSummaryItems(balanceByAccount);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceByOneCostCenter);
             return balanceByAccount;
         }
 
@@ -322,11 +338,14 @@ namespace SPPC.Tadbir.Persistence.Repository
             SortAndSetItems(balanceByAccount, parameters.GridOptions);
             SetSummaryItems(balanceByAccount);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceByAllCostCenters);
             return balanceByAccount;
         }
+
         #endregion
 
         #region report by Project
+
         private async Task<BalanceByAccountViewModel> ReportByProjectAsync(BalanceByAccountParameters parameters)
         {
             if (parameters.ProjectId.HasValue)
@@ -372,6 +391,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             SortAndSetItems(balanceByAccount, parameters.GridOptions);
             SetSummaryItems(balanceByAccount);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceByOneProject);
             return balanceByAccount;
         }
 
@@ -403,8 +423,10 @@ namespace SPPC.Tadbir.Persistence.Repository
             SortAndSetItems(balanceByAccount, parameters.GridOptions);
             SetSummaryItems(balanceByAccount);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceByAllProjects);
             return balanceByAccount;
         }
+
         #endregion
 
         private void SetSummaryItems(BalanceByAccountViewModel balanceByAccount)

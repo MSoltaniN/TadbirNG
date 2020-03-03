@@ -43,6 +43,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(grp => Mapper.Map<AccountGroupViewModel>(grp))
                 .Apply(gridOptions)
                 .ToListAsync();
+            await ReadAsync(gridOptions);
             return accGroups;
         }
 

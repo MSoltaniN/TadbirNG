@@ -47,10 +47,12 @@ namespace SPPC.Tadbir.Persistence
                 .Include(r => r.RolePermissions)
                     .ThenInclude(rp => rp.Permission);
 
-            return await query
+            var roles = await query
                 .Select(r => Mapper.Map<RoleViewModel>(r))
                 .Apply(gridOptions)
                 .ToListAsync();
+            await ReadAsync(gridOptions);
+            return roles;
         }
 
         /// <summary>

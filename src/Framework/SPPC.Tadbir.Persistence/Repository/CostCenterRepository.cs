@@ -47,6 +47,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
                 .ToList();
             await FilterGrandchildrenAsync(filteredCenters);
+            await ReadAsync(gridOptions);
             return filteredCenters
                 .Apply(gridOptions)
                 .ToList();

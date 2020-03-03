@@ -45,6 +45,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery(curr => curr.Branch)
                 .Select(item => Mapper.Map<CurrencyViewModel>(item))
                 .ToListAsync();
+            await ReadAsync(gridOptions);
             return currencies
                 .Apply(gridOptions)
                 .ToList();
