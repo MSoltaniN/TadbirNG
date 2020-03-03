@@ -90,7 +90,13 @@ export class LogSettingComponent extends DefaultComponent implements OnInit {
 
   chkItemClick(id: number, operationId:number,event:any) {
     var checkItem = new LogCheckItem(this.selectedNodeId, id, operationId, event.target.checked);
-    this.selectedItems.push(checkItem);
+    var existItemIndex = this.selectedItems.findIndex(f => f.nodeId === this.selectedNodeId && f.detailId === id);
+    if (existItemIndex >= 0)
+    {
+      this.selectedItems[existItemIndex] = event.target.checked;
+    }
+    else
+      this.selectedItems.push(checkItem);
   }
 
   //#endregion

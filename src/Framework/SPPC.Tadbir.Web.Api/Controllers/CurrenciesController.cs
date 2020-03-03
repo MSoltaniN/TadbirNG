@@ -76,8 +76,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             var allRates = await _rateRepository.GetCurrencyRatesAsync(currencyId, gridOptions);
             SetItemCount(allRates.Count);
-            SetRowNumbers(rates);
-            return Json(rates);
+            SetRowNumbers(allRates);
+            return Json(allRates);
         }
 
         // GET: api/currencies/rates/{rateId:min(1)}
