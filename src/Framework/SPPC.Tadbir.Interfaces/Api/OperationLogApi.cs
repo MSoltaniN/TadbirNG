@@ -15,22 +15,42 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for all operation logs
         /// </summary>
-        public const string AllOperationLogs = "system/oplog";
+        public const string OperationLogs = "system/oplog";
 
         /// <summary>
         /// API server route URL for all operation logs
         /// </summary>
-        public const string AllOperationLogsUrl = "system/oplog";
+        public const string OperationLogsUrl = "system/oplog";
 
         /// <summary>
         /// API client URL for all system operation logs
         /// </summary>
-        public const string AllSysOperationLogs = "system/sys-oplog";
+        public const string SysOperationLogs = "system/sys-oplog";
 
         /// <summary>
         /// API server route URL for all system operation logs
         /// </summary>
-        public const string AllSysOperationLogsUrl = "system/sys-oplog";
+        public const string SysOperationLogsUrl = "system/sys-oplog";
+
+        /// <summary>
+        /// API client URL for merged view of operation logs and log archive
+        /// </summary>
+        public const string AllOperationLogs = "system/oplog/all";
+
+        /// <summary>
+        /// API server route URL for merged view of operation logs and log archive
+        /// </summary>
+        public const string AllOperationLogsUrl = "system/oplog/all";
+
+        /// <summary>
+        /// API client URL for merged view of system operation logs and system log archive
+        /// </summary>
+        public const string AllSysOperationLogs = "system/sys-oplog/all";
+
+        /// <summary>
+        /// API server route URL for merged view of system operation logs and system log archive
+        /// </summary>
+        public const string AllSysOperationLogsUrl = "system/sys-oplog/all";
 
         /// <summary>
         /// API client URL for all operation logs
