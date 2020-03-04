@@ -34,7 +34,7 @@ export class OperationLogService extends BaseService {
 
   postSelectedLogsAsArchived(fromDate: string, toDate: string) {    
     var options = { headers: this.httpHeaders };
-    var url = OperationLogApi.OperationLogsArchiveUrl + String.Format("?from={0}&to={1}", fromDate, toDate);
+    var url = OperationLogApi.OperationLogsArchive + String.Format("?from={0}&to={1}", fromDate, toDate);
     return this.http.post(url,undefined,options)
       .map(res => res)
       .catch(this.handleError);
@@ -42,7 +42,7 @@ export class OperationLogService extends BaseService {
 
   postSelectedSysLogsAsArchived(fromDate: string, toDate: string) {
     var options = { headers: this.httpHeaders };
-    var url = OperationLogApi.SysOperationLogsArchiveUrl + String.Format("?from={0}&to={1}", fromDate, toDate);
+    var url = OperationLogApi.SysOperationLogsArchive + String.Format("?from={0}&to={1}", fromDate, toDate);
     return this.http.post(url, undefined, options)
       .map(res => res)
       .catch(this.handleError);
@@ -51,7 +51,7 @@ export class OperationLogService extends BaseService {
   putSelectedLogsAsArchived(ids: number[]) {
     var options = { headers: this.httpHeaders };
     let body = JSON.stringify({ paraph: '', items: ids });
-    var url = OperationLogApi.AllOperationLogsUrl;
+    var url = OperationLogApi.OperationLogs;
     return this.http.put(url, body, options)
       .map(res => res)
       .catch(this.handleError);
@@ -60,7 +60,7 @@ export class OperationLogService extends BaseService {
   putSelectedSysLogsAsArchived(ids: number[]) {
     var options = { headers: this.httpHeaders };
     let body = JSON.stringify({ paraph: '', items: ids });
-    var url = OperationLogApi.AllSysOperationLogsUrl;
+    var url = OperationLogApi.SysOperationLogs;
     return this.http.put(url, body, options)
       .map(res => res)
       .catch(this.handleError);
@@ -78,7 +78,7 @@ export class OperationLogService extends BaseService {
   PutSelectedArchivedSysLogsAsDeleted(ids: number[]) {
     let body = JSON.stringify({ paraph: '', items: ids });
     var options = { headers: this.httpHeaders };
-    var url = OperationLogApi.SysOperationLogsArchiveUrl;
+    var url = OperationLogApi.SysOperationLogsArchive;
     return this.http.put(url, body, options)
       .map(res => res)
       .catch(this.handleError);

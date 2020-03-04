@@ -28,6 +28,14 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، کلیه لاگ های عملیات شرکتی موجود را به همراه لاگ های بایگانی شده
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه لاگ های شرکتی موجود و لاگ های بایگانی شده</returns>
+        Task<IList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions = null);
+
+        /// <summary>
         /// به روش آسنکرون، تعداد سطرهای لاگ های عملیات شرکتی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -40,6 +48,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای لاگ های شرکتی بایگانی شده</returns>
         Task<int> GetLogArchiveCountAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای لاگ عملیات شرکتی و بایگانی شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد سطرهای لاگ های شرکتی و بایگانی شده</returns>
+        Task<int> GetMergedLogCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیات شرکتی جدید را ذخیره می کند
@@ -94,6 +109,14 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، کلیه لاگ های عملیات سیستمی موجود را به همراه لاگ های بایگانی شده
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه لاگ های سیستمی موجود و لاگ های بایگانی شده</returns>
+        Task<IList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions = null);
+
+        /// <summary>
         /// به روش آسنکرون، تعداد سطرهای لاگ های عملیات سیستمی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -106,6 +129,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای لاگ های سیستمی بایگانی شده</returns>
         Task<int> GetSystemLogArchiveCountAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای لاگ عملیات سیستمی و بایگانی شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد سطرهای لاگ های سیستمی و بایگانی شده</returns>
+        Task<int> GetMergedSystemLogCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیات سیستمی جدید را ذخیره می کند

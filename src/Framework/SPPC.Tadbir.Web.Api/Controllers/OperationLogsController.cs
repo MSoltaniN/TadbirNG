@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Company Log Operations
 
         // GET: api/system/oplog
-        [Route(OperationLogApi.AllOperationLogsUrl)]
+        [Route(OperationLogApi.OperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetOperationLogsAsync()
         {
@@ -53,6 +52,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(logArchive);
         }
 
+        // GET: api/system/oplog/all
+        [Route(OperationLogApi.AllOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.OperationLog,
+            (int)(OperationLogPermissions.View | OperationLogPermissions.ViewArchive))]
+        public async Task<IActionResult> GetAllOperationLogsAsync()
+        {
+            int itemCount = await _repository.GetMergedLogCountAsync(GridOptions);
+            SetItemCount(itemCount);
+            var mergedLogs = await _repository.GetMergedLogsAsync(GridOptions);
+            SetRowNumbers(mergedLogs);
+            Localize(mergedLogs);
+            return Json(mergedLogs);
+        }
+
         // POST: api/system/oplog/archive
         [HttpPost]
         [Route(OperationLogApi.OperationLogsArchiveUrl)]
@@ -71,7 +84,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/system/oplog
         [HttpPut]
-        [Route(OperationLogApi.AllOperationLogsUrl)]
+        [Route(OperationLogApi.OperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.Archive)]
         public async Task<IActionResult> PutSelectedLogsAsArchived([FromBody] ActionDetailViewModel actionDetail)
         {
@@ -86,7 +99,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/system/oplog
         [HttpPost]
-        [Route(OperationLogApi.AllOperationLogsUrl)]
+        [Route(OperationLogApi.OperationLogsUrl)]
         public async Task<IActionResult> PostSelectedLogsAsRecovered(DateTime from, DateTime to)
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
@@ -118,7 +131,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region System Log Operations
 
         // GET: api/system/sys-oplog
-        [Route(OperationLogApi.AllSysOperationLogsUrl)]
+        [Route(OperationLogApi.SysOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.View)]
         public async Task<IActionResult> GetSysOperationLogsAsync()
         {
@@ -143,6 +156,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(logArchive);
         }
 
+        // GET: api/system/sys-oplog/all
+        [Route(OperationLogApi.AllSysOperationLogsUrl)]
+        [AuthorizeRequest(SecureEntity.SysOperationLog,
+            (int)(SysOperationLogPermissions.View | SysOperationLogPermissions.ViewArchive))]
+        public async Task<IActionResult> GetAllSystemOperationLogsAsync()
+        {
+            int itemCount = await _repository.GetMergedSystemLogCountAsync(GridOptions);
+            SetItemCount(itemCount);
+            var mergedLogs = await _repository.GetMergedSystemLogsAsync(GridOptions);
+            SetRowNumbers(mergedLogs);
+            Localize(mergedLogs);
+            return Json(mergedLogs);
+        }
+
         // POST: api/system/sys-oplog/archive
         [HttpPost]
         [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
@@ -161,7 +188,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/system/sys-oplog
         [HttpPut]
-        [Route(OperationLogApi.AllSysOperationLogsUrl)]
+        [Route(OperationLogApi.SysOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.Archive)]
         public async Task<IActionResult> PutSelectedSysLogsAsArchived([FromBody] ActionDetailViewModel actionDetail)
         {
@@ -176,7 +203,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/system/sys-oplog
         [HttpPost]
-        [Route(OperationLogApi.AllSysOperationLogsUrl)]
+        [Route(OperationLogApi.SysOperationLogsUrl)]
         public async Task<IActionResult> PostSelectedSysLogsAsRecovered(DateTime from, DateTime to)
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
