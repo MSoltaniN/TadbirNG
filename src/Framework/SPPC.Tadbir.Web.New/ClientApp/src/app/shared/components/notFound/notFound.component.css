@@ -1,0 +1,32 @@
+
+.page-404 {
+  background-color: #fff;
+  padding: 80px;
+}
+
+  .page-404 .title {
+    display: block;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .page-404 .page-section {
+    margin-top: 50px;
+    justify-content: center;
+    display: flex;
+  }
+
+    .page-404 .page-section img {
+      width: 500px;
+    }
+
+    .page-404 .page-section button {
+      width: 100px;
+    }
+
+@media screen and (max-width:500px) {
+  .page-404 .page-section img {
+    width: 95%;
+  }
+}

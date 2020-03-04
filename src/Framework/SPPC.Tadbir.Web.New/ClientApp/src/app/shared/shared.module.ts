@@ -98,6 +98,7 @@ import { ReportParamComponent } from '@sppc/shared/components/viewIdentifier/rep
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { GridMessageService } from '@sppc/shared/services/grid-messages.service';
 import { AdvanceFilterComponent } from '@sppc/shared/components/advanceFilter/advance-filter.component';
+import { NotFoundComponent } from '@sppc/shared/components/notFound/notFound.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -134,9 +135,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReplaceLineBreaksPipe, DialogComponent, GridFilterComponent, SppcBranchScope, SppcDatepicker, SppcDateRangeSelector, SppcDropDownList, SppcDisplayFullAccountComponent,
     SppcFullAccountComponent, SppcGridDatepicker, SppcGridDateFilter, FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective,
     TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput, SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective,
-    FullCodeTestDirective, SpccOnlyNumberDirective,SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent],
+    FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent, NotFoundComponent
+  ],
 
-  entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent,AdvanceFilterComponent],
+  entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent, AdvanceFilterComponent],
 
   //providers: [BrowserStorageService, DashboardService, GridService, LookupService, MetaDataService, ReportingService, 
   //  { provide: MessageService, useClass: GridMessageService },
@@ -152,7 +154,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective, TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput,
     SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
-    ReportViewerComponent, SppcTimepicker]
+    ReportViewerComponent, SppcTimepicker, NotFoundComponent
+  ]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
