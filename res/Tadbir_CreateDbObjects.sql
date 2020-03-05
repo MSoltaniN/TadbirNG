@@ -757,6 +757,7 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (18, N'UndoFina
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (19, N'Mark')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (20, N'QuickReportDesign')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (21, N'GroupDelete')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (30, N'ViewArchive')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -1088,6 +1089,12 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (83, 1, 2, NULL, 18, 3, 0)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (84, 1, 2, NULL, 18, 4, 0)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (85, 1, 3, 6, NULL, 1, 0)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (86, 1, 3, 6, NULL, 6, 0)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (87, 1, 2, NULL, 11, 30, 0)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 

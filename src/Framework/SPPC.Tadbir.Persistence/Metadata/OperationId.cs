@@ -34,6 +34,7 @@ namespace SPPC.Tadbir.Persistence
         AssignRole = 26,
         AssignUser = 27,
         BranchAccess = 28,
-        FiscalPeriodAccess = 29
+        FiscalPeriodAccess = 29,
+        ViewArchive = 30
     }
 }

@@ -479,6 +479,7 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (26, N'AssignRo
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (27, N'AssignUser')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (28, N'BranchAccess')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (29, N'FiscalPeriodAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (30, N'ViewArchive')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -542,6 +543,8 @@ INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, O
     VALUES (26, 8, NULL, 24, 0)
 INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (27, 8, NULL, 25, 0)
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (28, NULL, 5, 30, 0)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
 
 
