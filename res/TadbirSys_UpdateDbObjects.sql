@@ -2960,3 +2960,17 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
     VALUES (45, 27, 125, N'LogSettings', N'/admin/log-settings', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
+-- 1.1.832
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (10, N'SystemSettings')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
+
+-- 1.1.833
+UPDATE [Metadata].[Command]
+SET PermissionID = 132
+WHERE CommandID = 45
+
+/* Delete Company permissions that are Admin-Only */
+DELETE [Auth].[Permission]
+WHERE [GroupID] = 9 AND Flag <> 1
+
