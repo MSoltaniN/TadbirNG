@@ -2943,4 +2943,7 @@
   <data name="LogSettings" xml:space="preserve">
     <value>Log settings</value>
   </data>
+  <data name="ViewArchive" xml:space="preserve">
+    <value>View archive</value>
+  </data>
 </root>

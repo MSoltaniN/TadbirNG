@@ -541,7 +541,7 @@
     <value>ناموفق</value>
   </data>
   <data name="OperationLog" xml:space="preserve">
-    <value>رویداد عملیاتی</value>
+    <value>رویداد</value>
   </data>
   <data name="Result" xml:space="preserve">
     <value>نتیجه</value>
@@ -784,7 +784,7 @@
     <value>عملیات</value>
   </data>
   <data name="OperationLogs" xml:space="preserve">
-    <value>مشاهده رویدادها</value>
+    <value>رویدادها</value>
   </data>
   <data name="OperationResult" xml:space="preserve">
     <value>نتیجه عملیات</value>
@@ -2933,5 +2933,8 @@
   </data>
   <data name="LogSettings" xml:space="preserve">
     <value>تنظیمات رویدادها</value>
+  </data>
+  <data name="ViewArchive" xml:space="preserve">
+    <value>مشاهده بایگانی</value>
   </data>
 </root>

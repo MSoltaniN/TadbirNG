@@ -613,13 +613,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مشخص می کند که آیا دسترسی داده شده قابل تخصیص به نقش های عمومی (غیر مدیر سیستم) هست یا نه؟
         /// </summary>
-        /// <param name="permission">نقش مورد نظر برای بررسی</param>
-        /// <returns>در صورت عمومی بودن نقش، مقدار بولی "درست" و در غیر این صورت
+        /// <param name="permission">دسترسی مورد نظر برای بررسی</param>
+        /// <returns>در صورت عمومی بودن دسترسی، مقدار بولی "درست" و در غیر این صورت
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public bool IsPublicPermission(PermissionViewModel permission)
         {
-            return permission.GroupId != 9
-                || (permission.GroupId == 9 && permission.Flag == 1);
+            return permission.GroupId != 29;
         }
 
         /// <inheritdoc/>

@@ -14,6 +14,11 @@ namespace SPPC.Tadbir.Web.Api.Filters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class AuthorizeRequestAttribute : ActionFilterAttribute
     {
+        public AuthorizeRequestAttribute()
+        {
+            _contextDecoder = new Base64Encoder<SecurityContext>();
+        }
+
         public AuthorizeRequestAttribute(string entity, int permission)
         {
             Verify.ArgumentNotNullOrWhitespace(entity, "entity");
@@ -26,12 +31,12 @@ namespace SPPC.Tadbir.Web.Api.Filters
 
         public string Entity
         {
-            get { return _requiredPermissions[0].EntityName; }
+            get { return _requiredPermissions?[0].EntityName; }
         }
 
         public int Permission
         {
-            get { return _requiredPermissions[0].Flags; }
+            get { return (_requiredPermissions != null) ? _requiredPermissions[0].Flags : 0; }
         }
 
         public override void OnActionExecuting(ActionExecutingContext actionContext)
@@ -72,8 +77,14 @@ namespace SPPC.Tadbir.Web.Api.Filters
         private bool IsAuthorized(string authTicket)
         {
             var securityContext = _contextDecoder.Decode(authTicket);
-            return securityContext.IsInRole(AppConstants.AdminRoleId)
-                || securityContext.HasPermissions(_requiredPermissions);
+            bool isAuthorized = securityContext.IsInRole(AppConstants.AdminRoleId);
+            if (_requiredPermissions != null)
+            {
+                isAuthorized = isAuthorized ||
+                    securityContext.HasPermissions(_requiredPermissions);
+            }
+
+            return isAuthorized;
         }
 
         private readonly PermissionBriefViewModel[] _requiredPermissions;

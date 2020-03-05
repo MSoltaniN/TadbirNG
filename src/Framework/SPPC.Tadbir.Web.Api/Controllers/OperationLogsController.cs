@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/system/oplog/archive
         [HttpPut]
         [Route(OperationLogApi.OperationLogsArchiveUrl)]
-        [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.Delete)]
+        [AuthorizeRequest]
         public async Task<IActionResult> PutSelectedArchivedLogsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -218,7 +218,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/system/sys-oplog/archive
         [HttpPut]
         [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
-        [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.Delete)]
+        [AuthorizeRequest]
         public async Task<IActionResult> PutSelectedArchivedSysLogsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)

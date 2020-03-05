@@ -2974,3 +2974,7 @@ WHERE CommandID = 45
 DELETE [Auth].[Permission]
 WHERE [GroupID] = 9 AND Flag <> 1
 
+-- 1.1.834
+/* Delete Delete Log permissions that are Admin-Only */
+DELETE [Auth].[Permission]
+WHERE PermissionID IN (127, 131)
