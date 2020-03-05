@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Tadbir.ViewModel.Config;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -33,5 +34,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="modified">تنظیمات تغییر یافته مورد نظر برای ذخیره</param>
         Task SaveModifiedSystemConfigAsync(IList<LogSettingItemViewModel> modified);
+
+        Task<LogSettingViewModel> GetLogConfigAsync(OperationLogViewModel log);
+
+        Task<LogSettingViewModel> GetSystemLogConfigAsync(OperationLogViewModel log);
     }
 }

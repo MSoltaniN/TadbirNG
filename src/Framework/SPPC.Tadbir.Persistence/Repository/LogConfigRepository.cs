@@ -4,8 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -206,8 +208,21 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseCompanyContext();
         }
 
-        private async Task<LogSettingViewModel> GetLogConfigAsync(Expression<Func<LogSetting, bool>> criteria)
+        public async Task<LogSettingViewModel> GetLogConfigAsync(OperationLogViewModel log)
         {
+            Verify.ArgumentNotNull(log, nameof(log));
+            Expression<Func<LogSetting, bool>> criteria = null;
+            if (log.EntityTypeId != null)
+            {
+                criteria = cfg => (cfg.Operation.Id == log.OperationId)
+                    && (cfg.EntityType.Id == log.EntityTypeId);
+            }
+            else
+            {
+                criteria = cfg => (cfg.Operation.Id == log.OperationId)
+                    && (cfg.Source.Id == log.SourceId);
+            }
+
             var configResult = default(LogSettingViewModel);
             var repository = UnitOfWork.GetAsyncRepository<LogSetting>();
             var config = await repository.GetSingleByCriteriaAsync(criteria);
@@ -216,6 +231,34 @@ namespace SPPC.Tadbir.Persistence
                 configResult = Mapper.Map<LogSettingViewModel>(config);
             }
 
+            return configResult;
+        }
+
+        public async Task<LogSettingViewModel> GetSystemLogConfigAsync(OperationLogViewModel log)
+        {
+            Verify.ArgumentNotNull(log, nameof(log));
+            Expression<Func<SysLogSetting, bool>> criteria = null;
+            if (log.EntityTypeId != null)
+            {
+                criteria = cfg => (cfg.Operation.Id == log.OperationId)
+                    && (cfg.EntityType.Id == log.EntityTypeId);
+            }
+            else
+            {
+                criteria = cfg => (cfg.Operation.Id == log.OperationId)
+                    && (cfg.Source.Id == log.SourceId);
+            }
+
+            var configResult = default(LogSettingViewModel);
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<SysLogSetting>();
+            var config = await repository.GetSingleByCriteriaAsync(criteria);
+            if (config != null)
+            {
+                configResult = Mapper.Map<LogSettingViewModel>(config);
+            }
+
+            UnitOfWork.UseCompanyContext();
             return configResult;
         }
     }

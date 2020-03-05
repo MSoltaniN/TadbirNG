@@ -26,9 +26,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
-        public AccountRepository(IRepositoryContext context, ISystemRepository system, ILogConfigRepository config)
-            : base(context, config, system?.Logger)
+        public AccountRepository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system?.Logger)
         {
             _system = system;
         }

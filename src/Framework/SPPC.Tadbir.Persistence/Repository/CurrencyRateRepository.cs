@@ -20,9 +20,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
-        public CurrencyRateRepository(IRepositoryContext context, IOperationLogRepository log, ILogConfigRepository config)
-            : base(context, config, log)
+        public CurrencyRateRepository(IRepositoryContext context, IOperationLogRepository log)
+            : base(context, log)
         {
         }
 
@@ -46,6 +45,7 @@ namespace SPPC.Tadbir.Persistence
                     .ThenByDescending(rate => rate.Time)
                     .Select(rate => Mapper.Map<CurrencyRateViewModel>(rate))
                     .ToListAsync();
+                OnEntityAction(OperationId.View);
                 Log.Description = String.Format("Currency : {0}", currency.Name);
                 await ReadAsync(gridOptions);
                 return all;
