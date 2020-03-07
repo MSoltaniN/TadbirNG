@@ -108,7 +108,8 @@ namespace SPPC.Tadbir.Persistence
             var user = await GetUserAsync(login.UserName);
             if (user == null || !user.IsEnabled || !CheckPassword(user.Password, login.Password))
             {
-                await OnSystemLoginAsync();
+                int? userId = user?.Id;
+                await OnSystemLoginAsync(userId);
             }
 
             return user;
