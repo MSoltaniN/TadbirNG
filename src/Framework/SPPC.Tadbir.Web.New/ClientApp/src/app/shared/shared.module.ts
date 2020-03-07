@@ -117,7 +117,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     PopupModule, TreeViewModule, ContextMenuModule,
     LayoutModule,
-    ToastrModule.forRoot({ preventDuplicates: true }),
+    ToastrModule.forRoot(
+      {
+        preventDuplicates: true,
+        toastClass:'toast toastr-rtl'
+      }),
     DpDatePickerModule,
     TranslateModule.forRoot({
       loader: {
