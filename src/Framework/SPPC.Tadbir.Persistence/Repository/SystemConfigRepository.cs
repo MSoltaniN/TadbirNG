@@ -21,8 +21,8 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        public SystemConfigRepository(IRepositoryContext context)
-            : base(context)
+        public SystemConfigRepository(IRepositoryContext context, IOperationLogRepository log)
+            : base(context, log)
         {
             UnitOfWork.UseSystemContext();
         }

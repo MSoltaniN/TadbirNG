@@ -35,6 +35,10 @@ namespace SPPC.Tadbir.Persistence
         AssignUser = 27,
         BranchAccess = 28,
         FiscalPeriodAccess = 29,
-        ViewArchive = 30
+        ViewArchive = 30,
+        CalendarChange = 31,
+        CurrencyChange = 32,
+        DecimalCountChange = 33,
+        DefaultCodingChange = 34
     }
 }

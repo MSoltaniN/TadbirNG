@@ -132,7 +132,7 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        internal async Task OnSourceActionAsync(OperationId operation)
+        internal async Task OnSourceActionAsync(OperationId operation, string description = null)
         {
             Log = new OperationLogViewModel()
             {
@@ -143,7 +143,8 @@ namespace SPPC.Tadbir.Persistence
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
                 OperationId = (int)operation,
-                SourceId = (int)OperationSource
+                SourceId = (int)OperationSource,
+                Description = description ?? String.Empty
             };
             await TrySaveLogAsync();
         }

@@ -28,8 +28,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
-        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository)
-            : base(context)
+        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository,
+            IOperationLogRepository log)
+            : base(context, log)
         {
             _fiscalRepository = fiscalRepository;
         }
@@ -234,15 +235,22 @@ namespace SPPC.Tadbir.Persistence
 
             var systemConfig = await repository
                 .GetByIDWithTrackingAsync(configItem.Id);
+            var oldValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
             systemConfig.Values = JsonHelper.From(configItem.Values, false);
             repository.Update(systemConfig);
             await UnitOfWork.CommitAsync();
 
             var configValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
+            await ProcessConfigChangeAsync(oldValues, configValues);
             if (configValues.UsesDefaultCoding && !await IsDefinedAccountAsync())
             {
                 await InitializeDefaultAccounts();
             }
+        }
+
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.EnvironmentParams; }
         }
 
         private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
@@ -256,6 +264,18 @@ namespace SPPC.Tadbir.Persistence
             {
                 fullConfig.Current.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
             }
+        }
+
+        private static string GetCalendarName(int calendar)
+        {
+            return (calendar == 1)
+                ? "Gregorian"
+                : "Persian";
+        }
+
+        private static string GetYesNo(bool value)
+        {
+            return value ? "Yes" : "No";
         }
 
         private async Task<bool> IsDefinedAccountAsync()
@@ -353,6 +373,38 @@ namespace SPPC.Tadbir.Persistence
             accountTreeConfig.Current.Levels[2].IsUsed = true;
             var configItems = new List<ViewTreeFullConfig> { accountTreeConfig };
             await SaveViewTreeConfigAsync(configItems);
+        }
+
+        private async Task ProcessConfigChangeAsync(SystemConfig oldConfig, SystemConfig newConfig)
+        {
+            string description = String.Empty;
+            if (oldConfig.DefaultCalendar != newConfig.DefaultCalendar)
+            {
+                description = String.Format("Old Value : {0} , New Value : {1}",
+                    GetCalendarName(oldConfig.DefaultCalendar), GetCalendarName(newConfig.DefaultCalendar));
+                await OnSourceActionAsync(OperationId.CalendarChange, description);
+            }
+
+            if (oldConfig.DefaultCurrencyNameKey != newConfig.DefaultCurrencyNameKey)
+            {
+                description = String.Format("Old Value : {0} , New Value : {1}",
+                    oldConfig.DefaultCurrencyNameKey, newConfig.DefaultCurrencyNameKey);
+                await OnSourceActionAsync(OperationId.CurrencyChange);
+            }
+
+            if (oldConfig.DefaultDecimalCount != newConfig.DefaultDecimalCount)
+            {
+                description = String.Format("Old Value : {0} , New Value : {1}",
+                    oldConfig.DefaultDecimalCount, newConfig.DefaultDecimalCount);
+                await OnSourceActionAsync(OperationId.DecimalCountChange);
+            }
+
+            if (oldConfig.UsesDefaultCoding != newConfig.UsesDefaultCoding)
+            {
+                description = String.Format("Old Value : {0} , New Value : {1}",
+                    GetYesNo(oldConfig.UsesDefaultCoding), GetYesNo(newConfig.UsesDefaultCoding));
+                await OnSourceActionAsync(OperationId.DefaultCodingChange);
+            }
         }
 
         private readonly IFiscalPeriodRepository _fiscalRepository;

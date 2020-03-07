@@ -13,14 +13,14 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات پایه مورد نیاز برای ذخیره و بازیابی تنظیمات را پیاده سازی می کند
     /// </summary>
-    public class BaseConfigRepository : RepositoryBase, IBaseConfigRepository
+    public class BaseConfigRepository : LoggingRepository<Setting, object>, IBaseConfigRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        public BaseConfigRepository(IRepositoryContext context)
-            : base(context)
+        public BaseConfigRepository(IRepositoryContext context, IOperationLogRepository log)
+            : base(context, log)
         {
         }
 
@@ -33,6 +33,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Setting>();
             var allConfig = await repository
                 .GetAllAsync();
+            await OnSourceActionAsync(OperationId.View);
             return allConfig
                 .Where(cfg => !(cfg.Type == 3 && cfg.ScopeType == 2) && cfg.IsStandalone)
                 .Select(cfg => Mapper.Map<SettingBriefViewModel>(cfg))
