@@ -17,8 +17,7 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
+        /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی و سیستمی را در برنامه فراهم می کند</param>
         public SystemLoggingRepository(IRepositoryContext context, IOperationLogRepository logRepository)
             : base(context)
         {

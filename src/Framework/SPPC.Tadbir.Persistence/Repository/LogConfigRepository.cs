@@ -208,6 +208,11 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseCompanyContext();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات جاری ایجاد لاگ عملیاتی را برای رکورد لاگ داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="log">رکورد لاگ عملیات جاری که مشخصات عملیات موجودیت یا فرم عملیاتی را مشخص می کند</param>
+        /// <returns>تنظیمات جاری برای ایجاد لاگ</returns>
         public async Task<LogSettingViewModel> GetLogConfigAsync(OperationLogViewModel log)
         {
             Verify.ArgumentNotNull(log, nameof(log));
@@ -234,6 +239,11 @@ namespace SPPC.Tadbir.Persistence
             return configResult;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات جاری ایجاد لاگ سیستمی را برای رکورد لاگ داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="log">رکورد لاگ عملیات جاری که مشخصات عملیات موجودیت یا فرم عملیاتی را مشخص می کند</param>
+        /// <returns>تنظیمات جاری برای ایجاد لاگ</returns>
         public async Task<LogSettingViewModel> GetSystemLogConfigAsync(OperationLogViewModel log)
         {
             Verify.ArgumentNotNull(log, nameof(log));

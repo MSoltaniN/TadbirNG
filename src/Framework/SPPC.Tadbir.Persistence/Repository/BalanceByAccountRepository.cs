@@ -89,6 +89,67 @@ namespace SPPC.Tadbir.Persistence.Repository
             get { return _system.Config; }
         }
 
+        private static void SetSummaryItems(BalanceByAccountViewModel balanceByAccount)
+        {
+            balanceByAccount.Total.StartBalance = balanceByAccount.Items.Sum(item => item.StartBalance);
+            balanceByAccount.Total.Credit = balanceByAccount.Items.Sum(item => item.Credit);
+            balanceByAccount.Total.Debit = balanceByAccount.Items.Sum(item => item.Debit);
+            balanceByAccount.Total.EndBalance = balanceByAccount.Items.Sum(item => item.EndBalance);
+        }
+
+        private static void SortAndSetItems(BalanceByAccountViewModel balanceByAccount, GridOptions gridOptions)
+        {
+            var sortedList = balanceByAccount.Items
+                .OrderBy(item => item.AccountFullCode)
+                .ThenBy(item => item.DetailAccountFullCode)
+                .ThenBy(item => item.CostCenterFullCode)
+                .ThenBy(item => item.ProjectFullCode);
+
+            balanceByAccount.SetItems(sortedList
+                .Apply(gridOptions, false)
+                .ToArray());
+        }
+
+        private static IQueryable<VoucherLine> IncludeLineReference(IQueryable<VoucherLine> query, BalanceByAccountParameters parameters)
+        {
+            if (parameters.IsSelectedAccount)
+            {
+                query = query.Include(line => line.Account);
+            }
+
+            if (parameters.IsSelectedDetailAccount)
+            {
+                if (parameters.ViewId == ViewName.DetailAccount)
+                {
+                    query = query.Where(line => line.DetailId.HasValue);
+                }
+
+                query = query.Include(line => line.DetailAccount);
+            }
+
+            if (parameters.IsSelectedCostCenter)
+            {
+                if (parameters.ViewId == ViewName.CostCenter)
+                {
+                    query = query.Where(line => line.CostCenterId.HasValue);
+                }
+
+                query = query.Include(line => line.CostCenter);
+            }
+
+            if (parameters.IsSelectedProject)
+            {
+                if (parameters.ViewId == ViewName.Project)
+                {
+                    query = query.Where(line => line.ProjectId.HasValue);
+                }
+
+                query = query.Include(line => line.Project);
+            }
+
+            return query;
+        }
+
         #region report by Account
 
         private async Task<BalanceByAccountViewModel> ReportByAccountAsync(BalanceByAccountParameters parameters)
@@ -428,27 +489,6 @@ namespace SPPC.Tadbir.Persistence.Repository
 
         #endregion
 
-        private void SetSummaryItems(BalanceByAccountViewModel balanceByAccount)
-        {
-            balanceByAccount.Total.StartBalance = balanceByAccount.Items.Sum(item => item.StartBalance);
-            balanceByAccount.Total.Credit = balanceByAccount.Items.Sum(item => item.Credit);
-            balanceByAccount.Total.Debit = balanceByAccount.Items.Sum(item => item.Debit);
-            balanceByAccount.Total.EndBalance = balanceByAccount.Items.Sum(item => item.EndBalance);
-        }
-
-        private void SortAndSetItems(BalanceByAccountViewModel balanceByAccount, GridOptions gridOptions)
-        {
-            var sortedList = balanceByAccount.Items
-                .OrderBy(item => item.AccountFullCode)
-                .ThenBy(item => item.DetailAccountFullCode)
-                .ThenBy(item => item.CostCenterFullCode)
-                .ThenBy(item => item.ProjectFullCode);
-
-            balanceByAccount.SetItems(sortedList
-                .Apply(gridOptions, false)
-                .ToArray());
-        }
-
         private async Task<IList<BalanceByAccountItemViewModel>> GetVoucherLinesAsync(BalanceByAccountParameters parameters)
         {
             var query = Repository
@@ -487,46 +527,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
 
             return lines;
-        }
-
-        private IQueryable<VoucherLine> IncludeLineReference(IQueryable<VoucherLine> query, BalanceByAccountParameters parameters)
-        {
-            if (parameters.IsSelectedAccount)
-            {
-                query = query.Include(line => line.Account);
-            }
-
-            if (parameters.IsSelectedDetailAccount)
-            {
-                if (parameters.ViewId == ViewName.DetailAccount)
-                {
-                    query = query.Where(line => line.DetailId.HasValue);
-                }
-
-                query = query.Include(line => line.DetailAccount);
-            }
-
-            if (parameters.IsSelectedCostCenter)
-            {
-                if (parameters.ViewId == ViewName.CostCenter)
-                {
-                    query = query.Where(line => line.CostCenterId.HasValue);
-                }
-
-                query = query.Include(line => line.CostCenter);
-            }
-
-            if (parameters.IsSelectedProject)
-            {
-                if (parameters.ViewId == ViewName.Project)
-                {
-                    query = query.Where(line => line.ProjectId.HasValue);
-                }
-
-                query = query.Include(line => line.Project);
-            }
-
-            return query;
         }
 
         private async Task<List<BalanceByAccountItemViewModel>> GetRawReportByDateLinesAsync(IQueryable<VoucherLine> query,
@@ -1058,48 +1058,6 @@ namespace SPPC.Tadbir.Persistence.Repository
                     lines = lines.Where(line => line.AccountLevel == parameters.AccountLevel.Value);
                 }
             }
-
-            //if (parameters.ViewId != ViewName.DetailAccount)
-            //{
-            //    if (parameters.DetailAccountId.HasValue)
-            //    {
-            //        var detailAccountItem = await GetDetailAccountAsync(parameters.DetailAccountId.Value);
-            //        lines = lines.Where(line => line.DetailAccountFullCode.StartsWith(detailAccountItem.FullCode));
-            //    }
-
-            //    if (!parameters.DetailAccountId.HasValue && parameters.DetailAccountLevel.HasValue)
-            //    {
-            //        lines = lines.Where(line => line.DetailAccountLevel == parameters.DetailAccountLevel.Value);
-            //    }
-            //}
-
-            //if (parameters.ViewId != ViewName.CostCenter)
-            //{
-            //    if (parameters.CostCenterId.HasValue)
-            //    {
-            //        var costcenterItem = await GetCostCenterAsync(parameters.CostCenterId.Value);
-            //        lines = lines.Where(line => line.CostCenterFullCode.StartsWith(costcenterItem.FullCode));
-            //    }
-
-            //    if (!parameters.CostCenterId.HasValue && parameters.CostCenterLevel.HasValue)
-            //    {
-            //        lines = lines.Where(line => line.CostCenterLevel == parameters.CostCenterLevel.Value);
-            //    }
-            //}
-
-            //if (parameters.ViewId != ViewName.Project)
-            //{
-            //    if (parameters.ProjectId.HasValue)
-            //    {
-            //        var projectItem = await GetProjectAsync(parameters.ProjectId.Value);
-            //        lines = lines.Where(line => line.ProjectFullCode.StartsWith(projectItem.FullCode));
-            //    }
-
-            //    if (!parameters.ProjectId.HasValue && parameters.ProjectLevel.HasValue)
-            //    {
-            //        lines = lines.Where(line => line.ProjectLevel == parameters.ProjectLevel.Value);
-            //    }
-            //}
 
             return lines.ToList();
         }
