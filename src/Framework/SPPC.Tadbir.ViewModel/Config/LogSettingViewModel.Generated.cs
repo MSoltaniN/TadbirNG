@@ -10,7 +10,6 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 

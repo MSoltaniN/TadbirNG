@@ -794,3 +794,30 @@ GO
 SET IDENTITY_INSERT [Metadata].[Operation] ON
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (21, N'GroupDelete')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+-- 1.1.832
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (9, N'Settings')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
+
+-- 1.1.833
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (6, N'BalanceByAccount')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (85, 1, 3, 6, NULL, 1, 0)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (86, 1, 3, 6, NULL, 6, 0)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.835
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (30, N'ViewArchive')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (87, 1, 2, NULL, 11, 30, 0)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

@@ -479,11 +479,13 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (26, N'AssignRo
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (27, N'AssignUser')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (28, N'BranchAccess')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (29, N'FiscalPeriodAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (30, N'ViewArchive')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (7, N'AppLogin')
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (8, N'AppEnvironment')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (10, N'SystemSettings')
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
 
 SET IDENTITY_INSERT [Config].[SysLogSetting] ON
@@ -541,6 +543,8 @@ INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, O
     VALUES (26, 8, NULL, 24, 0)
 INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (27, 8, NULL, 25, 0)
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (28, NULL, 5, 30, 0)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
 
 
@@ -1956,9 +1960,6 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (39, 8, N'Delete', 8)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (40, 8, N'AssignRolesToEntity,Branch', 16)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (41, 9, N'View', 1)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (42, 9, N'Create', 2)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (43, 9, N'Edit', 4)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (44, 9, N'Delete', 8)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (45, 10, N'View', 1)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (46, 10, N'Create', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (47, 10, N'Edit', 4)
@@ -2041,11 +2042,9 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (124, 27, N'ViewByBranch', 16)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (125, 17, N'Archive', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (126, 17, N'ViewArchive', 4)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (127, 17, N'Delete', 8)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (128, 28, N'View', 1)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (129, 28, N'Archive', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (130, 28, N'ViewArchive', 4)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (131, 28, N'Delete', 8)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (132, 29, N'View', 1)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (133, 29, N'Manage', 2)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
@@ -2594,7 +2593,7 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (44, 39, 120, N'BalanceByAccount', N'/finance/balance-by-account',
  N'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
-    VALUES (45, 27, 125, N'LogSettings', N'/admin/log-settings', N'list', NULL)
+    VALUES (45, 27, 132, N'LogSettings', N'/admin/log-settings', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET ANSI_NULLS OFF

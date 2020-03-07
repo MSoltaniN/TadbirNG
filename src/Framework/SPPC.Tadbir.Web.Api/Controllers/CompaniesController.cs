@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/companies
         [HttpPost]
         [Route(CompanyApi.CompaniesUrl)]
-        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Create)]
+        [AuthorizeRequest]
         public async Task<IActionResult> PostNewCompanyAsync([FromBody] CompanyDbViewModel company)
         {
             var result = await ValidationResultAsync(company);
@@ -87,7 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/companies/{companyId:min(1)}
         [HttpPut]
         [Route(CompanyApi.CompanyUrl)]
-        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Edit)]
+        [AuthorizeRequest]
         public async Task<IActionResult> PutModifiedCompanyAsync(
             int companyId, [FromBody] CompanyDbViewModel company)
         {
@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // DELETE: api/companies/{companyId:min(1)}
         [HttpDelete]
         [Route(CompanyApi.CompanyUrl)]
-        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Delete)]
+        [AuthorizeRequest]
         public async Task<IActionResult> DeleteExistingCompanyAsync(int companyId)
         {
             string result = await ValidateDeleteAsync(companyId);

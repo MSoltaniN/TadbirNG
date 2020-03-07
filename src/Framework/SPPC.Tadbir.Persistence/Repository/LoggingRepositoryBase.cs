@@ -8,7 +8,6 @@ using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
@@ -26,11 +25,9 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
-        public LoggingRepositoryBase(IRepositoryContext context, ILogConfigRepository config)
+        public LoggingRepositoryBase(IRepositoryContext context)
             : base(context)
         {
-            _config = config;
         }
 
         /// <summary>
@@ -109,7 +106,10 @@ namespace SPPC.Tadbir.Persistence
         protected async Task ReadAsync(GridOptions gridOptions)
         {
             OnEntityAction((OperationId)gridOptions.Operation);
-            await FinalizeEntityActionAsync(gridOptions);
+            if (gridOptions.ListChanged)
+            {
+                await TrySaveLogAsync();
+            }
         }
 
         /// <summary>
@@ -132,6 +132,22 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
+        internal async Task OnSourceActionAsync(OperationId operation)
+        {
+            Log = new OperationLogViewModel()
+            {
+                BranchId = UserContext.BranchId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                CompanyId = UserContext.CompanyId,
+                UserId = UserContext.Id,
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                OperationId = (int)operation,
+                SourceId = (int)OperationSource
+            };
+            await TrySaveLogAsync();
+        }
+
         internal async Task OnSourceActionAsync(GridOptions gridOptions, SourceListId list = SourceListId.None)
         {
             await OnSourceActionAsync(gridOptions, OperationSource, list);
@@ -141,8 +157,7 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions, OperationSourceId source, SourceListId list = SourceListId.None)
         {
             int? listId = (list != SourceListId.None) ? (int?)list : null;
-            var config = await GetSourceLogConfigByOperationAsync(gridOptions.Operation, (int)source);
-            if (config.IsEnabled && gridOptions.ListChanged)
+            if (gridOptions.ListChanged)
             {
                 Log = new OperationLogViewModel()
                 {
@@ -177,7 +192,7 @@ namespace SPPC.Tadbir.Persistence
                 SourceId = (int)OperationSourceId.AppLogin,
                 OperationId = (int)OperationId.FailedLogin
             };
-            await FinalizeSourceActionAsync();
+            await TrySaveLogAsync();
         }
 
         internal async Task OnEnvironmentChangeAsync(
@@ -201,7 +216,7 @@ namespace SPPC.Tadbir.Persistence
                 Log.Description = String.Format(
                     "Company : '{0}', Fiscal period : '{1}', Branch : '{2}'",
                     newLogin.CompanyName, newLogin.FiscalPeriodName, newLogin.BranchName);
-                await FinalizeSourceActionAsync();
+                await TrySaveLogAsync();
             }
             else
             {
@@ -210,7 +225,7 @@ namespace SPPC.Tadbir.Persistence
                     Log.OperationId = (int)OperationId.SwitchFiscalPeriod;
                     Log.Description = String.Format(
                         "Current : '{0}', New : '{1}'", currentLogin.FiscalPeriodName, newLogin.FiscalPeriodName);
-                    await FinalizeSourceActionAsync();
+                    await TrySaveLogAsync();
                 }
 
                 if (currentLogin.BranchId != newLogin.BranchId)
@@ -218,7 +233,7 @@ namespace SPPC.Tadbir.Persistence
                     Log.OperationId = (int)OperationId.SwitchBranch;
                     Log.Description = String.Format(
                         "Current : '{0}', New = '{1}'", currentLogin.BranchName, newLogin.BranchName);
-                    await FinalizeSourceActionAsync();
+                    await TrySaveLogAsync();
                 }
             }
         }
@@ -257,24 +272,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، تنظیمات لاگ را برای موجودیت و عملیات داده شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="operation">عملیات مورد نظر برای خواندن تنظیمات لاگ</param>
-        /// <param name="entity">موجودیت مورد نظر برای تنظیمات لاگ</param>
-        /// <returns>تنظیمات لاگ برای موجودیت و عملیات مورد نظر</returns>
-        protected abstract Task<LogSettingViewModel> GetEntityLogConfigByOperationAsync(
-                    int operation, int entity);
-
-        /// <summary>
-        /// به روش آسنکرون، تنظیمات لاگ را برای فرم و عملیات داده شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="operation">عملیات مورد نظر برای خواندن تنظیمات لاگ</param>
-        /// <param name="source">فرم عملیاتی مورد نظر برای تنظیمات لاگ</param>
-        /// <returns>تنظیمات لاگ برای فرم و عملیات مورد نظر</returns>
-        protected abstract Task<LogSettingViewModel> GetSourceLogConfigByOperationAsync(
-                    int operation, int source);
-
-        /// <summary>
         /// رکورد لاگ عملیاتی را در جدول مرتبط ایجاد می کند.
         /// </summary>
         /// <remarks>توجه : هر گونه خطای زمان اجرا حین عملیات، نادیده گرفته می‌شود</remarks>
@@ -288,39 +285,7 @@ namespace SPPC.Tadbir.Persistence
         {
             await UnitOfWork.CommitAsync();
             Log.EntityId = entity.Id;
-            var config = await GetEntityLogConfigByOperationAsync(
-                Log.OperationId, (int)Log.EntityTypeId);
-            if (config != null && config.IsEnabled)
-            {
-                await TrySaveLogAsync();
-            }
-        }
-
-        /// <summary>
-        /// در صورت نیاز، لاگ عملیاتی را برای یکی از عملیات موجودیت ها ایجاد می کند
-        /// </summary>
-        /// <param name="gridOptions">اطلاعات مورد نیاز برای ایجاد لاگ</param>
-        protected async Task FinalizeEntityActionAsync(GridOptions gridOptions)
-        {
-            var config = await GetEntityLogConfigByOperationAsync(
-                Log.OperationId, (int)Log.EntityTypeId);
-            if (config != null && config.IsEnabled && gridOptions.ListChanged)
-            {
-                await TrySaveLogAsync();
-            }
-        }
-
-        /// <summary>
-        /// در صورت نیاز، لاگ عملیاتی را برای یکی از عملیات ایجاد می کند
-        /// </summary>
-        protected async Task FinalizeSourceActionAsync()
-        {
-            var config = await GetSourceLogConfigByOperationAsync(
-                Log.OperationId, (int)Log.SourceId);
-            if (config != null && config.IsEnabled)
-            {
-                await TrySaveLogAsync();
-            }
+            await TrySaveLogAsync();
         }
 
         /// <summary>
@@ -348,6 +313,5 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private const string ModelNamespace = "SPPC.Tadbir.Model";
-        private readonly ILogConfigRepository _config;
     }
 }

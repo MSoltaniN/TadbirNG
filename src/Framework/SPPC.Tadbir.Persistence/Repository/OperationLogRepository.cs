@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
@@ -21,9 +22,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        public OperationLogRepository(IRepositoryContext context)
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
+        public OperationLogRepository(IRepositoryContext context, ILogConfigRepository config)
             : base(context)
         {
+            _config = config;
         }
 
         #region Company Log Operations
@@ -50,6 +54,7 @@ namespace SPPC.Tadbir.Persistence
                 await SetSystemValues(item);
             }
 
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.View);
             return list;
         }
 
@@ -75,6 +80,7 @@ namespace SPPC.Tadbir.Persistence
                 await SetSystemValues(item);
             }
 
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.ViewArchive);
             return list;
         }
 
@@ -86,8 +92,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های شرکتی موجود و لاگ های بایگانی شده</returns>
         public async Task<IList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions = null)
         {
-            var active = await GetLogsAsync();
-            var archived = await GetLogsArchiveAsync();
+            var active = await GetLogsAsync(null);
+            var archived = await GetLogsArchiveAsync(null);
             return active
                 .Concat(archived)
                 .OrderByDescending(log => log.Date)
@@ -144,11 +150,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="operationLog">اطلاعات لاگ عملیاتی جدید</param>
         public async Task SaveLogAsync(OperationLogViewModel operationLog)
         {
-            Verify.ArgumentNotNull(operationLog, "operationLog");
-            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
-            var newLog = Mapper.Map<OperationLog>(operationLog);
-            repository.Insert(newLog);
-            await UnitOfWork.CommitAsync();
+            Verify.ArgumentNotNull(operationLog, nameof(operationLog));
+            var config = await _config.GetLogConfigAsync(operationLog);
+            if (config != null && config.IsEnabled)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
+                var newLog = Mapper.Map<OperationLog>(operationLog);
+                repository.Insert(newLog);
+                await UnitOfWork.CommitAsync();
+            }
         }
 
         /// <summary>
@@ -173,6 +183,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await UnitOfWork.CommitAsync();
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.Archive);
         }
 
         /// <summary>
@@ -192,6 +203,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await UnitOfWork.CommitAsync();
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.Archive);
         }
 
         /// <summary>
@@ -230,6 +242,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await UnitOfWork.CommitAsync();
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.Delete);
         }
 
         #endregion
@@ -255,6 +268,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToListAsync();
             UnitOfWork.UseCompanyContext();
+
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.View);
             return list;
         }
 
@@ -277,6 +292,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToListAsync();
             UnitOfWork.UseCompanyContext();
+
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.ViewArchive);
             return list;
         }
 
@@ -288,8 +305,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های سیستمی موجود و لاگ های بایگانی شده</returns>
         public async Task<IList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions = null)
         {
-            var active = await GetSystemLogsAsync();
-            var archived = await GetSystemLogsArchiveAsync();
+            var active = await GetSystemLogsAsync(null);
+            var archived = await GetSystemLogsArchiveAsync(null);
             return active
                 .Concat(archived)
                 .OrderByDescending(log => log.Date)
@@ -350,13 +367,17 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="operationLog">اطلاعات لاگ عملیاتی جدید</param>
         public async Task SaveSystemLogAsync(OperationLogViewModel operationLog)
         {
-            Verify.ArgumentNotNull(operationLog, "operationLog");
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
-            var newLog = Mapper.Map<SysOperationLog>(operationLog);
-            repository.Insert(newLog);
-            await UnitOfWork.CommitAsync();
-            UnitOfWork.UseCompanyContext();
+            Verify.ArgumentNotNull(operationLog, nameof(operationLog));
+            var config = await _config.GetSystemLogConfigAsync(operationLog);
+            if (config != null && config.IsEnabled)
+            {
+                UnitOfWork.UseSystemContext();
+                var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
+                var newLog = Mapper.Map<SysOperationLog>(operationLog);
+                repository.Insert(newLog);
+                await UnitOfWork.CommitAsync();
+                UnitOfWork.UseCompanyContext();
+            }
         }
 
         /// <summary>
@@ -383,6 +404,7 @@ namespace SPPC.Tadbir.Persistence
 
             await UnitOfWork.CommitAsync();
             UnitOfWork.UseCompanyContext();
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.Archive);
         }
 
         /// <summary>
@@ -404,6 +426,7 @@ namespace SPPC.Tadbir.Persistence
 
             await UnitOfWork.CommitAsync();
             UnitOfWork.UseCompanyContext();
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.Archive);
         }
 
         /// <summary>
@@ -446,9 +469,34 @@ namespace SPPC.Tadbir.Persistence
 
             await UnitOfWork.CommitAsync();
             UnitOfWork.UseCompanyContext();
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.Delete);
         }
 
         #endregion
+
+        private async Task LogOperationAsync<TModel>(int entity, OperationId operation)
+            where TModel : class, IEntity
+        {
+            var log = new OperationLogViewModel()
+            {
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                CompanyId = UserContext.CompanyId,
+                BranchId = UserContext.BranchId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                EntityTypeId = entity,
+                OperationId = (int)operation,
+                UserId = UserContext.Id
+            };
+            if (typeof(TModel) == typeof(OperationLog))
+            {
+                await SaveLogAsync(log);
+            }
+            else
+            {
+                await SaveSystemLogAsync(log);
+            }
+        }
 
         private async Task SetSystemValues(OperationLogViewModel log)
         {
@@ -461,5 +509,7 @@ namespace SPPC.Tadbir.Persistence
             log.CompanyName = company?.Name;
             UnitOfWork.UseCompanyContext();
         }
+
+        private readonly ILogConfigRepository _config;
     }
 }

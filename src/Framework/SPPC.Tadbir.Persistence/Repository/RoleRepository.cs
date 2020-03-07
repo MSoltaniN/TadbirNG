@@ -27,9 +27,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
-        public RoleRepository(IRepositoryContext context, IOperationLogRepository log, ILogConfigRepository config)
-            : base(context, config, log)
+        public RoleRepository(IRepositoryContext context, IOperationLogRepository log)
+            : base(context, log)
         {
             UnitOfWork.UseSystemContext();
         }
@@ -613,13 +612,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مشخص می کند که آیا دسترسی داده شده قابل تخصیص به نقش های عمومی (غیر مدیر سیستم) هست یا نه؟
         /// </summary>
-        /// <param name="permission">نقش مورد نظر برای بررسی</param>
-        /// <returns>در صورت عمومی بودن نقش، مقدار بولی "درست" و در غیر این صورت
+        /// <param name="permission">دسترسی مورد نظر برای بررسی</param>
+        /// <returns>در صورت عمومی بودن دسترسی، مقدار بولی "درست" و در غیر این صورت
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public bool IsPublicPermission(PermissionViewModel permission)
         {
-            return permission.GroupId != 9
-                || (permission.GroupId == 9 && permission.Flag == 1);
+            return permission.GroupId != 29;
         }
 
         /// <inheritdoc/>

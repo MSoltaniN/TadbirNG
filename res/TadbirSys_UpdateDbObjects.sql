@@ -2960,3 +2960,31 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
     VALUES (45, 27, 125, N'LogSettings', N'/admin/log-settings', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
+-- 1.1.832
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (10, N'SystemSettings')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
+
+-- 1.1.833
+UPDATE [Metadata].[Command]
+SET PermissionID = 132
+WHERE CommandID = 45
+
+/* Delete Company permissions that are Admin-Only */
+DELETE [Auth].[Permission]
+WHERE [GroupID] = 9 AND Flag <> 1
+
+-- 1.1.834
+/* Delete Delete Log permissions that are Admin-Only */
+DELETE [Auth].[Permission]
+WHERE PermissionID IN (127, 131)
+
+-- 1.1.835
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (30, N'ViewArchive')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[SysLogSetting] ON
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (28, NULL, 5, 30, 0)
+SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
