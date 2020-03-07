@@ -114,7 +114,7 @@
                               [valuePrimitive]="true"
                               [value]="logType"
                               [(ngModel)]="logType"
-                              (ngModelChange)="saveStates();">
+                              (ngModelChange)="logTypeChanged();saveStates();">
             <ng-template kendoDropDownListValueTemplate let-dataItem>
               {{ dataItem?.value | translate }}
             </ng-template>
@@ -237,19 +237,19 @@
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <div *ngIf="!archiveSelected" class="col-xs-12 col-sm-3 form-group">
-          <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff"
+        <div *ngIf="this.logType != 3" class="col-xs-12 col-sm-3 form-group">
+          <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff" [disabled]="disableButtons" 
                   (click)="archiveData();">                  
             {{ 'OperationLog.Archive' | translate }}
           </button>
         </div>
-        <div *ngIf="archiveSelected" class="col-xs-12 col-sm-5 form-group">
-          <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff"
+        <div *ngIf="this.logType == 3" class="col-xs-12 col-sm-5 form-group">
+          <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff" [disabled]="disableButtons" 
                   (click)="deleteArchiveData();">
             {{ 'OperationLog.DeleteArchive' | translate }}
           </button>
         </div>        
-        <div class="col-xs-12  form-group sppc-float btn-show-log" [ngClass]="{'col-sm-8' : !archiveSelected,'col-sm-7' : archiveSelected}">
+        <div class="col-xs-12  form-group sppc-float btn-show-log" [ngClass]="{'col-sm-6' : !archiveSelected,'col-sm-7' : archiveSelected}">
           <button class="k-button btn-compute-default btn-compute-selectable sppc-float-diff"
                   (click)="getReportData();">
             {{ 'OperationLog.ShowLog' | translate }}

@@ -1103,7 +1103,7 @@
     "ReportTypeLog": "نوع گزارش",
     "AllLogs": "کلیه رویدادها",
     "ActiveLogs": "رویداد های فعال",
-    "ArchivedLogs": "رویداد های بایگانی",
+    "ArchivedLogs": "رویداد های بایگانی شده",
     "OperationalLogs": "رویداد های عملیاتی",
     "SystemLogs": "رویداد های سیستمی"
   },
