@@ -91,6 +91,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        // POST: api/branches/root
+        [HttpPost]
+        [Route(BranchApi.RootBranchesUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Create)]
+        public async Task<IActionResult> PostRootBranchValidationAsync([FromBody] BranchViewModel branch)
+        {
+            if (!await _repository.IsValidBranchAsync(branch))
+            {
+                return BadRequest(_strings.Format(AppStrings.RootBranchAlreadyDefined));
+            }
+
+            return NoContent();
+        }
+
         // POST: api/branches/init
         [HttpPost]
         [Route(BranchApi.BrancheInitialUrl)]

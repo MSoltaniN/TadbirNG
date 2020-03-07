@@ -122,8 +122,16 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   }
 
   addNew() {
-    this.editDataItem = new BranchInfo();
-    this.openEditorDialog(true);
+    var model = new BranchInfo();
+    model.level = this.parent ? this.parent.level + 1 : 0;
+    model.parentId = this.parent ? this.parent.id : null;
+
+    this.branchService.insert<Branch>(BranchApi.RootBranches, model).subscribe(res => {
+      this.editDataItem = new BranchInfo();
+      this.openEditorDialog(true);
+    }, (error => {
+        this.showMessage(error, MessageType.Warning);
+    }));  
   }
 
   reloadGrid(insertedModel?: any) {
