@@ -2946,4 +2946,19 @@
   <data name="ViewArchive" xml:space="preserve">
     <value>View archive</value>
   </data>
+  <data name="CalendarChange" xml:space="preserve">
+    <value>Calendar change</value>
+  </data>
+  <data name="CurrencyChange" xml:space="preserve">
+    <value>Base currency change</value>
+  </data>
+  <data name="DecimalCountChange" xml:space="preserve">
+    <value>Decimal count change</value>
+  </data>
+  <data name="DefaultCodingChange" xml:space="preserve">
+    <value>Default coding change</value>
+  </data>
+  <data name="EnvironmentParams" xml:space="preserve">
+    <value>Environment parameters</value>
+  </data>
 </root>

@@ -13,6 +13,7 @@ namespace SPPC.Tadbir.Persistence
         ItemBalance = 5,
         BalanceByAccount = 6,
         AppLogin = 7,
-        AppEnvironment = 8
+        AppEnvironment = 8,
+        EnvironmentParams = 9
     }
 }

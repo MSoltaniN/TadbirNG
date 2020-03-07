@@ -2937,4 +2937,19 @@
   <data name="ViewArchive" xml:space="preserve">
     <value>مشاهده بایگانی</value>
   </data>
+  <data name="CalendarChange" xml:space="preserve">
+    <value>تغییر تقویم</value>
+  </data>
+  <data name="CurrencyChange" xml:space="preserve">
+    <value>تغییر ارز پایه</value>
+  </data>
+  <data name="DecimalCountChange" xml:space="preserve">
+    <value>تغییر تعداد اعشار</value>
+  </data>
+  <data name="DefaultCodingChange" xml:space="preserve">
+    <value>تغییر کدینگ پیش فرض</value>
+  </data>
+  <data name="EnvironmentParams" xml:space="preserve">
+    <value>متغیرهای محیطی</value>
+  </data>
 </root>

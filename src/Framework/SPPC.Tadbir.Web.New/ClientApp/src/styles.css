@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 
-.dl-value{
-  margin:15px;
+.dl-value {
+  margin: 15px;
 }
 
 .chb-column-explore {
@@ -23,4 +23,8 @@
 
 .chb-column-m {
   width: 45px !important
+}
+
+.tRtl .toastr-rtl {
+  direction: rtl;
 }
