@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی و سیستمی را در برنامه فراهم می کند</param>
         public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository,
             IOperationLogRepository log)
             : base(context, log)

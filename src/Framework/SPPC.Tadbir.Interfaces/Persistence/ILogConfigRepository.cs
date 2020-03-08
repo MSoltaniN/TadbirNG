@@ -35,8 +35,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modified">تنظیمات تغییر یافته مورد نظر برای ذخیره</param>
         Task SaveModifiedSystemConfigAsync(IList<LogSettingItemViewModel> modified);
 
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات جاری ایجاد لاگ عملیاتی را برای رکورد لاگ داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="log">رکورد لاگ عملیات جاری که مشخصات عملیات موجودیت یا فرم عملیاتی را مشخص می کند</param>
+        /// <returns>تنظیمات جاری برای ایجاد لاگ</returns>
         Task<LogSettingViewModel> GetLogConfigAsync(OperationLogViewModel log);
 
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات جاری ایجاد لاگ سیستمی را برای رکورد لاگ داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="log">رکورد لاگ عملیات جاری که مشخصات عملیات موجودیت یا فرم عملیاتی را مشخص می کند</param>
+        /// <returns>تنظیمات جاری برای ایجاد لاگ</returns>
         Task<LogSettingViewModel> GetSystemLogConfigAsync(OperationLogViewModel log);
     }
 }

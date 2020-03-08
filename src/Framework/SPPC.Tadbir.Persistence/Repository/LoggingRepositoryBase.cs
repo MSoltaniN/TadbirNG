@@ -184,14 +184,16 @@ namespace SPPC.Tadbir.Persistence
             await TrySaveLogAsync();
         }
 
-        internal async Task OnSystemLoginAsync()
+        internal async Task OnSystemLoginAsync(int? userId, string description)
         {
             Log = new OperationLogViewModel()
             {
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
                 SourceId = (int)OperationSourceId.AppLogin,
-                OperationId = (int)OperationId.FailedLogin
+                OperationId = (int)OperationId.FailedLogin,
+                UserId = userId,
+                Description = description
             };
             await TrySaveLogAsync();
         }
@@ -213,6 +215,7 @@ namespace SPPC.Tadbir.Persistence
             if (currentLogin.CompanyId == 0
                 || currentLogin.CompanyId != newLogin.CompanyId)
             {
+                Log.CompanyId = newLogin.CompanyId;
                 Log.OperationId = (int)OperationId.CompanyLogin;
                 Log.Description = String.Format(
                     "Company : '{0}', Fiscal period : '{1}', Branch : '{2}'",

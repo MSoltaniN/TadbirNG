@@ -106,11 +106,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(login, nameof(login));
             var user = await GetUserAsync(login.UserName);
-            if (user == null || !user.IsEnabled || !CheckPassword(user.Password, login.Password))
-            {
-                await OnSystemLoginAsync();
-            }
-
+            await ProcessFailedLoginAsync(user, login);
             return user;
         }
 
@@ -665,6 +661,33 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return login;
+        }
+
+        private async Task ProcessFailedLoginAsync(UserViewModel user, LoginViewModel login)
+        {
+            string description;
+            if (user == null)
+            {
+                description = String.Format("Invalid user : {0}", login.UserName);
+            }
+            else if (!user.IsEnabled)
+            {
+                description = String.Format("Disabled user : {0}", login.UserName);
+            }
+            else if (!CheckPassword(user.Password, login.Password))
+            {
+                description = "Invalid password";
+            }
+            else
+            {
+                description = String.Empty;
+            }
+
+            if (user == null || !user.IsEnabled || !CheckPassword(user.Password, login.Password))
+            {
+                int? userId = user?.Id;
+                await OnSystemLoginAsync(userId, description);
+            }
         }
 
         private readonly ISystemRepository _system;
