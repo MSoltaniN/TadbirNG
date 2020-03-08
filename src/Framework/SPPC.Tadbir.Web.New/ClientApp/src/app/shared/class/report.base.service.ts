@@ -43,7 +43,7 @@ export class ReportBaseService extends EnviromentComponent{
    * @param orderby مرتب سازی
    * @param filters فیلتر
    */
-  public getAll(apiUrl: string, orderby?: any, filter?: FilterExpression) {
+  public getAll(apiUrl: string, orderby?: any, filter?: FilterExpression,operationId:number = 1) {
     
     var sort = new Array<GridOrderBy>();
     if (orderby && orderby.length > 0) {
@@ -52,7 +52,7 @@ export class ReportBaseService extends EnviromentComponent{
         sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
       }
     }
-    var postItem = { filter: filter, sortColumns: sort };
+    var postItem = { filter: filter, sortColumns: sort, operation:operationId };
     var searchHeaders = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));

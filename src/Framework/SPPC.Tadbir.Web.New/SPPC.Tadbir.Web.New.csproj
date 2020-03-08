@@ -89,6 +89,7 @@
     <None Remove="ClientApp\src\app\finance\index.ts" />
     <None Remove="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
     <None Remove="ClientApp\src\app\shared\directive\persistState\PersistState.ts" />
+    <None Remove="ClientApp\src\app\shared\enum\operationId.ts" />
     <None Remove="ClientApp\src\app\shared\index.ts" />
     <None Remove="ClientApp\src\app\shared\models\columnFilter.ts" />
     <None Remove="ClientApp\src\app\shared\models\filterViewModel.ts" />
@@ -853,6 +854,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\finance\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\directive\persistState\persistState.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\enum\operationId.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\filterViewModel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\index.ts" />
