@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -167,6 +168,9 @@ namespace SPPC.Tadbir.Persistence
                 AddNewRoles(existing, periodRoles);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.RoleAccess);
+                Log.Description = await GetFiscalPeriodRoleDescriptionAsync(existing);
+                await TrySaveLogAsync();
             }
         }
 
@@ -461,6 +465,28 @@ namespace SPPC.Tadbir.Persistence
                 };
                 existing.RoleFiscalPeriods.Add(roleFiscalPeriod);
             }
+        }
+
+        private async Task<string> GetFiscalPeriodRoleDescriptionAsync(FiscalPeriod fiscalPeriod)
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("Fiscal period : {0} , Roles with access : ", fiscalPeriod.Name);
+            if (fiscalPeriod.RoleFiscalPeriods.Count > 0)
+            {
+                UnitOfWork.UseSystemContext();
+                var repository = UnitOfWork.GetAsyncRepository<Role>();
+                var roles = await repository.GetByCriteriaAsync(r => fiscalPeriod.RoleFiscalPeriods
+                    .Select(rfp => rfp.RoleId)
+                    .Contains(r.Id));
+                builder.Append(String.Join(",", roles.Select(r => r.Name)));
+                UnitOfWork.UseCompanyContext();
+            }
+            else
+            {
+                builder.Append("(None)");
+            }
+
+            return builder.ToString();
         }
 
         private const string _deleteFiscalPeriodDataScript =
