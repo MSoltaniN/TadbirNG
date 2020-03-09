@@ -727,8 +727,6 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (9, N'DetailA
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (10, N'FiscalPeriod')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (11, N'OperationLog')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (12, N'Project')
-INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (13, N'RoleBranch')
-INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (14, N'RoleFiscalPeriod')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (15, N'Setting')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (16, N'TaxCurrency')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (17, N'Voucher')

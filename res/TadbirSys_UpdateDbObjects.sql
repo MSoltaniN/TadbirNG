@@ -2988,3 +2988,7 @@ SET IDENTITY_INSERT [Config].[SysLogSetting] ON
 INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (28, NULL, 5, 30, 0)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
+
+-- 1.1.844
+DELETE FROM [Metadata].[EntityType]
+WHERE [Name] IN ('RoleCompany', 'UserRole')

@@ -884,3 +884,8 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (105, 1, 1, NULL, 10, 35, 0)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.844
+DELETE FROM [Metadata].[EntityType]
+WHERE [Name] IN ('RoleBranch', 'RoleFiscalPeriod')
+
