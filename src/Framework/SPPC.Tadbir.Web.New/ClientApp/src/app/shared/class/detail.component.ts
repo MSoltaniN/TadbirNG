@@ -16,6 +16,7 @@ export class DetailComponent extends BaseComponent {
   public properties: Map<string, Array<Property>>;
 
   public metadataKey: string;
+  public isEnableSaveBtn: boolean = true;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, private metadataService: MetaDataService,

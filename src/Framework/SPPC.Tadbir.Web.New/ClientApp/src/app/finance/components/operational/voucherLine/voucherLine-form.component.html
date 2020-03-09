@@ -2,10 +2,10 @@
 <div class="dialog-body" style="min-height: 395px;">
 
   <div style="padding:15px;" (keydown.esc)="escPress()">
-    <div *ngIf="errorMessage">
+    <div *ngIf="errorMsg">
       <div class="alert alert-danger">
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-        {{ errorMessage }}
+        {{ errorMsg }}
       </div>
     </div>
 
@@ -159,8 +159,8 @@
     </form>
   </div>
   <kendo-dialog-actions>
-    <button class="k-button k-primary" [disabled]="!editForm1.valid" (click)="onSave($event,false)">{{ 'Buttons.Ok' | translate }}</button>
-    <button class="k-button k-primary" [disabled]="!editForm1.valid" (click)="onSave($event,true)">{{ 'Buttons.OkAndNew' | translate }}</button>
+    <button class="k-button k-primary" [disabled]="!(editForm1.valid && isEnableSaveBtn)" (click)="isEnableSaveBtn = false; onSave(false)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button k-primary" [disabled]="!(editForm1.valid && isEnableSaveBtn)" (click)="isEnableSaveBtn = false; onSave(true)">{{ 'Buttons.OkAndNew' | translate }}</button>
     <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
   </kendo-dialog-actions>
 </div>

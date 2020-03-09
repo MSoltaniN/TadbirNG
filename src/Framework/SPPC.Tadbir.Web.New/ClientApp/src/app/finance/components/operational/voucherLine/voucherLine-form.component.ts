@@ -85,9 +85,14 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   isDisplayCurrencyInfo: boolean = false;
   currencyRate: number | undefined;
   decimalCount: number = 0;
+  errorMsg: string;
 
   @Input() public isNew: boolean = false;
-  @Input() public errorMessage: string;
+  @Input() public set errorMessage(msg: string) {
+    this.errorMsg = msg;
+    this.isEnableSaveBtn = true;
+  }
+
   @Input() public isNewBalance: boolean = false;
   @Input() public balance: number = 0;
   @Input() public model: VoucherLine;
@@ -133,9 +138,8 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     this.onChangeFullAccount();
   }
 
-  public onSave(e: any, isOpen: boolean): void {
-    e.preventDefault();
-    debugger;
+  public onSave(isOpen: boolean): void {
+
     if (this.editForm1.valid) {
       var model = this.editForm1.value;
 
