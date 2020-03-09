@@ -150,6 +150,17 @@ namespace SPPC.Tadbir.Persistence.Repository
             return query;
         }
 
+        private static IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetGroupByItems(
+            IEnumerable<BalanceByAccountItemViewModel> items, Func<BalanceByAccountItemViewModel, string> selector1)
+        {
+            foreach (var byFirst in items
+                .OrderBy(selector1)
+                .GroupBy(selector1))
+            {
+                yield return byFirst;
+            }
+        }
+
         #region report by Account
 
         private async Task<BalanceByAccountViewModel> ReportByAccountAsync(BalanceByAccountParameters parameters)
@@ -1011,17 +1022,6 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             int codeLength = _report.GetLevelCodeLength(ViewName.Project, groupLevel);
             return item => item.ProjectFullCode.Substring(0, codeLength);
-        }
-
-        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetGroupByItems(
-            IEnumerable<BalanceByAccountItemViewModel> items, Func<BalanceByAccountItemViewModel, string> selector1)
-        {
-            foreach (var byFirst in items
-                .OrderBy(selector1)
-                .GroupBy(selector1))
-            {
-                yield return byFirst;
-            }
         }
 
         private async Task<BalanceByAccountItemViewModel> GetBalanceByAccountItemAsync(

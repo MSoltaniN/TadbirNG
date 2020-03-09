@@ -293,6 +293,9 @@ namespace SPPC.Tadbir.Persistence
                 AddNewRoles(existing, userRoles);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.AssignRole);
+                Log.Description = await GetUserRoleDescriptionAsync(existing);
+                await TrySaveLogAsync();
             }
         }
 
@@ -688,6 +691,25 @@ namespace SPPC.Tadbir.Persistence
                 int? userId = user?.Id;
                 await OnSystemLoginAsync(userId, description);
             }
+        }
+
+        private async Task<string> GetUserRoleDescriptionAsync(User user)
+        {
+            var builder = new StringBuilder();
+            var repository = UnitOfWork.GetAsyncRepository<UserRole>();
+            var userRoles = await repository.GetByCriteriaAsync(
+                ur => ur.UserId == user.Id, ur => ur.Role);
+            builder.AppendFormat("User : {0} , Assigned roles : ", user.UserName);
+            if (userRoles.Count > 0)
+            {
+                builder.Append(String.Join(",", userRoles.Select(ur => ur.Role.Name)));
+            }
+            else
+            {
+                builder.Append("(None)");
+            }
+
+            return builder.ToString();
         }
 
         private readonly ISystemRepository _system;

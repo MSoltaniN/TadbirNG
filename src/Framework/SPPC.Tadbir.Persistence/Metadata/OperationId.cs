@@ -39,6 +39,7 @@ namespace SPPC.Tadbir.Persistence
         CalendarChange = 31,
         CurrencyChange = 32,
         DecimalCountChange = 33,
-        DefaultCodingChange = 34
+        DefaultCodingChange = 34,
+        RoleAccess = 35
     }
 }

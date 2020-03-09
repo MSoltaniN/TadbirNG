@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -175,6 +176,9 @@ namespace SPPC.Tadbir.Persistence
                 AddNewRoles(existing, branchRoles);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.RoleAccess);
+                Log.Description = await GetBranchRoleDescriptionAsync(existing);
+                await TrySaveLogAsync();
             }
         }
 
@@ -428,6 +432,28 @@ namespace SPPC.Tadbir.Persistence
                 };
                 existing.RoleBranches.Add(roleBranch);
             }
+        }
+
+        private async Task<string> GetBranchRoleDescriptionAsync(Branch branch)
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("Branch : {0} , Roles with access : ", branch.Name);
+            if (branch.RoleBranches.Count > 0)
+            {
+                UnitOfWork.UseSystemContext();
+                var repository = UnitOfWork.GetAsyncRepository<Role>();
+                var roles = await repository.GetByCriteriaAsync(r => branch.RoleBranches
+                    .Select(rb => rb.RoleId)
+                    .Contains(r.Id));
+                builder.Append(String.Join(",", roles.Select(r => r.Name)));
+                UnitOfWork.UseCompanyContext();
+            }
+            else
+            {
+                builder.Append("(None)");
+            }
+
+            return builder.ToString();
         }
 
         private const string _deleteBranchDataScript =

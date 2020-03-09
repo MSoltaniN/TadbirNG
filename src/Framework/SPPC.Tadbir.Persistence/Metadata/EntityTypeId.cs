@@ -18,8 +18,6 @@ namespace SPPC.Tadbir.Persistence
         FiscalPeriod = 10,
         OperationLog = 11,
         Project = 12,
-        RoleBranch = 13,
-        RoleFiscalPeriod = 14,
         Setting = 15,
         TaxCurrency = 16,
         Voucher = 17,

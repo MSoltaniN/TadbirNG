@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -357,6 +358,9 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewBranches(repository, existing, roleBranches);
                 await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.BranchAccess);
+                Log.Description = await GetRoleBranchDescriptionAsync(roleBranches.Id);
+                await TrySaveLogAsync();
             }
 
             UnitOfWork.UseSystemContext();
@@ -422,6 +426,9 @@ namespace SPPC.Tadbir.Persistence
                 AddNewUsers(existing, roleUsers);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.AssignUser);
+                Log.Description = await GetRoleUserDescriptionAsync(roleUsers.Id);
+                await TrySaveLogAsync();
             }
         }
 
@@ -480,6 +487,9 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewFiscalPeriods(repository, existing, rolePeriods);
                 await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.FiscalPeriodAccess);
+                Log.Description = await GetRoleFiscalPeriodDescriptionAsync(rolePeriods.Id);
+                await TrySaveLogAsync();
             }
 
             UnitOfWork.UseSystemContext();
@@ -1001,6 +1011,82 @@ namespace SPPC.Tadbir.Persistence
                     }
                 }
             }
+        }
+
+        private async Task<string> GetRoleBranchDescriptionAsync(int roleId)
+        {
+            var builder = new StringBuilder();
+            UnitOfWork.UseSystemContext();
+            var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+            var role = await roleRepository.GetByIDAsync(roleId);
+            UnitOfWork.UseCompanyContext();
+            if (role != null)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+                var existing = await repository.GetByCriteriaAsync(
+                    rb => rb.RoleId == roleId, rb => rb.Branch);
+                builder.AppendFormat("Role : {0} , Accessible branches : ", role.Name);
+                if (existing.Count > 0)
+                {
+                    builder.Append(String.Join(",", existing.Select(rb => rb.Branch.Name)));
+                }
+                else
+                {
+                    builder.Append("(None)");
+                }
+            }
+
+            return builder.ToString();
+        }
+
+        private async Task<string> GetRoleFiscalPeriodDescriptionAsync(int roleId)
+        {
+            var builder = new StringBuilder();
+            UnitOfWork.UseSystemContext();
+            var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+            var role = await roleRepository.GetByIDAsync(roleId);
+            UnitOfWork.UseCompanyContext();
+            if (role != null)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
+                var existing = await repository.GetByCriteriaAsync(
+                    rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
+                builder.AppendFormat("Role : {0} , Accessible fiscal periods : ", role.Name);
+                if (existing.Count > 0)
+                {
+                    builder.Append(String.Join(",", existing.Select(rfp => rfp.FiscalPeriod.Name)));
+                }
+                else
+                {
+                    builder.Append("(None)");
+                }
+            }
+
+            return builder.ToString();
+        }
+
+        private async Task<string> GetRoleUserDescriptionAsync(int roleId)
+        {
+            var builder = new StringBuilder();
+            var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+            var role = await roleRepository.GetByIDAsync(roleId);
+            if (role != null)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<UserRole>();
+                var existing = await repository.GetByCriteriaAsync(
+                    ur => ur.RoleId == roleId, ur => ur.User);
+                builder.AppendFormat("Role : {0} , Assigned users : ", role.Name);
+                if (existing.Count > 0)
+                {
+                    builder.Append(String.Join(",", existing.Select(ur => ur.User.UserName)));
+                }
+                else
+                {
+                    builder.Append("(None)");
+                }
+            }
+
+            return builder.ToString();
         }
     }
 }

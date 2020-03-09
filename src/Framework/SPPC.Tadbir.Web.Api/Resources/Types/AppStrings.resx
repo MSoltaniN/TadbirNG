@@ -2952,4 +2952,7 @@
   <data name="EnvironmentParams" xml:space="preserve">
     <value>متغیرهای محیطی</value>
   </data>
+  <data name="RoleAccess" xml:space="preserve">
+    <value>دسترسی نقش</value>
+  </data>
 </root>

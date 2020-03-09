@@ -2961,4 +2961,7 @@
   <data name="EnvironmentParams" xml:space="preserve">
     <value>Environment parameters</value>
   </data>
+  <data name="RoleAccess" xml:space="preserve">
+    <value>Role access</value>
+  </data>
 </root>

@@ -872,3 +872,20 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (103, 1, 2, NULL, 18, 21, 0)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.843
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (35, N'RoleAccess')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (104, 1, 1, NULL, 5, 35, 0)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (105, 1, 1, NULL, 10, 35, 0)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.844
+DELETE FROM [Metadata].[EntityType]
+WHERE [Name] IN ('RoleBranch', 'RoleFiscalPeriod')
+
