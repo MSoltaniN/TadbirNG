@@ -378,13 +378,18 @@ CREATE TABLE [Core].[SysOperationLog] (
     [SysOperationLogID]   INT              IDENTITY (1, 1) NOT NULL,
     [OperationID]         INT              NOT NULL,
     [SourceID]            INT              NULL,
-    [SourceListID]        INT              NULL,
     [EntityTypeID]        INT              NULL,
-    [CompanyID]           INT              NULL,
+    [SourceListID]        INT              NULL,
     [UserID]              INT              NULL,
+    [CompanyID]           INT              NULL,
     [Date]                DATETIME         NOT NULL,
     [Time]                TIME(7)          NOT NULL,
     [EntityId]            INT              NULL,
+    [EntityCode]          NVARCHAR(256)    NULL,
+    [EntityName]          NVARCHAR(256)    NULL,
+    [EntityDescription]   NVARCHAR(1024)   NULL,
+    [EntityNo]            INT              NULL,
+    [EntityDate]          DATETIME         NULL,
     [Description]         NVARCHAR(MAX)    NULL,
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Core_SysOperationLog_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]        DATETIME         CONSTRAINT [DF_Core_SysOperationLog_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -399,19 +404,24 @@ CREATE TABLE [Core].[SysOperationLog] (
 GO
 
 CREATE TABLE [Core].[SysOperationLogArchive] (
-    [SysOperationLogArchiveID]   INT              NOT NULL,
-    [OperationID]                INT              NOT NULL,
-    [SourceID]                   INT              NULL,
-    [SourceListID]               INT              NULL,
-    [EntityTypeID]               INT              NULL,
-    [CompanyID]                  INT              NULL,
-    [UserID]                     INT              NULL,
-    [Date]                       DATETIME         NOT NULL,
-    [Time]                       TIME(7)          NOT NULL,
-    [EntityId]                   INT              NULL,
-    [Description]                NVARCHAR(MAX)    NULL,
-    [rowguid]                    UNIQUEIDENTIFIER CONSTRAINT [DF_Core_SysOperationLogArchive_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]               DATETIME         CONSTRAINT [DF_Core_SysOperationLogArchive_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [SysOperationLogArchiveID]  INT              NOT NULL,
+    [OperationID]               INT              NOT NULL,
+    [SourceID]                  INT              NULL,
+    [EntityTypeID]              INT              NULL,
+    [SourceListID]              INT              NULL,
+    [UserID]                    INT              NULL,
+    [CompanyID]                 INT              NULL,
+    [Date]                      DATETIME         NOT NULL,
+    [Time]                      TIME(7)          NOT NULL,
+    [EntityId]                  INT              NULL,
+    [EntityCode]                NVARCHAR(256)    NULL,
+    [EntityName]                NVARCHAR(256)    NULL,
+    [EntityDescription]         NVARCHAR(1024)   NULL,
+    [EntityNo]                  INT              NULL,
+    [EntityDate]                DATETIME         NULL,
+    [Description]               NVARCHAR(MAX)    NULL,
+    [rowguid]                   UNIQUEIDENTIFIER CONSTRAINT [DF_Core_SysOperationLogArchive_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]              DATETIME         CONSTRAINT [DF_Core_SysOperationLogArchive_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Core_SysOperationLogArchive] PRIMARY KEY CLUSTERED ([SysOperationLogArchiveID] ASC)
     , CONSTRAINT [FK_Core_SysOperationLogArchive_Metadata_Operation] FOREIGN KEY ([OperationID]) REFERENCES [Metadata].[Operation]([OperationID])
     , CONSTRAINT [FK_Core_SysOperationLogArchive_Metadata_Source] FOREIGN KEY ([SourceID]) REFERENCES [Metadata].[OperationSource]([OperationSourceID])

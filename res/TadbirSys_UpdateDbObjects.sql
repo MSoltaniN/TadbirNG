@@ -2992,3 +2992,44 @@ SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
 -- 1.1.844
 DELETE FROM [Metadata].[EntityType]
 WHERE [Name] IN ('RoleCompany', 'UserRole')
+
+-- 1.1.845
+ALTER TABLE [Core].[SysOperationLog]
+ADD [EntityCode] NVARCHAR(256) NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLog]
+ADD [EntityName] NVARCHAR(256) NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLog]
+ADD [EntityDescription] NVARCHAR(1024) NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLog]
+ADD [EntityNo] INT NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLog]
+ADD [EntityDate] DATETIME NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLogArchive]
+ADD [EntityCode] NVARCHAR(256) NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLogArchive]
+ADD [EntityName] NVARCHAR(256) NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLogArchive]
+ADD [EntityDescription] NVARCHAR(1024) NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLogArchive]
+ADD [EntityNo] INT NULL
+GO
+
+ALTER TABLE [Core].[SysOperationLogArchive]
+ADD [EntityDate] DATETIME NULL
+GO

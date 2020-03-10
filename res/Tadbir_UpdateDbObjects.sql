@@ -889,3 +889,59 @@ SET IDENTITY_INSERT [Config].[LogSetting] OFF
 DELETE FROM [Metadata].[EntityType]
 WHERE [Name] IN ('RoleBranch', 'RoleFiscalPeriod')
 
+-- 1.1.845
+ALTER TABLE [Core].[OperationLog]
+ADD [EntityCode] NVARCHAR(256) NULL
+GO
+
+ALTER TABLE [Core].[OperationLog]
+ADD [EntityName] NVARCHAR(256) NULL
+GO
+
+ALTER TABLE [Core].[OperationLog]
+ADD [EntityDescription] NVARCHAR(1024) NULL
+GO
+
+ALTER TABLE [Core].[OperationLog]
+ADD [EntityNo] INT NULL
+GO
+
+ALTER TABLE [Core].[OperationLog]
+ADD [EntityDate] DATETIME NULL
+GO
+
+ALTER TABLE [Core].[OperationLog]
+ADD [EntityReference] NVARCHAR(64) NULL
+GO
+
+ALTER TABLE [Core].[OperationLog]
+ADD [EntityAssociation] NVARCHAR(64) NULL
+GO
+
+ALTER TABLE [Core].[OperationLogArchive]
+ADD [EntityCode] NVARCHAR(256) NULL
+GO
+
+ALTER TABLE [Core].[OperationLogArchive]
+ADD [EntityName] NVARCHAR(256) NULL
+GO
+
+ALTER TABLE [Core].[OperationLogArchive]
+ADD [EntityDescription] NVARCHAR(1024) NULL
+GO
+
+ALTER TABLE [Core].[OperationLogArchive]
+ADD [EntityNo] INT NULL
+GO
+
+ALTER TABLE [Core].[OperationLogArchive]
+ADD [EntityDate] DATETIME NULL
+GO
+
+ALTER TABLE [Core].[OperationLogArchive]
+ADD [EntityReference] NVARCHAR(64) NULL
+GO
+
+ALTER TABLE [Core].[OperationLogArchive]
+ADD [EntityAssociation] NVARCHAR(64) NULL
+GO

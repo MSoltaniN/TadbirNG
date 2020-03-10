@@ -319,21 +319,28 @@ CREATE TABLE [Auth].[RoleFiscalPeriod] (
 GO
 
 CREATE TABLE [Core].[OperationLog] (
-    [OperationLogID]   INT              IDENTITY (1, 1) NOT NULL,
-    [BranchID]         INT              NOT NULL,
-    [FiscalPeriodID]   INT              NOT NULL,
-    [OperationID]      INT              NOT NULL,
-    [SourceID]         INT              NULL,
-    [SourceListId]     INT              NULL,
-    [EntityTypeID]     INT              NULL,
-    [Date]             DATETIME         NOT NULL,
-    [Time]             TIME(7)          NOT NULL,
-    [UserId]           INT              NOT NULL,
-    [CompanyId]        INT              NOT NULL,
-    [EntityId]         INT              NULL,
-    [Description]      NVARCHAR(MAX)    NULL,
-    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Core_OperationLog_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Core_OperationLog_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [OperationLogID]      INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]            INT              NOT NULL,
+    [FiscalPeriodID]      INT              NOT NULL,
+    [OperationID]         INT              NOT NULL,
+    [SourceID]            INT              NULL,
+    [EntityTypeID]        INT              NULL,
+    [SourceListID]        INT              NULL,
+    [Date]                DATETIME         NOT NULL,
+    [Time]                TIME(7)          NOT NULL,
+    [UserId]              INT              NOT NULL,
+    [CompanyId]           INT              NOT NULL,
+    [EntityId]            INT              NULL,
+    [EntityCode]          NVARCHAR(256)    NULL,
+    [EntityName]          NVARCHAR(256)    NULL,
+    [EntityDescription]   NVARCHAR(1024)   NULL,
+    [EntityNo]            INT              NULL,
+    [EntityDate]          DATETIME         NULL,
+    [EntityReference]     NVARCHAR(64)     NULL,
+    [EntityAssociation]   NVARCHAR(64)     NULL,
+    [Description]         NVARCHAR(MAX)    NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Core_OperationLog_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Core_OperationLog_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Core_OperationLog] PRIMARY KEY CLUSTERED ([OperationLogID] ASC)
     , CONSTRAINT [FK_Core_OperationLog_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Core_OperationLog_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
@@ -345,21 +352,28 @@ CREATE TABLE [Core].[OperationLog] (
 GO
 
 CREATE TABLE [Core].[OperationLogArchive] (
-    [OperationLogArchiveID]   INT              NOT NULL,
-    [BranchID]                INT              NOT NULL,
-    [FiscalPeriodID]          INT              NOT NULL,
-    [OperationID]             INT              NOT NULL,
-    [SourceID]                INT              NULL,
-    [SourceListID]            INT              NULL,
-    [EntityTypeID]            INT              NULL,
-    [Date]                    DATETIME         NOT NULL,
-    [Time]                    TIME(7)          NOT NULL,
-    [UserId]                  INT              NOT NULL,
-    [CompanyId]               INT              NOT NULL,
-    [EntityId]                INT              NULL,
-    [Description]             NVARCHAR(MAX)    NULL,
-    [rowguid]                 UNIQUEIDENTIFIER CONSTRAINT [DF_Core_OperationLogArchive_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]            DATETIME         CONSTRAINT [DF_Core_OperationLogArchive_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [OperationLogArchiveID]  INT              NOT NULL,
+    [BranchID]               INT              NOT NULL,
+    [FiscalPeriodID]         INT              NOT NULL,
+    [OperationID]            INT              NOT NULL,
+    [SourceID]               INT              NULL,
+    [EntityTypeID]           INT              NULL,
+    [SourceListID]           INT              NULL,
+    [Date]                   DATETIME         NOT NULL,
+    [Time]                   TIME(7)          NOT NULL,
+    [UserId]                 INT              NOT NULL,
+    [CompanyId]              INT              NOT NULL,
+    [EntityId]               INT              NULL,
+    [EntityCode]             NVARCHAR(256)    NULL,
+    [EntityName]             NVARCHAR(256)    NULL,
+    [EntityDescription]      NVARCHAR(1024)   NULL,
+    [EntityNo]               INT              NULL,
+    [EntityDate]             DATETIME         NULL,
+    [EntityReference]        NVARCHAR(64)     NULL,
+    [EntityAssociation]      NVARCHAR(64)     NULL,
+    [Description]            NVARCHAR(MAX)    NULL,
+    [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Core_OperationLogArchive_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]           DATETIME         CONSTRAINT [DF_Core_OperationLogArchive_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Core_OperationLogArchive] PRIMARY KEY CLUSTERED ([OperationLogArchiveID] ASC)
     , CONSTRAINT [FK_Core_OperationLogArchive_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Core_OperationLogArchive_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
