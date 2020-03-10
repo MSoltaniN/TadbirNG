@@ -19,6 +19,24 @@ namespace SPPC.Framework.Common
         /// </summary>
         /// <param name="source">The object to read the property from</param>
         /// <param name="name">The name of the property to read from the object</param>
+        /// <param name="throwIfInvalid">Indicates if operation should fail for an invalid property name</param>
+        /// <returns>The property value (for a valid property name) or null (for an invalid property name)</returns>
+        public static object GetSimpleProperty(object source, string name, bool throwIfInvalid = true)
+        {
+            if (throwIfInvalid)
+            {
+                VerifyIsValidProperty(source.GetType(), name);
+            }
+
+            PropertyInfo prop = source.GetType().GetProperty(name);
+            return (prop?.GetValue(source, null));
+        }
+
+        /// <summary>
+        /// Reads the current value of an instance property in an object.
+        /// </summary>
+        /// <param name="source">The object to read the property from</param>
+        /// <param name="name">The name of the property to read from the object</param>
         /// <returns>The property value currently set in the object</returns>
         /// <remarks>The property specified by name can be either a simple property or a
         /// property path, where path items are separated by dot.</remarks>
@@ -433,13 +451,6 @@ namespace SPPC.Framework.Common
         #endregion
 
         #region Implementation
-
-        private static object GetSimpleProperty(object source, string name)
-        {
-            VerifyIsValidProperty(source.GetType(), name);
-            PropertyInfo prop = source.GetType().GetProperty(name);
-            return (prop.GetValue(source, null));
-        }
 
         private static void VerifyIsValidProperty(Type type, string property)
         {

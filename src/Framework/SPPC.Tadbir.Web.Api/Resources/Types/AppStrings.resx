@@ -205,7 +205,7 @@
     <value>تاریخ پایان</value>
   </data>
   <data name="EntityName" xml:space="preserve">
-    <value>نام موجودیت</value>
+    <value>نام</value>
   </data>
   <data name="FieldIsRequired" xml:space="preserve">
     <value>وارد کردن {0} اجباری است.</value>
@@ -2790,7 +2790,7 @@
   <data name="EntityNo" xml:space="preserve">
     <value>شماره</value>
   </data>
-  <data name="EntityRef" xml:space="preserve">
+  <data name="EntityReference" xml:space="preserve">
     <value>رفرنس</value>
   </data>
   <data name="EntityTypeName" xml:space="preserve">
@@ -2954,5 +2954,14 @@
   </data>
   <data name="RoleAccess" xml:space="preserve">
     <value>دسترسی نقش</value>
+  </data>
+  <data name="EntityAssociation" xml:space="preserve">
+    <value>عطف</value>
+  </data>
+  <data name="EntityDate" xml:space="preserve">
+    <value>تاریخ</value>
+  </data>
+  <data name="EntityDescription" xml:space="preserve">
+    <value>شرح موجودیت</value>
   </data>
 </root>

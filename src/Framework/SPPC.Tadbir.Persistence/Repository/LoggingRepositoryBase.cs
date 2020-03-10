@@ -289,6 +289,7 @@ namespace SPPC.Tadbir.Persistence
         {
             await UnitOfWork.CommitAsync();
             Log.EntityId = entity.Id;
+            CopyEntityDataToLog(entity);
             await TrySaveLogAsync();
         }
 
@@ -314,6 +315,35 @@ namespace SPPC.Tadbir.Persistence
         {
             var mapped = Mapper.Map<TEntityView>(entity);
             return Mapper.Map<TEntity>(mapped);
+        }
+
+        private void CopyEntityDataToLog(TEntity entity)
+        {
+            var dataFields = new string[]
+                { "FullCode", "Name", "Description", "No", "Date", "Reference", "Association" };
+            foreach (string dataField in dataFields)
+            {
+                string propertyName = String.Format("Entity{0}", dataField);
+                object value = Reflector.GetSimpleProperty(entity, dataField, false);
+                if (dataField == "No")
+                {
+                    int? no = (value != null) ? Int32.Parse(value.ToString()) : (int?)null;
+                    Reflector.SetProperty(Log, propertyName, no);
+                }
+                else if (dataField == "Date")
+                {
+                    DateTime? date = (value != null) ? DateTime.Parse(value.ToString()) : (DateTime?)null;
+                    Reflector.SetProperty(Log, propertyName, date);
+                }
+                else if (dataField == "FullCode")
+                {
+                    Reflector.SetProperty(Log, "EntityCode", value);
+                }
+                else
+                {
+                    Reflector.SetProperty(Log, propertyName, value);
+                }
+            }
         }
 
         private const string ModelNamespace = "SPPC.Tadbir.Model";

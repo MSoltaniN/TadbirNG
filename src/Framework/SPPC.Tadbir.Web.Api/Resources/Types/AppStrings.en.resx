@@ -205,7 +205,7 @@
     <value>End date</value>
   </data>
   <data name="EntityName" xml:space="preserve">
-    <value>Entity name</value>
+    <value>Name</value>
   </data>
   <data name="FieldIsRequired" xml:space="preserve">
     <value>{0} is required.</value>
@@ -2963,5 +2963,14 @@
   </data>
   <data name="RoleAccess" xml:space="preserve">
     <value>Role access</value>
+  </data>
+  <data name="EntityAssociation" xml:space="preserve">
+    <value>Association</value>
+  </data>
+  <data name="EntityDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="EntityDescription" xml:space="preserve">
+    <value>Entity description</value>
   </data>
 </root>
