@@ -10,12 +10,12 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
-using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -218,7 +218,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var account = await _repository.GetAccountAsync(item);
             if (account == null)
             {
-                message = String.Format(
+                return String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Account), item);
             }
 

@@ -6,8 +6,8 @@ using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Metadata;
-using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {

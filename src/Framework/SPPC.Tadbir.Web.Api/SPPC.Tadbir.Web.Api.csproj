@@ -18,23 +18,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\Types\**" />
+    <Content Remove="Resources\Types\**" />
+    <EmbeddedResource Remove="Resources\Types\**" />
+    <None Remove="Resources\Types\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\InventoriesController.cs" />
     <Compile Remove="Controllers\LookupController.Finance.cs" />
     <Compile Remove="Controllers\RequisitionsController.cs" />
     <Compile Remove="Controllers\ValuesController.cs" />
     <Compile Remove="Report.cs" />
-    <Compile Remove="Resources\Types\EntityNames.cs" />
-    <Compile Remove="Resources\Types\Messages.cs" />
-    <Compile Remove="Resources\Types\Strings.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Resources\Types\EntityNames.en.resx" />
-    <EmbeddedResource Remove="Resources\Types\EntityNames.resx" />
-    <EmbeddedResource Remove="Resources\Types\Messages.en.resx" />
-    <EmbeddedResource Remove="Resources\Types\Messages.resx" />
-    <EmbeddedResource Remove="Resources\Types\Strings.en.resx" />
-    <EmbeddedResource Remove="Resources\Types\Strings.resx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,11 +65,8 @@
     <ProjectReference Include="..\SPPC.Tadbir.CrossCutting\SPPC.Tadbir.CrossCutting.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Persistence\SPPC.Tadbir.Persistence.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Service\SPPC.Tadbir.Service.csproj" />
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ProjectCLI.exe -cmd:reskey -res:$(ProjectDir)Resources\Types\AppStrings.resx -ns:$(ProjectName).Resources.Types" />
-  </Target>
 
 </Project>

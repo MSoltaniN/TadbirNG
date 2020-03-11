@@ -12,8 +12,12 @@
 
 using System;
 
-namespace SPPC.Tadbir.Web.Api.Resources.Types
+namespace SPPC.Tadbir.Resources
 {
+    /// <summary>
+    /// کلیدهای متنی چندزبانه را با توجه به ریسورس های متنی موجود تعریف می کند
+    /// </summary>
+    /// <remarks>این کلاس توسط ابزار خط فرمان پروژه تولید می شود و نیازی به تغییر دستی آن نیست</remarks>
     public sealed class AppStrings
     {
         private AppStrings()
