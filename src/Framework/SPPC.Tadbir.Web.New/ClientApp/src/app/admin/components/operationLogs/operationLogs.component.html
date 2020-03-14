@@ -237,13 +237,13 @@
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <div *ngIf="this.logType != 3" class="col-xs-12 col-sm-3 form-group">
+        <div *ngIf="this.logType != '3'" class="col-xs-12 col-sm-3 form-group">
           <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff" [disabled]="disableButtons" 
                   (click)="archiveData();">                  
             {{ 'OperationLog.Archive' | translate }}
           </button>
         </div>
-        <div *ngIf="this.logType == 3" class="col-xs-12 col-sm-5 form-group">
+        <div *ngIf="this.logType == '3'" class="col-xs-12 col-sm-5 form-group">
           <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff" [disabled]="disableButtons" 
                   (click)="deleteArchiveData();">
             {{ 'OperationLog.DeleteArchive' | translate }}
