@@ -37,11 +37,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.View)]
         public async Task<IActionResult> GetCompaniesAsync()
         {
-            int itemCount = await _repository.GetCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var companies = await _repository.GetCompaniesAsync(GridOptions);
-            SetRowNumbers(companies);
-            return Json(companies);
+            SetItemCount(companies.TotalCount);
+            SetRowNumbers(companies.Items);
+            return Json(companies.Items);
         }
 
         // GET: api/companies/{companyId:min(1)}

@@ -34,13 +34,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/fperiods/company/{companyId:min(1)}
         [Route(FiscalPeriodApi.CompanyFiscalPeriodsUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
-        public async Task<IActionResult> GetFiscalPeriodsAsync(int companyId)
+        public async Task<IActionResult> GetFiscalPeriodsAsync()
         {
-            int itemCount = await _repository.GetCountAsync(companyId, GridOptions);
-            SetItemCount(itemCount);
-            var fiscalPeriods = await _repository.GetFiscalPeriodsAsync(companyId, GridOptions);
-            SetRowNumbers(fiscalPeriods);
-            return Json(fiscalPeriods);
+            var fiscalPeriods = await _repository.GetFiscalPeriodsAsync(GridOptions);
+            SetItemCount(fiscalPeriods.TotalCount);
+            SetRowNumbers(fiscalPeriods.Items);
+            return Json(fiscalPeriods.Items);
         }
 
         // GET: api/fperiods/{fpId:min(1)}

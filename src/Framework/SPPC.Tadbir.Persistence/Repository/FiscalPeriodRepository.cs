@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -31,22 +34,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه دوره های مالی را که در شرکت مشخص شده تعریف شده اند،
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه دوره های مالی را که در شرکت جاری تعریف شده اند
+        /// خوانده و برمی گرداند
         /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از دوره های مالی تعریف شده در شرکت مشخص شده</returns>
-        public async Task<IList<FiscalPeriodViewModel>> GetFiscalPeriodsAsync(int companyId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از دوره های مالی تعریف شده در شرکت جاری</returns>
+        public async Task<PagedList<FiscalPeriodViewModel>> GetFiscalPeriodsAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var fiscalPeriods = await repository
-                .GetByCriteriaAsync(fp => fp.CompanyId == companyId);
+            var fiscalPeriods = await repository.GetByCriteriaAsync(await GetSecurityFilterAsync());
             await ReadAsync(gridOptions);
-            return fiscalPeriods
-                .Select(item => Mapper.Map<FiscalPeriodViewModel>(item))
-                .Apply(gridOptions)
-                .ToList();
+            return new PagedList<FiscalPeriodViewModel>(
+                fiscalPeriods.Select(fp => Mapper.Map<FiscalPeriodViewModel>(fp)), gridOptions);
         }
 
         /// <summary>
@@ -487,6 +486,25 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return builder.ToString();
+        }
+
+        private async Task<Expression<Func<FiscalPeriod, bool>>> GetSecurityFilterAsync()
+        {
+            if (!UserContext.Roles.Contains(AppConstants.AdminRoleId))
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
+                var periodIds = await repository
+                    .GetEntityQuery()
+                    .Where(rfp => UserContext.Roles.Contains(rfp.RoleId))
+                    .Select(rc => rc.FiscalPeriodId)
+                    .Distinct()
+                    .ToListAsync();
+                return fp => periodIds.Contains(fp.Id);
+            }
+            else
+            {
+                return fp => true;
+            }
         }
 
         private const string _deleteFiscalPeriodDataScript =

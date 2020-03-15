@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -15,14 +16,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از شرکت های تعریف شده در برنامه</returns>
-        Task<IList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null);
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد شرکت های تعریف شده در برنامه را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد شرکت های تعریف شده در شرکت مشخص شده</returns>
-        Task<int> GetCountAsync(GridOptions gridOptions = null);
+        Task<PagedList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون،شرکت با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

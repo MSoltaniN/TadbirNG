@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -32,41 +35,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه شعب سازمانی را که در شرکت مشخص شده تعریف شده اند،
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه شعب سازمانی را که در شرکت جاری تعریف شده اند
+        /// خوانده و برمی گرداند
         /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از شعب سازمانی تعریف شده در شرکت مشخص شده</returns>
-        public async Task<IList<BranchViewModel>> GetBranchesAsync(int companyId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از شعب سازمانی تعریف شده در شرکت جاری</returns>
+        public async Task<PagedList<BranchViewModel>> GetBranchesAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branches = await repository
-                .GetByCriteriaAsync(
-                    br => br.CompanyId == companyId, br => br.Parent, br => br.Children);
+            var branches = await repository.GetByCriteriaAsync(
+                    await GetSecurityFilterAsync(), br => br.Parent, br => br.Children);
             await ReadAsync(gridOptions);
-            return branches
-                .Select(item => Mapper.Map<BranchViewModel>(item))
-                .Apply(gridOptions)
-                .ToList();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد شعب سازمانی تعریف شده در شرکت مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد شعب  سازمانی تعریف شده در شرکت مشخص شده</returns>
-        public async Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var items = await repository
-                .GetByCriteriaAsync(br => br.CompanyId == companyId);
-            return items
-                .Select(br => Mapper.Map<BranchViewModel>(br))
-                .Apply(gridOptions, false)
-                .Count();
+            return new PagedList<BranchViewModel>(
+                branches.Select(br => Mapper.Map<BranchViewModel>(br)), gridOptions);
         }
 
         /// <summary>
@@ -97,6 +78,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var rootBranches = await repository
                 .GetEntityQuery(br => br.Children)
+                .Where(await GetSecurityFilterAsync())
                 .Where(br => br.Level == 0)
                 .Select(br => Mapper.Map<AccountItemBriefViewModel>(br))
                 .ToListAsync();
@@ -113,6 +95,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var children = await repository
                 .GetEntityQuery(br => br.Children)
+                .Where(await GetSecurityFilterAsync())
                 .Where(br => br.ParentId == branchId)
                 .Select(br => Mapper.Map<AccountItemBriefViewModel>(br))
                 .ToListAsync();
@@ -454,6 +437,25 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return builder.ToString();
+        }
+
+        private async Task<Expression<Func<Branch, bool>>> GetSecurityFilterAsync()
+        {
+            if (!UserContext.Roles.Contains(AppConstants.AdminRoleId))
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+                var branchIds = await repository
+                    .GetEntityQuery()
+                    .Where(rb => UserContext.Roles.Contains(rb.RoleId))
+                    .Select(rb => rb.BranchId)
+                    .Distinct()
+                    .ToListAsync();
+                return branch => branchIds.Contains(branch.Id);
+            }
+            else
+            {
+                return branch => true;
+            }
         }
 
         private const string _deleteBranchDataScript =

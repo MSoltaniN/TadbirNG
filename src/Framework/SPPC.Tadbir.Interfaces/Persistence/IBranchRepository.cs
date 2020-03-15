@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -14,22 +14,12 @@ namespace SPPC.Tadbir.Persistence
     public interface IBranchRepository
     {
         /// <summary>
-        /// به روش آسنکرون، کلیه شعب سازمانی را که در شرکت مشخص شده تعریف شده اند،
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه شعب سازمانی را که در شرکت جاری تعریف شده اند
+        /// خوانده و برمی گرداند
         /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از شعب سازمانی تعریف شده در شرکت مشخص شده</returns>
-        Task<IList<BranchViewModel>> GetBranchesAsync(int companyId, GridOptions gridOptions = null);
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد شعب سازمانی تعریف شده در شرکت مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد شعب  سازمانی تعریف شده در شرکت مشخص شده</returns>
-        Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null);
+        /// <returns>مجموعه ای از شعب سازمانی تعریف شده در شرکت جاری</returns>
+        Task<PagedList<BranchViewModel>> GetBranchesAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، شعبه سازمانی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

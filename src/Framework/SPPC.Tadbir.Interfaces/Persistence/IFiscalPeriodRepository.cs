@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -13,13 +14,12 @@ namespace SPPC.Tadbir.Persistence
     public interface IFiscalPeriodRepository : IRepositoryBase
     {
         /// <summary>
-        /// به روش آسنکرون، کلیه دوره های مالی را که در شرکت مشخص شده تعریف شده اند،
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه دوره های مالی را که در شرکت جاری تعریف شده اند
+        /// خوانده و برمی گرداند
         /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از دوره های مالی تعریف شده در شرکت مشخص شده</returns>
-        Task<IList<FiscalPeriodViewModel>> GetFiscalPeriodsAsync(int companyId, GridOptions gridOptions = null);
+        /// <returns>مجموعه ای از دوره های مالی تعریف شده در شرکت جاری</returns>
+        Task<PagedList<FiscalPeriodViewModel>> GetFiscalPeriodsAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، تعداد دوره های مالی تعریف شده در شرکت مشخص شده را

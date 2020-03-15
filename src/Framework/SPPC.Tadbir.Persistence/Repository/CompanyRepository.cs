@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -33,30 +38,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از شرکت های تعریف شده در برنامه</returns>
-        public async Task<IList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var companies = await repository.GetAllAsync();
+            var companies = await repository.GetByCriteriaAsync(await GetSecurityFilterAsync());
             await ReadAsync(gridOptions);
-            return companies
-                .Select(c => Mapper.Map<CompanyDbViewModel>(c))
-                .Apply(gridOptions)
-                .ToList();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد شرکت های تعریف شده در برنامه را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد شرکت های تعریف شده در شرکت مشخص شده</returns>
-        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var items = await repository.GetAllAsync();
-            return items
-                .Select(comp => Mapper.Map<CompanyDbViewModel>(comp))
-                .Apply(gridOptions, false)
-                .Count();
+            return new PagedList<CompanyDbViewModel>(
+                companies.Select(c => Mapper.Map<CompanyDbViewModel>(c)), gridOptions);
         }
 
         /// <summary>
@@ -309,6 +297,25 @@ namespace SPPC.Tadbir.Persistence
 
             DbConsole.ConnectionString = sysConnectionString;
             return false;
+        }
+
+        private async Task<Expression<Func<CompanyDb, bool>>> GetSecurityFilterAsync()
+        {
+            if (!UserContext.Roles.Contains(AppConstants.AdminRoleId))
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleCompany>();
+                var companyIds = await repository
+                    .GetEntityQuery()
+                    .Where(rc => UserContext.Roles.Contains(rc.RoleId))
+                    .Select(rc => rc.CompanyId)
+                    .Distinct()
+                    .ToListAsync();
+                return company => companyIds.Contains(company.Id);
+            }
+            else
+            {
+                return company => true;
+            }
         }
 
         private string _webRootPath;

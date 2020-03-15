@@ -34,13 +34,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/branches/company/{companyId:min(1)}
         [Route(BranchApi.CompanyBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
-        public async Task<IActionResult> GetBranchesAsync(int companyId)
+        public async Task<IActionResult> GetBranchesAsync()
         {
-            int itemCount = await _repository.GetCountAsync(companyId, GridOptions);
-            SetItemCount(itemCount);
-            var branches = await _repository.GetBranchesAsync(companyId, GridOptions);
-            SetRowNumbers(branches);
-            return Json(branches);
+            var branches = await _repository.GetBranchesAsync(GridOptions);
+            SetItemCount(branches.TotalCount);
+            SetRowNumbers(branches.Items);
+            return Json(branches.Items);
         }
 
         // GET: api/branches/{branchId:min(1)}
