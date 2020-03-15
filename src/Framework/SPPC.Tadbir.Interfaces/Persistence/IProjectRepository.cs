@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مجموعه ای از پروژه های سطح اول را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه پروژه های سطح اول</returns>
-        Task<IList<AccountItemBriefViewModel>> GetProjectsLedgerAsync();
+        Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync();
 
         /// <summary>
         /// به روش آسنکرون، پروژه های زیرمجموعه را برای پروژه مشخص شده خوانده و برمی گرداند

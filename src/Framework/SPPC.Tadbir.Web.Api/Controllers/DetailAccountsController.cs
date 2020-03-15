@@ -71,7 +71,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDetailAccountsLedgerAsync()
         {
-            var detailAccounts = await _repository.GetDetailAccountsLedgerAsync();
+            var detailAccounts = await _repository.GetRootDetailAccountsAsync();
             return JsonReadResult(detailAccounts);
         }
 

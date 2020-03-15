@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -147,51 +146,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private static TestBalanceParameters GetParameters(
-            string from, string to, TestBalanceMode mode, TestBalanceFormat format,
-            GridOptions gridOptions, bool? byBranch, int? options)
-        {
-            var parameters = new TestBalanceParameters()
-            {
-                ViewId = ViewName.Account,
-                Mode = mode,
-                Format = format,
-                GridOptions = gridOptions
-            };
-            var culture = new CultureInfo("en");
-            if (DateTime.TryParse(from, culture, DateTimeStyles.None, out DateTime fromDate))
-            {
-                parameters.FromDate = fromDate;
-            }
-
-            if (DateTime.TryParse(to, culture, DateTimeStyles.None, out DateTime toDate))
-            {
-                parameters.ToDate = toDate;
-            }
-
-            if (Int32.TryParse(from, out int fromNo))
-            {
-                parameters.FromNo = fromNo;
-            }
-
-            if (Int32.TryParse(to, out int toNo))
-            {
-                parameters.ToNo = toNo;
-            }
-
-            if (byBranch.HasValue)
-            {
-                parameters.IsByBranch = byBranch.Value;
-            }
-
-            if (options.HasValue)
-            {
-                parameters.Options = (TestBalanceOptions)options.Value;
-            }
-
-            return parameters;
-        }
-
         private async Task<IActionResult> TestBalanceResultAsync(
             TestBalanceMode mode, TestBalanceFormat format,
             string from, string to, bool? byBranch, int? options,
@@ -203,7 +157,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var gridOptions = GridOptions ?? new GridOptions();
-            var parameters = GetParameters(from, to, mode, format, gridOptions, byBranch, options);
+            var parameters = _repository.BuildParameters(
+                ViewName.Account, from, to, mode, format, gridOptions, byBranch, options);
             var balance = default(TestBalanceViewModel);
             switch (mode)
             {

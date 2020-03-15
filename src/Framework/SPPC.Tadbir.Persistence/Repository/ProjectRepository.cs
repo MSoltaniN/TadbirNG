@@ -44,12 +44,10 @@ namespace SPPC.Tadbir.Persistence
             var projects = await Repository.GetAllAsync<Project>(ViewName.Project, prj => prj.Children);
             var filteredProjects = projects
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
-                .ToList();
-            await FilterGrandchildrenAsync(filteredProjects);
-            await ReadAsync(gridOptions);
-            return filteredProjects
                 .Apply(gridOptions)
                 .ToList();
+            await ReadAsync(gridOptions);
+            return filteredProjects;
         }
 
         /// <summary>
@@ -125,14 +123,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مجموعه ای از پروژه های سطح اول را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه پروژه های سطح اول</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetProjectsLedgerAsync()
+        public async Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync()
         {
             var projects = await Repository
                 .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
                 .Where(prj => prj.ParentId == null)
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
                 .ToListAsync();
-            await FilterGrandchildrenAsync(projects);
             return projects;
         }
 
@@ -148,7 +145,6 @@ namespace SPPC.Tadbir.Persistence
                 .Where(prj => prj.ParentId == projectId)
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
                 .ToListAsync();
-            await FilterGrandchildrenAsync(children);
             return children;
         }
 
@@ -364,32 +360,6 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             int count = await repository.GetCountByCriteriaAsync(prj => prj.Level == level);
             await Config.SaveTreeLevelUsageAsync(ViewName.Project, level, count);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد زیرشاخه ها را در مجموعه ای از اطلاعات درختی
-        /// با توجه به تنظیمات جاری دسترسی به شعب و سطرها اصلاح می کند
-        /// </summary>
-        /// <typeparam name="TTreeEntity">نوع مدل نمایشی با ساختار درختی</typeparam>
-        /// <param name="children">مجموعه ای از اطلاعات درختی که زیرشاخه های آنها باید فیلتر شود</param>
-        private async Task FilterGrandchildrenAsync<TTreeEntity>(IList<TTreeEntity> children)
-            where TTreeEntity : ITreeEntityView
-        {
-            var childIds = children.Select(item => item.Id);
-            var grandchildren = await Repository
-                .GetAllQuery<Project>(ViewName.Project)
-                .Where(prj => prj.ParentId != null && childIds.Contains(prj.ParentId.Value))
-                .GroupBy(prj => prj.ParentId.Value)
-                .ToArrayAsync();
-            foreach (var child in children)
-            {
-                var grandchild = grandchildren
-                    .Where(item => item.Key == child.Id)
-                    .SingleOrDefault();
-                child.ChildCount = (grandchild != null)
-                    ? grandchild.Count()
-                    : 0;
-            }
         }
 
         private async Task CascadeUpdateFullCodeAsync(int projectId)

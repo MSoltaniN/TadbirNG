@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -58,7 +57,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در سطح اول را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه تفصیلی های شناور در سطح اول</returns>
-        Task<IList<AccountItemBriefViewModel>> GetDetailAccountsLedgerAsync();
+        Task<IList<AccountItemBriefViewModel>> GetRootDetailAccountsAsync();
 
         /// <summary>
         /// به روش آسنکرون، شناورهای زیرمجموعه را برای تفصیلی شناور مشخص شده خوانده و برمی گرداند

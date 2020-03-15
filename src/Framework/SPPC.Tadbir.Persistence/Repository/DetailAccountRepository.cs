@@ -44,12 +44,10 @@ namespace SPPC.Tadbir.Persistence
             var detailAccounts = await Repository.GetAllAsync<DetailAccount>(ViewName.DetailAccount, facc => facc.Children);
             var filteredDetails = detailAccounts
                 .Select(item => Mapper.Map<DetailAccountViewModel>(item))
-                .ToList();
-            await FilterGrandchildrenAsync(filteredDetails);
-            await ReadAsync(gridOptions);
-            return filteredDetails
                 .Apply(gridOptions)
                 .ToList();
+            await ReadAsync(gridOptions);
+            return filteredDetails;
         }
 
         /// <summary>
@@ -125,14 +123,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در سطح اول را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه تفصیلی های شناور در سطح اول</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountsLedgerAsync()
+        public async Task<IList<AccountItemBriefViewModel>> GetRootDetailAccountsAsync()
         {
             var detailAccounts = await Repository
                 .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
                 .Where(facc => facc.ParentId == null)
                 .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
                 .ToListAsync();
-            await FilterGrandchildrenAsync(detailAccounts);
             return detailAccounts;
         }
 
@@ -148,7 +145,6 @@ namespace SPPC.Tadbir.Persistence
                 .Where(facc => facc.ParentId == detailId)
                 .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
                 .ToListAsync();
-            await FilterGrandchildrenAsync(children);
             return children;
         }
 
@@ -365,32 +361,6 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             int count = await repository.GetCountByCriteriaAsync(facc => facc.Level == level);
             await Config.SaveTreeLevelUsageAsync(ViewName.DetailAccount, level, count);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد زیرشاخه ها را در مجموعه ای از اطلاعات درختی
-        /// با توجه به تنظیمات جاری دسترسی به شعب و سطرها اصلاح می کند
-        /// </summary>
-        /// <typeparam name="TTreeEntity">نوع مدل نمایشی با ساختار درختی</typeparam>
-        /// <param name="children">مجموعه ای از اطلاعات درختی که زیرشاخه های آنها باید فیلتر شود</param>
-        private async Task FilterGrandchildrenAsync<TTreeEntity>(IList<TTreeEntity> children)
-            where TTreeEntity : ITreeEntityView
-        {
-            var childIds = children.Select(item => item.Id);
-            var grandchildren = await Repository
-                .GetAllQuery<DetailAccount>(ViewName.DetailAccount)
-                .Where(facc => facc.ParentId != null && childIds.Contains(facc.ParentId.Value))
-                .GroupBy(facc => facc.ParentId.Value)
-                .ToArrayAsync();
-            foreach (var child in children)
-            {
-                var grandchild = grandchildren
-                    .Where(item => item.Key == child.Id)
-                    .SingleOrDefault();
-                child.ChildCount = (grandchild != null)
-                    ? grandchild.Count()
-                    : 0;
-            }
         }
 
         private async Task CascadeUpdateFullCodeAsync(int faccountId)

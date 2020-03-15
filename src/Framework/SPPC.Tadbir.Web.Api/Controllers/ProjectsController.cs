@@ -91,7 +91,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetEnvironmentAccountsLedgerAsync()
         {
-            var projects = await _repository.GetProjectsLedgerAsync();
+            var projects = await _repository.GetRootProjectsAsync();
             return JsonReadResult(projects);
         }
 

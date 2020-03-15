@@ -134,13 +134,6 @@ namespace SPPC.Tadbir.Persistence
         Task SaveRoleFiscalPeriodsAsync(RelatedItemsViewModel rolePeriods);
 
         /// <summary>
-        /// به روش آسنکرون، نقش های یک کاربر را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="userId">شناسه یکی از کاربران موجود</param>
-        /// <returns>اطلاعات نمایشی نقش ها</returns>
-        Task<RelatedItemsViewModel> GetUserRolesAsync(int userId);
-
-        /// <summary>
         /// به روش آسنکرون، آخرین وضعیت نقش های یک کاربر را ذخیره می کند
         /// </summary>
         /// <param name="userRoles">اطلاعات نمایشی نقش ها</param>

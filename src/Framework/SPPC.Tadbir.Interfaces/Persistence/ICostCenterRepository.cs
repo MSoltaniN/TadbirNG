@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -33,7 +32,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مجموعه ای از مراکز هزینه در سطح اول را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه مراکز هزینه در سطح اول</returns>
-        Task<IList<AccountItemBriefViewModel>> GetCostCentersLedgerAsync();
+        Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری را

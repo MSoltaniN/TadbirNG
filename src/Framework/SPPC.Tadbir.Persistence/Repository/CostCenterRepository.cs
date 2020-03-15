@@ -44,12 +44,10 @@ namespace SPPC.Tadbir.Persistence
             var costCenters = await Repository.GetAllAsync<CostCenter>(ViewName.CostCenter, cc => cc.Children);
             var filteredCenters = costCenters
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
-                .ToList();
-            await FilterGrandchildrenAsync(filteredCenters);
-            await ReadAsync(gridOptions);
-            return filteredCenters
                 .Apply(gridOptions)
                 .ToList();
+            await ReadAsync(gridOptions);
+            return filteredCenters;
         }
 
         /// <summary>
@@ -67,14 +65,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مجموعه ای از مراکز هزینه در سطح اول را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه مراکز هزینه در سطح اول</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetCostCentersLedgerAsync()
+        public async Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync()
         {
             var costCenters = await Repository
                 .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
                 .Where(cc => cc.ParentId == null)
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .ToListAsync();
-            await FilterGrandchildrenAsync(costCenters);
             return costCenters;
         }
 
@@ -148,7 +145,6 @@ namespace SPPC.Tadbir.Persistence
                 .Where(cc => cc.ParentId == costCenterId)
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .ToListAsync();
-            await FilterGrandchildrenAsync(children);
             return children;
         }
 
@@ -364,32 +360,6 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             int count = await repository.GetCountByCriteriaAsync(cc => cc.Level == level);
             await Config.SaveTreeLevelUsageAsync(ViewName.CostCenter, level, count);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد زیرشاخه ها را در مجموعه ای از اطلاعات درختی
-        /// با توجه به تنظیمات جاری دسترسی به شعب و سطرها اصلاح می کند
-        /// </summary>
-        /// <typeparam name="TTreeEntity">نوع مدل نمایشی با ساختار درختی</typeparam>
-        /// <param name="children">مجموعه ای از اطلاعات درختی که زیرشاخه های آنها باید فیلتر شود</param>
-        private async Task FilterGrandchildrenAsync<TTreeEntity>(IList<TTreeEntity> children)
-            where TTreeEntity : ITreeEntityView
-        {
-            var childIds = children.Select(item => item.Id);
-            var grandchildren = await Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter)
-                .Where(cc => cc.ParentId != null && childIds.Contains(cc.ParentId.Value))
-                .GroupBy(cc => cc.ParentId.Value)
-                .ToArrayAsync();
-            foreach (var child in children)
-            {
-                var grandchild = grandchildren
-                    .Where(item => item.Key == child.Id)
-                    .SingleOrDefault();
-                child.ChildCount = (grandchild != null)
-                    ? grandchild.Count()
-                    : 0;
-            }
         }
 
         private async Task CascadeUpdateFullCodeAsync(int costCenterId)

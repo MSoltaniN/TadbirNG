@@ -91,7 +91,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersLedgerAsync()
         {
-            var costCenters = await _repository.GetCostCentersLedgerAsync();
+            var costCenters = await _repository.GetRootCostCentersAsync();
             return JsonReadResult(costCenters);
         }
 

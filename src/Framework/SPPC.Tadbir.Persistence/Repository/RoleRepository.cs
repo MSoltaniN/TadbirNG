@@ -496,46 +496,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، نقش های یک کاربر را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="userId">شناسه یکی از کاربران موجود</param>
-        /// <returns>اطلاعات نمایشی نقش ها</returns>
-        public async Task<RelatedItemsViewModel> GetUserRolesAsync(int userId)
-        {
-            RelatedItemsViewModel userRoles = null;
-            var repository = UnitOfWork.GetAsyncRepository<User>();
-            var existing = await repository
-                .GetEntityQuery()
-                .Include(u => u.UserRoles)
-                    .ThenInclude(ur => ur.Role)
-                .Where(u => u.Id == userId)
-                .SingleOrDefaultAsync();
-            if (existing != null)
-            {
-                var enabledRoles = existing.UserRoles
-                    .Select(ur => ur.Role)
-                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
-                    .ToArray();
-                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
-                var allRoles = await roleRepository
-                    .GetAllAsync();
-                var disabledRoles = allRoles
-                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
-                    .Except(enabledRoles, new EntityEqualityComparer<RelatedItemViewModel>())
-                    .ToArray();
-                Array.ForEach(enabledRoles, item => item.IsSelected = true);
-
-                userRoles = Mapper.Map<RelatedItemsViewModel>(existing);
-                Array.ForEach(enabledRoles
-                    .Concat(disabledRoles)
-                    .OrderBy(item => item.Id)
-                    .ToArray(), item => userRoles.RelatedItems.Add(item));
-            }
-
-            return userRoles;
-        }
-
-        /// <summary>
         /// به روش آسنکرون، آخرین وضعیت نقش های یک کاربر را ذخیره می کند
         /// </summary>
         /// <param name="userRoles">اطلاعات نمایشی نقش ها</param>

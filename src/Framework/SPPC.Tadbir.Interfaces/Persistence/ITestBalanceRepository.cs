@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -32,5 +33,22 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>انواع مختلف تراز آزمایشی</returns>
         Task<IEnumerable<TestBalanceModeInfo>> GetBalanceTypesLookupAsync(int viewId);
+
+        /// <summary>
+        /// کلاس پارامتر مورد نیاز برای گزارش های گردش و مانده حساب و سطوح شناور را
+        /// با استفاده از مقادیر داده شده ساخته و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
+        /// <param name="from">تاریخ یا شماره سند ابتدا در محدوده گزارشگیری</param>
+        /// <param name="to">تاریخ یا شماره سند انتها در محدوده گزارشگیری</param>
+        /// <param name="mode">سطح مورد نظر برای گزارشگیری</param>
+        /// <param name="format">قالب مورد نظر</param>
+        /// <param name="gridOptions">گزینه های صفحه بندی، فیلتر و مرتب سازی برای نمای لیستی</param>
+        /// <param name="byBranch">مشخص می کند که گزارش به تفکیک شعبه است یا نه</param>
+        /// <param name="options">سایر گزینه های مورد نظر برای گزارشگیری</param>
+        /// <returns>کلاس پارامتر ساخته شده</returns>
+        TestBalanceParameters BuildParameters(int viewId, string from, string to,
+            TestBalanceMode mode, TestBalanceFormat format,
+            GridOptions gridOptions, bool? byBranch, int? options);
     }
 }
