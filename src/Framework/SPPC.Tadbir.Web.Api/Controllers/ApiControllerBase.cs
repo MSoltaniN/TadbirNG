@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
@@ -51,6 +53,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 item.RowNo = rowNo++;
             }
+        }
+
+        protected IActionResult JsonListResult<TModel>(PagedList<TModel> pagedList)
+            where TModel : ViewModelBase
+        {
+            SetItemCount(pagedList.TotalCount);
+            SetRowNumbers(pagedList.Items);
+            return Json(pagedList.Items);
         }
 
         protected IActionResult JsonReadResult(object data)

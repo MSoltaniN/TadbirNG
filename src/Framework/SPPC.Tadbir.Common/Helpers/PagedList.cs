@@ -20,8 +20,7 @@ namespace SPPC.Tadbir.Helpers
         /// <param name="gridOptions">گزینه های موجود برای مرتب سازی، فیلتر و صفحه بندی</param>
         public PagedList(IEnumerable<T> all, GridOptions gridOptions = null)
         {
-            Verify.ArgumentNotNull(all, nameof(all));
-            SetItems(all, gridOptions ?? new GridOptions());
+            SetItems(all ?? new List<T>(), gridOptions ?? new GridOptions());
         }
 
         /// <summary>

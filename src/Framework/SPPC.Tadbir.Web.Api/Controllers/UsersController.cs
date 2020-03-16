@@ -45,11 +45,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUsersAsync()
         {
-            int itemCount = await _repository.GetUserCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var users = await _repository.GetUsersAsync(GridOptions);
-            SetRowNumbers(users);
-            return Json(users);
+            return JsonListResult(users);
         }
 
         // GET: api/users/name/{userName}

@@ -42,12 +42,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentAccountsAsync()
         {
-            int itemCount = await _repository.GetCountAsync<AccountViewModel>(GridOptions);
-            SetItemCount(itemCount);
             var accounts = await _repository.GetAccountsAsync(GridOptions);
-            SetRowNumbers(accounts);
-            Localize(accounts);
-            return Json(accounts);
+            Localize(accounts.Items);
+            return JsonListResult(accounts);
         }
 
         // GET: api/accounts/lookup

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -38,15 +38,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
         {
-            var accounts = await Repository.GetAllAsync<Account>(ViewName.Account, acc => acc.Children);
-            var filteredAccounts = accounts
+            var accounts = await Repository
+                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Select(item => Mapper.Map<AccountViewModel>(item))
-                .Apply(gridOptions)
-                .ToList();
+                .ToListAsync();
             await ReadAsync(gridOptions);
-            return filteredAccounts;
+            return new PagedList<AccountViewModel>(accounts, gridOptions);
         }
 
         /// <summary>
@@ -149,19 +148,6 @@ namespace SPPC.Tadbir.Persistence
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .ToListAsync();
             return children;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
-            where TViewModel : class, new()
-        {
-            return await Repository.GetCountAsync<Account, TViewModel>(ViewName.Account, gridOptions);
         }
 
         /// <summary>

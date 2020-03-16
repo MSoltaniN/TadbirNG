@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -18,7 +19,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست کاربران برنامه</returns>
-        Task<IList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null);
+        Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// Asynchronously retrieves a single user specified by user name from repository.
@@ -77,13 +78,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>گزینه های منوی پیش فرض کاربران</returns>
         Task<IList<CommandViewModel>> GetUserCommandsAsync();
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد کاربران تعریف شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد کاربران تعریف شده</returns>
-        Task<int> GetUserCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، نقش های یک کاربر را خوانده و برمی گرداند

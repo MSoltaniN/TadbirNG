@@ -41,11 +41,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersAsync()
         {
-            int itemCount = await _repository.GetCountAsync<CostCenterViewModel>(GridOptions);
-            SetItemCount(itemCount);
             var costCenters = await _repository.GetCostCentersAsync(GridOptions);
-            SetRowNumbers(costCenters);
-            return Json(costCenters);
+            return JsonListResult(costCenters);
         }
 
         // GET: api/ccenters/lookup

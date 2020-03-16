@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -20,7 +19,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<IList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null);
+        Task<PagedList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه جاری تعریف شده اند،
@@ -29,16 +28,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
         Task<IList<KeyValue>> GetProjectsLookupAsync(GridOptions gridOptions = null);
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد پروژه های تعریف شده در دوره مالی و شعبه جاری را
-        /// از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
-            where TViewModel : class, new();
 
         /// <summary>
         /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

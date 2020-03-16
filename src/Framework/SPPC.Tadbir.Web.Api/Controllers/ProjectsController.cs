@@ -41,11 +41,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetEnvironmentProjectsAsync()
         {
-            int itemCount = await _repository.GetCountAsync<ProjectViewModel>(GridOptions);
-            SetItemCount(itemCount);
             var projects = await _repository.GetProjectsAsync(GridOptions);
-            SetRowNumbers(projects);
-            return Json(projects);
+            return JsonListResult(projects);
         }
 
         // GET: api/projects/lookup

@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -34,16 +35,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اطلاعات نمایشی گروه های حساب</returns>
-        public async Task<IList<AccountGroupViewModel>> GetAccountGroupsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<AccountGroupViewModel>> GetAccountGroupsAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
             var accGroups = await repository
                 .GetEntityQuery()
                 .Select(grp => Mapper.Map<AccountGroupViewModel>(grp))
-                .Apply(gridOptions)
                 .ToListAsync();
             await ReadAsync(gridOptions);
-            return accGroups;
+            return new PagedList<AccountGroupViewModel>(accGroups, gridOptions);
         }
 
         /// <summary>
@@ -65,52 +65,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، تعداد گروه های حساب را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد گروه های حساب تعریف شده</returns>
-        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
-            return await repository
-                .GetEntityQuery()
-                .Select(grp => Mapper.Map<AccountGroupViewModel>(grp))
-                .Apply(gridOptions, false)
-                .CountAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد حساب های کل زیرمجموعه گروه حساب مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="groupId">شناسه دیتابیسی گروه مورد نظر</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد حساب های کل زیرمجموعه گروه حساب</returns>
-        public async Task<int> GetSubItemCountAsync(int groupId, GridOptions gridOptions = null)
-        {
-            int count = await Repository
-                .GetAllQuery<Account>(ViewName.Account)
-                .Where(acc => acc.GroupId == groupId)
-                .Select(acc => Mapper.Map<AccountViewModel>(acc))
-                .Apply(gridOptions, false)
-                .CountAsync();
-            return count;
-        }
-
-        /// <summary>
         /// مجوعه ای از حساب های کل زیرمجموعه گروه مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="groupId">شناسه دیتابیسی گروه مورد نظر</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه حساب های کل زیرمجموعه</returns>
-        public async Task<IList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions = null)
+        public async Task<PagedList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions = null)
         {
             var accounts = await Repository
                 .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
                 .Where(acc => acc.GroupId == groupId)
                 .Select(acc => Mapper.Map<AccountViewModel>(acc))
-                .Apply(gridOptions)
                 .ToListAsync();
-            return accounts;
+            return new PagedList<AccountViewModel>(accounts, gridOptions);
         }
 
         /// <summary>

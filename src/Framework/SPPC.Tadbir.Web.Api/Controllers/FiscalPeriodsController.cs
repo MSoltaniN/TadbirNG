@@ -37,9 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetFiscalPeriodsAsync()
         {
             var fiscalPeriods = await _repository.GetFiscalPeriodsAsync(GridOptions);
-            SetItemCount(fiscalPeriods.TotalCount);
-            SetRowNumbers(fiscalPeriods.Items);
-            return Json(fiscalPeriods.Items);
+            return JsonListResult(fiscalPeriods);
         }
 
         // GET: api/fperiods/{fpId:min(1)}

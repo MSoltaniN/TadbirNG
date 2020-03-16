@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -34,12 +35,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetAccountGroupsAsync()
         {
-            int itemCount = await _repository.GetCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var accountGroups = await _repository.GetAccountGroupsAsync(GridOptions);
-            SetRowNumbers(accountGroups);
-            Localize(accountGroups.ToArray());
-            return Json(accountGroups);
+            Localize(accountGroups.Items);
+            return JsonListResult(accountGroups);
         }
 
         // GET: api/accgroups/{groupId:min(1)}
@@ -61,11 +59,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetGroupLedgerAccountsAsync(int groupId)
         {
-            int itemCount = await _repository.GetSubItemCountAsync(groupId, GridOptions);
-            SetItemCount(itemCount);
             var accounts = await _repository.GetGroupLedgerAccountsAsync(groupId, GridOptions);
-            SetRowNumbers(accounts);
-            return Json(accounts);
+            return JsonListResult(accounts);
         }
 
         // GET: api/accgroups/brief
@@ -172,9 +167,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return message;
         }
 
-        private void Localize(params AccountGroupViewModel[] accountGroups)
+        private void Localize(IEnumerable<AccountGroupViewModel> accountGroups)
         {
-            Array.ForEach(accountGroups, grp => grp.Category = _strings[grp.Category]);
+            foreach (var accountGroup in accountGroups)
+            {
+                Localize(accountGroup);
+            }
+        }
+
+        private void Localize(AccountGroupViewModel accountGroup)
+        {
+            accountGroup.Category = _strings[accountGroup.Category];
         }
 
         private readonly IAccountGroupRepository _repository;

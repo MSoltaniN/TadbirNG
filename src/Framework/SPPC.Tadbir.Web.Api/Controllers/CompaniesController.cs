@@ -38,9 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCompaniesAsync()
         {
             var companies = await _repository.GetCompaniesAsync(GridOptions);
-            SetItemCount(companies.TotalCount);
-            SetRowNumbers(companies.Items);
-            return Json(companies.Items);
+            return JsonListResult(companies);
         }
 
         // GET: api/companies/{companyId:min(1)}

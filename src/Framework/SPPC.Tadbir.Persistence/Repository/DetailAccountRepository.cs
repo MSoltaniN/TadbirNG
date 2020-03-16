@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -39,15 +39,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions = null)
         {
-            var detailAccounts = await Repository.GetAllAsync<DetailAccount>(ViewName.DetailAccount, facc => facc.Children);
-            var filteredDetails = detailAccounts
+            var detailAccounts = await Repository
+                .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
                 .Select(item => Mapper.Map<DetailAccountViewModel>(item))
-                .Apply(gridOptions)
-                .ToList();
+                .ToListAsync();
             await ReadAsync(gridOptions);
-            return filteredDetails;
+            return new PagedList<DetailAccountViewModel>(detailAccounts, gridOptions);
         }
 
         /// <summary>
@@ -59,19 +58,6 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<KeyValue>> GetDetailAccountsLookupAsync(GridOptions gridOptions = null)
         {
             return await Repository.GetAllLookupAsync<DetailAccount>(ViewName.DetailAccount, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری را
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
-            where TViewModel : class, new()
-        {
-            return await Repository.GetCountAsync<DetailAccount, TViewModel>(ViewName.DetailAccount, gridOptions);
         }
 
         /// <summary>

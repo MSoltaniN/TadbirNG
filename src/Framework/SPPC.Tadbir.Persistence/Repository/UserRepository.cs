@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Framework.Service.Security;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
@@ -46,16 +46,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست کاربران برنامه</returns>
-        public async Task<IList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<User>();
             var users = await repository
-                .GetAllAsync(u => u.Person);
-            await ReadAsync(gridOptions);
-            return users
+                .GetEntityQuery(u => u.Person)
                 .Select(user => Mapper.Map<UserViewModel>(user))
-                .Apply(gridOptions)
-                .ToList();
+                .ToListAsync();
+            await ReadAsync(gridOptions);
+            return new PagedList<UserViewModel>(users, gridOptions);
         }
 
         /// <summary>
@@ -217,21 +216,6 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync()
         {
             return await Metadata.GetDefaultCommandsAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد کاربران تعریف شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد کاربران تعریف شده</returns>
-        public async Task<int> GetUserCountAsync(GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<User>();
-            var items = await repository.GetAllAsync();
-            return items
-                .Select(usr => Mapper.Map<UserViewModel>(usr))
-                .Apply(gridOptions, false)
-                .Count();
         }
 
         /// <summary>

@@ -31,12 +31,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetOperationLogsAsync()
         {
-            int itemCount = await _repository.GetLogCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var operationLogs = await _repository.GetLogsAsync(GridOptions);
-            SetRowNumbers(operationLogs);
-            Localize(operationLogs);
-            return Json(operationLogs);
+            Localize(operationLogs.Items);
+            return JsonListResult(operationLogs);
         }
 
         // GET: api/system/oplog/archive
@@ -44,12 +41,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.ViewArchive)]
         public async Task<IActionResult> GetOperationLogArchiveAsync()
         {
-            int itemCount = await _repository.GetLogArchiveCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var logArchive = await _repository.GetLogsArchiveAsync(GridOptions);
-            SetRowNumbers(logArchive);
-            Localize(logArchive);
-            return Json(logArchive);
+            Localize(logArchive.Items);
+            return JsonListResult(logArchive);
         }
 
         // GET: api/system/oplog/all
@@ -58,12 +52,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             (int)(OperationLogPermissions.View | OperationLogPermissions.ViewArchive))]
         public async Task<IActionResult> GetAllOperationLogsAsync()
         {
-            int itemCount = await _repository.GetMergedLogCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var mergedLogs = await _repository.GetMergedLogsAsync(GridOptions);
-            SetRowNumbers(mergedLogs);
-            Localize(mergedLogs);
-            return Json(mergedLogs);
+            Localize(mergedLogs.Items);
+            return JsonListResult(mergedLogs);
         }
 
         // POST: api/system/oplog/archive
@@ -135,12 +126,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.View)]
         public async Task<IActionResult> GetSysOperationLogsAsync()
         {
-            int itemCount = await _repository.GetSystemLogCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var operationLogs = await _repository.GetSystemLogsAsync(GridOptions);
-            SetRowNumbers(operationLogs);
-            Localize(operationLogs);
-            return Json(operationLogs);
+            Localize(operationLogs.Items);
+            return JsonListResult(operationLogs);
         }
 
         // GET: api/system/sys-oplog/archive
@@ -148,12 +136,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.ViewArchive)]
         public async Task<IActionResult> GetSysOperationLogArchiveAsync()
         {
-            int itemCount = await _repository.GetSystemLogArchiveCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var logArchive = await _repository.GetSystemLogsArchiveAsync(GridOptions);
-            SetRowNumbers(logArchive);
-            Localize(logArchive);
-            return Json(logArchive);
+            Localize(logArchive.Items);
+            return JsonListResult(logArchive);
         }
 
         // GET: api/system/sys-oplog/all
@@ -162,12 +147,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             (int)(SysOperationLogPermissions.View | SysOperationLogPermissions.ViewArchive))]
         public async Task<IActionResult> GetAllSystemOperationLogsAsync()
         {
-            int itemCount = await _repository.GetMergedSystemLogCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var mergedLogs = await _repository.GetMergedSystemLogsAsync(GridOptions);
-            SetRowNumbers(mergedLogs);
-            Localize(mergedLogs);
-            return Json(mergedLogs);
+            Localize(mergedLogs.Items);
+            return JsonListResult(mergedLogs);
         }
 
         // POST: api/system/sys-oplog/archive

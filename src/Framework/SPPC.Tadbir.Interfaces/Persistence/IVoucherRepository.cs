@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<IList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null);
+        Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
@@ -169,7 +169,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
-        Task<ValueTuple<IList<VoucherViewModel>, int>> GetVouchersWithNoArticleAsync(
+        Task<PagedList<VoucherViewModel>> GetVouchersWithNoArticleAsync(
             GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد نا تراز</returns>
-        Task<ValueTuple<IList<VoucherViewModel>, int>> GetUnbalancedVouchersAsync(
+        Task<PagedList<VoucherViewModel>> GetUnbalancedVouchersAsync(
             GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>

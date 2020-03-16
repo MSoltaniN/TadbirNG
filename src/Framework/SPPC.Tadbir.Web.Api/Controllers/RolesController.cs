@@ -37,12 +37,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRolesAsync()
         {
-            int itemCount = await _repository.GetRoleCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var roles = await _repository.GetRolesAsync(GridOptions);
-            SetRowNumbers(roles);
-            Localize(roles);
-            return Json(roles);
+            Localize(roles.Items);
+            return JsonListResult(roles);
         }
 
         // GET: api/roles/new

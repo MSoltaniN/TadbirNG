@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -18,7 +19,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<IList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null);
+        Task<PagedList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه جاری تعریف شده اند،
@@ -33,16 +34,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه مراکز هزینه در سطح اول</returns>
         Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync();
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری را
-        /// از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
-            where TViewModel : class, new();
 
         /// <summary>
         /// به روش آسنکرون،مرکز هزینه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

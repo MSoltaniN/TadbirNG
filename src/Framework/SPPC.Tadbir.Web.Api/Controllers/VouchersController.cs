@@ -45,12 +45,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVouchersAsync()
         {
-            int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
-            SetItemCount(itemCount);
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
-            SetRowNumbers(vouchers);
-            Localize(vouchers.ToArray());
-            return Json(vouchers);
+            Localize(vouchers.Items);
+            return JsonListResult(vouchers);
         }
 
         // GET: api/vouchers/{voucherId:int}
@@ -141,11 +138,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVouchersWithNoArticleAsync(DateTime from, DateTime to)
         {
-            var (vouchers, itemCount) = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
-            SetItemCount(itemCount);
-            Localize(vouchers.ToArray());
-            SetRowNumbers(vouchers);
-            return Json(vouchers);
+            var vouchers = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
+            Localize(vouchers.Items);
+            return JsonListResult(vouchers);
         }
 
         // GET: api/vouchers/unbalanced
@@ -153,11 +148,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
         {
-            var (vouchers, itemCount) = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
-            SetItemCount(itemCount);
-            Localize(vouchers.ToArray());
-            SetRowNumbers(vouchers);
-            return Json(vouchers);
+            var vouchers = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
+            Localize(vouchers.Items);
+            return JsonListResult(vouchers);
         }
 
         // GET: api/vouchers/miss-number
@@ -400,15 +393,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticlesAsync(int voucherId)
         {
-            int itemCount = await _lineRepository.GetArticleCountAsync<VoucherLineViewModel>(voucherId, GridOptions);
-            SetItemCount(itemCount);
             var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
-            foreach (var article in articles)
+            SetItemCount(articles.TotalCount);
+            foreach (var article in articles.Items)
             {
                 article.CurrencyName = _strings[article.CurrencyName];
             }
 
-            return Json(articles);
+            return Json(articles.Items);
         }
 
         // GET: api/vouchers/articles/{articleId:min(1)}
@@ -434,14 +426,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetSystemIssueArticlesAsync(string issueType, DateTime from, DateTime to)
         {
-            var (articles, itemCount) = await _lineRepository.GetSystemIssueArticlesAsync(GridOptions, issueType, from, to);
-            SetItemCount(itemCount);
+            var articles = await _lineRepository.GetSystemIssueArticlesAsync(GridOptions, issueType, from, to);
+            SetItemCount(articles.TotalCount);
             if (issueType != "invalid-acc")
             {
-                SetRowNumbers(articles);
+                SetRowNumbers(articles.Items);
             }
 
-            return Json(articles);
+            return Json(articles.Items);
         }
 
         // POST: api/vouchers/{voucherId:min(1)}/articles
@@ -724,15 +716,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
-        private void Localize(params VoucherViewModel[] vouchers)
+        private void Localize(IEnumerable<VoucherViewModel> vouchers)
         {
-            Array.ForEach(vouchers, voucher =>
+            foreach (var voucher in vouchers)
             {
-                if (voucher != null)
-                {
-                    voucher.StatusName = _strings.Format(voucher.StatusName);
-                }
-            });
+                Localize(voucher);
+            }
+        }
+
+        private void Localize(VoucherViewModel voucher)
+        {
+            if (voucher != null)
+            {
+                voucher.StatusName = _strings.Format(voucher.StatusName);
+            }
         }
 
         private readonly IVoucherRepository _repository;

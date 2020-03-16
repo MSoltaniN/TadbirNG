@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست نقش های تعریف شده</returns>
-        Task<IList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null);
+        Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// Asynchronously initializes and returns a new role object that contains all available security permissions.
@@ -49,13 +49,6 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>A <see cref="RoleViewModel"/> instance that corresponds to the specified role identifier,
         /// if there is such a role defined; otherwise, returns null.</returns>
         Task<RoleViewModel> GetRoleBriefAsync(int roleId);
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد نقش های تعریف شده</returns>
-        Task<int> GetRoleCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// Asynchronously inserts or updates a single security role, including all permissions in it, in repository

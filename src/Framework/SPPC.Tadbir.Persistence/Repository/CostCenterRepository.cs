@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -39,15 +39,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null)
         {
-            var costCenters = await Repository.GetAllAsync<CostCenter>(ViewName.CostCenter, cc => cc.Children);
-            var filteredCenters = costCenters
+            var costCenters = await Repository
+                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
-                .Apply(gridOptions)
-                .ToList();
+                .ToListAsync();
             await ReadAsync(gridOptions);
-            return filteredCenters;
+            return new PagedList<CostCenterViewModel>(costCenters, gridOptions);
         }
 
         /// <summary>
@@ -73,19 +72,6 @@ namespace SPPC.Tadbir.Persistence
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .ToListAsync();
             return costCenters;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری را
-        /// از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
-            where TViewModel : class, new()
-        {
-            return await Repository.GetCountAsync<CostCenter, TViewModel>(ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>

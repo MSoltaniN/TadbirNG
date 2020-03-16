@@ -37,9 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetBranchesAsync()
         {
             var branches = await _repository.GetBranchesAsync(GridOptions);
-            SetItemCount(branches.TotalCount);
-            SetRowNumbers(branches.Items);
-            return Json(branches.Items);
+            return JsonListResult(branches);
         }
 
         // GET: api/branches/{branchId:min(1)}

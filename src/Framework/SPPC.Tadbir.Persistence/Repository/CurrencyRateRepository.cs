@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -31,7 +32,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر</param>
         /// <returns>مجموعه نرخ های ثبت شده برای ارز مورد نظر</returns>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        public async Task<IList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId, GridOptions gridOptions)
+        public async Task<PagedList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId, GridOptions gridOptions)
         {
             var repository = UnitOfWork.GetAsyncRepository<CurrencyRate>();
             var parentRepository = UnitOfWork.GetAsyncRepository<Currency>();
@@ -48,7 +49,7 @@ namespace SPPC.Tadbir.Persistence
                 OnEntityAction(OperationId.View);
                 Log.Description = String.Format("Currency : {0}", currency.Name);
                 await ReadAsync(gridOptions);
-                return all;
+                return new PagedList<CurrencyRateViewModel>(all, gridOptions);
             }
 
             return null;

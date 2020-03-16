@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -19,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        Task<IList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null);
+        Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
@@ -109,6 +108,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد آرتیکل ها</returns>
-        Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetSystemIssueArticlesAsync(GridOptions gridOptions, string issueType, DateTime from, DateTime to);
+        Task<PagedList<VoucherLineDetailViewModel>> GetSystemIssueArticlesAsync(
+            GridOptions gridOptions, string issueType, DateTime from, DateTime to);
     }
 }

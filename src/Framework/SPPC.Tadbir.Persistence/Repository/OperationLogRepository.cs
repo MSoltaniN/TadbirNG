@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
@@ -37,25 +38,25 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
-        public async Task<IList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions = null)
         {
-            var options = gridOptions ?? new GridOptions();
             var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
-            var list = await repository.GetEntityQuery(
-                log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
-                log => log.Operation, log => log.Source, log => log.SourceList)
+            var list = await repository
+                .GetEntityQuery(
+                    log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
+                    log => log.Operation, log => log.Source, log => log.SourceList)
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .ToListAsync();
-            list = list.Apply(options).ToList();
-            foreach (var item in list)
+            var logs = new PagedList<OperationLogViewModel>(list, gridOptions);
+            foreach (var item in logs.Items)
             {
                 await SetSystemValues(item);
             }
 
             await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.View);
-            return list;
+            return logs;
         }
 
         /// <summary>
@@ -63,9 +64,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های شرکتی بایگانی شده</returns>
-        public async Task<IList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions = null)
         {
-            var options = gridOptions ?? new GridOptions();
             var repository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
             var list = await repository.GetEntityQuery(
                 log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
@@ -74,14 +74,14 @@ namespace SPPC.Tadbir.Persistence
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .ToListAsync();
-            list = list.Apply(options).ToList();
-            foreach (var item in list)
+            var archive = new PagedList<OperationLogViewModel>(list, gridOptions);
+            foreach (var item in archive.Items)
             {
                 await SetSystemValues(item);
             }
 
             await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.ViewArchive);
-            return list;
+            return archive;
         }
 
         /// <summary>
@@ -90,58 +90,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های شرکتی موجود و لاگ های بایگانی شده</returns>
-        public async Task<IList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions = null)
         {
             var active = await GetLogsAsync(null);
             var archived = await GetLogsArchiveAsync(null);
-            return active
-                .Concat(archived)
+            var merged = active.Items
+                .Concat(archived.Items)
                 .OrderByDescending(log => log.Date)
-                .ThenByDescending(log => log.Time)
-                .Apply(gridOptions)
-                .ToList();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای لاگ های عملیاتی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد سطرهای لاگ های عملیاتی</returns>
-        public async Task<int> GetLogCountAsync(GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
-            var items = await repository.GetAllAsync();
-            return items
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .Apply(gridOptions, false)
-                .Count();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای لاگ های شرکتی بایگانی شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد سطرهای لاگ های شرکتی بایگانی شده</returns>
-        public async Task<int> GetLogArchiveCountAsync(GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
-            var items = await repository.GetAllAsync();
-            return items
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .Apply(gridOptions, false)
-                .Count();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای لاگ عملیات شرکتی و بایگانی شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد سطرهای لاگ های شرکتی و بایگانی شده</returns>
-        public async Task<int> GetMergedLogCountAsync(GridOptions gridOptions = null)
-        {
-            int activeCount = await GetLogCountAsync(gridOptions);
-            int archiveCount = await GetLogArchiveCountAsync(gridOptions);
-            return activeCount + archiveCount;
+                .ThenByDescending(log => log.Time);
+            return new PagedList<OperationLogViewModel>(merged, gridOptions);
         }
 
         /// <summary>
@@ -254,7 +211,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی موجود</returns>
-        public async Task<IList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions = null)
         {
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
@@ -265,12 +222,11 @@ namespace SPPC.Tadbir.Persistence
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .Apply(gridOptions)
                 .ToListAsync();
             UnitOfWork.UseCompanyContext();
 
             await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.View);
-            return list;
+            return new PagedList<OperationLogViewModel>(list, gridOptions);
         }
 
         /// <summary>
@@ -278,7 +234,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی بایگانی شده</returns>
-        public async Task<IList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions = null)
         {
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
@@ -289,12 +245,11 @@ namespace SPPC.Tadbir.Persistence
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .Apply(gridOptions)
                 .ToListAsync();
             UnitOfWork.UseCompanyContext();
 
             await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.ViewArchive);
-            return list;
+            return new PagedList<OperationLogViewModel>(list, gridOptions);
         }
 
         /// <summary>
@@ -303,62 +258,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی موجود و لاگ های بایگانی شده</returns>
-        public async Task<IList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions = null)
         {
             var active = await GetSystemLogsAsync(null);
             var archived = await GetSystemLogsArchiveAsync(null);
-            return active
-                .Concat(archived)
+            var merged = active.Items
+                .Concat(archived.Items)
                 .OrderByDescending(log => log.Date)
-                .ThenByDescending(log => log.Time)
-                .Apply(gridOptions)
-                .ToList();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای لاگ های عملیات سیستمی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد سطرهای لاگ های سیستمی</returns>
-        public async Task<int> GetSystemLogCountAsync(GridOptions gridOptions = null)
-        {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
-            int count = await repository.GetEntityQuery()
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .Apply(gridOptions, false)
-                .CountAsync();
-            UnitOfWork.UseCompanyContext();
-            return count;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای لاگ های سیستمی بایگانی شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد سطرهای لاگ های سیستمی بایگانی شده</returns>
-        public async Task<int> GetSystemLogArchiveCountAsync(GridOptions gridOptions = null)
-        {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
-            int count = await repository.GetEntityQuery()
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .Apply(gridOptions, false)
-                .CountAsync();
-            UnitOfWork.UseCompanyContext();
-            return count;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد سطرهای لاگ عملیات سیستمی و بایگانی شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد سطرهای لاگ های سیستمی و بایگانی شده</returns>
-        public async Task<int> GetMergedSystemLogCountAsync(GridOptions gridOptions = null)
-        {
-            int activeCount = await GetSystemLogCountAsync(gridOptions);
-            int archiveCount = await GetSystemLogArchiveCountAsync(gridOptions);
-            return activeCount + archiveCount;
+                .ThenByDescending(log => log.Time);
+            return new PagedList<OperationLogViewModel>(merged, gridOptions);
         }
 
         /// <summary>

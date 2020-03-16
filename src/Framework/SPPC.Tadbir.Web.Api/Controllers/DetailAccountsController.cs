@@ -41,11 +41,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDetailAccountsAsync()
         {
-            int itemCount = await _repository.GetCountAsync<DetailAccountViewModel>(GridOptions);
-            SetItemCount(itemCount);
             var detailAccounts = await _repository.GetDetailAccountsAsync(GridOptions);
-            SetRowNumbers(detailAccounts);
-            return Json(detailAccounts);
+            return JsonListResult(detailAccounts);
         }
 
         // GET: api/faccounts/lookup

@@ -9,6 +9,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
@@ -39,7 +40,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست نقش های تعریف شده</returns>
-        public async Task<IList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Role>();
             var query = repository
@@ -49,10 +50,9 @@ namespace SPPC.Tadbir.Persistence
 
             var roles = await query
                 .Select(r => Mapper.Map<RoleViewModel>(r))
-                .Apply(gridOptions)
                 .ToListAsync();
             await ReadAsync(gridOptions);
-            return roles;
+            return new PagedList<RoleViewModel>(roles, gridOptions);
         }
 
         /// <summary>
@@ -179,21 +179,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return roleBrief;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد نقش های تعریف شده</returns>
-        public async Task<int> GetRoleCountAsync(GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var items = await repository.GetAllAsync();
-            return items
-                .Select(role => Mapper.Map<RoleViewModel>(role))
-                .Apply(gridOptions, false)
-                .Count();
         }
 
         /// <summary>

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از ارزها تعریف شده</returns>
-        public async Task<IList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
             var currencies = await repository
@@ -45,26 +45,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(item => Mapper.Map<CurrencyViewModel>(item))
                 .ToListAsync();
             await ReadAsync(gridOptions);
-            return currencies
-                .Apply(gridOptions)
-                .ToList();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد ارزها را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد ارزها</returns>
-        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Currency>();
-            var items = await repository
-                .GetEntityQuery()
-                .Select(item => Mapper.Map<CurrencyViewModel>(item))
-                .ToListAsync();
-            return items
-                .Apply(gridOptions, false)
-                .Count();
+            return new PagedList<CurrencyViewModel>(currencies, gridOptions);
         }
 
         /// <summary>

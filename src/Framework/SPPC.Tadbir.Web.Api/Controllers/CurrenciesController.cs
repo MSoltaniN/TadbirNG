@@ -45,16 +45,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetCurrenciesAsync()
         {
-            int itemCount = await _repository.GetCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var currencies = await _repository.GetCurrenciesAsync(GridOptions);
-            foreach (var currency in currencies)
+            foreach (var currency in currencies.Items)
             {
                 Localize(currency);
             }
 
-            SetRowNumbers(currencies);
-            return Json(currencies);
+            return JsonListResult(currencies);
         }
 
         // GET: api/currencies/{currencyId:min(1)}
@@ -72,11 +69,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.View)]
         public async Task<IActionResult> GetCurrencyRatesAsync(int currencyId)
         {
-            var gridOptions = GridOptions ?? new GridOptions();
-            var allRates = await _rateRepository.GetCurrencyRatesAsync(currencyId, gridOptions);
-            SetItemCount(allRates.Count);
-            SetRowNumbers(allRates);
-            return Json(allRates);
+            var allRates = await _rateRepository.GetCurrencyRatesAsync(currencyId, GridOptions);
+            return JsonListResult(allRates);
         }
 
         // GET: api/currencies/rates/{rateId:min(1)}

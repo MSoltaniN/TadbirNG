@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -39,15 +39,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null)
         {
-            var projects = await Repository.GetAllAsync<Project>(ViewName.Project, prj => prj.Children);
-            var filteredProjects = projects
+            var projects = await Repository
+                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
-                .Apply(gridOptions)
-                .ToList();
+                .ToListAsync();
             await ReadAsync(gridOptions);
-            return filteredProjects;
+            return new PagedList<ProjectViewModel>(projects, gridOptions);
         }
 
         /// <summary>
@@ -59,19 +58,6 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<KeyValue>> GetProjectsLookupAsync(GridOptions gridOptions = null)
         {
             return await Repository.GetAllLookupAsync<Project>(ViewName.Project, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد پروژه های تعریف شده در دوره مالی و شعبه جاری را
-        /// از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
-            where TViewModel : class, new()
-        {
-            return await Repository.GetCountAsync<Project, TViewModel>(ViewName.Project, gridOptions);
         }
 
         /// <summary>
