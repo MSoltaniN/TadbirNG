@@ -375,7 +375,25 @@ export class DefaultComponent extends BaseComponent {
 
   }
 
+  andTwoFilterExpression(filterExp1: FilterExpression, filterExp2: FilterExpression): FilterExpression {
+    if (filterExp1 != null) {
+      if (filterExp2.filter) {
+        var filter = new Filter(filterExp2.filter.FieldName, filterExp2.filter.Value, filterExp2.filter.Operator, filterExp2.filter.fieldTypeName);
+        filterExp1.filter = filter;
+      }
 
+      if (filterExp2.children && filterExp2.children.length > 0) {
+        var newFilter = new FilterExpression();
+        newFilter.children = filterExp2.children
+        filterExp1.children.push(newFilter);
+      }
+      return filterExp1;
+    }
+    else {
+      return filterExp2;
+    }
+
+  }
 
 
   /**

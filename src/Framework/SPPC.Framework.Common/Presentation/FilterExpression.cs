@@ -60,12 +60,19 @@ namespace SPPC.Framework.Presentation
             }
             else
             {
-                builder = new StringBuilder(Filter.ToString());
+                if (Filter.Operator != "true")
+                {
+                    builder = new StringBuilder(Filter.ToString());
+                }
             }
 
             foreach (var item in Children)
             {
-                builder.Append(item.Operator);
+                if (!string.IsNullOrEmpty(builder.ToString()) && !string.IsNullOrEmpty(item.Operator))
+                {
+                    builder.Append(item.Operator);
+                }
+
                 if (item.Filter.Braces != null)
                 {
                     foreach (var brace in item.Filter.Braces)
@@ -77,7 +84,10 @@ namespace SPPC.Framework.Presentation
                     }
                 }
 
-                builder.Append(item.Filter.ToString());
+                if (!string.IsNullOrEmpty(item.Filter.FieldName))
+                {
+                    builder.Append(item.Filter.ToString());
+                }
 
                 if (item.Children != null && item.Children.Count > 0)
                 {
