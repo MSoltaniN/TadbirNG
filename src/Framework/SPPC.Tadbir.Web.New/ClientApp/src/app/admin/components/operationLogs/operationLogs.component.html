@@ -106,7 +106,7 @@
   <div class="section-option col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <div class="row">
 
-      <div class="col-xs-12 col-sm-2 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">                  
+      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">                  
           <label class="control-label" >{{ 'OperationLog.ReportLog' | translate }}</label>
           <kendo-dropdownlist [data]="LogTypes"
                               [textField]="'value'"
@@ -161,7 +161,7 @@
           </ng-template>
         </kendo-dropdownlist>
       </div>
-      <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
         <label class="control-label">{{ 'OperationLog.SelectCompany' | translate }}</label>
 
         <kendo-dropdownlist [data]="companies"
@@ -183,7 +183,7 @@
     </div>
     <div class="row">
 
-      <div class="col-xs-12 col-sm-2 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">                  
+      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">                  
           <label class="control-label">{{ 'OperationLog.ReportTypeLog' | translate }}</label>
           <kendo-dropdownlist [data]="LogReportTypes"
                               [textField]="'value'"
@@ -236,21 +236,21 @@
           </ng-template>
         </kendo-dropdownlist>
       </div>
-      <div class="col-xs-12 col-sm-4">
-        <div *ngIf="this.logType != '3'" class="col-xs-12 col-sm-3 form-group">
-          <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff" [disabled]="disableButtons" 
+      <div class="col-xs-12 col-sm-3">
+        <div *ngIf="this.logType != '3'" class="col-xs-12 col-sm-6 form-group">
+          <button  class="k-button btn-compute-default" [disabled]="disableButtons" 
                   (click)="archiveData();">                  
             {{ 'OperationLog.Archive' | translate }}
           </button>
         </div>
-        <div *ngIf="this.logType == '3'" class="col-xs-12 col-sm-5 form-group">
-          <button  class="k-button btn-compute-default btn-compute-selectable sppc-float-diff" [disabled]="disableButtons" 
+        <div *ngIf="this.logType == '3'" class="col-xs-12 col-sm-6 form-group">
+          <button  class="k-button btn-compute-default" [disabled]="disableButtons" 
                   (click)="deleteArchiveData();">
             {{ 'OperationLog.DeleteArchive' | translate }}
           </button>
         </div>        
         <div class="col-xs-12  form-group sppc-float btn-show-log" [ngClass]="{'col-sm-6' : !archiveSelected,'col-sm-7' : archiveSelected}">
-          <button class="k-button btn-compute-default btn-compute-selectable sppc-float-diff"
+          <button class="k-button btn-compute-default"
                   (click)="getReportData();">
             {{ 'OperationLog.ShowLog' | translate }}
           </button>

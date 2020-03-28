@@ -27,7 +27,7 @@ export function getLayoutModule(layout: Layout) {
   styles: [`
 .section-option { margin-top: 15px; background-color: #f6f6f6; border: solid 1px #dadde2; padding: 15px 15px 0; }
 .section-option label,input[type=text] { width:100% } /deep/.section-option kendo-dropdownlist { width:100% }
-.btn-compute-default {margin-top: 25px; border: 2px solid #337ab7; color: #337ab7; padding: 5px 25px;}
+.btn-compute-default {margin-top: 25px; border: 2px solid #337ab7; color: #337ab7;width:100%}
 .btn-compute { color: #337ab7; transition: All 0.3s 0.1s ease-out;}
 .check-item { margin-top: 20px;}
 .btn-show-log {padding-left:0px;}
