@@ -190,13 +190,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های برنامه را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های برنامه</returns>
-        Task<IList<KeyValue>> GetEntityTypesAsync();
+        Task<IList<SourceEntityViewModel>> GetEntityTypesAsync();
 
         /// <summary>
         /// به روش آسنکرون، موجودیت های سیستمی را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>مجموعه موجودیت های برنامه</returns>
-        Task<IList<KeyValue>> GetSystemEntityTypesAsync();
+        /// <returns>مجموعه موجودیت های سیستمی</returns>
+        Task<IList<SourceEntityViewModel>> GetSystemEntityTypesAsync();
 
         #endregion
     }

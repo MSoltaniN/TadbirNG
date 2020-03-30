@@ -274,8 +274,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetEntityTypesLookupAsync()
         {
             var lookup = await _repository.GetEntityTypesAsync();
-            Array.ForEach(lookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
-            var sortedLookup = lookup.OrderBy(item => item.Value).ToList();
+            Array.ForEach(lookup.ToArray(), item => item.Name = _strings[item.Name]);
+            var sortedLookup = lookup.OrderBy(item => item.Name).ToList();
             return Json(sortedLookup);
         }
 
@@ -284,8 +284,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetSystemEntityTypesLookupAsync()
         {
             var lookup = await _repository.GetSystemEntityTypesAsync();
-            Array.ForEach(lookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
-            var sortedLookup = lookup.OrderBy(item => item.Value).ToList();
+            Array.ForEach(lookup.ToArray(), item => item.Name = _strings[item.Name]);
+            var sortedLookup = lookup.OrderBy(item => item.Name).ToList();
             return Json(sortedLookup);
         }
 

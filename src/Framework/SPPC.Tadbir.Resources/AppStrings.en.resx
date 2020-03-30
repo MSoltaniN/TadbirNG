@@ -2973,4 +2973,7 @@
   <data name="EntityDescription" xml:space="preserve">
     <value>Entity description</value>
   </data>
+  <data name="SystemSettings" xml:space="preserve">
+    <value>System settings</value>
+  </data>
 </root>

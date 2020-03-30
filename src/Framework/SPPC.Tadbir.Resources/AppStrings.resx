@@ -2964,4 +2964,7 @@
   <data name="EntityDescription" xml:space="preserve">
     <value>شرح موجودیت</value>
   </data>
+  <data name="SystemSettings" xml:space="preserve">
+    <value>تنظیمات سیستمی</value>
+  </data>
 </root>

@@ -547,21 +547,21 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های برنامه را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های برنامه</returns>
-        public async Task<IList<KeyValue>> GetEntityTypesAsync()
+        public async Task<IList<SourceEntityViewModel>> GetEntityTypesAsync()
         {
-            var lookup = new List<KeyValue>
+            var lookup = new List<SourceEntityViewModel>
             {
-                new KeyValue("0", "AllEntities")
+                new SourceEntityViewModel() { Name = "AllEntities" }
             };
             var repository = UnitOfWork.GetAsyncRepository<EntityType>();
             lookup.AddRange(await repository
                 .GetEntityQuery()
-                .Select(entity => new KeyValue(entity.Id.ToString(), entity.Name))
+                .Select(entity => new SourceEntityViewModel() { EntityTypeId = entity.Id, Name = entity.Name })
                 .ToListAsync());
             var sourceRepository = UnitOfWork.GetAsyncRepository<OperationSource>();
             lookup.AddRange(await sourceRepository
                 .GetEntityQuery()
-                .Select(source => new KeyValue(source.Id.ToString(), source.Name))
+                .Select(source => new SourceEntityViewModel() { SourceId = source.Id, Name = source.Name })
                 .ToListAsync());
             return lookup;
         }
@@ -570,7 +570,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های سیستمی را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های برنامه</returns>
-        public async Task<IList<KeyValue>> GetSystemEntityTypesAsync()
+        public async Task<IList<SourceEntityViewModel>> GetSystemEntityTypesAsync()
         {
             UnitOfWork.UseSystemContext();
             var lookup = await GetEntityTypesAsync();
