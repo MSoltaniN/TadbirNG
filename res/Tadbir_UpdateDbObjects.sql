@@ -945,3 +945,44 @@ GO
 ALTER TABLE [Core].[OperationLogArchive]
 ADD [EntityAssociation] NVARCHAR(64) NULL
 GO
+
+-- 1.1.853
+UPDATE [Core].[OperationLog]
+SET EntityCode = ''
+WHERE EntityCode IS NULL
+
+UPDATE [Core].[OperationLog]
+SET EntityName = ''
+WHERE EntityName IS NULL
+
+UPDATE [Core].[OperationLog]
+SET EntityDescription = ''
+WHERE EntityDescription IS NULL
+
+UPDATE [Core].[OperationLog]
+SET EntityReference = ''
+WHERE EntityReference IS NULL
+
+UPDATE [Core].[OperationLog]
+SET EntityAssociation = ''
+WHERE EntityAssociation IS NULL
+
+UPDATE [Core].[OperationLogArchive]
+SET EntityCode = ''
+WHERE EntityCode IS NULL
+
+UPDATE [Core].[OperationLogArchive]
+SET EntityName = ''
+WHERE EntityName IS NULL
+
+UPDATE [Core].[OperationLogArchive]
+SET EntityDescription = ''
+WHERE EntityDescription IS NULL
+
+UPDATE [Core].[OperationLogArchive]
+SET EntityReference = ''
+WHERE EntityReference IS NULL
+
+UPDATE [Core].[OperationLogArchive]
+SET EntityAssociation = ''
+WHERE EntityAssociation IS NULL

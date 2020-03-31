@@ -32,6 +32,11 @@ namespace SPPC.Tadbir.ViewModel.Core
             EntityReference = String.Empty;
             EntityAssociation = String.Empty;
             Description = String.Empty;
+            EntityTypeName = String.Empty;
+            SourceName = String.Empty;
+            SourceListName = String.Empty;
+            UserName = String.Empty;
+            CompanyName = String.Empty;
         }
 
         /// <summary>

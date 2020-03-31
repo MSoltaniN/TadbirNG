@@ -2,8 +2,8 @@
 GO
 
 SET IDENTITY_INSERT [Corporate].[Branch] ON
-INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, Name, [Level]) VALUES (1, 1, N'ساختمان مرکزی (تهران)', 0)
-INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, Name, [Level]) VALUES (2, 1, N'نمایندگی کرج', 0)
+INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, Name, [Level]) VALUES (1, 1, N'دفتر مرکزی', 0)
+INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, Name, [Level]) VALUES (2, 1, N'نمایشگاه تهران', 0)
 SET IDENTITY_INSERT [Corporate].[Branch] OFF
 
 SET IDENTITY_INSERT [Finance].[FiscalPeriod] ON
@@ -307,24 +307,24 @@ INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (12, N'SalesQuote')
 SET IDENTITY_INSERT [Core].[DocumentType] OFF
 
 SET IDENTITY_INSERT [Finance].[DetailAccount] ON
-INSERT INTO [Finance].[DetailAccount] (DetailID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (1, 1, 1, N'100', N'100', N'شناور 1', 0)
-INSERT INTO [Finance].[DetailAccount] (DetailID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (2, 1, 1, N'200', N'200', N'شناور 2', 0)
-INSERT INTO [Finance].[DetailAccount] (DetailID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (3, 1, 1, N'300', N'300', N'شناور 3', 0)
-INSERT INTO [Finance].[DetailAccount] (DetailID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (4, 1, 1, N'400', N'100', N'شناور 4', 0)
+INSERT INTO [Finance].[DetailAccount] (DetailAccountID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (1, 1, 1, N'1000', N'1000', N'شناور 1', 0)
+INSERT INTO [Finance].[DetailAccount] (DetailAccountID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (2, 1, 1, N'2000', N'2000', N'شناور 2', 0)
+INSERT INTO [Finance].[DetailAccount] (DetailAccountID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (3, 1, 1, N'3000', N'3000', N'شناور 3', 0)
+INSERT INTO [Finance].[DetailAccount] (DetailAccountID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (4, 1, 1, N'4000', N'1000', N'شناور 4', 0)
 SET IDENTITY_INSERT [Finance].[DetailAccount] OFF
 
 SET IDENTITY_INSERT [Finance].[CostCenter] ON
-INSERT INTO [Finance].[CostCenter] (CostCenterID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (1, 1, 1, N'100', N'100', N'مرکز هزینه 1', 0)
-INSERT INTO [Finance].[CostCenter] (CostCenterID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (2, 1, 1, N'200', N'200', N'مرکز هزینه 2', 0)
-INSERT INTO [Finance].[CostCenter] (CostCenterID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (3, 1, 1, N'300', N'300', N'مرکز هزینه 3', 0)
-INSERT INTO [Finance].[CostCenter] (CostCenterID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (4, 1, 1, N'400', N'400', N'مرکز هزینه 4', 0)
+INSERT INTO [Finance].[CostCenter] (CostCenterID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (1, 1, 1, N'1000', N'1000', N'مرکز هزینه 1', 0)
+INSERT INTO [Finance].[CostCenter] (CostCenterID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (2, 1, 1, N'2000', N'2000', N'مرکز هزینه 2', 0)
+INSERT INTO [Finance].[CostCenter] (CostCenterID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (3, 1, 1, N'3000', N'3000', N'مرکز هزینه 3', 0)
+INSERT INTO [Finance].[CostCenter] (CostCenterID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (4, 1, 1, N'4000', N'4000', N'مرکز هزینه 4', 0)
 SET IDENTITY_INSERT [Finance].[CostCenter] OFF
 
 SET IDENTITY_INSERT [Finance].[Project] ON
-INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (1, 1, 1, N'100', N'100', N'پروژه 1', 0)
-INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (2, 1, 1, N'200', N'200', N'پروژه 2', 0)
-INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (3, 1, 1, N'300', N'300', N'پروژه 3', 0)
-INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (4, 1, 1, N'400', N'400', N'پروژه 4', 0)
+INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (1, 1, 1, N'1000', N'1000', N'پروژه 1', 0)
+INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (2, 1, 1, N'2000', N'2000', N'پروژه 2', 0)
+INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (3, 1, 1, N'3000', N'3000', N'پروژه 3', 0)
+INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (4, 1, 1, N'4000', N'4000', N'پروژه 4', 0)
 SET IDENTITY_INSERT [Finance].[Project] OFF
 
 SET IDENTITY_INSERT [Finance].[Voucher] ON
