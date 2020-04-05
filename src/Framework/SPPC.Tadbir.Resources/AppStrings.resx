@@ -2967,4 +2967,19 @@
   <data name="SystemSettings" xml:space="preserve">
     <value>تنظیمات سیستمی</value>
   </data>
+  <data name="CurrentValue" xml:space="preserve">
+    <value>مقدار جاری</value>
+  </data>
+  <data name="DeletedItems" xml:space="preserve">
+    <value>اقلام حذف شده</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>جدید</value>
+  </data>
+  <data name="NewValue" xml:space="preserve">
+    <value>مقدار جدید</value>
+  </data>
+  <data name="Old" xml:space="preserve">
+    <value>قدیم</value>
+  </data>
 </root>
