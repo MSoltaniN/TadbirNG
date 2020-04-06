@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SPPC.Tadbir.Domain
 {
@@ -35,19 +34,9 @@ namespace SPPC.Tadbir.Domain
         NonLiquidLiabilities = 4,
 
         /// <summary>
-        /// مجموعه حساب فروش
+        /// مجموعه حساب حقوق صاحبان سرمایه
         /// </summary>
-        Sales = 4,
-
-        /// <summary>
-        /// مجموعه حساب برگشت از فروش
-        /// </summary>
-        SalesRefund = 4,
-
-        /// <summary>
-        /// مجموعه حساب تخفیفات فروش
-        /// </summary>
-        SalesDiscount = 4,
+        OwnerEquities = 5,
 
         /// <summary>
         /// مجموعه حساب صندوق
@@ -57,6 +46,31 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب بانک
         /// </summary>
-        Bank = 17
+        Bank = 17,
+
+        /// <summary>
+        /// مجموعه حساب فروش
+        /// </summary>
+        Sales = 25,
+
+        /// <summary>
+        /// مجموعه حساب برگشت از فروش
+        /// </summary>
+        SalesRefund = 26,
+
+        /// <summary>
+        /// مجموعه حساب تخفیفات فروش
+        /// </summary>
+        SalesDiscount = 33,
+
+        /// <summary>
+        /// مجموعه حساب افتتاحیه
+        /// </summary>
+        OpeningAccount = 41,
+
+        /// <summary>
+        /// مجموعه حساب اختتامیه
+        /// </summary>
+        ClosingAccount = 42
     }
 }

@@ -384,6 +384,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // GET: api/vouchers/opening
+        [Route(VoucherApi.OpeningVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetOrIssueOpeningVoucherAsync()
+        {
+            // TODO: Perform required validation
+
+            // Rule 1 : Current fiscal period MUST have required account collection associations
+            var openingVoucher = await _repository.GetOpeningVoucherAsync();
+            return Json(openingVoucher);
+        }
+
         #endregion
 
         #region Article Operations

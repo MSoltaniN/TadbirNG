@@ -191,5 +191,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
         Task<ValueTuple<IList<NumberListViewModel>, int>> GetMissingVoucherNumbersAsync(
             GridOptions gridOptions, DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
+        Task<VoucherViewModel> GetOpeningVoucherAsync();
     }
 }

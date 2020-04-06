@@ -2982,4 +2982,10 @@
   <data name="Old" xml:space="preserve">
     <value>قدیم</value>
   </data>
+  <data name="OpeningAssetAccounts" xml:space="preserve">
+    <value>افتتاح حساب های دارایی</value>
+  </data>
+  <data name="OpeningLiabilityCapitalAccounts" xml:space="preserve">
+    <value>افتتاح حساب های بدهی و سرمایه</value>
+  </data>
 </root>
