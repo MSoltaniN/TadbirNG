@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را تعریف می کند.
     /// </summary>
-    public interface IVoucherRepository
+    public partial interface IVoucherRepository
     {
         /// <summary>
         /// به روش آسنکرون، کلیه اسناد مالی از نوع مفهومی سند حسابداری را که در دوره مالی و شعبه جاری
@@ -191,11 +191,5 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
         Task<ValueTuple<IList<NumberListViewModel>, int>> GetMissingVoucherNumbersAsync(
             GridOptions gridOptions, DateTime from, DateTime to);
-
-        /// <summary>
-        /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
-        Task<VoucherViewModel> GetOpeningVoucherAsync();
     }
 }

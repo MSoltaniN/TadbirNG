@@ -396,6 +396,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(openingVoucher);
         }
 
+        // GET: api/vouchers/closing
+        [Route(VoucherApi.ClosingVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetOrIssueClosingVoucherAsync()
+        {
+            // TODO: Perform required validation
+
+            // Rule 1 : Current fiscal period MUST NOT have any unchecked vouchers
+
+            // Rule 2 : Current fiscal period MUST have the closing temp accounts voucher
+            var closingVoucher = await _repository.GetClosingVoucherAsync();
+            return Json(closingVoucher);
+        }
+
         #endregion
 
         #region Article Operations

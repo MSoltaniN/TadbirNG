@@ -355,21 +355,21 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for the closing temp accounts voucher in current environment
         /// </summary>
-        public const string ClosingAccountsVoucher = "vouchers/opening";
+        public const string ClosingAccountsVoucher = "vouchers/closing-tmp";
 
         /// <summary>
         /// API server route URL for the closing temp accounts voucher in current environment
         /// </summary>
-        public const string ClosingAccountsVoucherUrl = "vouchers/opening";
+        public const string ClosingAccountsVoucherUrl = "vouchers/closing-tmp";
 
         /// <summary>
         /// API client URL for the closing voucher in current environment
         /// </summary>
-        public const string ClosingVoucher = "vouchers/opening";
+        public const string ClosingVoucher = "vouchers/closing";
 
         /// <summary>
         /// API server route URL for the closing voucher in current environment
         /// </summary>
-        public const string ClosingVoucherUrl = "vouchers/opening";
+        public const string ClosingVoucherUrl = "vouchers/closing";
     }
 }
