@@ -97,7 +97,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   isShowBreadcrumb: boolean = true;
   isFirstVoucher: boolean = false;
   isLastVoucher: boolean = false;
-
   voucherOperationsItem: any;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
@@ -152,6 +151,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
             break
           }
+          case "opening": {          
+            this.getVoucher(VoucherApi.OpeningVoucher);
+            break;
+          }
+          case "closing": {
+            this.getVoucher(VoucherApi.ClosingVoucher);
+            break;
+          }
+            
           default: {
             this.isShowBreadcrumb = false;
             this.newVoucher();
