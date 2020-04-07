@@ -2997,4 +2997,10 @@
   <data name="OpeningLiabilityCapitalAccounts" xml:space="preserve">
     <value>Opening liability and equity accounts</value>
   </data>
+  <data name="ClosingAssetAccounts" xml:space="preserve">
+    <value>Closing asset account by closure account</value>
+  </data>
+  <data name="ClosingLiabilityCapitalAccounts" xml:space="preserve">
+    <value>Closing liability/equity account by closure account</value>
+  </data>
 </root>
