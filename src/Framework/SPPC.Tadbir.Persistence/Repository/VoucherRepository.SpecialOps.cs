@@ -20,17 +20,23 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
         public async Task<VoucherViewModel> GetOpeningVoucherAsync()
         {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var openingVoucher = await repository.GetSingleByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
-                v.Type == (short)VoucherType.OpeningVoucher,
-                v => v.Lines);
+            var openingVoucher = await GetCurrentOpeningVoucherAsync();
             if (openingVoucher == null)
             {
                 openingVoucher = await IssueOpeningVoucherAsync();
             }
 
             return Mapper.Map<VoucherViewModel>(openingVoucher);
+        }
+
+        private async Task<Voucher> GetCurrentOpeningVoucherAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var openingVoucher = await repository.GetSingleByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
+                v.Type == (short)VoucherType.OpeningVoucher,
+                v => v.Lines);
+            return openingVoucher;
         }
 
         private async Task<Voucher> IssueOpeningVoucherAsync()
@@ -43,49 +49,156 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                openingVoucher = new Voucher()
-                {
-                    BranchId = UserContext.BranchId,
-                    DailyNo = 1,
-                    Date = DateTime.Now.Date,
-                    Description = AppStrings.OpeningVoucher,
-                    FiscalPeriodId = UserContext.FiscalPeriodId,
-                    IssuedById = UserContext.Id,
-                    IssuerName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName,
-                    No = 1,
-                    StatusId = 1,
-                    SubjectType = 0,
-                    Type = (short)VoucherType.OpeningVoucher
-                };
-                var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
-                var branches = await branchRepository
-                    .GetEntityQuery()
-                    .Select(br => br.Id)
-                    .ToListAsync();
+                openingVoucher = GetNewOpeningVoucher();
+                var branches = await GetBranchIdsAsync();
                 foreach (int branchId in branches)
                 {
                     openingVoucher.Lines.AddRange(await GetBranchOpeningVoucherLinesAsync(branchId));
                 }
             }
 
-            await InsertAsync(openingVoucher);
+            await InsertAsync(openingVoucher, AppStrings.IssueOpeningVoucher);
             return openingVoucher;
         }
 
         private async Task<Voucher> GetLastClosingVoucherAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var lastClosing = await repository
-                .GetEntityQuery(v => v.Lines)
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId - 1 &&
-                    v.Type == (short)VoucherType.ClosingVoucher)
-                .FirstOrDefaultAsync();
+            var lastClosing = await repository.GetSingleByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId - 1 &&
+                v.Type == (short)VoucherType.ClosingVoucher,
+                v => v.Lines);
             return lastClosing;
         }
 
         private async Task<Voucher> IssueOpeningFromLastBalanceAsync(Voucher lastClosingVoucher)
         {
-            throw new NotImplementedException();
+            var openingVoucher = GetNewOpeningVoucher();
+            var branches = await GetBranchIdsAsync();
+            foreach (int branchId in branches)
+            {
+                var branchLines = new List<VoucherLine>();
+                var closingAccount = await GetBranchClosingAccountAsync(branchId);
+
+                // Start with Asset lines, debit lines first, then credit lines...
+                var assetLines = lastClosingVoucher.Lines
+                    .Where(line => line.BranchId == branchId &&
+                        line.Description == AppStrings.ClosingAssetAccounts &&
+                        line.Credit > 0.0M);
+                branchLines.AddRange(ReverseClosingToOpening(
+                    assetLines, AppStrings.OpeningAssetAccounts));
+                var assetOpening = lastClosingVoucher.Lines
+                    .Where(line => line.BranchId == branchId &&
+                        line.AccountId == closingAccount.Id &&
+                        line.Debit > 0.0M)
+                    .Single();
+                var openingAccount = await GetBranchOpeningAccountAsync(branchId);
+                branchLines.Add(ReverseClosingToOpening(
+                    assetOpening, openingAccount.Id, AppStrings.OpeningAssetAccounts));
+
+                // Move on to Liability/Equity lines, debit lines first, then credit lines...
+                var liabilityOpening = lastClosingVoucher.Lines
+                    .Where(line => line.BranchId == branchId &&
+                        line.AccountId == closingAccount.Id &&
+                        line.Credit > 0.0M)
+                    .Single();
+                branchLines.Add(ReverseClosingToOpening(
+                    liabilityOpening, openingAccount.Id, AppStrings.OpeningLiabilityCapitalAccounts));
+                var liabilityLines = lastClosingVoucher.Lines
+                    .Where(line => line.BranchId == branchId &&
+                        line.Description == AppStrings.ClosingLiabilityCapitalAccounts &&
+                        line.Debit > 0.0M);
+                branchLines.AddRange(ReverseClosingToOpening(
+                    liabilityLines, AppStrings.OpeningLiabilityCapitalAccounts));
+
+                openingVoucher.Lines.AddRange(branchLines);
+            }
+
+            int rowNo = 1;
+            foreach (var line in openingVoucher.Lines)
+            {
+                line.RowNo = rowNo++;
+            }
+
+            await InsertAsync(openingVoucher, AppStrings.IssueOpeningVoucher);
+            return openingVoucher;
+        }
+
+        private IEnumerable<VoucherLine> ReverseClosingToOpening(
+            IEnumerable<VoucherLine> lines, string description)
+        {
+            var cloneLines = lines
+                .Select(line => CloneVoucherLine(line))
+                .ToList();
+            foreach (var line in cloneLines)
+            {
+                var temp = line.Debit;
+                line.Debit = line.Credit;
+                line.Credit = temp;
+                line.Description = description;
+            }
+
+            return cloneLines;
+        }
+
+        private VoucherLine ReverseClosingToOpening(VoucherLine line, int accountId, string description)
+        {
+            var clone = CloneVoucherLine(line);
+            clone.AccountId = accountId;
+            var temp = clone.Debit;
+            clone.Debit = clone.Credit;
+            clone.Credit = temp;
+            clone.Description = description;
+            return clone;
+        }
+
+        private async Task<IList<int>> GetBranchIdsAsync()
+        {
+            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+            return await branchRepository
+                .GetEntityQuery()
+                .Select(br => br.Id)
+                .ToListAsync();
+        }
+
+        private Voucher GetNewOpeningVoucher()
+        {
+            return new Voucher()
+            {
+                BranchId = UserContext.BranchId,
+                DailyNo = 1,
+                Date = DateTime.Now.Date,
+                Description = AppStrings.OpeningVoucher,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                IssuedById = UserContext.Id,
+                IssuerName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName,
+                No = 1,
+                StatusId = 1,
+                SubjectType = 0,
+                Type = (short)VoucherType.OpeningVoucher
+            };
+        }
+
+        private VoucherLine CloneVoucherLine(VoucherLine line)
+        {
+            return new VoucherLine()
+            {
+                AccountId = line.AccountId,
+                Amount = line.Amount,
+                BranchId = line.BranchId,
+                CostCenterId = line.CostCenterId,
+                CreatedById = UserContext.Id,
+                Credit = line.Credit,
+                CurrencyId = line.CurrencyId,
+                CurrencyValue = line.CurrencyValue,
+                Debit = line.Debit,
+                Description = line.Description,
+                DetailId = line.DetailId,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                FollowupNo = line.FollowupNo,
+                ProjectId = line.ProjectId,
+                TypeId = line.TypeId
+            };
         }
 
         private async Task<IEnumerable<VoucherLine>> GetBranchOpeningVoucherLinesAsync(int branchId)
@@ -151,6 +264,12 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Account> GetBranchOpeningAccountAsync(int branchId)
         {
             var accounts = await GetCollectionItemsAsync((int)AccountCollectionId.OpeningAccount, branchId);
+            return accounts.Single();
+        }
+
+        private async Task<Account> GetBranchClosingAccountAsync(int branchId)
+        {
+            var accounts = await GetCollectionItemsAsync((int)AccountCollectionId.ClosingAccount, branchId);
             return accounts.Single();
         }
 
@@ -288,11 +407,11 @@ namespace SPPC.Tadbir.Persistence
             return fullAccounts;
         }
 
-        private async Task InsertAsync(Voucher voucher)
+        private async Task InsertAsync(Voucher voucher, string description)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             OnEntityAction(OperationId.Create);
-            Log.Description = AppStrings.IssueOpeningVoucher;
+            Log.Description = description;
             repository.Insert(voucher, v => v.Lines);
             await FinalizeActionAsync(voucher);
         }

@@ -2988,4 +2988,10 @@
   <data name="OpeningLiabilityCapitalAccounts" xml:space="preserve">
     <value>افتتاح حساب های بدهی و سرمایه</value>
   </data>
+  <data name="ClosingAssetAccounts" xml:space="preserve">
+    <value>بستن حساب دارایی به حساب اختتامیه</value>
+  </data>
+  <data name="ClosingLiabilityCapitalAccounts" xml:space="preserve">
+    <value>بستن حساب بدهی یا سرمایه به حساب اختتامیه</value>
+  </data>
 </root>
