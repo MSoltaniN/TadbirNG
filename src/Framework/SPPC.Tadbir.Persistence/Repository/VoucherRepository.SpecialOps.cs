@@ -46,6 +46,32 @@ namespace SPPC.Tadbir.Persistence
 
         #region Common Operations
 
+        private static void SetRowNumbers(IEnumerable<VoucherLine> lines)
+        {
+            int rowNo = 1;
+            foreach (var line in lines)
+            {
+                line.RowNo = rowNo++;
+            }
+        }
+
+        private static IEnumerable<IGrouping<int?, VoucherLine>> GetByCurrencyLineGroups(IEnumerable<VoucherLine> lines)
+        {
+            foreach (var byDetail in lines.GroupBy(line => line.DetailId))
+            {
+                foreach (var byCostCenter in byDetail.GroupBy(line => line.CostCenterId))
+                {
+                    foreach (var byProject in byCostCenter.GroupBy(line => line.ProjectId))
+                    {
+                        foreach (var byCurrency in byProject.GroupBy(line => line.CurrencyId))
+                        {
+                            yield return byCurrency;
+                        }
+                    }
+                }
+            }
+        }
+
         private async Task<Voucher> GetCurrentSpecialVoucherAsync(VoucherType voucherType)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -59,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Account> GetBranchClosingAccountAsync(int branchId)
         {
             var accounts = await GetCollectionItemsAsync((int)AccountCollectionId.ClosingAccount, branchId);
-            return accounts.Single();
+            return accounts.SingleOrDefault();
         }
 
         private async Task<IList<Account>> GetBranchAssetAccountsAsync(int branchId)
@@ -82,20 +108,23 @@ namespace SPPC.Tadbir.Persistence
         private async Task<IList<Account>> GetCollectionItemsAsync(int collection, int branchId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            var assetAccounts = await repository
+            var collectionAccounts = await repository
                 .GetEntityQuery()
                 .Include(aca => aca.Account)
-                    .ThenInclude(acc => acc.AccountDetailAccounts)
-                .Include(aca => aca.Account)
-                    .ThenInclude(acc => acc.AccountCostCenters)
-                .Include(aca => aca.Account)
-                    .ThenInclude(acc => acc.AccountProjects)
                 .Where(aca => aca.FiscalPeriodId == UserContext.FiscalPeriodId &&
                     aca.BranchId == branchId &&
                     aca.CollectionId == collection)
                 .Select(aca => aca.Account)
                 .ToListAsync();
-            return assetAccounts;
+
+            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
+            var leafAccounts = await accountRepository
+                .GetEntityQuery(acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters,
+                    acc => acc.AccountProjects)
+                .Where(acc => acc.Children.Count == 0 &&
+                    collectionAccounts.Any(item => acc.FullCode.StartsWith(item.FullCode)))
+                .ToListAsync();
+            return leafAccounts;
         }
 
         private IList<FullAccountViewModel> GetFullAccounts(Account account)
@@ -104,24 +133,24 @@ namespace SPPC.Tadbir.Persistence
             var accountBrief = new AccountItemBriefViewModel() { Id = account.Id };
             if (account.AccountDetailAccounts.Count > 0)
             {
-                foreach (var detailAccount in account.AccountDetailAccounts.Select(ada => ada.DetailAccount))
+                foreach (var detailAccountId in account.AccountDetailAccounts.Select(ada => ada.DetailId))
                 {
-                    var detailAccountBrief = new AccountItemBriefViewModel() { Id = detailAccount.Id };
+                    var detailAccountBrief = new AccountItemBriefViewModel() { Id = detailAccountId };
                     if (account.AccountCostCenters.Count > 0)
                     {
-                        foreach (var costCenter in account.AccountCostCenters.Select(ac => ac.CostCenter))
+                        foreach (var costCenterId in account.AccountCostCenters.Select(ac => ac.CostCenterId))
                         {
-                            var costCenterBrief = new AccountItemBriefViewModel() { Id = costCenter.Id };
+                            var costCenterBrief = new AccountItemBriefViewModel() { Id = costCenterId };
                             if (account.AccountProjects.Count > 0)
                             {
-                                foreach (var project in account.AccountProjects.Select(ap => ap.Project))
+                                foreach (var projectId in account.AccountProjects.Select(ap => ap.ProjectId))
                                 {
                                     fullAccounts.Add(new FullAccountViewModel()
                                     {
                                         Account = accountBrief,
                                         DetailAccount = detailAccountBrief,
                                         CostCenter = costCenterBrief,
-                                        Project = new AccountItemBriefViewModel() { Id = project.Id }
+                                        Project = new AccountItemBriefViewModel() { Id = projectId }
                                     });
                                 }
                             }
@@ -138,32 +167,40 @@ namespace SPPC.Tadbir.Persistence
                     }
                     else if (account.AccountProjects.Count > 0)
                     {
-                        foreach (var project in account.AccountProjects.Select(ap => ap.Project))
+                        foreach (var projectId in account.AccountProjects.Select(ap => ap.ProjectId))
                         {
                             fullAccounts.Add(new FullAccountViewModel()
                             {
                                 Account = accountBrief,
                                 DetailAccount = detailAccountBrief,
-                                Project = new AccountItemBriefViewModel() { Id = project.Id }
+                                Project = new AccountItemBriefViewModel() { Id = projectId }
                             });
                         }
+                    }
+                    else
+                    {
+                        fullAccounts.Add(new FullAccountViewModel()
+                        {
+                            Account = accountBrief,
+                            DetailAccount = detailAccountBrief
+                        });
                     }
                 }
             }
             else if (account.AccountCostCenters.Count > 0)
             {
-                foreach (var costCenter in account.AccountCostCenters.Select(ac => ac.CostCenter))
+                foreach (var costCenterId in account.AccountCostCenters.Select(ac => ac.CostCenterId))
                 {
-                    var costCenterBrief = new AccountItemBriefViewModel() { Id = costCenter.Id };
+                    var costCenterBrief = new AccountItemBriefViewModel() { Id = costCenterId };
                     if (account.AccountProjects.Count > 0)
                     {
-                        foreach (var project in account.AccountProjects.Select(ap => ap.Project))
+                        foreach (var projectId in account.AccountProjects.Select(ap => ap.ProjectId))
                         {
                             fullAccounts.Add(new FullAccountViewModel()
                             {
                                 Account = accountBrief,
                                 CostCenter = costCenterBrief,
-                                Project = new AccountItemBriefViewModel() { Id = project.Id }
+                                Project = new AccountItemBriefViewModel() { Id = projectId }
                             });
                         }
                     }
@@ -179,12 +216,12 @@ namespace SPPC.Tadbir.Persistence
             }
             else if (account.AccountProjects.Count > 0)
             {
-                foreach (var project in account.AccountProjects.Select(ap => ap.Project))
+                foreach (var projectId in account.AccountProjects.Select(ap => ap.ProjectId))
                 {
                     fullAccounts.Add(new FullAccountViewModel()
                     {
                         Account = accountBrief,
-                        Project = new AccountItemBriefViewModel() { Id = project.Id }
+                        Project = new AccountItemBriefViewModel() { Id = projectId }
                     });
                 }
             }
@@ -228,13 +265,14 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                int rowNo = 1;
                 openingVoucher = GetNewOpeningVoucher();
                 var branches = await GetBranchIdsAsync();
                 foreach (int branchId in branches)
                 {
-                    openingVoucher.Lines.AddRange(await GetBranchOpeningVoucherLinesAsync(branchId, rowNo));
+                    openingVoucher.Lines.AddRange(await GetBranchOpeningVoucherLinesAsync(branchId));
                 }
+
+                SetRowNumbers(openingVoucher.Lines);
             }
 
             await InsertAsync(openingVoucher, AppStrings.IssueOpeningVoucher);
@@ -259,6 +297,10 @@ namespace SPPC.Tadbir.Persistence
             {
                 var branchLines = new List<VoucherLine>();
                 var closingAccount = await GetBranchClosingAccountAsync(branchId);
+                if (closingAccount == null)
+                {
+                    continue;
+                }
 
                 // Start with Asset lines, debit lines first, then credit lines...
                 var assetLines = lastClosingVoucher.Lines
@@ -273,6 +315,11 @@ namespace SPPC.Tadbir.Persistence
                         line.Debit > 0.0M)
                     .Single();
                 var openingAccount = await GetBranchOpeningAccountAsync(branchId);
+                if (openingAccount == null)
+                {
+                    continue;
+                }
+
                 branchLines.Add(ReverseClosingToOpening(
                     assetOpening, openingAccount.Id, AppStrings.OpeningAssetAccounts));
 
@@ -294,12 +341,7 @@ namespace SPPC.Tadbir.Persistence
                 openingVoucher.Lines.AddRange(branchLines);
             }
 
-            int rowNo = 1;
-            foreach (var line in openingVoucher.Lines)
-            {
-                line.RowNo = rowNo++;
-            }
-
+            SetRowNumbers(openingVoucher.Lines);
             await InsertAsync(openingVoucher, AppStrings.IssueOpeningVoucher);
             return openingVoucher;
         }
@@ -372,52 +414,56 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private async Task<IEnumerable<VoucherLine>> GetBranchOpeningVoucherLinesAsync(int branchId, int rowNo)
+        private async Task<IEnumerable<VoucherLine>> GetBranchOpeningVoucherLinesAsync(int branchId)
         {
             var lines = new List<VoucherLine>();
+            var openingAccount = await GetBranchOpeningAccountAsync(branchId);
+            if (openingAccount == null)
+            {
+                return lines;
+            }
+
             var assetAccounts = await GetBranchAssetAccountsAsync(branchId);
             foreach (var assetAccount in assetAccounts)
             {
                 lines.AddRange(
-                    GetAccountOpeningLines(assetAccount, branchId, AppStrings.OpeningAssetAccounts, rowNo));
+                    GetAccountOpeningLines(assetAccount, branchId, AppStrings.OpeningAssetAccounts));
             }
 
-            var openingAccount = await GetBranchOpeningAccountAsync(branchId);
             lines.Add(GetAccountOpeningLine(
-                openingAccount, branchId, AppStrings.OpeningAssetAccounts, rowNo));
+                openingAccount, branchId, AppStrings.OpeningAssetAccounts));
             lines.Add(GetAccountOpeningLine(
-                openingAccount, branchId, AppStrings.OpeningLiabilityCapitalAccounts, rowNo));
+                openingAccount, branchId, AppStrings.OpeningLiabilityCapitalAccounts));
 
             var liabilityAccounts = await GetBranchCapitalLiabilityAccountsAsync(branchId);
             foreach (var liabilityAccount in liabilityAccounts)
             {
                 lines.AddRange(GetAccountOpeningLines(
-                    liabilityAccount, branchId, AppStrings.OpeningLiabilityCapitalAccounts, rowNo));
+                    liabilityAccount, branchId, AppStrings.OpeningLiabilityCapitalAccounts));
             }
 
             return lines;
         }
 
         private IEnumerable<VoucherLine> GetAccountOpeningLines(
-            Account account, int branchId, string description, int nextRowNo)
+            Account account, int branchId, string description)
         {
             var fullAccounts = GetFullAccounts(account);
             return fullAccounts.Select(fa => new VoucherLine()
             {
                 AccountId = fa.Account.Id,
                 BranchId = branchId,
-                CostCenterId = fa.CostCenter.Id,
+                CostCenterId = fa.CostCenter.Id > 0 ? (int?)fa.CostCenter.Id : null,
                 CreatedById = UserContext.Id,
                 Description = description,
-                DetailId = fa.DetailAccount.Id,
+                DetailId = fa.DetailAccount.Id > 0 ? (int?)fa.DetailAccount.Id : null,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
-                ProjectId = fa.Project.Id,
-                RowNo = nextRowNo++,
+                ProjectId = fa.Project.Id > 0 ? (int?)fa.Project.Id : null,
                 TypeId = (short)VoucherLineType.NormalLine
             });
         }
 
-        private VoucherLine GetAccountOpeningLine(Account account, int branchId, string description, int nextRowNo)
+        private VoucherLine GetAccountOpeningLine(Account account, int branchId, string description)
         {
             return new VoucherLine()
             {
@@ -426,7 +472,6 @@ namespace SPPC.Tadbir.Persistence
                 CreatedById = UserContext.Id,
                 Description = description,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
-                RowNo = nextRowNo++,
                 TypeId = (short)VoucherLineType.NormalLine
             };
         }
@@ -434,7 +479,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Account> GetBranchOpeningAccountAsync(int branchId)
         {
             var accounts = await GetCollectionItemsAsync((int)AccountCollectionId.OpeningAccount, branchId);
-            return accounts.Single();
+            return accounts.SingleOrDefault();
         }
 
         #endregion
@@ -443,14 +488,14 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Voucher> IssueClosingVoucherAsync()
         {
-            int rowNo = 1;
             var closingVoucher = await GetNewClosingVoucherAsync();
             var branches = await GetBranchIdsAsync();
             foreach (int branchId in branches)
             {
-                closingVoucher.Lines.AddRange(await GetBranchClosingVoucherLinesAsync(branchId, rowNo));
+                closingVoucher.Lines.AddRange(await GetBranchClosingVoucherLinesAsync(branchId));
             }
 
+            SetRowNumbers(closingVoucher.Lines);
             await InsertAsync(closingVoucher, AppStrings.IssueClosingVoucher);
             return closingVoucher;
         }
@@ -480,21 +525,26 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private async Task<IEnumerable<VoucherLine>> GetBranchClosingVoucherLinesAsync(int branchId, int rowNo)
+        private async Task<IEnumerable<VoucherLine>> GetBranchClosingVoucherLinesAsync(int branchId)
         {
             var lines = new List<VoucherLine>();
+            var closingAccount = await GetBranchClosingAccountAsync(branchId);
+            if (closingAccount == null)
+            {
+                return lines;
+            }
+
             var assetLines = new List<VoucherLine>();
             var assetAccounts = await GetBranchAssetAccountsAsync(branchId);
             foreach (var assetAccount in assetAccounts)
             {
                 assetLines.AddRange(await GetAccountClosingLinesAsync(
-                    assetAccount, branchId, AppStrings.ClosingAssetAccounts, rowNo, false));
+                    assetAccount, branchId, AppStrings.ClosingAssetAccounts, false));
             }
 
             decimal total = assetLines.Sum(line => line.Credit);
-            var closingAccount = await GetBranchClosingAccountAsync(branchId);
             lines.Add(GetAccountClosingLine(
-                closingAccount, branchId, total, 0.0M, AppStrings.ClosingAssetAccounts, rowNo));
+                closingAccount, branchId, total, 0.0M, AppStrings.ClosingAssetAccounts));
             lines.AddRange(assetLines);
 
             var liabilityLines = new List<VoucherLine>();
@@ -502,19 +552,19 @@ namespace SPPC.Tadbir.Persistence
             foreach (var liabilityAccount in liabilityAccounts)
             {
                 liabilityLines.AddRange(await GetAccountClosingLinesAsync(
-                    liabilityAccount, branchId, AppStrings.ClosingLiabilityCapitalAccounts, rowNo));
+                    liabilityAccount, branchId, AppStrings.ClosingLiabilityCapitalAccounts));
             }
 
             total = liabilityLines.Sum(line => line.Debit);
             lines.AddRange(liabilityLines);
             lines.Add(GetAccountClosingLine(
-                closingAccount, branchId, 0.0M, total, AppStrings.ClosingLiabilityCapitalAccounts, rowNo));
+                closingAccount, branchId, 0.0M, total, AppStrings.ClosingLiabilityCapitalAccounts));
 
             return lines;
         }
 
         private async Task<IEnumerable<VoucherLine>> GetAccountClosingLinesAsync(
-            Account account, int branchId, string description, int rowNo, bool isDebit = true)
+            Account account, int branchId, string description, bool isDebit = true)
         {
             var branchLines = new List<VoucherLine>();
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
@@ -541,7 +591,6 @@ namespace SPPC.Tadbir.Persistence
                     DetailId = first.DetailId,
                     FiscalPeriodId = UserContext.FiscalPeriodId,
                     ProjectId = first.ProjectId,
-                    RowNo = rowNo++,
                     TypeId = (short)VoucherLineType.NormalLine
                 });
             }
@@ -550,7 +599,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private VoucherLine GetAccountClosingLine(
-            Account account, int branchId, decimal debit, decimal credit, string description, int rowNo)
+            Account account, int branchId, decimal debit, decimal credit, string description)
         {
             return new VoucherLine()
             {
@@ -561,26 +610,8 @@ namespace SPPC.Tadbir.Persistence
                 Credit = credit,
                 Description = description,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
-                RowNo = rowNo++,
                 TypeId = (short)VoucherLineType.NormalLine
             };
-        }
-
-        private IEnumerable<IGrouping<int?, VoucherLine>> GetByCurrencyLineGroups(IEnumerable<VoucherLine> lines)
-        {
-            foreach (var byDetail in lines.GroupBy(line => line.DetailId))
-            {
-                foreach (var byCostCenter in byDetail.GroupBy(line => line.CostCenterId))
-                {
-                    foreach (var byProject in byCostCenter.GroupBy(line => line.ProjectId))
-                    {
-                        foreach (var byCurrency in byProject.GroupBy(line => line.CurrencyId))
-                        {
-                            yield return byCurrency;
-                        }
-                    }
-                }
-            }
         }
 
         #endregion
