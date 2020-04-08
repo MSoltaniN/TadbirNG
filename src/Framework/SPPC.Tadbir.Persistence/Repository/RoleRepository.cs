@@ -14,6 +14,7 @@ using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -590,8 +591,8 @@ namespace SPPC.Tadbir.Persistence
             var clone = new Role() { Id = entity.Id, Name = entity.Name, Description = entity.Description };
             OnEntityAction(OperationId.Edit);
             UpdateExisting(entityView, entity);
-            Log.Description = String.Format("(Old) => {1}{0}(New) => {2}",
-                Environment.NewLine, GetState(clone), GetState(entity));
+            Log.Description = String.Format("{0} : {1}{2}{3} : {4}",
+                AppStrings.Old, GetState(clone), Environment.NewLine, AppStrings.New, GetState(entity));
             repository.UpdateWithTracking(entity);
             await FinalizeActionAsync(entity);
         }

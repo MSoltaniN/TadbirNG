@@ -128,7 +128,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه ای از آرتیکل های موجود در سند مالی
         /// </summary>
-        public virtual IList<VoucherLine> Lines { get; protected set; }
+        public virtual List<VoucherLine> Lines { get; protected set; }
 
         /// <summary>
         /// مستند اداری مرتبط با این سند مالی

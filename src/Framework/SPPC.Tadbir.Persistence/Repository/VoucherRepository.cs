@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را پیاده سازی می کند.
     /// </summary>
-    public class VoucherRepository : LoggingRepository<Voucher, VoucherViewModel>, IVoucherRepository
+    public partial class VoucherRepository : LoggingRepository<Voucher, VoucherViewModel>, IVoucherRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

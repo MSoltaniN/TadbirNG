@@ -2976,4 +2976,31 @@
   <data name="SystemSettings" xml:space="preserve">
     <value>System settings</value>
   </data>
+  <data name="CurrentValue" xml:space="preserve">
+    <value>Current value</value>
+  </data>
+  <data name="DeletedItems" xml:space="preserve">
+    <value>Deleted items</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="NewValue" xml:space="preserve">
+    <value>New value</value>
+  </data>
+  <data name="Old" xml:space="preserve">
+    <value>Old</value>
+  </data>
+  <data name="OpeningAssetAccounts" xml:space="preserve">
+    <value>Opening asset accounts</value>
+  </data>
+  <data name="OpeningLiabilityCapitalAccounts" xml:space="preserve">
+    <value>Opening liability and equity accounts</value>
+  </data>
+  <data name="ClosingAssetAccounts" xml:space="preserve">
+    <value>Closing asset account by closure account</value>
+  </data>
+  <data name="ClosingLiabilityCapitalAccounts" xml:space="preserve">
+    <value>Closing liability/equity account by closure account</value>
+  </data>
 </root>

@@ -341,5 +341,35 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for system issue articles
         /// </summary>
         public const string SystemIssueArticlesUrl = "vouchers/articles/sys-issue/{issueType}";
+
+        /// <summary>
+        /// API client URL for the opening voucher in current environment
+        /// </summary>
+        public const string OpeningVoucher = "vouchers/opening";
+
+        /// <summary>
+        /// API server route URL for the opening voucher in current environment
+        /// </summary>
+        public const string OpeningVoucherUrl = "vouchers/opening";
+
+        /// <summary>
+        /// API client URL for the closing temp accounts voucher in current environment
+        /// </summary>
+        public const string ClosingAccountsVoucher = "vouchers/closing-tmp";
+
+        /// <summary>
+        /// API server route URL for the closing temp accounts voucher in current environment
+        /// </summary>
+        public const string ClosingAccountsVoucherUrl = "vouchers/closing-tmp";
+
+        /// <summary>
+        /// API client URL for the closing voucher in current environment
+        /// </summary>
+        public const string ClosingVoucher = "vouchers/closing";
+
+        /// <summary>
+        /// API server route URL for the closing voucher in current environment
+        /// </summary>
+        public const string ClosingVoucherUrl = "vouchers/closing";
     }
 }

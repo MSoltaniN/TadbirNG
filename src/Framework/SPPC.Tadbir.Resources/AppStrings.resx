@@ -2967,4 +2967,31 @@
   <data name="SystemSettings" xml:space="preserve">
     <value>تنظیمات سیستمی</value>
   </data>
+  <data name="CurrentValue" xml:space="preserve">
+    <value>مقدار جاری</value>
+  </data>
+  <data name="DeletedItems" xml:space="preserve">
+    <value>اقلام حذف شده</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>جدید</value>
+  </data>
+  <data name="NewValue" xml:space="preserve">
+    <value>مقدار جدید</value>
+  </data>
+  <data name="Old" xml:space="preserve">
+    <value>قدیم</value>
+  </data>
+  <data name="OpeningAssetAccounts" xml:space="preserve">
+    <value>افتتاح حساب های دارایی</value>
+  </data>
+  <data name="OpeningLiabilityCapitalAccounts" xml:space="preserve">
+    <value>افتتاح حساب های بدهی و سرمایه</value>
+  </data>
+  <data name="ClosingAssetAccounts" xml:space="preserve">
+    <value>بستن حساب دارایی به حساب اختتامیه</value>
+  </data>
+  <data name="ClosingLiabilityCapitalAccounts" xml:space="preserve">
+    <value>بستن حساب بدهی یا سرمایه به حساب اختتامیه</value>
+  </data>
 </root>

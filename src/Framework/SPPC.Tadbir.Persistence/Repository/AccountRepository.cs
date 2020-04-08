@@ -582,7 +582,8 @@ namespace SPPC.Tadbir.Persistence
         private async Task UpdateAccountCurrencyAsync(AccountViewModel accountViewModel, Account account)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
-            var accountCurrency = await repository.GetSingleByCriteriaAsync(accCurr => accCurr.AccountId == account.Id && accCurr.BranchId == UserContext.BranchId);
+            var accountCurrency = await repository.GetSingleByCriteriaAsync(
+                accCurr => accCurr.AccountId == account.Id && accCurr.BranchId == UserContext.BranchId);
 
             if (accountViewModel.CurrencyId.HasValue)
             {

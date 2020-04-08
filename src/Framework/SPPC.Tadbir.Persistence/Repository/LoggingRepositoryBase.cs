@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 
@@ -56,8 +57,8 @@ namespace SPPC.Tadbir.Persistence
             var clone = GetEntityCopy(entity);
             OnEntityAction(OperationId.Edit);
             UpdateExisting(entityView, entity);
-            Log.Description = String.Format("(Old) => {1}{0}(New) => {2}",
-                Environment.NewLine, GetState(clone), GetState(entity));
+            Log.Description = String.Format("{0} : {1}{2}{3} : {4}",
+                AppStrings.Old, GetState(clone), Environment.NewLine, AppStrings.New, GetState(entity));
             repository.Update(entity);
             await FinalizeActionAsync(entity);
         }
@@ -180,7 +181,7 @@ namespace SPPC.Tadbir.Persistence
         {
             OnEntityAction(OperationId.GroupDelete);
             Log.Description = String.Format(
-                "Deleted items :{0}{1}", Environment.NewLine, String.Join(",", deletedIds));
+                "{0} :{1}{2}", AppStrings.DeletedItems, Environment.NewLine, String.Join(",", deletedIds));
             await TrySaveLogAsync();
         }
 
@@ -217,9 +218,10 @@ namespace SPPC.Tadbir.Persistence
             {
                 Log.CompanyId = newLogin.CompanyId;
                 Log.OperationId = (int)OperationId.CompanyLogin;
-                Log.Description = String.Format(
-                    "Company : '{0}', Fiscal period : '{1}', Branch : '{2}'",
-                    newLogin.CompanyName, newLogin.FiscalPeriodName, newLogin.BranchName);
+                Log.Description = String.Format("{0} : '{1}', {2} : '{3}', {4} : '{5}'",
+                    AppStrings.Company, newLogin.CompanyName,
+                    AppStrings.FiscalPeriod, newLogin.FiscalPeriodName,
+                    AppStrings.Branch, newLogin.BranchName);
                 await TrySaveLogAsync();
             }
             else
@@ -227,16 +229,18 @@ namespace SPPC.Tadbir.Persistence
                 if (currentLogin.FiscalPeriodId != newLogin.FiscalPeriodId)
                 {
                     Log.OperationId = (int)OperationId.SwitchFiscalPeriod;
-                    Log.Description = String.Format(
-                        "Current : '{0}', New : '{1}'", currentLogin.FiscalPeriodName, newLogin.FiscalPeriodName);
+                    Log.Description = String.Format("{0} : '{1}', {2} : '{3}'",
+                        AppStrings.CurrentValue, currentLogin.FiscalPeriodName,
+                        AppStrings.NewValue, newLogin.FiscalPeriodName);
                     await TrySaveLogAsync();
                 }
 
                 if (currentLogin.BranchId != newLogin.BranchId)
                 {
                     Log.OperationId = (int)OperationId.SwitchBranch;
-                    Log.Description = String.Format(
-                        "Current : '{0}', New = '{1}'", currentLogin.BranchName, newLogin.BranchName);
+                    Log.Description = String.Format("{0} : '{1}', {2} : '{3}'",
+                        AppStrings.CurrentValue, currentLogin.BranchName,
+                        AppStrings.NewValue, newLogin.BranchName);
                     await TrySaveLogAsync();
                 }
             }
@@ -320,24 +324,27 @@ namespace SPPC.Tadbir.Persistence
         private void CopyEntityDataToLog(TEntity entity)
         {
             var dataFields = new string[]
-                { "FullCode", "Name", "Description", "No", "Date", "Reference", "Association" };
+                {
+                    AppStrings.FullCode, AppStrings.Name, AppStrings.Description, AppStrings.No,
+                    AppStrings.Date, AppStrings.Reference, AppStrings.Association
+                };
             foreach (string dataField in dataFields)
             {
                 string propertyName = String.Format("Entity{0}", dataField);
                 object value = Reflector.GetSimpleProperty(entity, dataField, false);
-                if (dataField == "No")
+                if (dataField == AppStrings.No)
                 {
                     int? no = (value != null) ? Int32.Parse(value.ToString()) : (int?)null;
                     Reflector.SetProperty(Log, propertyName, no);
                 }
-                else if (dataField == "Date")
+                else if (dataField == AppStrings.Date)
                 {
                     DateTime? date = (value != null) ? DateTime.Parse(value.ToString()) : (DateTime?)null;
                     Reflector.SetProperty(Log, propertyName, date);
                 }
-                else if (dataField == "FullCode")
+                else if (dataField == AppStrings.FullCode)
                 {
-                    Reflector.SetProperty(Log, "EntityCode", value);
+                    Reflector.SetProperty(Log, AppStrings.EntityCode, value);
                 }
                 else
                 {

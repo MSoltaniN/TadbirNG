@@ -358,8 +358,13 @@ export class DefaultComponent extends BaseComponent {
       return filterExp;
     }
     else {
-      var filterExpBuilder = new FilterExpressionBuilder();
-      return filterExpBuilder.New(filter).Build();
+      if (filter) {
+        var filterExpBuilder = new FilterExpressionBuilder();
+        return filterExpBuilder.New(filter).Build();
+      }
+      else {
+        return undefined;
+      }
     }
 
   }
