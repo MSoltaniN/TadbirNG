@@ -3,7 +3,7 @@ import { Response } from '@angular/http';
 import { AccountApi } from './api/accountApi';
 import { HttpClient } from '@angular/common/http';
 import { BrowserStorageService } from '@sppc/shared/services';
-import { Account } from '@sppc/finance/models';
+import { Account, AccountOwner } from '@sppc/finance/models';
 import { BaseService } from '@sppc/shared/class';
 import { String } from '@sppc/shared/class/source';
 import { AccountFullData } from '../models/accountFullData';
@@ -52,15 +52,30 @@ export class CustomerTaxInfoModel implements CustomerTaxInfo {
   description?: string;
 }
 
+export class AccountOwnerInfo implements AccountOwner {
+  id: number = 0;
+  accountId: number;
+  bankName: string;
+  accountType: number;
+  bankBranchName: string;
+  branchIndex: string;
+  accountNumber: string;
+  cardNumber: string;
+  shabaNumber: string;
+  description?: string;
+}
+
 export class AccountFullDataInfo implements AccountFullData {
 
   constructor() {
     this.account = new AccountInfo();
     this.customerTaxInfo = new CustomerTaxInfoModel();
+    this.accountOwner = new AccountOwnerInfo();
   }
 
   account: Account;
   customerTaxInfo: CustomerTaxInfo;
+  accountOwner: AccountOwner;
 }
 
 @Injectable()

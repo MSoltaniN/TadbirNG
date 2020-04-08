@@ -1015,3 +1015,28 @@ CREATE TABLE [Finance].[CustomerTaxInfo] (
     , CONSTRAINT [FK_Finance_CustomerTaxInfo_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
 )
 GO
+
+-- 1.1.859
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [Finance].[AccountOwner] (
+    [AccountOwnerID]   INT              IDENTITY (1, 1) NOT NULL,
+    [AccountID]        INT              NOT NULL,    
+    [BankName]         NVARCHAR(64)     NOT NULL,
+    [AccountType]      INT              NOT NULL,
+    [BankBranchName]   NVARCHAR(64)     NOT NULL,
+    [BranchIndex]      NVARCHAR(64)     NOT NULL,
+    [AccountNumber]    NVARCHAR(32)     NOT NULL,
+    [CardNumber]       NVARCHAR(32)     NULL,
+    [ShabaNumber]      NVARCHAR(32)     NULL,
+    [Description]      NVARCHAR(512)    NULL,
+	[rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountOwner_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_AccountOwner_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_AccountOwner] PRIMARY KEY CLUSTERED ([AccountOwnerID] ASC)
+    , CONSTRAINT [FK_Finance_AccountOwner_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+)
+GO

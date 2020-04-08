@@ -14,5 +14,10 @@
         /// مدل نمایشی اطلاعات مالیاتی طرف حساب
         /// </summary>
         public CustomerTaxInfoViewModel CustomerTaxInfo { get; set; }
+
+        /// <summary>
+        /// مدل نمایشی اطلاعات حساب بانکی
+        /// </summary>
+        public AccountOwnerViewModel AccountOwner { get; set; }
     }
 }

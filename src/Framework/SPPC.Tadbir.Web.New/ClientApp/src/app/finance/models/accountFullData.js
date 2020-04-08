@@ -9,13 +9,4 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
-import { Account } from "./account";
-import { CustomerTaxInfo } from "./customerTaxInfo";
-import { AccountOwner } from "./accountOwner";
-
-export interface AccountFullData {
-    account: Account;
-    customerTaxInfo: CustomerTaxInfo;
-    accountOwner: AccountOwner;
-}
+//# sourceMappingURL=accountFullData.js.map

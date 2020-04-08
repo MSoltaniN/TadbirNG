@@ -17,3 +17,4 @@ export * from './currencyInfo';
 export * from './currencyBookDefault';
 export * from './taxCurrency';
 export * from './systemIssue';
+export * from './accountOwner';

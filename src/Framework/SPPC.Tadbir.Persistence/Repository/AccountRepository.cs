@@ -27,11 +27,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="customerTaxInfo">امکانات مورد نیاز برای اطلاعات مالی طرف حساب ها را فراهم میکند</param>
-        public AccountRepository(IRepositoryContext context, ISystemRepository system, ICustomerTaxInfoRepository customerTaxInfo)
+        public AccountRepository(IRepositoryContext context, ISystemRepository system, ICustomerTaxInfoRepository customerTaxInfo, IAccountOwnerRepository accountOwner)
             : base(context, system?.Logger)
         {
             _system = system;
             _customerTaxInfo = customerTaxInfo;
+            _accountOwner = accountOwner;
         }
 
         /// <summary>
@@ -103,7 +104,8 @@ namespace SPPC.Tadbir.Persistence
                 return new AccountFullDataViewModel()
                 {
                     Account = new AccountViewModel() { Level = -1 },
-                    CustomerTaxInfo = null
+                    CustomerTaxInfo = null,
+                    AccountOwner = null
                 };
             }
 
@@ -112,7 +114,8 @@ namespace SPPC.Tadbir.Persistence
             return new AccountFullDataViewModel()
             {
                 Account = GetNewChildAccount(parent, newCode, treeConfig),
-                CustomerTaxInfo = null
+                CustomerTaxInfo = null,
+                AccountOwner = null
             };
         }
 
@@ -170,6 +173,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(accountFullView, "accountFullView");
             Account account = default(Account);
             CustomerTaxInfoViewModel customerTax = default(CustomerTaxInfoViewModel);
+            AccountOwnerViewModel accountOwner = default(AccountOwnerViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var accountView = accountFullView.Account;
             if (accountView.Id == 0)
@@ -197,13 +201,19 @@ namespace SPPC.Tadbir.Persistence
                     {
                         customerTax = await _customerTaxInfo.SaveCustomerTaxInfoAsync(accountFullView.CustomerTaxInfo);
                     }
+
+                    if (accountFullView.AccountOwner != null)
+                    {
+                        accountOwner = await _accountOwner.SaveAccountOwnerAsync(accountFullView.AccountOwner);
+                    }
                 }
             }
 
             return new AccountFullDataViewModel()
             {
                 Account = Mapper.Map<AccountViewModel>(account),
-                CustomerTaxInfo = customerTax
+                CustomerTaxInfo = customerTax,
+                AccountOwner = accountOwner
             };
         }
 
@@ -214,10 +224,16 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDWithTrackingAsync(accountId, acc => acc.AccountCurrencies, acc => acc.CustomerTaxInfo);
+            var account = await repository.GetByIDWithTrackingAsync(
+                accountId,
+                acc => acc.AccountCurrencies,
+                acc => acc.CustomerTaxInfo,
+                acc => acc.AccountOwner);
+
             if (account != null)
             {
                 await _customerTaxInfo.DeleteCustomerTaxInfoAsync(account.CustomerTaxInfo.Id);
+                await _accountOwner.DeleteAccountOwnerAsync(account.AccountOwner.Id);
 
                 account.AccountCurrencies.Clear();
                 await DeleteAsync(repository, account);
@@ -235,10 +251,16 @@ namespace SPPC.Tadbir.Persistence
             int level = 0;
             foreach (int accountId in accountIds)
             {
-                var account = await repository.GetByIDWithTrackingAsync(accountId, acc => acc.AccountCurrencies, acc => acc.CustomerTaxInfo);
+                var account = await repository.GetByIDWithTrackingAsync(
+                    accountId,
+                    acc => acc.AccountCurrencies,
+                    acc => acc.CustomerTaxInfo,
+                    acc => acc.AccountOwner);
+
                 if (account != null)
                 {
                     await _customerTaxInfo.DeleteCustomerTaxInfoAsync(account.CustomerTaxInfo.Id);
+                    await _accountOwner.DeleteAccountOwnerAsync(account.AccountOwner.Id);
 
                     level = Math.Max(level, account.Level);
                     account.AccountCurrencies.Clear();
@@ -401,7 +423,8 @@ namespace SPPC.Tadbir.Persistence
 
             var account = await repository.GetByIDWithTrackingAsync(
                 accountId,
-                acc => acc.CustomerTaxInfo);
+                acc => acc.CustomerTaxInfo,
+                acc => acc.AccountOwner);
 
             if (account != null)
             {
@@ -415,15 +438,30 @@ namespace SPPC.Tadbir.Persistence
                 item.CustomerTaxInfo = null;
             }
 
+            if (!await IsBankSubSetAsync(accountId))
+            {
+                item.AccountOwner = null;
+            }
+
             return item;
         }
 
         private async Task<bool> IsCommercialDebtorAndCreditorAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+
             // 31: بدهکاران تجاری
             // 32: بستانکاران تجاری
             var collection = await repository.GetByCriteriaAsync(col => (col.CollectionId == 31 || col.CollectionId == 32) && col.AccountId == accountId);
+            return collection.Count() > 0 ? true : false;
+        }
+
+        private async Task<bool> IsBankSubSetAsync(int accountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+
+            // 17: بانک
+            var collection = await repository.GetByCriteriaAsync(col => col.CollectionId == 17 && col.AccountId == accountId);
             return collection.Count() > 0 ? true : false;
         }
 
@@ -632,5 +670,6 @@ namespace SPPC.Tadbir.Persistence
 
         private readonly ISystemRepository _system;
         private readonly ICustomerTaxInfoRepository _customerTaxInfo;
+        private readonly IAccountOwnerRepository _accountOwner;
     }
 }

@@ -1,6 +1,6 @@
-﻿using SPPC.Tadbir.ViewModel.Finance;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {

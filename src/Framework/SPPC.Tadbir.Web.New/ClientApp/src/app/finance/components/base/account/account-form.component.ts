@@ -4,8 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent, DetailComponent } from '@sppc/shared/class';
 import { Layout, Entities } from '@sppc/env/environment';
-import { AccountService, AccountFullDataInfo, AccountInfo, CustomerTaxInfoModel } from '@sppc/finance/service';
-import { Account } from '@sppc/finance/models';
+import { AccountService, AccountFullDataInfo, AccountInfo, CustomerTaxInfoModel, AccountOwnerInfo } from '@sppc/finance/service';
+import { Account, AccountOwner } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
 import { BranchApi } from '@sppc/organization/service/api';
 import { ViewName } from '@sppc/shared/security';
@@ -83,9 +83,11 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
 
   isDisableCustomerTaxTab: boolean = false;
+  isDisableAccountOwnerTab: boolean = false;
 
   accountModel: Account;
   customerTaxModel: CustomerTaxInfo;
+  accountOwnerModel: AccountOwner;
 
   @Input() public parent: Account;
   @Input() public model: AccountFullData;
@@ -105,6 +107,11 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     { key: "2", value: "مشمولین حقیقی ماده 81" },
     { key: "3", value: "اشخاصی که مشمول ثبت نام در نظام مالیاتی نیستند" },
     { key: "4", value: "مصرف کننده نهایی" },
+  ]
+
+  accountTypes: Array<Item> = [
+    { key: "0", value: "جاری" },
+    { key: "1", value: "پس انداز" }
   ]
 
   public accountDataForm = new FormGroup({
@@ -138,6 +145,18 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       postalCode: new FormControl(''),
       description: new FormControl(''),
     }),
+    owner: new FormGroup({
+      id: new FormControl(),
+      accountId: new FormControl(),
+      bankName: new FormControl(''),
+      accountType: new FormControl(''),
+      bankBranchName: new FormControl(''),
+      branchIndex: new FormControl(''),
+      accountNumber: new FormControl(''),
+      cardNumber: new FormControl(''),
+      shabaNumber: new FormControl(''),
+      description: new FormControl('')
+    })
   });
 
 
@@ -152,14 +171,20 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     if (this.model) {
       this.accountModel = this.model.account;
       this.customerTaxModel = this.model.customerTaxInfo;
+      this.accountOwnerModel = this.model.accountOwner;
 
       if (this.isNew || this.model.customerTaxInfo == null) {
         this.isDisableCustomerTaxTab = true;
+      }
+
+      if (this.isNew || this.model.accountOwner == null) {
+        this.isDisableAccountOwnerTab = true;
       }
     }
     else {
       this.accountModel = new AccountInfo();
       this.customerTaxModel = new CustomerTaxInfoModel();
+      this.accountOwnerModel = new AccountOwnerInfo();
     }
 
     this.viewId = ViewName.Account;
@@ -227,6 +252,23 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
             mobileNo: this.customerTaxModel.mobileNo,
             postalCode: this.customerTaxModel.postalCode,
             description: this.customerTaxModel.description,
+          }
+        })
+      }
+
+      if (this.accountOwnerModel) {
+        this.accountDataForm.patchValue({
+          owner: {
+            id: this.accountOwnerModel.id,
+            accountId: this.accountOwnerModel.accountId,
+            bankName: this.accountOwnerModel.bankName,
+            accountType: this.accountOwnerModel.accountType ? this.accountOwnerModel.accountType.toString() : "0",
+            bankBranchName: this.accountOwnerModel.bankBranchName,
+            branchIndex: this.accountOwnerModel.branchIndex,
+            accountNumber: this.accountOwnerModel.accountNumber,
+            cardNumber: this.accountOwnerModel.cardNumber,
+            shabaNumber: this.accountOwnerModel.shabaNumber,
+            description: this.accountOwnerModel.description,
           }
         })
       }
@@ -311,13 +353,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.accountModel.isActive = featureValue.isActive;
     this.accountModel.isCurrencyAdjustable = featureValue.isCurrencyAdjustable;
 
-    if (this.isNew) {
-
-    }
-    else {
-
-    }
-
 
     //if (this.editForm.valid) {
     if (this.accountModel.id > 0) {
@@ -344,6 +379,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
     resultModel.account = this.accountModel;
     resultModel.customerTaxInfo = null;
+    resultModel.accountOwner = null;
 
     if (!this.isNew && this.customerTaxModel) {
       var customerTaxInfo = this.accountDataForm.value.customerTax;
@@ -353,6 +389,14 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       resultModel.customerTaxInfo = customerTaxInfo;
     }
 
+
+    if (!this.isNew && this.accountOwnerModel) {
+      var accountOwner = this.accountDataForm.value.owner;
+      accountOwner.id = this.accountOwnerModel.id;
+      accountOwner.accountId = this.accountModel.id;
+
+      resultModel.accountOwner = accountOwner;
+    }
 
     this.save.emit(resultModel);
 

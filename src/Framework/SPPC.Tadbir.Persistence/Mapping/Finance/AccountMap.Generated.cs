@@ -81,6 +81,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey<CustomerTaxInfo>("AccountID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_CustomerTaxInfo_Finance_Account");
+
+            builder.HasOne(d => d.AccountOwner)
+                .WithOne(p => p.Account)
+                .HasForeignKey<AccountOwner>("AccountID")
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_AccountOwner_Finance_Account");
         }
     }
 }

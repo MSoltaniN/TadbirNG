@@ -374,13 +374,101 @@
           </ng-template>
         </kendo-tabstrip-tab>
 
-        <!--<kendo-tabstrip-tab [title]="'مشخصات بانکی'" *ngIf="!isNew">
+        <kendo-tabstrip-tab [title]="'مشخصات بانکی'" *ngIf="!isDisableAccountOwnerTab" >
           <ng-template kendoTabContent>
-            <div>
-              sfvsd
+
+            <div formGroupName="owner">
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نوع حساب</label>
+
+                    <kendo-dropdownlist class="ddl-acc"
+                                        [data]="accountTypes"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [valuePrimitive]="true"
+                                        formControlName="accountType">
+                    </kendo-dropdownlist>
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نام بانک</label>
+
+                    <input type="text" class="k-textbox" formControlName="bankName" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نام شعبه</label>
+
+                    <input type="text" class="k-textbox" formControlName="bankBranchName"/>
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شاخص شعبه</label>
+
+                    <input type="text" class="k-textbox" formControlName="branchIndex" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شماره حساب</label>
+
+                    <input type="text" class="k-textbox" formControlName="accountNumber" />
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شماره کارت</label>
+
+                    <input type="text" class="k-textbox" formControlName="cardNumber" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شماره شبا</label>
+
+                    <input type="text" class="k-textbox" formControlName="shabaNumber" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label class="control-label">توضیحات</label>
+                    <textarea class="k-textbox"
+                              formControlName="description">
+                  </textarea>
+                  </div>
+                </div>
+              </div>
             </div>
           </ng-template>
-        </kendo-tabstrip-tab>-->
+        </kendo-tabstrip-tab>
 
 
       </kendo-tabstrip>

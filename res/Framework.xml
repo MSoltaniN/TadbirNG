@@ -3219,6 +3219,79 @@
         <Relation multiplicity="OneToOne" endpointName="Account" entityName="Account" hasKey="False" isRequired="True" joinTable="" description="حساب انتخاب شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity name="AccountOwner" area="Finance" identifier="Id" type="BaseEntity" description="اطلاعات حساب بانکی یک حساب را نگهداری میکند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="AccountOwnerID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
+        </Property>
+        <Property name="BankName" type="String" isValidated="True" description="نام بانک مربوط به حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtBankName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="BankName" type="nvarchar(64)" nullable="True" />
+          <ColumnView name="Bank Name" visible="True" width="120" />
+          <ValidationRule name="BankName_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="AccountType" type="Int32" isValidated="True" description="نوع حساب (جاری:0) (پس انداز:1)" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnAccountType" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="AccountType" type="int" nullable="False" />
+          <ColumnView name="Account Type" visible="True" width="120" />
+          <ValidationRule name="AccountType_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="BankBranchName" type="String" isValidated="True" description="نام شعبه بانک " clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtBankBranchName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="BankBranchName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Bank Branch Name" visible="True" width="120" />
+          <ValidationRule name="BankBranchName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="BranchIndex" type="String" isValidated="True" description="شاخص شعبه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtBranchIndex" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="BranchIndex" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Branch Index" visible="True" width="120" />
+          <ValidationRule name="BranchIndex_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="AccountNumber" type="String" isValidated="True" description="شماره حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtAccountNumber" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="AccountNumber" type="nvarchar(32)" nullable="False" />
+          <ColumnView name="Account Number" visible="True" width="120" />
+          <ValidationRule name="AccountNumber_Validation" required="True" minimum="" maximum="32" format="" type="Length" />
+        </Property>
+        <Property name="CardNumber" type="String" isValidated="True" description="شماره کارت" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCardNumber" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CardNumber" type="nvarchar(32)" nullable="True" />
+          <ColumnView name="Card Number" visible="True" width="120" />
+          <ValidationRule name="CardNumber_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+        </Property>
+        <Property name="ShabaNumber" type="String" isValidated="True" description="شماره شبا" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtShabaNumber" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ShabaNumber" type="nvarchar(32)" nullable="True" />
+          <ColumnView name="Shaba Number" visible="True" width="120" />
+          <ValidationRule name="ShabaNumber_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="توضیحات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="OneToOne" endpointName="Account" entityName="Account" hasKey="True" isRequired="True" joinTable="" description="حساب انتخاب شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
   </Entities>
   <Storage name="Framework.xml" connection="..\..\..\res" media="XmlFile" />
 </Repository>

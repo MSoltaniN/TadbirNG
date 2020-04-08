@@ -119,6 +119,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IBalanceByAccountRepository, BalanceByAccountRepository>();
             _services.AddTransient<ILogConfigRepository, LogConfigRepository>();
             _services.AddTransient<ICustomerTaxInfoRepository, CustomerTaxInfoRepository>();
+            _services.AddTransient<IAccountOwnerRepository, AccountOwnerRepository>();
         }
 
         private void AddServiceTypes()

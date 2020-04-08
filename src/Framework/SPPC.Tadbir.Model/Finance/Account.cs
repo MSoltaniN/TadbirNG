@@ -19,14 +19,14 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public IList<AccountCurrency> AccountCurrencies { get; set; }
 
-        ///// <summary>
-        ///// مجموعه ای از مجموعه حساب های این سرفصل حسابداری
-        ///// </summary>
-        //public IList<AccountCollectionAccount> AccountCollectionAccounts { get; set; }
-
         /// <summary>
         /// اطلاعات مالیاتی طرف حساب
         /// </summary>
         public CustomerTaxInfo CustomerTaxInfo { get; set; }
+
+        /// <summary>
+        /// اطلاعات حساب بانکی
+        /// </summary>
+        public AccountOwner AccountOwner { get; set; }
     }
 }
