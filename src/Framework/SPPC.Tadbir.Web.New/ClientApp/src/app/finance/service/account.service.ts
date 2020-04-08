@@ -6,6 +6,8 @@ import { BrowserStorageService } from '@sppc/shared/services';
 import { Account } from '@sppc/finance/models';
 import { BaseService } from '@sppc/shared/class';
 import { String } from '@sppc/shared/class/source';
+import { AccountFullData } from '../models/accountFullData';
+import { CustomerTaxInfo } from '../models/customerTaxInfo';
 
 
 export class AccountInfo implements Account {
@@ -33,6 +35,33 @@ export class AccountInfo implements Account {
 
 }
 
+export class CustomerTaxInfoModel implements CustomerTaxInfo {
+  id: number = 0;
+  accountId: number;
+  customerFirstName: string;
+  customerName: string;
+  personType: number;
+  buyerType: number;
+  economicCode: string;
+  address: string;
+  nationalCode: string;
+  perCityCode: string;
+  phoneNo: string;
+  mobileNo: string;
+  postalCode: string;
+  description?: string;
+}
+
+export class AccountFullDataInfo implements AccountFullData {
+
+  constructor() {
+    this.account = new AccountInfo();
+    this.customerTaxInfo = new CustomerTaxInfoModel();
+  }
+
+  account: Account;
+  customerTaxInfo: CustomerTaxInfo;
+}
 
 @Injectable()
 export class AccountService extends BaseService {

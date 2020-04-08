@@ -292,6 +292,13 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<DbDataReader, TaxCurrencyViewModel>()
                 .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src["Code"]))
                 .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src["Name"]));
+
+            mapperConfig.CreateMap<CustomerTaxInfo, CustomerTaxInfoViewModel>();
+            mapperConfig.CreateMap<CustomerTaxInfoViewModel, CustomerTaxInfo>();
+
+            mapperConfig.CreateMap<Account, AccountFullDataViewModel>()
+                .ForMember(dest => dest.Account, opt => opt.MapFrom(src => src))
+                .ForMember(dest => dest.CustomerTaxInfo, opt => opt.MapFrom(src => src.CustomerTaxInfo != null ? src.CustomerTaxInfo : new CustomerTaxInfo()));
         }
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)

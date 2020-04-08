@@ -41,8 +41,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="parentId">شناسه دیتابیسی حساب والد - اگر مقدار نداشته باشد حساب جدید
         /// در سطح کل پیشنهاد می شود</param>
-        /// <returns>مدل نمایشی حساب پیشنهادی</returns>
-        Task<AccountViewModel> GetNewChildAccountAsync(int? parentId);
+        /// <returns>مدل نمایشی کلی حساب </returns>
+        Task<AccountFullDataViewModel> GetNewChildAccountAsync(int? parentId);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در سطح کل را خوانده و برمی گرداند
@@ -67,9 +67,9 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک حساب را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="account">حساب مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="accountFullView">اطلاعات مالیاتی طرف حساب مورد نظر برای ایجاد یا اصلاح</param>
         /// <returns>اطلاعات نمایشی حساب ایجاد یا اصلاح شده</returns>
-        Task<AccountViewModel> SaveAccountAsync(AccountViewModel account);
+        Task<AccountFullDataViewModel> SaveAccountAsync(AccountFullDataViewModel accountFullView);
 
         /// <summary>
         /// به روش آسنکرون، حساب مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
@@ -146,5 +146,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>تعداد کل حساب ها</returns>
         Task<int> GetAllAccountsCountAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، حساب با سایر مشخصات حساب را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns></returns>
+        Task<AccountFullDataViewModel> GetAccountFullDataAsync(int accountId);
     }
 }

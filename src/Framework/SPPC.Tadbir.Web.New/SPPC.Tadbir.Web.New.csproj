@@ -866,6 +866,7 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\shared\security\" />
     <Folder Include="ClientApp\src\assets\resources\fonts\IranSans-En\" />
+    <Folder Include="model\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 

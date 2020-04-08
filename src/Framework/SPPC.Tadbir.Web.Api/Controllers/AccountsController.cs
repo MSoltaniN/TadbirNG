@@ -65,23 +65,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(account);
         }
 
+        // GET: api/accounts/fulldata/{accountId:min(1)}
+        [Route(AccountApi.AccountFullDataUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetAccountFullDataAsync(int accountId)
+        {
+            var account = await _repository.GetAccountFullDataAsync(accountId);
+            return JsonReadResult(account);
+        }
+
         // GET: api/accounts/{accountId:int}/children/new
         [Route(AccountApi.EnvironmentNewChildAccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewAccountAsync(int accountId)
         {
-            var newAccount = await _repository.GetNewChildAccountAsync(accountId > 0 ? accountId : (int?)null);
-            if (newAccount == null)
+            var newAccountFull = await _repository.GetNewChildAccountAsync(accountId > 0 ? accountId : (int?)null);
+            if (newAccountFull == null)
             {
                 return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Account));
             }
 
-            if (newAccount.Level == -1)
+            if (newAccountFull.Account.Level == -1)
             {
                 return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Account));
             }
 
-            return Json(newAccount);
+            return Json(newAccountFull);
         }
 
         // GET: api/accounts/ledger
@@ -141,15 +150,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPost]
         [Route(AccountApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
-        public async Task<IActionResult> PostNewAccountAsync([FromBody] AccountViewModel account)
+        public async Task<IActionResult> PostNewAccountAsync([FromBody] AccountFullDataViewModel viewModel)
         {
-            var result = await ValidationResultAsync(account);
+            var result = await ValidationResultAsync(viewModel.Account);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputAccount = await _repository.SaveAccountAsync(account);
+            var outputAccount = await _repository.SaveAccountAsync(viewModel);
             return StatusCode(StatusCodes.Status201Created, outputAccount);
         }
 
@@ -157,15 +166,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedAccountAsync(int accountId, [FromBody] AccountViewModel account)
+        public async Task<IActionResult> PutModifiedAccountAsync(int accountId, [FromBody] AccountFullDataViewModel viewModel)
         {
-            var result = await ValidationResultAsync(account, accountId);
+            var result = await ValidationResultAsync(viewModel.Account, accountId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputAccount = await _repository.SaveAccountAsync(account);
+            var outputAccount = await _repository.SaveAccountAsync(viewModel);
             result = (outputAccount != null)
                 ? Ok(outputAccount)
                 : NotFound() as IActionResult;

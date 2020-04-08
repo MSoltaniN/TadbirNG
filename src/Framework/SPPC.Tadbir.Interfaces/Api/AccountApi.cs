@@ -101,5 +101,16 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for accounts count
         /// </summary>
         public const string AccountsCountUrl = "accounts/count";
+
+
+        /// <summary>
+        /// API client URL for account full data specified by identifier
+        /// </summary>
+        public const string AccountFullData = "accounts/fulldata/{0}";
+
+        /// <summary>
+        /// API server route URL for account full data specified by identifier
+        /// </summary>
+        public const string AccountFullDataUrl = "accounts/fulldata/{accountId:min(1)}";
     }
 }

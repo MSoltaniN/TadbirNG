@@ -3122,6 +3122,103 @@
         <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="False" isRequired="True" joinTable="" description="نقش اقدام کننده روی کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity name="CustomerTaxInfo" area="Finance" identifier="Id" type="BaseEntity" description="مشخصات اطلاعات مالیاتی طرف حساب ها را نگهداری میکند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CustomerTaxInfoID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
+        </Property>
+        <Property name="CustomerFirstName" type="String" isValidated="True" description="نام طرف حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCustomerFirstName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CustomerFirstName" type="nvarchar(64)" nullable="True" />
+          <ColumnView name="Customer First Name" visible="True" width="120" />
+          <ValidationRule name="CustomerFirstName_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CustomerName" type="String" isValidated="True" description="در صورتی که نوع شخص حقوقی باشد نام شرکت و در صورتی که حقیقی باشد نام خانوادگی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCustomerName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CustomerName" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Customer Name" visible="True" width="120" />
+          <ValidationRule name="CustomerName_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="PersonType" type="Int32" isValidated="True" description="نوع شخص" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnPersonType" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="PersonType" type="int" nullable="False" />
+          <ColumnView name="Person Type" visible="True" width="120" />
+          <ValidationRule name="PersonType_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="BuyerType" type="Int32" isValidated="True" description="نوع خریدار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnBuyerType" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="BuyerType" type="int" nullable="False" />
+          <ColumnView name="Buyer Type" visible="True" width="120" />
+          <ValidationRule name="BuyerType_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="EconomicCode" type="String" isValidated="True" description="کد اقتصادی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtEconomicCode" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="EconomicCode" type="nvarchar(12)" nullable="True" />
+          <ColumnView name="Economic Code" visible="True" width="120" />
+          <ValidationRule name="EconomicCode_Validation" required="False" minimum="" maximum="12" format="" type="Length" />
+        </Property>
+        <Property name="Address" type="String" isValidated="True" description="آدرس" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtAddress" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Address" type="nvarchar(256)" nullable="False" />
+          <ColumnView name="Address" visible="True" width="120" />
+          <ValidationRule name="Address_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="NationalCode" type="String" isValidated="True" description="در صورتی که نوع شخص حقوقی باشد شناسه ملی و در صورتی که حقیقی باشد کد ملی میباشد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtNationalCode" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="NationalCode" type="nvarchar(11)" nullable="False" />
+          <ColumnView name="National Code" visible="True" width="120" />
+          <ValidationRule name="NationalCode_Validation" required="True" minimum="" maximum="11" format="" type="Length" />
+        </Property>
+        <Property name="PerCityCode" type="String" isValidated="True" description="پیش شماره تلفن" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtPerCityCode" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="PerCityCode" type="nvarchar(10)" nullable="False" />
+          <ColumnView name="Per City Code" visible="True" width="120" />
+          <ValidationRule name="PerCityCode_Validation" required="True" minimum="" maximum="10" format="" type="Length" />
+        </Property>
+        <Property name="PhoneNo" type="String" isValidated="True" description="شماره تلفن ثابت" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtPhoneNo" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="PhoneNo" type="nvarchar(50)" nullable="False" />
+          <ColumnView name="Phone No" visible="True" width="120" />
+          <ValidationRule name="PhoneNo_Validation" required="True" minimum="" maximum="50" format="" type="Length" />
+        </Property>
+        <Property name="MobileNo" type="String" isValidated="True" description="شماره تلفن همراه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtMobileNo" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="MobileNo" type="nvarchar(50)" nullable="False" />
+          <ColumnView name="Mobile No" visible="True" width="120" />
+          <ValidationRule name="MobileNo_Validation" required="True" minimum="" maximum="50" format="" type="Length" />
+        </Property>
+        <Property name="PostalCode" type="String" isValidated="True" description="کد پستی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtPostalCode" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="PostalCode" type="nvarchar(10)" nullable="False" />
+          <ColumnView name="Postal Code" visible="True" width="120" />
+          <ValidationRule name="PostalCode_Validation" required="True" minimum="" maximum="10" format="" type="Length" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="توضیحات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="OneToOne" endpointName="Account" entityName="Account" hasKey="False" isRequired="True" joinTable="" description="حساب انتخاب شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
   </Entities>
   <Storage name="Framework.xml" connection="..\..\..\res" media="XmlFile" />
 </Repository>

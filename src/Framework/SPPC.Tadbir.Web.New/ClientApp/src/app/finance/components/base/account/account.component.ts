@@ -16,6 +16,7 @@ import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
 import { ViewName, AccountPermissions } from '@sppc/shared/security';
 import { SelectFormComponent } from '@sppc/shared/controls';
 import { Account } from '@sppc/finance/models';
+import { AccountFullData } from '@sppc/finance/models/accountFullData';
 
 
 //#endregion
@@ -133,6 +134,74 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
       else {
         this.showMessage(String.Format(errorMsg, (this.levelConfig.no - 1).toString()), MessageType.Warning);
       }
+  }
+
+  saveHandler(model: any, isNew: boolean) {
+    debugger;
+    this.grid.loading = true;
+    if (!isNew) {
+      this.service.edit<AccountFullData>(String.Format(this.modelUrl, model.account.id), model)
+        .subscribe(response => {
+
+          this.editDataItem = undefined;
+          this.showMessage(this.updateMsg, MessageType.Succes);
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+          //log is off after update model
+          this.listChanged = false;
+          this.reloadGrid();
+          this.selectedRows = [];
+
+          this.refreshTreeNodes(model);
+
+        }, (error => {
+          this.editDataItem = model;
+          this.dialogModel.errorMessage = error;
+        }));
+    }
+    else {
+      this.service.insert<AccountFullData>(this.environmentModelsUrl, model)
+        .subscribe((response: any) => {
+
+          this.editDataItem = undefined;
+          this.showMessage(this.insertMsg, MessageType.Succes);
+          var insertedModel = response.account;
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
+          this.selectedRows = [];
+          //log is off after update insert
+          this.listChanged = false;
+          this.reloadGrid(insertedModel);
+
+          this.refreshTreeNodes(insertedModel);
+
+        }, (error => {
+          this.dialogModel.errorMessage = error;
+        }));
+
+    }
+    this.grid.loading = false;
+
+  }
+
+  editHandler() {
+    var recordId = this.selectedRows[0].id;
+
+    this.grid.loading = true;
+    this.service.getById(String.Format(AccountApi.AccountFullData, recordId)).subscribe(res => {
+
+      this.editDataItem = res;
+      this.openEditorDialog(false);
+
+      this.grid.loading = false;
+    })
   }
 
   public showReport() {

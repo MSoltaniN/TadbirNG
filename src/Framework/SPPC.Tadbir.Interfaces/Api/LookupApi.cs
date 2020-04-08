@@ -101,5 +101,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all application users
         /// </summary>
         public const string UsersUrl = "lookup/users";
+
+        /// <summary>
+        /// API client URL for all provinces
+        /// </summary>
+        public const string Provinces = "lookup/provinces";
+
+        /// <summary>
+        /// API server route URL for all provinces
+        /// </summary>
+        public const string ProvincesUrl = "lookup/provinces";
     }
 }

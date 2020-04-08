@@ -1209,3 +1209,32 @@ GO
 
 SET QUOTED_IDENTIFIER OFF
 GO
+
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [Finance].[CustomerTaxInfo] (
+    [CustomerTaxInfoID]   INT              IDENTITY (1, 1) NOT NULL,  
+	[AccountID]           INT              NOT NULL,  
+    [CustomerFirstName]   NVARCHAR(64)     NULL,
+    [CustomerName]        NVARCHAR(128)    NOT NULL,
+    [PersonType]          INT              NOT NULL,
+    [BuyerType]           INT              NOT NULL,
+    [EconomicCode]        NVARCHAR(12)     NULL,
+    [Address]             NVARCHAR(256)    NOT NULL,
+    [NationalCode]        NVARCHAR(11)     NOT NULL,
+    [PerCityCode]         NVARCHAR(10)     NOT NULL,
+    [PhoneNo]             NVARCHAR(64)     NOT NULL,
+    [MobileNo]            NVARCHAR(64)     NOT NULL,
+    [PostalCode]          NVARCHAR(10)     NOT NULL,
+    [Description]         NVARCHAR(1024)   NULL,
+	[rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CustomerTaxInfo_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Finance_CustomerTaxInfo_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_CustomerTaxInfo] PRIMARY KEY CLUSTERED ([CustomerTaxInfoID] ASC)
+    , CONSTRAINT [FK_Finance_CustomerTaxInfo_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+)
+GO
