@@ -27,7 +27,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="customerTaxInfo">امکانات مورد نیاز برای اطلاعات مالی طرف حساب ها را فراهم میکند</param>
-        public AccountRepository(IRepositoryContext context, ISystemRepository system, ICustomerTaxInfoRepository customerTaxInfo, IAccountOwnerRepository accountOwner)
+        /// <param name="accountOwner"></param>
+        public AccountRepository(IRepositoryContext context, ISystemRepository system,
+            ICustomerTaxInfoRepository customerTaxInfo, IAccountOwnerRepository accountOwner)
             : base(context, system?.Logger)
         {
             _system = system;

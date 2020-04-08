@@ -7,7 +7,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
     public partial class AccountOwnerViewModel
     {
         /// <summary>
-        /// شناسه دیتابیسی حساب مرتبط 
+        /// شناسه دیتابیسی حساب مرتبط
         /// </summary>
         public int AccountId { get; set; }
     }

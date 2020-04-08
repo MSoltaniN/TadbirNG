@@ -29,21 +29,6 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
-
-        /// <summary>
         /// Gets or sets the نام بانک مربوط به حساب
         /// </summary>
         public virtual string BankName { get; set; }
