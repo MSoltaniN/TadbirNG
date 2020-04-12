@@ -234,8 +234,15 @@ namespace SPPC.Tadbir.Persistence
 
             if (account != null)
             {
-                await _customerTaxInfo.DeleteCustomerTaxInfoAsync(account.CustomerTaxInfo.Id);
-                await _accountOwner.DeleteAccountOwnerAsync(account.AccountOwner.Id);
+                if (account.CustomerTaxInfo != null && account.CustomerTaxInfo.Id > 0)
+                {
+                    await _customerTaxInfo.DeleteCustomerTaxInfoAsync(account.CustomerTaxInfo.Id);
+                }
+
+                if (account.AccountOwner != null && account.AccountOwner.Id > 0)
+                {
+                    await _accountOwner.DeleteAccountOwnerAsync(account.AccountOwner.Id);
+                }
 
                 account.AccountCurrencies.Clear();
                 await DeleteAsync(repository, account);
