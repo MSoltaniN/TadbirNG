@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         protected RepositoryBase(IRepositoryContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         /// <summary>
@@ -47,11 +47,16 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند
+        /// </summary>
+        protected IRepositoryContext Context { get; }
+
+        /// <summary>
         /// امکان دسترسی به دیتابیس ها و انجام تراکنش های دیتابیسی را فراهم می کند
         /// </summary>
         protected IAppUnitOfWork UnitOfWork
         {
-            get { return _context.UnitOfWork; }
+            get { return Context.UnitOfWork; }
         }
 
         /// <summary>
@@ -59,7 +64,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         protected IDomainMapper Mapper
         {
-            get { return _context.Mapper; }
+            get { return Context.Mapper; }
         }
 
         /// <summary>
@@ -67,7 +72,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         protected ISqlConsole DbConsole
         {
-            get { return _context.DbConsole; }
+            get { return Context.DbConsole; }
         }
 
         /// <summary>
@@ -75,7 +80,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         protected UserContextViewModel UserContext
         {
-            get { return _context.UserContext; }
+            get { return Context.UserContext; }
         }
 
         /// <summary>
@@ -216,6 +221,5 @@ namespace SPPC.Tadbir.Persistence
 SELECT COUNT(*) FROM [{0}].[{1}] WHERE BranchID = {2}";
         private const string _fiscalPeriodReferenceScript = @"
 SELECT COUNT(*) FROM [{0}].[{1}] WHERE FiscalPeriodID = {2}";
-        private readonly IRepositoryContext _context;
     }
 }

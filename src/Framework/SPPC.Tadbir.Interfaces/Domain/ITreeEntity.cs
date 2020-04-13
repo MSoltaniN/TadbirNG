@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Domain
 {
