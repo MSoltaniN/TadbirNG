@@ -70,7 +70,7 @@
                                 [reorderable]="false">
     </kendo-grid-checkbox-column>
 
-    <kendo-grid-column media="(max-width: 450px)" title="">     
+    <kendo-grid-column media="(max-width: 450px)" title="">
 
       <ng-template kendoGridCellTemplate let-dataItem>
         <dl>
@@ -111,22 +111,22 @@
   <div class="section-option col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <div class="row">
 
-      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">                  
-          <label class="control-label" >{{ 'OperationLog.ReportLog' | translate }}</label>
-          <kendo-dropdownlist [data]="LogTypes"
-                              [textField]="'value'"
-                              [valueField]="'key'"                              
-                              [valuePrimitive]="true"
-                              [value]="logType"
-                              [(ngModel)]="logType"
-                              (ngModelChange)="logTypeChanged();saveStates();">
-            <ng-template kendoDropDownListValueTemplate let-dataItem>
-              {{ dataItem?.value | translate }}
-            </ng-template>
-            <ng-template kendoDropDownListItemTemplate let-dataItem>
-              {{ dataItem?.value | translate }}
-            </ng-template>
-          </kendo-dropdownlist>        
+      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+        <label class="control-label">{{ 'OperationLog.ReportLog' | translate }}</label>
+        <kendo-dropdownlist [data]="LogTypes"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="logType"
+                            [(ngModel)]="logType"
+                            (ngModelChange)="logTypeChanged();saveStates();">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
         <label class="control-label">{{ 'OperationLog.SelectBranch' | translate }}</label>
@@ -134,7 +134,7 @@
         <kendo-dropdownlist [data]="branchScope"
                             [textField]="'value'"
                             [valueField]="'key'"
-                            [disabled]="disableBranch" 
+                            [disabled]="disableBranch"
                             [valuePrimitive]="true"
                             [value]="branchSelected"
                             [(ngModel)]="branchSelected"
@@ -152,7 +152,7 @@
 
         <kendo-dropdownlist [data]="fiscalsPeriods"
                             [textField]="'value'"
-                            [disabled]="disableFiscalPeriod" 
+                            [disabled]="disableFiscalPeriod"
                             [valueField]="'key'"
                             [valuePrimitive]="true"
                             [value]="fiscalsPeriodSelected"
@@ -184,26 +184,26 @@
           </ng-template>
         </kendo-dropdownlist>
       </div>
-      
+
     </div>
     <div class="row">
 
-      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">                  
-          <label class="control-label">{{ 'OperationLog.ReportTypeLog' | translate }}</label>
-          <kendo-dropdownlist [data]="LogReportTypes"
-                              [textField]="'value'"
-                              [valueField]="'key'"
-                              [valuePrimitive]="true"
-                              [value]="logReportType"
-                              [(ngModel)]="logReportType"
-                              (ngModelChange)="systemLogChanged();saveStates();">
-            <ng-template kendoDropDownListValueTemplate let-dataItem>
-              {{ dataItem?.value | translate }}
-            </ng-template>
-            <ng-template kendoDropDownListItemTemplate let-dataItem>
-              {{ dataItem?.value | translate }}
-            </ng-template>
-          </kendo-dropdownlist>        
+      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+        <label class="control-label">{{ 'OperationLog.ReportTypeLog' | translate }}</label>
+        <kendo-dropdownlist [data]="LogReportTypes"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="logReportType"
+                            [(ngModel)]="logReportType"
+                            (ngModelChange)="systemLogChanged();saveStates();">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
         <label class="control-label">{{ 'OperationLog.SelectUser' | translate }}</label>
@@ -243,17 +243,17 @@
       </div>
       <div class="col-xs-12 col-sm-3">
         <div *ngIf="this.logType != '3'" class="col-xs-12 col-sm-6 form-group">
-          <button  class="k-button btn-compute-default" [disabled]="disableButtons" 
-                  (click)="archiveData();">                  
+          <button class="k-button btn-compute-default" [disabled]="disableButtons"
+                  (click)="confirmArchiveData();">
             {{ 'OperationLog.Archive' | translate }}
           </button>
         </div>
         <div *ngIf="this.logType == '3'" class="col-xs-12 col-sm-6 form-group">
-          <button  class="k-button btn-compute-default" [disabled]="disableButtons" 
-                  (click)="deleteArchiveData();">
+          <button class="k-button btn-compute-default" [disabled]="disableButtons"
+                  (click)="confirmDeleteArchiveData();">
             {{ 'OperationLog.DeleteArchive' | translate }}
           </button>
-        </div>        
+        </div>
         <div class="col-xs-12  form-group sppc-float btn-show-log" [ngClass]="{'col-sm-6' : !archiveSelected,'col-sm-7' : archiveSelected}">
           <button class="k-button btn-compute-default"
                   (click)="getReportData();">
@@ -261,10 +261,29 @@
           </button>
         </div>
 
-        </div>
-      </div>    
+      </div>
+    </div>
   </div>
 </div>
 
 <operationLogs-detail-component [model]="detailDataItem" (cancel)="cancelHandler()">
 </operationLogs-detail-component>
+
+<kendo-dialog title="{{'OperationLog.DeleteArchive' | translate}}" *ngIf="deleteArchiveConfirm" (close)="deleteArchiveData(false)" [minWidth]="250" [width]="450">
+  <p>
+    {{'OperationLog.DeleteArchiveMsgConfirm' | translate}}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteArchiveData(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="deleteArchiveData(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="{{'OperationLog.Archive' | translate}}" *ngIf="archiveConfirm" (close)="archiveData(false)" [minWidth]="250" [width]="450">
+  <p>
+    {{'OperationLog.ArchiveMsgConfirm' | translate}}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="archiveData(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="archiveData(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
