@@ -6,7 +6,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { TranslateService } from '@ngx-translate/core';
 import { Layout, MessageType, MessagePosition } from '@sppc/env/environment';
 import { AuthenticationService, ContextInfo, CompanyLoginInfo } from '@sppc/core';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, SessionKeys } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { UserService } from '@sppc/admin/service';
 import { Command, ListFormViewConfig } from '@sppc/shared/models';
@@ -118,6 +118,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     if (lastFpId)
       this.fiscalPeriodId = lastFpId;
 
+    this.bStorageService.setSession(SessionKeys.OperationLog, undefined);
   }
 
   getCompany() {
