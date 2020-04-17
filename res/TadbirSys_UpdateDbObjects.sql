@@ -3191,7 +3191,12 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (646, 4, 'Password', NULL, NULL, 'System.String', 'nvarchar', 'string', 16, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
 
--- 1.1.870
+-- 1.1.860
 
 Update Metadata.Command set RouteUrl = '/finance/vouchers/opening-voucher' Where TitleKey = 'IssueOpeningVoucher'
 Update Metadata.Command set RouteUrl = '/finance/vouchers/closing-voucher' Where TitleKey = 'IssueClosingVoucher'
+
+-- 1.1.862
+UPDATE [Config].[SysLogSetting]
+SET IsEnabled = 1
+

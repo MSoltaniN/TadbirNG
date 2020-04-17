@@ -4,7 +4,7 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping.Finance
 {
-    public static class AccountOwnerMap
+    internal static class AccountOwnerMap
     {
         internal static void BuildMapping(EntityTypeBuilder<AccountOwner> builder)
         {

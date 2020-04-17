@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت ارتباطات بین مولفه های مختلف بردار حساب را پیاده سازی می کند
     /// </summary>
-    public class RelationRepository : RepositoryBase, IRelationRepository
+    public class RelationRepository : LoggingRepository<Account, object>, IRelationRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -24,9 +24,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="itemRepository">پیاده سازی اینترفیس مربوط به عملیات بردار حساب</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         public RelationRepository(
-            IRepositoryContext context, ISystemRepository system, IAccountItemRepository itemRepository)
-            : base(context)
+            IRepositoryContext context, ISystemRepository system, IAccountItemRepository itemRepository,
+            IOperationLogRepository log)
+            : base(context, log)
         {
             _system = system;
             _itemRepository = itemRepository;
@@ -180,7 +182,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش سنکرون، معتبر بودن بردار حساب را با توجه به سرفصل های حسابداری داده شده بررسی میکند
+        /// معتبر بودن بردار حساب را با توجه به سرفصل های حسابداری داده شده بررسی میکند
         /// </summary>
         /// <param name="account">اطلاعات نمایشی خلاصه حساب</param>
         /// <param name="detailAccount">اطلاعات نمایشی خلاصه تفصیلی شناور</param>
@@ -1322,6 +1324,11 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        internal override int? EntityType
+        {
+            get { return (int?)EntityTypeId.AccountRelations; }
+        }
+
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
@@ -1599,6 +1606,15 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #endregion
+
+        private async Task<string> GetRelationLogDescriptionAsync<TEntity>(
+            int itemId, string fromItem, string toItem)
+            where TEntity : class, ITreeEntity
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            var accountItem = await repository.GetByIDAsync(itemId);
+            return String.Format(String.Empty);
+        }
 
         private readonly ISystemRepository _system;
         private readonly IAccountItemRepository _itemRepository;

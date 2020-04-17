@@ -4,7 +4,7 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    public static class CustomerTaxInfoMap
+    internal static class CustomerTaxInfoMap
     {
         internal static void BuildMapping(EntityTypeBuilder<CustomerTaxInfo> builder)
         {

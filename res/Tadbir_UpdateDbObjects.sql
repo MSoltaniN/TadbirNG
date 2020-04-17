@@ -1040,3 +1040,8 @@ CREATE TABLE [Finance].[AccountOwner] (
     , CONSTRAINT [FK_Finance_AccountOwner_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
 )
 GO
+
+-- 1.1.862
+UPDATE [Config].[LogSetting]
+SET IsEnabled = 1
+

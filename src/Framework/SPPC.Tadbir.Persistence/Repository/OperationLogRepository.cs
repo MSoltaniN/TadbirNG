@@ -49,12 +49,12 @@ namespace SPPC.Tadbir.Persistence
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .ToListAsync();
-            var logs = new PagedList<OperationLogViewModel>(list, gridOptions);
-            foreach (var item in logs.Items)
+            foreach (var log in list)
             {
-                await SetSystemValues(item);
+                await SetSystemValues(log);
             }
 
+            var logs = new PagedList<OperationLogViewModel>(list, gridOptions);
             await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.View);
             return logs;
         }
@@ -74,12 +74,12 @@ namespace SPPC.Tadbir.Persistence
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .ToListAsync();
-            var archive = new PagedList<OperationLogViewModel>(list, gridOptions);
-            foreach (var item in archive.Items)
+            foreach (var log in list)
             {
-                await SetSystemValues(item);
+                await SetSystemValues(log);
             }
 
+            var archive = new PagedList<OperationLogViewModel>(list, gridOptions);
             await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.ViewArchive);
             return archive;
         }

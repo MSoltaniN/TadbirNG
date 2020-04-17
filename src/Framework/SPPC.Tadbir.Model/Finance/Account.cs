@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -28,5 +29,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// اطلاعات حساب بانکی
         /// </summary>
         public AccountOwner AccountOwner { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0} ({1})", Name, FullCode);
+        }
     }
 }

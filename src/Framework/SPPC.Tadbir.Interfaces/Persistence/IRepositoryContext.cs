@@ -30,5 +30,12 @@ namespace SPPC.Tadbir.Persistence
         /// امکان دسترسی به اطلاعات محیطی کاربر جاری برنامه را فراهم می کند
         /// </summary>
         UserContextViewModel UserContext { get; }
+
+        /// <summary>
+        /// یک رشته متنی شامل ترکیب دلخواهی از متن و کلید متنی چندزبانه را به زبان جاری برنامه ترجمه می کند
+        /// </summary>
+        /// <param name="resourceKey">رشته متنی مورد نظر برای ترجمه</param>
+        /// <returns>ترجمه رشته داده شده به زبان جاری برنامه</returns>
+        string Localize(string resourceKey);
     }
 }
