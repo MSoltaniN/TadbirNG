@@ -232,8 +232,15 @@ namespace SPPC.Tadbir.Persistence
 
             if (account != null)
             {
-                await _customerTaxInfo.DeleteCustomerTaxInfoAsync(account.CustomerTaxInfo.Id);
-                await _accountOwner.DeleteAccountOwnerAsync(account.AccountOwner.Id);
+                if (account.CustomerTaxInfo != null)
+                {
+                    await _customerTaxInfo.DeleteCustomerTaxInfoAsync(account.CustomerTaxInfo.Id);
+                }
+
+                if (account.AccountOwner != null)
+                {
+                    await _accountOwner.DeleteAccountOwnerAsync(account.AccountOwner.Id);
+                }
 
                 account.AccountCurrencies.Clear();
                 await DeleteAsync(repository, account);
@@ -259,8 +266,15 @@ namespace SPPC.Tadbir.Persistence
 
                 if (account != null)
                 {
-                    await _customerTaxInfo.DeleteCustomerTaxInfoAsync(account.CustomerTaxInfo.Id);
-                    await _accountOwner.DeleteAccountOwnerAsync(account.AccountOwner.Id);
+                    if (account.CustomerTaxInfo != null)
+                    {
+                        await _customerTaxInfo.DeleteCustomerTaxInfoAsync(account.CustomerTaxInfo.Id);
+                    }
+
+                    if (account.AccountOwner != null)
+                    {
+                        await _accountOwner.DeleteAccountOwnerAsync(account.AccountOwner.Id);
+                    }
 
                     level = Math.Max(level, account.Level);
                     account.AccountCurrencies.Clear();
