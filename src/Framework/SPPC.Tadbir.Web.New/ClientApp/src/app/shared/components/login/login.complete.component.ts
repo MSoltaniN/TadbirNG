@@ -118,7 +118,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     if (lastFpId)
       this.fiscalPeriodId = lastFpId;
 
-    this.bStorageService.setSession(SessionKeys.OperationLog, undefined);
+    this.bStorageService.removeSessionStorage(SessionKeys.OperationLog);
   }
 
   getCompany() {
