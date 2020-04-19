@@ -222,10 +222,10 @@
   <data name="IncorrectOldPassword" xml:space="preserve">
     <value>رمز ورود قدیم صحیح نیست.</value>
   </data>
-  <data name="InvalidPassword" xml:space="preserve">
+  <data name="InvalidPasswordMessage" xml:space="preserve">
     <value>رمز ورود وارد شده نادرست است.</value>
   </data>
-  <data name="InvalidUserName" xml:space="preserve">
+  <data name="InvalidUserNameMessage" xml:space="preserve">
     <value>کاربری با نام کاربری داده شده یافت نشد.</value>
   </data>
   <data name="ItemByIdNotFound" xml:space="preserve">
@@ -306,7 +306,7 @@
   <data name="UserAccount" xml:space="preserve">
     <value>حساب کاربری</value>
   </data>
-  <data name="UserIsDisabled" xml:space="preserve">
+  <data name="DisabledUserMessage" xml:space="preserve">
     <value>کاربر مورد نظر غیرفعال است.</value>
   </data>
   <data name="UserName" xml:space="preserve">
@@ -2993,5 +2993,32 @@
   </data>
   <data name="ClosingLiabilityCapitalAccounts" xml:space="preserve">
     <value>بستن حساب بدهی یا سرمایه به حساب اختتامیه</value>
+  </data>
+  <data name="AccessibleBranches" xml:space="preserve">
+    <value>شعبه های دارای دسترسی</value>
+  </data>
+  <data name="AccessiblePeriods" xml:space="preserve">
+    <value>دوره های مالی دارای دسترسی</value>
+  </data>
+  <data name="AssignedRoles" xml:space="preserve">
+    <value>نقش های تخصیص یافته</value>
+  </data>
+  <data name="AssignedUsers" xml:space="preserve">
+    <value>کاربران تخصیص یافته</value>
+  </data>
+  <data name="DisabledUser" xml:space="preserve">
+    <value>کاربر غیرفعال</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>رمز عبور غیرمعتبر</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>نام کاربری غیرمعتبر</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>(هیچکدام)</value>
+  </data>
+  <data name="RolesWithAccess" xml:space="preserve">
+    <value>نقش های دارای دسترسی</value>
   </data>
 </root>

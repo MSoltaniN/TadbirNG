@@ -12,6 +12,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Config;
 
@@ -200,8 +201,10 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "Name : {1}{0}Server : {2}{0}UserName : {3}{0}Password : {4}{0}Description : {5}",
-                    Environment.NewLine, entity.Name, entity.Server, entity.UserName, entity.Password, entity.Description)
+                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
+                    AppStrings.Name, entity.Name, AppStrings.Server, entity.Server,
+                    AppStrings.UserName, entity.UserName, AppStrings.Password, entity.Password,
+                    AppStrings.Description, entity.Description)
                 : null;
         }
 

@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Persistence
         public virtual async Task InsertAsync(IRepository<TEntity> repository, TEntity entity)
         {
             OnEntityAction(OperationId.Create);
-            Log.Description = GetState(entity);
+            Log.Description = Context.Localize(GetState(entity));
             repository.Insert(entity);
             await FinalizeActionAsync(entity);
         }
@@ -57,8 +57,10 @@ namespace SPPC.Tadbir.Persistence
             var clone = GetEntityCopy(entity);
             OnEntityAction(OperationId.Edit);
             UpdateExisting(entityView, entity);
-            Log.Description = String.Format("{0} : {1}{2}{3} : {4}",
-                AppStrings.Old, GetState(clone), Environment.NewLine, AppStrings.New, GetState(entity));
+            Log.Description = Context.Localize(
+                String.Format("{0} : ({1}) , {2} : ({3})",
+                AppStrings.Old, Context.Localize(GetState(clone)),
+                AppStrings.New, Context.Localize(GetState(entity))));
             repository.Update(entity);
             await FinalizeActionAsync(entity);
         }
@@ -72,7 +74,7 @@ namespace SPPC.Tadbir.Persistence
         public virtual async Task DeleteAsync(IRepository<TEntity> repository, TEntity entity)
         {
             OnEntityAction(OperationId.Delete);
-            Log.Description = GetState(entity);
+            Log.Description = Context.Localize(GetState(entity));
             DisconnectEntity(entity);
             repository.Delete(entity);
             await FinalizeActionAsync(entity);
@@ -202,6 +204,7 @@ namespace SPPC.Tadbir.Persistence
         internal async Task OnEnvironmentChangeAsync(
             CompanyLoginViewModel currentLogin, CompanyLoginViewModel newLogin)
         {
+            string description = String.Empty;
             Log = new OperationLogViewModel()
             {
                 Date = DateTime.Now.Date,
@@ -218,10 +221,11 @@ namespace SPPC.Tadbir.Persistence
             {
                 Log.CompanyId = newLogin.CompanyId;
                 Log.OperationId = (int)OperationId.CompanyLogin;
-                Log.Description = String.Format("{0} : '{1}', {2} : '{3}', {4} : '{5}'",
+                description = String.Format("{0} : '{1}', {2} : '{3}', {4} : '{5}'",
                     AppStrings.Company, newLogin.CompanyName,
                     AppStrings.FiscalPeriod, newLogin.FiscalPeriodName,
                     AppStrings.Branch, newLogin.BranchName);
+                Log.Description = Context.Localize(description);
                 await TrySaveLogAsync();
             }
             else
@@ -229,18 +233,20 @@ namespace SPPC.Tadbir.Persistence
                 if (currentLogin.FiscalPeriodId != newLogin.FiscalPeriodId)
                 {
                     Log.OperationId = (int)OperationId.SwitchFiscalPeriod;
-                    Log.Description = String.Format("{0} : '{1}', {2} : '{3}'",
+                    description = String.Format("{0} : '{1}', {2} : '{3}'",
                         AppStrings.CurrentValue, currentLogin.FiscalPeriodName,
                         AppStrings.NewValue, newLogin.FiscalPeriodName);
+                    Log.Description = Context.Localize(description);
                     await TrySaveLogAsync();
                 }
 
                 if (currentLogin.BranchId != newLogin.BranchId)
                 {
                     Log.OperationId = (int)OperationId.SwitchBranch;
-                    Log.Description = String.Format("{0} : '{1}', {2} : '{3}'",
+                    description = String.Format("{0} : '{1}', {2} : '{3}'",
                         AppStrings.CurrentValue, currentLogin.BranchName,
                         AppStrings.NewValue, newLogin.BranchName);
+                    Log.Description = Context.Localize(description);
                     await TrySaveLogAsync();
                 }
             }

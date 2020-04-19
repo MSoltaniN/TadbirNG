@@ -222,10 +222,10 @@
   <data name="IncorrectOldPassword" xml:space="preserve">
     <value>Value entered for old password is incorrect.</value>
   </data>
-  <data name="InvalidPassword" xml:space="preserve">
+  <data name="InvalidPasswordMessage" xml:space="preserve">
     <value>Password is incorrect.</value>
   </data>
-  <data name="InvalidUserName" xml:space="preserve">
+  <data name="InvalidUserNameMessage" xml:space="preserve">
     <value>No user with specified user name could be found.</value>
   </data>
   <data name="ItemByIdNotFound" xml:space="preserve">
@@ -306,7 +306,7 @@
   <data name="UserAccount" xml:space="preserve">
     <value>User account</value>
   </data>
-  <data name="UserIsDisabled" xml:space="preserve">
+  <data name="DisabledUserMessage" xml:space="preserve">
     <value>Specified user is disabled.</value>
   </data>
   <data name="UserName" xml:space="preserve">
@@ -3002,5 +3002,32 @@
   </data>
   <data name="ClosingLiabilityCapitalAccounts" xml:space="preserve">
     <value>Closing liability/equity account by closure account</value>
+  </data>
+  <data name="AccessibleBranches" xml:space="preserve">
+    <value>Accessible branches</value>
+  </data>
+  <data name="AccessiblePeriods" xml:space="preserve">
+    <value>Accessible fiscal periods</value>
+  </data>
+  <data name="AssignedRoles" xml:space="preserve">
+    <value>Assigned roles</value>
+  </data>
+  <data name="AssignedUsers" xml:space="preserve">
+    <value>Assigned users</value>
+  </data>
+  <data name="DisabledUser" xml:space="preserve">
+    <value>Disabled user</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Invalid password</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>Invalid user name</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>(None)</value>
+  </data>
+  <data name="RolesWithAccess" xml:space="preserve">
+    <value>Roles with access</value>
   </data>
 </root>

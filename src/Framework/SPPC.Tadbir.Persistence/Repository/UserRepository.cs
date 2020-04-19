@@ -279,7 +279,7 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.AssignRole);
-                Log.Description = await GetUserRoleDescriptionAsync(existing);
+                Log.Description = Context.Localize(await GetUserRoleDescriptionAsync(existing));
                 await TrySaveLogAsync();
             }
         }
@@ -394,7 +394,7 @@ namespace SPPC.Tadbir.Persistence
         public override async Task InsertAsync(IRepository<User> repository, User entity)
         {
             OnEntityAction(OperationId.Create);
-            Log.Description = GetState(entity);
+            Log.Description = Context.Localize(GetState(entity));
             repository.Insert(entity, usr => usr.Person);
             await FinalizeActionAsync(entity);
         }
@@ -405,8 +405,10 @@ namespace SPPC.Tadbir.Persistence
             var clone = CloneUser(entity);
             OnEntityAction(OperationId.Edit);
             UpdateExisting(entityView, entity);
-            Log.Description = String.Format("{0} : {1}{2}{3} : {4}",
-                AppStrings.Old, GetState(clone), Environment.NewLine, AppStrings.New, GetState(entity));
+            Log.Description = Context.Localize(
+                String.Format("{0} : ({1}) , {2} : ({3})",
+                AppStrings.Old, Context.Localize(GetState(clone)),
+                AppStrings.New, Context.Localize(GetState(entity))));
             repository.Update(entity, usr => usr.Person);
             await FinalizeActionAsync(entity);
         }
@@ -443,9 +445,9 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "UserName : {1}{0}IsEnabled : {2}{0}FirstName : {3}{0}LastName : {4}{0}",
-                    Environment.NewLine, entity.UserName, entity.IsEnabled,
-                    entity.Person.FirstName, entity.Person.LastName)
+                    "{0} : {1} , {2} : {3} , {4} : {5}",
+                    AppStrings.UserName, entity.UserName, AppStrings.PersonFirstName, entity.Person.FirstName,
+                    AppStrings.PersonLastName, entity.Person.LastName)
                 : null;
         }
 
@@ -656,15 +658,15 @@ namespace SPPC.Tadbir.Persistence
             string description;
             if (user == null)
             {
-                description = String.Format("Invalid user : {0}", login.UserName);
+                description = String.Format("{0} : {1}", AppStrings.InvalidUserName, login.UserName);
             }
             else if (!user.IsEnabled)
             {
-                description = String.Format("Disabled user : {0}", login.UserName);
+                description = String.Format("{0} : {1}", AppStrings.DisabledUser, login.UserName);
             }
             else if (!CheckPassword(user.Password, login.Password))
             {
-                description = "Invalid password";
+                description = AppStrings.InvalidPassword;
             }
             else
             {
@@ -684,14 +686,15 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<UserRole>();
             var userRoles = await repository.GetByCriteriaAsync(
                 ur => ur.UserId == user.Id, ur => ur.Role);
-            builder.AppendFormat("User : {0} , Assigned roles : ", user.UserName);
+            builder.AppendFormat("{0} : {1} , {2} : ",
+                AppStrings.User, user.UserName, AppStrings.AssignedRoles);
             if (userRoles.Count > 0)
             {
-                builder.Append(String.Join(",", userRoles.Select(ur => ur.Role.Name)));
+                builder.Append(String.Join(" , ", userRoles.Select(ur => ur.Role.Name)));
             }
             else
             {
-                builder.Append("(None)");
+                builder.Append(AppStrings.None);
             }
 
             return builder.ToString();

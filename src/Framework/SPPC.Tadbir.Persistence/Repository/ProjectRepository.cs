@@ -10,6 +10,7 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -308,8 +309,9 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                ? String.Format(
-                   "Name : {1}{0}Code : {2}{0}FullCode : {3}{0}Description : {4}",
-                   Environment.NewLine, entity.Name, entity.Code, entity.FullCode, entity.Description)
+                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
+                    AppStrings.Name, entity.Name, AppStrings.Code, entity.Code,
+                    AppStrings.FullCode, entity.FullCode, AppStrings.Description, entity.Description)
                : null;
         }
 

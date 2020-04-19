@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -47,7 +48,8 @@ namespace SPPC.Tadbir.Persistence
                     .Select(rate => Mapper.Map<CurrencyRateViewModel>(rate))
                     .ToListAsync();
                 OnEntityAction(OperationId.View);
-                Log.Description = String.Format("Currency : {0}", currency.Name);
+                Log.Description = Context.Localize(
+                    String.Format("{0} : {1}", AppStrings.Currency, currency.Name));
                 await ReadAsync(gridOptions);
                 return new PagedList<CurrencyRateViewModel>(all, gridOptions);
             }
@@ -174,8 +176,10 @@ namespace SPPC.Tadbir.Persistence
         protected override string GetState(CurrencyRate entity)
         {
             return (entity != null)
-                ? String.Format("Date : {1}{0}Time : {2}{0}Multiplier : {3}",
-                Environment.NewLine, entity.Date, entity.Time, entity.Multiplier)
+                ? String.Format(
+                    "{0} : {1} , {2} : {3} , {4} : {5}",
+                    AppStrings.Date, entity.Date, AppStrings.Time, entity.Time,
+                    AppStrings.Multiplier, entity.Multiplier)
                 : null;
         }
     }
