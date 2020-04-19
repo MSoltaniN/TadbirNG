@@ -690,11 +690,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.VoucherLine), articleId);
             }
-
-            var result = BranchValidationResult(voucherLine);
-            if (result is BadRequestObjectResult errorResult)
+            else
             {
-                message = errorResult.Value.ToString();
+                var result = BranchValidationResult(voucherLine);
+                if (result is BadRequestObjectResult errorResult)
+                {
+                    message = errorResult.Value.ToString();
+                }
             }
 
             return message;

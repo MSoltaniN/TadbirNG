@@ -178,6 +178,7 @@ namespace SPPC.Tadbir.Persistence
             if (lineView.Id == 0)
             {
                 line = Mapper.Map<VoucherLine>(lineView);
+                line.RowNo = await GetNextRowNoAsync(line.VoucherId);
                 line.CreatedById = UserContext.Id;
                 await InsertAsync(repository, line);
                 await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
@@ -223,6 +224,7 @@ namespace SPPC.Tadbir.Persistence
             if (article != null)
             {
                 await DeleteAsync(repository, article);
+                await UpdateRowNumbersAsync(article);
                 await UpdateVoucherBalanceStatusAsync(article.VoucherId);
             }
         }
@@ -248,6 +250,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucherId > 0)
             {
                 await UpdateVoucherBalanceStatusAsync(voucherId);
+                await UpdateRowNumbersAsync(voucherId);
             }
 
             await OnEntityGroupDeleted(items);
@@ -527,6 +530,55 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                     line => line.Project, line => line.Currency)
                 .Where(line => line.Id == articleId);
             return lineQuery;
+        }
+
+        private async Task<int> GetNextRowNoAsync(int voucherId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            int lastRowNo = await repository
+                .GetEntityQuery()
+                .Where(line => line.VoucherId == voucherId)
+                .OrderByDescending(line => line.RowNo)
+                .Select(line => line.RowNo)
+                .FirstOrDefaultAsync();
+            return lastRowNo + 1;
+        }
+
+        private async Task UpdateRowNumbersAsync(VoucherLine line)
+        {
+            Verify.ArgumentNotNull(line, nameof(line));
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            var nextLines = await repository
+                .GetEntityQuery()
+                .Where(vl => vl.VoucherId == line.VoucherId &&
+                    vl.RowNo > line.RowNo)
+                .OrderBy(vl => vl.RowNo)
+                .ToListAsync();
+            foreach (var nextLine in nextLines)
+            {
+                nextLine.RowNo = nextLine.RowNo - 1;
+                repository.Update(nextLine);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        private async Task UpdateRowNumbersAsync(int voucherId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            var lines = await repository
+                .GetEntityQuery()
+                .Where(vl => vl.VoucherId == voucherId)
+                .OrderBy(vl => vl.RowNo)
+                .ToListAsync();
+            int rowNo = 1;
+            foreach (var line in lines)
+            {
+                line.RowNo = rowNo++;
+                repository.Update(line);
+            }
+
+            await UnitOfWork.CommitAsync();
         }
 
         private readonly ISystemRepository _system;
