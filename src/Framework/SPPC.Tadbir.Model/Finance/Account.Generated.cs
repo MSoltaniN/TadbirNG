@@ -56,11 +56,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual short TurnoverMode { get; set; }
 
         /// <summary>
-        /// شرحی که اطلاعات تکمیلی برای این سرفصل حسابداری را مشخص می کند
-        /// </summary>
-        public virtual string Description { get; set; }
-
-        /// <summary>
         /// حساب والد (پدر) برای این سرفصل حسابداری که در سطح بالایی آن در ساختار درختی تعریف شده
         /// </summary>
         public virtual Account Parent { get; set; }

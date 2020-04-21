@@ -8,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -267,6 +268,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(detailAccounts.ToArray(), facc => facc.IsSelected = true);
+            await LogAssociationOperationAsync<Account>(
+                OperationId.View, AppStrings.Account, accountId, AppStrings.DetailAccount);
             return detailAccounts;
         }
 
@@ -301,6 +304,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(costCenters.ToArray(), cc => cc.IsSelected = true);
+            await LogAssociationOperationAsync<Account>(
+                OperationId.View, AppStrings.Account, accountId, AppStrings.CostCenter);
             return costCenters;
         }
 
@@ -335,6 +340,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(projects.ToArray(), prj => prj.IsSelected = true);
+            await LogAssociationOperationAsync<Account>(
+                OperationId.View, AppStrings.Account, accountId, AppStrings.Project);
             return projects;
         }
 
@@ -362,6 +369,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
+            await LogAssociationOperationAsync<DetailAccount>(
+                OperationId.View, AppStrings.DetailAccount, detailId, AppStrings.Account);
             return accounts;
         }
 
@@ -389,6 +398,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
+            await LogAssociationOperationAsync<CostCenter>(
+                OperationId.View, AppStrings.CostCenter, costCenterId, AppStrings.Account);
             return accounts;
         }
 
@@ -416,6 +427,8 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
+            await LogAssociationOperationAsync<Project>(
+                OperationId.View, AppStrings.Project, projectId, AppStrings.Account);
             return accounts;
         }
 
@@ -436,6 +449,8 @@ namespace SPPC.Tadbir.Persistence
                 await AddNewAccountDetailAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<Account>(
+                    OperationId.Save, AppStrings.Account, relations.Id, AppStrings.DetailAccount);
             }
         }
 
@@ -489,6 +504,8 @@ namespace SPPC.Tadbir.Persistence
                 await RemoveDisconnectedDetailAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<Account>(
+                    OperationId.Save, AppStrings.Account, relations.Id, AppStrings.DetailAccount);
             }
         }
 
@@ -535,6 +552,8 @@ namespace SPPC.Tadbir.Persistence
                 await AddConnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<DetailAccount>(
+                    OperationId.Save, AppStrings.DetailAccount, relations.Id, AppStrings.Account);
             }
         }
 
@@ -591,6 +610,8 @@ namespace SPPC.Tadbir.Persistence
                 await RemoveDisconnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<DetailAccount>(
+                    OperationId.Save, AppStrings.DetailAccount, relations.Id, AppStrings.Account);
             }
         }
 
@@ -642,6 +663,8 @@ namespace SPPC.Tadbir.Persistence
                 await AddNewAccountCostCentersAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<Account>(
+                    OperationId.Save, AppStrings.Account, relations.Id, AppStrings.CostCenter);
             }
         }
 
@@ -695,6 +718,8 @@ namespace SPPC.Tadbir.Persistence
                 await RemoveDisconnectedCostCentersAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<Account>(
+                    OperationId.Save, AppStrings.Account, relations.Id, AppStrings.CostCenter);
             }
         }
 
@@ -741,6 +766,8 @@ namespace SPPC.Tadbir.Persistence
                 await AddConnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<CostCenter>(
+                    OperationId.Save, AppStrings.CostCenter, relations.Id, AppStrings.Account);
             }
         }
 
@@ -797,6 +824,8 @@ namespace SPPC.Tadbir.Persistence
                 await RemoveDisconnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<CostCenter>(
+                    OperationId.Save, AppStrings.CostCenter, relations.Id, AppStrings.Account);
             }
         }
 
@@ -848,6 +877,8 @@ namespace SPPC.Tadbir.Persistence
                 await AddNewAccountProjectsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<Account>(
+                    OperationId.Save, AppStrings.Account, relations.Id, AppStrings.Project);
             }
         }
 
@@ -900,6 +931,8 @@ namespace SPPC.Tadbir.Persistence
                 await RemoveDisconnectedProjectsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<Account>(
+                    OperationId.Save, AppStrings.Account, relations.Id, AppStrings.Project);
             }
         }
 
@@ -946,6 +979,8 @@ namespace SPPC.Tadbir.Persistence
                 await AddConnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<Project>(
+                    OperationId.Save, AppStrings.Project, relations.Id, AppStrings.Account);
             }
         }
 
@@ -1002,6 +1037,8 @@ namespace SPPC.Tadbir.Persistence
                 await RemoveDisconnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
+                await LogAssociationOperationAsync<Project>(
+                    OperationId.Save, AppStrings.Project, relations.Id, AppStrings.Account);
             }
         }
 
@@ -1607,13 +1644,31 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        private async Task<string> GetRelationLogDescriptionAsync<TEntity>(
-            int itemId, string fromItem, string toItem)
+        private async Task LogAssociationOperationAsync<TEntity>(
+            OperationId operation, string fromItem, int fromId, string toItem)
             where TEntity : class, ITreeEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            var accountItem = await repository.GetByIDAsync(itemId);
-            return String.Format(String.Empty);
+            var accountItem = await repository.GetByIDAsync(fromId);
+            if (accountItem != null)
+            {
+                OnEntityAction(operation);
+                Log.Description = GetRelationLogDescription(accountItem, fromItem, toItem);
+                Log.EntityName = accountItem.Name;
+                Log.EntityCode = accountItem.FullCode;
+                Log.EntityDescription = accountItem.Description ?? String.Empty;
+                await TrySaveLogAsync();
+            }
+        }
+
+        private string GetRelationLogDescription<TEntity>(
+            TEntity accountItem, string fromItem, string toItem)
+            where TEntity : class, ITreeEntity
+        {
+            string template = Context.Localize(AppStrings.AccountItemRelations);
+            string description = String.Format(template,
+                fromItem, accountItem.Name, accountItem.FullCode, toItem);
+            return Context.Localize(description);
         }
 
         private readonly ISystemRepository _system;

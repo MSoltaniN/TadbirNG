@@ -28,5 +28,10 @@ namespace SPPC.Tadbir.Model
         /// شماره سطح که عمق این موجودیت چندسطحی را در ساختار درختی مشخص می کند
         /// </summary>
         public virtual short Level { get; set; }
+
+        /// <summary>
+        /// شرحی که اطلاعات تکمیلی برای موجودیت چندسطحی را مشخص می کند
+        /// </summary>
+        public virtual string Description { get; set; }
     }
 }
