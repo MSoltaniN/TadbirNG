@@ -36,11 +36,6 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
-        /// شرحی که اطلاعات تکمیلی برای این تفصیلی شناور را مشخص می کند
-        /// </summary>
-        public virtual string Description { get; set; }
-
-        /// <summary>
         /// حساب والد (پدر) برای این تفصیلی شناور که در سطح بالایی آن در ساختار درختی تعریف شده
         /// </summary>
         public virtual DetailAccount Parent { get; set; }

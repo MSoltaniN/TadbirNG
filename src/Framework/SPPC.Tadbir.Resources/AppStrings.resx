@@ -3021,4 +3021,7 @@
   <data name="RolesWithAccess" xml:space="preserve">
     <value>نقش های دارای دسترسی</value>
   </data>
+  <data name="AccountItemRelations" xml:space="preserve">
+    <value>ارتباط {0} '{1}' ({2}) با {3}</value>
+  </data>
 </root>
