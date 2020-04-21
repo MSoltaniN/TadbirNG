@@ -134,49 +134,49 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     }));  
   }
 
-  reloadGrid(insertedModel?: any) {
-    this.grid.loading = true;
-    var filter = this.currentFilter;
-    if (this.totalRecords == this.skip && this.totalRecords != 0) {
-      this.skip = this.skip - this.pageSize;
-    }
+  //reloadGrid(insertedModel?: any) {
+  //  this.grid.loading = true;
+  //  var filter = this.currentFilter;
+  //  if (this.totalRecords == this.skip && this.totalRecords != 0) {
+  //    this.skip = this.skip - this.pageSize;
+  //  }
 
-    if (insertedModel)
-      this.goToLastPage(this.totalRecords);
+  //  if (insertedModel)
+  //    this.goToLastPage(this.totalRecords);
 
-    var parent_Id = this.parentId ? this.parentId.toString() : "null";
-    filter = this.addFilterToFilterExpression(
-      this.currentFilter,
-      parent_Id ? new Filter("ParentId", parent_Id, "== {0}", "System.Int32") : new Filter("ParentId", "", "== null", ""),
-      FilterExpressionOperator.And);
+  //  var parent_Id = this.parentId ? this.parentId.toString() : "null";
+  //  filter = this.addFilterToFilterExpression(
+  //    this.currentFilter,
+  //    parent_Id ? new Filter("ParentId", parent_Id, "== {0}", "System.Int32") : new Filter("ParentId", "", "== null", ""),
+  //    FilterExpressionOperator.And);
 
-    this.currentFilter = filter;
+  //  this.currentFilter = filter;
 
-    this.service.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId), this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
+  //  this.service.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId), this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
 
-      var resData = res.body;
+  //    var resData = res.body;
 
-      var totalCount = 0;
+  //    var totalCount = 0;
 
-      if (res.headers != null) {
-        var headers = res.headers != undefined ? res.headers : null;
-        if (headers != null) {
-          var retheader = headers.get('X-Total-Count');
-          if (retheader != null)
-            totalCount = parseInt(retheader.toString());
-        }
-      }
+  //    if (res.headers != null) {
+  //      var headers = res.headers != undefined ? res.headers : null;
+  //      if (headers != null) {
+  //        var retheader = headers.get('X-Total-Count');
+  //        if (retheader != null)
+  //          totalCount = parseInt(retheader.toString());
+  //      }
+  //    }
 
-      this.rowData = {
-        data: resData,
-        total: totalCount
-      }
+  //    this.rowData = {
+  //      data: resData,
+  //      total: totalCount
+  //    }
 
-      this.showloadingMessage = !(resData.length == 0);
-      this.totalRecords = totalCount;
-      this.grid.loading = false;
-    })
-  }
+  //    this.showloadingMessage = !(resData.length == 0);
+  //    this.totalRecords = totalCount;
+  //    this.grid.loading = false;
+  //  })
+  //}
 
   rolesHandler() {
     var branchId = this.selectedRows[0].id;
