@@ -108,8 +108,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">اطلاعات مورد نیاز برای ایجاد لاگ</param>
         protected async Task ReadAsync(GridOptions gridOptions)
         {
-            OnEntityAction((OperationId)gridOptions.Operation);
-            if (gridOptions.ListChanged)
+            var options = gridOptions ?? new GridOptions();
+            OnEntityAction((OperationId)options.Operation);
+            if (options.ListChanged)
             {
                 await TrySaveLogAsync();
             }
