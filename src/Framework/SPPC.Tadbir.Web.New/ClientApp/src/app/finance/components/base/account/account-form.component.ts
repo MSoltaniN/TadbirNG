@@ -114,51 +114,93 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     { key: "1", value: "پس انداز" }
   ]
 
-  public accountDataForm = new FormGroup({
-    account: new FormGroup({
-      name: new FormControl('', Validators.required),
-      groupId: new FormControl(''),
-      code: new FormControl(''),
-      fullCode: new FormControl(''),
-      description: new FormControl(''),
-      branchScope: new FormControl(''),
-    }),
-    features: new FormGroup({
-      currencyId: new FormControl(''),
-      turnoverMode: new FormControl(''),
-      isActive: new FormControl(''),
-      isCurrencyAdjustable: new FormControl(''),
-    }),
-    customerTax: new FormGroup({
-      id: new FormControl(),
-      accountId: new FormControl(),
-      customerFirstName: new FormControl(''),
-      customerName: new FormControl(''),
-      personType: new FormControl(''),
-      buyerType: new FormControl(''),
-      economicCode: new FormControl(''),
-      address: new FormControl(''),
-      nationalCode: new FormControl(''),
-      perCityCode: new FormControl(''),
-      phoneNo: new FormControl(''),
-      mobileNo: new FormControl(''),
-      postalCode: new FormControl(''),
-      description: new FormControl(''),
-    }),
-    owner: new FormGroup({
-      id: new FormControl(),
-      accountId: new FormControl(),
-      bankName: new FormControl(''),
-      accountType: new FormControl(''),
-      bankBranchName: new FormControl(''),
-      branchIndex: new FormControl(''),
-      accountNumber: new FormControl(''),
-      cardNumber: new FormControl(''),
-      shabaNumber: new FormControl(''),
-      description: new FormControl('')
-    })
-  });
+  //public accountDataForm = new FormGroup({
+  //  account: new FormGroup({
+  //    name: new FormControl('', Validators.required),
+  //    groupId: new FormControl(''),
+  //    code: new FormControl(''),
+  //    fullCode: new FormControl(''),
+  //    description: new FormControl(''),
+  //    branchScope: new FormControl(''),
+  //  }),
+  //  features: new FormGroup({
+  //    currencyId: new FormControl(''),
+  //    turnoverMode: new FormControl(''),
+  //    isActive: new FormControl(''),
+  //    isCurrencyAdjustable: new FormControl(''),
+  //  }),
+  //  customerTax: new FormGroup({
+  //    id: new FormControl(),
+  //    accountId: new FormControl(),
+  //    customerFirstName: new FormControl(''),
+  //    customerName: new FormControl(''),
+  //    personType: new FormControl(''),
+  //    buyerType: new FormControl(''),
+  //    economicCode: new FormControl(''),
+  //    address: new FormControl(''),
+  //    nationalCode: new FormControl(''),
+  //    perCityCode: new FormControl(''),
+  //    phoneNo: new FormControl(''),
+  //    mobileNo: new FormControl(''),
+  //    postalCode: new FormControl(''),
+  //    description: new FormControl(''),
+  //  }),
+  //  owner: new FormGroup({
+  //    id: new FormControl(),
+  //    accountId: new FormControl(),
+  //    bankName: new FormControl(''),
+  //    accountType: new FormControl(''),
+  //    bankBranchName: new FormControl(''),
+  //    branchIndex: new FormControl(''),
+  //    accountNumber: new FormControl(''),
+  //    cardNumber: new FormControl(''),
+  //    shabaNumber: new FormControl(''),
+  //    description: new FormControl('')
+  //  })
+  //});
 
+  accountForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    groupId: new FormControl(''),
+    code: new FormControl(''),
+    fullCode: new FormControl(''),
+    description: new FormControl(''),
+    branchScope: new FormControl(''),
+  })
+  featuresForm = new FormGroup({
+    currencyId: new FormControl(''),
+    turnoverMode: new FormControl(''),
+    isActive: new FormControl(''),
+    isCurrencyAdjustable: new FormControl(''),
+  })
+  customerTaxForm = new FormGroup({
+    id: new FormControl(),
+    accountId: new FormControl(),
+    customerFirstName: new FormControl(''),
+    customerName: new FormControl(''),
+    personType: new FormControl(''),
+    buyerType: new FormControl(''),
+    economicCode: new FormControl(''),
+    address: new FormControl(''),
+    nationalCode: new FormControl(''),
+    perCityCode: new FormControl(''),
+    phoneNo: new FormControl(''),
+    mobileNo: new FormControl(''),
+    postalCode: new FormControl(''),
+    description: new FormControl(''),
+  })
+  ownerForm = new FormGroup({
+    id: new FormControl(),
+    accountId: new FormControl(),
+    bankName: new FormControl(''),
+    accountType: new FormControl(''),
+    bankBranchName: new FormControl(''),
+    branchIndex: new FormControl(''),
+    accountNumber: new FormControl(''),
+    cardNumber: new FormControl(''),
+    shabaNumber: new FormControl(''),
+    description: new FormControl('')
+  })
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
     public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService) {
@@ -212,65 +254,107 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     else
       this.accountModel.fullCode = this.parentFullCode;
 
-
+    debugger;
 
     if (!this.model) {
-      this.accountDataForm.reset();
-    }
-    else {
-      this.accountDataForm.patchValue({
-        account: {
-          name: this.accountModel.name,
-          groupId: this.accountModel.groupId,
-          code: this.accountModel.code,
-          fullCode: this.accountModel.fullCode,
-          description: this.accountModel.description,
-          branchScope: this.accountModel.branchScope,
-        },
-        features: {
-          currencyId: this.accountModel.currencyId,
-          turnoverMode: this.accountModel.turnoverMode,
-          isActive: this.accountModel.isActive,
-          isCurrencyAdjustable: this.accountModel.isCurrencyAdjustable,
-        }
+      this.accountForm.reset();
+      this.featuresForm.reset();
+      this.customerTaxForm.reset();
+      this.ownerForm.reset();
+
+      this.customerTaxForm.patchValue({
+        personType: "1",
+        buyerType: "1"
       })
 
+      this.ownerForm.patchValue({
+        accountType: "0"
+      })
+
+    }
+    else {
+      this.accountForm.patchValue({
+        name: this.accountModel.name,
+        groupId: this.accountModel.groupId,
+        code: this.accountModel.code,
+        fullCode: this.accountModel.fullCode,
+        description: this.accountModel.description,
+        branchScope: this.accountModel.branchScope,
+      })
+
+      this.featuresForm.patchValue({
+        currencyId: this.accountModel.currencyId,
+        turnoverMode: this.accountModel.turnoverMode,
+        isActive: this.accountModel.isActive,
+        isCurrencyAdjustable: this.accountModel.isCurrencyAdjustable,
+      })
+
+      //this.accountDataForm.patchValue({
+      //  account: {
+      //    name: this.accountModel.name,
+      //    groupId: this.accountModel.groupId,
+      //    code: this.accountModel.code,
+      //    fullCode: this.accountModel.fullCode,
+      //    description: this.accountModel.description,
+      //    branchScope: this.accountModel.branchScope,
+      //  },
+      //  features: {
+      //    currencyId: this.accountModel.currencyId,
+      //    turnoverMode: this.accountModel.turnoverMode,
+      //    isActive: this.accountModel.isActive,
+      //    isCurrencyAdjustable: this.accountModel.isCurrencyAdjustable,
+      //  }
+      //})
+
       if (this.customerTaxModel) {
-        this.accountDataForm.patchValue({
-          customerTax: {
-            id: this.customerTaxModel.id,
-            accountId: this.customerTaxModel.accountId,
-            customerFirstName: this.customerTaxModel.customerFirstName,
-            customerName: this.customerTaxModel.customerName,
-            personType: this.customerTaxModel.personType ? this.customerTaxModel.personType.toString() : "1",
-            buyerType: this.customerTaxModel.buyerType ? this.customerTaxModel.buyerType.toString() : "1",
-            economicCode: this.customerTaxModel.economicCode,
-            address: this.customerTaxModel.address,
-            nationalCode: this.customerTaxModel.nationalCode,
-            perCityCode: this.customerTaxModel.perCityCode,
-            phoneNo: this.customerTaxModel.phoneNo,
-            mobileNo: this.customerTaxModel.mobileNo,
-            postalCode: this.customerTaxModel.postalCode,
-            description: this.customerTaxModel.description,
-          }
+        this.customerTaxForm.reset(this.customerTaxModel);
+
+        this.customerTaxForm.patchValue({
+          personType: this.customerTaxModel.personType.toString(),
+          buyerType: this.customerTaxModel.buyerType.toString()
         })
+
+        //this.accountDataForm.patchValue({
+        //  customerTax: {
+        //    id: this.customerTaxModel.id,
+        //    accountId: this.customerTaxModel.accountId,
+        //    customerFirstName: this.customerTaxModel.customerFirstName,
+        //    customerName: this.customerTaxModel.customerName,
+        //    personType: this.customerTaxModel.personType ? this.customerTaxModel.personType.toString() : "1",
+        //    buyerType: this.customerTaxModel.buyerType ? this.customerTaxModel.buyerType.toString() : "1",
+        //    economicCode: this.customerTaxModel.economicCode,
+        //    address: this.customerTaxModel.address,
+        //    nationalCode: this.customerTaxModel.nationalCode,
+        //    perCityCode: this.customerTaxModel.perCityCode,
+        //    phoneNo: this.customerTaxModel.phoneNo,
+        //    mobileNo: this.customerTaxModel.mobileNo,
+        //    postalCode: this.customerTaxModel.postalCode,
+        //    description: this.customerTaxModel.description,
+        //  }
+        //})
       }
 
       if (this.accountOwnerModel) {
-        this.accountDataForm.patchValue({
-          owner: {
-            id: this.accountOwnerModel.id,
-            accountId: this.accountOwnerModel.accountId,
-            bankName: this.accountOwnerModel.bankName,
-            accountType: this.accountOwnerModel.accountType ? this.accountOwnerModel.accountType.toString() : "0",
-            bankBranchName: this.accountOwnerModel.bankBranchName,
-            branchIndex: this.accountOwnerModel.branchIndex,
-            accountNumber: this.accountOwnerModel.accountNumber,
-            cardNumber: this.accountOwnerModel.cardNumber,
-            shabaNumber: this.accountOwnerModel.shabaNumber,
-            description: this.accountOwnerModel.description,
-          }
+
+        this.ownerForm.reset(this.accountOwnerModel)
+
+        this.ownerForm.patchValue({
+          accountType: this.accountOwnerModel.accountType.toString()
         })
+        //this.accountDataForm.patchValue({
+        //  owner: {
+        //    id: this.accountOwnerModel.id,
+        //    accountId: this.accountOwnerModel.accountId,
+        //    bankName: this.accountOwnerModel.bankName,
+        //    accountType: this.accountOwnerModel.accountType ? this.accountOwnerModel.accountType.toString() : "0",
+        //    bankBranchName: this.accountOwnerModel.bankBranchName,
+        //    branchIndex: this.accountOwnerModel.branchIndex,
+        //    accountNumber: this.accountOwnerModel.accountNumber,
+        //    cardNumber: this.accountOwnerModel.cardNumber,
+        //    shabaNumber: this.accountOwnerModel.shabaNumber,
+        //    description: this.accountOwnerModel.description,
+        //  }
+        //})
       }
     }
   }
@@ -337,10 +421,11 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   onSave(e: any): void {
     e.preventDefault();
 
+    //var accountValue = this.accountDataForm.value.account;
+    //var featureValue = this.accountDataForm.value.features;
 
-
-    var accountValue = this.accountDataForm.value.account;
-    var featureValue = this.accountDataForm.value.features;
+    var accountValue = this.accountForm.value;
+    var featureValue = this.featuresForm.value;
 
     this.accountModel.name = accountValue.name;
     this.accountModel.groupId = accountValue.groupId;
@@ -382,7 +467,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     resultModel.accountOwner = null;
 
     if (!this.isNew && this.customerTaxModel) {
-      var customerTaxInfo = this.accountDataForm.value.customerTax;
+      //var customerTaxInfo = this.accountDataForm.value.customerTax;
+      var customerTaxInfo = this.customerTaxForm.value;
       customerTaxInfo.id = this.customerTaxModel.id;
       customerTaxInfo.accountId = this.accountModel.id;
 
@@ -391,7 +477,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
 
     if (!this.isNew && this.accountOwnerModel) {
-      var accountOwner = this.accountDataForm.value.owner;
+      //var accountOwner = this.accountDataForm.value.owner;
+      var accountOwner = this.ownerForm.value;
       accountOwner.id = this.accountOwnerModel.id;
       accountOwner.accountId = this.accountModel.id;
 
