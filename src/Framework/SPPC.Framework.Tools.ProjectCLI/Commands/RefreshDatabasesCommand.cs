@@ -28,7 +28,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
 
         private string GetSysConnectionString()
         {
-            string path = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
+            string path = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.json";
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }
@@ -47,7 +47,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     UserName = row[2].ToString(),
                     Password = row[3].ToString()
                 };
-                connections.Add(BuildConnectionString(company));
+               connections.Add(BuildConnectionString(company));
             }
 
             return connections.ToArray();
@@ -86,8 +86,19 @@ namespace SPPC.Framework.Tools.ProjectCLI
             {
                 Console.WriteLine("Database '{0}' is up-to-date.", sqlBuilder.InitialCatalog);
             }
+            SetDatabaseVersion(connection, version);
         }
 
+        private void SetDatabaseVersion(string connection,Version ver)
+        {
+            var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
+            if(_Ver>ver)
+            {
+                dal.QueryScalar(string.Format("Update [Core].[Version] SET  Number = '{0}' ", _Ver.ToString()));
+                Console.WriteLine("Set Core Version of this DataBase to : {0}",_Ver.ToString());
+            }
+
+        }
         private Version GetDatabaseVersion(string connection)
         {
             var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
@@ -115,6 +126,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     else
                     {
                         blocks.Add(ver, script.Substring(match.Index));
+                        _Ver = ver;
                     }
                 }
             }
@@ -166,5 +178,6 @@ namespace SPPC.Framework.Tools.ProjectCLI
         private const string _argsTemplate = @"-S {0} -d {1} -i {2} -b -E -I -j";
         private const string _scriptBlockRegex = @"-- (\d{1,}).(\d{1,}).(\d{1,})";
         private const string _tempScript = "Update.sql";
+        private  Version _Ver =new Version();
     }
 }
