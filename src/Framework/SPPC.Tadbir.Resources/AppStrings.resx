@@ -3024,4 +3024,10 @@
   <data name="AccountItemRelations" xml:space="preserve">
     <value>ارتباط {0} '{1}' ({2}) با {3}</value>
   </data>
+  <data name="RowPermissionsForRole" xml:space="preserve">
+    <value>دسترسی سطری نقش {0}</value>
+  </data>
+  <data name="RowPermissionsForRoleTo" xml:space="preserve">
+    <value>دسترسی سطری نقش {0} به : {1}</value>
+  </data>
 </root>

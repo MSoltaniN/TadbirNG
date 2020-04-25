@@ -3033,4 +3033,10 @@
   <data name="AccountItemRelations" xml:space="preserve">
     <value>Relations between {0} '{1}' ({2}) and {3}</value>
   </data>
+  <data name="RowPermissionsForRole" xml:space="preserve">
+    <value>Row access of role {0}</value>
+  </data>
+  <data name="RowPermissionsForRoleTo" xml:space="preserve">
+    <value>Row access of role {0} to : {1}</value>
+  </data>
 </root>
