@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
@@ -59,10 +60,10 @@ namespace SPPC.Tadbir.Persistence
         public string Localize(string resourceKey)
         {
             var parts = resourceKey.Split(' ');
-            Array.ForEach(parts, part => part = _strings[part]);
-            return String.Join(" ", parts);
+            var licalizedParts = parts.Select(part => _strings[part]);
+            return String.Join(" ", licalizedParts);
         }
 
-        private IStringLocalizer<AppStrings> _strings;
+        private readonly IStringLocalizer<AppStrings> _strings;
     }
 }

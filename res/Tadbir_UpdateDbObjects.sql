@@ -1045,3 +1045,6 @@ GO
 UPDATE [Config].[LogSetting]
 SET IsEnabled = 1
 
+-- 1.1.869
+DELETE FROM [Config].[LogSetting]
+WHERE EntityTypeID = 11 AND OperationID = 21

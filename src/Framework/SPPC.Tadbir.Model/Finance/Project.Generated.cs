@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// اطلاعات یک پروژه مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند
     /// </summary>
-    public partial class Project : TreeEntity
+    public partial class Project : TreeEntity, IBaseEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس ایجاد می کند.
@@ -34,11 +34,6 @@ namespace SPPC.Tadbir.Model.Finance
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شرحی که اطلاعات تکمیلی برای این پروژه را مشخص می کند
-        /// </summary>
-        public virtual string Description { get; set; }
 
         /// <summary>
         /// حساب والد (پدر) برای این پروژه که در سطح بالایی آن در ساختار درختی تعریف شده

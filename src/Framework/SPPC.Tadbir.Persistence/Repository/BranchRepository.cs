@@ -12,6 +12,7 @@ using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Corporate;
@@ -160,7 +161,7 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.RoleAccess);
-                Log.Description = await GetBranchRoleDescriptionAsync(existing);
+                Log.Description = Context.Localize(await GetBranchRoleDescriptionAsync(existing));
                 await TrySaveLogAsync();
             }
         }
@@ -348,8 +349,8 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "Name : {1}{0}Description : {2}",
-                    Environment.NewLine, entity.Name, entity.Description)
+                    "{0} : {1} , {2} : {3}",
+                    AppStrings.Name, entity.Name, AppStrings.Description, entity.Description)
                 : null;
         }
 
@@ -420,7 +421,8 @@ namespace SPPC.Tadbir.Persistence
         private async Task<string> GetBranchRoleDescriptionAsync(Branch branch)
         {
             var builder = new StringBuilder();
-            builder.AppendFormat("Branch : {0} , Roles with access : ", branch.Name);
+            builder.AppendFormat("{0} : {1} , {2} : ",
+                AppStrings.Branch, branch.Name, AppStrings.RolesWithAccess);
             if (branch.RoleBranches.Count > 0)
             {
                 UnitOfWork.UseSystemContext();
@@ -428,12 +430,12 @@ namespace SPPC.Tadbir.Persistence
                 var roles = await repository.GetByCriteriaAsync(r => branch.RoleBranches
                     .Select(rb => rb.RoleId)
                     .Contains(r.Id));
-                builder.Append(String.Join(",", roles.Select(r => r.Name)));
+                builder.Append(String.Join(" , ", roles.Select(r => r.Name)));
                 UnitOfWork.UseCompanyContext();
             }
             else
             {
-                builder.Append("(None)");
+                builder.Append(AppStrings.None);
             }
 
             return builder.ToString();

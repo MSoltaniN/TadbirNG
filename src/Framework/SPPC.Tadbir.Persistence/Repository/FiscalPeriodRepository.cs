@@ -12,6 +12,7 @@ using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -168,7 +169,7 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.RoleAccess);
-                Log.Description = await GetFiscalPeriodRoleDescriptionAsync(existing);
+                Log.Description = Context.Localize(await GetFiscalPeriodRoleDescriptionAsync(existing));
                 await TrySaveLogAsync();
             }
         }
@@ -397,8 +398,9 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "Name : {1}{0}Start Date : {2}{0}End Date : {3}{0}Description : {4}",
-                    Environment.NewLine, entity.Name, entity.StartDate, entity.EndDate, entity.Description)
+                    "{0} : {1} , {2} : {3} , {4} : {5}",
+                    AppStrings.StartDate, entity.StartDate, AppStrings.EndDate, entity.EndDate,
+                    AppStrings.Description, entity.Description)
                 : null;
         }
 
@@ -469,7 +471,8 @@ namespace SPPC.Tadbir.Persistence
         private async Task<string> GetFiscalPeriodRoleDescriptionAsync(FiscalPeriod fiscalPeriod)
         {
             var builder = new StringBuilder();
-            builder.AppendFormat("Fiscal period : {0} , Roles with access : ", fiscalPeriod.Name);
+            builder.AppendFormat("{0} : {1} , {2} : ",
+                AppStrings.FiscalPeriod, fiscalPeriod.Name, AppStrings.RolesWithAccess);
             if (fiscalPeriod.RoleFiscalPeriods.Count > 0)
             {
                 UnitOfWork.UseSystemContext();
@@ -477,12 +480,12 @@ namespace SPPC.Tadbir.Persistence
                 var roles = await repository.GetByCriteriaAsync(r => fiscalPeriod.RoleFiscalPeriods
                     .Select(rfp => rfp.RoleId)
                     .Contains(r.Id));
-                builder.Append(String.Join(",", roles.Select(r => r.Name)));
+                builder.Append(String.Join(" , ", roles.Select(r => r.Name)));
                 UnitOfWork.UseCompanyContext();
             }
             else
             {
-                builder.Append("(None)");
+                builder.Append(AppStrings.None);
             }
 
             return builder.ToString();

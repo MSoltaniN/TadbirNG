@@ -345,7 +345,7 @@ namespace SPPC.Tadbir.Persistence
                 AddNewBranches(repository, existing, roleBranches);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.BranchAccess);
-                Log.Description = await GetRoleBranchDescriptionAsync(roleBranches.Id);
+                Log.Description = Context.Localize(await GetRoleBranchDescriptionAsync(roleBranches.Id));
                 await TrySaveLogAsync();
             }
 
@@ -413,7 +413,7 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(existing);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.AssignUser);
-                Log.Description = await GetRoleUserDescriptionAsync(roleUsers.Id);
+                Log.Description = Context.Localize(await GetRoleUserDescriptionAsync(roleUsers.Id));
                 await TrySaveLogAsync();
             }
         }
@@ -474,7 +474,7 @@ namespace SPPC.Tadbir.Persistence
                 AddNewFiscalPeriods(repository, existing, rolePeriods);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.FiscalPeriodAccess);
-                Log.Description = await GetRoleFiscalPeriodDescriptionAsync(rolePeriods.Id);
+                Log.Description = Context.Localize(await GetRoleFiscalPeriodDescriptionAsync(rolePeriods.Id));
                 await TrySaveLogAsync();
             }
 
@@ -580,7 +580,7 @@ namespace SPPC.Tadbir.Persistence
         public override async Task InsertAsync(IRepository<Role> repository, Role entity)
         {
             OnEntityAction(OperationId.Create);
-            Log.Description = GetState(entity);
+            Log.Description = Context.Localize(GetState(entity));
             repository.Insert(entity, role => role.RolePermissions);
             await FinalizeActionAsync(entity);
         }
@@ -591,8 +591,10 @@ namespace SPPC.Tadbir.Persistence
             var clone = new Role() { Id = entity.Id, Name = entity.Name, Description = entity.Description };
             OnEntityAction(OperationId.Edit);
             UpdateExisting(entityView, entity);
-            Log.Description = String.Format("{0} : {1}{2}{3} : {4}",
-                AppStrings.Old, GetState(clone), Environment.NewLine, AppStrings.New, GetState(entity));
+            Log.Description = Context.Localize(
+                String.Format("{0} : ({1}) , {2} : ({3})",
+                AppStrings.Old, Context.Localize(GetState(clone)),
+                AppStrings.New, Context.Localize(GetState(entity))));
             repository.UpdateWithTracking(entity);
             await FinalizeActionAsync(entity);
         }
@@ -601,7 +603,7 @@ namespace SPPC.Tadbir.Persistence
         public override async Task DeleteAsync(IRepository<Role> repository, Role entity)
         {
             OnEntityAction(OperationId.Delete);
-            Log.Description = GetState(entity);
+            Log.Description = Context.Localize(GetState(entity));
             repository.Delete(entity);
             await FinalizeActionAsync(entity);
         }
@@ -631,8 +633,8 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "Name : {1}{0}Description : {2}",
-                    Environment.NewLine, entity.Name, entity.Description)
+                    "{0} : {1} , {2} : {3}",
+                    AppStrings.Name, entity.Name, AppStrings.Description, entity.Description)
                 : null;
         }
 
@@ -971,14 +973,15 @@ namespace SPPC.Tadbir.Persistence
                 var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
                 var existing = await repository.GetByCriteriaAsync(
                     rb => rb.RoleId == roleId, rb => rb.Branch);
-                builder.AppendFormat("Role : {0} , Accessible branches : ", role.Name);
+                builder.AppendFormat("{0} : {1} , {2} : ",
+                    AppStrings.Role, role.Name, AppStrings.AccessibleBranches);
                 if (existing.Count > 0)
                 {
-                    builder.Append(String.Join(",", existing.Select(rb => rb.Branch.Name)));
+                    builder.Append(String.Join(" , ", existing.Select(rb => rb.Branch.Name)));
                 }
                 else
                 {
-                    builder.Append("(None)");
+                    builder.Append(AppStrings.None);
                 }
             }
 
@@ -997,14 +1000,15 @@ namespace SPPC.Tadbir.Persistence
                 var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
                 var existing = await repository.GetByCriteriaAsync(
                     rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
-                builder.AppendFormat("Role : {0} , Accessible fiscal periods : ", role.Name);
+                builder.AppendFormat("{0} : {1} , {2} : ",
+                    AppStrings.Role, role.Name, AppStrings.AccessiblePeriods);
                 if (existing.Count > 0)
                 {
-                    builder.Append(String.Join(",", existing.Select(rfp => rfp.FiscalPeriod.Name)));
+                    builder.Append(String.Join(" , ", existing.Select(rfp => rfp.FiscalPeriod.Name)));
                 }
                 else
                 {
-                    builder.Append("(None)");
+                    builder.Append(AppStrings.None);
                 }
             }
 
@@ -1021,14 +1025,15 @@ namespace SPPC.Tadbir.Persistence
                 var repository = UnitOfWork.GetAsyncRepository<UserRole>();
                 var existing = await repository.GetByCriteriaAsync(
                     ur => ur.RoleId == roleId, ur => ur.User);
-                builder.AppendFormat("Role : {0} , Assigned users : ", role.Name);
+                builder.AppendFormat("{0} : {1} , {2} : ",
+                    AppStrings.Role, role.Name, AppStrings.AssignedUsers);
                 if (existing.Count > 0)
                 {
-                    builder.Append(String.Join(",", existing.Select(ur => ur.User.UserName)));
+                    builder.Append(String.Join(" , ", existing.Select(ur => ur.User.UserName)));
                 }
                 else
                 {
-                    builder.Append("(None)");
+                    builder.Append(AppStrings.None);
                 }
             }
 

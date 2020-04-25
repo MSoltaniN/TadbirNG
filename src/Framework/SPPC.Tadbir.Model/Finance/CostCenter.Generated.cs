@@ -36,11 +36,6 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
-        /// شرحی که اطلاعات تکمیلی برای این مرکز هزینه را مشخص می کند
-        /// </summary>
-        public virtual string Description { get; set; }
-
-        /// <summary>
         /// حساب والد (پدر) برای این مرکز هزینه که در سطح بالایی آن در ساختار درختی تعریف شده
         /// </summary>
         public virtual CostCenter Parent { get; set; }

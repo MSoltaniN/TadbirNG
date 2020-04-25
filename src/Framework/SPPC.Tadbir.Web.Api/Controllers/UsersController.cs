@@ -234,17 +234,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var user = await _repository.GetUserAsync(login);
             if (user == null)
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidUserName));
+                return BadRequest(_strings.Format(AppStrings.InvalidUserNameMessage));
             }
 
             if (!user.IsEnabled)
             {
-                return BadRequest(_strings.Format(AppStrings.UserIsDisabled));
+                return BadRequest(_strings.Format(AppStrings.DisabledUserMessage));
             }
 
             if (!CheckPassword(user.Password, login.Password))
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidPassword));
+                return BadRequest(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
 
             await _repository.UpdateUserLastLoginAsync(user.Id);

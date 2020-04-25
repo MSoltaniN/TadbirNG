@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Model.Core;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
@@ -120,8 +121,7 @@ namespace SPPC.Tadbir.Persistence
         protected override string GetState(Filter entity)
         {
             return (entity != null)
-                ? String.Format("Name : {1}{0}IsPublic : {2}",
-                    Environment.NewLine, entity.Name, entity.IsPublic)
+                ? String.Format("{0} : {1}", AppStrings.Name, entity.Name)
                 : null;
         }
     }

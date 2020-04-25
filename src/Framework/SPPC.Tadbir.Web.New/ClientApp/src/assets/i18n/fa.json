@@ -1105,7 +1105,10 @@
     "ActiveLogs": "رویداد های فعال",
     "ArchivedLogs": "رویداد های بایگانی شده",
     "OperationalLogs": "رویداد های عملیاتی",
-    "SystemLogs": "رویداد های سیستمی"
+    "SystemLogs": "رویداد های سیستمی",
+    "DeleteArchiveMsgConfirm": "آیا برای حذف از بایگانی مطمئن هستید؟",
+    "ArchiveMsgConfirm": "آیا برای بایگانی رویدادهای فعال مطمئن هستید؟",
+    "PleaseSelectRowsAsDeleteArchive": "لطفا برای حذف از بایگانی رویداد های مورد نظر را انتخاب کنید"
   },
   "MetaDataValidation": {
     "CodeLength": "طول کد مجاز نمیباشد."

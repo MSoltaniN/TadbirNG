@@ -12,6 +12,7 @@ using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -358,7 +359,6 @@ namespace SPPC.Tadbir.Persistence
                 voucher.StatusId = (int)status;
                 repository.Update(voucher);
                 OnDocumentStatus(status);
-                Log.Description = GetState(voucher);
                 await FinalizeActionAsync(voucher);
             }
         }
@@ -379,7 +379,6 @@ namespace SPPC.Tadbir.Persistence
                 voucher.ConfirmerName = isConfirmed ? GetCurrentUserDisplayName() : null;
                 repository.Update(voucher);
                 OnDocumentConfirmation(isConfirmed);
-                Log.Description = GetState(voucher);
                 await FinalizeActionAsync(voucher);
             }
         }
@@ -400,7 +399,6 @@ namespace SPPC.Tadbir.Persistence
                 voucher.ApproverName = isApproved ? GetCurrentUserDisplayName() : null;
                 repository.Update(voucher);
                 OnDocumentApproval(isApproved);
-                Log.Description = GetState(voucher);
                 await FinalizeActionAsync(voucher);
             }
         }
@@ -541,8 +539,10 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "No : {1}{0}Date : {2}{0}Description : {3}{0}Reference : {4}{0}Association : {5}{0}",
-                    Environment.NewLine, entity.No, entity.Date, entity.Description, entity.Reference, entity.Association)
+                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
+                    AppStrings.No, entity.No, AppStrings.Date, entity.Date,
+                    AppStrings.Description, entity.Description, AppStrings.Reference, entity.Reference,
+                    AppStrings.Association, entity.Association)
                 : null;
         }
 

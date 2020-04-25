@@ -9,6 +9,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -322,10 +323,10 @@ namespace SPPC.Tadbir.Persistence
         protected override string GetState(Currency entity)
         {
             return (entity != null)
-                ? String.Format(@"Name : {1}{0}Country : {2}{0}Code : {3}{0}MinorUnit : {4}{0}
-Multiplier : {5}{0}DecimalCount : {6}{0}Description : {7}{0}", Environment.NewLine,
-                entity.Name, entity.Country, entity.Code, entity.MinorUnit, entity.Multiplier,
-                entity.DecimalCount, entity.Description)
+                ? String.Format(
+                    AppStrings.Name, entity.Name, AppStrings.Code, entity.Code,
+                    AppStrings.MinorUnit, entity.MinorUnit, AppStrings.Multiplier, entity.Multiplier,
+                    AppStrings.DecimalCount, entity.DecimalCount, AppStrings.Description, entity.Description)
                 : null;
         }
 

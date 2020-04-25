@@ -27,5 +27,10 @@ namespace SPPC.Tadbir.Domain
         /// شماره سطح که عمق این موجودیت چندسطحی را در ساختار درختی مشخص می کند
         /// </summary>
         short Level { get; set; }
+
+        /// <summary>
+        /// شرحی که اطلاعات تکمیلی برای موجودیت چندسطحی را مشخص می کند
+        /// </summary>
+        string Description { get; set; }
     }
 }

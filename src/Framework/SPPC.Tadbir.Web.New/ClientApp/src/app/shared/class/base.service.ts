@@ -86,6 +86,23 @@ export class BaseService extends EnviromentComponent{
   }
 
   /**
+   * لیست رکوردها بر اساس پارامتر
+   * @param apiUrl آدرس‌ کامل api
+   * @param params پارامتر های فرم   
+   */
+  public getAllByParams(apiUrl: string, params:any) {
+
+    var searchHeaders = this.httpHeaders;
+    var postBody = JSON.stringify(params);
+    var base64Body = btoa(encodeURIComponent(postBody));
+    if (searchHeaders)
+      searchHeaders = searchHeaders.append('X-Tadbir-Parameters', base64Body);
+
+    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .map(response => <any>(<HttpResponse<any>>response));
+  }
+
+  /**
    * لیستی از اطلاعات را از سرویس میگیرد
    * @param apiUrl آدرس کامل api
    */
