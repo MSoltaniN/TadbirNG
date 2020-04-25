@@ -28,7 +28,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
 
         private string GetSysConnectionString()
         {
-            string path = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.json";
+            string path = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }
@@ -86,16 +86,17 @@ namespace SPPC.Framework.Tools.ProjectCLI
             {
                 Console.WriteLine("Database '{0}' is up-to-date.", sqlBuilder.InitialCatalog);
             }
+
             SetDatabaseVersion(connection, version);
         }
 
-        private void SetDatabaseVersion(string connection,Version ver)
+        private void SetDatabaseVersion(string connection, Version currentVersion)
         {
             var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
-            if(_Ver>ver)
+            if (_latestVersion > currentVersion)
             {
-                dal.QueryScalar(string.Format("Update [Core].[Version] SET  Number = '{0}' ", _Ver.ToString()));
-                Console.WriteLine("Set Core Version of this DataBase to : {0}",_Ver.ToString());
+                dal.QueryScalar(string.Format("UPDATE [Core].[Version] SET Number = '{0}'", _latestVersion.ToString()));
+                Console.WriteLine("Set core version of this database to : {0}", _latestVersion.ToString());
             }
 
         }
@@ -126,7 +127,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     else
                     {
                         blocks.Add(ver, script.Substring(match.Index));
-                        _Ver = ver;
+                        _latestVersion = ver;
                     }
                 }
             }
@@ -178,6 +179,6 @@ namespace SPPC.Framework.Tools.ProjectCLI
         private const string _argsTemplate = @"-S {0} -d {1} -i {2} -b -E -I -j";
         private const string _scriptBlockRegex = @"-- (\d{1,}).(\d{1,}).(\d{1,})";
         private const string _tempScript = "Update.sql";
-        private  Version _Ver =new Version();
+        private  Version _latestVersion = new Version();
     }
 }
