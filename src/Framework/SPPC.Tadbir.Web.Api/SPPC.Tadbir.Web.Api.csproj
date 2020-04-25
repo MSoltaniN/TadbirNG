@@ -24,6 +24,10 @@
     <None Remove="Resources\Types\**" />
   </ItemGroup>
 
+  <Target Name="PostBuild" BeforeTargets="PostBuildEvent">
+    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ProjectCLI.exe -cmd:refdb " />
+  </Target>
+
   <ItemGroup>
     <Compile Remove="Controllers\InventoriesController.cs" />
     <Compile Remove="Controllers\LookupController.Finance.cs" />

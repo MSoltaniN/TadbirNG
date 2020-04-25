@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
@@ -542,26 +541,28 @@ namespace SPPC.Tadbir.Persistence
                     rowSettings.RowPermissions.Add(permission);
                 });
 
+            await LogRowPermissionOperationAsync(OperationId.View, rowSettings);
             return rowSettings;
         }
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش را ذخیره می کند
         /// </summary>
-        /// <param name="permissions">تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش</param>
-        public async Task SaveRowAccessSettingsAsync(RowPermissionsForRoleViewModel permissions)
+        /// <param name="rowSettings">تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش</param>
+        public async Task SaveRowAccessSettingsAsync(RowPermissionsForRoleViewModel rowSettings)
         {
-            Verify.ArgumentNotNull(permissions, "permissions");
+            Verify.ArgumentNotNull(rowSettings, "permissions");
             var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var role = await repository.GetByIDAsync(permissions.Id);
+            var role = await repository.GetByIDAsync(rowSettings.Id);
             if (role != null)
             {
-                foreach (var permission in permissions.RowPermissions)
+                foreach (var permission in rowSettings.RowPermissions)
                 {
                     await SaveViewRolePermissionAsync(permission);
                 }
 
                 await UnitOfWork.CommitAsync();
+                await LogRowPermissionOperationAsync(OperationId.Save, rowSettings);
             }
         }
 
@@ -1038,6 +1039,46 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return builder.ToString();
+        }
+
+        private async Task LogRowPermissionOperationAsync(
+            OperationId operation, RowPermissionsForRoleViewModel settings)
+        {
+            OnEntityAction(operation);
+            Log.EntityTypeId = (int)SysEntityTypeId.ViewRowPermission;
+            Log.Description = await GetRowPermissionDescriptionAsync(
+                operation, settings.Id, settings.RowPermissions.ToArray());
+            await TrySaveLogAsync();
+        }
+
+        private async Task<string> GetRowPermissionDescriptionAsync(
+            OperationId operation, int roleId, params ViewRowPermissionViewModel[] permissions)
+        {
+            string description = String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
+            string roleName = await repository
+                .GetEntityQuery()
+                .Where(role => role.Id == roleId)
+                .Select(role => role.Name)
+                .FirstOrDefaultAsync();
+            var modifiedViews = permissions
+                .Where(perm => perm.AccessMode != RowAccessOptions.Default)
+                .Select(perm => perm.ViewName);
+            if (operation == OperationId.Save && modifiedViews.Count() > 0)
+            {
+                string template = Context.Localize(AppStrings.RowPermissionsForRoleTo);
+                string viewNames = String.Join(" , ", modifiedViews);
+                description = String.Format(template, roleName, viewNames);
+                description = Context.Localize(description);
+            }
+            else
+            {
+                string template = Context.Localize(AppStrings.RowPermissionsForRole);
+                description = String.Format(template, roleName);
+                description = Context.Localize(description);
+            }
+
+            return description;
         }
     }
 }

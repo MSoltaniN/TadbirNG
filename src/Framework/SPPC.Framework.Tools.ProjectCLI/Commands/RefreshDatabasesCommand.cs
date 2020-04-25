@@ -47,7 +47,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     UserName = row[2].ToString(),
                     Password = row[3].ToString()
                 };
-                connections.Add(BuildConnectionString(company));
+               connections.Add(BuildConnectionString(company));
             }
 
             return connections.ToArray();
@@ -86,8 +86,20 @@ namespace SPPC.Framework.Tools.ProjectCLI
             {
                 Console.WriteLine("Database '{0}' is up-to-date.", sqlBuilder.InitialCatalog);
             }
+
+            SetDatabaseVersion(connection, version);
         }
 
+        private void SetDatabaseVersion(string connection, Version currentVersion)
+        {
+            var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
+            if (_latestVersion > currentVersion)
+            {
+                dal.QueryScalar(string.Format("UPDATE [Core].[Version] SET Number = '{0}'", _latestVersion.ToString()));
+                Console.WriteLine("Set core version of this database to : {0}", _latestVersion.ToString());
+            }
+
+        }
         private Version GetDatabaseVersion(string connection)
         {
             var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
@@ -115,6 +127,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     else
                     {
                         blocks.Add(ver, script.Substring(match.Index));
+                        _latestVersion = ver;
                     }
                 }
             }
@@ -166,5 +179,6 @@ namespace SPPC.Framework.Tools.ProjectCLI
         private const string _argsTemplate = @"-S {0} -d {1} -i {2} -b -E -I -j";
         private const string _scriptBlockRegex = @"-- (\d{1,}).(\d{1,}).(\d{1,})";
         private const string _tempScript = "Update.sql";
+        private  Version _latestVersion = new Version();
     }
 }
