@@ -217,6 +217,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 string template = Context.Localize(AppStrings.AccountCollectionItems);
                 OnEntityAction(operation);
+                Log.EntityName = collectionName;
                 Log.Description = String.Format(template, collectionName);
                 await TrySaveLogAsync();
             }
