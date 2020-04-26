@@ -16,7 +16,7 @@ namespace SPPC.Framework.Presentation
             Paging = GridPaging.NoPaging;
             SortColumns = new List<GridOrderBy>();
             ListChanged = true;
-            Operation = 1;      // TEMPORARY : Remove later
+            Operation = 1;      // Defaults to View operation
         }
 
         /// <summary>

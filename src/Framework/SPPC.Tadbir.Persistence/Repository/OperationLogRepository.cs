@@ -54,9 +54,8 @@ namespace SPPC.Tadbir.Persistence
                 await SetSystemValues(log);
             }
 
-            var logs = new PagedList<OperationLogViewModel>(list, gridOptions);
-            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.View);
-            return logs;
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, gridOptions);
+            return new PagedList<OperationLogViewModel>(list, gridOptions);
         }
 
         /// <summary>
@@ -79,9 +78,8 @@ namespace SPPC.Tadbir.Persistence
                 await SetSystemValues(log);
             }
 
-            var archive = new PagedList<OperationLogViewModel>(list, gridOptions);
-            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.ViewArchive);
-            return archive;
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, gridOptions);
+            return new PagedList<OperationLogViewModel>(list, gridOptions);
         }
 
         /// <summary>
@@ -98,6 +96,8 @@ namespace SPPC.Tadbir.Persistence
                 .Concat(archived.Items)
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time);
+
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, gridOptions);
             return new PagedList<OperationLogViewModel>(merged, gridOptions);
         }
 
@@ -225,7 +225,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             UnitOfWork.UseCompanyContext();
 
-            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.View);
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, gridOptions);
             return new PagedList<OperationLogViewModel>(list, gridOptions);
         }
 
@@ -248,7 +248,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             UnitOfWork.UseCompanyContext();
 
-            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.ViewArchive);
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, gridOptions);
             return new PagedList<OperationLogViewModel>(list, gridOptions);
         }
 
@@ -266,6 +266,8 @@ namespace SPPC.Tadbir.Persistence
                 .Concat(archived.Items)
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time);
+
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, gridOptions);
             return new PagedList<OperationLogViewModel>(merged, gridOptions);
         }
 
@@ -381,6 +383,20 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #endregion
+
+        private async Task LogOperationAsync<TModel>(int entity, GridOptions gridOptions)
+            where TModel : class, IEntity
+        {
+            if (gridOptions == null)
+            {
+                return;
+            }
+
+            if (gridOptions.ListChanged)
+            {
+                await LogOperationAsync<TModel>(entity, (OperationId)gridOptions.Operation);
+            }
+        }
 
         private async Task LogOperationAsync<TModel>(int entity, OperationId operation)
             where TModel : class, IEntity
