@@ -3030,4 +3030,7 @@
   <data name="RowPermissionsForRoleTo" xml:space="preserve">
     <value>دسترسی سطری نقش {0} به : {1}</value>
   </data>
+  <data name="AccountCollectionItems" xml:space="preserve">
+    <value>حساب های مجموعه حساب '{0}'</value>
+  </data>
 </root>

@@ -3039,4 +3039,7 @@
   <data name="RowPermissionsForRoleTo" xml:space="preserve">
     <value>Row access of role {0} to : {1}</value>
   </data>
+  <data name="AccountCollectionItems" xml:space="preserve">
+    <value>Accounts in collection '{0}'</value>
+  </data>
 </root>

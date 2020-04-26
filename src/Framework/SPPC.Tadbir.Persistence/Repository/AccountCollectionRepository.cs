@@ -8,6 +8,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -51,11 +52,15 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountViewModel>> GetCollectionAccountsAsync(int collectionId)
         {
             var accCollection = await Repository
-                .GetAllOperationQuery<AccountCollectionAccount>(ViewName.AccountCollectionAccount, col => col.Account, col => col.Account.Children)
-                .Where(col => col.CollectionId == collectionId && col.BranchId == UserContext.BranchId && col.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .GetAllOperationQuery<AccountCollectionAccount>(
+                    ViewName.AccountCollectionAccount, col => col.Account, col => col.Account.Children)
+                .Where(col => col.CollectionId == collectionId &&
+                    col.BranchId == UserContext.BranchId &&
+                    col.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Select(col => Mapper.Map<AccountViewModel>(col))
                 .ToListAsync();
 
+            await LogCollectionOperationAsync(OperationId.View, collectionId);
             return accCollection;
         }
 
@@ -92,6 +97,12 @@ namespace SPPC.Tadbir.Persistence
 
             await AddNewAccountCollections(repository, existing, accCollectionsList);
             await UnitOfWork.CommitAsync();
+            await LogCollectionOperationAsync(OperationId.Save, collectionId);
+        }
+
+        internal override int? EntityType
+        {
+            get { return (int)EntityTypeId.AccountCollectionAccount; }
         }
 
         /// <summary>
@@ -191,6 +202,23 @@ namespace SPPC.Tadbir.Persistence
                     await CascadeNewAccountCollection(repository, branchRepository, existing, item);
                     repository.Delete(item);
                 }
+            }
+        }
+
+        private async Task LogCollectionOperationAsync(OperationId operation, int collectionId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollection>();
+            string collectionName = await repository
+                .GetEntityQuery()
+                .Where(coll => coll.Id == collectionId)
+                .Select(coll => coll.Name)
+                .FirstOrDefaultAsync();
+            if (!String.IsNullOrEmpty(collectionName))
+            {
+                string template = Context.Localize(AppStrings.AccountCollectionItems);
+                OnEntityAction(operation);
+                Log.Description = String.Format(template, collectionName);
+                await TrySaveLogAsync();
             }
         }
 
