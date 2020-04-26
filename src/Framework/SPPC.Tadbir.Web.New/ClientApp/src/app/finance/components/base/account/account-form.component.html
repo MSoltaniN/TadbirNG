@@ -2,483 +2,530 @@
 <div class="dialog-body acc-form">
 
   <div (keydown.esc)="escPress()">
-    <!--<form novalidate [formGroup]="accountDataForm" (keydown.enter)="onSave($event)">-->
+    <kendo-tabstrip>
 
-      <kendo-tabstrip>
+      <kendo-tabstrip-tab [title]="getText('Account.AccountInfoTabTitle')" [selected]="true">
+        <ng-template kendoTabContent>
 
-        <kendo-tabstrip-tab [title]="getText('Account.AccountInfoTabTitle')" [selected]="true">
-          <ng-template kendoTabContent>
+          <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
 
-            <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
+          <div *ngIf="errorMessage">
+            <div class="alert alert-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorMessage }}
+            </div>
+          </div>
 
-            <div *ngIf="errorMessage">
-              <div class="alert alert-danger">
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                {{ errorMessage }}
+          <form novalidate [formGroup]="accountForm">
+            <div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+                  <div class="form-group">
+                    <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
+
+                    <input type="text" class="k-textbox" formControlName="name" />
+
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="accountForm.controls.name.valid || accountForm.controls.name.pristine">
+                      <span *ngIf="accountForm.controls.name.errors?.required">{{ 'AllValidations.Account.NameIsRequired' | translate }}</span>
+                      <span *ngIf="accountForm.controls.name.errors?.maxlength">{{ 'AllValidations.Account.NameIsTooLong' | translate }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    <label for="groupId" class="control-label">{{ 'Account.AccountGroup' | translate }}</label>
+
+                    <kendo-dropdownlist class="ddl-acc" [disabled]="parent || model.groupId"
+                                        [data]="accGroupList"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [valuePrimitive]="true"
+                                        [value]="accGroupSelected"
+                                        [(ngModel)]="accGroupSelected"
+                                        formControlName="groupId">
+                    </kendo-dropdownlist>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+                  <div class="form-group">
+                    <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>
+
+                    <input type="text" class="k-textbox" formControlName="code" [OnlyNumber] [SppcCodeLength]="level + 1" [ViewId]="viewId" [sppcFullCodeTest]="'fullCode'" [parentFullCode]="parentFullCode" />
+
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="accountForm.controls.code.valid || accountForm.controls.code.pristine">
+                      <span *ngIf="accountForm.controls.code.errors?.required">{{ 'AllValidations.Account.CodeIsRequired' | translate }}</span>
+                      <span *ngIf="accountForm.controls.code.errors?.maxlength">{{ 'AllValidations.Account.CodeIsTooLong' | translate }}</span>
+                      <span *ngIf="accountForm.controls.code.errors?.sppcCodeLength">{{ 'MetaDataValidation.CodeLength' | translate }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="fullCode" class="control-label">{{ 'Account.FullCode' | translate }}</label>
+
+                    <input type="text" class="k-textbox" formControlName="fullCode" readonly id="fullCode" style="direction:ltr" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+                  <div class="form-group">
+                    <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
+
+                    <input type="text" class="k-textbox" formControlName="description" />
+
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="accountForm.controls.description.valid || accountForm.controls.description.pristine">
+                      {{ 'AllValidations.Account.DescriptionIsTooLong' | translate }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr />
+
+              <div class="row">
+                <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+                  <label class="control-label">{{ 'Account.AccountBranchName' | translate }}</label>
+
+                  <input type="text" class="k-textbox" value="{{ branchName }}" [disabled]="true" />
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="branchScope" class="control-label">{{ 'Account.BranchScope' | translate }}</label>
+
+                    <sppc-branch-scope formControlName="branchScope" [parentScope]="parentScopeValue" [isNew]="isNew"></sppc-branch-scope>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </ng-template>
+      </kendo-tabstrip-tab>
+
+      <kendo-tabstrip-tab [title]="getText('Account.OtherAccountInfoTabTitle')">
+        <ng-template kendoTabContent>
+
+          <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
+
+          <div *ngIf="errorMessage">
+            <div class="alert alert-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorMessage }}
+            </div>
+          </div>
+
+          <form novalidate [formGroup]="featuresForm">
+            <div>
+              <div class="row">
+                <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+                  <div class="form-group">
+                    <label for="currencyId" class="control-label">{{ 'Account.DefaultCurrency' | translate }}</label>
+
+                    <kendo-dropdownlist [data]="filteredCurrencies" class="ddl-acc"
+                                        [valuePrimitive]="true"
+                                        [filterable]="true"
+                                        formControlName="currencyId"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [value]="selectedCurrencyValue"
+                                        [(ngModel)]="selectedCurrencyValue"
+                                        (filterChange)="handleFilter($event)"
+                                        [defaultItem]="{ value: '', key: null }">
+                    </kendo-dropdownlist>
+
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="turnoverMode" class="control-label">{{ 'Account.EntryLimitation' | translate }}</label>
+
+                    <kendo-dropdownlist [data]="turnovermodes" class="ddl-acc"
+                                        [valuePrimitive]="true"
+                                        formControlName="turnoverMode"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [value]="selectedTurnoverModeValue"
+                                        [(ngModel)]="selectedTurnoverModeValue">
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+                  <div class="form-group">
+                    <label for="isActive" class="control-label">{{ 'Account.IsActive' | translate }}</label>
+
+                    <kendo-switch formControlName="isActive"
+                                  [onLabel]="getText('Account.Active')"
+                                  [offLabel]="getText('Account.Inactive')">
+                    </kendo-switch>
+
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="isCurrencyAdjustable" class="control-label">{{ 'Account.IsCurrencyAdjustable' | translate }}</label>
+
+                    <kendo-switch formControlName="isCurrencyAdjustable"
+                                  [onLabel]="getText('Account.Active')"
+                                  [offLabel]="getText('Account.Inactive')">
+                    </kendo-switch>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </ng-template>
+      </kendo-tabstrip-tab>
+
+
+      <kendo-tabstrip-tab [title]="'اطلاعات مالیاتی طرف حساب'" *ngIf="!isDisableCustomerTaxTab">
+        <ng-template kendoTabContent>
+          <form novalidate [formGroup]="customerTaxForm">
+            <div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نوع شخص</label>
+
+                    <kendo-dropdownlist class="ddl-acc"
+                                        [data]="personTypes"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [valuePrimitive]="true"
+                                        formControlName="personType">
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نوع خریدار</label>
+
+                    <kendo-dropdownlist class="ddl-acc"
+                                        [data]="buyerTypes"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [valuePrimitive]="true"
+                                        formControlName="buyerType">
+                    </kendo-dropdownlist>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نام</label>
+
+                    <input type="text" class="k-textbox" formControlName="customerFirstName"
+                           [readonly]="customerTaxForm.value.personType == '2'" />
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">
+                      <spna *ngIf="customerTaxForm.value.personType == '1'">نام خانوادگی</spna>
+                      <span *ngIf="customerTaxForm.value.personType == '2'">نام شرکت</span>
+                    </label>
+
+                    <input type="text" class="k-textbox" formControlName="customerName" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">کد اقتصادی</label>
+
+                    <input type="text" class="k-textbox" formControlName="economicCode" />
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">
+                      <spna *ngIf="customerTaxForm.value.personType == '1'">کد ملی</spna>
+                      <span *ngIf="customerTaxForm.value.personType == '2'">شناسه ملی</span>
+                    </label>
+
+                    <input type="text" class="k-textbox" formControlName="nationalCode" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+
+                    <div class="col-xs-5 sppc-float" style="padding:0">
+                      <label class="control-label">پیش شماره تلفن</label>
+
+                      <input type="text" class="k-textbox" formControlName="perCityCode" />
+                    </div>
+                    <div class="col-xs-7 sppc-float" style="padding-left:0">
+                      <label class="control-label">تلفن</label>
+
+                      <input type="text" class="k-textbox" formControlName="phoneNo" />
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">تلفن همراه</label>
+
+                    <input type="text" class="k-textbox" formControlName="mobileNo" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">استان</label>
+
+                    <kendo-dropdownlist class="ddl-acc"
+                                        [data]="filteredProcinces"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [filterable]="true"
+                                        [valuePrimitive]="true"
+                                        [value]="selectedProvince"
+                                        [(ngModel)]="selectedProvince"
+                                        (valueChange)="onChangeProvince($event)"
+                                        (filterChange)="handleFilterProvince($event)"
+                                        [ngModelOptions]="{standalone: true}">
+                    </kendo-dropdownlist>
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شهر</label>
+
+                    <kendo-dropdownlist class="ddl-acc"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [valuePrimitive]="true">
+                    </kendo-dropdownlist>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">کد پستی</label>
+
+                    <input type="text" class="k-textbox" formControlName="postalCode" />
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">آدرس</label>
+
+                    <input type="text" class="k-textbox" formControlName="address" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label class="control-label">توضیحات</label>
+                    <textarea class="k-textbox"
+                              formControlName="description">
+                  </textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </kendo-tabstrip-tab>
+
+      <kendo-tabstrip-tab [title]="'مشخصات بانکی'" *ngIf="!isDisableAccountOwnerTab">
+        <ng-template kendoTabContent>
+          <form novalidate [formGroup]="ownerForm">
+            <div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نوع حساب</label>
+
+                    <kendo-dropdownlist class="ddl-acc"
+                                        [data]="accountTypes"
+                                        [textField]="'value'"
+                                        [valueField]="'key'"
+                                        [valuePrimitive]="true"
+                                        formControlName="accountType">
+                    </kendo-dropdownlist>
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نام بانک</label>
+
+                    <input type="text" class="k-textbox" formControlName="bankName" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">نام شعبه</label>
+
+                    <input type="text" class="k-textbox" formControlName="bankBranchName" />
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شاخص شعبه</label>
+
+                    <input type="text" class="k-textbox" formControlName="branchIndex" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شماره حساب</label>
+
+                    <input type="text" class="k-textbox" formControlName="accountNumber" />
+
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شماره کارت</label>
+
+                    <input type="text" class="k-textbox" formControlName="cardNumber" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+
+                <div class="col-xs-12 col-sm-6 sppc-float">
+                  <div class="form-group">
+                    <label class="control-label">شماره شبا</label>
+
+                    <input type="text" class="k-textbox" formControlName="shabaNumber" />
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" formArrayName="accountHolders">
+                <div *ngFor="let item of accountHolders.controls; let i=index">
+                  <div [formGroupName]="i">
+                    <div class="col-xs-12 col-sm-6 sppc-float">
+                      <div class="form-group">
+
+                        <label class="control-label">نام صاحب حساب</label>
+
+                        <input type="text" class="k-textbox" formControlName="firstName" />
+
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4 sppc-float">
+                      <div class="form-group">
+
+                        <label class="control-label">نام خانوادگی صاحب حساب</label>
+
+                        <input type="text" class="k-textbox" formControlName="lastName" />
+
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-2 sppc-float">
+                      <div class="form-group">
+                        <label class="control-label">حق امضا</label>
+
+                        <kendo-switch formControlName="hasSignature"
+                                      [onLabel]="getText('Account.Active')"
+                                      [offLabel]="getText('Account.Inactive')">
+                        </kendo-switch>
+
+                        <button *ngIf="accountHolders.value.length == (i+1)"
+                                class="k-button k-button-icon"
+                                type="button"
+                                (click)="onAddAccountHolder()"
+                                title="صاحب امضا جدید">
+                          <span class="k-icon k-i-plus"></span>
+                        </button>
+
+                        <button *ngIf="accountHolders.value.length != (i+1)"
+                                class="k-button k-button-icon"
+                                type="button"
+                                (click)="onRemoveAccountHolder(i)"
+                                title="حذف صاحب امضا">
+                          <span class="k-icon k-i-minus"></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label class="control-label">توضیحات</label>
+                    <textarea class="k-textbox"
+                              formControlName="description">
+                  </textarea>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <form novalidate [formGroup]="accountForm">
-              <div>
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-                    <div class="form-group">
-                      <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
+          </form>
+        </ng-template>
+      </kendo-tabstrip-tab>
 
-                      <input type="text" class="k-textbox" formControlName="name" />
 
-                      <div class="k-tooltip k-tooltip-validation" [hidden]="accountForm.controls.name.valid || accountForm.controls.name.pristine">
-                        <span *ngIf="accountForm.controls.name.errors?.required">{{ 'AllValidations.Account.NameIsRequired' | translate }}</span>
-                        <span *ngIf="accountForm.controls.name.errors?.maxlength">{{ 'AllValidations.Account.NameIsTooLong' | translate }}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6">
-                    <div class="form-group">
-                      <label for="groupId" class="control-label">{{ 'Account.AccountGroup' | translate }}</label>
-
-                      <kendo-dropdownlist class="ddl-acc" [disabled]="parent || model.groupId"
-                                          [data]="accGroupList"
-                                          [textField]="'value'"
-                                          [valueField]="'key'"
-                                          [valuePrimitive]="true"
-                                          [value]="accGroupSelected"
-                                          [(ngModel)]="accGroupSelected"
-                                          formControlName="groupId">
-                      </kendo-dropdownlist>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-                    <div class="form-group">
-                      <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>
-
-                      <input type="text" class="k-textbox" formControlName="code" [OnlyNumber] [SppcCodeLength]="level + 1" [ViewId]="viewId" [sppcFullCodeTest]="'fullCode'" [parentFullCode]="parentFullCode" />
-
-                      <div class="k-tooltip k-tooltip-validation" [hidden]="accountForm.controls.code.valid || accountForm.controls.code.pristine">
-                        <span *ngIf="accountForm.controls.code.errors?.required">{{ 'AllValidations.Account.CodeIsRequired' | translate }}</span>
-                        <span *ngIf="accountForm.controls.code.errors?.maxlength">{{ 'AllValidations.Account.CodeIsTooLong' | translate }}</span>
-                        <span *ngIf="accountForm.controls.code.errors?.sppcCodeLength">{{ 'MetaDataValidation.CodeLength' | translate }}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="fullCode" class="control-label">{{ 'Account.FullCode' | translate }}</label>
-
-                      <input type="text" class="k-textbox" formControlName="fullCode" readonly id="fullCode" style="direction:ltr" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-                    <div class="form-group">
-                      <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
-
-                      <input type="text" class="k-textbox" formControlName="description" />
-
-                      <div class="k-tooltip k-tooltip-validation" [hidden]="accountForm.controls.description.valid || accountForm.controls.description.pristine">
-                        {{ 'AllValidations.Account.DescriptionIsTooLong' | translate }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <hr />
-
-                <div class="row">
-                  <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-                    <label class="control-label">{{ 'Account.AccountBranchName' | translate }}</label>
-
-                    <input type="text" class="k-textbox" value="{{ branchName }}" [disabled]="true" />
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="branchScope" class="control-label">{{ 'Account.BranchScope' | translate }}</label>
-
-                      <sppc-branch-scope formControlName="branchScope" [parentScope]="parentScopeValue" [isNew]="isNew"></sppc-branch-scope>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-
-          </ng-template>
-        </kendo-tabstrip-tab>
-
-        <kendo-tabstrip-tab [title]="getText('Account.OtherAccountInfoTabTitle')">
-          <ng-template kendoTabContent>
-
-            <editor-form-title [parentModel]="parent" [entityType]="viewId"></editor-form-title>
-
-            <div *ngIf="errorMessage">
-              <div class="alert alert-danger">
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                {{ errorMessage }}
-              </div>
-            </div>
-
-            <form novalidate [formGroup]="featuresForm">
-              <div>
-                <div class="row">
-                  <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-                    <div class="form-group">
-                      <label for="currencyId" class="control-label">{{ 'Account.DefaultCurrency' | translate }}</label>
-
-                      <kendo-dropdownlist [data]="filteredCurrencies" class="ddl-acc"
-                                          [valuePrimitive]="true"
-                                          [filterable]="true"
-                                          formControlName="currencyId"
-                                          [textField]="'value'"
-                                          [valueField]="'key'"
-                                          [value]="selectedCurrencyValue"
-                                          [(ngModel)]="selectedCurrencyValue"
-                                          (filterChange)="handleFilter($event)"
-                                          [defaultItem]="{ value: '', key: null }">
-                      </kendo-dropdownlist>
-
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="turnoverMode" class="control-label">{{ 'Account.EntryLimitation' | translate }}</label>
-
-                      <kendo-dropdownlist [data]="turnovermodes" class="ddl-acc"
-                                          [valuePrimitive]="true"
-                                          formControlName="turnoverMode"
-                                          [textField]="'value'"
-                                          [valueField]="'key'"
-                                          [value]="selectedTurnoverModeValue"
-                                          [(ngModel)]="selectedTurnoverModeValue">
-                      </kendo-dropdownlist>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-                    <div class="form-group">
-                      <label for="isActive" class="control-label">{{ 'Account.IsActive' | translate }}</label>
-
-                      <kendo-switch formControlName="isActive"
-                                    [onLabel]="getText('Account.Active')"
-                                    [offLabel]="getText('Account.Inactive')">
-                      </kendo-switch>
-
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="isCurrencyAdjustable" class="control-label">{{ 'Account.IsCurrencyAdjustable' | translate }}</label>
-
-                      <kendo-switch formControlName="isCurrencyAdjustable"
-                                    [onLabel]="getText('Account.Active')"
-                                    [offLabel]="getText('Account.Inactive')">
-                      </kendo-switch>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-
-          </ng-template>
-        </kendo-tabstrip-tab>
-
-
-        <kendo-tabstrip-tab [title]="'اطلاعات مالیاتی طرف حساب'" *ngIf="!isDisableCustomerTaxTab">
-          <ng-template kendoTabContent>
-            <form novalidate [formGroup]="customerTaxForm">
-              <div>
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">نوع شخص</label>
-
-                      <kendo-dropdownlist class="ddl-acc"
-                                          [data]="personTypes"
-                                          [textField]="'value'"
-                                          [valueField]="'key'"
-                                          [valuePrimitive]="true"
-                                          formControlName="personType">
-                      </kendo-dropdownlist>
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">نوع خریدار</label>
-
-                      <kendo-dropdownlist class="ddl-acc"
-                                          [data]="buyerTypes"
-                                          [textField]="'value'"
-                                          [valueField]="'key'"
-                                          [valuePrimitive]="true"
-                                          formControlName="buyerType">
-                      </kendo-dropdownlist>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">نام</label>
-
-                      <input type="text" class="k-textbox" formControlName="customerFirstName"
-                             [readonly]="customerTaxForm.value.personType == '2'" />
-
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">
-                        <spna *ngIf="customerTaxForm.value.personType == '1'">نام خانوادگی</spna>
-                        <span *ngIf="customerTaxForm.value.personType == '2'">نام شرکت</span>
-                      </label>
-
-                      <input type="text" class="k-textbox" formControlName="customerName" />
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">کد اقتصادی</label>
-
-                      <input type="text" class="k-textbox" formControlName="economicCode" />
-
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">
-                        <spna *ngIf="customerTaxForm.value.personType == '1'">کد ملی</spna>
-                        <span *ngIf="customerTaxForm.value.personType == '2'">شناسه ملی</span>
-                      </label>
-
-                      <input type="text" class="k-textbox" formControlName="nationalCode" />
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-
-                      <div class="col-xs-5 sppc-float" style="padding:0">
-                        <label class="control-label">پیش شماره تلفن</label>
-
-                        <input type="text" class="k-textbox" formControlName="perCityCode" />
-                      </div>
-                      <div class="col-xs-7 sppc-float" style="padding-left:0">
-                        <label class="control-label">تلفن</label>
-
-                        <input type="text" class="k-textbox" formControlName="phoneNo" />
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">تلفن همراه</label>
-
-                      <input type="text" class="k-textbox" formControlName="mobileNo" />
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">استان</label>
-
-                      <kendo-dropdownlist class="ddl-acc"
-                                          [data]="filteredProcinces"
-                                          [textField]="'value'"
-                                          [valueField]="'key'"
-                                          [filterable]="true"
-                                          [valuePrimitive]="true"
-                                          [value]="selectedProvince"
-                                          [(ngModel)]="selectedProvince"
-                                          (valueChange)="onChangeProvince($event)"
-                                          (filterChange)="handleFilterProvince($event)"
-                                          [ngModelOptions]="{standalone: true}">
-                      </kendo-dropdownlist>
-
-                      <!-- formControlName="name" -->
-
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">شهر</label>
-
-                      <kendo-dropdownlist class="ddl-acc"
-                                          [textField]="'value'"
-                                          [valueField]="'key'"
-                                          [valuePrimitive]="true">
-                      </kendo-dropdownlist>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">کد پستی</label>
-
-                      <input type="text" class="k-textbox" formControlName="postalCode" />
-
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">آدرس</label>
-
-                      <input type="text" class="k-textbox" formControlName="address" />
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12">
-                    <div class="form-group">
-                      <label class="control-label">توضیحات</label>
-                      <textarea class="k-textbox"
-                                formControlName="description">
-                  </textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </ng-template>
-        </kendo-tabstrip-tab>
-
-        <kendo-tabstrip-tab [title]="'مشخصات بانکی'" *ngIf="!isDisableAccountOwnerTab" >
-          <ng-template kendoTabContent>
-            <form novalidate [formGroup]="ownerForm">
-              <div>
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">نوع حساب</label>
-
-                      <kendo-dropdownlist class="ddl-acc"
-                                          [data]="accountTypes"
-                                          [textField]="'value'"
-                                          [valueField]="'key'"
-                                          [valuePrimitive]="true"
-                                          formControlName="accountType">
-                      </kendo-dropdownlist>
-
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">نام بانک</label>
-
-                      <input type="text" class="k-textbox" formControlName="bankName" />
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">نام شعبه</label>
-
-                      <input type="text" class="k-textbox" formControlName="bankBranchName" />
-
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">شاخص شعبه</label>
-
-                      <input type="text" class="k-textbox" formControlName="branchIndex" />
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">شماره حساب</label>
-
-                      <input type="text" class="k-textbox" formControlName="accountNumber" />
-
-                    </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">شماره کارت</label>
-
-                      <input type="text" class="k-textbox" formControlName="cardNumber" />
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-
-                  <div class="col-xs-12 col-sm-6 sppc-float">
-                    <div class="form-group">
-                      <label class="control-label">شماره شبا</label>
-
-                      <input type="text" class="k-textbox" formControlName="shabaNumber" />
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-xs-12">
-                    <div class="form-group">
-                      <label class="control-label">توضیحات</label>
-                      <textarea class="k-textbox"
-                                formControlName="description">
-                  </textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </ng-template>
-        </kendo-tabstrip-tab>
-
-
-      </kendo-tabstrip>
-
-    <!--</form>-->
-
+    </kendo-tabstrip>
   </div>
 
   <kendo-dialog-actions>

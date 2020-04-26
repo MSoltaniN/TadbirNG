@@ -91,6 +91,7 @@ namespace SPPC.Tadbir.Persistence
             WorkItemHistoryMap.BuildMapping(modelBuilder.Entity<WorkItemHistory>());
             CustomerTaxInfoMap.BuildMapping(modelBuilder.Entity<CustomerTaxInfo>());
             AccountOwnerMap.BuildMapping(modelBuilder.Entity<AccountOwner>());
+            AccountHolderMap.BuildMapping(modelBuilder.Entity<AccountHolder>());
         }
 
         /// <summary>

@@ -3292,6 +3292,49 @@
         <Relation multiplicity="OneToOne" endpointName="Account" entityName="Account" hasKey="True" isRequired="True" joinTable="" description="حساب انتخاب شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity name="AccountHolder" area="Finance" identifier="Id" type="BaseEntity" description="اطلاعات صاحب حساب را نگهداری میکند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="AccountHolderID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
+        </Property>
+        <Property name="FirstName" type="String" isValidated="True" description="نام صاحب حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtFirstName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="FirstName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="First Name" visible="True" width="120" />
+          <ValidationRule name="FirstName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="LastName" type="String" isValidated="True" description="نام خانوادگی صاحب حساب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtLastName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="LastName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Last Name" visible="True" width="120" />
+          <ValidationRule name="LastName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="HasSignature" type="Boolean" isValidated="True" description="آیا صاحب حساب دارای حق امضا هست؟" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkHasSignature" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="HasSignature" type="bit" nullable="False" />
+          <ColumnView name="Has Signature" visible="True" width="120" />
+          <ValidationRule name="HasSignature_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="AccountOwner" entityName="AccountOwner" hasKey="True" isRequired="True" joinTable="" description="اطلاعات حساب بانکی مربوط به این طرف حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
   </Entities>
   <Storage name="Framework.xml" connection="..\..\..\res" media="XmlFile" />
 </Repository>

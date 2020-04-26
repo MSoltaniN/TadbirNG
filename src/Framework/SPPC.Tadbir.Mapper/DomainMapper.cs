@@ -299,6 +299,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<AccountOwner, AccountOwnerViewModel>();
             mapperConfig.CreateMap<AccountOwnerViewModel, AccountOwner>();
 
+            mapperConfig.CreateMap<AccountHolder, AccountHolderViewModel>();
+            mapperConfig.CreateMap<AccountHolderViewModel, AccountHolder>();
+
             mapperConfig.CreateMap<Account, AccountFullDataViewModel>()
                 .ForMember(dest => dest.Account, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.CustomerTaxInfo, opt => opt.MapFrom(src => src.CustomerTaxInfo != null ? src.CustomerTaxInfo : new CustomerTaxInfo()))

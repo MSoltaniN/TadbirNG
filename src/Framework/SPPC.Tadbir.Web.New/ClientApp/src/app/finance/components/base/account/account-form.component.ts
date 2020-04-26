@@ -5,12 +5,12 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent, DetailComponent } from '@sppc/shared/class';
 import { Layout, Entities } from '@sppc/env/environment';
 import { AccountService, AccountFullDataInfo, AccountInfo, CustomerTaxInfoModel, AccountOwnerInfo } from '@sppc/finance/service';
-import { Account, AccountOwner } from '@sppc/finance/models';
+import { Account, AccountOwner, AccountHolder } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
 import { BranchApi } from '@sppc/organization/service/api';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { AccountFullData } from '@sppc/finance/models/accountFullData';
 import { CustomerTaxInfo } from '@sppc/finance/models/customerTaxInfo';
 
@@ -189,26 +189,30 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     postalCode: new FormControl(''),
     description: new FormControl(''),
   })
-  ownerForm = new FormGroup({
-    id: new FormControl(),
-    accountId: new FormControl(),
-    bankName: new FormControl(''),
-    accountType: new FormControl(''),
-    bankBranchName: new FormControl(''),
-    branchIndex: new FormControl(''),
-    accountNumber: new FormControl(''),
-    cardNumber: new FormControl(''),
-    shabaNumber: new FormControl(''),
-    description: new FormControl('')
-  })
+  ownerForm: FormGroup;
+  accountHolders: FormArray;
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
-    public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService, public formBuilder: FormBuilder) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Account, ViewName.Account);
   }
 
 
   ngOnInit(): void {
+
+    this.ownerForm = this.formBuilder.group({
+      id: new FormControl(),
+      accountId: new FormControl(),
+      bankName: new FormControl(''),
+      accountType: new FormControl(''),
+      bankBranchName: new FormControl(''),
+      branchIndex: new FormControl(''),
+      accountNumber: new FormControl(''),
+      cardNumber: new FormControl(''),
+      shabaNumber: new FormControl(''),
+      description: new FormControl(''),
+      accountHolders: this.formBuilder.array([])
+    })
 
     if (this.model) {
       this.accountModel = this.model.account;
@@ -254,23 +258,11 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     else
       this.accountModel.fullCode = this.parentFullCode;
 
-    debugger;
-
     if (!this.model) {
       this.accountForm.reset();
       this.featuresForm.reset();
       this.customerTaxForm.reset();
       this.ownerForm.reset();
-
-      this.customerTaxForm.patchValue({
-        personType: "1",
-        buyerType: "1"
-      })
-
-      this.ownerForm.patchValue({
-        accountType: "0"
-      })
-
     }
     else {
       this.accountForm.patchValue({
@@ -289,49 +281,13 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
         isCurrencyAdjustable: this.accountModel.isCurrencyAdjustable,
       })
 
-      //this.accountDataForm.patchValue({
-      //  account: {
-      //    name: this.accountModel.name,
-      //    groupId: this.accountModel.groupId,
-      //    code: this.accountModel.code,
-      //    fullCode: this.accountModel.fullCode,
-      //    description: this.accountModel.description,
-      //    branchScope: this.accountModel.branchScope,
-      //  },
-      //  features: {
-      //    currencyId: this.accountModel.currencyId,
-      //    turnoverMode: this.accountModel.turnoverMode,
-      //    isActive: this.accountModel.isActive,
-      //    isCurrencyAdjustable: this.accountModel.isCurrencyAdjustable,
-      //  }
-      //})
-
       if (this.customerTaxModel) {
         this.customerTaxForm.reset(this.customerTaxModel);
 
         this.customerTaxForm.patchValue({
-          personType: this.customerTaxModel.personType.toString(),
-          buyerType: this.customerTaxModel.buyerType.toString()
+          personType: this.customerTaxModel.id > 0 ? this.customerTaxModel.personType.toString() : "1",
+          buyerType: this.customerTaxModel.id > 0 ? this.customerTaxModel.buyerType.toString() : "1"
         })
-
-        //this.accountDataForm.patchValue({
-        //  customerTax: {
-        //    id: this.customerTaxModel.id,
-        //    accountId: this.customerTaxModel.accountId,
-        //    customerFirstName: this.customerTaxModel.customerFirstName,
-        //    customerName: this.customerTaxModel.customerName,
-        //    personType: this.customerTaxModel.personType ? this.customerTaxModel.personType.toString() : "1",
-        //    buyerType: this.customerTaxModel.buyerType ? this.customerTaxModel.buyerType.toString() : "1",
-        //    economicCode: this.customerTaxModel.economicCode,
-        //    address: this.customerTaxModel.address,
-        //    nationalCode: this.customerTaxModel.nationalCode,
-        //    perCityCode: this.customerTaxModel.perCityCode,
-        //    phoneNo: this.customerTaxModel.phoneNo,
-        //    mobileNo: this.customerTaxModel.mobileNo,
-        //    postalCode: this.customerTaxModel.postalCode,
-        //    description: this.customerTaxModel.description,
-        //  }
-        //})
       }
 
       if (this.accountOwnerModel) {
@@ -339,23 +295,22 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
         this.ownerForm.reset(this.accountOwnerModel)
 
         this.ownerForm.patchValue({
-          accountType: this.accountOwnerModel.accountType.toString()
+          accountType: this.accountOwnerModel.id > 0 ? this.accountOwnerModel.accountType.toString() : "0"
         })
-        //this.accountDataForm.patchValue({
-        //  owner: {
-        //    id: this.accountOwnerModel.id,
-        //    accountId: this.accountOwnerModel.accountId,
-        //    bankName: this.accountOwnerModel.bankName,
-        //    accountType: this.accountOwnerModel.accountType ? this.accountOwnerModel.accountType.toString() : "0",
-        //    bankBranchName: this.accountOwnerModel.bankBranchName,
-        //    branchIndex: this.accountOwnerModel.branchIndex,
-        //    accountNumber: this.accountOwnerModel.accountNumber,
-        //    cardNumber: this.accountOwnerModel.cardNumber,
-        //    shabaNumber: this.accountOwnerModel.shabaNumber,
-        //    description: this.accountOwnerModel.description,
-        //  }
-        //})
+
+        this.initialAccountHolderData();
       }
+    }
+  }
+
+  initialAccountHolderData() {
+    if (this.accountOwnerModel.id > 0) {
+      this.accountOwnerModel.accountHolders.forEach(item => {
+        this.onAddAccountHolder(item);
+      })
+    }
+    else {
+      this.onAddAccountHolder();
     }
   }
 
@@ -418,11 +373,28 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     //get cities
   }
 
+
+  onAddAccountHolder(dataItem?: AccountHolder) {
+    this.accountHolders = this.ownerForm.get('accountHolders') as FormArray;
+
+    let newItem: FormGroup = this.formBuilder.group({
+      id: dataItem ? dataItem.id:0,
+      accountOwnerId: this.accountOwnerModel ? this.accountOwnerModel.id : 0,
+      firstName: dataItem ? dataItem.firstName : '',
+      lastName: dataItem ? dataItem.lastName : '',
+      hasSignature: dataItem ? dataItem.hasSignature : true
+    });
+
+    this.accountHolders.push(newItem);
+  }
+
+  onRemoveAccountHolder(index: number) {
+    this.accountHolders.removeAt(index);
+  }
+
+
   onSave(e: any): void {
     e.preventDefault();
-
-    //var accountValue = this.accountDataForm.value.account;
-    //var featureValue = this.accountDataForm.value.features;
 
     var accountValue = this.accountForm.value;
     var featureValue = this.featuresForm.value;
@@ -457,9 +429,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     }
     //}
 
-    debugger;
-
-
     var resultModel = new AccountFullDataInfo();
 
     resultModel.account = this.accountModel;
@@ -467,7 +436,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     resultModel.accountOwner = null;
 
     if (!this.isNew && this.customerTaxModel) {
-      //var customerTaxInfo = this.accountDataForm.value.customerTax;
       var customerTaxInfo = this.customerTaxForm.value;
       customerTaxInfo.id = this.customerTaxModel.id;
       customerTaxInfo.accountId = this.accountModel.id;
@@ -477,7 +445,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
 
     if (!this.isNew && this.accountOwnerModel) {
-      //var accountOwner = this.accountDataForm.value.owner;
       var accountOwner = this.ownerForm.value;
       accountOwner.id = this.accountOwnerModel.id;
       accountOwner.accountId = this.accountModel.id;

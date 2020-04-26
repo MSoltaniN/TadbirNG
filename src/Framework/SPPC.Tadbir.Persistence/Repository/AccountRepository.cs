@@ -441,7 +441,7 @@ namespace SPPC.Tadbir.Persistence
             var account = await repository.GetByIDWithTrackingAsync(
                 accountId,
                 acc => acc.CustomerTaxInfo,
-                acc => acc.AccountOwner);
+                acc => acc.AccountOwner.AccountHolders);
 
             if (account != null)
             {

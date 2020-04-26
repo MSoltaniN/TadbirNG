@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// اطلاعات حساب بانکی یک حساب را نگهداری میکند
     /// </summary>
-    public partial class AccountOwner: CoreEntity
+    public partial class AccountOwner : CoreEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountOwner"/> class.

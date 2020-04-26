@@ -10,5 +10,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی حساب مرتبط
         /// </summary>
         public int AccountId { get; set; }
+
+        /// <summary>
+        /// مجموعه صاحبان حساب
+        /// </summary>
+        public IList<AccountHolderViewModel> AccountHolders { get; set; }
     }
 }

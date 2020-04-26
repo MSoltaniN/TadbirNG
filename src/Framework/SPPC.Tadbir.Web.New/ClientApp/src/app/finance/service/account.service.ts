@@ -8,6 +8,7 @@ import { BaseService } from '@sppc/shared/class';
 import { String } from '@sppc/shared/class/source';
 import { AccountFullData } from '../models/accountFullData';
 import { CustomerTaxInfo } from '../models/customerTaxInfo';
+import { AccountHolder } from '../models/index';
 
 
 export class AccountInfo implements Account {
@@ -53,7 +54,13 @@ export class CustomerTaxInfoModel implements CustomerTaxInfo {
 }
 
 export class AccountOwnerInfo implements AccountOwner {
-  id: number = 0;
+
+  constructor() {
+    this.id = 0;
+    this.accountHolders = new Array<AccountHolderInfo>();
+  }
+
+  id: number;
   accountId: number;
   bankName: string;
   accountType: number;
@@ -63,6 +70,15 @@ export class AccountOwnerInfo implements AccountOwner {
   cardNumber: string;
   shabaNumber: string;
   description?: string;
+  accountHolders: Array<AccountHolder>;
+}
+
+export class AccountHolderInfo implements AccountHolder {
+  id: number;
+  accountOwnerId: number;
+  firstName: string;
+  lastName: string;
+  hasSignature: boolean;
 }
 
 export class AccountFullDataInfo implements AccountFullData {

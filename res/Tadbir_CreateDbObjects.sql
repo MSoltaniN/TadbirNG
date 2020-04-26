@@ -1243,3 +1243,21 @@ CREATE TABLE [Finance].[AccountOwner] (
 )
 GO
 
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [Finance].[AccountHolder] (
+    [AccountHolderID]   INT              IDENTITY (1, 1) NOT NULL,
+    [AccountOwnerID]    INT              NOT NULL,    
+    [FirstName]         NVARCHAR(64)     NOT NULL,
+    [LastName]          NVARCHAR(64)     NOT NULL,
+    [HasSignature]      BIT              NOT NULL,
+	[rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountHolder_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_AccountHolder_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_AccountHolder] PRIMARY KEY CLUSTERED ([AccountHolderID] ASC)
+    , CONSTRAINT [FK_Finance_AccountHolder_Finance_AccountOwner] FOREIGN KEY ([AccountOwnerID]) REFERENCES [Finance].[AccountOwner]([AccountOwnerID])
+)
+GO

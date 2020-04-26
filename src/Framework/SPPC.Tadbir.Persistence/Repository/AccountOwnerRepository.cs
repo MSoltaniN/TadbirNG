@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using SPPC.Framework.Common;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -35,13 +38,25 @@ namespace SPPC.Tadbir.Persistence.Repository
             {
                 accOwner = Mapper.Map<AccountOwner>(accountOwner);
                 await InsertAsync(repository, accOwner);
+
+                var rep = UnitOfWork.GetAsyncRepository<AccountHolder>();
+
+                foreach (var item in accOwner.AccountHolders)
+                {
+                    item.AccountOwnerId = accOwner.Id;
+                    rep.Insert(item);
+                }
+
+                await UnitOfWork.CommitAsync();
             }
             else
             {
-                accOwner = await repository.GetByIDAsync(accountOwner.Id);
+                accOwner = await repository.GetByIDAsync(accountOwner.Id, owner => owner.AccountHolders);
                 if (accOwner != null)
                 {
                     await UpdateAsync(repository, accOwner, accountOwner);
+
+                    await UpdateAccountHoldersAsync(accOwner.AccountHolders, accountOwner.AccountHolders);
                 }
             }
 
@@ -55,9 +70,12 @@ namespace SPPC.Tadbir.Persistence.Repository
         public async Task DeleteAccountOwnerAsync(int ownerId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountOwner>();
-            var accountOwner = await repository.GetByIDWithTrackingAsync(ownerId);
+            var accountOwner = await repository.GetByIDWithTrackingAsync(
+                ownerId,
+                owner => owner.AccountHolders);
             if (accountOwner != null)
             {
+                accountOwner.AccountHolders.Clear();
                 await DeleteAsync(repository, accountOwner);
             }
         }
@@ -77,6 +95,79 @@ namespace SPPC.Tadbir.Persistence.Repository
             accountOwner.CardNumber = accountOwnerViewModel.CardNumber;
             accountOwner.ShabaNumber = accountOwnerViewModel.ShabaNumber;
             accountOwner.Description = accountOwnerViewModel.Description;
+        }
+
+        private async Task UpdateAccountHoldersAsync(
+            IList<AccountHolder> existing,
+            IList<AccountHolderViewModel> accHolders)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountHolder>();
+
+            if (existing.Count > 0)
+            {
+                var accHolderItems = accHolders
+                    .Select(item => item.Id);
+                var removedItems = existing
+                .Where(item => !accHolderItems.Contains(item.Id))
+                .ToList();
+
+                RemoveAccountHolders(repository, removedItems);
+
+                var newItems = accHolders.Where(f => f.Id == 0).ToList();
+                InsertAccountHolder(repository, newItems);
+
+                var updatedItems = accHolders
+                    .Where(item => item.Id > 0 &&
+                    !removedItems.Select(rmvItem => rmvItem.Id).Contains(item.Id))
+                    .ToList();
+
+                await UpdateAccountHoldersAsync(repository, updatedItems);
+            }
+            else
+            {
+                InsertAccountHolder(repository, accHolders);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        private void InsertAccountHolder(
+            IAsyncRepository<AccountHolder> repository,
+            IList<AccountHolderViewModel> newItems)
+        {
+            foreach (var item in newItems)
+            {
+                var entity = Mapper.Map<AccountHolder>(item);
+                repository.Insert(entity);
+            }
+        }
+
+        private async Task UpdateAccountHoldersAsync(
+            IAsyncRepository<AccountHolder> repository,
+            IList<AccountHolderViewModel> updatedItems)
+        {
+            foreach (var item in updatedItems)
+            {
+                var entity = await repository.GetByIDAsync(item.Id);
+                if (entity != null)
+                {
+                    entity.FirstName = item.FirstName;
+                    entity.LastName = item.LastName;
+                    entity.HasSignature = item.HasSignature;
+
+                    repository.Update(entity);
+                }
+            }
+        }
+
+        private void RemoveAccountHolders(
+            IAsyncRepository<AccountHolder> repository,
+            IList<AccountHolder> removedItems)
+        {
+            foreach (var item in removedItems)
+            {
+                repository.Delete(item);
+            }
         }
 
         private readonly ISystemRepository _system;
