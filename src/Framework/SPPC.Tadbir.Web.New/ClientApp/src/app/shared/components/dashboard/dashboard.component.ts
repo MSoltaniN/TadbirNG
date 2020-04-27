@@ -147,7 +147,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
         //set current route to session
         var currentRoute = this.bStorageService.getCurrentRoute();
-        var currentUrl = location.path().toLowerCase();
+        var currentUrl = location.path();
 
         if (currentRoute && currentRoute != currentUrl)
           this.bStorageService.setPreviousRoute(currentRoute);
