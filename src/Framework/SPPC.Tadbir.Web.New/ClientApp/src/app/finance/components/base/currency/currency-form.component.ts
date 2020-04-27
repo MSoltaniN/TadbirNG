@@ -87,6 +87,7 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger;
     this.currencyId = this.model.id;
     this.editForm.reset();
     this.getCurrencyNames();
@@ -112,12 +113,17 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
     if (item) {
       this.selectedCurrencyItem = item;
 
-      this.currencyService.getModels(String.Format(CurrencyApi.CurrencyHasRates, this.currencyId)).subscribe(res => {
-        this.editConfirm = res;
-        if (!this.editConfirm) {
-          this.getCurrencyInfo(true);
-        }
-      })
+      if (this.isNew) {
+        this.getCurrencyInfo(true);
+      }
+      else {
+        this.currencyService.getModels(String.Format(CurrencyApi.CurrencyHasRates, this.currencyId)).subscribe(res => {
+          this.editConfirm = res;
+          if (!this.editConfirm) {
+            this.getCurrencyInfo(true);
+          }
+        })
+      }
     }
   }
 
