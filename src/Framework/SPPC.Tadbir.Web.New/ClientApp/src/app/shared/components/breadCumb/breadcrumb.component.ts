@@ -23,9 +23,16 @@ export class BreadCumbComponent implements OnInit {
 
   ngOnInit() {
     if (this.getEntityFromParent) {
-      var entityType = (<any>this.parentComponet)._view.component.entityType;
-      if (entityType)
-        this.getEntityTitle(entityType.toString());
+      var entityTypeName = (<any>this.parentComponet)._view.component.entityTypeName;
+
+      if (entityTypeName) {
+        this.getEntityTitle(entityTypeName.toString());
+      }
+      else {
+        var entityType = (<any>this.parentComponet)._view.component.entityType;
+        if (entityType)
+          this.getEntityTitle(entityType.toString());
+      }      
     }
   }
 
