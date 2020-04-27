@@ -12,6 +12,8 @@ import { UserApi } from '@sppc/admin/service/api';
 import { String } from '@sppc/shared/class/source';
 import { CompanyLogin } from '@sppc/shared/models';
 import { LookupApi } from '@sppc/shared/services/api';
+import { BaseService } from '@sppc/shared/class';
+import { extend } from 'webdriver-js-extender';
 
 
 export class ContextInfo implements Context {
@@ -37,13 +39,18 @@ export class CompanyLoginInfo implements CompanyLogin {
 
 
 @Injectable()
-export class AuthenticationService {
+export class AuthenticationService extends BaseService {
 
 
-  constructor(private http: HttpClient, public bStorageService: BrowserStorageService) {}
+  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+    super(http, bStorageService);
+  }  
 
   login(username: string, password: string, remember: boolean) {
-    return this.http.put(environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/, { observe: "response" })
+    var header = new HttpHeaders();
+    header = header.append('Accept-Language',this.httpHeaders.get('Accept-Language'));
+
+    return this.http.put(environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/, { headers: header, observe: "response" })
       .map((response) => {
         if (response.headers != null) {
           let ticket = response.headers.get('X-Tadbir-AuthTicket');
@@ -82,10 +89,11 @@ export class AuthenticationService {
   }
 
   getCompanies(userName: string, ticket: string): Observable<any> {
-    var header = new HttpHeaders();
+    var header = new HttpHeaders();   
+    
     header = header.delete('X-Tadbir-AuthTicket');
     header = header.delete('Content-Type');
-
+    header = header.append('Accept-Language', this.httpHeaders.get('Accept-Language'));
     header = header.append('Content-Type', 'application/json; charset=utf-8');
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
@@ -100,10 +108,11 @@ export class AuthenticationService {
   }
 
   getBranches(companyId: number, ticket: string): Observable<any> {
-    var header = new HttpHeaders();
+    var header = new HttpHeaders();   
+    
     header = header.delete('X-Tadbir-AuthTicket');
     header = header.delete('Content-Type');
-
+    header = header.append('Accept-Language', this.httpHeaders.get('Accept-Language'));
     header = header.append('Content-Type', 'application/json; charset=utf-8');
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
@@ -117,10 +126,10 @@ export class AuthenticationService {
   }
 
   getFiscalPeriod(companyId: number, ticket: string): Observable<any> {
-    var header = new HttpHeaders();
+    var header = new HttpHeaders();    
     header = header.delete('X-Tadbir-AuthTicket');
     header = header.delete('Content-Type');
-
+    header = header.append('Accept-Language', this.httpHeaders.get('Accept-Language'));    
     header = header.append('Content-Type', 'application/json; charset=utf-8');
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
@@ -137,7 +146,7 @@ export class AuthenticationService {
     var header = new HttpHeaders();
     header = header.delete('X-Tadbir-AuthTicket');
     header = header.delete('Content-Type');
-
+    header = header.append('Accept-Language', this.httpHeaders.get('Accept-Language'));
     header = header.append('Content-Type', 'application/json; charset=utf-8');
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
@@ -147,9 +156,7 @@ export class AuthenticationService {
 
   getCompanyTicket(model: CompanyLogin, ticket: string): Observable<any> {
     var header = new HttpHeaders();
-    //header = header.delete('X-Tadbir-AuthTicket');
-    //header = header.delete('Content-Type');
-
+    header = header.append('Accept-Language', this.httpHeaders.get('Accept-Language'));    
     header = header.append('Content-Type', 'application/json; charset=utf-8');
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
