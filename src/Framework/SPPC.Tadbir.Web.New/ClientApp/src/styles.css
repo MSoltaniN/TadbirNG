@@ -6,23 +6,23 @@
 }
 
 .chb-column-explore {
-  width: 25px !important
+  width: 30px !important
 }
 
 .chb-column {
-  width: 32px !important
+  width: 35px !important
 }
 
 .chb-column-explore-s {
-  width: 15px !important
-}
-
-.chb-column-s {
   width: 20px !important
 }
 
+.chb-column-s {
+  width: 25px !important
+}
+
 .chb-column-m {
-  width: 45px !important
+  width: 50px !important
 }
 
 .tRtl .toastr-rtl {

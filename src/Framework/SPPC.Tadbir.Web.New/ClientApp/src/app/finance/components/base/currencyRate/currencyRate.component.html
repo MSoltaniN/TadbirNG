@@ -66,12 +66,20 @@
             </kendo-dropdownlist>
           </div>
         </div>
+
         <div class="col-xs-12 col-sm-4 col-md-3 sppc-float">
           <div class="form-group">
             <label class="control-label">{{ 'Currency.Code' | translate }}</label>
             <input type="text" class="k-textbox" [ngModel]="selectedCurrency?.code" readonly />
           </div>
         </div>
+
+        <div class="col-xs-12 col-sm-4 col-md-6 sppc-float">
+          <div class="form-group">
+            <button class="k-button pull-left" [routerLink]="['/finance/currency']">{{ 'Buttons.ComingBack' | translate }}</button>
+          </div>
+        </div>
+
       </div>
 
       <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'CurrencyRate.New' | translate }}"></button>
@@ -83,6 +91,7 @@
                                    (columnsList)="getColumns($event)">
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true"

@@ -112,7 +112,8 @@
     "Next": "بعدی",
     "Previous": "قبلی",
     "NextStep": "مرحله بعد",
-    "PreviousStep": "مرحله قبل"
+    "PreviousStep": "مرحله قبل",
+    "ComingBack": "بازگشت"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
