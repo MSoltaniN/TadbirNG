@@ -111,7 +111,8 @@
     "Next": "Next",
     "Previous": "Previous",
     "NextStep": "Next Step",
-    "PreviousStep": "Previous Step"
+    "PreviousStep": "Previous Step",
+    "ComingBack": "Coming Back"
   },
   "GridSetting": {
     "Visibility": "Visibility",
