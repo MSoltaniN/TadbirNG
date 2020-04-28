@@ -53,6 +53,7 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
     this.entityName = Entities.CostCenter;
     this.viewId = ViewName[this.entityTypeName];
 
+    this.getDataUrl = CostCenterApi.EnvironmentCostCenters;
     this.treeConfig = this.getViewTreeSettings(this.viewId);
     this.getTreeNode();
     this.reloadGrid();

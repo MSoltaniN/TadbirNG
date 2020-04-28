@@ -50,6 +50,7 @@ export class ProjectComponent extends AutoGridExplorerComponent<Project> impleme
     this.entityName = Entities.Project;
     this.viewId = ViewName[this.entityTypeName];
 
+    this.getDataUrl = ProjectApi.EnvironmentProjects;
     this.treeConfig = this.getViewTreeSettings(this.viewId);
     this.getTreeNode();
     this.reloadGrid();
