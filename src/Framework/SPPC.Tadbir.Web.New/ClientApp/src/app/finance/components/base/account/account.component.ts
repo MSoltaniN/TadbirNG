@@ -62,6 +62,7 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
     this.entityName = Entities.Account;
     this.viewId = ViewName[this.entityTypeName];
 
+    this.getDataUrl = AccountApi.EnvironmentAccounts;
     this.treeConfig = this.getViewTreeSettings(this.viewId);
     this.getTreeNode();
     this.reloadGrid();

@@ -53,6 +53,7 @@ export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAcco
     this.entityName = Entities.DetailAccount;
     this.viewId = ViewName[this.entityTypeName];
 
+    this.getDataUrl = DetailAccountApi.EnvironmentDetailAccounts;
     this.treeConfig = this.getViewTreeSettings(this.viewId);
     this.getTreeNode();
     this.reloadGrid();

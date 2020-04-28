@@ -62,7 +62,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     this.viewId = ViewName[this.entityTypeName];
 
     this.getTreeNode();
-    this.environmentModelsUrl = String.Format(BranchApi.CompanyBranches, this.CompanyId);
+    this.getDataUrl = String.Format(BranchApi.CompanyBranches, this.CompanyId);
     this.reloadGrid();
   }
 
@@ -79,7 +79,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     this.dialogModel.isNew = isNew;
     this.dialogModel.errorMessage = undefined;
 
-    this.dialogRef.content.instance.save.subscribe((res) => {
+    this.dialogRef.content.instance.save.subscribe((res) => {      
       this.saveHandler(res, isNew);
     });
 
