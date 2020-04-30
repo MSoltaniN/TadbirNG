@@ -1114,3 +1114,26 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (114, 1, 2, NULL, 7, 44, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.878
+DELETE FROM [Core].[OperationLog]
+WHERE SourceListID IN(42, 43, 44, 45, 46, 47, 48, 49)
+
+DELETE FROM [Core].[OperationLogArchive]
+WHERE SourceListID IN(42, 43, 44, 45, 46, 47, 48, 49)
+
+SET IDENTITY_INSERT [Metadata].[OperationSourceList] ON
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (42, N'BalanceByOneAccount')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (43, N'BalanceByAllAccounts')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (44, N'BalanceByOneDetailAccount')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (45, N'BalanceByAllDetailAccounts')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (46, N'BalanceByOneCostCenter')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (47, N'BalanceByAllCostCenters')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (48, N'BalanceByOneProject')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (49, N'BalanceByAllProjects')
+SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF
+
+ALTER TABLE [Core].[OperationLog]
+ADD CONSTRAINT [FK_Core_OperationLog_Metadata_OperationSourceList] FOREIGN KEY ([SourceListID])
+    REFERENCES [Metadata].[OperationSourceList]([OperationSourceListID])
+GO

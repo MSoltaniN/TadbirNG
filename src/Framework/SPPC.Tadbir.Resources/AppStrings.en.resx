@@ -3072,4 +3072,28 @@
   <data name="CurrencyRatesList" xml:space="preserve">
     <value>Rates of currency {0}</value>
   </data>
+  <data name="BalanceByAllAccounts" xml:space="preserve">
+    <value>By all accounts</value>
+  </data>
+  <data name="BalanceByAllCostCenters" xml:space="preserve">
+    <value>By all cost centers</value>
+  </data>
+  <data name="BalanceByAllDetailAccounts" xml:space="preserve">
+    <value>By all detail accounts</value>
+  </data>
+  <data name="BalanceByAllProjects" xml:space="preserve">
+    <value>By all projects</value>
+  </data>
+  <data name="BalanceByOneAccount" xml:space="preserve">
+    <value>By selected account</value>
+  </data>
+  <data name="BalanceByOneCostCenter" xml:space="preserve">
+    <value>By selected cost center</value>
+  </data>
+  <data name="BalanceByOneDetailAccount" xml:space="preserve">
+    <value>By selected detail account</value>
+  </data>
+  <data name="BalanceByOneProject" xml:space="preserve">
+    <value>By selected project</value>
+  </data>
 </root>

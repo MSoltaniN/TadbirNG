@@ -3063,4 +3063,28 @@
   <data name="CurrencyRatesList" xml:space="preserve">
     <value>نرخ های ارز {0}</value>
   </data>
+  <data name="BalanceByAllAccounts" xml:space="preserve">
+    <value>بر اساس کلیه حساب ها</value>
+  </data>
+  <data name="BalanceByAllCostCenters" xml:space="preserve">
+    <value>بر اساس کلیه مراکز هزینه</value>
+  </data>
+  <data name="BalanceByAllDetailAccounts" xml:space="preserve">
+    <value>بر اساس کلیه شناورها</value>
+  </data>
+  <data name="BalanceByAllProjects" xml:space="preserve">
+    <value>بر اساس کلیه پروژه ها</value>
+  </data>
+  <data name="BalanceByOneAccount" xml:space="preserve">
+    <value>بر اساس حساب انتخابی</value>
+  </data>
+  <data name="BalanceByOneCostCenter" xml:space="preserve">
+    <value>بر اساس مرکز هزینه انتخابی</value>
+  </data>
+  <data name="BalanceByOneDetailAccount" xml:space="preserve">
+    <value>بر اساس شناور انتخابی</value>
+  </data>
+  <data name="BalanceByOneProject" xml:space="preserve">
+    <value>بر اساس پروژه انتخابی</value>
+  </data>
 </root>
