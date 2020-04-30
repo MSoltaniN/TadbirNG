@@ -391,19 +391,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public override async Task InsertAsync(IRepository<User> repository, User entity)
+        public override async Task InsertAsync(IRepository<User> repository,
+            User entity, OperationId operation = OperationId.Create)
         {
-            OnEntityAction(OperationId.Create);
+            OnEntityAction(operation);
             Log.Description = Context.Localize(GetState(entity));
             repository.Insert(entity, usr => usr.Person);
             await FinalizeActionAsync(entity);
         }
 
         /// <inheritdoc/>
-        public override async Task UpdateAsync(IRepository<User> repository, User entity, UserViewModel entityView)
+        public override async Task UpdateAsync(IRepository<User> repository,
+            User entity, UserViewModel entityView, OperationId operation = OperationId.Edit)
         {
             var clone = CloneUser(entity);
-            OnEntityAction(OperationId.Edit);
+            OnEntityAction(operation);
             UpdateExisting(entityView, entity);
             Log.Description = Context.Localize(
                 String.Format("{0} : ({1}) , {2} : ({3})",

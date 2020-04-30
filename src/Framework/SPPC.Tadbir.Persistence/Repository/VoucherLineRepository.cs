@@ -181,15 +181,15 @@ namespace SPPC.Tadbir.Persistence
                 line = Mapper.Map<VoucherLine>(lineView);
                 line.RowNo = await GetNextRowNoAsync(line.VoucherId);
                 line.CreatedById = UserContext.Id;
-                await InsertAsync(repository, line);
+                await InsertAsync(repository, line, OperationId.CreateLine);
                 await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
             }
             else
             {
-                line = await repository.GetByIDAsync(lineView.Id);
+                line = await repository.GetByIDAsync(lineView.Id, vl => vl.Account);
                 if (line != null)
                 {
-                    await UpdateAsync(repository, line, lineView);
+                    await UpdateAsync(repository, line, lineView, OperationId.EditLine);
                     await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
                 }
             }
@@ -224,7 +224,7 @@ namespace SPPC.Tadbir.Persistence
             var article = await repository.GetByIDAsync(articleId);
             if (article != null)
             {
-                await DeleteAsync(repository, article);
+                await DeleteAsync(repository, article, OperationId.DeleteLine);
                 await UpdateRowNumbersAsync(article);
                 await UpdateVoucherBalanceStatusAsync(article.VoucherId);
             }
@@ -254,7 +254,7 @@ namespace SPPC.Tadbir.Persistence
                 await UpdateRowNumbersAsync(voucherId);
             }
 
-            await OnEntityGroupDeleted(items);
+            await OnEntityGroupDeleted(items, OperationId.GroupDeleteLines);
         }
 
         /// <summary>
@@ -330,9 +330,23 @@ namespace SPPC.Tadbir.Persistence
             return result;
         }
 
+        /// <inheritdoc/>
+        protected override async Task FinalizeActionAsync(VoucherLine entity)
+        {
+            var voucherRepository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await voucherRepository.GetByIDAsync(entity.VoucherId);
+            if (voucher != null)
+            {
+                await UnitOfWork.CommitAsync();
+                Log.EntityId = entity.Id;
+                CopyEntityDataToLog(voucher);
+                await TrySaveLogAsync();
+            }
+        }
+
         internal override int? EntityType
         {
-            get { return (int)EntityTypeId.VoucherLine; }
+            get { return (int)EntityTypeId.Voucher; }
         }
 
         /// <summary>
@@ -360,10 +374,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(VoucherLine entity)
         {
+            var repository = UnitOfWork.GetRepository<Account>();
+            var account = repository.GetByID(entity.AccountId);
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
-                    AppStrings.Account, entity.AccountId, AppStrings.Debit, entity.Debit,
+                    AppStrings.Account, account, AppStrings.Debit, entity.Debit,
                     AppStrings.Credit, entity.Credit, AppStrings.Description, entity.Description)
                 : null;
         }

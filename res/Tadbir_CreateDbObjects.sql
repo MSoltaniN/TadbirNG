@@ -745,7 +745,6 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (4, N'Account
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (5, N'Branch')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (6, N'CostCenter')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (7, N'Currency')
-INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (8, N'CurrencyRate')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (9, N'DetailAccount')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (10, N'FiscalPeriod')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (11, N'OperationLog')
@@ -753,7 +752,6 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (12, N'Projec
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (15, N'Setting')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (16, N'TaxCurrency')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (17, N'Voucher')
-INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (18, N'VoucherLine')
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON
@@ -784,6 +782,15 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (32, N'Currency
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (33, N'DecimalCountChange')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (34, N'DefaultCodingChange')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (35, N'RoleAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (36, N'CreateLine')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (37, N'EditLine')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (38, N'DeleteLine')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (39, N'GroupDeleteLines')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (40, N'CreateRate')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (41, N'EditRate')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (42, N'DeleteRate')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (43, N'PrintRates')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (44, N'GroupDeleteRates')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -1058,16 +1065,6 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (33, 1, 3, 3, NULL, 6, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (34, 1, 2, NULL, 8, 1, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (35, 1, 2, NULL, 8, 2, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (36, 1, 2, NULL, 8, 3, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (37, 1, 2, NULL, 8, 4, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (38, 1, 2, NULL, 8, 6, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (39, 1, 1, NULL, 9, 1, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (40, 1, 1, NULL, 9, 2, 1)
@@ -1152,14 +1149,6 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (80, 1, 2, NULL, 17, 17, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (81, 1, 2, NULL, 18, 1, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (82, 1, 2, NULL, 18, 2, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (83, 1, 2, NULL, 18, 3, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (84, 1, 2, NULL, 18, 4, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (85, 1, 3, 6, NULL, 1, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (86, 1, 3, 6, NULL, 6, 1)
@@ -1184,8 +1173,6 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (96, 1, 1, NULL, 7, 21, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (97, 1, 2, NULL, 8, 21, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (98, 1, 1, NULL, 9, 21, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (99, 1, 1, NULL, 10, 21, 1)
@@ -1193,8 +1180,6 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (101, 1, 1, NULL, 12, 21, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (102, 1, 2, NULL, 17, 21, 1)
-INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (103, 1, 2, NULL, 18, 21, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (104, 1, 1, NULL, 5, 35, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
@@ -1243,11 +1228,6 @@ CREATE TABLE [Finance].[AccountOwner] (
 )
 GO
 
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE TABLE [Finance].[AccountHolder] (
     [AccountHolderID]   INT              IDENTITY (1, 1) NOT NULL,

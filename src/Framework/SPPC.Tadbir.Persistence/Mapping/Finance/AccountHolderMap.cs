@@ -31,7 +31,6 @@ namespace SPPC.Tadbir.Persistence.Mapping.Finance
                 .WithMany(p => p.AccountHolders)
                 .HasForeignKey(d => d.AccountOwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
-
         }
     }
 }

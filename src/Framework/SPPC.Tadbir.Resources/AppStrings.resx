@@ -3033,4 +3033,34 @@
   <data name="AccountCollectionItems" xml:space="preserve">
     <value>حساب های مجموعه حساب '{0}'</value>
   </data>
+  <data name="CreateLine" xml:space="preserve">
+    <value>ایجاد آرتیکل</value>
+  </data>
+  <data name="CreateRate" xml:space="preserve">
+    <value>ایجاد نرخ</value>
+  </data>
+  <data name="DeleteLine" xml:space="preserve">
+    <value>حذف آرتیکل</value>
+  </data>
+  <data name="DeleteRate" xml:space="preserve">
+    <value>حذف نرخ</value>
+  </data>
+  <data name="EditLine" xml:space="preserve">
+    <value>اصلاح آرتیکل</value>
+  </data>
+  <data name="EditRate" xml:space="preserve">
+    <value>اصلاح نرخ</value>
+  </data>
+  <data name="GroupDeleteLines" xml:space="preserve">
+    <value>حذف گروهی آرتیکل ها</value>
+  </data>
+  <data name="GroupDeleteRates" xml:space="preserve">
+    <value>حذف گروهی نرخ ها</value>
+  </data>
+  <data name="PrintRates" xml:space="preserve">
+    <value>چاپ نرخ ها</value>
+  </data>
+  <data name="CurrencyRatesList" xml:space="preserve">
+    <value>نرخ های ارز {0}</value>
+  </data>
 </root>

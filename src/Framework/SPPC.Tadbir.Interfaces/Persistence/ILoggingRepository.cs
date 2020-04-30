@@ -20,7 +20,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید ذخیره شود</param>
-        Task InsertAsync(IRepository<TEntity> repository, TEntity entity);
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض ایجاد موجودیت است</param>
+        Task InsertAsync(IRepository<TEntity> repository,
+            TEntity entity, OperationId operation = OperationId.Create);
 
         /// <summary>
         /// به روش آسنکرون، سطر اطلاعاتی اصلاح شده را در دیتابیس جاری برنامه و سطر لاگ عملیاتی را
@@ -29,7 +31,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که تغییرات آن باید ذخیره شود</param>
         /// <param name="entityView">مدل نمایشی شامل آخرین تغییرات سطر اطلاعاتی</param>
-        Task UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView);
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض اصلاح موجودیت است</param>
+        Task UpdateAsync(IRepository<TEntity> repository,
+            TEntity entity, TEntityView entityView, OperationId operation = OperationId.Edit);
 
         /// <summary>
         /// به روش آسنکرون، سطر اطلاعاتی قابل حذف را از دیتابیس جاری برنامه حذف و سطر لاگ عملیاتی را
@@ -37,6 +41,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید حذف شود</param>
-        Task DeleteAsync(IRepository<TEntity> repository, TEntity entity);
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض حذف موجودیت است</param>
+        Task DeleteAsync(IRepository<TEntity> repository,
+            TEntity entity, OperationId operation = OperationId.Delete);
     }
 }

@@ -30,6 +30,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public AccountOwner AccountOwner { get; set; }
 
+        /// <summary>
+        /// اطلاعات موجودیت را به صورت متنی ساخته و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات موجودیت به صورت متنی</returns>
         public override string ToString()
         {
             return String.Format("{0} ({1})", Name, FullCode);

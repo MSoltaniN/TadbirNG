@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Persistence
 {
-    internal enum OperationId
+    public enum OperationId
     {
         None = 0,
         View = 1,
@@ -40,6 +40,15 @@ namespace SPPC.Tadbir.Persistence
         CurrencyChange = 32,
         DecimalCountChange = 33,
         DefaultCodingChange = 34,
-        RoleAccess = 35
+        RoleAccess = 35,
+        CreateLine = 36,
+        EditLine = 37,
+        DeleteLine = 38,
+        GroupDeleteLines = 39,
+        CreateRate = 40,
+        EditRate = 41,
+        DeleteRate = 42,
+        PrintRates = 43,
+        GroupDeleteRates = 44
     }
 }

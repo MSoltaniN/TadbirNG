@@ -578,19 +578,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public override async Task InsertAsync(IRepository<Role> repository, Role entity)
+        public override async Task InsertAsync(IRepository<Role> repository,
+            Role entity, OperationId operation = OperationId.Create)
         {
-            OnEntityAction(OperationId.Create);
+            OnEntityAction(operation);
             Log.Description = Context.Localize(GetState(entity));
             repository.Insert(entity, role => role.RolePermissions);
             await FinalizeActionAsync(entity);
         }
 
         /// <inheritdoc/>
-        public override async Task UpdateAsync(IRepository<Role> repository, Role entity, RoleFullViewModel entityView)
+        public override async Task UpdateAsync(IRepository<Role> repository,
+            Role entity, RoleFullViewModel entityView, OperationId operation = OperationId.Edit)
         {
             var clone = new Role() { Id = entity.Id, Name = entity.Name, Description = entity.Description };
-            OnEntityAction(OperationId.Edit);
+            OnEntityAction(operation);
             UpdateExisting(entityView, entity);
             Log.Description = Context.Localize(
                 String.Format("{0} : ({1}) , {2} : ({3})",
@@ -601,9 +603,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public override async Task DeleteAsync(IRepository<Role> repository, Role entity)
+        public override async Task DeleteAsync(IRepository<Role> repository,
+            Role entity, OperationId operation = OperationId.Delete)
         {
-            OnEntityAction(OperationId.Delete);
+            OnEntityAction(operation);
             Log.Description = Context.Localize(GetState(entity));
             repository.Delete(entity);
             await FinalizeActionAsync(entity);

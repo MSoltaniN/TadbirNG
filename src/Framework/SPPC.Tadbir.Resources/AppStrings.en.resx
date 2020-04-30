@@ -3042,4 +3042,34 @@
   <data name="AccountCollectionItems" xml:space="preserve">
     <value>Accounts in collection '{0}'</value>
   </data>
+  <data name="CreateLine" xml:space="preserve">
+    <value>Create line</value>
+  </data>
+  <data name="CreateRate" xml:space="preserve">
+    <value>Create rate</value>
+  </data>
+  <data name="DeleteLine" xml:space="preserve">
+    <value>Delete line</value>
+  </data>
+  <data name="DeleteRate" xml:space="preserve">
+    <value>Delete rate</value>
+  </data>
+  <data name="EditLine" xml:space="preserve">
+    <value>Edit line</value>
+  </data>
+  <data name="EditRate" xml:space="preserve">
+    <value>Edit rate</value>
+  </data>
+  <data name="GroupDeleteLines" xml:space="preserve">
+    <value>Group delete lines</value>
+  </data>
+  <data name="GroupDeleteRates" xml:space="preserve">
+    <value>Group delete rates</value>
+  </data>
+  <data name="PrintRates" xml:space="preserve">
+    <value>Print rates</value>
+  </data>
+  <data name="CurrencyRatesList" xml:space="preserve">
+    <value>Rates of currency {0}</value>
+  </data>
 </root>
