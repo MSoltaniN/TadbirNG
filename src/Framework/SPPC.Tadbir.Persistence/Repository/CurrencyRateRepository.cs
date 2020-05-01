@@ -48,8 +48,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(rate => Mapper.Map<CurrencyRateViewModel>(rate))
                     .ToListAsync();
                 OnEntityAction(OperationId.View);
-                Log.Description = Context.Localize(
-                    String.Format("{0} : {1}", AppStrings.Currency, currency.Name));
+                Log.Description = GetRatesOperationDescription(currency.Name);
                 await ReadAsync(gridOptions);
                 return new PagedList<CurrencyRateViewModel>(all, gridOptions);
             }
@@ -88,14 +87,14 @@ namespace SPPC.Tadbir.Persistence
             if (currencyRate.Id == 0)
             {
                 rateModel = Mapper.Map<CurrencyRate>(currencyRate);
-                await InsertAsync(repository, rateModel);
+                await InsertAsync(repository, rateModel, OperationId.CreateRate);
             }
             else
             {
                 rateModel = await repository.GetByIDAsync(currencyRate.Id);
                 if (rateModel != null)
                 {
-                    await UpdateAsync(repository, rateModel, currencyRate);
+                    await UpdateAsync(repository, rateModel, currencyRate, OperationId.EditRate);
                 }
             }
 
@@ -112,7 +111,7 @@ namespace SPPC.Tadbir.Persistence
             var currencyRate = await repository.GetByIDAsync(rateId);
             if (currencyRate != null)
             {
-                await DeleteAsync(repository, currencyRate);
+                await DeleteAsync(repository, currencyRate, OperationId.DeleteRate);
             }
         }
 
@@ -132,7 +131,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await OnEntityGroupDeleted(items);
+            await OnEntityGroupDeleted(items, OperationId.GroupDeleteRates);
         }
 
         /// <summary>
@@ -151,7 +150,7 @@ namespace SPPC.Tadbir.Persistence
 
         internal override int? EntityType
         {
-            get { return (int)EntityTypeId.CurrencyRate; }
+            get { return (int)EntityTypeId.Currency; }
         }
 
         /// <summary>
@@ -178,9 +177,31 @@ namespace SPPC.Tadbir.Persistence
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3} , {4} : {5}",
-                    AppStrings.Date, entity.Date, AppStrings.Time, entity.Time,
+                    AppStrings.Date, entity.Date.Date, AppStrings.Time, entity.Time,
                     AppStrings.Multiplier, entity.Multiplier)
                 : null;
+        }
+
+        /// <inheritdoc/>
+        protected override async Task FinalizeActionAsync(CurrencyRate entity)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Currency>();
+            var currency = await repository.GetByIDAsync(entity.CurrencyId);
+            if (currency != null)
+            {
+                await UnitOfWork.CommitAsync();
+                Log.EntityId = entity.Id;
+                CopyEntityDataToLog(currency);
+                Log.EntityName = Context.Localize(Log.EntityName);
+                await TrySaveLogAsync();
+            }
+        }
+
+        private string GetRatesOperationDescription(string currencyName)
+        {
+            string template = Context.Localize(AppStrings.CurrencyRatesList);
+            string description = String.Format(template, currencyName);
+            return Context.Localize(description);
         }
     }
 }

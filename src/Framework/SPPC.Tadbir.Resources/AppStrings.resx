@@ -3033,4 +3033,58 @@
   <data name="AccountCollectionItems" xml:space="preserve">
     <value>حساب های مجموعه حساب '{0}'</value>
   </data>
+  <data name="CreateLine" xml:space="preserve">
+    <value>ایجاد آرتیکل</value>
+  </data>
+  <data name="CreateRate" xml:space="preserve">
+    <value>ایجاد نرخ</value>
+  </data>
+  <data name="DeleteLine" xml:space="preserve">
+    <value>حذف آرتیکل</value>
+  </data>
+  <data name="DeleteRate" xml:space="preserve">
+    <value>حذف نرخ</value>
+  </data>
+  <data name="EditLine" xml:space="preserve">
+    <value>اصلاح آرتیکل</value>
+  </data>
+  <data name="EditRate" xml:space="preserve">
+    <value>اصلاح نرخ</value>
+  </data>
+  <data name="GroupDeleteLines" xml:space="preserve">
+    <value>حذف گروهی آرتیکل ها</value>
+  </data>
+  <data name="GroupDeleteRates" xml:space="preserve">
+    <value>حذف گروهی نرخ ها</value>
+  </data>
+  <data name="PrintRates" xml:space="preserve">
+    <value>چاپ نرخ ها</value>
+  </data>
+  <data name="CurrencyRatesList" xml:space="preserve">
+    <value>نرخ های ارز {0}</value>
+  </data>
+  <data name="BalanceByAllAccounts" xml:space="preserve">
+    <value>بر اساس کلیه حساب ها</value>
+  </data>
+  <data name="BalanceByAllCostCenters" xml:space="preserve">
+    <value>بر اساس کلیه مراکز هزینه</value>
+  </data>
+  <data name="BalanceByAllDetailAccounts" xml:space="preserve">
+    <value>بر اساس کلیه شناورها</value>
+  </data>
+  <data name="BalanceByAllProjects" xml:space="preserve">
+    <value>بر اساس کلیه پروژه ها</value>
+  </data>
+  <data name="BalanceByOneAccount" xml:space="preserve">
+    <value>بر اساس حساب انتخابی</value>
+  </data>
+  <data name="BalanceByOneCostCenter" xml:space="preserve">
+    <value>بر اساس مرکز هزینه انتخابی</value>
+  </data>
+  <data name="BalanceByOneDetailAccount" xml:space="preserve">
+    <value>بر اساس شناور انتخابی</value>
+  </data>
+  <data name="BalanceByOneProject" xml:space="preserve">
+    <value>بر اساس پروژه انتخابی</value>
+  </data>
 </root>

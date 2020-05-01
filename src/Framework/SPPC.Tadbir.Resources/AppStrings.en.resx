@@ -3042,4 +3042,58 @@
   <data name="AccountCollectionItems" xml:space="preserve">
     <value>Accounts in collection '{0}'</value>
   </data>
+  <data name="CreateLine" xml:space="preserve">
+    <value>Create line</value>
+  </data>
+  <data name="CreateRate" xml:space="preserve">
+    <value>Create rate</value>
+  </data>
+  <data name="DeleteLine" xml:space="preserve">
+    <value>Delete line</value>
+  </data>
+  <data name="DeleteRate" xml:space="preserve">
+    <value>Delete rate</value>
+  </data>
+  <data name="EditLine" xml:space="preserve">
+    <value>Edit line</value>
+  </data>
+  <data name="EditRate" xml:space="preserve">
+    <value>Edit rate</value>
+  </data>
+  <data name="GroupDeleteLines" xml:space="preserve">
+    <value>Group delete lines</value>
+  </data>
+  <data name="GroupDeleteRates" xml:space="preserve">
+    <value>Group delete rates</value>
+  </data>
+  <data name="PrintRates" xml:space="preserve">
+    <value>Print rates</value>
+  </data>
+  <data name="CurrencyRatesList" xml:space="preserve">
+    <value>Rates of currency {0}</value>
+  </data>
+  <data name="BalanceByAllAccounts" xml:space="preserve">
+    <value>By all accounts</value>
+  </data>
+  <data name="BalanceByAllCostCenters" xml:space="preserve">
+    <value>By all cost centers</value>
+  </data>
+  <data name="BalanceByAllDetailAccounts" xml:space="preserve">
+    <value>By all detail accounts</value>
+  </data>
+  <data name="BalanceByAllProjects" xml:space="preserve">
+    <value>By all projects</value>
+  </data>
+  <data name="BalanceByOneAccount" xml:space="preserve">
+    <value>By selected account</value>
+  </data>
+  <data name="BalanceByOneCostCenter" xml:space="preserve">
+    <value>By selected cost center</value>
+  </data>
+  <data name="BalanceByOneDetailAccount" xml:space="preserve">
+    <value>By selected detail account</value>
+  </data>
+  <data name="BalanceByOneProject" xml:space="preserve">
+    <value>By selected project</value>
+  </data>
 </root>

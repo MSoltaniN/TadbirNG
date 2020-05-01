@@ -53,5 +53,14 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی گروه حساب این بخش
         /// </summary>
         public int? GroupId { get; set; }
+
+        /// <summary>
+        /// اطلاعات این نمونه را به صورت متنی ساخته و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات این نمونه به صورت متنی</returns>
+        public override string ToString()
+        {
+            return String.Format("{0} ({1})", Name, FullCode);
+        }
     }
 }

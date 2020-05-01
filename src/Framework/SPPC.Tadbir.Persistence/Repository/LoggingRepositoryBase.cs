@@ -37,9 +37,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید ذخیره شود</param>
-        public virtual async Task InsertAsync(IRepository<TEntity> repository, TEntity entity)
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض ایجاد موجودیت است</param>
+        public virtual async Task InsertAsync(IRepository<TEntity> repository,
+            TEntity entity, OperationId operation = OperationId.Create)
         {
-            OnEntityAction(OperationId.Create);
+            OnEntityAction(operation);
             Log.Description = Context.Localize(GetState(entity));
             repository.Insert(entity);
             await FinalizeActionAsync(entity);
@@ -52,14 +54,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که تغییرات آن باید ذخیره شود</param>
         /// <param name="entityView">مدل نمایشی شامل آخرین تغییرات سطر اطلاعاتی</param>
-        public virtual async Task UpdateAsync(IRepository<TEntity> repository, TEntity entity, TEntityView entityView)
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض اصلاح موجودیت است</param>
+        public virtual async Task UpdateAsync(IRepository<TEntity> repository,
+            TEntity entity, TEntityView entityView, OperationId operation = OperationId.Edit)
         {
-            var clone = GetEntityCopy(entity);
-            OnEntityAction(OperationId.Edit);
+            string oldState = GetState(entity);
+            OnEntityAction(operation);
             UpdateExisting(entityView, entity);
             Log.Description = Context.Localize(
                 String.Format("{0} : ({1}) , {2} : ({3})",
-                AppStrings.Old, Context.Localize(GetState(clone)),
+                AppStrings.Old, Context.Localize(oldState),
                 AppStrings.New, Context.Localize(GetState(entity))));
             repository.Update(entity);
             await FinalizeActionAsync(entity);
@@ -71,9 +75,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
         /// <param name="entity">سطر اطلاعاتی که باید حذف شود</param>
-        public virtual async Task DeleteAsync(IRepository<TEntity> repository, TEntity entity)
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض حذف موجودیت است</param>
+        public virtual async Task DeleteAsync(IRepository<TEntity> repository,
+            TEntity entity, OperationId operation = OperationId.Delete)
         {
-            OnEntityAction(OperationId.Delete);
+            OnEntityAction(operation);
             Log.Description = Context.Localize(GetState(entity));
             DisconnectEntity(entity);
             repository.Delete(entity);
@@ -180,11 +186,12 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        internal virtual async Task OnEntityGroupDeleted(IEnumerable<int> deletedIds)
+        internal virtual async Task OnEntityGroupDeleted(
+            IEnumerable<int> deletedIds, OperationId operation = OperationId.GroupDelete)
         {
-            OnEntityAction(OperationId.GroupDelete);
-            Log.Description = String.Format(
-                "{0} :{1}{2}", AppStrings.DeletedItems, Environment.NewLine, String.Join(",", deletedIds));
+            OnEntityAction(operation);
+            Log.Description = Context.Localize(String.Format(
+                "{0} :{1}{2}", AppStrings.DeletedItems, Environment.NewLine, String.Join(",", deletedIds)));
             await TrySaveLogAsync();
         }
 
@@ -296,7 +303,7 @@ namespace SPPC.Tadbir.Persistence
         /// تغییرات انجام شده را اعمال کرده و در صورت نیاز، لاگ عملیاتی را ایجاد می کند
         /// </summary>
         /// <param name="entity">موجودیتی که عملیات روی آن در حال انجام است</param>
-        protected async Task FinalizeActionAsync(TEntity entity)
+        protected virtual async Task FinalizeActionAsync(TEntity entity)
         {
             await UnitOfWork.CommitAsync();
             Log.EntityId = entity.Id;
@@ -318,17 +325,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// از آبجکت داده شده یک رونوشت تهیه کرده و رونوشت را به صورت آبجکت جدیدی برمی گرداند
+        /// اطلاعات مشترک موجودیت های پایه و عملیاتی را در رکورد لاگ کپی می کند
         /// </summary>
-        /// <param name="entity">آبجکتی که باید از آن رونوشت یا کپی تهیه شود</param>
-        /// <returns>رونوشت تهیه شده از آبجکت داده شده</returns>
-        protected TEntity GetEntityCopy(TEntity entity)
-        {
-            var mapped = Mapper.Map<TEntityView>(entity);
-            return Mapper.Map<TEntity>(mapped);
-        }
-
-        private void CopyEntityDataToLog(TEntity entity)
+        /// <param name="entity">موجودیتی که عملیات جاری روی آن انجام شده است</param>
+        protected void CopyEntityDataToLog(object entity)
         {
             var dataFields = new string[]
                 {
