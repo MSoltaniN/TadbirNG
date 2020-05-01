@@ -269,7 +269,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             Array.ForEach(detailAccounts.ToArray(), facc => facc.IsSelected = true);
             await LogAssociationOperationAsync<Account>(
-                OperationId.View, AppStrings.Account, accountId, AppStrings.DetailAccount);
+                OperationId.View, AppStrings.Account, accountId, AppStrings.DetailAccount, gridOptions);
             return detailAccounts;
         }
 
@@ -305,7 +305,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             Array.ForEach(costCenters.ToArray(), cc => cc.IsSelected = true);
             await LogAssociationOperationAsync<Account>(
-                OperationId.View, AppStrings.Account, accountId, AppStrings.CostCenter);
+                OperationId.View, AppStrings.Account, accountId, AppStrings.CostCenter, gridOptions);
             return costCenters;
         }
 
@@ -341,7 +341,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             Array.ForEach(projects.ToArray(), prj => prj.IsSelected = true);
             await LogAssociationOperationAsync<Account>(
-                OperationId.View, AppStrings.Account, accountId, AppStrings.Project);
+                OperationId.View, AppStrings.Account, accountId, AppStrings.Project, gridOptions);
             return projects;
         }
 
@@ -370,7 +370,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             await LogAssociationOperationAsync<DetailAccount>(
-                OperationId.View, AppStrings.DetailAccount, detailId, AppStrings.Account);
+                OperationId.View, AppStrings.DetailAccount, detailId, AppStrings.Account, gridOptions);
             return accounts;
         }
 
@@ -399,7 +399,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             await LogAssociationOperationAsync<CostCenter>(
-                OperationId.View, AppStrings.CostCenter, costCenterId, AppStrings.Account);
+                OperationId.View, AppStrings.CostCenter, costCenterId, AppStrings.Account, gridOptions);
             return accounts;
         }
 
@@ -428,7 +428,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             await LogAssociationOperationAsync<Project>(
-                OperationId.View, AppStrings.Project, projectId, AppStrings.Account);
+                OperationId.View, AppStrings.Project, projectId, AppStrings.Account, gridOptions);
             return accounts;
         }
 
@@ -1645,19 +1645,27 @@ namespace SPPC.Tadbir.Persistence
         #endregion
 
         private async Task LogAssociationOperationAsync<TEntity>(
-            OperationId operation, string fromItem, int fromId, string toItem)
+            OperationId operation, string fromItem, int fromId, string toItem, GridOptions gridOptions = null)
             where TEntity : class, ITreeEntity
         {
-            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            var accountItem = await repository.GetByIDAsync(fromId);
-            if (accountItem != null)
+            bool needsLog = (gridOptions != null && gridOptions.ListChanged)
+                || operation == OperationId.Save;
+            if (needsLog)
             {
-                OnEntityAction(operation);
-                Log.Description = GetRelationLogDescription(accountItem, fromItem, toItem);
-                Log.EntityName = accountItem.Name;
-                Log.EntityCode = accountItem.FullCode;
-                Log.EntityDescription = accountItem.Description ?? String.Empty;
-                await TrySaveLogAsync();
+                var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+                var accountItem = await repository.GetByIDAsync(fromId);
+                if (accountItem != null)
+                {
+                    var operationId = gridOptions != null
+                        ? (OperationId)gridOptions.Operation
+                        : operation;
+                    OnEntityAction(operationId);
+                    Log.Description = GetRelationLogDescription(accountItem, fromItem, toItem);
+                    Log.EntityName = accountItem.Name;
+                    Log.EntityCode = accountItem.FullCode;
+                    Log.EntityDescription = accountItem.Description ?? String.Empty;
+                    await TrySaveLogAsync();
+                }
             }
         }
 
