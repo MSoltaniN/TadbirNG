@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -290,6 +293,28 @@ namespace SPPC.Tadbir.Persistence
             return currencyViewModel;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، استان و شهرها را در شرکت جاری به روزرسانی می کند
+        /// TODO: موقتی میباشد
+        /// </summary>
+        /// <param name="mdbPath">مسیر فایل بانک اطلاعاتی اکسس مرتبط با استان و شهر</param>
+        public async Task UpdateZoneAsync(string mdbPath)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Province>();
+            var zoneItems = await _access.GetAllAsync<ZoneViewModel>(mdbPath, "Zone");
+
+            var provinceGroup = zoneItems.GroupBy(item => item.ProvinceCode);
+
+            foreach (var itemGroup in provinceGroup)
+            {
+                var province = Mapper.Map<Province>(itemGroup.First());
+                province.Cities = itemGroup.Select(item => Mapper.Map<City>(item)).ToList();
+                repository.Insert(province, pro => pro.Cities);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.Currency; }
@@ -373,6 +398,11 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return Mapper.Map<CurrencyViewModel>(currencyModel);
+        }
+
+        private void InsertProvinceAsync(IAsyncRepository<Province> repository, Province entity)
+        {
+            repository.Insert(entity);
         }
 
         private readonly IAccessRepository _access;

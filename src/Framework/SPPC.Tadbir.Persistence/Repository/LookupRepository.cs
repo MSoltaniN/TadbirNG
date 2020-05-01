@@ -578,6 +578,33 @@ namespace SPPC.Tadbir.Persistence
             return lookup;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، لیست استان ها را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>لیست استان ها</returns>
+        public async Task<IList<KeyValue>> GetProvincesAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Province>();
+            var provinces = await repository.GetAllAsync();
+            return provinces
+                .OrderBy(item => item.Name)
+                .Select(item => Mapper.Map<KeyValue>(item)).ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، لیست شهرهای یک استان را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="provinceCode">کد یکتای استان</param>
+        /// <returns>لیست شهرهای یک استان</returns>
+        public async Task<IList<KeyValue>> GetCitiesAsync(string provinceCode)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<City>();
+            var cities = await repository.GetByCriteriaAsync(city => city.Province.Code == provinceCode);
+            return cities
+                .OrderBy(item => item.Name)
+                .Select(item => Mapper.Map<KeyValue>(item)).ToList();
+        }
+
         #endregion
 
         private static string GetFullName(User user)

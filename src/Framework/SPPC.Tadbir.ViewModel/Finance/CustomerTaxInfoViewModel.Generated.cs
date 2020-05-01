@@ -106,6 +106,20 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string PostalCode { get; set; }
 
         /// <summary>
+        /// Gets or sets the کد استان
+        /// </summary>
+        [Required(ErrorMessage = "{0} is required.")]
+        [MaxLength(4, ErrorMessage = "{0} must have at most {1} characters.")]
+        public string ProvinceCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the کد شهر
+        /// </summary>
+        [Required(ErrorMessage = "{0} is required.")]
+        [MaxLength(16, ErrorMessage = "{0} must have at most {1} characters.")]
+        public string CityCode { get; set; }
+
+        /// <summary>
         /// Gets or sets the توضیحات
         /// </summary>
         [MaxLength(1024, ErrorMessage = "{0} must have at most {1} characters.")]

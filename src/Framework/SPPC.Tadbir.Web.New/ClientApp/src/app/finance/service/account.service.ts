@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { AccountApi } from './api/accountApi';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { Account, AccountOwner } from '@sppc/finance/models';
 import { BaseService } from '@sppc/shared/class';
@@ -9,6 +9,7 @@ import { String } from '@sppc/shared/class/source';
 import { AccountFullData } from '../models/accountFullData';
 import { CustomerTaxInfo } from '../models/customerTaxInfo';
 import { AccountHolder } from '../models/index';
+import { CurrencyApi } from './api';
 
 
 export class AccountInfo implements Account {
@@ -50,6 +51,8 @@ export class CustomerTaxInfoModel implements CustomerTaxInfo {
   phoneNo: string;
   mobileNo: string;
   postalCode: string;
+  provinceCode: string;
+  cityCode: string;
   description?: string;
 }
 
@@ -109,4 +112,14 @@ export class AccountService extends BaseService {
       .map(response => <any>(<Response>response));
   }
 
+  postFile(file: File) {
+    var currentContext = this.bStorageService.getCurrentUser();
+    const formData: FormData = new FormData();
+    formData.append(file.name, file, file.name);
+    formData.append("X-Tadbir-AuthTicket", currentContext ? currentContext.ticket : "");
+
+    const uploadReq = new HttpRequest('POST', CurrencyApi.Zone, formData, { reportProgress: true, });
+
+    return this.http.request(uploadReq);
+  }
 }

@@ -198,6 +198,18 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های سیستمی</returns>
         Task<IList<SourceEntityViewModel>> GetSystemEntityTypesAsync();
 
+        /// <summary>
+        /// به روش آسنکرون، لیست استان ها را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>لیست استان ها</returns>
+        Task<IList<KeyValue>> GetProvincesAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، لیست شهرهای یک استان را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="provinceCode">کد یکتای استان</param>
+        /// <returns>لیست شهرهای یک استان</returns>
+        Task<IList<KeyValue>> GetCitiesAsync(string provinceCode);
         #endregion
     }
 }

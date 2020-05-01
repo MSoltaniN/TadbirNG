@@ -549,6 +549,26 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<View, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<Province, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Code))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<City, KeyValue>()
+               .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Code))
+               .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+
+            mapperConfig.CreateMap<DbDataReader, ZoneViewModel>()
+                .ForMember(dest => dest.ProvinceName, opts => opts.MapFrom(src => src[2]))
+                .ForMember(dest => dest.ProvinceCode, opts => opts.MapFrom(src => src[3]))
+                .ForMember(dest => dest.CityName, opts => opts.MapFrom(src => src[1]))
+                .ForMember(dest => dest.CityCode, opts => opts.MapFrom(src => src[0]));
+
+            mapperConfig.CreateMap<ZoneViewModel, Province>()
+               .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.ProvinceName))
+               .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.ProvinceCode));
+
+            mapperConfig.CreateMap<ZoneViewModel, City>()
+               .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.CityName))
+               .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.CityCode));
         }
 
         private static void MapReportingTypes(IMapperConfigurationExpression mapperConfig)

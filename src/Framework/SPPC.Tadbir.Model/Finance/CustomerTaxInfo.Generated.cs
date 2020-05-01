@@ -81,6 +81,16 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual string PostalCode { get; set; }
 
         /// <summary>
+        /// Gets or sets the کد استان
+        /// </summary>
+        public virtual string ProvinceCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the کد شهر
+        /// </summary>
+        public virtual string CityCode { get; set; }
+
+        /// <summary>
         /// Gets or sets the توضیحات
         /// </summary>
         public virtual string Description { get; set; }

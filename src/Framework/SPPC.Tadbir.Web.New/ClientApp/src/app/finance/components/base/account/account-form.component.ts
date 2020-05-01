@@ -1,9 +1,9 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent, DetailComponent } from '@sppc/shared/class';
-import { Layout, Entities } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { AccountService, AccountFullDataInfo, AccountInfo, CustomerTaxInfoModel, AccountOwnerInfo } from '@sppc/finance/service';
 import { Account, AccountOwner, AccountHolder } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
@@ -13,6 +13,7 @@ import { LookupApi } from '@sppc/shared/services/api';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { AccountFullData } from '@sppc/finance/models/accountFullData';
 import { CustomerTaxInfo } from '@sppc/finance/models/customerTaxInfo';
+import { HttpEventType } from '@angular/common/http';
 
 
 
@@ -48,6 +49,17 @@ input[type=text],.ddl-acc,textarea { width: 100%; } /deep/ .k-dialog-buttongroup
 /deep/ .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
 /deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }
 .acc-form { min-height: 386px; }
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #337ab7;
+    color: #fff;
+    border-radius: 3px;
+    margin-right: 10px;
+}
 `],
   templateUrl: './account-form.component.html',
   providers: [{
@@ -81,13 +93,20 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   filteredProcinces: Array<Item> = [];
   selectedProvince: string;
 
+  citiesList: Array<Item> = [];
+  filteredCities: Array<Item> = [];
+
 
   isDisableCustomerTaxTab: boolean = false;
   isDisableAccountOwnerTab: boolean = false;
+  uploadTab: boolean = false;
 
   accountModel: Account;
   customerTaxModel: CustomerTaxInfo;
   accountOwnerModel: AccountOwner;
+
+  progress: number = 0;
+  @ViewChild('myInput') myInputVariable: ElementRef;
 
   @Input() public parent: Account;
   @Input() public model: AccountFullData;
@@ -113,51 +132,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     { key: "0", value: "جاری" },
     { key: "1", value: "پس انداز" }
   ]
-
-  //public accountDataForm = new FormGroup({
-  //  account: new FormGroup({
-  //    name: new FormControl('', Validators.required),
-  //    groupId: new FormControl(''),
-  //    code: new FormControl(''),
-  //    fullCode: new FormControl(''),
-  //    description: new FormControl(''),
-  //    branchScope: new FormControl(''),
-  //  }),
-  //  features: new FormGroup({
-  //    currencyId: new FormControl(''),
-  //    turnoverMode: new FormControl(''),
-  //    isActive: new FormControl(''),
-  //    isCurrencyAdjustable: new FormControl(''),
-  //  }),
-  //  customerTax: new FormGroup({
-  //    id: new FormControl(),
-  //    accountId: new FormControl(),
-  //    customerFirstName: new FormControl(''),
-  //    customerName: new FormControl(''),
-  //    personType: new FormControl(''),
-  //    buyerType: new FormControl(''),
-  //    economicCode: new FormControl(''),
-  //    address: new FormControl(''),
-  //    nationalCode: new FormControl(''),
-  //    perCityCode: new FormControl(''),
-  //    phoneNo: new FormControl(''),
-  //    mobileNo: new FormControl(''),
-  //    postalCode: new FormControl(''),
-  //    description: new FormControl(''),
-  //  }),
-  //  owner: new FormGroup({
-  //    id: new FormControl(),
-  //    accountId: new FormControl(),
-  //    bankName: new FormControl(''),
-  //    accountType: new FormControl(''),
-  //    bankBranchName: new FormControl(''),
-  //    branchIndex: new FormControl(''),
-  //    accountNumber: new FormControl(''),
-  //    cardNumber: new FormControl(''),
-  //    shabaNumber: new FormControl(''),
-  //    description: new FormControl('')
-  //  })
-  //});
 
   accountForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -187,6 +161,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     phoneNo: new FormControl(''),
     mobileNo: new FormControl(''),
     postalCode: new FormControl(''),
+    provinceCode: new FormControl(''),
+    cityCode: new FormControl(''),
     description: new FormControl(''),
   })
   ownerForm: FormGroup;
@@ -240,7 +216,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.getBranchName();
     this.getCurrencies();
     this.getTurnoverModes();
-    //this.getProvince()
+    this.getProvince()
 
     this.parentScopeValue = 0;
     if (this.parent) {
@@ -364,21 +340,35 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   }
 
   getProvince() {
-    //this.lookupService.getModels(LookupApi.Provinces).subscribe(res => {
-    //  this.filteredProcinces = this.provincesList = res;
-    //})
+    this.lookupService.getModels(LookupApi.Provinces).subscribe(res => {
+      if (res.length) {
+        this.filteredProcinces = this.provincesList = res;
+      }
+      else {
+        this.uploadTab = true;
+      }
+
+      if (!this.isNew && this.customerTaxModel.id > 0) {
+        this.onChangeProvince(this.customerTaxModel.provinceCode, true);
+      }
+    })
   }
 
-  onChangeProvince() {
-    //get cities
+  onChangeProvince(provinceCode: string, initValue?: boolean) {
+    this.filteredCities = this.citiesList = [];
+    if (!initValue) {
+      this.customerTaxForm.patchValue({ cityCode: undefined });
+    }
+    this.lookupService.getModels(String.Format(LookupApi.Cities, provinceCode)).subscribe(res => {
+      this.filteredCities = this.citiesList = res;
+    })
   }
-
 
   onAddAccountHolder(dataItem?: AccountHolder) {
     this.accountHolders = this.ownerForm.get('accountHolders') as FormArray;
 
     let newItem: FormGroup = this.formBuilder.group({
-      id: dataItem ? dataItem.id:0,
+      id: dataItem ? dataItem.id : 0,
       accountOwnerId: this.accountOwnerModel ? this.accountOwnerModel.id : 0,
       firstName: dataItem ? dataItem.firstName : '',
       lastName: dataItem ? dataItem.lastName : '',
@@ -391,7 +381,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   onRemoveAccountHolder(index: number) {
     this.accountHolders.removeAt(index);
   }
-
 
   onSave(e: any): void {
     e.preventDefault();
@@ -443,7 +432,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       resultModel.customerTaxInfo = customerTaxInfo;
     }
 
-
     if (!this.isNew && this.accountOwnerModel) {
       var accountOwner = this.ownerForm.value;
       accountOwner.id = this.accountOwnerModel.id;
@@ -466,7 +454,35 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   }
 
   handleFilterProvince(value: any) {
-    debugger;
     this.filteredProcinces = this.provincesList.filter((s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+  }
+
+  handleFilterCity(value: any) {
+    this.filteredCities = this.citiesList.filter((s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+  }
+
+  onFileChange(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      var fileExtension = file.name.split('.').pop();
+      var accessExtensions = ["accda", "accdb", "accde", "accdr", "accdt", "mdb", "mde", "mdf", "mda"];
+      if (accessExtensions.filter(f => f == fileExtension.toLowerCase()).length > 0) {
+
+        this.accountService.postFile(file).subscribe(res => {
+          this.myInputVariable.nativeElement.value = "";
+
+          if (res.type === HttpEventType.UploadProgress)
+            this.progress = Math.round(100 * res.loaded / res.total);
+          else
+            if (res.type === HttpEventType.Response) {
+              this.showMessage(this.getText("Messages.UploadSuccessful"), MessageType.Succes);
+            }
+        })
+      }
+      else {
+        this.showMessage(this.getText("Messages.IncorrectFileFormat"), MessageType.Warning);
+      }
+
+    }
   }
 }

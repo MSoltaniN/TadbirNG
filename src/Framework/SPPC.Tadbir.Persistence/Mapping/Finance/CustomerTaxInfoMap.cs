@@ -43,6 +43,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.PostalCode)
                 .IsRequired()
                 .HasMaxLength(10);
+            builder.Property(e => e.ProvinceCode)
+                .IsRequired()
+                .HasMaxLength(4);
+            builder.Property(e => e.CityCode)
+                .IsRequired()
+                .HasMaxLength(16);
             builder.Property(e => e.Description)
                 .HasMaxLength(1024);
             builder.Property(e => e.ModifiedDate)

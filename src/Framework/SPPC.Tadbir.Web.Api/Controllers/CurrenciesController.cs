@@ -226,6 +226,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // POST: api/currencies/tax
+        // TODO: temporary
+        [HttpPost]
+        [Route(CurrencyApi.ZoneUrl)]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> PostZoneAsync()
+        {
+            var file = Request.Form.Files[0];
+            string newPath = Path.Combine(_host.WebRootPath, AppConstants.UserUploadFolderName);
+            if (!Directory.Exists(newPath))
+            {
+                Directory.CreateDirectory(newPath);
+            }
+
+            if (file.Length > 0)
+            {
+                string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                string fullPath = Path.Combine(newPath, fileName);
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                var ticket = Request.Form[AppConstants.ContextHeaderName];
+                var context = SecurityContextFromTicket(ticket);
+                _repository.CompanyConnection = _crypto.Decrypt(context.User.Connection);
+                await _repository.UpdateZoneAsync(fullPath);
+            }
+
+            return Ok();
+        }
+
         // PUT: api/currencies/{currencyId:min(1)}
         [HttpPut]
         [Route(CurrencyApi.CurrencyUrl)]

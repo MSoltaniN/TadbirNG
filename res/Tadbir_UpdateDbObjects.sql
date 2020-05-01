@@ -1068,3 +1068,132 @@ CREATE TABLE [Finance].[AccountHolder] (
     , CONSTRAINT [FK_Finance_AccountHolder_Finance_AccountOwner] FOREIGN KEY ([AccountOwnerID]) REFERENCES [Finance].[AccountOwner]([AccountOwnerID])
 )
 GO
+
+-- 1.1.880
+BEGIN TRANSACTION
+SET QUOTED_IDENTIFIER ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
+SET CONCAT_NULL_YIELDS_NULL ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE Finance.CustomerTaxInfo
+	DROP CONSTRAINT FK_Finance_CustomerTaxInfo_Finance_Account
+GO
+ALTER TABLE Finance.Account SET (LOCK_ESCALATION = TABLE)
+GO
+COMMIT
+BEGIN TRANSACTION
+GO
+ALTER TABLE Finance.CustomerTaxInfo
+	DROP CONSTRAINT DF_Finance_CustomerTaxInfo_rowguid
+GO
+ALTER TABLE Finance.CustomerTaxInfo
+	DROP CONSTRAINT DF_Finance_CustomerTaxInfo_ModifiedDate
+GO
+CREATE TABLE Finance.Tmp_CustomerTaxInfo
+	(
+	CustomerTaxInfoID int NOT NULL IDENTITY (1, 1),
+	AccountID int NOT NULL,
+	CustomerFirstName nvarchar(64) NULL,
+	CustomerName nvarchar(128) NOT NULL,
+	PersonType int NOT NULL,
+	BuyerType int NOT NULL,
+	EconomicCode nvarchar(12) NULL,
+	Address nvarchar(256) NOT NULL,
+	NationalCode nvarchar(11) NOT NULL,
+	PerCityCode nvarchar(10) NOT NULL,
+	PhoneNo nvarchar(64) NOT NULL,
+	MobileNo nvarchar(64) NOT NULL,
+	PostalCode nvarchar(10) NOT NULL,
+	ProvinceCode nvarchar(4) NOT NULL,
+	CityCode nvarchar(16) NOT NULL,
+	Description nvarchar(1024) NULL,
+	rowguid uniqueidentifier NOT NULL ROWGUIDCOL,
+	ModifiedDate datetime NOT NULL
+	)  ON [PRIMARY]
+GO
+ALTER TABLE Finance.Tmp_CustomerTaxInfo SET (LOCK_ESCALATION = TABLE)
+GO
+ALTER TABLE Finance.Tmp_CustomerTaxInfo ADD CONSTRAINT
+	DF_CustomerTaxInfo_ProvinceCode DEFAULT N'' FOR ProvinceCode
+GO
+ALTER TABLE Finance.Tmp_CustomerTaxInfo ADD CONSTRAINT
+	DF_CustomerTaxInfo_CityCode DEFAULT N'' FOR CityCode
+GO
+ALTER TABLE Finance.Tmp_CustomerTaxInfo ADD CONSTRAINT
+	DF_Finance_CustomerTaxInfo_rowguid DEFAULT (newid()) FOR rowguid
+GO
+ALTER TABLE Finance.Tmp_CustomerTaxInfo ADD CONSTRAINT
+	DF_Finance_CustomerTaxInfo_ModifiedDate DEFAULT (getdate()) FOR ModifiedDate
+GO
+SET IDENTITY_INSERT Finance.Tmp_CustomerTaxInfo ON
+GO
+IF EXISTS(SELECT * FROM Finance.CustomerTaxInfo)
+	 EXEC('INSERT INTO Finance.Tmp_CustomerTaxInfo (CustomerTaxInfoID, AccountID, CustomerFirstName, CustomerName, PersonType, BuyerType, EconomicCode, Address, NationalCode, PerCityCode, PhoneNo, MobileNo, PostalCode, Description, rowguid, ModifiedDate)
+		SELECT CustomerTaxInfoID, AccountID, CustomerFirstName, CustomerName, PersonType, BuyerType, EconomicCode, Address, NationalCode, PerCityCode, PhoneNo, MobileNo, PostalCode, Description, rowguid, ModifiedDate FROM Finance.CustomerTaxInfo WITH (HOLDLOCK TABLOCKX)')
+GO
+SET IDENTITY_INSERT Finance.Tmp_CustomerTaxInfo OFF
+GO
+DROP TABLE Finance.CustomerTaxInfo
+GO
+EXECUTE sp_rename N'Finance.Tmp_CustomerTaxInfo', N'CustomerTaxInfo', 'OBJECT' 
+GO
+ALTER TABLE Finance.CustomerTaxInfo ADD CONSTRAINT
+	PK_Finance_CustomerTaxInfo PRIMARY KEY CLUSTERED 
+	(
+	CustomerTaxInfoID
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+GO
+ALTER TABLE Finance.CustomerTaxInfo ADD CONSTRAINT
+	FK_Finance_CustomerTaxInfo_Finance_Account FOREIGN KEY
+	(
+	AccountID
+	) REFERENCES Finance.Account
+	(
+	AccountID
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+	
+GO
+COMMIT
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [Metadata].[Province] (
+    [ProvinceID]     INT              IDENTITY (1, 1) NOT NULL,
+	[Name]           NVARCHAR(64)     NOT NULL,
+    [Code]           NVARCHAR(4)      NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Province_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Province_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Province] PRIMARY KEY CLUSTERED ([ProvinceID] ASC)
+)
+GO
+
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [Metadata].[City] (
+    [CityID]         INT              IDENTITY (1, 1) NOT NULL,
+    [ProvinceID]     INT              NOT NULL,
+	[Name]           NVARCHAR(64)     NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_City_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_City_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_City] PRIMARY KEY CLUSTERED ([CityID] ASC)
+    , CONSTRAINT [FK_Metadata_City_Metadata_Province] FOREIGN KEY ([ProvinceID]) REFERENCES [Metadata].[Province]([ProvinceID])
+)
+GO

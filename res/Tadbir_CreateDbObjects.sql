@@ -1216,6 +1216,8 @@ CREATE TABLE [Finance].[CustomerTaxInfo] (
     [PhoneNo]             NVARCHAR(64)     NOT NULL,
     [MobileNo]            NVARCHAR(64)     NOT NULL,
     [PostalCode]          NVARCHAR(10)     NOT NULL,
+	[ProvinceCode]        NVARCHAR(4)      NOT NULL,
+    [CityCode]            NVARCHAR(16)     NOT NULL,
     [Description]         NVARCHAR(1024)   NULL,
 	[rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CustomerTaxInfo_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]        DATETIME         CONSTRAINT [DF_Finance_CustomerTaxInfo_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -1259,5 +1261,40 @@ CREATE TABLE [Finance].[AccountHolder] (
     [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_AccountHolder_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_AccountHolder] PRIMARY KEY CLUSTERED ([AccountHolderID] ASC)
     , CONSTRAINT [FK_Finance_AccountHolder_Finance_AccountOwner] FOREIGN KEY ([AccountOwnerID]) REFERENCES [Finance].[AccountOwner]([AccountOwnerID])
+)
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [Metadata].[Province] (
+    [ProvinceID]     INT              IDENTITY (1, 1) NOT NULL,
+	[Name]           NVARCHAR(64)     NOT NULL,
+    [Code]           NVARCHAR(4)      NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Province_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Province_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Province] PRIMARY KEY CLUSTERED ([ProvinceID] ASC)
+)
+GO
+
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [Metadata].[City] (
+    [CityID]         INT              IDENTITY (1, 1) NOT NULL,
+    [ProvinceID]     INT              NOT NULL,
+	[Name]           NVARCHAR(64)     NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_City_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_City_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_City] PRIMARY KEY CLUSTERED ([CityID] ASC)
+    , CONSTRAINT [FK_Metadata_City_Metadata_Province] FOREIGN KEY ([ProvinceID]) REFERENCES [Metadata].[Province]([ProvinceID])
 )
 GO

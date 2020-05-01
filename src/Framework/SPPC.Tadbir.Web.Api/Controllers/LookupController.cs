@@ -289,6 +289,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(sortedLookup);
         }
 
+        // GET: api/lookup/provinces
+        [Route(LookupApi.ProvincesUrl)]
+        public async Task<IActionResult> GetProvincesAsync()
+        {
+            var lookup = await _repository.GetProvincesAsync();
+            return Json(lookup);
+        }
+
+        // GET: api/lookup/cities/{provinceCode}
+        [Route(LookupApi.CitiesUrl)]
+        public async Task<IActionResult> GetCitiesAsync(string provinceCode)
+        {
+            var lookup = await _repository.GetCitiesAsync(provinceCode);
+            return Json(lookup);
+        }
         #endregion
 
         private IList<KeyValue> Localize(IList<KeyValue> keyValues, bool isNameSorted = false)

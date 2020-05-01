@@ -101,6 +101,8 @@ namespace SPPC.Tadbir.Persistence.Repository
             customerTaxInfo.PersonType = customerTaxInfoViewModel.PersonType;
             customerTaxInfo.PhoneNo = customerTaxInfoViewModel.PhoneNo;
             customerTaxInfo.PostalCode = customerTaxInfoViewModel.PostalCode;
+            customerTaxInfo.ProvinceCode = customerTaxInfoViewModel.ProvinceCode;
+            customerTaxInfo.CityCode = customerTaxInfoViewModel.CityCode;
         }
 
         private readonly ISystemRepository _system;

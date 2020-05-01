@@ -46,4 +46,7 @@ export class CurrencyApi {
 
   // currency/rates
   public static DeleteCurrencyRates = environment.BaseUrl + "/currency/rates";
+
+  // accounts/zone
+  public static Zone = environment.BaseUrl + "/currency/zone";
 }

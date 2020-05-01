@@ -195,7 +195,7 @@
 
       <kendo-tabstrip-tab [title]="'اطلاعات مالیاتی طرف حساب'" *ngIf="!isDisableCustomerTaxTab">
         <ng-template kendoTabContent>
-          <form novalidate [formGroup]="customerTaxForm">
+          <form novalidate [formGroup]="customerTaxForm" *ngIf="!uploadTab">
             <div>
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
@@ -314,11 +314,9 @@
                                         [valueField]="'key'"
                                         [filterable]="true"
                                         [valuePrimitive]="true"
-                                        [value]="selectedProvince"
-                                        [(ngModel)]="selectedProvince"
                                         (valueChange)="onChangeProvince($event)"
-                                        (filterChange)="handleFilterProvince($event)"
-                                        [ngModelOptions]="{standalone: true}">
+                                        formControlName="provinceCode"
+                                        (filterChange)="handleFilterProvince($event)">
                     </kendo-dropdownlist>
 
                   </div>
@@ -329,9 +327,13 @@
                     <label class="control-label">شهر</label>
 
                     <kendo-dropdownlist class="ddl-acc"
+                                        [data]="filteredCities"
                                         [textField]="'value'"
                                         [valueField]="'key'"
-                                        [valuePrimitive]="true">
+                                        [filterable]="true"
+                                        [valuePrimitive]="true"
+                                        formControlName="cityCode"
+                                        (filterChange)="handleFilterCity($event)">
                     </kendo-dropdownlist>
 
                   </div>
@@ -370,6 +372,22 @@
               </div>
             </div>
           </form>
+
+          <div *ngIf="uploadTab">
+            <div class="alert alert-info">
+              اطلاعات مربوط به استان ها و شهرها آپلود نشده است. لطفا فایل اکسس مربوطه را آپلود کنید.
+            </div>
+
+            <label for="file-upload" class="custom-file-upload" title="آپلود فایل">
+              آپلود فایل اکسس
+              <i class="fa fa-cloud-upload" *ngIf="progress == 0 || progress == 100" style="padding:2px 4px 2px !important;"></i>
+              <span class="upload-msg" *ngIf="progress > 0 && progress < 100">
+                {{progress}}%
+              </span>
+            </label>
+            <input #myInput id="file-upload" type="file" multiple (change)="onFileChange($event)" />
+
+          </div>
         </ng-template>
       </kendo-tabstrip-tab>
 

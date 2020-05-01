@@ -25,5 +25,7 @@ export interface CustomerTaxInfo {
     phoneNo: string;
     mobileNo: string;
     postalCode: string;
+    provinceCode: string;
+    cityCode: string;
     description?: string;
 }
