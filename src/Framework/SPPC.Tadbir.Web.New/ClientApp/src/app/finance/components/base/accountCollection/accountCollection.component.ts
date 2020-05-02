@@ -53,7 +53,8 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
   ddlLevelSelected: number = 0;
   accCollectionArray: Array<AccountCollectionAccount> = [];
 
-
+  accCollectionListChanged: boolean = false;
+  accListChanged: boolean = false;
   currentFilter: FilterExpression;
   collectionViewAccess: boolean;
   /**
@@ -86,6 +87,8 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
     this.collectionViewAccess = this.isAccess(SecureEntity.AccountCollection, AccountCollectionPermissions.View)
     this.getAccountCollectionCategory();
     this.getAccountLevels();
+    this.accCollectionListChanged = true;
+    this.accListChanged = true;
   }
 
 
@@ -181,7 +184,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
         }
         this.grid.loading = true;
 
-        this.accountCollectionService.getAll(AccountApi.EnvironmentAccounts, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
+        this.accountCollectionService.getAll(AccountApi.EnvironmentAccounts, this.pageIndex, this.pageSize, this.sort, filter,undefined,this.accListChanged).subscribe((res) => {
           var resData = res.body;
 
           var totalCount = 0;
@@ -202,6 +205,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
           this.dataloadingMessage = !(resData.length == 0);
           this.totalRecords = totalCount;
           this.grid.loading = false;
+          this.accListChanged = false;
         })
       }
     }
@@ -215,10 +219,12 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
    * */
   getSelectedAccount() {
     if (this.collectionViewAccess) {
-      this.accountCollectionService.getAll(String.Format(AccountCollectionApi.AccountCollectionAccount, this.selectedCollectionItem.id)).subscribe((res) => {
+      this.accountCollectionService.getAll(String.Format(AccountCollectionApi.AccountCollectionAccount, this.selectedCollectionItem.id), undefined, undefined,
+        undefined, undefined, undefined, this.accCollectionListChanged).subscribe((res) => {
         var resData = res.body;
         this.selectedRowData = resData;
         this.selectedDataloadingMessage = !(resData.length == 0);
+        this.accCollectionListChanged = false;
       })
     }
     else {
