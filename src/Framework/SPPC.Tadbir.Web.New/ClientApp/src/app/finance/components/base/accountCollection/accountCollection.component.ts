@@ -88,7 +88,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
     this.getAccountCollectionCategory();
     this.getAccountLevels();
     this.accCollectionListChanged = true;
-    this.accListChanged = true;
+    this.accListChanged = false;
   }
 
 
@@ -204,8 +204,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
 
           this.dataloadingMessage = !(resData.length == 0);
           this.totalRecords = totalCount;
-          this.grid.loading = false;
-          this.accListChanged = false;
+          this.grid.loading = false;          
         })
       }
     }
@@ -223,8 +222,7 @@ export class AccountCollectionComponent extends DefaultComponent implements OnIn
         undefined, undefined, undefined, this.accCollectionListChanged).subscribe((res) => {
         var resData = res.body;
         this.selectedRowData = resData;
-        this.selectedDataloadingMessage = !(resData.length == 0);
-        this.accCollectionListChanged = false;
+        this.selectedDataloadingMessage = !(resData.length == 0);        
       })
     }
     else {
