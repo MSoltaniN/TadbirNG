@@ -61,7 +61,7 @@ export class FullAccountService extends BaseService {
   public getFullAccountItemList(apiUrl: string, filter?: FilterExpression) {
     var intMaxValue = 2147483647
     var gridPaging = { pageIndex: 1, pageSize: intMaxValue };
-    var postItem = { Paging: gridPaging, filter: filter, sortColumns: null };
+    var postItem = { Paging: gridPaging, filter: filter, sortColumns: null, listChanged:false };
     var searchHeaders = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));
