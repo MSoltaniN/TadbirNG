@@ -21,10 +21,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public CurrencyRateRepository(IRepositoryContext context, IOperationLogRepository log)
-            : base(context, log)
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
+        public CurrencyRateRepository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system.Logger)
         {
+            _system = system;
         }
 
         /// <summary>
@@ -174,10 +175,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(CurrencyRate entity)
         {
+            string dateValue = Config.GetDateDisplayAsync(entity.Date).Result;
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3} , {4} : {5}",
-                    AppStrings.Date, entity.Date.Date, AppStrings.Time, entity.Time,
+                    AppStrings.Date, dateValue, AppStrings.Time, entity.Time,
                     AppStrings.Multiplier, entity.Multiplier)
                 : null;
         }
@@ -197,11 +199,18 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
+        }
+
         private string GetRatesOperationDescription(string currencyName)
         {
             string template = Context.Localize(AppStrings.CurrencyRatesList);
             string description = String.Format(template, currencyName);
             return Context.Localize(description);
         }
+
+        private readonly ISystemRepository _system;
     }
 }

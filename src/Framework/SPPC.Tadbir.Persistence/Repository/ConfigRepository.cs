@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
@@ -58,6 +59,25 @@ namespace SPPC.Tadbir.Persistence
                     ? DateTime.Now
                     : fp.EndDate;
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تاریخ داده شده را با توجه به تنظیمات تقویم پیش فرض به صورت رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="date">تاریخ مورد نظر برای نمایش متنی</param>
+        /// <returns>تاریخ داده شده به صورت رشته متنی</returns>
+        public async Task<string> GetDateDisplayAsync(DateTime date)
+        {
+            string dateDisplay = date.ToShortDateString(false);
+            var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
+            if (systemConfig.DefaultCalendar == 0)
+            {
+                dateDisplay = JalaliDateTime
+                    .FromDateTime(date)
+                    .ToShortDateString();
+            }
+
+            return dateDisplay;
         }
 
         /// <summary>

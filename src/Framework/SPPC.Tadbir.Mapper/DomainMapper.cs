@@ -492,6 +492,8 @@ namespace SPPC.Tadbir.Mapper
                 .ConvertUsing(MapConfigType<ListFormViewConfig>);
             mapperConfig.CreateMap<Setting, EntityRowAccessConfig>()
                 .ConvertUsing(MapConfigType<EntityRowAccessConfig>);
+            mapperConfig.CreateMap<Setting, SystemConfig>()
+                .ConvertUsing(MapConfigType<SystemConfig>);
             mapperConfig.CreateMap<Column, ColumnViewConfig>()
                 .ConvertUsing(prop => GetDynamicColumnSettings(prop));
             mapperConfig.CreateMap<UserSetting, ListFormViewConfig>()

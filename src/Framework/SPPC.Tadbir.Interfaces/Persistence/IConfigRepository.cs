@@ -19,6 +19,13 @@ namespace SPPC.Tadbir.Persistence
         void GetCurrentFiscalDateRange(out DateTime start, out DateTime end);
 
         /// <summary>
+        /// به روش آسنکرون، تاریخ داده شده را با توجه به تنظیمات تقویم پیش فرض به صورت رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="date">تاریخ مورد نظر برای نمایش متنی</param>
+        /// <returns>تاریخ داده شده به صورت رشته متنی</returns>
+        Task<string> GetDateDisplayAsync(DateTime date);
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات کاربری موجود برای جستجوی سریع در یکی از فرم های لیستی را
         /// برای کاربر مشخص شده خوانده و برمی گرداند
         /// </summary>

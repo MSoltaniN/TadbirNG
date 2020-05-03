@@ -537,10 +537,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(Voucher entity)
         {
+            string dateValue = Config.GetDateDisplayAsync(entity.Date).Result;
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
-                    AppStrings.No, entity.No, AppStrings.Date, entity.Date,
+                    AppStrings.No, entity.No, AppStrings.Date, dateValue,
                     AppStrings.Description, entity.Description, AppStrings.Reference, entity.Reference,
                     AppStrings.Association, entity.Association)
                 : null;
@@ -560,6 +561,11 @@ namespace SPPC.Tadbir.Persistence
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
         }
 
         private async Task<DateTime> GetLastVoucherDateAsync()
