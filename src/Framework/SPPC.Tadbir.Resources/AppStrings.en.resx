@@ -3096,4 +3096,16 @@
   <data name="BalanceByOneProject" xml:space="preserve">
     <value>By selected project</value>
   </data>
+  <data name="BooleanNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="BooleanYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Gregorian" xml:space="preserve">
+    <value>Gregorian</value>
+  </data>
+  <data name="Persian" xml:space="preserve">
+    <value>Persian</value>
+  </data>
 </root>

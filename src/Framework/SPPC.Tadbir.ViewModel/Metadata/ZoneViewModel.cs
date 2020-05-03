@@ -5,7 +5,7 @@ using System.Text;
 namespace SPPC.Tadbir.ViewModel.Metadata
 {
     /// <summary>
-    /// اطلاعات استان و شهرها موجود در فایل اکسس 
+    /// اطلاعات استان و شهرها موجود در فایل اکسس
     /// </summary>
     public class ZoneViewModel
     {

@@ -14,6 +14,7 @@ using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -290,13 +291,13 @@ namespace SPPC.Tadbir.Persistence
         private static string GetCalendarName(int calendar)
         {
             return (calendar == 1)
-                ? "Gregorian"
-                : "Persian";
+                ? AppStrings.Gregorian
+                : AppStrings.Persian;
         }
 
         private static string GetYesNo(bool value)
         {
-            return value ? "Yes" : "No";
+            return value ? AppStrings.BooleanYes : AppStrings.BooleanNo;
         }
 
         private async Task<bool> IsDefinedAccountAsync()
@@ -401,30 +402,34 @@ namespace SPPC.Tadbir.Persistence
             string description = String.Empty;
             if (oldConfig.DefaultCalendar != newConfig.DefaultCalendar)
             {
-                description = String.Format("Old Value : {0} , New Value : {1}",
-                    GetCalendarName(oldConfig.DefaultCalendar), GetCalendarName(newConfig.DefaultCalendar));
-                await OnSourceActionAsync(OperationId.CalendarChange, description);
+                description = String.Format("{0} : {1} , {2} : {3}",
+                    AppStrings.Old, GetCalendarName(oldConfig.DefaultCalendar),
+                    AppStrings.New, GetCalendarName(newConfig.DefaultCalendar));
+                await OnSourceActionAsync(OperationId.CalendarChange, Context.Localize(description));
             }
 
             if (oldConfig.DefaultCurrencyNameKey != newConfig.DefaultCurrencyNameKey)
             {
-                description = String.Format("Old Value : {0} , New Value : {1}",
-                    oldConfig.DefaultCurrencyNameKey, newConfig.DefaultCurrencyNameKey);
-                await OnSourceActionAsync(OperationId.CurrencyChange);
+                description = String.Format("{0} : {1} , {2} : {3}",
+                    AppStrings.Old, oldConfig.DefaultCurrencyNameKey,
+                    AppStrings.New, newConfig.DefaultCurrencyNameKey);
+                await OnSourceActionAsync(OperationId.CurrencyChange, Context.Localize(description));
             }
 
             if (oldConfig.DefaultDecimalCount != newConfig.DefaultDecimalCount)
             {
-                description = String.Format("Old Value : {0} , New Value : {1}",
-                    oldConfig.DefaultDecimalCount, newConfig.DefaultDecimalCount);
-                await OnSourceActionAsync(OperationId.DecimalCountChange);
+                description = String.Format("{0} : {1} , {2} : {3}",
+                    AppStrings.Old, oldConfig.DefaultDecimalCount,
+                    AppStrings.New, newConfig.DefaultDecimalCount);
+                await OnSourceActionAsync(OperationId.DecimalCountChange, Context.Localize(description));
             }
 
             if (oldConfig.UsesDefaultCoding != newConfig.UsesDefaultCoding)
             {
-                description = String.Format("Old Value : {0} , New Value : {1}",
-                    GetYesNo(oldConfig.UsesDefaultCoding), GetYesNo(newConfig.UsesDefaultCoding));
-                await OnSourceActionAsync(OperationId.DefaultCodingChange);
+                description = String.Format("{0} : {1} , {2} : {3}",
+                    AppStrings.Old, GetYesNo(oldConfig.UsesDefaultCoding),
+                    AppStrings.New, GetYesNo(newConfig.UsesDefaultCoding));
+                await OnSourceActionAsync(OperationId.DefaultCodingChange, Context.Localize(description));
             }
         }
 
