@@ -1,4 +1,4 @@
-<kendo-grid-string-filter-cell *ngIf="isString" [column]="column" [filter]="filter">
+<kendo-grid-string-filter-cell *ngIf="isString && allowFiltering" [column]="column" [filter]="filter">
     <kendo-filter-eq-operator></kendo-filter-eq-operator>
     <kendo-filter-neq-operator></kendo-filter-neq-operator>
     <kendo-filter-contains-operator></kendo-filter-contains-operator>
@@ -6,7 +6,7 @@
     <kendo-filter-startswith-operator></kendo-filter-startswith-operator>
     <kendo-filter-endswith-operator></kendo-filter-endswith-operator>
 </kendo-grid-string-filter-cell>
-<kendo-grid-numeric-filter-cell *ngIf="isNumber" [spinners]="false" [format]="'0'" [column]="column" [filter]="filter">
+<kendo-grid-numeric-filter-cell *ngIf="isNumber && allowFiltering" [spinners]="false" [format]="'0'" [column]="column" [filter]="filter">
     <kendo-filter-eq-operator></kendo-filter-eq-operator>
     <kendo-filter-neq-operator></kendo-filter-neq-operator>
     <kendo-filter-lt-operator></kendo-filter-lt-operator>
@@ -14,7 +14,7 @@
     <kendo-filter-gt-operator></kendo-filter-gt-operator>
     <kendo-filter-gte-operator></kendo-filter-gte-operator>
 </kendo-grid-numeric-filter-cell>
-<kendo-grid-string-filter-cell *ngIf="isDate" FilterDatePickerDirective="day" [column]="column" [filter]="filter" operator="equal">
+<kendo-grid-string-filter-cell *ngIf="isDate && allowFiltering" FilterDatePickerDirective="day" [column]="column" [filter]="filter" operator="equal">
     <kendo-filter-eq-operator></kendo-filter-eq-operator>
     <kendo-filter-neq-operator></kendo-filter-neq-operator>
     <kendo-filter-lt-operator></kendo-filter-lt-operator>
@@ -22,7 +22,7 @@
     <kendo-filter-gt-operator></kendo-filter-gt-operator>
     <kendo-filter-gte-operator></kendo-filter-gte-operator>
 </kendo-grid-string-filter-cell>
-<kendo-grid-string-filter-cell *ngIf="isDateTime" FilterDatePickerDirective="daytime" [column]="column" [filter]="filter" operator="equal">
+<kendo-grid-string-filter-cell *ngIf="isDateTime && allowFiltering" FilterDatePickerDirective="daytime" [column]="column" [filter]="filter" operator="equal">
     <kendo-filter-eq-operator></kendo-filter-eq-operator>
     <kendo-filter-neq-operator></kendo-filter-neq-operator>
     <kendo-filter-lt-operator></kendo-filter-lt-operator>

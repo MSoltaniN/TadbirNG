@@ -15,6 +15,8 @@ export class SppcAutoGridFilter {
   @Input() public isString: boolean = false;
   @Input() public isDate: boolean = false;
   @Input() public isDateTime: boolean = false;
+  @Input() public allowFiltering: boolean = true;
+  @Input() public metaDataItem: any;  
 
   @Input('metaData')
   public set metaData(value: string | undefined) {
@@ -39,11 +41,16 @@ export class SppcAutoGridFilter {
   }
 
   constructor(@Host() private hostColumn: ColumnComponent) {
-   
+    
+  }
+
+  ngOnInit() {
+    if (this.metaDataItem)
+      this.allowFiltering = this.metaDataItem.allowFiltering;
   }
 
  
-  ngAfterViewInit() {
+  ngAfterViewInit() {   
 
     var self = this.hostColumn;
 

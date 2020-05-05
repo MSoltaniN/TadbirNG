@@ -83,7 +83,7 @@
     <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumns" sppc-auto-grid-column="{{ item.settings }}">
 
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-        <sppc-auto-grid-filter [metaData]="item.scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
+        <sppc-auto-grid-filter [metaDataItem]="item" [metaData]="item.scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'Date'">

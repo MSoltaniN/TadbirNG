@@ -31,7 +31,7 @@ export class SppcAutoGridColumn extends EnviromentComponent {
     setting = JSON.parse(this.value);
     var size = this.screenSize;
     let screenSetting: ColumnViewDeviceConfig = setting[size];
-
+    
     this.hostColumn.resizable = true;
     this.hostColumn.sortable = true;
     this.hostColumn.width = screenSetting.width;
