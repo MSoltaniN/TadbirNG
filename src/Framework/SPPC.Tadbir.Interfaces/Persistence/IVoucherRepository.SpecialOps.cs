@@ -18,5 +18,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>اطلاعات نمایشی سند اختتامیه در دوره مالی جاری</returns>
         Task<VoucherViewModel> GetClosingVoucherAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، سند بستن حساب های موقت مربوط به دوره مالی جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی سند بستن حساب های موقت در دوره مالی جاری</returns>
+        Task<VoucherViewModel> GetClosingTempAccountsVoucherAsync();
     }
 }

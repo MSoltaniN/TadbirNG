@@ -39,6 +39,41 @@ namespace SPPC.Tadbir.Domain
         OwnerEquities = 5,
 
         /// <summary>
+        /// مجموعه حساب فروش - سود و زیان
+        /// </summary>
+        FinalSales = 9,
+
+        /// <summary>
+        /// مجموعه حساب برگشت از فروش و تخفیفات
+        /// </summary>
+        SalesRefundDiscount = 10,
+
+        /// <summary>
+        /// مجموعه حساب قیمت تمام شده کالای فروش رفته
+        /// </summary>
+        SoldProductCost = 11,
+
+        /// <summary>
+        /// مجموعه حساب خرید - سود و زیان
+        /// </summary>
+        FinalPurchase = 12,
+
+        /// <summary>
+        /// مجموعه حساب برگشت از خرید و تخفیفات
+        /// </summary>
+        PurchaseRefundDiscount = 13,
+
+        /// <summary>
+        /// مجموعه حساب هزینه های عملیاتی
+        /// </summary>
+        OperationalCosts = 14,
+
+        /// <summary>
+        /// مجموعه حساب سایر هزینه ها و درآمدها
+        /// </summary>
+        OtherCostRevenue = 15,
+
+        /// <summary>
         /// مجموعه حساب صندوق
         /// </summary>
         Cashier = 16,
@@ -64,6 +99,11 @@ namespace SPPC.Tadbir.Domain
         SalesDiscount = 33,
 
         /// <summary>
+        /// مجموعه حساب قیمت تمام شده
+        /// </summary>
+        CalculatedCost = 35,
+
+        /// <summary>
         /// مجموعه حساب افتتاحیه
         /// </summary>
         OpeningAccount = 41,
@@ -71,6 +111,26 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب اختتامیه
         /// </summary>
-        ClosingAccount = 42
+        ClosingAccount = 42,
+
+        /// <summary>
+        /// مجموعه حساب عملکرد
+        /// </summary>
+        Performance = 43,
+
+        /// <summary>
+        /// مجموعه حساب سود و زیان سال جاری
+        /// </summary>
+        CurrentProfitLoss = 44,
+
+        /// <summary>
+        /// مجموعه حساب سود و زیان انباشته
+        /// </summary>
+        AccumulatedProfitLoss = 45,
+
+        /// <summary>
+        /// مجموعه حساب موجودی کالا
+        /// </summary>
+        ProductInventory = 46
     }
 }

@@ -3108,4 +3108,28 @@
   <data name="Persian" xml:space="preserve">
     <value>Persian</value>
   </data>
+  <data name="ClosingCalculatedCostAccounts" xml:space="preserve">
+    <value>Closing calculated cost accounts</value>
+  </data>
+  <data name="ClosingOperationalCostAccounts" xml:space="preserve">
+    <value>Closing operational costs accounts</value>
+  </data>
+  <data name="ClosingOtherCostRevenueAccounts" xml:space="preserve">
+    <value>Closing other cost-revenue accounts</value>
+  </data>
+  <data name="ClosingPerformanceToProfitLoss" xml:space="preserve">
+    <value>Closing performance account to profit-loss account</value>
+  </data>
+  <data name="ClosingProfitLossToAccumulated" xml:space="preserve">
+    <value>Closing profit-loss account to accumulated profit-loss account</value>
+  </data>
+  <data name="ClosingSalesAccounts" xml:space="preserve">
+    <value>Closing sales accounts</value>
+  </data>
+  <data name="ClosingSalesReducerAccounts" xml:space="preserve">
+    <value>Closing sales reducer accounts</value>
+  </data>
+  <data name="IssueClosingTempAccountsVoucher" xml:space="preserve">
+    <value>Issue closing temp accounts voucher</value>
+  </data>
 </root>

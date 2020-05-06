@@ -3099,4 +3099,28 @@
   <data name="Persian" xml:space="preserve">
     <value>شمسی</value>
   </data>
+  <data name="ClosingCalculatedCostAccounts" xml:space="preserve">
+    <value>بستن حساب های قیمت تمام شده</value>
+  </data>
+  <data name="ClosingOperationalCostAccounts" xml:space="preserve">
+    <value>بستن حساب های هزینه های عملیاتی</value>
+  </data>
+  <data name="ClosingOtherCostRevenueAccounts" xml:space="preserve">
+    <value>بستن حساب های سایر هزینه ها و درآمدها</value>
+  </data>
+  <data name="ClosingPerformanceToProfitLoss" xml:space="preserve">
+    <value>بستن حساب عملکرد به حساب سود و زیان</value>
+  </data>
+  <data name="ClosingProfitLossToAccumulated" xml:space="preserve">
+    <value>بستن حساب سود و زیان به حساب سود و زیان انباشته</value>
+  </data>
+  <data name="ClosingSalesAccounts" xml:space="preserve">
+    <value>بستن حساب های فروش</value>
+  </data>
+  <data name="ClosingSalesReducerAccounts" xml:space="preserve">
+    <value>بستن حساب های کاهنده فروش</value>
+  </data>
+  <data name="IssueClosingTempAccountsVoucher" xml:space="preserve">
+    <value>صدور سند بستن حساب های موقت</value>
+  </data>
 </root>
