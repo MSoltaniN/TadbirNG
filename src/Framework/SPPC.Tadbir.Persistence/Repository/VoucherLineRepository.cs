@@ -276,17 +276,17 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد آرتیکل ها</returns>
-        public async Task<PagedList<VoucherLineDetailViewModel>> GetSystemIssueArticlesAsync(
-            GridOptions gridOptions, string issueType, DateTime from, DateTime to)
+        public async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetSystemIssueArticlesAsync(GridOptions gridOptions, string issueType, DateTime from, DateTime to)
         {
-            PagedList<VoucherLineDetailViewModel> result;
+            (IList<VoucherLineDetailViewModel>, int) result;
+
             switch (issueType)
             {
                 case "miss-acc":
                     {
                         var lines = GetArticlesAsync(from, to);
                         lines = GetArticlesWithMissingAccount(lines);
-                        result = await GetPagedListAsync(gridOptions, lines);
+                        result = await GetListAndCountAsync(gridOptions, lines);
                         break;
                     }
 
@@ -294,7 +294,7 @@ namespace SPPC.Tadbir.Persistence
                     {
                         var lines = GetArticlesAsync(from, to);
                         lines = GetArticleHavingZeroAmount(lines);
-                        result = await GetPagedListAsync(gridOptions, lines);
+                        result = await GetListAndCountAsync(gridOptions, lines);
                         break;
                     }
 
@@ -315,14 +315,14 @@ namespace SPPC.Tadbir.Persistence
                 case "invalid-acc-turnover":
                     {
                         var lines = GetArticleWithInvalidTurnover(from, to);
-                        result = await GetPagedListAsync(gridOptions, lines);
+                        result = await GetListAndCountAsync(gridOptions, lines);
                         break;
                     }
 
                 default:
                     {
-                        result = new PagedList<VoucherLineDetailViewModel>(
-                            new List<VoucherLineDetailViewModel>());
+                        result = new ValueTuple<IList<VoucherLineDetailViewModel>, int>(
+                            new List<VoucherLineDetailViewModel>(), 0);
                         break;
                     }
             }
@@ -412,7 +412,7 @@ namespace SPPC.Tadbir.Persistence
             return lines;
         }
 
-        private async Task<PagedList<VoucherLineDetailViewModel>> GetArticleWithInvalidBalance(
+        private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetArticleWithInvalidBalance(
             GridOptions gridOptions, DateTime to)
         {
             List<VoucherLine> result = new List<VoucherLine>();
@@ -455,7 +455,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var voucherLines = result.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
-            return new PagedList<VoucherLineDetailViewModel>(voucherLines, gridOptions);
+            voucherLines = voucherLines
+                .ApplyPaging(gridOptions);
+
+            return (voucherLines.ToList(), result.Count());
         }
 
         private IQueryable<VoucherLine> GetArticlesAsync(DateTime from, DateTime to)
@@ -486,6 +489,40 @@ namespace SPPC.Tadbir.Persistence
             return lineList;
         }
 
+        private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetListAndCountAsync(
+            GridOptions gridOptions, IQueryable<VoucherLine> lines)
+        {
+            var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
+
+            var filteredList = voucherLines
+                .Apply(gridOptions, false);
+
+            var vouchersList = await filteredList
+                .OrderBy(line => line.VoucherDate.Date)
+                .ThenBy(line => line.VoucherNo)
+                .ApplyPaging(gridOptions)
+                .ToListAsync();
+
+            return (vouchersList, await filteredList.CountAsync());
+        }
+
+        private ValueTuple<IList<VoucherLineDetailViewModel>, int> GetListAndCount(
+            GridOptions gridOptions, IEnumerable<VoucherLine> lines)
+        {
+            var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
+
+            var filteredList = voucherLines
+               .Apply(gridOptions, false);
+
+            var vouchersList = filteredList
+                .OrderBy(line => line.VoucherDate.Date)
+                .ThenBy(line => line.VoucherNo)
+                .ApplyPaging(gridOptions)
+                .ToList();
+
+            return (vouchersList, filteredList.Count());
+        }
+
         private async Task<PagedList<VoucherLineDetailViewModel>> GetPagedListAsync(
             GridOptions gridOptions, IQueryable<VoucherLine> lines)
         {
@@ -494,18 +531,6 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(line => line.VoucherDate.Date)
                 .ThenBy(line => line.VoucherNo)
                 .ToListAsync();
-
-            return new PagedList<VoucherLineDetailViewModel>(voucherLines, gridOptions);
-        }
-
-        private PagedList<VoucherLineDetailViewModel> GetListAndCount(
-            GridOptions gridOptions, IEnumerable<VoucherLine> lines)
-        {
-            var voucherLines = lines
-                .Select(item => Mapper.Map<VoucherLineDetailViewModel>(item))
-                .OrderBy(line => line.VoucherDate.Date)
-                .ThenBy(line => line.VoucherNo)
-                .ToList();
 
             return new PagedList<VoucherLineDetailViewModel>(voucherLines, gridOptions);
         }

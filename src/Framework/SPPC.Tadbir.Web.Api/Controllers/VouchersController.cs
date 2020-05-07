@@ -138,9 +138,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVouchersWithNoArticleAsync(DateTime from, DateTime to)
         {
-            var vouchers = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
-            Localize(vouchers.Items);
-            return JsonListResult(vouchers);
+            var (vouchers, itemCount) = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
+            SetItemCount(itemCount);
+            Localize(vouchers.ToArray());
+            SetRowNumbers(vouchers);
+            return Json(vouchers);
         }
 
         // GET: api/vouchers/unbalanced
@@ -148,9 +150,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
         {
-            var vouchers = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
-            Localize(vouchers.Items);
-            return JsonListResult(vouchers);
+            var (vouchers, itemCount) = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
+            SetItemCount(itemCount);
+            Localize(vouchers.ToArray());
+            SetRowNumbers(vouchers);
+            return Json(vouchers);
         }
 
         // GET: api/vouchers/miss-number
@@ -472,14 +476,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetSystemIssueArticlesAsync(string issueType, DateTime from, DateTime to)
         {
-            var articles = await _lineRepository.GetSystemIssueArticlesAsync(GridOptions, issueType, from, to);
-            SetItemCount(articles.TotalCount);
+            var (articles, itemCount) = await _lineRepository.GetSystemIssueArticlesAsync(GridOptions, issueType, from, to);
+            SetItemCount(itemCount);
             if (issueType != "invalid-acc")
             {
-                SetRowNumbers(articles.Items);
+                SetRowNumbers(articles);
             }
 
-            return Json(articles.Items);
+            return Json(articles);
         }
 
         // POST: api/vouchers/{voucherId:min(1)}/articles

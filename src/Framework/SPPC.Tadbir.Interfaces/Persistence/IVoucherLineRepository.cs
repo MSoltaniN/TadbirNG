@@ -108,7 +108,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد آرتیکل ها</returns>
-        Task<PagedList<VoucherLineDetailViewModel>> GetSystemIssueArticlesAsync(
+        Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetSystemIssueArticlesAsync(
             GridOptions gridOptions, string issueType, DateTime from, DateTime to);
     }
 }

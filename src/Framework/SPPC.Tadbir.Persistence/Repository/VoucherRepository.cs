@@ -432,7 +432,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
-        public async Task<PagedList<VoucherViewModel>> GetVouchersWithNoArticleAsync(
+        public async Task<ValueTuple<IList<VoucherViewModel>, int>> GetVouchersWithNoArticleAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
             var vouchers = Repository.GetAllOperationQuery<Voucher>(
@@ -440,7 +440,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(voucher => voucher.Lines.Count == 0 && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
-            return await GetPagedListAsync(gridOptions, vouchers);
+            return await GetListAndCountAsync(gridOptions, vouchers);
         }
 
         /// <summary>
@@ -450,7 +450,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد نا تراز</returns>
-        public async Task<PagedList<VoucherViewModel>> GetUnbalancedVouchersAsync(
+        public async Task<ValueTuple<IList<VoucherViewModel>, int>> GetUnbalancedVouchersAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
             var vouchers = Repository.GetAllOperationQuery<Voucher>(
@@ -458,7 +458,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(voucher => !voucher.IsBalanced && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
-            return await GetPagedListAsync(gridOptions, vouchers);
+            return await GetListAndCountAsync(gridOptions, vouchers);
         }
 
         /// <summary>
@@ -545,6 +545,21 @@ namespace SPPC.Tadbir.Persistence
                     AppStrings.Description, entity.Description, AppStrings.Reference, entity.Reference,
                     AppStrings.Association, entity.Association)
                 : null;
+        }
+
+        private static async Task<ValueTuple<IList<VoucherViewModel>, int>> GetListAndCountAsync(
+            GridOptions gridOptions, IQueryable<VoucherViewModel> vouchers)
+        {
+            var filteredList = vouchers
+                .Apply(gridOptions, false);
+
+            var vouchersList = await filteredList
+                .OrderBy(voucher => voucher.Date.Date)
+                .ThenBy(voucher => voucher.No)
+                .ApplyPaging(gridOptions)
+                .ToListAsync();
+
+            return (vouchersList, await filteredList.CountAsync());
         }
 
         private static async Task<PagedList<VoucherViewModel>> GetPagedListAsync(
