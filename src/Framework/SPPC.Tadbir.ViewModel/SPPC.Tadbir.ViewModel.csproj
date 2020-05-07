@@ -27,17 +27,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Inventory\**" />
     <Compile Remove="Procurement\**" />
     <Compile Remove="Sales\**" />
     <Compile Remove="UI\**" />
     <Compile Remove="Warehousing\**" />
-    <EmbeddedResource Remove="Inventory\**" />
     <EmbeddedResource Remove="Procurement\**" />
     <EmbeddedResource Remove="Sales\**" />
     <EmbeddedResource Remove="UI\**" />
     <EmbeddedResource Remove="Warehousing\**" />
-    <None Remove="Inventory\**" />
     <None Remove="Procurement\**" />
     <None Remove="Sales\**" />
     <None Remove="UI\**" />

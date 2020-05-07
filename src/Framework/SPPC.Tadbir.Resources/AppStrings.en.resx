@@ -3132,4 +3132,13 @@
   <data name="IssueClosingTempAccountsVoucher" xml:space="preserve">
     <value>Issue closing temp accounts voucher</value>
   </data>
+  <data name="ClosingPurchaseAccounts" xml:space="preserve">
+    <value>Closing purchase accounts</value>
+  </data>
+  <data name="ClosingPurchaseReducerAccounts" xml:space="preserve">
+    <value>Closing purchase reducer accounts</value>
+  </data>
+  <data name="RegisterEndProductInventory" xml:space="preserve">
+    <value>Registering product inventory balance</value>
+  </data>
 </root>

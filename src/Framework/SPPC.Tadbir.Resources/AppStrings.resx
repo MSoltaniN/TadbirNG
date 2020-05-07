@@ -3123,4 +3123,13 @@
   <data name="IssueClosingTempAccountsVoucher" xml:space="preserve">
     <value>صدور سند بستن حساب های موقت</value>
   </data>
+  <data name="ClosingPurchaseAccounts" xml:space="preserve">
+    <value>بستن حساب های خرید</value>
+  </data>
+  <data name="ClosingPurchaseReducerAccounts" xml:space="preserve">
+    <value>بستن حساب های کاهنده خرید</value>
+  </data>
+  <data name="RegisterEndProductInventory" xml:space="preserve">
+    <value>ثبت موجودی کالای پایان دوره</value>
+  </data>
 </root>

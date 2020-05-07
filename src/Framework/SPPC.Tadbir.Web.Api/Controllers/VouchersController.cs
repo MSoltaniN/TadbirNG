@@ -406,6 +406,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(closingAccountsVoucher);
         }
 
+        // PUT: api/vouchers/closing-tmp
+        [Route(VoucherApi.ClosingAccountsVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync()
+        {
+            // TODO: Perform required validation
+            var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync();
+            return Json(closingAccountsVoucher);
+        }
+
         // GET: api/vouchers/closing
         [Route(VoucherApi.ClosingVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
