@@ -3200,3 +3200,6 @@ Update Metadata.Command set RouteUrl = '/finance/vouchers/closing-voucher' Where
 UPDATE [Config].[SysLogSetting]
 SET IsEnabled = 1
 
+--1.1.884
+Update MetaData.[Column] set AllowFiltering = 0 where ViewId in (13,59,60,61) And [Name] = 'RowNo'
+

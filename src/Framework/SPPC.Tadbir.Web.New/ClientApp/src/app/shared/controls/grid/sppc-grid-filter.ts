@@ -17,6 +17,10 @@ export class SppcGridFilter {
     @Input() public isDate: boolean = false;
     @Input() public isDateTime: boolean = false;
 
+    @Input() public allowFiltering: boolean = true;
+    @Input() public metaDataItem: any;
+
+
     @Input('metaData')
     public set metaData(value: Property | undefined) {
         if (value == undefined) return;
@@ -37,5 +41,10 @@ export class SppcGridFilter {
                 break;
         }
 
-    }
+  }
+
+  ngOnInit() {
+    if (this.metaDataItem)
+      this.allowFiltering = this.metaDataItem.allowFiltering;
+  }
 }
