@@ -169,7 +169,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
-        Task<PagedList<VoucherViewModel>> GetVouchersWithNoArticleAsync(
+        Task<ValueTuple<IList<VoucherViewModel>, int>> GetVouchersWithNoArticleAsync(
             GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
         /// <returns>لیست و تعداد اسناد نا تراز</returns>
-        Task<PagedList<VoucherViewModel>> GetUnbalancedVouchersAsync(
+        Task<ValueTuple<IList<VoucherViewModel>, int>> GetUnbalancedVouchersAsync(
             GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>
