@@ -138,7 +138,6 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
   }
 
   saveHandler(model: any, isNew: boolean) {
-    debugger;
     this.grid.loading = true;
     if (!isNew) {
       this.service.edit<AccountFullData>(String.Format(this.modelUrl, model.account.id), model)

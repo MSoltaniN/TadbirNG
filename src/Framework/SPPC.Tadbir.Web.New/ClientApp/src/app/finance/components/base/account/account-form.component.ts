@@ -134,12 +134,12 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   ]
 
   accountForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    groupId: new FormControl(''),
-    code: new FormControl(''),
-    fullCode: new FormControl(''),
-    description: new FormControl(''),
-    branchScope: new FormControl(''),
+    name: new FormControl('', [Validators.required, Validators.maxLength(512)]),
+    groupId: new FormControl('', Validators.required),
+    code: new FormControl('', [Validators.required, Validators.maxLength(16)]),
+    fullCode: new FormControl('', [Validators.required, Validators.maxLength(256)]),
+    description: new FormControl('', Validators.maxLength(256)),
+    branchScope: new FormControl('', Validators.required),
   })
   featuresForm = new FormGroup({
     currencyId: new FormControl(''),
@@ -150,22 +150,34 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   customerTaxForm = new FormGroup({
     id: new FormControl(),
     accountId: new FormControl(),
-    customerFirstName: new FormControl(''),
-    customerName: new FormControl(''),
-    personType: new FormControl(''),
-    buyerType: new FormControl(''),
-    economicCode: new FormControl(''),
-    address: new FormControl(''),
-    nationalCode: new FormControl(''),
-    perCityCode: new FormControl(''),
-    phoneNo: new FormControl(''),
-    mobileNo: new FormControl(''),
-    postalCode: new FormControl(''),
-    provinceCode: new FormControl(''),
-    cityCode: new FormControl(''),
-    description: new FormControl(''),
+    customerFirstName: new FormControl('', Validators.maxLength(64)),
+    customerName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
+    personType: new FormControl('', Validators.required),
+    buyerType: new FormControl('', Validators.required),
+    economicCode: new FormControl('', Validators.maxLength(12)),
+    address: new FormControl('', [Validators.required, Validators.maxLength(256)]),
+    nationalCode: new FormControl('', [Validators.required, Validators.maxLength(11)]),
+    perCityCode: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    phoneNo: new FormControl('', [Validators.required, Validators.maxLength(64)]),
+    mobileNo: new FormControl('', [Validators.required, Validators.maxLength(64)]),
+    postalCode: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    provinceCode: new FormControl('', [Validators.required, Validators.maxLength(4)]),
+    cityCode: new FormControl('', [Validators.required, Validators.maxLength(16)]),
+    description: new FormControl('', Validators.maxLength(1024)),
   })
-  ownerForm: FormGroup;
+  ownerForm = new FormGroup({
+    id: new FormControl(),
+    accountId: new FormControl(),
+    bankName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
+    accountType: new FormControl('', Validators.required),
+    bankBranchName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
+    branchIndex: new FormControl('', [Validators.required, Validators.maxLength(64)]),
+    accountNumber: new FormControl('', [Validators.required, Validators.maxLength(32)]),
+    cardNumber: new FormControl('', Validators.maxLength(32)),
+    shabaNumber: new FormControl('', Validators.maxLength(32)),
+    description: new FormControl('', Validators.maxLength(512)),
+    accountHolders: this.formBuilder.array([])
+  })
   accountHolders: FormArray;
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
@@ -175,21 +187,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-    this.ownerForm = this.formBuilder.group({
-      id: new FormControl(),
-      accountId: new FormControl(),
-      bankName: new FormControl(''),
-      accountType: new FormControl(''),
-      bankBranchName: new FormControl(''),
-      branchIndex: new FormControl(''),
-      accountNumber: new FormControl(''),
-      cardNumber: new FormControl(''),
-      shabaNumber: new FormControl(''),
-      description: new FormControl(''),
-      accountHolders: this.formBuilder.array([])
-    })
-
     if (this.model) {
       this.accountModel = this.model.account;
       this.customerTaxModel = this.model.customerTaxInfo;
@@ -211,7 +208,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
     this.viewId = ViewName.Account;
 
-    ////this.editForm.reset();
     this.getAccountGroups();
     this.getBranchName();
     this.getCurrencies();
@@ -277,6 +273,20 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
         this.initialAccountHolderData();
       }
     }
+
+    this.onChangeForm();
+  }
+
+  isChangeFormValue: boolean = false;
+
+  onChangeForm() {
+    this.customerTaxForm.valueChanges.subscribe(val => {
+      this.isChangeFormValue = true;
+    })
+
+    this.ownerForm.valueChanges.subscribe(val => {
+      this.isChangeFormValue = true;
+    })
   }
 
   initialAccountHolderData() {
@@ -368,11 +378,11 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.accountHolders = this.ownerForm.get('accountHolders') as FormArray;
 
     let newItem: FormGroup = this.formBuilder.group({
-      id: dataItem ? dataItem.id : 0,
-      accountOwnerId: this.accountOwnerModel ? this.accountOwnerModel.id : 0,
-      firstName: dataItem ? dataItem.firstName : '',
-      lastName: dataItem ? dataItem.lastName : '',
-      hasSignature: dataItem ? dataItem.hasSignature : true
+      id: [dataItem ? dataItem.id : 0, [Validators.required]],
+      accountOwnerId: [this.accountOwnerModel ? this.accountOwnerModel.id : 0, [Validators.required]],
+      firstName: [dataItem ? dataItem.firstName : '', [Validators.required, Validators.maxLength(64)]],
+      lastName: [dataItem ? dataItem.lastName : '', [Validators.required, Validators.maxLength(64)]],
+      hasSignature: [dataItem ? dataItem.hasSignature : true, [Validators.required]]
     });
 
     this.accountHolders.push(newItem);
@@ -399,12 +409,9 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.accountModel.isActive = featureValue.isActive;
     this.accountModel.isCurrencyAdjustable = featureValue.isCurrencyAdjustable;
 
-
-    //if (this.editForm.valid) {
     if (this.accountModel.id > 0) {
       if (this.accountModel.level > 0)
         this.accountModel.groupId = undefined;
-      //this.save.emit(model);
     }
     else {
       this.accountModel.branchId = this.BranchId;
@@ -414,9 +421,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       this.accountModel.level = this.level;
       if (this.accountModel.level > 0)
         this.accountModel.groupId = undefined;
-      //this.save.emit(model);
     }
-    //}
 
     var resultModel = new AccountFullDataInfo();
 
@@ -424,7 +429,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     resultModel.customerTaxInfo = null;
     resultModel.accountOwner = null;
 
-    if (!this.isNew && this.customerTaxModel) {
+    if (!this.isNew && this.customerTaxModel && this.customerTaxForm.valid) {
       var customerTaxInfo = this.customerTaxForm.value;
       customerTaxInfo.id = this.customerTaxModel.id;
       customerTaxInfo.accountId = this.accountModel.id;
@@ -432,7 +437,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       resultModel.customerTaxInfo = customerTaxInfo;
     }
 
-    if (!this.isNew && this.accountOwnerModel) {
+    if (!this.isNew && this.accountOwnerModel && this.ownerForm.valid) {
       var accountOwner = this.ownerForm.value;
       accountOwner.id = this.accountOwnerModel.id;
       accountOwner.accountId = this.accountModel.id;
@@ -459,6 +464,40 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
   handleFilterCity(value: any) {
     this.filteredCities = this.citiesList.filter((s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+  }
+
+  isDisabledForm = () => {
+    if (this.accountForm.valid && this.featuresForm.valid) {
+      if (!this.isDisableCustomerTaxTab) {
+        if (!this.isChangeFormValue) {
+          return false;
+        }
+        else {
+          if (this.customerTaxForm.valid) {
+            return false;
+          }
+          else
+            return true;
+        }
+      }
+
+      if (!this.isDisableAccountOwnerTab) {
+        if (!this.isChangeFormValue) {
+          return false;
+        }
+        else {
+          if (this.ownerForm.valid) {
+            return false;
+          }
+          else
+            return true;
+        }
+      }
+
+      return false;
+    }
+    else
+      return true;
   }
 
   onFileChange(event: any) {

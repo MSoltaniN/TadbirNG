@@ -192,15 +192,14 @@
         </ng-template>
       </kendo-tabstrip-tab>
 
-
-      <kendo-tabstrip-tab [title]="'اطلاعات مالیاتی طرف حساب'" *ngIf="!isDisableCustomerTaxTab">
+      <kendo-tabstrip-tab [title]="getText('Account.CustomerTaxTitle')" *ngIf="!isDisableCustomerTaxTab">
         <ng-template kendoTabContent>
           <form novalidate [formGroup]="customerTaxForm" *ngIf="!uploadTab">
             <div>
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">نوع شخص</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.PersonType' | translate }}</label>
 
                     <kendo-dropdownlist class="ddl-acc"
                                         [data]="personTypes"
@@ -214,7 +213,7 @@
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">نوع خریدار</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.BuyerType' | translate }}</label>
 
                     <kendo-dropdownlist class="ddl-acc"
                                         [data]="buyerTypes"
@@ -231,23 +230,29 @@
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">نام</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.CustomerFirstName' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="customerFirstName"
                            [readonly]="customerTaxForm.value.personType == '2'" />
 
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.customerFirstName.valid || customerTaxForm.controls.customerFirstName.pristine">
+                      <span *ngIf="customerTaxForm.controls.customerFirstName.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.CustomerFirstNameIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
                     <label class="control-label">
-                      <spna *ngIf="customerTaxForm.value.personType == '1'">نام خانوادگی</spna>
-                      <span *ngIf="customerTaxForm.value.personType == '2'">نام شرکت</span>
+                      <spna *ngIf="customerTaxForm.value.personType == '1'">{{ 'Account.CustomerTaxInfo.CustomerName' | translate }}</spna>
+                      <span *ngIf="customerTaxForm.value.personType == '2'">{{ 'Account.CustomerTaxInfo.CustomerCompanyName' | translate }}</span>
                     </label>
 
                     <input type="text" class="k-textbox" formControlName="customerName" />
-
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.customerName.valid || customerTaxForm.controls.customerName.pristine">
+                      <span *ngIf="customerTaxForm.controls.customerName.errors?.required">{{ 'AllValidations.CustomerTaxInfo.CustomerNameIsRequired' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.customerName.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.CustomerNameIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -255,21 +260,29 @@
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">کد اقتصادی</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.EconomicCode' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="economicCode" />
 
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.economicCode.valid || customerTaxForm.controls.economicCode.pristine">
+                      <span *ngIf="customerTaxForm.controls.economicCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.EconomicCodeIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
                     <label class="control-label">
-                      <spna *ngIf="customerTaxForm.value.personType == '1'">کد ملی</spna>
-                      <span *ngIf="customerTaxForm.value.personType == '2'">شناسه ملی</span>
+                      <spna *ngIf="customerTaxForm.value.personType == '1'">{{ 'Account.CustomerTaxInfo.NationalCode' | translate }}</spna>
+                      <span *ngIf="customerTaxForm.value.personType == '2'">{{ 'Account.CustomerTaxInfo.NationalIndex' | translate }}</span>
                     </label>
 
                     <input type="text" class="k-textbox" formControlName="nationalCode" />
+
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.nationalCode.valid || customerTaxForm.controls.nationalCode.pristine">
+                      <span *ngIf="customerTaxForm.controls.nationalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.NationalCodeIsRequired' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.nationalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.NationalCodeIsTooLong' | translate }}</span>
+                    </div>
 
                   </div>
                 </div>
@@ -280,14 +293,25 @@
                   <div class="form-group">
 
                     <div class="col-xs-5 sppc-float" style="padding:0">
-                      <label class="control-label">پیش شماره تلفن</label>
+                      <label class="control-label">{{ 'Account.CustomerTaxInfo.AreaCode' | translate }}</label>
 
                       <input type="text" class="k-textbox" formControlName="perCityCode" />
+
+                      <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.perCityCode.valid || customerTaxForm.controls.perCityCode.pristine">
+                        <span *ngIf="customerTaxForm.controls.perCityCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PerCityCodeIsRequired' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.perCityCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.PerCityCodeIsTooLong' | translate }}</span>
+                      </div>
+
                     </div>
                     <div class="col-xs-7 sppc-float" style="padding-left:0">
-                      <label class="control-label">تلفن</label>
+                      <label class="control-label">{{ 'Account.CustomerTaxInfo.PhoneNo' | translate }}</label>
 
                       <input type="text" class="k-textbox" formControlName="phoneNo" />
+
+                      <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.phoneNo.valid || customerTaxForm.controls.phoneNo.pristine">
+                        <span *ngIf="customerTaxForm.controls.phoneNo.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PhoneNoIsRequired' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.phoneNo.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.PhoneNoIsTooLong' | translate }}</span>
+                      </div>
                     </div>
 
                   </div>
@@ -295,10 +319,14 @@
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">تلفن همراه</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.MobileNo' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="mobileNo" />
 
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.mobileNo.valid || customerTaxForm.controls.mobileNo.pristine">
+                      <span *ngIf="customerTaxForm.controls.mobileNo.errors?.required">{{ 'AllValidations.CustomerTaxInfo.MobileNoIsRequired' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.mobileNo.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.MobileNoIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -306,7 +334,7 @@
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">استان</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.ProvinceCode' | translate }}</label>
 
                     <kendo-dropdownlist class="ddl-acc"
                                         [data]="filteredProcinces"
@@ -318,13 +346,15 @@
                                         formControlName="provinceCode"
                                         (filterChange)="handleFilterProvince($event)">
                     </kendo-dropdownlist>
-
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.provinceCode.valid || customerTaxForm.controls.provinceCode.pristine">
+                      <span *ngIf="customerTaxForm.controls.provinceCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.ProvinceCodeIsRequired' | translate }}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">شهر</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.CityCode' | translate }}</label>
 
                     <kendo-dropdownlist class="ddl-acc"
                                         [data]="filteredCities"
@@ -335,7 +365,9 @@
                                         formControlName="cityCode"
                                         (filterChange)="handleFilterCity($event)">
                     </kendo-dropdownlist>
-
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.cityCode.valid || customerTaxForm.controls.cityCode.pristine">
+                      <span *ngIf="customerTaxForm.controls.cityCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.CityCodeIsRequired' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -343,19 +375,26 @@
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">کد پستی</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.PostalCode' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="postalCode" />
 
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.postalCode.valid || customerTaxForm.controls.postalCode.pristine">
+                      <span *ngIf="customerTaxForm.controls.postalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PostalCodeIsRequired' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.postalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.PostalCodeIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">آدرس</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.Address' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="address" />
-
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.address.valid || customerTaxForm.controls.address.pristine">
+                      <span *ngIf="customerTaxForm.controls.address.errors?.required">{{ 'AllValidations.CustomerTaxInfo.AddressIsRequired' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.address.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.AddressIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -363,10 +402,13 @@
               <div class="row">
                 <div class="col-xs-12">
                   <div class="form-group">
-                    <label class="control-label">توضیحات</label>
+                    <label class="control-label">{{ 'Account.CustomerTaxInfo.Description' | translate }}</label>
                     <textarea class="k-textbox"
                               formControlName="description">
                   </textarea>
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.description.valid || customerTaxForm.controls.description.pristine">
+                      <span *ngIf="customerTaxForm.controls.description.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.DescriptionIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -391,14 +433,14 @@
         </ng-template>
       </kendo-tabstrip-tab>
 
-      <kendo-tabstrip-tab [title]="'مشخصات بانکی'" *ngIf="!isDisableAccountOwnerTab">
+      <kendo-tabstrip-tab [title]="getText('Account.AccountOwnerTitle')" *ngIf="!isDisableAccountOwnerTab">
         <ng-template kendoTabContent>
           <form novalidate [formGroup]="ownerForm">
             <div>
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">نوع حساب</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.AccountType' | translate }}</label>
 
                     <kendo-dropdownlist class="ddl-acc"
                                         [data]="accountTypes"
@@ -413,10 +455,14 @@
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">نام بانک</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.BankName' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="bankName" />
 
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.bankName.valid || ownerForm.controls.bankName.pristine">
+                      <span *ngIf="ownerForm.controls.bankName.errors?.required">{{ 'AllValidations.AccountOwner.BankNameIsRequired' | translate }}</span>
+                      <span *ngIf="ownerForm.controls.bankName.errors?.maxlength">{{ 'AllValidations.AccountOwner.BankNameIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -424,19 +470,26 @@
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">نام شعبه</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.BankBranchName' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="bankBranchName" />
 
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.bankBranchName.valid || ownerForm.controls.bankBranchName.pristine">
+                      <span *ngIf="ownerForm.controls.bankBranchName.errors?.required">{{ 'AllValidations.AccountOwner.BankBranchNameIsRequired' | translate }}</span>
+                      <span *ngIf="ownerForm.controls.bankBranchName.errors?.maxlength">{{ 'AllValidations.AccountOwner.BankBranchNameIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">شاخص شعبه</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.BranchIndex' | translate }}شاخص شعبه</label>
 
                     <input type="text" class="k-textbox" formControlName="branchIndex" />
-
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.branchIndex.valid || ownerForm.controls.branchIndex.pristine">
+                      <span *ngIf="ownerForm.controls.branchIndex.errors?.required">{{ 'AllValidations.AccountOwner.BranchIndexIsRequired' | translate }}</span>
+                      <span *ngIf="ownerForm.controls.branchIndex.errors?.maxlength">{{ 'AllValidations.AccountOwner.BranchIndexIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -444,19 +497,25 @@
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">شماره حساب</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.AccountNumber' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="accountNumber" />
 
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.accountNumber.valid || ownerForm.controls.accountNumber.pristine">
+                      <span *ngIf="ownerForm.controls.accountNumber.errors?.required">{{ 'AllValidations.AccountOwner.AccountNumberIsRequired' | translate }}</span>
+                      <span *ngIf="ownerForm.controls.accountNumber.errors?.maxlength">{{ 'AllValidations.AccountOwner.AccountNumberIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">شماره کارت</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.CardNumber' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="cardNumber" />
-
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.cardNumber.valid || ownerForm.controls.cardNumber.pristine">
+                      <span *ngIf="ownerForm.controls.cardNumber.errors?.maxlength">{{ 'AllValidations.AccountOwner.CardNumberIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -465,10 +524,12 @@
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">شماره شبا</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.ShabaNumber' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="shabaNumber" />
-
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.shabaNumber.valid || ownerForm.controls.shabaNumber.pristine">
+                      <span *ngIf="ownerForm.controls.shabaNumber.errors?.maxlength">{{ 'AllValidations.AccountOwner.ShabaNumberIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -479,37 +540,45 @@
                     <div class="col-xs-12 col-sm-6 sppc-float">
                       <div class="form-group">
 
-                        <label class="control-label">نام صاحب حساب</label>
+                        <label class="control-label">{{ 'Account.AccountOwner.FirstName' | translate }}</label>
 
                         <input type="text" class="k-textbox" formControlName="firstName" />
 
+                        <div class="k-tooltip k-tooltip-validation" [hidden]="item.get('firstName').valid || item.get('firstName').pristine">
+                          <span *ngIf="item.get('firstName').hasError('required')">{{ 'AllValidations.AccountHolder.FirstNameIsRequired' | translate }}</span>
+                          <span *ngIf="item.get('firstName').hasError('maxlength')">{{ 'AllValidations.AccountHolder.FirstNameIsTooLong' | translate }}</span>
+                        </div>
                       </div>
                     </div>
 
                     <div class="col-xs-12 col-sm-4 sppc-float">
                       <div class="form-group">
 
-                        <label class="control-label">نام خانوادگی صاحب حساب</label>
+                        <label class="control-label">{{ 'Account.AccountOwner.LastName' | translate }}</label>
 
                         <input type="text" class="k-textbox" formControlName="lastName" />
 
+                        <div class="k-tooltip k-tooltip-validation" [hidden]="item.get('lastName').valid || item.get('lastName').pristine">
+                          <span *ngIf="item.get('lastName').hasError('required')">{{ 'AllValidations.AccountHolder.LastNameIsRequired' | translate }}</span>
+                          <span *ngIf="item.get('lastName').hasError('maxlength')">{{ 'AllValidations.AccountHolder.LastNameIsTooLong' | translate }}</span>
+                        </div>
                       </div>
                     </div>
 
                     <div class="col-xs-12 col-sm-2 sppc-float">
                       <div class="form-group">
-                        <label class="control-label">حق امضا</label>
+                        <label class="control-label">{{ 'Account.AccountOwner.HasSignature' | translate }}</label>
 
                         <kendo-switch formControlName="hasSignature"
-                                      [onLabel]="getText('Account.Active')"
-                                      [offLabel]="getText('Account.Inactive')">
+                                      [onLabel]="getText('Account.AccountOwner.HasIt')"
+                                      [offLabel]="getText('Account.AccountOwner.HaveNot')">
                         </kendo-switch>
 
                         <button *ngIf="accountHolders.value.length == (i+1)"
                                 class="k-button k-button-icon"
                                 type="button"
                                 (click)="onAddAccountHolder()"
-                                title="صاحب امضا جدید">
+                                title="{{ 'Account.AccountOwner.AddAccountholder' | translate }}">
                           <span class="k-icon k-i-plus"></span>
                         </button>
 
@@ -517,7 +586,7 @@
                                 class="k-button k-button-icon"
                                 type="button"
                                 (click)="onRemoveAccountHolder(i)"
-                                title="حذف صاحب امضا">
+                                title="{{ 'Account.AccountOwner.RemoveAccountholder' | translate }}">
                           <span class="k-icon k-i-minus"></span>
                         </button>
                       </div>
@@ -529,10 +598,13 @@
               <div class="row">
                 <div class="col-xs-12">
                   <div class="form-group">
-                    <label class="control-label">توضیحات</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.Description' | translate }}</label>
                     <textarea class="k-textbox"
                               formControlName="description">
                   </textarea>
+                    <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.description.valid || ownerForm.controls.description.pristine">
+                      <span *ngIf="ownerForm.controls.description.errors?.maxlength">{{ 'AllValidations.AccountOwner.DescriptionIsTooLong' | translate }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -545,9 +617,8 @@
 
     </kendo-tabstrip>
   </div>
-
   <kendo-dialog-actions>
-    <button class="k-button k-primary" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button k-primary" [disabled]="isDisabledForm()" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
     <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
   </kendo-dialog-actions>
 </div>
