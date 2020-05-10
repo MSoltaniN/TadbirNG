@@ -99,6 +99,8 @@
       <DependentUpon>TicketManager.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Models\AppSettingsModel.cs" />
+    <Compile Include="Models\ConnectionStringsModel.cs" />
     <Compile Include="Utility\HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
     <Compile Include="MainWindow.cs">
