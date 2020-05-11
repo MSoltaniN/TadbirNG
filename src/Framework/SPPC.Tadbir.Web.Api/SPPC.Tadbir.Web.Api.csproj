@@ -73,4 +73,8 @@
     <ProjectReference Include="..\SPPC.Tadbir.Service\SPPC.Tadbir.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Upload\" />
+  </ItemGroup>
+
 </Project>

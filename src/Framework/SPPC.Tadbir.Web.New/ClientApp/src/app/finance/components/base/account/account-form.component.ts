@@ -353,6 +353,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.lookupService.getModels(LookupApi.Provinces).subscribe(res => {
       if (res.length) {
         this.filteredProcinces = this.provincesList = res;
+        this.uploadTab = false;
       }
       else {
         this.uploadTab = true;
@@ -515,6 +516,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
           else
             if (res.type === HttpEventType.Response) {
               this.showMessage(this.getText("Messages.UploadSuccessful"), MessageType.Succes);
+              this.getProvince();
             }
         })
       }
