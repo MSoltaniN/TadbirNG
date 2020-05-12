@@ -13,6 +13,7 @@ using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -413,10 +414,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/vouchers/closing-tmp
         [Route(VoucherApi.ClosingAccountsVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync()
+        public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync(
+            [FromBody] IList<InventoryBalanceViewModel> balanceItems)
         {
             // TODO: Perform required validation
-            var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync();
+            var closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(balanceItems);
             return Json(closingAccountsVoucher);
         }
 
