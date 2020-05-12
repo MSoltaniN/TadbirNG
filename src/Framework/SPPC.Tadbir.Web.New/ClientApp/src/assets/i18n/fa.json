@@ -1174,6 +1174,7 @@
       "PerCityCodeIsSmall": "پیش شماره باید حداقل 3 حرف داشته باشد.",
       "PhoneNoIsRequired": "وارد کردن تلفن اجباری است",
       "PhoneNoIsTooLong": "تلفن می تواند حداکثر 64 حرف داشته باشد.",
+      "PhoneNoPattern": "فقط اعداد و کاراکتر '-' مجاز میباشند.",
       "MobileNoIsRequired": "وارد کردن موبایل اجباری است",
       "MobileNoIsTooLong": "موبایل می تواند حداکثر 64 حرف داشته باشد.",
       "ProvinceCodeIsRequired": "انتخاب استان اجباری است",

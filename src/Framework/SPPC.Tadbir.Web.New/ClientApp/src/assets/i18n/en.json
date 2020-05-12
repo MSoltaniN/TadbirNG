@@ -1072,6 +1072,7 @@
       "PerCityCodeIsSmall": "Area code must a minimum of 3 characters.",
       "PhoneNoIsRequired": "Phone No is required.",
       "PhoneNoIsTooLong": "Phone No can have a maximum of 64 characters.",
+      "PhoneNoPattern": "Only numbers and characters '-' are allowed.",
       "MobileNoIsRequired": "Mobile is required.",
       "MobileNoIsTooLong": "Mobile can have a maximum of 64 characters.",
       "ProvinceCodeIsRequired": "Province code is required.",
