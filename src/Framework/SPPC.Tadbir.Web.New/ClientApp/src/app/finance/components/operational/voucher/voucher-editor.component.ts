@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { String, DetailComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { VoucherService, VoucherInfo } from '@sppc/finance/service';
+import { VoucherService, VoucherInfo, InventoryBalanceInfo } from '@sppc/finance/service';
 import { VoucherApi } from '@sppc/finance/service/api';
 import { Voucher } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
@@ -15,6 +15,7 @@ import { DocumentStatusValue, VoucherOperations } from '@sppc/finance/enum';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 import { Item } from '@sppc/shared/models';
+import { InventoryBalance } from '@sppc/finance/models/inventoryBalance';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -151,13 +152,25 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
             break
           }
-          case "opening": {          
+          case "opening-voucher": {          
             this.getVoucher(VoucherApi.OpeningVoucher);
             break;
           }
-          case "closing": {
+          case "closing-voucher": {
             this.getVoucher(VoucherApi.ClosingVoucher);
             break;
+          }
+          case "close-temp-accounts":
+          {
+            this.checkClosingTmp();
+            break;
+          }
+          case "close-temp-created":
+          {
+              var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no')
+              if (voucherNo)
+                this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
+              break
           }
             
           default: {
@@ -169,6 +182,23 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
 
     this.getVoucherType();
+  }
+
+  checkClosingTmp() {
+    var bodyItem = new Array<InventoryBalance>();
+    var item = new InventoryBalanceInfo();       
+
+    this.voucherService.getClosingAccountsVoucher(bodyItem).subscribe(result => {
+      if (result) {
+        //closingAccount created and show voucher
+        this.initVoucherForm(result);        
+      }
+      else {
+        //closingAccount not created and show popup
+        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/closing-tmp-created',mode:'closing-tmp' } });
+      }
+    });
+
   }
 
 
@@ -193,7 +223,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
 
     if (!voucherNo) {
-      this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no' } });
+      this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no',mode: 'by-no' } });
     }
     else {
       this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
@@ -211,7 +241,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         if (error.status == 404) {
           this.showMessage(this.getText("Voucher.VoucherNotFound"), MessageType.Warning);
           if (byNo)
-            this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no' } });
+            this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
         }
 
       })
@@ -298,7 +328,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   searchVoucher() {
-    this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no' } });
+    this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
   }
 
   checkHandler() {

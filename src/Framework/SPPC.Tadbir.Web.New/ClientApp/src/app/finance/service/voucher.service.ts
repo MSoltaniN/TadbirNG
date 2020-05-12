@@ -4,6 +4,8 @@ import { Observable } from "rxjs/Observable";
 import { BrowserStorageService } from '@sppc/shared/services';
 import { Voucher } from '@sppc/finance/models';
 import { BaseService, FilterExpression } from '@sppc/shared/class';
+import { InventoryBalance } from '../models/inventoryBalance';
+import { VoucherApi } from './api';
 
 
 export class VoucherInfo implements Voucher {
@@ -34,6 +36,13 @@ export class VoucherInfo implements Voucher {
   description?: string;
 }
 
+export class InventoryBalanceInfo implements InventoryBalance {  
+  accountId: number;
+  branchId: number;
+  debitBalance: number;
+  creditBalance: number;
+}
+
 @Injectable()
 export class VoucherService extends BaseService {
 
@@ -49,6 +58,14 @@ export class VoucherService extends BaseService {
       .catch(this.handleError);
   }
 
+  public getClosingAccountsVoucher(invetoryBalances: Array<InventoryBalance>) {
+
+    var body = JSON.stringify(invetoryBalances);
+
+    return this.http.put(VoucherApi.ClosingAccountsVoucher, body, this.option)
+      .map(res => res)
+      .catch(this.handleError);
+  }
 
   public getVoucherNumberByStatus(apiUrl: string, filter?: FilterExpression) {
     var intMaxValue = 2147483647

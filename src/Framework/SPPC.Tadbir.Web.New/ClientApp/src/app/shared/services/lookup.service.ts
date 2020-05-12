@@ -114,4 +114,11 @@ export class LookupService extends BaseService {
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));
   }
+
+  GetInventoryAccountsLookup() {
+    var url = LookupApi.InventoryAccounts;
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
 }

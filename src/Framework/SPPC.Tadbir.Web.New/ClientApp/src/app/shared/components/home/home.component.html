@@ -15,3 +15,12 @@
   <button kendoButton [primary]="true" [disabled]="!voucherNo" (click)="passVoucherId()">تایید</button>
   <button kendoButton (click)="close()">انصراف</button>
 </ng-template>
+
+
+<ng-template #elClsoingTmp>
+  <closing-tmp-voucher (dataChanged)="closingDataChanged($event)"></closing-tmp-voucher>
+</ng-template>
+<ng-template #closingTmpActions>
+  <button kendoButton [primary]="true"  (click)="closingTmpOk()">تایید</button>
+  <button kendoButton (click)="close()">انصراف</button>
+</ng-template>

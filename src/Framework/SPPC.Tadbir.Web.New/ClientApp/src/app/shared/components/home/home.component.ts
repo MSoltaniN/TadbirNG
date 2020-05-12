@@ -6,9 +6,10 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { Layout } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { DefaultComponent } from '@sppc/shared/class';
+import { VoucherService } from '@sppc/finance/service';
 
 
 
@@ -41,27 +42,64 @@ export class HomeComponent extends DefaultComponent implements OnInit {
   @ViewChild('itemListRef') el: TemplateRef<any>;
   @ViewChild('dialogActions') actionBtn: TemplateRef<any>;
 
+
+  @ViewChild('elClsoingTmp') elClsoingTmp: TemplateRef<any>;
+  @ViewChild('closingTmpActions') closingTmpActionBtn: TemplateRef<any>;
+
   private dialog;
   voucherNo: number;
   returnUrl: string;
+  mode: string;
 
+  closingTmpData: any;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute, public router: Router, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, private dialogService: DialogService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, private dialogService: DialogService,public voucherService: VoucherService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
   }
 
   ngOnInit() {
 
     this.returnUrl = this.activeRoute.snapshot.queryParamMap.get('returnUrl');
+    this.mode = this.activeRoute.snapshot.queryParamMap.get('mode');
 
+    switch (this.mode) {
+      case 'closing-tmp':
+        this.showClosingTmpDialog();
+        break;
+      case 'by-no':
+        this.showByNoDialog();
+        break;
+    }
+  }
+
+  showClosingTmpDialog() {
+    this.dialog = this.dialogService.open({
+      title: 'دریافت موجودی کالای پایان دوره',
+      content: this.elClsoingTmp,
+      actions: this.closingTmpActionBtn,      
+      height: 420,
+      width:150
+    });
+  }
+
+  showByNoDialog() {
     this.dialog = this.dialogService.open({
       title: 'شماره سند',
       content: this.el,
       actions: this.actionBtn
     });
+  }
 
+  closingDataChanged(data:any) {
+    this.closingTmpData = data;
+  }
 
+  closingTmpOk() {
+    this.voucherService.getClosingAccountsVoucher(this.closingTmpData).subscribe(result => {
+      this.close();
+      this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
+    });
   }
 
   passVoucherId() {

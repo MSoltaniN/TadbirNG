@@ -99,6 +99,7 @@ import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/
 import { GridMessageService } from '@sppc/shared/services/grid-messages.service';
 import { AdvanceFilterComponent } from '@sppc/shared/components/advanceFilter/advance-filter.component';
 import { NotFoundComponent } from '@sppc/shared/components/notFound/notFound.component';
+import { ClosingTmpComponent } from '@sppc/finance/components/operational/voucher/closing-tmp.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -139,7 +140,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReplaceLineBreaksPipe, DialogComponent, GridFilterComponent, SppcBranchScope, SppcDatepicker, SppcDateRangeSelector, SppcDropDownList, SppcDisplayFullAccountComponent,
     SppcFullAccountComponent, SppcGridDatepicker, SppcGridDateFilter, FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective,
     TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput, SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective,
-    FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent, NotFoundComponent
+    FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent, NotFoundComponent,ClosingTmpComponent
   ],
 
   entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent, AdvanceFilterComponent],
@@ -158,7 +159,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective, TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput,
     SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
-    ReportViewerComponent, SppcTimepicker, NotFoundComponent
+    ReportViewerComponent, SppcTimepicker, NotFoundComponent,ClosingTmpComponent
   ]
 })
 export class SharedModule {

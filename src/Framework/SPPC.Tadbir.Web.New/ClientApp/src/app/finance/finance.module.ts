@@ -50,7 +50,7 @@ import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/ba
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
     ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
     currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent, BalanceByAccountComponent,
-ItemBalanceComponent],
+    ItemBalanceComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
