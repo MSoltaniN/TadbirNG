@@ -1069,14 +1069,17 @@
       "NationalCodeIsTooLong": "National code can have a maximum of 11 characters.",
       "PerCityCodeIsRequired": "Area code is required.",
       "PerCityCodeIsTooLong": "Area code can have a maximum of 10 characters.",
+      "PerCityCodeIsSmall": "Area code must a minimum of 3 characters.",
       "PhoneNoIsRequired": "Phone No is required.",
       "PhoneNoIsTooLong": "Phone No can have a maximum of 64 characters.",
+      "PhoneNoPattern": "Only numbers and characters '-' are allowed.",
       "MobileNoIsRequired": "Mobile is required.",
       "MobileNoIsTooLong": "Mobile can have a maximum of 64 characters.",
       "ProvinceCodeIsRequired": "Province code is required.",
       "CityCodeIsRequired": "City code is required.",
       "PostalCodeIsRequired": "Postal code is required.",
       "PostalCodeIsTooLong": "Postal code can have a maximum of 10 characters.",
+      "PostalCodePattern": "Postal code only contains numbers.",
       "AddressIsRequired": "Address is required.",
       "AddressIsTooLong": "Address can have a maximum of 256 characters.",
       "DescriptionIsTooLong": "Description can have a maximum of 1024 characters."
@@ -1090,8 +1093,10 @@
       "BranchIndexIsTooLong": "Branch index can have a maximum of 64 characters.",
       "AccountNumberIsRequired": "Account number is required.",
       "AccountNumberIsTooLong": "Account number can have a maximum of 32 characters.",
+      "AccountNumberPattern": "Only numbers and characters '-' and '.' are allowed.",
       "CardNumberIsTooLong": "Card number can have a maximum of 32 characters.",
       "ShabaNumberIsTooLong": "Shaba number can have a maximum of 32 characters.",
+      "CardNumberPattern": "Only numbers and characters '-' are allowed.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "AccountHolder": {

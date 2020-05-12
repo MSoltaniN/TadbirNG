@@ -300,6 +300,7 @@
                       <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.perCityCode.valid || customerTaxForm.controls.perCityCode.pristine">
                         <span *ngIf="customerTaxForm.controls.perCityCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PerCityCodeIsRequired' | translate }}</span>
                         <span *ngIf="customerTaxForm.controls.perCityCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.PerCityCodeIsTooLong' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.perCityCode.errors?.minlength">{{ 'AllValidations.CustomerTaxInfo.PerCityCodeIsSmall' | translate }}</span>
                       </div>
 
                     </div>
@@ -311,6 +312,7 @@
                       <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.phoneNo.valid || customerTaxForm.controls.phoneNo.pristine">
                         <span *ngIf="customerTaxForm.controls.phoneNo.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PhoneNoIsRequired' | translate }}</span>
                         <span *ngIf="customerTaxForm.controls.phoneNo.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.PhoneNoIsTooLong' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.phoneNo.errors?.pattern">{{ 'AllValidations.CustomerTaxInfo.PhoneNoPattern' | translate }}</span>
                       </div>
                     </div>
 
@@ -326,6 +328,7 @@
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.mobileNo.valid || customerTaxForm.controls.mobileNo.pristine">
                       <span *ngIf="customerTaxForm.controls.mobileNo.errors?.required">{{ 'AllValidations.CustomerTaxInfo.MobileNoIsRequired' | translate }}</span>
                       <span *ngIf="customerTaxForm.controls.mobileNo.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.MobileNoIsTooLong' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.mobileNo.errors?.pattern">{{ 'AllValidations.CustomerTaxInfo.PhoneNoPattern' | translate }}</span>
                     </div>
                   </div>
                 </div>
@@ -377,11 +380,12 @@
                   <div class="form-group">
                     <label class="control-label">{{ 'Account.CustomerTaxInfo.PostalCode' | translate }}</label>
 
-                    <input type="text" class="k-textbox" formControlName="postalCode" />
+                    <input type="text" class="k-textbox" formControlName="postalCode"/>
 
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.postalCode.valid || customerTaxForm.controls.postalCode.pristine">
                       <span *ngIf="customerTaxForm.controls.postalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PostalCodeIsRequired' | translate }}</span>
                       <span *ngIf="customerTaxForm.controls.postalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.PostalCodeIsTooLong' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.postalCode.errors?.pattern">{{ 'AllValidations.CustomerTaxInfo.PostalCodePattern' | translate }}</span>
                     </div>
                   </div>
                 </div>
@@ -483,7 +487,7 @@
 
                 <div class="col-xs-12 col-sm-6 sppc-float">
                   <div class="form-group">
-                    <label class="control-label">{{ 'Account.AccountOwner.BranchIndex' | translate }}شاخص شعبه</label>
+                    <label class="control-label">{{ 'Account.AccountOwner.BranchIndex' | translate }}</label>
 
                     <input type="text" class="k-textbox" formControlName="branchIndex" />
                     <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.branchIndex.valid || ownerForm.controls.branchIndex.pristine">
@@ -504,6 +508,7 @@
                     <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.accountNumber.valid || ownerForm.controls.accountNumber.pristine">
                       <span *ngIf="ownerForm.controls.accountNumber.errors?.required">{{ 'AllValidations.AccountOwner.AccountNumberIsRequired' | translate }}</span>
                       <span *ngIf="ownerForm.controls.accountNumber.errors?.maxlength">{{ 'AllValidations.AccountOwner.AccountNumberIsTooLong' | translate }}</span>
+                      <span *ngIf="ownerForm.controls.accountNumber.errors?.pattern">{{ 'AllValidations.AccountOwner.AccountNumberPattern' | translate }}</span>
                     </div>
                   </div>
                 </div>
@@ -515,6 +520,7 @@
                     <input type="text" class="k-textbox" formControlName="cardNumber" />
                     <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.cardNumber.valid || ownerForm.controls.cardNumber.pristine">
                       <span *ngIf="ownerForm.controls.cardNumber.errors?.maxlength">{{ 'AllValidations.AccountOwner.CardNumberIsTooLong' | translate }}</span>
+                      <span *ngIf="ownerForm.controls.cardNumber.errors?.pattern">{{ 'AllValidations.AccountOwner.CardNumberPattern' | translate }}</span>
                     </div>
                   </div>
                 </div>
