@@ -520,6 +520,7 @@
                     <input type="text" class="k-textbox" formControlName="cardNumber" />
                     <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.cardNumber.valid || ownerForm.controls.cardNumber.pristine">
                       <span *ngIf="ownerForm.controls.cardNumber.errors?.maxlength">{{ 'AllValidations.AccountOwner.CardNumberIsTooLong' | translate }}</span>
+                      <span *ngIf="ownerForm.controls.cardNumber.errors?.pattern">{{ 'AllValidations.AccountOwner.CardNumberPattern' | translate }}</span>
                     </div>
                   </div>
                 </div>

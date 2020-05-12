@@ -1096,6 +1096,7 @@
       "AccountNumberPattern": "Only numbers and characters '-' and '.' are allowed.",
       "CardNumberIsTooLong": "Card number can have a maximum of 32 characters.",
       "ShabaNumberIsTooLong": "Shaba number can have a maximum of 32 characters.",
+      "CardNumberPattern": "Only numbers and characters '-' are allowed.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "AccountHolder": {

@@ -1198,6 +1198,7 @@
       "AccountNumberPattern": "فقط اعداد و کاراکتر '-' و '.' مجاز میباشند.",
       "CardNumberIsTooLong": "شماره کارت می تواند حداکثر 32 حرف داشته باشد.",
       "ShabaNumberIsTooLong": "شماره شبا می تواند حداکثر 32 حرف داشته باشد.",
+      "CardNumberPattern": "فقط اعداد و کاراکتر '-' مجاز میباشند.",
       "DescriptionIsTooLong": "توضیحات می تواند حداکثر 512 حرف داشته باشد."
     },
     "AccountHolder": {
