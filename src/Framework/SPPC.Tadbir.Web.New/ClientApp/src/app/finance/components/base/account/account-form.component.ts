@@ -172,7 +172,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     accountType: new FormControl('', Validators.required),
     bankBranchName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
     branchIndex: new FormControl('', [Validators.required, Validators.maxLength(64)]),
-    accountNumber: new FormControl('', [Validators.required, Validators.maxLength(32)]),
+    accountNumber: new FormControl('', [Validators.required, Validators.maxLength(32), Validators.pattern("^[0-9-.]+$")]),
     cardNumber: new FormControl('', Validators.maxLength(32)),
     shabaNumber: new FormControl('', Validators.maxLength(32)),
     description: new FormControl('', Validators.maxLength(512)),

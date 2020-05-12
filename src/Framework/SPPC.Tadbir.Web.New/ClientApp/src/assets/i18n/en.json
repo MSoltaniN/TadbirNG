@@ -1093,6 +1093,7 @@
       "BranchIndexIsTooLong": "Branch index can have a maximum of 64 characters.",
       "AccountNumberIsRequired": "Account number is required.",
       "AccountNumberIsTooLong": "Account number can have a maximum of 32 characters.",
+      "AccountNumberPattern": "Only numbers and characters '-' and '.' are allowed.",
       "CardNumberIsTooLong": "Card number can have a maximum of 32 characters.",
       "ShabaNumberIsTooLong": "Shaba number can have a maximum of 32 characters.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters."

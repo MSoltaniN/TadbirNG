@@ -508,6 +508,7 @@
                     <div class="k-tooltip k-tooltip-validation" [hidden]="ownerForm.controls.accountNumber.valid || ownerForm.controls.accountNumber.pristine">
                       <span *ngIf="ownerForm.controls.accountNumber.errors?.required">{{ 'AllValidations.AccountOwner.AccountNumberIsRequired' | translate }}</span>
                       <span *ngIf="ownerForm.controls.accountNumber.errors?.maxlength">{{ 'AllValidations.AccountOwner.AccountNumberIsTooLong' | translate }}</span>
+                      <span *ngIf="ownerForm.controls.accountNumber.errors?.pattern">{{ 'AllValidations.AccountOwner.AccountNumberPattern' | translate }}</span>
                     </div>
                   </div>
                 </div>
