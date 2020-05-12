@@ -558,7 +558,8 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery(
                     line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
                     line => line.Project, line => line.Currency)
-                .Where(line => line.Voucher.Id == voucherId);
+                .Where(line => line.Voucher.Id == voucherId)
+                .OrderBy(line => line.RowNo);
             return linesQuery;
         }
 
