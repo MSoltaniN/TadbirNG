@@ -328,6 +328,7 @@
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.mobileNo.valid || customerTaxForm.controls.mobileNo.pristine">
                       <span *ngIf="customerTaxForm.controls.mobileNo.errors?.required">{{ 'AllValidations.CustomerTaxInfo.MobileNoIsRequired' | translate }}</span>
                       <span *ngIf="customerTaxForm.controls.mobileNo.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.MobileNoIsTooLong' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.mobileNo.errors?.pattern">{{ 'AllValidations.CustomerTaxInfo.PhoneNoPattern' | translate }}</span>
                     </div>
                   </div>
                 </div>
