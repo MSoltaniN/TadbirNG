@@ -162,16 +162,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           }
           case "close-temp-accounts":
           {
-            this.checkClosingTmp();
+              var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
+              if (voucherNo) {
+                this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+              }
+              else {
+                this.checkClosingTmp();
+              }
             break;
-          }
-          case "close-temp-created":
-          {
-              var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no')
-              if (voucherNo)
-                this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
-              break
-          }
+          }         
             
           default: {
             this.isShowBreadcrumb = false;
@@ -195,7 +194,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       }
       else {
         //closingAccount not created and show popup
-        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/closing-tmp-created',mode:'closing-tmp' } });
+        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/close-temp-accounts',mode:'closing-tmp' } });
       }
     });
 
