@@ -1069,6 +1069,7 @@
       "NationalCodeIsTooLong": "National code can have a maximum of 11 characters.",
       "PerCityCodeIsRequired": "Area code is required.",
       "PerCityCodeIsTooLong": "Area code can have a maximum of 10 characters.",
+      "PerCityCodeIsSmall": "Area code must a minimum of 3 characters.",
       "PhoneNoIsRequired": "Phone No is required.",
       "PhoneNoIsTooLong": "Phone No can have a maximum of 64 characters.",
       "MobileNoIsRequired": "Mobile is required.",

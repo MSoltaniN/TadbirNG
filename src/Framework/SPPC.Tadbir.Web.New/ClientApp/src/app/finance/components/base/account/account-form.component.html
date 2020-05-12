@@ -300,6 +300,7 @@
                       <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.perCityCode.valid || customerTaxForm.controls.perCityCode.pristine">
                         <span *ngIf="customerTaxForm.controls.perCityCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PerCityCodeIsRequired' | translate }}</span>
                         <span *ngIf="customerTaxForm.controls.perCityCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.PerCityCodeIsTooLong' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.perCityCode.errors?.minlength">{{ 'AllValidations.CustomerTaxInfo.PerCityCodeIsSmall' | translate }}</span>
                       </div>
 
                     </div>
