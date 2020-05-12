@@ -1181,6 +1181,7 @@
       "CityCodeIsRequired": "انتخاب شهر اجباری است",
       "PostalCodeIsRequired": "وارد کردن کد پستی اجباری است",
       "PostalCodeIsTooLong": "کد پستی می تواند حداکثر 10 حرف داشته باشد.",
+      "PostalCodePattern": "کد پستی فقط شامل اعداد میباشد.",
       "AddressIsRequired": "وارد کردن آدرس اجباری است",
       "AddressIsTooLong": "آدرس می تواند حداکثر 256 حرف داشته باشد.",
       "DescriptionIsTooLong": "توضیحات می تواند حداکثر 1024 حرف داشته باشد."

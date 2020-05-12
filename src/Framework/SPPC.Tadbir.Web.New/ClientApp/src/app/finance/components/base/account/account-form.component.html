@@ -380,11 +380,12 @@
                   <div class="form-group">
                     <label class="control-label">{{ 'Account.CustomerTaxInfo.PostalCode' | translate }}</label>
 
-                    <input type="text" class="k-textbox" formControlName="postalCode" />
+                    <input type="text" class="k-textbox" formControlName="postalCode"/>
 
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.postalCode.valid || customerTaxForm.controls.postalCode.pristine">
                       <span *ngIf="customerTaxForm.controls.postalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PostalCodeIsRequired' | translate }}</span>
                       <span *ngIf="customerTaxForm.controls.postalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.PostalCodeIsTooLong' | translate }}</span>
+                      <span *ngIf="customerTaxForm.controls.postalCode.errors?.pattern">{{ 'AllValidations.CustomerTaxInfo.PostalCodePattern' | translate }}</span>
                     </div>
                   </div>
                 </div>

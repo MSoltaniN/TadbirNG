@@ -1079,6 +1079,7 @@
       "CityCodeIsRequired": "City code is required.",
       "PostalCodeIsRequired": "Postal code is required.",
       "PostalCodeIsTooLong": "Postal code can have a maximum of 10 characters.",
+      "PostalCodePattern": "Postal code only contains numbers.",
       "AddressIsRequired": "Address is required.",
       "AddressIsTooLong": "Address can have a maximum of 256 characters.",
       "DescriptionIsTooLong": "Description can have a maximum of 1024 characters."

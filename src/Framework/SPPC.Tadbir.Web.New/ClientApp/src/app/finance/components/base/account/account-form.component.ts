@@ -160,7 +160,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     perCityCode: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(3)]),
     phoneNo: new FormControl('', [Validators.required, Validators.maxLength(64), Validators.pattern("^[0-9-]+$")]),
     mobileNo: new FormControl('', [Validators.required, Validators.maxLength(64), Validators.pattern("^[0-9-]+$")]),
-    postalCode: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    postalCode: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9]+$")]),
     provinceCode: new FormControl('', [Validators.required, Validators.maxLength(4)]),
     cityCode: new FormControl('', [Validators.required, Validators.maxLength(16)]),
     description: new FormControl('', Validators.maxLength(1024)),
