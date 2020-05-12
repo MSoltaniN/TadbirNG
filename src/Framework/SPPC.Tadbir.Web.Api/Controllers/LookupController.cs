@@ -198,6 +198,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(localizedTurnoversLookup);
         }
 
+        // GET: api/lookup/inv-acc
+        [Route(LookupApi.InventoryAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetInventoryAccountsAsync()
+        {
+            var inventoryAccounts = await _repository.GetInventoryAccountsAsync();
+            return Json(inventoryAccounts);
+        }
+
         #endregion
 
         #region Security Subsystem API

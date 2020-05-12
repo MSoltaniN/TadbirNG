@@ -179,6 +179,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string AccountBookLevelsUrl = "lookup/accbook/views/{viewId:min(1)}/levels";
 
+        /// <summary>
+        /// API client URL for all inventory accounts in all branches
+        /// </summary>
+        public const string InventoryAccounts = "lookup/inv-acc";
+
+        /// <summary>
+        /// API server route URL for all inventory accounts in all branches
+        /// </summary>
+        public const string InventoryAccountsUrl = "lookup/inv-acc";
+
         #endregion
     }
 }

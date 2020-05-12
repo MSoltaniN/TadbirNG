@@ -141,6 +141,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns></returns>
         Task<IList<AccountLevelViewModel>> GetAccountBookLevelsAsync(int viewId);
 
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با مجموعه حساب موجودی کالا را
+        /// برای کلیه شعب خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از حساب های موجودی کالا</returns>
+        Task<IList<AccountViewModel>> GetInventoryAccountsAsync();
+
         #endregion
 
         #region Security Subsystem lookup

@@ -439,6 +439,32 @@ namespace SPPC.Tadbir.Persistence
             return levels;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با مجموعه حساب موجودی کالا را
+        /// برای کلیه شعب خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از حساب های موجودی کالا</returns>
+        public async Task<IList<AccountViewModel>> GetInventoryAccountsAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var collectionAccounts = await repository
+                .GetEntityQuery()
+                .Include(aca => aca.Account)
+                .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
+                    aca.CollectionId == (int)AccountCollectionId.ProductInventory)
+                .Select(aca => aca.Account)
+                .ToListAsync();
+
+            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
+            var leafAccounts = await accountRepository
+                .GetEntityQuery()
+                .Where(acc => acc.Children.Count == 0 &&
+                    collectionAccounts.Any(item => acc.FullCode.StartsWith(item.FullCode)))
+                .Select(acc => Mapper.Map<AccountViewModel>(acc))
+                .ToListAsync();
+            return leafAccounts;
+        }
+
         #endregion
 
         #region Security Subsystem lookup
