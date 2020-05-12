@@ -56,6 +56,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> GetPeriodicClosingTempAccountsVoucherAsync(
             IList<InventoryBalanceViewModel> balanceItems)
         {
+            if (balanceItems.Count == 0)
+            {
+                return null;
+            }
+
             var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherType.ClosingTempAccounts);
             if (closingVoucher == null)
             {
