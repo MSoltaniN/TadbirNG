@@ -76,6 +76,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetVoucherByNoAsync(int voucherNo)
         {
             var voucherByNo = await _repository.GetVoucherByNoAsync(voucherNo);
+            Localize(voucherByNo);
             return JsonReadResult(voucherByNo);
         }
 
@@ -94,6 +95,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetFirstVoucherAsync()
         {
             var first = await _repository.GetFirstVoucherAsync();
+            Localize(first);
             return JsonReadResult(first);
         }
 
@@ -103,6 +105,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetPreviousVoucherAsync(int voucherNo)
         {
             var previous = await _repository.GetPreviousVoucherAsync(voucherNo);
+            Localize(previous);
             return JsonReadResult(previous);
         }
 
@@ -112,6 +115,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetNextVoucherAsync(int voucherNo)
         {
             var next = await _repository.GetNextVoucherAsync(voucherNo);
+            Localize(next);
             return JsonReadResult(next);
         }
 
@@ -120,8 +124,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetLastVoucherAsync()
         {
-            var lastVoucher = await _repository.GetLastVoucherAsync();
-            return JsonReadResult(lastVoucher);
+            var last = await _repository.GetLastVoucherAsync();
+            Localize(last);
+            return JsonReadResult(last);
         }
 
         // GET: api/vouchers/count/by-status
@@ -398,6 +403,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             // Rule 1 : Current fiscal period MUST have required account collection associations
             var openingVoucher = await _repository.GetOpeningVoucherAsync();
+            Localize(openingVoucher);
             return Json(openingVoucher);
         }
 
@@ -408,10 +414,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             // TODO: Perform required validation
             var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync();
+            Localize(closingAccountsVoucher);
             return Json(closingAccountsVoucher);
         }
 
         // PUT: api/vouchers/closing-tmp
+        [HttpPut]
         [Route(VoucherApi.ClosingAccountsVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync(
@@ -419,6 +427,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             // TODO: Perform required validation
             var closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(balanceItems);
+            Localize(closingAccountsVoucher);
             return Json(closingAccountsVoucher);
         }
 
@@ -433,6 +442,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             // Rule 2 : Current fiscal period MUST have the closing temp accounts voucher
             var closingVoucher = await _repository.GetClosingVoucherAsync();
+            Localize(closingVoucher);
             return Json(closingVoucher);
         }
 
@@ -447,11 +457,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
             SetItemCount(articles.TotalCount);
-            foreach (var article in articles.Items)
-            {
-                article.CurrencyName = _strings[article.CurrencyName];
-            }
-
+            Localize(articles.Items);
             return Json(articles.Items);
         }
 
@@ -461,6 +467,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetArticleAsync(int articleId)
         {
             var article = await _lineRepository.GetArticleAsync(articleId);
+            Localize(article);
             return JsonReadResult(article);
         }
 
@@ -782,7 +789,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (voucher != null)
             {
-                voucher.StatusName = _strings.Format(voucher.StatusName);
+                voucher.StatusName = _strings[voucher.StatusName];
+                voucher.Description = _strings[voucher.Description];
+            }
+        }
+
+        private void Localize(IEnumerable<VoucherLineViewModel> voucherLines)
+        {
+            foreach (var voucherLine in voucherLines)
+            {
+                Localize(voucherLine);
+            }
+        }
+
+        private void Localize(VoucherLineViewModel voucherLine)
+        {
+            if (voucherLine != null)
+            {
+                voucherLine.CurrencyName = _strings[voucherLine.CurrencyName];
+                voucherLine.Description = _strings[voucherLine.Description];
             }
         }
 

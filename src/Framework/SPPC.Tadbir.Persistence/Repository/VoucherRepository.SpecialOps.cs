@@ -113,8 +113,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var openingVoucher = await repository.GetSingleByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
-                v.Type == (short)voucherType,
-                v => v.Lines);
+                v.Type == (short)voucherType);
             return openingVoucher;
         }
 
@@ -147,7 +146,7 @@ namespace SPPC.Tadbir.Persistence
             var collectionAccounts = await repository
                 .GetEntityQuery()
                 .Include(aca => aca.Account)
-                .Where(aca => aca.FiscalPeriodId == UserContext.FiscalPeriodId &&
+                .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
                     aca.BranchId == branchId &&
                     aca.CollectionId == collection)
                 .Select(aca => aca.Account)
@@ -274,6 +273,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             OnEntityAction(OperationId.Create);
             Log.Description = description;
+            voucher.IsBalanced = voucher.Lines.Sum(line => line.Debit - line.Credit) == 0;
             repository.Insert(voucher, v => v.Lines);
             await FinalizeActionAsync(voucher);
         }
@@ -352,7 +352,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                openingVoucher = GetNewOpeningVoucher();
+                openingVoucher = await GetNewOpeningVoucherAsync();
                 var branches = await GetBranchIdsAsync();
                 foreach (int branchId in branches)
                 {
@@ -378,7 +378,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Voucher> IssueOpeningFromLastBalanceAsync(Voucher lastClosingVoucher)
         {
-            var openingVoucher = GetNewOpeningVoucher();
+            var openingVoucher = await GetNewOpeningVoucherAsync();
             var branches = await GetBranchIdsAsync();
             foreach (int branchId in branches)
             {
@@ -461,17 +461,21 @@ namespace SPPC.Tadbir.Persistence
             return clone;
         }
 
-        private Voucher GetNewOpeningVoucher()
+        private async Task<Voucher> GetNewOpeningVoucherAsync()
         {
+            string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
             return new Voucher()
             {
                 BranchId = UserContext.BranchId,
                 DailyNo = 1,
-                Date = DateTime.Now.Date,
+                Date = await GetCurrentFiscalStartDate(),
                 Description = AppStrings.OpeningVoucher,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
+                IsBalanced = true,
                 IssuedById = UserContext.Id,
-                IssuerName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName,
+                IssuerName = fullName,
+                ModifiedById = UserContext.Id,
+                ModifierName = fullName,
                 No = 1,
                 StatusId = 1,
                 SubjectType = 0,
@@ -567,6 +571,16 @@ namespace SPPC.Tadbir.Persistence
         {
             var accounts = await GetCollectionItemsAsync((int)AccountCollectionId.OpeningAccount, branchId);
             return accounts.SingleOrDefault();
+        }
+
+        private async Task<DateTime> GetCurrentFiscalStartDate()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            return await repository
+                .GetEntityQuery()
+                .Where(fp => fp.Id == UserContext.FiscalPeriodId)
+                .Select(fp => fp.StartDate)
+                .SingleAsync();
         }
 
         #endregion

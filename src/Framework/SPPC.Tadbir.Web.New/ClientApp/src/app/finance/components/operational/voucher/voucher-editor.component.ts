@@ -151,11 +151,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
             break
           }
-          case "opening": {          
+          case "opening-voucher": {          
             this.getVoucher(VoucherApi.OpeningVoucher);
             break;
           }
-          case "closing": {
+          case "closing-voucher": {
             this.getVoucher(VoucherApi.ClosingVoucher);
             break;
           }
