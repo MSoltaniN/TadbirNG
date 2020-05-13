@@ -61,7 +61,7 @@ export class ClosingTmpComponent extends DetailComponent implements OnInit {
   }
 
   onSelectedKeysChange(event) {
-    var index = this.selectedRows[0];    
+    var index = this.inventoryBalanceData.findIndex(p=>p.accountId === this.selectedRows[0]);    
     if (index >= 0) {
       if (this.creditDebitMode == "1")
         this.creditDebit = this.inventoryBalanceData[index].debitBalance;
@@ -71,7 +71,7 @@ export class ClosingTmpComponent extends DetailComponent implements OnInit {
   }
 
   focusOutFunction() {
-    var index = this.selectedRows[0];    
+    var index = this.inventoryBalanceData.findIndex(p => p.accountId === this.selectedRows[0]);    
     if (index >= 0) {
       if (this.creditDebitMode == "1") {
         this.inventoryBalanceData[index].debitBalance = this.creditDebit;

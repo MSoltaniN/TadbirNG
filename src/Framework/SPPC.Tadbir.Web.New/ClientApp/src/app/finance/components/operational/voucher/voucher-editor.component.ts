@@ -190,7 +190,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.voucherService.getClosingAccountsVoucher(bodyItem).subscribe(result => {
       if (result) {
         //closingAccount created and show voucher
-        this.initVoucherForm(result);        
+        //this.initVoucherForm(result);
+        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/close-temp-accounts', mode: 'closing-tmp' } });
       }
       else {
         //closingAccount not created and show popup

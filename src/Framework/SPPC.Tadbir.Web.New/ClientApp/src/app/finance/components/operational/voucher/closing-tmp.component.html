@@ -1,11 +1,11 @@
 
-<div style="padding:15px;" (keydown.esc)="escPress()">   
+<div style="padding:15px;" >   
   <div class="form-group">
     <div class="col-md-4">
       <div class="form-group row">        
         <label for="amount" class="control-label">مانده</label>
         <sppc-numericInput name="amount" (focusout)="focusOutFunction()"  [(ngModel)]="creditDebit"
-                           [decimalCount]="decimalCount" class="sppc-input-num sppc-float"></sppc-numericInput>
+                            class="sppc-input-num sppc-float"></sppc-numericInput>
       </div>      
       <div class="form-group row">        
         <div class="voucher-mode-item">
@@ -22,20 +22,18 @@
       </div>
     </div>
     <div class="col-md-8">
-        <kendo-grid [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+        <kendo-grid [ngClass]="{'tRtl':this.CurrentLanguage === 'fa' , 'tLtr': this.CurrentLanguage === 'en'}"
                     [data]="rowData"
                     [sortable]="false"
                     [height]="300"                    
                     [pageable]="false"
                     [resizable]="true"
                     [filterable]="false"
-                    [scrollable]="'scrollable'"
-                    (pageChange)="pageChange($event)"
-                    (sortChange)="sortChange($event)"
+                    [scrollable]="'scrollable'"                    
                     [loading]="false"
                     [selectable]="{ checkboxOnly: false, mode: 'single' }"
                   [selectedKeys]="selectedRows"
-                  [kendoGridSelectBy]="id"
+                  kendoGridSelectBy="id"
                   (selectedKeysChange)="onSelectedKeysChange($event)">
 
 
