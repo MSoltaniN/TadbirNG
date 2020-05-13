@@ -3203,3 +3203,7 @@ SET IsEnabled = 1
 --1.1.884
 Update MetaData.[Column] set AllowFiltering = 0 where ViewId in (13,59,60,61) And [Name] = 'RowNo'
 
+--1.1.891
+Update Metadata.Command set RouteUrl = '/finance/vouchers/close-temp-accounts' where CommandID = 19 
+
+
