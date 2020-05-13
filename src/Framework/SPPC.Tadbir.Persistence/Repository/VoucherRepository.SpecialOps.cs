@@ -56,15 +56,17 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> GetPeriodicClosingTempAccountsVoucherAsync(
             IList<InventoryBalanceViewModel> balanceItems)
         {
-            if (balanceItems.Count == 0)
-            {
-                return null;
-            }
-
             var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherType.ClosingTempAccounts);
             if (closingVoucher == null)
             {
-                closingVoucher = await IssueClosingTempAccountsVoucherAsync(balanceItems);
+                if (balanceItems.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    closingVoucher = await IssueClosingTempAccountsVoucherAsync(balanceItems);
+                }
             }
 
             return Mapper.Map<VoucherViewModel>(closingVoucher);
@@ -305,7 +307,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var grouping in GetByCurrencyLineGroups(accountLines))
             {
                 var first = grouping.First();
-                var balance = grouping.Sum(line => line.Debit - line.Credit);
+                var balance = Math.Abs(grouping.Sum(line => line.Debit - line.Credit));
                 branchLines.Add(new VoucherLine()
                 {
                     AccountId = account.Id,
@@ -363,10 +365,9 @@ namespace SPPC.Tadbir.Persistence
                 {
                     openingVoucher.Lines.AddRange(await GetBranchOpeningVoucherLinesAsync(branchId));
                 }
-
-                SetRowNumbers(openingVoucher.Lines);
             }
 
+            SetRowNumbers(openingVoucher.Lines);
             await InsertAsync(openingVoucher, AppStrings.IssueOpeningVoucher);
             return openingVoucher;
         }
@@ -433,8 +434,6 @@ namespace SPPC.Tadbir.Persistence
                 openingVoucher.Lines.AddRange(branchLines);
             }
 
-            SetRowNumbers(openingVoucher.Lines);
-            await InsertAsync(openingVoucher, AppStrings.IssueOpeningVoucher);
             return openingVoucher;
         }
 
@@ -608,6 +607,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Voucher> GetNewClosingVoucherAsync()
         {
+            string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
             var tempVoucher = new VoucherViewModel()
             {
                 Date = DateTime.Now.Date,
@@ -623,7 +623,9 @@ namespace SPPC.Tadbir.Persistence
                 Description = AppStrings.ClosingVoucher,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 IssuedById = UserContext.Id,
-                IssuerName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName,
+                IssuerName = fullName,
+                ModifiedById = UserContext.Id,
+                ModifierName = fullName,
                 No = tempVoucher.No + 1,
                 StatusId = 1,
                 SubjectType = 0,
@@ -767,6 +769,11 @@ namespace SPPC.Tadbir.Persistence
             // Product Inventory accounts -- supplied by user (Debit)...
             // Performance account (Credit)...
             var performanceAccount = specialAccounts[AccountCollectionId.Performance].SingleOrDefault();
+            if (performanceAccount == null)
+            {
+                return lines;
+            }
+
             var branchItems = balanceItems.Where(item => item.BranchId == branchId);
             foreach (var item in branchItems)
             {

@@ -1192,6 +1192,24 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (104, 1, 1, NULL, 5, 35, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (105, 1, 1, NULL, 10, 35, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (106, 1, 2, NULL, 17, 36, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (107, 1, 2, NULL, 17, 37, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (108, 1, 2, NULL, 17, 38, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (109, 1, 2, NULL, 17, 39, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (110, 1, 2, NULL, 7, 40, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (111, 1, 2, NULL, 7, 41, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (112, 1, 2, NULL, 7, 42, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (113, 1, 2, NULL, 7, 43, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (114, 1, 2, NULL, 7, 44, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 
@@ -1252,12 +1270,6 @@ CREATE TABLE [Finance].[AccountHolder] (
 )
 GO
 
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [Metadata].[Province] (
     [ProvinceID]     INT              IDENTITY (1, 1) NOT NULL,
 	[Name]           NVARCHAR(64)     NOT NULL,
@@ -1268,12 +1280,6 @@ CREATE TABLE [Metadata].[Province] (
 )
 GO
 
-
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE TABLE [Metadata].[City] (
     [CityID]         INT              IDENTITY (1, 1) NOT NULL,

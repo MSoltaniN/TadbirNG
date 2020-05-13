@@ -790,7 +790,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (voucher != null)
             {
                 voucher.StatusName = _strings[voucher.StatusName];
-                voucher.Description = _strings[voucher.Description];
+                voucher.Description = _strings[voucher.Description ?? String.Empty];
             }
         }
 
@@ -806,8 +806,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (voucherLine != null)
             {
-                voucherLine.CurrencyName = _strings[voucherLine.CurrencyName];
-                voucherLine.Description = _strings[voucherLine.Description];
+                voucherLine.CurrencyName = _strings[voucherLine.CurrencyName ?? String.Empty];
+                voucherLine.Description = _strings[voucherLine.Description ?? String.Empty];
             }
         }
 
