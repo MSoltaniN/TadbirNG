@@ -11,12 +11,12 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 {
@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
             _mockRepository
                 .Setup(repo => repo.GetAccountsAsync(It.IsAny<GridOptions>()))
-                .ReturnsAsync(new List<AccountViewModel>());
+                .ReturnsAsync(new PagedList<AccountViewModel>(new List<AccountViewModel>()));
 
             // Act
             var result = await _controller.GetEnvironmentAccountsAsync() as JsonResult;
@@ -361,7 +361,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in Setup method)
 
             // Act
-            var result = await _controller.PostNewAccountAsync(new AccountViewModel());
+            var result = await _controller.PostNewAccountAsync(new AccountFullDataViewModel());
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -371,7 +371,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public async Task PostNewAccountAsync_GivenValidModel_CallsRepositoryWithModel()
         {
             // Arrange
-            var newAccount = new AccountViewModel() { BranchId = 1 };
+            var newAccount = new AccountFullDataViewModel() { Account = new AccountViewModel() { BranchId = 1 } };
 
             // Act
             await _controller.PostNewAccountAsync(newAccount);
@@ -384,7 +384,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public async Task PostNewAccountAsync_GivenValidModel_ReturnsObjectResultWithCreatedStatusCode()
         {
             // Arrange
-            var newAccount = new AccountViewModel() { BranchId = 1 };
+            var newAccount = new AccountFullDataViewModel() { Account = new AccountViewModel() { BranchId = 1 } };
 
             // Act
             var result = await _controller.PostNewAccountAsync(newAccount) as ObjectResult;
@@ -410,7 +410,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public async Task PostNewAccountAsync_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
         {
             // Arrange
-            var invalidModel = new AccountViewModel();
+            var invalidModel = new AccountFullDataViewModel();
 
             // Act
             _controller.ModelState.AddModelError(String.Empty, "Invalid");
@@ -426,8 +426,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public async Task PostNewAccountAsync_GivenDuplicateAccount_ReturnsBadRequestWithMessage()
         {
             // Arrange (Done in setup methods)
-            var duplicate = new AccountViewModel() { FullCode = "1234" };
-            _mockRepository.Setup(repo => repo.IsDuplicateAccountAsync(duplicate))
+            var duplicate = new AccountFullDataViewModel() { Account = new AccountViewModel() { FullCode = "1234" } };
+            _mockRepository.Setup(repo => repo.IsDuplicateAccountAsync(duplicate.Account))
                 .ReturnsAsync(true);
 
             // Act
