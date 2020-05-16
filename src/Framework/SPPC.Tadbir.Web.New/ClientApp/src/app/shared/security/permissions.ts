@@ -206,7 +206,7 @@ export enum ItemBalancePermissions {
   Lookup = 2,
   Filter = 4,
   Print = 8,
-  ByBranch = 16
+  ByBranch = 16  
 }
 
 export enum AccountBookPermissions {
