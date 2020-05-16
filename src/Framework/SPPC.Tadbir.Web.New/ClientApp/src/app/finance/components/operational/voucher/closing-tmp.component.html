@@ -4,18 +4,18 @@
     <div class="col-md-4">
       <div class="form-group row">        
         <label for="amount" class="control-label">مانده</label>
-        <sppc-numericInput name="amount" (focusout)="focusOutFunction()"  [(ngModel)]="creditDebit"
+        <sppc-numericInput #amount name="amount" (change)="focusOutFunction()"  [(ngModel)]="creditDebit"
                             class="sppc-input-num sppc-float"></sppc-numericInput>
       </div>      
       <div class="form-group row">        
         <div class="voucher-mode-item">
-          <input type="radio" name="creditDebitMode" id="mode1" class="k-radio" (change)="onSelectedKeysChange($event)"
+          <input type="radio" name="creditDebitMode" id="mode1" class="k-radio" (change)="onKeysChange()"
                   [(ngModel)]="creditDebitMode" value="1" [ngModelOptions]="{standalone: true}" />
           <label class="k-radio-label" for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
         </div>
 
         <div class="voucher-mode-item">
-          <input type="radio" name="creditDebitMode" id="mode2" class="k-radio" (change)="onSelectedKeysChange($event)"
+          <input type="radio" name="creditDebitMode" id="mode2" class="k-radio" (change)="onKeysChange()"
                   [(ngModel)]="creditDebitMode" value="2" [ngModelOptions]="{standalone: true}" />
           <label class="k-radio-label" for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
         </div>        

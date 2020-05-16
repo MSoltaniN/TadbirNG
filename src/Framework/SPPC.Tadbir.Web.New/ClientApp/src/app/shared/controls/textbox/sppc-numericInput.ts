@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, ElementRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, Validator, AbstractControl, FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { KeyCode } from '@sppc/shared/enum';
 
@@ -9,7 +9,7 @@ import { KeyCode } from '@sppc/shared/enum';
 @Component({
   selector: 'sppc-numericInput',
   template: `
-<input type="text" [(ngModel)]="showValue" (ngModelChange)="changeValue()" [OnlyNumber] class="k-textbox num-input" [ngClass]="cssClass" (keyup)="keyPress($event)"/>
+<input type="text" #numinput [(ngModel)]="showValue" (ngModelChange)="changeValue()" [OnlyNumber] class="k-textbox num-input" [ngClass]="cssClass" (keyup)="keyPress($event)"/>
 `,
   styles: [`.num-input { width:100% }`],
   providers: [
@@ -28,6 +28,8 @@ import { KeyCode } from '@sppc/shared/enum';
 
 export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator {
 
+  @ViewChild('numinput') numInput: ElementRef;
+  
   @Input() cssClass: string = "";
   @Input() set decimalCount(decCount: number) {
     this.deciCount = 0
@@ -118,6 +120,18 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
     //debugger;
     //this.propagateChange(this.hiddenValue);
 
+  }
+
+  setFocus() {
+    setTimeout(() => {
+      this.numInput.nativeElement.focus();
+    }, 0);  
+  }
+
+  select() {
+    setTimeout(() => {
+      this.numInput.nativeElement.select();
+    }, 0);
   }
 
   setComma(num: string, event?: any): string {

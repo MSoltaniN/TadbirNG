@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef, ViewChild, ViewChildren } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -6,6 +6,7 @@ import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/sha
 import { Layout } from '@sppc/env/environment';
 import { DefaultComponent, DetailComponent } from '@sppc/shared/class';
 import { InventoryBalanceInfo, AccountInfo } from '@sppc/finance/service';
+import { SppcNumericInput } from '@sppc/shared/controls';
 
 
 
@@ -36,7 +37,9 @@ export class ClosingTmpComponent extends DetailComponent implements OnInit {
   selectedRows: any[] = [];
   creditDebitMode: string = "1";
   creditDebit: number;
-    
+
+  @ViewChild('amount') txtAmount: SppcNumericInput;
+
   @Output() dataChanged: EventEmitter<any> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
@@ -60,14 +63,24 @@ export class ClosingTmpComponent extends DetailComponent implements OnInit {
     })
   }
 
-  onSelectedKeysChange(event) {
-    var index = this.inventoryBalanceData.findIndex(p=>p.accountId === this.selectedRows[0]);    
+  onSelectedKeysChange() {
+    this.onKeysChange();
+  }
+
+  onKeysChange() {
+    var index = this.inventoryBalanceData.findIndex(p => p.accountId === this.selectedRows[0]);
     if (index >= 0) {
       if (this.creditDebitMode == "1")
         this.creditDebit = this.inventoryBalanceData[index].debitBalance;
       else
         this.creditDebit = this.inventoryBalanceData[index].creditBalance;
     }
+    this.setFocusInAmount();
+  }
+
+  setFocusInAmount() {    
+    this.txtAmount.setFocus();
+    this.txtAmount.select();
   }
 
   focusOutFunction() {
