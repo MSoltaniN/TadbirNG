@@ -192,7 +192,7 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
   }
 
   editHandler() {
-    var recordId = this.selectedRows[0].id;
+    var recordId = this.selectedRows[0];//.id;
 
     this.grid.loading = true;
     this.service.getById(String.Format(AccountApi.AccountFullData, recordId)).subscribe(res => {

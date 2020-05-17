@@ -180,7 +180,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   //}
 
   rolesHandler() {
-    var branchId = this.selectedRows[0].id;
+    var branchId = this.selectedRows[0];
 
     this.dialogRef = this.dialogService.open({
       title: this.getText('Branch.RolesTitle'),
@@ -216,7 +216,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
    *عملیات تغییر شرکت
    * */
   onChangeBranch() {
-    var branchId = this.selectedRows[0].id;
+    var branchId = this.selectedRows[0];
     this.bStorageService.setSelectedBranchId(branchId);
 
     var fiscalPeriodId = this.FiscalPeriodId ? this.FiscalPeriodId : this.bStorageService.getSelectedFiscalPeriodId();
