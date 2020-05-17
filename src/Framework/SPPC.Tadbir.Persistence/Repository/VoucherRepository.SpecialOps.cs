@@ -19,15 +19,37 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
-        public async Task<VoucherViewModel> GetOpeningVoucherAsync()
+        public async Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false)
         {
             var openingVoucher = await GetCurrentSpecialVoucherAsync(VoucherType.OpeningVoucher);
             if (openingVoucher == null)
             {
-                openingVoucher = await IssueOpeningVoucherAsync();
+                if (isQuery)
+                {
+                    return null;
+                }
+                else
+                {
+                    openingVoucher = await IssueOpeningVoucherAsync();
+                }
             }
 
             return Mapper.Map<VoucherViewModel>(openingVoucher);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون مشخص می کند که برای دوره مالی قبل سند اختتامیه صادر شده یا نه
+        /// </summary>
+        /// <returns>در صورتی که دوره مالی قبل سند اختتامیه داشته باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> HasPreviousClosingVoucherAsync()
+        {
+            int previousId = await GetPreviousFiscalPeriodIdAsync();
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            int count = await repository.GetCountByCriteriaAsync(
+                v => v.FiscalPeriodId == previousId &&
+                v.Type == (short)VoucherType.ClosingVoucher);
+            return count == 1;
         }
 
         /// <summary>
@@ -352,7 +374,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Voucher> IssueOpeningVoucherAsync()
         {
             var openingVoucher = default(Voucher);
-            var lastClosingVoucher = await GetLastClosingVoucherAsync();
+            var lastClosingVoucher = await GetPreviousClosingVoucherAsync();
             if (lastClosingVoucher != null)
             {
                 openingVoucher = await IssueOpeningFromLastBalanceAsync(lastClosingVoucher);
@@ -372,14 +394,26 @@ namespace SPPC.Tadbir.Persistence
             return openingVoucher;
         }
 
-        private async Task<Voucher> GetLastClosingVoucherAsync()
+        private async Task<Voucher> GetPreviousClosingVoucherAsync()
         {
+            int previousId = await GetPreviousFiscalPeriodIdAsync();
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var lastClosing = await repository.GetSingleByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId - 1 &&
+                v => v.FiscalPeriodId == previousId &&
                 v.Type == (short)VoucherType.ClosingVoucher,
                 v => v.Lines);
             return lastClosing;
+        }
+
+        private async Task<int> GetPreviousFiscalPeriodIdAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            return await repository
+                .GetEntityQuery()
+                .Where(fp => fp.Id < UserContext.FiscalPeriodId)
+                .OrderByDescending(fp => fp.Id)
+                .Select(fp => fp.Id)
+                .FirstOrDefaultAsync();
         }
 
         private async Task<Voucher> IssueOpeningFromLastBalanceAsync(Voucher lastClosingVoucher)

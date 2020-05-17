@@ -12,7 +12,14 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
-        Task<VoucherViewModel> GetOpeningVoucherAsync();
+        Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false);
+
+        /// <summary>
+        /// به روش آسنکرون مشخص می کند که برای دوره مالی قبل سند اختتامیه صادر شده یا نه
+        /// </summary>
+        /// <returns>در صورتی که دوره مالی قبل سند اختتامیه داشته باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> HasPreviousClosingVoucherAsync();
 
         /// <summary>
         /// به روش آسنکرون، سند بستن حساب های موقت مربوط به دوره مالی جاری را

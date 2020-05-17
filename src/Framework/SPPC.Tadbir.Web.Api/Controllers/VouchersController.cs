@@ -394,6 +394,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // GET: api/vouchers/opening/query
+        [Route(VoucherApi.OpeningVoucherQueryUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetOpeningVoucherAsync()
+        {
+            var openingVoucher = await _repository.GetOpeningVoucherAsync(true);
+            if (openingVoucher != null)
+            {
+                Localize(openingVoucher);
+                return Json(openingVoucher);
+            }
+            else
+            {
+                bool hasPrevious = await _repository.HasPreviousClosingVoucherAsync();
+                bool needsPrompt = !hasPrevious;
+                return Json(needsPrompt);
+            }
+        }
+
         // GET: api/vouchers/opening
         [Route(VoucherApi.OpeningVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
