@@ -1258,20 +1258,19 @@ namespace SPPC.Tadbir.Persistence
                 insertedDetailId, facc => facc.AccountDetailAccounts);
             if (detailAccount != null && detailAccount.ParentId.HasValue)
             {
+                var relationRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
                 int count = detailAccount.AccountDetailAccounts.Count;
-                var parent = await repository
-                    .GetEntityWithTrackingQuery()
-                        .Include(facc => facc.AccountDetailAccounts)
-                            .ThenInclude(ada => ada.Account)
-                    .Where(facc => facc.Id == detailAccount.ParentId.Value)
-                    .SingleAsync();
-                foreach (var relation in parent.AccountDetailAccounts)
+                var relatedAccounts = await relationRepository
+                    .GetEntityQuery(ada => ada.Account)
+                    .Where(ada => ada.DetailId == detailAccount.ParentId.Value
+                        && ada.Account.FiscalPeriodId <= UserContext.FiscalPeriodId)
+                    .Select(ada => ada.Account)
+                    .ToListAsync();
+                foreach (var account in relatedAccounts)
                 {
                     var accountDetailAccount = new AccountDetailAccount()
                     {
-                        Account = relation.Account,
-                        AccountId = relation.AccountId,
-                        DetailAccount = detailAccount,
+                        AccountId = account.Id,
                         DetailId = detailAccount.Id
                     };
                     detailAccount.AccountDetailAccounts.Add(accountDetailAccount);
@@ -1296,20 +1295,19 @@ namespace SPPC.Tadbir.Persistence
                 insertedCenterId, cc => cc.AccountCostCenters);
             if (costCenter != null && costCenter.ParentId.HasValue)
             {
+                var relationRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
                 int count = costCenter.AccountCostCenters.Count;
-                var parent = await repository
-                    .GetEntityWithTrackingQuery()
-                        .Include(cc => cc.AccountCostCenters)
-                            .ThenInclude(ac => ac.Account)
-                    .Where(cc => cc.Id == costCenter.ParentId.Value)
-                    .SingleAsync();
-                foreach (var relation in parent.AccountCostCenters)
+                var relatedAccounts = await relationRepository
+                    .GetEntityQuery(ac => ac.Account)
+                    .Where(ac => ac.CostCenterId == costCenter.ParentId.Value
+                        && ac.Account.FiscalPeriodId <= UserContext.FiscalPeriodId)
+                    .Select(ac => ac.Account)
+                    .ToListAsync();
+                foreach (var account in relatedAccounts)
                 {
                     var accountCostCenter = new AccountCostCenter()
                     {
-                        Account = relation.Account,
-                        AccountId = relation.AccountId,
-                        CostCenter = costCenter,
+                        AccountId = account.Id,
                         CostCenterId = costCenter.Id
                     };
                     costCenter.AccountCostCenters.Add(accountCostCenter);
@@ -1334,20 +1332,19 @@ namespace SPPC.Tadbir.Persistence
                 insertedProjectId, prj => prj.AccountProjects);
             if (project != null && project.ParentId.HasValue)
             {
+                var relationRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
                 int count = project.AccountProjects.Count;
-                var parent = await repository
-                    .GetEntityWithTrackingQuery()
-                        .Include(prj => prj.AccountProjects)
-                            .ThenInclude(ap => ap.Account)
-                    .Where(prj => prj.Id == project.ParentId.Value)
-                    .SingleAsync();
-                foreach (var relation in parent.AccountProjects)
+                var relatedAccounts = await relationRepository
+                    .GetEntityQuery(ap => ap.Account)
+                    .Where(ap => ap.ProjectId == project.ParentId.Value
+                        && ap.Account.FiscalPeriodId <= UserContext.FiscalPeriodId)
+                    .Select(ap => ap.Account)
+                    .ToListAsync();
+                foreach (var account in relatedAccounts)
                 {
                     var accountProject = new AccountProject()
                     {
-                        Account = relation.Account,
-                        AccountId = relation.AccountId,
-                        Project = project,
+                        AccountId = account.Id,
                         ProjectId = project.Id
                     };
                     project.AccountProjects.Add(accountProject);

@@ -59,6 +59,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>ترجمه رشته داده شده به زبان جاری برنامه</returns>
         public string Localize(string resourceKey)
         {
+            if (String.IsNullOrEmpty(resourceKey))
+            {
+                return resourceKey;
+            }
+
             var parts = resourceKey.Split(' ');
             var licalizedParts = parts.Select(part => _strings[part]);
             return String.Join(" ", licalizedParts);

@@ -791,6 +791,7 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (41, N'EditRate
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (42, N'DeleteRate')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (43, N'PrintRates')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (44, N'GroupDeleteRates')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (45, N'ViewRates')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -1201,15 +1202,17 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (109, 1, 2, NULL, 17, 39, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (110, 1, 2, NULL, 7, 40, 1)
+    VALUES (110, 1, 1, NULL, 7, 40, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (111, 1, 2, NULL, 7, 41, 1)
+    VALUES (111, 1, 1, NULL, 7, 41, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (112, 1, 2, NULL, 7, 42, 1)
+    VALUES (112, 1, 1, NULL, 7, 42, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (113, 1, 2, NULL, 7, 43, 1)
+    VALUES (113, 1, 1, NULL, 7, 43, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES (114, 1, 2, NULL, 7, 44, 1)
+    VALUES (114, 1, 1, NULL, 7, 44, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (115, 1, 1, NULL, 7, 45, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 

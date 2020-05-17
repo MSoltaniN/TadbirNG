@@ -2515,7 +2515,7 @@
     <value>نرخ های ارز</value>
   </data>
   <data name="Multiplier" xml:space="preserve">
-    <value>نرخ</value>
+    <value>نرخ تبدیل</value>
   </data>
   <data name="Revised" xml:space="preserve">
     <value>اصلاحی</value>
@@ -3131,5 +3131,8 @@
   </data>
   <data name="RegisterEndProductInventory" xml:space="preserve">
     <value>ثبت موجودی کالای پایان دوره</value>
+  </data>
+  <data name="ViewRates" xml:space="preserve">
+    <value>مشاهده نرخ ها</value>
   </data>
 </root>

@@ -343,6 +343,16 @@ namespace SPPC.Tadbir.Api
         public const string SystemIssueArticlesUrl = "vouchers/articles/sys-issue/{issueType}";
 
         /// <summary>
+        /// API client URL for querying existence of the opening voucher in current environment
+        /// </summary>
+        public const string OpeningVoucherQuery = "vouchers/opening/query";
+
+        /// <summary>
+        /// API server route URL for querying existence of the opening voucher in current environment
+        /// </summary>
+        public const string OpeningVoucherQueryUrl = "vouchers/opening/query";
+
+        /// <summary>
         /// API client URL for the opening voucher in current environment
         /// </summary>
         public const string OpeningVoucher = "vouchers/opening";

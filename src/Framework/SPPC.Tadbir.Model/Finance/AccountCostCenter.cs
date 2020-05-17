@@ -13,7 +13,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public AccountCostCenter()
         {
-            InitReferences();
         }
 
         /// <summary>
@@ -35,11 +34,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// نمونه مرکز هزینه متناظر با شناسه دیتابیسی موجود
         /// </summary>
         public virtual CostCenter CostCenter { get; set; }
-
-        private void InitReferences()
-        {
-            Account = new Account();
-            CostCenter = new CostCenter();
-        }
     }
 }

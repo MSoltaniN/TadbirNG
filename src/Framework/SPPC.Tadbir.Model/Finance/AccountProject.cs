@@ -13,7 +13,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public AccountProject()
         {
-            InitReferences();
         }
 
         /// <summary>
@@ -35,11 +34,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// نمونه پروژه متناظر با شناسه دیتابیسی موجود
         /// </summary>
         public virtual Project Project { get; set; }
-
-        private void InitReferences()
-        {
-            Account = new Account();
-            Project = new Project();
-        }
     }
 }
