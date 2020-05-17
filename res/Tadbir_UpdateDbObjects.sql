@@ -1266,3 +1266,26 @@ CREATE TABLE [Metadata].[City] (
     , CONSTRAINT [FK_Metadata_City_Metadata_Province] FOREIGN KEY ([ProvinceID]) REFERENCES [Metadata].[Province]([ProvinceID])
 )
 GO
+
+-- 1.1.894
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (45, N'ViewRates')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+DELETE FROM [Config].[LogSetting]
+WHERE LogSettingID >= 110
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (110, 1, 1, NULL, 7, 40, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (111, 1, 1, NULL, 7, 41, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (112, 1, 1, NULL, 7, 42, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (113, 1, 1, NULL, 7, 43, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (114, 1, 1, NULL, 7, 44, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (115, 1, 1, NULL, 7, 45, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

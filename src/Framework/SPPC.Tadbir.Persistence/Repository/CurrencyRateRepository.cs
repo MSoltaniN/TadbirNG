@@ -48,9 +48,10 @@ namespace SPPC.Tadbir.Persistence
                     .ThenByDescending(rate => rate.Time)
                     .Select(rate => Mapper.Map<CurrencyRateViewModel>(rate))
                     .ToListAsync();
-                OnEntityAction(OperationId.View);
-                Log.Description = GetRatesOperationDescription(currency.Name);
-                await ReadAsync(gridOptions);
+                var description = GetRatesOperationDescription(currency.Name);
+                var options = gridOptions ?? new GridOptions();
+                options.Operation = (int)OperationId.ViewRates;
+                await ReadAsync(options, description);
                 return new PagedList<CurrencyRateViewModel>(all, gridOptions);
             }
 

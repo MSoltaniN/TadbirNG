@@ -3141,4 +3141,7 @@
   <data name="RegisterEndProductInventory" xml:space="preserve">
     <value>Registering product inventory balance</value>
   </data>
+  <data name="ViewRates" xml:space="preserve">
+    <value>View rates</value>
+  </data>
 </root>

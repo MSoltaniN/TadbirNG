@@ -231,6 +231,11 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// کد عملیاتی حذف گروهی نرخ های ارز
         /// </summary>
-        GroupDeleteRates = 44
+        GroupDeleteRates = 44,
+
+        /// <summary>
+        /// کد عملیاتی مشاهده نرخ های ارز
+        /// </summary>
+        ViewRates = 45
     }
 }

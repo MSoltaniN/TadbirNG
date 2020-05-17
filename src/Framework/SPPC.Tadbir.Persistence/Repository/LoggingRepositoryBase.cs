@@ -112,10 +112,12 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، لاگ عملیاتی را در صورت نیاز برای عملیات خواندن لیست موجودیت ها ایجاد می کند
         /// </summary>
         /// <param name="gridOptions">اطلاعات مورد نیاز برای ایجاد لاگ</param>
-        protected async Task ReadAsync(GridOptions gridOptions)
+        /// <param name="description">شرح اختیاری برای رویداد</param>
+        protected async Task ReadAsync(GridOptions gridOptions, string description = null)
         {
             var options = gridOptions ?? new GridOptions();
             OnEntityAction((OperationId)options.Operation);
+            Log.Description = description;
             if (options.ListChanged)
             {
                 await TrySaveLogAsync();
@@ -351,11 +353,11 @@ namespace SPPC.Tadbir.Persistence
                 }
                 else if (dataField == AppStrings.FullCode)
                 {
-                    Reflector.SetProperty(Log, AppStrings.EntityCode, value);
+                    Reflector.SetProperty(Log, AppStrings.EntityCode, value?.ToString());
                 }
                 else
                 {
-                    Reflector.SetProperty(Log, propertyName, value);
+                    Reflector.SetProperty(Log, propertyName, Context.Localize(value?.ToString()));
                 }
             }
         }

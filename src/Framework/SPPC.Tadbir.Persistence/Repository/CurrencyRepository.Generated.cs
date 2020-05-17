@@ -348,10 +348,10 @@ namespace SPPC.Tadbir.Persistence
         protected override string GetState(Currency entity)
         {
             return (entity != null)
-                ? String.Format(
+                ? String.Format("{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
                     AppStrings.Name, entity.Name, AppStrings.Code, entity.Code,
-                    AppStrings.MinorUnit, entity.MinorUnit, AppStrings.Multiplier, entity.Multiplier,
-                    AppStrings.DecimalCount, entity.DecimalCount, AppStrings.Description, entity.Description)
+                    AppStrings.MinorUnit, entity.MinorUnit, AppStrings.DecimalCount, entity.DecimalCount,
+                    AppStrings.Description, entity.Description)
                 : null;
         }
 
