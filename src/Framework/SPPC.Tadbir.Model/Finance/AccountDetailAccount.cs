@@ -13,7 +13,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public AccountDetailAccount()
         {
-            InitReferences();
         }
 
         /// <summary>
@@ -35,11 +34,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// نمونه تفصیلی شناور متناظر با شناسه دیتابیسی موجود
         /// </summary>
         public virtual DetailAccount DetailAccount { get; set; }
-
-        private void InitReferences()
-        {
-            Account = new Account();
-            DetailAccount = new DetailAccount();
-        }
     }
 }
