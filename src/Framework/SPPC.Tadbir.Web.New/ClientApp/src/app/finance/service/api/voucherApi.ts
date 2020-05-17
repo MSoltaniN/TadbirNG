@@ -114,6 +114,9 @@ export class VoucherApi {
     public static SystemIssueArticles = environment.BaseUrl + "/vouchers/articles/sys-issue/{0}";
 
     // vouchers/opening
+    public static OpeningVoucherQuery = environment.BaseUrl + "/vouchers/opening/query";
+
+    // vouchers/opening
     public static OpeningVoucher = environment.BaseUrl + "/vouchers/opening";
 
     // vouchers/closing-tmp
