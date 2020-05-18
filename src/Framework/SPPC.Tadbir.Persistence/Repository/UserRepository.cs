@@ -564,13 +564,10 @@ namespace SPPC.Tadbir.Persistence
                     && !currentItems.Contains(item.Id));
             foreach (var item in newItems)
             {
-                var role = repository.GetByIDWithTracking(item.Id);
                 var userRole = new UserRole()
                 {
-                    User = existing,
                     UserId = existing.Id,
-                    Role = role,
-                    RoleId = role.Id
+                    RoleId = item.Id
                 };
                 existing.UserRoles.Add(userRole);
             }
