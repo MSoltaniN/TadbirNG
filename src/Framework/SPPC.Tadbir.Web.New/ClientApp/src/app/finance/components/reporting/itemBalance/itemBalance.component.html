@@ -73,13 +73,12 @@
       </div>
 
       <div class="col-md-12  no-padding no-margin">
-
         <div class="test-balance sppc-float">
           <input type="radio" name="rdbitemBalanceType" [(ngModel)]="itemBalanceType" (change)="changeType()" id="radio1" class="k-radio" value="1" />
-          <label class="k-radio-label" for="radio1">{{ 'ItemBalance.ByDate' | translate }}</label>
+          <label  for="radio1">{{ 'ItemBalance.ByDate' | translate }}</label>
           <br />
           <input type="radio" name="rdbitemBalanceType" [(ngModel)]="itemBalanceType" (change)="changeType()" class="k-radio" id="radio2" value="2" />
-          <label class="k-radio-label" for="radio2">{{ 'ItemBalance.ByVoucher' | translate }}</label>
+          <label  for="radio2">{{ 'ItemBalance.ByVoucher' | translate }}</label>
         </div>
         <div class="sppc-float">
 
@@ -329,7 +328,7 @@
               </div>
               <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
                 <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="showFilterByRefChange()" />
-                <label class="k-checkbox-label" for="showFilterByRef">{{ 'ItemBalance.FilterByRef' | translate }}</label>
+                <span  for="showFilterByRef">{{ 'ItemBalance.FilterByRef' | translate }}</span>
               </div>            
           </div>
           <div class="col-xs-12 col-sm-3 form-group">
@@ -347,19 +346,19 @@
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
             <input type="checkbox" name="useClosingVoucher" id="useClosingVoucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" (ngModelChange)="saveStates()"/>
-            <label class="k-checkbox-label" for="useClosingVoucher">{{ 'ItemBalance.Closing' | translate }}</label>
+            <span for="useClosingVoucher">{{ 'ItemBalance.Closing' | translate }}</span>
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
             <input type="checkbox" name="useClosingTempVoucher" id="useClosingTempVoucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" (ngModelChange)="saveStates()"/>
-            <label class="k-checkbox-label" for="useClosingTempVoucher">{{ 'ItemBalance.CloseAccounts' | translate }}</label>
+            <span for="useClosingTempVoucher">{{ 'ItemBalance.CloseAccounts' | translate }}</span>
           </div>
         </div>        
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
             <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="saveStates()"/>
-            <label class="k-checkbox-label" for="showZeroBalanceItems">{{ 'ItemBalance.ShowZeroRemains' | translate }}</label>
+            <span  for="showZeroBalanceItems">{{ 'ItemBalance.ShowZeroRemains' | translate }}</span>
           </div>
         </div>        
       </div>

@@ -197,7 +197,7 @@
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
         <input type="checkbox" name="account" id="account" [(ngModel)]="chbAccount" (ngModelChange)="onChangeCheckboxFullAccount($event,'account')" class="k-checkbox" />
-        <label class="k-checkbox-label" for="account">{{ 'Entity.Account' | translate }}</label>
+        <span  for="account">{{ 'Entity.Account' | translate }}</span>
 
         <input type="text" class="k-textbox acc-code" [ngModel]="selectedAccount?.fullCode" title="{{selectedAccount?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
         <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedAccount?.name" title="{{selectedAccount?.name}}" readonly />
@@ -207,7 +207,7 @@
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
         <input type="checkbox" name="detailAccount" id="detailAccount" [(ngModel)]="chbDetailAccount" (ngModelChange)="onChangeCheckboxFullAccount($event,'detailAccount')" class="k-checkbox" />
-        <label class="k-checkbox-label" for="detailAccount">{{ 'Entity.DetailAccount' | translate }}</label>
+        <span  for="detailAccount">{{ 'Entity.DetailAccount' | translate }}</span>
 
         <input type="text" class="k-textbox acc-code" [ngModel]="selectedDetailAccount?.fullCode" title="{{selectedDetailAccount?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
         <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedDetailAccount?.name" title="{{selectedDetailAccount?.name}}" readonly />
@@ -217,7 +217,7 @@
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
         <input type="checkbox" name="costCenter" id="costCenter" [(ngModel)]="chbCostCenter" (ngModelChange)="onChangeCheckboxFullAccount($event,'costCenter')" class="k-checkbox" />
-        <label class="k-checkbox-label" for="costCenter">{{ 'Entity.CostCenter' | translate }}</label>
+        <span for="costCenter">{{ 'Entity.CostCenter' | translate }}</span>
 
         <input type="text" class="k-textbox acc-code" [ngModel]="selectedCostCenter?.fullCode" title="{{selectedCostCenter?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
         <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedCostCenter?.name" title="{{selectedCostCenter?.name}}" readonly />
@@ -227,7 +227,7 @@
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
         <input type="checkbox" name="project" id="project" [(ngModel)]="chbProject" (ngModelChange)="onChangeCheckboxFullAccount($event,'project')" class="k-checkbox" />
-        <label class="k-checkbox-label" for="project">{{ 'Entity.Project' | translate }}</label>
+        <span for="project">{{ 'Entity.Project' | translate }}</span>
 
         <input type="text" class="k-textbox acc-code" [ngModel]="selectedProject?.fullCode" title="{{selectedProject?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
         <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedProject?.name" title="{{selectedProject?.name}}" readonly />
@@ -287,7 +287,7 @@
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
         <div style="margin-top:33px">
           <input type="checkbox" [(ngModel)]="currencyFree" [disabled]="selectedCurrencyValue" (ngModelChange)="onChangeCurrencyFree()" name="currencyFree" id="currencyFree" class="k-checkbox" />
-          <label class="k-checkbox-label" for="currencyFree">{{ 'CurrencyBook.CurrencyFreeRows' | translate }}</label>
+          <span for="currencyFree">{{ 'CurrencyBook.CurrencyFreeRows' | translate }}</span>
         </div>
       </div>
 

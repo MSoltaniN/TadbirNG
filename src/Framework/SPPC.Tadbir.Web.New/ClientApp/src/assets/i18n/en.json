@@ -38,7 +38,8 @@
     "GrossSales": "Gross Sales",
     "DashboardTitle": "Dashboard",
     "Home": "Home",
-    "DashboardName": "Dashboard"
+    "DashboardName": "\"Dashboard\".",
+    "White": "White"
   },
   "Exception": {
     "ErrorCode": "Error Code",
