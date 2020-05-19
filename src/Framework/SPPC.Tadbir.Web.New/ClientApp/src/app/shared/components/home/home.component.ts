@@ -46,6 +46,9 @@ export class HomeComponent extends DefaultComponent implements OnInit {
   @ViewChild('elClsoingTmp') elClsoingTmp: TemplateRef<any>;
   @ViewChild('closingTmpActions') closingTmpActionBtn: TemplateRef<any>;
 
+  @ViewChild('elOpenVoucherConfirmBox') elOVConfirmBox: TemplateRef<any>;
+  @ViewChild('elOpenVoucherActions') elOVConfirmBoxActions: TemplateRef<any>;
+
   private dialog;
   voucherNo: number;
   returnUrl: string;
@@ -70,6 +73,9 @@ export class HomeComponent extends DefaultComponent implements OnInit {
       case 'by-no':
         this.showByNoDialog();
         break;
+      case 'opening-voucher':
+        this.showOpeningVoucherConfirm();        
+        break;
     }
   }
 
@@ -88,6 +94,21 @@ export class HomeComponent extends DefaultComponent implements OnInit {
       title: 'شماره سند',
       content: this.el,
       actions: this.actionBtn
+    });
+  }
+
+  showOpeningVoucherConfirm() {
+    this.dialog = this.dialogService.open({
+      title: 'پیغام تایید',
+      content: this.elOVConfirmBox,
+      actions: this.elOVConfirmBoxActions
+    });
+  }
+
+  openingVoucherOk() {
+    this.voucherService.getOpeningVoucher().subscribe(result => {
+      this.close();
+      this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
     });
   }
 

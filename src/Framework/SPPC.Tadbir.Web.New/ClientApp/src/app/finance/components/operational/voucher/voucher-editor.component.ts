@@ -152,8 +152,14 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
             break
           }
-          case "opening-voucher": {          
-            this.getVoucher(VoucherApi.OpeningVoucher);
+          case "opening-voucher": {                      
+            var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
+            if (voucherNo) {
+              this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+            }
+            else {
+              this.openingVoucherQuery();
+            }
             break;
           }
           case "closing-voucher": {
@@ -181,6 +187,23 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
 
     this.getVoucherType();
+  }
+
+  openingVoucherQuery() {
+    this.voucherService.getOpeningVoucherQuery().subscribe(result => {
+      if (result == true) {        
+        //show confirm box
+        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/opening-voucher', mode: 'opening-voucher' } });
+      }
+      else if (result == false) {
+        //create opening voucher
+        this.getVoucher(VoucherApi.OpeningVoucher);
+      }
+      else {
+        this.initVoucherForm(result);
+      }
+
+    });
   }
 
   checkClosingTmp() {
