@@ -3135,4 +3135,7 @@
   <data name="ViewRates" xml:space="preserve">
     <value>مشاهده نرخ ها</value>
   </data>
+  <data name="CannotDeleteRoleHavingPermissions" xml:space="preserve">
+    <value>برای نقش {0} دسترسی سطری تعریف شده و قابل حذف نیست.</value>
+  </data>
 </root>

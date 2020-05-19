@@ -236,6 +236,26 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، نقش های مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        public async Task DeleteRolesAsync(IEnumerable<int> items)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
+            foreach (int item in items)
+            {
+                var role = await repository.GetByIDWithTrackingAsync(item, r => r.RolePermissions);
+                if (role != null)
+                {
+                    role.RolePermissions.Clear();
+                    await DeleteNoLogAsync(repository, role);
+                }
+            }
+
+            await OnEntityGroupDeleted(items);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر به کاربری تخصیص داده شده یا نه
         /// </summary>
         /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
@@ -274,6 +294,20 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر با یک یا چند شرکت مرتبط شده یا نه
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اگر نقش مورد نظر با یک یا چند شرکت مرتبط شده مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsRoleRelatedToCompanyAsync(int roleId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<RoleCompany>();
+            int count = await repository
+                .GetCountByCriteriaAsync(rc => rc.RoleId == roleId);
+            return count > 0;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر با یک یا چند دوره مالی مرتبط شده یا نه
         /// </summary>
         /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
@@ -286,6 +320,20 @@ namespace SPPC.Tadbir.Persistence
             int count = await repository
                 .GetCountByCriteriaAsync(rfp => rfp.RoleId == roleId);
             UnitOfWork.UseSystemContext();
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا برای نقش مورد نظر دسترسی سطری تعریف شده است یا نه؟
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اگر برای نقش مورد نظر دسترسی سطری تعریف شده مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> HasRowPermissions(int roleId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
+            int count = await repository
+                .GetCountByCriteriaAsync(rp => rp.Role.Id == roleId);
             return count > 0;
         }
 

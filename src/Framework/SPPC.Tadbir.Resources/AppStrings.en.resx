@@ -3144,4 +3144,7 @@
   <data name="ViewRates" xml:space="preserve">
     <value>View rates</value>
   </data>
+  <data name="CannotDeleteRoleHavingPermissions" xml:space="preserve">
+    <value>The role {0} has one or more row permissions and cannot be deleted.</value>
+  </data>
 </root>

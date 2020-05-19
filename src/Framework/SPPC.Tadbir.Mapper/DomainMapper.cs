@@ -143,9 +143,7 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Items,
                     opts => opts.MapFrom(src => src.Items.Count > 0
                         ? String.Join(",", src.Items)
-                        : null))
-                .AfterMap((viewModel, model) => model.Role.Id = viewModel.RoleId)
-                .AfterMap((viewModel, model) => model.View.Id = viewModel.ViewId);
+                        : null));
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
