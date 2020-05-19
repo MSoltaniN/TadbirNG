@@ -62,7 +62,7 @@ namespace SPPC.Tadbir.Persistence
             var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherType.ClosingTempAccounts);
             if (closingVoucher == null)
             {
-                var balanceItems = new List<InventoryBalanceViewModel>();
+                var balanceItems = new List<AccountBalanceViewModel>();
                 closingVoucher = await IssueClosingTempAccountsVoucherAsync(balanceItems);
             }
 
@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="balanceItems">مجموعه مقادیر مانده موجودی انبار - برای سیستم ثبت ادواری</param>
         /// <returns>اطلاعات نمایشی سند بستن حساب های موقت در دوره مالی جاری</returns>
         public async Task<VoucherViewModel> GetPeriodicClosingTempAccountsVoucherAsync(
-            IList<InventoryBalanceViewModel> balanceItems)
+            IList<AccountBalanceViewModel> balanceItems)
         {
             var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherType.ClosingTempAccounts);
             if (closingVoucher == null)
@@ -118,6 +118,23 @@ namespace SPPC.Tadbir.Persistence
             {
                 line.RowNo = rowNo++;
             }
+        }
+
+        private static void SetReverseAmounts(VoucherLine line, decimal balance)
+        {
+            line.Debit = balance < 0 ? Math.Abs(balance) : 0.0M;
+            line.Credit = balance > 0 ? balance : 0.0M;
+        }
+
+        private static AccountBalanceViewModel GetBalanceItem(int accountId, int branchId, decimal balance)
+        {
+            return new AccountBalanceViewModel()
+            {
+                AccountId = accountId,
+                BranchId = branchId,
+                DebitBalance = balance > 0 ? balance : 0.0M,
+                CreditBalance = balance < 0 ? Math.Abs(balance) : 0.0M
+            };
         }
 
         private static IEnumerable<IGrouping<int?, VoucherLine>> GetByCurrencyLineGroups(IEnumerable<VoucherLine> lines)
@@ -317,7 +334,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<VoucherLine>> GetAccountBalanceLinesAsync(
-            Account account, int branchId, string description, bool isDebit = true)
+            Account account, int branchId, string description)
         {
             var branchLines = new List<VoucherLine>();
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
@@ -329,8 +346,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var grouping in GetByCurrencyLineGroups(accountLines))
             {
                 var first = grouping.First();
-                var balance = Math.Abs(grouping.Sum(line => line.Debit - line.Credit));
-                branchLines.Add(new VoucherLine()
+                var closingLine = new VoucherLine()
                 {
                     AccountId = account.Id,
                     BranchId = branchId,
@@ -338,29 +354,43 @@ namespace SPPC.Tadbir.Persistence
                     CreatedById = UserContext.Id,
                     CurrencyId = first.CurrencyId,
                     CurrencyValue = grouping.Sum(line => line.CurrencyValue),
-                    Debit = isDebit ? balance : 0.0M,
-                    Credit = isDebit ? 0.0M : balance,
                     Description = description,
                     DetailId = first.DetailId,
                     FiscalPeriodId = UserContext.FiscalPeriodId,
                     ProjectId = first.ProjectId,
                     TypeId = (short)VoucherLineType.NormalLine
-                });
+                };
+                SetReverseAmounts(closingLine, grouping.Sum(line => line.Debit - line.Credit));
+                branchLines.Add(closingLine);
             }
 
             return branchLines;
         }
 
-        private VoucherLine GetAccountClosingLine(
-            int accountId, int branchId, decimal debit, decimal credit, string description)
+        private VoucherLine GetAccountDirectLine(AccountBalanceViewModel balance, string description)
         {
             return new VoucherLine()
             {
-                AccountId = accountId,
-                BranchId = branchId,
+                AccountId = balance.AccountId,
+                BranchId = balance.BranchId,
                 CreatedById = UserContext.Id,
-                Debit = debit,
-                Credit = credit,
+                Debit = balance.DebitBalance,
+                Credit = balance.CreditBalance,
+                Description = description,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                TypeId = (short)VoucherLineType.NormalLine
+            };
+        }
+
+        private VoucherLine GetAccountClosingLine(AccountBalanceViewModel balance, string description)
+        {
+            return new VoucherLine()
+            {
+                AccountId = balance.AccountId,
+                BranchId = balance.BranchId,
+                CreatedById = UserContext.Id,
+                Debit = balance.CreditBalance,
+                Credit = balance.DebitBalance,
                 Description = description,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 TypeId = (short)VoucherLineType.NormalLine
@@ -681,12 +711,12 @@ namespace SPPC.Tadbir.Persistence
             foreach (var assetAccount in assetAccounts)
             {
                 assetLines.AddRange(await GetAccountBalanceLinesAsync(
-                    assetAccount, branchId, AppStrings.ClosingAssetAccounts, false));
+                    assetAccount, branchId, AppStrings.ClosingAssetAccounts));
             }
 
-            decimal total = assetLines.Sum(line => line.Credit);
-            lines.Add(GetAccountClosingLine(
-                closingAccount.Id, branchId, total, 0.0M, AppStrings.ClosingAssetAccounts));
+            decimal balance = assetLines.Sum(line => line.Debit - line.Credit);
+            var balanceItem = GetBalanceItem(closingAccount.Id, branchId, balance);
+            lines.Add(GetAccountClosingLine(balanceItem, AppStrings.ClosingAssetAccounts));
             lines.AddRange(assetLines);
 
             var liabilityLines = new List<VoucherLine>();
@@ -697,10 +727,10 @@ namespace SPPC.Tadbir.Persistence
                     liabilityAccount, branchId, AppStrings.ClosingLiabilityCapitalAccounts));
             }
 
-            total = liabilityLines.Sum(line => line.Debit);
+            balance = liabilityLines.Sum(line => line.Debit - line.Credit);
+            balanceItem = GetBalanceItem(closingAccount.Id, branchId, balance);
             lines.AddRange(liabilityLines);
-            lines.Add(GetAccountClosingLine(
-                closingAccount.Id, branchId, 0.0M, total, AppStrings.ClosingLiabilityCapitalAccounts));
+            lines.Add(GetAccountClosingLine(balanceItem, AppStrings.ClosingLiabilityCapitalAccounts));
 
             return lines;
         }
@@ -710,7 +740,7 @@ namespace SPPC.Tadbir.Persistence
         #region Closing Temp Accounts Voucher Operations
 
         private async Task<Voucher> IssueClosingTempAccountsVoucherAsync(
-            IList<InventoryBalanceViewModel> balanceItems)
+            IList<AccountBalanceViewModel> balanceItems)
         {
             var closingVoucher = await GetNewClosingVoucherAsync();
             closingVoucher.Description = AppStrings.ClosingTempAccounts;
@@ -728,7 +758,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<VoucherLine>> GetBranchClosingTempAccountLinesAsync(
-            int branchId, IList<InventoryBalanceViewModel> balanceItems)
+            int branchId, IList<AccountBalanceViewModel> balanceItems)
         {
             return balanceItems.Count == 0
                 ? await GetBranchPerpetualLinesAsync(branchId)
@@ -745,7 +775,7 @@ namespace SPPC.Tadbir.Persistence
             var performanceAccount = specialAccounts[AccountCollectionId.Performance].SingleOrDefault();
             lines.AddRange(await GetBranchBalancedAccountLinesAsync(
                 branchId, specialAccounts[AccountCollectionId.FinalSales],
-                performanceAccount, AppStrings.ClosingSalesAccounts, false));
+                performanceAccount, AppStrings.ClosingSalesAccounts));
 
             // Performance account (Debit)...
             // Sales reducer accounts by floating items and currency (Credit)...
@@ -764,10 +794,10 @@ namespace SPPC.Tadbir.Persistence
             var profitLossAccount = specialAccounts[AccountCollectionId.CurrentProfitLoss].SingleOrDefault();
             decimal performance = lines
                 .Where(line => line.AccountId == performanceAccount.Id)
-                .Sum(line => line.Credit - line.Debit);
+                .Sum(line => line.Debit - line.Credit);
             lines.AddRange(GetBranchBalancedAccountLines(
                 branchId, performanceAccount, profitLossAccount,
-                AppStrings.ClosingPerformanceToProfitLoss, performance, false));
+                AppStrings.ClosingPerformanceToProfitLoss, performance));
 
             // Current Profit-Loss account (Debit)...
             // Operational cost accounts by floating items and currency (Credit)...
@@ -786,16 +816,17 @@ namespace SPPC.Tadbir.Persistence
             var accumulatedAccount = specialAccounts[AccountCollectionId.AccumulatedProfitLoss].SingleOrDefault();
             decimal netProfitLoss = lines
                 .Where(line => line.AccountId == profitLossAccount.Id)
-                .Sum(line => line.Credit - line.Debit);
+                .Sum(line => line.Debit - line.Credit);
             lines.AddRange(GetBranchBalancedAccountLines(
                 branchId, profitLossAccount, accumulatedAccount,
-                AppStrings.ClosingProfitLossToAccumulated, netProfitLoss, false));
+                AppStrings.ClosingProfitLossToAccumulated, netProfitLoss));
 
-            return lines;
+            return lines
+                .Where(line => line.Debit > 0.0M || line.Credit > 0.0M);
         }
 
         private async Task<IEnumerable<VoucherLine>> GetBranchPeriodicLinesAsync(
-            int branchId, IList<InventoryBalanceViewModel> balanceItems)
+            int branchId, IList<AccountBalanceViewModel> balanceItems)
         {
             var lines = new List<VoucherLine>();
             var specialAccounts = await GetPeriodicSpecialAccountsAsync(branchId);
@@ -811,20 +842,18 @@ namespace SPPC.Tadbir.Persistence
             var branchItems = balanceItems.Where(item => item.BranchId == branchId);
             foreach (var item in branchItems)
             {
-                lines.Add(GetAccountClosingLine(
-                    item.AccountId, branchId, Math.Max(item.DebitBalance, item.CreditBalance),
-                    0.0M, AppStrings.RegisterEndProductInventory));
+                lines.Add(GetAccountDirectLine(item, AppStrings.RegisterEndProductInventory));
             }
 
-            decimal totalBalance = balanceItems.Sum(item => Math.Max(item.DebitBalance, item.CreditBalance));
-            lines.Add(GetAccountClosingLine(
-                performanceAccount.Id, branchId, 0.0M, totalBalance, AppStrings.RegisterEndProductInventory));
+            decimal totalBalance = lines.Sum(line => line.Debit - line.Credit);
+            var balanceItem = GetBalanceItem(performanceAccount.Id, branchId, totalBalance);
+            lines.Add(GetAccountClosingLine(balanceItem, AppStrings.RegisterEndProductInventory));
 
             // Sales accounts by floating items and currency (Debit)...
             // Performance account (Credit)...
             lines.AddRange(await GetBranchBalancedAccountLinesAsync(
                 branchId, specialAccounts[AccountCollectionId.FinalSales],
-                performanceAccount, AppStrings.ClosingSalesAccounts, false));
+                performanceAccount, AppStrings.ClosingSalesAccounts));
 
             // Performance account (Debit)...
             // Sales reducer accounts by floating items and currency (Credit)...
@@ -842,17 +871,17 @@ namespace SPPC.Tadbir.Persistence
             // Performance account (Credit)...
             lines.AddRange(await GetBranchBalancedAccountLinesAsync(
                 branchId, specialAccounts[AccountCollectionId.PurchaseRefundDiscount],
-                performanceAccount, AppStrings.ClosingPurchaseReducerAccounts, false));
+                performanceAccount, AppStrings.ClosingPurchaseReducerAccounts));
 
             // Performance account (Debit)
             // Current Profit-Loss (Credit)
             var profitLossAccount = specialAccounts[AccountCollectionId.CurrentProfitLoss].SingleOrDefault();
             decimal performance = lines
                 .Where(line => line.AccountId == performanceAccount.Id)
-                .Sum(line => line.Credit - line.Debit);
+                .Sum(line => line.Debit - line.Credit);
             lines.AddRange(GetBranchBalancedAccountLines(
                 branchId, performanceAccount, profitLossAccount,
-                AppStrings.ClosingPerformanceToProfitLoss, performance, false));
+                AppStrings.ClosingPerformanceToProfitLoss, performance));
 
             // Current Profit-Loss account (Debit)...
             // Operational cost accounts by floating items and currency (Credit)...
@@ -871,12 +900,13 @@ namespace SPPC.Tadbir.Persistence
             var accumulatedAccount = specialAccounts[AccountCollectionId.AccumulatedProfitLoss].SingleOrDefault();
             decimal netProfitLoss = lines
                 .Where(line => line.AccountId == profitLossAccount.Id)
-                .Sum(line => line.Credit - line.Debit);
+                .Sum(line => line.Debit - line.Credit);
             lines.AddRange(GetBranchBalancedAccountLines(
                 branchId, profitLossAccount, accumulatedAccount,
-                AppStrings.ClosingProfitLossToAccumulated, netProfitLoss, false));
+                AppStrings.ClosingProfitLossToAccumulated, netProfitLoss));
 
-            return lines;
+            return lines
+                .Where(line => line.Debit > 0.0M || line.Credit > 0.0M);
         }
 
         private async Task<Dictionary<AccountCollectionId, IEnumerable<Account>>>
@@ -934,8 +964,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<VoucherLine>> GetBranchBalancedAccountLinesAsync(
-            int branchId, IEnumerable<Account> accounts, Account closureAccount,
-            string description, bool isDebitClosure = true)
+            int branchId, IEnumerable<Account> accounts, Account closureAccount, string description)
         {
             var lines = new List<VoucherLine>();
             if (closureAccount == null)
@@ -944,21 +973,17 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var accountLines = new List<VoucherLine>();
-            bool isDebit = !isDebitClosure;
             foreach (var account in accounts)
             {
                 accountLines.AddRange(
-                    await GetAccountBalanceLinesAsync(account, branchId, description, isDebit));
+                    await GetAccountBalanceLinesAsync(account, branchId, description));
             }
 
-            decimal balance = Math.Abs(accountLines.Sum(line => line.Debit - line.Credit));
-            decimal debit = isDebitClosure ? balance : 0.0M;
-            decimal credit = isDebitClosure ? 0.0M : balance;
             lines.AddRange(accountLines);
-
-            var closureLine = GetAccountClosingLine(
-                closureAccount.Id, branchId, debit, credit, description);
-            if (isDebitClosure)
+            decimal balance = accountLines.Sum(line => line.Debit - line.Credit);
+            var balanceItem = GetBalanceItem(closureAccount.Id, branchId, balance);
+            var closureLine = GetAccountClosingLine(balanceItem, description);
+            if (balance < 0)
             {
                 lines.Insert(0, closureLine);
             }
@@ -971,8 +996,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IEnumerable<VoucherLine> GetBranchBalancedAccountLines(
-            int branchId, Account account, Account closureAccount, string description,
-            decimal balance, bool isDebitClosure = true)
+            int branchId, Account account, Account closureAccount, string description, decimal balance)
         {
             var lines = new List<VoucherLine>();
             if (closureAccount == null)
@@ -980,14 +1004,11 @@ namespace SPPC.Tadbir.Persistence
                 return lines;
             }
 
-            decimal debit = isDebitClosure ? 0.0M : balance;
-            decimal credit = isDebitClosure ? balance : 0.0M;
-            lines.Add(GetAccountClosingLine(account.Id, branchId, debit, credit, description));
-
-            debit = isDebitClosure ? balance : 0.0M;
-            credit = isDebitClosure ? 0.0M : balance;
-            var closureLine = GetAccountClosingLine(closureAccount.Id, branchId, debit, credit, description);
-            if (isDebitClosure)
+            var balanceItem = GetBalanceItem(account.Id, branchId, balance);
+            lines.Add(GetAccountClosingLine(balanceItem, description));
+            balanceItem = GetBalanceItem(closureAccount.Id, branchId, -balance);
+            var closureLine = GetAccountClosingLine(balanceItem, description);
+            if (balance > 0)
             {
                 lines.Insert(0, closureLine);
             }

@@ -442,7 +442,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(VoucherApi.ClosingAccountsVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync(
-            [FromBody] IList<InventoryBalanceViewModel> balanceItems)
+            [FromBody] IList<AccountBalanceViewModel> balanceItems)
         {
             // TODO: Perform required validation
             var closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(balanceItems);
