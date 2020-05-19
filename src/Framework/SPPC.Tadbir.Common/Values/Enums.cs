@@ -239,4 +239,20 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         CreditorEndPeriod = 3
     }
+
+    /// <summary>
+    /// داده شمارشی برای انواع سیستم ثبت موجودی
+    /// </summary>
+    public enum InventoryModeEnum
+    {
+        /// <summary>
+        /// سیستم ثبت ادواری
+        /// </summary>
+        Periodic = 0,
+
+        /// <summary>
+        /// سیستم ثبت دائمی
+        /// </summary>
+        Perpetual = 1
+    }
 }

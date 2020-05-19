@@ -309,6 +309,7 @@ CREATE TABLE [Finance].[FiscalPeriod] (
     [Name]             NVARCHAR(64)     NOT NULL,
     [StartDate]        DATETIME         NOT NULL,
     [EndDate]          DATETIME         NOT NULL,
+	[InventoryMode]    INT              CONSTRAINT [DF_Finance_FiscalPeriod_InventoryMode] DEFAULT (1) NOT NULL,
     [Description]      NVARCHAR(512)    NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_FiscalPeriod_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_FiscalPeriod_ModifiedDate] DEFAULT (getdate()) NOT NULL
