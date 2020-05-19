@@ -181,17 +181,17 @@
 
                 <div class="voucher-status-item">
                   <input type="checkbox" name="balanced" id="balanced" class="k-checkbox" [ngModel]="balancedMode" onclick="return false;" />
-                  <label class="k-checkbox-label" for="balanced">{{ 'Voucher.Balanced' | translate }}</label>
+                  <span for="balanced">{{ 'Voucher.Balanced' | translate }}</span>
                 </div>
 
                 <div class="voucher-status-item">
                   <input type="checkbox" name="committed" id="committed" class="k-checkbox" [ngModel]="committedMode" onclick="return false;" />
-                  <label class="k-checkbox-label" for="committed">{{ 'Voucher.Committed' | translate }}</label>
+                  <span  for="committed">{{ 'Voucher.Committed' | translate }}</span>
                 </div>
 
                 <div class="voucher-status-item">
                   <input type="checkbox" name="finalized" id="finalized" class="k-checkbox" [ngModel]="finalizedMode" onclick="return false;" />
-                  <label class="k-checkbox-label" for="finalized">{{ 'Voucher.Finalized' | translate }}</label>
+                  <span  for="finalized">{{ 'Voucher.Finalized' | translate }}</span>
                 </div>
 
               </div>
@@ -219,7 +219,7 @@
           <div class="article-status-item">
             <input type="checkbox" id="confirmedBy" class="k-checkbox"
                    [(ngModel)]="isConfirmed" (ngModelChange)="changeVoucherStatus('confirm')"/>
-            <label class="k-checkbox-label" for="confirmedBy">{{ 'Voucher.ConfirmerName' | translate }}</label>
+            <span  for="confirmedBy">{{ 'Voucher.ConfirmerName' | translate }}</span>
 
             <input type="text" class="k-textbox" [ngModel]="voucherModel?.confirmerName" readonly />
           </div>
@@ -227,7 +227,7 @@
           <div class="article-status-item">
             <input type="checkbox" id="approvedBy" class="k-checkbox"
                    [(ngModel)]="isApproved" (ngModelChange)="changeVoucherStatus('approve')"/>
-            <label class="k-checkbox-label" for="approvedBy">{{ 'Voucher.ApproverName' | translate }}</label>
+            <span  for="approvedBy">{{ 'Voucher.ApproverName' | translate }}</span>
 
             <input type="text" class="k-textbox" [ngModel]="voucherModel?.approverName" readonly />
           </div>

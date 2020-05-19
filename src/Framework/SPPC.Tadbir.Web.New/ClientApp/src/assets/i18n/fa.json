@@ -38,7 +38,8 @@
     "GrossSales": "نمودار ماهانه فروش ناخالص",
     "DashboardTitle": "داشبورد",
     "Home": "خانه",
-    "DashboardName": "داشبورد"
+    "DashboardName": "داشبورد",
+    "White": "سفید"
   },
   "Exception": {
     "ErrorCode": "کد خطا",
@@ -943,7 +944,8 @@
     "Version": "نسخه",
     "VoucherNotFound": "سند مورد نظر یافت نشد",
     "SaveChanges": "آیا تغییرات ذخیره شود؟",
-    "VoucherDetail": "جزئیات سند"
+    "VoucherDetail": "جزئیات سند",
+    "OpeningVoucher": "آیا برای ایجاد سند افتتاحیه مطمئن هستید ؟"
   },
   "User": {
     "New": "کاربر جدید",

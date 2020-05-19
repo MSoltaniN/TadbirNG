@@ -237,7 +237,7 @@
                    [(ngModel)]="chbAccount"
                    (ngModelChange)="getAccountItemLevels($event,1);changeParam()"
                    [disabled]="selectedReportBy == '1'" />
-            <label class="k-checkbox-label" for="account">{{ 'Entity.Account' | translate }}</label>
+            <span for="account">{{ 'Entity.Account' | translate }}</span>
 
             <kendo-dropdownlist [data]="accountLevelList" class="ddl-account-item"
                                 [textField]="'title'"
@@ -260,7 +260,7 @@
                    [(ngModel)]="chbDetailAccount"
                    (ngModelChange)="getAccountItemLevels($event,6);changeParam()"
                    [disabled]="selectedReportBy == '6'" />
-            <label class="k-checkbox-label" for="detailAccount">{{ 'Entity.DetailAccount' | translate }}</label>
+            <span  for="detailAccount">{{ 'Entity.DetailAccount' | translate }}</span>
 
             <kendo-dropdownlist [data]="detailAccountLevelList" class="ddl-account-item"
                                 [textField]="'title'"
@@ -283,7 +283,7 @@
                    [(ngModel)]="chbCCenter"
                    (ngModelChange)="getAccountItemLevels($event,7);changeParam()"
                    [disabled]="selectedReportBy == '7'" />
-            <label class="k-checkbox-label" for="cost-center">{{ 'Entity.CostCenter' | translate }}</label>
+            <span  for="cost-center">{{ 'Entity.CostCenter' | translate }}</span>
 
             <kendo-dropdownlist [data]="cCenterLevelList" class="ddl-account-item"
                                 [textField]="'title'"
@@ -306,7 +306,7 @@
                    [(ngModel)]="chbProject"
                    (ngModelChange)="getAccountItemLevels($event,8);changeParam()"
                    [disabled]="selectedReportBy == '8'" />
-            <label class="k-checkbox-label" for="project">{{ 'Entity.Project' | translate }}</label>
+            <span  for="project">{{ 'Entity.Project' | translate }}</span>
 
             <kendo-dropdownlist [data]="projectLevelList" class="ddl-account-item"
                                 [textField]="'title'"
@@ -331,7 +331,7 @@
         <div class="row">
           <div class="col-xs-12 sppc-float">
             <input type="checkbox" id="filter-by-ref" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="onChangeFilterByRef();changeParam()" />
-            <label class="k-checkbox-label" for="filter-by-ref">{{ 'Balance.FilterByRef' | translate }}</label>
+            <span  for="filter-by-ref">{{ 'Balance.FilterByRef' | translate }}</span>
             <input type="text" class="k-textbox" [disabled]="!showFilterByRef" [(ngModel)]="filterByRef" (ngModelChange)="changeParam()" />
           </div>
 

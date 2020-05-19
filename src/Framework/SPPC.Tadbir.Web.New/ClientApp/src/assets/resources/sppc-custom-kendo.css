@@ -5411,11 +5411,11 @@ kendo-sortable,
     align-items: stretch;
 }
 
-.k-dialog-titlebar {
+/*.k-dialog-titlebar {
     border-color: inherit;
     color: #ffffff;
     background-color: #337ab7 !important;
-}
+}*/
 
 .k-dialog-buttongroup .k-button {
     color: inherit;
@@ -12711,7 +12711,7 @@ table.k-editor {
         transform: translate(8px, -3px) translate(1px, -1.07143em) translate(12.5%, -9.375%) scale(0.75);
     }
 
-.k-checkbox,
+/*.k-checkbox,
 .k-radio {
     margin: 0;
     padding: 0;
@@ -12721,7 +12721,7 @@ table.k-editor {
     opacity: 0;
     -webkit-appearance: none;
     pointer-events: none;
-}
+}*/
 
     .k-radio:disabled + .k-radio-label,
     .k-checkbox:disabled + .k-checkbox-label {

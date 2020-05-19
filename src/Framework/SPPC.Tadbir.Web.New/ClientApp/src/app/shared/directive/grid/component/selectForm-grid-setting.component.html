@@ -10,7 +10,7 @@
             <td *ngIf="chackIsSearchable(dataItem)">              
                 <input type="checkbox" name="search-{{dataItem.name}}" id="search-{{dataItem.name}}" class="k-checkbox" [checked]="dataItem.isSearched"
                        (change)="changeIsSearched(dataItem,$event)" />
-                <label class="k-checkbox-label" for="search-{{dataItem.name}}">{{ dataItem.title }}</label>              
+                <label for="search-{{dataItem.name}}">{{ dataItem.title }}</label>              
             </td>
           </tr>
         </table>
@@ -24,7 +24,7 @@
             <td>
               <input type="checkbox" name="show-{{dataItem.name}}" id="show-{{dataItem.name}}" class="k-checkbox" [checked]="dataItem.visibility" [disabled]="dataItem.disabled"
                      (change)="changeVisibility(dataItem,$event)" />
-              <label class="k-checkbox-label" for="show-{{dataItem.name}}">{{ dataItem.title }}</label>
+              <label for="show-{{dataItem.name}}">{{ dataItem.title }}</label>
             </td>
           </tr>
         </table>

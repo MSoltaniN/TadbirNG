@@ -67,6 +67,18 @@ export class VoucherService extends BaseService {
       .catch(this.handleError);
   }
 
+  public getOpeningVoucherQuery() {
+    return this.http.get(VoucherApi.OpeningVoucherQuery, this.option)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
+  public getOpeningVoucher() {
+    return this.http.get(VoucherApi.OpeningVoucher, this.option)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
   public getVoucherNumberByStatus(apiUrl: string, filter?: FilterExpression) {
     var intMaxValue = 2147483647
     var gridPaging = { pageIndex: 1, pageSize: intMaxValue };

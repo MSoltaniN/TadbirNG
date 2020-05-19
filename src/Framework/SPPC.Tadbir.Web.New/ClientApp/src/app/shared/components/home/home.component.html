@@ -21,6 +21,17 @@
   <closing-tmp-voucher (dataChanged)="closingDataChanged($event)"></closing-tmp-voucher>
 </ng-template>
 <ng-template #closingTmpActions>
-  <button kendoButton [primary]="true"  (click)="closingTmpOk()">تایید</button>
+  <button kendoButton [primary]="true" (click)="closingTmpOk()">تایید</button>
+  <button kendoButton (click)="close()">انصراف</button>
+</ng-template>
+
+
+<ng-template #elOpenVoucherConfirmBox>  
+  <div class="form-group">
+    {{'Voucher.OpeningVoucher' | translate}}
+  </div>  
+</ng-template>
+<ng-template #elOpenVoucherActions>
+  <button kendoButton [primary]="true" (click)="openingVoucherOk()">تایید</button>
   <button kendoButton (click)="close()">انصراف</button>
 </ng-template>
