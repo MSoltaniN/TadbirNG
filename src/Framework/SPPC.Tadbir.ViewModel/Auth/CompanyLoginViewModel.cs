@@ -52,6 +52,11 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public string FiscalPeriodName { get; set; }
 
         /// <summary>
+        /// نوع سیستم ثبت موجودی در دوره مالی کاربر به آن وارد شده
+        /// </summary>
+        public int InventoryMode { get; set; }
+
+        /// <summary>
         /// اطلاعات مورد نیاز برای اتصال به دیتابیس شرکتی که کاربر به آن وارد شده
         /// </summary>
         public string Connection { get; set; }

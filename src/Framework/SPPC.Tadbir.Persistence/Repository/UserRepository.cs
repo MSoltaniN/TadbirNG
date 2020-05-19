@@ -369,6 +369,7 @@ namespace SPPC.Tadbir.Persistence
             userContext.Connection = newLogin.Connection;
             userContext.CompanyName = newLogin.CompanyName;
             userContext.FiscalPeriodName = newLogin.FiscalPeriodName;
+            userContext.InventoryMode = newLogin.InventoryMode;
             userContext.BranchName = newLogin.BranchName;
             await OnEnvironmentChangeAsync(currentLogin, newLogin);
         }
@@ -641,6 +642,9 @@ namespace SPPC.Tadbir.Persistence
                 var fiscalPeriodRepo = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
                 var fiscalPeriod = await fiscalPeriodRepo.GetByIDAsync(fiscalPeriodId);
                 login.FiscalPeriodName = fiscalPeriod?.Name;
+                login.InventoryMode = fiscalPeriod != null
+                    ? fiscalPeriod.InventoryMode
+                    : (int)InventoryModeEnum.Perpetual;
 
                 var branchRepo = UnitOfWork.GetAsyncRepository<Branch>();
                 var branch = await branchRepo.GetByIDAsync(branchId);

@@ -1289,3 +1289,10 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (115, 1, 1, NULL, 7, 45, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.899
+ALTER TABLE [Finance].[FiscalPeriod]
+ADD [InventoryMode] INT NOT NULL
+CONSTRAINT [DF_Finance_FiscalPeriod_InventoryMode] DEFAULT (1)
+WITH VALUES;
+GO
