@@ -206,7 +206,8 @@
                                         [textField]="'value'"
                                         [valueField]="'key'"
                                         [valuePrimitive]="true"
-                                        formControlName="personType">
+                                        formControlName="personType"
+                                        (valueChange)="onChangePersonType($event)">
                     </kendo-dropdownlist>
                   </div>
                 </div>
@@ -250,8 +251,16 @@
 
                     <input type="text" class="k-textbox" formControlName="customerName" />
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.customerName.valid || customerTaxForm.controls.customerName.pristine">
-                      <span *ngIf="customerTaxForm.controls.customerName.errors?.required">{{ 'AllValidations.CustomerTaxInfo.CustomerNameIsRequired' | translate }}</span>
-                      <span *ngIf="customerTaxForm.controls.customerName.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.CustomerNameIsTooLong' | translate }}</span>
+
+                      <span *ngIf="customerTaxForm.value.personType == '1'">
+                        <span *ngIf="customerTaxForm.controls.customerName.errors?.required">{{ 'AllValidations.CustomerTaxInfo.CustomerNameIsRequired' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.customerName.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.CustomerNameIsTooLong' | translate }}</span>
+                      </span>
+                      <span *ngIf="customerTaxForm.value.personType == '2'">
+                        <span *ngIf="customerTaxForm.controls.customerName.errors?.required">{{ 'AllValidations.CustomerTaxInfo.CustomerCompanyNameIsRequired' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.customerName.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.CustomerCompanyNameIsTooLong' | translate }}</span>
+                      </span>
+
                     </div>
                   </div>
                 </div>
@@ -265,6 +274,7 @@
                     <input type="text" class="k-textbox" formControlName="economicCode" />
 
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.economicCode.valid || customerTaxForm.controls.economicCode.pristine">
+                      <span *ngIf="customerTaxForm.controls.economicCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.EconomicCodeIsRequired' | translate }}</span>
                       <span *ngIf="customerTaxForm.controls.economicCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.EconomicCodeIsTooLong' | translate }}</span>
                     </div>
                   </div>
@@ -280,8 +290,19 @@
                     <input type="text" class="k-textbox" formControlName="nationalCode" />
 
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.nationalCode.valid || customerTaxForm.controls.nationalCode.pristine">
-                      <span *ngIf="customerTaxForm.controls.nationalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.NationalCodeIsRequired' | translate }}</span>
-                      <span *ngIf="customerTaxForm.controls.nationalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.NationalCodeIsTooLong' | translate }}</span>
+
+                      <span *ngIf="customerTaxForm.value.personType == '1'">
+                        <span *ngIf="customerTaxForm.controls.nationalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.NationalCodeIsRequired' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.nationalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.NationalCodeIsTooLong' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.nationalCode.errors?.validNationalCode">{{ 'AllValidations.CustomerTaxInfo.NationalCodeNotValid' | translate }}</span>
+                      </span>
+
+                      <span *ngIf="customerTaxForm.value.personType == '2'">
+                        <span *ngIf="customerTaxForm.controls.nationalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.NationalIndexIsRequired' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.nationalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.NationalIndexIsTooLong' | translate }}</span>
+                      </span>
+
+                      
                     </div>
 
                   </div>
@@ -380,7 +401,7 @@
                   <div class="form-group">
                     <label class="control-label">{{ 'Account.CustomerTaxInfo.PostalCode' | translate }}</label>
 
-                    <input type="text" class="k-textbox" formControlName="postalCode"/>
+                    <input type="text" class="k-textbox" formControlName="postalCode" />
 
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.postalCode.valid || customerTaxForm.controls.postalCode.pristine">
                       <span *ngIf="customerTaxForm.controls.postalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.PostalCodeIsRequired' | translate }}</span>

@@ -14,6 +14,7 @@ import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@ang
 import { AccountFullData } from '@sppc/finance/models/accountFullData';
 import { CustomerTaxInfo } from '@sppc/finance/models/customerTaxInfo';
 import { HttpEventType } from '@angular/common/http';
+import { SppcNationalCode } from '@sppc/shared/directive/Validator/Sppc-nationalCodeValidator';
 
 
 
@@ -156,7 +157,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     buyerType: new FormControl('', Validators.required),
     economicCode: new FormControl('', Validators.maxLength(12)),
     address: new FormControl('', [Validators.required, Validators.maxLength(256)]),
-    nationalCode: new FormControl('', [Validators.required, Validators.maxLength(11)]),
+    nationalCode: new FormControl('', [Validators.required, Validators.maxLength(11), SppcNationalCode.validNationalCode]),
     perCityCode: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(3)]),
     phoneNo: new FormControl('', [Validators.required, Validators.maxLength(64), Validators.pattern("^[0-9-]+$")]),
     mobileNo: new FormControl('', [Validators.required, Validators.maxLength(64), Validators.pattern("^[0-9-]+$")]),
@@ -260,6 +261,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
           personType: this.customerTaxModel.id > 0 ? this.customerTaxModel.personType.toString() : "1",
           buyerType: this.customerTaxModel.id > 0 ? this.customerTaxModel.buyerType.toString() : "1"
         })
+
+        this.onChangePersonType(this.customerTaxModel.id > 0 ? this.customerTaxModel.personType.toString() : "1");
       }
 
       if (this.accountOwnerModel) {
@@ -363,6 +366,26 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
         this.onChangeProvince(this.customerTaxModel.provinceCode, true);
       }
     })
+  }
+
+  onChangePersonType(personTypeKey: string) {
+    if (personTypeKey == "2") {
+      //شحص حقوقی
+      this.customerTaxForm.patchValue({ customerFirstName: undefined });
+
+      this.customerTaxForm.controls['nationalCode'].clearValidators();
+      this.customerTaxForm.controls['nationalCode'].setValidators([Validators.required, Validators.maxLength(11)]);
+      this.customerTaxForm.controls['nationalCode'].updateValueAndValidity();
+
+      this.customerTaxForm.controls['economicCode'].clearValidators();
+      this.customerTaxForm.controls['economicCode'].setValidators([Validators.required, Validators.maxLength(12)]);
+      this.customerTaxForm.controls['economicCode'].updateValueAndValidity();
+    }
+    else {
+      //شخص حقیقی
+      this.customerTaxForm.controls['nationalCode'].setValidators([Validators.required, SppcNationalCode.validNationalCode]);
+      this.customerTaxForm.controls['nationalCode'].updateValueAndValidity();
+    }
   }
 
   onChangeProvince(provinceCode: string, initValue?: boolean) {
