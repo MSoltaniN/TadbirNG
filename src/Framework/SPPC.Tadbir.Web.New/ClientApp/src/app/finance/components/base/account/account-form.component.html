@@ -302,7 +302,7 @@
                         <span *ngIf="customerTaxForm.controls.nationalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.NationalIndexIsTooLong' | translate }}</span>
                       </span>
 
-                      
+
                     </div>
 
                   </div>
@@ -564,7 +564,19 @@
               <div class="row" formArrayName="accountHolders">
                 <div *ngFor="let item of accountHolders.controls; let i=index">
                   <div [formGroupName]="i">
-                    <div class="col-xs-12 col-sm-6 sppc-float">
+
+                    <div class="col-xs-1 sppc-float" *ngIf="accountHolders.value.length > 1">
+
+                      <button style="margin-top: 25px"
+                              class="k-button k-button-icon"
+                              type="button"
+                              (click)="onRemoveAccountHolder(i)"
+                              title="{{ 'Account.AccountOwner.RemoveAccountholder' | translate }}">
+                        <span class="k-icon k-i-minus"></span>
+                      </button>
+                    </div>
+
+                    <div class="sppc-float" [ngClass]="{'col-xs-11 col-sm-5':accountHolders.value.length > 1,'col-xs-12 col-sm-6':accountHolders.value.length == 1}">
                       <div class="form-group">
 
                         <label class="control-label">{{ 'Account.AccountOwner.FirstName' | translate }}</label>
@@ -607,14 +619,6 @@
                                 (click)="onAddAccountHolder()"
                                 title="{{ 'Account.AccountOwner.AddAccountholder' | translate }}">
                           <span class="k-icon k-i-plus"></span>
-                        </button>
-
-                        <button *ngIf="accountHolders.value.length != (i+1)"
-                                class="k-button k-button-icon"
-                                type="button"
-                                (click)="onRemoveAccountHolder(i)"
-                                title="{{ 'Account.AccountOwner.RemoveAccountholder' | translate }}">
-                          <span class="k-icon k-i-minus"></span>
                         </button>
                       </div>
                     </div>
