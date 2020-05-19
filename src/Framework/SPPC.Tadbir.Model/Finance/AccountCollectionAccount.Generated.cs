@@ -11,7 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -26,7 +25,6 @@ namespace SPPC.Tadbir.Model.Finance
         public AccountCollectionAccount()
         {
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -38,13 +36,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// حساب
         /// </summary>
         public virtual Account Account { get; set; }
-
-        private void InitReferences()
-        {
-            //Collection = new AccountCollection();
-            //Account = new Account();
-            //Branch = new Branch();
-            //FiscalPeriod = new FiscalPeriod();
-        }
     }
 }

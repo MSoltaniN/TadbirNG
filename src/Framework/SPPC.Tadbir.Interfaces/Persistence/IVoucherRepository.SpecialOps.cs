@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="balanceItems">مجموعه مقادیر مانده موجودی انبار - برای سیستم ثبت ادواری</param>
         /// <returns>اطلاعات نمایشی سند بستن حساب های موقت در دوره مالی جاری</returns>
         Task<VoucherViewModel> GetPeriodicClosingTempAccountsVoucherAsync(
-            IList<InventoryBalanceViewModel> balanceItems);
+            IList<AccountBalanceViewModel> balanceItems);
 
         /// <summary>
         /// به روش آسنکرون، سند اختتامیه مربوط به دوره مالی جاری را خوانده و برمی گرداند

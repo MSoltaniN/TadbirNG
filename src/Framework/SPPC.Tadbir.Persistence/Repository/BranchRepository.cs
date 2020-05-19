@@ -410,7 +410,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 var roleBranch = new RoleBranch()
                 {
-                    Branch = existing,
                     BranchId = existing.Id,
                     RoleId = item.Id
                 };

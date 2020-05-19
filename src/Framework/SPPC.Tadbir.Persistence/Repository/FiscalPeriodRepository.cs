@@ -460,7 +460,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 var roleFiscalPeriod = new RoleFiscalPeriod()
                 {
-                    FiscalPeriod = existing,
                     FiscalPeriodId = existing.Id,
                     RoleId = item.Id
                 };

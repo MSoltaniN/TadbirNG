@@ -819,12 +819,9 @@ namespace SPPC.Tadbir.Persistence
                     && !currentItems.Contains(perm.Id));
             foreach (var item in newItems)
             {
-                var permission = repository.GetByIDWithTracking(item.Id, perm => perm.Group);
                 var rolePermission = new RolePermission()
                 {
-                    Permission = permission,
-                    PermissionId = permission.Id,
-                    Role = existing,
+                    PermissionId = item.Id,
                     RoleId = existing.Id
                 };
                 existing.RolePermissions.Add(rolePermission);
@@ -834,18 +831,15 @@ namespace SPPC.Tadbir.Persistence
         private void AddNewBranches(
             IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
-            var branchRepository = UnitOfWork.GetRepository<Branch>();
             var currentItems = existing.Select(rb => rb.BranchId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
                     && !currentItems.Contains(item.Id));
             foreach (var item in newItems)
             {
-                var branch = branchRepository.GetByID(item.Id);
                 var roleBranch = new RoleBranch()
                 {
-                    Branch = branch,
-                    BranchId = branch.Id,
+                    BranchId = item.Id,
                     RoleId = roleItems.Id
                 };
                 repository.Insert(roleBranch);
@@ -861,12 +855,9 @@ namespace SPPC.Tadbir.Persistence
                     && !currentItems.Contains(item.Id));
             foreach (var item in newItems)
             {
-                var user = repository.GetByIDWithTracking(item.Id);
                 var userRole = new UserRole()
                 {
-                    User = user,
-                    UserId = user.Id,
-                    Role = existing,
+                    UserId = item.Id,
                     RoleId = existing.Id
                 };
                 existing.UserRoles.Add(userRole);
@@ -876,18 +867,15 @@ namespace SPPC.Tadbir.Persistence
         private void AddNewFiscalPeriods(
             IRepository<RoleFiscalPeriod> repository, IList<RoleFiscalPeriod> existing, RelatedItemsViewModel roleItems)
         {
-            var periodRepository = UnitOfWork.GetRepository<FiscalPeriod>();
             var currentItems = existing.Select(rfp => rfp.FiscalPeriodId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
                     && !currentItems.Contains(item.Id));
             foreach (var item in newItems)
             {
-                var fiscalPeriod = periodRepository.GetByID(item.Id);
                 var roleFiscalPeriod = new RoleFiscalPeriod()
                 {
-                    FiscalPeriod = fiscalPeriod,
-                    FiscalPeriodId = fiscalPeriod.Id,
+                    FiscalPeriodId = item.Id,
                     RoleId = roleItems.Id
                 };
                 repository.Insert(roleFiscalPeriod);
@@ -903,13 +891,10 @@ namespace SPPC.Tadbir.Persistence
                     && !currentItems.Contains(item.Id));
             foreach (var item in newItems)
             {
-                var role = repository.GetByIDWithTracking(item.Id);
                 var userRole = new UserRole()
                 {
-                    User = existing,
                     UserId = existing.Id,
-                    Role = role,
-                    RoleId = role.Id
+                    RoleId = item.Id
                 };
                 existing.UserRoles.Add(userRole);
             }
@@ -926,13 +911,10 @@ namespace SPPC.Tadbir.Persistence
 
         private RolePermission GetNewRolePermission(PermissionViewModel perm, Role role)
         {
-            var permission = Mapper.Map<Permission>(perm);
             return new RolePermission()
             {
-                Role = role,
                 RoleId = role.Id,
-                Permission = permission,
-                PermissionId = permission.Id
+                PermissionId = perm.Id
             };
         }
 

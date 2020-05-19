@@ -6,7 +6,7 @@ namespace SPPC.Tadbir.ViewModel.Inventory
     /// <summary>
     /// اطلاعات نمایشی مانده حساب های موجودی انبار را نگهداری می کند
     /// </summary>
-    public class InventoryBalanceViewModel
+    public class AccountBalanceViewModel
     {
         /// <summary>
         /// شناسه دیتابیسی حساب موجودی انبار

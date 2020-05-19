@@ -474,12 +474,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDWithTrackingAsync(detailId, facc => facc.Children);
+            var detailAccount = await repository.GetByIDAsync(detailId, facc => facc.Children);
             var accountDetailAccount = new AccountDetailAccount()
             {
-                Account = existing,
                 AccountId = existing.Id,
-                DetailAccount = detailAccount,
                 DetailId = detailAccount.Id
             };
             existing.AccountDetailAccounts.Add(accountDetailAccount);
@@ -581,9 +579,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var accountDetailAccount = new AccountDetailAccount()
             {
-                Account = account,
                 AccountId = account.Id,
-                DetailAccount = existing,
                 DetailId = existing.Id
             };
             existing.AccountDetailAccounts.Add(accountDetailAccount);
@@ -688,12 +684,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDWithTrackingAsync(centerId, cc => cc.Children);
+            var costCenter = await repository.GetByIDAsync(centerId, cc => cc.Children);
             var accountCostCenter = new AccountCostCenter()
             {
-                Account = existing,
                 AccountId = existing.Id,
-                CostCenter = costCenter,
                 CostCenterId = costCenter.Id
             };
             existing.AccountCostCenters.Add(accountCostCenter);
@@ -795,9 +789,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var accountCostCenter = new AccountCostCenter()
             {
-                Account = account,
                 AccountId = account.Id,
-                CostCenter = existing,
                 CostCenterId = existing.Id
             };
             existing.AccountCostCenters.Add(accountCostCenter);
@@ -901,12 +893,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDWithTrackingAsync(projectId, prj => prj.Children);
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
             var accountProject = new AccountProject()
             {
-                Account = existing,
                 AccountId = existing.Id,
-                Project = project,
                 ProjectId = project.Id
             };
             existing.AccountProjects.Add(accountProject);
@@ -1008,9 +998,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             var accountProject = new AccountProject()
             {
-                Account = account,
                 AccountId = account.Id,
-                Project = existing,
                 ProjectId = existing.Id
             };
             existing.AccountProjects.Add(accountProject);
