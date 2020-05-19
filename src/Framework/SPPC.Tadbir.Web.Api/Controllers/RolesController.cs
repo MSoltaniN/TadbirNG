@@ -13,6 +13,7 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -120,36 +121,35 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Delete)]
         public async Task<IActionResult> DeleteExistingRoleAsync(int roleId)
         {
-            if (roleId == AppConstants.AdminRoleId)
+            string result = await ValidateDeleteAsync(roleId);
+            if (!String.IsNullOrEmpty(result))
             {
-                return BadRequest(_strings.Format(AppStrings.AdminRoleIsReadonly));
-            }
-
-            var role = await _repository.GetRoleBriefAsync(roleId);
-            if (role == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.Role));
-            }
-
-            if (await _repository.IsAssignedRoleAsync(roleId))
-            {
-                return BadRequest(String.Format(
-                    _strings.Format(AppStrings.CannotDeleteAssignedRole), role.Name));
-            }
-
-            if (await _repository.IsRoleRelatedToBranchAsync(roleId))
-            {
-                return BadRequest(String.Format(
-                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Branch]));
-            }
-
-            if (await _repository.IsRoleRelatedToFiscalPeriodAsync(roleId))
-            {
-                return BadRequest(String.Format(
-                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.FiscalPeriod]));
+                return BadRequest(result);
             }
 
             await _repository.DeleteRoleAsync(roleId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // PUT: api/roles
+        [HttpPut]
+        [Route(RoleApi.RolesUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Delete)]
+        public async Task<IActionResult> PutExistingRolesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            await _repository.DeleteRolesAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -286,6 +286,52 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        protected override async Task<string> ValidateDeleteAsync(int item)
+        {
+            if (item == AppConstants.AdminRoleId)
+            {
+                return _strings.Format(AppStrings.AdminRoleIsReadonly);
+            }
+
+            var role = await _repository.GetRoleBriefAsync(item);
+            if (role == null)
+            {
+                return _strings.Format(AppStrings.ItemNotFound, AppStrings.Role);
+            }
+
+            if (await _repository.IsAssignedRoleAsync(item))
+            {
+                return String.Format(
+                    _strings.Format(AppStrings.CannotDeleteAssignedRole), role.Name);
+            }
+
+            if (await _repository.IsRoleRelatedToCompanyAsync(item))
+            {
+                return String.Format(
+                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Company]);
+            }
+
+            if (await _repository.IsRoleRelatedToBranchAsync(item))
+            {
+                return String.Format(
+                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Branch]);
+            }
+
+            if (await _repository.IsRoleRelatedToFiscalPeriodAsync(item))
+            {
+                return String.Format(
+                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.FiscalPeriod]);
+            }
+
+            if (await _repository.HasRowPermissions(item))
+            {
+                return String.Format(
+                    _strings[AppStrings.CannotDeleteRoleHavingPermissions], role.Name);
+            }
+
+            return String.Empty;
         }
 
         private IActionResult PermissionValidationResult(RowPermissionsForRoleViewModel permissions)

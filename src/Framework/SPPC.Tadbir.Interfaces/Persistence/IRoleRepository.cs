@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Helpers;
@@ -64,6 +65,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteRoleAsync(int roleId);
 
         /// <summary>
+        /// به روش آسنکرون، نقش های مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        Task DeleteRolesAsync(IEnumerable<int> items);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر به کاربری تخصیص داده شده یا نه
         /// </summary>
         /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
@@ -80,12 +87,28 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsRoleRelatedToBranchAsync(int roleId);
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر با یک یا چند شرکت مرتبط شده یا نه
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اگر نقش مورد نظر با یک یا چند شرکت مرتبط شده مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> IsRoleRelatedToCompanyAsync(int roleId);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر با یک یا چند دوره مالی مرتبط شده یا نه
         /// </summary>
         /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
         /// <returns>اگر نقش مورد نظر با یک یا چند دوره مالی مرتبط شده مقدار "درست" و
         /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsRoleRelatedToFiscalPeriodAsync(int roleId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا برای نقش مورد نظر دسترسی سطری تعریف شده است یا نه؟
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اگر برای نقش مورد نظر دسترسی سطری تعریف شده مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> HasRowPermissions(int roleId);
 
         /// <summary>
         /// به روش آسنکرون، شعبه های قابل دسترسی توسط یک نقش را خوانده و برمی گرداند

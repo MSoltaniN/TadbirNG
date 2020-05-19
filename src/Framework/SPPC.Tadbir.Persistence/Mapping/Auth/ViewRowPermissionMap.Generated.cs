@@ -47,12 +47,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Role)
                 .WithMany()
-                .HasForeignKey("RoleID")
+                .HasForeignKey(e => e.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Auth_ViewRowPermission_Auth_Role");
             builder.HasOne(e => e.View)
                 .WithMany()
-                .HasForeignKey("ViewID")
+                .HasForeignKey(e => e.ViewID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Auth_ViewRowPermission_Metadata_View");
         }

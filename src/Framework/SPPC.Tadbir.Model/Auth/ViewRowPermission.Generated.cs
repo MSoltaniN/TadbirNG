@@ -28,7 +28,6 @@ namespace SPPC.Tadbir.Model.Auth
         {
             AccessMode = RowAccessOptions.Default;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -65,11 +64,5 @@ namespace SPPC.Tadbir.Model.Auth
         /// موجودیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود
         /// </summary>
         public virtual View View { get; set; }
-
-        private void InitReferences()
-        {
-            Role = new Role();
-            View = new View();
-        }
     }
 }
