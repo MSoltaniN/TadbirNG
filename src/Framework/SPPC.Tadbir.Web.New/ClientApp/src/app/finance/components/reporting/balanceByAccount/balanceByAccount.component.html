@@ -55,10 +55,10 @@
 
       <div class="report-type sppc-float">
         <input type="radio" name="rdbReportType" [(ngModel)]="reportType" id="radio1" class="k-radio" value="1" />
-        <label class="k-radio-label" for="radio1">{{ 'Journal.ByDate' | translate }}</label>
+        <label for="radio1">{{ 'Journal.ByDate' | translate }}</label>
         <br />
         <input type="radio" name="rdbReportType" [(ngModel)]="reportType" class="k-radio" id="radio2" value="2" />
-        <label class="k-radio-label" for="radio2">{{ 'Journal.ByVoucher' | translate }}</label>
+        <label for="radio2">{{ 'Journal.ByVoucher' | translate }}</label>
       </div>
 
       <div class="sppc-float">
@@ -342,10 +342,10 @@
             <label class="k-checkbox-label" for="zero-balance">نمایش سرفصل های با مانده صفر</label>-->
 
             <input type="checkbox" id="closing-voucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" (ngModelChange)="changeParam()" />
-            <label class="k-checkbox-label" for="closing-voucher">{{ 'Balance.Closing' | translate }}</label>
+            <span  for="closing-voucher">{{ 'Balance.Closing' | translate }}</span>
 
             <input type="checkbox" id="temp-voucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" (ngModelChange)="changeParam()" />
-            <label class="k-checkbox-label" for="temp-voucher">{{ 'Balance.CloseAccounts' | translate }}</label>
+            <span for="temp-voucher">{{ 'Balance.CloseAccounts' | translate }}</span>
 
             <label class="control-label">{{ 'Journal.BranchSeparation' | translate }}</label>
             <kendo-switch [onLabel]="('AccountBook.OnLabel' | translate)"

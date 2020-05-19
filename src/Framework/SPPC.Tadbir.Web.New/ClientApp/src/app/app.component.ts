@@ -131,6 +131,23 @@ export class AppComponent implements AfterViewInit, OnInit {
           this.document.getElementById('mainBody').classList.add(currentSkin);
           this.document.getElementById('mainBody').classList.remove('skin-blue');
         }
+
+        switch (currentSkin) {
+          case 'skin-blue':
+            this.document.getElementById('theme').setAttribute('href', 'assets/resources/powder-blue.css?dt=' + Date.now());
+            break;
+          case 'skin-purple':
+            this.document.getElementById('theme').setAttribute('href', 'assets/resources/purple.css?dt=' + Date.now());
+            break;
+          case 'skin-yellow-light':
+            this.document.getElementById('theme').setAttribute('href', 'assets/resources/vintage.css?dt=' + Date.now());
+            break;
+          case 'skin-black-light':
+            this.document.getElementById('theme').setAttribute('href', 'assets/resources/nordic.css?dt=' + Date.now());
+            break;
+
+        }
+
       }
 
       var lang = this.bStorageService.getLanguage();
