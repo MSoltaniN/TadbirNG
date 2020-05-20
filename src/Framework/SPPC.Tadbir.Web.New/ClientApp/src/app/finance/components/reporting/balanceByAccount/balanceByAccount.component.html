@@ -55,10 +55,10 @@
 
       <div class="report-type sppc-float">
         <input type="radio" name="rdbReportType" [(ngModel)]="reportType" id="radio1" class="k-radio" value="1" />
-        <label for="radio1">{{ 'Journal.ByDate' | translate }}</label>
+        <span>{{ 'Journal.ByDate' | translate }}</span>
         <br />
         <input type="radio" name="rdbReportType" [(ngModel)]="reportType" class="k-radio" id="radio2" value="2" />
-        <label for="radio2">{{ 'Journal.ByVoucher' | translate }}</label>
+        <span>{{ 'Journal.ByVoucher' | translate }}</span>
       </div>
 
       <div class="sppc-float">
@@ -357,7 +357,7 @@
         </div>
       </div>
       <div class="col-xs-12">
-        <button class="k-button btn-compute-default" SppcPermissionCheck="View" EntityName="BalanceByAccount" (sppcClick)="getReportData()"
+        <button class="k-button k-primary" SppcPermissionCheck="View" EntityName="BalanceByAccount" (sppcClick)="getReportData()"
                 [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en','btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
           {{ 'Buttons.Compute' | translate }}
         </button>
