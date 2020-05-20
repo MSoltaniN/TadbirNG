@@ -32,5 +32,21 @@ export class AppsettingComponent implements OnInit {
 
     this.bStorageService.setCurrentSkin(skin);
     this.document.getElementById('mainBody').classList.add(skin);
+
+    switch (skin) {
+      case 'skin-blue':        
+        this.document.getElementById('theme').setAttribute('href', 'assets/resources/powder-blue.css?dt=' + Date.now());
+        break;        
+      case 'skin-purple':
+        this.document.getElementById('theme').setAttribute('href', 'assets/resources/purple.css?dt=' + Date.now());
+        break;
+      case 'skin-yellow-light':
+        this.document.getElementById('theme').setAttribute('href', 'assets/resources/vintage.css?dt=' + Date.now());
+        break;
+      case 'skin-black-light':
+        this.document.getElementById('theme').setAttribute('href', 'assets/resources/nordic.css?dt=' + Date.now());        
+        break;
+        
+    }
   }
 }

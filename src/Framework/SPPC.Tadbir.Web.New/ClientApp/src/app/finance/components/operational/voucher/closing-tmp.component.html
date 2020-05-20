@@ -11,13 +11,13 @@
         <div class="voucher-mode-item">
           <input type="radio" name="creditDebitMode" id="mode1" class="k-radio" (change)="onKeysChange()"
                   [(ngModel)]="creditDebitMode" value="1" [ngModelOptions]="{standalone: true}" />
-          <label class="k-radio-label" for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
+          <label for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
         </div>
 
         <div class="voucher-mode-item">
           <input type="radio" name="creditDebitMode" id="mode2" class="k-radio" (change)="onKeysChange()"
                   [(ngModel)]="creditDebitMode" value="2" [ngModelOptions]="{standalone: true}" />
-          <label class="k-radio-label" for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
+          <label for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
         </div>        
       </div>
     </div>

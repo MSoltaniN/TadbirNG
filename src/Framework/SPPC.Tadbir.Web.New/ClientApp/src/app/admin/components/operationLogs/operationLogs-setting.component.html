@@ -4,7 +4,7 @@
     <div class="col-md-6 col-xs-12 col-sm-6 sppc-float section-border">   
       <div class="form-group">
         <input type="checkbox" name="chkArchive" id="chkArchive" class="k-checkbox" [(ngModel)]="isSystem" (ngModelChange)="chkIsSystemChanged()" />
-        <label class="k-checkbox-label" for="chkArchive">{{ 'OperationLog.SystemLog' | translate }}</label>
+        <span  for="chkArchive">{{ 'OperationLog.SystemLog' | translate }}</span>
       </div>
       <div class="form-group" [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
         <kendo-treeview [nodes]="settingModel"
@@ -21,7 +21,7 @@
     <div class="col-md-6 col-xs-12 col-sm-6 section-border">
       <div class="form-group" *ngFor="let item of detailItem">
         <input type="checkbox" name="chkItem{{ item.id }}" id="chkItem{{ item.id }}" class="k-checkbox" [checked]="item.isEnabled" (change)="chkItemClick(item.id,item.operationId,$event)"  />
-        <label class="k-checkbox-label" for="chkItem{{ item.id }}">{{ item.operationName }}</label>
+        <span >{{ item.operationName }}</span>
       </div>
     </div>
     <div class="col-md-12 col-xs-12 col-sm-12">
