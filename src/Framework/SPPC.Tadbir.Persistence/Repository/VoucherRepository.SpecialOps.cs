@@ -397,6 +397,17 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
+        private async Task<DateTime> GetFiscalPeriodClosingDateAsync(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var closingDate = await repository
+                .GetEntityQuery()
+                .Where(fp => fp.Id == fpId)
+                .Select(fp => fp.EndDate)
+                .SingleOrDefaultAsync();
+            return closingDate;
+        }
+
         #endregion
 
         #region Opening Voucher Operations
@@ -536,7 +547,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 BranchId = UserContext.BranchId,
                 DailyNo = 1,
-                Date = await GetCurrentFiscalStartDate(),
+                Date = await GetCurrentFiscalStartDateAsync(),
                 Description = AppStrings.OpeningVoucher,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 IsBalanced = true,
@@ -641,7 +652,7 @@ namespace SPPC.Tadbir.Persistence
             return accounts.SingleOrDefault();
         }
 
-        private async Task<DateTime> GetCurrentFiscalStartDate()
+        private async Task<DateTime> GetCurrentFiscalStartDateAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             return await repository
@@ -674,7 +685,7 @@ namespace SPPC.Tadbir.Persistence
             string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
             var tempVoucher = new VoucherViewModel()
             {
-                Date = DateTime.Now.Date,
+                Date = await GetFiscalPeriodClosingDateAsync(UserContext.FiscalPeriodId),
                 No = await GetLastVoucherNoAsync(),
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 SubjectType = 0
@@ -683,7 +694,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 BranchId = UserContext.BranchId,
                 DailyNo = await GetNextDailyNoAsync(tempVoucher),
-                Date = DateTime.Now.Date,
+                Date = tempVoucher.Date,
                 Description = AppStrings.ClosingVoucher,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 IssuedById = UserContext.Id,
