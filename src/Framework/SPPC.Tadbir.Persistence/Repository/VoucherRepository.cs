@@ -13,6 +13,7 @@ using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -230,7 +231,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucher">اطلاعات نمایشی سند جدید</param>
         public async Task SetVoucherDailyNoAsync(VoucherViewModel voucher)
         {
-            voucher.DailyNo = await GetNextDailyNoAsync(voucher);
+            voucher.DailyNo = await GetNextDailyNoAsync(voucher.Date, (SubjectType)voucher.SubjectType);
         }
 
         /// <summary>
@@ -547,6 +548,16 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
+        }
+
         private static async Task<ValueTuple<IList<VoucherViewModel>, int>> GetListAndCountAsync(
             GridOptions gridOptions, IQueryable<VoucherViewModel> vouchers)
         {
@@ -562,25 +573,30 @@ namespace SPPC.Tadbir.Persistence
             return (vouchersList, await filteredList.CountAsync());
         }
 
-        private static async Task<PagedList<VoucherViewModel>> GetPagedListAsync(
-            GridOptions gridOptions, IQueryable<VoucherViewModel> vouchersQuery)
+        private async Task<Voucher> GetNewVoucherAsync(string description = null,
+            VoucherType type = VoucherType.NormalVoucher, SubjectType subject = SubjectType.Accounting)
         {
-            var vouchers = await vouchersQuery
-                .OrderBy(voucher => voucher.Date.Date)
-                .ThenBy(voucher => voucher.No)
-                .ToListAsync();
-
-            return new PagedList<VoucherViewModel>(vouchers, gridOptions);
-        }
-
-        private ISecureRepository Repository
-        {
-            get { return _system.Repository; }
-        }
-
-        private IConfigRepository Config
-        {
-            get { return _system.Config; }
+            string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
+            DateTime date = await GetLastVoucherDateAsync();
+            int no = await GetLastVoucherNoAsync();
+            int dailyNo = await GetNextDailyNoAsync(date, subject);
+            return new Voucher()
+            {
+                BranchId = UserContext.BranchId,
+                DailyNo = dailyNo,
+                Date = date,
+                Description = description,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                IsBalanced = true,
+                IssuedById = UserContext.Id,
+                IssuerName = fullName,
+                ModifiedById = UserContext.Id,
+                ModifierName = fullName,
+                No = no + 1,
+                StatusId = (int)VoucherStatusId.Draft,
+                SubjectType = (short)subject,
+                Type = (short)type
+            };
         }
 
         private async Task<DateTime> GetLastVoucherDateAsync()
@@ -617,18 +633,13 @@ namespace SPPC.Tadbir.Persistence
             return (lastByNo != null) ? lastByNo.No : 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، شماره روزانه بعدی را برای سند مورد نظر به دست آورده و برمی گرداند
-        /// </summary>
-        /// <param name="voucher">مدل نمایشی سند مورد نظر</param>
-        /// <returns>شماره روزانه بعدی</returns>
-        private async Task<int> GetNextDailyNoAsync(VoucherViewModel voucher)
+        private async Task<int> GetNextDailyNoAsync(DateTime date, SubjectType subject)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var sameDate = await repository
-                .GetByCriteriaAsync(v => v.Date == voucher.Date
-                    && v.FiscalPeriodId == voucher.FiscalPeriodId
-                    && v.SubjectType == voucher.SubjectType);
+                .GetByCriteriaAsync(v => v.Date == date
+                    && v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.SubjectType == (short)subject);
             int lastNo = sameDate
                 .OrderByDescending(v => v.DailyNo)
                 .Select(v => v.DailyNo)

@@ -189,6 +189,27 @@ namespace SPPC.Tadbir.Values
     }
 
     /// <summary>
+    /// انواع مفهومی سند مالی را تعریف می کند
+    /// </summary>
+    public enum SubjectType
+    {
+        /// <summary>
+        /// نوع مفهومی سند حسابداری
+        /// </summary>
+        Accounting = 0,
+
+        /// <summary>
+        /// نوع مفهومی سند پیش نویس
+        /// </summary>
+        Draft = 1,
+
+        /// <summary>
+        /// نوع مفهومی سند بودجه
+        /// </summary>
+        Budgeting = 2
+    }
+
+    /// <summary>
     /// داده شمارشی برای انواع آرتیکل های سند مالی
     /// </summary>
     public enum VoucherLineType
@@ -207,6 +228,32 @@ namespace SPPC.Tadbir.Values
         /// آرتیکل اصلاحی
         /// </summary>
         Revised = 2
+    }
+
+    /// <summary>
+    /// انواع وضعیت های ثبتی را برای سند مالی تعریف می کند
+    /// </summary>
+    public enum VoucherStatusId
+    {
+        /// <summary>
+        /// وضعیت نامشخص
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        /// وضعیت پیش نویس
+        /// </summary>
+        Draft = 1,
+
+        /// <summary>
+        /// وضعیت ثبت عادی
+        /// </summary>
+        Checked = 2,
+
+        /// <summary>
+        /// وضعیت ثبت قطعی
+        /// </summary>
+        Finalized = 3,
     }
 
     /// <summary>

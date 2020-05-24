@@ -397,17 +397,6 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private async Task<DateTime> GetFiscalPeriodClosingDateAsync(int fpId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var closingDate = await repository
-                .GetEntityQuery()
-                .Where(fp => fp.Id == fpId)
-                .Select(fp => fp.EndDate)
-                .SingleOrDefaultAsync();
-            return closingDate;
-        }
-
         #endregion
 
         #region Opening Voucher Operations
@@ -422,7 +411,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                openingVoucher = await GetNewOpeningVoucherAsync();
+                openingVoucher = await GetNewVoucherAsync(AppStrings.OpeningVoucher, VoucherType.OpeningVoucher);
                 var branches = await GetBranchIdsAsync();
                 foreach (int branchId in branches)
                 {
@@ -459,7 +448,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Voucher> IssueOpeningFromLastBalanceAsync(Voucher lastClosingVoucher)
         {
-            var openingVoucher = await GetNewOpeningVoucherAsync();
+            var openingVoucher = await GetNewVoucherAsync(AppStrings.OpeningVoucher, VoucherType.OpeningVoucher);
             var branches = await GetBranchIdsAsync();
             foreach (int branchId in branches)
             {
@@ -538,28 +527,6 @@ namespace SPPC.Tadbir.Persistence
             clone.Credit = temp;
             clone.Description = description;
             return clone;
-        }
-
-        private async Task<Voucher> GetNewOpeningVoucherAsync()
-        {
-            string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
-            return new Voucher()
-            {
-                BranchId = UserContext.BranchId,
-                DailyNo = 1,
-                Date = await GetCurrentFiscalStartDateAsync(),
-                Description = AppStrings.OpeningVoucher,
-                FiscalPeriodId = UserContext.FiscalPeriodId,
-                IsBalanced = true,
-                IssuedById = UserContext.Id,
-                IssuerName = fullName,
-                ModifiedById = UserContext.Id,
-                ModifierName = fullName,
-                No = 1,
-                StatusId = 1,
-                SubjectType = 0,
-                Type = (short)VoucherType.OpeningVoucher
-            };
         }
 
         private VoucherLine CloneVoucherLine(VoucherLine line)
@@ -652,23 +619,13 @@ namespace SPPC.Tadbir.Persistence
             return accounts.SingleOrDefault();
         }
 
-        private async Task<DateTime> GetCurrentFiscalStartDateAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            return await repository
-                .GetEntityQuery()
-                .Where(fp => fp.Id == UserContext.FiscalPeriodId)
-                .Select(fp => fp.StartDate)
-                .SingleAsync();
-        }
-
         #endregion
 
         #region Closing Voucher Operations
 
         private async Task<Voucher> IssueClosingVoucherAsync()
         {
-            var closingVoucher = await GetNewClosingVoucherAsync();
+            var closingVoucher = await GetNewVoucherAsync(AppStrings.ClosingVoucher, VoucherType.ClosingVoucher);
             var branches = await GetBranchIdsAsync();
             foreach (int branchId in branches)
             {
@@ -678,34 +635,6 @@ namespace SPPC.Tadbir.Persistence
             SetRowNumbers(closingVoucher.Lines);
             await InsertAsync(closingVoucher, AppStrings.IssueClosingVoucher);
             return closingVoucher;
-        }
-
-        private async Task<Voucher> GetNewClosingVoucherAsync()
-        {
-            string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
-            var tempVoucher = new VoucherViewModel()
-            {
-                Date = await GetFiscalPeriodClosingDateAsync(UserContext.FiscalPeriodId),
-                No = await GetLastVoucherNoAsync(),
-                FiscalPeriodId = UserContext.FiscalPeriodId,
-                SubjectType = 0
-            };
-            return new Voucher()
-            {
-                BranchId = UserContext.BranchId,
-                DailyNo = await GetNextDailyNoAsync(tempVoucher),
-                Date = tempVoucher.Date,
-                Description = AppStrings.ClosingVoucher,
-                FiscalPeriodId = UserContext.FiscalPeriodId,
-                IssuedById = UserContext.Id,
-                IssuerName = fullName,
-                ModifiedById = UserContext.Id,
-                ModifierName = fullName,
-                No = tempVoucher.No + 1,
-                StatusId = 1,
-                SubjectType = 0,
-                Type = (short)VoucherType.ClosingVoucher
-            };
         }
 
         private async Task<IEnumerable<VoucherLine>> GetBranchClosingVoucherLinesAsync(int branchId)
@@ -753,9 +682,8 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Voucher> IssueClosingTempAccountsVoucherAsync(
             IList<AccountBalanceViewModel> balanceItems)
         {
-            var closingVoucher = await GetNewClosingVoucherAsync();
-            closingVoucher.Description = AppStrings.ClosingTempAccounts;
-            closingVoucher.Type = (short)VoucherType.ClosingTempAccounts;
+            var closingVoucher = await GetNewVoucherAsync(
+                AppStrings.ClosingTempAccounts, VoucherType.ClosingTempAccounts);
             var branches = await GetBranchIdsAsync();
             foreach (int branchId in branches)
             {
