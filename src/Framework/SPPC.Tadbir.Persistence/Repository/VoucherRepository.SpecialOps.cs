@@ -16,6 +16,23 @@ namespace SPPC.Tadbir.Persistence
     public partial class VoucherRepository
     {
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که شعبه داده شده امکان صدور سندهای ویژه را دارد یا نه
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه داده شده</param>
+        /// <returns>اگر شعبه داده شده امکان صدور سندهای ویژه را داشته باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> CanIssueSpecialVoucherAsync(int branchId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            var parentId = await repository
+                .GetEntityQuery()
+                .Where(br => br.Id == branchId)
+                .Select(br => br.ParentId)
+                .SingleOrDefaultAsync();
+            return parentId == null;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>

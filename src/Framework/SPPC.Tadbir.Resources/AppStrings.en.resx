@@ -3147,4 +3147,7 @@
   <data name="CannotDeleteRoleHavingPermissions" xml:space="preserve">
     <value>The role {0} has one or more row permissions and cannot be deleted.</value>
   </data>
+  <data name="CantIssueVoucherFromLowerBranch" xml:space="preserve">
+    <value>Cannot issue {0} voucher from child branches.</value>
+  </data>
 </root>

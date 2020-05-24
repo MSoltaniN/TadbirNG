@@ -3138,4 +3138,7 @@
   <data name="CannotDeleteRoleHavingPermissions" xml:space="preserve">
     <value>برای نقش {0} دسترسی سطری تعریف شده و قابل حذف نیست.</value>
   </data>
+  <data name="CantIssueVoucherFromLowerBranch" xml:space="preserve">
+    <value>صدور سند {0} از شعب زیرمجموعه امکان پذیر نیست.</value>
+  </data>
 </root>

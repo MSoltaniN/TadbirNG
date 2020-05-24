@@ -418,9 +418,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueOpeningVoucherAsync()
         {
-            // TODO: Perform required validation
+            var result = await SpecialVoucherValidationResultAsync(AppStrings.OpeningVoucher);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
 
-            // Rule 1 : Current fiscal period MUST have required account collection associations
             var openingVoucher = await _repository.GetOpeningVoucherAsync();
             Localize(openingVoucher);
             return Json(openingVoucher);
@@ -431,7 +434,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueClosingAccountsVoucherAsync()
         {
-            // TODO: Perform required validation
+            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync();
             Localize(closingAccountsVoucher);
             return Json(closingAccountsVoucher);
@@ -444,7 +452,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync(
             [FromBody] IList<AccountBalanceViewModel> balanceItems)
         {
-            // TODO: Perform required validation
+            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             var closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(balanceItems);
             Localize(closingAccountsVoucher);
             return Json(closingAccountsVoucher);
@@ -455,11 +468,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueClosingVoucherAsync()
         {
-            // TODO: Perform required validation
+            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingVoucher);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
 
-            // Rule 1 : Current fiscal period MUST NOT have any unchecked vouchers
+            // Rule 2 : Current fiscal period MUST NOT have any unchecked vouchers
 
-            // Rule 2 : Current fiscal period MUST have the closing temp accounts voucher
+            // Rule 3 : Current fiscal period MUST have the closing temp accounts voucher
             var closingVoucher = await _repository.GetClosingVoucherAsync();
             Localize(closingVoucher);
             return Json(closingVoucher);
@@ -728,6 +745,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
                 return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> SpecialVoucherValidationResultAsync(string typeKey)
+        {
+            // Rule 1 : Current branch MUST be the highest-level branch in hierarchy...
+            if (!await _repository.CanIssueSpecialVoucherAsync(SecurityContext.User.BranchId))
+            {
+                string message = _strings.Format(AppStrings.CantIssueVoucherFromLowerBranch, typeKey);
+                return BadRequest(message);
             }
 
             return Ok();
