@@ -401,6 +401,11 @@ namespace SPPC.Tadbir.Persistence
 
         private VoucherLine GetAccountClosingLine(AccountBalanceViewModel balance, string description)
         {
+            if (balance.AccountId == 0)
+            {
+                return null;
+            }
+
             return new VoucherLine()
             {
                 AccountId = balance.AccountId,
@@ -471,48 +476,46 @@ namespace SPPC.Tadbir.Persistence
             {
                 var branchLines = new List<VoucherLine>();
                 var closingAccount = await GetBranchClosingAccountAsync(branchId);
-                if (closingAccount == null)
-                {
-                    continue;
-                }
+                int closingAccountId = (closingAccount != null)
+                    ? closingAccount.Id
+                    : 0;
 
                 // Start with Asset lines, debit lines first, then credit lines...
                 var assetLines = lastClosingVoucher.Lines
                     .Where(line => line.BranchId == branchId &&
-                        line.Description == AppStrings.ClosingAssetAccounts &&
-                        line.Credit > 0.0M);
+                        line.AccountId != closingAccountId &&
+                        line.Description == AppStrings.ClosingAssetAccounts);
                 branchLines.AddRange(ReverseClosingToOpening(
                     assetLines, AppStrings.OpeningAssetAccounts));
                 var assetOpening = lastClosingVoucher.Lines
                     .Where(line => line.BranchId == branchId &&
-                        line.AccountId == closingAccount.Id &&
-                        line.Debit > 0.0M)
-                    .Single();
+                        line.AccountId == closingAccountId &&
+                        line.Description == AppStrings.ClosingAssetAccounts)
+                    .SingleOrDefault();
                 var openingAccount = await GetBranchOpeningAccountAsync(branchId);
-                if (openingAccount == null)
-                {
-                    continue;
-                }
+                int openingAccountId = (openingAccount != null)
+                    ? openingAccount.Id
+                    : 0;
 
                 branchLines.Add(ReverseClosingToOpening(
-                    assetOpening, openingAccount.Id, AppStrings.OpeningAssetAccounts));
+                    assetOpening, openingAccountId, AppStrings.OpeningAssetAccounts));
 
                 // Move on to Liability/Equity lines, debit lines first, then credit lines...
                 var liabilityOpening = lastClosingVoucher.Lines
                     .Where(line => line.BranchId == branchId &&
-                        line.AccountId == closingAccount.Id &&
-                        line.Credit > 0.0M)
-                    .Single();
+                        line.AccountId == closingAccountId &&
+                        line.Description == AppStrings.ClosingLiabilityCapitalAccounts)
+                    .SingleOrDefault();
                 branchLines.Add(ReverseClosingToOpening(
-                    liabilityOpening, openingAccount.Id, AppStrings.OpeningLiabilityCapitalAccounts));
+                    liabilityOpening, openingAccountId, AppStrings.OpeningLiabilityCapitalAccounts));
                 var liabilityLines = lastClosingVoucher.Lines
                     .Where(line => line.BranchId == branchId &&
-                        line.Description == AppStrings.ClosingLiabilityCapitalAccounts &&
-                        line.Debit > 0.0M);
+                        line.AccountId != closingAccountId &&
+                        line.Description == AppStrings.ClosingLiabilityCapitalAccounts);
                 branchLines.AddRange(ReverseClosingToOpening(
                     liabilityLines, AppStrings.OpeningLiabilityCapitalAccounts));
 
-                openingVoucher.Lines.AddRange(branchLines);
+                openingVoucher.Lines.AddRange(branchLines.Where(line => line != null));
             }
 
             return openingVoucher;
@@ -521,9 +524,7 @@ namespace SPPC.Tadbir.Persistence
         private IEnumerable<VoucherLine> ReverseClosingToOpening(
             IEnumerable<VoucherLine> lines, string description)
         {
-            var cloneLines = lines
-                .Select(line => CloneVoucherLine(line))
-                .ToList();
+            var cloneLines = lines.Select(line => CloneVoucherLine(line));
             foreach (var line in cloneLines)
             {
                 var temp = line.Debit;
@@ -537,6 +538,11 @@ namespace SPPC.Tadbir.Persistence
 
         private VoucherLine ReverseClosingToOpening(VoucherLine line, int accountId, string description)
         {
+            if (line == null)
+            {
+                return null;
+            }
+
             var clone = CloneVoucherLine(line);
             clone.AccountId = accountId;
             var temp = clone.Debit;
@@ -572,10 +578,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var lines = new List<VoucherLine>();
             var openingAccount = await GetBranchOpeningAccountAsync(branchId);
-            if (openingAccount == null)
-            {
-                return lines;
-            }
+            int openingAccountId = (openingAccount != null)
+                ? openingAccount.Id
+                : 0;
 
             var assetAccounts = await GetBranchAssetAccountsAsync(branchId);
             foreach (var assetAccount in assetAccounts)
@@ -585,9 +590,9 @@ namespace SPPC.Tadbir.Persistence
             }
 
             lines.Add(GetAccountOpeningLine(
-                openingAccount, branchId, AppStrings.OpeningAssetAccounts));
+                openingAccountId, branchId, AppStrings.OpeningAssetAccounts));
             lines.Add(GetAccountOpeningLine(
-                openingAccount, branchId, AppStrings.OpeningLiabilityCapitalAccounts));
+                openingAccountId, branchId, AppStrings.OpeningLiabilityCapitalAccounts));
 
             var liabilityAccounts = await GetBranchCapitalLiabilityAccountsAsync(branchId);
             foreach (var liabilityAccount in liabilityAccounts)
@@ -596,7 +601,7 @@ namespace SPPC.Tadbir.Persistence
                     liabilityAccount, branchId, AppStrings.OpeningLiabilityCapitalAccounts));
             }
 
-            return lines;
+            return lines.Where(line => line != null);
         }
 
         private IEnumerable<VoucherLine> GetAccountOpeningLines(
@@ -617,11 +622,16 @@ namespace SPPC.Tadbir.Persistence
             });
         }
 
-        private VoucherLine GetAccountOpeningLine(Account account, int branchId, string description)
+        private VoucherLine GetAccountOpeningLine(int accountId, int branchId, string description)
         {
+            if (accountId == 0)
+            {
+                return null;
+            }
+
             return new VoucherLine()
             {
-                AccountId = account.Id,
+                AccountId = accountId,
                 BranchId = branchId,
                 CreatedById = UserContext.Id,
                 Description = description,
@@ -658,10 +668,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var lines = new List<VoucherLine>();
             var closingAccount = await GetBranchClosingAccountAsync(branchId);
-            if (closingAccount == null)
-            {
-                return lines;
-            }
+            int closingAccountId = (closingAccount != null)
+                ? closingAccount.Id
+                : 0;
 
             var assetLines = new List<VoucherLine>();
             var assetAccounts = await GetBranchAssetAccountsAsync(branchId);
@@ -672,7 +681,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             decimal balance = assetLines.Sum(line => line.Debit - line.Credit);
-            var balanceItem = GetBalanceItem(closingAccount.Id, branchId, balance);
+            var balanceItem = GetBalanceItem(closingAccountId, branchId, balance);
             lines.Add(GetAccountClosingLine(balanceItem, AppStrings.ClosingAssetAccounts));
             lines.AddRange(assetLines);
 
@@ -685,11 +694,12 @@ namespace SPPC.Tadbir.Persistence
             }
 
             balance = liabilityLines.Sum(line => line.Debit - line.Credit);
-            balanceItem = GetBalanceItem(closingAccount.Id, branchId, balance);
+            balanceItem = GetBalanceItem(closingAccountId, branchId, balance);
             lines.AddRange(liabilityLines);
             lines.Add(GetAccountClosingLine(balanceItem, AppStrings.ClosingLiabilityCapitalAccounts));
 
-            return lines;
+            return lines.Where(line => line != null
+                && (line.Debit > 0.0M || line.Credit > 0.0M));
         }
 
         #endregion
@@ -748,6 +758,9 @@ namespace SPPC.Tadbir.Persistence
             // Performance account (Debit)
             // Current Profit-Loss (Credit)
             var profitLossAccount = specialAccounts[AccountCollectionId.CurrentProfitLoss].SingleOrDefault();
+            int profitLossAccountId = (profitLossAccount != null)
+                ? profitLossAccount.Id
+                : 0;
             decimal performance = lines
                 .Where(line => line.AccountId == performanceAccount.Id)
                 .Sum(line => line.Debit - line.Credit);
@@ -771,7 +784,7 @@ namespace SPPC.Tadbir.Persistence
             // Accumulated Profit-Loss account (Credit)
             var accumulatedAccount = specialAccounts[AccountCollectionId.AccumulatedProfitLoss].SingleOrDefault();
             decimal netProfitLoss = lines
-                .Where(line => line.AccountId == profitLossAccount.Id)
+                .Where(line => line.AccountId == profitLossAccountId)
                 .Sum(line => line.Debit - line.Credit);
             lines.AddRange(GetBranchBalancedAccountLines(
                 branchId, profitLossAccount, accumulatedAccount,
@@ -790,11 +803,9 @@ namespace SPPC.Tadbir.Persistence
             // Product Inventory accounts -- supplied by user (Debit)...
             // Performance account (Credit)...
             var performanceAccount = specialAccounts[AccountCollectionId.Performance].SingleOrDefault();
-            if (performanceAccount == null)
-            {
-                return lines;
-            }
-
+            int performanceAccountId = (performanceAccount != null)
+                ? performanceAccount.Id
+                : 0;
             var branchItems = balanceItems.Where(item => item.BranchId == branchId);
             foreach (var item in branchItems)
             {
@@ -802,8 +813,12 @@ namespace SPPC.Tadbir.Persistence
             }
 
             decimal totalBalance = lines.Sum(line => line.Debit - line.Credit);
-            var balanceItem = GetBalanceItem(performanceAccount.Id, branchId, totalBalance);
-            lines.Add(GetAccountClosingLine(balanceItem, AppStrings.RegisterEndProductInventory));
+            var balanceItem = GetBalanceItem(performanceAccountId, branchId, totalBalance);
+            var closingLine = GetAccountClosingLine(balanceItem, AppStrings.RegisterEndProductInventory);
+            if (closingLine != null)
+            {
+                lines.Add(closingLine);
+            }
 
             // Sales accounts by floating items and currency (Debit)...
             // Performance account (Credit)...
@@ -832,8 +847,11 @@ namespace SPPC.Tadbir.Persistence
             // Performance account (Debit)
             // Current Profit-Loss (Credit)
             var profitLossAccount = specialAccounts[AccountCollectionId.CurrentProfitLoss].SingleOrDefault();
+            int profitLossAccountId = (profitLossAccount != null)
+                ? profitLossAccount.Id
+                : 0;
             decimal performance = lines
-                .Where(line => line.AccountId == performanceAccount.Id)
+                .Where(line => line.AccountId == performanceAccountId)
                 .Sum(line => line.Debit - line.Credit);
             lines.AddRange(GetBranchBalancedAccountLines(
                 branchId, performanceAccount, profitLossAccount,
@@ -855,7 +873,7 @@ namespace SPPC.Tadbir.Persistence
             // Accumulated Profit-Loss account (Credit)
             var accumulatedAccount = specialAccounts[AccountCollectionId.AccumulatedProfitLoss].SingleOrDefault();
             decimal netProfitLoss = lines
-                .Where(line => line.AccountId == profitLossAccount.Id)
+                .Where(line => line.AccountId == profitLossAccountId)
                 .Sum(line => line.Debit - line.Credit);
             lines.AddRange(GetBranchBalancedAccountLines(
                 branchId, profitLossAccount, accumulatedAccount,
@@ -923,10 +941,9 @@ namespace SPPC.Tadbir.Persistence
             int branchId, IEnumerable<Account> accounts, Account closureAccount, string description)
         {
             var lines = new List<VoucherLine>();
-            if (closureAccount == null)
-            {
-                return lines;
-            }
+            int closureAccountId = (closureAccount != null)
+                ? closureAccount.Id
+                : 0;
 
             var accountLines = new List<VoucherLine>();
             foreach (var account in accounts)
@@ -937,7 +954,7 @@ namespace SPPC.Tadbir.Persistence
 
             lines.AddRange(accountLines);
             decimal balance = accountLines.Sum(line => line.Debit - line.Credit);
-            var balanceItem = GetBalanceItem(closureAccount.Id, branchId, balance);
+            var balanceItem = GetBalanceItem(closureAccountId, branchId, balance);
             var closureLine = GetAccountClosingLine(balanceItem, description);
             if (balance < 0)
             {
@@ -948,21 +965,23 @@ namespace SPPC.Tadbir.Persistence
                 lines.Add(closureLine);
             }
 
-            return lines;
+            return lines.Where(line => line != null);
         }
 
         private IEnumerable<VoucherLine> GetBranchBalancedAccountLines(
             int branchId, Account account, Account closureAccount, string description, decimal balance)
         {
             var lines = new List<VoucherLine>();
-            if (closureAccount == null)
-            {
-                return lines;
-            }
+            int accountId = (account != null)
+                ? account.Id
+                : 0;
+            int closureAccountId = (closureAccount != null)
+                ? closureAccount.Id
+                : 0;
 
-            var balanceItem = GetBalanceItem(account.Id, branchId, balance);
+            var balanceItem = GetBalanceItem(accountId, branchId, balance);
             lines.Add(GetAccountClosingLine(balanceItem, description));
-            balanceItem = GetBalanceItem(closureAccount.Id, branchId, -balance);
+            balanceItem = GetBalanceItem(closureAccountId, branchId, -balance);
             var closureLine = GetAccountClosingLine(balanceItem, description);
             if (balance > 0)
             {
@@ -973,7 +992,7 @@ namespace SPPC.Tadbir.Persistence
                 lines.Add(closureLine);
             }
 
-            return lines;
+            return lines.Where(line => line != null);
         }
 
         #endregion
