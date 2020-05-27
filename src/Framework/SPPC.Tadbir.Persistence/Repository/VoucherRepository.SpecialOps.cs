@@ -484,7 +484,8 @@ namespace SPPC.Tadbir.Persistence
                 var assetLines = lastClosingVoucher.Lines
                     .Where(line => line.BranchId == branchId &&
                         line.AccountId != closingAccountId &&
-                        line.Description == AppStrings.ClosingAssetAccounts);
+                        line.Description == AppStrings.ClosingAssetAccounts)
+                    .OrderBy(line => line.RowNo);
                 branchLines.AddRange(ReverseClosingToOpening(
                     assetLines, AppStrings.OpeningAssetAccounts));
                 var assetOpening = lastClosingVoucher.Lines
@@ -511,7 +512,8 @@ namespace SPPC.Tadbir.Persistence
                 var liabilityLines = lastClosingVoucher.Lines
                     .Where(line => line.BranchId == branchId &&
                         line.AccountId != closingAccountId &&
-                        line.Description == AppStrings.ClosingLiabilityCapitalAccounts);
+                        line.Description == AppStrings.ClosingLiabilityCapitalAccounts)
+                    .OrderBy(line => line.RowNo);
                 branchLines.AddRange(ReverseClosingToOpening(
                     liabilityLines, AppStrings.OpeningLiabilityCapitalAccounts));
 
@@ -524,7 +526,9 @@ namespace SPPC.Tadbir.Persistence
         private IEnumerable<VoucherLine> ReverseClosingToOpening(
             IEnumerable<VoucherLine> lines, string description)
         {
-            var cloneLines = lines.Select(line => CloneVoucherLine(line));
+            var cloneLines = lines
+                .Select(line => CloneVoucherLine(line))
+                .ToArray();
             foreach (var line in cloneLines)
             {
                 var temp = line.Debit;
@@ -570,6 +574,7 @@ namespace SPPC.Tadbir.Persistence
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 FollowupNo = line.FollowupNo,
                 ProjectId = line.ProjectId,
+                RowNo = line.RowNo,
                 TypeId = line.TypeId
             };
         }
