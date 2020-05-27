@@ -101,6 +101,9 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\AppSettingsModel.cs" />
     <Compile Include="Models\ConnectionStringsModel.cs" />
+    <Compile Include="Models\SysVeiwModel.cs" />
+    <Compile Include="Models\ViewModel.cs" />
+    <Compile Include="Models\ViewModelWizard.cs" />
     <Compile Include="Utility\HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
     <Compile Include="MainWindow.cs">
@@ -235,6 +238,12 @@
     <Compile Include="Wizards\ViewWizard\SelectViewModelForm.Designer.cs">
       <DependentUpon>SelectViewModelForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Wizards\ViewWizard\SysViewMoldelsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizards\ViewWizard\SysViewMoldelsForm.Designer.cs">
+      <DependentUpon>SysViewMoldelsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Wizards\ViewWizard\ViewWizardForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -286,6 +295,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Wizards\ViewWizard\SelectViewModelForm.resx">
       <DependentUpon>SelectViewModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizards\ViewWizard\SysViewMoldelsForm.resx">
+      <DependentUpon>SysViewMoldelsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizards\ViewWizard\ViewWizardForm.resx">
       <DependentUpon>ViewWizardForm.cs</DependentUpon>

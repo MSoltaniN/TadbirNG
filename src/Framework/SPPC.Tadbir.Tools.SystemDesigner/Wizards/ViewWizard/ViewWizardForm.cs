@@ -19,47 +19,96 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         public ViewWizardForm()
         {
             InitializeComponent();
-
-            _sysConnection = GetSysConnectionString();
-
-            cboxModelViewSelector.DropDownStyle = ComboBoxStyle.DropDownList;
+            WizardModel = new ViewModelWizard();
+           
         }
 
-        private void ViewWizardForm_Load(object sender, EventArgs e)
+        public ViewModelWizard WizardModel { get; set; }
+        protected override void OnLoad(EventArgs e)
         {
-            var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
-            var result = dal.Query("SELECT v.ViewID,v.Name FROM Metadata.[View] v");
-
-            cboxModelViewSelector.ValueMember = "ViewID";
-            cboxModelViewSelector.DisplayMember = "Name";
-            cboxModelViewSelector.DataSource=result;
+            base.OnLoad(e);
+            LoadFirstPage();
         }
-        private string GetSysConnectionString()
+
+        private void Back_Click(object sender, EventArgs e)
         {
-            string path = @"..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
-            var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
-            return appSettings.ConnectionStrings.TadbirSysApi;
+            if (_currentStepNo == 2)
+            {
+                _currentStepNo--;
+                LoadFirstPage();
+            }
+            else if (_currentStepNo == 3)
+            {
+                _currentStepNo--;
+                LoadSecondPage();
+            }
         }
 
-        private void cboxModelViewSelector_SelectedIndexChanged(object sender, EventArgs e)
+        private void Next_Click(object sender, EventArgs e)
         {
-            int nSelectedViewId=cboxModelViewSelector.SelectedIndex;
-            var strQuery= string.Format(@"SELECT 
-                                          c.ColumnID
-                                         ,c.Name
-                                         ,c.Type
-                                         ,c.Length
-                                         ,c.IsNullable
-                                         ,ISNULL(c.Visibility,'Visibale') AS Visibility
-                                         ,c.DisplayIndex
-                                        FROM Metadata.[Column] c WHERE c.ViewID={0}", nSelectedViewId);
-
-            var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
-            var result = dal.Query(strQuery);
-
-            GVMetaDataViewer.DataSource = result;
+            if (_currentStepNo == 1)
+            {
+                _currentStepNo++;
+                LoadSecondPage();
+            }
+            else if (_currentStepNo == 2)
+            {
+                _currentStepNo++;
+                LoadThirdPage();
+            }
+            else
+            {
+                GenerateScript();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
 
-        private  string _sysConnection = "";
+        private void LoadFirstPage()
+        {
+            var page = new SysViewMoldelsForm() { Dock = DockStyle.Fill, SysView = WizardModel.SysViewModel };
+            splitContainerNested.Panel1.Controls.Clear();
+            splitContainerNested.Panel1.Controls.Add(page);
+            SetCurrentStepInfo(page.Info);
+            btnNext.Text = "Add New ViewModel";
+        }
+
+        private void LoadSecondPage()
+        {
+            var page = new SelectViewModelForm () { Dock = DockStyle.Fill, View = WizardModel.ViewModel };
+           
+            splitContainerNested.Panel1.Controls.Clear();
+            splitContainerNested.Panel1.Controls.Add(page);
+            SetCurrentStepInfo(page.Info);
+            btnNext.Text =  "Next" ;
+        }
+
+        private void LoadThirdPage()
+        {
+            var page = new EditColumnsForm() { Dock = DockStyle.Fill, ViewModel = WizardModel.ViewModel, ColumnView=WizardModel.ColumnViewModel,ActiveColumns=WizardModel.ActiveColumns };
+            splitContainerNested.Panel1.Controls.Clear();
+            splitContainerNested.Panel1.Controls.Add(page);
+            SetCurrentStepInfo(page.info);
+            btnNext.Text = "Finish";
+        }
+
+        private void SetCurrentStepInfo(string task)
+        {
+            lblStepInfo.Text = String.Format("Step {0} : {1}", _currentStepNo, task);
+            btnBack.Enabled = (_currentStepNo > 1);
+        }
+
+        void  GenerateScript()
+        {
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private int _currentStepNo = 1;
+
     }
 }
