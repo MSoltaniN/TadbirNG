@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Tools.SystemDesigner.Models;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 {
@@ -10,10 +11,15 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         public SelectViewModelForm()
         {
             InitializeComponent();
+            Info = "Select View Model";
             SelectedViewModel = "View Models";
         }
 
+        public string Info { get; set; }
+
         public string SelectedViewModel { get; private set; }
+
+        public ViewModelClass View { get; set; }
 
         public void SetSelectedViewModel(string name)
         {
@@ -25,14 +31,19 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            SelectedViewModel = View.SelectedViewModelOnTreeView ;
+            cmbEntityType.SelectedIndex = 0;
             LoadViewModels();
+            SetupBindings();
         }
 
-        private void tvViewModels_AfterSelect(object sender, TreeViewEventArgs e)
+        private void TViewModels_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Nodes.Count == 0)
             {
                 SelectedViewModel = e.Node.Name;
+                txtName.Text = SelectedViewModel;
+                View.Name = SelectedViewModel;
             }
         }
 
@@ -62,6 +73,22 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             tvViewModels.SelectedNode = node.FirstOrDefault() ?? tvViewModels.Nodes[0];
         }
 
+        private void SetupBindings()
+        {
+            txtName.DataBindings.Add("Text", View, "Name");
+            txtFetchUrl.DataBindings.Add("Text", View, "FetchUrl");
+            txtSearchUrl.DataBindings.Add("Text", View, "SearchUrl");
+            cmbEntityType.DataBindings.Add("Text", View, "EntityType");
+            chkIsHierarchy.DataBindings.Add("Checked", View, "IsHierarchy");
+            chkEnableCartable.DataBindings.Add("Checked", View, "IsCartableIntegrated");
+        }
+        
         private const string _defaultAssembly = "SPPC.Tadbir.ViewModel";
+
+        private void SelectViewModelForm_Leave(object sender, EventArgs e)
+        {
+            View.SelectedViewModelOnTreeView = SelectedViewModel;
+        }
+
     }
 }
