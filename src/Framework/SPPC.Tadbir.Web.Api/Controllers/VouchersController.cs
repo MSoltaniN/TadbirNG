@@ -66,6 +66,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
         public async Task<IActionResult> GetNewVoucherAsync()
         {
+            bool isChecked = await _repository.IsCurrentClosingVoucherCheckedAsync();
+            if (isChecked)
+            {
+                return BadRequest(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
+            }
+
             var newVoucher = await _repository.GetNewVoucherAsync();
             return Json(newVoucher);
         }

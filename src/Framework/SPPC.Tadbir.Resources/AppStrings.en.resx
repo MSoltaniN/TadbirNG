@@ -3150,4 +3150,7 @@
   <data name="CantIssueVoucherFromLowerBranch" xml:space="preserve">
     <value>Cannot issue {0} voucher from child branches.</value>
   </data>
+  <data name="CurrentClosingVoucherIsChecked" xml:space="preserve">
+    <value>Current fiscal period has a checked closing voucher and no more transactions can be registered in it.</value>
+  </data>
 </root>

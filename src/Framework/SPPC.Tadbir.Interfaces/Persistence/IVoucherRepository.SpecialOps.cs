@@ -30,6 +30,13 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> HasPreviousClosingVoucherAsync();
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که سند اختتامیه دوره مالی جاری - در صورت وجود - ثبت شده است یا نه
+        /// </summary>
+        /// <returns>در صورتی که سند اختتامیه صادر و ثبت شده باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsCurrentClosingVoucherCheckedAsync();
+
+        /// <summary>
         /// به روش آسنکرون، سند بستن حساب های موقت مربوط به دوره مالی جاری را
         /// برای سیستم ثبت دائمی خوانده و برمی گرداند
         /// </summary>
