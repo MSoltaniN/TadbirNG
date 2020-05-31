@@ -33,8 +33,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که سند ویژه مشخص شده در دوره مالی جاری - در صورت وجود - ثبت شده است یا نه
+        /// </summary>
+        /// <param name="type">نوع سند ویژه مورد نظر</param>
+        /// <returns>در صورتی که سند اختتامیه صادر و ثبت شده باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsCurrentSpecialVoucherCheckedAsync(VoucherType type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            int closingCount = await repository.GetCountByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
+                v.Type == (short)type &&
+                v.StatusId >= (int)VoucherStatusId.Checked);
+            return closingCount == 1;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="isQuery">مشخص می کند که در صورت وجود نداشتن، آیا سند افتتاحیه باید صادر شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
         public async Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false)
         {
@@ -67,21 +84,6 @@ namespace SPPC.Tadbir.Persistence
                 v => v.FiscalPeriodId == previousId &&
                 v.Type == (short)VoucherType.ClosingVoucher);
             return count == 1;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که سند اختتامیه دوره مالی جاری - در صورت وجود - ثبت شده است یا نه
-        /// </summary>
-        /// <returns>در صورتی که سند اختتامیه صادر و ثبت شده باشد، مقدار بولی "درست" و
-        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
-        public async Task<bool> IsCurrentClosingVoucherCheckedAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            int closingCount = await repository.GetCountByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
-                v.Type == (short)VoucherType.ClosingVoucher &&
-                v.StatusId >= (int)VoucherStatusId.Checked);
-            return closingCount == 1;
         }
 
         /// <summary>

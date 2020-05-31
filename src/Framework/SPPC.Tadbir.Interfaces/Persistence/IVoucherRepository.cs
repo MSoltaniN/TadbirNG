@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -84,6 +85,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
         Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
             where TViewModel : class, new();
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سندهای دوره مالی جاری با وضعیت ثبتی داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="status">وضعیت ثبتی مورد نظر برای سند</param>
+        /// <returns>تعداد سندهای دوره مالی جاری با وضعیت ثبتی مورد نظر</returns>
+        Task<int> GetCountByStatusAsync(VoucherStatusId status);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات محدوده سندهای قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند

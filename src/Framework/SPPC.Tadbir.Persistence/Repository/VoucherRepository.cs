@@ -195,6 +195,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تعداد سندهای دوره مالی جاری با وضعیت ثبتی داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="status">وضعیت ثبتی مورد نظر برای سند</param>
+        /// <returns>تعداد سندهای دوره مالی جاری با وضعیت ثبتی مورد نظر</returns>
+        public async Task<int> GetCountByStatusAsync(VoucherStatusId status)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            return await repository.GetCountByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                && v.StatusId == (int)status);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات محدوده سندهای قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>محدوده سندهای قابل دسترسی توسط کاربر جاری</returns>
