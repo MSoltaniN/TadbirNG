@@ -6,7 +6,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 
-namespace SPPC.Tadbir.Persistence.Repository
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات بانکی حساب را تعریف میکند
@@ -97,6 +97,34 @@ namespace SPPC.Tadbir.Persistence.Repository
             accountOwner.Description = accountOwnerViewModel.Description;
         }
 
+        private static async Task UpdateAccountHoldersAsync(
+            IAsyncRepository<AccountHolder> repository,
+            IList<AccountHolderViewModel> updatedItems)
+        {
+            foreach (var item in updatedItems)
+            {
+                var entity = await repository.GetByIDAsync(item.Id);
+                if (entity != null)
+                {
+                    entity.FirstName = item.FirstName;
+                    entity.LastName = item.LastName;
+                    entity.HasSignature = item.HasSignature;
+
+                    repository.Update(entity);
+                }
+            }
+        }
+
+        private static void RemoveAccountHolders(
+            IAsyncRepository<AccountHolder> repository,
+            IList<AccountHolder> removedItems)
+        {
+            foreach (var item in removedItems)
+            {
+                repository.Delete(item);
+            }
+        }
+
         private async Task UpdateAccountHoldersAsync(
             IList<AccountHolder> existing,
             IList<AccountHolderViewModel> accHolders)
@@ -139,34 +167,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             {
                 var entity = Mapper.Map<AccountHolder>(item);
                 repository.Insert(entity);
-            }
-        }
-
-        private async Task UpdateAccountHoldersAsync(
-            IAsyncRepository<AccountHolder> repository,
-            IList<AccountHolderViewModel> updatedItems)
-        {
-            foreach (var item in updatedItems)
-            {
-                var entity = await repository.GetByIDAsync(item.Id);
-                if (entity != null)
-                {
-                    entity.FirstName = item.FirstName;
-                    entity.LastName = item.LastName;
-                    entity.HasSignature = item.HasSignature;
-
-                    repository.Update(entity);
-                }
-            }
-        }
-
-        private void RemoveAccountHolders(
-            IAsyncRepository<AccountHolder> repository,
-            IList<AccountHolder> removedItems)
-        {
-            foreach (var item in removedItems)
-            {
-                repository.Delete(item);
             }
         }
 
