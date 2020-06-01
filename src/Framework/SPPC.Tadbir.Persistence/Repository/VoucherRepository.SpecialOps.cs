@@ -222,16 +222,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<IList<Account>> GetCollectionItemsAsync(int collection, int branchId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            var collectionAccounts = await repository
-                .GetEntityQuery()
-                .Include(aca => aca.Account)
-                .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
-                    aca.BranchId == branchId &&
-                    aca.CollectionId == collection)
-                .Select(aca => aca.Account)
-                .ToListAsync();
-
+            var collectionAccounts = await GetInheritedCollectionAccountsAsync(collection, branchId);
             var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
             var leafAccounts = await accountRepository
                 .GetEntityQuery(acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters,
@@ -240,6 +231,39 @@ namespace SPPC.Tadbir.Persistence
                     collectionAccounts.Any(item => acc.FullCode.StartsWith(item.FullCode)))
                 .ToListAsync();
             return leafAccounts;
+        }
+
+        private async Task<IEnumerable<Account>> GetInheritedCollectionAccountsAsync(
+            int collection, int branchId)
+        {
+            var accounts = new List<Account>();
+            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+            var branch = await branchRepository.GetByIDWithTrackingAsync(branchId);
+            var currentBranch = branch;
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            while (currentBranch != null)
+            {
+                var collectionAccounts = await repository
+                    .GetEntityQuery()
+                    .Include(aca => aca.Account)
+                    .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
+                        aca.BranchId == currentBranch.Id &&
+                        aca.CollectionId == collection)
+                    .Select(aca => aca.Account)
+                    .ToListAsync();
+                if (collectionAccounts.Count > 0)
+                {
+                    accounts.AddRange(collectionAccounts);
+                    break;
+                }
+                else
+                {
+                    branchRepository.LoadReference(currentBranch, br => br.Parent);
+                    currentBranch = currentBranch.Parent;
+                }
+            }
+
+            return accounts;
         }
 
         private IList<FullAccountViewModel> GetFullAccounts(Account account)
