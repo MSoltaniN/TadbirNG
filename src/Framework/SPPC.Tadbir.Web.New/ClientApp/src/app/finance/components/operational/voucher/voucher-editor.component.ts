@@ -260,13 +260,16 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.initVoucherForm(res);
       this.errorMessage = undefined;
     },
-      error => {
-        if (error.status == 404) {
+      err => {
+        if (err.status == 404) {
           this.showMessage(this.getText("Voucher.VoucherNotFound"), MessageType.Warning);
           if (byNo)
             this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
         }
 
+        if (err.status == 400) {
+          this.showMessage(this.getText(err.error.value), MessageType.Warning);          
+        }
       })
   }
 

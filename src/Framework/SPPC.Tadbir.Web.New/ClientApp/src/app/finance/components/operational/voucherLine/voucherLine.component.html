@@ -210,7 +210,7 @@
           <div class="article-status-item">
             <input type="checkbox" id="issuedBy" class="k-checkbox right"
                    [(ngModel)]="isIssued" onclick="return false;" />
-            <label class="left" for="issuedBy">{{ 'Voucher.IssuerName' | translate }}</label>
+            <span class="left">{{ 'Voucher.IssuerName' | translate }}</span>
 
             <input type="text" class="k-textbox" [ngModel]="voucherModel?.issuerName" readonly />
 
