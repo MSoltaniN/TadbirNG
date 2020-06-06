@@ -30,22 +30,24 @@ namespace SPPC.Framework.Persistence
         DataTable ExecuteQuery(string sqlCommand);
 
         /// <summary>
-        /// اجزا تشکیل دهنده رشته اتصال به دیتابیس را برمیگرداند
+        /// اجزا تشکیل دهنده رشته اتصال به دیتابیس را برمی گرداند
         /// </summary>
         /// <returns>دیکشنری از کلید و مقدار اجزاء تشکیل دهنده رشته اتصال دیتابیس</returns>
         IDictionary<string, string> GetConnectionStringProperties();
 
         /// <summary>
-        /// ارتباط رشته اتصال را با دیتابیس بررسی میکند
+        /// امکان اتصال به دیتابیس به کمک رشته اتصال داده شده را بررسی می کند
         /// </summary>
-        /// <returns>در صورت برقراری ارتباط مقدار درست و در غیر این صورت مقدار غلط را برمیگرداند</returns>
-        bool TestConnection();
+        /// <param name="connectionString">رشته اتصال مورد نظر برای بررسی</param>
+        /// <returns>در صورت برقراری ارتباط مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        bool TestConnection(string connectionString);
 
         /// <summary>
-        /// نام دیتابیس رشته اتصال را تغییر میدهد
+        /// رشته اتصال جدیدی با استفاده از مشخصات اتصال جاری و نام دیتابیس داده شده ساخته و برمی گرداند
         /// </summary>
-        /// <param name="dbName">نام دیتابیس</param>
-        /// <returns>رشته اتصال جدید</returns>
+        /// <param name="dbName">نام دیتابیس مورد نظر</param>
+        /// <returns>رشته اتصال ساخته شده</returns>
         string BuildConnectionString(string dbName);
     }
 }

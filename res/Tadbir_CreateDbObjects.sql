@@ -1296,3 +1296,7 @@ CREATE TABLE [Metadata].[City] (
     , CONSTRAINT [FK_Metadata_City_Metadata_Province] FOREIGN KEY ([ProvinceID]) REFERENCES [Metadata].[Province]([ProvinceID])
 )
 GO
+
+-- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
+INSERT INTO [Core].[Version] ([VersionID],[Number])
+VALUES(1, '1.1.899')

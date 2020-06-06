@@ -69,16 +69,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// ارتباط رشته اتصال را با دیتابیس بررسی میکند
+        /// امکان اتصال به دیتابیس به کمک رشته اتصال داده شده را بررسی می کند
         /// </summary>
-        /// <returns>در صورت برقراری ارتباط مقدار درست و در غیر این صورت مقدار غلط را برمیگرداند</returns>
-        public bool TestConnection()
+        /// <param name="connectionString">رشته اتصال مورد نظر برای بررسی</param>
+        /// <returns>در صورت برقراری ارتباط مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        public bool TestConnection(string connectionString)
         {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 try
                 {
-                    conn.Open();
+                    connection.Open();
                     return true;
                 }
                 catch (Exception)
@@ -89,16 +91,16 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// نام دیتابیس رشته اتصال را تغییر میدهد
+        /// رشته اتصال جدیدی با استفاده از مشخصات اتصال جاری و نام دیتابیس داده شده ساخته و برمی گرداند
         /// </summary>
-        /// <param name="dbName">نام دیتابیس</param>
-        /// <returns>رشته اتصال جدید</returns>
+        /// <param name="dbName">نام دیتابیس مورد نظر</param>
+        /// <returns>رشته اتصال ساخته شده</returns>
         public string BuildConnectionString(string dbName)
         {
-            SqlConnectionStringBuilder builder =
-            new SqlConnectionStringBuilder(ConnectionString);
-
-            builder.InitialCatalog = dbName;
+            var builder = new SqlConnectionStringBuilder(ConnectionString)
+            {
+                InitialCatalog = dbName
+            };
 
             return builder.ConnectionString;
         }
