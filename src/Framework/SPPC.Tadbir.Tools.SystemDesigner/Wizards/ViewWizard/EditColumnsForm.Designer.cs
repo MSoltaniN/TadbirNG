@@ -66,7 +66,6 @@
             this.lbxColumns.Name = "lbxColumns";
             this.lbxColumns.Size = new System.Drawing.Size(199, 319);
             this.lbxColumns.TabIndex = 0;
-            this.lbxColumns.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.lbxColumns_ItemCheck);
             this.lbxColumns.SelectedIndexChanged += new System.EventHandler(this.lbxColumns_SelectedIndexChanged);
             // 
             // grpColumn

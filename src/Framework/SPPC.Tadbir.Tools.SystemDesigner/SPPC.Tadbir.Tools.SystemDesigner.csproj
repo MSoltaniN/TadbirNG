@@ -101,7 +101,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\AppSettingsModel.cs" />
     <Compile Include="Models\ConnectionStringsModel.cs" />
-    <Compile Include="Models\SysVeiwModel.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Models\ViewModelWizard.cs" />
     <Compile Include="Utility\HtmlHelper.cs" />

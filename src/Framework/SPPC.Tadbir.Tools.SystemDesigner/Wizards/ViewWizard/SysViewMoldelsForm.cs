@@ -25,19 +25,19 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             cboxModelViewSelector.DropDownStyle = ComboBoxStyle.DropDownList;
         }
         public string Info { get; set; }
-        public SysVeiwModel SysView { get; set; }
+        public ViewModelWizard ViewModelWizard { get; set; }
         protected override void OnLoad(EventArgs e)
         {
             int SelectedIndex=0;
-            if (SysView.SysModelViewItemIndex == -1)
+            if (ViewModelWizard.SysModelViewItemIndex == -1)
             {
                 var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
                 _ViewModelList = dal.Query("SELECT v.ViewID,v.Name FROM Metadata.[View] v");
             }
             else
             {
-                SelectedIndex  = SysView.SysModelViewItemIndex;
-                _ViewModelList = SysView.SysModelViewItems;
+                SelectedIndex  = ViewModelWizard.SysModelViewItemIndex;
+                _ViewModelList = ViewModelWizard.SysModelViewItems;
             }
             cboxModelViewSelector.ValueMember = "ViewID";
             cboxModelViewSelector.DisplayMember = "Name";
@@ -82,8 +82,8 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         {
             if (cboxModelViewSelector.SelectedItem != null)
             {
-                SysView.SysModelViewItemIndex = cboxModelViewSelector.SelectedIndex;
-                SysView.SysModelViewItems = _ViewModelList;
+                ViewModelWizard.SysModelViewItemIndex = cboxModelViewSelector.SelectedIndex;
+                ViewModelWizard.SysModelViewItems = _ViewModelList;
             }
         }
         private string _sysConnection = "";

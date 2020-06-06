@@ -19,7 +19,8 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         public string SelectedViewModel { get; private set; }
 
-        public ViewModelClass View { get; set; }
+        public ViewModelEntityModel View { get; set; }
+        public ViewModelWizard ViewModelWizard { get; set; }
 
         public void SetSelectedViewModel(string name)
         {
@@ -31,7 +32,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            SelectedViewModel = View.SelectedViewModelOnTreeView ;
+            SelectedViewModel = ViewModelWizard.SelectedViewModelOnTreeView ;
             cmbEntityType.SelectedIndex = 0;
             LoadViewModels();
             SetupBindings();
@@ -87,7 +88,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void SelectViewModelForm_Leave(object sender, EventArgs e)
         {
-            View.SelectedViewModelOnTreeView = SelectedViewModel;
+            ViewModelWizard.SelectedViewModelOnTreeView = SelectedViewModel;
         }
 
     }
