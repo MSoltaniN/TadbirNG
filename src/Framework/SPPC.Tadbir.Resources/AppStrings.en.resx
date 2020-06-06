@@ -2524,7 +2524,7 @@
     <value>currency rates</value>
   </data>
   <data name="Multiplier" xml:space="preserve">
-    <value>Rate</value>
+    <value>Exchange rate</value>
   </data>
   <data name="Revised" xml:space="preserve">
     <value>Revised</value>
