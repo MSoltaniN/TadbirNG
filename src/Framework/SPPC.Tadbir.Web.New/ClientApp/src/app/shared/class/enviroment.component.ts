@@ -36,6 +36,11 @@ export class EnviromentComponent {
     return currentContext ? currentContext.fpId : 0;
   }
 
+  public get InventoryMode(): number {
+    var currentContext = this.bStorageService.getCurrentUser();
+    return currentContext ? currentContext.inventoryMode : 0;
+  }
+
   public get BranchId(): number {
     var currentContext = this.bStorageService.getCurrentUser();
     return currentContext ? currentContext.branchId : 0;;

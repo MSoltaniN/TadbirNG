@@ -24,6 +24,7 @@ export class ContextInfo implements Context {
   fpId: number = 0;
   branchId: number = 0;
   companyId: number = 0;
+  inventoryMode: number = 0;
   branchName: string;
   companyName: string;
   fiscalPeriodName: string;

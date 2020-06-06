@@ -33,8 +33,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که سند ویژه مشخص شده در دوره مالی جاری - در صورت وجود - ثبت شده است یا نه
+        /// </summary>
+        /// <param name="type">نوع سند ویژه مورد نظر</param>
+        /// <returns>در صورتی که سند اختتامیه صادر و ثبت شده باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsCurrentSpecialVoucherCheckedAsync(VoucherType type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            int closingCount = await repository.GetCountByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
+                v.Type == (short)type &&
+                v.StatusId >= (int)VoucherStatusId.Checked);
+            return closingCount == 1;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="isQuery">مشخص می کند که در صورت وجود نداشتن، آیا سند افتتاحیه باید صادر شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
         public async Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false)
         {
@@ -205,16 +222,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<IList<Account>> GetCollectionItemsAsync(int collection, int branchId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            var collectionAccounts = await repository
-                .GetEntityQuery()
-                .Include(aca => aca.Account)
-                .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
-                    aca.BranchId == branchId &&
-                    aca.CollectionId == collection)
-                .Select(aca => aca.Account)
-                .ToListAsync();
-
+            var collectionAccounts = await GetInheritedCollectionAccountsAsync(collection, branchId);
             var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
             var leafAccounts = await accountRepository
                 .GetEntityQuery(acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters,
@@ -223,6 +231,39 @@ namespace SPPC.Tadbir.Persistence
                     collectionAccounts.Any(item => acc.FullCode.StartsWith(item.FullCode)))
                 .ToListAsync();
             return leafAccounts;
+        }
+
+        private async Task<IEnumerable<Account>> GetInheritedCollectionAccountsAsync(
+            int collection, int branchId)
+        {
+            var accounts = new List<Account>();
+            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+            var branch = await branchRepository.GetByIDWithTrackingAsync(branchId);
+            var currentBranch = branch;
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            while (currentBranch != null)
+            {
+                var collectionAccounts = await repository
+                    .GetEntityQuery()
+                    .Include(aca => aca.Account)
+                    .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
+                        aca.BranchId == currentBranch.Id &&
+                        aca.CollectionId == collection)
+                    .Select(aca => aca.Account)
+                    .ToListAsync();
+                if (collectionAccounts.Count > 0)
+                {
+                    accounts.AddRange(collectionAccounts);
+                    break;
+                }
+                else
+                {
+                    branchRepository.LoadReference(currentBranch, br => br.Parent);
+                    currentBranch = currentBranch.Parent;
+                }
+            }
+
+            return accounts;
         }
 
         private IList<FullAccountViewModel> GetFullAccounts(Account account)
@@ -484,7 +525,8 @@ namespace SPPC.Tadbir.Persistence
                 var assetLines = lastClosingVoucher.Lines
                     .Where(line => line.BranchId == branchId &&
                         line.AccountId != closingAccountId &&
-                        line.Description == AppStrings.ClosingAssetAccounts);
+                        line.Description == AppStrings.ClosingAssetAccounts)
+                    .OrderBy(line => line.RowNo);
                 branchLines.AddRange(ReverseClosingToOpening(
                     assetLines, AppStrings.OpeningAssetAccounts));
                 var assetOpening = lastClosingVoucher.Lines
@@ -511,7 +553,8 @@ namespace SPPC.Tadbir.Persistence
                 var liabilityLines = lastClosingVoucher.Lines
                     .Where(line => line.BranchId == branchId &&
                         line.AccountId != closingAccountId &&
-                        line.Description == AppStrings.ClosingLiabilityCapitalAccounts);
+                        line.Description == AppStrings.ClosingLiabilityCapitalAccounts)
+                    .OrderBy(line => line.RowNo);
                 branchLines.AddRange(ReverseClosingToOpening(
                     liabilityLines, AppStrings.OpeningLiabilityCapitalAccounts));
 
@@ -524,7 +567,9 @@ namespace SPPC.Tadbir.Persistence
         private IEnumerable<VoucherLine> ReverseClosingToOpening(
             IEnumerable<VoucherLine> lines, string description)
         {
-            var cloneLines = lines.Select(line => CloneVoucherLine(line));
+            var cloneLines = lines
+                .Select(line => CloneVoucherLine(line))
+                .ToArray();
             foreach (var line in cloneLines)
             {
                 var temp = line.Debit;
@@ -570,6 +615,7 @@ namespace SPPC.Tadbir.Persistence
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 FollowupNo = line.FollowupNo,
                 ProjectId = line.ProjectId,
+                RowNo = line.RowNo,
                 TypeId = line.TypeId
             };
         }

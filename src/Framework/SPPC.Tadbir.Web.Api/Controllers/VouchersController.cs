@@ -11,6 +11,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Inventory;
@@ -66,6 +67,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
         public async Task<IActionResult> GetNewVoucherAsync()
         {
+            bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(VoucherType.ClosingVoucher);
+            if (isChecked)
+            {
+                return BadRequest(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
+            }
+
             var newVoucher = await _repository.GetNewVoucherAsync();
             return Json(newVoucher);
         }
@@ -468,15 +475,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueClosingVoucherAsync()
         {
-            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingVoucher);
+            var result = await ClosingVoucherValidationResultAsync();
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            // Rule 2 : Current fiscal period MUST NOT have any unchecked vouchers
-
-            // Rule 3 : Current fiscal period MUST have the closing temp accounts voucher
             var closingVoucher = await _repository.GetClosingVoucherAsync();
             Localize(closingVoucher);
             return Json(closingVoucher);
@@ -745,6 +749,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
                 return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> ClosingVoucherValidationResultAsync()
+        {
+            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingVoucher);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            // Rule 2 : Current fiscal period MUST NOT have any unchecked vouchers
+            int draftCount = await _repository.GetCountByStatusAsync(VoucherStatusId.Draft);
+            if (draftCount > 0)
+            {
+                return BadRequest(_strings[AppStrings.CantIssueClosingVoucherWithDraftVouchers]);
+            }
+
+            // Rule 3 : Current fiscal period MUST have the closing temp accounts voucher
+            if (!await _repository.IsCurrentSpecialVoucherCheckedAsync(VoucherType.ClosingTempAccounts))
+            {
+                return BadRequest(_strings[AppStrings.ClosingAccountsVoucherNotIssuedOrChecked]);
             }
 
             return Ok();

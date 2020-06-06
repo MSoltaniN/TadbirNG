@@ -3150,4 +3150,13 @@
   <data name="CantIssueVoucherFromLowerBranch" xml:space="preserve">
     <value>Cannot issue {0} voucher from child branches.</value>
   </data>
+  <data name="CurrentClosingVoucherIsChecked" xml:space="preserve">
+    <value>Current fiscal period has a checked closing voucher and no more transactions can be registered in it.</value>
+  </data>
+  <data name="ClosingAccountsVoucherNotIssuedOrChecked" xml:space="preserve">
+    <value>Closing temp accounts voucher is either not yet issued or in draft status.</value>
+  </data>
+  <data name="CantIssueClosingVoucherWithDraftVouchers" xml:space="preserve">
+    <value>Current fiscal period has one or more draft vouchers and closing voucher cannot be issued.</value>
+  </data>
 </root>

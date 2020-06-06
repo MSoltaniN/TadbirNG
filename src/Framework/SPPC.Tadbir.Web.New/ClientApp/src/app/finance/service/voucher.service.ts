@@ -67,6 +67,13 @@ export class VoucherService extends BaseService {
       .catch(this.handleError);
   }
 
+  public getClosingAccountsVoucherMode1() {
+    
+    return this.http.get(VoucherApi.ClosingAccountsVoucher, this.option)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
   public getOpeningVoucherQuery() {
     return this.http.get(VoucherApi.OpeningVoucherQuery, this.option)
       .map(res => res)

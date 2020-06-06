@@ -3141,4 +3141,13 @@
   <data name="CantIssueVoucherFromLowerBranch" xml:space="preserve">
     <value>صدور سند {0} از شعب زیرمجموعه امکان پذیر نیست.</value>
   </data>
+  <data name="CurrentClosingVoucherIsChecked" xml:space="preserve">
+    <value>دوره مالی جاری دارای سند اختتامیه ثبت شده است و ثبت تراکنش مالی در آن امکان پذیر نیست.</value>
+  </data>
+  <data name="ClosingAccountsVoucherNotIssuedOrChecked" xml:space="preserve">
+    <value>سند بستن حساب های موقت صادر نشده یا در وضعیت پیش نویس است.</value>
+  </data>
+  <data name="CantIssueClosingVoucherWithDraftVouchers" xml:space="preserve">
+    <value>دوره مالی جاری یک یا چند سند پیش نویس دارد و صدور سند اختتامیه امکان پذیر نیست.</value>
+  </data>
 </root>
