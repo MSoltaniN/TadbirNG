@@ -866,7 +866,8 @@
     "Version": "Version",
     "VoucherNotFound": "Voucher Not Found",
     "SaveChanges": "Do you want to save changes?",
-    "VoucherDetail": "Voucher Detail"
+    "VoucherDetail": "Voucher Detail",
+    "OpeningVoucher": "No closing voucher could be found in the previous fiscal period. This operation creates an opening voucher having a line for each account and each valid relation between floating levels, with zero turnover. Are you sure you want to issue the opening voucher?"
   },
   "User": {
     "New": "New User",

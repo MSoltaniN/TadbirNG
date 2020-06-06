@@ -167,13 +167,18 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
             break;
           }
           case "close-temp-accounts":
-          {
-              var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
-              if (voucherNo) {
-                this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+            {
+              if (this.InventoryMode == 0) {
+                var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
+                if (voucherNo) {
+                  this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+                }
+                else {
+                  this.checkClosingTmp();
+                }
               }
               else {
-                this.checkClosingTmp();
+                this.closingTmpOnInventoryMode1();
               }
             break;
           }         
@@ -203,6 +208,18 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         this.initVoucherForm(result);
       }
 
+    });
+  }
+
+  /**
+  * ساخت سند بستن حسابها براساس سیستم دایمی  
+  */
+  closingTmpOnInventoryMode1() {    
+    this.voucherService.getClosingAccountsVoucherMode1().subscribe(result => {
+      var voucherNo = result.no;
+      if (voucherNo) {
+        this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+      }
     });
   }
 
@@ -260,13 +277,16 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.initVoucherForm(res);
       this.errorMessage = undefined;
     },
-      error => {
-        if (error.status == 404) {
+      err => {
+        if (err.status == 404) {
           this.showMessage(this.getText("Voucher.VoucherNotFound"), MessageType.Warning);
           if (byNo)
             this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
         }
 
+        if (err.status == 400) {
+          this.showMessage(this.getText(err.error.value), MessageType.Warning);          
+        }
       })
   }
 

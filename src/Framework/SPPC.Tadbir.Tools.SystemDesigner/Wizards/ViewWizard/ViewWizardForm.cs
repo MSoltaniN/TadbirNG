@@ -5,11 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
@@ -20,7 +15,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         {
             InitializeComponent();
             WizardModel = new ViewModelWizard();
-           
         }
 
         public ViewModelWizard WizardModel { get; set; }
@@ -66,7 +60,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void LoadFirstPage()
         {
-            var page = new SysViewMoldelsForm() { Dock = DockStyle.Fill, SysView = WizardModel.SysViewModel };
+            var page = new SysViewMoldelsForm() { Dock = DockStyle.Fill, ViewModelWizard = WizardModel };
             splitContainerNested.Panel1.Controls.Clear();
             splitContainerNested.Panel1.Controls.Add(page);
             SetCurrentStepInfo(page.Info);
@@ -75,7 +69,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void LoadSecondPage()
         {
-            var page = new SelectViewModelForm () { Dock = DockStyle.Fill, View = WizardModel.ViewModel };
+            var page = new SelectViewModelForm () { Dock = DockStyle.Fill, View = WizardModel.ViewModel ,ViewModelWizard=WizardModel};
            
             splitContainerNested.Panel1.Controls.Clear();
             splitContainerNested.Panel1.Controls.Add(page);
@@ -85,10 +79,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void LoadThirdPage()
         {
-            var page = new EditColumnsForm() { Dock = DockStyle.Fill, ViewModel = WizardModel.ViewModel, ColumnView=WizardModel.ColumnViewModel,ActiveColumns=WizardModel.ActiveColumns };
+            var page = new EditColumnsForm() { Dock = DockStyle.Fill, ViewModel = WizardModel.ViewModel };
             splitContainerNested.Panel1.Controls.Clear();
             splitContainerNested.Panel1.Controls.Add(page);
-            SetCurrentStepInfo(page.info);
+            SetCurrentStepInfo(page.Info);
             btnNext.Text = "Finish";
         }
 

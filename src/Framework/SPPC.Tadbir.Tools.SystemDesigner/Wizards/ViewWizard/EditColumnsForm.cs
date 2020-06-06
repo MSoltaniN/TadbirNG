@@ -15,42 +15,44 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         public EditColumnsForm()
         {
             InitializeComponent();
-            info="Edit Columns";
+            Info="Edit Columns";
         }
 
-        public ViewModelClass ViewModel { get; set; }
-        public List<ColumnViewModel> ColumnView { get; set; }
-        public List<bool> ActiveColumns { get; set; }
+        public ViewModelEntityModel ViewModel { get; set; }
 
-        public string info { get; set; }
+        public string Info { get; set; }
 
         private void InitColumnProperties()
         {
-            cmbDotNetType.SelectedIndex = 0;
-            cmbScriptType.SelectedIndex = 0;
-            cmbStorageType.SelectedIndex = 0;
-            cmbType.SelectedIndex = 0;
+            //cmbDotNetType.SelectedIndex = 0;
+            //cmbScriptType.SelectedIndex = 0;
+            //cmbStorageType.SelectedIndex = 0;
+            //cmbType.SelectedIndex = 0;
 
-            if(lbxColumns.Items.Count!=0)
-            {
-                txtName.Text = lbxColumns.Items[0].ToString();
-                cmbType.Text = ColumnView[0].Type;
-                cmbDotNetType.Text = ColumnView[0].DotNetType;
-                cmbStorageType.Text = ColumnView[0].StorageType;
-                cmbScriptType.Text = ColumnView[0].ScriptType;
-                spnLength.Value = ColumnView[0].Length;
-                spnMinLength.Value = ColumnView[0].MinLength;
-                chkIsFixedLength.Checked = ColumnView[0].IsFixedLength;
-                chkIsNullable.Checked = ColumnView[0].IsNullable;
-                chkAllowSorting.Checked = ColumnView[0].AllowSorting;
-                chkAllowFiltering.Checked = ColumnView[0].AllowFiltering;
-                txtExpression.Text = ColumnView[0].Expression;
-            }
-            
+            //if (lbxColumns.Items.Count != 0)
+            //{
+            //    txtName.Text = lbxColumns.Items[0].ToString();
+            //    cmbType.Text = ViewModel.Columns[0].Type;
+            //    cmbDotNetType.Text = ViewModel.Columns[0].DotNetType;
+            //    cmbStorageType.Text = ViewModel.Columns[0].StorageType;
+            //    cmbScriptType.Text = ViewModel.Columns[0].ScriptType;
+            //    spnLength.Value = ViewModel.Columns[0].Length;
+            //    spnMinLength.Value = ViewModel.Columns[0].MinLength;
+            //    chkIsFixedLength.Checked = ViewModel.Columns[0].IsFixedLength;
+            //    chkIsNullable.Checked = ViewModel.Columns[0].IsNullable;
+            //    chkAllowSorting.Checked = ViewModel.Columns[0].AllowSorting;
+            //    chkAllowFiltering.Checked = ViewModel.Columns[0].AllowFiltering;
+            //    txtExpression.Text = ViewModel.Columns[0].Expression;
+            //}
+
         }
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            if (ViewModel.Columns.Count == 0)
+            {
+                InitViewModelColumns();
+            }
             LoadColumns();
             InitColumnProperties();
             SetupBinding();
@@ -58,21 +60,21 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void SetupBinding()
         {
-            txtName.DataBindings.Add("Text", ColumnView[_ColumnSlectedIndex], "Name");
-            cmbType.DataBindings.Add("Text", ColumnView[_ColumnSlectedIndex], "Type");
-            cmbDotNetType.DataBindings.Add("Text", ColumnView[_ColumnSlectedIndex], "DotNetType");
-            cmbStorageType.DataBindings.Add("Text", ColumnView[_ColumnSlectedIndex], "StorageType");
-            cmbScriptType.DataBindings.Add("Text", ColumnView[_ColumnSlectedIndex], "ScriptType");
-            spnLength.DataBindings.Add("Value", ColumnView[_ColumnSlectedIndex], "Length");
-            spnMinLength.DataBindings.Add("Value", ColumnView[_ColumnSlectedIndex], "MinLength");
-            chkIsFixedLength.DataBindings.Add("Checked", ColumnView[_ColumnSlectedIndex], "IsFixedLength");
-            chkIsNullable.DataBindings.Add("Checked", ColumnView[_ColumnSlectedIndex], "IsNullable");
-            chkAllowSorting.DataBindings.Add("Checked", ColumnView[_ColumnSlectedIndex], "AllowSorting");
-            chkAllowFiltering.DataBindings.Add("Checked", ColumnView[_ColumnSlectedIndex], "AllowFiltering");
-            txtExpression.DataBindings.Add("Text", ColumnView[_ColumnSlectedIndex],  "Expression");
+            txtName.DataBindings.Add("Text", ViewModel.Columns, "Name");
+            cmbType.DataBindings.Add("Text", ViewModel.Columns, "Type");
+            cmbDotNetType.DataBindings.Add("Text", ViewModel.Columns, "DotNetType");
+            cmbStorageType.DataBindings.Add("Text", ViewModel.Columns, "StorageType");
+            cmbScriptType.DataBindings.Add("Text", ViewModel.Columns, "ScriptType");
+            spnLength.DataBindings.Add("Value", ViewModel.Columns, "Length");
+            spnMinLength.DataBindings.Add("Value", ViewModel.Columns, "MinLength");
+            chkIsFixedLength.DataBindings.Add("Checked", ViewModel.Columns, "IsFixedLength");
+            chkIsNullable.DataBindings.Add("Checked", ViewModel.Columns, "IsNullable");
+            chkAllowSorting.DataBindings.Add("Checked", ViewModel.Columns, "AllowSorting");
+            chkAllowFiltering.DataBindings.Add("Checked", ViewModel.Columns, "AllowFiltering");
+            txtExpression.DataBindings.Add("Text", ViewModel.Columns,  "Expression");
         }
 
-        private void LoadColumns()
+        private void InitViewModelColumns()
         {
             if (!String.IsNullOrEmpty(ViewModel.Name))
             {
@@ -83,31 +85,16 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                 if (type != null)
                 {
                     var propertyNames = Reflector.GetPropertyNames(type);
-                    if(ActiveColumns.Count==0)
-                    {
-                        int ItemCount = propertyNames.Count();
-                        ActiveColumns = Enumerable.Repeat(true, ItemCount).ToList();
-                    }
+                    int ItemCount = propertyNames.Count();
+                    ViewModel.ActiveColumns = Enumerable.Repeat(true, ItemCount).ToList();
                     int ItemIndex = 0;
                     foreach (var name in propertyNames)
                     {
                         var column = new ColumnViewModel();
                         column = GetColumn(name, Reflector.GetPropertyType(type, name), type);
-                        lbxColumns.Items.Add(column, ActiveColumns[ItemIndex]) ;
+                        ViewModel.Columns.Add(column);
                         ItemIndex++;
                     }
-                    ItemIndex = 0;
-                    if (ColumnView.Count==0)
-                    {
-                        foreach (var name in propertyNames)
-                        {
-                            var column = new ColumnViewModel();
-                            column = GetColumn(name, Reflector.GetPropertyType(type, name), type);
-                            ColumnView.Add(column);
-                            ItemIndex++;
-                        }
-                    }
-                    
                 }
             }
         }
@@ -133,10 +120,9 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                     column.Length = lengthAttribute.MaximumLength;
                 }
             }
-
             return column;
         }
-
+        
         string StorageTypeFromType(Type type)
         {
             string storageType = String.Empty;
@@ -206,54 +192,64 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
             return scriptType;
         }
-
-        private void lbxColumns_SelectedIndexChanged(object sender, EventArgs e)
+        private void LoadColumns()
         {
-            if (lbxColumns.SelectedItem != null && _ColumnSlectedIndex != lbxColumns.SelectedIndex)
+            int ItemIndex = 0;
+            foreach (var Item in ViewModel.Columns)
             {
-
-                //save last items in model
-                ColumnView[_ColumnSlectedIndex].Name =txtName.Text;
-                ColumnView[_ColumnSlectedIndex].Type = cmbType.Text;
-                ColumnView[_ColumnSlectedIndex].DotNetType = cmbDotNetType.Text;
-                ColumnView[_ColumnSlectedIndex].StorageType = cmbStorageType.Text;
-                ColumnView[_ColumnSlectedIndex].ScriptType = cmbScriptType.Text;
-                ColumnView[_ColumnSlectedIndex].Length = Convert.ToInt32( spnLength.Value);
-                ColumnView[_ColumnSlectedIndex].MinLength =Convert.ToInt32( spnMinLength.Value);
-                ColumnView[_ColumnSlectedIndex].IsFixedLength = chkIsFixedLength.Checked;
-                ColumnView[_ColumnSlectedIndex].IsNullable = chkIsNullable.Checked;
-                ColumnView[_ColumnSlectedIndex].AllowSorting = chkAllowSorting.Checked;
-                ColumnView[_ColumnSlectedIndex].AllowFiltering = chkAllowFiltering.Checked;
-                ColumnView[_ColumnSlectedIndex].Expression = txtExpression.Text;
-
-
-                _ColumnSlectedIndex = lbxColumns.SelectedIndex;
-
-                //retrive items from model
-                txtName.Text = lbxColumns.SelectedItem.ToString();
-                cmbType.Text = ColumnView[_ColumnSlectedIndex].Type;
-                cmbDotNetType.Text=ColumnView[_ColumnSlectedIndex].DotNetType;
-                cmbStorageType.Text=ColumnView[_ColumnSlectedIndex].StorageType;
-                cmbScriptType.Text=ColumnView[_ColumnSlectedIndex].ScriptType;
-                spnLength.Value=ColumnView[_ColumnSlectedIndex].Length;
-                spnMinLength.Value=ColumnView[_ColumnSlectedIndex].MinLength;
-                chkIsFixedLength.Checked=ColumnView[_ColumnSlectedIndex].IsFixedLength;
-                chkIsNullable.Checked=ColumnView[_ColumnSlectedIndex].IsNullable;
-                chkAllowSorting.Checked=ColumnView[_ColumnSlectedIndex].AllowSorting;
-                chkAllowFiltering.Checked =ColumnView[_ColumnSlectedIndex].AllowFiltering;
-                txtExpression.Text=ColumnView[_ColumnSlectedIndex].Expression;
+                lbxColumns.Items.Add(Item, ViewModel.ActiveColumns[ItemIndex]);
+                ItemIndex++;
             }
+        }
+      
+
+    private void lbxColumns_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //if (lbxColumns.SelectedItem != null && _ColumnSlectedIndex != lbxColumns.SelectedIndex)
+            //{
+
+            //    //save last items in model
+            //    ViewModel.Columns[_ColumnSlectedIndex].Name =txtName.Text;
+            //    ViewModel.Columns[_ColumnSlectedIndex].Type = cmbType.Text;
+            //    ViewModel.Columns[_ColumnSlectedIndex].DotNetType = cmbDotNetType.Text;
+            //    ViewModel.Columns[_ColumnSlectedIndex].StorageType = cmbStorageType.Text;
+            //    ViewModel.Columns[_ColumnSlectedIndex].ScriptType = cmbScriptType.Text;
+            //    ViewModel.Columns[_ColumnSlectedIndex].Length = Convert.ToInt32( spnLength.Value);
+            //    ViewModel.Columns[_ColumnSlectedIndex].MinLength =Convert.ToInt32( spnMinLength.Value);
+            //    ViewModel.Columns[_ColumnSlectedIndex].IsFixedLength = chkIsFixedLength.Checked;
+            //    ViewModel.Columns[_ColumnSlectedIndex].IsNullable = chkIsNullable.Checked;
+            //    ViewModel.Columns[_ColumnSlectedIndex].AllowSorting = chkAllowSorting.Checked;
+            //    ViewModel.Columns[_ColumnSlectedIndex].AllowFiltering = chkAllowFiltering.Checked;
+            //    ViewModel.Columns[_ColumnSlectedIndex].Expression = txtExpression.Text;
+
+
+            //    _ColumnSlectedIndex = lbxColumns.SelectedIndex;
+
+            //    //retrive items from model
+            //    txtName.Text = lbxColumns.SelectedItem.ToString();
+            //    cmbType.Text = ViewModel.Columns[_ColumnSlectedIndex].Type;
+            //    cmbDotNetType.Text= ViewModel.Columns[_ColumnSlectedIndex].DotNetType;
+            //    cmbStorageType.Text= ViewModel.Columns[_ColumnSlectedIndex].StorageType;
+            //    cmbScriptType.Text= ViewModel.Columns[_ColumnSlectedIndex].ScriptType;
+            //    spnLength.Value= ViewModel.Columns[_ColumnSlectedIndex].Length;
+            //    spnMinLength.Value= ViewModel.Columns[_ColumnSlectedIndex].MinLength;
+            //    chkIsFixedLength.Checked= ViewModel.Columns[_ColumnSlectedIndex].IsFixedLength;
+            //    chkIsNullable.Checked= ViewModel.Columns[_ColumnSlectedIndex].IsNullable;
+            //    chkAllowSorting.Checked= ViewModel.Columns[_ColumnSlectedIndex].AllowSorting;
+            //    chkAllowFiltering.Checked = ViewModel.Columns[_ColumnSlectedIndex].AllowFiltering;
+            //    txtExpression.Text= ViewModel.Columns[_ColumnSlectedIndex].Expression;
+            //}
         }
             
         private void EditColumnsForm_Leave(object sender, EventArgs e)
         {
-            for(int i=0;i<ActiveColumns.Count;i++)
+            for(int i=0;i< ViewModel.ActiveColumns.Count;i++)
             {
-                ActiveColumns[i] = false;
+                ViewModel.ActiveColumns[i] = false;
                 foreach (var item in lbxColumns.CheckedItems)
                 {
-                    if (item.ToString() == ColumnView[i].Name)
-                        ActiveColumns[i] = true;
+                    if (item.ToString() == ViewModel.Columns[i].Name)
+                        ViewModel.ActiveColumns[i] = true;
                    
                 }
             }

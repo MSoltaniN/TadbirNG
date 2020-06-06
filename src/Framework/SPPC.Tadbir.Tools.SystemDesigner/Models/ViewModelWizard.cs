@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SPPC.Tadbir.ViewModel.Metadata;
+
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Models
 {
@@ -11,16 +12,16 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Models
     {
         public ViewModelWizard()
         {
-            SysViewModel = new SysVeiwModel();
-            ViewModel = new ViewModelClass();
-            ColumnViewModel = new List<ColumnViewModel>();
-            ActiveColumns = new List<bool>();
+            ViewModel = new ViewModelEntityModel();
+            SysModelViewItemIndex = -1;
+            SelectedViewModelOnTreeView = "View Models";
         }
-
-        public SysVeiwModel SysViewModel { get; set; }
-
-        public ViewModelClass ViewModel { get; set; }
-        public List<ColumnViewModel> ColumnViewModel { get; set; }
-        public List<bool> ActiveColumns { get; set; }
+        public ViewModelEntityModel ViewModel { get; set; }
+       //SysViewModel control
+        public int SysModelViewItemIndex { get; set; }
+        public DataTable SysModelViewItems { get; set; }
+        //ViewModel control
+        public string SelectedViewModelOnTreeView { get; set; }
+        //ColumnViewModel control        
     }
 }

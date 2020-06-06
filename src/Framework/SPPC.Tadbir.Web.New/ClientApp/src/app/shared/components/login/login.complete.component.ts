@@ -276,6 +276,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         if (currentUser != null) {
           currentUser.branchId = contextInfo.branchId;
           currentUser.companyId = contextInfo.companyId;
+          currentUser.inventoryMode = contextInfo.inventoryMode;
           currentUser.fpId = contextInfo.fiscalPeriodId;
           currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
           currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;

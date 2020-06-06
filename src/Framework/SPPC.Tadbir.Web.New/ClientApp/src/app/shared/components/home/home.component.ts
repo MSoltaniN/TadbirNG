@@ -28,6 +28,8 @@ export function getLayoutModule(layout: Layout) {
       right: calc(50% - 170px);
       opacity: .1;
     }
+
+  .open-voucher-msg {padding:10px;}
   `],
   providers: [{
     provide: RTL,
@@ -101,7 +103,9 @@ export class HomeComponent extends DefaultComponent implements OnInit {
     this.dialog = this.dialogService.open({
       title: 'پیغام تایید',
       content: this.elOVConfirmBox,
-      actions: this.elOVConfirmBoxActions
+      actions: this.elOVConfirmBoxActions,
+      width: 430,
+      height:245
     });
   }
 
