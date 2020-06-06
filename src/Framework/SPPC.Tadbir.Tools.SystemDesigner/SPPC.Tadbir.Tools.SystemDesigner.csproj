@@ -56,6 +56,9 @@
       <HintPath>..\..\..\lib\HtmlAgilityPack.1.11.10\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -101,8 +104,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\AppSettingsModel.cs" />
     <Compile Include="Models\ConnectionStringsModel.cs" />
-    <Compile Include="Models\ViewModel.cs" />
-    <Compile Include="Models\ViewModelWizard.cs" />
+    <Compile Include="Models\ViewWizardModel.cs" />
     <Compile Include="Utility\HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
     <Compile Include="MainWindow.cs">
@@ -219,29 +221,23 @@
     <Compile Include="Wizards\NewCrudEntityWizard\WizardOptionsPage.Designer.cs">
       <DependentUpon>WizardOptionsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Wizards\ViewWizard\EditColumnsForm.cs">
+    <Compile Include="Wizards\ViewWizard\EditColumnsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Wizards\ViewWizard\EditColumnsForm.Designer.cs">
-      <DependentUpon>EditColumnsForm.cs</DependentUpon>
+    <Compile Include="Wizards\ViewWizard\EditColumnsPage.Designer.cs">
+      <DependentUpon>EditColumnsPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Wizards\ViewWizard\EditViewForm.cs">
+    <Compile Include="Wizards\ViewWizard\EditViewPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Wizards\ViewWizard\EditViewForm.Designer.cs">
-      <DependentUpon>EditViewForm.cs</DependentUpon>
+    <Compile Include="Wizards\ViewWizard\EditViewPage.Designer.cs">
+      <DependentUpon>EditViewPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Wizards\ViewWizard\SelectViewModelForm.cs">
+    <Compile Include="Wizards\ViewWizard\BrowseViewsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Wizards\ViewWizard\SelectViewModelForm.Designer.cs">
-      <DependentUpon>SelectViewModelForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Wizards\ViewWizard\SysViewMoldelsForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Wizards\ViewWizard\SysViewMoldelsForm.Designer.cs">
-      <DependentUpon>SysViewMoldelsForm.cs</DependentUpon>
+    <Compile Include="Wizards\ViewWizard\BrowseViewsPage.Designer.cs">
+      <DependentUpon>BrowseViewsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Wizards\ViewWizard\ViewWizardForm.cs">
       <SubType>Form</SubType>
@@ -286,17 +282,14 @@
     <EmbeddedResource Include="Wizards\NewCrudEntityWizard\WizardOptionsPage.resx">
       <DependentUpon>WizardOptionsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Wizards\ViewWizard\EditColumnsForm.resx">
-      <DependentUpon>EditColumnsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Wizards\ViewWizard\EditColumnsPage.resx">
+      <DependentUpon>EditColumnsPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Wizards\ViewWizard\EditViewForm.resx">
-      <DependentUpon>EditViewForm.cs</DependentUpon>
+    <EmbeddedResource Include="Wizards\ViewWizard\EditViewPage.resx">
+      <DependentUpon>EditViewPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Wizards\ViewWizard\SelectViewModelForm.resx">
-      <DependentUpon>SelectViewModelForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Wizards\ViewWizard\SysViewMoldelsForm.resx">
-      <DependentUpon>SysViewMoldelsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Wizards\ViewWizard\BrowseViewsPage.resx">
+      <DependentUpon>BrowseViewsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizards\ViewWizard\ViewWizardForm.resx">
       <DependentUpon>ViewWizardForm.cs</DependentUpon>
