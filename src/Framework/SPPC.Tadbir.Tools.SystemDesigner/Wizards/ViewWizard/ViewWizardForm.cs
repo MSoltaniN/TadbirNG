@@ -1,11 +1,9 @@
-﻿using BabakSoft.Platform.Data;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
-using SPPC.Framework.Helpers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
+using System.IO;
 using System.Windows.Forms;
+using BabakSoft.Platform.Data;
+using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Tools.SystemDesigner.Models;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 {
@@ -14,14 +12,23 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         public ViewWizardForm()
         {
             InitializeComponent();
-            WizardModel = new ViewModelWizard();
+            WizardModel = new ViewWizardModel();
         }
 
-        public ViewModelWizard WizardModel { get; set; }
+        public ViewWizardModel WizardModel { get; set; }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            LoadViews();
             LoadFirstPage();
+        }
+
+        private void LoadViews()
+        {
+            _sysConnection = GetSysConnectionString();
+            var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
+            WizardModel.ViewItems = dal.Query("SELECT ViewID, Name FROM [Metadata].[View]");
         }
 
         private void Back_Click(object sender, EventArgs e)
@@ -60,28 +67,41 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void LoadFirstPage()
         {
-            var page = new SysViewMoldelsForm() { Dock = DockStyle.Fill, ViewModelWizard = WizardModel };
-            splitContainerNested.Panel1.Controls.Clear();
-            splitContainerNested.Panel1.Controls.Add(page);
+            var page = new BrowseViewsPage()
+            {
+                Dock = DockStyle.Fill,
+                ViewItems = WizardModel.ViewItems,
+                SysConnection = _sysConnection
+            };
+            pnlPage.Controls.Clear();
+            pnlPage.Controls.Add(page);
             SetCurrentStepInfo(page.Info);
-            btnNext.Text = "Add New ViewModel";
+            btnNext.Text = "Add View";
         }
 
         private void LoadSecondPage()
         {
-            var page = new SelectViewModelForm () { Dock = DockStyle.Fill, View = WizardModel.ViewModel ,ViewModelWizard=WizardModel};
-           
-            splitContainerNested.Panel1.Controls.Clear();
-            splitContainerNested.Panel1.Controls.Add(page);
+            var page = new EditViewPage()
+            {
+                Dock = DockStyle.Fill,
+                View = WizardModel.View,
+            };
+            pnlPage.Controls.Clear();
+            pnlPage.Controls.Add(page);
             SetCurrentStepInfo(page.Info);
-            btnNext.Text =  "Next" ;
+            btnNext.Text = "Next";
         }
 
         private void LoadThirdPage()
         {
-            var page = new EditColumnsForm() { Dock = DockStyle.Fill, ViewModel = WizardModel.ViewModel };
-            splitContainerNested.Panel1.Controls.Clear();
-            splitContainerNested.Panel1.Controls.Add(page);
+            var page = new EditColumnsPage()
+            {
+                Dock = DockStyle.Fill,
+                Columns = WizardModel.Columns,
+                ViewName = WizardModel.View.Name
+            };
+            pnlPage.Controls.Clear();
+            pnlPage.Controls.Add(page);
             SetCurrentStepInfo(page.Info);
             btnNext.Text = "Finish";
         }
@@ -92,17 +112,24 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             btnBack.Enabled = (_currentStepNo > 1);
         }
 
-        void  GenerateScript()
+        void GenerateScript()
         {
 
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private string GetSysConnectionString()
         {
-            this.Close();
+            string path = @"..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
+            var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
+            return appSettings.ConnectionStrings.TadbirSysApi;
+        }
+
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private int _currentStepNo = 1;
-
+        private string _sysConnection;
     }
 }

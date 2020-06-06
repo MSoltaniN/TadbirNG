@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Auth;
@@ -28,9 +29,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log)
+        /// <param name="appConfig">امکان خواندن تنظیمات کلی برنامه را فراهم می کند</param>
+        public CompanyRepository(IRepositoryContext context, IOperationLogRepository log,
+            IConfiguration appConfig)
             : base(context, log)
         {
+            _appConfig = appConfig;
             UnitOfWork.UseSystemContext();
         }
 
@@ -70,17 +74,16 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک شرکت را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="companyView">شرکت مورد نظر برای ایجاد یا اصلاح</param>
-        /// <param name="webHostPath">مسیر ریشه نرم افزار</param>
+        /// <param name="webRoot">مسیر ریشه نرم افزار</param>
         /// <returns>اطلاعات نمایشی شرکت ایجاد یا اصلاح شده</returns>
-        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView, string webHostPath)
+        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView, string webRoot)
         {
-            _webRootPath = webHostPath;
             Verify.ArgumentNotNull(companyView, "companyView");
             var company = default(CompanyDb);
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             if (companyView.Id == 0)
             {
-                CreateDatabase(companyView);
+                CreateDatabase(companyView, webRoot);
                 company = Mapper.Map<CompanyDb>(companyView);
                 await InsertAsync(repository, company);
             }
@@ -168,9 +171,16 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(company, "company");
 
             string userScript = @"SELECT name FROM sys.sql_logins";
-            DataTable dt = DbConsole.ExecuteQuery(userScript);
-            List<DataRow> drList = dt.AsEnumerable().ToList();
-            return drList.Any(dataRow => dataRow["name"].ToString().ToLower().Equals(company.UserName.ToLower()));
+            DataTable table = DbConsole.ExecuteQuery(userScript);
+            List<DataRow> rows = table.AsEnumerable().ToList();
+            string userName = !String.IsNullOrEmpty(company.UserName)
+                ? company.UserName.ToLower()
+                : String.Empty;
+            return rows.Any(row =>
+                row["name"]
+                    .ToString()
+                    .ToLower()
+                    .Equals(userName));
         }
 
         internal override int? EntityType
@@ -208,21 +218,22 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private void CreateDatabase(CompanyDbViewModel companyViewModel)
+        private void CreateDatabase(CompanyDbViewModel company, string webRoot)
         {
-            if (!IsDuplicateDatabaseName(companyViewModel.DbName))
+            if (!IsDuplicateDatabaseName(company.DbName))
             {
-                var scriptPath = Path.Combine(_webRootPath, @"static\Tadbir_CreateDbObjects.sql");
+                var scriptPath = Path.Combine(webRoot, @"static\Tadbir_CreateDbObjects.sql");
                 if (!File.Exists(scriptPath))
                 {
                     throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
                 }
 
-                string companyScript = string.Format(@"CREATE DATABASE {0}
-                                                      GO
-                                                      USE {0}
-                                                      GO",
-                                                      companyViewModel.DbName);
+                string companyScript = string.Format(
+                    @"CREATE DATABASE {0}
+                    GO
+                    USE {0}
+                    GO",
+                    company.DbName);
 
                 companyScript += Environment.NewLine;
                 companyScript += File.ReadAllText(scriptPath);
@@ -230,75 +241,68 @@ namespace SPPC.Tadbir.Persistence
                 DbConsole.ExecuteNonQuery(companyScript);
             }
 
-            CreateDatabaseLogin(companyViewModel);
-
-            SetServerName(companyViewModel);
+            CreateDatabaseLogin(company);
+            SetServerName(company);
         }
 
-        private void CreateDatabaseLogin(CompanyDbViewModel companyViewModel)
+        private void CreateDatabaseLogin(CompanyDbViewModel company)
         {
-            string loginScript = string.Format(@"CREATE LOGIN [{0}] WITH PASSWORD = '{1}', CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF;
-                                                     GO
-                                                     Use [{2}];
-                                                     GO
-                                                     IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'{0}')
-                                                     BEGIN
-                                                        CREATE USER [{0}] FOR LOGIN [{0}]
-                                                        EXEC sp_addrolemember N'db_owner', N'{1}'    
-                                                     END;
-                                                     GO",
-                                                 companyViewModel.UserName,
-                                                 companyViewModel.Password,
-                                                 companyViewModel.DbName);
+            if (String.IsNullOrEmpty(company.UserName))
+            {
+                return;
+            }
+
+            string loginScript = string.Format(
+                @"CREATE LOGIN [{0}] WITH PASSWORD = '{1}', CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF;
+                    GO
+                    Use [{2}];
+                    GO
+                    IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'{0}')
+                    BEGIN
+                    CREATE USER [{0}] FOR LOGIN [{0}]
+                    EXEC sp_addrolemember N'db_owner', N'{0}'    
+                    END;
+                    GO",
+                company.UserName,
+                company.Password,
+                company.DbName);
 
             DbConsole.ExecuteNonQuery(loginScript);
         }
 
-        private void SetServerName(CompanyDbViewModel companyViewModel)
+        private void SetServerName(CompanyDbViewModel company)
         {
-            string serverInfoScript = @"SELECT 
-                                            @@servername AS 'ServerName',
-                                            @@servicename AS 'InstanceName',
-                                            DB_NAME() AS 'DatabaseName',
-                                            HOST_NAME() AS 'HostName'";
-
-            var serverInfo = DbConsole.ExecuteQuery(serverInfoScript);
-            string serverName = serverInfo.Rows[0].ItemArray[0].ToString();
-            companyViewModel.Server = serverName;
+            string connection = _appConfig.GetConnectionString("TadbirSysApi");
+            var sqlBuilder = new SqlConnectionStringBuilder(connection);
+            company.Server = sqlBuilder.DataSource;
         }
 
         private bool IsDuplicateDatabaseName(string dbName)
         {
-            string dbNameScript = @"SELECT [name] FROM sys.databases";
-            DataTable dt = DbConsole.ExecuteQuery(dbNameScript);
-            List<DataRow> drList = dt.AsEnumerable().ToList();
-            return drList.Any(dataRow => dataRow["name"].ToString().ToLower().Equals(dbName.ToLower()));
+            string dbNameScript = String.Format(
+                @"SELECT [name] FROM sys.databases
+                    WHERE LOWER([name]) = LOWER('{0}')", dbName);
+            DataTable table = DbConsole.ExecuteQuery(dbNameScript);
+            return table.Rows.Count > 0;
         }
 
         private bool CheckIsTadbirDatabase(string dbName)
         {
-            string sysConnectionString = DbConsole.ConnectionString;
-
-            DbConsole.ConnectionString = DbConsole.BuildConnectionString(dbName);
-
-            if (DbConsole.TestConnection())
+            string connectionString = DbConsole.BuildConnectionString(dbName);
+            if (DbConsole.TestConnection(connectionString))
             {
-                string tableScript = string.Format(@"SELECT *
-                                                     FROM {0}.INFORMATION_SCHEMA.TABLES 
-                                                     WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME='Account' AND TABLE_SCHEMA='Finance'",
-                                                     dbName);
-
-                DataTable dt = DbConsole.ExecuteQuery(tableScript);
-
-                DbConsole.ConnectionString = sysConnectionString;
-                return dt.Rows.Count == 1;
+                string tableScript = String.Format(
+                    @"SELECT * FROM {0}.INFORMATION_SCHEMA.TABLES
+                        WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME='Account' AND TABLE_SCHEMA='Finance'",
+                        dbName);
+                DataTable table = DbConsole.ExecuteQuery(tableScript);
+                return table.Rows.Count == 1;
             }
             else
             {
                 // امکان دارد دیتابیس تدبیر نباشد باید یوزر به آن اضافه شود سپس دیتابیس چک شود
             }
 
-            DbConsole.ConnectionString = sysConnectionString;
             return false;
         }
 
@@ -321,6 +325,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private string _webRootPath;
+        private readonly IConfiguration _appConfig;
     }
 }

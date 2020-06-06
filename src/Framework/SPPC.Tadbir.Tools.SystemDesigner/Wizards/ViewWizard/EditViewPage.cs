@@ -3,48 +3,37 @@ using System.Linq;
 using System.Windows.Forms;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 {
-    public partial class SelectViewModelForm : UserControl
+    public partial class EditViewPage : UserControl
     {
-        public SelectViewModelForm()
+        public EditViewPage()
         {
             InitializeComponent();
             Info = "Select View Model";
-            SelectedViewModel = "View Models";
+            //SelectedViewModel = "View Models";
         }
 
         public string Info { get; set; }
 
-        public string SelectedViewModel { get; private set; }
-
-        public ViewModelEntityModel View { get; set; }
-        public ViewModelWizard ViewModelWizard { get; set; }
-
-        public void SetSelectedViewModel(string name)
-        {
-            SelectedViewModel = !String.IsNullOrEmpty(name)
-                ? name
-                : "View Models";
-        }
+        public ViewViewModel View { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            SelectedViewModel = ViewModelWizard.SelectedViewModelOnTreeView ;
+            SetupBindings();
             cmbEntityType.SelectedIndex = 0;
             LoadViewModels();
-            SetupBindings();
         }
 
-        private void TViewModels_AfterSelect(object sender, TreeViewEventArgs e)
+        private void ViewModels_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Nodes.Count == 0)
             {
-                SelectedViewModel = e.Node.Name;
-                txtName.Text = SelectedViewModel;
-                View.Name = SelectedViewModel;
+                txtName.Text = e.Node.Name;
+                View.Name = e.Node.Name;
             }
         }
 
@@ -70,7 +59,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                 }
             }
 
-            var node = tvViewModels.Nodes.Find(SelectedViewModel, true);
+            var node = tvViewModels.Nodes.Find(View.Name, true);
             tvViewModels.SelectedNode = node.FirstOrDefault() ?? tvViewModels.Nodes[0];
         }
 
@@ -83,13 +72,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             chkIsHierarchy.DataBindings.Add("Checked", View, "IsHierarchy");
             chkEnableCartable.DataBindings.Add("Checked", View, "IsCartableIntegrated");
         }
-        
-        private const string _defaultAssembly = "SPPC.Tadbir.ViewModel";
 
         private void SelectViewModelForm_Leave(object sender, EventArgs e)
         {
-            ViewModelWizard.SelectedViewModelOnTreeView = SelectedViewModel;
         }
 
+        private const string _defaultAssembly = "SPPC.Tadbir.ViewModel";
     }
 }

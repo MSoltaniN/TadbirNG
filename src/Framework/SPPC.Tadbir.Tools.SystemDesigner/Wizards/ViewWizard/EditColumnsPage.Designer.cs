@@ -1,6 +1,6 @@
 ﻿namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 {
-    partial class EditColumnsForm
+    partial class EditColumnsPage
     {
         /// <summary> 
         /// Required designer variable.
@@ -66,7 +66,7 @@
             this.lbxColumns.Name = "lbxColumns";
             this.lbxColumns.Size = new System.Drawing.Size(199, 319);
             this.lbxColumns.TabIndex = 0;
-            this.lbxColumns.SelectedIndexChanged += new System.EventHandler(this.lbxColumns_SelectedIndexChanged);
+            this.lbxColumns.SelectedIndexChanged += new System.EventHandler(this.Columns_SelectedIndexChanged);
             // 
             // grpColumn
             // 
