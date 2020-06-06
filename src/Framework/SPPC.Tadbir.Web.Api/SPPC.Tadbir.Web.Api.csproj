@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -24,9 +24,9 @@
     <None Remove="Resources\Types\**" />
   </ItemGroup>
 
-  <Target Name="PostBuild" BeforeTargets="PostBuildEvent">
+  <!--<Target Name="PostBuild" BeforeTargets="PostBuildEvent">
     <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ProjectCLI.exe -cmd:refdb " />
-  </Target>
+  </Target>-->
 
   <ItemGroup>
     <Compile Remove="Controllers\InventoriesController.cs" />
