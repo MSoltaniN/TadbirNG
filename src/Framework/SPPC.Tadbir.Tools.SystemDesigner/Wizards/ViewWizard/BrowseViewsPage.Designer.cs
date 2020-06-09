@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.labelModelViewSelector = new System.Windows.Forms.Label();
             this.cmbViewSelector = new System.Windows.Forms.ComboBox();
             this.gvColumns = new System.Windows.Forms.DataGridView();
@@ -40,10 +40,9 @@
             // labelModelViewSelector
             // 
             this.labelModelViewSelector.AutoSize = true;
-            this.labelModelViewSelector.Location = new System.Drawing.Point(14, 29);
-            this.labelModelViewSelector.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelModelViewSelector.Location = new System.Drawing.Point(10, 24);
             this.labelModelViewSelector.Name = "labelModelViewSelector";
-            this.labelModelViewSelector.Size = new System.Drawing.Size(37, 17);
+            this.labelModelViewSelector.Size = new System.Drawing.Size(30, 13);
             this.labelModelViewSelector.TabIndex = 3;
             this.labelModelViewSelector.Text = "View";
             // 
@@ -51,10 +50,9 @@
             // 
             this.cmbViewSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbViewSelector.FormattingEnabled = true;
-            this.cmbViewSelector.Location = new System.Drawing.Point(71, 26);
-            this.cmbViewSelector.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbViewSelector.Location = new System.Drawing.Point(53, 21);
             this.cmbViewSelector.Name = "cmbViewSelector";
-            this.cmbViewSelector.Size = new System.Drawing.Size(299, 24);
+            this.cmbViewSelector.Size = new System.Drawing.Size(225, 21);
             this.cmbViewSelector.TabIndex = 2;
             this.cmbViewSelector.SelectedIndexChanged += new System.EventHandler(this.ViewSelector_SelectedIndexChanged);
             // 
@@ -73,16 +71,15 @@
             this.EditCell,
             this.Column1});
             this.gvColumns.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.gvColumns.Location = new System.Drawing.Point(17, 68);
-            this.gvColumns.Margin = new System.Windows.Forms.Padding(4);
+            this.gvColumns.Location = new System.Drawing.Point(13, 55);
             this.gvColumns.Name = "gvColumns";
             this.gvColumns.ReadOnly = true;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            this.gvColumns.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            this.gvColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.gvColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvColumns.Size = new System.Drawing.Size(749, 475);
-            this.gvColumns.TabIndex = 2;
+            this.gvColumns.Size = new System.Drawing.Size(562, 386);
+            this.gvColumns.TabIndex = 4;
             // 
             // EditCell
             // 
@@ -105,14 +102,13 @@
             // 
             // BrowseViewsPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.labelModelViewSelector);
             this.Controls.Add(this.gvColumns);
             this.Controls.Add(this.cmbViewSelector);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "BrowseViewsPage";
-            this.Size = new System.Drawing.Size(781, 558);
+            this.Size = new System.Drawing.Size(586, 453);
             ((System.ComponentModel.ISupportInitialize)(this.gvColumns)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

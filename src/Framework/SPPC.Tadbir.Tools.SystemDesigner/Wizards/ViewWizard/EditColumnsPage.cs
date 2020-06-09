@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Forms;
 using BS = BabakSoft.Platform.Common;
-using SPPC.Framework.Common;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -30,41 +28,27 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             base.OnLoad(e);
             InitColumns(Columns.Count == 0);
             LoadColumns();
-            SetupBinding();
-        }
-
-        private void SetupBinding()
-        {
-            txtName.DataBindings.Add("Text", Columns, "Name");
-            cmbType.DataBindings.Add("Text", Columns, "Type");
-            cmbDotNetType.DataBindings.Add("Text", Columns, "DotNetType");
-            cmbStorageType.DataBindings.Add("Text", Columns, "StorageType");
-            cmbScriptType.DataBindings.Add("Text", Columns, "ScriptType");
-            spnLength.DataBindings.Add("Value", Columns, "Length");
-            spnMinLength.DataBindings.Add("Value", Columns, "MinLength");
-            chkIsFixedLength.DataBindings.Add("Checked", Columns, "IsFixedLength");
-            chkIsNullable.DataBindings.Add("Checked", Columns, "IsNullable");
-            chkAllowSorting.DataBindings.Add("Checked", Columns, "AllowSorting");
-            chkAllowFiltering.DataBindings.Add("Checked", Columns, "AllowFiltering");
-            txtExpression.DataBindings.Add("Text", Columns,  "Expression");
         }
 
         private void InitColumns(bool isDefault)
         {
-            if (!String.IsNullOrEmpty(ViewName))
+            if(isDefault)
             {
-                var type = typeof(AccountViewModel).Assembly
-                    .GetTypes()
-                    .Where(t => t.Name == ViewName + "ViewModel")
-                    .FirstOrDefault();
-                if (type != null)
+                if (!String.IsNullOrEmpty(ViewName))
                 {
-                    var propertyNames = BS::Reflector.GetPropertyNames(type);
-                    int itemCount = propertyNames.Count();
-                    foreach (var name in propertyNames)
+                    var type = typeof(AccountViewModel).Assembly
+                        .GetTypes()
+                        .Where(t => t.Name == ViewName + "ViewModel")
+                        .FirstOrDefault();
+                    if (type != null)
                     {
-                        var column = GetColumn(name, BS::Reflector.GetPropertyType(type, name), type);
-                        Columns.Add(column);
+                        var propertyNames = BS::Reflector.GetPropertyNames(type);
+                        int itemCount = propertyNames.Count();
+                        foreach (var name in propertyNames)
+                        {
+                            var column = GetColumn(name, BS::Reflector.GetPropertyType(type, name), type);
+                            Columns.Add(column);
+                        }
                     }
                 }
             }
@@ -81,7 +65,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                 ScriptType = ScriptTypeFromType(type),
                 StorageType = StorageTypeFromType(type)
             };
-
+            
             if (column.ScriptType == "string")
             {
                 if (BS::Reflector.GetPropertyAttribute(
@@ -90,7 +74,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                     column.Length = lengthAttribute.MaximumLength;
                 }
             }
-
             return column;
         }
 
@@ -166,22 +149,109 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void LoadColumns()
         {
-            int itemIndex = 0;
             foreach (var column in Columns)
-            {
-                lbxColumns.Items.Add(column);
-                itemIndex++;
-            }
+              lbxColumns.Items.Add(column,false);
         }
 
         private void Columns_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lbxColumns.SelectedItem == null)
+                return;
+           
+            int tmpSelectedIndex = Columns.IndexOf(Columns.Where(p => p.Name == lbxColumns.SelectedItem.ToString()).SingleOrDefault());
+
+            if (tmpSelectedIndex != _columnSelectedIndex && lbxColumns.SelectedIndex!=-1)
+            {
+                SaveColumnDetails(_columnSelectedIndex != -1);
+                _columnSelectedIndex = tmpSelectedIndex;
+                RetrieveColumnDetails();
+            }
+        }
+        private void SaveColumnDetails(bool dataExist)
+        {
+            if(dataExist)
+            {
+                Columns[_columnSelectedIndex].Name = txtName.Text;
+                Columns[_columnSelectedIndex].Type = cmbType.Text;
+                Columns[_columnSelectedIndex].DotNetType = cmbDotNetType.Text;
+                Columns[_columnSelectedIndex].StorageType = cmbStorageType.Text;
+                Columns[_columnSelectedIndex].ScriptType = cmbScriptType.Text;
+                Columns[_columnSelectedIndex].Length = Convert.ToInt32(spnLength.Value);
+                Columns[_columnSelectedIndex].MinLength = Convert.ToInt32(spnMinLength.Value);
+                Columns[_columnSelectedIndex].IsFixedLength = chkIsFixedLength.Checked;
+                Columns[_columnSelectedIndex].IsNullable = chkIsNullable.Checked;
+                Columns[_columnSelectedIndex].AllowSorting = chkAllowSorting.Checked;
+                Columns[_columnSelectedIndex].AllowFiltering = chkAllowFiltering.Checked;
+                Columns[_columnSelectedIndex].Expression = txtExpression.Text;
+            }
         }
 
+        private void RetrieveColumnDetails()
+        {
+            txtName.Text = Columns[_columnSelectedIndex].Name;
+            cmbType.Text = (Columns[_columnSelectedIndex].Type == "" ? "(not set)" : Columns[_columnSelectedIndex].Type);
+            cmbDotNetType.Text = Columns[_columnSelectedIndex].DotNetType;
+            cmbStorageType.Text = Columns[_columnSelectedIndex].StorageType;
+            cmbScriptType.Text = Columns[_columnSelectedIndex].ScriptType;
+            spnLength.Value = Columns[_columnSelectedIndex].Length;
+            spnMinLength.Value = Columns[_columnSelectedIndex].MinLength;
+            chkIsFixedLength.Checked = Columns[_columnSelectedIndex].IsFixedLength;
+            chkIsNullable.Checked = Columns[_columnSelectedIndex].IsNullable;
+            chkAllowSorting.Checked = Columns[_columnSelectedIndex].AllowSorting;
+            chkAllowFiltering.Checked = Columns[_columnSelectedIndex].AllowFiltering;
+            txtExpression.Text = Columns[_columnSelectedIndex].Expression;
+        }
+
+
+        private void MoveUp_Click(object sender, EventArgs e)
+        {
+            if(lbxColumns.SelectedIndex>0)
+            {
+                int itemIndex = lbxColumns.SelectedIndex;
+                var tmpValue = lbxColumns.Items[itemIndex-1];
+                bool tmpCheckState = lbxColumns.GetItemChecked(itemIndex - 1);
+                lbxColumns.Items[itemIndex - 1] = lbxColumns.Items[itemIndex];
+                lbxColumns.SetItemChecked(itemIndex - 1,lbxColumns.GetItemChecked(itemIndex));
+                lbxColumns.Items[itemIndex] = tmpValue;
+                lbxColumns.SetItemChecked(itemIndex, tmpCheckState);
+                lbxColumns.SelectedIndex = itemIndex - 1;
+            }
+        }
+
+        private void MoveDown_Click(object sender, EventArgs e)
+        {
+            if (lbxColumns.SelectedIndex < lbxColumns.Items.Count-1)
+            {
+                int itemIndex = lbxColumns.SelectedIndex;
+                var tmpValue = lbxColumns.Items[itemIndex + 1];
+                bool tmpCheckState = lbxColumns.GetItemChecked(itemIndex + 1);
+                lbxColumns.Items[itemIndex + 1] = lbxColumns.Items[itemIndex];
+                lbxColumns.SetItemChecked(itemIndex + 1, lbxColumns.GetItemChecked(itemIndex));
+                lbxColumns.Items[itemIndex] = tmpValue;
+                lbxColumns.SetItemChecked(itemIndex, tmpCheckState);
+                lbxColumns.SelectedIndex = itemIndex + 1;
+            }
+        }
+      
+        private void DeselectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < lbxColumns.Items.Count; i++)
+                lbxColumns.SetItemChecked(i, false);
+        }
+
+        private void SelectAll_Click(object sender, EventArgs e)
+        {
+            for(int i=0 ; i < lbxColumns.Items.Count; i++)
+                lbxColumns.SetItemChecked(i, true);
+        }
+        
         private void EditColumnsForm_Leave(object sender, EventArgs e)
         {
+            Columns.Clear();
+            foreach (var column in lbxColumns.CheckedItems.OfType<ColumnViewModel>())
+                Columns.Add(column);
         }
 
-        public int _columnSelectedIndex = 0;
+        public int _columnSelectedIndex = -1;
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Data;
-using System.IO;
 using System.Windows.Forms;
 using BabakSoft.Platform.Data;
-using SPPC.Framework.Helpers;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 {

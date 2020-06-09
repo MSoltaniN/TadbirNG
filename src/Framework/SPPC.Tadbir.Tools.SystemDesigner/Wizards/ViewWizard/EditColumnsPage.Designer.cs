@@ -51,8 +51,10 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.btnMoveUp = new System.Windows.Forms.Button();
+            this.btnSelectAll = new System.Windows.Forms.Button();
+            this.btnDeselectAll = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
+            this.btnMoveUp = new System.Windows.Forms.Button();
             this.grpColumn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spnMinLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnLength)).BeginInit();
@@ -95,7 +97,7 @@
             this.grpColumn.Name = "grpColumn";
             this.grpColumn.Padding = new System.Windows.Forms.Padding(2);
             this.grpColumn.Size = new System.Drawing.Size(246, 326);
-            this.grpColumn.TabIndex = 1;
+            this.grpColumn.TabIndex = 7;
             this.grpColumn.TabStop = false;
             this.grpColumn.Text = "Column properties";
             // 
@@ -211,7 +213,7 @@
             this.cmbScriptType.Margin = new System.Windows.Forms.Padding(2);
             this.cmbScriptType.Name = "cmbScriptType";
             this.cmbScriptType.Size = new System.Drawing.Size(120, 21);
-            this.cmbScriptType.TabIndex = 11;
+            this.cmbScriptType.TabIndex = 12;
             // 
             // label4
             // 
@@ -243,7 +245,7 @@
             this.cmbStorageType.Margin = new System.Windows.Forms.Padding(2);
             this.cmbStorageType.Name = "cmbStorageType";
             this.cmbStorageType.Size = new System.Drawing.Size(106, 21);
-            this.cmbStorageType.TabIndex = 9;
+            this.cmbStorageType.TabIndex = 11;
             // 
             // label5
             // 
@@ -274,7 +276,7 @@
             this.cmbDotNetType.Margin = new System.Windows.Forms.Padding(2);
             this.cmbDotNetType.Name = "cmbDotNetType";
             this.cmbDotNetType.Size = new System.Drawing.Size(120, 21);
-            this.cmbDotNetType.TabIndex = 7;
+            this.cmbDotNetType.TabIndex = 10;
             // 
             // label3
             // 
@@ -298,7 +300,7 @@
             this.cmbType.Margin = new System.Windows.Forms.Padding(2);
             this.cmbType.Name = "cmbType";
             this.cmbType.Size = new System.Drawing.Size(106, 21);
-            this.cmbType.TabIndex = 5;
+            this.cmbType.TabIndex = 9;
             // 
             // label2
             // 
@@ -317,7 +319,7 @@
             this.txtName.Name = "txtName";
             this.txtName.ReadOnly = true;
             this.txtName.Size = new System.Drawing.Size(230, 20);
-            this.txtName.TabIndex = 3;
+            this.txtName.TabIndex = 8;
             // 
             // label1
             // 
@@ -339,37 +341,67 @@
             this.label9.TabIndex = 22;
             this.label9.Text = "Available columns :";
             // 
-            // btnMoveUp
+            // btnSelectAll
             // 
-            this.btnMoveUp.Location = new System.Drawing.Point(10, 353);
-            this.btnMoveUp.Margin = new System.Windows.Forms.Padding(2);
-            this.btnMoveUp.Name = "btnMoveUp";
-            this.btnMoveUp.Size = new System.Drawing.Size(94, 27);
-            this.btnMoveUp.TabIndex = 23;
-            this.btnMoveUp.Text = "Move Up";
-            this.btnMoveUp.UseVisualStyleBackColor = true;
+            this.btnSelectAll.BackgroundImage = global::SPPC.Tadbir.Tools.SystemDesigner.Properties.Resources.icnCheckAll;
+            this.btnSelectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnSelectAll.Location = new System.Drawing.Point(145, 349);
+            this.btnSelectAll.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(44, 37);
+            this.btnSelectAll.TabIndex = 4;
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.SelectAll_Click);
+            // 
+            // btnDeselectAll
+            // 
+            this.btnDeselectAll.BackgroundImage = global::SPPC.Tadbir.Tools.SystemDesigner.Properties.Resources.icnUncheckAll;
+            this.btnDeselectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnDeselectAll.Location = new System.Drawing.Point(100, 349);
+            this.btnDeselectAll.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDeselectAll.Name = "btnDeselectAll";
+            this.btnDeselectAll.Size = new System.Drawing.Size(44, 37);
+            this.btnDeselectAll.TabIndex = 3;
+            this.btnDeselectAll.UseVisualStyleBackColor = true;
+            this.btnDeselectAll.Click += new System.EventHandler(this.DeselectAll_Click);
             // 
             // btnMoveDown
             // 
-            this.btnMoveDown.Location = new System.Drawing.Point(114, 352);
+            this.btnMoveDown.BackgroundImage = global::SPPC.Tadbir.Tools.SystemDesigner.Properties.Resources.icnMoveDown;
+            this.btnMoveDown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnMoveDown.Location = new System.Drawing.Point(55, 349);
             this.btnMoveDown.Margin = new System.Windows.Forms.Padding(2);
             this.btnMoveDown.Name = "btnMoveDown";
-            this.btnMoveDown.Size = new System.Drawing.Size(94, 27);
-            this.btnMoveDown.TabIndex = 24;
-            this.btnMoveDown.Text = "Move Down";
+            this.btnMoveDown.Size = new System.Drawing.Size(44, 37);
+            this.btnMoveDown.TabIndex = 2;
             this.btnMoveDown.UseVisualStyleBackColor = true;
+            this.btnMoveDown.Click += new System.EventHandler(this.MoveDown_Click);
             // 
-            // EditColumnsForm
+            // btnMoveUp
+            // 
+            this.btnMoveUp.BackgroundImage = global::SPPC.Tadbir.Tools.SystemDesigner.Properties.Resources.icnMoveUp;
+            this.btnMoveUp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnMoveUp.Location = new System.Drawing.Point(10, 349);
+            this.btnMoveUp.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMoveUp.Name = "btnMoveUp";
+            this.btnMoveUp.Size = new System.Drawing.Size(44, 37);
+            this.btnMoveUp.TabIndex = 1;
+            this.btnMoveUp.UseVisualStyleBackColor = true;
+            this.btnMoveUp.Click += new System.EventHandler(this.MoveUp_Click);
+            // 
+            // EditColumnsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnSelectAll);
+            this.Controls.Add(this.btnDeselectAll);
             this.Controls.Add(this.btnMoveDown);
             this.Controls.Add(this.btnMoveUp);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.grpColumn);
             this.Controls.Add(this.lbxColumns);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "EditColumnsForm";
+            this.Name = "EditColumnsPage";
             this.Size = new System.Drawing.Size(477, 388);
             this.Leave += new System.EventHandler(this.EditColumnsForm_Leave);
             this.grpColumn.ResumeLayout(false);
@@ -408,5 +440,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnMoveUp;
         private System.Windows.Forms.Button btnMoveDown;
+        private System.Windows.Forms.Button btnDeselectAll;
+        private System.Windows.Forms.Button btnSelectAll;
     }
 }
