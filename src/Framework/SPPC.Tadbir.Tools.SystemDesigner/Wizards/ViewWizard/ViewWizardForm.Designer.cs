@@ -43,20 +43,21 @@
             this.lblStepInfo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblStepInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStepInfo.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblStepInfo.Location = new System.Drawing.Point(11, 9);
+            this.lblStepInfo.Location = new System.Drawing.Point(8, 7);
+            this.lblStepInfo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStepInfo.Name = "lblStepInfo";
-            this.lblStepInfo.Size = new System.Drawing.Size(854, 34);
+            this.lblStepInfo.Size = new System.Drawing.Size(640, 28);
             this.lblStepInfo.TabIndex = 2;
             this.lblStepInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnNext
             // 
             this.btnNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNext.Location = new System.Drawing.Point(662, 503);
-            this.btnNext.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnNext.Location = new System.Drawing.Point(496, 459);
+            this.btnNext.Margin = new System.Windows.Forms.Padding(2);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(100, 34);
-            this.btnNext.TabIndex = 7;
+            this.btnNext.Size = new System.Drawing.Size(75, 28);
+            this.btnNext.TabIndex = 41;
             this.btnNext.Text = "Next";
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.Next_Click);
@@ -64,11 +65,11 @@
             // btnBack
             // 
             this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBack.Location = new System.Drawing.Point(556, 503);
-            this.btnBack.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnBack.Location = new System.Drawing.Point(417, 459);
+            this.btnBack.Margin = new System.Windows.Forms.Padding(2);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(100, 34);
-            this.btnBack.TabIndex = 8;
+            this.btnBack.Size = new System.Drawing.Size(75, 28);
+            this.btnBack.TabIndex = 40;
             this.btnBack.Text = "Back";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.Back_Click);
@@ -77,11 +78,11 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(768, 503);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnCancel.Location = new System.Drawing.Point(576, 459);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(100, 34);
-            this.btnCancel.TabIndex = 6;
+            this.btnCancel.Size = new System.Drawing.Size(75, 28);
+            this.btnCancel.TabIndex = 42;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.Cancel_Click);
@@ -91,22 +92,23 @@
             this.pnlPage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlPage.Location = new System.Drawing.Point(11, 56);
+            this.pnlPage.Location = new System.Drawing.Point(8, 46);
+            this.pnlPage.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(854, 426);
-            this.pnlPage.TabIndex = 10;
+            this.pnlPage.Size = new System.Drawing.Size(640, 396);
+            this.pnlPage.TabIndex = 1;
             // 
             // ViewWizardForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(877, 548);
+            this.ClientSize = new System.Drawing.Size(658, 495);
             this.Controls.Add(this.pnlPage);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.lblStepInfo);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnNext);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ViewWizardForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Manage List Form Metadata";

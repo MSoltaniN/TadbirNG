@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows.Forms;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
@@ -13,7 +12,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         {
             InitializeComponent();
             Info = "Select View Model";
-            //SelectedViewModel = "View Models";
         }
 
         public string Info { get; set; }
@@ -71,10 +69,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             cmbEntityType.DataBindings.Add("Text", View, "EntityType");
             chkIsHierarchy.DataBindings.Add("Checked", View, "IsHierarchy");
             chkEnableCartable.DataBindings.Add("Checked", View, "IsCartableIntegrated");
-        }
-
-        private void SelectViewModelForm_Leave(object sender, EventArgs e)
-        {
         }
 
         private const string _defaultAssembly = "SPPC.Tadbir.ViewModel";

@@ -49,19 +49,21 @@
             this.tvViewModels.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvViewModels.Location = new System.Drawing.Point(16, 48);
-            this.tvViewModels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tvViewModels.Indent = 5;
+            this.tvViewModels.Location = new System.Drawing.Point(12, 39);
+            this.tvViewModels.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tvViewModels.Name = "tvViewModels";
-            this.tvViewModels.Size = new System.Drawing.Size(387, 307);
+            this.tvViewModels.Size = new System.Drawing.Size(291, 250);
             this.tvViewModels.TabIndex = 0;
             this.tvViewModels.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ViewModels_AfterSelect);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 25);
+            this.label1.Location = new System.Drawing.Point(12, 20);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 17);
+            this.label1.Size = new System.Drawing.Size(85, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "All view models :";
             // 
@@ -69,11 +71,11 @@
             // 
             this.chkEnableCartable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkEnableCartable.AutoSize = true;
-            this.chkEnableCartable.Location = new System.Drawing.Point(20, 280);
-            this.chkEnableCartable.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.chkEnableCartable.Location = new System.Drawing.Point(15, 228);
+            this.chkEnableCartable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkEnableCartable.Name = "chkEnableCartable";
-            this.chkEnableCartable.Size = new System.Drawing.Size(152, 21);
-            this.chkEnableCartable.TabIndex = 11;
+            this.chkEnableCartable.Size = new System.Drawing.Size(115, 17);
+            this.chkEnableCartable.TabIndex = 13;
             this.chkEnableCartable.Text = "Cartable-integrated";
             this.chkEnableCartable.UseVisualStyleBackColor = true;
             // 
@@ -81,49 +83,51 @@
             // 
             this.chkIsHierarchy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkIsHierarchy.AutoSize = true;
-            this.chkIsHierarchy.Location = new System.Drawing.Point(20, 253);
-            this.chkIsHierarchy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.chkIsHierarchy.Location = new System.Drawing.Point(15, 206);
+            this.chkIsHierarchy.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkIsHierarchy.Name = "chkIsHierarchy";
-            this.chkIsHierarchy.Size = new System.Drawing.Size(105, 21);
-            this.chkIsHierarchy.TabIndex = 10;
+            this.chkIsHierarchy.Size = new System.Drawing.Size(82, 17);
+            this.chkIsHierarchy.TabIndex = 12;
             this.chkIsHierarchy.Text = "Hierarchical";
             this.chkIsHierarchy.UseVisualStyleBackColor = true;
             // 
             // txtFetchUrl
             // 
             this.txtFetchUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtFetchUrl.Location = new System.Drawing.Point(21, 93);
-            this.txtFetchUrl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtFetchUrl.Location = new System.Drawing.Point(16, 76);
+            this.txtFetchUrl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtFetchUrl.Name = "txtFetchUrl";
-            this.txtFetchUrl.Size = new System.Drawing.Size(295, 22);
-            this.txtFetchUrl.TabIndex = 9;
+            this.txtFetchUrl.Size = new System.Drawing.Size(222, 20);
+            this.txtFetchUrl.TabIndex = 7;
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 74);
+            this.label2.Location = new System.Drawing.Point(14, 60);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 17);
+            this.label2.Size = new System.Drawing.Size(65, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "Fetch URL :";
             // 
             // txtName
             // 
             this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtName.Location = new System.Drawing.Point(21, 42);
-            this.txtName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtName.Location = new System.Drawing.Point(16, 34);
+            this.txtName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(295, 22);
-            this.txtName.TabIndex = 7;
+            this.txtName.Size = new System.Drawing.Size(222, 20);
+            this.txtName.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 23);
+            this.label3.Location = new System.Drawing.Point(13, 19);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 17);
+            this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Name :";
             // 
@@ -141,12 +145,10 @@
             this.gboxViewModel.Controls.Add(this.chkIsHierarchy);
             this.gboxViewModel.Controls.Add(this.label2);
             this.gboxViewModel.Controls.Add(this.txtFetchUrl);
-            this.gboxViewModel.Location = new System.Drawing.Point(436, 42);
-            this.gboxViewModel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gboxViewModel.Location = new System.Drawing.Point(327, 34);
             this.gboxViewModel.Name = "gboxViewModel";
-            this.gboxViewModel.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gboxViewModel.Size = new System.Drawing.Size(361, 313);
-            this.gboxViewModel.TabIndex = 12;
+            this.gboxViewModel.Size = new System.Drawing.Size(271, 254);
+            this.gboxViewModel.TabIndex = 3;
             this.gboxViewModel.TabStop = false;
             this.gboxViewModel.Text = "View Model";
             // 
@@ -161,19 +163,20 @@
             "Fiscal",
             "Base",
             "Operational"});
-            this.cmbEntityType.Location = new System.Drawing.Point(20, 204);
-            this.cmbEntityType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cmbEntityType.Location = new System.Drawing.Point(15, 166);
+            this.cmbEntityType.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmbEntityType.Name = "cmbEntityType";
-            this.cmbEntityType.Size = new System.Drawing.Size(159, 24);
-            this.cmbEntityType.TabIndex = 15;
+            this.cmbEntityType.Size = new System.Drawing.Size(120, 21);
+            this.cmbEntityType.TabIndex = 11;
             // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 185);
+            this.label5.Location = new System.Drawing.Point(13, 150);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(82, 17);
+            this.label5.Size = new System.Drawing.Size(62, 13);
             this.label5.TabIndex = 14;
             this.label5.Text = "Entity type :";
             // 
@@ -181,32 +184,32 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 125);
+            this.label4.Location = new System.Drawing.Point(14, 102);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(93, 17);
+            this.label4.Size = new System.Drawing.Size(72, 13);
             this.label4.TabIndex = 12;
             this.label4.Text = "Search URL :";
             // 
             // txtSearchUrl
             // 
             this.txtSearchUrl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtSearchUrl.Location = new System.Drawing.Point(21, 145);
-            this.txtSearchUrl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtSearchUrl.Location = new System.Drawing.Point(16, 118);
+            this.txtSearchUrl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtSearchUrl.Name = "txtSearchUrl";
-            this.txtSearchUrl.Size = new System.Drawing.Size(295, 22);
-            this.txtSearchUrl.TabIndex = 13;
+            this.txtSearchUrl.Size = new System.Drawing.Size(222, 20);
+            this.txtSearchUrl.TabIndex = 9;
             // 
-            // SelectViewModelForm
+            // EditViewPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gboxViewModel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tvViewModels);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "SelectViewModelForm";
-            this.Size = new System.Drawing.Size(812, 370);
-            this.Leave += new System.EventHandler(this.SelectViewModelForm_Leave);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Name = "EditViewPage";
+            this.Size = new System.Drawing.Size(609, 301);
             this.gboxViewModel.ResumeLayout(false);
             this.gboxViewModel.PerformLayout();
             this.ResumeLayout(false);

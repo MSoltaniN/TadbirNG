@@ -105,6 +105,11 @@
     <Compile Include="Models\AppSettingsModel.cs" />
     <Compile Include="Models\ConnectionStringsModel.cs" />
     <Compile Include="Models\ViewWizardModel.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utility\HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
     <Compile Include="MainWindow.cs">
@@ -263,13 +268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Wizards\NewCrudEntityWizard\EntityActionsPage.resx">
       <DependentUpon>EntityActionsPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -326,6 +327,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\icnCheckAll.png" />
+    <None Include="Resources\icnUncheckAll.png" />
+    <Content Include="Resources\icnMoveUp.png" />
+    <None Include="Resources\icnMoveDown.png" />
     <Content Include="Templates\BlankController.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>BlankController.cs</LastGenOutput>
