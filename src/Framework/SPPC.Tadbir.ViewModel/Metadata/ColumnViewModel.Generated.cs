@@ -137,6 +137,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// <summary>
         /// گروه برای فیلد ها
         /// </summary>
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string GroupName { get; set; }
 
         /// <summary>
