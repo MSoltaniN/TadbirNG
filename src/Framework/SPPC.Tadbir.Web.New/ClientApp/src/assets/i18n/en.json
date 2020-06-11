@@ -121,7 +121,7 @@
   },
   "Entity": {
     "Account": "Account",
-    "Voucher": "Voucher",
+    "Voucher": "Vouchers Managment",
     "VoucherLine": "Voucher Article",
     "User": "User",
     "Role": "Role",
