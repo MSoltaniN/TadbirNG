@@ -79,7 +79,7 @@
         <span class="k-icon k-i-check-outline"></span>
       </button>
       <button SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()"
-              title="{{ (ReturnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
+              title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
       <button SppcPermissionCheck="Finalize" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon" [disabled]="isDisabledFinalizeBtn()"
@@ -128,8 +128,12 @@
         {{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate  }}
       </ng-template>
 
-      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean'">
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean' && item.name!='IsBalanced' ">
         {{ getRowValue(item.name,dataItem,item.scriptType)  }}
+      </ng-template>
+
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean' && item.name=='IsBalanced'">
+        {{ getBalanceValue(item.name,dataItem,item.scriptType)  }}
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
