@@ -75,7 +75,7 @@
   <button SppcPermissionCheck="Finalize" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon" [disabled]="isDisabledFinalizeBtn()" title="{{ 'Voucher.Finalized' | translate }}"><span class="k-icon k-i-track-changes-accept-all"></span></button>-->
 
       <button SppcPermissionCheck="Check" (sppcClick)="onCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledCheckBtn()"
-              title="{{ (CommitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
+              title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
         <span class="k-icon k-i-check-outline"></span>
       </button>
       <button SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()"
@@ -85,6 +85,26 @@
       <button SppcPermissionCheck="Finalize" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon" [disabled]="isDisabledFinalizeBtn()"
               title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
         <span class="k-icon k-i-track-changes-accept-all"></span>
+      </button>
+      <!----add---Confirm Group icon-and --UnConfirm Group icon----------240399-->
+      <!--<button SppcPermissionCheck="UnConfirmGroup" (sppcClick)="onUnFinalizedGroupHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedGroupBtn()"
+              title="{{'Voucher.UnFinalizedGroup'| translate}}">
+        <span class="k-icon k-i-track-changes-reject-all"></span>
+      </button>-->
+
+      <button SppcPermissionCheck="UnDoFinalize" (sppcClick)="onUnFinalizedGroupHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedGroupBtn()"
+              title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
+        <span class="k-icon k-i-track-changes-reject-all"></span>
+      </button>
+
+      <button SppcPermissionCheck="ConfirmGroup" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon" [disabled]="isDisabledConfirmGroupBtn()"
+              title="{{'Voucher.ConfirmGroup'| translate}}">
+        <span class="k-icon k-i-lock"></span>
+      </button>
+
+      <button SppcPermissionCheck="UnConfirmGroup" (sppcClick)="onUnConfirmGroupHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnConfirmGroupBtn()"
+              title="{{'Voucher.UnConfirmGroup'| translate}}">
+        <span class="k-icon k-i-unlock"></span>
       </button>
 
 

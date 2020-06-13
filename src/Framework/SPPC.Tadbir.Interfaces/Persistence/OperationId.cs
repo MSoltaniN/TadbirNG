@@ -236,6 +236,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// کد عملیاتی مشاهده نرخ های ارز
         /// </summary>
-        ViewRates = 45
+        ViewRates = 45,
+
+        /// <summary>
+        /// کد عملیاتی ثبت گروهی اسناد
+        /// </summary>
+        GroupCheck = 46,
+
+        /// <summary>
+        /// کد عملیاتی برگشت از ثبت گروهی اسناد
+        /// </summary>
+        UndoGroupCheck = 47,
     }
 }

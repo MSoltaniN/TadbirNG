@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+       #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task<string> ValidateDeleteAsync(int item)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
