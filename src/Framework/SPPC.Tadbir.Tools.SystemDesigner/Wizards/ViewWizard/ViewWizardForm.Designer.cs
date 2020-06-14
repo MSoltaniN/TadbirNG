@@ -53,7 +53,7 @@
             // btnNext
             // 
             this.btnNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNext.Location = new System.Drawing.Point(496, 459);
+            this.btnNext.Location = new System.Drawing.Point(496, 528);
             this.btnNext.Margin = new System.Windows.Forms.Padding(2);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(75, 28);
@@ -65,7 +65,7 @@
             // btnBack
             // 
             this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBack.Location = new System.Drawing.Point(417, 459);
+            this.btnBack.Location = new System.Drawing.Point(417, 528);
             this.btnBack.Margin = new System.Windows.Forms.Padding(2);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(75, 28);
@@ -78,7 +78,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(576, 459);
+            this.btnCancel.Location = new System.Drawing.Point(576, 528);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 28);
@@ -95,14 +95,14 @@
             this.pnlPage.Location = new System.Drawing.Point(8, 46);
             this.pnlPage.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(640, 396);
+            this.pnlPage.Size = new System.Drawing.Size(640, 465);
             this.pnlPage.TabIndex = 1;
             // 
             // ViewWizardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(658, 495);
+            this.ClientSize = new System.Drawing.Size(658, 564);
             this.Controls.Add(this.pnlPage);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.lblStepInfo);

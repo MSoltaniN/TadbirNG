@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -17,6 +18,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         public string Info { get; set; }
 
         public ViewViewModel View { get; set; }
+        public List<ColumnViewModel> Columns { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -28,10 +30,17 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void ViewModels_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            var lastViewName= View.Name;
             if (e.Node.Nodes.Count == 0)
             {
                 txtName.Text = e.Node.Name;
                 View.Name = e.Node.Name;
+                View.IsHierarchy = false;
+                View.IsCartableIntegrated = false;
+            }
+            if(lastViewName != View.Name)
+            {
+                Columns.Clear();
             }
         }
 
