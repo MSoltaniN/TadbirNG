@@ -135,9 +135,9 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                 , view.Name
                 , view.IsHierarchy == true ? 1 : 0
                 , view.IsCartableIntegrated == true ? 1 : 0 
-                , view.Entitytype == "(not set)" ? "NULL" : "'" + view.Entitytype + "'"
+                , view.Entitytype != null ? (view.Entitytype == "(not set)" ? "NULL" : "'" + view.Entitytype + "'"): "NULL"
                 , view.FetchUrl
-                , view.SearchUrl == "" ? "NULL" : "'" + view.SearchUrl + "'");
+                , view.SearchUrl != null ? (view.SearchUrl == "" ? "NULL" : "'" + view.SearchUrl + "'") : "NULL");
             builder.AppendLine("SET IDENTITY_INSERT[Metadata].[View] OFF ");
             builder.AppendLine();
             builder.AppendLine("SET IDENTITY_INSERT[Metadata].[Column] ON ");
@@ -146,7 +146,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                 builder.AppendFormat("INSERT INTO [Metadata].[Column]" +
                     "([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType]," +
                     " [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], " +
-                    "[AllowFiltering], [Visibility], [DisplayIndex], [Expression]) \n" +
+                    "[AllowFiltering], [Visibility], [DisplayIndex], [Expression]) \n                        " +
                     "VALUES ({0}, {1}, '{2}', {3}, {4}, '{5}', '{6}', '{7}', {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}) \n"
                     , maxColumnId + 1
                     , maxViewId + 1
