@@ -75,7 +75,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                     column.Length = lengthAttribute.MaximumLength;
                 }
             }
-
             return column;
         }
 
@@ -160,18 +159,15 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             if (lbxColumns.SelectedItem == null)
                 return;
            
-            int tmpSelectedIndex = Columns
-                .IndexOf(Columns.Where(p => p.Name == lbxColumns.SelectedItem.ToString())
-                .SingleOrDefault());
+            int tmpSelectedIndex = Columns.IndexOf(Columns.Where(p => p.Name == lbxColumns.SelectedItem.ToString()).SingleOrDefault());
 
             if (tmpSelectedIndex != _columnSelectedIndex && lbxColumns.SelectedIndex!=-1)
             {
                 SaveColumnDetails(_columnSelectedIndex != -1);
                 _columnSelectedIndex = tmpSelectedIndex;
-                LoadColumnDetails();
+                RetrieveColumnDetails();
             }
         }
-
         private void SaveColumnDetails(bool dataExist)
         {
             if(dataExist)
@@ -193,7 +189,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             }
         }
 
-        private void LoadColumnDetails()
+        private void RetrieveColumnDetails()
         {
             txtName.Text = Columns[_columnSelectedIndex].Name;
             cmbType.Text = (Columns[_columnSelectedIndex].Type == "" ? "(not set)" : Columns[_columnSelectedIndex].Type);
@@ -210,6 +206,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             txtGroupName.Text = Columns[_columnSelectedIndex].GroupName;
             txtExpression.Text = Columns[_columnSelectedIndex].Expression;
         }
+
 
         private void MoveUp_Click(object sender, EventArgs e)
         {
