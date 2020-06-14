@@ -5098,5 +5098,15 @@ namespace SPPC.Tadbir.Resources
         /// Default text : اسناد فاقد آرتیکل
         /// </summary>
         public const string VouchersWithNoArticle = "VouchersWithNoArticle";
+
+        /// <summary>
+        /// Default text : ثبت گروهی 
+        /// </summary>
+        public const string GroupCheck = "GroupCheck";
+
+        /// <summary>
+        /// Default text : برگشت از ثبت گروهی  
+        /// </summary>
+        public const string UndoGroupCheck = "UndoGroupCheck";
     }
 }

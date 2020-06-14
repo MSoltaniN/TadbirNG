@@ -3159,4 +3159,13 @@
   <data name="IsBalanced" xml:space="preserve">
     <value>وضعیت تراز</value>
   </data>
+  <data name="CheckedVouchers" xml:space="preserve">
+    <value>اسناد ثبت شده</value>
+  </data>
+  <data name="GroupCheck" xml:space="preserve">
+    <value>ثبت گروهی</value>
+  </data>
+  <data name="UndoGroupCheck" xml:space="preserve">
+    <value>برگشت از ثبت گروهی</value>
+  </data>
 </root>

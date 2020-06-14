@@ -333,13 +333,10 @@ namespace SPPC.Tadbir.Persistence
                 {
                     voucher.StatusId = (int)status;
                     repository.Update(voucher);
-                   OnDocumentStatus(status);
-                    //await FinalizeActionAsync(voucher);
                 }
             }
 
             await OnEntityGroupChecked(items);
-
         }
 
         /// <summary>
@@ -783,7 +780,7 @@ namespace SPPC.Tadbir.Persistence
             return status;
         }
 
-       
+
 
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;

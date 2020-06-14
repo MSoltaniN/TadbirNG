@@ -1304,3 +1304,10 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (47, N'UndoGrou
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 
+-- 1.1.901
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (116, 1, 1, NULL, 17, 46, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (117, 1, 1, NULL, 17, 47, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

@@ -3168,4 +3168,13 @@
   <data name="IsBalanced" xml:space="preserve">
     <value>Balance Status</value>
   </data>
+  <data name="CheckedVouchers" xml:space="preserve">
+    <value>Checked Vouchers</value>
+  </data>
+  <data name="GroupCheck" xml:space="preserve">
+    <value>Group Check</value>
+  </data>
+  <data name="UndoGroupCheck" xml:space="preserve">
+    <value>Undo Group Check</value>
+  </data>
 </root>

@@ -3222,10 +3222,6 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [
 
 
 	-- 1.1.913
-SET IDENTITY_INSERT [Metadata].[Operation] ON
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (46, N'GroupCheck')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (47, N'UndoGroupCheck')
-SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
 INSERT INTO [Auth].[Permission] ([GroupID],[Name],[Flag],[Description]) VALUES (7, N'GroupCheck',65536,NULL)

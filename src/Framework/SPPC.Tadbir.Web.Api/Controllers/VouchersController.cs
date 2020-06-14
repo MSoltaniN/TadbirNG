@@ -272,9 +272,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-           await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Checked);
-           // await _repository.DeleteVouchersAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Checked);
+            return StatusCode(StatusCodes.Status200OK);
         }
 
         // PUT: api/vouchers/{voucherId:int}/check/undo
@@ -669,16 +668,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        //--------npb----
         protected async Task<IEnumerable<string>> ValidateGroupCheckAsync(IEnumerable<int> items)
         {
             var messages = new List<string>();
             foreach (int item in items)
             {
                 var result = await VoucherActionValidationResultAsync(item, VoucherAction.Check);
-                if (result is BadRequestObjectResult error2)
+                if (result is BadRequestObjectResult errorCheck)
                 {
-                    messages.Add(error2.Value.ToString());
+                    messages.Add(_strings.Format("{0} :{1}{2}", AppStrings.VoucherByNo, item.ToString(), errorCheck.Value.ToString()));
                 }
             }
 
@@ -686,7 +684,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
-        //--------npb---end---------------------------------->
         protected override async Task<string> ValidateDeleteAsync(int voucherId)
         {
             string message = String.Empty;

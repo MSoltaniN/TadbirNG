@@ -183,12 +183,12 @@ namespace SPPC.Tadbir.Api
         public const string CheckVoucherUrl = "vouchers/{voucherId:min(1)}/check";
 
         /// <summary>
-        /// API client URL for all vouchers defined in current environment
+        /// API client URL for checking (changing document group  status  to Checked)
         /// </summary>
         public const string CheckVouchers = "vouchers/check";
 
         /// <summary>
-        /// API server route URL for checking (changing document status group to Checked) 
+        /// API server route URL for checking (changing document group  status  to Checked)
         /// </summary>
         public const string CheckVouchersUrl = "vouchers/check";
 
