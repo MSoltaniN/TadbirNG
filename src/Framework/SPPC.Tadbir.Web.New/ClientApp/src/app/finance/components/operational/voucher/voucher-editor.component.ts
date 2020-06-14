@@ -90,6 +90,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   voucherModel: Voucher;
   voucherTypeList: Array<Item> = [];
   selectedType: string;
+  deleteConfirm: boolean;
 
   @Input() voucherItem: Voucher;
   @Input() isOpenFromList: boolean = false;
@@ -99,6 +100,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   isFirstVoucher: boolean = false;
   isLastVoucher: boolean = false;
   voucherOperationsItem: any;
+  deleteConfirmMsg: string;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
@@ -483,6 +485,56 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       }
       default:
     }
+  }
+
+  removeHandler(arg: any) {
+    this.deleteConfirm = true;   
+    this.prepareDeleteConfirm(this.getText('Messages.SelectedItems'));    
+  }
+
+  deleteModel(confirm: boolean) {
+    if (confirm) {     
+      this.voucherService.delete(String.Format(VoucherApi.Voucher, this.voucherModel.id)).subscribe(response => {
+        this.showMessage(this.getText('Messages.DeleteOperationSuccessful'), MessageType.Info);
+        
+        //try for next voucher
+        this.voucherService.getModels(String.Format(VoucherApi.NextVoucher, this.voucherModel.no)).subscribe(voucher => {
+          if (voucher) {
+            this.router.navigate(['/finance/vouchers/by-no'], { queryParams: { no: voucher.no } });
+          }
+          else {
+            
+          }
+        }, (error => {
+              //if next voucher not exists try for previous voucher
+              this.voucherService.getModels(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no)).subscribe(voucher => {
+                if (voucher) {
+                  this.router.navigate(['/finance/vouchers/by-no'], { queryParams: { no: voucher.no } });
+                }                
+              }, (error => {
+                  //if previous voucher not exists show voucher list
+                  this.router.navigate(['/finance/vouchers']);
+              }))
+        }));
+
+        }, (error => {          
+          var message = error.message ? error.message : error;
+          this.showMessage(message, MessageType.Warning);
+        }));      
+    }
+
+    //hide confirm dialog
+    this.deleteConfirm = false;
+  }
+
+  /**
+   * prepare confim message for delete operation
+   * @param text is a part of message that use for delete confirm message
+  */
+  public prepareDeleteConfirm(text: string) {
+    this.translate.get("Messages.VoucherDeleteConfirm").subscribe((msg: string) => {
+      this.deleteConfirmMsg = String.Format(msg, text);
+    });
   }
 
 }

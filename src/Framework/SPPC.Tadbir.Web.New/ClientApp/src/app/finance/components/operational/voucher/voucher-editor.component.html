@@ -52,6 +52,8 @@
             <span class="k-icon k-i-close-outline"></span>
           </button>
 
+          <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+
           <button class="k-button k-button-icon sppc-float-diff" title="{{ 'Buttons.Help' | translate }}"><span class="k-icon k-i-help"></span></button>
         </div>
       </div>
@@ -90,7 +92,7 @@
               <div class="form-group">
                 <label for="dailyNo" class="control-label">{{ 'Voucher.DailyNo' | translate }}</label>
 
-                <input type="text" formControlName="dailyNo" class="k-textbox" [attr.disabled] = "voucherModel && voucherModel.saveCount === 0 ? 'disabled' : null"/>
+                <input type="text" formControlName="dailyNo" class="k-textbox" [attr.disabled]="voucherModel && voucherModel.saveCount === 0 ? 'disabled' : null" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dailyNo.valid || editForm.controls.dailyNo.pristine">
                   <span *ngIf="editForm.controls.dailyNo.errors?.required">{{ 'AllValidations.Voucher.DailyNoIsRequired' | translate }}</span>
@@ -177,3 +179,12 @@
   </div>
 </div>
 
+<kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
+  <p>
+    {{ this.deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

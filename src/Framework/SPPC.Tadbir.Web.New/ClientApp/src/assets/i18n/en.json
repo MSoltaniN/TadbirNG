@@ -56,7 +56,9 @@
     "IncorrectFileFormat": "The file format is incorrect",
     "UploadSuccessful": "Upload Successful",
     "VoucherNumberByStatus": "The system has {0} {1} vouchers.",
-    "OperationSuccessful": "Operation successful"
+    "OperationSuccessful": "Operation successful",
+    "VoucherDeleteConfirm": "are you sure to delete voucher?",
+    "DeleteOperationSuccessful": "delete operation successful"
   },
   "Report": {
     "ReportViewer": "View of",

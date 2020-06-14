@@ -56,7 +56,9 @@
     "IncorrectFileFormat": "فرمت فایل انتخابی صحیح نیست",
     "UploadSuccessful": "آپلود با موفقیت انجام شد",
     "VoucherNumberByStatus": "سیستم دارای {0} عدد سند {1} میباشد",
-    "OperationSuccessful": "عملیات با موفقیت انجام شد"
+    "OperationSuccessful": "عملیات با موفقیت انجام شد",
+    "VoucherDeleteConfirm": "آیا برای حذف سند اطمینان دارید؟",
+    "DeleteOperationSuccessful": "عملیات حذف با موفقیت انجام شد"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
