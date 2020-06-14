@@ -325,7 +325,7 @@
     <value>شماره سند</value>
   </data>
   <data name="Vouchers" xml:space="preserve">
-    <value>اسناد مالی</value>
+    <value>مدیریت اسناد</value>
   </data>
   <data name="BizPartners" xml:space="preserve">
     <value>شرکای تجاری</value>
@@ -3149,5 +3149,14 @@
   </data>
   <data name="CantIssueClosingVoucherWithDraftVouchers" xml:space="preserve">
     <value>دوره مالی جاری یک یا چند سند پیش نویس دارد و صدور سند اختتامیه امکان پذیر نیست.</value>
+  </data>
+  <data name="ApproverName" xml:space="preserve">
+    <value>کاربر تصویب کننده</value>
+  </data>
+  <data name="ConfirmerName" xml:space="preserve">
+    <value>کاربر تایید کننده</value>
+  </data>
+  <data name="IsBalanced" xml:space="preserve">
+    <value>وضعیت تراز</value>
   </data>
 </root>

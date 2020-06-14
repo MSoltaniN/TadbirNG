@@ -3159,4 +3159,13 @@
   <data name="CantIssueClosingVoucherWithDraftVouchers" xml:space="preserve">
     <value>Current fiscal period has one or more draft vouchers and closing voucher cannot be issued.</value>
   </data>
+  <data name="ApproverName" xml:space="preserve">
+    <value>Approver Name</value>
+  </data>
+  <data name="ConfirmerName" xml:space="preserve">
+    <value>Confirmer Name</value>
+  </data>
+  <data name="IsBalanced" xml:space="preserve">
+    <value>Balance Status</value>
+  </data>
 </root>

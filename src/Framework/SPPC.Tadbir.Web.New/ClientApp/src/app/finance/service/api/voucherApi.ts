@@ -123,5 +123,9 @@ export class VoucherApi {
     public static ClosingAccountsVoucher = environment.BaseUrl + "/vouchers/closing-tmp";
 
     // vouchers/closing
-    public static ClosingVoucher = environment.BaseUrl + "/vouchers/closing";
+  public static ClosingVoucher = environment.BaseUrl + "/vouchers/closing";
+  
+  // vouchers/check
+  public static CheckVouchers = environment.BaseUrl + "/vouchers/check";
+  
 }

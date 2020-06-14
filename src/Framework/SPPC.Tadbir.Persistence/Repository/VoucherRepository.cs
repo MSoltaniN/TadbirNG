@@ -317,6 +317,31 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(items);
         }
 
+        /// /// <summary>
+        /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی راتغییر می دهد
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
+        /// <param name="status">وضعیت سند را در خود نگه می دارد</param>
+        public async Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status)
+        {
+            Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            foreach (int item in items)
+            {
+                var voucher = await repository.GetByIDAsync(item);
+                if (voucher != null)
+                {
+                    voucher.StatusId = (int)status;
+                    repository.Update(voucher);
+                   OnDocumentStatus(status);
+                    //await FinalizeActionAsync(voucher);
+                }
+            }
+
+            await OnEntityGroupChecked(items);
+
+        }
+
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا شماره سند مورد نظر تکراری است یا نه
         /// </summary>
@@ -757,6 +782,8 @@ namespace SPPC.Tadbir.Persistence
 
             return status;
         }
+
+       
 
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;

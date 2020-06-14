@@ -1296,3 +1296,11 @@ ADD [InventoryMode] INT NOT NULL
 CONSTRAINT [DF_Finance_FiscalPeriod_InventoryMode] DEFAULT (1)
 WITH VALUES;
 GO
+
+-- 1.1.900
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (46, N'GroupCheck')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (47, N'UndoGroupCheck')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+

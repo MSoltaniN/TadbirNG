@@ -256,6 +256,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route(VoucherApi.CheckVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.GroupCheck)]
+        public async Task<IActionResult> PutExistingVouchersAsChecked([FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupCheckAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+           await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Checked);
+           // await _repository.DeleteVouchersAsync(actionDetail.Items);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         // PUT: api/vouchers/{voucherId:int}/check/undo
         [HttpPut]
         [Route(VoucherApi.UndoCheckVoucherUrl)]
@@ -648,6 +669,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        //--------npb----
+        protected async Task<IEnumerable<string>> ValidateGroupCheckAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                var result = await VoucherActionValidationResultAsync(item, VoucherAction.Check);
+                if (result is BadRequestObjectResult error2)
+                {
+                    messages.Add(error2.Value.ToString());
+                }
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
+        }
+
+        //--------npb---end---------------------------------->
         protected override async Task<string> ValidateDeleteAsync(int voucherId)
         {
             string message = String.Empty;
