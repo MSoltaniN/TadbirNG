@@ -197,6 +197,15 @@ namespace SPPC.Tadbir.Persistence
             await TrySaveLogAsync();
         }
 
+        internal virtual async Task OnEntityGroupChecked(
+            IEnumerable<int> checkedIds, OperationId operation = OperationId.GroupDelete)
+        {
+            OnEntityAction(operation);
+            Log.Description = Context.Localize(String.Format(
+                "{0} :{1}{2}", AppStrings.CheckedVouchers, Environment.NewLine, String.Join(",", checkedIds)));
+            await TrySaveLogAsync();
+        }
+
         internal async Task OnSystemLoginAsync(int? userId, string description)
         {
             Log = new OperationLogViewModel()

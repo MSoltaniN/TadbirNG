@@ -3190,6 +3190,11 @@ namespace SPPC.Tadbir.Resources
         public const string DeletedItems = "DeletedItems";
 
         /// <summary>
+        /// Default text : اسناد ثبت شده 
+        /// </summary>
+        public const string CheckedVouchers = "CheckedVouchers";
+
+        /// <summary>
         /// Default text : حذف {0}
         /// </summary>
         public const string DeleteEntity = "DeleteEntity";

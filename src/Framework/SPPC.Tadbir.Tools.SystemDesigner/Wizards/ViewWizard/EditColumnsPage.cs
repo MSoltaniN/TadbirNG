@@ -58,12 +58,13 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         {
             var column = new ColumnViewModel()
             {
-                AllowFiltering = true,
+                AllowFiltering = (name == "RowNo" ? false : true),
                 AllowSorting = true,
                 DotNetType = type.FullName,
                 Name = name,
                 ScriptType = ScriptTypeFromType(type),
-                StorageType = StorageTypeFromType(type)
+                StorageType = StorageTypeFromType(type),
+                Visibility = (name.Contains("Id") ? "AlwaysHidden" : (name=="RowNo" ? "AlwaysVisible" : "Visible"))
             };
             
             if (column.ScriptType == "string")
@@ -176,12 +177,14 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                 Columns[_columnSelectedIndex].DotNetType = cmbDotNetType.Text;
                 Columns[_columnSelectedIndex].StorageType = cmbStorageType.Text;
                 Columns[_columnSelectedIndex].ScriptType = cmbScriptType.Text;
+                Columns[_columnSelectedIndex].Visibility = cmbVisibility.Text;
                 Columns[_columnSelectedIndex].Length = Convert.ToInt32(spnLength.Value);
                 Columns[_columnSelectedIndex].MinLength = Convert.ToInt32(spnMinLength.Value);
                 Columns[_columnSelectedIndex].IsFixedLength = chkIsFixedLength.Checked;
                 Columns[_columnSelectedIndex].IsNullable = chkIsNullable.Checked;
                 Columns[_columnSelectedIndex].AllowSorting = chkAllowSorting.Checked;
                 Columns[_columnSelectedIndex].AllowFiltering = chkAllowFiltering.Checked;
+                Columns[_columnSelectedIndex].GroupName = txtGroupName.Text;
                 Columns[_columnSelectedIndex].Expression = txtExpression.Text;
             }
         }
@@ -193,12 +196,14 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             cmbDotNetType.Text = Columns[_columnSelectedIndex].DotNetType;
             cmbStorageType.Text = Columns[_columnSelectedIndex].StorageType;
             cmbScriptType.Text = Columns[_columnSelectedIndex].ScriptType;
+            cmbVisibility.Text = Columns[_columnSelectedIndex].Visibility;
             spnLength.Value = Columns[_columnSelectedIndex].Length;
             spnMinLength.Value = Columns[_columnSelectedIndex].MinLength;
             chkIsFixedLength.Checked = Columns[_columnSelectedIndex].IsFixedLength;
             chkIsNullable.Checked = Columns[_columnSelectedIndex].IsNullable;
             chkAllowSorting.Checked = Columns[_columnSelectedIndex].AllowSorting;
             chkAllowFiltering.Checked = Columns[_columnSelectedIndex].AllowFiltering;
+            txtGroupName.Text = Columns[_columnSelectedIndex].GroupName;
             txtExpression.Text = Columns[_columnSelectedIndex].Expression;
         }
 
@@ -241,12 +246,26 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void SelectAll_Click(object sender, EventArgs e)
         {
-            for(int i=0 ; i < lbxColumns.Items.Count; i++)
+            for (int i = 0; i < lbxColumns.Items.Count; i++)
+            {
                 lbxColumns.SetItemChecked(i, true);
+                lbxColumns.SelectedIndex = i;
+            }
+               
         }
         
         private void EditColumnsForm_Leave(object sender, EventArgs e)
         {
+            SaveColumnDetails(_columnSelectedIndex != -1);
+            int AlwaysVisibleCount = 0;
+            foreach (var column in lbxColumns.CheckedItems.OfType<ColumnViewModel>())
+                if(column.Visibility == "AlwaysVisible") AlwaysVisibleCount++;
+            if (AlwaysVisibleCount == 0)
+            {
+                MessageBox.Show("Please set at least one column as AlwaysVisible.", "Warnings");
+                return;
+            }
+
             Columns.Clear();
             foreach (var column in lbxColumns.CheckedItems.OfType<ColumnViewModel>())
                 Columns.Add(column);

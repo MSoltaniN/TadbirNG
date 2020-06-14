@@ -50,7 +50,12 @@ export class VoucherService extends BaseService {
     super(http, bStorageService);
   }
 
-
+  public changeVouchersStatus(apiUrl: string, models: number[]): Observable<string> {
+    let body = JSON.stringify({ paraph: '', items: models });
+    return this.http.put(apiUrl, body, this.option)
+      .map(res => res)
+      .catch(this.handleError);
+  }
   public changeVoucherStatus(apiUrl: string): Observable<string> {
 
     return this.http.put(apiUrl, null, this.option)
