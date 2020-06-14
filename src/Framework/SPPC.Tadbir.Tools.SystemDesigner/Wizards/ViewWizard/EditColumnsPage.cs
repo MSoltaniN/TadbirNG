@@ -112,7 +112,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                 default:
                     break;
             }
-
             return storageType;
         }
 
@@ -151,15 +150,21 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         private void LoadColumns()
         {
             foreach (var column in Columns)
-              lbxColumns.Items.Add(column,false);
+            {
+                lbxColumns.Items.Add(column, false);
+            }
         }
 
         private void Columns_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lbxColumns.SelectedItem == null)
+            {
                 return;
+            }
            
-            int tmpSelectedIndex = Columns.IndexOf(Columns.Where(p => p.Name == lbxColumns.SelectedItem.ToString()).SingleOrDefault());
+            int tmpSelectedIndex = Columns
+                                   .IndexOf(Columns.Where(p => p.Name == lbxColumns.SelectedItem.ToString())
+                                   .SingleOrDefault());
 
             if (tmpSelectedIndex != _columnSelectedIndex && lbxColumns.SelectedIndex!=-1)
             {
@@ -241,7 +246,9 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
         private void DeselectAll_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < lbxColumns.Items.Count; i++)
+            {
                 lbxColumns.SetItemChecked(i, false);
+            }
         }
 
         private void SelectAll_Click(object sender, EventArgs e)
@@ -259,7 +266,13 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             SaveColumnDetails(_columnSelectedIndex != -1);
             int AlwaysVisibleCount = 0;
             foreach (var column in lbxColumns.CheckedItems.OfType<ColumnViewModel>())
-                if(column.Visibility == "AlwaysVisible") AlwaysVisibleCount++;
+            {
+                if (column.Visibility == "AlwaysVisible")
+                {
+                    AlwaysVisibleCount++;
+                }
+            }
+               
             if (AlwaysVisibleCount == 0)
             {
                 MessageBox.Show("Please set at least one column as AlwaysVisible.", "Warnings");
@@ -268,7 +281,9 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
             Columns.Clear();
             foreach (var column in lbxColumns.CheckedItems.OfType<ColumnViewModel>())
+            {
                 Columns.Add(column);
+            }
         }
 
         public int _columnSelectedIndex = -1;
