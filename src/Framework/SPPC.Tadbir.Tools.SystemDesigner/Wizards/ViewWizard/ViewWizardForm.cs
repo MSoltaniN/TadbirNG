@@ -125,34 +125,39 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             var columns = WizardModel.Columns;
             var builder = new StringBuilder();
             var result = GetDatabaseVersion(sysConnection);
-            
-            builder.AppendFormat("--{0} \n", result.ToString());
+
+            int columnId = maxColumnId + 1;
+            builder.AppendFormat("-- {0}", result.ToString());
+            builder.AppendLine();
             builder.AppendLine("SET IDENTITY_INSERT [Metadata].[View] ON ");
-            builder.AppendFormat("INSERT INTO [Metadata].[View] " +
-                "([ViewID], [Name], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl]) " +
-                "VALUES ({0}, '{1}', {2}, {3}, '{4}', '{5}', '{6}') \n"
-                , maxViewId+1
+            builder.AppendLine("INSERT INTO [Metadata].[View] " +
+                "([ViewID], [Name], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])");
+            builder.AppendFormat("    VALUES ({0}, '{1}', {2}, {3}, '{4}', {5}, {6})"
+                , maxViewId + 1
                 , view.Name
                 , view.IsHierarchy == true ? 1 : 0
                 , view.IsCartableIntegrated == true ? 1 : 0 
                 , view.Entitytype 
-                , view.FetchUrl
-                , view.SearchUrl);
-            builder.AppendLine("SET IDENTITY_INSERT[Metadata].[View] OFF ");
+                , GetNullableValue(view.FetchUrl)
+                , GetNullableValue(view.SearchUrl));
             builder.AppendLine();
-            builder.AppendLine("SET IDENTITY_INSERT[Metadata].[Column] ON ");
+            builder.AppendLine("SET IDENTITY_INSERT [Metadata].[View] OFF ");
+            builder.AppendLine();
+            builder.AppendLine("SET IDENTITY_INSERT [Metadata].[Column] ON ");
             short rowCount = 0;
             foreach (var item in columns)
-                builder.AppendFormat("INSERT INTO [Metadata].[Column]" +
-                    "([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType]," +
-                    " [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], " +
-                    "[AllowFiltering], [Visibility], [DisplayIndex], [Expression]) \n" +
-                    "VALUES ({0}, {1}, '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', {8}, {9}, {10}, {11}, {12}, {13}, '{14}', {15}, '{16}') \n"
-                    , maxColumnId + 1
+            {
+                builder.AppendLine("INSERT INTO [Metadata].[Column] " +
+                    "([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], " +
+                    "[ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], " +
+                    "[AllowFiltering], [Visibility], [DisplayIndex], [Expression]");
+                builder.AppendFormat(
+                    "    VALUES ({0}, {1}, '{2}', {3}, {4}, '{5}', '{6}', '{7}', {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16})"
+                    , columnId++
                     , maxViewId + 1
                     , item.Name
-                    , item.GroupName
-                    , item.Type == "(not set)" ? "NULL" : item.Type
+                    , GetNullableValue(item.GroupName)
+                    , GetNullableValue(item.Type, "(not set)")
                     , item.DotNetType
                     , item.StorageType
                     , item.ScriptType
@@ -162,14 +167,35 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                     , item.IsNullable == true ? 1 : 0
                     , item.AllowSorting == true ? 1 : 0
                     , item.AllowFiltering == true ? 1 : 0
-                    , item.Visibility == "(not set)" ? "NULL" : item.Visibility
+                    , GetNullableValue(item.Visibility, "Visible")
                     , item.DisplayIndex = (short)(item.Visibility != "AlwaysHidden" ? rowCount++ : -1)
-                    , item.Expression );
-            
+                    , GetNullableValue(item.Expression));
+                builder.AppendLine();
+            }
+
             builder.AppendLine("SET IDENTITY_INSERT [Metadata].[Column] OFF ");
             builder.AppendLine();
 
             File.AppendAllText(_tempScript, builder.ToString());
+        }
+
+        private string GetNullableValue(string nullable, string nullValue = null)
+        {
+            string output;
+            if (nullValue == null)
+            {
+                output = String.IsNullOrEmpty(nullable)
+                    ? "NULL"
+                    : String.Format("'{0}'", nullable);
+            }
+            else
+            {
+                output = nullable == nullValue
+                    ? "NULL"
+                    : String.Format("'{0}'", nullable);
+            }
+
+            return output;
         }
 
         private string GetSysConnectionString()
@@ -178,6 +204,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }
+
         private Version GetDatabaseVersion(string connection)
         {
             var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
