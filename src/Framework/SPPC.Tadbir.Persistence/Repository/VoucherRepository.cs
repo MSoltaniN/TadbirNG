@@ -321,7 +321,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی راتغییر می دهد
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="status">وضعیت سند را در خود نگه می دارد</param>
+        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
         public async Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status)
         {
             Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
@@ -333,13 +333,10 @@ namespace SPPC.Tadbir.Persistence
                 {
                     voucher.StatusId = (int)status;
                     repository.Update(voucher);
-                   OnDocumentStatus(status);
-                    //await FinalizeActionAsync(voucher);
                 }
             }
 
             await OnEntityGroupChecked(items);
-
         }
 
         /// <summary>
@@ -782,8 +779,6 @@ namespace SPPC.Tadbir.Persistence
 
             return status;
         }
-
-       
 
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;

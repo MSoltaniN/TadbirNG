@@ -1297,10 +1297,22 @@ CONSTRAINT [DF_Finance_FiscalPeriod_InventoryMode] DEFAULT (1)
 WITH VALUES;
 GO
 
--- 1.1.900
+-- 1.1.915
+-- Undoing previous version operations
+DELETE FROM [Config].[LogSetting]
+WHERE LogSettingID IN(116, 117)
+
+DELETE FROM [Metadata].[Operation]
+WHERE OperationID IN(46, 47)
+
 SET IDENTITY_INSERT [Metadata].[Operation] ON
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (46, N'GroupCheck')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (47, N'UndoGroupCheck')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
-
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (116, 1, 2, NULL, 17, 46, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (117, 1, 2, NULL, 17, 47, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

@@ -6,6 +6,7 @@ using SPPC.Framework.Domain;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Resources;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -110,6 +111,21 @@ namespace SPPC.Tadbir.Persistence
 
                 // Ignored (logging should not throw exception)
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="checkedIds"></param>
+        /// <param name="operation"></param>
+        /// <returns></returns>
+        protected virtual async Task OnEntityGroupChecked(
+            IEnumerable<int> checkedIds, OperationId operation = OperationId.GroupCheck)
+        {
+            OnEntityAction(operation);
+            Log.Description = Context.Localize(String.Format(
+                "{0} :{1}{2}", AppStrings.CheckedVouchers, Environment.NewLine, String.Join(",", checkedIds)));
+            await TrySaveLogAsync();
         }
 
         private void DeleteWithCascade(Type parentType, int parentId, Type type, IEnumerable<int> ids)

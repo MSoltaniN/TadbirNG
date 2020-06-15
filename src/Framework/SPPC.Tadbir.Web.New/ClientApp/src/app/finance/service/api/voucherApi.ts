@@ -127,5 +127,10 @@ export class VoucherApi {
   
   // vouchers/check
   public static CheckVouchers = environment.BaseUrl + "/vouchers/check";
+
+  // vouchers/UnDocheck
+  public static UnDoCheckVouchers = environment.BaseUrl + "/vouchers/UnDocheck";
+
+  
   
 }
