@@ -780,8 +780,6 @@ namespace SPPC.Tadbir.Persistence
             return status;
         }
 
-
-
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;
     }

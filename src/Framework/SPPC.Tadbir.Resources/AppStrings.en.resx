@@ -3172,9 +3172,9 @@
     <value>Checked Vouchers</value>
   </data>
   <data name="GroupCheck" xml:space="preserve">
-    <value>Group Check</value>
+    <value>Group check</value>
   </data>
   <data name="UndoGroupCheck" xml:space="preserve">
-    <value>Undo Group Check</value>
+    <value>Undo group check</value>
   </data>
 </root>
