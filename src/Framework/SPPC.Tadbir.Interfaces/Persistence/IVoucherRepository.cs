@@ -128,6 +128,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی راتغییر می دهد
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
+        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
         Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status);
 
         /// <summary>

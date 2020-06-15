@@ -193,6 +193,16 @@ namespace SPPC.Tadbir.Api
         public const string CheckVouchersUrl = "vouchers/check";
 
         /// <summary>
+        /// API client URL for undoing check (changing document group  status  to Undoing Check)
+        /// </summary>
+        public const string UnDoCheckVouchers = "vouchers/UnDocheck";
+
+        /// <summary>
+        /// API server route URL for undoing check (changing document group  status  to Undoing Check)
+        /// </summary>
+        public const string UnDoCheckVouchersUrl = "vouchers/UnDocheck";
+
+        /// <summary>
         /// API client URL for undoing check for a single voucher specified by identifier
         /// </summary>
         public const string UndoCheckVoucher = "vouchers/{0}/check/undo";
