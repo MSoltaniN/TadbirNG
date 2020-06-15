@@ -125,9 +125,10 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteVouchersAsync(IEnumerable<int> items);
 
         /// /// <summary>
-        /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی راتغییر می دهد
+        /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی را تغییر می دهد
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
+        /// <param name="status">وضعیت ثبتی جدید برای اسناد مالی</param>
         Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status);
 
         /// <summary>
