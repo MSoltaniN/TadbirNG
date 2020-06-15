@@ -120,7 +120,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="operation"></param>
         /// <returns></returns>
         protected virtual async Task OnEntityGroupChecked(
-         IEnumerable<int> checkedIds, OperationId operation = OperationId.GroupCheck)
+            IEnumerable<int> checkedIds, OperationId operation = OperationId.GroupCheck)
         {
             OnEntityAction(operation);
             Log.Description = Context.Localize(String.Format(
