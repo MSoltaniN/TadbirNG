@@ -376,6 +376,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+
+        [HttpPut]
+        [Route(VoucherApi.FinalizeVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.GroupFinalize)]
+        public async Task<IActionResult> PutExistingVouchersAsFinalized([FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.Finalize);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Finalized);
+            return StatusCode(StatusCodes.Status200OK);
+        }
+
         // PUT: api/vouchers/{voucherId:int}/finalize
         [HttpPut]
         [Route(VoucherApi.FinalizeVoucherUrl)]

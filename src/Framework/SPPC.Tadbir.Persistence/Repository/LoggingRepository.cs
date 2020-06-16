@@ -76,6 +76,40 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// انتخاب کد عملیات گروهی جهت استفاده درلاگ گیری عملیات گروهی انجام گرفته برروی اسناد
+        /// </summary>
+        /// <param name="newStatus">وضعیت  جدید سند حسابداری</param>
+        /// <param name="oldStatus">وضعیت قبلی سند حسابداری</param>
+        protected OperationId OnSelectedOperationGroup(DocumentStatusValue newStatus, DocumentStatusValue oldStatus)
+        {
+            OperationId operation = OperationId.None;
+            switch (newStatus)
+            {
+                case DocumentStatusValue.Draft:
+                    operation = OperationId.UndoGroupCheck;
+                    break;
+                case DocumentStatusValue.Checked:
+                    if (oldStatus == DocumentStatusValue.Finalized)
+                    {
+                        operation = OperationId.UndoGroupFinalize;
+                    }
+                    else
+                    {
+                        operation = OperationId.GroupCheck;
+                    }
+
+                    break;
+                case DocumentStatusValue.Finalized:
+                    operation = OperationId.GroupFinalize;
+                    break;
+                default:
+                    break;
+            }
+
+            return operation;
+        }
+
+        /// <summary>
         /// یک رکورد لاگ عملیاتی برای عملیات تایید یا برگشت از تایید موجودیت عملیاتی ایجاد می کند
         /// </summary>
         /// <param name="isConfirmed">مشخص می کند که وضعیت تایید جدید، تایید شده است یا نه؟</param>
@@ -114,17 +148,17 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// 
+        /// یک رکورد لاگ عملیاتی برای عملیات تغییر وضعیت های گروهی موجودیت های عملیاتی ایجاد می کند
         /// </summary>
-        /// <param name="checkedIds"></param>
-        /// <param name="operation"></param>
+        /// <param name="itemIds">شناسه اسناد</param>
+        /// <param name="operation">شناسه عملیات گروهی</param>
         /// <returns></returns>
-        protected virtual async Task OnEntityGroupChecked(
-            IEnumerable<int> checkedIds, OperationId operation = OperationId.GroupCheck)
+        protected virtual async Task OnEntityGroupChangeStatus(
+            IEnumerable<int> itemIds, OperationId operation = OperationId.GroupCheck)
         {
             OnEntityAction(operation);
             Log.Description = Context.Localize(String.Format(
-                "{0} :{1}{2}", AppStrings.CheckedVouchers, Environment.NewLine, String.Join(",", checkedIds)));
+                "{0} :{1}{2}", AppStrings.CheckedVouchers, Environment.NewLine, String.Join(",", itemIds)));
             await TrySaveLogAsync();
         }
 

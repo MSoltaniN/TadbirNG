@@ -3168,4 +3168,10 @@
   <data name="UndoGroupCheck" xml:space="preserve">
     <value>برگشت از ثبت گروهی</value>
   </data>
+  <data name="GroupFinalize" xml:space="preserve">
+    <value>ثبت قطعی گروهی</value>
+  </data>
+  <data name="UndoGroupFinalize" xml:space="preserve">
+    <value>برگشت از ثبت قطعی گروهی</value>
+  </data>
 </root>

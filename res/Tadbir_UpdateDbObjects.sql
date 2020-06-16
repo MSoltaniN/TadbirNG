@@ -1316,3 +1316,16 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (117, 1, 2, NULL, 17, 47, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.916
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (48, N'GroupFinalize')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (49, N'UndoGroupFinalize')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (118, 1, 2, NULL, 17, 48, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (119, 1, 2, NULL, 17, 49, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

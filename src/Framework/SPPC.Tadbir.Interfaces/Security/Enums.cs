@@ -711,6 +711,16 @@ namespace SPPC.Tadbir.Security
         UndoGroupCheck = 0x20000,
 
         /// <summary>
+        /// دسترسی ثبت قطعی گروهی اسناد حسابداری
+        /// </summary>
+        GroupFinalize = 0x40000,
+
+        /// <summary>
+        /// دسترسی برگشت از ثبت قطعی گروهی اسناد حسابداری
+        /// </summary>
+        UndoGroupFinalize = 0x80000,
+
+        /// <summary>
         /// کلیه دسترسی های تعریف شده برای اسناد حسابداری
         /// </summary>
         All = 0xffff
