@@ -20,6 +20,8 @@
             <span class="k-icon k-i-file-add"></span>
           </button>
 
+          <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+
           <button class="k-button" title="{{ 'Voucher.SearchVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Search)">
             <span class="k-icon k-i-search"></span>
           </button>
@@ -51,8 +53,6 @@
           <button class="k-button" SppcPermissionCheck="UndoCheck" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId < 2" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
             <span class="k-icon k-i-close-outline"></span>
           </button>
-
-          <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
           <button class="k-button k-button-icon sppc-float-diff" title="{{ 'Buttons.Help' | translate }}"><span class="k-icon k-i-help"></span></button>
         </div>
