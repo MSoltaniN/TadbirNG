@@ -3177,4 +3177,10 @@
   <data name="UndoGroupCheck" xml:space="preserve">
     <value>Undo group check</value>
   </data>
+  <data name="GroupFinalize" xml:space="preserve">
+    <value>Group Finalize</value>
+  </data>
+  <data name="UndoGroupFinalize" xml:space="preserve">
+    <value>Undo Group Finalize</value>
+  </data>
 </root>

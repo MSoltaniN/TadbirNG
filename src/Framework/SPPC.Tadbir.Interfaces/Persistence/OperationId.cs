@@ -247,5 +247,15 @@ namespace SPPC.Tadbir.Persistence
         /// کد عملیاتی برگشت از ثبت گروهی اسناد
         /// </summary>
         UndoGroupCheck = 47,
+
+        /// <summary>
+        /// کد عملیاتی ثبت قطعی گروهی اسناد
+        /// </summary>
+        GroupFinalize = 48,
+
+        /// <summary>
+        /// کد عملیاتی برگشت از ثبت قطعی گروهی اسناد
+        /// </summary>
+        UndoGroupFinalize = 49,
     }
 }

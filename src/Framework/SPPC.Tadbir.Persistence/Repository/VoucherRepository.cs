@@ -326,6 +326,8 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var oldStatusVoucher = (DocumentStatusValue)(await repository.GetByIDAsync(items.FirstOrDefault())).StatusId;
+
             foreach (int item in items)
             {
                 var voucher = await repository.GetByIDAsync(item);
@@ -336,7 +338,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await OnEntityGroupChecked(items);
+            var opertionId = OnSelectedOperationGroup(status, oldStatusVoucher);
+            await OnEntityGroupChangeStatus(items, opertionId);
         }
 
         /// <summary>
