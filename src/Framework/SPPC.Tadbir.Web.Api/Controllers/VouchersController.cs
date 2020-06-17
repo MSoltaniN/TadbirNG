@@ -413,6 +413,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route(VoucherApi.UnDoFinalizeVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoGroupFinalize)]
+        public async Task<IActionResult> PutExistingVouchersAsUnfinalized([FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.UndoFinalize);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Checked);
+            return StatusCode(StatusCodes.Status200OK);
+        }
+
         // PUT: api/vouchers/{voucherId:int}/finalize/undo
         [HttpPut]
         [Route(VoucherApi.UndoFinalizeVoucherUrl)]
