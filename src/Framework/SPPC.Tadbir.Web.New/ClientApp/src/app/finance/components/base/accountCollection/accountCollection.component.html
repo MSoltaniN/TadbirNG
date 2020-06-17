@@ -75,7 +75,7 @@
               <span>{{ 'AccountCollection.SelectableAccounts' | translate }}</span>
             </div>
 
-            <kendo-grid id="14" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #grid
+            <kendo-grid id="{{viewId}}" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #grid
                         [data]="rowData"
                         [sortable]="{ allowUnsort: true, mode: 'multiple' }"
                         [sort]="sort"
@@ -92,7 +92,7 @@
                         [selectedKeys]="selectableRowsKey"
                         [kendoGridSelectBy]="'id'"
                         (filterChange)="filterChange($event)"
-                        sppc-grid-reorder sppc-grid-resize>
+                        sppc-auto-generated-grid-reorder sppc-auto-generated-grid-resize>
               <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                    pagerOf="{{ 'Paging.Of' | translate }}"
                                    pagerItems="{{ 'Paging.Record' | translate }}">
@@ -122,15 +122,17 @@
 
               <kendo-grid-checkbox-column showSelectAll="false" width="20"></kendo-grid-checkbox-column>
 
-              <kendo-grid-column width="150" sppc-grid-column="AccountCollection.fullCode">
+              <kendo-grid-column width="150" sppc-grid-column="AccountCollection.name">
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                  <sppc-grid-filter [metaData]="getMeta('fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                  <!--<sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>-->
+                  <sppc-auto-grid-filter [metaData]="getMeta('name').scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
                 </ng-template>
               </kendo-grid-column>
 
-              <kendo-grid-column width="150" sppc-grid-column="AccountCollection.name">
+              <kendo-grid-column width="150" sppc-grid-column="AccountCollection.fullCode">
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                  <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                  <!--<sppc-grid-filter [metaData]="getMeta('fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>-->
+                  <sppc-auto-grid-filter [metaData]="getMeta('fullCode').scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
                 </ng-template>
               </kendo-grid-column>
 
