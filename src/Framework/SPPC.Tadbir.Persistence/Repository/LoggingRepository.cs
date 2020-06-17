@@ -53,17 +53,26 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// یک رکورد لاگ عملیاتی برای عملیات تغییر وضعیت موجودیت عملیاتی ایجاد می کند
         /// </summary>
-        /// <param name="status">وضعیت ثبتی جدید برای موجودیت عملیاتی</param>
-        protected void OnDocumentStatus(DocumentStatusValue status)
+        /// <param name="newStatus">وضعیت ثبتی جدید برای موجودیت عملیاتی</param>
+        /// <param name="oldStatus"></param>
+        protected void OnDocumentStatus(DocumentStatusValue newStatus, DocumentStatusValue oldStatus)
         {
             OperationId operation = OperationId.None;
-            switch (status)
+            switch (newStatus)
             {
                 case DocumentStatusValue.Draft:
                     operation = OperationId.UndoCheck;
                     break;
                 case DocumentStatusValue.Checked:
-                    operation = OperationId.Check;
+                    if (oldStatus == DocumentStatusValue.Finalized)
+                    {
+                        operation = OperationId.UndoFinalize;
+                    }
+                    else
+                    {
+                        operation = OperationId.Check;
+                    }
+
                     break;
                 case DocumentStatusValue.Finalized:
                     operation = OperationId.Finalize;

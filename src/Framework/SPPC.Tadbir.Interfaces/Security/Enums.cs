@@ -723,7 +723,7 @@ namespace SPPC.Tadbir.Security
         /// <summary>
         /// کلیه دسترسی های تعریف شده برای اسناد حسابداری
         /// </summary>
-        All = 0xffff
+        All = 0x100000// 0xffff
     }
 
     /// <summary>
