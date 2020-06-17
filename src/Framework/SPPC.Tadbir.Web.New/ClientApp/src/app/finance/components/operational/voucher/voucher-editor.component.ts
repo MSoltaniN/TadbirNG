@@ -487,7 +487,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
   }
 
-  removeHandler(arg: any) {
+  removeHandler() {
     this.deleteConfirm = true;   
     this.prepareDeleteConfirm(this.getText('Messages.SelectedItems'));    
   }
