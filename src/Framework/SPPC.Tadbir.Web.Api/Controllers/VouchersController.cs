@@ -413,15 +413,40 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route(VoucherApi.UnDoFinalizeVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoGroupFinalize)]
+        public async Task<IActionResult> PutExistingVouchersAsUnfinalized([FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.UndoFinalize);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Checked);
+            return StatusCode(StatusCodes.Status200OK);
+        }
+
         // PUT: api/vouchers/{voucherId:int}/finalize/undo
         [HttpPut]
         [Route(VoucherApi.UndoFinalizeVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoFinalize)]
-        public IActionResult PutExistingVoucherAsUnfinalized(int voucherId)
+        public async Task<IActionResult> PutExistingVoucherAsUnfinalized(int voucherId)
         {
-            // NOTE: This operation is formally ILLEGAL, so it's currently disabled.
-            int id = voucherId; // Prevent unused argument warning
-            return Unauthorized();
+            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoFinalize);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
+            return Ok();
         }
 
         // DELETE: api/vouchers/{voucherId:int}
@@ -761,7 +786,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return action == VoucherAction.Check
                 || action == VoucherAction.Confirm
                 || action == VoucherAction.Approve
-                || action == VoucherAction.Finalize;
+                || action == VoucherAction.Finalize
+                || action == VoucherAction.UndoFinalize;
         }
 
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)

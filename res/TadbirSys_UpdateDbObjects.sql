@@ -3227,3 +3227,8 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description]) VALUES (135, 7, N'UndoGroupCheck', 131072, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
+-- 1.1.916
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description]) VALUES (136, 7, N'GroupFinalize', 262144, NULL)
+SET IDENTITY_INSERT [Auth].[Permission] OFF
+

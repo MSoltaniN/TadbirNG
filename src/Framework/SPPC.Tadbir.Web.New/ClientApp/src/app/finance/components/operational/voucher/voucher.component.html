@@ -69,15 +69,11 @@
       <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
       <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
-      <!--<button SppcPermissionCheck="Check" (sppcClick)="onCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledCheckBtn()" title="{{ 'Voucher.Commit' | translate }}"><span class="k-icon k-i-check-outline"></span></button>
-  <button SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()" title="{{ 'Voucher.ReturnFromCommit' | translate }}"><span class="k-icon k-i-close-outline"></span></button>
-
-  <button SppcPermissionCheck="Finalize" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon" [disabled]="isDisabledFinalizeBtn()" title="{{ 'Voucher.Finalized' | translate }}"><span class="k-icon k-i-track-changes-accept-all"></span></button>-->
-
       <button SppcPermissionCheck="Check" (sppcClick)="onCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledCheckBtn()"
               title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
         <span class="k-icon k-i-check-outline"></span>
       </button>
+
       <button SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()"
               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
@@ -86,13 +82,8 @@
               title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
-      <!----add---Confirm Group icon-and --UnConfirm Group icon----------240399-->
-      <!--<button SppcPermissionCheck="UnConfirmGroup" (sppcClick)="onUnFinalizedGroupHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedGroupBtn()"
-              title="{{'Voucher.UnFinalizedGroup'| translate}}">
-        <span class="k-icon k-i-track-changes-reject-all"></span>
-      </button>-->
 
-      <button SppcPermissionCheck="UnDoFinalize" (sppcClick)="onUnFinalizedGroupHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedGroupBtn()"
+      <button SppcPermissionCheck="UndoFinalize" (sppcClick)="onUnFinalizedHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedBtn()"
               title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
         <span class="k-icon k-i-track-changes-reject-all"></span>
       </button>
@@ -165,10 +156,11 @@
   </kendo-grid>
 
   <div class="col-xs-12 col-sm-4 form-group">
-    <button class="k-button k-primary sppc-float-diff" (click)="getVouchers()"  style="margin-top: 25px;">
+    <button class="k-button k-primary sppc-float-diff" (click)="getVouchers()" style="margin-top: 25px;">
       {{ 'Buttons.Compute' | translate }}
     </button>
   </div>
+
 </div>
 
 <kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">

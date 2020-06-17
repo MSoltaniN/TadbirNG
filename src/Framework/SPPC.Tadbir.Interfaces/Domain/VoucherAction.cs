@@ -42,5 +42,10 @@ namespace SPPC.Tadbir.Domain
         /// عمل ثبت قطعی سند
         /// </summary>
         public const string Finalize = "Finalize";
+
+        /// <summary>
+        /// عمل برگشت از ثبت قطعی سند
+        /// </summary>
+        public const string UndoFinalize = "UndoFinalize";
     }
 }

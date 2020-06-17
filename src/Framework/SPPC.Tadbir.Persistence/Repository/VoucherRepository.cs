@@ -393,11 +393,12 @@ namespace SPPC.Tadbir.Persistence
             Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var voucher = await repository.GetByIDAsync(voucherId);
+            var oldStatusVoucher = (DocumentStatusValue)voucher.StatusId;
             if (voucher != null)
             {
                 voucher.StatusId = (int)status;
                 repository.Update(voucher);
-                OnDocumentStatus(status);
+                OnDocumentStatus(status, oldStatusVoucher);
                 await FinalizeActionAsync(voucher);
             }
         }
@@ -742,7 +743,8 @@ namespace SPPC.Tadbir.Persistence
                 new KeyValue(VoucherStatus.Confirmed, VoucherAction.Approve),
                 new KeyValue(VoucherStatus.Confirmed, VoucherAction.UndoConfirm),
                 new KeyValue(VoucherStatus.Approved, VoucherAction.UndoApprove),
-                new KeyValue(VoucherStatus.Approved, VoucherAction.Finalize)
+                new KeyValue(VoucherStatus.Approved, VoucherAction.Finalize),
+                new KeyValue(VoucherStatus.Finalized, VoucherAction.UndoFinalize)
             };
             return transitions;
         }

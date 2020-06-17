@@ -148,7 +148,11 @@ export enum VoucherPermissions {
   UndoApprove = 8192,
   Finalize = 16384,
   UndoFinalize = 32768,
-  All = 65535
+  GroupCheck = 65536,
+  UndoGroupCheck = 131072,
+  GroupFinalize = 262144,
+  UndoGroupFinalize = 524288,
+  All = 1048576
 }
 
 export enum UserPermissions {

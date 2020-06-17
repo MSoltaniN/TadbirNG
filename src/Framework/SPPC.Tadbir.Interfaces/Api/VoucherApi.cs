@@ -243,6 +243,16 @@ namespace SPPC.Tadbir.Api
         public const string UndoFinalizeVoucherUrl = "vouchers/{voucherId:min(1)}/finalize/undo";
 
         /// <summary>
+        /// API client URL for undoing finalize (changing document group  status  to check)
+        /// </summary>
+        public const string UnDoFinalizeVouchers = "vouchers/undofinalize";
+
+        /// <summary>
+        /// API server route URL for undoing finalize (changing document group  status  to check)
+        /// </summary>
+        public const string UnDoFinalizeVouchersUrl = "vouchers/undofinalize";
+
+        /// <summary>
         /// API client URL for number of voucher by statusId
         /// </summary>
         public const string VoucherCountByStatus = "vouchers/count/by-status";

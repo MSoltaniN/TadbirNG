@@ -1226,6 +1226,8 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (118, 1, 2, NULL, 17, 48, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (119, 1, 2, NULL, 17, 49, 1)
+	INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (120, 1, 2, NULL, 17, 18, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 
@@ -1311,4 +1313,4 @@ GO
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.1.916')
+VALUES(1, '1.1.917')
