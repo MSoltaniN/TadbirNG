@@ -1105,4 +1105,31 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         ViewByBranch = 0x10
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به گزارش سود و زیان را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum ProfitLossPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به سود و زیان
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده سود و زیان
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر اطلاعات سود و زیان
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ اطلاعات سود و زیان
+        /// </summary>
+        Print = 0x4,
+    }
 }

@@ -376,7 +376,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-
         [HttpPut]
         [Route(VoucherApi.FinalizeVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.GroupFinalize)]
