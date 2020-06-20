@@ -156,5 +156,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت مانده به تفکیک حساب
         /// </summary>
         public const string BalanceByAccount = "BalanceByAccount";
+
+        /// <summary>
+        /// نام موجودیت سود و زیان
+        /// </summary>
+        public const string ProfitLoss = "ProfitLoss";
     }
 }
