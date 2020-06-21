@@ -344,6 +344,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // PUT: api/vouchers/{voucherId:int}/confirm/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoConfirmGroupVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UnConfirmGroup)]
+        public async Task<IActionResult> PutExistingVoucherAsUnConfirmedGroup([FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateCombinationDocumentAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            await _repository.SetCombinationVouchersStatusAsync(actionDetail.Items, false);
+            return Ok();
+        }
+
         // PUT: api/vouchers/{voucherId:int}/approve
         [HttpPut]
         [Route(VoucherApi.ApproveVoucherUrl)]
@@ -732,6 +753,62 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         #endregion
+
+        protected async Task<IEnumerable<string>> ValidateCombinationDocumentAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            var approveList = new List<int>();
+            var confirmList = new List<int>();
+            string message = String.Empty;
+            foreach (int item in items)
+            {
+                var voucher = await _repository.GetVoucherAsync(item);
+                if (voucher == null)
+                {
+                    message = String.Format(
+                        _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucher.Id);
+                    messages.Add(message);
+                    break;
+                }
+
+                if (voucher.ApprovedById != null && voucher.ConfirmedById != null)
+                {
+                    approveList.Add(item);
+                }
+
+                if (voucher.ConfirmedById != null && voucher.ApprovedById == null)
+                {
+                    confirmList.Add(item);
+                }
+            }
+
+            if (approveList.Count() > 0)
+            {
+                var approveListValidation = await ValidateGroupCheckAsync(approveList, VoucherAction.UndoApprove);
+                if (approveListValidation.Count() > 0)
+                {
+                    foreach (var item in approveListValidation)
+                    {
+                        messages.Add(item);
+                    }
+                }
+            }
+
+            if (confirmList.Count() > 0)
+            {
+                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, VoucherAction.UndoConfirm);
+                if (confirmListValidation.Count() > 0)
+                {
+                    foreach (var item in confirmListValidation)
+                    {
+                        messages.Add(item);
+                    }
+                }
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
+        }
 
         protected async Task<IEnumerable<string>> ValidateGroupCheckAsync(IEnumerable<int> items, string action)
         {

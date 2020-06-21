@@ -163,6 +163,26 @@ namespace SPPC.Tadbir.Api
         public const string UndoConfirmVoucherUrl = "vouchers/{voucherId:min(1)}/confirm/undo";
 
         /// <summary>
+        /// API client URL for undoing confirmation and undoing approval document group
+        /// </summary>
+        public const string UndoConfirmGroupVouchers = "/vouchers/undoconfirmgroup";
+
+        /// <summary>
+        /// API server route URL for undoing confirmation and undoing approval document group
+        /// </summary>
+        public const string UndoConfirmGroupVouchersUrl = "vouchers/undoconfirmgroup";
+
+        /// <summary>
+        /// API client URL for confirming and approving document group
+        /// </summary>
+        public const string ConfirmGroupVouchers = "/vouchers/confirmgroup";
+
+        /// <summary>
+        /// API server route URL for confirming and approving document group
+        /// </summary>
+        public const string ConfirmGroupVouchersUrl = "vouchers/confirmgroup";
+
+        /// <summary>
         /// API client URL for undoing approval of a single voucher specified by identifier
         /// </summary>
         public const string UndoApproveVoucher = "vouchers/{0}/approve/undo";
