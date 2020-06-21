@@ -1335,3 +1335,16 @@ SET IDENTITY_INSERT [Config].[LogSetting] ON
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (120, 1, 2, NULL, 17, 18, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.918
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (50, N'ConfirmGroup')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (51, N'UnConfirmGroup')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (121, 1, 2, NULL, 17, 50, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (122, 1, 2, NULL, 17, 51, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

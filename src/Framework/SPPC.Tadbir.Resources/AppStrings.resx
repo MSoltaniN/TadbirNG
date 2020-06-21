@@ -3174,4 +3174,13 @@
   <data name="UndoGroupFinalize" xml:space="preserve">
     <value>برگشت از ثبت قطعی گروهی</value>
   </data>
+  <data name="ConfirmGroup" xml:space="preserve">
+    <value>تایید گروهی اسناد</value>
+  </data>
+  <data name="UnConfirmGroup" xml:space="preserve">
+    <value> رفع تایید گروهی اسناد</value>
+  </data>
+  <data name="UndoFinalize" xml:space="preserve">
+    <value>برگشت از ثبت قطعی</value>
+  </data>
 </root>
