@@ -721,9 +721,19 @@ namespace SPPC.Tadbir.Security
         UndoGroupFinalize = 0x80000,
 
         /// <summary>
+        /// دسترسی تایید گروهی اسناد حسابداری
+        /// </summary>
+        ConfirmGroup = 0x100000,
+
+        /// <summary>
+        /// دسترسی رفع تایید گروهی اسناد حسابداری
+        /// </summary>
+        UnConfirmGroup = 0x200000,
+
+        /// <summary>
         /// کلیه دسترسی های تعریف شده برای اسناد حسابداری
         /// </summary>
-        All = 0x100000// 0xffff
+        All = 0x400000// 0xffff
     }
 
     /// <summary>

@@ -2113,6 +2113,8 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (134, 7, N'GroupCheck', 65536)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (135, 7, N'UndoGroupCheck', 131072)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (136, 7, N'GroupFinalize', 262144)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (137, 7, N'ConfirmGroup', 1048576)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (138, 7, N'UnConfirmGroup', 2097152)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 

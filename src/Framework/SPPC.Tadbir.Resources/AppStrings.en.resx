@@ -3183,4 +3183,13 @@
   <data name="UndoGroupFinalize" xml:space="preserve">
     <value>Undo Group Finalize</value>
   </data>
+  <data name="ConfirmGroup" xml:space="preserve">
+    <value>Confirm Group</value>
+  </data>
+  <data name="UnConfirmGroup" xml:space="preserve">
+    <value>Undo Confirm Group</value>
+  </data>
+  <data name="UndoFinalize" xml:space="preserve">
+    <value>Undo Finalize</value>
+  </data>
 </root>

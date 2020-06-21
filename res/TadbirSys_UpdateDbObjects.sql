@@ -3232,3 +3232,10 @@ SET IDENTITY_INSERT [Auth].[Permission] ON
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description]) VALUES (136, 7, N'GroupFinalize', 262144, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
+-- 1.1.917
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description]) VALUES (137, 7, N'ConfirmGroup', 1048576, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description]) VALUES (138, 7, N'UnConfirmGroup', 2097152, NULL)
+SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+
