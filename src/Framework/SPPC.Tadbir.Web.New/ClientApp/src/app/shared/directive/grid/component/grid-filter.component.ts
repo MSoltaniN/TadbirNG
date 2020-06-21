@@ -61,7 +61,10 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
 
     document.addEventListener('keydown', function (ev: KeyboardEvent) {
       if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
-        self.parentComponent.reloadGrid();
+        setTimeout(() => {
+          self.parentComponent.reloadGrid();
+        }, 300);
+        
       }
     });
 

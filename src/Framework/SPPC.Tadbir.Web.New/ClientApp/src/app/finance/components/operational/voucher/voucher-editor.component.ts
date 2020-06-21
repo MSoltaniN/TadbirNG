@@ -513,7 +513,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                 }                
               }, (error => {
                   //if previous voucher not exists show voucher list
-                  this.router.navigate(['/finance/vouchers']);
+                  this.router.navigate(['/finance/voucher']);
               }))
         }));
 
