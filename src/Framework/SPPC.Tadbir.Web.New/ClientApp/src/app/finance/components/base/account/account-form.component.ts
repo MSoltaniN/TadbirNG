@@ -105,6 +105,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   accountModel: Account;
   customerTaxModel: CustomerTaxInfo;
   accountOwnerModel: AccountOwner;
+  groupId: number;
 
   progress: number = 0;
   @ViewChild('myInput') myInputVariable: ElementRef;
@@ -192,6 +193,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       this.accountModel = this.model.account;
       this.customerTaxModel = this.model.customerTaxInfo;
       this.accountOwnerModel = this.model.accountOwner;
+      this.groupId = (<any>this.model).groupId;
 
       if (this.isNew || this.model.customerTaxInfo == null) {
         this.isDisableCustomerTaxTab = true;
@@ -310,10 +312,12 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       if (this.accountModel && this.accountModel.groupId) {
         this.accGroupSelected = this.accountModel.groupId.toString();
       }
-      else
-        if (this.parent) {
+      else if (this.parent) {
           this.accGroupSelected = this.parent.groupId.toString();
-        }
+      }
+      else if (this.groupId) {
+        this.accGroupSelected = this.groupId.toString();
+      }
     })
   }
 
