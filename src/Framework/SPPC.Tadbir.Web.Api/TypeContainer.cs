@@ -120,6 +120,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ILogConfigRepository, LogConfigRepository>();
             _services.AddTransient<ICustomerTaxInfoRepository, CustomerTaxInfoRepository>();
             _services.AddTransient<IAccountOwnerRepository, AccountOwnerRepository>();
+            _services.AddTransient<IProfitLossRepository, ProfitLossRepository>();
         }
 
         private void AddServiceTypes()
@@ -132,6 +133,7 @@ namespace SPPC.Tadbir.Web.Api
         {
             _services.AddTransient<IDomainMapper, DomainMapper>();
             _services.AddTransient<IReportUtility, ReportUtility>();
+            _services.AddTransient<IAccountCollectionUtility, AccountCollectionUtility>();
             _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
             _services.AddTransient<ITestBalanceUtilityFactory, TestBalanceUtilityFactory>();
             _services.AddTransient<ITestBalanceHelper, TestBalanceHelper>();

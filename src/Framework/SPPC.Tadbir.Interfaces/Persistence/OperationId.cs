@@ -259,7 +259,7 @@ namespace SPPC.Tadbir.Persistence
         UndoGroupFinalize = 49,
 
         /// <summary>
-        /// کد عملیاتی ثبت گروهی اسناد 
+        /// کد عملیاتی ثبت گروهی اسناد
         /// </summary>
         ConfirmGroup = 50,
 

@@ -74,8 +74,4 @@
     <ProjectReference Include="..\SPPC.Tadbir.Configuration\SPPC.Tadbir.Configuration.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Inventory\" />
-  </ItemGroup>
-
 </Project>

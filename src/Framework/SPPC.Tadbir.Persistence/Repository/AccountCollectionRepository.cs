@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Persistence;
-using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
@@ -41,7 +40,9 @@ namespace SPPC.Tadbir.Persistence
             var accCollectionCat = await repository
                 .GetAllAsync(f => f.AccountCollections);
 
-            return accCollectionCat.Select(a => Mapper.Map<AccountCollectionCategoryViewModel>(a)).ToList();
+            return accCollectionCat
+                .Select(a => Mapper.Map<AccountCollectionCategoryViewModel>(a))
+                .ToList();
         }
 
         /// <summary>
@@ -62,18 +63,6 @@ namespace SPPC.Tadbir.Persistence
 
             await LogCollectionOperationAsync(OperationId.View, collectionId);
             return accCollection;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
-        {
-            return await Repository.GetCountAsync<Account, AccountViewModel>(
-                ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -136,7 +125,6 @@ namespace SPPC.Tadbir.Persistence
             IList<AccountCollectionAccount> existing, IList<AccountCollectionAccountViewModel> accCollectionsList)
         {
             var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
-
             var branchID = UserContext.BranchId;
             var accountItems = existing
                 .Where(item => item.BranchId == branchID)
@@ -193,10 +181,13 @@ namespace SPPC.Tadbir.Persistence
             IList<AccountCollectionAccount> existing,
             AccountCollectionAccount removedItem)
         {
-            var branchChildes = await branchRepository.GetByCriteriaAsync(br => br.ParentId == removedItem.BranchId);
-            foreach (var child in branchChildes)
+            var childBranches = await branchRepository.GetByCriteriaAsync(
+                br => br.ParentId == removedItem.BranchId);
+            foreach (var child in childBranches)
             {
-                var item = existing.SingleOrDefault(col => col.BranchId == child.Id && col.CollectionId == removedItem.CollectionId && col.AccountId == removedItem.AccountId);
+                var item = existing.SingleOrDefault(col => col.BranchId == child.Id
+                    && col.CollectionId == removedItem.CollectionId
+                    && col.AccountId == removedItem.AccountId);
                 if (item != null)
                 {
                     await CascadeNewAccountCollection(repository, branchRepository, existing, item);

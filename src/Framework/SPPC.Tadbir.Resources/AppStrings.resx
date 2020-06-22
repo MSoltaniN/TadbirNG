@@ -3183,4 +3183,43 @@
   <data name="UndoFinalize" xml:space="preserve">
     <value>برگشت از ثبت قطعی</value>
   </data>
+  <data name="GrossProfit" xml:space="preserve">
+    <value>سود ناخالص</value>
+  </data>
+  <data name="GrossProfitCalculation" xml:space="preserve">
+    <value>محاسبه سود ناخالص</value>
+  </data>
+  <data name="NetProfit" xml:space="preserve">
+    <value>سود خالص</value>
+  </data>
+  <data name="OperationalCost" xml:space="preserve">
+    <value>هزینه های عملیاتی</value>
+  </data>
+  <data name="OperationalCostTotal" xml:space="preserve">
+    <value>جمع هزینه های عملیاتی</value>
+  </data>
+  <data name="OperationalProfit" xml:space="preserve">
+    <value>سود عملیاتی</value>
+  </data>
+  <data name="OtherCostAndRevenue" xml:space="preserve">
+    <value>سایر هزینه ها و درآمدها</value>
+  </data>
+  <data name="OtherCostAndRevenueNet" xml:space="preserve">
+    <value>خالص سایر هزینه ها و درآمدها</value>
+  </data>
+  <data name="ProfitBeforeTax" xml:space="preserve">
+    <value>سود قبل از کسر مالیات</value>
+  </data>
+  <data name="NetSales" xml:space="preserve">
+    <value>فروش خالص</value>
+  </data>
+  <data name="SoldProductCost" xml:space="preserve">
+    <value>بهای تمام شده کالای فروش رفته</value>
+  </data>
+  <data name="NetRevenue" xml:space="preserve">
+    <value>درآمد خالص</value>
+  </data>
+  <data name="Tax" xml:space="preserve">
+    <value>مالیات</value>
+  </data>
 </root>

@@ -3192,4 +3192,43 @@
   <data name="UndoFinalize" xml:space="preserve">
     <value>Undo Finalize</value>
   </data>
+  <data name="GrossProfit" xml:space="preserve">
+    <value>Gross profit</value>
+  </data>
+  <data name="GrossProfitCalculation" xml:space="preserve">
+    <value>Gross profit calculation</value>
+  </data>
+  <data name="NetProfit" xml:space="preserve">
+    <value>Net profit</value>
+  </data>
+  <data name="OperationalCost" xml:space="preserve">
+    <value>Operational cost</value>
+  </data>
+  <data name="OperationalCostTotal" xml:space="preserve">
+    <value>Operational cost total</value>
+  </data>
+  <data name="OperationalProfit" xml:space="preserve">
+    <value>Operational profit</value>
+  </data>
+  <data name="OtherCostAndRevenue" xml:space="preserve">
+    <value>Other cost and revenue</value>
+  </data>
+  <data name="OtherCostAndRevenueNet" xml:space="preserve">
+    <value>Other cost and revenue total</value>
+  </data>
+  <data name="ProfitBeforeTax" xml:space="preserve">
+    <value>Profit before tax</value>
+  </data>
+  <data name="NetSales" xml:space="preserve">
+    <value>Net sales</value>
+  </data>
+  <data name="SoldProductCost" xml:space="preserve">
+    <value>Sold product cost</value>
+  </data>
+  <data name="NetRevenue" xml:space="preserve">
+    <value>Net revenue</value>
+  </data>
+  <data name="Tax" xml:space="preserve">
+    <value>Tax</value>
+  </data>
 </root>
