@@ -61,49 +61,22 @@ namespace SPPC.Tadbir.Persistence
                 (int)AccountCollectionId.FinalSales, parameters.ToDate, parameters));
             lines.AddRange(await GetCollectionLinesAsync(
                 (int)AccountCollectionId.SalesRefundDiscount, parameters.ToDate, parameters));
-            decimal initBalance = lines
-                .Where(line => line.VoucherDate.Date < parameters.FromDate)
-                .Sum(line => line.Credit - line.Debit);
-            decimal turnover = lines
-                .Where(line => line.VoucherDate.IsBetween(parameters.FromDate, parameters.ToDate))
-                .Sum(line => line.Credit - line.Debit);
-            var netRevenue = new ProfitLossItemViewModel()
-            {
-                Account = AppStrings.NetRevenue,
-                StartBalance = initBalance,
-                PeriodTurnover = turnover,
-                EndBalance = initBalance + turnover,
-                Balance = initBalance + turnover
-            };
+            var netRevenue = GetReportItem(
+                lines, line => line.Credit - line.Debit, AppStrings.NetRevenue,
+                parameters.FromDate, parameters.ToDate);
 
             lines.Clear();
             lines.AddRange(await GetCollectionLinesAsync(
                 (int)AccountCollectionId.SoldProductCost, parameters.ToDate, parameters));
-            initBalance = lines
-                .Where(line => line.VoucherDate.Date < parameters.FromDate)
-                .Sum(line => line.Debit - line.Credit);
-            turnover = lines
-                .Where(line => line.VoucherDate.IsBetween(parameters.FromDate, parameters.ToDate))
-                .Sum(line => line.Debit - line.Credit);
-            var productCost = new ProfitLossItemViewModel()
-            {
-                Account = AppStrings.SoldProductCost,
-                StartBalance = initBalance,
-                PeriodTurnover = turnover,
-                EndBalance = initBalance + turnover,
-                Balance = initBalance + turnover
-            };
+            var productCost = GetReportItem(
+                lines, line => line.Debit - line.Credit, AppStrings.SoldProductCost,
+                parameters.FromDate, parameters.ToDate);
 
             items.Add(netRevenue);
             items.Add(productCost);
-            items.Add(new ProfitLossItemViewModel()
-            {
-                Category = AppStrings.GrossProfit,
-                StartBalance = netRevenue.StartBalance - productCost.StartBalance,
-                PeriodTurnover = netRevenue.PeriodTurnover - productCost.PeriodTurnover,
-                EndBalance = netRevenue.EndBalance - productCost.EndBalance,
-                Balance = netRevenue.EndBalance - productCost.EndBalance
-            });
+            var grossProfit = netRevenue - productCost;
+            grossProfit.Category = AppStrings.GrossProfit;
+            items.Add(grossProfit);
 
             return items;
         }
@@ -124,20 +97,9 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(line => line.AccountId)
                 .GroupBy(line => line.AccountId))
             {
-                decimal initBalance = group
-                    .Where(line => line.VoucherDate.Date < parameters.FromDate)
-                    .Sum(line => line.Debit - line.Credit);
-                decimal turnover = group
-                    .Where(line => line.VoucherDate.IsBetween(parameters.FromDate, parameters.ToDate))
-                    .Sum(line => line.Debit - line.Credit);
-                costItems.Add(new ProfitLossItemViewModel()
-                {
-                    Account = group.First().AccountName,
-                    StartBalance = initBalance,
-                    PeriodTurnover = turnover,
-                    EndBalance = initBalance + turnover,
-                    Balance = initBalance + turnover
-                });
+                var costItem = GetReportItem(group, line => line.Debit - line.Credit,
+                    group.First().AccountName, parameters.FromDate, parameters.ToDate);
+                costItems.Add(costItem);
             }
 
             items.AddRange(costItems);
@@ -150,14 +112,9 @@ namespace SPPC.Tadbir.Persistence
                 Balance = costItems.Sum(item => item.EndBalance)
             };
             items.Add(totalCost);
-            items.Add(new ProfitLossItemViewModel()
-            {
-                Category = AppStrings.OperationalProfit,
-                StartBalance = grossProfit.StartBalance - totalCost.StartBalance,
-                PeriodTurnover = grossProfit.PeriodTurnover - totalCost.PeriodTurnover,
-                EndBalance = grossProfit.EndBalance - totalCost.EndBalance,
-                Balance = grossProfit.EndBalance - totalCost.EndBalance
-            });
+            var operationProfit = grossProfit - totalCost;
+            operationProfit.Category = AppStrings.OperationalProfit;
+            items.Add(operationProfit);
 
             return items;
         }
@@ -178,20 +135,9 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(line => line.AccountId)
                 .GroupBy(line => line.AccountId))
             {
-                decimal initBalance = group
-                    .Where(line => line.VoucherDate.Date < parameters.FromDate)
-                    .Sum(line => line.Debit - line.Credit);
-                decimal turnover = group
-                    .Where(line => line.VoucherDate.IsBetween(parameters.FromDate, parameters.ToDate))
-                    .Sum(line => line.Debit - line.Credit);
-                costItems.Add(new ProfitLossItemViewModel()
-                {
-                    Account = group.First().AccountName,
-                    StartBalance = initBalance,
-                    PeriodTurnover = turnover,
-                    EndBalance = initBalance + turnover,
-                    Balance = initBalance + turnover
-                });
+                var costItem = GetReportItem(group, line => line.Debit - line.Credit,
+                    group.First().AccountName, parameters.FromDate, parameters.ToDate);
+                costItems.Add(costItem);
             }
 
             items.AddRange(costItems);
@@ -204,14 +150,9 @@ namespace SPPC.Tadbir.Persistence
                 Balance = costItems.Sum(item => item.EndBalance)
             };
             items.Add(netCost);
-            items.Add(new ProfitLossItemViewModel()
-            {
-                Category = AppStrings.ProfitBeforeTax,
-                StartBalance = operationProfit.StartBalance - netCost.StartBalance,
-                PeriodTurnover = operationProfit.PeriodTurnover - netCost.PeriodTurnover,
-                EndBalance = operationProfit.EndBalance - netCost.EndBalance,
-                Balance = operationProfit.EndBalance - netCost.EndBalance
-            });
+            var beforeTax = operationProfit - netCost;
+            beforeTax.Category = AppStrings.ProfitBeforeTax;
+            items.Add(beforeTax);
 
             return items;
         }
@@ -303,6 +244,27 @@ namespace SPPC.Tadbir.Persistence
             return filteredLines
                 .Select(line => Mapper.Map<ProfitLossLineViewModel>(line))
                 .Apply(parameters.GridOptions, false);
+        }
+
+        private ProfitLossItemViewModel GetReportItem(
+            IEnumerable<ProfitLossLineViewModel> lines,
+            Func<ProfitLossLineViewModel, decimal> balanceFunc,
+            string account, DateTime from, DateTime to)
+        {
+            decimal initBalance = lines
+                .Where(line => line.VoucherDate.Date < from)
+                .Sum(balanceFunc);
+            decimal turnover = lines
+                .Where(line => line.VoucherDate.IsBetween(from, to))
+                .Sum(balanceFunc);
+            return new ProfitLossItemViewModel()
+            {
+                Account = account,
+                StartBalance = initBalance,
+                PeriodTurnover = turnover,
+                EndBalance = initBalance + turnover,
+                Balance = initBalance + turnover
+            };
         }
 
         private IEnumerable<int> GetChildTree(int branchId)

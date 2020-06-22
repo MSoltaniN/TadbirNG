@@ -21,11 +21,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string Category { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی حساب ویژه مورد استفاده
-        /// </summary>
-        public int AccountId { get; set; }
-
-        /// <summary>
         /// حساب ویژه مورد استفاده
         /// </summary>
         public string Account { get; set; }
@@ -54,5 +49,40 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام شعبه ایجادکننده آرتیکل سند برای حالت تفکیک شعبه
         /// </summary>
         public string BranchName { get; set; }
+
+        /// <summary>
+        /// تابع کمکی که عمل تفریق یک سطر از این آبجکت را فراهم می کند
+        /// </summary>
+        /// <param name="right">عبارت سمت راست عملگر تفریق</param>
+        /// <returns>همین آبجکت را پس از انجام عمل تفریق برمی گرداند</returns>
+        public ProfitLossItemViewModel Subtract(ProfitLossItemViewModel right)
+        {
+            StartBalance -= right.StartBalance;
+            PeriodTurnover -= right.PeriodTurnover;
+            EndBalance -= right.EndBalance;
+            Balance = EndBalance;
+            return this;
+        }
+
+        /// <summary>
+        /// عملگر تفریق را برای سطر گزارش سود و زیان پیاده سازی می کند
+        /// </summary>
+        /// <param name="left">عبارت سمت چپ عملگر تفریق</param>
+        /// <param name="right">عبارت سمت راست عملگر تفریق</param>
+        /// <returns>آبجکت جدیدی با مقادیر تفریق شده</returns>
+        public static ProfitLossItemViewModel operator - (
+            ProfitLossItemViewModel left, ProfitLossItemViewModel right)
+        {
+            return new ProfitLossItemViewModel()
+            {
+                Category = left.Category,
+                Account = left.Account,
+                StartBalance = left.StartBalance - right.StartBalance,
+                PeriodTurnover = left.PeriodTurnover - right.PeriodTurnover,
+                EndBalance = left.EndBalance - right.EndBalance,
+                Balance = left.EndBalance - right.EndBalance,
+                BranchName = left.BranchName
+            };
+        }
     }
 }
