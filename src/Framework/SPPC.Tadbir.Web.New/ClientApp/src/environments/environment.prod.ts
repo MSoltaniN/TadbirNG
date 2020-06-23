@@ -110,7 +110,8 @@ export const Entities = {
   BalanceByAccount: 'BalanceByAccount',
   SysOperationLog: 'SysOperationLog',
   SysOperationLogArchive: 'SysOperationLogArchive',
-  OperationLogArchive: 'OperationLogArchive'
+  OperationLogArchive: 'OperationLogArchive',
+  ProfitLost:'ProfitLost'
 }
 
 export const ColumnVisibility =

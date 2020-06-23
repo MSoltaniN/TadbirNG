@@ -19,12 +19,6 @@
               (remove)="removeHandler($event)"
               [loading]="false"
               [selectable]="{ checkboxOnly: true, mode: 'single' }"
-              [selectedKeys]="selectedRows"
-              [kendoGridSelectBy]="selectionKey"
-              (filterChange)="filterChange($event)"
-              (selectedKeysChange)="onSelectedKeysChange($event)"
-              (cellClick)="onCellClick($event)"
-              (dblclick)="onDblClick($event)"
               (dataStateChange)="onDataStateChange()"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
@@ -49,11 +43,11 @@
 
     <ng-template kendoGridToolbarTemplate>
 
-      <div class="col-md-12  no-padding no-margin">        
+      <div class="col-md-12  no-padding no-margin">
         <div class="sppc-float">
           <div>
             <sppc-dateRangeSelector [viewName]="'testBalance'" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
-          </div>         
+          </div>
         </div>
         <div class="pull-left">
           <div class="form-group pull-left">
@@ -61,11 +55,11 @@
                                          (columnsList)="getColumns($event)">
             </auto-generated-grid-setting>
             <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-           
+
             <button kendoButton class="hidden-xs rm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showReportSetting()"
                     [icon]="'form-element'" type="button"></button>
             <button kendoButton class="hidden-xs rm" title="{{ 'Report.Print' | translate }}" (click)="showReport()"
-                    [icon]="'printer'" type="button"></button>       
+                    [icon]="'printer'" type="button"></button>
           </div>
 
         </div>
@@ -73,15 +67,6 @@
       </div>
 
     </ng-template>
-
-    <kendo-grid-checkbox-column showSelectAll="true"
-                                width="55"
-                                [resizable]="false"
-                                [reorderable]="false">
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
-        {{ 'ItemBalance.Sum' | translate }}
-      </ng-template>
-    </kendo-grid-checkbox-column>
 
     <kendo-grid-column media="(max-width: 450px)" title="">
       <ng-template kendoGridCellTemplate let-dataItem>
@@ -94,22 +79,10 @@
           </ng-template>
         </dl>
 
-      </ng-template>
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
-        <table>
-          <tr>
-            <td>{{ 'ItemBalance.DebitSum' | translate }}</td>
-            <td>{{ debitSum | SppcNumConfig | async }}</td>
-          </tr>
-          <tr>
-            <td>{{ 'ItemBalance.CreditSum' | translate }}</td>
-            <td>{{ creditSum | SppcNumConfig | async }}</td>
-          </tr>
-        </table>
-      </ng-template>
+      </ng-template>    
     </kendo-grid-column>
 
-    <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumnsRow" sppc-auto-grid-column="{{ item.settings }}">
+    <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumns" sppc-auto-grid-column="{{ item.settings }}">
 
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
         <sppc-auto-grid-filter [metaDataItem]="item" [metaData]="item.scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
@@ -127,50 +100,17 @@
         {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Credit'">
-        {{ creditSum | SppcNumConfig | async }}
-      </ng-template>
-
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && item.name == 'Debit'">
-        {{ debitSum | SppcNumConfig | async }}
-      </ng-template>
-
-      <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">
-        <input class="k-textbox" [formControl]="formGroup.get(column.field)">
-      </ng-template>
-
     </kendo-grid-column>
-
-    <kendo-grid-column-group title="{{ gcn.groupName }}" *ngFor="let gcn of gridGroupColumnNames" media="(min-width: 450px)">
-      <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of getColumnRows(gcn)"
-                         sppc-auto-grid-column="{{ item.settings }}">
-
-        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-          <sppc-auto-grid-filter [metaDataItem]="item" [metaData]="item.scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
-        </ng-template>
-
-        <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'Date'">
-          {{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate  }}
-        </ng-template>
-
-        <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean'">
-          {{ getRowValue(item.name,dataItem,item.scriptType)  }}
-        </ng-template>
-
-        <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
-          {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
-        </ng-template>
-
-        <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
-          {{ getSumValue(item) | SppcNumConfig | async }}
-        </ng-template>
-
-        <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">
-          <input class="k-textbox" [formControl]="formGroup.get(column.field)">
-        </ng-template>
-
-      </kendo-grid-column>
-
-    </kendo-grid-column-group>
   </kendo-grid>
+</div>
+
+<div class="section-option col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 form-group">      
+      <button class="k-button k-primary sppc-float-diff btn-compute"
+              EntityName="TestBalance" (click)="getReportData();" >
+        {{ 'Buttons.Compute' | translate }}
+      </button>
+    </div>
+  </div>
 </div>
