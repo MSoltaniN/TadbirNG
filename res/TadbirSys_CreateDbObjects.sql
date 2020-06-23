@@ -355,10 +355,11 @@ CREATE TABLE [Config].[CompanyDb] (
     [Server]         NVARCHAR(64)     NOT NULL,
     [UserName]       NVARCHAR(32)     NULL,
     [Password]       NVARCHAR(32)     NULL,
+	[IsActive]       BIT              CONSTRAINT [DF_Corporate_CompanyDb_IsActive] DEFAULT (1) NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_Company_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_Company_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Corporate_Company] PRIMARY KEY CLUSTERED ([CompanyID] ASC)
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_CompanyDb_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_CompanyDb_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Corporate_CompanyDb] PRIMARY KEY CLUSTERED ([CompanyID] ASC)
 )
 GO
 

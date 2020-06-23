@@ -586,7 +586,7 @@ DROP COLUMN DbPath
 GO
 
 DELETE Metadata.[Column]
-WHERE ColumnID=72
+WHERE ColumnID = 72
 
 -- 1.1.733
 UPDATE [Metadata].[Column]
@@ -1098,8 +1098,8 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [Type], [DotNetType], 
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 -- 1.1.773
-ALTER TABLE Reporting.SystemIssue
-Add DeleteApiUrl nvarchar(128) null
+ALTER TABLE [Reporting].[SystemIssue]
+ADD DeleteApiUrl NVARCHAR(128) NULL
 
 -- 1.1.776
 CREATE TABLE [Metadata].[EntityType] (
@@ -3258,3 +3258,11 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (655, 62, 'Balance', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, 'Hidden', 5, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF 
+
+-- 1.1.930
+ALTER TABLE [Config].[CompanyDb] 
+ADD [IsActive] BIT NOT NULL
+CONSTRAINT DF_Config_CompanyDb_IsActive DEFAULT 1
+WITH VALUES;
+GO
+
