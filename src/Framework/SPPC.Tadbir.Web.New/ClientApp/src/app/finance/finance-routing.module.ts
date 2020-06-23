@@ -22,6 +22,7 @@ import { CurrencyBookComponent } from '@sppc/finance/components/reporting/curren
 import { SystemIssueComponent } from '@sppc/finance//components/reporting/systemIssue/systemIssue.component';
 import { ItemBalanceComponent } from './components/reporting/itemBalance/itemBalance.component';
 import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/balanceByAccount/balanceByAccount.component';
+import { ProfitLostComponent } from './components/reporting/profitLoss/profitLost.component';
 
 
 const routes: Routes = [{
@@ -37,6 +38,7 @@ const routes: Routes = [{
     { path: 'currency', component: CurrencyComponent },
     { path: 'detailAccount', component: DetailAccountComponent },
     { path: 'projects', component: ProjectComponent },
+    { path: 'profit-lost', component: ProfitLostComponent },
     { path: 'voucher', component: VoucherComponent },
     { path: 'vouchers/:mode', component: VoucherEditorComponent,
       data: { viewId: ViewName.Voucher },

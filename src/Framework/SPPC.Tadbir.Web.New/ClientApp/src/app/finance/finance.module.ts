@@ -39,6 +39,8 @@ import { CurrencyBookComponent } from '@sppc/finance/components/reporting/curren
 import { CurrencyBookDetailComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook-detail.component';
 import { SystemIssueComponent } from '@sppc/finance/components/reporting/systemIssue/systemIssue.component';
 import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/balanceByAccount/balanceByAccount.component';
+import { ProfitLostComponent } from './components/reporting/profitLoss/profitLost.component';
+import { ProfitLostService } from './service/profitLost.service';
 
 @NgModule({
   imports: [
@@ -50,11 +52,11 @@ import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/ba
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
     ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
     currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent, BalanceByAccountComponent,
-    ItemBalanceComponent],
+    ItemBalanceComponent, ProfitLostComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
-    FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService,ItemBalanceService, SystemIssueService],
+    FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService, ItemBalanceService, SystemIssueService, ProfitLostService],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class FinanceModule { }
