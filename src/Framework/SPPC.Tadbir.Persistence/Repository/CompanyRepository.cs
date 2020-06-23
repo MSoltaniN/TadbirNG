@@ -127,13 +127,16 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             foreach (int item in items)
             {
-                var company = await repository.GetByIDAsync(item);
+                var company = await repository.GetByIDWithTrackingAsync(item, c => c.RoleCompanies);
                 if (company != null)
                 {
-                    await DeleteNoLogAsync(repository, company);
+                    company.RoleCompanies.Clear();
+                    company.IsActive = false;
+                    repository.Update(company);
                 }
             }
 
+            await UnitOfWork.CommitAsync();
             await OnEntityGroupDeleted(items);
         }
 

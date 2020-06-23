@@ -31,6 +31,7 @@ namespace SPPC.Tadbir.ViewModel.Config
             Server = String.Empty;
             UserName = String.Empty;
             Password = String.Empty;
+            IsActive = true;
             Description = String.Empty;
         }
 
