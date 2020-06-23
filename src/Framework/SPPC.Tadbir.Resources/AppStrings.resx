@@ -3222,4 +3222,7 @@
   <data name="Tax" xml:space="preserve">
     <value>مالیات</value>
   </data>
+  <data name="FilterName" xml:space="preserve">
+    <value>نام فیلتر</value>
+  </data>
 </root>

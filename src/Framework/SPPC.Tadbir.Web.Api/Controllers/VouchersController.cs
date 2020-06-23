@@ -830,6 +830,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return messages
                 .Where(msg => !String.IsNullOrEmpty(msg));
         }
+
         protected async Task<IEnumerable<string>> ValidateDocumentsForConfirmGroupAsync(IEnumerable<int> items)
         {
             var messages = new List<string>();

@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(FilterApi.FiltersUrl)]
         public async Task<IActionResult> PostNewFilterAsync([FromBody] FilterViewModel filter)
         {
-            var result = BasicValidationResult(filter);
+            var result = await FilterValidationResultAsync(filter);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -96,6 +96,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private async Task<IActionResult> FilterValidationResultAsync(FilterViewModel filter)
+        {
+            var result = BasicValidationResult(filter);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsDuplicateFilterAsync(filter))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.FilterName));
+            }
+
+            return Ok();
         }
 
         private readonly IFilterRepository _repository;

@@ -3231,4 +3231,7 @@
   <data name="Tax" xml:space="preserve">
     <value>Tax</value>
   </data>
+  <data name="FilterName" xml:space="preserve">
+    <value>Filter name</value>
+  </data>
 </root>
