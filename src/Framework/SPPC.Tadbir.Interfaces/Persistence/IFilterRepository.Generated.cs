@@ -38,5 +38,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="filterId">شناسه عددی فیلتر مورد نظر برای حذف</param>
         Task DeleteFilterAsync(int filterId);
+
+        /// <summary>
+        /// به روش آسنکرون مشخص می کند که فیلتر مورد نظر قواعد موجود برای یکتا بودن فیلتر را نقض می کند یا نه
+        /// </summary>
+        /// <param name="filter">فیلتر مورد نظر برای بررسی</param>
+        /// <returns>در صورت نقض شدن قواعد یکتایی مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsDuplicateFilterAsync(FilterViewModel filter);
     }
 }

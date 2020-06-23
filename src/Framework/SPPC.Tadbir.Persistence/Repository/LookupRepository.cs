@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.Persistence
                 var roleIds = user.UserRoles.Select(ur => ur.RoleId);
                 if (roleIds.Contains(AppConstants.AdminRoleId))
                 {
-                    userCompanies.AddRange(await repository.GetAllAsync());
+                    userCompanies.AddRange(await repository.GetByCriteriaAsync(c => c.IsActive));
                 }
                 else
                 {
@@ -219,6 +219,7 @@ namespace SPPC.Tadbir.Persistence
 
                     userCompanies = await repository
                         .GetEntityQuery()
+                        .Where(c => c.IsActive)
                         .Where(c => companies
                             .Distinct()
                             .Contains(c.Id))
@@ -514,14 +515,24 @@ namespace SPPC.Tadbir.Persistence
         {
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<User>();
-            var lookup = new List<KeyValue>
+            var lookup = new List<KeyValue>();
+            if (UserContext.Roles.Contains(AppConstants.AdminRoleId))
             {
-                new KeyValue("0", "AllUsers")
-            };
-            lookup.AddRange(await repository
-                .GetEntityQuery(user => user.Person)
-                .Select(user => new KeyValue(user.Id.ToString(), GetFullName(user)))
-                .ToListAsync());
+                lookup.Add(new KeyValue("0", "AllUsers"));
+                lookup.AddRange(await repository
+                    .GetEntityQuery(user => user.Person)
+                    .Select(user => new KeyValue(user.Id.ToString(), GetFullName(user)))
+                    .ToListAsync());
+            }
+            else
+            {
+                var user = await repository.GetByIDAsync(UserContext.Id, u => u.Person);
+                if (user != null)
+                {
+                    lookup.Add(new KeyValue(user.Id.ToString(), GetFullName(user)));
+                }
+            }
+
             UnitOfWork.UseCompanyContext();
             return lookup;
         }

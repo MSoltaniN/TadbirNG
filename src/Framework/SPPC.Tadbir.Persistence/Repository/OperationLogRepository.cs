@@ -40,11 +40,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
         public async Task<PagedList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions = null)
         {
+            var inactiveIds = await GetInactiveCompanyIdsAsync();
             var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
             var list = await repository
                 .GetEntityQuery(
                     log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
                     log => log.Operation, log => log.Source, log => log.SourceList)
+                .Where(log => !inactiveIds.Contains(log.CompanyId))
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
@@ -65,10 +67,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های شرکتی بایگانی شده</returns>
         public async Task<PagedList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions = null)
         {
+            var inactiveIds = await GetInactiveCompanyIdsAsync();
             var repository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
-            var list = await repository.GetEntityQuery(
-                log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
-                log => log.Operation, log => log.Source, log => log.SourceList)
+            var list = await repository
+                .GetEntityQuery(
+                    log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
+                    log => log.Operation, log => log.Source, log => log.SourceList)
+                .Where(log => !inactiveIds.Contains(log.CompanyId))
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
@@ -219,6 +224,7 @@ namespace SPPC.Tadbir.Persistence
                     log => log.Operation, log => log.EntityType,
                     log => log.Source, log => log.SourceList,
                     log => log.Company, log => log.User)
+                .Where(log => log.Company.IsActive)
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
@@ -242,6 +248,7 @@ namespace SPPC.Tadbir.Persistence
                     log => log.Operation, log => log.EntityType,
                     log => log.Source, log => log.SourceList,
                     log => log.Company, log => log.User)
+                .Where(log => log.Company.IsActive)
                 .OrderByDescending(log => log.Date)
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
@@ -420,6 +427,20 @@ namespace SPPC.Tadbir.Persistence
             {
                 await SaveSystemLogAsync(log);
             }
+        }
+
+        private async Task<IEnumerable<int>> GetInactiveCompanyIdsAsync()
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var inactiveIds = await repository
+                .GetEntityQuery()
+                .Where(c => c.IsActive)
+                .Select(c => c.Id)
+                .ToListAsync();
+            UnitOfWork.UseCompanyContext();
+
+            return inactiveIds;
         }
 
         private async Task SetSystemValues(OperationLogViewModel log)

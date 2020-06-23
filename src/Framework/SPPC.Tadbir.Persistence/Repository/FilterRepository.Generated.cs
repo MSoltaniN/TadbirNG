@@ -102,6 +102,20 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون مشخص می کند که فیلتر مورد نظر قواعد موجود برای یکتا بودن فیلتر را نقض می کند یا نه
+        /// </summary>
+        /// <param name="filter">فیلتر مورد نظر برای بررسی</param>
+        /// <returns>در صورت نقض شدن قواعد یکتایی مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsDuplicateFilterAsync(FilterViewModel filter)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Filter>();
+            int count = await repository.GetCountByCriteriaAsync(
+                f => f.ViewId == filter.ViewId && f.Name == filter.Name.ToLower());
+            return count >= 1;
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="filterViewModel">مدل نمایشی شامل آخرین تغییرات</param>
