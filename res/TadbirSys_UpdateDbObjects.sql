@@ -3238,4 +3238,23 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description]) VALUES (138, 7, N'UnConfirmGroup', 2097152, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
+-- 1.1.929
+SET IDENTITY_INSERT [Metadata].[View] ON 
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
+    VALUES (62, 'ProfitLoss', 0, 0, NULL, '', NULL)
+SET IDENTITY_INSERT [Metadata].[View] OFF 
 
+SET IDENTITY_INSERT [Metadata].[Column] ON 
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (650, 62, 'Category', NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 1, 0, 0, 'AlwaysVisible', 0, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (651, 62, 'Account', NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 1, 0, 0, NULL, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (652, 62, 'StartBalance', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, NULL, 2, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (653, 62, 'PeriodTurnover', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, NULL, 3, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (654, 62, 'EndBalance', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, NULL, 4, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (655, 62, 'Balance', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, 'Hidden', 5, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF 
