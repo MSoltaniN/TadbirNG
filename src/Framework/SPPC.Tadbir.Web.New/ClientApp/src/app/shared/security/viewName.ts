@@ -62,5 +62,6 @@ export enum ViewName {
   BalanceByAccount = 58,
   SysOperationLog = 59,
   SysOperationLogArchive = 60,
-  OperationLogArchive = 61
+  OperationLogArchive = 61,
+  ProfitLost=62
 }
