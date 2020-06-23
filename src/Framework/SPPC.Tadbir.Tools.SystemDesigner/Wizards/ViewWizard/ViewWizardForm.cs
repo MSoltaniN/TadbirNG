@@ -150,7 +150,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
                 builder.AppendLine("INSERT INTO [Metadata].[Column] " +
                     "([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], " +
                     "[ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], " +
-                    "[AllowFiltering], [Visibility], [DisplayIndex], [Expression]");
+                    "[AllowFiltering], [Visibility], [DisplayIndex], [Expression])");
                 builder.AppendFormat(
                     "    VALUES ({0}, {1}, '{2}', {3}, {4}, '{5}', '{6}', '{7}', {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16})"
                     , columnId++
