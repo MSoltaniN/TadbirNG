@@ -77,4 +77,8 @@
     <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ProjectCLI.exe -cmd:refdb" />
+  </Target>
+
 </Project>

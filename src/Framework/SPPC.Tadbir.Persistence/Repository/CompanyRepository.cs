@@ -107,10 +107,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteCompanyAsync(int companyId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await repository.GetByIDAsync(companyId);
+            var company = await repository.GetByIDWithTrackingAsync(companyId, c => c.RoleCompanies);
             if (company != null)
             {
-                await DeleteAsync(repository, company);
+                company.RoleCompanies.Clear();
+                company.IsActive = false;
+                repository.Update(company);
+                OnEntityAction(OperationId.Delete);
+                await FinalizeActionAsync(company);
             }
         }
 
@@ -123,13 +127,16 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             foreach (int item in items)
             {
-                var company = await repository.GetByIDAsync(item);
+                var company = await repository.GetByIDWithTrackingAsync(item, c => c.RoleCompanies);
                 if (company != null)
                 {
-                    await DeleteNoLogAsync(repository, company);
+                    company.RoleCompanies.Clear();
+                    company.IsActive = false;
+                    repository.Update(company);
                 }
             }
 
+            await UnitOfWork.CommitAsync();
             await OnEntityGroupDeleted(items);
         }
 
@@ -313,7 +320,7 @@ namespace SPPC.Tadbir.Persistence
                 var repository = UnitOfWork.GetAsyncRepository<RoleCompany>();
                 var companyIds = await repository
                     .GetEntityQuery()
-                    .Where(rc => UserContext.Roles.Contains(rc.RoleId))
+                    .Where(rc => rc.Company.IsActive && UserContext.Roles.Contains(rc.RoleId))
                     .Select(rc => rc.CompanyId)
                     .Distinct()
                     .ToListAsync();
@@ -321,7 +328,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                return company => true;
+                return company => company.IsActive;
             }
         }
 

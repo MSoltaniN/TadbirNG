@@ -75,8 +75,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         {
             return new ProfitLossItemViewModel()
             {
-                Category = left.Category,
-                Account = left.Account,
                 StartBalance = left.StartBalance - right.StartBalance,
                 PeriodTurnover = left.PeriodTurnover - right.PeriodTurnover,
                 EndBalance = left.EndBalance - right.EndBalance,

@@ -355,10 +355,11 @@ CREATE TABLE [Config].[CompanyDb] (
     [Server]         NVARCHAR(64)     NOT NULL,
     [UserName]       NVARCHAR(32)     NULL,
     [Password]       NVARCHAR(32)     NULL,
+	[IsActive]       BIT              CONSTRAINT [DF_Corporate_CompanyDb_IsActive] DEFAULT (1) NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_Company_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_Company_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Corporate_Company] PRIMARY KEY CLUSTERED ([CompanyID] ASC)
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_CompanyDb_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_CompanyDb_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Corporate_CompanyDb] PRIMARY KEY CLUSTERED ([CompanyID] ASC)
 )
 GO
 
@@ -616,6 +617,10 @@ INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, 
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (57, 'ProjectBalance10Column', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (58, N'BalanceByAccount', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (59, N'SysOperationLog', 0, 0, N'')
+INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (60, N'SysOperationLogArchive', 0, 0, N'')
+INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (61, N'OperationLogArchive', 0, 0, N'')
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
+    VALUES (62, 'ProfitLoss', 0, 0, NULL, '', NULL)
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
@@ -1919,13 +1924,17 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (649, 2, 'ApproverName', NULL, NULL, 'System.String', 'nvarchar', 'string', 120, 0, 0, 1, 1, 1, NULL, 10, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (650, 2, 'IsVerified', NULL, NULL, 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 1, 1, 1, NULL, 11, NULL)
+    VALUES (650, 62, 'Category', NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 1, 0, 0, 'AlwaysVisible', 0, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (651, 2, 'IsApproved', NULL, NULL, 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 1, 1, 1, NULL, 12, NULL)
+    VALUES (651, 62, 'Account', NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 1, 0, 0, NULL, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (652, 2, 'BranchName', NULL, NULL, 'System.String', 'nvarchar', 'string', 200, 0, 0, 1, 1, 1, NULL, 13, NULL)
+    VALUES (652, 62, 'StartBalance', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, NULL, 2, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (653, 2, 'IssuerName', NULL, NULL, 'System.String', 'nvarchar', 'string', 64, 0, 0, 1, 1, 1, NULL, 14, NULL)
+    VALUES (653, 62, 'PeriodTurnover', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, NULL, 3, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (654, 62, 'EndBalance', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, NULL, 4, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (655, 62, 'Balance', NULL, NULL, 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, 'Hidden', 5, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 

@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.Persistence
                 var roleIds = user.UserRoles.Select(ur => ur.RoleId);
                 if (roleIds.Contains(AppConstants.AdminRoleId))
                 {
-                    userCompanies.AddRange(await repository.GetAllAsync());
+                    userCompanies.AddRange(await repository.GetByCriteriaAsync(c => c.IsActive));
                 }
                 else
                 {
@@ -219,6 +219,7 @@ namespace SPPC.Tadbir.Persistence
 
                     userCompanies = await repository
                         .GetEntityQuery()
+                        .Where(c => c.IsActive)
                         .Where(c => companies
                             .Distinct()
                             .Contains(c.Id))
