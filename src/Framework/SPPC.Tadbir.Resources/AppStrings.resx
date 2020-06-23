@@ -3225,4 +3225,13 @@
   <data name="FilterName" xml:space="preserve">
     <value>نام فیلتر</value>
   </data>
+  <data name="IsApproved" xml:space="preserve">
+    <value>تصویب شده</value>
+  </data>
+  <data name="IsVerified" xml:space="preserve">
+    <value>تایید شده</value>
+  </data>
+  <data name="IssuerName" xml:space="preserve">
+    <value>کاربرصادر کننده</value>
+  </data>
 </root>

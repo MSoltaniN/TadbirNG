@@ -3238,4 +3238,14 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description]) VALUES (138, 7, N'UnConfirmGroup', 2097152, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
-
+-- 1.1.918
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (650, 2, 'IsVerified', NULL, NULL, 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 1, 1, 1, NULL, 11, NULL)
+	INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (651, 2, 'IsApproved', NULL, NULL, 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 1, 1, 1, NULL, 12, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (652, 2, 'BranchName', NULL, NULL, 'System.String', 'nvarchar', 'string', 200, 0, 0, 1, 1, 1, NULL, 13, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (653, 2, 'IssuerName', NULL, NULL, 'System.String', 'nvarchar', 'string', 64, 0, 0, 1, 1, 1, NULL, 14, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF

@@ -17,6 +17,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int BranchId { get; set; }
 
         /// <summary>
+        /// نام شعبه سازمانی که این سرفصل حسابداری در آن تعریف شده است
+        /// </summary>
+        public string BranchName { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی وضعیت ثبتی این سند مالی
         /// </summary>
         public int StatusId { get; set; }

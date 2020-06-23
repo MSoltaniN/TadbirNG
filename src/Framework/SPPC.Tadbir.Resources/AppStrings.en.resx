@@ -3234,4 +3234,13 @@
   <data name="FilterName" xml:space="preserve">
     <value>Filter name</value>
   </data>
+  <data name="IsApproved" xml:space="preserve">
+    <value>IsApproved</value>
+  </data>
+  <data name="IsVerified" xml:space="preserve">
+    <value>IsVerified</value>
+  </data>
+  <data name="IssuerName" xml:space="preserve">
+    <value>Issuer Name</value>
+  </data>
 </root>
