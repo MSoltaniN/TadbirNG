@@ -8,6 +8,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -124,18 +125,23 @@ namespace SPPC.Tadbir.Persistence
             IAsyncRepository<AccountCollectionAccount> repository,
             IList<AccountCollectionAccount> existing, IList<AccountCollectionAccountViewModel> accCollectionsList)
         {
+            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
             var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branchID = UserContext.BranchId;
+            var branchId = UserContext.BranchId;
             var accountItems = existing
-                .Where(item => item.BranchId == branchID)
+                .Where(item => item.BranchId == branchId)
                 .Select(item => item.AccountId);
             var newItems = accCollectionsList
                 .Where(item => !accountItems.Contains(item.AccountId));
             foreach (var item in newItems)
             {
+                var account = await accountRepository.GetByIDAsync(item.AccountId);
                 var accountCollectionAccount = Mapper.Map<AccountCollectionAccount>(item);
                 repository.Insert(accountCollectionAccount);
-                await CascadeNewAccountCollection(repository, branchRepository, item);
+                if (account != null && account.BranchScope != (short)BranchScope.CurrentBranch)
+                {
+                    await CascadeNewAccountCollection(repository, branchRepository, item);
+                }
             }
         }
 
