@@ -355,15 +355,15 @@ namespace SPPC.Tadbir.Persistence
                 var voucher = await repository.GetByIDAsync(item);
                 if (voucher != null)
                 {
-                    if (voucher.ApprovedById != null && voucher.ConfirmedById != null)
-                    {
-                        voucher.ApprovedById = status ? UserContext.Id : (int?)null;
-                        repository.Update(voucher);
-                    }
-
                     if (voucher.ConfirmedById != null && voucher.ApprovedById == null)
                     {
                         voucher.ConfirmedById = status ? UserContext.Id : (int?)null;
+                        repository.Update(voucher);
+                    }
+
+                    if (voucher.ApprovedById != null && voucher.ConfirmedById != null)
+                    {
+                        voucher.ApprovedById = status ? UserContext.Id : (int?)null;
                         repository.Update(voucher);
                     }
                 }
