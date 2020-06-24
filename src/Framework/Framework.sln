@@ -85,7 +85,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{1EFB19A2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.Tools.SystemDesigner", "SPPC.Tadbir.Tools.SystemDesigner\SPPC.Tadbir.Tools.SystemDesigner.csproj", "{3817C0C9-B129-409B-BEB7-E3627837EBAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.Resources", "SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj", "{8923E8CD-E5C0-4931-B619-2EC26FF4AA2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.Resources", "SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj", "{8923E8CD-E5C0-4931-B619-2EC26FF4AA2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
