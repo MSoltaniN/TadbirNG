@@ -3234,4 +3234,10 @@
   <data name="IssuerName" xml:space="preserve">
     <value>کاربرصادر کننده</value>
   </data>
+  <data name="Group" xml:space="preserve">
+    <value>گروه</value>
+  </data>
+  <data name="PeriodTurnover" xml:space="preserve">
+    <value>کارکرد طی دوره</value>
+  </data>
 </root>

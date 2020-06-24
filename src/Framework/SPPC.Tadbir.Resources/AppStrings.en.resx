@@ -3243,4 +3243,10 @@
   <data name="IssuerName" xml:space="preserve">
     <value>Issuer Name</value>
   </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="PeriodTurnover" xml:space="preserve">
+    <value>Period turnover</value>
+  </data>
 </root>
