@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Reflection;
 using BabakSoft.Platform.Data;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Tools.SystemDesigner.Models;
@@ -124,10 +125,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             var view = WizardModel.View;
             var columns = WizardModel.Columns;
             var builder = new StringBuilder();
-            var result = GetDatabaseVersion(sysConnection);
+            var solutionVersion = GetSolutionVersion();
 
             int columnId = maxColumnId + 1;
-            builder.AppendFormat("-- {0}", result.ToString());
+            builder.AppendLine();
+            builder.AppendFormat("-- {0}", solutionVersion);
             builder.AppendLine();
             builder.AppendLine("SET IDENTITY_INSERT [Metadata].[View] ON ");
             builder.AppendLine("INSERT INTO [Metadata].[View] " +
@@ -176,7 +178,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             builder.AppendLine("SET IDENTITY_INSERT [Metadata].[Column] OFF ");
             builder.AppendLine();
 
-            File.AppendAllText(_tempScript, builder.ToString());
+            File.AppendAllText(_TadbirSysUpdateScript, builder.ToString());
         }
 
         private string GetNullableValue(string nullable, string nullValue = null)
@@ -205,11 +207,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
             return appSettings.ConnectionStrings.TadbirSysApi;
         }
 
-        private Version GetDatabaseVersion(string connection)
+        private Version GetSolutionVersion()
         {
-            var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
-            var result = dal.QueryScalar("SELECT Number FROM [Core].[Version]");
-            return new Version(result.ToString());
+            var assemblyVersion= GetType().Assembly.GetName().Version;
+            return new Version(assemblyVersion.ToString());
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -219,6 +220,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 
         private int _currentStepNo = 1;
         private string _sysConnection;
-        private const string _tempScript = "Update.sql";
+        private const string _TadbirSysUpdateScript = @"..\..\res\TadbirSys_UpdateDbObjects.sql";
     }
 }
