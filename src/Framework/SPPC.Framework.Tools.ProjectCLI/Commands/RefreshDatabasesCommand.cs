@@ -24,6 +24,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
             {
                 UpdateDatabaseFromScript(connection, "UpdateScriptPath");
             }
+            RefereshRuntimeCreateTadbirDBScripts();
         }
 
         private string GetSysConnectionString()
@@ -163,9 +164,19 @@ namespace SPPC.Framework.Tools.ProjectCLI
                 Console.WriteLine("Refresh Database command completed with error(s).");
             }
         }
+        private void RefereshRuntimeCreateTadbirDBScripts()
+        {
+            if (File.GetLastWriteTime(_createTadbirDBScriptFilePath) >
+                     File.GetLastWriteTime(_runetimeCreateTadbirDBScriptFilePath))
+            {
+                File.Copy(_createTadbirDBScriptFilePath, _runetimeCreateTadbirDBScriptFilePath,true);
+            }
+        }
 
         private const string _argsTemplate = @"-S {0} -d {1} -i {2} -b -E -I -j";
         private const string _scriptBlockRegex = @"-- (\d{1,}).(\d{1,}).(\d{1,})";
         private const string _tempScript = "Update.sql";
+        private const string _createTadbirDBScriptFilePath = @"..\..\..\res\Tadbir_CreateDbObjects.sql";
+        private const string _runetimeCreateTadbirDBScriptFilePath = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\wwwroot\static\Tadbir_CreateDbObjects.sql";
     }
 }
