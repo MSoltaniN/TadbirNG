@@ -207,7 +207,7 @@ namespace SPPC.Tadbir.Persistence
             var branchIds = GetChildTree(UserContext.BranchId);
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var linesQuery = repository
-                .GetEntityQuery(line => line.Voucher)
+                .GetEntityQuery(line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.IsBetween(from, to)
                     && line.FiscalPeriodId == UserContext.FiscalPeriodId
                     && accountIds.Contains(line.AccountId)
