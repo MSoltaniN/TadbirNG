@@ -547,10 +547,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        // GET: api/vouchers/opening
+        // GET: api/vouchers/opening?isDefault={bool}
         [Route(VoucherApi.OpeningVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetOrIssueOpeningVoucherAsync()
+        public async Task<IActionResult> GetOrIssueOpeningVoucherAsync(bool? isDefault)
         {
             var result = await SpecialVoucherValidationResultAsync(AppStrings.OpeningVoucher);
             if (result is BadRequestObjectResult)
@@ -558,7 +558,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var openingVoucher = await _repository.GetOpeningVoucherAsync();
+            bool isDefaultVoucher = isDefault ?? true;
+            var openingVoucher = await _repository.GetOpeningVoucherAsync(false, isDefaultVoucher);
             Localize(openingVoucher);
             return Json(openingVoucher);
         }
