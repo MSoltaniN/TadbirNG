@@ -195,11 +195,13 @@
   </kendo-dialog-actions>
 </kendo-dialog>
 
-<kendo-dialog title="{{'Voucher.ModalTitle' | translate}}" *ngIf="UnConfirmGroupConfirm" (close)="UnGroupConfirmModel(false)" [minWidth]="450" [width]="610">
+<kendo-dialog title="{{'Voucher.ModalTitle' | translate}}" *ngIf="UnConfirmGroupConfirm" (close)="UnGroupConfirmModel(false)" [minWidth]="450" [width]="620">
   <p>
     {{ 'Voucher.UnConfirmGroupMsg' | translate }}
+
     <span class="k-icon k-i-question k-i-help" style="font-size: 40px;color: #0e99da;"></span>
-    {{'Voucher.AreYouAgree' | translate}}?
+    <br />
+    {{'Voucher.AreYouAgree' | translate}}
   </p>
   <kendo-dialog-actions>
     <button class="k-button" (click)="UnGroupConfirmModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
