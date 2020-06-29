@@ -28,9 +28,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="isQuery">مشخص می کند که در صورت وجود نداشتن، آیا سند افتتاحیه باید صادر شود یا نه</param>
+        /// <param name="isQuery">مشخص می کند که در صورت وجود نداشتن، باید
+        /// از کاربر تأیید گرفته شود یا نه</param>
+        /// <param name="isDefault">مشخص می کند که اولین سند افتتاحیه باید به صورت پیش فرض
+        /// و با مبالغ صفر ایجاد شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
-        Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false);
+        Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false, bool isDefault = true);
 
         /// <summary>
         /// به روش آسنکرون مشخص می کند که برای دوره مالی قبل سند اختتامیه صادر شده یا نه
