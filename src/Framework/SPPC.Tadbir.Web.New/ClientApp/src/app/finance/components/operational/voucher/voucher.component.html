@@ -70,16 +70,16 @@
       <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
       <button *ngIf="groupOperation" SppcPermissionCheck="GroupCheck" (sppcClick)="onCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledCheckBtn()"
-             title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
+              title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
         <span class="k-icon k-i-check-outline"></span>
       </button>
       <button *ngIf="!groupOperation" SppcPermissionCheck="Check" (sppcClick)="onCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledCheckBtn()"
-             title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
+              title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
         <span class="k-icon k-i-check-outline"></span>
       </button>
 
       <button *ngIf="groupOperation" SppcPermissionCheck="UndoGroupCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()"
-               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
+              title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
       <button *ngIf="!groupOperation" SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnCheckBtn()"
@@ -92,7 +92,7 @@
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
       <button *ngIf="!groupOperation" SppcPermissionCheck="Finalize" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon" [disabled]="isDisabledFinalizeBtn()"
-             title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
+              title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
 
@@ -160,7 +160,7 @@
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean' && item.name=='IsVerified' || item.name=='IsApproved' ">
         {{ getVerifidAndapproveValue(item.name,dataItem,item.scriptType)  }}
       </ng-template>
-            
+
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean' && item.name!='IsBalanced' && item.name!='IsApproved' && item.name!='IsVerified' ">
         {{ getRowValue(item.name,dataItem,item.scriptType)  }}
       </ng-template>
@@ -177,10 +177,29 @@
 
   </kendo-grid>
 
-  <div class="col-xs-12 col-sm-4 form-group">
+  <!--<div class="col-xs-12 col-sm-4 form-group">
     <button class="k-button k-primary sppc-float-diff" (click)="getVouchers()" style="margin-top: 25px;">
       {{ 'Buttons.Compute' | translate }}
     </button>
+  </div>-->
+
+  <div class="col-xs-12 col-sm-3 form-group sppc-float-diff" style="margin-top: 25px;" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+    <label class="control-label" style="padding:10px">{{ 'Voucher.SelectBranch' | translate }}</label>
+
+    <kendo-dropdownlist [data]="branchScope"  class="ddl-type"
+                        [textField]="'value'"
+                        [valueField]="'key'"
+                        [valuePrimitive]="true"
+                        [value]="branchSelected"
+                        [(ngModel)]="branchSelected"
+                        (ngModelChange)="saveStates();">
+      <ng-template kendoDropDownListValueTemplate let-dataItem>
+        {{ dataItem?.value | translate }}
+      </ng-template>
+      <ng-template kendoDropDownListItemTemplate let-dataItem>
+        {{ dataItem?.value | translate }}
+      </ng-template>
+    </kendo-dropdownlist>
   </div>
 
 </div>
