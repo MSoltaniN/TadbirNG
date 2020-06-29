@@ -177,13 +177,13 @@
 
   </kendo-grid>
 
-  <!--<div class="col-xs-12 col-sm-4 form-group">
+  <div class="col-xs-12 col-sm-4 form-group">
     <button class="k-button k-primary sppc-float-diff" (click)="getVouchers()" style="margin-top: 25px;">
       {{ 'Buttons.Compute' | translate }}
     </button>
-  </div>-->
+  </div>
 
-  <div class="col-xs-12 col-sm-3 form-group sppc-float-diff" style="margin-top: 25px;" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+  <div class="col-xs-12 col-sm-5 form-group " style="margin-top: 25px;" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <label class="control-label" style="padding:10px">{{ 'Voucher.SelectBranch' | translate }}</label>
 
     <kendo-dropdownlist [data]="branchScope"  class="ddl-type"
@@ -192,7 +192,7 @@
                         [valuePrimitive]="true"
                         [value]="branchSelected"
                         [(ngModel)]="branchSelected"
-                        (ngModelChange)="saveStates();">
+                        (ngModelChange)="changeParam();">
       <ng-template kendoDropDownListValueTemplate let-dataItem>
         {{ dataItem?.value | translate }}
       </ng-template>

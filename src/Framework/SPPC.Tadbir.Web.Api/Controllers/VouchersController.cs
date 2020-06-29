@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(VoucherApi.EnvironmentVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVouchersAsync()
-        {
+       {
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
             Localize(vouchers.Items);
             return JsonListResult(vouchers);
