@@ -85,8 +85,20 @@ export class VoucherService extends BaseService {
       .catch(this.handleError);
   }
 
-  public getOpeningVoucher() {
-    return this.http.get(VoucherApi.OpeningVoucher, this.option)
+  public getOpeningVoucher(isDefault:boolean) {
+
+    var url = VoucherApi.OpeningVoucher;
+    if (isDefault) {
+      //در صورت تأیید پیغام توسط کاربر : باید سند افتتاحیه رو با کلی آرتیکل با مبلغ صفر ایجاد کنیم
+      url += "?isDefault=true";
+    }
+    else
+    {
+      //در صورت انصراف از پیغام توسط کاربر : باید سند افتتاحیه خالی درست کنیم
+      url += "?isDefault=false";
+    }
+
+    return this.http.get(url, this.option)
       .map(res => res)
       .catch(this.handleError);
   }
