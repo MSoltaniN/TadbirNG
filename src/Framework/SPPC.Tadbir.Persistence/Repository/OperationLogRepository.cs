@@ -435,7 +435,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var inactiveIds = await repository
                 .GetEntityQuery()
-                .Where(c => c.IsActive)
+                .Where(c => !c.IsActive)
                 .Select(c => c.Id)
                 .ToListAsync();
             UnitOfWork.UseCompanyContext();

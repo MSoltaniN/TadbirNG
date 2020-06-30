@@ -3240,4 +3240,7 @@
   <data name="PeriodTurnover" xml:space="preserve">
     <value>گردش طی دوره</value>
   </data>
+  <data name="DeletedItemCount" xml:space="preserve">
+    <value>تعداد اقلام حذف شده</value>
+  </data>
 </root>
