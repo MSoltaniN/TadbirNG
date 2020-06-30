@@ -3252,4 +3252,7 @@
   <data name="DeletedItemCount" xml:space="preserve">
     <value>Deleted item count</value>
   </data>
+  <data name="VoucherCount" xml:space="preserve">
+    <value>Voucher count</value>
+  </data>
 </root>

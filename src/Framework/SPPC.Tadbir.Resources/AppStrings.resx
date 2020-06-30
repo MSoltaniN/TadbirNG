@@ -3243,4 +3243,7 @@
   <data name="DeletedItemCount" xml:space="preserve">
     <value>تعداد اقلام حذف شده</value>
   </data>
+  <data name="VoucherCount" xml:space="preserve">
+    <value>تعداد اسناد</value>
+  </data>
 </root>

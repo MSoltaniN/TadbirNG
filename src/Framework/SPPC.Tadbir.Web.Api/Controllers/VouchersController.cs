@@ -348,7 +348,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(VoucherApi.UndoConfirmGroupVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UnConfirmGroup)]
-        public async Task<IActionResult> PutExistingVoucherAsUnConfirmedGroup([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutExistingVoucherAsUnConfirmed([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {
