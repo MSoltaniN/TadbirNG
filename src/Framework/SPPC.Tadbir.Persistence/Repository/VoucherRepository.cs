@@ -346,7 +346,7 @@ namespace SPPC.Tadbir.Persistence
                     }
                 }
 
-                var operationId = OnSelectedOperationGroup(status, oldStatus);
+                var operationId = GetGroupOperationCode(status, oldStatus);
                 await OnEntityGroupChangeStatus(items, operationId);
             }
         }

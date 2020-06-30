@@ -135,7 +135,12 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private OperationId GetGroupOperationCode(DocumentStatusValue newStatus, DocumentStatusValue oldStatus)
+        /// <summary>
+        /// کد عملیات گروهی اسناد را با توجه به وضعیت قدیم و جدید آنها به دست می آورد
+        /// </summary>
+        /// <param name="newStatus">وضعیت  جدید سند حسابداری</param>
+        /// <param name="oldStatus">وضعیت قبلی سند حسابداری</param>
+        protected OperationId GetGroupOperationCode(DocumentStatusValue newStatus, DocumentStatusValue oldStatus)
         {
             OperationId operation = OperationId.None;
             switch (newStatus)
