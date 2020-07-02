@@ -285,6 +285,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(roles);
         }
 
+        // GET: api/users/specialpassword/{specialpassword}
+        [Route(UserApi.CheckSpecialPasswordUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
+        public async Task<IActionResult> CheckSpecialPasswordAsync(string specialPassword)
+        {
+            if (specialPassword == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Password));
+            }
+
+            var userId = SecurityContext.User.Id;
+            UserViewModel currentUser = null;
+            if (userId != 0)
+            {
+                 currentUser = await _repository.GetUserAsync(userId);
+            }
+
+            if (currentUser == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidUserNameMessage));
+            }
+
+            // SepecialPassword Hash--temporary
+            // if (!CheckPassword(user.SepecialPassword, login.Password))
+            if (!CheckPassword("b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576", specialPassword))
+            {
+                return BadRequest(_strings.Format(AppStrings.InvalidPasswordMessage));
+            }
+
+            return Ok();
+        }
+
         // PUT: api/users/{userId:min(1)}/roles
         [HttpPut]
         [Route(UserApi.UserRolesUrl)]

@@ -15,41 +15,44 @@ import { environment } from "@sppc/env/environment";
 
 export class UserApi {
 
-    // users
-    public static Users = environment.BaseUrl + "/users";
+  // users
+  public static Users = environment.BaseUrl + "/users";
 
-    // users/{userId:min(1)}
-    public static User = environment.BaseUrl + "/users/{0}";
+  // users/{userId:min(1)}
+  public static User = environment.BaseUrl + "/users/{0}";
 
-    // users/{userId:min(1)}/login
-    public static UserLastLogin = environment.BaseUrl + "/users/{0}/login";
+  // users/{userId:min(1)}/login
+  public static UserLastLogin = environment.BaseUrl + "/users/{0}/login";
 
-    // users/name/{userName}
-    public static UserByName = environment.BaseUrl + "/users/name/{0}";
+  // users/name/{userName}
+  public static UserByName = environment.BaseUrl + "/users/name/{0}";
 
-    // users/{userName}/password
-    public static UserPassword = environment.BaseUrl + "/users/{0}/password";
+  // users/{userName}/password
+  public static UserPassword = environment.BaseUrl + "/users/{0}/password";
 
-    // users/{userId:min(1)}/roles
-    public static UserRoles = environment.BaseUrl + "/users/{0}/roles";
+  // users/{userId:min(1)}/roles
+  public static UserRoles = environment.BaseUrl + "/users/{0}/roles";
 
-    // users/{userId:min(1)}/context
-    public static UserContext = environment.BaseUrl + "/users/{0}/context";
+  // users/{userId:min(1)}/context
+  public static UserContext = environment.BaseUrl + "/users/{0}/context";
 
-    // users/login
-    public static UserLoginStatus = environment.BaseUrl + "/users/login";
+  // users/login
+  public static UserLoginStatus = environment.BaseUrl + "/users/login";
 
-    // users/login/company
-    public static UserCompanyLoginStatus = environment.BaseUrl + "/users/login/company";
+  // users/login/company
+  public static UserCompanyLoginStatus = environment.BaseUrl + "/users/login/company";
 
-    // users/metadata
-    public static UserMetadata = environment.BaseUrl + "/users/metadata";
+  // users/metadata
+  public static UserMetadata = environment.BaseUrl + "/users/metadata";
 
-    // users/current/commands
-    public static CurrentUserCommands = environment.BaseUrl + "/users/current/commands";
+  // users/current/commands
+  public static CurrentUserCommands = environment.BaseUrl + "/users/current/commands";
 
-    // users/default/commands
-    public static UserDefaultCommands = environment.BaseUrl + "/users/default/commands";
+  // users/default/commands
+  public static UserDefaultCommands = environment.BaseUrl + "/users/default/commands";
 
-    
+  // users/specialPassword/{specialPassword}
+  public static CheckSpecialPassword = environment.BaseUrl + "/users/specialPassword/{0}";
+
+
 }
