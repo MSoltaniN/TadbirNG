@@ -287,7 +287,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         }
 
         if (err.status == 400) {
-          this.showMessage(this.getText(err.error.value), MessageType.Warning);          
+          this.showMessage(this.getText(err.error.value), MessageType.Warning);
+          this.router.navigate(['/finance/voucher']);
         }
       })
   }
