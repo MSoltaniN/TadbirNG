@@ -325,29 +325,38 @@ namespace SPPC.Tadbir.Persistence
         public async Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status)
         {
             Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var oldStatusVoucher = (DocumentStatusValue)(await repository.GetByIDAsync(items.FirstOrDefault())).StatusId;
-
-            foreach (int item in items)
+            if (items.Count() == 0)
             {
-                var voucher = await repository.GetByIDAsync(item);
-                if (voucher != null)
-                {
-                    voucher.StatusId = (int)status;
-                    repository.Update(voucher);
-                }
+                return;
             }
 
-            var opertionId = OnSelectedOperationGroup(status, oldStatusVoucher);
-            await OnEntityGroupChangeStatus(items, opertionId);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var first = await repository.GetByIDAsync(items.First());
+            if (first != null)
+            {
+                var oldStatus = (DocumentStatusValue)first.StatusId;
+
+                foreach (int item in items)
+                {
+                    var voucher = await repository.GetByIDAsync(item);
+                    if (voucher != null)
+                    {
+                        voucher.StatusId = (int)status;
+                        repository.Update(voucher);
+                    }
+                }
+
+                var operationId = GetGroupOperationCode(status, oldStatus);
+                await OnEntityGroupChangeStatus(items, operationId);
+            }
         }
 
         /// <summary>
         /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را رفع تایید گروهی می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="status">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
-        public async Task SetCombinationVouchersStatusAsync(IEnumerable<int> items, bool status)
+        /// <param name="isConfirmed">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
+        public async Task SetCombinationVouchersStatusAsync(IEnumerable<int> items, bool isConfirmed)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             foreach (int item in items)
@@ -357,27 +366,27 @@ namespace SPPC.Tadbir.Persistence
                 {
                     if (voucher.ApprovedById != null)
                     {
-                        voucher.ApprovedById = status ? UserContext.Id : (int?)null;
+                        voucher.ApprovedById = isConfirmed ? UserContext.Id : (int?)null;
                     }
                     else if (voucher.ConfirmedById != null)
                     {
-                        voucher.ConfirmedById = status ? UserContext.Id : (int?)null;
+                        voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
                     }
 
                     repository.Update(voucher);
                 }
             }
 
-            OperationId operation = status ? OperationId.ConfirmGroup : OperationId.UnConfirmGroup;
+            OperationId operation = isConfirmed ? OperationId.ConfirmGroup : OperationId.UnConfirmGroup;
             await OnEntityGroupChangeStatus(items, operation);
         }
 
         /// <summary>
-        /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را تایید گروهی  می کند
+        /// به روش اسنکرون اسناد مالی مشخص شده با شناسه عادی را تایید گروهی  می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="status">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
-        public async Task SetConfirmGroupVouchersAsync(IEnumerable<int> items, bool status)
+        /// <param name="isConfirmed">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
+        public async Task SetConfirmGroupVouchersAsync(IEnumerable<int> items, bool isConfirmed)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             foreach (int item in items)
@@ -387,18 +396,18 @@ namespace SPPC.Tadbir.Persistence
                 {
                     if (voucher.ApprovedById == null && voucher.ApproverName != null && voucher.ConfirmedById != null)
                     {
-                        voucher.ApprovedById = status ? UserContext.Id : (int?)null;
+                        voucher.ApprovedById = isConfirmed ? UserContext.Id : (int?)null;
                     }
                     else if (voucher.ConfirmedById == null && voucher.ConfirmerName != null)
                     {
-                        voucher.ConfirmedById = status ? UserContext.Id : (int?)null;
+                        voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
                     }
 
                     repository.Update(voucher);
                 }
             }
 
-            OperationId operation = status ? OperationId.ConfirmGroup : OperationId.UnConfirmGroup;
+            OperationId operation = isConfirmed ? OperationId.ConfirmGroup : OperationId.UnConfirmGroup;
             await OnEntityGroupChangeStatus(items, operation);
         }
 

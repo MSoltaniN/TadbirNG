@@ -95,16 +95,16 @@
               title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
-
-      <button *ngIf="groupOperation" SppcPermissionCheck="UndoGroupFinalize" (sppcClick)="onUnFinalizedHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedBtn()"
-              title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
-        <span class="k-icon k-i-track-changes-reject-all"></span>
-      </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="UndoFinalize" (sppcClick)="onUnFinalizedHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedBtn()"
-              title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
-        <span class="k-icon k-i-track-changes-reject-all"></span>
-      </button>
-
+      <div [style.display]="showFinancBtns ? 'inline-block' : 'none'">
+        <button *ngIf="groupOperation" SppcPermissionCheck="UndoGroupFinalize" (sppcClick)="onUnFinalizedHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedBtn()"
+                title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
+          <span class="k-icon k-i-track-changes-reject-all"></span>
+        </button>
+        <button *ngIf="!groupOperation" SppcPermissionCheck="UndoFinalize" (sppcClick)="onUnFinalizedHandler()" class="k-button k-button-icon" [disabled]="isDisabledUnFinalizedBtn()"
+                title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
+          <span class="k-icon k-i-track-changes-reject-all"></span>
+        </button>
+      </div>
       <button SppcPermissionCheck="ConfirmGroup" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon" [disabled]="isDisabledConfirmGroupBtn()"
               title="{{'Voucher.ConfirmGroup'| translate}}">
         <span class="k-icon k-i-lock"></span>
@@ -177,13 +177,13 @@
 
   </kendo-grid>
 
-  <!--<div class="col-xs-12 col-sm-4 form-group">
+  <div class="col-xs-12 col-sm-4 form-group">
     <button class="k-button k-primary sppc-float-diff" (click)="getVouchers()" style="margin-top: 25px;">
       {{ 'Buttons.Compute' | translate }}
     </button>
-  </div>-->
+  </div>
 
-  <div class="col-xs-12 col-sm-3 form-group sppc-float-diff" style="margin-top: 25px;" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+  <div class="col-xs-12 col-sm-5 form-group " style="margin-top: 25px;" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
     <label class="control-label" style="padding:10px">{{ 'Voucher.SelectBranch' | translate }}</label>
 
     <kendo-dropdownlist [data]="branchScope"  class="ddl-type"
@@ -192,7 +192,7 @@
                         [valuePrimitive]="true"
                         [value]="branchSelected"
                         [(ngModel)]="branchSelected"
-                        (ngModelChange)="saveStates();">
+                        (ngModelChange)="changeParam();">
       <ng-template kendoDropDownListValueTemplate let-dataItem>
         {{ dataItem?.value | translate }}
       </ng-template>
@@ -225,5 +225,19 @@
   <kendo-dialog-actions>
     <button class="k-button" (click)="UnGroupConfirmModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
     <button class="k-button" (click)="UnGroupConfirmModel(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="{{'Voucher.GetPasssordModalTitle' | translate}}" *ngIf="showGetPasswordModal" (close)="getPasswordModel(false)" [minWidth]="450" [width]="620">
+  <div class="col-sm-10ths col-xs-12 sppc-float">
+    <div class="form-group">
+      <label for="no" class="control-label">{{ 'Voucher.Password' | translate }}</label>
+      <input type="password" class="k-textbox" id="specialPassword" style="width:80%" [(ngModel)]="value" (ngModelChange)="onPasswordChange($event)" required/>
+    
+    </div>
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="getPasswordModel(true)" primary="true" [disabled]="showErrorMessage">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="getPasswordModel(false)">{{ 'Buttons.Cancel' | translate }}</button>
   </kendo-dialog-actions>
 </kendo-dialog>

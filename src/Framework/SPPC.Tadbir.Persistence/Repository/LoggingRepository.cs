@@ -85,11 +85,62 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// انتخاب کد عملیات گروهی جهت استفاده درلاگ گیری عملیات گروهی انجام گرفته برروی اسناد
+        /// یک رکورد لاگ عملیاتی برای عملیات تایید یا برگشت از تایید موجودیت عملیاتی ایجاد می کند
+        /// </summary>
+        /// <param name="isConfirmed">مشخص می کند که وضعیت تایید جدید، تایید شده است یا نه؟</param>
+        protected void OnDocumentConfirmation(bool isConfirmed)
+        {
+            OperationId operation = isConfirmed ? OperationId.Confirm : OperationId.UndoConfirm;
+            OnEntityAction(operation);
+        }
+
+        /// <summary>
+        /// یک رکورد لاگ عملیاتی برای عملیات تصویب یا برگشت از تصویب موجودیت عملیاتی ایجاد می کند
+        /// </summary>
+        /// <param name="isApproved">مشخص می کند که وضعیت تصویب جدید، تصویب شده است یا نه؟</param>
+        protected void OnDocumentApproval(bool isApproved)
+        {
+            OperationId operation = isApproved ? OperationId.Approve : OperationId.UndoApprove;
+            OnEntityAction(operation);
+        }
+
+        /// <summary>
+        /// یک رکورد لاگ عملیاتی برای عملیات تغییر وضعیت های گروهی موجودیت های عملیاتی ایجاد می کند
+        /// </summary>
+        /// <param name="itemIds">شناسه اسناد</param>
+        /// <param name="operation">شناسه عملیات گروهی</param>
+        protected async Task OnEntityGroupChangeStatus(IEnumerable<int> itemIds, OperationId operation)
+        {
+            OnEntityAction(operation);
+            Log.Description = Context.Localize(String.Format(
+                "{0} : {1}", AppStrings.VoucherCount, itemIds.Count()));
+            await TrySaveLogAsync();
+        }
+
+        /// <summary>
+        /// رکورد لاگ عملیاتی را در جدول مرتبط ایجاد می کند.
+        /// </summary>
+        /// <remarks>توجه : هر گونه خطای زمان اجرا حین عملیات، نادیده گرفته می‌شود</remarks>
+        protected override async Task TrySaveLogAsync()
+        {
+            try
+            {
+                await _logRepository.SaveLogAsync(Log);
+            }
+            catch (Exception ex)
+            {
+                ReportLoggingError(ex);
+
+                // Ignored (logging should not throw exception)
+            }
+        }
+
+        /// <summary>
+        /// کد عملیات گروهی اسناد را با توجه به وضعیت قدیم و جدید آنها به دست می آورد
         /// </summary>
         /// <param name="newStatus">وضعیت  جدید سند حسابداری</param>
         /// <param name="oldStatus">وضعیت قبلی سند حسابداری</param>
-        protected OperationId OnSelectedOperationGroup(DocumentStatusValue newStatus, DocumentStatusValue oldStatus)
+        protected OperationId GetGroupOperationCode(DocumentStatusValue newStatus, DocumentStatusValue oldStatus)
         {
             OperationId operation = OperationId.None;
             switch (newStatus)
@@ -116,59 +167,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return operation;
-        }
-
-        /// <summary>
-        /// یک رکورد لاگ عملیاتی برای عملیات تایید یا برگشت از تایید موجودیت عملیاتی ایجاد می کند
-        /// </summary>
-        /// <param name="isConfirmed">مشخص می کند که وضعیت تایید جدید، تایید شده است یا نه؟</param>
-        protected void OnDocumentConfirmation(bool isConfirmed)
-        {
-            OperationId operation = isConfirmed ? OperationId.Confirm : OperationId.UndoConfirm;
-            OnEntityAction(operation);
-        }
-
-        /// <summary>
-        /// یک رکورد لاگ عملیاتی برای عملیات تصویب یا برگشت از تصویب موجودیت عملیاتی ایجاد می کند
-        /// </summary>
-        /// <param name="isApproved">مشخص می کند که وضعیت تصویب جدید، تصویب شده است یا نه؟</param>
-        protected void OnDocumentApproval(bool isApproved)
-        {
-            OperationId operation = isApproved ? OperationId.Approve : OperationId.UndoApprove;
-            OnEntityAction(operation);
-        }
-
-        /// <summary>
-        /// رکورد لاگ عملیاتی را در جدول مرتبط ایجاد می کند.
-        /// </summary>
-        /// <remarks>توجه : هر گونه خطای زمان اجرا حین عملیات، نادیده گرفته می‌شود</remarks>
-        protected override async Task TrySaveLogAsync()
-        {
-            try
-            {
-                await _logRepository.SaveLogAsync(Log);
-            }
-            catch (Exception ex)
-            {
-                ReportLoggingError(ex);
-
-                // Ignored (logging should not throw exception)
-            }
-        }
-
-        /// <summary>
-        /// یک رکورد لاگ عملیاتی برای عملیات تغییر وضعیت های گروهی موجودیت های عملیاتی ایجاد می کند
-        /// </summary>
-        /// <param name="itemIds">شناسه اسناد</param>
-        /// <param name="operation">شناسه عملیات گروهی</param>
-        /// <returns></returns>
-        protected virtual async Task OnEntityGroupChangeStatus(
-            IEnumerable<int> itemIds, OperationId operation = OperationId.GroupCheck)
-        {
-            OnEntityAction(operation);
-            Log.Description = Context.Localize(String.Format(
-                "{0} :{1}{2}", AppStrings.CheckedVouchers, Environment.NewLine, String.Join(",", itemIds)));
-            await TrySaveLogAsync();
         }
 
         private void DeleteWithCascade(Type parentType, int parentId, Type type, IEnumerable<int> ids)

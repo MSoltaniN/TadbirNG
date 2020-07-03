@@ -848,6 +848,7 @@
     "CommitGroup": "Commit Group",
     "ConfirmGroup": "Confirm/Approved Group",
     "ModalTitle": "Get user approval",
+    "GetPasssordModalTitle": "Get password from system administaror",
     "UnConfirmGroup": "UnConfirm/UnApprove Group",
     "ReturnFromCommitGroup": "Return From Commit Group",
     "ReturnFromCommit": "Return Voucher",
@@ -880,7 +881,8 @@
     "VoucherDetail": "Voucher Detail",
     "OpeningVoucher": "No closing voucher could be found in the previous fiscal period. This operation creates an opening voucher having a line for each account and each valid relation between floating levels, with zero turnover. Are you sure you want to issue the opening voucher?",
     "UnConfirmGroupMsg": "If you agree,Not all documents are finalize,They will be unapproved or approved",
-    "AreYouAgree": "Are you Agree?"
+    "AreYouAgree": "Are you Agree?",
+    "Password": "Password"
   },
   "User": {
     "New": "New User",

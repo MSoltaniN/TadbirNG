@@ -193,7 +193,7 @@ namespace SPPC.Tadbir.Persistence
         {
             OnEntityAction(operation);
             Log.Description = Context.Localize(String.Format(
-                "{0} :{1}{2}", AppStrings.DeletedItems, Environment.NewLine, String.Join(",", deletedIds)));
+                "{0} : {1}", AppStrings.DeletedItemCount, deletedIds.Count()));
             await TrySaveLogAsync();
         }
 

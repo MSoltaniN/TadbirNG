@@ -49,8 +49,8 @@ export class AuthenticationService extends BaseService {
 
   login(username: string, password: string, remember: boolean) {
     var header = new HttpHeaders();
-    header = header.append('Accept-Language',this.httpHeaders.get('Accept-Language'));
-
+    header = header.append('Accept-Language', this.httpHeaders.get('Accept-Language'));
+  
     return this.http.put(environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/, { headers: header, observe: "response" })
       .map((response) => {
         if (response.headers != null) {
@@ -64,7 +64,6 @@ export class AuthenticationService extends BaseService {
             user.ticket = ticket;
             user.userName = username;
             user.roles = contextInfo.user.roles;
-
             this.bStorageService.setContext(user, remember);
           }
         }
@@ -167,5 +166,17 @@ export class AuthenticationService extends BaseService {
     //var options = { headers: header, observe: "response" };
     return this.http.put(url, body, { headers: header, observe: "response" })
       .map(response => <any>(<HttpResponse<any>>response));
+  }
+
+  checkSpecialPassword(specialPassword: string, ticket: string): Observable<any> {
+    var header = new HttpHeaders();
+    header = header.append('Accept-Language', this.httpHeaders.get('Accept-Language'));
+    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    header = header.append('X-Tadbir-AuthTicket', ticket);
+
+    if (ticket == '') return Observable.empty<Response>();
+    var url = String.Format(UserApi.CheckSpecialPassword, specialPassword);
+    return this.http.get(url, { headers: header })
+      .map(response => <any>(<Response>response));
   }
 }
