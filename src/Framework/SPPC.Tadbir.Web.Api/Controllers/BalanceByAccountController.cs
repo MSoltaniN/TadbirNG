@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.BalanceByAccount, (int)BalanceByAccountPermissions.View)]
         public async Task<IActionResult> GetBalanceByAccountAsync()
         {
-            var parameters = GetHeaderParameters<BalanceByAccountParameters>();
+            var parameters = GetParameters<BalanceByAccountParameters>();
 
             if (parameters == null)
             {

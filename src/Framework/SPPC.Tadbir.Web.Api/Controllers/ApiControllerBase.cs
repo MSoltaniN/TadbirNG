@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -99,7 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return acceptLanguages;
         }
 
-        protected T GetHeaderParameters<T>()
+        protected T GetParameters<T>()
         {
             var parameters = Request.Headers[AppConstants.ParametersHeaderName];
             if (String.IsNullOrEmpty(parameters))
