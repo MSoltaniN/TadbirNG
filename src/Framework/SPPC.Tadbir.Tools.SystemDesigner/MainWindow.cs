@@ -5,6 +5,7 @@ using SPPC.Tadbir.Tools.SystemDesigner.Forms;
 using SPPC.Tadbir.Tools.SystemDesigner.Models;
 using SPPC.Tadbir.Tools.SystemDesigner.Wizards.NewCrudEntityWizard;
 using SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard;
+using SPPC.Tadbir.Tools.SystemDesigner.Designers;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner
 {
@@ -55,6 +56,16 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
         {
             var form = new TicketManager();
             form.ShowDialog(this);
+        }
+        private void AddPermissionGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var designer = new PermissionDesignerForm();
+            designer.ShowDialog();
+        }
+        private void editPermissionGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //var Editor = new PermissionEditorForm();
+            //Editor.ShowDialog();
         }
     }
 }

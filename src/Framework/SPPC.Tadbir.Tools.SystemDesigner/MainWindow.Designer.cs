@@ -31,6 +31,8 @@
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.menuSecurity = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSecurityPermission = new System.Windows.Forms.ToolStripMenuItem();
+            this.addPermissionGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editPermissionGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGenerate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGenerateBlankController = new System.Windows.Forms.ToolStripMenuItem();
             this.menuWizards = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,11 +69,28 @@
             // 
             // menuSecurityPermission
             // 
+            this.menuSecurityPermission.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addPermissionGroupToolStripMenuItem,
+            this.editPermissionGroupToolStripMenuItem});
             this.menuSecurityPermission.Name = "menuSecurityPermission";
             this.menuSecurityPermission.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.P)));
             this.menuSecurityPermission.Size = new System.Drawing.Size(254, 22);
             this.menuSecurityPermission.Text = "&Permission Designer";
+            // 
+            // addPermissionGroupToolStripMenuItem
+            // 
+            this.addPermissionGroupToolStripMenuItem.Name = "addPermissionGroupToolStripMenuItem";
+            this.addPermissionGroupToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.addPermissionGroupToolStripMenuItem.Text = "Add Permission Group";
+            this.addPermissionGroupToolStripMenuItem.Click += new System.EventHandler(this.AddPermissionGroupToolStripMenuItem_Click);
+            // 
+            // editPermissionGroupToolStripMenuItem
+            // 
+            this.editPermissionGroupToolStripMenuItem.Name = "editPermissionGroupToolStripMenuItem";
+            this.editPermissionGroupToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.editPermissionGroupToolStripMenuItem.Text = "Edit Permission Group";
+            this.editPermissionGroupToolStripMenuItem.Click += new System.EventHandler(this.editPermissionGroupToolStripMenuItem_Click);
             // 
             // menuGenerate
             // 
@@ -84,7 +103,7 @@
             // menuGenerateBlankController
             // 
             this.menuGenerateBlankController.Name = "menuGenerateBlankController";
-            this.menuGenerateBlankController.Size = new System.Drawing.Size(157, 22);
+            this.menuGenerateBlankController.Size = new System.Drawing.Size(180, 22);
             this.menuGenerateBlankController.Text = "API Controller...";
             this.menuGenerateBlankController.Click += new System.EventHandler(this.GenerateApiController_Click);
             // 
@@ -123,14 +142,14 @@
             // menuManageLogCatalog
             // 
             this.menuManageLogCatalog.Name = "menuManageLogCatalog";
-            this.menuManageLogCatalog.Size = new System.Drawing.Size(180, 22);
+            this.menuManageLogCatalog.Size = new System.Drawing.Size(151, 22);
             this.menuManageLogCatalog.Text = "Log Catalog";
             this.menuManageLogCatalog.Click += new System.EventHandler(this.ManageLogCatalog_Click);
             // 
             // securityTicketToolStripMenuItem
             // 
             this.securityTicketToolStripMenuItem.Name = "securityTicketToolStripMenuItem";
-            this.securityTicketToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.securityTicketToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.securityTicketToolStripMenuItem.Text = "Security Ticket";
             this.securityTicketToolStripMenuItem.Click += new System.EventHandler(this.ManageSecurityTicket_Click);
             // 
@@ -164,6 +183,8 @@
         private System.Windows.Forms.ToolStripMenuItem menuManage;
         private System.Windows.Forms.ToolStripMenuItem menuManageLogCatalog;
         private System.Windows.Forms.ToolStripMenuItem securityTicketToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addPermissionGroupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editPermissionGroupToolStripMenuItem;
     }
 }
 

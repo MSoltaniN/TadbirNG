@@ -104,6 +104,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\AppSettingsModel.cs" />
     <Compile Include="Models\ConnectionStringsModel.cs" />
+    <Compile Include="Models\PermissionDesignerModel.cs" />
     <Compile Include="Models\ViewWizardModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
