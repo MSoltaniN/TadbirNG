@@ -131,5 +131,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for commands accessible to all users.
         /// </summary>
         public const string UserDefaultCommandsUrl = "users/default/commands";
+
+        /// <summary>
+        /// API client URL for Check Special Password for Admin User
+        /// </summary>
+        public const string CheckSpecialPassword = "users/specialPassword/{0}";
+
+        /// <summary>
+        /// API server route URL for Check Special Password for Admin User
+        /// </summary>
+        public const string CheckSpecialPasswordUrl = "users/specialPassword/{specialPassword}";
     }
 }

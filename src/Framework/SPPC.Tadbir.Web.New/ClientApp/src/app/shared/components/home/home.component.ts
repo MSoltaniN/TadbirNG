@@ -110,7 +110,7 @@ export class HomeComponent extends DefaultComponent implements OnInit {
   }
 
   openingVoucherOk() {
-    this.voucherService.getOpeningVoucher().subscribe(result => {
+    this.voucherService.getOpeningVoucher(true).subscribe(result => {
       this.close();
       this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
     });
@@ -122,6 +122,13 @@ export class HomeComponent extends DefaultComponent implements OnInit {
 
   closingTmpOk() {
     this.voucherService.getClosingAccountsVoucher(this.closingTmpData).subscribe(result => {
+      this.close();
+      this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
+    });
+  }
+
+  openingVoucherCancel() {
+    this.voucherService.getOpeningVoucher(false).subscribe(result => {
       this.close();
       this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
     });

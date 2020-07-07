@@ -222,6 +222,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       if (voucherNo) {
         this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
       }
+    }, err => {
+      //if (err.status == 400) {
+        //this.showMessage(this.getText(err.error.value), MessageType.Warning);
+        //TODO: add error message
+        this.router.navigate(['/finance/voucher']);
+      //}
     });
   }
 
@@ -239,7 +245,13 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         //closingAccount not created and show popup
         this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/close-temp-accounts',mode:'closing-tmp' } });
       }
-    });
+    },
+      err => {       
+        if (err.status == 400) {
+          this.showMessage(this.getText(err.error.value), MessageType.Warning);
+          this.router.navigate(['/finance/voucher']);
+        }
+      });
 
   }
 
@@ -287,7 +299,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         }
 
         if (err.status == 400) {
-          this.showMessage(this.getText(err.error.value), MessageType.Warning);          
+          this.showMessage(this.getText(err.error.value), MessageType.Warning);
+          this.router.navigate(['/finance/voucher']);
         }
       })
   }

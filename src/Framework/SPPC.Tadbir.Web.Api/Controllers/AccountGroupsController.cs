@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -13,34 +12,33 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Utility;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class AccountGroupsController : ValidatingController<AccountGroupViewModel>
+    public class AccountGroupsController : Controller
     {
-        public AccountGroupsController(IAccountGroupRepository repository, IStringLocalizer<AppStrings> strings = null)
-            : base(strings)
+        public AccountGroupsController(IAccountGroupRepository repository, IApiValidation apiUtility)
         {
             _repository = repository;
-        }
-
-        protected override string EntityNameKey
-        {
-            get { return AppStrings.AccountGroup; }
+            _apiUtility = apiUtility;
+            _apiUtility.EntityNameKey = AppStrings.AccountGroup;
         }
 
         // GET: api/accgroups
+        [HttpGet]
         [Route(AccountGroupApi.AccountGroupsUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetAccountGroupsAsync()
         {
-            var accountGroups = await _repository.GetAccountGroupsAsync(GridOptions);
+            var accountGroups = await _repository.GetAccountGroupsAsync(_apiUtility.GridOptions);
             Localize(accountGroups.Items);
-            return JsonListResult(accountGroups);
+            return _apiUtility.JsonListResult(accountGroups);
         }
 
         // GET: api/accgroups/{groupId:min(1)}
+        [HttpGet]
         [Route(AccountGroupApi.AccountGroupUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetAccountGroupAsync(int groupId)
@@ -51,25 +49,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 Localize(accountGroup);
             }
 
-            return JsonReadResult(accountGroup);
+            return _apiUtility.JsonReadResult(accountGroup);
         }
 
         // GET: api/accgroups/{groupId:min(1)}/accounts
+        [HttpGet]
         [Route(AccountGroupApi.GroupLedgerAccountsUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetGroupLedgerAccountsAsync(int groupId)
         {
-            var accounts = await _repository.GetGroupLedgerAccountsAsync(groupId, GridOptions);
-            return JsonListResult(accounts);
+            var accounts = await _repository.GetGroupLedgerAccountsAsync(groupId, _apiUtility.GridOptions);
+            return _apiUtility.JsonListResult(accounts);
         }
 
         // GET: api/accgroups/brief
+        [HttpGet]
         [Route(AccountGroupApi.AccountGroupBriefUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetAccountGroupsBriefAsync()
         {
             var accGroups = await _repository.GetAccountGroupsBriefAsync();
-            return JsonReadResult(accGroups);
+            return _apiUtility.JsonReadResult(accGroups);
         }
 
         // POST: api/accgroups
@@ -79,7 +79,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewAccountGroupAsync(
             [FromBody] AccountGroupViewModel accountGroup)
         {
-            var result = BasicValidationResult(accountGroup);
+            var result = _apiUtility.BasicValidationResult(accountGroup, ModelState);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -96,17 +96,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedAccountGroupAsync(
             int groupId, [FromBody] AccountGroupViewModel accountGroup)
         {
-            var result = BasicValidationResult(accountGroup, groupId);
+            var result = _apiUtility.BasicValidationResult(accountGroup, ModelState, groupId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
             var outputItem = await _repository.SaveAccountGroupAsync(accountGroup);
-            result = (outputItem != null)
-                ? Ok(outputItem)
-                : NotFound() as IActionResult;
-            return result;
+            return _apiUtility.OkReadResult(outputItem);
         }
 
         // DELETE: api/accgroups/{groupId:min(1)}
@@ -134,10 +131,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequest(_apiUtility.Strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            var result = await _apiUtility.ValidateGroupDeleteAsync(actionDetail.Items, ValidateDeleteAsync);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -147,20 +144,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        private async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var accountGroup = await _repository.GetAccountGroupAsync(item);
             if (accountGroup == null)
             {
-                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.AccountGroup, item.ToString());
+                message = _apiUtility.Strings.Format(
+                    AppStrings.ItemByIdNotFound, AppStrings.AccountGroup, item.ToString());
             }
             else
             {
                 bool canDelete = await _repository.CanDeleteAccountGroupAsync(item);
                 if (!canDelete)
                 {
-                    message = _strings.Format(AppStrings.CantDeleteUsedAccountGroup, accountGroup.Name);
+                    message = _apiUtility.Strings.Format(
+                        AppStrings.CantDeleteUsedAccountGroup, accountGroup.Name);
                 }
             }
 
@@ -177,9 +176,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void Localize(AccountGroupViewModel accountGroup)
         {
-            accountGroup.Category = _strings[accountGroup.Category];
+            accountGroup.Category = _apiUtility.Strings[accountGroup.Category];
         }
 
         private readonly IAccountGroupRepository _repository;
+        private readonly IApiValidation _apiUtility;
     }
 }

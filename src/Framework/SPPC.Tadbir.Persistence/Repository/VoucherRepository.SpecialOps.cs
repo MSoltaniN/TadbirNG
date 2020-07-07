@@ -51,9 +51,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="isQuery">مشخص می کند که در صورت وجود نداشتن، آیا سند افتتاحیه باید صادر شود یا نه</param>
+        /// <param name="isQuery">مشخص می کند که در صورت وجود نداشتن، باید
+        /// از کاربر تأیید گرفته شود یا نه</param>
+        /// <param name="isDefault">مشخص می کند که اولین سند افتتاحیه باید به صورت پیش فرض
+        /// و با مبالغ صفر ایجاد شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
-        public async Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false)
+        public async Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false, bool isDefault = true)
         {
             var openingVoucher = await GetCurrentSpecialVoucherAsync(VoucherType.OpeningVoucher);
             if (openingVoucher == null)
@@ -64,7 +67,7 @@ namespace SPPC.Tadbir.Persistence
                 }
                 else
                 {
-                    openingVoucher = await IssueOpeningVoucherAsync();
+                    openingVoucher = await IssueOpeningVoucherAsync(isDefault);
                 }
             }
 
@@ -464,7 +467,7 @@ namespace SPPC.Tadbir.Persistence
 
         #region Opening Voucher Operations
 
-        private async Task<Voucher> IssueOpeningVoucherAsync()
+        private async Task<Voucher> IssueOpeningVoucherAsync(bool isDefault)
         {
             var openingVoucher = default(Voucher);
             var lastClosingVoucher = await GetPreviousClosingVoucherAsync();
@@ -475,10 +478,13 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 openingVoucher = await GetNewVoucherAsync(AppStrings.OpeningVoucher, VoucherType.OpeningVoucher);
-                var branches = await GetBranchIdsAsync();
-                foreach (int branchId in branches)
+                if (isDefault)
                 {
-                    openingVoucher.Lines.AddRange(await GetBranchOpeningVoucherLinesAsync(branchId));
+                    var branches = await GetBranchIdsAsync();
+                    foreach (int branchId in branches)
+                    {
+                        openingVoucher.Lines.AddRange(await GetBranchOpeningVoucherLinesAsync(branchId));
+                    }
                 }
             }
 

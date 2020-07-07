@@ -51,13 +51,14 @@ namespace SPPC.Tadbir.Persistence
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .ToListAsync();
-            foreach (var log in list)
+            var pagedList = new PagedList<OperationLogViewModel>(list, gridOptions);
+            foreach (var log in pagedList.Items)
             {
                 await SetSystemValues(log);
             }
 
             await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, gridOptions);
-            return new PagedList<OperationLogViewModel>(list, gridOptions);
+            return pagedList;
         }
 
         /// <summary>
@@ -78,13 +79,14 @@ namespace SPPC.Tadbir.Persistence
                 .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .ToListAsync();
+            var pagedList = new PagedList<OperationLogViewModel>(list, gridOptions);
             foreach (var log in list)
             {
                 await SetSystemValues(log);
             }
 
             await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, gridOptions);
-            return new PagedList<OperationLogViewModel>(list, gridOptions);
+            return pagedList;
         }
 
         /// <summary>
@@ -435,7 +437,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var inactiveIds = await repository
                 .GetEntityQuery()
-                .Where(c => c.IsActive)
+                .Where(c => !c.IsActive)
                 .Select(c => c.Id)
                 .ToListAsync();
             UnitOfWork.UseCompanyContext();

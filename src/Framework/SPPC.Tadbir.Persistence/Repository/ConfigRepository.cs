@@ -433,10 +433,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task LogConfigOperationAsync()
-        {
-        }
-
         private readonly IFiscalPeriodRepository _fiscalRepository;
         private string _webRootPath;
     }
