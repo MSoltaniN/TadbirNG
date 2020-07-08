@@ -793,6 +793,12 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (42, N'DeleteRa
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (43, N'PrintRates')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (44, N'GroupDeleteRates')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (45, N'ViewRates')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (46, N'GroupCheck')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (47, N'UndoGroupCheck')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (48, N'GroupFinalize')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (49, N'UndoGroupFinalize')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (50, N'ConfirmGroup')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (51, N'UnConfirmGroup')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -1214,6 +1220,20 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (114, 1, 1, NULL, 7, 44, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (115, 1, 1, NULL, 7, 45, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (116, 1, 2, NULL, 17, 46, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (117, 1, 2, NULL, 17, 47, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (118, 1, 2, NULL, 17, 48, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (119, 1, 2, NULL, 17, 49, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (120, 1, 2, NULL, 17, 18, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (121, 1, 2, NULL, 17, 50, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (122, 1, 2, NULL, 17, 51, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 
@@ -1297,6 +1317,6 @@ CREATE TABLE [Metadata].[City] (
 )
 GO
 
--- TODO: Add new database scripts BEFORE this command
+-- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.1.899')
+VALUES(1, '1.1.918')

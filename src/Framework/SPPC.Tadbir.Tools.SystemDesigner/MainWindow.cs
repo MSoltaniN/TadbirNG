@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             InitializeComponent();
         }
 
-        private void viewWizardToolStripMenuItem_Click(object sender, EventArgs e)
+        private void WizardsViewWizard_Click(object sender, EventArgs e)
         {
             var wizard = new ViewWizardForm();
             wizard.ShowDialog();
@@ -57,12 +57,14 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             var form = new TicketManager();
             form.ShowDialog(this);
         }
-        private void AddPermissionGroupToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void AddPermissionGroup_Click(object sender, EventArgs e)
         {
             var designer = new PermissionDesignerForm();
             designer.ShowDialog();
         }
-        private void editPermissionGroupToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void EditPermissionGroup_Click(object sender, EventArgs e)
         {
             //var Editor = new PermissionEditorForm();
             //Editor.ShowDialog();

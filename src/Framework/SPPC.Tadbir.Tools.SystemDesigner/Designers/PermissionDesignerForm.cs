@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using BabakSoft.Platform.Data;
+using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Tools.SystemDesigner.Models;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -15,9 +17,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         public PermissionDesignerForm()
         {
             InitializeComponent();
-            PermissionDesignerModel = new PermissionDesignerModel();
+            Model = new PermissionDesignerModel();
         }
-        public PermissionDesignerModel PermissionDesignerModel { get; set; }
+
+        public PermissionDesignerModel Model { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -27,242 +30,283 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             lboxPermissions.DisplayMember = "Name";
         }
 
-        private void SetupBindings()
+        private void AddDefaultPermissions_Click(object sender, EventArgs e)
         {
-            txtPermissionGroupName.DataBindings.Add("Text", PermissionDesignerModel.PermissionGroup, "Name");
-            txtPermissionGroupEntityName.DataBindings.Add("Text", PermissionDesignerModel.PermissionGroup, "EntityName");
-            txtPermissionGroupDescription.DataBindings.Add("Text", PermissionDesignerModel.PermissionGroup, "Description");
-        }
-        private void ApplyPermissionGroup_Click(object sender, EventArgs e)
-        {
-            if(txtPermissionGroupName.Text == "")
+            if(!ValidateGroup())
             {
-                MessageBox.Show("Please enter a name for permission group.");
                 return;
             }
-            if(btnApplyPermissionGroup.Text == "->")
-            {
-                ApplyPermissionGroup();
-                LoadDefaultPermissions(PermissionDesignerModel.Permissions.Count == 0);
-                LoadPermissionsList();
-                lboxPermissions.SelectedIndex = 0;
-                gboxPermissionGroup.Enabled = false;
-                gboxPermission.Enabled = true;
-                lboxPermissions.Enabled = true;
-                btnApplyPermissionGroup.Text = "<-";
-            }
-            else
-            {
-                lboxPermissions.Items.Clear();
-                gboxPermissionGroup.Enabled = true;
-                gboxPermission.Enabled = false;
-                lboxPermissions.Enabled = false;
-                btnApplyPermissionGroup.Text = "->";
-            }
-            
-        }
-        private void ApplyPermissionGroup()
-        {
-            var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
-            var lastId = dal.QueryScalar("SELECT MAX(pg.PermissionGroupID) FROM [Auth].[PermissionGroup] pg");
-               
-            PermissionDesignerModel.PermissionGroup.Id = Convert.ToInt32(lastId)+1;
-            PermissionDesignerModel.PermissionGroup.Name = txtPermissionGroupName.Text;
-            PermissionDesignerModel.PermissionGroup.EntityName = txtPermissionGroupEntityName.Text;
-            PermissionDesignerModel.PermissionGroup.Description = txtPermissionGroupDescription.Text;
+
+            ApplyPermissionGroup();
+            LoadDefaultPermissions();
+            lboxPermissions.SelectedIndex = 0;
         }
 
-        private void  LoadDefaultPermissions(bool IsNotFirstLoad)
-        {
-            if(IsNotFirstLoad)
-            {
-                List<string> PermissionNames = new List<string> { "View", "Create", "Edit", "Delete", "Filter", "Print" };
-                int itemIndex = 0;
-                foreach(var item in PermissionNames)
-                {
-                    var permission = GetPermission(item, itemIndex++);
-                    PermissionDesignerModel.Permissions.Add(permission);
-                }
-            }
-        }
-        private PermissionViewModel GetPermission(string name,int index)
-        {
-            var Permission = new PermissionViewModel()
-            {
-                Id=index,
-                Name = name,
-                Flag = (int)Math.Pow(2, index),
-                Description = "",
-            };
-            return Permission;
-        }
-        private void LoadPermissionsList()
-        {
-            foreach (var item in PermissionDesignerModel.Permissions)
-            {
-                lboxPermissions.Items.Add(item);
-            }
-        }
-       
         private void Permissions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(lboxPermissions.SelectedItem == null)
+            if(lboxPermissions.SelectedIndex != _lastselectedIndex)
             {
-                return;
-            }
-            if(_lastselectedIndex != lboxPermissions.SelectedIndex && lboxPermissions.SelectedIndex != -1)
-            {
-                SaveLastPermissionDetails(_lastselectedIndex != -1);
-                RefereshPermissionList();
+                SavePermission(_lastselectedIndex);
                 _lastselectedIndex = lboxPermissions.SelectedIndex;
-                RetrieveLastPermissionDetails(_lastselectedIndex != -1);
-                ShowFlagLable();
+                LoadPermission(_lastselectedIndex);
+                ShowFlagLabel();
             }
         }
-        private void SaveLastPermissionDetails(bool dataExist)
-        {
-            if(dataExist)
-            {
-                PermissionDesignerModel.Permissions[_lastselectedIndex].Name = txtPermissionName.Text;
-                PermissionDesignerModel.Permissions[_lastselectedIndex].Flag = Convert.ToInt32(Math.Pow(2, trbFlag.Value));
-                PermissionDesignerModel.Permissions[_lastselectedIndex].Description = txtPermissionDesc.Text;
-            }
-        }
-        private void RetrieveLastPermissionDetails(bool dataExist)
-        {
-            if(dataExist)
-            {
-                txtPermissionName.Text = PermissionDesignerModel.Permissions[_lastselectedIndex].Name;
-                trbFlag.Value = Convert.ToInt32(Math.Log(PermissionDesignerModel.Permissions[_lastselectedIndex].Flag, 2));
-                txtPermissionDesc.Text = PermissionDesignerModel.Permissions[_lastselectedIndex].Description;
-            }
-        }
-        private void RefereshPermissionList()
-        {
-            if (_lastselectedIndex != -1)
-            {
-                lboxPermissions.Items.RemoveAt(_lastselectedIndex);
-                lboxPermissions.Items.Insert(_lastselectedIndex, PermissionDesignerModel.Permissions[_lastselectedIndex]);
-            }
-        }
-        private void ShowFlagLable()
-        {
-            var flagValue = Math.Pow(2, trbFlag.Value).ToString();
-            lblFlag.Text = "Flag:" + flagValue;
-        }
-        private void PermissionName_Leave(object sender, EventArgs e)
-        {
-            if (txtPermissionName.Text == "")
-            {
-                MessageBox.Show("Please don't leave this field empty");
-            }
-        }
-        private void Flag_Scroll(object sender, EventArgs e)
-        {
-            ShowFlagLable();
-        }
+
         private void AddPermission_Click(object sender, EventArgs e)
         {
             var newItemIndex = lboxPermissions.Items.Count;
-            var permission = GetPermission(string.Format("(Pemission {0})", newItemIndex + 1), newItemIndex);
-            PermissionDesignerModel.Permissions.Add(permission);
+            var permission = GetPermission(String.Format("(Pemission {0})", newItemIndex + 1), newItemIndex);
             lboxPermissions.Items.Add(permission);
             lboxPermissions.SelectedIndex = newItemIndex;
         }
+
         private void DeletePermission_Click(object sender, EventArgs e)
         {
             if(lboxPermissions.SelectedIndex != -1)
             {
-                var selectedIndex = lboxPermissions.SelectedIndex;
-                var permissionItemCount = lboxPermissions.Items.Count;
-                PermissionDesignerModel.Permissions.RemoveAt(selectedIndex);
-                lboxPermissions.Items.Clear();
-                LoadPermissionsList();
-                lboxPermissions.SelectedIndex = _lastselectedIndex 
-                                        = (selectedIndex + 1 == permissionItemCount ? _lastselectedIndex -1 : _lastselectedIndex);
-                RetrieveLastPermissionDetails(_lastselectedIndex != -1);
+                int deletedIndex = lboxPermissions.SelectedIndex;
+                int newCount = lboxPermissions.Items.Count - 1;
+                int selectedIndex = (deletedIndex < newCount)
+                    ? deletedIndex
+                    : deletedIndex - 1;
+                _lastselectedIndex = -1;
+                lboxPermissions.Items.RemoveAt(deletedIndex);
+                lboxPermissions.SelectedIndex = selectedIndex;
             }
         }
+
         private void GenarateScript_Click(object sender, EventArgs e)
         {
-            if (!VerifyFields())
+            if (!SaveAndValidateModel())
             {
                 return;
             }
+
             var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
-            int maxPermissionGroupId = Convert.ToInt32(dal.QueryScalar("SELECT MAX(pg.PermissionGroupID) FROM [Auth].[PermissionGroup] pg"));
-            var pg = PermissionDesignerModel.PermissionGroup;
-            var Permissions = PermissionDesignerModel.Permissions;
+            int maxGroupId = Convert.ToInt32(
+                dal.QueryScalar("SELECT MAX(PermissionGroupID) FROM [Auth].[PermissionGroup]"));
+            int maxPermissionId = Convert.ToInt32(
+                dal.QueryScalar("SELECT MAX(PermissionID) FROM [Auth].[Permission]"));
+            var group = Model.PermissionGroup;
             var builder = new StringBuilder();
             var solutionVersion = GetSolutionVersion();
 
-            int columnId = 0;
+            int permissionId = maxPermissionId + 1;
             builder.AppendLine();
             builder.AppendLine();
             builder.AppendFormat("-- {0}", solutionVersion);
             builder.AppendLine();
-            builder.AppendLine("SET IDENTITY_INSERT [Auth].[PermissionGroup] ON ");
-            builder.AppendFormat("INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName] , [Description]) VALUES ({0}, N'{1}', N'{2}' , N'{3}')"
-                                    , maxPermissionGroupId + 1
-                                    , pg.Name
-                                    , pg.EntityName
-                                    , pg.Description);
+            builder.AppendLine("SET IDENTITY_INSERT [Auth].[PermissionGroup] ON");
+            builder.AppendFormat(
+                @"INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName] , [Description])
+    VALUES ({0}, N'{1}', {2} , {3})"
+                    , maxGroupId + 1
+                    , group.Name
+                    , GetNullableValue(group.EntityName)
+                    , GetNullableValue(group.Description));
 
             builder.AppendLine();
-            builder.AppendLine("SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF ");
+            builder.AppendLine("SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF");
             builder.AppendLine();
-            builder.AppendLine("SET IDENTITY_INSERT [Auth].[Permission] ON ");
+            builder.AppendLine("SET IDENTITY_INSERT [Auth].[Permission] ON");
 
-            foreach(var item in Permissions)
+            foreach (var item in Model.Permissions)
             {
-                builder.AppendFormat("INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description]) VALUES ({0}, {1}, N'{2}', {3}, N'{4}')"
-                                      , columnId++
-                                      , maxPermissionGroupId + 1
-                                      , item.Name
-                                      , item.Flag
-                                      , item.Description);
+                builder.AppendFormat(
+                    @"INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description])
+    VALUES ({0}, {1}, N'{2}', {3}, {4})"
+                        , permissionId++
+                        , maxGroupId + 1
+                        , item.Name
+                        , item.Flag
+                        , GetNullableValue(item.Description));
                 builder.AppendLine();
             }
-            
 
-            builder.AppendLine("SET IDENTITY_INSERT[Auth].[Permission] OFF ");
+            builder.AppendLine("SET IDENTITY_INSERT[Auth].[Permission] OFF");
             builder.AppendLine();
 
             File.AppendAllText(_TadbirSysUpdateScript, builder.ToString());
+            MessageBox.Show("The script was successfully generated.");
+            Close();
+        }
 
-            MessageBox.Show("the script was generated. ");
-        }
-        private bool VerifyFields()
+        private void Cancel_Click(object sender, EventArgs e)
         {
-            bool res = true;
-            if(lboxPermissions.Items.Count == 0)
-            {
-                MessageBox.Show("Please enter at least one Permission");
-                res = false;
-            }
-            return res;
+            Close();
         }
+
+        private void Flag_Scroll(object sender, EventArgs e)
+        {
+            ShowFlagLabel();
+        }
+
+        private void EntityName_Leave(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtGroupName.Text) && !String.IsNullOrEmpty(txtEntityName.Text))
+            {
+                txtGroupName.Text = String.Format("ManageEntities,{0}", GetPluralName(txtEntityName.Text));
+            }
+        }
+
+        private void SetupBindings()
+        {
+            txtGroupName.DataBindings.Add("Text", Model.PermissionGroup, "Name");
+            txtEntityName.DataBindings.Add("Text", Model.PermissionGroup, "EntityName");
+            txtGroupDescription.DataBindings.Add("Text", Model.PermissionGroup, "Description");
+        }
+
+        private void ApplyPermissionGroup()
+        {
+            var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
+            var lastId = dal.QueryScalar("SELECT MAX(pg.PermissionGroupID) FROM [Auth].[PermissionGroup] pg");
+            Model.PermissionGroup.Id = Convert.ToInt32(lastId)+1;
+        }
+
+        private bool ValidateGroup()
+        {
+            bool validated = true;
+            if (String.IsNullOrWhiteSpace(txtGroupName.Text))
+            {
+                MessageBox.Show("Please enter a name for permission group.");
+                validated = false;
+            }
+
+            return validated;
+        }
+
+        private bool ValidatePermission()
+        {
+            bool validated = true;
+            if (String.IsNullOrWhiteSpace(txtName.Text))
+            {
+                MessageBox.Show("Please enter a name for permission.");
+                validated = false;
+            }
+
+            return validated;
+        }
+
+        private void LoadDefaultPermissions()
+        {
+            List<string> permissionNames = new List<string> { "View", "Create", "Edit", "Delete", "Filter", "Print" };
+            int itemIndex = 0;
+            foreach (var name in permissionNames)
+            {
+                lboxPermissions.Items.Add(GetPermission(name, itemIndex++));
+            }
+        }
+
+        private PermissionViewModel GetPermission(string name, int index)
+        {
+            var Permission = new PermissionViewModel()
+            {
+                Id = index,
+                Name = name,
+                Flag = (int)Math.Pow(2, index)
+            };
+            return Permission;
+        }
+
+        private void SavePermission(int index)
+        {
+            if (index != -1 && ValidatePermission())
+            {
+                var permission = lboxPermissions.Items[index] as PermissionViewModel;
+                permission.Name = txtName.Text;
+                permission.Flag = Convert.ToInt32(Math.Pow(2, trbFlag.Value));
+                permission.Description = txtDescription.Text;
+                lboxPermissions.Items.RemoveAt(index);
+                lboxPermissions.Items.Insert(index, permission);
+            }
+        }
+
+        private void LoadPermission(int index)
+        {
+            if(index != -1)
+            {
+                var permission = lboxPermissions.Items[index] as PermissionViewModel;
+                txtName.Text = permission.Name;
+                trbFlag.Value = Convert.ToInt32(Math.Log(permission.Flag, 2));
+                txtDescription.Text = permission.Description;
+            }
+        }
+
+        private void ShowFlagLabel()
+        {
+            var flagValue = Math.Pow(2, trbFlag.Value).ToString();
+            lblFlag.Text = "Flag:" + flagValue;
+        }
+
+        private bool SaveAndValidateModel()
+        {
+            if (lboxPermissions.Items.Count == 0)
+            {
+                MessageBox.Show("Please enter at least one permission.");
+                return false;
+            }
+
+            int invalidItemCount = lboxPermissions.Items
+                .Cast<PermissionViewModel>()
+                .Where(perm => String.IsNullOrWhiteSpace(perm.Name))
+                .Count();
+            if (invalidItemCount > 0)
+            {
+                MessageBox.Show("One or more permissions have blank name.");
+                return false;
+            }
+
+            Model.Permissions.AddRange(lboxPermissions.Items.Cast<PermissionViewModel>());
+            return true;
+        }
+
         private Version GetSolutionVersion()
         {
             var assemblyVersion = GetType().Assembly.GetName().Version;
-            return new Version(assemblyVersion.ToString());
+            return new Version(assemblyVersion.ToString(3));
         }
+
         private string GetSysConnectionString()
         {
             string path = @"..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }
-        private void Cancel_Click(object sender, EventArgs e)
+
+        private static string GetPluralName(string name)
         {
-            Close();
+            Verify.ArgumentNotNullOrEmptyString(name, "name");
+            char lastChar = name[name.Length - 1];
+            string plural = name;
+            switch (lastChar)
+            {
+                case 'h':
+                case 's':
+                case 'x':
+                case 'z':
+                    plural = String.Format("{0}es", name);
+                    break;
+                case 'y':
+                    plural = String.Format("{0}ies", name.Substring(0, name.Length - 1));
+                    break;
+                default:
+                    plural = String.Format("{0}s", name);
+                    break;
+            }
+
+            return plural;
         }
-       
+
+        private string GetNullableValue(string nullable)
+        {
+            return String.IsNullOrEmpty(nullable)
+                ? "NULL"
+                : String.Format("N'{0}'", nullable);
+        }
 
         private string _sysConnection;
-        static int _lastselectedIndex = -1;
+        private int _lastselectedIndex = -1;
         private const string _TadbirSysUpdateScript = @"..\..\res\TadbirSys_UpdateDbObjects.sql";
-
-       
     }
 }

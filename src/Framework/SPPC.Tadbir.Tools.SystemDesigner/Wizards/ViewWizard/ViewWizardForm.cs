@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.Reflection;
 using BabakSoft.Platform.Data;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Tools.SystemDesigner.Models;
