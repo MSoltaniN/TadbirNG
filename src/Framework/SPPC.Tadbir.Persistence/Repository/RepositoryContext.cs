@@ -65,8 +65,8 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var parts = resourceKey.Split(' ');
-            var licalizedParts = parts.Select(part => _strings[part]);
-            return String.Join(" ", licalizedParts);
+            var localizedParts = parts.Select(part => _strings[part]);
+            return String.Join(" ", localizedParts);
         }
 
         private readonly IStringLocalizer<AppStrings> _strings;

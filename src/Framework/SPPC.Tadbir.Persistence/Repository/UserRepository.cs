@@ -494,28 +494,6 @@ namespace SPPC.Tadbir.Persistence
                 && left.All(value => right.Contains(value));
         }
 
-        private static string BuildConnectionString(CompanyDb company)
-        {
-            if (company == null)
-            {
-                return null;
-            }
-
-            var builder = new StringBuilder();
-            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
-            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
-            {
-                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
-                    company.UserName, company.Password);
-            }
-            else
-            {
-                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
-            }
-
-            return builder.ToString();
-        }
-
         private static void FilterInaccessibleCommands(IList<int> permissions, IList<CommandViewModel> commands)
         {
             int count = commands.Count;

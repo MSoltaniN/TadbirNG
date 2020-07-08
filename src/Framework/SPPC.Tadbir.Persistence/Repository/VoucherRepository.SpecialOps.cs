@@ -791,6 +791,9 @@ namespace SPPC.Tadbir.Persistence
             // Sales accounts by floating items and currency (Debit)...
             // Performance account (Credit)...
             var performanceAccount = specialAccounts[AccountCollectionId.Performance].SingleOrDefault();
+            int performanceAccountId = (performanceAccount != null)
+                ? performanceAccount.Id
+                : 0;
             lines.AddRange(await GetBranchBalancedAccountLinesAsync(
                 branchId, specialAccounts[AccountCollectionId.FinalSales],
                 performanceAccount, AppStrings.ClosingSalesAccounts));
@@ -814,7 +817,7 @@ namespace SPPC.Tadbir.Persistence
                 ? profitLossAccount.Id
                 : 0;
             decimal performance = lines
-                .Where(line => line.AccountId == performanceAccount.Id)
+                .Where(line => line.AccountId == performanceAccountId)
                 .Sum(line => line.Debit - line.Credit);
             lines.AddRange(GetBranchBalancedAccountLines(
                 branchId, performanceAccount, profitLossAccount,

@@ -91,5 +91,15 @@ namespace SPPC.Tadbir.Values
         /// اندازه بردار اولیه مورد استفاده در عملیات رمزنگاری اطلاعات، بر حسب بایت
         /// </summary>
         public const int CryptoIvSize = 16;
+
+        /// <summary>
+        /// نام لاگین سیستمی مورد استفاده برای اتصال به دیتابیس سیستمی و شرکت های بدون لاگین
+        /// </summary>
+        public const string SystemLoginName = "NgTadbirUser";
+
+        /// <summary>
+        /// شکل کد شده رمز عبور برای لاگین سیستمی
+        /// </summary>
+        public const string SystemLoginPassword = "TmdUYWRiaXJVc2Vy";
     }
 }

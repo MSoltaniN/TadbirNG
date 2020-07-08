@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
@@ -109,6 +111,29 @@ namespace SPPC.Tadbir.Persistence
             return BuildConnectionString(company);
         }
 
+        protected static string BuildConnectionString(CompanyDb company)
+        {
+            if (company == null)
+            {
+                return null;
+            }
+
+            var builder = new StringBuilder();
+            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
+            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
+            {
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                    company.UserName, company.Password);
+            }
+            else
+            {
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                    AppConstants.SystemLoginName, GetDecodedValue(AppConstants.SystemLoginPassword));
+            }
+
+            return builder.ToString();
+        }
+
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا موجودیت مالی داده شده به شعبه مورد نظر وابسته است یا نه؟
         /// </summary>
@@ -200,21 +225,10 @@ namespace SPPC.Tadbir.Persistence
                 .ToArray();
         }
 
-        private static string BuildConnectionString(CompanyDb company)
+        private static string GetDecodedValue(string encoded)
         {
-            var builder = new StringBuilder();
-            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
-            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
-            {
-                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
-                    company.UserName, company.Password);
-            }
-            else
-            {
-                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
-            }
-
-            return builder.ToString();
+            var bytes = Transform.FromBase64String(encoded);
+            return Encoding.UTF8.GetString(bytes);
         }
 
         private const string _branchReferenceScript = @"
