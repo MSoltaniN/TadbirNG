@@ -27,6 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/lookup/types
+        [HttpGet]
         [Route(ItemBalanceApi.ItemBalanceTypeLookupUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetTestBalanceTypesLookupAsync(int viewId)
@@ -39,6 +40,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Specific Level reports
 
         // GET: api/itembal/views/{viewId:min(2)}/levels/{level:min(1)}/2-col
+        [HttpGet]
         [Route(ItemBalanceApi.TwoColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetTwoColumnLevelBalanceAsync(
@@ -50,6 +52,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/levels/{level:min(1)}/4-col
+        [HttpGet]
         [Route(ItemBalanceApi.FourColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetFourColumnLevelBalanceAsync(
@@ -61,6 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/levels/{level:min(1)}/6-col
+        [HttpGet]
         [Route(ItemBalanceApi.SixColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetSixColumnLevelBalanceAsync(
@@ -72,6 +76,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/levels/{level:min(1)}/8-col
+        [HttpGet]
         [Route(ItemBalanceApi.EightColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetEightColumnLevelBalanceAsync(
@@ -83,6 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/levels/{level:min(1)}/10-col
+        [HttpGet]
         [Route(ItemBalanceApi.TenColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetTenColumnLevelBalanceAsync(
@@ -98,6 +104,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Child Items Level reports
 
         // GET: api/itembal/views/{viewId:min(2)}/items/{itemId:min(1)}/2-col
+        [HttpGet]
         [Route(ItemBalanceApi.TwoColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetTwoColumnChildItemsBalanceAsync(
@@ -109,6 +116,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/items/{itemId:min(1)}/4-col
+        [HttpGet]
         [Route(ItemBalanceApi.FourColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetFourColumnChildItemsBalanceAsync(
@@ -120,6 +128,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/items/{itemId:min(1)}/6-col
+        [HttpGet]
         [Route(ItemBalanceApi.SixColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetSixColumnChildItemsBalanceAsync(
@@ -131,6 +140,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/items/{itemId:min(1)}/8-col
+        [HttpGet]
         [Route(ItemBalanceApi.EightColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetEightColumnChildItemsBalanceAsync(
@@ -142,6 +152,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/itembal/views/{viewId:min(2)}/items/{itemId:min(1)}/10-col
+        [HttpGet]
         [Route(ItemBalanceApi.TenColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.ItemBalance, (int)ItemBalancePermissions.View)]
         public async Task<IActionResult> GetTenColumnChildItemsBalanceAsync(

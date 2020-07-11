@@ -21,6 +21,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/metadata/view/{viewName}
+        [HttpGet]
         [Route(MetadataApi.ViewMetadataUrl)]
         public async Task<IActionResult> GetViewMetadata(string viewName)
         {
@@ -30,6 +31,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/metadata/view/{viewId:min(1)}
+        [HttpGet]
         [Route(MetadataApi.ViewMetadataByIdUrl)]
         public async Task<IActionResult> GetViewMetadataById(int viewId)
         {
@@ -39,6 +41,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/metadata/permissions
+        [HttpGet]
         [Route(MetadataApi.PermissionMetadataUrl)]
         public async Task<IActionResult> GetPermissionMetadataAsync()
         {

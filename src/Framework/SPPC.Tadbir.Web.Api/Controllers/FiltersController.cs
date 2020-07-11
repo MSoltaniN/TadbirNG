@@ -26,6 +26,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/filters/views/{viewId:min(1)}
+        [HttpGet]
         [Route(FilterApi.FiltersByViewUrl)]
         public async Task<IActionResult> GetFiltersAsync(int viewId)
         {
@@ -34,6 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/filters/{filterId:min(1)}
+        [HttpGet]
         [Route(FilterApi.FilterUrl)]
         public async Task<IActionResult> GetFilterAsync(int filterId)
         {

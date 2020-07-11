@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SPPC.Tadbir.Web.Api.Api.Swagger;
 using SPPC.Tadbir.Web.Api.Middleware;
 
 namespace SPPC.Tadbir.Web.Api
@@ -21,6 +22,7 @@ namespace SPPC.Tadbir.Web.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwagger();
             services.AddLocalization();
             services.AddMvc();
             services.AddCors();
@@ -38,6 +40,7 @@ namespace SPPC.Tadbir.Web.Api
             }
 
             ConfigureLocalization(app);
+          
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseCors(
                 options => options
@@ -59,7 +62,7 @@ namespace SPPC.Tadbir.Web.Api
                 new CultureInfo("en-US"),
                 new CultureInfo("en")
             };
-
+            app.UseSwaggerAndUI();
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture("fa", "fa"),

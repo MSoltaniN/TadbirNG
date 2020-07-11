@@ -32,6 +32,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/branches/company/{companyId:min(1)}
+        [HttpGet]
         [Route(BranchApi.CompanyBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetBranchesAsync()
@@ -41,6 +42,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/branches/{branchId:min(1)}
+        [HttpGet]
         [Route(BranchApi.BranchUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetBranchAsync(int branchId)
@@ -50,6 +52,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/branches/root
+        [HttpGet]
         [Route(BranchApi.RootBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetRootBranchesAsync()
@@ -59,6 +62,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/branches/{branchId:min(1)}/children
+        [HttpGet]
         [Route(BranchApi.BranchChildrenUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetBranchChildrenAsync(int branchId)
@@ -190,6 +194,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/branches/{branchId:min(1)}/roles
+        [HttpGet]
         [Route(BranchApi.BranchRolesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetBranchRolesAsync(int branchId)

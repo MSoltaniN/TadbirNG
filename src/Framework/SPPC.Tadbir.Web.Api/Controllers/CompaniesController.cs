@@ -33,6 +33,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/companies
+        [HttpGet]
         [Route(CompanyApi.CompaniesUrl)]
         [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.View)]
         public async Task<IActionResult> GetCompaniesAsync()
@@ -42,6 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/companies/{companyId:min(1)}
+        [HttpGet]
         [Route(CompanyApi.CompanyUrl)]
         [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.View)]
         public async Task<IActionResult> GetCompanyAsync(int companyId)

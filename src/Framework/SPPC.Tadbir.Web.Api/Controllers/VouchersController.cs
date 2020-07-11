@@ -43,6 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Voucher Operations
 
         // GET: api/vouchers
+        [HttpGet]
         [Route(VoucherApi.EnvironmentVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVouchersAsync()
@@ -53,6 +54,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/{voucherId:int}
+        [HttpGet]
         [Route(VoucherApi.VoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVoucherAsync(int voucherId)
@@ -63,6 +65,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/new
+        [HttpGet]
         [Route(VoucherApi.NewVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
         public async Task<IActionResult> GetNewVoucherAsync()
@@ -78,6 +81,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/by-no
+        [HttpGet]
         [Route(VoucherApi.VoucherByNoUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVoucherByNoAsync(int voucherNo)
@@ -88,6 +92,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/range
+        [HttpGet]
         [Route(VoucherApi.EnvironmentItemRangeUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVoucherRangeAsync()
@@ -97,6 +102,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/first
+        [HttpGet]
         [Route(VoucherApi.FirstVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetFirstVoucherAsync()
@@ -107,6 +113,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/{voucherNo:min(1)}/previous
+        [HttpGet]
         [Route(VoucherApi.PreviousVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousVoucherAsync(int voucherNo)
@@ -117,6 +124,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/{voucherNo:min(1)}/next
+        [HttpGet]
         [Route(VoucherApi.NextVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetNextVoucherAsync(int voucherNo)
@@ -127,6 +135,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/last
+        [HttpGet]
         [Route(VoucherApi.LastVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetLastVoucherAsync()
@@ -137,6 +146,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/count/by-status
+        [HttpGet]
         [Route(VoucherApi.VoucherCountByStatusUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVouchersCountByStatusIdAsync()
@@ -147,6 +157,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/no-article
+        [HttpGet]
         [Route(VoucherApi.VoucherWithNoArticleUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVouchersWithNoArticleAsync(DateTime from, DateTime to)
@@ -159,6 +170,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/unbalanced
+        [HttpGet]
         [Route(VoucherApi.UnbalancedVouchers)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
@@ -171,6 +183,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/miss-number
+        [HttpGet]
         [Route(VoucherApi.MissingVoucherNumberUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetMissingVoucherNumbersAsync(DateTime from, DateTime to)
@@ -529,6 +542,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/opening/query
+        [HttpGet]
         [Route(VoucherApi.OpeningVoucherQueryUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOpeningVoucherAsync()
@@ -548,6 +562,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/opening?isDefault={bool}
+        [HttpGet]
         [Route(VoucherApi.OpeningVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueOpeningVoucherAsync(bool? isDefault)
@@ -565,6 +580,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/closing-tmp
+        [HttpGet]
         [Route(VoucherApi.ClosingAccountsVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueClosingAccountsVoucherAsync()
@@ -599,6 +615,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/closing
+        [HttpGet]
         [Route(VoucherApi.ClosingVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueClosingVoucherAsync()
@@ -619,6 +636,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Article Operations
 
         // GET: api/vouchers/{voucherId:min(1)}/articles
+        [HttpGet]
         [Route(VoucherApi.VoucherArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticlesAsync(int voucherId)
@@ -630,6 +648,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/articles/{articleId:min(1)}
+        [HttpGet]
         [Route(VoucherApi.VoucherArticleUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticleAsync(int articleId)
@@ -640,6 +659,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/articles/count
+        [HttpGet]
         [Route(VoucherApi.VoucherArticlesCountUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticlesCountAsync()
@@ -649,6 +669,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/vouchers/articles/sys-issue/{issueType}
+        [HttpGet]
         [Route(VoucherApi.SystemIssueArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetSystemIssueArticlesAsync(string issueType, DateTime from, DateTime to)

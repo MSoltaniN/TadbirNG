@@ -37,6 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/faccounts
+        [HttpGet]
         [Route(DetailAccountApi.EnvironmentDetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDetailAccountsAsync()
@@ -46,6 +47,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/faccounts/lookup
+        [HttpGet]
         [Route(DetailAccountApi.EnvironmentDetailAccountsLookupUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDetailAccountsLookupAsync()
@@ -55,6 +57,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/faccounts/{faccountId:min(1)}
+        [HttpGet]
         [Route(DetailAccountApi.DetailAccountUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetDetailAccountAsync(int faccountId)
@@ -64,6 +67,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/faccounts/ledger
+        [HttpGet]
         [Route(DetailAccountApi.EnvironmentDetailAccountsLedgerUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDetailAccountsLedgerAsync()
@@ -73,6 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/faccounts/{faccountId:min(1)}/children
+        [HttpGet]
         [Route(DetailAccountApi.DetailAccountChildrenUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetDetailAccountChildrenAsync(int faccountId)
@@ -82,6 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/faccounts/{faccountId:int}/children/new
+        [HttpGet]
         [Route(DetailAccountApi.EnvironmentNewChildDetailAccountUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewDetailAccountAsync(int faccountId)

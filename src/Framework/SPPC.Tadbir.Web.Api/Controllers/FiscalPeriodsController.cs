@@ -32,6 +32,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/fperiods/company/{companyId:min(1)}
+        [HttpGet]
         [Route(FiscalPeriodApi.CompanyFiscalPeriodsUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public async Task<IActionResult> GetFiscalPeriodsAsync()
@@ -41,6 +42,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/fperiods/{fpId:min(1)}
+        [HttpGet]
         [Route(FiscalPeriodApi.FiscalPeriodUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public async Task<IActionResult> GetFiscalPeriodAsync(int fpId)
@@ -181,6 +183,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/fperiods/{fpId:min(1)}/roles
+        [HttpGet]
         [Route(FiscalPeriodApi.FiscalPeriodRolesUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public async Task<IActionResult> GetFiscalPeriodRolesAsync(int fpId)

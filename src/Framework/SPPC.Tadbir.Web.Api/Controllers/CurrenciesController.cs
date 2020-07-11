@@ -41,6 +41,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies
+        [HttpGet]
         [Route(CurrencyApi.CurrenciesUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetCurrenciesAsync()
@@ -55,6 +56,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies/{currencyId:min(1)}
+        [HttpGet]
         [Route(CurrencyApi.CurrencyUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetCurrencyAsync(int currencyId)
@@ -65,6 +67,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies/{currencyId:min(1)}/rates
+        [HttpGet]
         [Route(CurrencyApi.CurrencyRatesUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.View)]
         public async Task<IActionResult> GetCurrencyRatesAsync(int currencyId)
@@ -74,6 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies/rates/{rateId:min(1)}
+        [HttpGet]
         [Route(CurrencyApi.CurrencyRateUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.View)]
         public async Task<IActionResult> GetCurrencyRateAsync(int rateId)
@@ -83,6 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies/info/{nameKey}
+        [HttpGet]
         [Route(CurrencyApi.CurrencyInfoByNameUrl)]
         public IActionResult GetCurrencyInfoByName(string nameKey)
         {
@@ -95,6 +100,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies/names/lookup
+        [HttpGet]
         [Route(CurrencyApi.CurrencyNamesLookupUrl)]
         public IActionResult GetCurrencyNamesLookup()
         {
@@ -109,6 +115,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies/default/account/{accountId:min(1)}/faccount/{faccountId:min(1)}
+        [HttpGet]
         [Route(CurrencyApi.DefaultCurrencyByFullAccountUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetDefaultCurrencyByFullAccountAsync(int accountId, int faccountId)
@@ -118,6 +125,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies/tax
+        [HttpGet]
         [Route(CurrencyApi.TaxCurrenciesUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetTaxCurrenciesLookupAsync()
@@ -128,6 +136,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currencies/{currencyId:min(1)}/has-rates
+        [HttpGet]
         [Route(CurrencyApi.CurrencyHasRatesUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Edit)]
         public async Task<IActionResult> GetCurrencyHasRateAsync(int currencyId)

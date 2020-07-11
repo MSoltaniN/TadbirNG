@@ -18,6 +18,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
+
+        [HttpGet]
         [Route(CartableApi.UserInboxItemsUrl)]
         public IActionResult GetUserInbox(int userId)
         {
@@ -30,6 +32,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(workItems);
         }
 
+        [HttpGet]
         [Route(CartableApi.UserOutboxItemsUrl)]
         public IActionResult GetUserOutbox(int userId)
         {
