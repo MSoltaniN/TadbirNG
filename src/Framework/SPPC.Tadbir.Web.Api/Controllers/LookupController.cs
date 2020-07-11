@@ -30,6 +30,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Finance Subsystem API
 
         // GET: api/lookup/accounts
+        [HttpGet]
         [Route(LookupApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountsLookupAsync()
@@ -39,6 +40,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/faccounts
+        [HttpGet]
         [Route(LookupApi.EnvironmentDetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetDetailAccountsLookupAsync()
@@ -48,6 +50,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/costcenters
+        [HttpGet]
         [Route(LookupApi.EnvironmentCostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCentersLookupAsync()
@@ -57,6 +60,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/projects
+        [HttpGet]
         [Route(LookupApi.EnvironmentProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectsLookupAsync()
@@ -66,6 +70,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/vouchers
+        [HttpGet]
         [Route(LookupApi.EnvironmentVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetVouchersLookupAsync()
@@ -88,6 +93,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/vouchers/lines
+        [HttpGet]
         [Route(LookupApi.EnvironmentVoucherLinesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetVoucherLinesLookupAsync()
@@ -104,6 +110,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/currencies
+        [HttpGet]
         [Route(LookupApi.CurrenciesUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetCurrenciesLookupAsync()
@@ -114,6 +121,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/currencies/info[?withRate={true|false}]
+        [HttpGet]
         [Route(LookupApi.CurrenciesInfoUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public async Task<IActionResult> GetCurrenciesInfoLookupAsync(bool withRate = true)
@@ -124,6 +132,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/companies/user/{userId:min(1)}
+        [HttpGet]
         [Route(LookupApi.UserAccessibleCompaniesUrl)]
         public async Task<IActionResult> GetUserAccessibleCompaniesAsync(int userId)
         {
@@ -132,6 +141,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/fps/company/{companyId:min(1)}/user/{userId:min(1)}
+        [HttpGet]
         [Route(LookupApi.UserAccessibleCompanyFiscalPeriodsUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public async Task<IActionResult> GetFiscalPeriodsLookupAsync(int companyId, int userId)
@@ -141,6 +151,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/branches/company/{companyId:min(1)}/user/{userId:min(1)}
+        [HttpGet]
         [Route(LookupApi.UserAccessibleCompanyBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetBranchesLookupAsync(int companyId, int userId)
@@ -150,6 +161,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/accgroup/categories
+        [HttpGet]
         [Route(LookupApi.AccountGroupCategoriesUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public IActionResult GetAccountGroupCategoriesLookup()
@@ -160,6 +172,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/accgroups
+        [HttpGet]
         [Route(LookupApi.AccountGroupsUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetAccountGroupsLookupAsync()
@@ -169,6 +182,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/types/voucher
+        [HttpGet]
         [Route(LookupApi.VoucherSysTypesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public IActionResult GetVoucherTypeslookup()
@@ -179,6 +193,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/types/voucher-line
+        [HttpGet]
         [Route(LookupApi.VoucherLineTypesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public IActionResult GetVoucherLineTypesLookup()
@@ -189,6 +204,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/accturnovermodes
+        [HttpGet]
         [Route(LookupApi.AccountTurnoversUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccountTurnoverModesLookup()
@@ -199,6 +215,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/inv-acc
+        [HttpGet]
         [Route(LookupApi.InventoryAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetInventoryAccountsAsync()
@@ -212,6 +229,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Security Subsystem API
 
         // GET: api/lookup/roles
+        [HttpGet]
         [Route(LookupApi.RolesUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRolesLookupAsync()
@@ -222,6 +240,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/users
+        [HttpGet]
         [Route(LookupApi.UsersUrl)]
         public async Task<IActionResult> GetUsersLookupAsync()
         {
@@ -236,6 +255,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Metadata Subsystem API
 
         // GET: api/lookup/views
+        [HttpGet]
         [Route(LookupApi.EntityViewsUrl)]
         public async Task<IActionResult> GetEntityViewsLookupAsync()
         {
@@ -248,6 +268,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/views/base
+        [HttpGet]
         [Route(LookupApi.BaseEntityViewsUrl)]
         public async Task<IActionResult> GetBaseViewsLookupAsync()
         {
@@ -257,6 +278,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/views/tree
+        [HttpGet]
         [Route(LookupApi.TreeViewsUrl)]
         public async Task<IActionResult> GetTreeViewsLookupAsync()
         {
@@ -266,6 +288,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/accbook/views/{viewId:min(1)}/levels
+        [HttpGet]
         [Route(LookupApi.AccountBookLevelsUrl)]
         public async Task<IActionResult> GetAccountBookLevelsAsync(int viewId)
         {
@@ -279,6 +302,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/entities
+        [HttpGet]
         [Route(LookupApi.EntityTypesUrl)]
         public async Task<IActionResult> GetEntityTypesLookupAsync()
         {
@@ -289,6 +313,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/sys/entities
+        [HttpGet]
         [Route(LookupApi.SystemEntityTypesUrl)]
         public async Task<IActionResult> GetSystemEntityTypesLookupAsync()
         {
@@ -299,6 +324,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/provinces
+        [HttpGet]
         [Route(LookupApi.ProvincesUrl)]
         public async Task<IActionResult> GetProvincesAsync()
         {
@@ -307,6 +333,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/cities/{provinceCode}
+        [HttpGet]
         [Route(LookupApi.CitiesUrl)]
         public async Task<IActionResult> GetCitiesAsync(string provinceCode)
         {

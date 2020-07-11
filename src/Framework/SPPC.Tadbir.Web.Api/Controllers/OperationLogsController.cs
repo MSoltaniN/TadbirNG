@@ -27,6 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Company Log Operations
 
         // GET: api/system/oplog
+        [HttpGet]
         [Route(OperationLogApi.OperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.View)]
         public async Task<IActionResult> GetOperationLogsAsync()
@@ -37,6 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/system/oplog/archive
+        [HttpGet]
         [Route(OperationLogApi.OperationLogsArchiveUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.ViewArchive)]
         public async Task<IActionResult> GetOperationLogArchiveAsync()
@@ -47,6 +49,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/system/oplog/all
+        [HttpGet]
         [Route(OperationLogApi.AllOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog,
             (int)(OperationLogPermissions.View | OperationLogPermissions.ViewArchive))]
@@ -122,6 +125,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region System Log Operations
 
         // GET: api/system/sys-oplog
+        [HttpGet]
         [Route(OperationLogApi.SysOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.View)]
         public async Task<IActionResult> GetSysOperationLogsAsync()
@@ -132,6 +136,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/system/sys-oplog/archive
+        [HttpGet]
         [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.ViewArchive)]
         public async Task<IActionResult> GetSysOperationLogArchiveAsync()
@@ -142,6 +147,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/system/sys-oplog/all
+        [HttpGet]
         [Route(OperationLogApi.AllSysOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog,
             (int)(SysOperationLogPermissions.View | SysOperationLogPermissions.ViewArchive))]

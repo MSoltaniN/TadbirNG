@@ -34,6 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/roles
+        [HttpGet]
         [Route(RoleApi.RolesUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRolesAsync()
@@ -44,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/roles/new
+        [HttpGet]
         [Route(RoleApi.NewRoleUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Create)]
         public async Task<IActionResult> GetNewRoleAsync()
@@ -54,6 +56,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/roles/{roleId:min(1)}
+        [HttpGet]
         [Route(RoleApi.RoleUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRoleAsync(int roleId)
@@ -69,6 +72,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/roles/{roleId:min(1)}/details
+        [HttpGet]
         [Route(RoleApi.RoleDetailsUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRoleDetailsAsync(int roleId)
@@ -154,6 +158,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/roles/{roleId:min(1)}/branches
+        [HttpGet]
         [Route(RoleApi.RoleBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRoleBranchesAsync(int roleId)
@@ -180,6 +185,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/roles/{roleId:min(1)}/users
+        [HttpGet]
         [Route(RoleApi.RoleUsersUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRoleUsersAsync(int roleId)
@@ -206,6 +212,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/roles/{roleId:min(1)}/fperiods
+        [HttpGet]
         [Route(RoleApi.RoleFiscalPeriodsUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRoleFiscalPeriodsAsync(int roleId)
@@ -232,6 +239,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/roles/{roleId:min(2)}/rowaccess
+        [HttpGet]
         [Route(RoleApi.RowAccessSettingsUrl)]
         [AuthorizeRequest(SecureEntity.RowAccess, (int)RowAccessPermissions.ViewRowAccess)]
         public async Task<IActionResult> GetRowAccessSettingsForRoleAsync(int roleId)

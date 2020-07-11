@@ -21,6 +21,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/dashboard/summaries
+        [HttpGet]
         [Route(DashboardApi.SummariesUrl)]
         public async Task<IActionResult> GetSummariesAsync()
         {

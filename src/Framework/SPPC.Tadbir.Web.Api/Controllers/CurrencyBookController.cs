@@ -27,6 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currbook/by-row/by-branch/{byBranch}
+        [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookByRowAsync(
@@ -37,6 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currbook/voucher-sum/by-branch/{byBranch}
+        [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookVoucherSumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookVoucherSumAsync(
@@ -47,6 +49,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currbook/daily-sum/by-branch/{byBranch}
+        [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookDailySumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookDailySumAsync(
@@ -57,6 +60,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currbook/monthly-sum/by-branch/{byBranch}
+        [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookMonthlySumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookMonthlySumAsync(
@@ -67,6 +71,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/currbook/all-currencies/{currFree}
+        [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookAllCurrenciesUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookAllCurrenciesAsync(
