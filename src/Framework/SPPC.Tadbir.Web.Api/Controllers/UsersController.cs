@@ -262,6 +262,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/users/login/company
         [HttpPut]
         [Route(UserApi.UserCompanyLoginStatusUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> PutUserCompanyLoginStatusAsync([FromBody] CompanyLoginViewModel companyLogin)
         {
             if (companyLogin == null)
