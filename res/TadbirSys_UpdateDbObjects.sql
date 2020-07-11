@@ -3283,28 +3283,3 @@ UPDATE [Metadata].[Column]
 SET Name = 'Group'
 WHERE ViewID = 62 AND Name = 'Category'
 
-
-
--- 1.1.945
-SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
-INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName] , [Description])
-    VALUES (30, N'ManageEntities,Schools', N'School' , NULL)
-SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
-
-SET IDENTITY_INSERT [Auth].[Permission] ON
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description])
-    VALUES (136, 30, N'View', 1, N'Hold Me!')
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description])
-    VALUES (137, 30, N'Create', 2, NULL)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description])
-    VALUES (138, 30, N'Edit', 4, N'Thrill Me!')
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description])
-    VALUES (139, 30, N'Delete', 8, NULL)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description])
-    VALUES (140, 30, N'Filter', 16, N'Kiss Me!')
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description])
-    VALUES (141, 30, N'Print', 32, NULL)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag] , [Description])
-    VALUES (142, 30, N'Disable', 64, N'Kill Me!')
-SET IDENTITY_INSERT[Auth].[Permission] OFF
-
