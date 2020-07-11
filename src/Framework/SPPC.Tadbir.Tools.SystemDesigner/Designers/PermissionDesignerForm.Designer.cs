@@ -66,7 +66,7 @@
             this.pnlPage.Controls.Add(this.lboxPermissions);
             this.pnlPage.Controls.Add(this.gboxPermissionGroup);
             this.pnlPage.Location = new System.Drawing.Point(11, 49);
-            this.pnlPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlPage.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPage.Name = "pnlPage";
             this.pnlPage.Size = new System.Drawing.Size(738, 303);
             this.pnlPage.TabIndex = 1;
@@ -149,7 +149,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDescription.Location = new System.Drawing.Point(18, 148);
-            this.txtDescription.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(2);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(217, 119);
@@ -160,7 +160,7 @@
             this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtName.Location = new System.Drawing.Point(21, 38);
-            this.txtName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtName.Margin = new System.Windows.Forms.Padding(2);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(214, 20);
             this.txtName.TabIndex = 1;
@@ -219,11 +219,10 @@
             this.txtGroupName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtGroupName.Location = new System.Drawing.Point(17, 87);
-            this.txtGroupName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtGroupName.Margin = new System.Windows.Forms.Padding(2);
             this.txtGroupName.Name = "txtGroupName";
             this.txtGroupName.Size = new System.Drawing.Size(222, 20);
             this.txtGroupName.TabIndex = 3;
-            this.txtGroupName.Text = "2222";
             this.txtGroupName.Enter += new System.EventHandler(this.GroupName_Enter);
             // 
             // label3
@@ -256,7 +255,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtGroupDescription.Location = new System.Drawing.Point(18, 127);
-            this.txtGroupDescription.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtGroupDescription.Margin = new System.Windows.Forms.Padding(2);
             this.txtGroupDescription.Multiline = true;
             this.txtGroupDescription.Name = "txtGroupDescription";
             this.txtGroupDescription.Size = new System.Drawing.Size(222, 115);
@@ -289,7 +288,7 @@
             this.txtEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEntityName.Location = new System.Drawing.Point(17, 46);
-            this.txtEntityName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtEntityName.Margin = new System.Windows.Forms.Padding(2);
             this.txtEntityName.Name = "txtEntityName";
             this.txtEntityName.Size = new System.Drawing.Size(222, 20);
             this.txtEntityName.TabIndex = 1;
@@ -315,7 +314,7 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(676, 363);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 28);
             this.btnCancel.TabIndex = 3;
@@ -343,7 +342,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.pnlPage);
             this.Controls.Add(this.lblStepInfo);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PermissionDesignerForm";

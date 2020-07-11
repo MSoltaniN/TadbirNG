@@ -44,7 +44,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             {
                 return;
             }
-
             ApplyPermissionGroup();
             LoadDefaultPermissions();
             lboxPermissions.SelectedIndex = 0;
