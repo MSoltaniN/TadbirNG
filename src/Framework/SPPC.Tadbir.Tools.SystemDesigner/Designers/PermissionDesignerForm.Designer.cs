@@ -65,10 +65,10 @@
             this.pnlPage.Controls.Add(this.gboxPermission);
             this.pnlPage.Controls.Add(this.lboxPermissions);
             this.pnlPage.Controls.Add(this.gboxPermissionGroup);
-            this.pnlPage.Location = new System.Drawing.Point(15, 60);
-            this.pnlPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pnlPage.Location = new System.Drawing.Point(11, 49);
+            this.pnlPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(984, 373);
+            this.pnlPage.Size = new System.Drawing.Size(738, 303);
             this.pnlPage.TabIndex = 1;
             // 
             // label1
@@ -76,18 +76,18 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(421, 16);
+            this.label1.Location = new System.Drawing.Point(316, 13);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 17);
+            this.label1.Size = new System.Drawing.Size(68, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Permissions :";
             // 
             // btnDeletePermission
             // 
-            this.btnDeletePermission.Location = new System.Drawing.Point(539, 327);
-            this.btnDeletePermission.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDeletePermission.Location = new System.Drawing.Point(404, 266);
             this.btnDeletePermission.Name = "btnDeletePermission";
-            this.btnDeletePermission.Size = new System.Drawing.Size(102, 32);
+            this.btnDeletePermission.Size = new System.Drawing.Size(76, 26);
             this.btnDeletePermission.TabIndex = 4;
             this.btnDeletePermission.Text = "Delete";
             this.btnDeletePermission.UseVisualStyleBackColor = true;
@@ -95,10 +95,9 @@
             // 
             // btnAddPermission
             // 
-            this.btnAddPermission.Location = new System.Drawing.Point(424, 327);
-            this.btnAddPermission.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAddPermission.Location = new System.Drawing.Point(318, 266);
             this.btnAddPermission.Name = "btnAddPermission";
-            this.btnAddPermission.Size = new System.Drawing.Size(107, 32);
+            this.btnAddPermission.Size = new System.Drawing.Size(80, 26);
             this.btnAddPermission.TabIndex = 3;
             this.btnAddPermission.Text = "Add";
             this.btnAddPermission.UseVisualStyleBackColor = true;
@@ -112,11 +111,9 @@
             this.gboxPermission.Controls.Add(this.txtName);
             this.gboxPermission.Controls.Add(this.label6);
             this.gboxPermission.Controls.Add(this.lblFlag);
-            this.gboxPermission.Location = new System.Drawing.Point(649, 16);
-            this.gboxPermission.Margin = new System.Windows.Forms.Padding(4);
+            this.gboxPermission.Location = new System.Drawing.Point(487, 13);
             this.gboxPermission.Name = "gboxPermission";
-            this.gboxPermission.Padding = new System.Windows.Forms.Padding(4);
-            this.gboxPermission.Size = new System.Drawing.Size(324, 343);
+            this.gboxPermission.Size = new System.Drawing.Size(243, 279);
             this.gboxPermission.TabIndex = 5;
             this.gboxPermission.TabStop = false;
             this.gboxPermission.Text = "Permission Details";
@@ -125,11 +122,10 @@
             // 
             this.trbFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trbFlag.Location = new System.Drawing.Point(27, 107);
-            this.trbFlag.Margin = new System.Windows.Forms.Padding(4);
+            this.trbFlag.Location = new System.Drawing.Point(20, 87);
             this.trbFlag.Maximum = 50;
             this.trbFlag.Name = "trbFlag";
-            this.trbFlag.Size = new System.Drawing.Size(285, 56);
+            this.trbFlag.Size = new System.Drawing.Size(214, 45);
             this.trbFlag.SmallChange = 2;
             this.trbFlag.TabIndex = 3;
             this.trbFlag.Value = 1;
@@ -140,9 +136,10 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 164);
+            this.label5.Location = new System.Drawing.Point(16, 133);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(87, 17);
+            this.label5.Size = new System.Drawing.Size(66, 13);
             this.label5.TabIndex = 4;
             this.label5.Text = "Description :";
             // 
@@ -151,21 +148,21 @@
             this.txtDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDescription.Location = new System.Drawing.Point(24, 182);
-            this.txtDescription.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtDescription.Location = new System.Drawing.Point(18, 148);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(288, 145);
+            this.txtDescription.Size = new System.Drawing.Size(217, 119);
             this.txtDescription.TabIndex = 5;
             // 
             // txtName
             // 
             this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(28, 47);
-            this.txtName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtName.Location = new System.Drawing.Point(21, 38);
+            this.txtName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(284, 22);
+            this.txtName.Size = new System.Drawing.Size(214, 20);
             this.txtName.TabIndex = 1;
             // 
             // label6
@@ -173,9 +170,10 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(24, 26);
+            this.label6.Location = new System.Drawing.Point(18, 21);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 17);
+            this.label6.Size = new System.Drawing.Size(41, 13);
             this.label6.TabIndex = 0;
             this.label6.Text = "Name :";
             // 
@@ -184,20 +182,19 @@
             this.lblFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFlag.AutoSize = true;
-            this.lblFlag.Location = new System.Drawing.Point(24, 87);
+            this.lblFlag.Location = new System.Drawing.Point(18, 71);
+            this.lblFlag.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblFlag.Name = "lblFlag";
-            this.lblFlag.Size = new System.Drawing.Size(43, 17);
+            this.lblFlag.Size = new System.Drawing.Size(33, 13);
             this.lblFlag.TabIndex = 2;
             this.lblFlag.Text = "Flag :";
             // 
             // lboxPermissions
             // 
             this.lboxPermissions.FormattingEnabled = true;
-            this.lboxPermissions.ItemHeight = 16;
-            this.lboxPermissions.Location = new System.Drawing.Point(424, 37);
-            this.lboxPermissions.Margin = new System.Windows.Forms.Padding(4);
+            this.lboxPermissions.Location = new System.Drawing.Point(318, 30);
             this.lboxPermissions.Name = "lboxPermissions";
-            this.lboxPermissions.Size = new System.Drawing.Size(217, 276);
+            this.lboxPermissions.Size = new System.Drawing.Size(164, 225);
             this.lboxPermissions.TabIndex = 2;
             this.lboxPermissions.SelectedIndexChanged += new System.EventHandler(this.Permissions_SelectedIndexChanged);
             // 
@@ -210,11 +207,9 @@
             this.gboxPermissionGroup.Controls.Add(this.btnApplyPermissionGroup);
             this.gboxPermissionGroup.Controls.Add(this.label2);
             this.gboxPermissionGroup.Controls.Add(this.txtEntityName);
-            this.gboxPermissionGroup.Location = new System.Drawing.Point(19, 16);
-            this.gboxPermissionGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.gboxPermissionGroup.Location = new System.Drawing.Point(14, 13);
             this.gboxPermissionGroup.Name = "gboxPermissionGroup";
-            this.gboxPermissionGroup.Padding = new System.Windows.Forms.Padding(4);
-            this.gboxPermissionGroup.Size = new System.Drawing.Size(361, 343);
+            this.gboxPermissionGroup.Size = new System.Drawing.Size(271, 279);
             this.gboxPermissionGroup.TabIndex = 0;
             this.gboxPermissionGroup.TabStop = false;
             this.gboxPermissionGroup.Text = "Permission Group";
@@ -223,20 +218,23 @@
             // 
             this.txtGroupName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtGroupName.Location = new System.Drawing.Point(23, 107);
-            this.txtGroupName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtGroupName.Location = new System.Drawing.Point(17, 87);
+            this.txtGroupName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtGroupName.Name = "txtGroupName";
-            this.txtGroupName.Size = new System.Drawing.Size(295, 22);
+            this.txtGroupName.Size = new System.Drawing.Size(222, 20);
             this.txtGroupName.TabIndex = 3;
+            this.txtGroupName.Text = "2222";
+            this.txtGroupName.Enter += new System.EventHandler(this.GroupName_Enter);
             // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 86);
+            this.label3.Location = new System.Drawing.Point(14, 70);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 17);
+            this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Name :";
             // 
@@ -245,9 +243,10 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(21, 137);
+            this.label4.Location = new System.Drawing.Point(16, 111);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(87, 17);
+            this.label4.Size = new System.Drawing.Size(66, 13);
             this.label4.TabIndex = 4;
             this.label4.Text = "Description :";
             // 
@@ -256,19 +255,18 @@
             this.txtGroupDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtGroupDescription.Location = new System.Drawing.Point(24, 156);
-            this.txtGroupDescription.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtGroupDescription.Location = new System.Drawing.Point(18, 127);
+            this.txtGroupDescription.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtGroupDescription.Multiline = true;
             this.txtGroupDescription.Name = "txtGroupDescription";
-            this.txtGroupDescription.Size = new System.Drawing.Size(295, 141);
+            this.txtGroupDescription.Size = new System.Drawing.Size(222, 115);
             this.txtGroupDescription.TabIndex = 5;
             // 
             // btnApplyPermissionGroup
             // 
-            this.btnApplyPermissionGroup.Location = new System.Drawing.Point(23, 301);
-            this.btnApplyPermissionGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.btnApplyPermissionGroup.Location = new System.Drawing.Point(17, 245);
             this.btnApplyPermissionGroup.Name = "btnApplyPermissionGroup";
-            this.btnApplyPermissionGroup.Size = new System.Drawing.Size(199, 32);
+            this.btnApplyPermissionGroup.Size = new System.Drawing.Size(149, 26);
             this.btnApplyPermissionGroup.TabIndex = 6;
             this.btnApplyPermissionGroup.Text = "Add Default Permissions";
             this.btnApplyPermissionGroup.UseVisualStyleBackColor = true;
@@ -279,9 +277,10 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 37);
+            this.label2.Location = new System.Drawing.Point(15, 30);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 17);
+            this.label2.Size = new System.Drawing.Size(70, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "Entity Name :";
             // 
@@ -289,12 +288,11 @@
             // 
             this.txtEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEntityName.Location = new System.Drawing.Point(23, 57);
-            this.txtEntityName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtEntityName.Location = new System.Drawing.Point(17, 46);
+            this.txtEntityName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtEntityName.Name = "txtEntityName";
-            this.txtEntityName.Size = new System.Drawing.Size(295, 22);
+            this.txtEntityName.Size = new System.Drawing.Size(222, 20);
             this.txtEntityName.TabIndex = 1;
-            this.txtEntityName.Leave += new System.EventHandler(this.EntityName_Leave);
             // 
             // lblStepInfo
             // 
@@ -304,9 +302,10 @@
             this.lblStepInfo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblStepInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStepInfo.ForeColor = System.Drawing.Color.MediumBlue;
-            this.lblStepInfo.Location = new System.Drawing.Point(15, 12);
+            this.lblStepInfo.Location = new System.Drawing.Point(11, 10);
+            this.lblStepInfo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStepInfo.Name = "lblStepInfo";
-            this.lblStepInfo.Size = new System.Drawing.Size(979, 34);
+            this.lblStepInfo.Size = new System.Drawing.Size(734, 28);
             this.lblStepInfo.TabIndex = 0;
             this.lblStepInfo.Text = "Permission Designer";
             this.lblStepInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -315,10 +314,10 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(901, 447);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnCancel.Location = new System.Drawing.Point(676, 363);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(100, 34);
+            this.btnCancel.Size = new System.Drawing.Size(75, 28);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -327,10 +326,9 @@
             // btnGenarateScript
             // 
             this.btnGenarateScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGenarateScript.Location = new System.Drawing.Point(753, 447);
-            this.btnGenarateScript.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGenarateScript.Location = new System.Drawing.Point(565, 363);
             this.btnGenarateScript.Name = "btnGenarateScript";
-            this.btnGenarateScript.Size = new System.Drawing.Size(141, 34);
+            this.btnGenarateScript.Size = new System.Drawing.Size(106, 28);
             this.btnGenarateScript.TabIndex = 2;
             this.btnGenarateScript.Text = "Generate Script";
             this.btnGenarateScript.UseVisualStyleBackColor = true;
@@ -338,14 +336,14 @@
             // 
             // PermissionDesignerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1009, 492);
+            this.ClientSize = new System.Drawing.Size(757, 400);
             this.Controls.Add(this.btnGenarateScript);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.pnlPage);
             this.Controls.Add(this.lblStepInfo);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PermissionDesignerForm";
