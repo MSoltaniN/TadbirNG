@@ -30,13 +30,20 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             lboxPermissions.DisplayMember = "Name";
         }
 
+        private void GroupName_Enter(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtGroupName.Text) && !String.IsNullOrEmpty(txtEntityName.Text))
+            {
+                txtGroupName.Text = String.Format("ManageEntities,{0}", GetPluralName(txtEntityName.Text));
+            }
+        }
+
         private void AddDefaultPermissions_Click(object sender, EventArgs e)
         {
             if(!ValidateGroup())
             {
                 return;
             }
-
             ApplyPermissionGroup();
             LoadDefaultPermissions();
             lboxPermissions.SelectedIndex = 0;
@@ -140,14 +147,6 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         private void Flag_Scroll(object sender, EventArgs e)
         {
             ShowFlagLabel();
-        }
-
-        private void EntityName_Leave(object sender, EventArgs e)
-        {
-            if (String.IsNullOrEmpty(txtGroupName.Text) && !String.IsNullOrEmpty(txtEntityName.Text))
-            {
-                txtGroupName.Text = String.Format("ManageEntities,{0}", GetPluralName(txtEntityName.Text));
-            }
         }
 
         private void SetupBindings()

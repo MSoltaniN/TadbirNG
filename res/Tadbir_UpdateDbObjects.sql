@@ -1348,3 +1348,7 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (122, 1, 2, NULL, 17, 51, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.944
+sp_changedbowner 'NgTadbirUser'
+
