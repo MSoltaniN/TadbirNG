@@ -29,6 +29,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/sysissues
+        [HttpGet]
         [Route(SystemIssueApi.SystemIssuesUrl)]
         [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetSystemIssuesAsync()

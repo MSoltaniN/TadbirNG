@@ -24,6 +24,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/profitloss
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
         [Route(ProfitLossApi.ProfitLossUrl)]
         public async Task<IActionResult> GetProfitLossAsync(
@@ -33,6 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/profitloss/simple
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
         [Route(ProfitLossApi.ProfitLossSimpleUrl)]
         public async Task<IActionResult> GetSimpleProfitLossAsync(

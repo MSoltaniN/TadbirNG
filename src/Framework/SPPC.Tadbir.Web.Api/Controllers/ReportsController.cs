@@ -39,6 +39,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Report Management API
 
         // GET: api/reports/sys/tree
+        [HttpGet]
         [Route(ReportApi.ReportsHierarchyUrl)]
         public async Task<IActionResult> GetReportTreeAsync()
         {
@@ -48,6 +49,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/sys/view/{viewId:min(1)}
+        [HttpGet]
         [Route(ReportApi.ReportsByViewUrl)]
         public async Task<IActionResult> GetReportTreeByViewAsync(int viewId)
         {
@@ -57,6 +59,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/sys/subsys/{subsysId:min(1)}
+        [HttpGet]
         [Route(ReportApi.ReportsBySubsystemUrl)]
         public async Task<IActionResult> GetReportTreeBySubsystemAsync(int subsysId)
         {
@@ -66,6 +69,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/sys/{reportId:min(1)}
+        [HttpGet]
         [Route(ReportApi.ReportUrl)]
         public async Task<IActionResult> GetReportAsync(int reportId)
         {
@@ -76,6 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/sys/{reportId:min(1)}/design
+        [HttpGet]
         [Route(ReportApi.ReportDesignUrl)]
         public async Task<IActionResult> GetReportDesignAsync(int reportId)
         {
@@ -84,6 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(reportDesign);
         }
 
+        [HttpGet]
         [Route(ReportApi.ReportsByViewDefaultUrl)]
         public async Task<IActionResult> GetDefaultReportByViewAsync(int viewId)
         {
@@ -247,6 +253,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Business Reports API
 
         // GET: api/reports/metadata/{viewId:min(1)}
+        [HttpGet]
         [Route(ReportApi.ReportMetadataByViewUrl)]
         public async Task<IActionResult> GetReportMetadataByViewAsync(int viewId)
         {
@@ -255,6 +262,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/voucher/sum-by-date
+        [HttpGet]
         [Route(ReportApi.EnvironmentVoucherSummaryByDateUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVoucherSummaryByDateAsync()
@@ -267,6 +275,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/voucher/std-form
+        [HttpGet]
         [Route(ReportApi.VoucherStandardFormUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetStandardVoucherFormAsync()
@@ -277,6 +286,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/reports/voucher/std-form-detail
+        [HttpGet]
         [Route(ReportApi.VoucherStandardFormWithDetailUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync()
@@ -582,8 +592,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             else
             {
                 orderdColumns = (from c in columns
-                                     orderby c.DisplayIndex descending
-                                     where c.Visible
+                                 orderby c.DisplayIndex descending
+                                 where c.Visible
                                  select c).ToList();
             }
 

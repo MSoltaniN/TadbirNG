@@ -31,6 +31,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings
+        [HttpGet]
         [Route(SettingsApi.AllSettingsUrl)]
         [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ViewSettings)]
         public async Task<IActionResult> GetAllSettingsAsync()
@@ -60,6 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings/{settingId:min(1)}
+        [HttpGet]
         [Route(SettingsApi.SettingUrl)]
         public async Task<IActionResult> GetSettingByIdAsync(int settingId)
         {
@@ -74,6 +76,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings/list/users/{userId:min(1)}
+        [HttpGet]
         [Route(SettingsApi.ListSettingsByUserUrl)]
         public async Task<IActionResult> GetListSettingsByUserAsync(int userId)
         {
@@ -83,6 +86,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings/list/users/{userId:min(1)}/views/{viewId:min(1)}
+        [HttpGet]
         [Route(SettingsApi.ListSettingsByUserAndViewUrl)]
         public async Task<IActionResult> GetListSettingsByUserAndViewAsync(int userId, int viewId)
         {
@@ -122,6 +126,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings/qsearch/users/{userId:min(1)}/views/{viewId:min(1)}
+        [HttpGet]
         [Route(SettingsApi.QuickSearchSettingsByUserAndViewUrl)]
         public async Task<IActionResult> GetQSearchSettingsByUserAndViewAsync(int userId, int viewId)
         {
@@ -146,6 +151,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings/qreport/users/{userId:min(1)}/views/{viewId:min(1)}
+        [HttpGet]
         [Route(SettingsApi.QuickReportSettingsByUserAndViewUrl)]
         public async Task<IActionResult> GetQReportSettingsByUserAndViewAsync(int userId, int viewId)
         {
@@ -170,6 +176,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings/views/{viewId:min(1)}/tree
+        [HttpGet]
         [Route(SettingsApi.ViewTreeSettingsByViewUrl)]
         [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ViewSettings)]
         public async Task<IActionResult> GetViewTreeSettingsByViewAsync(int viewId)
@@ -195,6 +202,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings/log
+        [HttpGet]
         [Route(SettingsApi.LogSettingsUrl)]
         [AuthorizeRequest]
         public async Task<IActionResult> GetLogSettingsAsync()
@@ -206,6 +214,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/settings/sys/log
+        [HttpGet]
         [Route(SettingsApi.SystemLogSettingsUrl)]
         [AuthorizeRequest]
         public async Task<IActionResult> GetSystemLogSettingsAsync()

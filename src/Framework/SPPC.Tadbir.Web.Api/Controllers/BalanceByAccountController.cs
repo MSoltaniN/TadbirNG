@@ -22,6 +22,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/balancebyacc
+        [HttpGet]
         [Route(BalanceByAccountApi.BalanceByAccountUrl)]
         [AuthorizeRequest(SecureEntity.BalanceByAccount, (int)BalanceByAccountPermissions.View)]
         public async Task<IActionResult> GetBalanceByAccountAsync()

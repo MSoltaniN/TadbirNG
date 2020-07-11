@@ -38,6 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts
+        [HttpGet]
         [Route(AccountApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentAccountsAsync()
@@ -48,6 +49,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/lookup
+        [HttpGet]
         [Route(AccountApi.EnvironmentAccountsLookupUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentAccountsLookupAsync()
@@ -57,6 +59,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/{accountId:min(1)}
+        [HttpGet]
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountAsync(int accountId)
@@ -66,6 +69,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/fulldata/{accountId:min(1)}
+        [HttpGet]
         [Route(AccountApi.AccountFullDataUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountFullDataAsync(int accountId)
@@ -75,6 +79,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/{accountId:int}/children/new
+        [HttpGet]
         [Route(AccountApi.EnvironmentNewChildAccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewAccountAsync(int accountId)
@@ -94,6 +99,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/ledger
+        [HttpGet]
         [Route(AccountApi.EnvironmentLedgerAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentLedgerAccountsAsync()
@@ -103,6 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/ledger/{groupId:min(1)}
+        [HttpGet]
         [Route(AccountApi.EnvironmentLedgerAccountsByGroupIdUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetEnvironmentLedgerAccountsByGroupIdAsync(int groupId)
@@ -112,6 +119,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/{accountId:min(1)}/children
+        [HttpGet]
         [Route(AccountApi.AccountChildrenUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountChildrenAsync(int accountId)

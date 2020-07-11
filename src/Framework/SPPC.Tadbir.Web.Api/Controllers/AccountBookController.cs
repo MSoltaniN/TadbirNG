@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Account Books
 
         // GET: api/accbook/account/{accountId:min(1)}/by-row
+        [HttpGet]
         [Route(AccountBookApi.AccountBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetAccountBookByRowAsync(
@@ -37,6 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/voucher-sum
+        [HttpGet]
         [Route(AccountBookApi.AccountBookVoucherSumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetAccountBookVoucherSumAsync(
@@ -46,6 +48,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/daily-sum
+        [HttpGet]
         [Route(AccountBookApi.AccountBookDailySumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetAccountBookDailySumAsync(
@@ -55,6 +58,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/monthly-sum
+        [HttpGet]
         [Route(AccountBookApi.AccountBookMonthlySumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetAccountBookMonthlySumAsync(
@@ -64,6 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/by-row/by-branch
+        [HttpGet]
         [Route(AccountBookApi.AccountBookByRowByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetAccountBookByRowByBranchAsync(
@@ -73,6 +78,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/voucher-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.AccountBookVoucherSumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetAccountBookVoucherSumByBranchAsync(
@@ -82,6 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/daily-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.AccountBookDailySumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetAccountBookDailySumByBranchAsync(
@@ -91,6 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/monthly-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.AccountBookMonthlySumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetAccountBookMonthlySumByBranchAsync(
@@ -104,6 +112,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region DetailAccount Books
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/by-row
+        [HttpGet]
         [Route(AccountBookApi.DetailAccountBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetDetailAccountBookByRowAsync(
@@ -113,6 +122,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/voucher-sum
+        [HttpGet]
         [Route(AccountBookApi.DetailAccountBookVoucherSumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetDetailAccountBookVoucherSumAsync(
@@ -122,6 +132,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/daily-sum
+        [HttpGet]
         [Route(AccountBookApi.DetailAccountBookDailySumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetDetailAccountBookDailySumAsync(
@@ -131,6 +142,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/monthly-sum
+        [HttpGet]
         [Route(AccountBookApi.DetailAccountBookMonthlySumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetDetailAccountBookMonthlySumAsync(
@@ -140,6 +152,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/by-row/by-branch
+        [HttpGet]
         [Route(AccountBookApi.DetailAccountBookByRowByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetDetailAccountBookByRowByBranchAsync(
@@ -149,6 +162,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/voucher-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.DetailAccountBookVoucherSumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetDetailAccountBookVoucherSumByBranchAsync(
@@ -158,6 +172,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/daily-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.DetailAccountBookDailySumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetDetailAccountBookDailySumByBranchAsync(
@@ -167,6 +182,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/monthly-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.DetailAccountBookMonthlySumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetDetailAccountBookMonthlySumByBranchAsync(
@@ -180,6 +196,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region CostCenter Books
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/by-row
+        [HttpGet]
         [Route(AccountBookApi.CostCenterBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetCostCenterBookByRowAsync(
@@ -189,6 +206,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/voucher-sum
+        [HttpGet]
         [Route(AccountBookApi.CostCenterBookVoucherSumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetCostCenterBookVoucherSumAsync(
@@ -198,6 +216,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/daily-sum
+        [HttpGet]
         [Route(AccountBookApi.CostCenterBookDailySumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetCostCenterBookDailySumAsync(
@@ -207,6 +226,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/monthly-sum
+        [HttpGet]
         [Route(AccountBookApi.CostCenterBookMonthlySumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetCostCenterBookMonthlySumAsync(
@@ -216,6 +236,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/by-row/by-branch
+        [HttpGet]
         [Route(AccountBookApi.CostCenterBookByRowByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetCostCenterBookByRowByBranchAsync(
@@ -225,6 +246,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/voucher-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.CostCenterBookVoucherSumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetCostCenterBookVoucherSumByBranchAsync(
@@ -234,6 +256,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/daily-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.CostCenterBookDailySumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetCostCenterBookDailySumByBranchAsync(
@@ -243,6 +266,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/monthly-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.CostCenterBookMonthlySumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetCostCenterBookMonthlySumByBranchAsync(
@@ -256,6 +280,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Project Books
 
         // GET: api/accbook/project/{projectId:min(1)}/by-row
+        [HttpGet]
         [Route(AccountBookApi.ProjectBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetProjectBookByRowAsync(
@@ -265,6 +290,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/voucher-sum
+        [HttpGet]
         [Route(AccountBookApi.ProjectBookVoucherSumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetProjectBookVoucherSumAsync(
@@ -274,6 +300,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/daily-sum
+        [HttpGet]
         [Route(AccountBookApi.ProjectBookDailySumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetProjectBookDailySumAsync(
@@ -283,6 +310,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/monthly-sum
+        [HttpGet]
         [Route(AccountBookApi.ProjectBookMonthlySumUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetProjectBookMonthlySumAsync(
@@ -292,6 +320,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/by-row/by-branch
+        [HttpGet]
         [Route(AccountBookApi.ProjectBookByRowByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetProjectBookByRowByBranchAsync(
@@ -301,6 +330,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/voucher-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.ProjectBookVoucherSumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetProjectBookVoucherSumByBranchAsync(
@@ -310,6 +340,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/daily-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.ProjectBookDailySumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetProjectBookDailySumByBranchAsync(
@@ -319,6 +350,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/monthly-sum/by-branch
+        [HttpGet]
         [Route(AccountBookApi.ProjectBookMonthlySumByBranchUrl)]
         [AuthorizeRequest(SecureEntity.AccountBook, (int)AccountBookPermissions.View)]
         public async Task<IActionResult> GetProjectBookMonthlySumByBranchAsync(
@@ -332,6 +364,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Account Item Navigation
 
         // GET: api/accbook/view/{viewId:min(1)}/item/{itemId:min(1)}/prev
+        [HttpGet]
         [Route(AccountBookApi.PreviousEnvironmentItemUrl)]
         public async Task<IActionResult> GetPreviousEnvironmentItemAsync(int viewId, int itemId)
         {
@@ -340,6 +373,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accbook/view/{viewId:min(1)}/item/{itemId:min(1)}/next
+        [HttpGet]
         [Route(AccountBookApi.NextEnvironmentItemUrl)]
         public async Task<IActionResult> GetNextEnvironmentItemAsync(int viewId, int itemId)
         {

@@ -37,6 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/projects
+        [HttpGet]
         [Route(ProjectApi.EnvironmentProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetEnvironmentProjectsAsync()
@@ -46,6 +47,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/projects/lookup
+        [HttpGet]
         [Route(ProjectApi.EnvironmentProjectsLookupUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetEnvironmentProjectsLookupAsync()
@@ -55,6 +57,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/projects/{projectId:min(1)}
+        [HttpGet]
         [Route(ProjectApi.ProjectUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectAsync(int projectId)
@@ -64,6 +67,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/projects/{projectId:int}/children/new
+        [HttpGet]
         [Route(ProjectApi.EnvironmentNewChildProjectUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewProjectAsync(int projectId)
@@ -84,6 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/projects/ledger
+        [HttpGet]
         [Route(ProjectApi.EnvironmentProjectsLedgerUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetEnvironmentAccountsLedgerAsync()
@@ -93,6 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/projects/{projectId:min(1)}/children
+        [HttpGet]
         [Route(ProjectApi.ProjectChildrenUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectChildrenAsync(int projectId)
@@ -102,6 +108,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/projects/fullcode/{parentId}
+        [HttpGet]
         [HttpGet]
         [Route(ProjectApi.ProjectFullCodeUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create | (int)ProjectPermissions.Edit)]

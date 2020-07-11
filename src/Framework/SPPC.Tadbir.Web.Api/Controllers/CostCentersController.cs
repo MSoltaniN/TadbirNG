@@ -37,6 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/ccenters
+        [HttpGet]
         [Route(CostCenterApi.EnvironmentCostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersAsync()
@@ -46,6 +47,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/ccenters/lookup
+        [HttpGet]
         [Route(CostCenterApi.EnvironmentCostCentersLookupUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersLookupAsync()
@@ -55,6 +57,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/ccenters/{ccenterId:min(1)}
+        [HttpGet]
         [Route(CostCenterApi.CostCenterUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCenterAsync(int ccenterId)
@@ -64,6 +67,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/ccenters/{ccenterId:int}/children/new
+        [HttpGet]
         [Route(CostCenterApi.EnvironmentNewChildCostCenterUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create)]
         public async Task<IActionResult> GetEnvironmentNewCostCenterAsync(int ccenterId)
@@ -84,6 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/ccenters/ledger
+        [HttpGet]
         [Route(CostCenterApi.EnvironmentCostCentersLedgerUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersLedgerAsync()
@@ -93,6 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/ccenters/{ccenterId:min(1)}/children
+        [HttpGet]
         [Route(CostCenterApi.CostCenterChildrenUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCenterChildrenAsync(int ccenterId)
