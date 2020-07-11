@@ -19,6 +19,7 @@ using SPPC.Tadbir.Web.Api.Filters;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
+
     public class TestBalanceController : ApiControllerBase
     {
         public TestBalanceController(ITestBalanceRepository repository, IStringLocalizer<AppStrings> strings)
@@ -28,6 +29,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/lookup/types
+        [HttpGet]
         [Route(TestBalanceApi.TestBalanceTypeLookupUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTestBalanceTypesLookupAsync()
@@ -40,6 +42,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Specific Level reports
 
         // GET: api/testbal/levels/{level:min(1)}/2-col
+        [HttpGet]
         [Route(TestBalanceApi.TwoColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTwoColumnLevelBalanceAsync(
@@ -50,6 +53,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/levels/{level:min(1)}/4-col
+        [HttpGet]
         [Route(TestBalanceApi.FourColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetFourColumnLevelBalanceAsync(
@@ -60,6 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/levels/{level:min(1)}/6-col
+        [HttpGet]
         [Route(TestBalanceApi.SixColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetSixColumnLevelBalanceAsync(
@@ -71,6 +76,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/levels/{level:min(1)}/8-col
+        [HttpGet]
         [Route(TestBalanceApi.EightColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetEightColumnLevelBalanceAsync(
@@ -81,6 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/levels/{level:min(1)}/10-col
+        [HttpGet]
         [Route(TestBalanceApi.TenColumnLevelBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTenColumnLevelBalanceAsync(
@@ -95,6 +102,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Child Items Level reports
 
         // GET: api/testbal/{accountId:min(1)}/items/2-col
+        [HttpGet]
         [Route(TestBalanceApi.TwoColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTwoColumnChildItemsBalanceAsync(
@@ -105,6 +113,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/{accountId:min(1)}/items/4-col
+        [HttpGet]
         [Route(TestBalanceApi.FourColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetFourColumnChildItemsBalanceAsync(
@@ -115,6 +124,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/{accountId:min(1)}/items/6-col
+        [HttpGet]
         [Route(TestBalanceApi.SixColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetSixColumnChildItemsBalanceAsync(
@@ -125,6 +135,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/{accountId:min(1)}/items/8-col
+        [HttpGet]
         [Route(TestBalanceApi.EightColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetEightColumnChildItemsBalanceAsync(
@@ -135,6 +146,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/testbal/{accountId:min(1)}/items/10-col
+        [HttpGet]
         [Route(TestBalanceApi.TenColumnChildItemsBalanceUrl)]
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTenColumnChildItemsBalanceAsync(

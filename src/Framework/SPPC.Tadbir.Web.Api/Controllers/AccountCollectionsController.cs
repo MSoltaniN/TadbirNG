@@ -27,6 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/acccollections
+        [HttpGet]
         [Route(AccountCollectionApi.AccountCollectionsUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionCategoriesAsync()
@@ -36,6 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // Get: api/acccollections/collection/{collectionId:min(1)}
+        [HttpGet]
         [Route(AccountCollectionApi.AccountCollectionAccountUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionAccountAsync(int collectionId)

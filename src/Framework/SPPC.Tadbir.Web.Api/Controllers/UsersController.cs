@@ -41,6 +41,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users
+        [HttpGet]
         [Route(UserApi.UsersUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUsersAsync()
@@ -50,6 +51,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users/name/{userName}
+        [HttpGet]
         [Route(UserApi.UserByNameUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUserByNameAsync(string userName)
@@ -64,6 +66,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users/{userId:min(1)}
+        [HttpGet]
         [Route(UserApi.UserUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUserAsync(int userId)
@@ -74,6 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users/current/commands
+        [HttpGet]
         [Route(UserApi.CurrentUserCommandsUrl)]
         public async Task<IActionResult> GetCurrentUserCommandsAsync()
         {
@@ -96,6 +100,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users/default/commands
+        [HttpGet]
         [Route(UserApi.UserDefaultCommandsUrl)]
         public async Task<IActionResult> GetUserDefaultCommandsAsync()
         {
@@ -209,6 +214,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users/{userId:min(1)}/context
+        [HttpGet]
         [Route(UserApi.UserContextUrl)]
         public async Task<IActionResult> GetUserContextAsync(int userId)
         {
@@ -276,6 +282,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users/{userId:min(1)}/roles
+        [HttpGet]
         [Route(UserApi.UserRolesUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUserRolesAsync(int userId)
@@ -286,6 +293,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users/specialpassword/{specialpassword}
+        [HttpGet]
         [Route(UserApi.CheckSpecialPasswordUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> CheckSpecialPasswordAsync(string specialPassword)
@@ -335,6 +343,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users/{userId:min(1)}/ticket
+        [HttpGet]
         [Route("users/{userId:min(1)}/ticket")]
         public IActionResult GetUserTicket(int userId)
         {

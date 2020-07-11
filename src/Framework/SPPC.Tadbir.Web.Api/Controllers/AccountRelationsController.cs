@@ -31,6 +31,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/accounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         [Route(AccountRelationApi.EnvironmentAccountsUrl)]
         public async Task<IActionResult> GetEnvironmentConnectableAccountsAsync()
@@ -40,6 +41,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/faccounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         [Route(AccountRelationApi.EnvironmentDetailAccountsUrl)]
         public async Task<IActionResult> GetEnvironmentConnectableDetailAccountsAsync()
@@ -49,6 +51,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/ccenters
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         [Route(AccountRelationApi.EnvironmentCostCentersUrl)]
         public async Task<IActionResult> GetEnvironmentConnectableCostCentersAsync()
@@ -58,6 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/projects
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         [Route(AccountRelationApi.EnvironmentProjectsUrl)]
         public async Task<IActionResult> GetEnvironmentConnectableProjectsAsync()
@@ -67,6 +71,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/accounts/lookup
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         [Route(AccountRelationApi.EnvironmentAccountsLookupUrl)]
         public async Task<IActionResult> GetUsableAccountsLookupAsync()
@@ -76,6 +81,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/faccounts/lookup
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         [Route(AccountRelationApi.EnvironmentDetailAccountsLookupUrl)]
         public async Task<IActionResult> GetUsableDetailAccountsLookupAsync()
@@ -85,6 +91,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/ccenters/lookup
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         [Route(AccountRelationApi.EnvironmentCostCentersLookupUrl)]
         public async Task<IActionResult> GetUsableCostCentersLookupAsync()
@@ -94,6 +101,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/projects/lookup
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         [Route(AccountRelationApi.EnvironmentProjectsLookupUrl)]
         public async Task<IActionResult> GetUsableProjectsLookupAsync()
@@ -103,6 +111,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/account/{accountId:min(1)}/faccounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountDetailAccountsAsync(int accountId)
@@ -112,6 +121,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/account/{accountId:min(1)}/faccounts/usable
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.UsableDetailAccountsRelatedToAccountUrl)]
         public async Task<IActionResult> GetUsableAccountDetailAccountsAsync(int accountId)
@@ -155,6 +165,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/account/{accountId:min(1)}/ccenters
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.CostCentersRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountCostCentersAsync(int accountId)
@@ -164,6 +175,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/account/{accountId:min(1)}/ccenters/usable
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.UsableCostCentersRelatedToAccountUrl)]
         public async Task<IActionResult> GetUsableAccountCostCentersAsync(int accountId)
@@ -207,6 +219,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/account/{accountId:min(1)}/projects
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.ProjectsRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountProjectsAsync(int accountId)
@@ -216,6 +229,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/account/{accountId:min(1)}/projects/usable
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.UsableProjectsRelatedToAccountUrl)]
         public async Task<IActionResult> GetUsableAccountProjectsAsync(int accountId)
@@ -259,6 +273,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/faccount/{faccountId:min(1)}/accounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToDetailAccountUrl)]
         public async Task<IActionResult> GetDetailAccountAccountsAsync(int faccountId)
@@ -302,6 +317,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/ccenter/{ccenterId:min(1)}/accounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToCostCenterUrl)]
         public async Task<IActionResult> GetCostCenterAccountsAsync(int ccenterId)
@@ -345,6 +361,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/project/{projectId:min(1)}/accounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToProjectUrl)]
         public async Task<IActionResult> GetProjectAccountsAsync(int projectId)
@@ -388,6 +405,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/free/accounts/{accountId:min(1)}/faccounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.DetailAccountsNotRelatedToAccountUrl)]
         public async Task<IActionResult> GetConnectableDetailAccountsForAccountAsync(int accountId)
@@ -398,6 +416,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/free/accounts/{accountId:min(1)}/ccenters
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.CostCentersNotRelatedToAccountUrl)]
         public async Task<IActionResult> GetConnectableCostCentersForAccountAsync(int accountId)
@@ -408,6 +427,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/free/accounts/{accountId:min(1)}/projects
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.ProjectsNotRelatedToAccountUrl)]
         public async Task<IActionResult> GetConnectableProjectsForAccountAsync(int accountId)
@@ -418,6 +438,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/free/faccounts/{faccountId:min(1)}/accounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.AccountsNotRelatedToDetailAccountUrl)]
         public async Task<IActionResult> GetConnectableAccountsForDetailAccountAsync(int faccountId)
@@ -428,6 +449,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/free/ccenters/{ccenterId:min(1)}/accounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.AccountsNotRelatedToCostCenterUrl)]
         public async Task<IActionResult> GetConnectableAccountsForCostCenterAsync(int ccenterId)
@@ -438,6 +460,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/relations/free/projects/{projectId:min(1)}/accounts
+        [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.AccountsNotRelatedToProjectUrl)]
         public async Task<IActionResult> GetConnectableAccountsForProjectAsync(int projectId)
