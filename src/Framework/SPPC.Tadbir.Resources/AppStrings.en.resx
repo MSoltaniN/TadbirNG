@@ -141,16 +141,16 @@
   <data name="AdminUserIsReadOnly" xml:space="preserve">
     <value>Administrator user cannot be modified or deleted.</value>
   </data>
-  <data name="CannotDeleteAssignedRole" xml:space="preserve">
+  <data name="CantDeleteAssignedRole" xml:space="preserve">
     <value>The role {0} is currently assigned to one or more users and cannot be deleted.</value>
   </data>
-  <data name="CannotDeleteNonLeafItem" xml:space="preserve">
+  <data name="CantDeleteNonLeafItem" xml:space="preserve">
     <value>The {0} {1} has one or more subitems and cannot be deleted.</value>
   </data>
-  <data name="CannotDeleteUsedItem" xml:space="preserve">
+  <data name="CantDeleteUsedItem" xml:space="preserve">
     <value>The {0} {1} is used in one or more vouchers and cannot be deleted.</value>
   </data>
-  <data name="CannotUseNonLeafItem" xml:space="preserve">
+  <data name="CantUseNonLeafItem" xml:space="preserve">
     <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers.</value>
   </data>
   <data name="ChangePassword" xml:space="preserve">
@@ -495,13 +495,13 @@
   <data name="VoucherLineDisplay" xml:space="preserve">
     <value>Debit: {0}, Credit : {1}, Description : {2}</value>
   </data>
-  <data name="CannotDeleteRelatedItem" xml:space="preserve">
+  <data name="CantDeleteRelatedItem" xml:space="preserve">
     <value>The {0} {1} is used in account relationships and cannot be deleted.</value>
   </data>
   <data name="ChangeCompany" xml:space="preserve">
     <value>Change Company</value>
   </data>
-  <data name="CannotDeleteRoleHavingRelation" xml:space="preserve">
+  <data name="CantDeleteRoleHavingRelation" xml:space="preserve">
     <value>The role {0} is currently related to at least one {1} and cannot be deleted.</value>
   </data>
   <data name="DbName" xml:space="preserve">
@@ -615,7 +615,7 @@
   <data name="SwitchCompany" xml:space="preserve">
     <value>Switch company</value>
   </data>
-  <data name="CannotDeleteAssignedBranch" xml:space="preserve">
+  <data name="CantDeleteAssignedBranch" xml:space="preserve">
     <value>The branch '{0}' is assigned to one or more roles and cannot be deleted.</value>
   </data>
   <data name="CantModifyCheckedDocument" xml:space="preserve">
@@ -840,10 +840,10 @@
   <data name="AccountTitle" xml:space="preserve">
     <value>Account title</value>
   </data>
-  <data name="CannotDeleteUsedInAccountCollection" xml:space="preserve">
+  <data name="CantDeleteUsedInAccountCollection" xml:space="preserve">
     <value>The account {0} is currently assigned to account collection and cannot be deleted.</value>
   </data>
-  <data name="CannotInsertLeafAccount" xml:space="preserve">
+  <data name="CantInsertLeafAccount" xml:space="preserve">
     <value>Parent account is used in an account collection at leaf level and a child account cannot be created for it.</value>
   </data>
   <data name="AsQuotedInVoucherLines" xml:space="preserve">
@@ -2658,7 +2658,7 @@
   <data name="SpecificRecordsNotSelected" xml:space="preserve">
     <value>No records are specified to filter {0} items.</value>
   </data>
-  <data name="CannotDeleteReferencedItem" xml:space="preserve">
+  <data name="CantDeleteReferencedItem" xml:space="preserve">
     <value>The {0} by name '{1}' is being used by other data in current company and cannot be deleted.</value>
   </data>
   <data name="CantDeleteCurrentItem" xml:space="preserve">
@@ -3144,7 +3144,7 @@
   <data name="ViewRates" xml:space="preserve">
     <value>View rates</value>
   </data>
-  <data name="CannotDeleteRoleHavingPermissions" xml:space="preserve">
+  <data name="CantDeleteRoleHavingPermissions" xml:space="preserve">
     <value>The role {0} has one or more row permissions and cannot be deleted.</value>
   </data>
   <data name="CantIssueVoucherFromLowerBranch" xml:space="preserve">
@@ -3157,7 +3157,7 @@
     <value>Closing temp accounts voucher is either not yet issued or in draft status.</value>
   </data>
   <data name="CantIssueClosingVoucherWithDraftVouchers" xml:space="preserve">
-    <value>Current fiscal period has one or more draft vouchers and closing voucher cannot be issued.</value>
+    <value>Current fiscal period has one or more draft vouchers and closing accounts voucher cannot be issued.</value>
   </data>
   <data name="ApproverName" xml:space="preserve">
     <value>Approver Name</value>

@@ -255,7 +255,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
-                return _strings.Format(AppStrings.CannotDeleteNonLeafItem, AppStrings.Branch, branch.Name);
+                return _strings.Format(AppStrings.CantDeleteNonLeafItem, AppStrings.Branch, branch.Name);
             }
 
             return String.Empty;

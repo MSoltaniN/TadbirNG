@@ -218,17 +218,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (hasChildren == true)
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.DetailAccount], detailInfo);
+                    _strings[AppStrings.CantDeleteNonLeafItem], _strings[AppStrings.DetailAccount], detailInfo);
             }
             else if (await _repository.IsUsedDetailAccountAsync(item))
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.DetailAccount], detailInfo);
+                    _strings[AppStrings.CantDeleteUsedItem], _strings[AppStrings.DetailAccount], detailInfo);
             }
             else if (await _repository.IsRelatedDetailAccountAsync(item))
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteRelatedItem], _strings[AppStrings.DetailAccount], detailInfo);
+                    _strings[AppStrings.CantDeleteRelatedItem], _strings[AppStrings.DetailAccount], detailInfo);
             }
 
             return message;
