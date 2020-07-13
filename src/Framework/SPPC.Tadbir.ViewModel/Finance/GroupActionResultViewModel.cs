@@ -5,9 +5,9 @@ using System.Text;
 namespace SPPC.Tadbir.ViewModel.Finance
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
-public class GroupActionResultViewModel
+    public class GroupActionResultViewModel
     {
         /// <summary>
         /// شناسه موجودیت
