@@ -219,17 +219,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (hasChildren == true)
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Project], projectInfo);
+                    _strings[AppStrings.CantDeleteNonLeafItem], _strings[AppStrings.Project], projectInfo);
             }
             else if (await _repository.IsUsedProjectAsync(item))
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.Project], projectInfo);
+                    _strings[AppStrings.CantDeleteUsedItem], _strings[AppStrings.Project], projectInfo);
             }
             else if (await _repository.IsRelatedProjectAsync(item))
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteRelatedItem], _strings[AppStrings.Project], projectInfo);
+                    _strings[AppStrings.CantDeleteRelatedItem], _strings[AppStrings.Project], projectInfo);
             }
 
             return message;

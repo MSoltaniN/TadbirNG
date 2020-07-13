@@ -1113,14 +1113,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            // Rule 2 : Current fiscal period MUST NOT have any unchecked vouchers
-            int draftCount = await _repository.GetCountByStatusAsync(VoucherStatusId.Draft);
-            if (draftCount > 0)
-            {
-                return BadRequest(_strings[AppStrings.CantIssueClosingVoucherWithDraftVouchers]);
-            }
-
-            // Rule 3 : Current fiscal period MUST have the closing temp accounts voucher
+            // Current fiscal period MUST have the closing temp accounts voucher
             if (!await _repository.IsCurrentSpecialVoucherCheckedAsync(VoucherType.ClosingTempAccounts))
             {
                 return BadRequest(_strings[AppStrings.ClosingAccountsVoucherNotIssuedOrChecked]);
@@ -1136,6 +1129,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 string message = _strings.Format(AppStrings.CantIssueVoucherFromLowerBranch, typeKey);
                 return BadRequest(message);
+            }
+
+            if (typeKey == AppStrings.ClosingTempAccounts)
+            {
+                // Rule 2 : Current fiscal period MUST NOT have any unchecked vouchers
+                int draftCount = await _repository.GetCountByStatusAsync(VoucherStatusId.Draft);
+                if (draftCount > 0)
+                {
+                    return BadRequest(_strings[AppStrings.CantIssueClosingVoucherWithDraftVouchers]);
+                }
             }
 
             return Ok();
