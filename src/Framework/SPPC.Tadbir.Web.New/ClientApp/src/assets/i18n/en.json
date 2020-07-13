@@ -885,7 +885,11 @@
     "AreYouAgree": "Are you Agree?",
     "Password": "Password",
     "Yes": "Yes",
-    "Not": "No"
+    "Not": "No",
+    "OperationSuccessful": "Operation Successful",
+    "vouchersListThatHasError": "vouchers List That Has Error",
+    "RowNo": "ردیف",
+    "VoucherNo": "شماره سند"
   },
   "User": {
     "New": "New User",
@@ -1089,6 +1093,13 @@
     "DeleteArchiveMsgConfirm": "Are you sure you want to delete the archive?",
     "ArchiveMsgConfirm": "Are you sure to archive active events?",
     "PleaseSelectRowsAsDeleteArchive": "Please select the desired events to delete from the archive"
+  },
+  "GroupActionResult": {
+    "Id": "Id  ",
+    "Name": "Name",
+    "FullCode": "FullCode",
+    "ErrorMesagge": "ErrorMesagge ",
+    "Date": "Date"
   },
   "MetaDataValidation": {
     "CodeLength": "Code length is not allowed"
