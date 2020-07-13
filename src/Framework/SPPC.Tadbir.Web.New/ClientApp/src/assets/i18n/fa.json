@@ -966,7 +966,12 @@
     "AreYouAgree": "آیا موافق هستید؟",
     "Password": "رمز عبور",
     "Yes": "بلی",
-    "Not": "خیر"
+    "Not": "خیر",
+    "OperationSuccessful": "عملیات  با موفقیت انجام شد",
+    "vouchersListThatHasError": "لیست اسنادی که با خطا مواجه شده اند",
+    "RowNo": "ردیف",
+    "VoucherNo": "شماره سند"
+
 
   },
   "User": {
@@ -1171,6 +1176,13 @@
     "DeleteArchiveMsgConfirm": "آیا برای حذف از بایگانی مطمئن هستید؟",
     "ArchiveMsgConfirm": "آیا برای بایگانی رویدادهای فعال مطمئن هستید؟",
     "PleaseSelectRowsAsDeleteArchive": "لطفا برای حذف از بایگانی رویداد های مورد نظر را انتخاب کنید"
+  },
+  "GroupActionResult": {
+    "Id": "شماره  ",
+    "Name": "نام",
+    "FullCode": "کد کامل",
+    "ErrorMesagge": "پیغام خطا",
+    "Date": "تاریخ"
   },
   "MetaDataValidation": {
     "CodeLength": "طول کد مجاز نمیباشد."
