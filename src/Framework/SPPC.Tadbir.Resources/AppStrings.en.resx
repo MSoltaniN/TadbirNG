@@ -3255,4 +3255,10 @@
   <data name="VoucherCount" xml:space="preserve">
     <value>Voucher count</value>
   </data>
+  <data name="InvalidVoucherActionMessage" xml:space="preserve">
+    <value>To perform '{0}' action on a voucher, first you have to {0} it.</value>
+  </data>
+  <data name="RepeatedVoucherActionMessage" xml:space="preserve">
+    <value>Action '{0}' has already been performed on this voucher.</value>
+  </data>
 </root>

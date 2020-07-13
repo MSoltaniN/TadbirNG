@@ -259,7 +259,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Check)]
         public async Task<IActionResult> PutExistingVoucherAsChecked(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Check);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Check);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -279,7 +279,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.Check);
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.Check);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -299,7 +299,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.UndoCheck);
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.UndoCheck);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -315,7 +315,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoCheck)]
         public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoCheck);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoCheck);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -331,7 +331,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public async Task<IActionResult> PutExistingVoucherAsConfirmed(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Confirm);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Confirm);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -347,7 +347,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoConfirm)]
         public async Task<IActionResult> PutExistingVoucherAsUnconfirmed(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoConfirm);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoConfirm);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -405,7 +405,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
         public async Task<IActionResult> PutExistingVoucherAsApproved(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Approve);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Approve);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -421,7 +421,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoApprove)]
         public async Task<IActionResult> PutExistingVoucherAsUnapproved(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoApprove);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoApprove);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -441,7 +441,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.Finalize);
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.Finalize);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -457,7 +457,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Finalize)]
         public async Task<IActionResult> PutExistingVoucherAsFinalized(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Finalize);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Finalize);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -477,7 +477,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.UndoFinalize);
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.UndoFinalize);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -493,7 +493,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoFinalize)]
         public async Task<IActionResult> PutExistingVoucherAsUnfinalized(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoFinalize);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoFinalize);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -827,7 +827,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (approveList.Count() > 0)
             {
-                var approveListValidation = await ValidateGroupCheckAsync(approveList, VoucherAction.UndoApprove);
+                var approveListValidation = await ValidateGroupCheckAsync(approveList, AppStrings.UndoApprove);
                 if (approveListValidation.Count() > 0)
                 {
                     foreach (var item in approveListValidation)
@@ -839,7 +839,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (confirmList.Count() > 0)
             {
-                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, VoucherAction.UndoConfirm);
+                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, AppStrings.UndoConfirm);
                 if (confirmListValidation.Count() > 0)
                 {
                     foreach (var item in confirmListValidation)
@@ -883,7 +883,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (approveList.Count() > 0)
             {
-                var approveListValidation = await ValidateGroupCheckAsync(approveList, VoucherAction.Approve);
+                var approveListValidation = await ValidateGroupCheckAsync(approveList, AppStrings.Approve);
                 if (approveListValidation.Count() > 0)
                 {
                     foreach (var item in approveListValidation)
@@ -895,7 +895,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (confirmList.Count() > 0)
             {
-                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, VoucherAction.Confirm);
+                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, AppStrings.Confirm);
                 if (confirmListValidation.Count() > 0)
                 {
                     foreach (var item in confirmListValidation)
@@ -958,11 +958,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private static bool IsVoucherMainAction(string action)
         {
-            return action == VoucherAction.Check
-                || action == VoucherAction.Confirm
-                || action == VoucherAction.Approve
-                || action == VoucherAction.Finalize
-                || action == VoucherAction.UndoFinalize;
+            return action == AppStrings.Check
+                || action == AppStrings.Confirm
+                || action == AppStrings.Approve
+                || action == AppStrings.Finalize
+                || action == AppStrings.UndoFinalize;
         }
 
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
@@ -1107,7 +1107,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var error = await _repository.ValidateVoucherActionAsync(voucherId, action);
             if (!String.IsNullOrEmpty(error))
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidVoucherAction, action, error));
+                return BadRequest(error);
             }
 
             if (IsVoucherMainAction(action))

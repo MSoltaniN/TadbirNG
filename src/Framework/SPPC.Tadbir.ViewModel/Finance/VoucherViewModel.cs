@@ -40,5 +40,15 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// جمع مقادیر بستانکار در آرتیکل های سند
         /// </summary>
         public decimal CreditSum { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا سند مورد نظر تایید شده است یا نه؟
+        /// </summary>
+        public bool IsConfirmed { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا سند مورد نظر تصویب شده است یا نه؟
+        /// </summary>
+        public bool IsApproved { get; set; }
     }
 }

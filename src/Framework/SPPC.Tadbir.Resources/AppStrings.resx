@@ -3246,4 +3246,10 @@
   <data name="VoucherCount" xml:space="preserve">
     <value>تعداد اسناد</value>
   </data>
+  <data name="InvalidVoucherActionMessage" xml:space="preserve">
+    <value>برای {0} سند، باید ابتدا سند را {1} کنید.</value>
+  </data>
+  <data name="RepeatedVoucherActionMessage" xml:space="preserve">
+    <value>سند مورد نظر قبلاً {0} شده است.</value>
+  </data>
 </root>
