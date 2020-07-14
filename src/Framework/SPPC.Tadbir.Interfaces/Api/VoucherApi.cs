@@ -113,166 +113,6 @@ namespace SPPC.Tadbir.Api
         public const string LastVoucherUrl = "vouchers/last";
 
         /// <summary>
-        /// API client URL for confirming multiple vouchers
-        /// </summary>
-        public const string ConfirmVouchers = "vouchers/confirm";
-
-        /// <summary>
-        /// API server route URL for confirming multiple vouchers
-        /// </summary>
-        public const string ConfirmVouchersUrl = "vouchers/confirm";
-
-        /// <summary>
-        /// API client URL for approving multiple vouchers
-        /// </summary>
-        public const string ApproveVouchers = "vouchers/approve";
-
-        /// <summary>
-        /// API server route URL for approving multiple vouchers
-        /// </summary>
-        public const string ApproveVouchersUrl = "vouchers/approve";
-
-        /// <summary>
-        /// API client URL for confirming a single voucher specified by identifier
-        /// </summary>
-        public const string ConfirmVoucher = "vouchers/{0}/confirm";
-
-        /// <summary>
-        /// API server route URL for confirming a single voucher specified by identifier
-        /// </summary>
-        public const string ConfirmVoucherUrl = "vouchers/{voucherId:min(1)}/confirm";
-
-        /// <summary>
-        /// API client URL for approving a single voucher specified by identifier
-        /// </summary>
-        public const string ApproveVoucher = "vouchers/{0}/approve";
-
-        /// <summary>
-        /// API server route URL for approving a single voucher specified by identifier
-        /// </summary>
-        public const string ApproveVoucherUrl = "vouchers/{voucherId:min(1)}/approve";
-
-        /// <summary>
-        /// API client URL for undoing confirmation of a single voucher specified by identifier
-        /// </summary>
-        public const string UndoConfirmVoucher = "vouchers/{0}/confirm/undo";
-
-        /// <summary>
-        /// API server route URL for undoing confirmation of a single voucher specified by identifier
-        /// </summary>
-        public const string UndoConfirmVoucherUrl = "vouchers/{voucherId:min(1)}/confirm/undo";
-
-        /// <summary>
-        /// API client URL for undoing confirmation and undoing approval document group
-        /// </summary>
-        public const string UndoConfirmGroupVouchers = "/vouchers/undoconfirmgroup";
-
-        /// <summary>
-        /// API server route URL for undoing confirmation and undoing approval document group
-        /// </summary>
-        public const string UndoConfirmGroupVouchersUrl = "vouchers/undoconfirmgroup";
-
-        /// <summary>
-        /// API client URL for confirming and approving document group
-        /// </summary>
-        public const string ConfirmGroupVouchers = "/vouchers/confirmgroup";
-
-        /// <summary>
-        /// API server route URL for confirming and approving document group
-        /// </summary>
-        public const string ConfirmGroupVouchersUrl = "vouchers/confirmgroup";
-
-        /// <summary>
-        /// API client URL for undoing approval of a single voucher specified by identifier
-        /// </summary>
-        public const string UndoApproveVoucher = "vouchers/{0}/approve/undo";
-
-        /// <summary>
-        /// API server route URL for undoing approval of a single voucher specified by identifier
-        /// </summary>
-        public const string UndoApproveVoucherUrl = "vouchers/{voucherId:min(1)}/approve/undo";
-
-        /// <summary>
-        /// API client URL for checking (changing document status to Checked) a single voucher specified by identifier
-        /// </summary>
-        public const string CheckVoucher = "vouchers/{0}/check";
-
-        /// <summary>
-        /// API server route URL for checking (changing document status to Checked) a single voucher specified by identifier
-        /// </summary>
-        public const string CheckVoucherUrl = "vouchers/{voucherId:min(1)}/check";
-
-        /// <summary>
-        /// API client URL for checking (changing document group  status  to Checked)
-        /// </summary>
-        public const string CheckVouchers = "vouchers/check";
-
-        /// <summary>
-        /// API server route URL for checking (changing document group  status  to Checked)
-        /// </summary>
-        public const string CheckVouchersUrl = "vouchers/check";
-
-        /// <summary>
-        /// API client URL for undoing check (changing document group  status  to Undoing Check)
-        /// </summary>
-        public const string UnDoCheckVouchers = "vouchers/UnDocheck";
-
-        /// <summary>
-        /// API server route URL for undoing check (changing document group  status  to Undoing Check)
-        /// </summary>
-        public const string UnDoCheckVouchersUrl = "vouchers/UnDocheck";
-
-        /// <summary>
-        /// API client URL for undoing check for a single voucher specified by identifier
-        /// </summary>
-        public const string UndoCheckVoucher = "vouchers/{0}/check/undo";
-
-        /// <summary>
-        /// API server route URL for undoing check for a single voucher specified by identifier
-        /// </summary>
-        public const string UndoCheckVoucherUrl = "vouchers/{voucherId:min(1)}/check/undo";
-
-        /// <summary>
-        /// API client URL for finalizing a single voucher specified by identifier
-        /// </summary>
-        public const string FinalizeVoucher = "vouchers/{0}/finalize";
-
-        /// <summary>
-        /// API server route URL for finalizing a single voucher specified by identifier
-        /// </summary>
-        public const string FinalizeVoucherUrl = "vouchers/{voucherId:min(1)}/finalize";
-
-        /// <summary>
-        /// API client URL for finalizing (changing document group  status  to Finalize)
-        /// </summary>
-        public const string FinalizeVouchers = "vouchers/finalize";
-
-        /// <summary>
-        /// API server route URL for finalizing (changing document group  status  to Finalize)
-        /// </summary>
-        public const string FinalizeVouchersUrl = "vouchers/finalize";
-
-        /// <summary>
-        /// API client URL for undoing finalize for a single voucher specified by identifier
-        /// </summary>
-        public const string UndoFinalizeVoucher = "vouchers/{0}/finalize/undo";
-
-        /// <summary>
-        /// API server route URL for undoing finalize for a single voucher specified by identifier
-        /// </summary>
-        public const string UndoFinalizeVoucherUrl = "vouchers/{voucherId:min(1)}/finalize/undo";
-
-        /// <summary>
-        /// API client URL for undoing finalize (changing document group  status  to check)
-        /// </summary>
-        public const string UnDoFinalizeVouchers = "vouchers/undofinalize";
-
-        /// <summary>
-        /// API server route URL for undoing finalize (changing document group  status  to check)
-        /// </summary>
-        public const string UnDoFinalizeVouchersUrl = "vouchers/undofinalize";
-
-        /// <summary>
         /// API client URL for number of voucher by statusId
         /// </summary>
         public const string VoucherCountByStatus = "vouchers/count/by-status";
@@ -441,5 +281,163 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for the closing voucher in current environment
         /// </summary>
         public const string ClosingVoucherUrl = "vouchers/closing";
+
+        #region Voucher Operations - Single
+
+        /// <summary>
+        /// API client URL for checking (changing document status to Checked) a single voucher specified by identifier
+        /// </summary>
+        public const string CheckVoucher = "vouchers/{0}/check";
+
+        /// <summary>
+        /// API server route URL for checking (changing document status to Checked) a single voucher specified by identifier
+        /// </summary>
+        public const string CheckVoucherUrl = "vouchers/{voucherId:min(1)}/check";
+
+        /// <summary>
+        /// API client URL for undoing check for a single voucher specified by identifier
+        /// </summary>
+        public const string UndoCheckVoucher = "vouchers/{0}/check/undo";
+
+        /// <summary>
+        /// API server route URL for undoing check for a single voucher specified by identifier
+        /// </summary>
+        public const string UndoCheckVoucherUrl = "vouchers/{voucherId:min(1)}/check/undo";
+
+        /// <summary>
+        /// API client URL for finalizing a single voucher specified by identifier
+        /// </summary>
+        public const string FinalizeVoucher = "vouchers/{0}/finalize";
+
+        /// <summary>
+        /// API server route URL for finalizing a single voucher specified by identifier
+        /// </summary>
+        public const string FinalizeVoucherUrl = "vouchers/{voucherId:min(1)}/finalize";
+
+        /// <summary>
+        /// API client URL for undoing finalize for a single voucher specified by identifier
+        /// </summary>
+        public const string UndoFinalizeVoucher = "vouchers/{0}/finalize/undo";
+
+        /// <summary>
+        /// API server route URL for undoing finalize for a single voucher specified by identifier
+        /// </summary>
+        public const string UndoFinalizeVoucherUrl = "vouchers/{voucherId:min(1)}/finalize/undo";
+
+        /// <summary>
+        /// API client URL for confirming a single voucher specified by identifier
+        /// </summary>
+        public const string ConfirmVoucher = "vouchers/{0}/confirm";
+
+        /// <summary>
+        /// API server route URL for confirming a single voucher specified by identifier
+        /// </summary>
+        public const string ConfirmVoucherUrl = "vouchers/{voucherId:min(1)}/confirm";
+
+        /// <summary>
+        /// API client URL for undoing confirmation of a single voucher specified by identifier
+        /// </summary>
+        public const string UndoConfirmVoucher = "vouchers/{0}/confirm/undo";
+
+        /// <summary>
+        /// API server route URL for undoing confirmation of a single voucher specified by identifier
+        /// </summary>
+        public const string UndoConfirmVoucherUrl = "vouchers/{voucherId:min(1)}/confirm/undo";
+
+        /// <summary>
+        /// API client URL for approving a single voucher specified by identifier
+        /// </summary>
+        public const string ApproveVoucher = "vouchers/{0}/approve";
+
+        /// <summary>
+        /// API server route URL for approving a single voucher specified by identifier
+        /// </summary>
+        public const string ApproveVoucherUrl = "vouchers/{voucherId:min(1)}/approve";
+
+        /// <summary>
+        /// API client URL for undoing approval of a single voucher specified by identifier
+        /// </summary>
+        public const string UndoApproveVoucher = "vouchers/{0}/approve/undo";
+
+        /// <summary>
+        /// API server route URL for undoing approval of a single voucher specified by identifier
+        /// </summary>
+        public const string UndoApproveVoucherUrl = "vouchers/{voucherId:min(1)}/approve/undo";
+
+        #endregion
+
+        #region Voucher Operations - Group
+
+        /// <summary>
+        /// API client URL for checking (changing document group  status  to Checked)
+        /// </summary>
+        public const string CheckVouchers = "vouchers/check";
+
+        /// <summary>
+        /// API server route URL for checking (changing document group  status  to Checked)
+        /// </summary>
+        public const string CheckVouchersUrl = "vouchers/check";
+
+        /// <summary>
+        /// API client URL for undoing check (changing document group  status  to Undoing Check)
+        /// </summary>
+        public const string UndoCheckVouchers = "vouchers/check/undo";
+
+        /// <summary>
+        /// API server route URL for undoing check (changing document group  status  to Undoing Check)
+        /// </summary>
+        public const string UndoCheckVouchersUrl = "vouchers/check/undo";
+
+        /// <summary>
+        /// API client URL for finalizing (changing document group  status  to Finalize)
+        /// </summary>
+        public const string FinalizeVouchers = "vouchers/finalize";
+
+        /// <summary>
+        /// API server route URL for finalizing (changing document group  status  to Finalize)
+        /// </summary>
+        public const string FinalizeVouchersUrl = "vouchers/finalize";
+
+        /// <summary>
+        /// API client URL for undoing finalize (changing document group  status  to check)
+        /// </summary>
+        public const string UndoFinalizeVouchers = "vouchers/finalize/undo";
+
+        /// <summary>
+        /// API server route URL for undoing finalize (changing document group  status  to check)
+        /// </summary>
+        public const string UndoFinalizeVouchersUrl = "vouchers/finalize/undo";
+
+        /// <summary>
+        /// API client URL for confirming multiple vouchers
+        /// </summary>
+        public const string ConfirmVouchers = "vouchers/confirm";
+
+        /// <summary>
+        /// API server route URL for confirming multiple vouchers
+        /// </summary>
+        public const string ConfirmVouchersUrl = "vouchers/confirm";
+
+        /// <summary>
+        /// API client URL for undoing confirmation and undoing approval document group
+        /// </summary>
+        public const string UndoConfirmVouchers = "vouchers/confirm/undo";
+
+        /// <summary>
+        /// API server route URL for undoing confirmation and undoing approval document group
+        /// </summary>
+        public const string UndoConfirmVouchersUrl = "vouchers/confirm/undo";
+
+        /// <summary>
+        /// API client URL for approving multiple vouchers
+        /// </summary>
+        public const string ApproveVouchers = "vouchers/approve";
+
+        /// <summary>
+        /// API server route URL for approving multiple vouchers
+        /// </summary>
+        public const string ApproveVouchersUrl = "vouchers/approve";
+
+        #endregion
     }
 }

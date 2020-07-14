@@ -148,14 +148,5 @@ namespace SPPC.Tadbir.ViewModel.Finance
         [Display(Name = FieldNames.DescriptionField)]
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
-
-        /// <summary>
-        /// مشخص می کند که آیا سند مورد نظر تصویب شده است یا نه؟
-        /// </summary>
-        public bool IsApproved { get; set; }
-        /// <summary>
-        /// مشخص می کند که آیا سند مورد نظر تایید شده است یا نه؟
-        /// </summary>
-        public bool IsVerified { get; set; }
     }
 }

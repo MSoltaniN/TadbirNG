@@ -260,7 +260,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Check)]
         public async Task<IActionResult> PutExistingVoucherAsChecked(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Check);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Check);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -291,7 +291,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             foreach (int item in actionDetail.Items)
             {
                 var voucherItem = await _repository.GetVoucherAsync(item);
-                var result = await VoucherActionValidationResultAsync(item, VoucherAction.Check);
+                var result = await VoucherActionValidationResultAsync(item, AppStrings.Check);
                 if (voucherItem != null && result is BadRequestObjectResult error)
                 {
                     objResult.Add(new { voucherNo = voucherItem.No, errorMessage = error.Value.ToString() });
@@ -326,7 +326,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده</param>
         /// <returns></returns>
         [HttpPut]
-        [Route(VoucherApi.UnDoCheckVouchersUrl)]
+        [Route(VoucherApi.UndoCheckVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoGroupCheck)]
         public async Task<IActionResult> PutExistingVouchersAsUnChecked([FromBody] ActionDetailViewModel actionDetail)
         {
@@ -335,7 +335,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.UndoCheck);
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.UndoCheck);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -351,7 +351,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoCheck)]
         public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoCheck);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoCheck);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -367,7 +367,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public async Task<IActionResult> PutExistingVoucherAsConfirmed(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Confirm);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Confirm);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -383,7 +383,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoConfirm)]
         public async Task<IActionResult> PutExistingVoucherAsUnconfirmed(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoConfirm);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoConfirm);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -398,18 +398,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده</param>
         /// <returns></returns>
-        // PUT: api/vouchers/undoconfirmgroup
+        // PUT: api/vouchers/confirm/undo
         [HttpPut]
-        [Route(VoucherApi.UndoConfirmGroupVouchersUrl)]
+        [Route(VoucherApi.UndoConfirmVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UnConfirmGroup)]
-        public async Task<IActionResult> PutExistingVoucherAsUnConfirmed([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutExistingVouchersAsUnConfirmed([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateVoucherForUnConfirmedGroupAsync(actionDetail.Items);
+            var result = await ValidateGroupUndoConfirmAsync(actionDetail.Items);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -424,18 +424,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده</param>
         /// <returns></returns>
-        // PUT: api/vouchers/confirmgroup
+        // PUT: api/vouchers/confirm
         [HttpPut]
-        [Route(VoucherApi.ConfirmGroupVouchersUrl)]
+        [Route(VoucherApi.ConfirmVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.ConfirmGroup)]
-        public async Task<IActionResult> PutExistingVoucherAsConfirmedGroup([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutExistingVouchersAsConfirmed([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateDocumentsForConfirmGroupAsync(actionDetail.Items);
+            var result = await ValidateGroupConfirmAsync(actionDetail.Items);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -451,7 +451,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
         public async Task<IActionResult> PutExistingVoucherAsApproved(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Approve);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Approve);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -467,7 +467,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoApprove)]
         public async Task<IActionResult> PutExistingVoucherAsUnapproved(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoApprove);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoApprove);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -492,7 +492,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.Finalize);
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.Finalize);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -508,7 +508,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Finalize)]
         public async Task<IActionResult> PutExistingVoucherAsFinalized(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.Finalize);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Finalize);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -524,7 +524,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده</param>
         /// <returns></returns>
         [HttpPut]
-        [Route(VoucherApi.UnDoFinalizeVouchersUrl)]
+        [Route(VoucherApi.UndoFinalizeVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoGroupFinalize)]
         public async Task<IActionResult> PutExistingVouchersAsUnfinalized([FromBody] ActionDetailViewModel actionDetail)
         {
@@ -533,7 +533,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, VoucherAction.UndoFinalize);
+            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.UndoFinalize);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -549,7 +549,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoFinalize)]
         public async Task<IActionResult> PutExistingVoucherAsUnfinalized(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, VoucherAction.UndoFinalize);
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoFinalize);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -853,151 +853,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        /// <summary>
-        /// اعتبارسنجی اسناد انتخاب شده برای برگشت از تایید گروهی اسناد
-        /// </summary>
-        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
-        /// <returns></returns>
-        protected async Task<IEnumerable<string>> ValidateVoucherForUnConfirmedGroupAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            var approveList = new List<int>();
-            var confirmList = new List<int>();
-            string message = String.Empty;
-            foreach (int item in items)
-            {
-                var voucher = await _repository.GetVoucherAsync(item);
-                if (voucher == null)
-                {
-                    message = String.Format(
-                        _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucher.Id);
-                    messages.Add(message);
-                    break;
-                }
-
-                if (voucher.ApprovedById != null && voucher.ConfirmedById != null)
-                {
-                    approveList.Add(item);
-                }
-
-                if (voucher.ConfirmedById != null && voucher.ApprovedById == null)
-                {
-                    confirmList.Add(item);
-                }
-            }
-
-            if (approveList.Count() > 0)
-            {
-                var approveListValidation = await ValidateGroupCheckAsync(approveList, VoucherAction.UndoApprove);
-                if (approveListValidation.Count() > 0)
-                {
-                    foreach (var item in approveListValidation)
-                    {
-                        messages.Add(item);
-                    }
-                }
-            }
-
-            if (confirmList.Count() > 0)
-            {
-                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, VoucherAction.UndoConfirm);
-                if (confirmListValidation.Count() > 0)
-                {
-                    foreach (var item in confirmListValidation)
-                    {
-                        messages.Add(item);
-                    }
-                }
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
-        }
-
-        /// <summary>
-        /// اعتبارسنجی اسناد انتخاب شده برای  تایید گروهی اسناد
-        /// </summary>
-        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
-        /// <returns></returns>
-        protected async Task<IEnumerable<string>> ValidateDocumentsForConfirmGroupAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            var approveList = new List<int>();
-            var confirmList = new List<int>();
-            string message = String.Empty;
-            foreach (int item in items)
-            {
-                var voucher = await _repository.GetVoucherAsync(item);
-                if (voucher == null)
-                {
-                    message = String.Format(
-                        _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucher.Id);
-                    messages.Add(message);
-                    break;
-                }
-
-                if (voucher.ConfirmedById == null && voucher.ConfirmerName != null)
-                {
-                    confirmList.Add(item);
-                }
-
-                if (voucher.ApprovedById == null && voucher.ApproverName != null && voucher.ConfirmedById != null)
-                {
-                    approveList.Add(item);
-                }
-            }
-
-            if (approveList.Count() > 0)
-            {
-                var approveListValidation = await ValidateGroupCheckAsync(approveList, VoucherAction.Approve);
-                if (approveListValidation.Count() > 0)
-                {
-                    foreach (var item in approveListValidation)
-                    {
-                        messages.Add(item);
-                    }
-                }
-            }
-
-            if (confirmList.Count() > 0)
-            {
-                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, VoucherAction.Confirm);
-                if (confirmListValidation.Count() > 0)
-                {
-                    foreach (var item in confirmListValidation)
-                    {
-                        messages.Add(item);
-                    }
-                }
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
-        }
-
-        /// <summary>
-        /// اعتبارسنجی اسناد انتخاب شده برای  ثبت گروهی اسناد
-        /// </summary>
-        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        protected async Task<IEnumerable<string>> ValidateGroupCheckAsync(IEnumerable<int> items, string action)
-        {
-            var messages = new List<string>();
-            foreach (int item in items)
-            {
-                var result = await VoucherActionValidationResultAsync(item, action);
-                if (result is BadRequestObjectResult error)
-                {
-                    // messages.Add(_strings.Format("{0} :{1}{2}", AppStrings.VoucherByNo, item.ToString(), error.Value.ToString()));
-                    messages.Add(_strings.Format("{0} :{1}{2}", AppStrings.VoucherDisplay, item.ToString(), error.Value.ToString()));
-                }
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
-        }
-
         protected override async Task<string> ValidateDeleteAsync(int voucherId)
         {
             string message = String.Empty;
@@ -1031,11 +886,156 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private static bool IsVoucherMainAction(string action)
         {
-            return action == VoucherAction.Check
-                || action == VoucherAction.Confirm
-                || action == VoucherAction.Approve
-                || action == VoucherAction.Finalize
-                || action == VoucherAction.UndoFinalize;
+            return action == AppStrings.Check
+                || action == AppStrings.Confirm
+                || action == AppStrings.Approve
+                || action == AppStrings.Finalize
+                || action == AppStrings.UndoFinalize;
+        }
+
+        /// <summary>
+        /// اعتبارسنجی اسناد انتخاب شده برای برگشت از تایید گروهی اسناد
+        /// </summary>
+        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
+        /// <returns></returns>
+        private async Task<IEnumerable<string>> ValidateGroupUndoConfirmAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            var approveList = new List<int>();
+            var confirmList = new List<int>();
+            string message = String.Empty;
+            foreach (int item in items)
+            {
+                var voucher = await _repository.GetVoucherAsync(item);
+                if (voucher == null)
+                {
+                    message = String.Format(
+                        _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucher.Id);
+                    messages.Add(message);
+                    break;
+                }
+
+                if (voucher.ApprovedById != null && voucher.ConfirmedById != null)
+                {
+                    approveList.Add(item);
+                }
+
+                if (voucher.ConfirmedById != null && voucher.ApprovedById == null)
+                {
+                    confirmList.Add(item);
+                }
+            }
+
+            if (approveList.Count() > 0)
+            {
+                var approveListValidation = await ValidateGroupCheckAsync(approveList, AppStrings.UndoApprove);
+                if (approveListValidation.Count() > 0)
+                {
+                    foreach (var item in approveListValidation)
+                    {
+                        messages.Add(item);
+                    }
+                }
+            }
+
+            if (confirmList.Count() > 0)
+            {
+                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, AppStrings.UndoConfirm);
+                if (confirmListValidation.Count() > 0)
+                {
+                    foreach (var item in confirmListValidation)
+                    {
+                        messages.Add(item);
+                    }
+                }
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
+        }
+
+        /// <summary>
+        /// اعتبارسنجی اسناد انتخاب شده برای  تایید گروهی اسناد
+        /// </summary>
+        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
+        /// <returns></returns>
+        private async Task<IEnumerable<string>> ValidateGroupConfirmAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            var approveList = new List<int>();
+            var confirmList = new List<int>();
+            string message = String.Empty;
+            foreach (int item in items)
+            {
+                var voucher = await _repository.GetVoucherAsync(item);
+                if (voucher == null)
+                {
+                    message = String.Format(
+                        _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucher.Id);
+                    messages.Add(message);
+                    break;
+                }
+
+                if (voucher.ConfirmedById == null && voucher.ConfirmerName != null)
+                {
+                    confirmList.Add(item);
+                }
+
+                if (voucher.ApprovedById == null && voucher.ApproverName != null && voucher.ConfirmedById != null)
+                {
+                    approveList.Add(item);
+                }
+            }
+
+            if (approveList.Count() > 0)
+            {
+                var approveListValidation = await ValidateGroupCheckAsync(approveList, AppStrings.Approve);
+                if (approveListValidation.Count() > 0)
+                {
+                    foreach (var item in approveListValidation)
+                    {
+                        messages.Add(item);
+                    }
+                }
+            }
+
+            if (confirmList.Count() > 0)
+            {
+                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, AppStrings.Confirm);
+                if (confirmListValidation.Count() > 0)
+                {
+                    foreach (var item in confirmListValidation)
+                    {
+                        messages.Add(item);
+                    }
+                }
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
+        }
+
+        /// <summary>
+        /// اعتبارسنجی اسناد انتخاب شده برای  ثبت گروهی اسناد
+        /// </summary>
+        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        private async Task<IEnumerable<string>> ValidateGroupCheckAsync(IEnumerable<int> items, string action)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                var result = await VoucherActionValidationResultAsync(item, action);
+                if (result is BadRequestObjectResult error)
+                {
+                    // messages.Add(_strings.Format("{0} :{1}{2}", AppStrings.VoucherByNo, item.ToString(), error.Value.ToString()));
+                    messages.Add(_strings.Format("{0} :{1}{2}", AppStrings.VoucherDisplay, item.ToString(), error.Value.ToString()));
+                }
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
@@ -1180,7 +1180,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var error = await _repository.ValidateVoucherActionAsync(voucherId, action);
             if (!String.IsNullOrEmpty(error))
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidVoucherAction, action, error));
+                return BadRequest(error);
             }
 
             if (IsVoucherMainAction(action))
