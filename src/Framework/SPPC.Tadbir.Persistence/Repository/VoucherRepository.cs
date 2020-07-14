@@ -69,7 +69,6 @@ namespace SPPC.Tadbir.Persistence
             if (existing != null)
             {
                 voucher = Mapper.Map<VoucherViewModel>(existing);
-                voucher.IsBalanced = voucher.DebitSum.AlmostEquals(voucher.CreditSum);
             }
 
             return voucher;

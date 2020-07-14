@@ -3235,10 +3235,10 @@
     <value>Filter name</value>
   </data>
   <data name="IsApproved" xml:space="preserve">
-    <value>IsApproved</value>
+    <value>Approved</value>
   </data>
-  <data name="IsVerified" xml:space="preserve">
-    <value>IsVerified</value>
+  <data name="IsConfirmed" xml:space="preserve">
+    <value>Confirmed</value>
   </data>
   <data name="IssuerName" xml:space="preserve">
     <value>Issuer Name</value>

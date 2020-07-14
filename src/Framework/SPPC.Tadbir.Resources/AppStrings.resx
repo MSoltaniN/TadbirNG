@@ -3228,7 +3228,7 @@
   <data name="IsApproved" xml:space="preserve">
     <value>تصویب شده</value>
   </data>
-  <data name="IsVerified" xml:space="preserve">
+  <data name="IsConfirmed" xml:space="preserve">
     <value>تایید شده</value>
   </data>
   <data name="IssuerName" xml:space="preserve">

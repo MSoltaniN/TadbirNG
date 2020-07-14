@@ -870,6 +870,8 @@
     "VoucherStatus": "Voucher Status",
     "Balanced": "Balanced",
     "Unbalanced": "Unbalanced",
+    "IsConfirmed": "Confirmed",
+    "IsApproved": "Approved",
     "NotCommitted": "Not Committed",
     "Committed": "Committed",
     "Finalized": "Finalized",
@@ -888,8 +890,8 @@
     "Not": "No",
     "OperationSuccessful": "Operation Successful",
     "vouchersListThatHasError": "vouchers List That Has Error",
-    "RowNo": "ردیف",
-    "VoucherNo": "شماره سند"
+    "RowNo": "Row",
+    "VoucherNo": "Voucher Number"
   },
   "User": {
     "New": "New User",

@@ -125,20 +125,20 @@ export class VoucherApi {
   // vouchers/check
   public static CheckVouchers = environment.BaseUrl + "/vouchers/check";
 
-  // vouchers/undocheck
-  public static UnDoCheckVouchers = environment.BaseUrl + "/vouchers/undocheck";
+  // vouchers/check/undo
+  public static UnDoCheckVouchers = environment.BaseUrl + "/vouchers/check/undo";
 
   // vouchers/finalize
   public static FinalizeVouchers = environment.BaseUrl + "/vouchers/finalize";
 
-  // vouchers/undofinalize
-  public static UndoFinalizeVouchers = environment.BaseUrl + "/vouchers/undofinalize";
+  // vouchers/finalize/undo
+  public static UndoFinalizeVouchers = environment.BaseUrl + "/vouchers/finalize/undo";
 
-  // vouchers/undoconfirmgroup
-  public static UndoConfirmGroupVouchers = environment.BaseUrl + "/vouchers/undoconfirmgroup";
+  // vouchers/confirm/undo
+  public static UndoConfirmVouchers = environment.BaseUrl + "/vouchers/confirm/undo";
 
-  // vouchers/confirmgroup
-  public static ConfirmGroupVouchers = environment.BaseUrl + "/vouchers/confirmgroup";
+  // vouchers/confirm
+  public static ConfirmVouchers = environment.BaseUrl + "/vouchers/confirm";
 
  
 
