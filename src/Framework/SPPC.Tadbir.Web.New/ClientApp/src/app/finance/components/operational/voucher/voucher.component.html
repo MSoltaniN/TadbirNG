@@ -253,7 +253,7 @@
         </tr>
 
       </thead>
-      <tbody  [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+      <tbody [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
         <tr *ngFor="let item of resultForReport; index as i">
           <td style="width:50px;text-align:center">{{i+1}}</td>
           <td style="width:100px;text-align:center">  {{ item.voucherNo }}</td>
