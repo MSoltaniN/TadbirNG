@@ -13,3 +13,4 @@ export * from './voucherReportApi';
 export * from './currencyBookApi';
 export * from './systemIssueApi';
 export * from './balanceByAccountApi';
+export * from './profitLossApi';
