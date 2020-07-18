@@ -287,17 +287,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var validateResult = await _repository.ValidateVouchersAsync(actionDetail.Items, AppStrings.Check);
-            var groupActionResult = validateResult.Where(v => !string.IsNullOrEmpty(v.ErrorMessage)).ToList();
-            var itemsForGroupCheck = validateResult.Where(v => string.IsNullOrEmpty(v.ErrorMessage)).Select(v => v.Id).ToList();
-            if (itemsForGroupCheck.Count > 0)
+            var validated = new List<int>();
+            var notValidated = new List<GroupActionResultViewModel>();
+            foreach (int item in actionDetail.Items)
             {
-                await _repository.SetVouchersStatusAsync(itemsForGroupCheck, DocumentStatusValue.Checked);
+                var result = await _repository.ValidateVoucherActionAsync(item, AppStrings.Check);
+                if (result == null)
+                {
+                    validated.Add(item);
+                }
+                else
+                {
+                    notValidated.Add(result);
+                }
             }
 
-            var gridOptions = GridOptions ?? new GridOptions();
-            var pageList = new PagedList<GroupActionResultViewModel>(groupActionResult, gridOptions);
-            return Ok(pageList);
+            await _repository.SetVouchersStatusAsync(validated, DocumentStatusValue.Checked);
+            return Ok(notValidated);
         }
 
         /// <summary>
@@ -1158,9 +1164,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> VoucherActionValidationResultAsync(int voucherId, string action)
         {
             var error = await _repository.ValidateVoucherActionAsync(voucherId, action);
-            if (!String.IsNullOrEmpty(error))
+            if (error != null)
             {
-                return BadRequest(error);
+                return BadRequest(error.ErrorMessage);
             }
 
             if (IsVoucherMainAction(action))

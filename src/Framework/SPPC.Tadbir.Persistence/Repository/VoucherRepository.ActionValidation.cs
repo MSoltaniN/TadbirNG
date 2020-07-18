@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="action">عمل مورد نظر</param>
         /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت پیغام خطا را برمی گرداند
         /// </returns>
-        public async Task<string> ValidateVoucherActionAsync(int voucherId, string action)
+        public async Task<GroupActionResultViewModel> ValidateVoucherActionAsync(int voucherId, string action)
         {
             string error = String.Empty;
             var voucher = await GetVoucherAsync(voucherId);
@@ -53,28 +53,15 @@ namespace SPPC.Tadbir.Persistence
                 error = ValidateUndoFinalize(voucher);
             }
 
-            return error;
-        }
-
-        /// <summary>
-        /// عمل داده شده را روی سند با شناسه دیتابیسی مشخص شده بررسی و اعتبارسنجی می کند
-        /// </summary>
-        /// <param name="voucherIds">شناسه دیتابیسی سند مورد نظر</param>
-        /// <param name="action">عمل مورد نظر</param>
-        /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت پیغام خطا را برمی گرداند
-        /// </returns>
-        public async Task<IEnumerable<GroupActionResultViewModel>> ValidateVouchersAsync(IEnumerable<int> voucherIds, string action)
-        {
-            var voucherItems = await GetVouchersAsGroupActionResultAsync(voucherIds);
-            foreach (var item in voucherItems)
-            {
-                var result = await ValidateVoucherActionAsync(item.Id, action);
-                item.ErrorMessage = (!string.IsNullOrEmpty(result)) ? result : string.Empty;
-                item.Name = String.Format(AppStrings.Voucher);
-            }
-
-            return voucherItems;
-
+            return String.IsNullOrEmpty(error)
+                ? null
+                : new GroupActionResultViewModel()
+                {
+                    Id = voucher.Id,
+                    Date = voucher.Date,
+                    ErrorMessage = error,
+                    No = voucher.No
+                };
         }
 
         private string ValidateCheck(VoucherViewModel voucher)

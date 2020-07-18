@@ -5,7 +5,7 @@ using System.Text;
 namespace SPPC.Tadbir.ViewModel.Finance
 {
     /// <summary>
-    ///
+    /// اطلاعات مورد نیاز برای گزارش نتیجه عملیات گروهی را نگهداری می کند
     /// </summary>
     public class GroupActionResultViewModel
     {
@@ -15,7 +15,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int Id { get; set; }
 
         /// <summary>
-        /// شماره سند مالی که مقداری عددی است
+        /// شماره موجودیت عملیاتی
         /// </summary>
         public int No { get; set; }
 
@@ -25,17 +25,17 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string Name { get; set; }
 
         /// <summary>
-        /// کد کامل مورد استفاده برای موجودیت های پایه ای که حالت درختی دارند و نامشان ممکن است تکراری باشد
+        /// کد کامل موجودیت
         /// </summary>
         public string FullCode { get; set; }
 
         /// <summary>
-        /// پیام خطا رادر خود نگه می دارد
+        /// پیام خطای عملیات
         /// </summary>
         public string ErrorMessage { get; set; }
 
         /// <summary>
-        /// تاریخ ایجاد سند
+        /// تاریخ موجودیت عملیاتی
         /// </summary>
         public DateTime Date { get; set; }
     }
