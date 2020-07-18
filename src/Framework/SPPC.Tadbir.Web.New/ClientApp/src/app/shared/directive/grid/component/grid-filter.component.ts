@@ -1,5 +1,5 @@
 
-import { OnInit, OnDestroy, Component, Host, ElementRef, Input, EventEmitter, Output } from "@angular/core";
+import { OnInit, OnDestroy, Component, Host, ElementRef, Input, EventEmitter, Output, HostListener } from "@angular/core";
 
 import { RTL } from "@progress/kendo-angular-l10n";
 import { ToastrService } from "ngx-toastr";
@@ -31,6 +31,34 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
   @Input() public showClearFilter: number = 0;
   @Input() public parentComponent: any;
 
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key == 'Enter') {
+      var filterInput = false;
+      var element: any = event.srcElement;
+      var object = element;
+      var level = 5;
+      while (object.offsetParent && level > 0) {
+        object = object.offsetParent;
+        level = level - 1;
+        if (element.hasAttribute('kendofilterinput') || object.hasAttribute('kendofilterinput')) {
+          filterInput = true;
+          break;
+        }
+      }
+
+      if (filterInput) {
+
+        event.stopPropagation();
+        setTimeout(() => {
+          this.parentComponent.reloadGrid();
+        }, 300);
+
+      }
+
+    }
+  }
+
   constructor(public toastrService: ToastrService, public translate: TranslateService, public settingService: SettingService,
     @Host() private grid: GridComponent, private elRef: ElementRef, public bStorageService: BrowserStorageService) {
 
@@ -47,27 +75,7 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
     if (this.CurrentLanguage == 'fa')
       this.rtl = true;
     else
-      this.rtl = false;
-
-    var self = this;
-
-    //document.addEventListener('keydown', function (ev: KeyboardEvent) {
-    //    if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
-    //        self.parentComponent.reloadGrid();
-    //    }
-    //});
-
-
-
-    document.addEventListener('keydown', function (ev: KeyboardEvent) {
-      if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
-        setTimeout(() => {
-          self.parentComponent.reloadGrid();
-        }, 300);
-        
-      }
-    });
-
+      this.rtl = false;  
   }
 
   @Output() reloadEvent = new EventEmitter();

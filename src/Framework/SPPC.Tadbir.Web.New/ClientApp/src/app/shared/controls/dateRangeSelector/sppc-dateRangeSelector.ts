@@ -43,6 +43,9 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   public fpStartDate: Date;
   public fpEndDate: Date;
 
+  fromDate: Date;
+  toDate: Date;
+
   @Output() valueChange = new EventEmitter();
 
   constructor(public settingService: SettingService, public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
@@ -75,7 +78,10 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     this.myForm.patchValue({ fromDate: this.displayFromDate, toDate: this.displayToDate });
     this.saveTemporarilyDate(this.displayFromDate, this.displayToDate);
 
-    this.myForm.valueChanges.subscribe(val => {
+    this.myForm.valueChanges
+      .debounceTime(800)
+      .distinctUntilChanged()
+      .subscribe(val => {
 
       if (val.fromDate && val.toDate) {
 
@@ -91,13 +97,16 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
               this.myForm.patchValue({ 'toDate': this.fpEndDate });
             }
             else {
+              if (val.fromDate != this.fromDate || val.toDate != this.toDate) {
+                this.fromDate = val.fromDate;
+                this.toDate = val.toDate;
+                this.valueChange.emit({
+                  fromDate: this.getEmitDate(val.fromDate, false),
+                  toDate: this.getEmitDate(val.toDate, true)
+                });
 
-              this.valueChange.emit({
-                fromDate: this.getEmitDate(val.fromDate, false),
-                toDate: this.getEmitDate(val.toDate, true)
-              });
-
-              this.saveTemporarilyDate(val.fromDate, val.toDate);
+                this.saveTemporarilyDate(val.fromDate, val.toDate);
+              }
             }
           
           
