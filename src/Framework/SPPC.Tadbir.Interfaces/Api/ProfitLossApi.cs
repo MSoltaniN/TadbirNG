@@ -15,21 +15,21 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for profit-loss report
         /// </summary>
-        public const string ProfitLoss = "profitloss";
+        public const string ProfitLoss = "profit-loss";
 
         /// <summary>
         /// API server route URL for profit-loss report
         /// </summary>
-        public const string ProfitLossUrl = "profitloss";
+        public const string ProfitLossUrl = "profit-loss";
 
         /// <summary>
         /// API client URL for profit-loss report in a specific date
         /// </summary>
-        public const string ProfitLossSimple = "profitloss/simple";
+        public const string ProfitLossSimple = "profit-loss/simple";
 
         /// <summary>
         /// API server route URL for profit-loss report in a specific date
         /// </summary>
-        public const string ProfitLossSimpleUrl = "profitloss/simple";
+        public const string ProfitLossSimpleUrl = "profit-loss/simple";
     }
 }

@@ -69,7 +69,6 @@ namespace SPPC.Tadbir.Persistence
             if (existing != null)
             {
                 voucher = Mapper.Map<VoucherViewModel>(existing);
-                voucher.IsBalanced = voucher.DebitSum.AlmostEquals(voucher.CreditSum);
             }
 
             return voucher;
@@ -513,28 +512,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// عمل داده شده را روی سند با شناسه دیتابیسی مشخص شده بررسی و اعتبارسنجی می کند
-        /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
-        /// <param name="action">عمل مورد نظر</param>
-        /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
-        /// آخرین وضعیت سند را برمی گرداند</returns>
-        public async Task<string> ValidateVoucherActionAsync(int voucherId, string action)
-        {
-            string error = String.Empty;
-            var status = await GetLatestVoucherStatusAsync(voucherId);
-            var transition = GetValidTransitions()
-                .Where(kv => kv.Key == status && kv.Value == action)
-                .FirstOrDefault();
-            if (transition == null)
-            {
-                error = status;
-            }
-
-            return error;
-        }
-
-        /// <summary>
         /// به روش آسنکرون، لیست و تعداد اسناد فاقد آرتیکل را برمیگرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -799,59 +776,6 @@ namespace SPPC.Tadbir.Persistence
         private string GetCurrentUserDisplayName()
         {
             return String.Format("{0}, {1}", UserContext.PersonLastName, UserContext.PersonFirstName);
-        }
-
-        private List<KeyValue> GetValidTransitions()
-        {
-            var transitions = new List<KeyValue>
-            {
-                new KeyValue(VoucherStatus.Balanced, VoucherAction.Check),
-                new KeyValue(VoucherStatus.Checked, VoucherAction.Finalize),
-                new KeyValue(VoucherStatus.Checked, VoucherAction.Confirm),
-                new KeyValue(VoucherStatus.Checked, VoucherAction.UndoCheck),
-                new KeyValue(VoucherStatus.Confirmed, VoucherAction.Approve),
-                new KeyValue(VoucherStatus.Confirmed, VoucherAction.UndoConfirm),
-                new KeyValue(VoucherStatus.Approved, VoucherAction.UndoApprove),
-                new KeyValue(VoucherStatus.Approved, VoucherAction.Finalize),
-                new KeyValue(VoucherStatus.Finalized, VoucherAction.UndoFinalize)
-            };
-            return transitions;
-        }
-
-        private async Task<string> GetLatestVoucherStatusAsync(int voucherId)
-        {
-            string status = null;
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetByIDAsync(voucherId);
-            if (voucher != null)
-            {
-                if (voucher.StatusId == (int)DocumentStatusValue.Finalized)
-                {
-                    status = VoucherStatus.Finalized;
-                }
-                else if (voucher.ApprovedById != null)
-                {
-                    status = VoucherStatus.Approved;
-                }
-                else if (voucher.ConfirmedById != null)
-                {
-                    status = VoucherStatus.Confirmed;
-                }
-                else if (voucher.StatusId == (int)DocumentStatusValue.Checked)
-                {
-                    status = VoucherStatus.Checked;
-                }
-                else if (voucher.IsBalanced)
-                {
-                    status = VoucherStatus.Balanced;
-                }
-                else
-                {
-                    status = VoucherStatus.NotBalanced;
-                }
-            }
-
-            return status;
         }
 
         private readonly ISystemRepository _system;

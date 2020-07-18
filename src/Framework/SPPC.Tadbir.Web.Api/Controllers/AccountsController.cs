@@ -247,22 +247,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (hasChildren == true)
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Account], accountInfo);
+                    _strings[AppStrings.CantDeleteNonLeafItem], _strings[AppStrings.Account], accountInfo);
             }
             else if (await _repository.IsUsedAccountAsync(item))
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.Account], accountInfo);
+                    _strings[AppStrings.CantDeleteUsedItem], _strings[AppStrings.Account], accountInfo);
             }
             else if (await _repository.IsRelatedAccountAsync(item))
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteRelatedItem], _strings[AppStrings.Account], accountInfo);
+                    _strings[AppStrings.CantDeleteRelatedItem], _strings[AppStrings.Account], accountInfo);
             }
             else if (await _repository.IsUsedInAccountCollectionAsync(item))
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteUsedInAccountCollection], accountInfo);
+                    _strings[AppStrings.CantDeleteUsedInAccountCollection], accountInfo);
             }
 
             return message;
@@ -288,7 +288,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (account.ParentId != null && await _repository.IsAccountCollectionValidAsync(account))
             {
-                return BadRequest(_strings.Format(AppStrings.CannotInsertLeafAccount));
+                return BadRequest(_strings.Format(AppStrings.CantInsertLeafAccount));
             }
 
             result = BranchValidationResult(account);

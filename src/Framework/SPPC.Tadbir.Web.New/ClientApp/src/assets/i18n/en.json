@@ -869,6 +869,9 @@
     "Type": "Type",
     "VoucherStatus": "Voucher Status",
     "Balanced": "Balanced",
+    "Unbalanced": "Unbalanced",
+    "IsConfirmed": "Confirmed",
+    "IsApproved": "Approved",
     "NotCommitted": "Not Committed",
     "Committed": "Committed",
     "Finalized": "Finalized",
@@ -882,7 +885,13 @@
     "OpeningVoucher": "No closing voucher could be found in the previous fiscal period. This operation creates an opening voucher having a line for each account and each valid relation between floating levels, with zero turnover. Are you sure you want to issue the opening voucher?",
     "UnConfirmGroupMsg": "If you agree,Not all documents are finalize,They will be unapproved or approved",
     "AreYouAgree": "Are you Agree?",
-    "Password": "Password"
+    "Password": "Password",
+    "Yes": "Yes",
+    "Not": "No",
+    "OperationSuccessful": "Operation Successful",
+    "vouchersListThatHasError": "vouchers List That Has Error",
+    "RowNo": "Row",
+    "VoucherNo": "Voucher Number"
   },
   "User": {
     "New": "New User",
@@ -1086,6 +1095,13 @@
     "DeleteArchiveMsgConfirm": "Are you sure you want to delete the archive?",
     "ArchiveMsgConfirm": "Are you sure to archive active events?",
     "PleaseSelectRowsAsDeleteArchive": "Please select the desired events to delete from the archive"
+  },
+  "GroupActionResult": {
+    "Id": "Id  ",
+    "Name": "Name",
+    "FullCode": "FullCode",
+    "ErrorMesagge": "ErrorMesagge ",
+    "Date": "Date"
   },
   "MetaDataValidation": {
     "CodeLength": "Code length is not allowed"

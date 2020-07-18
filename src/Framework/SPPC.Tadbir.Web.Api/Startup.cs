@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SPPC.Tadbir.Web.Api.Api.Swagger;
 using SPPC.Tadbir.Web.Api.Middleware;
+using SPPC.Tadbir.Web.Api.Swagger;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Web.Api
             }
 
             ConfigureLocalization(app);
-          
+
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseCors(
                 options => options

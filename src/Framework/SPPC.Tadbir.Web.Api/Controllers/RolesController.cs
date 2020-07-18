@@ -312,31 +312,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (await _repository.IsAssignedRoleAsync(item))
             {
                 return String.Format(
-                    _strings.Format(AppStrings.CannotDeleteAssignedRole), role.Name);
+                    _strings.Format(AppStrings.CantDeleteAssignedRole), role.Name);
             }
 
             if (await _repository.IsRoleRelatedToCompanyAsync(item))
             {
                 return String.Format(
-                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Company]);
+                    _strings[AppStrings.CantDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Company]);
             }
 
             if (await _repository.IsRoleRelatedToBranchAsync(item))
             {
                 return String.Format(
-                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Branch]);
+                    _strings[AppStrings.CantDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Branch]);
             }
 
             if (await _repository.IsRoleRelatedToFiscalPeriodAsync(item))
             {
                 return String.Format(
-                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.FiscalPeriod]);
+                    _strings[AppStrings.CantDeleteRoleHavingRelation], role.Name, _strings[AppStrings.FiscalPeriod]);
             }
 
             if (await _repository.HasRowPermissions(item))
             {
                 return String.Format(
-                    _strings[AppStrings.CannotDeleteRoleHavingPermissions], role.Name);
+                    _strings[AppStrings.CantDeleteRoleHavingPermissions], role.Name);
             }
 
             return String.Empty;

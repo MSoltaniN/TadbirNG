@@ -1,29 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace SPPC.Tadbir.Web.Api.Api.Swagger
+namespace SPPC.Tadbir.Web.Api.Swagger
 {
     /// <summary>
     ///
     /// </summary>
     public class UnauthorizedResponsesOperationFilter : IOperationFilter
     {
-        private readonly bool includeUnauthorizedAndForbiddenResponses;
-        private readonly string schemeName;
-
         /// <summary>
         ///
         /// </summary>
         /// <param name="includeUnauthorizedAndForbiddenResponses"></param>
         /// <param name="schemeName"></param>
-        public UnauthorizedResponsesOperationFilter(bool includeUnauthorizedAndForbiddenResponses, string schemeName = "X-Tadbir-AuthTicket")
+        public UnauthorizedResponsesOperationFilter(
+            bool includeUnauthorizedAndForbiddenResponses, string schemeName = "X-Tadbir-AuthTicket")
         {
-            this.includeUnauthorizedAndForbiddenResponses = includeUnauthorizedAndForbiddenResponses;
-            this.schemeName = schemeName;
+            _includeUnauthorizedAndForbiddenResponses = includeUnauthorizedAndForbiddenResponses;
+            _schemeName = schemeName;
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Api.Swagger
                 return;
             }
 
-            if (includeUnauthorizedAndForbiddenResponses)
+            if (_includeUnauthorizedAndForbiddenResponses)
             {
                 operation.Responses.TryAdd("401", new Response { Description = "Unauthorized" });
                 operation.Responses.TryAdd("403", new Response { Description = "Forbidden" });
@@ -55,8 +54,11 @@ namespace SPPC.Tadbir.Web.Api.Api.Swagger
 
             operation.Security = new List<IDictionary<string, IEnumerable<string>>>
             {
-                new Dictionary<string, IEnumerable<string>> { { schemeName, new string[] { } } }
+                new Dictionary<string, IEnumerable<string>> { { _schemeName, Array.Empty<string>() } }
             };
         }
+
+        private readonly bool _includeUnauthorizedAndForbiddenResponses;
+        private readonly string _schemeName;
     }
 }
