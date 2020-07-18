@@ -208,17 +208,17 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>
-        /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را  رفع تایید گروهی می کند
+        /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را رفع تایید گروهی می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
         /// <param name="status">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
-        Task SetCombinationVouchersStatusAsync(IEnumerable<int> items, bool status);
+        Task UnconfirmGroupVouchersAsync(IEnumerable<int> items, bool status);
 
         /// <summary>
         /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را تایید گروهی  می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
         /// <param name="status">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
-        Task SetConfirmGroupVouchersAsync(IEnumerable<int> items, bool status);
+        Task ConfirmGroupVouchersAsync(IEnumerable<int> items, bool status);
     }
 }

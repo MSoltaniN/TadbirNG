@@ -6,11 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
-using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Helpers;
-using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -272,6 +269,118 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // PUT: api/vouchers/{voucherId:int}/check/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoCheckVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoCheck)]
+        public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoCheck);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Draft);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/confirm
+        [HttpPut]
+        [Route(VoucherApi.ConfirmVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
+        public async Task<IActionResult> PutExistingVoucherAsConfirmed(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Confirm);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherConfirmationAsync(voucherId, true);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/confirm/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoConfirmVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoConfirm)]
+        public async Task<IActionResult> PutExistingVoucherAsUnconfirmed(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoConfirm);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherConfirmationAsync(voucherId, false);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/approve
+        [HttpPut]
+        [Route(VoucherApi.ApproveVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
+        public async Task<IActionResult> PutExistingVoucherAsApproved(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Approve);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherApprovalAsync(voucherId, true);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/approve/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoApproveVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoApprove)]
+        public async Task<IActionResult> PutExistingVoucherAsUnapproved(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoApprove);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherApprovalAsync(voucherId, false);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/finalize
+        [HttpPut]
+        [Route(VoucherApi.FinalizeVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Finalize)]
+        public async Task<IActionResult> PutExistingVoucherAsFinalized(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Finalize);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Finalized);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/finalize/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoFinalizeVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoFinalize)]
+        public async Task<IActionResult> PutExistingVoucherAsUnfinalized(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoFinalize);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
+            return Ok();
+        }
+
         /// <summary>
         /// ثبت گروهی اسناد
         /// </summary>
@@ -321,7 +430,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.UndoCheck);
+            var result = await ValidateGroupActionAsync(actionDetail.Items, AppStrings.UndoCheck);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -331,51 +440,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status200OK);
         }
 
-        // PUT: api/vouchers/{voucherId:int}/check/undo
+        /// <summary>
+        /// تایید گروهی اسناد
+        /// </summary>
+        /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده</param>
+        /// <returns></returns>
+        // PUT: api/vouchers/confirm
         [HttpPut]
-        [Route(VoucherApi.UndoCheckVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoCheck)]
-        public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
+        [Route(VoucherApi.ConfirmVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.ConfirmGroup)]
+        public async Task<IActionResult> PutExistingVouchersAsConfirmed([FromBody] ActionDetailViewModel actionDetail)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoCheck);
-            if (result is BadRequestObjectResult)
+            if (actionDetail == null)
             {
-                return result;
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Draft);
-            return Ok();
-        }
-
-        // PUT: api/vouchers/{voucherId:int}/confirm
-        [HttpPut]
-        [Route(VoucherApi.ConfirmVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
-        public async Task<IActionResult> PutExistingVoucherAsConfirmed(int voucherId)
-        {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Confirm);
-            if (result is BadRequestObjectResult)
+            var result = await ValidateGroupConfirmAsync(actionDetail.Items);
+            if (result.Count() > 0)
             {
-                return result;
+                return BadRequest(result);
             }
 
-            await _repository.SetVoucherConfirmationAsync(voucherId, true);
-            return Ok();
-        }
-
-        // PUT: api/vouchers/{voucherId:int}/confirm/undo
-        [HttpPut]
-        [Route(VoucherApi.UndoConfirmVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoConfirm)]
-        public async Task<IActionResult> PutExistingVoucherAsUnconfirmed(int voucherId)
-        {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoConfirm);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            await _repository.SetVoucherConfirmationAsync(voucherId, false);
+            await _repository.ConfirmGroupVouchersAsync(actionDetail.Items, true);
             return Ok();
         }
 
@@ -401,65 +488,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
-            await _repository.SetCombinationVouchersStatusAsync(actionDetail.Items, false);
-            return Ok();
-        }
-
-        /// <summary>
-        /// تایید گروهی اسناد
-        /// </summary>
-        /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده</param>
-        /// <returns></returns>
-        // PUT: api/vouchers/confirm
-        [HttpPut]
-        [Route(VoucherApi.ConfirmVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.ConfirmGroup)]
-        public async Task<IActionResult> PutExistingVouchersAsConfirmed([FromBody] ActionDetailViewModel actionDetail)
-        {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupConfirmAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.SetConfirmGroupVouchersAsync(actionDetail.Items, true);
-            return Ok();
-        }
-
-        // PUT: api/vouchers/{voucherId:int}/approve
-        [HttpPut]
-        [Route(VoucherApi.ApproveVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
-        public async Task<IActionResult> PutExistingVoucherAsApproved(int voucherId)
-        {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Approve);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            await _repository.SetVoucherApprovalAsync(voucherId, true);
-            return Ok();
-        }
-
-        // PUT: api/vouchers/{voucherId:int}/approve/undo
-        [HttpPut]
-        [Route(VoucherApi.UndoApproveVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoApprove)]
-        public async Task<IActionResult> PutExistingVoucherAsUnapproved(int voucherId)
-        {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoApprove);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            await _repository.SetVoucherApprovalAsync(voucherId, false);
+            await _repository.UnconfirmGroupVouchersAsync(actionDetail.Items, false);
             return Ok();
         }
 
@@ -478,7 +507,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.Finalize);
+            var result = await ValidateGroupActionAsync(actionDetail.Items, AppStrings.Finalize);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -486,22 +515,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Finalized);
             return StatusCode(StatusCodes.Status200OK);
-        }
-
-        // PUT: api/vouchers/{voucherId:int}/finalize
-        [HttpPut]
-        [Route(VoucherApi.FinalizeVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Finalize)]
-        public async Task<IActionResult> PutExistingVoucherAsFinalized(int voucherId)
-        {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Finalize);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Finalized);
-            return Ok();
         }
 
         /// <summary>
@@ -519,7 +532,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupCheckAsync(actionDetail.Items, AppStrings.UndoFinalize);
+            var result = await ValidateGroupActionAsync(actionDetail.Items, AppStrings.UndoFinalize);
             if (result.Count() > 0)
             {
                 return BadRequest(result);
@@ -527,22 +540,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Checked);
             return StatusCode(StatusCodes.Status200OK);
-        }
-
-        // PUT: api/vouchers/{voucherId:int}/finalize/undo
-        [HttpPut]
-        [Route(VoucherApi.UndoFinalizeVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoFinalize)]
-        public async Task<IActionResult> PutExistingVoucherAsUnfinalized(int voucherId)
-        {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoFinalize);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
-            return Ok();
         }
 
         // DELETE: api/vouchers/{voucherId:int}
@@ -895,8 +892,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 var voucher = await _repository.GetVoucherAsync(item);
                 if (voucher == null)
                 {
-                    message = String.Format(
-                        _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucher.Id);
+                    message = _strings.Format(
+                        AppStrings.ItemByIdNotFound, AppStrings.Voucher, voucher.Id.ToString());
                     messages.Add(message);
                     break;
                 }
@@ -914,7 +911,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (approveList.Count() > 0)
             {
-                var approveListValidation = await ValidateGroupCheckAsync(approveList, AppStrings.UndoApprove);
+                var approveListValidation = await ValidateGroupActionAsync(approveList, AppStrings.UndoApprove);
                 if (approveListValidation.Count() > 0)
                 {
                     foreach (var item in approveListValidation)
@@ -926,7 +923,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (confirmList.Count() > 0)
             {
-                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, AppStrings.UndoConfirm);
+                var confirmListValidation = await ValidateGroupActionAsync(confirmList, AppStrings.UndoConfirm);
                 if (confirmListValidation.Count() > 0)
                 {
                     foreach (var item in confirmListValidation)
@@ -956,8 +953,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 var voucher = await _repository.GetVoucherAsync(item);
                 if (voucher == null)
                 {
-                    message = String.Format(
-                        _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucher.Id);
+                    message = _strings.Format(
+                        AppStrings.ItemByIdNotFound, AppStrings.Voucher, voucher.Id.ToString());
                     messages.Add(message);
                     break;
                 }
@@ -975,7 +972,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (approveList.Count() > 0)
             {
-                var approveListValidation = await ValidateGroupCheckAsync(approveList, AppStrings.Approve);
+                var approveListValidation = await ValidateGroupActionAsync(approveList, AppStrings.Approve);
                 if (approveListValidation.Count() > 0)
                 {
                     foreach (var item in approveListValidation)
@@ -987,7 +984,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (confirmList.Count() > 0)
             {
-                var confirmListValidation = await ValidateGroupCheckAsync(confirmList, AppStrings.Confirm);
+                var confirmListValidation = await ValidateGroupActionAsync(confirmList, AppStrings.Confirm);
                 if (confirmListValidation.Count() > 0)
                 {
                     foreach (var item in confirmListValidation)
@@ -1001,13 +998,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
-        /// <summary>
-        /// اعتبارسنجی اسناد انتخاب شده برای  ثبت گروهی اسناد
-        /// </summary>
-        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        private async Task<IEnumerable<string>> ValidateGroupCheckAsync(IEnumerable<int> items, string action)
+        private async Task<IEnumerable<string>> ValidateGroupActionAsync(IEnumerable<int> items, string action)
         {
             var messages = new List<string>();
             foreach (int item in items)
@@ -1015,8 +1006,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 var result = await VoucherActionValidationResultAsync(item, action);
                 if (result is BadRequestObjectResult error)
                 {
-                    // messages.Add(_strings.Format("{0} :{1}{2}", AppStrings.VoucherByNo, item.ToString(), error.Value.ToString()));
-                    messages.Add(_strings.Format("{0} :{1}{2}", AppStrings.VoucherDisplay, item.ToString(), error.Value.ToString()));
+                    messages.Add(error.Value.ToString());
                 }
             }
 

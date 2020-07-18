@@ -351,11 +351,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را رفع تایید گروهی می کند
+        /// به روش آسنکرون، اسناد مالی مشخص شده با شناسه دیتابیسی را رفع تایید گروهی می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="isConfirmed">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
-        public async Task SetCombinationVouchersStatusAsync(IEnumerable<int> items, bool isConfirmed)
+        /// <param name="isConfirmed">وضعیت جدید مورد نظر برای اسناد مالی</param>
+        public async Task UnconfirmGroupVouchersAsync(IEnumerable<int> items, bool isConfirmed)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             foreach (int item in items)
@@ -381,11 +381,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش اسنکرون اسناد مالی مشخص شده با شناسه عادی را تایید گروهی  می کند
+        /// به روش آسنکرون، اسناد مالی مشخص شده با شناسه دیتابیسی را تایید گروهی  می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="isConfirmed">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
-        public async Task SetConfirmGroupVouchersAsync(IEnumerable<int> items, bool isConfirmed)
+        /// <param name="isConfirmed">وضعیت جدید مورد نظر برای اسناد مالی</param>
+        public async Task ConfirmGroupVouchersAsync(IEnumerable<int> items, bool isConfirmed)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             foreach (int item in items)
