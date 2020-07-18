@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+    #line 1 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class RepoInterfaceFromMetadata : RepoInterfaceFromMetadataBase
     {
@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Templates
         public virtual string TransformText()
         {
             
-            #line 6 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 6 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
 
 var entityInfo = _model;
 var entity = entityInfo.Entity;
@@ -39,9 +39,9 @@ var plural = GetPluralName(entity.Name);
             #line default
             #line hidden
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Threading.Tasks;\r\n" +
-                    "using SPPC.Framework.Presentation;\r\nusing SPPC.Tadbir.ViewModel.Auth;\r\n");
+                    "using SPPC.Framework.Presentation;\r\nusing SPPC.Tadbir.Helpers;\r\n");
             
-            #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 16 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
  if(entity.Area != "Auth")
 { 
             
@@ -49,14 +49,14 @@ var plural = GetPluralName(entity.Name);
             #line hidden
             this.Write("using SPPC.Tadbir.ViewModel.");
             
-            #line 18 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 18 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 19 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
  } 
             
             #line default
@@ -64,21 +64,21 @@ var plural = GetPluralName(entity.Name);
             this.Write("\r\nnamespace SPPC.Tadbir.Persistence\r\n{\r\n    /// <summary>\r\n    /// عملیات مورد نی" +
                     "از برای مدیریت ");
             
-            #line 24 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 24 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
             #line hidden
             this.Write(" را تعریف میکند\r\n    /// </summary>\r\n    public interface I");
             
-            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 26 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("Repository\r\n    {\r\n        /// <summary>\r\n        /// به روش آسنکرون، کلیه ");
             
-            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 29 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
@@ -87,46 +87,29 @@ var plural = GetPluralName(entity.Name);
                     "tions\">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>\r\n        /// " +
                     "<returns>مجموعه ای از ");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 32 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
             #line hidden
-            this.Write(" تعریف شده</returns>\r\n        Task<IList<");
+            this.Write(" تعریف شده</returns>\r\n        Task<PagedList<");
             
-            #line 33 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 33 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel>> Get");
             
-            #line 33 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 33 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write("Async(GridOptions gridOptions = null);\r\n\r\n        /// <summary>\r\n        /// به ر" +
-                    "وش آسنکرون، تعداد ");
+                    "وش آسنکرون، ");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
-            
-            #line default
-            #line hidden
-            this.Write(" را خوانده و برمی گرداند\r\n        /// </summary>\r\n        /// <param name=\"gridOp" +
-                    "tions\">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>\r\n        /// " +
-                    "<returns>تعداد ");
-            
-            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
-            
-            #line default
-            #line hidden
-            this.Write("</returns>\r\n        Task<int> GetCountAsync(GridOptions gridOptions = null);\r\n\r\n " +
-                    "       /// <summary>\r\n        /// به روش آسنکرون، ");
-            
-            #line 43 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 36 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
@@ -134,105 +117,105 @@ var plural = GetPluralName(entity.Name);
             this.Write(" با شناسه عددی مشخص شده را خوانده و برمی گرداند\r\n        /// </summary>\r\n        " +
                     "/// <param name=\"");
             
-            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 38 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id\">شناسه عددی یکی از ");
             
-            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 38 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
             #line hidden
             this.Write(" موجود</param>\r\n        /// <returns>");
             
-            #line 46 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 39 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" مشخص شده با شناسه عددی</returns>\r\n        Task<");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 40 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel> Get");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 40 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 40 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id);\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، اطلاعات یک ");
             
-            #line 50 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 43 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" را ایجاد یا اصلاح می کند\r\n        /// </summary>\r\n        /// <param name=\"");
             
-            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 45 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name.ToLower()));
             
             #line default
             #line hidden
             this.Write("\">");
             
-            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 45 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" مورد نظر برای ایجاد یا اصلاح</param>\r\n        /// <returns>اطلاعات نمایشی ");
             
-            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 46 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" ایجاد یا اصلاح شده</returns>\r\n        Task<");
             
-            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 47 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel> Save");
             
-            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 47 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 47 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel ");
             
-            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 47 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name.ToLower()));
             
             #line default
             #line hidden
             this.Write(");\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، ");
             
-            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 50 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
@@ -240,28 +223,28 @@ var plural = GetPluralName(entity.Name);
             this.Write(" مشخص شده با شناسه عددی را حذف می کند\r\n        /// </summary>\r\n        /// <param" +
                     " name=\"");
             
-            #line 59 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 52 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id\">شناسه عددی ");
             
-            #line 59 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 52 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" مورد نظر برای حذف</param>\r\n        Task Delete");
             
-            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 53 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
+            #line 53 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name.ToLower()));
             
             #line default
