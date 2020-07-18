@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Helpers;
 <# if(entity.Area != "Auth")
 { #>
 using SPPC.Tadbir.ViewModel.<#= entity.Area #>;
@@ -30,14 +30,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از <#= entityInfo.PluralName #> تعریف شده</returns>
-        Task<IList<<#= entity.Name #>ViewModel>> Get<#= plural #>Async(GridOptions gridOptions = null);
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد <#= entityInfo.PluralName #> را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد <#= entityInfo.PluralName #></returns>
-        Task<int> GetCountAsync(GridOptions gridOptions = null);
+        Task<PagedList<<#= entity.Name #>ViewModel>> Get<#= plural #>Async(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، <#= entityInfo.SingularName #> با شناسه عددی مشخص شده را خوانده و برمی گرداند
