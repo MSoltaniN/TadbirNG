@@ -889,9 +889,14 @@
     "Yes": "Yes",
     "Not": "No",
     "OperationSuccessful": "Operation Successful",
-    "vouchersListThatHasError": "vouchers List That Has Error",
+    "VouchersListThatHasError": "vouchers List That Has Error",
+    "GroupOperationReport": "Group Operation Report",
     "RowNo": "Row",
-    "VoucherNo": "Voucher Number"
+    "VoucherNo": "Voucher Number",
+    "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
+    "SuccessfulNumber": "Successful Number :",
+    "NumberOfErrors": "Number Of Errors :"
+
   },
   "User": {
     "New": "New User",

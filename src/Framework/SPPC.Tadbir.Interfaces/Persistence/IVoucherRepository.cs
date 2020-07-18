@@ -174,8 +174,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
         /// <param name="action">عمل مورد نظر</param>
         /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
-        /// آخرین وضعیت سند را برمی گرداند</returns>
-        Task<string> ValidateVoucherActionAsync(int voucherId, string action);
+        /// پیغام خطای عملیاتی را برمی گرداند</returns>
+        Task<GroupActionResultViewModel> ValidateVoucherActionAsync(int voucherId, string action);
 
         /// <summary>
         /// به روش آسنکرون، لیست و تعداد اسناد فاقد آرتیکل را برمیگرداند

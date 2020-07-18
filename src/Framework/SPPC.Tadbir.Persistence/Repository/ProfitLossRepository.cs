@@ -44,7 +44,8 @@ namespace SPPC.Tadbir.Persistence
             profitLoss.Items.AddRange(operationProfit);
             var beforeTax = await GetOtherCostRevenueItemsAsync(operationProfit.Last(), parameters);
             profitLoss.Items.AddRange(beforeTax);
-            profitLoss.Items.AddRange(GetNetProfitItemsAsync(beforeTax.Last(), parameters));
+            var netProfit = GetNetProfitItemsAsync(beforeTax.Last(), parameters);
+            profitLoss.Items.AddRange(netProfit);
             return profitLoss;
         }
 
@@ -65,12 +66,9 @@ namespace SPPC.Tadbir.Persistence
                 lines, line => line.Credit - line.Debit, AppStrings.NetRevenue,
                 parameters.FromDate, parameters.ToDate);
 
-            lines.Clear();
-            lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.SoldProductCost, parameters.ToDate, parameters));
-            var productCost = GetReportItem(
-                lines, line => line.Debit - line.Credit, AppStrings.SoldProductCost,
-                parameters.FromDate, parameters.ToDate);
+            ProfitLossItemViewModel productCost = (UserContext.InventoryMode == (int)InventoryMode.Perpetual)
+                ? await GetProductCostItemAsync(parameters)
+                : await GetPeriodicProductCostItemAsync(parameters);
 
             items.Add(netRevenue);
             items.Add(productCost);
@@ -79,6 +77,38 @@ namespace SPPC.Tadbir.Persistence
             items.Add(grossProfit);
 
             return items;
+        }
+
+        private async Task<ProfitLossItemViewModel> GetProductCostItemAsync(
+            ProfitLossParameters parameters)
+        {
+            var lines = new List<ProfitLossLineViewModel>();
+            lines.AddRange(await GetCollectionLinesAsync(
+                (int)AccountCollectionId.SoldProductCost, parameters.ToDate, parameters));
+            var productCost = GetReportItem(
+                lines, line => line.Debit - line.Credit, AppStrings.SoldProductCost,
+                parameters.FromDate, parameters.ToDate);
+            return productCost;
+        }
+
+        private async Task<ProfitLossItemViewModel> GetPeriodicProductCostItemAsync(
+            ProfitLossParameters parameters)
+        {
+            var lines = new List<ProfitLossLineViewModel>();
+            lines.AddRange(await GetCollectionLinesAsync(
+                (int)AccountCollectionId.FinalPurchase, parameters.ToDate, parameters));
+            lines.AddRange(await GetCollectionLinesAsync(
+                (int)AccountCollectionId.PurchaseRefundDiscount, parameters.ToDate, parameters));
+            var productCost = GetReportItem(
+                lines, line => line.Debit - line.Credit, AppStrings.CategoryPurchase,
+                parameters.FromDate, parameters.ToDate);
+            decimal startInventory = parameters.BalanceItems
+                .Sum(item => item.StartBalanceDebit - item.StartBalanceCredit);
+            decimal endInventory = parameters.BalanceItems
+                .Sum(item => item.EndBalanceDebit - item.EndBalanceCredit);
+            productCost.StartBalance = startInventory + productCost.StartBalance;
+            productCost.EndBalance = endInventory + productCost.EndBalance;
+            return productCost;
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetOperationalCostItemsAsync(

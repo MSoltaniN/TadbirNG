@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -8,6 +9,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -23,7 +25,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
-        // GET: api/profitloss
+        // GET: api/profit-loss
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
         [Route(ProfitLossApi.ProfitLossUrl)]
@@ -33,7 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await ProfitLossResultAsync(from, to, tax, closing, ccenterId, projectId);
         }
 
-        // GET: api/profitloss/simple
+        // GET: api/profit-loss/simple
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
         [Route(ProfitLossApi.ProfitLossSimpleUrl)]
@@ -43,19 +45,43 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await ProfitLossResultAsync(date, date, tax, closing, ccenterId, projectId);
         }
 
-        private async Task<IActionResult> ProfitLossResultAsync(
-            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId)
+        // PUT: api/profit-loss
+        [HttpPut]
+        [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
+        [Route(ProfitLossApi.ProfitLossUrl)]
+        public async Task<IActionResult> PutPeriodicProfitLossAsync(
+            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId,
+            [FromBody] IList<StartEndBalanceViewModel> balanceItems)
         {
-            var parameters = GetParameters(from, to, tax, closing, ccenterId, projectId);
+            return await ProfitLossResultAsync(from, to, tax, closing, ccenterId, projectId, balanceItems);
+        }
+
+        // PUT: api/profit-loss/simple
+        [HttpPut]
+        [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
+        [Route(ProfitLossApi.ProfitLossSimpleUrl)]
+        public async Task<IActionResult> PutPeriodicSimpleProfitLossAsync(
+            DateTime date, decimal? tax, bool? closing, int? ccenterId, int? projectId,
+            [FromBody] IList<StartEndBalanceViewModel> balanceItems)
+        {
+            return await ProfitLossResultAsync(date, date, tax, closing, ccenterId, projectId, balanceItems);
+        }
+
+        private async Task<IActionResult> ProfitLossResultAsync(
+            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId,
+            IList<StartEndBalanceViewModel> balanceItems = null)
+        {
+            var parameters = GetParameters(from, to, tax, closing, ccenterId, projectId, balanceItems);
             var profitLoss = await _repository.GetProfitLossAsync(parameters);
             Localize(profitLoss);
             return Json(profitLoss);
         }
 
         private ProfitLossParameters GetParameters(
-            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId)
+            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId,
+            IList<StartEndBalanceViewModel> balanceItems = null)
         {
-            return new ProfitLossParameters()
+            var parameters = new ProfitLossParameters()
             {
                 FromDate = from,
                 ToDate = to,
@@ -65,6 +91,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ProjectId = projectId,
                 GridOptions = GridOptions ?? new GridOptions()
             };
+
+            if (balanceItems != null)
+            {
+                parameters.BalanceItems.AddRange(balanceItems);
+            }
+
+            return parameters;
         }
 
         private void Localize(ProfitLossViewModel profitLoss)
