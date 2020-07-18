@@ -31,6 +31,13 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherViewModel> GetVoucherAsync(int voucherId);
 
         /// <summary>
+        /// به روش آسنکرون، اسناد مالی با شناسه دیتابیسی مشخص شده را از دیتابیس خوانده ودر قالب ویو مدل برمی گرداند
+        /// </summary>
+        /// <param name="voucherIds">شناسه دیتابیسی اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
+        Task<List<GroupActionResultViewModel>> GetVouchersAsGroupActionResultAsync(IEnumerable<int> voucherIds);
+
+        /// <summary>
         /// به روش آسنکرون، سند مالی جدیدی را با مقادیر پیشنهادی ایجاد کرده و برمی گرداند
         /// </summary>
         /// <returns>سند مالی جدید با مقادیر پیشنهادی</returns>
@@ -176,6 +183,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
         /// آخرین وضعیت سند را برمی گرداند</returns>
         Task<string> ValidateVoucherActionAsync(int voucherId, string action);
+
+        /// <summary>
+        /// عمل داده شده را روی اسناد با شناسه دیتابیسی مشخص شده بررسی و اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="voucherIds">شناسه دیتابیسی اسناد مورد نظر</param>
+        /// <param name="action">عمل مورد نظر</param>
+        /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
+        /// آخرین وضعیت سند را برمی گرداند</returns>
+        Task<IEnumerable<GroupActionResultViewModel>> ValidateVouchersAsync(IEnumerable<int> voucherIds, string action);
 
         /// <summary>
         /// به روش آسنکرون، لیست و تعداد اسناد فاقد آرتیکل را برمیگرداند

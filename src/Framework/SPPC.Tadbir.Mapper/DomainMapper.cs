@@ -220,6 +220,7 @@ namespace SPPC.Tadbir.Mapper
                  .ForMember(dest => dest.IsApproved, opts => opts.MapFrom(src => src.ApprovedById != null ? true : false))
                   .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null ? true : false))
                   ;
+            mapperConfig.CreateMap<Voucher, GroupActionResultViewModel>();
             mapperConfig.CreateMap<VoucherViewModel, Voucher>();
             mapperConfig.CreateMap<Voucher, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))

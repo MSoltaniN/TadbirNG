@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -285,39 +287,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            // List<GroupActionResultViewModel> groupActionResult = new List<GroupActionResultViewModel>();
-            List<object> objResult = new List<object>();
-            List<int> itemsForGroupCheck = new List<int>();
-            foreach (int item in actionDetail.Items)
-            {
-                var voucherItem = await _repository.GetVoucherAsync(item);
-                var result = await VoucherActionValidationResultAsync(item, AppStrings.Check);
-                if (voucherItem != null && result is BadRequestObjectResult error)
-                {
-                    objResult.Add(new { voucherNo = voucherItem.No, errorMessage = error.Value.ToString() });
-
-                    // groupActionResult.Add(new GroupActionResultViewModel
-                    // {
-                    //    Id = voucherItem.No,
-                    //    Date = voucherItem.Date,
-                    //    ErrorMesagge = error.Value.ToString(),
-                    //    Name = _strings.Format(AppStrings.Voucher),
-                    //    FullCode = string.Empty,
-                    // });
-                }
-                else
-                {
-                    itemsForGroupCheck.Add(item);
-                }
-            }
-
+            var validateResult = await _repository.ValidateVouchersAsync(actionDetail.Items, AppStrings.Check);
+            var groupActionResult = validateResult.Where(v => !string.IsNullOrEmpty(v.ErrorMessage)).ToList();
+            var itemsForGroupCheck = validateResult.Where(v => string.IsNullOrEmpty(v.ErrorMessage)).Select(v => v.Id).ToList();
             if (itemsForGroupCheck.Count > 0)
             {
                 await _repository.SetVouchersStatusAsync(itemsForGroupCheck, DocumentStatusValue.Checked);
             }
 
-            // return Ok(groupActionResult);
-            return Ok(objResult);
+            var gridOptions = GridOptions ?? new GridOptions();
+            var pageList = new PagedList<GroupActionResultViewModel>(groupActionResult, gridOptions);
+            return Ok(pageList);
         }
 
         /// <summary>

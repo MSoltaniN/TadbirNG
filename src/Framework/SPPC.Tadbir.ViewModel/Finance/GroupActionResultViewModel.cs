@@ -15,6 +15,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int Id { get; set; }
 
         /// <summary>
+        /// شماره سند مالی که مقداری عددی است
+        /// </summary>
+        public int No { get; set; }
+
+        /// <summary>
         /// نام موجودیت
         /// </summary>
         public string Name { get; set; }
@@ -27,7 +32,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// پیام خطا رادر خود نگه می دارد
         /// </summary>
-        public string ErrorMesagge { get; set; }
+        public string ErrorMessage { get; set; }
 
         /// <summary>
         /// تاریخ ایجاد سند

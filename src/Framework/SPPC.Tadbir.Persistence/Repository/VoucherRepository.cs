@@ -75,6 +75,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اسناد مالی با شناسه دیتابیسی مشخص شده رااز دیتابیس خوانده ودر قالب ویو مدل برمی گرداند
+        /// </summary>
+        /// <param name="voucherIds">شناسه دیتابیسی اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
+        public async Task<List<GroupActionResultViewModel>> GetVouchersAsGroupActionResultAsync(IEnumerable<int> voucherIds)
+        {
+            var vouchers = await Repository
+               .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+               .Where(item => voucherIds.Contains(item.Id))
+               .Select(item => Mapper.Map<GroupActionResultViewModel>(item))
+               .ToListAsync();
+            return vouchers;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سند مالی جدیدی را با مقادیر پیشنهادی ایجاد کرده و برمی گرداند
         /// </summary>
         /// <returns>سند مالی جدید با مقادیر پیشنهادی</returns>
