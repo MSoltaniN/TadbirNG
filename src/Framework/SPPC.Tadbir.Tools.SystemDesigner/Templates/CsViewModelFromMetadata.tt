@@ -28,7 +28,7 @@ namespace <#= codeNamespace #>
     /// <#= _entity.Description #>
     /// </summary>
 <#  } #>
-    public partial class <#= _entity.Name #>ViewModel
+    public partial class <#= _entity.Name #>ViewModel : ViewModelBase
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

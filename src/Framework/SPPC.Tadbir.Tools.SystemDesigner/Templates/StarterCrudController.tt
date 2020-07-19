@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.<#= _model.EntityArea #>;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
-using SPPC.Tadbir.Web.Api.Resources.Types;
 
 <#
 var plural = GetPluralName(_model.EntityName);
@@ -22,32 +22,52 @@ var name = String.Format("{0}Controller", plural);
 #>
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    /// عملیات سرویس وب برای مدیریت اطلاعات مدارس را پیاده سازی می کند
+    /// </summary>
     [Produces("application/json")]
     public class <#= name #> : ValidatingController<<#= _model.EntityName #>ViewModel>
     {
-        public <#= name #>(I<#= _model.EntityName #>Repository repository, IStringLocalizer<AppStrings> strings = null)
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="repository">امکان ذخیره و بازیابی اطلاعات مدارس در دیتابیس را فراهم می کند</param>
+        /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
+        public <#= name #>(I<#= _model.EntityName #>Repository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
         }
 
+        /// <summary>
+        /// کلید متنی چندزبانه برای موجودیت مدرسه
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.<#= _model.EntityName #>; }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده مدارس را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات صفحه بندی شده مدارس</returns>
         // GET: api/<#= plural.ToLower() #>
+        [HttpGet]
         [Route(<#= _model.EntityName #>Api.<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Url)]
         [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.View)]
         public async Task<IActionResult> Get<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Async()
         {
-            int itemCount = await _repository.GetCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var <#= plural.ToLower() #> = await _repository.Get<#= plural #>Async(GridOptions);
-            return Json(<#= plural.ToLower() #>);
+            return JsonListResult(<#= plural.ToLower() #>);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی مدرسه مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی مدرسه مورد نظر</param>
+        /// <returns>اطلاعات نمایشی مدرسه مورد نظر</returns>
         // GET: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
+        [HttpGet]
         [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
         [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.View)]
         public async Task<IActionResult> Get<#= _model.EntityName #>Async(int <#= _model.EntityName.ToLower() #>Id)
@@ -56,6 +76,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(<#= _model.EntityName.ToLower() #>);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی یک مدرسه جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// </summary>
+        /// <param name="<#= _model.EntityName.ToLower() #>">اطلاعات نمایشی مدرسه جدید</param>
+        /// <returns>اطلاعات نمایشی ذخیره شده برای مدرسه</returns>
         // POST: api/<#= plural.ToLower() #>
         [HttpPost]
         [Route(<#= _model.EntityName #>Api.<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Url)]
@@ -72,6 +97,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک مدرسه موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// </summary>
+        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی مدرسه اصلاح شده</param>
+        /// <param name="<#= _model.EntityName.ToLower() #>">اطلاعات نمایشی اصلاح شده برای مدرسه</param>
+        /// <returns>اطلاعات نمایشی ذخیره شده برای مدرسه</returns>
         // PUT: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
         [HttpPut]
         [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
@@ -88,8 +119,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return OkReadResult(outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات مدرسه مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
+        /// </summary>
+        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی مدرسه مورد نظر برای حذف</param>
         // DELETE: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
-        [HttpDelete]
+		[HttpDelete]
         [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
         [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.Delete)]
         public async Task<IActionResult> DeleteExisting<#= _model.EntityName #>Async(int <#= _model.EntityName.ToLower() #>Id)
@@ -104,7 +139,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        private async Task<string> ValidateDeleteAsync(int item)
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای یکی از مدارس اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی مدرسه مورد نظر برای حذف</param>
+        /// <returns>اگر خطای اعتبارسنجی برای حذف وجود داشته باشد، متن محلی شده خطا
+        /// و در غیر این صورت رشته خالی را برمی گرداند</returns>
+        protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var <#= _model.EntityName.ToLower() #> = await _repository.Get<#= _model.EntityName #>Async(item);
