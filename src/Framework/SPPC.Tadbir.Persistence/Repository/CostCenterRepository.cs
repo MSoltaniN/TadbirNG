@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
@@ -48,17 +47,6 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             await ReadAsync(gridOptions);
             return new PagedList<CostCenterViewModel>(costCenters, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه جاری تعریف شده اند،
-        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<KeyValue>> GetCostCentersLookupAsync(GridOptions gridOptions = null)
-        {
-            return await Repository.GetAllLookupAsync<CostCenter>(ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>
@@ -213,7 +201,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر کد مرکز هزینه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
         public async Task<bool> IsDuplicateCostCenterAsync(CostCenterViewModel costCenter)
         {
-            Verify.ArgumentNotNull(costCenter, "costCenter");
+            Verify.ArgumentNotNull(costCenter, nameof(costCenter));
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             int count = await repository
                 .GetCountByCriteriaAsync(cc => cc.Id != costCenter.Id
@@ -265,17 +253,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مقدار فیلد FullCode والد هر مرکز هزینه را برمیگرداند
+        /// به روش آسنکرون، کد کامل مرکز هزینه والد داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه والد هر مرکز هزینه</param>
-        /// <returns>اگر مرکز هزینه والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        /// <param name="parentId">شناسه مرکز هزینه والد مورد نظر</param>
+        /// <returns>اگر مرکز هزینه والد وجود نداشته باشد مقدار خالی و در غیر این صورت کد کامل والد را برمی گرداند
+        /// </returns>
         public async Task<string> GetCostCenterFullCodeAsync(int parentId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDAsync(parentId);
             if (costCenter == null)
             {
-                return string.Empty;
+                return String.Empty;
             }
 
             return costCenter.FullCode;

@@ -42,7 +42,7 @@ export class ProjectComponent extends AutoGridExplorerComponent<Project> impleme
     public cdref: ChangeDetectorRef, public ngZone: NgZone) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Project,
       "Project.LedgerProject", "Project.EditorTitleNew", "Project.EditorTitleEdit",
-      ProjectApi.EnvironmentProjects, ProjectApi.EnvironmentProjectsLedger, ProjectApi.Project, ProjectApi.ProjectChildren, ProjectApi.EnvironmentNewChildProject,
+      ProjectApi.EnvironmentProjects, ProjectApi.RootProjects, ProjectApi.Project, ProjectApi.ProjectChildren, ProjectApi.NewChildProject,
       cdref, ngZone)
   }
 

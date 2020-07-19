@@ -22,14 +22,6 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه جاری تعریف شده اند،
-        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<IList<KeyValue>> GetProjectsLookupAsync(GridOptions gridOptions = null);
-
-        /// <summary>
         /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="projectId">شناسه عددی یکی از پروژه های موجود</param>
@@ -110,10 +102,11 @@ namespace SPPC.Tadbir.Persistence
         Task<bool?> HasChildrenAsync(int projectId);
 
         /// <summary>
-        /// به روش آسنکرون، مقدار فیلد FullCode والد هر پروژه را برمیگرداند
+        /// به روش آسنکرون، کد کامل پروژه والد داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه والد هر پروژه</param>
-        /// <returns>اگر پروژه والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        /// <param name="parentId">شناسه پروژه والد مورد نظر</param>
+        /// <returns>اگر پروژه والد وجود نداشته باشد مقدار خالی و در غیر این صورت کد کامل والد را برمی گرداند
+        /// </returns>
         Task<string> GetProjectFullCodeAsync(int parentId);
     }
 }

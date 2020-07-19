@@ -23,24 +23,14 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentCostCentersUrl = "ccenters";
 
         /// <summary>
-        /// API client URL for cost center lookups defined in current environment
+        /// API client URL for root cost centers defined in current environment
         /// </summary>
-        public const string EnvironmentCostCentersLookup = "ccenters/lookup";
+        public const string RootCostCenters = "ccenters/root";
 
         /// <summary>
-        /// API server route URL for cost center lookups defined in current environment
+        /// API server route URL for root cost centers defined in current environment
         /// </summary>
-        public const string EnvironmentCostCentersLookupUrl = "ccenters/lookup";
-
-        /// <summary>
-        /// API client URL for cost center ledger defined in current environment
-        /// </summary>
-        public const string EnvironmentCostCentersLedger = "ccenters/ledger";
-
-        /// <summary>
-        /// API server route URL for cost center ledger defined in current environment
-        /// </summary>
-        public const string EnvironmentCostCentersLedgerUrl = "ccenters/ledger";
+        public const string RootCostCentersUrl = "ccenters/root";
 
         /// <summary>
         /// API client URL for a cost center item specified by unique identifier
@@ -65,21 +55,21 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for a new child for a parent cost center specified by unique identifier
         /// </summary>
-        public const string EnvironmentNewChildCostCenter = "ccenters/{0}/children/new";
+        public const string NewChildCostCenter = "ccenters/{0}/children/new";
 
         /// <summary>
         /// API server route URL for a new child for a parent cost center specified by unique identifier
         /// </summary>
-        public const string EnvironmentNewChildCostCenterUrl = "ccenters/{ccenterId:int}/children/new";
+        public const string NewChildCostCenterUrl = "ccenters/{ccenterId:int}/children/new";
 
         /// <summary>
         /// API client URL for cost center full code
         /// </summary>
-        public const string CostCenterFullCode = "ccenters/fullcode/{0}";
+        public const string CostCenterFullCode = "ccenters/{0}/fullcode";
 
         /// <summary>
         /// API server route URL for cost center full code
         /// </summary>
-        public const string CostCenterFullCodeUrl = "ccenters/fullcode/{parentId}";
+        public const string CostCenterFullCodeUrl = "ccenters/{parentId:int}/fullcode";
     }
 }

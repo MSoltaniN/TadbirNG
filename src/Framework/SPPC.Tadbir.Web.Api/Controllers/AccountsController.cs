@@ -95,13 +95,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، سرفصل حسابداری جدیدی زیرمجموعه سرفصل والد داده شده برمی گرداند 
+        /// به روش آسنکرون، سرفصل حسابداری جدیدی زیرمجموعه سرفصل والد داده شده برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی سرفصل والد</param>
         /// <returns>اطلاعات کامل پیشنهادی برای سرفصل حسابداری جدید</returns>
         // GET: api/accounts/{accountId:int}/children/new
         [HttpGet]
-        [Route(AccountApi.EnvironmentNewChildAccountUrl)]
+        [Route(AccountApi.NewChildAccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public async Task<IActionResult> GetNewAccountAsync(int accountId)
         {
@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>لیست اطلاعات خلاصه سرفصل های حسابداری در سطح کل</returns>
         // GET: api/accounts/ledger
         [HttpGet]
-        [Route(AccountApi.EnvironmentLedgerAccountsUrl)]
+        [Route(AccountApi.LedgerAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetLedgerAccountsAsync()
         {
@@ -141,7 +141,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>لیست اطلاعات خلاصه سرفصل های حسابداری در سطح کل</returns>
         // GET: api/accounts/ledger/{groupId:min(1)}
         [HttpGet]
-        [Route(AccountApi.EnvironmentLedgerAccountsByGroupIdUrl)]
+        [Route(AccountApi.LedgerAccountsByGroupIdUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetLedgerAccountsByGroupIdAsync(int groupId)
         {

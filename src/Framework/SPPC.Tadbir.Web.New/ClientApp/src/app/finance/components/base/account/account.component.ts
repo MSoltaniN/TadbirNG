@@ -53,8 +53,8 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
     public cdref: ChangeDetectorRef, public ngZone: NgZone) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Account,
       "Account.LedgerAccount", "Account.EditorTitleNew", "Account.EditorTitleEdit",
-      AccountApi.EnvironmentAccounts, AccountApi.EnvironmentLedgerAccounts, AccountApi.Account, AccountApi.AccountChildren,
-      AccountApi.EnvironmentNewChildAccount, cdref, ngZone)
+      AccountApi.EnvironmentAccounts, AccountApi.LedgerAccounts, AccountApi.Account, AccountApi.AccountChildren,
+      AccountApi.NewChildAccount, cdref, ngZone)
   }
 
 

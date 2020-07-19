@@ -23,34 +23,24 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentAccountsUrl = "accounts";
 
         /// <summary>
-        /// API client URL for accounts lookup defined in current environment
-        /// </summary>
-        public const string EnvironmentAccountsLookup = "accounts/lookup";
-
-        /// <summary>
-        /// API client URL for accounts ledger defined in current environment
-        /// </summary>
-        public const string EnvironmentAccountsLookupUrl = "accounts/lookup";
-
-        /// <summary>
         /// API client URL for ledger accounts defined in current environment
         /// </summary>
-        public const string EnvironmentLedgerAccounts = "accounts/ledger";
+        public const string LedgerAccounts = "accounts/ledger";
 
         /// <summary>
         /// API server route URL for ledger accounts defined in current environment
         /// </summary>
-        public const string EnvironmentLedgerAccountsUrl = "accounts/ledger";
+        public const string LedgerAccountsUrl = "accounts/ledger";
 
         /// <summary>
         /// API client URL for ledger accounts by group id defined in current environment
         /// </summary>
-        public const string EnvironmentLedgerAccountsByGroupId = "accounts/ledger/{0}";
+        public const string LedgerAccountsByGroupId = "accounts/ledger/{0}";
 
         /// <summary>
         /// API server route URL for ledger accounts by group id defined in current environment
         /// </summary>
-        public const string EnvironmentLedgerAccountsByGroupIdUrl = "accounts/ledger/{groupId:min(1)}";
+        public const string LedgerAccountsByGroupIdUrl = "accounts/ledger/{groupId:min(1)}";
 
         /// <summary>
         /// API client URL for a single account specified by identifier
@@ -75,12 +65,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for a new child for a parent account specified by unique identifier
         /// </summary>
-        public const string EnvironmentNewChildAccount = "accounts/{0}/children/new";
+        public const string NewChildAccount = "accounts/{0}/children/new";
 
         /// <summary>
         /// API server route URL for a new child for a parent account specified by unique identifier
         /// </summary>
-        public const string EnvironmentNewChildAccountUrl = "accounts/{accountId:int}/children/new";
+        public const string NewChildAccountUrl = "accounts/{accountId:int}/children/new";
 
         /// <summary>
         /// API client URL for account full code

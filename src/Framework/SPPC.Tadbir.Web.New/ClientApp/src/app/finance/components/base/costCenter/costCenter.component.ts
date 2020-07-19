@@ -45,8 +45,8 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
     public cdref: ChangeDetectorRef, public ngZone: NgZone) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.CostCenter,
       "CostCenter.LedgerCostCenter", "CostCenter.EditorTitleNew", "CostCenter.EditorTitleEdit",
-      CostCenterApi.EnvironmentCostCenters, CostCenterApi.EnvironmentCostCentersLedger, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren,
-      CostCenterApi.EnvironmentNewChildCostCenter, cdref, ngZone)
+      CostCenterApi.EnvironmentCostCenters, CostCenterApi.RootCostCenters, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren,
+      CostCenterApi.NewChildCostCenter, cdref, ngZone)
   }
 
   ngOnInit(): void {

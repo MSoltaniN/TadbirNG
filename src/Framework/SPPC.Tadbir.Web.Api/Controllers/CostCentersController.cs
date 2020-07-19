@@ -18,11 +18,20 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    /// واسط برنامه نویسی با مراکز هزینه در برنامه را پیاده سازی می کند
+    /// </summary>
     [Produces("application/json")]
     public class CostCentersController : ValidatingController<CostCenterViewModel>
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="repository">امکان مدیریت اطلاعات مراکز هزینه در دیتابیس را فراهم می کند</param>
+        /// <param name="config">امکان خواندن اطلاعات پیکربندی برنامه را فراهم می کند</param>
+        /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         public CostCentersController(
-            ICostCenterRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
+            ICostCenterRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
@@ -31,11 +40,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewName.CostCenter).Result;
         }
 
+        /// <summary>
+        /// کلید متن چندزبانه برای نام مرکز هزینه
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.CostCenter; }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه مراکز هزینه قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده مراکز هزینه</returns>
         // GET: api/ccenters
         [HttpGet]
         [Route(CostCenterApi.EnvironmentCostCentersUrl)]
@@ -46,16 +62,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(costCenters);
         }
 
-        // GET: api/ccenters/lookup
-        [HttpGet]
-        [Route(CostCenterApi.EnvironmentCostCentersLookupUrl)]
-        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentCostCentersLookupAsync()
-        {
-            var lookup = await _repository.GetCostCentersLookupAsync(GridOptions);
-            return Json(lookup);
-        }
-
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی مرکز هزینه مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <returns>اطلاعات نمایشی مرکز هزینه</returns>
         // GET: api/ccenters/{ccenterId:min(1)}
         [HttpGet]
         [Route(CostCenterApi.CostCenterUrl)]
@@ -66,11 +77,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(costCenter);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مرکز هزینه جدیدی زیرمجموعه مرکز هزینه والد داده شده برمی گرداند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه والد</param>
+        /// <returns>اطلاعات پیشنهادی برای مرکز هزینه جدید</returns>
         // GET: api/ccenters/{ccenterId:int}/children/new
         [HttpGet]
-        [Route(CostCenterApi.EnvironmentNewChildCostCenterUrl)]
+        [Route(CostCenterApi.NewChildCostCenterUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create)]
-        public async Task<IActionResult> GetEnvironmentNewCostCenterAsync(int ccenterId)
+        public async Task<IActionResult> GetNewCostCenterAsync(int ccenterId)
         {
             var newCenter = await _repository.GetNewChildCostCenterAsync(
                 ccenterId > 0 ? ccenterId : (int?)null);
@@ -87,16 +103,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(newCenter);
         }
 
-        // GET: api/ccenters/ledger
+        /// <summary>
+        /// به روش آسنکرون، کلیه مراکز هزینه در بالاترین سطح را برمی گرداند
+        /// </summary>
+        /// <returns>لیست اطلاعات خلاصه مراکز هزینه در بالاترین سطح</returns>
+        // GET: api/ccenters/root
         [HttpGet]
-        [Route(CostCenterApi.EnvironmentCostCentersLedgerUrl)]
+        [Route(CostCenterApi.RootCostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentCostCentersLedgerAsync()
+        public async Task<IActionResult> GetRootCostCentersAsync()
         {
             var costCenters = await _repository.GetRootCostCentersAsync();
-            return JsonReadResult(costCenters);
+            return Json(costCenters);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه مراکز هزینه زیرمجموعه مرکز هزینه داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه والد</param>
+        /// <returns>لیست اطلاعات خلاصه مراکز هزینه زیرمجموعه</returns>
         // GET: api/ccenters/{ccenterId:min(1)}/children
         [HttpGet]
         [Route(CostCenterApi.CostCenterChildrenUrl)]
@@ -104,10 +129,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterChildrenAsync(int ccenterId)
         {
             var children = await _repository.GetCostCenterChildrenAsync(ccenterId);
-            return JsonReadResult(children);
+            return Json(children);
         }
 
-        // GET: api/ccenters/fullcode/{parentId}
+        /// <summary>
+        /// به روش آسنکرون، کد کامل مرکز هزینه مشخص شده با شناسه را برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <returns>کد کامل مرکز هزینه</returns>
+        // GET: api/ccenters/{parentId:int}/fullcode
         [HttpGet]
         [Route(CostCenterApi.CostCenterFullCodeUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create | (int)CostCenterPermissions.Edit)]
@@ -115,14 +145,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (parentId <= 0)
             {
-                return Ok(string.Empty);
+                return Ok(String.Empty);
             }
 
             string fullCode = await _repository.GetCostCenterFullCodeAsync(parentId);
-
             return Ok(fullCode);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مرکز هزینه داده شده را ایجاد می کند
+        /// </summary>
+        /// <param name="costCenter">اطلاعات کامل مرکز هزینه جدید</param>
+        /// <returns>اطلاعات مرکز هزینه بعد از ایجاد در دیتابیس</returns>
         // POST: api/ccenters
         [HttpPost]
         [Route(CostCenterApi.EnvironmentCostCentersUrl)]
@@ -139,6 +173,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر برای اصلاح</param>
+        /// <param name="costCenter">اطلاعات اصلاح شده مرکز هزینه</param>
+        /// <returns>اطلاعات مرکز هزینه بعد از اصلاح در دیتابیس</returns>
         // PUT: api/ccenters/{ccenterId:min(1)}
         [HttpPut]
         [Route(CostCenterApi.CostCenterUrl)]
@@ -153,12 +193,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var outputItem = await _repository.SaveCostCenterAsync(costCenter);
-            result = (outputItem != null)
-                ? Ok(outputItem)
-                : NotFound() as IActionResult;
-            return result;
+            return OkReadResult(outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/ccenters/{ccenterId:min(1)}
         [HttpDelete]
         [Route(CostCenterApi.CostCenterUrl)]
@@ -175,6 +218,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/ccenters
         [HttpPut]
         [Route(CostCenterApi.EnvironmentCostCentersUrl)]
@@ -197,14 +246,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای مرکز هزینه مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
+        /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var costCenter = await _repository.GetCostCenterAsync(item);
             if (costCenter == null)
             {
-                message = String.Format(
-                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.CostCenter), item);
+                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.CostCenter, item.ToString());
             }
 
             var result = BranchValidationResult(costCenter);
@@ -217,18 +270,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
-                message = String.Format(
-                    _strings[AppStrings.CantDeleteNonLeafItem], _strings[AppStrings.CostCenter], costCenterInfo);
+                message = _strings.Format(AppStrings.CantDeleteNonLeafItem, AppStrings.CostCenter, costCenterInfo);
             }
             else if (await _repository.IsUsedCostCenterAsync(item))
             {
-                message = String.Format(
-                    _strings[AppStrings.CantDeleteUsedItem], _strings[AppStrings.CostCenter], costCenterInfo);
+                message = _strings.Format(AppStrings.CantDeleteUsedItem, AppStrings.CostCenter, costCenterInfo);
             }
             else if (await _repository.IsRelatedCostCenterAsync(item))
             {
-                message = String.Format(
-                    _strings[AppStrings.CantDeleteRelatedItem], _strings[AppStrings.CostCenter], costCenterInfo);
+                message = _strings.Format(AppStrings.CantDeleteRelatedItem, AppStrings.CostCenter, costCenterInfo);
             }
 
             return message;
@@ -244,7 +294,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateCostCenterAsync(costCenter))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.CostCenter, costCenter.FullCode));
+                return BadRequest(_strings.Format(
+                    AppStrings.DuplicateCodeValue, AppStrings.CostCenter, costCenter.FullCode));
             }
 
             result = BranchValidationResult(costCenter);
