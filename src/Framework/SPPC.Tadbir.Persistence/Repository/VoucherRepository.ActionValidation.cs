@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Resources;
@@ -15,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="action">عمل مورد نظر</param>
         /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت پیغام خطا را برمی گرداند
         /// </returns>
-        public async Task<string> ValidateVoucherActionAsync(int voucherId, string action)
+        public async Task<GroupActionResultViewModel> ValidateVoucherActionAsync(int voucherId, string action)
         {
             string error = String.Empty;
             var voucher = await GetVoucherAsync(voucherId);
@@ -52,7 +53,15 @@ namespace SPPC.Tadbir.Persistence
                 error = ValidateUndoFinalize(voucher);
             }
 
-            return error;
+            return String.IsNullOrEmpty(error)
+                ? null
+                : new GroupActionResultViewModel()
+                {
+                    Id = voucher.Id,
+                    Date = voucher.Date,
+                    ErrorMessage = error,
+                    No = voucher.No
+                };
         }
 
         private string ValidateCheck(VoucherViewModel voucher)

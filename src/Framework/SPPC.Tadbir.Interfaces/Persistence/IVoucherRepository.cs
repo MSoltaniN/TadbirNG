@@ -174,8 +174,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
         /// <param name="action">عمل مورد نظر</param>
         /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
-        /// آخرین وضعیت سند را برمی گرداند</returns>
-        Task<string> ValidateVoucherActionAsync(int voucherId, string action);
+        /// پیغام خطای عملیاتی را برمی گرداند</returns>
+        Task<GroupActionResultViewModel> ValidateVoucherActionAsync(int voucherId, string action);
 
         /// <summary>
         /// به روش آسنکرون، لیست و تعداد اسناد فاقد آرتیکل را برمیگرداند
@@ -208,17 +208,17 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>
-        /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را  رفع تایید گروهی می کند
+        /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را رفع تایید گروهی می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
         /// <param name="status">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
-        Task SetCombinationVouchersStatusAsync(IEnumerable<int> items, bool status);
+        Task UnconfirmGroupVouchersAsync(IEnumerable<int> items, bool status);
 
         /// <summary>
         /// به روش اسنکرون وضعیت اسناد مالی مشخص شده با شناسه عادی را تایید گروهی  می کند
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
         /// <param name="status">وضعیت جدید مورد نظر برای اسناد مالی مالی</param>
-        Task SetConfirmGroupVouchersAsync(IEnumerable<int> items, bool status);
+        Task ConfirmGroupVouchersAsync(IEnumerable<int> items, bool status);
     }
 }

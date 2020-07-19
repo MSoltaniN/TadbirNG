@@ -968,9 +968,13 @@
     "Yes": "بلی",
     "Not": "خیر",
     "OperationSuccessful": "عملیات  با موفقیت انجام شد",
-    "vouchersListThatHasError": "لیست اسنادی که با خطا مواجه شده اند",
+    "VouchersListThatHasError": "لیست اسنادی که با خطا مواجه شده اند",
+    "GroupOperationReport": "گزارش عملیات گروهی",
     "RowNo": "ردیف",
-    "VoucherNo": "شماره سند"
+    "VoucherNo": "شماره سند",
+    "NumberOfVouchersSelected": "تعداد اسناد انتخاب شده :",
+    "SuccessfulNumber": "تعداد موفق :",
+    "NumberOfErrors": "تعداد خطا :"
 
 
   },
