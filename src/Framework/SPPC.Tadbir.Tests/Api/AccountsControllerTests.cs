@@ -127,69 +127,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         #endregion
 
-        #region GetEnvironmentAccountsLookupAsync (GET: accounts/lookup) tests
-
-        [Test]
-        public void GetEnvironmentAccountsLookup_HasAuthorizeRequestAttribute()
-        {
-            // Arrange
-
-            // Act & Assert
-            AssertActionIsSecured(
-                "GetEnvironmentAccountsLookupAsync", SecureEntity.Account, (int)AccountPermissions.View);
-        }
-
-        [Test]
-        public void GetEnvironmentAccountsLookup_SpecifiesCorrectRoute()
-        {
-            // Arrange
-
-            // Act & Assert
-            AssertActionRouteEquals("GetEnvironmentAccountsLookupAsync", AccountApi.EnvironmentAccountsLookupUrl);
-        }
-
-        [Test]
-        public async Task GetEnvironmentAccountsLookup_ReturnsNonNullResult()
-        {
-            // Arrange
-
-            // Act
-            var result = await _controller.GetEnvironmentAccountsLookupAsync();
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
-
-        [Test]
-        public async Task GetEnvironmentAccountsLookup_CallsRepository()
-        {
-            // Arrange
-
-            // Act
-            await _controller.GetEnvironmentAccountsLookupAsync();
-
-            // Assert
-            _mockRepository.Verify(repo => repo.GetAccountsLookupAsync(It.IsAny<GridOptions>()));
-        }
-
-        [Test]
-        public async Task GetEnvironmentAccountsLookup_ReturnsJsonWithCorrectContentType()
-        {
-            // Arrange
-            _mockRepository
-                .Setup(repo => repo.GetAccountsLookupAsync(It.IsAny<GridOptions>()))
-                .ReturnsAsync(new List<KeyValue>());
-
-            // Act
-            var result = await _controller.GetEnvironmentAccountsLookupAsync() as JsonResult;
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.InstanceOf<IList<KeyValue>>());
-        }
-
-        #endregion
-
         #region GetAccountAsync (GET: accounts/{accountId:min(1)}) tests
 
         [Test]

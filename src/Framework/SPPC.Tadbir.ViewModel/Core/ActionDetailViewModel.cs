@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.ViewModel.Core
 {
     /// <summary>
-    /// این مدل نمایشی اطلاعات تکمیلی مربوط به یک اقدام را نشان می دهد.
+    /// اطلاعات تکمیلی مربوط به یک اقدام گروهی را نگهداری می کند
     /// </summary>
     public class ActionDetailViewModel
     {

@@ -85,12 +85,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for account full code
         /// </summary>
-        public const string AccountFullCode = "accounts/fullcode/{0}";
+        public const string AccountFullCode = "accounts/{0}/fullcode";
 
         /// <summary>
         /// API server route URL for account full code
         /// </summary>
-        public const string AccountFullCodeUrl = "accounts/fullcode/{parentId}";
+        public const string AccountFullCodeUrl = "accounts/{parentId:int}/fullcode";
 
         /// <summary>
         /// API client URL for accounts count
@@ -103,13 +103,13 @@ namespace SPPC.Tadbir.Api
         public const string AccountsCountUrl = "accounts/count";
 
         /// <summary>
-        /// API client URL for account full data specified by identifier
+        /// API client URL for full data of a single account specified by identifier
         /// </summary>
-        public const string AccountFullData = "accounts/fulldata/{0}";
+        public const string AccountFullData = "accounts/{0}/fulldata";
 
         /// <summary>
-        /// API server route URL for account full data specified by identifier
+        /// API server route URL for full data of a single account specified by identifier
         /// </summary>
-        public const string AccountFullDataUrl = "accounts/fulldata/{accountId:min(1)}";
+        public const string AccountFullDataUrl = "accounts/{accountId:min(1)}/fulldata";
     }
 }

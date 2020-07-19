@@ -22,14 +22,6 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
-        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<IList<KeyValue>> GetAccountsLookupAsync(GridOptions gridOptions = null);
-
-        /// <summary>
         /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
@@ -130,25 +122,25 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مشخص میکند که آیا حساب انتخاب شده در مجموعه حسابی وجود دارد یا نه
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <returns>در حالتی که حساب مشخص شده در کجکوعه حسابی باشد مقدار "درست" و در غیر این صورت
+        /// <returns>در حالتی که حساب مشخص شده در مجموعه حسابی باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsUsedInAccountCollectionAsync(int accountId);
 
         /// <summary>
-        /// به روش آسنکرون، مقدار فیلد FullCode والد هر حساب را برمیگرداند
+        /// به روش آسنکرون، کد کامل حساب والد داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه والد هر حساب</param>
-        /// <returns>اگر حساب والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        /// <param name="parentId">شناسه حساب والد مورد نظر</param>
+        /// <returns>اگر حساب والد وجود نداشته باشد مقدار خالی و در غیر این صورت کد کامل والد را برمی گرداند</returns>
         Task<string> GetAccountFullCodeAsync(int parentId);
 
         /// <summary>
-        /// به روش آسنکرون، تعداد کل حساب های ثبت شده را برمیگرداند
+        /// به روش آسنکرون، تعداد کل حساب های ثبت شده را برمی گرداند
         /// </summary>
         /// <returns>تعداد کل حساب ها</returns>
         Task<int> GetAllAccountsCountAsync();
 
         /// <summary>
-        /// به روش آسنکرون، حساب با سایر مشخصات حساب را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، حساب با سایر مشخصات حساب را خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <returns></returns>

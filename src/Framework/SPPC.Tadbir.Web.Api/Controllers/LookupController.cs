@@ -21,6 +21,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     {
         public LookupController(ILookupRepository repository,
             IConfigRepository config, IStringLocalizer<AppStrings> strings)
+            : base(strings)
         {
             _repository = repository;
             _configRepository = config;

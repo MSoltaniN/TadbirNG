@@ -19,11 +19,20 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    /// واسط برنامه نویسی با سرفصل های حسابداری را در برنامه پیاده سازی می کند
+    /// </summary>
     [Produces("application/json")]
     public class AccountsController : ValidatingController<AccountViewModel>
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="repository">امکان مدیریت اطلاعات سرفصل های حسابداری در دیتابیس را فراهم می کند</param>
+        /// <param name="config">امکان خواندن اطلاعات پیکربندی برنامه را فراهم می کند</param>
+        /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         public AccountsController(
-            IAccountRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
+            IAccountRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
@@ -32,11 +41,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewName.Account).Result;
         }
 
+        /// <summary>
+        /// کلید متن چندزبانه برای نام سرفصل حسابداری
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.Account; }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه سرفصل های حسابداری قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده سرفصل های حسابداری</returns>
         // GET: api/accounts
         [HttpGet]
         [Route(AccountApi.EnvironmentAccountsUrl)]
@@ -48,16 +64,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(accounts);
         }
 
-        // GET: api/accounts/lookup
-        [HttpGet]
-        [Route(AccountApi.EnvironmentAccountsLookupUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentAccountsLookupAsync()
-        {
-            var lookup = await _repository.GetAccountsLookupAsync(GridOptions);
-            return Json(lookup);
-        }
-
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی سرفصل حسابداری مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر</param>
+        /// <returns>اطلاعات نمایشی سرفصل حسابداری</returns>
         // GET: api/accounts/{accountId:min(1)}
         [HttpGet]
         [Route(AccountApi.AccountUrl)]
@@ -68,7 +79,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(account);
         }
 
-        // GET: api/accounts/fulldata/{accountId:min(1)}
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کامل سرفصل حسابداری مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر</param>
+        /// <returns>اطلاعات کامل سرفصل حسابداری شامل حساب و سایر مشخصات حساب</returns>
+        // GET: api/accounts/{accountId:min(1)}/fulldata
         [HttpGet]
         [Route(AccountApi.AccountFullDataUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
@@ -78,13 +94,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(account);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سرفصل حسابداری جدیدی زیرمجموعه سرفصل والد داده شده برمی گرداند 
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل والد</param>
+        /// <returns>اطلاعات کامل پیشنهادی برای سرفصل حسابداری جدید</returns>
         // GET: api/accounts/{accountId:int}/children/new
         [HttpGet]
         [Route(AccountApi.EnvironmentNewChildAccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
-        public async Task<IActionResult> GetEnvironmentNewAccountAsync(int accountId)
+        public async Task<IActionResult> GetNewAccountAsync(int accountId)
         {
-            var newAccountFull = await _repository.GetNewChildAccountAsync(accountId > 0 ? accountId : (int?)null);
+            var newAccountFull = await _repository.GetNewChildAccountAsync(
+                accountId > 0 ? accountId : (int?)null);
             if (newAccountFull == null)
             {
                 return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Account));
@@ -98,26 +120,40 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(newAccountFull);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه سرفصل های حسابداری در سطح کل را برمی گرداند
+        /// </summary>
+        /// <returns>لیست اطلاعات خلاصه سرفصل های حسابداری در سطح کل</returns>
         // GET: api/accounts/ledger
         [HttpGet]
         [Route(AccountApi.EnvironmentLedgerAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentLedgerAccountsAsync()
+        public async Task<IActionResult> GetLedgerAccountsAsync()
         {
             var accounts = await _repository.GetLedgerAccountsAsync();
-            return JsonReadResult(accounts);
+            return Json(accounts);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه سرفصل های حسابداری کل تعریف شده برای گروه حساب داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="groupId">شناسه دیتابیسی گروه حساب مورد نظر</param>
+        /// <returns>لیست اطلاعات خلاصه سرفصل های حسابداری در سطح کل</returns>
         // GET: api/accounts/ledger/{groupId:min(1)}
         [HttpGet]
         [Route(AccountApi.EnvironmentLedgerAccountsByGroupIdUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentLedgerAccountsByGroupIdAsync(int groupId)
+        public async Task<IActionResult> GetLedgerAccountsByGroupIdAsync(int groupId)
         {
             var accounts = await _repository.GetLedgerAccountsByGroupIdAsync(groupId);
-            return JsonReadResult(accounts);
+            return Json(accounts);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه سرفصل های حسابداری زیرمجموعه سرفصل داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری والد</param>
+        /// <returns>لیست اطلاعات خلاصه سرفصل های حسابداری زیرمجموعه</returns>
         // GET: api/accounts/{accountId:min(1)}/children
         [HttpGet]
         [Route(AccountApi.AccountChildrenUrl)]
@@ -125,10 +161,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountChildrenAsync(int accountId)
         {
             var children = await _repository.GetAccountChildrenAsync(accountId);
-            return JsonReadResult(children);
+            return Json(children);
         }
 
-        // GET: api/accounts/fullcode/{parentId}
+        /// <summary>
+        /// به روش آسنکرون، کد کامل سرفصل حسابداری مشخص شده با شناسه را برمی گرداند
+        /// </summary>
+        /// <param name="parentId">شناسه دیتابیسی سرفصل حسابداری مورد نظر</param>
+        /// <returns>کد کامل سرفصل حسابداری</returns>
+        // GET: api/accounts/{parentId:int}/fullcode
         [HttpGet]
         [Route(AccountApi.AccountFullCodeUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create | (int)AccountPermissions.Edit)]
@@ -136,14 +177,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (parentId <= 0)
             {
-                return Ok(string.Empty);
+                return Ok(String.Empty);
             }
 
             string fullCode = await _repository.GetAccountFullCodeAsync(parentId);
-
             return Ok(fullCode);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، تعداد کل سرفصل های حسابداری را برمی گرداند
+        /// </summary>
+        /// <returns>تعداد کل سرفصل های حسابداری</returns>
         // GET: api/accounts/count
         [HttpGet]
         [Route(AccountApi.AccountsCount)]
@@ -154,6 +198,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok(itemsCount);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سرفصل حسابداری داده شده را ایجاد می کند
+        /// </summary>
+        /// <param name="viewModel">اطلاعات کامل سرفصل حسابداری جدید</param>
+        /// <returns>اطلاعات سرفصل حسابداری بعد از ایجاد در دیتابیس</returns>
         // POST: api/accounts
         [HttpPost]
         [Route(AccountApi.EnvironmentAccountsUrl)]
@@ -170,11 +219,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputAccount);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای اصلاح</param>
+        /// <param name="viewModel">اطلاعات اصلاح شده سرفصل حسابداری</param>
+        /// <returns>اطلاعات سرفصل حسابداری بعد از اصلاح در دیتابیس</returns>
         // PUT: api/accounts/{accountId:min(1)}
         [HttpPut]
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedAccountAsync(int accountId, [FromBody] AccountFullDataViewModel viewModel)
+        public async Task<IActionResult> PutModifiedAccountAsync(
+            int accountId, [FromBody] AccountFullDataViewModel viewModel)
         {
             var result = await ValidationResultAsync(viewModel.Account, accountId);
             if (result is BadRequestObjectResult)
@@ -183,12 +239,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var outputAccount = await _repository.SaveAccountAsync(viewModel);
-            result = (outputAccount != null)
-                ? Ok(outputAccount)
-                : NotFound() as IActionResult;
-            return result;
+            return OkReadResult(outputAccount);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/accounts/{accountId:min(1)}
         [HttpDelete]
         [Route(AccountApi.AccountUrl)]
@@ -205,11 +264,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سرفصل های حسابداری داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/accounts
         [HttpPut]
         [Route(AccountApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
-        public async Task<IActionResult> PutExistingAccountsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutExistingAccountsAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {
@@ -226,14 +292,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای سرفصل حسابداری مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
+        /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
             var account = await _repository.GetAccountAsync(item);
             if (account == null)
             {
-                return String.Format(
-                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Account), item);
+                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Account, item.ToString());
             }
 
             var result = BranchValidationResult(account);
@@ -246,23 +316,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
-                message = String.Format(
-                    _strings[AppStrings.CantDeleteNonLeafItem], _strings[AppStrings.Account], accountInfo);
+                message = _strings.Format(AppStrings.CantDeleteNonLeafItem, AppStrings.Account, accountInfo);
             }
             else if (await _repository.IsUsedAccountAsync(item))
             {
-                message = String.Format(
-                    _strings[AppStrings.CantDeleteUsedItem], _strings[AppStrings.Account], accountInfo);
+                message = _strings.Format(AppStrings.CantDeleteUsedItem, AppStrings.Account, accountInfo);
             }
             else if (await _repository.IsRelatedAccountAsync(item))
             {
-                message = String.Format(
-                    _strings[AppStrings.CantDeleteRelatedItem], _strings[AppStrings.Account], accountInfo);
+                message = _strings.Format(AppStrings.CantDeleteRelatedItem, AppStrings.Account, accountInfo);
             }
             else if (await _repository.IsUsedInAccountCollectionAsync(item))
             {
-                message = String.Format(
-                    _strings[AppStrings.CantDeleteUsedInAccountCollection], accountInfo);
+                message = _strings.Format(AppStrings.CantDeleteUsedInAccountCollection, accountInfo);
             }
 
             return message;

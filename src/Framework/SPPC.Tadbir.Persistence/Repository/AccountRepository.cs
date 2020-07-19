@@ -4,14 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -53,17 +51,6 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
             await ReadAsync(gridOptions);
             return new PagedList<AccountViewModel>(accounts, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
-        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<KeyValue>> GetAccountsLookupAsync(GridOptions gridOptions = null)
-        {
-            return await Repository.GetAllLookupAsync<Account>(ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -293,41 +280,45 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا کد حساب مورد نظر تکراری است یا نه
         /// </summary>
-        /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>
+        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
         /// <returns>اگر کد حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
         /// <remarks>اگر کد حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
         /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
-        public async Task<bool> IsDuplicateAccountAsync(AccountViewModel accountViewModel)
+        public async Task<bool> IsDuplicateAccountAsync(AccountViewModel account)
         {
-            Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
+            Verify.ArgumentNotNull(account, nameof(account));
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             int count = await repository
-                .GetCountByCriteriaAsync(acc => acc.Id != accountViewModel.Id
-                    && acc.FullCode == accountViewModel.FullCode);
+                .GetCountByCriteriaAsync(acc => acc.Id != account.Id
+                    && acc.FullCode == account.FullCode);
             return count > 0;
         }
 
         /// <summary>
         /// به روش آسنکرون، با توجه به مجموعه حساب پدر حساب، مشخص میکند که حساب قابلیت اضافه شدن دارد یا نه
         /// </summary>
-        /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>
+        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
         /// <returns>اگر حساب شرایط اضافه شدن با توجه به مجموعه حساب والد را داشته باشد مقدار"درست"
         /// و در غیر این صورت مقدار "نادرست" را برمیگرداند</returns>
-        public async Task<bool> IsAccountCollectionValidAsync(AccountViewModel accountViewModel)
+        public async Task<bool> IsAccountCollectionValidAsync(AccountViewModel account)
         {
-            Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
-            var accCollectionRepository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            var accCollectionAccounts = await accCollectionRepository
-                .GetByCriteriaAsync(col => col.AccountId == accountViewModel.ParentId, ac => ac.Collection);
+            Verify.ArgumentNotNull(account, nameof(account));
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var collectionAccounts = await repository
+                .GetByCriteriaAsync(acc => acc.AccountId == account.ParentId, ac => ac.Collection);
 
-            if (accCollectionAccounts.Count() == 0)
+            if (collectionAccounts.Count() == 0)
             {
                 return false;
             }
             else
             {
-                var accCollections = accCollectionAccounts.Select(ac => ac.Collection).Distinct();
-                return accCollections.Where(f => f.TypeLevel == (int)TypeLevel.LeafAccounts).Count() > 0;
+                var collections = collectionAccounts
+                    .Select(ac => ac.Collection)
+                    .Distinct();
+                return collections
+                    .Where(f => f.TypeLevel == (int)TypeLevel.LeafAccounts)
+                    .Count() > 0;
             }
         }
 
@@ -402,10 +393,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مقدار فیلد FullCode والد هر حساب را برمیگرداند
+        /// به روش آسنکرون، کد کامل حساب والد داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه والد هر حساب</param>
-        /// <returns>اگر حساب والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        /// <param name="parentId">شناسه حساب والد مورد نظر</param>
+        /// <returns>اگر حساب والد وجود نداشته باشد مقدار خالی و در غیر این صورت کد کامل والد را برمی گرداند</returns>
         public async Task<string> GetAccountFullCodeAsync(int parentId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
@@ -470,7 +461,9 @@ namespace SPPC.Tadbir.Persistence
 
             // 31: بدهکاران تجاری
             // 32: بستانکاران تجاری
-            var collection = await repository.GetByCriteriaAsync(col => (col.CollectionId == 31 || col.CollectionId == 32) && col.AccountId == accountId);
+            var collection = await repository.GetByCriteriaAsync(
+                col => (col.CollectionId == 31 || col.CollectionId == 32)
+                    && col.AccountId == accountId);
             return collection.Count() > 0 ? true : false;
         }
 
@@ -479,7 +472,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
 
             // 17: بانک
-            var collection = await repository.GetByCriteriaAsync(col => col.CollectionId == 17 && col.AccountId == accountId);
+            var collection = await repository.GetByCriteriaAsync(
+                col => col.CollectionId == 17 && col.AccountId == accountId);
             return collection.Count() > 0 ? true : false;
         }
 
@@ -675,16 +669,17 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<int?> GetAccountCurrencyIdAsync(int accountId)
         {
-            var accountCurrencyRepository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
-            var accCurrency = await accountCurrencyRepository.GetSingleByCriteriaAsync(
+            var repository = UnitOfWork.GetAsyncRepository<AccountCurrency>();
+            var accCurrency = await repository.GetSingleByCriteriaAsync(
                 accCurr => accCurr.AccountId == accountId && accCurr.BranchId == UserContext.BranchId);
 
+            int? currencyId = null;
             if (accCurrency != null)
             {
-                return accCurrency.CurrencyId;
+                currencyId = accCurrency.CurrencyId;
             }
 
-            return null;
+            return currencyId;
         }
 
         private readonly ISystemRepository _system;
