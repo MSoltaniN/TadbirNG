@@ -3286,12 +3286,12 @@ WHERE ViewID = 62 AND Name = 'Category'
 -- 1.1.952
 UPDATE [Metadata].[Column]
 SET Name = 'IsConfirmed'
-WHERE ColumnID = 656 AND Name = 'IsVerified'
+WHERE ViewID = 2 AND Name = 'IsVerified'
 
 -- 1.1.959
 SET IDENTITY_INSERT [Metadata].[View] ON 
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
-    VALUES (63, 'GroupActionResult', 0, 0, '', NULL, NULL)
+    VALUES (63, 'GroupActionResult', 0, 0, NULL, '', NULL)
 SET IDENTITY_INSERT [Metadata].[View] OFF 
 
 SET IDENTITY_INSERT [Metadata].[Column] ON 
