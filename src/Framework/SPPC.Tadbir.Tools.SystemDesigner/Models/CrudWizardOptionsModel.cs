@@ -8,6 +8,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Models
         public CrudWizardOptionsModel()
         {
             Controller = new ControllerModel();
+            Api = new ApiModel();
             HasController = HasModel = HasViewModel = HasDbMapping = HasDbScript =
                 HasRepoInterface = HasRepoImplementation = HasApiRouting =
                 HasPermissionEnum = HasTsViewModel = HasTsApiRouting = true;
@@ -15,6 +16,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Models
 
         public ControllerModel Controller { get; set; }
 
+        public ApiModel Api { get; set; }
         public bool HasController { get; set; }
 
         public bool HasModel { get; set; }

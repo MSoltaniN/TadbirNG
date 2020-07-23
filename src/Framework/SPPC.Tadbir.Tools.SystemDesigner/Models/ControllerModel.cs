@@ -17,7 +17,9 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Models
         public string OutputPath { get; set; }
 
         public string EntityName { get; set; }
+
         public string EntityPersianName { get; set; }
+
         public string EntityPluralPersianName { get; set; }
 
         public string EntityArea { get; set; }

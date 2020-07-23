@@ -73,6 +73,7 @@
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Commands\CrudEntityWizardCommand.cs" />
+    <Compile Include="Commands\GenerateCsApiCommand.cs" />
     <Compile Include="Commands\GenerateControllerCommand.cs" />
     <Compile Include="Commands\GenerateCsModelCommand.cs" />
     <Compile Include="Commands\GenerateRepositoryCommand.cs" />
@@ -102,6 +103,7 @@
       <DependentUpon>TicketManager.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Models\ApiModel.cs" />
     <Compile Include="Models\AppSettingsModel.cs" />
     <Compile Include="Models\ConnectionStringsModel.cs" />
     <Compile Include="Models\PermissionDesignerModel.cs" />
@@ -111,6 +113,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\CsApiClass.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CsApiClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\CsApiClass.Custom.cs" />
     <Compile Include="Utility\HtmlHelper.cs" />
     <Compile Include="ITextTemplate.cs" />
     <Compile Include="MainWindow.cs">
@@ -335,6 +343,10 @@
     <Content Include="Templates\BlankController.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>BlankController.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\CsApiClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsApiClass.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\RepoImplementationFromMetadata.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>

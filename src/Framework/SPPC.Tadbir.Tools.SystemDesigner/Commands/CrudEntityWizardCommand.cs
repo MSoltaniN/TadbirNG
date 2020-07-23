@@ -27,6 +27,10 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
             {
                 GeneratePersistenceLayer();
             }
+            if(_model.Options.HasApiRouting)
+            {
+                GenerateCsApi();
+            }
         }
 
         private void GenerateController()
@@ -49,6 +53,12 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
         private void GeneratePersistenceLayer()
         {
             var command = new GenerateRepositoryCommand(_model);
+            command.Execute();
+        }
+        private void GenerateCsApi()
+        {
+            _model.Options.Api.EntityName = _model.EntityInfo.Entity.Name;
+            var command = new GenerateCsApiCommand(_model.Options.Api);
             command.Execute();
         }
 
