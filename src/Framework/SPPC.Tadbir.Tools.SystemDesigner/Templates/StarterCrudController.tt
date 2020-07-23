@@ -23,7 +23,7 @@ var name = String.Format("{0}Controller", plural);
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     /// <summary>
-    /// عملیات سرویس وب برای مدیریت اطلاعات مدارس را پیاده سازی می کند
+    /// عملیات سرویس وب برای مدیریت اطلاعات <<#= _model.EntityPluralPersianName #> را پیاده سازی می کند
     /// </summary>
     [Produces("application/json")]
     public class <#= name #> : ValidatingController<<#= _model.EntityName #>ViewModel>
@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="repository">امکان ذخیره و بازیابی اطلاعات مدارس در دیتابیس را فراهم می کند</param>
+        /// <param name="repository">امکان ذخیره و بازیابی اطلاعات <<#= _model.EntityPluralPersianName #> در دیتابیس را فراهم می کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
         public <#= name #>(I<#= _model.EntityName #>Repository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)
@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// کلید متنی چندزبانه برای موجودیت مدرسه
+        /// کلید متنی چندزبانه برای موجودیت <<#= _model.EntityPersianName #>
         /// </summary>
         protected override string EntityNameKey
         {
@@ -48,9 +48,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات صفحه بندی شده مدارس را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده <<#= _model.EntityPluralPersianName #> را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات صفحه بندی شده مدارس</returns>
+        /// <returns>اطلاعات صفحه بندی شده <<#= _model.EntityPluralPersianName #></returns>
         // GET: api/<#= plural.ToLower() #>
         [HttpGet]
         [Route(<#= _model.EntityName #>Api.<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Url)]
@@ -62,10 +62,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی مدرسه مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات نمایشی <<#= _model.EntityPersianName #> مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی مدرسه مورد نظر</param>
-        /// <returns>اطلاعات نمایشی مدرسه مورد نظر</returns>
+        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی <<#= _model.EntityPersianName #> مورد نظر</param>
+        /// <returns>اطلاعات نمایشی <<#= _model.EntityPersianName #> مورد نظر</returns>
         // GET: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
         [HttpGet]
         [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
@@ -77,10 +77,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی یک مدرسه جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// به روش آسنکرون، اطلاعات نمایشی یک <<#= _model.EntityPersianName #> جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
-        /// <param name="<#= _model.EntityName.ToLower() #>">اطلاعات نمایشی مدرسه جدید</param>
-        /// <returns>اطلاعات نمایشی ذخیره شده برای مدرسه</returns>
+        /// <param name="<#= _model.EntityName.ToLower() #>">اطلاعات نمایشی <<#= _model.EntityPersianName #> جدید</param>
+        /// <returns>اطلاعات نمایشی ذخیره شده برای <<#= _model.EntityPersianName #></returns>
         // POST: api/<#= plural.ToLower() #>
         [HttpPost]
         [Route(<#= _model.EntityName #>Api.<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Url)]
@@ -98,11 +98,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک مدرسه موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک <<#= _model.EntityPersianName #> موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
-        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی مدرسه اصلاح شده</param>
-        /// <param name="<#= _model.EntityName.ToLower() #>">اطلاعات نمایشی اصلاح شده برای مدرسه</param>
-        /// <returns>اطلاعات نمایشی ذخیره شده برای مدرسه</returns>
+        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی <<#= _model.EntityPersianName #> اصلاح شده</param>
+        /// <param name="<#= _model.EntityName.ToLower() #>">اطلاعات نمایشی اصلاح شده برای <<#= _model.EntityPersianName #></param>
+        /// <returns>اطلاعات نمایشی ذخیره شده برای <<#= _model.EntityPersianName #></returns>
         // PUT: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
         [HttpPut]
         [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
@@ -120,9 +120,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات مدرسه مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
+        /// به روش آسنکرون، اطلاعات <<#= _model.EntityPersianName #> مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
-        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی مدرسه مورد نظر برای حذف</param>
+        /// <param name="<#= _model.EntityName.ToLower() #>Id">شناسه دیتابیسی <<#= _model.EntityPersianName #> مورد نظر برای حذف</param>
         // DELETE: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
 		[HttpDelete]
         [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
@@ -140,9 +140,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، عمل حذف را برای یکی از مدارس اعتبارسنجی می کند
+        /// به روش آسنکرون، عمل حذف را برای یکی از <<#= _model.EntityPluralPersianName #> اعتبارسنجی می کند
         /// </summary>
-        /// <param name="item">شناسه دیتابیسی مدرسه مورد نظر برای حذف</param>
+        /// <param name="item">شناسه دیتابیسی <<#= _model.EntityPersianName #> مورد نظر برای حذف</param>
         /// <returns>اگر خطای اعتبارسنجی برای حذف وجود داشته باشد، متن محلی شده خطا
         /// و در غیر این صورت رشته خالی را برمی گرداند</returns>
         protected override async Task<string> ValidateDeleteAsync(int item)

@@ -32,6 +32,8 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
         private void GenerateController()
         {
             _model.Options.Controller.EntityName = _model.EntityInfo.Entity.Name;
+            _model.Options.Controller.EntityPersianName = _model.EntityInfo.SingularName;
+            _model.Options.Controller.EntityPluralPersianName = _model.EntityInfo.PluralName;
             _model.Options.Controller.EntityArea = _model.EntityInfo.Entity.Area;
             _model.Options.Controller.IsFiscalEntity = _model.EntityInfo.IsFiscalEntity;
             var command = new GenerateControllerCommand(_model.Options.Controller);
