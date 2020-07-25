@@ -8,7 +8,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Models
     {
         public ApiModel()
         {
-            OutputPath = ConfigurationManager.AppSettings["ControllerFolder"];
+            OutputPath = ConfigurationManager.AppSettings["ApiFolder"];
         }
         
         public string EntityName { get; set; }

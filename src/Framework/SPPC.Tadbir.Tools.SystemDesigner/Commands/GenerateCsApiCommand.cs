@@ -13,6 +13,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
             Verify.ArgumentNotNull(model);
             _model = model;
         }
+
         public void Execute()
         {
             var template = GetTemplate();
@@ -21,6 +22,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
                 _model.OutputPath, String.Format("{0}Api.cs", _model.EntityName));
             File.WriteAllText(path, transformed);
         }
+
         private ITextTemplate GetTemplate()
         {
             ITextTemplate template = null;

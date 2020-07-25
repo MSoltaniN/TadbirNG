@@ -55,6 +55,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
             var command = new GenerateRepositoryCommand(_model);
             command.Execute();
         }
+
         private void GenerateCsApi()
         {
             _model.Options.Api.EntityName = _model.EntityInfo.Entity.Name;
