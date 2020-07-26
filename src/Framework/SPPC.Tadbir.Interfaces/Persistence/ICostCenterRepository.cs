@@ -72,7 +72,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="costCenter">مدل نمایشی مرکز هزینه مورد نظر</param>
         /// <returns>اگر کد مرکز هزینه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        Task<bool> IsDuplicateCostCenterAsync(CostCenterViewModel costCenter);
+        Task<bool> IsDuplicateFullCodeAsync(CostCenterViewModel costCenter);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که نام مرکز هزینه مورد نظر بین مراکز همسطح با والد یکسان تکراری است یا نه
+        /// </summary>
+        /// <param name="costCenter">مدل نمایشی مرکز هزینه مورد نظر</param>
+        /// <returns>اگر نام مرکز هزینه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        Task<bool> IsDuplicateNameAsync(CostCenterViewModel costCenter);
 
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا مرکز هزینه انتخاب شده توسط رکوردهای اطلاعاتی دیگر

@@ -117,7 +117,6 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
     //}
 
     //this.hiddenValue = this.removeComma(this.showValue);
-    //debugger;
     //this.propagateChange(this.hiddenValue);
 
   }

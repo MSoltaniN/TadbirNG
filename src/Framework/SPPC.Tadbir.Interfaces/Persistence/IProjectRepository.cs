@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -73,7 +72,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="project">مدل نمایشی پروژه مورد نظر</param>
         /// <returns>اگر کد پروژه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        Task<bool> IsDuplicateProjectAsync(ProjectViewModel project);
+        Task<bool> IsDuplicateFullCodeAsync(ProjectViewModel project);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که نام پروژه مورد نظر بین پروژه های همسطح با والد یکسان تکراری است یا نه
+        /// </summary>
+        /// <param name="project">مدل نمایشی پروژه مورد نظر</param>
+        /// <returns>اگر نام پروژه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        Task<bool> IsDuplicateNameAsync(ProjectViewModel project);
 
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا پروژه انتخاب شده توسط رکوردهای اطلاعاتی دیگر

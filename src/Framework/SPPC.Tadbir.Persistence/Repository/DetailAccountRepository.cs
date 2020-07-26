@@ -211,13 +211,30 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="detailAccount">مدل نمایشی تفصیلی شناور مورد نظر</param>
         /// <returns>اگر کد تفصیلی شناور تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        public async Task<bool> IsDuplicateDetailAccountAsync(DetailAccountViewModel detailAccount)
+        public async Task<bool> IsDuplicateFullCodeAsync(DetailAccountViewModel detailAccount)
         {
             Verify.ArgumentNotNull(detailAccount, "detailAccount");
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             int count = await repository
                 .GetCountByCriteriaAsync(facc => facc.Id != detailAccount.Id
                     && facc.FullCode == detailAccount.FullCode);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که نام تفصیلی شناور مورد نظر بین تفصیلی های همسطح
+        /// با والد یکسان تکراری است یا نه
+        /// </summary>
+        /// <param name="detailAccount">مدل نمایشی تفصیلی شناور مورد نظر</param>
+        /// <returns>اگر نام تفصیلی شناور تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        public async Task<bool> IsDuplicateNameAsync(DetailAccountViewModel detailAccount)
+        {
+            Verify.ArgumentNotNull(detailAccount, "detailAccount");
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
+            int count = await repository
+                .GetCountByCriteriaAsync(facc => facc.Id != detailAccount.Id
+                    && facc.ParentId == detailAccount.ParentId
+                    && facc.Name == detailAccount.Name);
             return count > 0;
         }
 

@@ -78,11 +78,28 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا کد حساب مورد نظر تکراری است یا نه
         /// </summary>
-        /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>
+        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
         /// <returns>اگر کد حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
         /// <remarks>اگر کد حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
         /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
-        Task<bool> IsDuplicateAccountAsync(AccountViewModel accountViewModel);
+        Task<bool> IsDuplicateFullCodeAsync(AccountViewModel account);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که نام حساب مورد نظر بین حساب های همسطح با حساب والد یکسان تکراری است یا نه
+        /// </summary>
+        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
+        /// <returns>اگر نام حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        /// <remarks>اگر نام حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
+        /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
+        Task<bool> IsDuplicateNameAsync(AccountViewModel account);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که حساب مورد نظر زیرمجموعه یک حساب رابط است یا نه
+        /// </summary>
+        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
+        /// <returns>اگر حساب والد از نوع حساب رابط باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" برمی گرداند</returns>
+        Task<bool> IsAssociationChildAccountAsync(AccountViewModel account);
 
         /// <summary>
         /// به روش آسنکرون، با توجه به مجموعه حساب پدر حساب، مشخص میکند که حساب قابلیت اضافه شدن دارد یا نه

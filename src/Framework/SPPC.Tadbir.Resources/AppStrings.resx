@@ -3252,4 +3252,10 @@
   <data name="RepeatedVoucherActionMessage" xml:space="preserve">
     <value>سند مورد نظر قبلاً {0} شده است.</value>
   </data>
+  <data name="DuplicateNameValue" xml:space="preserve">
+    <value>نام {0} '{1}' تکراری است.</value>
+  </data>
+  <data name="CantCreateAssociationChild" xml:space="preserve">
+    <value>برای حساب های رابط نمی توان حساب زیرمجموعه تعریف کرد.</value>
+  </data>
 </root>

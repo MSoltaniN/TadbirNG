@@ -81,7 +81,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="detailAccount">مدل نمایشی تفصیلی شناور مورد نظر</param>
         /// <returns>اگر کد تفصیلی شناور تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        Task<bool> IsDuplicateDetailAccountAsync(DetailAccountViewModel detailAccount);
+        Task<bool> IsDuplicateFullCodeAsync(DetailAccountViewModel detailAccount);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که نام تفصیلی شناور مورد نظر بین تفصیلی های همسطح
+        /// با والد یکسان تکراری است یا نه
+        /// </summary>
+        /// <param name="detailAccount">مدل نمایشی تفصیلی شناور مورد نظر</param>
+        /// <returns>اگر نام تفصیلی شناور تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        Task<bool> IsDuplicateNameAsync(DetailAccountViewModel detailAccount);
 
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا تفصیلی شناور انتخاب شده توسط رکوردهای اطلاعاتی دیگر

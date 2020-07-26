@@ -111,7 +111,6 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    * @param param0
    */
   public cellClickHandler({ sender, rowIndex, column, columnIndex, dataItem, isEdited }) {
-    //debugger;
     if (!isEdited && !this.isReadOnly(column.field) && dataItem.isEnabled) {
       if ((this.viewTreeConfig.viewId == ViewName.Account && dataItem.no <= 3 && column.field == 'name') || (column.field == 'codeLength' && dataItem.isUsed))
         return

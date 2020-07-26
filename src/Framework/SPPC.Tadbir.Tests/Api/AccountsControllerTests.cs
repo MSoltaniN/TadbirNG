@@ -367,7 +367,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         {
             // Arrange (Done in setup methods)
             var duplicate = new AccountFullDataViewModel() { Account = new AccountViewModel() { FullCode = "1234" } };
-            _mockRepository.Setup(repo => repo.IsDuplicateAccountAsync(duplicate.Account))
+            _mockRepository.Setup(repo => repo.IsDuplicateFullCodeAsync(duplicate.Account))
                 .ReturnsAsync(true);
 
             // Act
@@ -509,7 +509,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             {
                 Account = new AccountViewModel() { Id = _existingAccountId }
             };
-            _mockRepository.Setup(repo => repo.IsDuplicateAccountAsync(duplicate.Account))
+            _mockRepository.Setup(repo => repo.IsDuplicateFullCodeAsync(duplicate.Account))
                 .ReturnsAsync(true);
 
             // Act

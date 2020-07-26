@@ -20,7 +20,6 @@ export class SppcViewTreeConfig implements OnInit {
 
 
   ngOnInit() {
-    ////debugger;
     //var level = 4;
     //let config: ViewTreeConfig;
     //config = this.defaultComponent.getViewTreeSettings(1);

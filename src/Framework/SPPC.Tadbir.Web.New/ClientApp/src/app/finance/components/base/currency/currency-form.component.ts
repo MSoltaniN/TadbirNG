@@ -87,7 +87,6 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger;
     this.currencyId = this.model.id;
     this.editForm.reset();
     this.getCurrencyNames();

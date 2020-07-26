@@ -290,7 +290,6 @@ export class SelectFormGridSettingComponent extends BaseComponent implements OnI
   }
 
   chackIsSearchable(dataItem: SettingViewModelInfo): boolean {
-    debugger;
     var column = this.allGridColumn.find(f => f.name.toLowerCase() == dataItem.name.toLowerCase());
     if (column && (column.scriptType == "string" || column.scriptType == "number")) {
       return true
@@ -300,7 +299,6 @@ export class SelectFormGridSettingComponent extends BaseComponent implements OnI
 
 
   changeIsSearched(dataItem: SettingViewModelInfo, event: any) {
-    debugger;
     if (!this.viewId)
       return;
 

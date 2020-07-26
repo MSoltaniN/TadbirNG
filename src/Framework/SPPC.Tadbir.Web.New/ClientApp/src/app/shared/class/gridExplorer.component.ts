@@ -581,7 +581,6 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
       this.service.edit<T>(String.Format(this.modelUrl, model.id), model)
         .subscribe(response => {
           this.editDataItem = undefined;
-          debugger;
           this.showMessage(this.updateMsg, MessageType.Succes);
 
           this.dialogRef.close();

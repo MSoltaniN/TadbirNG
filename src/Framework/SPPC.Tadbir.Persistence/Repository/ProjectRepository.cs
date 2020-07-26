@@ -200,13 +200,29 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="project">مدل نمایشی پروژه مورد نظر</param>
         /// <returns>اگر کد پروژه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        public async Task<bool> IsDuplicateProjectAsync(ProjectViewModel project)
+        public async Task<bool> IsDuplicateFullCodeAsync(ProjectViewModel project)
         {
             Verify.ArgumentNotNull(project, nameof(project));
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             int count = await repository
                 .GetCountByCriteriaAsync(prj => prj.Id != project.Id
                     && prj.FullCode == project.FullCode);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که نام پروژه مورد نظر بین پروژه های همسطح با والد یکسان تکراری است یا نه
+        /// </summary>
+        /// <param name="project">مدل نمایشی پروژه مورد نظر</param>
+        /// <returns>اگر نام پروژه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        public async Task<bool> IsDuplicateNameAsync(ProjectViewModel project)
+        {
+            Verify.ArgumentNotNull(project, nameof(project));
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            int count = await repository
+                .GetCountByCriteriaAsync(prj => prj.Id != project.Id
+                    && prj.ParentId == project.ParentId
+                    && prj.Name == project.Name);
             return count > 0;
         }
 

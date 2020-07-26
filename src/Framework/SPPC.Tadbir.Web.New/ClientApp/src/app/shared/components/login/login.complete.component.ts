@@ -313,8 +313,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     this.dialogRef.content.instance.save.subscribe((res) => {
 
-      debugger;
-
       if (res) {
         this.companyId = res.company ? res.company.id : 0;
         this.branchId = res.branch ? res.branch.id : 0;

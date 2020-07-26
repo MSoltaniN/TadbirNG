@@ -199,13 +199,29 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="costCenter">مدل نمایشی مرکز هزینه مورد نظر</param>
         /// <returns>اگر کد مرکز هزینه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        public async Task<bool> IsDuplicateCostCenterAsync(CostCenterViewModel costCenter)
+        public async Task<bool> IsDuplicateFullCodeAsync(CostCenterViewModel costCenter)
         {
             Verify.ArgumentNotNull(costCenter, nameof(costCenter));
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             int count = await repository
                 .GetCountByCriteriaAsync(cc => cc.Id != costCenter.Id
                     && cc.FullCode == costCenter.FullCode);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که نام مرکز هزینه مورد نظر بین مراکز همسطح با والد یکسان تکراری است یا نه
+        /// </summary>
+        /// <param name="costCenter">مدل نمایشی مرکز هزینه مورد نظر</param>
+        /// <returns>اگر نام مرکز هزینه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        public async Task<bool> IsDuplicateNameAsync(CostCenterViewModel costCenter)
+        {
+            Verify.ArgumentNotNull(costCenter, nameof(costCenter));
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
+            int count = await repository
+                .GetCountByCriteriaAsync(cc => cc.Id != costCenter.Id
+                    && cc.ParentId == costCenter.ParentId
+                    && cc.Name == costCenter.Name);
             return count > 0;
         }
 

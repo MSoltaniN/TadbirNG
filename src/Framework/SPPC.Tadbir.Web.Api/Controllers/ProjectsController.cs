@@ -293,10 +293,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (await _repository.IsDuplicateProjectAsync(project))
+            if (await _repository.IsDuplicateFullCodeAsync(project))
             {
                 return BadRequest(_strings.Format(
                     AppStrings.DuplicateCodeValue, AppStrings.Project, project.FullCode));
+            }
+
+            if (await _repository.IsDuplicateNameAsync(project))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateNameValue, AppStrings.Project, project.Name));
             }
 
             result = BranchValidationResult(project);

@@ -347,9 +347,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.AccountGroupIsRequired));
             }
 
-            if (await _repository.IsDuplicateAccountAsync(account))
+            if (await _repository.IsAssociationChildAccountAsync(account))
+            {
+                return BadRequest(_strings.Format(
+                    AppStrings.CantCreateAssociationChild, AppStrings.Account, account.Name));
+            }
+
+            if (await _repository.IsDuplicateFullCodeAsync(account))
             {
                 return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
+            }
+
+            if (await _repository.IsDuplicateNameAsync(account))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateNameValue, AppStrings.Account, account.Name));
             }
 
             if (account.ParentId != null && await _repository.IsAccountCollectionValidAsync(account))

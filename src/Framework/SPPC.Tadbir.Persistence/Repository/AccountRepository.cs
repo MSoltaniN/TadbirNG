@@ -284,7 +284,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر کد حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
         /// <remarks>اگر کد حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
         /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
-        public async Task<bool> IsDuplicateAccountAsync(AccountViewModel account)
+        public async Task<bool> IsDuplicateFullCodeAsync(AccountViewModel account)
         {
             Verify.ArgumentNotNull(account, nameof(account));
             var repository = UnitOfWork.GetAsyncRepository<Account>();
@@ -292,6 +292,47 @@ namespace SPPC.Tadbir.Persistence
                 .GetCountByCriteriaAsync(acc => acc.Id != account.Id
                     && acc.FullCode == account.FullCode);
             return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که نام حساب مورد نظر بین حساب های همسطح با حساب والد یکسان تکراری است یا نه
+        /// </summary>
+        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
+        /// <returns>اگر نام حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        /// <remarks>اگر نام حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
+        /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
+        public async Task<bool> IsDuplicateNameAsync(AccountViewModel account)
+        {
+            Verify.ArgumentNotNull(account, nameof(account));
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            int count = await repository
+                .GetCountByCriteriaAsync(acc => acc.Id != account.Id
+                    && acc.ParentId == account.ParentId
+                    && acc.Name == account.Name);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که حساب مورد نظر زیرمجموعه یک حساب رابط است یا نه
+        /// </summary>
+        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
+        /// <returns>اگر حساب والد از نوع حساب رابط باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" برمی گرداند</returns>
+        public async Task<bool> IsAssociationChildAccountAsync(AccountViewModel account)
+        {
+            bool isInvalid = false;
+            if (account.Level > 0)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Account>();
+                var parent = await repository.GetByIDWithTrackingAsync((int)account.ParentId);
+                var groupId = GetAccountGroupId(repository, parent);
+
+                var groupRepository = UnitOfWork.GetAsyncRepository<AccountGroup>();
+                var accountGroup = await groupRepository.GetByIDAsync(groupId);
+                isInvalid = (accountGroup.Category == AppStrings.CategoryAssociation);
+            }
+
+            return isInvalid;
         }
 
         /// <summary>

@@ -3261,4 +3261,10 @@
   <data name="RepeatedVoucherActionMessage" xml:space="preserve">
     <value>Action '{0}' has already been performed on this voucher.</value>
   </data>
+  <data name="DuplicateNameValue" xml:space="preserve">
+    <value>{0} name '{1}' is duplicate.</value>
+  </data>
+  <data name="CantCreateAssociationChild" xml:space="preserve">
+    <value>Association accounts cannot have child items.</value>
+  </data>
 </root>

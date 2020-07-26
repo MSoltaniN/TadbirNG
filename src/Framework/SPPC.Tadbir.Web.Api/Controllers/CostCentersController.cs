@@ -292,10 +292,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (await _repository.IsDuplicateCostCenterAsync(costCenter))
+            if (await _repository.IsDuplicateFullCodeAsync(costCenter))
             {
                 return BadRequest(_strings.Format(
                     AppStrings.DuplicateCodeValue, AppStrings.CostCenter, costCenter.FullCode));
+            }
+
+            if (await _repository.IsDuplicateNameAsync(costCenter))
+            {
+                return BadRequest(_strings.Format(
+                    AppStrings.DuplicateNameValue, AppStrings.CostCenter, costCenter.Name));
             }
 
             result = BranchValidationResult(costCenter);
