@@ -24,6 +24,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
             {
                 UpdateDatabaseFromScript(connection, "UpdateScriptPath");
             }
+
             RefereshRuntimeCreateTadbirDBScripts();
         }
 
@@ -164,6 +165,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                 Console.WriteLine("Refresh Database command completed with error(s).");
             }
         }
+
         private void RefereshRuntimeCreateTadbirDBScripts()
         {
             if (File.GetLastWriteTime(_createTadbirDBScriptFilePath) >

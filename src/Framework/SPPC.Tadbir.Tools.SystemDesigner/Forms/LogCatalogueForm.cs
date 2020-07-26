@@ -237,8 +237,8 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Forms
                 : (int?)null;
         }
 
-        private const string _connection = @"Server=.;Database=NGTadbir;Trusted_Connection=True;MultipleActiveResultSets=true";
-        private const string _sysConnection = @"Server=.;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private const string _connection = @"Server=(localdb)\MSSQLLocalDB;Database=NGTadbir;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private const string _sysConnection = @"Server=(localdb)\MSSQLLocalDB;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=true";
         private readonly SqlDataLayer _dal;
     }
 }

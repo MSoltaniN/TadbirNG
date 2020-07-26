@@ -23,14 +23,14 @@ namespace SPPC.Framework.Tools.ProjectCLI
                 return;
             }
 
-            string generatedPath = Path.Combine(tsAppPath, "security", "permissions.ts");
+            string generatedPath = Path.Combine(tsAppPath, "permissions.ts");
             var types = assembly.GetTypes()
                 .Where(t => t.IsEnum && t.Name.EndsWith("Permissions"));
             Console.WriteLine("Generating TypeScript enum types for permissions...");
             var template1 = new TsPermissionsFromCsPermissions(types);
             File.WriteAllText(generatedPath, template1.TransformText());
 
-            generatedPath = Path.Combine(tsAppPath, "security", "secureEntity.ts");
+            generatedPath = Path.Combine(tsAppPath, "secureEntity.ts");
             var type = assembly.GetType(csTypeName);
             Console.WriteLine("Generating TypeScript constant type for entity names...");
             var template2 = new TsConstTypeFromCsValueClass(type);

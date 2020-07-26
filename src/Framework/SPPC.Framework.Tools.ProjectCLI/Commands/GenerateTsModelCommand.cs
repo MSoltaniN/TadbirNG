@@ -42,7 +42,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     .Replace("ViewModel", String.Empty)
                     .CamelCase();
                 string fullName = String.Format("{0}.{1}", csAssembly, typeName);
-                string generatedPath = String.Format(@"{0}\model\{1}.ts", tsAppPath, tsTypeName);
+                string generatedPath = String.Format(@"{0}\{1}.ts", tsAppPath, tsTypeName);
                 string assemblyPath = String.Format(@"{0}\{1}.dll", csOutPath, csAssembly);
                 var csType = assembly.GetType(fullName);
 

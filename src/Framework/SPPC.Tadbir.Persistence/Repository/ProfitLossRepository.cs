@@ -10,6 +10,7 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -31,7 +32,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات گزارش سود و زیان غیرمقایسه ای را برای سیستم ثبت دائمی محاسبه کرده و برمی گرداند
+        /// اطلاعات گزارش سود و زیان غیرمقایسه ای را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
         /// <returns>اطلاعات گزارش سود و زیان غیرمقایسه ای</returns>
@@ -95,20 +96,55 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters)
         {
             var lines = new List<ProfitLossLineViewModel>();
+            lines.AddRange(await GetStartCollectionLinesAsync(
+                (int)AccountCollectionId.ProductInventory, parameters));
+            decimal openingInventory = lines.Sum(line => line.Debit - line.Credit);
+            var inventoryLines = parameters.BalanceItems
+                .Select(item => new VoucherLineAmountsViewModel()
+                {
+                    Debit = item.StartBalanceDebit,
+                    Credit = item.StartBalanceCredit
+                });
+            decimal startCost = await GetPeriodicProductCostBalanceAsync(
+                parameters.FromDate, openingInventory, inventoryLines, parameters);
+            var costItem = new ProfitLossItemViewModel()
+            {
+                Account = AppStrings.SoldProductCost,
+                StartBalance = startCost,
+                Balance = startCost
+            };
+
+            if (parameters.ToDate > parameters.FromDate)
+            {
+                inventoryLines = parameters.BalanceItems
+                    .Select(item => new VoucherLineAmountsViewModel()
+                    {
+                        Debit = item.EndBalanceDebit,
+                        Credit = item.EndBalanceCredit
+                    });
+                decimal endCost = await GetPeriodicProductCostBalanceAsync(
+                    parameters.ToDate, openingInventory, inventoryLines, parameters);
+                costItem.EndBalance = endCost;
+                costItem.Balance = 0.0M;
+                costItem.PeriodTurnover = endCost - startCost;
+            }
+
+            return costItem;
+        }
+
+        private async Task<decimal> GetPeriodicProductCostBalanceAsync(
+            DateTime date, decimal openingInventory, IEnumerable<VoucherLineAmountsViewModel> inventoryLines,
+            ProfitLossParameters parameters)
+        {
+            // Product Cost = Opening Inventory + Net Purchase - Inventory
+            var lines = new List<ProfitLossLineViewModel>();
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.FinalPurchase, parameters.ToDate, parameters));
+                (int)AccountCollectionId.FinalPurchase, date, parameters));
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.PurchaseRefundDiscount, parameters.ToDate, parameters));
-            var productCost = GetReportItem(
-                lines, line => line.Debit - line.Credit, AppStrings.CategoryPurchase,
-                parameters.FromDate, parameters.ToDate);
-            decimal startInventory = parameters.BalanceItems
-                .Sum(item => item.StartBalanceDebit - item.StartBalanceCredit);
-            decimal endInventory = parameters.BalanceItems
-                .Sum(item => item.EndBalanceDebit - item.EndBalanceCredit);
-            productCost.StartBalance = startInventory + productCost.StartBalance;
-            productCost.EndBalance = endInventory + productCost.EndBalance;
-            return productCost;
+                (int)AccountCollectionId.PurchaseRefundDiscount, date, parameters));
+            decimal netPurchase = lines.Sum(line => line.Debit - line.Credit);
+            decimal inventory = inventoryLines.Sum(item => item.Debit - item.Credit);
+            return openingInventory + netPurchase - inventory;
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetOperationalCostItemsAsync(
@@ -210,16 +246,25 @@ namespace SPPC.Tadbir.Persistence
             return items;
         }
 
+        private async Task<IEnumerable<ProfitLossLineViewModel>> GetStartCollectionLinesAsync(
+            int collectionId, ProfitLossParameters parameters)
+        {
+            var lines = new List<ProfitLossLineViewModel>();
+            DateTime startDate = await GetCurrentFiscalStartDateAsync();
+            if (startDate != DateTime.MinValue)
+            {
+                lines.AddRange(
+                    await GetCollectionLinesAsync(collectionId, startDate, startDate, parameters));
+            }
+
+            return lines;
+        }
+
         private async Task<IEnumerable<ProfitLossLineViewModel>> GetCollectionLinesAsync(
             int collectionId, DateTime until, ProfitLossParameters parameters)
         {
             var lines = new List<ProfitLossLineViewModel>();
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            DateTime startDate = await repository
-                .GetEntityQuery()
-                .Where(fp => fp.Id == UserContext.FiscalPeriodId)
-                .Select(fp => fp.StartDate)
-                .SingleOrDefaultAsync();
+            DateTime startDate = await GetCurrentFiscalStartDateAsync();
             if (startDate != DateTime.MinValue)
             {
                 lines.AddRange(
@@ -261,7 +306,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.ProjectId != null)
             {
-                var projectRepository = UnitOfWork.GetAsyncRepository<CostCenter>();
+                var projectRepository = UnitOfWork.GetAsyncRepository<Project>();
                 var fullCode = await projectRepository
                     .GetEntityQuery()
                     .Where(prj => prj.Id == parameters.ProjectId)
@@ -295,6 +340,16 @@ namespace SPPC.Tadbir.Persistence
                 EndBalance = initBalance + turnover,
                 Balance = initBalance + turnover
             };
+        }
+
+        private async Task<DateTime> GetCurrentFiscalStartDateAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            return await repository
+                .GetEntityQuery()
+                .Where(fp => fp.Id == UserContext.FiscalPeriodId)
+                .Select(fp => fp.StartDate)
+                .SingleOrDefaultAsync();
         }
 
         private IEnumerable<int> GetChildTree(int branchId)

@@ -2339,6 +2339,18 @@
           <ColumnView name="Manager" visible="True" width="120" />
           <ValidationRule name="Manager_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
         </Property>
+        <Property name="Capacity" type="Int32" isValidated="True" description="ظرفیت پذیرش دانش آموز در مدرسه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCapacity" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="Capacity" type="int" nullable="False" />
+          <ColumnView name="Capacity" visible="True" width="120" />
+          <ValidationRule name="Capacity_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Tuition" type="Decimal" isValidated="True" description="مبلغ شهریه متوسط هر دانش آموز در یک دوره تحصیلی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtTuition" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Tuition" type="float" nullable="False" />
+          <ColumnView name="Tuition" visible="True" width="120" />
+          <ValidationRule name="Tuition_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
         <Property name="Address" type="String" isValidated="True" description="نشانی پستی مدرسه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtAddress" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Address" type="nvarchar(256)" nullable="True" />
