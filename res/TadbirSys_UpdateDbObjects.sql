@@ -3309,3 +3309,17 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
     VALUES (665, 63, 'ErrorMessage', NULL, NULL, 'System.String', 'nvarchar', 'string', 128, 0, 0, 0, 1, 1, NULL, 4, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF 
 
+-- 1.1.962
+SET IDENTITY_INSERT [Metadata].[View] ON 
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
+    VALUES (64, 'ProfitLossSimple', 0, 0, NULL, '', NULL)
+SET IDENTITY_INSERT [Metadata].[View] OFF 
+
+SET IDENTITY_INSERT [Metadata].[Column] ON 
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (666, 64, 'Category', NULL, NULL, 'System.String', 'nvarchar', 'string', 64, 0, 0, 1, 0, 0, 'AlwaysVisible', 0, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (667, 64, 'Account', NULL, NULL, 'System.String', 'nvarchar', 'string', 64, 0, 0, 1, 0, 0, NULL, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (668, 64, 'Balance', NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, NULL, 2, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF 
