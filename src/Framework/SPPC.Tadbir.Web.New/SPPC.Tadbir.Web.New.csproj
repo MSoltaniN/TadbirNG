@@ -86,6 +86,7 @@
     <None Remove="ClientApp\src\app\finance\service\ItemBalance.service.ts" />
     <None Remove="ClientApp\src\app\finance\service\profitLost.service.ts" />
     <None Remove="ClientApp\src\app\finance\service\testBalance.service.ts" />
+    <None Remove="ClientApp\src\app\shared\components\errorList\errorList.component.ts" />
     <None Remove="ClientApp\src\app\shared\components\login\login.complete.component.ts" />
     <None Remove="ClientApp\src\app\shared\components\login\login.component.ts" />
     <None Remove="ClientApp\src\app\shared\components\login\login.container.component.ts" />
@@ -856,6 +857,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\ItemBalance.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\profitLost.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\testBalance.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\errorList\errorList.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\login\login.complete.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\login\login.container.component.ts" />

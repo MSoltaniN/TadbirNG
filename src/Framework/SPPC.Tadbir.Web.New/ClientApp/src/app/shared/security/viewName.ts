@@ -63,5 +63,6 @@ export enum ViewName {
   SysOperationLog = 59,
   SysOperationLogArchive = 60,
   OperationLogArchive = 61,
-  ProfitLost=62
+  ProfitLost = 62,
+  GroupActionResult = 63
 }

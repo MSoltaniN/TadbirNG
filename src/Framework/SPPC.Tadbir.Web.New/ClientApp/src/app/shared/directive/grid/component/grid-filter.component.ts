@@ -37,15 +37,21 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
       var filterInput = false;
       var element: any = event.srcElement;
       var object = element;
-      var level = 5;
-      while (object.offsetParent && level > 0) {
-        object = object.offsetParent;
-        level = level - 1;
-        if (element.hasAttribute('kendofilterinput') || object.hasAttribute('kendofilterinput')) {
-          filterInput = true;
-          break;
+      if (element.hasAttribute('kendofilterinput')) {
+        filterInput = true;
+      }
+      else {
+        var level = 5;
+        while (object.offsetParent && level > 0) {
+          object = object.offsetParent;
+          level = level - 1;
+          if (element.hasAttribute('kendofilterinput') || object.hasAttribute('kendofilterinput')) {
+            filterInput = true;
+            break;
+          }
         }
       }
+      
 
       if (filterInput) {
 
