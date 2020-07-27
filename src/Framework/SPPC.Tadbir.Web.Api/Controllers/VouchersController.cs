@@ -20,9 +20,19 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    /// واسط برنامه نویسی با اسناد و آرتیکل های مالی را در برنامه پیاده سازی می کند
+    /// </summary>
     [Produces("application/json")]
     public class VouchersController : ValidatingController<VoucherViewModel>
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="repository">امکان مدیریت اطلاعات اسناد مالی را فراهم می کند</param>
+        /// <param name="lineRepository">امکان مدیریت اطلاعات آرتیکل های مالی را فراهم می کند</param>
+        /// <param name="relationRepository">امکان خواندن ارتباطات موجود در  بردار حساب را فراهم می کند</param>
+        /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         public VouchersController(
             IVoucherRepository repository,
             IVoucherLineRepository lineRepository,
@@ -35,6 +45,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _relationRepository = relationRepository;
         }
 
+        /// <summary>
+        /// کلید متن چندزبانه برای نام اسناد مالی
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.Voucher; }
@@ -42,6 +55,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Voucher Operations
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه اسناد مالی قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده اسناد مالی</returns>
         // GET: api/vouchers
         [HttpGet]
         [Route(VoucherApi.EnvironmentVouchersUrl)]
@@ -53,6 +70,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(vouchers);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی سند مالی مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر</param>
+        /// <returns>اطلاعات نمایشی سند مالی</returns>
         // GET: api/vouchers/{voucherId:int}
         [HttpGet]
         [Route(VoucherApi.VoucherUrl)]
@@ -64,6 +86,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(voucher);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند مالی جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی سند مالی جدید با مقادیر پیشنهادی</returns>
         // GET: api/vouchers/new
         [HttpGet]
         [Route(VoucherApi.NewVoucherUrl)]
@@ -80,6 +106,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(newVoucher);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی مشخص شده با شماره را برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند مالی مورد نظر</param>
+        /// <returns>اطلاعات نمایشی سند مالی مورد نظر</returns>
         // GET: api/vouchers/by-no
         [HttpGet]
         [Route(VoucherApi.VoucherByNoUrl)]
@@ -91,6 +122,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(voucherByNo);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، محدوده شماره سندهای قابل دسترسی توسط کاربر جاری را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات محدوده شماره سندها</returns>
         // GET: api/vouchers/range
         [HttpGet]
         [Route(VoucherApi.EnvironmentItemRangeUrl)]
@@ -101,6 +136,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(range);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین سند مالی قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی اولین سند مالی قابل دسترسی</returns>
         // GET: api/vouchers/first
         [HttpGet]
         [Route(VoucherApi.FirstVoucherUrl)]
@@ -112,6 +151,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(first);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی پیش از شماره مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند مالی فعلی</param>
+        /// <returns>اطلاعات نمایشی سند مالی قابل دسترسی قبلی</returns>
         // GET: api/vouchers/{voucherNo:min(1)}/previous
         [HttpGet]
         [Route(VoucherApi.PreviousVoucherUrl)]
@@ -123,6 +167,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(previous);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی بعد از شماره مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند مالی فعلی</param>
+        /// <returns>اطلاعات نمایشی سند مالی قابل دسترسی بعدی</returns>
         // GET: api/vouchers/{voucherNo:min(1)}/next
         [HttpGet]
         [Route(VoucherApi.NextVoucherUrl)]
@@ -134,6 +183,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(next);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آخرین سند مالی قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی آخرین سند مالی قابل دسترسی</returns>
         // GET: api/vouchers/last
         [HttpGet]
         [Route(VoucherApi.LastVoucherUrl)]
@@ -194,6 +247,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(voucherNumbers);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند مالی داده شده را ایجاد می کند
+        /// </summary>
+        /// <param name="voucher">اطلاعات کامل سند مالی جدید</param>
+        /// <returns>اطلاعات سند مالی بعد از ایجاد در دیتابیس</returns>
         // POST: api/vouchers
         [HttpPost]
         [Route(VoucherApi.EnvironmentVouchersUrl)]
@@ -216,6 +274,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputVoucher);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای اصلاح</param>
+        /// <param name="voucher">اطلاعات اصلاح شده سند مالی</param>
+        /// <returns>اطلاعات سند مالی بعد از اصلاح در دیتابیس</returns>
         // PUT: api/vouchers/{voucherId:int}
         [HttpPut]
         [Route(VoucherApi.VoucherUrl)]
@@ -253,6 +317,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، وضعیت ثبت سند مشخص شده را به ثبت عادی تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای ثبت</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/vouchers/{voucherId:int}/check
         [HttpPut]
         [Route(VoucherApi.CheckVoucherUrl)]
@@ -269,6 +339,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند ثبت عادی را برگشت داده و وضعیتش را به پیش نویس تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای برگشت از ثبت</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/vouchers/{voucherId:int}/check/undo
         [HttpPut]
         [Route(VoucherApi.UndoCheckVoucherUrl)]
@@ -285,6 +361,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند مشخص شده را در حالت تأییدشده قرار می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای تأیید</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/vouchers/{voucherId:int}/confirm
         [HttpPut]
         [Route(VoucherApi.ConfirmVoucherUrl)]
@@ -301,6 +383,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند مشخص شده را برگشت از تأیید کرده و وضعیتش را در حالت تأییدنشده قرار می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای برگشت از تأیید</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/vouchers/{voucherId:int}/confirm/undo
         [HttpPut]
         [Route(VoucherApi.UndoConfirmVoucherUrl)]
@@ -317,6 +405,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند مشخص شده را در حالت تصویب شده قرار می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای تصویب</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/vouchers/{voucherId:int}/approve
         [HttpPut]
         [Route(VoucherApi.ApproveVoucherUrl)]
@@ -333,6 +427,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند مشخص شده را برگشت از تصویب کرده و وضعیتش را در حالت تصویب نشده قرار می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای برگشت از تصویب</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/vouchers/{voucherId:int}/approve/undo
         [HttpPut]
         [Route(VoucherApi.UndoApproveVoucherUrl)]
@@ -349,6 +449,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، وضعیت ثبت سند مشخص شده را به ثبت قطعی تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای ثبت قطعی</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/vouchers/{voucherId:int}/finalize
         [HttpPut]
         [Route(VoucherApi.FinalizeVoucherUrl)]
@@ -365,6 +471,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند ثبت قطعی را برگشت داده و وضعیتش را به ثبت عادی تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای برگشت از ثبت قطعی</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/vouchers/{voucherId:int}/finalize/undo
         [HttpPut]
         [Route(VoucherApi.UndoFinalizeVoucherUrl)]
@@ -396,23 +508,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var validated = new List<int>();
-            var notValidated = new List<GroupActionResultViewModel>();
-            foreach (int item in actionDetail.Items)
-            {
-                var result = await _repository.ValidateVoucherActionAsync(item, AppStrings.Check);
-                if (result == null)
-                {
-                    validated.Add(item);
-                }
-                else
-                {
-                    notValidated.Add(result);
-                }
-            }
-
-            await _repository.SetVouchersStatusAsync(validated, DocumentStatusValue.Checked);
-            return Ok(notValidated);
+            return await GroupStatusChangeResultAsync(
+                actionDetail.Items, AppStrings.Check, DocumentStatusValue.Checked);
         }
 
         /// <summary>
@@ -430,14 +527,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupActionAsync(actionDetail.Items, AppStrings.UndoCheck);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Draft);
-            return StatusCode(StatusCodes.Status200OK);
+            return await GroupStatusChangeResultAsync(
+                actionDetail.Items, AppStrings.UndoCheck, DocumentStatusValue.Draft);
         }
 
         /// <summary>
@@ -507,14 +598,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupActionAsync(actionDetail.Items, AppStrings.Finalize);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Finalized);
-            return StatusCode(StatusCodes.Status200OK);
+            return await GroupStatusChangeResultAsync(
+                actionDetail.Items, AppStrings.Finalize, DocumentStatusValue.Finalized);
         }
 
         /// <summary>
@@ -532,16 +617,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupActionAsync(actionDetail.Items, AppStrings.UndoFinalize);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.SetVouchersStatusAsync(actionDetail.Items, DocumentStatusValue.Checked);
-            return StatusCode(StatusCodes.Status200OK);
+            return await GroupStatusChangeResultAsync(
+                actionDetail.Items, AppStrings.UndoFinalize, DocumentStatusValue.Checked);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سند مالی مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/vouchers/{voucherId:int}
         [HttpDelete]
         [Route(VoucherApi.VoucherUrl)]
@@ -558,6 +643,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اسناد مالی داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/vouchers
         [HttpPut]
         [Route(VoucherApi.EnvironmentVouchersUrl)]
@@ -836,6 +927,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای سند مالی مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
+        /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
         protected override async Task<string> ValidateDeleteAsync(int voucherId)
         {
             string message = String.Empty;
@@ -861,12 +957,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return message;
         }
 
-        private static bool IsUnbalancedVoucher(VoucherViewModel voucher)
-        {
-            return (voucher.DebitSum == 0.0M && voucher.CreditSum == 0.0M)
-                || Math.Abs(voucher.DebitSum - voucher.CreditSum) >= 1.0M;
-        }
-
         private static bool IsVoucherMainAction(string action)
         {
             return action == AppStrings.Check
@@ -876,11 +966,50 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 || action == AppStrings.UndoFinalize;
         }
 
-        /// <summary>
-        /// اعتبارسنجی اسناد انتخاب شده برای برگشت از تایید گروهی اسناد
-        /// </summary>
-        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
-        /// <returns></returns>
+        private async Task<IActionResult> GroupStatusChangeResultAsync(
+            IEnumerable<int> items, string action, DocumentStatusValue status)
+        {
+            var validated = new List<int>();
+            var notValidated = new List<GroupActionResultViewModel>();
+            foreach (int item in items)
+            {
+                var result = await _repository.ValidateVoucherActionAsync(item, action);
+                if (result == null)
+                {
+                    validated.Add(item);
+                }
+                else
+                {
+                    notValidated.Add(result);
+                }
+            }
+
+            await _repository.SetVouchersStatusAsync(validated, status);
+            return Ok(notValidated);
+        }
+
+        private async Task<IActionResult> GroupConfirmApproveResultAsync(
+            IEnumerable<int> items, string action, bool isConfirmed)
+        {
+            var validated = new List<int>();
+            var notValidated = new List<GroupActionResultViewModel>();
+            foreach (int item in items)
+            {
+                var result = await _repository.ValidateVoucherActionAsync(item, action);
+                if (result == null)
+                {
+                    validated.Add(item);
+                }
+                else
+                {
+                    notValidated.Add(result);
+                }
+            }
+
+            await _repository.SetVouchersConfirmApproveStatusAsync(validated, isConfirmed);
+            return Ok(notValidated);
+        }
+
         private async Task<IEnumerable<string>> ValidateGroupUndoConfirmAsync(IEnumerable<int> items)
         {
             var messages = new List<string>();
@@ -937,11 +1066,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
-        /// <summary>
-        /// اعتبارسنجی اسناد انتخاب شده برای  تایید گروهی اسناد
-        /// </summary>
-        /// <param name="items">لیست شناسه اسناد انتخاب شده</param>
-        /// <returns></returns>
         private async Task<IEnumerable<string>> ValidateGroupConfirmAsync(IEnumerable<int> items)
         {
             var messages = new List<string>();

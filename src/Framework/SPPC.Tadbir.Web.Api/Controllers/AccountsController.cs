@@ -201,21 +201,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، سرفصل حسابداری داده شده را ایجاد می کند
         /// </summary>
-        /// <param name="viewModel">اطلاعات کامل سرفصل حسابداری جدید</param>
+        /// <param name="account">اطلاعات کامل سرفصل حسابداری جدید</param>
         /// <returns>اطلاعات سرفصل حسابداری بعد از ایجاد در دیتابیس</returns>
         // POST: api/accounts
         [HttpPost]
         [Route(AccountApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
-        public async Task<IActionResult> PostNewAccountAsync([FromBody] AccountFullDataViewModel viewModel)
+        public async Task<IActionResult> PostNewAccountAsync([FromBody] AccountFullDataViewModel account)
         {
-            var result = await ValidationResultAsync(viewModel.Account);
+            var result = await ValidationResultAsync(account.Account);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputAccount = await _repository.SaveAccountAsync(viewModel);
+            var outputAccount = await _repository.SaveAccountAsync(account);
             return StatusCode(StatusCodes.Status201Created, outputAccount);
         }
 
@@ -223,22 +223,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را اصلاح می کند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای اصلاح</param>
-        /// <param name="viewModel">اطلاعات اصلاح شده سرفصل حسابداری</param>
+        /// <param name="account">اطلاعات اصلاح شده سرفصل حسابداری</param>
         /// <returns>اطلاعات سرفصل حسابداری بعد از اصلاح در دیتابیس</returns>
         // PUT: api/accounts/{accountId:min(1)}
         [HttpPut]
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
         public async Task<IActionResult> PutModifiedAccountAsync(
-            int accountId, [FromBody] AccountFullDataViewModel viewModel)
+            int accountId, [FromBody] AccountFullDataViewModel account)
         {
-            var result = await ValidationResultAsync(viewModel.Account, accountId);
+            var result = await ValidationResultAsync(account.Account, accountId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputAccount = await _repository.SaveAccountAsync(viewModel);
+            var outputAccount = await _repository.SaveAccountAsync(account);
             return OkReadResult(outputAccount);
         }
 

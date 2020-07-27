@@ -3174,9 +3174,6 @@
   <data name="UndoGroupFinalize" xml:space="preserve">
     <value>برگشت از ثبت قطعی گروهی</value>
   </data>
-  <data name="ConfirmGroup" xml:space="preserve">
-    <value>تایید/تصویب گروهی اسناد</value>
-  </data>
   <data name="UnConfirmGroup" xml:space="preserve">
     <value> رفع تایید/تصویب گروهی اسناد</value>
   </data>
@@ -3257,5 +3254,20 @@
   </data>
   <data name="CantCreateAssociationChild" xml:space="preserve">
     <value>برای حساب های رابط نمی توان حساب زیرمجموعه تعریف کرد.</value>
+  </data>
+  <data name="GroupConfirmApprove" xml:space="preserve">
+    <value>تایید/تصویب گروهی اسناد</value>
+  </data>
+  <data name="CantGroupApprove" xml:space="preserve">
+    <value>تصویب گروهی فقط برای اسنادی امکانپذیر است که به صورت گروهی رفع تصویب شده باشند.</value>
+  </data>
+  <data name="CantGroupConfirm" xml:space="preserve">
+    <value>تأیید گروهی فقط برای اسنادی امکانپذیر است که به صورت گروهی رفع تأیید شده باشند.</value>
+  </data>
+  <data name="GroupApprove" xml:space="preserve">
+    <value>تصویب گروهی</value>
+  </data>
+  <data name="GroupConfirm" xml:space="preserve">
+    <value>تأیید گروهی</value>
   </data>
 </root>

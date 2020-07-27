@@ -124,13 +124,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
         Task DeleteVouchersAsync(IEnumerable<int> items);
 
-        /// /// <summary>
-        /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی راتغییر می دهد
-        /// </summary>
-        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
-        Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status);
-
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا شماره سند مورد نظر تکراری است یا نه
         /// </summary>
@@ -167,6 +160,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="isApproved">مشخص می کند که سند مورد نظر تصویب شده است یا نه؟ مقدار بولی درست
         /// یعنی سند تصویب شده و مقدار بولی نادرست یعنی سند برگشت از تصویب شده است.</param>
         Task SetVoucherApprovalAsync(int voucherId, bool isApproved);
+
+        /// /// <summary>
+        /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی راتغییر می دهد
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
+        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
+        Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status);
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تأیید یا تصویب اسناد مالی مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
+        /// <param name="isConfirmed">مشخص می کند که تغییر مورد نظر تأیید/تصویب است یا رفع تأیید/تصویب</param>
+        Task SetVouchersConfirmApproveStatusAsync(IEnumerable<int> items, bool isConfirmed);
 
         /// <summary>
         /// عمل داده شده را روی سند با شناسه دیتابیسی مشخص شده بررسی و اعتبارسنجی می کند

@@ -3183,9 +3183,6 @@
   <data name="UndoGroupFinalize" xml:space="preserve">
     <value>Undo Group Finalize</value>
   </data>
-  <data name="ConfirmGroup" xml:space="preserve">
-    <value>Confirm/Approve Group</value>
-  </data>
   <data name="UnConfirmGroup" xml:space="preserve">
     <value>UndoConfirm/UndoApprove Group</value>
   </data>
@@ -3266,5 +3263,20 @@
   </data>
   <data name="CantCreateAssociationChild" xml:space="preserve">
     <value>Association accounts cannot have child items.</value>
+  </data>
+  <data name="GroupConfirmApprove" xml:space="preserve">
+    <value>Group confirm/approve vouchers</value>
+  </data>
+  <data name="CantGroupApprove" xml:space="preserve">
+    <value>Group approval can be performed only on vouchers that were previously disapproved in group mode.</value>
+  </data>
+  <data name="CantGroupConfirm" xml:space="preserve">
+    <value>Group confirmation can be performed only on vouchers that were previously unconfirmed in group mode.</value>
+  </data>
+  <data name="GroupApprove" xml:space="preserve">
+    <value>Group approve</value>
+  </data>
+  <data name="GroupConfirm" xml:space="preserve">
+    <value>Group confirm</value>
   </data>
 </root>

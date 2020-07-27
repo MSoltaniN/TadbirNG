@@ -52,6 +52,14 @@ namespace SPPC.Tadbir.Persistence
             {
                 error = ValidateUndoFinalize(voucher);
             }
+            else if (action == AppStrings.GroupConfirm)
+            {
+                error = ValidateGroupConfirm(voucher);
+            }
+            else if (action == AppStrings.GroupApprove)
+            {
+                error = ValidateGroupApprove(voucher);
+            }
 
             return String.IsNullOrEmpty(error)
                 ? null
@@ -195,6 +203,28 @@ namespace SPPC.Tadbir.Persistence
             else if (voucher.StatusId != (int)DocumentStatusValue.Finalized)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoFinalize, AppStrings.Finalize));
+            }
+
+            return error;
+        }
+
+        private string ValidateGroupConfirm(VoucherViewModel voucher)
+        {
+            string error = String.Empty;
+            if (String.IsNullOrEmpty(voucher.ConfirmerName) && !voucher.IsConfirmed)
+            {
+                error = Context.Localize(AppStrings.CantGroupConfirm);
+            }
+
+            return error;
+        }
+
+        private string ValidateGroupApprove(VoucherViewModel voucher)
+        {
+            string error = String.Empty;
+            if (String.IsNullOrEmpty(voucher.ApproverName) && !voucher.IsApproved)
+            {
+                error = Context.Localize(AppStrings.CantGroupApprove);
             }
 
             return error;

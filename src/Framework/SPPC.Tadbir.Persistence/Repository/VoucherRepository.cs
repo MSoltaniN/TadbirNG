@@ -316,40 +316,6 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(items);
         }
 
-        /// /// <summary>
-        /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی راتغییر می دهد
-        /// </summary>
-        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
-        public async Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status)
-        {
-            Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
-            if (items.Count() == 0)
-            {
-                return;
-            }
-
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var first = await repository.GetByIDAsync(items.First());
-            if (first != null)
-            {
-                var oldStatus = (DocumentStatusValue)first.StatusId;
-
-                foreach (int item in items)
-                {
-                    var voucher = await repository.GetByIDAsync(item);
-                    if (voucher != null)
-                    {
-                        voucher.StatusId = (int)status;
-                        repository.Update(voucher);
-                    }
-                }
-
-                var operationId = GetGroupOperationCode(status, oldStatus);
-                await OnEntityGroupChangeStatus(items, operationId);
-            }
-        }
-
         /// <summary>
         /// به روش آسنکرون، اسناد مالی مشخص شده با شناسه دیتابیسی را رفع تایید گروهی می کند
         /// </summary>
@@ -508,6 +474,59 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(voucher);
                 OnDocumentApproval(isApproved);
                 await FinalizeActionAsync(voucher);
+            }
+        }
+
+        /// /// <summary>
+        /// به روش آسنکرون، وضعیت ثبتی اسناد مالی مشخص شده با شناسه عددی راتغییر می دهد
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
+        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
+        public async Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status)
+        {
+            Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
+            if (items.Count() == 0)
+            {
+                return;
+            }
+
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var first = await repository.GetByIDAsync(items.First());
+            if (first != null)
+            {
+                var oldStatus = (DocumentStatusValue)first.StatusId;
+
+                foreach (int item in items)
+                {
+                    var voucher = await repository.GetByIDAsync(item);
+                    if (voucher != null)
+                    {
+                        voucher.StatusId = (int)status;
+                        repository.Update(voucher);
+                    }
+                }
+
+                var operationId = GetGroupOperationCode(status, oldStatus);
+                await OnEntityGroupChangeStatus(items, operationId);
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تأیید یا تصویب اسناد مالی مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
+        /// <param name="isConfirmed">مشخص می کند که تغییر مورد نظر تأیید/تصویب است یا رفع تأیید/تصویب</param>
+        public async Task SetVouchersConfirmApproveStatusAsync(IEnumerable<int> items, bool isConfirmed)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            foreach (int item in items)
+            {
+                var voucher = await repository.GetByIDAsync(item);
+                if (voucher != null)
+                {
+                    voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
+                    voucher.ApprovedById = isConfirmed ? UserContext.Id : (int?)null;
+                }
             }
         }
 

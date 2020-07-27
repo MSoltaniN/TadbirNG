@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.ViewModel.Finance
 {
     /// <summary>
-    /// اطلاعات کلی محدوده ای از موجودیت های شماره گذاری شده را تگهداری می کند
+    /// اطلاعات کلی محدوده ای از موجودیت های شماره گذاری شده را نگهداری می کند
     /// </summary>
     public class NumberedItemRangeViewModel
     {
