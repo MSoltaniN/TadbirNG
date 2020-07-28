@@ -124,7 +124,8 @@ export const Entities = {
   SysOperationLogArchive: 'SysOperationLogArchive',
   OperationLogArchive: 'OperationLogArchive',
   ProfitLost: 'ProfitLost',
-  GroupActionResult: 'GroupActionResult'
+  GroupActionResult: 'GroupActionResult',
+  ProfitLossSimple:'ProfitLossSimple'
 }
 
 export const ColumnVisibility =

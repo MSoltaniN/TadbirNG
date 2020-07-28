@@ -158,6 +158,12 @@
     "SystemIssue": "System Control",
     "BalanceByAccount": "Balance By Account"
   },
+  "ErrorList": {
+    "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
+    "SuccessfulNumber": "Successful Number :",
+    "NumberOfErrors": "Number Of Errors :",
+    "GroupOperationReport": "Group Operation Report"
+  },
   "Balance": {
     "ByDate": "By date",
     "ByVoucher": "By voucher",
@@ -889,13 +895,9 @@
     "Yes": "Yes",
     "Not": "No",
     "OperationSuccessful": "Operation Successful",
-    "VouchersListThatHasError": "vouchers List That Has Error",
-    "GroupOperationReport": "Group Operation Report",
+    "VouchersListThatHasError": "vouchers List That Has Error",    
     "RowNo": "Row",
-    "VoucherNo": "Voucher Number",
-    "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
-    "SuccessfulNumber": "Successful Number :",
-    "NumberOfErrors": "Number Of Errors :"
+    "VoucherNo": "Voucher Number" 
 
   },
   "User": {

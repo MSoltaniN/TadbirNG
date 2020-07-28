@@ -161,7 +161,8 @@
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
     "SuccessfulNumber": "تعداد موفق :",
-    "NumberOfErrors": "تعداد خطا :"
+    "NumberOfErrors": "تعداد خطا :",
+    "GroupOperationReport": "گزارش عملیات گروهی"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -973,8 +974,7 @@
     "Yes": "بلی",
     "Not": "خیر",
     "OperationSuccessful": "عملیات  با موفقیت انجام شد",
-    "VouchersListThatHasError": "لیست اسنادی که با خطا مواجه شده اند",
-    "GroupOperationReport": "گزارش عملیات گروهی",
+    "VouchersListThatHasError": "لیست اسنادی که با خطا مواجه شده اند",    
     "RowNo": "ردیف",
     "VoucherNo": "شماره سند"
   },

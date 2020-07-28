@@ -1,5 +1,5 @@
 
-<div class="sppc-dialog-md sppc-errorlist-form" (keydown.esc)="escPress()">
+<div class="sppc-dialog-md sppc-errorlist-form">
   <kendo-grid id="{{viewId}}"
               #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="currentRowData"
