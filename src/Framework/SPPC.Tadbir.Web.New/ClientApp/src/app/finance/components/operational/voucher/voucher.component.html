@@ -157,7 +157,7 @@
         {{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate  }}
       </ng-template>
 
-      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean' && item.name=='IsConfirmed' || item.name=='IsApproved' ">
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean' && item.name=='IsConfirmed' || item.name=='IsApproved' || item.name=='IsVerified' ">
         {{ getVerifidAndapproveValue(item.name,dataItem,item.scriptType)  }}
       </ng-template>
 
