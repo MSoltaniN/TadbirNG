@@ -209,10 +209,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingProjectAsync(int projectId)
         {
-            string result = await ValidateDeleteAsync(projectId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateDeleteResultAsync(projectId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteProjectAsync(projectId);
@@ -232,19 +232,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingProjectsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteProjectsAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteProjectsAsync);
         }
 
         /// <summary>
@@ -252,22 +240,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
         /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
             string message = String.Empty;
             var project = await _repository.GetProjectAsync(item);
             if (project == null)
             {
-                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Project, item.ToString());
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Project, item.ToString());
+                return GetGroupActionResult(message, project);
             }
 
             var result = BranchValidationResult(project);
             if (result is BadRequestObjectResult errorResult)
             {
-                return errorResult.Value.ToString();
+                return GetGroupActionResult(errorResult.Value.ToString(), project);
             }
 
-            var projectInfo = String.Format("'{0} ({1})'", project.Name, project.Code);
+            var projectInfo = String.Format("'{0} ({1})'", project.Name, project.FullCode);
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
@@ -282,7 +271,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = _strings.Format(AppStrings.CantDeleteRelatedItem, AppStrings.Project, projectInfo);
             }
 
-            return message;
+            return GetGroupActionResult(message, project);
         }
 
         private async Task<IActionResult> ValidationResultAsync(ProjectViewModel project, int projectId = 0)

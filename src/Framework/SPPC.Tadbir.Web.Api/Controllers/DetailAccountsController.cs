@@ -165,10 +165,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingDetailAccountAsync(int faccountId)
         {
-            string result = await ValidateDeleteAsync(faccountId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateDeleteResultAsync(faccountId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteDetailAccountAsync(faccountId);
@@ -182,38 +182,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingDetailAccountsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteDetailAccountsAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteDetailAccountsAsync);
         }
 
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
             string message = String.Empty;
             var detailAccount = await _repository.GetDetailAccountAsync(item);
             if (detailAccount == null)
             {
-                message = String.Format(
-                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.DetailAccount), item);
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.DetailAccount, item.ToString());
+                return GetGroupActionResult(message, detailAccount);
             }
 
             var result = BranchValidationResult(detailAccount);
             if (result is BadRequestObjectResult errorResult)
             {
-                return errorResult.Value.ToString();
+                return GetGroupActionResult(errorResult.Value.ToString(), detailAccount);
             }
 
-            var detailInfo = String.Format("'{0} ({1})'", detailAccount.Name, detailAccount.Code);
+            var detailInfo = String.Format("'{0} ({1})'", detailAccount.Name, detailAccount.FullCode);
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
@@ -231,7 +219,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     _strings[AppStrings.CantDeleteRelatedItem], _strings[AppStrings.DetailAccount], detailInfo);
             }
 
-            return message;
+            return GetGroupActionResult(message, detailAccount);
         }
 
         private async Task<IActionResult> ValidationResultAsync(DetailAccountViewModel detailAccount, int faccountId = 0)

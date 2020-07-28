@@ -9,6 +9,7 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 
@@ -155,6 +156,60 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
+        protected async Task<IActionResult> GroupDeleteResultAsync(
+            ActionDetailViewModel actionDetail, GroupDeleteAsyncDelegate groupDelete)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var validated = new List<int>();
+            var notValidated = new List<GroupActionResultViewModel>();
+            foreach (int item in actionDetail.Items)
+            {
+                var result = await ValidateDeleteResultAsync(item);
+                if (result == null)
+                {
+                    validated.Add(item);
+                }
+                else
+                {
+                    notValidated.Add(result);
+                }
+            }
+
+            if (validated.Count > 0)
+            {
+                await groupDelete(validated);
+            }
+
+            return Ok(notValidated);
+        }
+
+        protected GroupActionResultViewModel GetGroupActionResult<TModel>(string error, TModel model)
+            where TModel : class, new()
+        {
+            var result = String.IsNullOrEmpty(error)
+                ? null
+                : new GroupActionResultViewModel() { ErrorMessage = error };
+            if (result != null && model != null)
+            {
+                object value = Reflector.GetSimpleProperty(model, AppStrings.Id, false);
+                result.Id = (value != null) ? Int32.Parse(value.ToString()) : 0;
+                value = Reflector.GetSimpleProperty(model, AppStrings.Name, false);
+                result.Name = value?.ToString();
+                value = Reflector.GetSimpleProperty(model, AppStrings.FullCode, false);
+                result.FullCode = value?.ToString();
+                value = Reflector.GetSimpleProperty(model, AppStrings.No, false);
+                result.No = (value != null) ? Int32.Parse(value.ToString()) : (int?)null;
+                value = Reflector.GetSimpleProperty(model, AppStrings.Date, false);
+                result.Date = (value != null) ? DateTime.Parse(value.ToString()) : (DateTime?)null;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
         /// </summary>
@@ -164,7 +219,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected virtual async Task<string> ValidateDeleteAsync(int item)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            return String.Empty;
+            return null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
+        /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected virtual async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            return null;
         }
 
         private IActionResult GetBasicValidationResult(object item, int itemId)
@@ -188,4 +255,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
     }
+
+    /// <summary>
+    /// شکل متد مورد نیاز برای حذف گروهی موجودیت ها را تعریف می کند
+    /// </summary>
+    /// <param name="items">مجموعه شناسه های دیتابیسی موجودیت های انتخاب شده برای حذف گروهی</param>
+    public delegate Task GroupDeleteAsyncDelegate(IList<int> items);
 }

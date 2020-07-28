@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// شماره موجودیت عملیاتی
         /// </summary>
-        public int No { get; set; }
+        public int? No { get; set; }
 
         /// <summary>
         /// نام موجودیت
@@ -37,6 +37,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// تاریخ موجودیت عملیاتی
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

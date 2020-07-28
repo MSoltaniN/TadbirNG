@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Presentation;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
@@ -312,10 +311,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingCurrencyAsync(int currencyId)
         {
-            string message = await ValidateDeleteAsync(currencyId);
-            if (!String.IsNullOrEmpty(message))
+            var result = await ValidateDeleteResultAsync(currencyId);
+            if (result != null)
             {
-                return BadRequest(message);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteCurrencyAsync(currencyId);
@@ -328,10 +327,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CurrencyRate, (int)CurrencyRatePermissions.Delete)]
         public async Task<IActionResult> DeleteExistingCurrencyRateAsync(int rateId)
         {
-            string message = await ValidateRateDeleteAsync(rateId);
-            if (!String.IsNullOrEmpty(message))
+            var result = await ValidateRateDeleteAsync(rateId);
+            if (result != null)
             {
-                return BadRequest(message);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _rateRepository.DeleteCurrencyRateAsync(rateId);
@@ -345,19 +344,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingCurrenciesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteCurrenciesAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteCurrenciesAsync);
         }
 
         // PUT: api/currency/rates
@@ -367,22 +354,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingCurrencyRatesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupRatesDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _rateRepository.DeleteCurrencyRatesAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _rateRepository.DeleteCurrencyRatesAsync);
         }
 
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
             string message = String.Empty;
             var currency = await _repository.GetCurrencyAsync(item);
@@ -403,10 +378,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            return message;
+            return GetGroupActionResult(message, currency);
         }
 
-        protected async Task<string> ValidateRateDeleteAsync(int item)
+        protected async Task<GroupActionResultViewModel> ValidateRateDeleteAsync(int item)
         {
             string message = String.Empty;
             var currencyRate = await _rateRepository.GetCurrencyRateAsync(item);
@@ -419,19 +394,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = _strings.Format(AppStrings.OtherBranchEditNotAllowed);
             }
 
-            return message;
-        }
-
-        private async Task<IEnumerable<string>> ValidateGroupRatesDeleteAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            foreach (int item in items)
-            {
-                messages.Add(await ValidateRateDeleteAsync(item));
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
+            return GetGroupActionResult(message, currencyRate);
         }
 
         private void Localize(CurrencyViewModel currency)

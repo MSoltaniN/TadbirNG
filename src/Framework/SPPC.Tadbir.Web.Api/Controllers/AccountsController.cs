@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -254,10 +253,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingAccountAsync(int accountId)
         {
-            string result = await ValidateDeleteAsync(accountId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateDeleteResultAsync(accountId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteAccountAsync(accountId);
@@ -277,42 +276,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingAccountsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteAccountsAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteAccountsAsync);
         }
 
         /// <summary>
-        /// به روش آسنکرون، عمل حذف را برای سرفصل حسابداری مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
         /// </summary>
-        /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
-        /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        /// <param name="item">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای حذف</param>
+        /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
             string message = String.Empty;
             var account = await _repository.GetAccountAsync(item);
             if (account == null)
             {
-                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Account, item.ToString());
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Account, item.ToString());
+                return GetGroupActionResult(message, account);
             }
 
             var result = BranchValidationResult(account);
             if (result is BadRequestObjectResult errorResult)
             {
-                return errorResult.Value.ToString();
+                return GetGroupActionResult(errorResult.Value.ToString(), account);
             }
 
-            string accountInfo = String.Format("'{0} ({1})'", account.Name, account.Code);
+            string accountInfo = String.Format("'{0} ({1})'", account.Name, account.FullCode);
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
@@ -331,7 +319,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = _strings.Format(AppStrings.CantDeleteUsedInAccountCollection, accountInfo);
             }
 
-            return message;
+            return GetGroupActionResult(message, account);
         }
 
         private async Task<IActionResult> ValidationResultAsync(AccountViewModel account, int accountId = 0)

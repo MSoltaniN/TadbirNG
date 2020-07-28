@@ -208,10 +208,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingCostCenterAsync(int ccenterId)
         {
-            string result = await ValidateDeleteAsync(ccenterId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateDeleteResultAsync(ccenterId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteCostCenterAsync(ccenterId);
@@ -231,42 +231,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingCostCentersAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteCostCentersAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteCostCentersAsync);
         }
 
         /// <summary>
         /// به روش آسنکرون، عمل حذف را برای مرکز هزینه مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
         /// </summary>
-        /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
-        /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        /// <param name="item">شناسه دیتابیسی مرکز هزینه مورد نظر برای حذف</param>
+        /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
             string message = String.Empty;
             var costCenter = await _repository.GetCostCenterAsync(item);
             if (costCenter == null)
             {
-                return _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.CostCenter, item.ToString());
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.CostCenter, item.ToString());
+                return GetGroupActionResult(message, costCenter);
             }
 
             var result = BranchValidationResult(costCenter);
             if (result is BadRequestObjectResult errorResult)
             {
-                return errorResult.Value.ToString();
+                return GetGroupActionResult(errorResult.Value.ToString(), costCenter);
             }
 
-            var costCenterInfo = String.Format("'{0} ({1})'", costCenter.Name, costCenter.Code);
+            var costCenterInfo = String.Format("'{0} ({1})'", costCenter.Name, costCenter.FullCode);
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
@@ -281,7 +270,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = _strings.Format(AppStrings.CantDeleteRelatedItem, AppStrings.CostCenter, costCenterInfo);
             }
 
-            return message;
+            return GetGroupActionResult(message, costCenter);
         }
 
         private async Task<IActionResult> ValidationResultAsync(CostCenterViewModel costCenter, int ccenterId = 0)
