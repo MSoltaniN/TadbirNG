@@ -3267,8 +3267,8 @@
   <data name="GroupConfirmApprove" xml:space="preserve">
     <value>Group confirm/approve vouchers</value>
   </data>
-  <data name="CantGroupApprove" xml:space="preserve">
-    <value>Group approval can be performed only on vouchers that were previously disapproved in group mode.</value>
+  <data name="CantGroupConfirmFinalizedItems" xml:space="preserve">
+    <value>Group unconfirmation cannot be performed on finalized items.</value>
   </data>
   <data name="CantGroupConfirm" xml:space="preserve">
     <value>Group confirmation can be performed only on vouchers that were previously unconfirmed in group mode.</value>
@@ -3278,5 +3278,11 @@
   </data>
   <data name="GroupConfirm" xml:space="preserve">
     <value>Group confirm</value>
+  </data>
+  <data name="DocumentNotConfirmed" xml:space="preserve">
+    <value>This document is not yet confirmed.</value>
+  </data>
+  <data name="GroupUndoConfirmApprove" xml:space="preserve">
+    <value>Group unconfirm/disapprove vouchers</value>
   </data>
 </root>

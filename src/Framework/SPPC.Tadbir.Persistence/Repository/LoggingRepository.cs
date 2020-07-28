@@ -146,12 +146,12 @@ namespace SPPC.Tadbir.Persistence
             switch (newStatus)
             {
                 case DocumentStatusValue.Draft:
-                    operation = OperationId.UndoGroupCheck;
+                    operation = OperationId.GroupUndoCheck;
                     break;
                 case DocumentStatusValue.Checked:
                     if (oldStatus == DocumentStatusValue.Finalized)
                     {
-                        operation = OperationId.UndoGroupFinalize;
+                        operation = OperationId.GroupUndoFinalize;
                     }
                     else
                     {

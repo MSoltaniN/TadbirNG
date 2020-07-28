@@ -246,7 +246,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// کد عملیاتی برگشت از ثبت گروهی اسناد
         /// </summary>
-        UndoGroupCheck = 47,
+        GroupUndoCheck = 47,
 
         /// <summary>
         /// کد عملیاتی ثبت قطعی گروهی اسناد
@@ -256,16 +256,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// کد عملیاتی برگشت از ثبت قطعی گروهی اسناد
         /// </summary>
-        UndoGroupFinalize = 49,
+        GroupUndoFinalize = 49,
 
         /// <summary>
         /// کد عملیاتی تایید گروهی اسناد
         /// </summary>
-        ConfirmGroup = 50,
+        GroupConfirm = 50,
 
         /// <summary>
         /// کد عملیاتی  رفع تایید گروهی اسناد
         /// </summary>
-        UnConfirmGroup = 51,
+        GroupUndoConfirm = 51,
     }
 }

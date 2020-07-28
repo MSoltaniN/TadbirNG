@@ -3258,8 +3258,8 @@
   <data name="GroupConfirmApprove" xml:space="preserve">
     <value>تایید/تصویب گروهی اسناد</value>
   </data>
-  <data name="CantGroupApprove" xml:space="preserve">
-    <value>تصویب گروهی فقط برای اسنادی امکانپذیر است که به صورت گروهی رفع تصویب شده باشند.</value>
+  <data name="CantGroupConfirmFinalizedItems" xml:space="preserve">
+    <value>رفع تأیید گروهی اسناد ثبت قطعی شده امکانپذیر نیست.</value>
   </data>
   <data name="CantGroupConfirm" xml:space="preserve">
     <value>تأیید گروهی فقط برای اسنادی امکانپذیر است که به صورت گروهی رفع تأیید شده باشند.</value>
@@ -3269,5 +3269,11 @@
   </data>
   <data name="GroupConfirm" xml:space="preserve">
     <value>تأیید گروهی</value>
+  </data>
+  <data name="DocumentNotConfirmed" xml:space="preserve">
+    <value>این سند هنوز تأیید نشده است.</value>
+  </data>
+  <data name="GroupUndoConfirmApprove" xml:space="preserve">
+    <value>برگشت از تأیید/تصویب گروهی اسناد</value>
   </data>
 </root>

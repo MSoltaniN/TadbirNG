@@ -547,14 +547,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupConfirmAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.ConfirmGroupVouchersAsync(actionDetail.Items, true);
-            return Ok();
+            return await GroupConfirmApproveResultAsync(
+                actionDetail.Items, AppStrings.GroupConfirmApprove);
         }
 
         /// <summary>
@@ -573,14 +567,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateGroupUndoConfirmAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.UnconfirmGroupVouchersAsync(actionDetail.Items, false);
-            return Ok();
+            return await GroupConfirmApproveResultAsync(
+                actionDetail.Items, AppStrings.GroupUndoConfirmApprove);
         }
 
         /// <summary>
@@ -989,10 +977,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> GroupConfirmApproveResultAsync(
-            IEnumerable<int> items, string action, bool isConfirmed)
+            IEnumerable<int> items, string action)
         {
             var validated = new List<int>();
             var notValidated = new List<GroupActionResultViewModel>();
+            bool isConfirmed = (action == AppStrings.GroupConfirmApprove);
             foreach (int item in items)
             {
                 var result = await _repository.ValidateVoucherActionAsync(item, action);

@@ -52,13 +52,13 @@ namespace SPPC.Tadbir.Persistence
             {
                 error = ValidateUndoFinalize(voucher);
             }
-            else if (action == AppStrings.GroupConfirm)
+            else if (action == AppStrings.GroupConfirmApprove)
             {
-                error = ValidateGroupConfirm(voucher);
+                error = ValidateGroupConfirmApprove(voucher);
             }
-            else if (action == AppStrings.GroupApprove)
+            else if (action == AppStrings.GroupUndoConfirmApprove)
             {
-                error = ValidateGroupApprove(voucher);
+                error = ValidateGroupUndoConfirmApprove(voucher);
             }
 
             return String.IsNullOrEmpty(error)
@@ -208,10 +208,11 @@ namespace SPPC.Tadbir.Persistence
             return error;
         }
 
-        private string ValidateGroupConfirm(VoucherViewModel voucher)
+        private string ValidateGroupConfirmApprove(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (String.IsNullOrEmpty(voucher.ConfirmerName) && !voucher.IsConfirmed)
+            if (String.IsNullOrEmpty(voucher.ConfirmerName)
+                && String.IsNullOrEmpty(voucher.ConfirmerName))
             {
                 error = Context.Localize(AppStrings.CantGroupConfirm);
             }
@@ -219,12 +220,17 @@ namespace SPPC.Tadbir.Persistence
             return error;
         }
 
-        private string ValidateGroupApprove(VoucherViewModel voucher)
+        private string ValidateGroupUndoConfirmApprove(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (String.IsNullOrEmpty(voucher.ApproverName) && !voucher.IsApproved)
+            if (voucher.StatusId == (int)DocumentStatusValue.Finalized)
             {
-                error = Context.Localize(AppStrings.CantGroupApprove);
+                error = Context.Localize(AppStrings.CantGroupConfirmFinalizedItems);
+            }
+            else if (voucher.ConfirmedById == null
+                && voucher.ApprovedById == null)
+            {
+                error = Context.Localize(AppStrings.DocumentNotConfirmed);
             }
 
             return error;

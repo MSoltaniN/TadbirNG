@@ -317,66 +317,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اسناد مالی مشخص شده با شناسه دیتابیسی را رفع تایید گروهی می کند
-        /// </summary>
-        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="isConfirmed">وضعیت جدید مورد نظر برای اسناد مالی</param>
-        public async Task UnconfirmGroupVouchersAsync(IEnumerable<int> items, bool isConfirmed)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            foreach (int item in items)
-            {
-                var voucher = await repository.GetByIDAsync(item);
-                if (voucher != null)
-                {
-                    if (voucher.ApprovedById != null)
-                    {
-                        voucher.ApprovedById = isConfirmed ? UserContext.Id : (int?)null;
-                    }
-                    else if (voucher.ConfirmedById != null)
-                    {
-                        voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
-                    }
-
-                    repository.Update(voucher);
-                }
-            }
-
-            OperationId operation = isConfirmed ? OperationId.ConfirmGroup : OperationId.UnConfirmGroup;
-            await OnEntityGroupChangeStatus(items, operation);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اسناد مالی مشخص شده با شناسه دیتابیسی را تایید گروهی  می کند
-        /// </summary>
-        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
-        /// <param name="isConfirmed">وضعیت جدید مورد نظر برای اسناد مالی</param>
-        public async Task ConfirmGroupVouchersAsync(IEnumerable<int> items, bool isConfirmed)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            foreach (int item in items)
-            {
-                var voucher = await repository.GetByIDAsync(item);
-                if (voucher != null)
-                {
-                    if (voucher.ApprovedById == null && voucher.ApproverName != null && voucher.ConfirmedById != null)
-                    {
-                        voucher.ApprovedById = isConfirmed ? UserContext.Id : (int?)null;
-                    }
-                    else if (voucher.ConfirmedById == null && voucher.ConfirmerName != null)
-                    {
-                        voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
-                    }
-
-                    repository.Update(voucher);
-                }
-            }
-
-            OperationId operation = isConfirmed ? OperationId.ConfirmGroup : OperationId.UnConfirmGroup;
-            await OnEntityGroupChangeStatus(items, operation);
-        }
-
-        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا شماره سند مورد نظر تکراری است یا نه
         /// </summary>
         /// <param name="voucher">سند مالی که تکراری بودن شماره آن باید بررسی شود</param>
@@ -526,7 +466,11 @@ namespace SPPC.Tadbir.Persistence
                 {
                     voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
                     voucher.ApprovedById = isConfirmed ? UserContext.Id : (int?)null;
+                    repository.Update(voucher);
                 }
+
+                var operationId = isConfirmed ? OperationId.GroupConfirm : OperationId.GroupUndoConfirm;
+                await OnEntityGroupChangeStatus(items, operationId);
             }
         }
 
