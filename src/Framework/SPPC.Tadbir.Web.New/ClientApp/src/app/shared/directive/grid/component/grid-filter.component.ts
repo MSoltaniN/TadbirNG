@@ -1,5 +1,5 @@
 
-import { OnInit, OnDestroy, Component, Host, ElementRef, Input, EventEmitter, Output, HostListener } from "@angular/core";
+import { OnInit, OnDestroy, Component, Host, ElementRef, Input, EventEmitter, Output, HostListener, Renderer2 } from "@angular/core";
 
 import { RTL } from "@progress/kendo-angular-l10n";
 import { ToastrService } from "ngx-toastr";
@@ -31,42 +31,44 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
   @Input() public showClearFilter: number = 0;
   @Input() public parentComponent: any;
 
-  @HostListener('document:keypress', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key == 'Enter') {
-      var filterInput = false;
-      var element: any = event.srcElement;
-      var object = element;
-      if (element.hasAttribute('kendofilterinput')) {
-        filterInput = true;
-      }
-      else {
-        var level = 5;
-        while (object.offsetParent && level > 0) {
-          object = object.offsetParent;
-          level = level - 1;
-          if (element.hasAttribute('kendofilterinput') || object.hasAttribute('kendofilterinput')) {
-            filterInput = true;
-            break;
-          }
-        }
-      }
+  //@HostListener('document:keypress', ['$event'])
+  //handleKeyboardEvent(event: KeyboardEvent) {
+  //  if (event.key == 'Enter') {
+  //    var filterInput = false;
+  //    var element: any = event.srcElement;
+  //    var object = element;
+  //    if (element.hasAttribute('kendofilterinput')) {
+  //      filterInput = true;
+  //    }
+  //    else {
+  //      var level = 5;
+  //      while (object.offsetParent && level > 0) {
+  //        object = object.offsetParent;
+  //        level = level - 1;
+  //        if (element.hasAttribute('kendofilterinput') || object.hasAttribute('kendofilterinput')) {
+  //          filterInput = true;
+  //          break;
+  //        }
+  //      }
+  //    }
       
 
-      if (filterInput) {
+  //    if (filterInput) {
 
-        event.stopPropagation();
-        setTimeout(() => {
-          this.parentComponent.reloadGrid();
-        }, 300);
+  //      event.stopPropagation();
+  //      setTimeout(() => {
+  //        this.parentComponent.reloadGrid();
+  //      }, 300);
 
-      }
+  //    }
 
-    }
-  }
+  //  }
+  //}
+
+  globalListenFunc: Function;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public settingService: SettingService,
-    @Host() private grid: GridComponent, private elRef: ElementRef, public bStorageService: BrowserStorageService) {
+    @Host() private grid: GridComponent, private elRef: ElementRef, public bStorageService: BrowserStorageService, private renderer: Renderer2) {
 
     super(toastrService, bStorageService);
     if (this.grid.filter)
@@ -77,11 +79,63 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
 
   }
 
+  //@HostListener('window:keydown', ['$event'])
+  //keyEvent(event: KeyboardEvent) {
+  //  console.log(event);
+  //}
+
+  @HostListener('document:keydown', ['$event'])
+  handleClick(event: KeyboardEvent) {
+    if (this.elRef.nativeElement.offsetParent.contains(event.target)) {
+        if (event.key == 'Enter') {
+          var filterInput = false;
+          var element: any = event.srcElement;
+          var object = element;
+          if (element.hasAttribute('kendofilterinput')) {
+            filterInput = true;
+          }
+          else {
+            var level = 5;
+            while (object.offsetParent && level > 0) {
+              object = object.offsetParent;
+              level = level - 1;
+              if (element.hasAttribute('kendofilterinput') || object.hasAttribute('kendofilterinput')) {
+                filterInput = true;
+                break;
+              }
+            }
+          }
+
+          if (filterInput) {
+
+            event.stopPropagation();
+            setTimeout(() => {
+              this.parentComponent.reloadGrid();
+            }, 300);
+          }
+      }
+    }
+  }
+
   ngOnInit(): void {
     if (this.CurrentLanguage == 'fa')
       this.rtl = true;
     else
-      this.rtl = false;  
+      this.rtl = false;    
+
+    //const elements = <any>document.querySelectorAll('[kendofilterinput]');
+    //elements.forEach(element => {
+
+    //  this.globalListenFunc = this.renderer.listen(element, 'keypress', e => {
+    //    console.log(e);
+    //    if (e.key == 'Enter') {
+    //      setTimeout(() => {
+    //        this.parentComponent.reloadGrid();
+    //      }, 300);
+    //    }
+
+    //  });
+    //});
   }
 
   @Output() reloadEvent = new EventEmitter();
