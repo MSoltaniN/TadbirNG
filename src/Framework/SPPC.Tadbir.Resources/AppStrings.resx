@@ -2617,7 +2617,7 @@
     <value>گزینه های موجود برای محاسبه اطلاعات گزارش تراز آزمایشی</value>
   </data>
   <data name="InvalidEmptyVoucherAction" xml:space="preserve">
-    <value>عمل '{0}' روی سند بدون آرتیکل امکان پذیر نیست.</value>
+    <value>عمل {0} روی سند بدون آرتیکل امکان پذیر نیست.</value>
   </data>
   <data name="RootBranchAlreadyDefined" xml:space="preserve">
     <value>فقط یک شعبه در بالاترین سطح قابل تعریف است.</value>

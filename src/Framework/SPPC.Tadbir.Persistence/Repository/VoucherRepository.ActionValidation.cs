@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Resources;
@@ -20,6 +19,20 @@ namespace SPPC.Tadbir.Persistence
         {
             string error = String.Empty;
             var voucher = await GetVoucherAsync(voucherId);
+            int lineCount = await GetVoucherLineCountAsync(voucherId);
+            if (lineCount == 0)
+            {
+                string template = Context.Localize(AppStrings.InvalidEmptyVoucherAction);
+                error = Context.Localize(String.Format(template, action));
+                return new GroupActionResultViewModel()
+                {
+                    Id = voucher.Id,
+                    Date = voucher.Date,
+                    ErrorMessage = error,
+                    No = voucher.No
+                };
+            }
+
             if (action == AppStrings.Check)
             {
                 error = ValidateCheck(voucher);
@@ -101,9 +114,13 @@ namespace SPPC.Tadbir.Persistence
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.UndoConfirm));
             }
-            else if (voucher.StatusId != (int)DocumentStatusValue.Checked)
+            else if (voucher.StatusId == (int)DocumentStatusValue.Draft)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.Check));
+            }
+            else if (voucher.StatusId == (int)DocumentStatusValue.Finalized)
+            {
+                error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.UndoFinalize));
             }
 
             return error;
@@ -192,15 +209,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string error = String.Empty;
             var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
-            if (voucher.IsApproved)
-            {
-                error = Context.Localize(String.Format(template, AppStrings.UndoFinalize, AppStrings.UndoApprove));
-            }
-            else if (voucher.IsConfirmed)
-            {
-                error = Context.Localize(String.Format(template, AppStrings.UndoFinalize, AppStrings.UndoConfirm));
-            }
-            else if (voucher.StatusId != (int)DocumentStatusValue.Finalized)
+            if (voucher.StatusId != (int)DocumentStatusValue.Finalized)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoFinalize, AppStrings.Finalize));
             }

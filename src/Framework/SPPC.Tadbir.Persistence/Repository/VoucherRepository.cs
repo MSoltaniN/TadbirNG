@@ -466,6 +466,12 @@ namespace SPPC.Tadbir.Persistence
                 {
                     voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
                     voucher.ApprovedById = isConfirmed ? UserContext.Id : (int?)null;
+                    if (isConfirmed)
+                    {
+                        voucher.ConfirmerName = GetCurrentUserDisplayName();
+                        voucher.ApproverName = GetCurrentUserDisplayName();
+                    }
+
                     repository.Update(voucher);
                 }
 
@@ -739,6 +745,12 @@ namespace SPPC.Tadbir.Persistence
         private string GetCurrentUserDisplayName()
         {
             return String.Format("{0}, {1}", UserContext.PersonLastName, UserContext.PersonFirstName);
+        }
+
+        private async Task<int> GetVoucherLineCountAsync(int voucherId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            return await repository.GetCountByCriteriaAsync(line => line.VoucherId == voucherId);
         }
 
         private readonly ISystemRepository _system;
