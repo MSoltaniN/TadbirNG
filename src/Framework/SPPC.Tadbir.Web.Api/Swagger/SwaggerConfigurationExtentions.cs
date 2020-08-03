@@ -25,8 +25,8 @@ namespace SPPC.Tadbir.Web.Api.Swagger
                 Description = "Allows programmatic access to Tadbir functionality.",
                 Contact = new Contact
                 {
-                    Email = "ms.pishbin2@gmail.com",
-                    Name = "nazdar pishbin",
+                    Email = "software@sppc.co.ir",
+                    Name = "Software Department",
                     Url = "https://www.sppcco.com/",
                 },
                 License = new License

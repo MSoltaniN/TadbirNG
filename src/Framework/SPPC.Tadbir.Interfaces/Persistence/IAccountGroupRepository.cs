@@ -65,5 +65,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>مجموعه ای از مدل نمایشی خلاصه گروه های حساب</returns>
         Task<IList<AccountItemBriefViewModel>> GetAccountGroupsBriefAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که گروه حساب داده شده تکراری است یا نه
+        /// </summary>
+        /// <param name="accountGroup">اطلاعات نمایشی گروه حساب مورد نظر برای بررسی</param>
+        /// <returns>در صورتی که نام گروه حساب تکراری باشد، مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsDuplicateGroupAsync(AccountGroupViewModel accountGroup);
     }
 }

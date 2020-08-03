@@ -5,7 +5,6 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
@@ -164,23 +163,36 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountGroupsBriefAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
-            var accGroups = await repository
+            var accountGroups = await repository
                 .GetEntityQuery()
                 .Select(grp => Mapper.Map<AccountItemBriefViewModel>(grp))
                 .ToListAsync();
 
-            var accRepository = UnitOfWork.GetAsyncRepository<Account>();
-
-            foreach (var item in accGroups)
+            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
+            foreach (var item in accountGroups)
             {
-                var accounts = Repository
+                item.ChildCount = await Repository
                     .GetAllQuery<Account>(ViewName.Account)
-                    .Where(acc => acc.ParentId == null && acc.GroupId == item.Id);
-
-                item.ChildCount = accounts.Count();
+                    .Where(acc => acc.GroupId == item.Id)
+                    .CountAsync();
             }
 
-            return accGroups;
+            return accountGroups;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که گروه حساب داده شده تکراری است یا نه
+        /// </summary>
+        /// <param name="accountGroup">اطلاعات نمایشی گروه حساب مورد نظر برای بررسی</param>
+        /// <returns>در صورتی که نام گروه حساب تکراری باشد، مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsDuplicateGroupAsync(AccountGroupViewModel accountGroup)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
+            int count = await repository.GetCountByCriteriaAsync(
+                grp => grp.Id != accountGroup.Id &&
+                grp.Name == accountGroup.Name);
+            return count > 0;
         }
 
         internal override int? EntityType
