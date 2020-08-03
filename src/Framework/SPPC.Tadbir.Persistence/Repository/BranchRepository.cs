@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model;
@@ -60,8 +59,7 @@ namespace SPPC.Tadbir.Persistence
         {
             BranchViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branch = await repository.GetByIDAsync(
-                branchId, b => b.Children);
+            var branch = await repository.GetByIDAsync(branchId);
             if (branch != null)
             {
                 item = Mapper.Map<BranchViewModel>(branch);
@@ -71,33 +69,17 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه شعب سازمانی در اولین سطح را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ای از شعب سازمانی تعریف شده در اولین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetRootBranchesAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var rootBranches = await repository
-                .GetEntityQuery(br => br.Children)
-                .Where(await GetSecurityFilterAsync())
-                .Where(br => br.Level == 0)
-                .Select(br => Mapper.Map<AccountItemBriefViewModel>(br))
-                .ToListAsync();
-            return rootBranches;
-        }
-
-        /// <summary>
         /// به روش آسنکرون، کلیه شعب سازمانی زیرمجموعه یک شعبه را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
+        /// <param name="parentId">شناسه دیتابیسی شعبه والد مورد نظر</param>
         /// <returns>مجموعه ای از شعب سازمانی زیرمجموعه</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetBranchChildrenAsync(int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetBranchChildrenAsync(int? parentId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var children = await repository
                 .GetEntityQuery(br => br.Children)
                 .Where(await GetSecurityFilterAsync())
-                .Where(br => br.ParentId == branchId)
+                .Where(br => br.ParentId == parentId)
                 .Select(br => Mapper.Map<AccountItemBriefViewModel>(br))
                 .ToListAsync();
             return children;
@@ -243,15 +225,9 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> HasChildrenAsync(int branchId)
         {
-            bool hasChildren = false;
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branch = await repository.GetByIDAsync(branchId, b => b.Children);
-            if (branch != null)
-            {
-                hasChildren = branch.Children.Count > 0;
-            }
-
-            return hasChildren;
+            int count = await repository.GetCountByCriteriaAsync(br => br.ParentId == branchId);
+            return count > 0;
         }
 
         /// <summary>
@@ -303,24 +279,23 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات اواین شعبه سازمانی یک شرکت  را در محل ذخیره ایجاد می کند
+        /// به روش آسنکرون، اطلاعات اولین شعبه سازمانی یک شرکت  را ایجاد می کند
         /// </summary>
-        /// <param name="branchView">شعبه سازمانی مورد نظر برای ایجاد</param>
+        /// <param name="branch">شعبه سازمانی مورد نظر برای ایجاد</param>
         /// <returns>اطلاعات نمایشی شعبه سازمانی ایجاد شده</returns>
-        public async Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branchView)
+        public async Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branch)
         {
-            Verify.ArgumentNotNull(branchView, "branchView");
-            Branch branch = default(Branch);
+            Verify.ArgumentNotNull(branch, "branch");
+            Branch newBranch = default(Branch);
 
             UnitOfWork.UseSystemContext();
-            CompanyConnection = await BuildConnectionStringAsync(branchView.CompanyId);
+            CompanyConnection = await BuildConnectionStringAsync(branch.CompanyId);
+            UnitOfWork.UseCompanyContext();
 
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            branch = Mapper.Map<Branch>(branchView);
-
-            await InsertAsync(repository, branch);
-
-            return Mapper.Map<BranchViewModel>(branch);
+            newBranch = Mapper.Map<Branch>(branch);
+            await InsertAsync(repository, newBranch);
+            return Mapper.Map<BranchViewModel>(newBranch);
         }
 
         internal override int? EntityType
@@ -386,17 +361,6 @@ namespace SPPC.Tadbir.Persistence
                 existing.RoleBranches.Remove(existing.RoleBranches
                     .Where(rb => rb.RoleId == id)
                     .Single());
-            }
-        }
-
-        private void DeleteBranchData(Type dependentType, int branchId)
-        {
-            var idItems = ModelCatalogue.GetModelTypeItems(dependentType);
-            if (idItems != null)
-            {
-                string command = String.Format(_deleteBranchDataScript, idItems[0], idItems[1], branchId);
-                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-                DbConsole.ExecuteNonQuery(command);
             }
         }
 

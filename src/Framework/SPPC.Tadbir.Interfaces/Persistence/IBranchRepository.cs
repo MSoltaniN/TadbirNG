@@ -29,17 +29,11 @@ namespace SPPC.Tadbir.Persistence
         Task<BranchViewModel> GetBranchAsync(int branchId);
 
         /// <summary>
-        /// به روش آسنکرون، کلیه شعب سازمانی در اولین سطح را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ای از شعب سازمانی تعریف شده در اولین سطح</returns>
-        Task<IList<AccountItemBriefViewModel>> GetRootBranchesAsync();
-
-        /// <summary>
         /// به روش آسنکرون، کلیه شعب سازمانی زیرمجموعه یک شعبه را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
+        /// <param name="parentId">شناسه دیتابیسی شعبه والد مورد نظر</param>
         /// <returns>مجموعه ای از شعب سازمانی زیرمجموعه</returns>
-        Task<IList<AccountItemBriefViewModel>> GetBranchChildrenAsync(int branchId);
+        Task<IList<AccountItemBriefViewModel>> GetBranchChildrenAsync(int? parentId);
 
         /// <summary>
         /// به روش آسنکرون، نقش های دارای دسترسی به یک شعبه را خوانده و برمی گرداند
@@ -103,10 +97,10 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsValidBranchAsync(BranchViewModel branch);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات اواین شعبه سازمانی یک شرکت  را در محل ذخیره ایجاد می کند
+        /// به روش آسنکرون، اطلاعات اولین شعبه سازمانی یک شرکت  را در محل ذخیره ایجاد می کند
         /// </summary>
-        /// <param name="branchView">شعبه سازمانی مورد نظر برای ایجاد</param>
+        /// <param name="branch">شعبه سازمانی مورد نظر برای ایجاد</param>
         /// <returns>اطلاعات نمایشی شعبه سازمانی ایجاد شده</returns>
-        Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branchView);
+        Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branch);
     }
 }

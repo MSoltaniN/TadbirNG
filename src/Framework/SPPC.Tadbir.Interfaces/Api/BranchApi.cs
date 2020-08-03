@@ -83,6 +83,6 @@
         /// <summary>
         /// API server route URL for initial branch
         /// </summary>
-        public const string BrancheInitialUrl = "branches/init";
+        public const string BranchInitialUrl = "branches/init";
     }
 }

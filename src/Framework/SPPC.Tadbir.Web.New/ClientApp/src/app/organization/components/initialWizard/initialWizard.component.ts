@@ -212,7 +212,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
   insertBranch(company: any) {
     if (this.branch) {
       this.branch.companyId = company.id;
-      this.branchService.insert<Branch>(BranchApi.BrancheInitial, this.branch).subscribe(res => {
+      this.branchService.insert<Branch>(BranchApi.BranchInitial, this.branch).subscribe(res => {
         this.insertFiscalPeriod(company, res);
       })
     }

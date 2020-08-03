@@ -352,22 +352,21 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات اولین دوره مالی را در محل ذخیره ایجاد می کند
         /// </summary>
-        /// <param name="fiscalPeriodView">دوره مالی مورد نظر برای ایجاد</param>
+        /// <param name="fiscalPeriod">دوره مالی مورد نظر برای ایجاد</param>
         /// <returns>اطلاعات نمایشی دوره مالی ایجاد شده</returns>
-        public async Task<FiscalPeriodViewModel> SaveInitialFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriodView)
+        public async Task<FiscalPeriodViewModel> SaveInitialFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod)
         {
-            Verify.ArgumentNotNull(fiscalPeriodView, "fiscalPeriodView");
-            FiscalPeriod fiscalPeriod = default(FiscalPeriod);
+            Verify.ArgumentNotNull(fiscalPeriod, "fiscalPeriod");
+            FiscalPeriod newFiscalPeriod = default(FiscalPeriod);
 
             UnitOfWork.UseSystemContext();
-            CompanyConnection = await BuildConnectionStringAsync(fiscalPeriodView.CompanyId);
+            CompanyConnection = await BuildConnectionStringAsync(fiscalPeriod.CompanyId);
+            UnitOfWork.UseCompanyContext();
 
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-
-            fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
-            await InsertAsync(repository, fiscalPeriod);
-
-            return Mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
+            newFiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriod);
+            await InsertAsync(repository, newFiscalPeriod);
+            return Mapper.Map<FiscalPeriodViewModel>(newFiscalPeriod);
         }
 
         internal override int? EntityType

@@ -311,9 +311,7 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Branch, BranchViewModel>()
-                .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true))
-                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
+            mapperConfig.CreateMap<Branch, BranchViewModel>();
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);

@@ -15,9 +15,7 @@ import { IEntity } from "@sppc/shared/models";
 
 export interface Branch extends IEntity{
     companyId: number;
-    isAccessible: boolean;
     parentId?: number;
-    childCount: number;
     id: number;
     name: string;
     description?: string;

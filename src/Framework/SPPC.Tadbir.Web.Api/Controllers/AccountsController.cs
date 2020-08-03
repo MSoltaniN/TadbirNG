@@ -283,7 +283,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
         /// </summary>
         /// <param name="item">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای حذف</param>
-        /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
+        /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رفرنس بدون مقدار در صورت نبود خطا</returns>
         protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
             string message = String.Empty;

@@ -11,14 +11,23 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    /// واسط برنامه نویسی با شعبه های سازمانی را در برنامه پیاده سازی می کند
+    /// </summary>
     [Produces("application/json")]
     public class BranchesController : ValidatingController<BranchViewModel>
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="repository">امکان مدیریت اطلاعات شعبه ها در دیتابیس را فراهم می کند</param>
+        /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         public BranchesController(
             IBranchRepository repository, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
@@ -26,11 +35,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
+        /// <summary>
+        /// کلید متن چندزبانه برای نام موجودیت شعبه
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.Branch; }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کلیه شعبه های سازمانی قابل دسترسی توسط کاربر جاری را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده شعبه های سازمانی</returns>
         // GET: api/branches/company/{companyId:min(1)}
         [HttpGet]
         [Route(BranchApi.CompanyBranchesUrl)]
@@ -41,6 +57,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(branches);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی شعبه مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <returns>اطلاعات نمایشی شعبه</returns>
         // GET: api/branches/{branchId:min(1)}
         [HttpGet]
         [Route(BranchApi.BranchUrl)]
@@ -51,16 +72,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(branch);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه شعبه های بالاترین سطح را برمی گرداند
+        /// </summary>
+        /// <returns>لیست اطلاعات شعبه های بالاترین سطح</returns>
         // GET: api/branches/root
         [HttpGet]
         [Route(BranchApi.RootBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetRootBranchesAsync()
         {
-            var rootBranches = await _repository.GetRootBranchesAsync();
+            var rootBranches = await _repository.GetBranchChildrenAsync(null);
             return Json(rootBranches);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه شعبه های زیرمجموعه شعبه داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه والد</param>
+        /// <returns>لیست اطلاعات شعبه های زیرمجموعه</returns>
         // GET: api/branches/{branchId:min(1)}/children
         [HttpGet]
         [Route(BranchApi.BranchChildrenUrl)]
@@ -71,6 +101,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(children);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شعبه داده شده را ایجاد می کند
+        /// </summary>
+        /// <param name="branch">اطلاعات کامل شعبه جدید</param>
+        /// <returns>اطلاعات شعبه بعد از ایجاد در دیتابیس</returns>
         // POST: api/branches
         [HttpPost]
         [Route(BranchApi.BranchesUrl)]
@@ -92,6 +127,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، بودن شعبه در بالاترین سطح را بررسی می کند
+        /// </summary>
+        /// <param name="branch">اطلاعات اولیه شعبه جدید برای اعتبارسنجی</param>
+        /// <returns>در صورت بودن شعبه در بالاترین سطح، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
         // POST: api/branches/root
         [HttpPost]
         [Route(BranchApi.RootBranchesUrl)]
@@ -103,14 +144,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RootBranchAlreadyDefined));
             }
 
-            return NoContent();
+            return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین شعبه را برای شرکت جاری در دیتابیس ایجاد می کند
+        /// </summary>
+        /// <param name="branch">اطلاعات اولین شعبه در شرکت جاری</param>
+        /// <returns>در صورت بودن شعبه در بالاترین سطح، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 201 (به معنی ایجاد شدن اطلاعات) را برمی گرداند</returns>
         // POST: api/branches/init
         [HttpPost]
-        [Route(BranchApi.BrancheInitialUrl)]
+        [Route(BranchApi.BranchInitialUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Create)]
-        public async Task<IActionResult> PostInitialBranchAsync([FromBody]BranchViewModel branch)
+        public async Task<IActionResult> PostInitialBranchAsync([FromBody] BranchViewModel branch)
         {
             var result = BasicValidationResult(branch);
             if (result is BadRequestObjectResult)
@@ -122,6 +169,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شعبه مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر برای اصلاح</param>
+        /// <param name="branch">اطلاعات اصلاح شده شعبه</param>
+        /// <returns>اطلاعات شعبه بعد از اصلاح در دیتابیس</returns>
         // PUT: api/branches/{branchId:min(1)}
         [HttpPut]
         [Route(BranchApi.BranchUrl)]
@@ -139,22 +192,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return OkReadResult(outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شعبه مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/branches/{branchId:min(1)}
         [HttpDelete]
         [Route(BranchApi.BranchUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingBranchAsync(int branchId)
         {
-            string result = await ValidateDeleteAsync(branchId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateDeleteResultAsync(branchId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteBranchAsync(branchId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شعبه مشخص شده با شناسه دیتابیسی را به همراه کلیه اطلاعات وابسته حذف می کند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/branches/{branchId:min(1)}/data
         [HttpDelete]
         [Route(BranchApi.BranchDataUrl)]
@@ -171,6 +236,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شعبه های داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>سطرهای اطلاعاتی قابل حذف را از دیتابیس حذف می کند و موارد مشکل دار را به همراه
+        /// کد وضعیتی 200 برمی گرداند</returns>
         // PUT: api/branches
         [HttpPut]
         [Route(BranchApi.BranchesUrl)]
@@ -178,21 +249,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingBranchesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteBranchesAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteBranchesAsync);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای نقش های دارای دسترسی به شعبه داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای نقش های دارای دسترسی به شعبه</returns>
         // GET: api/branches/{branchId:min(1)}/roles
         [HttpGet]
         [Route(BranchApi.BranchRolesUrl)]
@@ -204,6 +268,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(roles);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به شعبه داده شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <param name="branchRoles">اطلاعات جدید برای نقش های دارای دسترسی به شعبه</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
         // PUT: api/branches/{branchId:min(1)}/roles
         [HttpPut]
         [Route(BranchApi.BranchRolesUrl)]
@@ -221,22 +292,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی شعبه مورد نظر برای حذف</param>
+        /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رفرنس بدون مقدار در صورت نبود خطا</returns>
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
+            var branch = await _repository.GetBranchAsync(item);
             string error = await BasicValidateDeleteAsync(item);
             if (!String.IsNullOrEmpty(error))
             {
-                return error;
+                return GetGroupActionResult(error, branch);
             }
 
             var canDelete = await _repository.CanDeleteBranchAsync(item);
             if (canDelete == false)
             {
-                var branch = await _repository.GetBranchAsync(item);
-                return _strings.Format(AppStrings.CantDeleteItemWithData, EntityNameKey, branch.Name);
+                error = _strings.Format(AppStrings.CantDeleteItemWithData, EntityNameKey, branch.Name);
             }
 
-            return String.Empty;
+            return GetGroupActionResult(error, branch);
         }
 
         private async Task<string> BasicValidateDeleteAsync(int item)

@@ -10,9 +10,7 @@ import { RelatedItems } from '@sppc/shared/models';
 
 export class BranchInfo implements Branch {
   companyId: number = 0;
-  isAccessible: boolean;
   parentId?: number | undefined;
-  childCount: number = 0;
   id: number = 0;
   name: string;
   description?: string | undefined;
