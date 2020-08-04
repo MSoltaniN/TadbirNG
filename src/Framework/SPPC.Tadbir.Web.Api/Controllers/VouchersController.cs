@@ -621,10 +621,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingVoucherAsync(int voucherId)
         {
-            string result = await ValidateDeleteAsync(voucherId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateDeleteResultAsync(voucherId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteVoucherAsync(voucherId);
@@ -644,19 +644,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingVouchersAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteVouchersAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteVouchersAsync);
         }
 
         // GET: api/vouchers/opening/query
@@ -753,6 +741,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Article Operations
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه آرتیکل های سند داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <returns>فهرست صفحه بندی شده آرتیکل های سند</returns>
         // GET: api/vouchers/{voucherId:min(1)}/articles
         [HttpGet]
         [Route(VoucherApi.VoucherArticlesUrl)]
@@ -765,6 +758,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(articles.Items);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آرتیکل مالی مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر</param>
+        /// <returns>اطلاعات نمایشی آرتیکل مالی</returns>
         // GET: api/vouchers/articles/{articleId:min(1)}
         [HttpGet]
         [Route(VoucherApi.VoucherArticleUrl)]
@@ -776,6 +774,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(article);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، تعداد کل آرتیکل های موجود را برمی گرداند
+        /// </summary>
+        /// <returns>تعداد کل آرتیکل های موجود</returns>
         // GET: api/vouchers/articles/count
         [HttpGet]
         [Route(VoucherApi.VoucherArticlesCountUrl)]
@@ -786,13 +788,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok(itemsCount);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل های مالی دارای اشکال داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="issueType">نوع اشکال سیستمی مورد نظر برای آرتیکل های مالی</param>
+        /// <param name="from">تاریخ ابتدای دوره گزارشگیری</param>
+        /// <param name="to">تاریخ انتهای دوره گزارشگیری</param>
+        /// <returns>اطلاعات نمایشی آرتیکل های مالی دارای مشکل داده شده</returns>
         // GET: api/vouchers/articles/sys-issue/{issueType}
         [HttpGet]
         [Route(VoucherApi.SystemIssueArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetSystemIssueArticlesAsync(string issueType, DateTime from, DateTime to)
         {
-            var (articles, itemCount) = await _lineRepository.GetSystemIssueArticlesAsync(GridOptions, issueType, from, to);
+            var (articles, itemCount) = await _lineRepository.GetSystemIssueArticlesAsync(
+                GridOptions, issueType, from, to);
             SetItemCount(itemCount);
             if (issueType != "invalid-acc")
             {
@@ -802,6 +812,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(articles);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل مالی داده شده را ایجاد می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی</param>
+        /// <param name="article">اطلاعات کامل آرتیکل مالی جدید</param>
+        /// <returns>اطلاعات آرتیکل مالی بعد از ایجاد در دیتابیس</returns>
         // POST: api/vouchers/{voucherId:min(1)}/articles
         [HttpPost]
         [Route(VoucherApi.VoucherArticlesUrl)]
@@ -832,6 +848,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputLine);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر برای اصلاح</param>
+        /// <param name="article">اطلاعات اصلاح شده آرتیکل مالی</param>
+        /// <returns>اطلاعات آرتیکل مالی بعد از اصلاح در دیتابیس</returns>
         // PUT: api/vouchers/articles/{articleId:min(1)}
         [HttpPut]
         [Route(VoucherApi.VoucherArticleUrl)]
@@ -858,6 +880,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات علامتگذاری آرتیکل مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی</param>
+        /// <param name="mark">اطلاعات اصلاح شده علامتگذاری آرتیکل مالی</param>
+        /// <returns>در صورت بروز خطا، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
         // PUT: api/vouchers/articles/{articleId:min(1)}/mark
         [HttpPut]
         [Route(VoucherApi.VoucherArticleMarkUrl)]
@@ -875,42 +904,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل مالی مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/vouchers/articles/{articleId:min(1)}
         [HttpDelete]
         [Route(VoucherApi.VoucherArticleUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
         {
-            string result = await ValidateLineDeleteAsync(articleId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateLineDeleteResultAsync(articleId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _lineRepository.DeleteArticleAsync(articleId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل های مالی داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/vouchers/articles
         [HttpPut]
         [Route(VoucherApi.AllVoucherArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
-        public async Task<IActionResult> PutExistingVoucherLinesAsDeletedAsync(
+        public async Task<IActionResult> PutExistingArticlesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupLineDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _lineRepository.DeleteArticlesAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteLineResultAsync(actionDetail, _lineRepository.DeleteArticlesAsync);
         }
 
         #endregion
@@ -920,7 +949,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
         /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
-        protected override async Task<string> ValidateDeleteAsync(int voucherId)
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int voucherId)
         {
             string message = String.Empty;
             var voucher = await _repository.GetVoucherAsync(voucherId);
@@ -928,12 +957,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucherId);
+                return GetGroupActionResult(message, voucher);
             }
 
             var result = BranchValidationResult(voucher);
             if (result is BadRequestObjectResult branchError)
             {
                 message = branchError.Value.ToString();
+                return GetGroupActionResult(message, voucher);
             }
 
             result = CheckedValidationResult(voucher);
@@ -942,7 +973,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = statusError.Value.ToString();
             }
 
-            return message;
+            return GetGroupActionResult(message, voucher);
         }
 
         private static bool IsVoucherMainAction(string action)
@@ -1105,7 +1136,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<string> ValidateLineDeleteAsync(int articleId)
+        private async Task<GroupActionResultViewModel> ValidateLineDeleteResultAsync(int articleId)
         {
             string message = String.Empty;
             var voucherLine = await _lineRepository.GetArticleAsync(articleId);
@@ -1123,7 +1154,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            return message;
+            return GetGroupActionResult(message, voucherLine);
         }
 
         private IActionResult CheckedValidationResult(VoucherViewModel voucher)
@@ -1156,16 +1187,35 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IEnumerable<string>> ValidateGroupLineDeleteAsync(IEnumerable<int> items)
+        private async Task<IActionResult> GroupDeleteLineResultAsync(
+            ActionDetailViewModel actionDetail, GroupDeleteAsyncDelegate groupDelete)
         {
-            var messages = new List<string>();
-            foreach (int item in items)
+            if (actionDetail == null)
             {
-                messages.Add(await ValidateLineDeleteAsync(item));
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
+            var validated = new List<int>();
+            var notValidated = new List<GroupActionResultViewModel>();
+            foreach (int item in actionDetail.Items)
+            {
+                var result = await ValidateLineDeleteResultAsync(item);
+                if (result == null)
+                {
+                    validated.Add(item);
+                }
+                else
+                {
+                    notValidated.Add(result);
+                }
+            }
+
+            if (validated.Count > 0)
+            {
+                await groupDelete(validated);
+            }
+
+            return Ok(notValidated);
         }
 
         private void Localize(IEnumerable<VoucherViewModel> vouchers)
