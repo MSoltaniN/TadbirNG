@@ -422,8 +422,5 @@ namespace SPPC.Tadbir.Persistence
                 return branch => true;
             }
         }
-
-        private const string _deleteBranchDataScript =
-            @"DELETE FROM [{0}].[{1}] WHERE BranchID = {2}";
     }
 }
