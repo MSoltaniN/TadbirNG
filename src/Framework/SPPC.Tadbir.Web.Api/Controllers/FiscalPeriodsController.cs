@@ -16,9 +16,17 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    /// واسط برنامه نویسی با دوره های مالی را در برنامه پیاده سازی می کند
+    /// </summary>
     [Produces("application/json")]
     public class FiscalPeriodsController : ValidatingController<FiscalPeriodViewModel>
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="repository">امکان مدیریت اطلاعات دوره های مالی در دیتابیس را فراهم می کند</param>
+        /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         public FiscalPeriodsController(
             IFiscalPeriodRepository repository, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
@@ -26,11 +34,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
+        /// <summary>
+        /// کلید متن چندزبانه برای نام موجودیت دوره مالی
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.FiscalPeriod; }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه دوره های مالی در شرکت جاری برنامه را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده دوره های مالی</returns>
         // GET: api/fperiods/company/{companyId:min(1)}
         [HttpGet]
         [Route(FiscalPeriodApi.CompanyFiscalPeriodsUrl)]
@@ -41,6 +56,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(fiscalPeriods);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی دوره مالی مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <returns>اطلاعات نمایشی دوره مالی</returns>
         // GET: api/fperiods/{fpId:min(1)}
         [HttpGet]
         [Route(FiscalPeriodApi.FiscalPeriodUrl)]
@@ -51,6 +71,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(fiscalPeriod);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، دوره مالی داده شده را ایجاد می کند
+        /// </summary>
+        /// <param name="fiscalPeriod">اطلاعات دوره مالی جدید</param>
+        /// <returns>اطلاعات دوره مالی بعد از ایجاد در دیتابیس</returns>
         // POST: api/fperiods
         [HttpPost]
         [Route(FiscalPeriodApi.FiscalPeriodsUrl)]
@@ -67,47 +92,49 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین دوره مالی را برای شرکت جاری در دیتابیس ایجاد می کند
+        /// </summary>
+        /// <param name="fiscalPeriod">اطلاعات اولین دوره مالی در شرکت جاری</param>
+        /// <returns>در صورت بودن شعبه در بالاترین سطح، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 201 (به معنی ایجاد شدن اطلاعات) را برمی گرداند</returns>
         // POST: api/fperiods/init
         [HttpPost]
         [Route(FiscalPeriodApi.FiscalPeriodInitialUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
         public async Task<IActionResult> PostInitialFiscalPeriodAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
         {
-            var result = BasicValidationResult(fiscalPeriod);
+            var result = await ValidationResultAsync(fiscalPeriod);
             if (result is BadRequestObjectResult)
             {
                 return result;
-            }
-
-            if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
-            {
-                return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
             }
 
             var outputItem = await _repository.SaveInitialFiscalPeriodAsync(fiscalPeriod);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، معتبر بودن اطلاعات اولین دوره مالی را پیش از ایجاد بررسی می کند
+        /// </summary>
+        /// <param name="fiscalPeriod">اطلاعات اولیه دوره مالی جدید برای اعتبارسنجی</param>
+        /// <returns>در صورت بودن شعبه در بالاترین سطح، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
         // POST: api/fperiods/validation
         [HttpPost]
         [Route(FiscalPeriodApi.FiscalPeriodValidationUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
-        public IActionResult PostFiscalPeriodValidation([FromBody]FiscalPeriodViewModel fiscalPeriod)
+        public async Task<IActionResult> PostFiscalPeriodValidationAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
         {
-            var result = BasicValidationResult(fiscalPeriod);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
-            {
-                return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
-            }
-
-            return Ok();
+            return await ValidationResultAsync(fiscalPeriod);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر برای اصلاح</param>
+        /// <param name="fiscalPeriod">اطلاعات اصلاح شده دوره مالی</param>
+        /// <returns>اطلاعات دوره مالی بعد از اصلاح در دیتابیس</returns>
         // PUT: api/fperiods/{fpId:min(1)}
         [HttpPut]
         [Route(FiscalPeriodApi.FiscalPeriodUrl)]
@@ -122,28 +149,37 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var outputItem = await _repository.SaveFiscalPeriodAsync(fiscalPeriod);
-            result = (outputItem != null)
-                ? Ok(outputItem)
-                : NotFound() as IActionResult;
-            return result;
+            return OkReadResult(outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/fperiods/{fpId:min(1)}
         [HttpDelete]
         [Route(FiscalPeriodApi.FiscalPeriodUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingFiscalPeriodAsync(int fpId)
         {
-            string result = await ValidateDeleteAsync(fpId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateDeleteResultAsync(fpId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteFiscalPeriodAsync(fpId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه دیتابیسی را به همراه کلیه اطلاعات وابسته حذف می کند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/fperiods/{fpId:min(1)}/data
         [HttpDelete]
         [Route(FiscalPeriodApi.FiscalPeriodDataUrl)]
@@ -160,6 +196,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، دوره های مالی داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/fperiods
         [HttpPut]
         [Route(FiscalPeriodApi.FiscalPeriodsUrl)]
@@ -167,21 +209,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingFiscalPeriodsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteFiscalPeriodsAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteFiscalPeriodsAsync);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای نقش های دارای دسترسی به دوره مالی داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای نقش های دارای دسترسی به دوره مالی</returns>
         // GET: api/fperiods/{fpId:min(1)}/roles
         [HttpGet]
         [Route(FiscalPeriodApi.FiscalPeriodRolesUrl)]
@@ -193,6 +228,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(roles);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به دوره مالی داده شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <param name="fiscalPeriodRoles">اطلاعات جدید برای نقش های دارای دسترسی به دوره مالی</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
         // PUT: api/fperiods/{fpId:min(1)}/roles
         [HttpPut]
         [Route(FiscalPeriodApi.FiscalPeriodRolesUrl)]
@@ -210,23 +252,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی دوره مالی مورد نظر برای حذف</param>
+        /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رفرنس بدون مقدار در صورت نبود خطا</returns>
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
+            var fiscalPeriod = await _repository.GetFiscalPeriodAsync(item);
             string error = await BasicValidateDeleteAsync(item);
             if (!String.IsNullOrEmpty(error))
             {
-                return error;
+                return GetGroupActionResult(error, fiscalPeriod);
             }
 
             bool canDelete = await _repository.CanDeleteFiscalPeriodAsync(item);
             if (!canDelete)
             {
                 string name = _strings[EntityNameKey].ToString().ToLower();
-                var fperiod = await _repository.GetFiscalPeriodAsync(item);
-                return _strings.Format(AppStrings.CantDeleteItemWithData, name, fperiod.Name);
+                error = _strings.Format(AppStrings.CantDeleteItemWithData, name, fiscalPeriod.Name);
             }
 
-            return String.Empty;
+            return GetGroupActionResult(error, fiscalPeriod);
         }
 
         private async Task<string> BasicValidateDeleteAsync(int item)

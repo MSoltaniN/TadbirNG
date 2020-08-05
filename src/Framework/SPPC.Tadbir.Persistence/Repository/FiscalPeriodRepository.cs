@@ -50,35 +50,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، تعداد دوره های مالی تعریف شده در شرکت مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد دوره های مالی تعریف شده در شرکت مشخص شده</returns>
-        public async Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var items = await repository.GetByCriteriaAsync(fp => fp.CompanyId == companyId);
-            return items
-                .Select(fp => Mapper.Map<FiscalPeriodViewModel>(fp))
-                .Apply(gridOptions, false)
-                .Count();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد اسناد مالی ایجاد شده در دوره مالی مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر</param>
-        /// <returns>تعداد اسناد مالی ایجاد شده در دوره مالی</returns>
-        public async Task<int> GetVoucherCountAsync(int fpId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            int voucherCount = await repository.GetCountByCriteriaAsync(v => v.FiscalPeriodId == fpId);
-            return voucherCount;
-        }
-
-        /// <summary>
         /// به روش آسنکرون،دوره مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="fperiodId">شناسه عددی یکی از دوره های مالی</param>
@@ -94,21 +65,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return item;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا در محدوده تاریخی داده شده دوره مالی تعریف شده یا نه
-        /// </summary>
-        /// <param name="start">شروع دوره مالی مورد نظر</param>
-        /// <param name="end">پایان دوره مالی مورد نظر</param>
-        /// <returns>اگر در محدوده تاریخی داده شده دوره مالی تعریف شده باشد، مقدار "درست"
-        /// و در غیر این صورت مقدار "نادرست" را برمی گرداند.</returns>
-        public async Task<bool> ExistsFiscalPeriodInRange(DateTime start, DateTime end)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var fiscalPeriod = await repository.GetFirstByCriteriaAsync(
-                fp => fp.StartDate == start && fp.EndDate == end && fp.CompanyId == UserContext.CompanyId);
-            return (fiscalPeriod != null);
         }
 
         /// <summary>
@@ -438,17 +394,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void DeleteFiscalPeriodData(Type dependentType, int fperiodId)
-        {
-            var idItems = ModelCatalogue.GetModelTypeItems(dependentType);
-            if (idItems != null)
-            {
-                string command = String.Format(_deleteFiscalPeriodDataScript, idItems[0], idItems[1], fperiodId);
-                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-                DbConsole.ExecuteNonQuery(command);
-            }
-        }
-
         private void AddNewRoles(FiscalPeriod existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.RoleFiscalPeriods.Select(rfp => rfp.RoleId);
@@ -507,8 +452,5 @@ namespace SPPC.Tadbir.Persistence
                 return fp => true;
             }
         }
-
-        private const string _deleteFiscalPeriodDataScript =
-            @"DELETE FROM [{0}].[{1}] WHERE FiscalPeriodID = {2}";
     }
 }
