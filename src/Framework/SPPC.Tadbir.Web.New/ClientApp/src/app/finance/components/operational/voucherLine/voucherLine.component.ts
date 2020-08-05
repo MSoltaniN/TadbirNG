@@ -19,6 +19,7 @@ import { ViewName, VoucherPermissions } from '@sppc/shared/security';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { ReportViewerComponent } from '@sppc/shared/components/reportViewer/reportViewer.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { ErrorListComponent } from '@sppc/shared/components/errorList/errorList.component';
 
 
 
