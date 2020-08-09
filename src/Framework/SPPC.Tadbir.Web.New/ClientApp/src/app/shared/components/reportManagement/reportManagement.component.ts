@@ -534,7 +534,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
           urlParameters.push(p);
         }
 
-        if (!p.ParamInFilter) {
+        if (!p.ParamInFilter && params) {
           var index = params.findIndex(f => f.name === p.ParamName);
           if (index >= 0)
             params.splice(index, 1);

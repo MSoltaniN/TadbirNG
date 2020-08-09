@@ -2796,3 +2796,86 @@ INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [
 VALUES (11, 3, 26, 42, N'AccountsWithInvalidPeriodTurnover', N'/vouchers/articles/sys-issue/invalid-acc-turnover', NULL, 0)
 GO
 SET IDENTITY_INSERT [Reporting].[SystemIssue] OFF
+
+------------------------
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT Reporting.Report(ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+    VALUES (50,19,1,43,1,'DetailAccountBalance2Column','',0,1,1,1)
+INSERT Reporting.Report(ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+    VALUES (51,19,1,44,1,'DetailAccountBalance4Column','',0,1,1,1)
+INSERT Reporting.Report(ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+    VALUES (52,19,1,45,1,'DetailAccountBalance6Column','',0,1,1,1)
+INSERT Reporting.Report(ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+    VALUES (53,19,1,46,1,'DetailAccountBalance8Column','',0,1,1,1)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (197, 1,50,'Detail account balance 8 columns')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (198, 2,50,N'گردش مانده سطوح شناور')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (199, 3,50,'Detail account 8 columns')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (200, 4,50,'Detail account 8 columns')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (201, 1,51,'Detail account balance 8 columns')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (202, 2,51,N'گردش مانده سطوح شناور')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (203, 3,51,'Detail account 8 columns')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (204, 4,51,'Detail account 8 columns')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (205, 1,52,'Detail account balance 8 columns')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (206, 2,52,N'گردش مانده سطوح شناور')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (207, 3,52,'Detail account 8 columns')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (208, 4,52,'Detail account 8 columns')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (209, 1,53,'Detail account balance 8 columns')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (210, 2,53,N'گردش مانده سطوح شناور')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (211, 3,53,'Detail account 8 columns')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+    VALUES (212, 4,53,'Detail account 8 columns')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Reporting].[Parameter] ON
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (91, 50, N'fromDate', N'from', N'EQ', N'System.DateTime', N'QueryString', N'FromDate', NULL, NULL, NULL, N'FromDate')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (92, 50, N'toDate', N'to', N'EQ', N'System.DateTime', N'QueryString', N'ToDate', NULL, NULL, NULL, N'ToDate')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (93, 50, N'fromNo', N'from', N'EQ', N'System.Int32', N'QueryString', N'FromNo', NULL, NULL, NULL, N'FromNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (94, 50, N'toNo', N'to', N'EQ', N'System.Int32', N'QueryString', N'ToNo', NULL, NULL, NULL, N'ToNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (95, 50, N'VoucherStatus', N'VoucherStatusId', N'EQ', N'System.Int32', N'TextBox', N'VoucherStatus', NULL, NULL, NULL, N'VoucherStatus')
+
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (96, 51, N'fromDate', N'from', N'EQ', N'System.DateTime', N'QueryString', N'FromDate', NULL, NULL, NULL, N'FromDate')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (97, 51, N'toDate', N'to', N'EQ', N'System.DateTime', N'QueryString', N'ToDate', NULL, NULL, NULL, N'ToDate')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (98, 51, N'fromNo', N'from', N'EQ', N'System.Int32', N'QueryString', N'FromNo', NULL, NULL, NULL, N'FromNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (99, 51, N'toNo', N'to', N'EQ', N'System.Int32', N'QueryString', N'ToNo', NULL, NULL, NULL, N'ToNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (100, 51, N'VoucherStatus', N'VoucherStatusId', N'EQ', N'System.Int32', N'TextBox', N'VoucherStatus', NULL, NULL, NULL, N'VoucherStatus')
+
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (101, 52, N'fromDate', N'from', N'EQ', N'System.DateTime', N'QueryString', N'FromDate', NULL, NULL, NULL, N'FromDate')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (102, 52, N'toDate', N'to', N'EQ', N'System.DateTime', N'QueryString', N'ToDate', NULL, NULL, NULL, N'ToDate')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (103, 52, N'fromNo', N'from', N'EQ', N'System.Int32', N'QueryString', N'FromNo', NULL, NULL, NULL, N'FromNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (104, 52, N'toNo', N'to', N'EQ', N'System.Int32', N'QueryString', N'ToNo', NULL, NULL, NULL, N'ToNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (105, 52, N'VoucherStatus', N'VoucherStatusId', N'EQ', N'System.Int32', N'TextBox', N'VoucherStatus', NULL, NULL, NULL, N'VoucherStatus')
+
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (106, 53, N'fromDate', N'from', N'EQ', N'System.DateTime', N'QueryString', N'FromDate', NULL, NULL, NULL, N'FromDate')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (107, 53, N'toDate', N'to', N'EQ', N'System.DateTime', N'QueryString', N'ToDate', NULL, NULL, NULL, N'ToDate')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (108, 53, N'fromNo', N'from', N'EQ', N'System.Int32', N'QueryString', N'FromNo', NULL, NULL, NULL, N'FromNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (109, 53, N'toNo', N'to', N'EQ', N'System.Int32', N'QueryString', N'ToNo', NULL, NULL, NULL, N'ToNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey]) VALUES (110, 53, N'VoucherStatus', N'VoucherStatusId', N'EQ', N'System.Int32', N'TextBox', N'VoucherStatus', NULL, NULL, NULL, N'VoucherStatus')
+SET IDENTITY_INSERT [Reporting].[Parameter] OFF
+
