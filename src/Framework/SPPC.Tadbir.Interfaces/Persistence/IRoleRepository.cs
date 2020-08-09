@@ -150,12 +150,6 @@ namespace SPPC.Tadbir.Persistence
         Task SaveRoleFiscalPeriodsAsync(RelatedItemsViewModel rolePeriods);
 
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت نقش های یک کاربر را ذخیره می کند
-        /// </summary>
-        /// <param name="userRoles">اطلاعات نمایشی نقش ها</param>
-        Task SaveUserRolesAsync(RelatedItemsViewModel userRoles);
-
-        /// <summary>
         /// به روش آسنکرون، تنظیمات دسترسی به سطرهای اطلاعاتی را برای نقش مشخص شده خوانده و برمی گرداند
         /// </summary>
         /// <param name="roleId">شناسه دیتابیسی یکی از نقش های امنیتی موجود</param>
@@ -171,8 +165,8 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مشخص می کند که آیا دسترسی داده شده قابل تخصیص به نقش های عمومی (غیر مدیر سیستم) هست یا نه؟
         /// </summary>
-        /// <param name="permission">نقش مورد نظر برای بررسی</param>
-        /// <returns>در صورت عمومی بودن نقش، مقدار بولی "درست" و در غیر این صورت
+        /// <param name="permission">دسترسی مورد نظر برای بررسی</param>
+        /// <returns>در صورت عمومی بودن دسترسی، مقدار بولی "درست" و در غیر این صورت
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
         bool IsPublicPermission(PermissionViewModel permission);
     }

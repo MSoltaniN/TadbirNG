@@ -123,8 +123,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<PermissionGroup, PermissionGroupViewModel>();
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
-            mapperConfig.CreateMap<PermissionViewModel, Permission>()
-                .AfterMap((viewModel, model) => model.Group.Id = viewModel.GroupId);
+            mapperConfig.CreateMap<PermissionViewModel, Permission>();
             mapperConfig.CreateMap<Permission, PermissionBriefViewModel>()
                 .ForMember(dest => dest.EntityName, opts => opts.MapFrom(src => src.Group.EntityName))
                 .ForMember(dest => dest.Flags, opts => opts.MapFrom(src => src.Flag));

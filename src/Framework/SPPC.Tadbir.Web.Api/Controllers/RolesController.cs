@@ -14,25 +14,41 @@ using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    /// واسط برنامه نویسی با نقش های سازمانی را در برنامه پیاده سازی می کند
+    /// </summary>
     [Produces("application/json")]
     public class RolesController : ValidatingController<RoleFullViewModel>
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="repository">امکان مدیریت اطلاعات نقش های سازمانی در دیتابیس را فراهم می کند</param>
+        /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         public RolesController(IRoleRepository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
         }
 
+        /// <summary>
+        /// کلید متن چندزبانه برای نام موجودیت نقش
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.Role; }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کلیه نقش های تعریف شده را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده نقش ها</returns>
         // GET: api/roles
         [HttpGet]
         [Route(RoleApi.RolesUrl)]
@@ -44,6 +60,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(roles);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی پیش فرض برای یک نقش سازمانی جدید را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نقش جدید به همراه کلیه دسترسی های امنیتی تعریف شده</returns>
         // GET: api/roles/new
         [HttpGet]
         [Route(RoleApi.NewRoleUrl)]
@@ -51,10 +71,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetNewRoleAsync()
         {
             var newRole = await _repository.GetNewRoleAsync();
-            LocalizeRole(newRole);
+            Localize(newRole);
             return Json(newRole);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی نقش مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اطلاعات نمایشی نقش به همراه دسترسی های امنیتی تنظیم شده برای نقش</returns>
         // GET: api/roles/{roleId:min(1)}
         [HttpGet]
         [Route(RoleApi.RoleUrl)]
@@ -62,15 +87,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetRoleAsync(int roleId)
         {
             var role = await _repository.GetRoleAsync(roleId);
-            if (role == null)
-            {
-                return NotFound();
-            }
-
-            LocalizeRole(role);
+            Localize(role);
             return JsonReadResult(role);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کامل نقش مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اطلاعات کامل نقش به همراه دسترسی های امنیتی تنظیم شده برای نقش</returns>
         // GET: api/roles/{roleId:min(1)}/details
         [HttpGet]
         [Route(RoleApi.RoleDetailsUrl)]
@@ -78,10 +103,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetRoleDetailsAsync(int roleId)
         {
             var role = await _repository.GetRoleDetailsAsync(roleId);
-            LocalizeRoleDetails(role);
+            Localize(role);
             return JsonReadResult(role);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نقش سازمانی داده شده را ایجاد می کند
+        /// </summary>
+        /// <param name="role">اطلاعات کامل نقش سازمانی جدید</param>
+        /// <returns>اطلاعات نقش سازمانی بعد از ایجاد در دیتابیس</returns>
         // POST: api/roles
         [HttpPost]
         [Route(RoleApi.RolesUrl)]
@@ -98,6 +128,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputRole);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نقش سازمانی مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش سازمانی مورد نظر برای اصلاح</param>
+        /// <param name="role">اطلاعات اصلاح شده نقش سازمانی</param>
+        /// <returns>اطلاعات نقش سازمانی بعد از اصلاح در دیتابیس</returns>
         // PUT: api/roles/{roleId:min(1)}
         [HttpPut]
         [Route(RoleApi.RoleUrl)]
@@ -119,22 +155,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok(outputRole);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نقش مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // DELETE: api/roles/{roleId:min(1)}
         [HttpDelete]
         [Route(RoleApi.RoleUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Delete)]
         public async Task<IActionResult> DeleteExistingRoleAsync(int roleId)
         {
-            string result = await ValidateDeleteAsync(roleId);
-            if (!String.IsNullOrEmpty(result))
+            var result = await ValidateDeleteResultAsync(roleId);
+            if (result != null)
             {
-                return BadRequest(result);
+                return BadRequest(result.ErrorMessage);
             }
 
             await _repository.DeleteRoleAsync(roleId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نقش های سازمانی داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/roles
         [HttpPut]
         [Route(RoleApi.RolesUrl)]
@@ -142,21 +190,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingRolesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
-            if (result.Count() > 0)
-            {
-                return BadRequest(result);
-            }
-
-            await _repository.DeleteRolesAsync(actionDetail.Items);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteRolesAsync);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای شعبه های قابل دسترسی توسط نقش داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای شعبه های قابل دسترسی توسط نقش</returns>
         // GET: api/roles/{roleId:min(1)}/branches
         [HttpGet]
         [Route(RoleApi.RoleBranchesUrl)]
@@ -167,6 +208,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(branches);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شعبه های قابل دسترسی توسط نقش داده شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <param name="roleBranches">اطلاعات جدید برای شعبه های قابل دسترسی توسط نقش</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
         // PUT: api/roles/{roleId:min(1)}/branches
         [HttpPut]
         [Route(RoleApi.RoleBranchesUrl)]
@@ -184,6 +232,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای کاربران تخصیص داده شده به نقش مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای کاربران تخصیص داده شده به نقش</returns>
         // GET: api/roles/{roleId:min(1)}/users
         [HttpGet]
         [Route(RoleApi.RoleUsersUrl)]
@@ -194,6 +247,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(users);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، کاربران تخصیص داده شده به نقش مشخص شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <param name="roleUsers">اطلاعات جدید برای کاربران تخصیص داده شده به نقش</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
         // PUT: api/roles/{roleId:min(1)}/users
         [HttpPut]
         [Route(RoleApi.RoleUsersUrl)]
@@ -211,6 +271,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای دوره های مالی قابل دسترسی توسط نقش داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای دوره های مالی قابل دسترسی توسط نقش</returns>
         // GET: api/roles/{roleId:min(1)}/fperiods
         [HttpGet]
         [Route(RoleApi.RoleFiscalPeriodsUrl)]
@@ -221,6 +286,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(fiscalPeriods);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، دوره های مالی قابل دسترسی توسط نقش داده شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <param name="roleFiscalPeriods">اطلاعات جدید برای دوره های مالی قابل دسترسی توسط نقش</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
         // PUT: api/roles/{roleId:min(1)}/fperiods
         [HttpPut]
         [Route(RoleApi.RoleFiscalPeriodsUrl)]
@@ -238,6 +310,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات تنظیمات دسترسی سطری تعریف شده برای نقش داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>تنظیمات دسترسی سطری تعریف شده برای نقش</returns>
         // GET: api/roles/{roleId:min(2)}/rowaccess
         [HttpGet]
         [Route(RoleApi.RowAccessSettingsUrl)]
@@ -248,6 +325,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(settings);
         }
 
+        /// <summary>
+        /// آخرین وضعیت تنظیمات دسترسی سطری را برای نقش داده شده در دیتابیس ذخیره می کند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <param name="permissions">اطلاعات جدید تنظیمات دسترسی سطری برای نقش</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 (به معنی نبود خطا) را برمی گرداند</returns>
         // PUT: api/roles/{roleId:min(2)}/rowaccess
         [HttpPut]
         [Route(RoleApi.RowAccessSettingsUrl)]
@@ -271,6 +355,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// قواعد اولیه اعتبارسنجی را برای نقش داده شده بررسی می کند و نتیجه اعتبارسنجی را برمی گرداند
+        /// </summary>
+        /// <param name="role">اطلاعات نقش مورد نظر برای بررسی</param>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر برای بررسی</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیتی 400 را به همراه پیغام خطا
+        /// و در غیر این صورت کد وضعیتی 200 را برمی گرداند</returns>
         protected override IActionResult BasicValidationResult(RoleFullViewModel role, int roleId = 0)
         {
             if (role == null || role.Role == null)
@@ -296,50 +387,50 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی نقش مورد نظر برای حذف</param>
+        /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رفرنس بدون مقدار در صورت نبود خطا</returns>
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
+            string message = String.Empty;
             if (item == AppConstants.AdminRoleId)
             {
-                return _strings.Format(AppStrings.AdminRoleIsReadonly);
+                message = _strings.Format(AppStrings.AdminRoleIsReadonly);
+                return GetGroupActionResult<RoleViewModel>(message, null);
             }
 
             var role = await _repository.GetRoleBriefAsync(item);
             if (role == null)
             {
-                return _strings.Format(AppStrings.ItemNotFound, AppStrings.Role);
+                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Role, item.ToString());
             }
-
-            if (await _repository.IsAssignedRoleAsync(item))
+            else if (await _repository.IsAssignedRoleAsync(item))
             {
-                return String.Format(
-                    _strings.Format(AppStrings.CantDeleteAssignedRole), role.Name);
+                message = _strings.Format(AppStrings.CantDeleteAssignedRole, role.Name);
             }
-
-            if (await _repository.IsRoleRelatedToCompanyAsync(item))
+            else if (await _repository.IsRoleRelatedToCompanyAsync(item))
             {
-                return String.Format(
-                    _strings[AppStrings.CantDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Company]);
+                message = _strings.Format(
+                    AppStrings.CantDeleteRoleHavingRelation, role.Name, AppStrings.Company);
             }
-
-            if (await _repository.IsRoleRelatedToBranchAsync(item))
+            else if (await _repository.IsRoleRelatedToBranchAsync(item))
             {
-                return String.Format(
-                    _strings[AppStrings.CantDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Branch]);
+                message = _strings.Format(
+                    AppStrings.CantDeleteRoleHavingRelation, role.Name, AppStrings.Branch);
             }
-
-            if (await _repository.IsRoleRelatedToFiscalPeriodAsync(item))
+            else if (await _repository.IsRoleRelatedToFiscalPeriodAsync(item))
             {
-                return String.Format(
-                    _strings[AppStrings.CantDeleteRoleHavingRelation], role.Name, _strings[AppStrings.FiscalPeriod]);
+                message = _strings.Format(
+                    AppStrings.CantDeleteRoleHavingRelation, role.Name, AppStrings.FiscalPeriod);
             }
-
-            if (await _repository.HasRowPermissions(item))
+            else if (await _repository.HasRowPermissions(item))
             {
-                return String.Format(
-                    _strings[AppStrings.CantDeleteRoleHavingPermissions], role.Name);
+                message = _strings.Format(AppStrings.CantDeleteRoleHavingPermissions, role.Name);
             }
 
-            return String.Empty;
+            return GetGroupActionResult(message, role);
         }
 
         private IActionResult PermissionValidationResult(RowPermissionsForRoleViewModel permissions)
@@ -391,8 +482,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             });
         }
 
-        private void LocalizeRole(RoleFullViewModel role)
+        private void Localize(RoleFullViewModel role)
         {
+            if (role == null)
+            {
+                return;
+            }
+
             role.Role.Name = _strings[role.Role.Name];
             role.Role.Description = _strings[role.Role.Description ?? String.Empty];
             Array.ForEach(role.Permissions.ToArray(), perm =>
@@ -402,7 +498,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             });
         }
 
-        private void LocalizeRoleDetails(RoleDetailsViewModel role)
+        private void Localize(RoleDetailsViewModel role)
         {
             role.Role.Name = _strings[role.Role.Name];
             role.Role.Description = _strings[role.Role.Description ?? String.Empty];

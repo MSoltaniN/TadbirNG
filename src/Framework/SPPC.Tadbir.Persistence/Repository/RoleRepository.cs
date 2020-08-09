@@ -43,14 +43,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var query = repository
+            var roles = await repository
                 .GetEntityQuery()
                 .Include(r => r.RolePermissions)
-                    .ThenInclude(rp => rp.Permission);
-
-            var roles = await query
+                    .ThenInclude(rp => rp.Permission)
                 .Select(r => Mapper.Map<RoleViewModel>(r))
                 .ToListAsync();
+
             await ReadAsync(gridOptions);
             return new PagedList<RoleViewModel>(roles, gridOptions);
         }
@@ -64,13 +63,12 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Permission>();
             var all = await repository
-                .GetAllAsync(perm => perm.Group);
-            var allView = all
+                .GetEntityQuery(perm => perm.Group)
                 .Select(perm => Mapper.Map<PermissionViewModel>(perm))
                 .Where(perm => IsPublicPermission(perm))
-                .ToArray();
+                .ToArrayAsync();
             var role = new RoleFullViewModel();
-            Array.ForEach(allView, perm =>
+            Array.ForEach(all, perm =>
             {
                 perm.IsEnabled = false;
                 role.Permissions.Add(perm);
@@ -263,18 +261,9 @@ namespace SPPC.Tadbir.Persistence
         /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsAssignedRoleAsync(int roleId)
         {
-            bool isAssigned = false;
-            var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var role = await repository
-                .GetEntityQuery(r => r.UserRoles)
-                .Where(r => r.Id == roleId)
-                .SingleOrDefaultAsync();
-            if (role != null)
-            {
-                isAssigned = (role.UserRoles.Count > 0);
-            }
-
-            return isAssigned;
+            var repository = UnitOfWork.GetAsyncRepository<UserRole>();
+            int count = await repository.GetCountByCriteriaAsync(ur => ur.RoleId == roleId);
+            return count > 0;
         }
 
         /// <summary>
@@ -287,8 +276,7 @@ namespace SPPC.Tadbir.Persistence
         {
             UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
-            int count = await repository
-                .GetCountByCriteriaAsync(rb => rb.RoleId == roleId);
+            int count = await repository.GetCountByCriteriaAsync(rb => rb.RoleId == roleId);
             UnitOfWork.UseSystemContext();
             return count > 0;
         }
@@ -302,8 +290,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsRoleRelatedToCompanyAsync(int roleId)
         {
             var repository = UnitOfWork.GetAsyncRepository<RoleCompany>();
-            int count = await repository
-                .GetCountByCriteriaAsync(rc => rc.RoleId == roleId);
+            int count = await repository.GetCountByCriteriaAsync(rc => rc.RoleId == roleId);
             return count > 0;
         }
 
@@ -317,8 +304,7 @@ namespace SPPC.Tadbir.Persistence
         {
             UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
-            int count = await repository
-                .GetCountByCriteriaAsync(rfp => rfp.RoleId == roleId);
+            int count = await repository.GetCountByCriteriaAsync(rfp => rfp.RoleId == roleId);
             UnitOfWork.UseSystemContext();
             return count > 0;
         }
@@ -332,8 +318,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> HasRowPermissions(int roleId)
         {
             var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
-            int count = await repository
-                .GetCountByCriteriaAsync(rp => rp.Role.Id == roleId);
+            int count = await repository.GetCountByCriteriaAsync(rp => rp.Role.Id == roleId);
             return count > 0;
         }
 
@@ -526,28 +511,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             UnitOfWork.UseSystemContext();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت نقش های یک کاربر را ذخیره می کند
-        /// </summary>
-        /// <param name="userRoles">اطلاعات نمایشی نقش ها</param>
-        public async Task SaveUserRolesAsync(RelatedItemsViewModel userRoles)
-        {
-            Verify.ArgumentNotNull(userRoles, "userRoles");
-            var repository = UnitOfWork.GetAsyncRepository<User>();
-            var existing = await repository.GetByIDWithTrackingAsync(userRoles.Id, r => r.UserRoles);
-            if (existing != null && AreRolesModified(existing, userRoles))
-            {
-                if (existing.UserRoles.Count > 0)
-                {
-                    RemoveUnassignedRoles(existing, userRoles);
-                }
-
-                AddNewRoles(existing, userRoles);
-                repository.Update(existing);
-                await UnitOfWork.CommitAsync();
-            }
         }
 
         /// <summary>

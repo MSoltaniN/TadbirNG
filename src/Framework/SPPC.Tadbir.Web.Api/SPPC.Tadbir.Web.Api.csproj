@@ -20,9 +20,13 @@
 
   <ItemGroup>
     <Compile Remove="Resources\Types\**" />
+    <Compile Remove="Utility\**" />
     <Content Remove="Resources\Types\**" />
+    <Content Remove="Utility\**" />
     <EmbeddedResource Remove="Resources\Types\**" />
+    <EmbeddedResource Remove="Utility\**" />
     <None Remove="Resources\Types\**" />
+    <None Remove="Utility\**" />
   </ItemGroup>
 
   <Target Name="PostBuild" BeforeTargets="PostBuildEvent">

@@ -27,9 +27,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
 
-            builder.HasOne(d => d.Group)
-                .WithMany(p => p.Permissions)
-                .HasForeignKey("GroupID")
+            builder.HasOne(e => e.Group)
+                .WithMany(e => e.Permissions)
+                .HasForeignKey(e => e.GroupId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Auth_Permission_Auth_PermissionGroup");
         }

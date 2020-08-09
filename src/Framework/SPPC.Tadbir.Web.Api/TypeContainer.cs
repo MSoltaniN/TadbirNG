@@ -14,7 +14,6 @@ using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Web.Api.Extensions;
-using SPPC.Tadbir.Web.Api.Utility;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -141,16 +140,6 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ITestBalanceUtilityFactory, TestBalanceUtilityFactory>();
             _services.AddTransient<ITestBalanceHelper, TestBalanceHelper>();
             _services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
-            _services.AddTransient(provider =>
-            {
-                var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
-                var strings = provider.GetService<IStringLocalizer<AppStrings>>();
-                var factory = provider.GetService<IApiResultFactory>();
-                IApiValidation utility = new ApiValidation(strings, factory);
-                utility.SetCurrentContext(httpContext.Request, httpContext.Response);
-                return utility;
-            });
-            _services.AddTransient<IApiResultFactory, ApiResultFactory>();
         }
 
         private readonly IServiceCollection _services;
