@@ -3086,7 +3086,7 @@
           <ColumnView name="Is Balanced" visible="True" width="120" />
           <ValidationRule name="IsBalanced_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="Type" type="Int16" isValidated="True" description="نوع سیستمی سند، مانند سند عادی، افتتاحیه، اختتامیه و ..." clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Type" type="Int16" isValidated="True" description="نوع سیستمی سند، مانند سند عادی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnType" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="Type" type="smallint" nullable="False" />
           <ColumnView name="Type" visible="True" width="120" />

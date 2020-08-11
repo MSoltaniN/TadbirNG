@@ -478,6 +478,7 @@ CREATE TABLE [Finance].[Voucher] (
     [BranchID]        INT              NOT NULL,
     [DocumentID]      INT              NULL,
     [StatusID]        INT              NOT NULL,
+	[VoucherOriginID] INT              CONSTRAINT [DF_Finance_Voucher_VoucherOriginID] DEFAULT (1) NOT NULL,
     [IssuedByID]      INT              NOT NULL,
     [ModifiedByID]    INT              NOT NULL,
     [ConfirmedByID]   INT              NULL,
@@ -503,6 +504,7 @@ CREATE TABLE [Finance].[Voucher] (
     , CONSTRAINT [FK_Finance_Voucher_Finance_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Finance_Voucher_Finance_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
     , CONSTRAINT [FK_Finance_Voucher_Finance_Status] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
+	, CONSTRAINT [FK_Finance_Voucher_Finance_VoucherOrigin] FOREIGN KEY ([VoucherOriginID]) REFERENCES [Finance].[VoucherOrigin]([OriginID])
 )
 GO
 
@@ -872,6 +874,13 @@ INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) V
 INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) VALUES (2, N'OperationalForms')
 INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) VALUES (3, N'Reports')
 SET IDENTITY_INSERT [Metadata].[OperationSourceType] OFF
+
+SET IDENTITY_INSERT [Finance].[VoucherOrigin] ON
+INSERT INTO [Finance].[VoucherOrigin] ([OriginID], [Name]) VALUES (1, N'NormalVoucher')
+INSERT INTO [Finance].[VoucherOrigin] ([OriginID], [Name]) VALUES (2, N'OpeningVoucher')
+INSERT INTO [Finance].[VoucherOrigin] ([OriginID], [Name]) VALUES (3, N'ClosingTempAccounts')
+INSERT INTO [Finance].[VoucherOrigin] ([OriginID], [Name]) VALUES (4, N'ClosingVoucher')
+SET IDENTITY_INSERT [Finance].[VoucherOrigin] OFF
 
 
 -- Insert suggested account groups...

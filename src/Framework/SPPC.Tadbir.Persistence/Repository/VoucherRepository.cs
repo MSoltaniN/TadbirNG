@@ -88,8 +88,8 @@ namespace SPPC.Tadbir.Persistence
                 No = lastNo + 1,
                 BranchId = UserContext.BranchId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
-                Type = 0,
-                SubjectType = 0,
+                Type = (short)VoucherType.NormalVoucher,
+                SubjectType = (short)SubjectType.Accounting,
                 SaveCount = 0
             };
 
@@ -627,9 +627,9 @@ namespace SPPC.Tadbir.Persistence
             return (vouchersList, await filteredList.CountAsync());
         }
 
-        private async Task<Voucher> GetNewVoucherAsync(string description = null,
-            VoucherType type = VoucherType.NormalVoucher, SubjectType subject = SubjectType.Accounting)
+        private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginValue origin)
         {
+            var subject = SubjectType.Accounting;
             string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
             DateTime date = await GetLastVoucherDateAsync();
             int no = await GetLastVoucherNoAsync();
@@ -649,7 +649,8 @@ namespace SPPC.Tadbir.Persistence
                 No = no + 1,
                 StatusId = (int)VoucherStatusId.Draft,
                 SubjectType = (short)subject,
-                Type = (short)type
+                Type = (short)VoucherType.NormalVoucher,
+                VoucherOriginId = (int)origin
             };
         }
 

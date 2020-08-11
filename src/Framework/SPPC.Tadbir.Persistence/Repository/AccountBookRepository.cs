@@ -244,7 +244,7 @@ namespace SPPC.Tadbir.Persistence
 
             var itemCriteria = await GetItemCriteriaAsync(parameters.ViewId, parameters.ItemId);
             await AddSpecialBookItemsAsync(
-                book, itemCriteria, VoucherType.OpeningVoucher, parameters.FromDate, parameters.ToDate,
+                book, itemCriteria, VoucherOriginValue.OpeningVoucher, parameters.FromDate, parameters.ToDate,
                 parameters.GridOptions, parameters.IsByBranch);
 
             var monthEnum = new MonthEnumerator(parameters.FromDate, parameters.ToDate, new PersianCalendar());
@@ -278,10 +278,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await AddSpecialBookItemsAsync(
-                book, itemCriteria, VoucherType.ClosingTempAccounts, parameters.FromDate, parameters.ToDate,
+                book, itemCriteria, VoucherOriginValue.ClosingTempAccounts, parameters.FromDate, parameters.ToDate,
                 parameters.GridOptions, parameters.IsByBranch);
             await AddSpecialBookItemsAsync(
-                book, itemCriteria, VoucherType.ClosingVoucher, parameters.FromDate, parameters.ToDate,
+                book, itemCriteria, VoucherOriginValue.ClosingVoucher, parameters.FromDate, parameters.ToDate,
                 parameters.GridOptions, parameters.IsByBranch);
 
             book.SetItems(book.Items.Apply(parameters.GridOptions, false).ToArray());
@@ -291,17 +291,17 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task AddSpecialBookItemsAsync(
             AccountBookViewModel book, Expression<Func<VoucherLine, bool>> itemCriteria,
-            VoucherType voucherType, DateTime from, DateTime to, GridOptions gridOptions, bool byBranch = false)
+            VoucherOriginValue origin, DateTime from, DateTime to, GridOptions gridOptions, bool byBranch = false)
         {
-            if (voucherType != VoucherType.NormalVoucher)
+            if (origin != VoucherOriginValue.NormalVoucher)
             {
-                var date = await _report.GetSpecialVoucherDateAsync(voucherType);
+                var date = await _report.GetSpecialVoucherDateAsync(origin);
                 if (date.HasValue && date.Value.IsBetween(from, to))
                 {
                     var lines = await Repository
                         .GetAllOperationQuery<VoucherLine>(
                             ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
-                        .Where(line => line.Voucher.Type == (short)voucherType)
+                        .Where(line => line.Voucher.VoucherOriginId == (int)origin)
                         .Where(itemCriteria)
                         .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
                         .ToListAsync();
@@ -313,14 +313,14 @@ namespace SPPC.Tadbir.Persistence
                         Array.ForEach(_report.GetGroupByItems(lines, item => item.BranchId).ToArray(), group =>
                         {
                             var aggregates = GetAggregatedBookItems(group, true);
-                            Array.ForEach(aggregates.ToArray(), item => item.Description = voucherType.ToString());
+                            Array.ForEach(aggregates.ToArray(), item => item.Description = origin.ToString());
                             book.Items.AddRange(aggregates);
                         });
                     }
                     else
                     {
                         var aggregates = GetAggregatedBookItems(lines, false);
-                        Array.ForEach(aggregates.ToArray(), item => item.Description = voucherType.ToString());
+                        Array.ForEach(aggregates.ToArray(), item => item.Description = origin.ToString());
                         book.Items.AddRange(aggregates);
                     }
                 }

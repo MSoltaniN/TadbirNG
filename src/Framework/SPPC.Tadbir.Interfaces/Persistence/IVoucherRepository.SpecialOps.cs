@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Inventory;
@@ -20,10 +21,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که سند ویژه مشخص شده در دوره مالی جاری - در صورت وجود - ثبت شده است یا نه
         /// </summary>
-        /// <param name="type">نوع سند ویژه مورد نظر</param>
-        /// <returns>در صورتی که سند اختتامیه صادر و ثبت شده باشد، مقدار بولی "درست" و
+        /// <param name="type">مأخذ سند ویژه مورد نظر</param>
+        /// <returns>در صورتی که سند ویژه صادر و ثبت شده باشد، مقدار بولی "درست" و
         /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
-        Task<bool> IsCurrentSpecialVoucherCheckedAsync(VoucherType type);
+        Task<bool> IsCurrentSpecialVoucherCheckedAsync(VoucherOriginValue type);
 
         /// <summary>
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند

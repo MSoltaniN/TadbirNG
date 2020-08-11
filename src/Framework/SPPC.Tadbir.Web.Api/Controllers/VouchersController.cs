@@ -96,7 +96,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
         public async Task<IActionResult> GetNewVoucherAsync()
         {
-            bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(VoucherType.ClosingVoucher);
+            bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(
+                VoucherOriginValue.ClosingVoucher);
             if (isChecked)
             {
                 return BadRequest(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
@@ -1106,7 +1107,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             // Current fiscal period MUST have the closing temp accounts voucher
-            if (!await _repository.IsCurrentSpecialVoucherCheckedAsync(VoucherType.ClosingTempAccounts))
+            if (!await _repository.IsCurrentSpecialVoucherCheckedAsync(
+                VoucherOriginValue.ClosingTempAccounts))
             {
                 return BadRequest(_strings[AppStrings.ClosingAccountsVoucherNotIssuedOrChecked]);
             }

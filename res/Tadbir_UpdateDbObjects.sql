@@ -1367,3 +1367,16 @@ ALTER TABLE [Finance].[Voucher]
 ADD CONSTRAINT [FK_Finance_Voucher_Finance_VoucherOrigin] FOREIGN KEY ([VoucherOriginID])
     REFERENCES [Finance].[VoucherOrigin]([OriginID]);
 GO
+
+-- 1.1.973
+UPDATE [Finance].[Voucher]
+SET VoucherOriginID = 2, Type = 0
+WHERE Type = 1  -- Change OpeningVoucher Type to OpeningVoucher Origin
+
+UPDATE [Finance].[Voucher]
+SET VoucherOriginID = 3, Type = 0
+WHERE Type = 3  -- Change ClosingTempAccounts Type to ClosingTempAccounts Origin
+
+UPDATE [Finance].[Voucher]
+SET VoucherOriginID = 4, Type = 0
+WHERE Type = 2  -- Change ClosingVoucher Type to ClosingVoucher Origin

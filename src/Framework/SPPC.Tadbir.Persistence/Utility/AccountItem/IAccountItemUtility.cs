@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
@@ -39,14 +40,14 @@ namespace SPPC.Tadbir.Persistence.Utility
         Task<decimal> GetBalanceAsync(int itemId, int number);
 
         /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را در نوع سند سیستمی داده شده
+        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را در اسناد مالی با مأخذ داده شده
         /// محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="type">نوع سند سیستمی مورد نظر برای محاسبه مانده</param>
+        /// <param name="origin">مأخذ مورد نظر برای محاسبه مانده</param>
         /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        Task<decimal> GetBalanceAsync(int itemId, VoucherType type);
+        Task<decimal> GetBalanceAsync(int itemId, VoucherOriginValue origin);
 
         /// <summary>
         /// به روش آسنکرون، مبالغ گردش بدهکار و بستانکار برای مولفه حساب مورد نظر را

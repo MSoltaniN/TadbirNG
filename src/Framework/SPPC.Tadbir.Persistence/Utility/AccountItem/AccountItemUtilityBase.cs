@@ -67,20 +67,20 @@ namespace SPPC.Tadbir.Persistence.Utility
         }
 
         /// <summary>
-        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را در نوع سند سیستمی داده شده
+        /// به روش آسنکرون، مانده مولفه حساب مشخص شده را در اسناد مالی با مأخذ داده شده
         /// محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
-        /// <param name="type">نوع سند سیستمی مورد نظر برای محاسبه مانده</param>
-        /// <returns>مانده مولفه حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
+        /// <param name="origin">مأخذ مورد نظر برای محاسبه مانده</param>
+        /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetBalanceAsync(int itemId, VoucherType type)
+        public async Task<decimal> GetBalanceAsync(int itemId, VoucherOriginValue origin)
         {
             decimal balance = 0.0M;
             var account = await GetItemAsync(itemId);
             if (account != null)
             {
-                balance = await GetBalanceByVoucherTypeAsync(type, GetItemCriteria(account));
+                balance = await GetBalanceByVoucherOriginAsync(origin, GetItemCriteria(account));
             }
 
             return balance;
@@ -167,11 +167,11 @@ namespace SPPC.Tadbir.Persistence.Utility
                 line => line.Voucher.No < number, itemCriteria);
         }
 
-        private async Task<decimal> GetBalanceByVoucherTypeAsync(
-            VoucherType type, Expression<Func<VoucherLine, bool>> itemCriteria)
+        private async Task<decimal> GetBalanceByVoucherOriginAsync(
+            VoucherOriginValue origin, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             return await GetBalanceAsync(
-                line => line.Voucher.Type == (short)type, itemCriteria);
+                line => line.Voucher.VoucherOriginId == (int)origin, itemCriteria);
         }
 
         private async Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(

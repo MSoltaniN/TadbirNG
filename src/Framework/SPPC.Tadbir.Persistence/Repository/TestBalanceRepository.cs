@@ -263,17 +263,20 @@ namespace SPPC.Tadbir.Persistence
             var options = parameters.Options;
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
             {
-                query = query.Where(art => art.Voucher.Type != (short)VoucherType.ClosingVoucher);
+                query = query.Where(
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.ClosingVoucher);
             }
 
             if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
             {
-                query = query.Where(art => art.Voucher.Type != (short)VoucherType.ClosingTempAccounts);
+                query = query.Where(
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.ClosingTempAccounts);
             }
 
             if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
-                query = query.Where(art => art.Voucher.Type != (short)VoucherType.OpeningVoucher);
+                query = query.Where(
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.OpeningVoucher);
             }
 
             IList<TestBalanceItemViewModel> lines = null;

@@ -171,21 +171,6 @@ namespace SPPC.Tadbir.Values
         /// نوع سیستمی سند عادی
         /// </summary>
         NormalVoucher = 0,
-
-        /// <summary>
-        /// نوع سیستمی سند افتتاحیه
-        /// </summary>
-        OpeningVoucher = 1,
-
-        /// <summary>
-        /// نوع سیستمی سند اختتامیه
-        /// </summary>
-        ClosingVoucher = 2,
-
-        /// <summary>
-        /// نوع سیستمی بستن حسابهای موقت
-        /// </summary>
-        ClosingTempAccounts = 3
     }
 
     /// <summary>

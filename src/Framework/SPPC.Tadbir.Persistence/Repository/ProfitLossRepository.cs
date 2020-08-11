@@ -290,7 +290,7 @@ namespace SPPC.Tadbir.Persistence
             if (!parameters.UseClosingTempVoucher)
             {
                 linesQuery = linesQuery
-                    .Where(line => line.Voucher.Type != (short)VoucherType.ClosingTempAccounts);
+                    .Where(line => line.Voucher.VoucherOriginId != (int)VoucherOriginValue.ClosingTempAccounts);
             }
 
             if (parameters.CostCenterId != null)

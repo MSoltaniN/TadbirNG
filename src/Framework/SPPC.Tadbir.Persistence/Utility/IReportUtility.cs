@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
@@ -63,11 +64,11 @@ namespace SPPC.Tadbir.Persistence.Utility
             int from, int to, GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون، تاریخ سند سیستمی با نوع داده شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، تاریخ سند سیستمی با مأخذ داده شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">یکی از انواع تعریف شده برای سندهای سیستمی</param>
+        /// <param name="origin">یکی از مأخذهای تعریف شده برای سندهای سیستمی</param>
         /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
-        Task<DateTime?> GetSpecialVoucherDateAsync(VoucherType type);
+        Task<DateTime?> GetSpecialVoucherDateAsync(VoucherOriginValue origin);
 
         /// <summary>
         /// آرتیکل های داده شده را بر حسب یکی از سطوح درختی مولفه حساب گروه بندی می کند

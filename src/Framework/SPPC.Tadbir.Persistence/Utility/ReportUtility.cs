@@ -125,15 +125,15 @@ namespace SPPC.Tadbir.Persistence.Utility
         }
 
         /// <summary>
-        /// به روش آسنکرون، تاریخ سند سیستمی با نوع داده شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، تاریخ سند سیستمی با مأخذ داده شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">یکی از انواع تعریف شده برای سندهای سیستمی</param>
+        /// <param name="origin">یکی از مأخذهای تعریف شده برای سندهای سیستمی</param>
         /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
-        public async Task<DateTime?> GetSpecialVoucherDateAsync(VoucherType type)
+        public async Task<DateTime?> GetSpecialVoucherDateAsync(VoucherOriginValue origin)
         {
             DateTime? voucherDate = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetFirstByCriteriaAsync(v => v.Type == (short)type);
+            var voucher = await repository.GetFirstByCriteriaAsync(v => v.VoucherOriginId == (int)origin);
             if (voucher != null)
             {
                 voucherDate = voucher.Date;

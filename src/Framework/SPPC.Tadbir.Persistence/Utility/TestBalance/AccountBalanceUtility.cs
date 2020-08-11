@@ -100,7 +100,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 : await GetBalanceAsync(itemId, parameters.FromNo.Value);
             if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
-                balance += await GetBalanceAsync(itemId, VoucherType.OpeningVoucher);
+                balance += await GetBalanceAsync(itemId, VoucherOriginValue.OpeningVoucher);
             }
 
             return balance;

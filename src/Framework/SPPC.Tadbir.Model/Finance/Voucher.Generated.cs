@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual bool IsBalanced { get; set; }
 
         /// <summary>
-        /// نوع سیستمی سند، مانند سند عادی، افتتاحیه، اختتامیه و ...
+        /// نوع سیستمی سند، مانند سند عادی
         /// </summary>
         public virtual short Type { get; set; }
 
