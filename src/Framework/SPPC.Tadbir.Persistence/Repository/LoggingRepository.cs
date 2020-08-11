@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Persistence
             OperationId operation = OperationId.None;
             switch (newStatus)
             {
-                case DocumentStatusValue.Draft:
+                case DocumentStatusValue.NotChecked:
                     operation = OperationId.UndoCheck;
                     break;
                 case DocumentStatusValue.Checked:
@@ -145,7 +145,7 @@ namespace SPPC.Tadbir.Persistence
             OperationId operation = OperationId.None;
             switch (newStatus)
             {
-                case DocumentStatusValue.Draft:
+                case DocumentStatusValue.NotChecked:
                     operation = OperationId.GroupUndoCheck;
                     break;
                 case DocumentStatusValue.Checked:

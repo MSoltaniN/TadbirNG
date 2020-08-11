@@ -591,8 +591,8 @@
   <data name="CantCheckUnbalancedDocument" xml:space="preserve">
     <value>This {0} is either unbalanced or empty and cannot be checked.</value>
   </data>
-  <data name="Draft" xml:space="preserve">
-    <value>Draft</value>
+  <data name="NotChecked" xml:space="preserve">
+    <value>Not Checked</value>
   </data>
   <data name="FinalCheck" xml:space="preserve">
     <value>Final check</value>
@@ -2478,8 +2478,8 @@
   <data name="CantDeleteUsedCurrency" xml:space="preserve">
     <value>The currency '{0}' is used in application and cannot be deleted.</value>
   </data>
-  <data name="CantDeleteNonDraftDocument" xml:space="preserve">
-    <value>The {0} with number {1} is not draft and cannot be deleted.</value>
+  <data name="CantDeleteCheckedDocument" xml:space="preserve">
+    <value>The {0} with number {1} is checked / finalized and cannot be deleted.</value>
   </data>
   <data name="Month1" xml:space="preserve">
     <value>January</value>
@@ -3154,10 +3154,10 @@
     <value>Current fiscal period has a checked closing voucher and no more transactions can be registered in it.</value>
   </data>
   <data name="ClosingAccountsVoucherNotIssuedOrChecked" xml:space="preserve">
-    <value>Closing temp accounts voucher is either not yet issued or in draft status.</value>
+    <value>Closing temp accounts voucher is either not yet issued or in unchecked status.</value>
   </data>
-  <data name="CantIssueClosingVoucherWithDraftVouchers" xml:space="preserve">
-    <value>Current fiscal period has one or more draft vouchers and closing accounts voucher cannot be issued.</value>
+  <data name="CantIssueClosingVoucherWithUncheckedVouchers" xml:space="preserve">
+    <value>Current fiscal period has one or more unchecked vouchers and closing accounts voucher cannot be issued.</value>
   </data>
   <data name="ApproverName" xml:space="preserve">
     <value>Approver Name</value>

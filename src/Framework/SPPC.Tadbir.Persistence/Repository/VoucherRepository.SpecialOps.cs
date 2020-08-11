@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Persistence
             int closingCount = await repository.GetCountByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
                 v.VoucherOriginId == (int)type &&
-                v.StatusId >= (int)VoucherStatusId.Checked);
+                v.StatusId >= (int)DocumentStatusValue.Checked);
             return closingCount == 1;
         }
 

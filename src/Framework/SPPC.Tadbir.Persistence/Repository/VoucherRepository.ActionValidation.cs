@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Persistence
                 var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Check, AppStrings.BalanceLabel));
             }
-            else if (voucher.StatusId != (int)DocumentStatusValue.Draft)
+            else if (voucher.StatusId != (int)DocumentStatusValue.NotChecked)
             {
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Check));
@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.UndoConfirm));
             }
-            else if (voucher.StatusId == (int)DocumentStatusValue.Draft)
+            else if (voucher.StatusId == (int)DocumentStatusValue.NotChecked)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.Check));
             }
@@ -134,7 +134,7 @@ namespace SPPC.Tadbir.Persistence
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Confirm));
             }
-            else if (voucher.StatusId == (int)DocumentStatusValue.Draft)
+            else if (voucher.StatusId == (int)DocumentStatusValue.NotChecked)
             {
                 var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Confirm, AppStrings.Check));
@@ -196,7 +196,7 @@ namespace SPPC.Tadbir.Persistence
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Finalize));
             }
-            else if (voucher.StatusId == (int)DocumentStatusValue.Draft)
+            else if (voucher.StatusId == (int)DocumentStatusValue.NotChecked)
             {
                 var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Finalize, AppStrings.Check));

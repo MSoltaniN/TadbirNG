@@ -91,7 +91,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="status">وضعیت ثبتی مورد نظر برای سند</param>
         /// <returns>تعداد سندهای دوره مالی جاری با وضعیت ثبتی مورد نظر</returns>
-        Task<int> GetCountByStatusAsync(VoucherStatusId status);
+        Task<int> GetCountByStatusAsync(DocumentStatusValue status);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات محدوده سندهای قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند

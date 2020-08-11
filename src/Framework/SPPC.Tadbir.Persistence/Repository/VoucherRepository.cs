@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
@@ -198,7 +196,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="status">وضعیت ثبتی مورد نظر برای سند</param>
         /// <returns>تعداد سندهای دوره مالی جاری با وضعیت ثبتی مورد نظر</returns>
-        public async Task<int> GetCountByStatusAsync(VoucherStatusId status)
+        public async Task<int> GetCountByStatusAsync(DocumentStatusValue status)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             return await repository.GetCountByCriteriaAsync(
@@ -260,7 +258,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucherView.Id == 0)
             {
                 voucher = Mapper.Map<Voucher>(voucherView);
-                voucher.StatusId = (int)DocumentStatusValue.Draft;
+                voucher.StatusId = (int)DocumentStatusValue.NotChecked;
                 voucher.IssuedById = UserContext.Id;
                 voucher.ModifiedById = UserContext.Id;
                 voucher.IssuerName = voucher.ModifierName = displayName;
@@ -647,7 +645,7 @@ namespace SPPC.Tadbir.Persistence
                 ModifiedById = UserContext.Id,
                 ModifierName = fullName,
                 No = no + 1,
-                StatusId = (int)VoucherStatusId.Draft,
+                StatusId = (int)DocumentStatusValue.NotChecked,
                 SubjectType = (short)subject,
                 Type = (short)VoucherType.NormalVoucher,
                 VoucherOriginId = (int)origin

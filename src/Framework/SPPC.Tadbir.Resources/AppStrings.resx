@@ -591,8 +591,8 @@
   <data name="CantCheckUnbalancedDocument" xml:space="preserve">
     <value>{0} مورد نظر ناتراز یا فاقد آرتیکل بوده و قابل ثبت نیست.</value>
   </data>
-  <data name="Draft" xml:space="preserve">
-    <value>پیش نویس</value>
+  <data name="NotChecked" xml:space="preserve">
+    <value>ثبت نشده</value>
   </data>
   <data name="FinalCheck" xml:space="preserve">
     <value>ثبت قطعی</value>
@@ -2469,8 +2469,8 @@
   <data name="CantDeleteUsedCurrency" xml:space="preserve">
     <value>ارز '{0}' در سیستم استفاده شده و قابل حذف نیست.</value>
   </data>
-  <data name="CantDeleteNonDraftDocument" xml:space="preserve">
-    <value>{0} شماره {1} در وضعیت پیش نویس نبوده و قابل حذف نیست.</value>
+  <data name="CantDeleteCheckedDocument" xml:space="preserve">
+    <value>{0} شماره {1} ثبت عادی یا قطعی شده و قابل حذف نیست.</value>
   </data>
   <data name="Month1" xml:space="preserve">
     <value>فروردین</value>
@@ -3145,10 +3145,10 @@
     <value>دوره مالی جاری دارای سند اختتامیه ثبت شده است و ثبت تراکنش مالی در آن امکان پذیر نیست.</value>
   </data>
   <data name="ClosingAccountsVoucherNotIssuedOrChecked" xml:space="preserve">
-    <value>سند بستن حساب های موقت صادر نشده یا در وضعیت پیش نویس است.</value>
+    <value>سند بستن حساب های موقت صادر نشده یا در وضعیت ثبت نشده است.</value>
   </data>
-  <data name="CantIssueClosingVoucherWithDraftVouchers" xml:space="preserve">
-    <value>دوره مالی جاری یک یا چند سند پیش نویس دارد و صدور سند بستن حساب ها امکان پذیر نیست.</value>
+  <data name="CantIssueClosingVoucherWithUncheckedVouchers" xml:space="preserve">
+    <value>دوره مالی جاری یک یا چند سند ثبت نشده دارد و صدور سند بستن حساب ها امکان پذیر نیست.</value>
   </data>
   <data name="ApproverName" xml:space="preserve">
     <value>کاربر تصویب کننده</value>

@@ -1380,3 +1380,9 @@ WHERE Type = 3  -- Change ClosingTempAccounts Type to ClosingTempAccounts Origin
 UPDATE [Finance].[Voucher]
 SET VoucherOriginID = 4, Type = 0
 WHERE Type = 2  -- Change ClosingVoucher Type to ClosingVoucher Origin
+
+-- 1.1.974
+UPDATE [Core].[DocumentStatus]
+SET Name = N'NotChecked'
+WHERE Name = N'Draft'
+

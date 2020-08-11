@@ -75,52 +75,6 @@ namespace SPPC.Tadbir.Values
     }
 
     /// <summary>
-    /// نوع وضعیت های ثبتی یا ریالی را متناظر با شناسه های دیتابیسی تعریف می کند
-    /// </summary>
-    public enum DocumentStatusId
-    {
-        /// <summary>
-        /// وضعیت نامشخص
-        /// </summary>
-        None = 0,
-
-        /// <summary>
-        /// وضعیت پیش نویس
-        /// </summary>
-        Draft = 1,
-
-        /// <summary>
-        /// وضعیت ثبت نشده
-        /// </summary>
-        Unchecked = 2,
-
-        /// <summary>
-        /// وضعیت ثبت شده
-        /// </summary>
-        Checked = 3,
-
-        /// <summary>
-        /// وضعیت ثبت عادی
-        /// </summary>
-        NormalCheck = 4,
-
-        /// <summary>
-        /// وضعیت ثبت قطعی
-        /// </summary>
-        FinalCheck = 5,
-
-        /// <summary>
-        /// وضعیت ریالی نشده
-        /// </summary>
-        NotPriced = 6,
-
-        /// <summary>
-        /// وضعیت ریالی شده
-        /// </summary>
-        Priced = 7
-    }
-
-    /// <summary>
     /// مقادیر تعریف شده برای محدوده دسترسی به موجودیت ها در سطح شعبه های سازمانی را تعریف می کند
     /// </summary>
     public enum BranchScope
@@ -213,32 +167,6 @@ namespace SPPC.Tadbir.Values
         /// آرتیکل اصلاحی
         /// </summary>
         Revised = 2
-    }
-
-    /// <summary>
-    /// انواع وضعیت های ثبتی را برای سند مالی تعریف می کند
-    /// </summary>
-    public enum VoucherStatusId
-    {
-        /// <summary>
-        /// وضعیت نامشخص
-        /// </summary>
-        None = 0,
-
-        /// <summary>
-        /// وضعیت پیش نویس
-        /// </summary>
-        Draft = 1,
-
-        /// <summary>
-        /// وضعیت ثبت عادی
-        /// </summary>
-        Checked = 2,
-
-        /// <summary>
-        /// وضعیت ثبت قطعی
-        /// </summary>
-        Finalized = 3,
     }
 
     /// <summary>

@@ -11,7 +11,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Inventory;
@@ -341,7 +340,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، سند ثبت عادی را برگشت داده و وضعیتش را به پیش نویس تغییر می دهد
+        /// به روش آسنکرون، سند ثبت عادی را برگشت داده و وضعیتش را به ثبت نشده تغییر می دهد
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای برگشت از ثبت</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
@@ -358,7 +357,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Draft);
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.NotChecked);
             return Ok();
         }
 
@@ -529,7 +528,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return await GroupStatusChangeResultAsync(
-                actionDetail.Items, AppStrings.UndoCheck, DocumentStatusValue.Draft);
+                actionDetail.Items, AppStrings.UndoCheck, DocumentStatusValue.NotChecked);
         }
 
         /// <summary>
@@ -1128,10 +1127,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (typeKey == AppStrings.ClosingTempAccounts)
             {
                 // Rule 2 : Current fiscal period MUST NOT have any unchecked vouchers
-                int draftCount = await _repository.GetCountByStatusAsync(VoucherStatusId.Draft);
-                if (draftCount > 0)
+                int uncheckedCount = await _repository.GetCountByStatusAsync(DocumentStatusValue.NotChecked);
+                if (uncheckedCount > 0)
                 {
-                    return BadRequest(_strings[AppStrings.CantIssueClosingVoucherWithDraftVouchers]);
+                    return BadRequest(_strings[AppStrings.CantIssueClosingVoucherWithUncheckedVouchers]);
                 }
             }
 
@@ -1161,7 +1160,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private IActionResult CheckedValidationResult(VoucherViewModel voucher)
         {
-            if (voucher.StatusId != (int)DocumentStatusValue.Draft)
+            if (voucher.StatusId != (int)DocumentStatusValue.NotChecked)
             {
                 return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher));
             }
