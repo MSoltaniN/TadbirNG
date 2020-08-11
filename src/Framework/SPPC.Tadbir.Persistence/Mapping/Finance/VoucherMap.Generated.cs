@@ -95,26 +95,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.StatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Voucher_Core_Status");
-            builder.HasOne(e => e.IssuedBy)
+            builder.HasOne(e => e.Origin)
                 .WithMany()
-                .HasForeignKey(e => e.IssuedById)
+                .HasForeignKey(e => e.VoucherOriginId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_Voucher_Auth_IssuedBy");
-            builder.HasOne(e => e.ModifiedBy)
-                .WithMany()
-                .HasForeignKey(e => e.ModifiedById)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_Voucher_Auth_ModifiedBy");
-            builder.HasOne(e => e.ConfirmedBy)
-                .WithMany()
-                .HasForeignKey(e => e.ConfirmedById)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_Voucher_Auth_ConfirmedBy");
-            builder.HasOne(e => e.ApprovedBy)
-                .WithMany()
-                .HasForeignKey(e => e.ApprovedById)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_Voucher_Auth_ApprovedBy");
+                .HasConstraintName("FK_Finance_Voucher_Finance_VoucherOrigin");
         }
     }
 }

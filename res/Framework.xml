@@ -3134,24 +3134,6 @@
           <ColumnView name="Approved By Id" visible="True" width="120" />
           <ValidationRule name="ApprovedById_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="Description" type="String" isValidated="True" description="شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
-          <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
-        </Property>
-        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
-          <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
-          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
-          <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
-        </Property>
         <Property name="IssuerName" type="String" isValidated="True" description="نام کامل کاربر صادر کننده سند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtIssuerName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="IssuerName" type="nvarchar(64)" nullable="False" />
@@ -3176,6 +3158,24 @@
           <ColumnView name="Modifier Name" visible="True" width="120" />
           <ValidationRule name="ModifierName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
+        <Property name="Description" type="String" isValidated="True" description="شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
       </Properties>
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که پیشامد مالی در آن ثبت شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -3183,10 +3183,7 @@
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که سند مالی برای آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="OneToOne" endpointName="Document" entityName="Document" hasKey="True" isRequired="False" joinTable="" description="مستند اداری مرتبط با این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Status" entityName="DocumentStatus" hasKey="True" isRequired="True" joinTable="" description="وضعیت ثبتی این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="IssuedBy" entityName="User" hasKey="True" isRequired="True" joinTable="" description="کاربر صادرکننده سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="ModifiedBy" entityName="User" hasKey="True" isRequired="True" joinTable="" description="کاربری که آخرین تغییرات را روی سند مالی داده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="ConfirmedBy" entityName="User" hasKey="True" isRequired="False" joinTable="" description="کاربر تأییدکننده سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="ApprovedBy" entityName="User" hasKey="True" isRequired="False" joinTable="" description="کاربر تصویب کننده سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="VoucherOrigin" entityName="VoucherOrigin" hasKey="True" isRequired="True" joinTable="" description="مأخذ این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="VoucherLine" area="Finance" identifier="Id" type="FiscalEntity" description="آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

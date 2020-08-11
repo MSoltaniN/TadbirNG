@@ -12,9 +12,8 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Core;
-using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -35,9 +34,9 @@ namespace SPPC.Tadbir.Model.Finance
             ModifierName = String.Empty;
             ConfirmerName = String.Empty;
             ApproverName = String.Empty;
+            VoucherOriginId = (int)VoucherOriginValue.NormalVoucher;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -69,16 +68,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// شماره نسخه سند که نعداد دفعات ثبت را نشان می دهد
         /// </summary>
         public virtual int SaveCount { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی وضعیت ثبتی این سند مالی
-        /// </summary>
-        public virtual int StatusId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی مستند اداری مرتبط با این سند مالی
-        /// </summary>
-        public virtual int? DocumentId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی کاربر صادرکننده سند مالی
@@ -141,33 +130,8 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual DocumentStatus Status { get; set; }
 
         /// <summary>
-        /// کاربر صادرکننده سند مالی
+        /// مأخذ این سند مالی
         /// </summary>
-        public virtual User IssuedBy { get; set; }
-
-        /// <summary>
-        /// کاربری که آخرین تغییرات را روی سند مالی داده است
-        /// </summary>
-        public virtual User ModifiedBy { get; set; }
-
-        /// <summary>
-        /// کاربر تأییدکننده سند مالی
-        /// </summary>
-        public virtual User ConfirmedBy { get; set; }
-
-        /// <summary>
-        /// کاربر تصویب کننده سند مالی
-        /// </summary>
-        public virtual User ApprovedBy { get; set; }
-
-        private void InitReferences()
-        {
-            FiscalPeriod = new FiscalPeriod();
-            Lines = new List<VoucherLine>();
-            Branch = new Branch();
-            Status = new DocumentStatus();
-            IssuedBy = new User();
-            ModifiedBy = new User();
-        }
+        public virtual VoucherOrigin Origin { get; set; }
     }
 }

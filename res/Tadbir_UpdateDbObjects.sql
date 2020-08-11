@@ -1349,3 +1349,21 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (122, 1, 2, NULL, 17, 51, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
+-- 1.1.972
+SET IDENTITY_INSERT [Finance].[VoucherOrigin] ON
+INSERT INTO [Finance].[VoucherOrigin] ([OriginID], [Name]) VALUES (1, N'NormalVoucher')
+INSERT INTO [Finance].[VoucherOrigin] ([OriginID], [Name]) VALUES (2, N'OpeningVoucher')
+INSERT INTO [Finance].[VoucherOrigin] ([OriginID], [Name]) VALUES (3, N'ClosingTempAccounts')
+INSERT INTO [Finance].[VoucherOrigin] ([OriginID], [Name]) VALUES (4, N'ClosingVoucher')
+SET IDENTITY_INSERT [Finance].[VoucherOrigin] OFF
+
+ALTER TABLE [Finance].[Voucher]
+ADD [VoucherOriginID] INT NOT NULL
+CONSTRAINT DF_Finance_Voucher_VoucherOriginID DEFAULT 1  -- Default is NormalVoucher
+WITH VALUES;
+GO
+
+ALTER TABLE [Finance].[Voucher]
+ADD CONSTRAINT [FK_Finance_Voucher_Finance_VoucherOrigin] FOREIGN KEY ([VoucherOriginID])
+    REFERENCES [Finance].[VoucherOrigin]([OriginID]);
+GO
