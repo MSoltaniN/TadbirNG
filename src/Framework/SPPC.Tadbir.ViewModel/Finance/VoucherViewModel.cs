@@ -50,5 +50,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// مشخص می کند که آیا سند مورد نظر تصویب شده است یا نه؟
         /// </summary>
         public bool IsApproved { get; set; }
+
+        /// <summary>
+        /// نام مأخذ سند مالی
+        /// </summary>
+        public string OriginName { get; set; }
     }
 }

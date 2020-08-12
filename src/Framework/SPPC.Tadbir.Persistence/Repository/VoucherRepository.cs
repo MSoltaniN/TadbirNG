@@ -45,7 +45,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null)
         {
             var vouchers = await Repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher, v => v.Lines, v => v.Status, v => v.Branch)
+                .GetAllOperationQuery<Voucher>(
+                    ViewName.Voucher, v => v.Lines, v => v.Status, v => v.Branch, v => v.Origin)
                 .Where(item => item.SubjectType == 0)
                 .OrderBy(item => item.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item))

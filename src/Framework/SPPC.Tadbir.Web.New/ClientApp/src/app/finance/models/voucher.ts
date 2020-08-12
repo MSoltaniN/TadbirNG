@@ -37,4 +37,5 @@ export interface Voucher {
     confirmerName: string;
     approverName: string;
     description?: string;
+    originName: string;
 }

@@ -48,11 +48,15 @@ namespace SPPC.Tadbir.Persistence
             AccountDetailAccountMap.BuildMapping(modelBuilder.Entity<AccountDetailAccount>());
             AccountCostCenterMap.BuildMapping(modelBuilder.Entity<AccountCostCenter>());
             AccountProjectMap.BuildMapping(modelBuilder.Entity<AccountProject>());
+            AccountOwnerMap.BuildMapping(modelBuilder.Entity<AccountOwner>());
+            AccountHolderMap.BuildMapping(modelBuilder.Entity<AccountHolder>());
             BranchMap.BuildMapping(modelBuilder.Entity<Branch>());
+            CityMap.BuildMapping(modelBuilder.Entity<City>());
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CostCenterMap.BuildMapping(modelBuilder.Entity<CostCenter>());
             CurrencyMap.BuildMapping(modelBuilder.Entity<Currency>());
             CurrencyRateMap.BuildMapping(modelBuilder.Entity<CurrencyRate>());
+            CustomerTaxInfoMap.BuildMapping(modelBuilder.Entity<CustomerTaxInfo>());
             DetailAccountMap.BuildMapping(modelBuilder.Entity<DetailAccount>());
             DocumentMap.BuildMapping(modelBuilder.Entity<Document>());
             DocumentActionMap.BuildMapping(modelBuilder.Entity<DocumentAction>());
@@ -72,6 +76,7 @@ namespace SPPC.Tadbir.Persistence
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());
             ProjectMap.BuildMapping(modelBuilder.Entity<Project>());
+            ProvinceMap.BuildMapping(modelBuilder.Entity<Province>());
             RoleMap.BuildMapping(modelBuilder.Entity<Role>());
             RoleBranchMap.BuildMapping(modelBuilder.Entity<RoleBranch>());
             RoleFiscalPeriodMap.BuildMapping(modelBuilder.Entity<RoleFiscalPeriod>());
@@ -81,6 +86,7 @@ namespace SPPC.Tadbir.Persistence
             TaxCurrencyMap.BuildMapping(modelBuilder.Entity<TaxCurrency>());
             VoucherMap.BuildMapping(modelBuilder.Entity<Voucher>());
             VoucherLineMap.BuildMapping(modelBuilder.Entity<VoucherLine>());
+            VoucherOriginMap.BuildMapping(modelBuilder.Entity<VoucherOrigin>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
@@ -89,11 +95,6 @@ namespace SPPC.Tadbir.Persistence
             WorkItemMap.BuildMapping(modelBuilder.Entity<WorkItem>());
             WorkItemDocumentMap.BuildMapping(modelBuilder.Entity<WorkItemDocument>());
             WorkItemHistoryMap.BuildMapping(modelBuilder.Entity<WorkItemHistory>());
-            CustomerTaxInfoMap.BuildMapping(modelBuilder.Entity<CustomerTaxInfo>());
-            AccountOwnerMap.BuildMapping(modelBuilder.Entity<AccountOwner>());
-            AccountHolderMap.BuildMapping(modelBuilder.Entity<AccountHolder>());
-            ProvinceMap.BuildMapping(modelBuilder.Entity<Province>());
-            CityMap.BuildMapping(modelBuilder.Entity<City>());
         }
 
         /// <summary>

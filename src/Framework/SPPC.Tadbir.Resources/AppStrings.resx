@@ -3276,4 +3276,7 @@
   <data name="GroupUndoConfirmApprove" xml:space="preserve">
     <value>برگشت از تأیید/تصویب گروهی اسناد</value>
   </data>
+  <data name="OriginName" xml:space="preserve">
+    <value>مأخذ سند</value>
+  </data>
 </root>

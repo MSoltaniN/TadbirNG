@@ -1232,6 +1232,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (voucher != null)
             {
                 voucher.StatusName = _strings[voucher.StatusName];
+                voucher.OriginName = _strings[voucher.OriginName];
                 voucher.Description = _strings[voucher.Description ?? String.Empty];
             }
         }

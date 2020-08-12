@@ -34,6 +34,7 @@ export class VoucherInfo implements Voucher {
   confirmerName: string;
   approverName: string;
   description?: string;
+  originName: string;
 }
 
 export class InventoryBalanceInfo implements InventoryBalance {  
