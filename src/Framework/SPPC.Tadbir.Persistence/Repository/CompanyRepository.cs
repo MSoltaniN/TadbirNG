@@ -89,8 +89,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                company = await repository.GetByIDAsync(
-                    companyView.Id);
+                company = await repository.GetByIDAsync(companyView.Id);
                 if (company != null)
                 {
                     await UpdateAsync(repository, company, companyView);
@@ -141,28 +140,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مشخص میکند که نام وارد شده برای دیتابیس تکرای میباشد یا خیر
+        /// به روش آسنکرون، مشخص میکند که نام وارد شده برای دیتابیس تکراری میباشد یا خیر
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
-        /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
+        /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
         public async Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company)
         {
-            Verify.ArgumentNotNull(company, "company");
-
+            Verify.ArgumentNotNull(company, nameof(company));
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var items = await repository
-                .GetByCriteriaAsync(comp => comp.DbName == company.DbName);
-
-            if (items.Count > 0)
+            var existing = await repository.GetSingleByCriteriaAsync(
+                comp => comp.Id != company.Id && comp.DbName == company.DbName);
+            if (existing != null)
             {
-                return (items.SingleOrDefault(comp => comp.Id != company.Id) != null);
+                return true;
             }
 
-            var isDuplicateDB = IsDuplicateDatabaseName(company.DbName);
-
-            if (isDuplicateDB)
+            var isDuplicateDb = IsDuplicateDatabaseName(company.DbName);
+            if (isDuplicateDb)
             {
-                return !CheckIsTadbirDatabase(company.DbName);
+                return !IsTadbirDatabase(company.DbName);
             }
 
             return false;
@@ -176,7 +172,6 @@ namespace SPPC.Tadbir.Persistence
         public bool IsDuplicateCompanyUserNameAsync(CompanyDbViewModel company)
         {
             Verify.ArgumentNotNull(company, "company");
-
             string userScript = @"SELECT name FROM sys.sql_logins";
             DataTable table = DbConsole.ExecuteQuery(userScript);
             List<DataRow> rows = table.AsEnumerable().ToList();
@@ -235,7 +230,7 @@ namespace SPPC.Tadbir.Persistence
                     throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
                 }
 
-                string companyScript = string.Format(
+                string companyScript = String.Format(
                     @"CREATE DATABASE {0}
                     GO
                     USE {0}
@@ -244,7 +239,6 @@ namespace SPPC.Tadbir.Persistence
 
                 companyScript += Environment.NewLine;
                 companyScript += File.ReadAllText(scriptPath);
-
                 DbConsole.ExecuteNonQuery(companyScript);
             }
 
@@ -270,10 +264,7 @@ namespace SPPC.Tadbir.Persistence
                     EXEC sp_addrolemember N'db_owner', N'{0}'    
                     END;
                     GO",
-                company.UserName,
-                company.Password,
-                company.DbName);
-
+                company.UserName, company.Password, company.DbName);
             DbConsole.ExecuteNonQuery(loginScript);
         }
 
@@ -293,7 +284,7 @@ namespace SPPC.Tadbir.Persistence
             return table.Rows.Count > 0;
         }
 
-        private bool CheckIsTadbirDatabase(string dbName)
+        private bool IsTadbirDatabase(string dbName)
         {
             string connectionString = DbConsole.BuildConnectionString(dbName);
             if (DbConsole.TestConnection(connectionString))
@@ -304,10 +295,6 @@ namespace SPPC.Tadbir.Persistence
                         dbName);
                 DataTable table = DbConsole.ExecuteQuery(tableScript);
                 return table.Rows.Count == 1;
-            }
-            else
-            {
-                // امکان دارد دیتابیس تدبیر نباشد باید یوزر به آن اضافه شود سپس دیتابیس چک شود
             }
 
             return false;

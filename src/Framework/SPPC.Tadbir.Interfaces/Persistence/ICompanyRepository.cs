@@ -53,10 +53,10 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company);
 
         /// <summary>
-        /// مشخص میکند که نام کاربری وارد شده تکرای میباشد یا خیر
+        /// مشخص میکند که نام کاربری وارد شده تکراری میباشد یا خیر
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
-        /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
+        /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
         bool IsDuplicateCompanyUserNameAsync(CompanyDbViewModel company);
     }
 }

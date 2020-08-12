@@ -11,14 +11,26 @@ using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Web.Api.Filters
 {
+    /// <summary>
+    /// امکانات احراز هویت و مجوزدهی امنیتی را با استفاده از
+    /// مکانیزم فیلترهای درخواست پیاده سازی می کند
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class AuthorizeRequestAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
         public AuthorizeRequestAttribute()
         {
             _contextDecoder = new Base64Encoder<SecurityContext>();
         }
 
+        /// <summary>
+        /// نمونه جدیدی از این کلاس با توجه به موجودیت محافظت شده و دسترسی مورد نیاز می سازد
+        /// </summary>
+        /// <param name="entity">موجودیت محافظت شده ای که مجوزدهی امنیتی باید برای آن انجام شود</param>
+        /// <param name="permission">دسترسی امنیتی مورد نیاز برای ادامه عملیات</param>
         public AuthorizeRequestAttribute(string entity, int permission)
         {
             Verify.ArgumentNotNullOrWhitespace(entity, "entity");
@@ -29,16 +41,26 @@ namespace SPPC.Tadbir.Web.Api.Filters
             };
         }
 
+        /// <summary>
+        /// موجودیت محافظت شده ای که مجوزدهی امنیتی باید برای آن انجام شود
+        /// </summary>
         public string Entity
         {
             get { return _requiredPermissions?[0].EntityName; }
         }
 
+        /// <summary>
+        /// دسترسی امنیتی مورد نیاز برای ادامه عملیات
+        /// </summary>
         public int Permission
         {
             get { return (_requiredPermissions != null) ? _requiredPermissions[0].Flags : 0; }
         }
 
+        /// <summary>
+        /// امکان فیلتر درخواست را پیش از اجرای متد کنترلر فراهم می کند
+        /// </summary>
+        /// <param name="actionContext">اطلاعات جاری مورد نیاز برای فیلتر درخواست</param>
         public override void OnActionExecuting(ActionExecutingContext actionContext)
         {
             Verify.ArgumentNotNull(actionContext, "actionContext");
