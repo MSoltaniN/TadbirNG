@@ -48,6 +48,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   @Input() public Grid: GridComponent;
   @Input() public Sort: SortDescriptor[];
   @Input() public Filter: FilterExpression;
+  @Input() public QuickFilter: FilterExpression;
   @Input() public RowData: any;
   @Input() public MetadataType: string;
   @Input() public DefaultServiceUrl: string; //ServiceUrl from parent from
@@ -79,6 +80,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   currentDefaultReportId: any;
   showDesktopTab: boolean = false;
   currentFilter: FilterExpression;
+  currentQuickFilter: FilterExpression;
   currentSort: SortDescriptor[];
 
   quickReportJsonDesign: string;
@@ -191,13 +193,14 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
   //متد نمایش گزارش فوری
   public showQuickReport(viewId: string, formParams: Array<ReportParamComponent>,
-    filter: FilterExpression = null, sort: SortDescriptor[] = null, designJson: string, qrRowData: any, quickReportViewInfo: QuickReportConfigInfo) {
+    filter: FilterExpression = null, sort: SortDescriptor[] = null, designJson: string, qrRowData: any, quickReportViewInfo: QuickReportConfigInfo, quickFilter: FilterExpression = null) {
     this.active = true;
 
     if (viewId) {
       this.currentViewId = viewId;
       this.showDesktopTab = false;
       this.currentFilter = filter;
+      this.currentQuickFilter = quickFilter;
       this.currentSort = sort;
       this.currentQuickReportViewInfo = quickReportViewInfo;
     }
@@ -554,10 +557,11 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
       }
     }
 
-    var sort = this.currentSort;    
+    var sort = this.currentSort;
+    var quickFilter = this.currentQuickFilter;  
 
     this.reportingService.getAll(serviceUrl,
-      sort, filterExpression, OperationId.Print).subscribe((response: any) => {
+      sort, filterExpression,quickFilter,OperationId.Print).subscribe((response: any) => {
 
         var reportData = {
           rows: response.body,
@@ -944,7 +948,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
               this.showMessage(this.getText('Report.ReportIsOutOfPage'));
             }
             var id = this.ViewIdentity.ViewID;
-            this.showQuickReport(id, params, this.Filter, this.Sort, design, treeData, viewInfo);
+            this.showQuickReport(id, params, this.Filter, this.Sort, design, treeData, viewInfo,this.QuickFilter);
           });
 
       });

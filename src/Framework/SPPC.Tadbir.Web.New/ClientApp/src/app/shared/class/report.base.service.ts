@@ -43,16 +43,15 @@ export class ReportBaseService extends EnviromentComponent{
    * @param orderby مرتب سازی
    * @param filters فیلتر
    */
-  public getAll(apiUrl: string, orderby?: any, filter?: FilterExpression,operationId:number = 1) {
+  public getAll(apiUrl: string, orderby?: any, filter?: FilterExpression,quickFilter?:FilterExpression,operationId:number = 1) {
     
     var sort = new Array<GridOrderBy>();
     if (orderby && orderby.length > 0) {
-
       for (let item of orderby) {
         sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
       }
     }
-    var postItem = { filter: filter, sortColumns: sort, operation:operationId };
+    var postItem = { filter: filter, sortColumns: sort, operation: operationId, quickFilter: quickFilter};
     var searchHeaders = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));
