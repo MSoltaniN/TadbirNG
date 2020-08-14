@@ -85,8 +85,8 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
   //}
 
   @HostListener('document:keydown', ['$event'])
-  handleClick(event: KeyboardEvent) {
-    if (this.elRef.nativeElement.offsetParent.contains(event.target)) {
+  handleClick(event: KeyboardEvent) {    
+    if (this.grid.wrapper.nativeElement.offsetParent.contains(event.target)) {
         if (event.key == 'Enter') {
           var filterInput = false;
           var element: any = event.srcElement;
