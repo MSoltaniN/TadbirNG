@@ -223,11 +223,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
       }
     }, err => {
-      //if (err.status == 400) {
-        //this.showMessage(this.getText(err.error.value), MessageType.Warning);
-        //TODO: add error message
+      if (err.status == 400) {
+        this.showMessage(this.getText(err.error.value), MessageType.Warning);        
         this.router.navigate(['/finance/voucher']);
-      //}
+      }
+
+      if (err.value) {
+        this.showMessage(err.value, MessageType.Warning);
+        this.router.navigate(['/finance/voucher']);
+      }
     });
   }
 
