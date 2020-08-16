@@ -88,7 +88,14 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Templates
             
             #line default
             #line hidden
-            this.Write("Url = \"schools\";\r\n\r\n        /// <summary>\r\n        /// API client URL for a ");
+            this.Write("Url = \"");
+            
+            #line 28 "C:\Users\m\source\repos\TadbirNG\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\CsApiClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
+            
+            #line default
+            #line hidden
+            this.Write("\";\r\n\r\n        /// <summary>\r\n        /// API client URL for a ");
             
             #line 31 "C:\Users\m\source\repos\TadbirNG\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name.ToLower()));
@@ -103,8 +110,14 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Templates
             
             #line default
             #line hidden
-            this.Write(" = \"schools/{0}\";\r\n\r\n        /// <summary>\r\n        /// API server route URL for " +
-                    "a ");
+            this.Write(" = \"");
+            
+            #line 33 "C:\Users\m\source\repos\TadbirNG\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\CsApiClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
+            
+            #line default
+            #line hidden
+            this.Write("/{0}\";\r\n\r\n        /// <summary>\r\n        /// API server route URL for a ");
             
             #line 36 "C:\Users\m\source\repos\TadbirNG\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name.ToLower()));
