@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/companies/validation
         [HttpPost]
         [Route(CompanyApi.CompanyValidationUrl)]
-        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Create)]
+        [AuthorizeRequest]
         public async Task<IActionResult> PostValidationCompanyAsync([FromBody]CompanyDbViewModel company)
         {
             var result = await ValidationResultAsync(company);
@@ -163,7 +163,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/companies
         [HttpPut]
         [Route(CompanyApi.CompaniesUrl)]
-        [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Delete)]
+        [AuthorizeRequest]
         public async Task<IActionResult> PutExistingCompaniesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {

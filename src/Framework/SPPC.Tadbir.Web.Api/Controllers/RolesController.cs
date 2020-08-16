@@ -335,7 +335,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/roles/{roleId:min(2)}/rowaccess
         [HttpPut]
         [Route(RoleApi.RowAccessSettingsUrl)]
-        [AuthorizeRequest(SecureEntity.RowAccess, (int)RowAccessPermissions.ManageRowAccess)]
+        [AuthorizeRequest(SecureEntity.RowAccess, (int)RowAccessPermissions.SaveRowAccess)]
         public async Task<IActionResult> PutModifiedRowAccessSettingsForRoleAsync(
             int roleId, [FromBody] RowPermissionsForRoleViewModel permissions)
         {

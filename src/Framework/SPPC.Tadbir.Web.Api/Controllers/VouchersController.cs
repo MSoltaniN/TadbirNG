@@ -480,7 +480,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/vouchers/{voucherId:int}/finalize/undo
         [HttpPut]
         [Route(VoucherApi.UndoFinalizeVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoFinalize)]
+        [AuthorizeRequest]
         public async Task<IActionResult> PutExistingVoucherAsUnfinalized(int voucherId)
         {
             var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoFinalize);
@@ -500,7 +500,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route(VoucherApi.CheckVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.GroupCheck)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupCheck)]
         public async Task<IActionResult> PutExistingVouchersAsChecked([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -519,7 +519,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route(VoucherApi.UndoCheckVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoGroupCheck)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupUndoCheck)]
         public async Task<IActionResult> PutExistingVouchersAsUnChecked([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -539,7 +539,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/vouchers/confirm
         [HttpPut]
         [Route(VoucherApi.ConfirmVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.ConfirmGroup)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupConfirm)]
         public async Task<IActionResult> PutExistingVouchersAsConfirmed([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -559,7 +559,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/vouchers/confirm/undo
         [HttpPut]
         [Route(VoucherApi.UndoConfirmVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UnConfirmGroup)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupUndoConfirm)]
         public async Task<IActionResult> PutExistingVouchersAsUnConfirmed([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -578,7 +578,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route(VoucherApi.FinalizeVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.GroupFinalize)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupFinalize)]
         public async Task<IActionResult> PutExistingVouchersAsFinalized([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -597,7 +597,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route(VoucherApi.UndoFinalizeVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoGroupFinalize)]
+        [AuthorizeRequest]
         public async Task<IActionResult> PutExistingVouchersAsUnfinalized([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -1231,8 +1231,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (voucher != null)
             {
-                voucher.StatusName = _strings[voucher.StatusName];
-                voucher.OriginName = _strings[voucher.OriginName];
+                voucher.StatusName = _strings[voucher.StatusName ?? String.Empty];
+                voucher.OriginName = _strings[voucher.OriginName ?? String.Empty];
                 voucher.Description = _strings[voucher.Description ?? String.Empty];
             }
         }

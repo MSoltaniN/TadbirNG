@@ -609,9 +609,6 @@
   <data name="CheckEntity" xml:space="preserve">
     <value>Check {0}</value>
   </data>
-  <data name="UncheckEntity" xml:space="preserve">
-    <value>Uncheck {0}</value>
-  </data>
   <data name="SwitchCompany" xml:space="preserve">
     <value>Switch company</value>
   </data>
@@ -3174,20 +3171,11 @@
   <data name="GroupCheck" xml:space="preserve">
     <value>Group check</value>
   </data>
-  <data name="UndoGroupCheck" xml:space="preserve">
-    <value>Undo group check</value>
-  </data>
   <data name="GroupFinalize" xml:space="preserve">
     <value>Group Finalize</value>
   </data>
-  <data name="UndoGroupFinalize" xml:space="preserve">
-    <value>Undo Group Finalize</value>
-  </data>
-  <data name="UnConfirmGroup" xml:space="preserve">
-    <value>UndoConfirm/UndoApprove Group</value>
-  </data>
   <data name="UndoFinalize" xml:space="preserve">
-    <value>Undo Finalize</value>
+    <value>Undo finalize</value>
   </data>
   <data name="GrossProfit" xml:space="preserve">
     <value>Gross profit</value>
@@ -3287,5 +3275,23 @@
   </data>
   <data name="OriginName" xml:space="preserve">
     <value>Origin</value>
+  </data>
+  <data name="GroupUndoCheck" xml:space="preserve">
+    <value>Group undo check</value>
+  </data>
+  <data name="GroupUndoConfirm" xml:space="preserve">
+    <value>Group undo confirm / approve</value>
+  </data>
+  <data name="GroupUndoFinalize" xml:space="preserve">
+    <value>Group undo finalize</value>
+  </data>
+  <data name="LogSetting" xml:space="preserve">
+    <value>Log settings</value>
+  </data>
+  <data name="ProfitLossReport" xml:space="preserve">
+    <value>Profit-Loss report</value>
+  </data>
+  <data name="SysOperationLogs" xml:space="preserve">
+    <value>System logs</value>
   </data>
 </root>

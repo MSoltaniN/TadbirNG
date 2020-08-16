@@ -325,7 +325,7 @@
     <value>شماره سند</value>
   </data>
   <data name="Vouchers" xml:space="preserve">
-    <value>مدیریت اسناد</value>
+    <value>اسناد مالی</value>
   </data>
   <data name="BizPartners" xml:space="preserve">
     <value>شرکای تجاری</value>
@@ -608,9 +608,6 @@
   </data>
   <data name="CheckEntity" xml:space="preserve">
     <value>ثبت {0}</value>
-  </data>
-  <data name="UncheckEntity" xml:space="preserve">
-    <value>برگشت {0}</value>
   </data>
   <data name="SwitchCompany" xml:space="preserve">
     <value>تغییر شرکت</value>
@@ -3165,17 +3162,8 @@
   <data name="GroupCheck" xml:space="preserve">
     <value>ثبت گروهی</value>
   </data>
-  <data name="UndoGroupCheck" xml:space="preserve">
-    <value>برگشت از ثبت گروهی</value>
-  </data>
   <data name="GroupFinalize" xml:space="preserve">
     <value>ثبت قطعی گروهی</value>
-  </data>
-  <data name="UndoGroupFinalize" xml:space="preserve">
-    <value>برگشت از ثبت قطعی گروهی</value>
-  </data>
-  <data name="UnConfirmGroup" xml:space="preserve">
-    <value> رفع تایید/تصویب گروهی اسناد</value>
   </data>
   <data name="UndoFinalize" xml:space="preserve">
     <value>برگشت از ثبت قطعی</value>
@@ -3278,5 +3266,23 @@
   </data>
   <data name="OriginName" xml:space="preserve">
     <value>مأخذ سند</value>
+  </data>
+  <data name="GroupUndoCheck" xml:space="preserve">
+    <value>برگشت از ثبت گروهی</value>
+  </data>
+  <data name="GroupUndoConfirm" xml:space="preserve">
+    <value>رفع تایید/تصویب گروهی اسناد</value>
+  </data>
+  <data name="GroupUndoFinalize" xml:space="preserve">
+    <value>برگشت از ثبت قطعی گروهی</value>
+  </data>
+  <data name="LogSetting" xml:space="preserve">
+    <value>تنظیمات رویداد</value>
+  </data>
+  <data name="ProfitLossReport" xml:space="preserve">
+    <value>گزارش سود و زیان</value>
+  </data>
+  <data name="SysOperationLogs" xml:space="preserve">
+    <value>رویدادهای سیستمی</value>
   </data>
 </root>

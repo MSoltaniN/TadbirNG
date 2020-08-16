@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/acccollections/collection/{collectionId:min(1)}
         [HttpPost]
         [Route(AccountCollectionApi.AccountCollectionAccountUrl)]
-        [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.Save)]
         public async Task<IActionResult> PostAccountCollectionAccountAsync(
             int collectionId, [FromBody]List<AccountCollectionAccountViewModel> accCollections)
         {

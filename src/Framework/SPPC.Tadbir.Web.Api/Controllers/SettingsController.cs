@@ -48,7 +48,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/settings
         [HttpPut]
         [Route(SettingsApi.AllSettingsUrl)]
-        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ManageSettings)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.SaveSettings)]
         public async Task<IActionResult> PutModifiedSettingsAsync([FromBody] List<SettingBriefViewModel> settings)
         {
             if (settings == null)
@@ -189,7 +189,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/settings/views/tree
         [HttpPut]
         [Route(SettingsApi.ViewTreeSettingsUrl)]
-        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ManageSettings)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.SaveSettings)]
         public async Task<IActionResult> PutModifiedViewTreeSettingsAsync([FromBody] List<ViewTreeFullConfig> settings)
         {
             if (settings == null)

@@ -132,7 +132,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/relations/account/{accountId:min(1)}/faccounts
         [HttpPost]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]
         public async Task<IActionResult> PostNewAccountDetailAccountsAsync(
             int accountId, [FromBody] AccountItemRelationsViewModel relations)
@@ -149,7 +149,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/relations/account/{accountId:min(1)}/faccounts
         [HttpPut]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]
         public async Task<IActionResult> PutModifiedAccountDetailAccountsAsync(
             int accountId, [FromBody] AccountItemRelationsViewModel relations)
@@ -186,7 +186,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/relations/account/{accountId:min(1)}/ccenters
         [HttpPost]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.CostCentersRelatedToAccountUrl)]
         public async Task<IActionResult> PostNewAccountCostCentersAsync(
             int accountId, [FromBody] AccountItemRelationsViewModel relations)
@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/relations/account/{accountId:min(1)}/ccenters
         [HttpPut]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.CostCentersRelatedToAccountUrl)]
         public async Task<IActionResult> PutModifiedAccountCostCentersAsync(
             int accountId, [FromBody] AccountItemRelationsViewModel relations)
@@ -240,7 +240,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/relations/account/{accountId:min(1)}/projects
         [HttpPost]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.ProjectsRelatedToAccountUrl)]
         public async Task<IActionResult> PostNewAccountProjectsAsync(
             int accountId, [FromBody] AccountItemRelationsViewModel relations)
@@ -257,7 +257,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/relations/account/{accountId:min(1)}/projects
         [HttpPut]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.ProjectsRelatedToAccountUrl)]
         public async Task<IActionResult> PutModifiedAccountProjectsAsync(
             int accountId, [FromBody] AccountItemRelationsViewModel relations)
@@ -284,7 +284,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/relations/faccount/{faccountId:min(1)}/accounts
         [HttpPost]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToDetailAccountUrl)]
         public async Task<IActionResult> PostNewDetailAccountAccountsAsync(
             int faccountId, [FromBody] AccountItemRelationsViewModel relations)
@@ -301,7 +301,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/relations/faccount/{faccountId:min(1)}/accounts
         [HttpPut]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToDetailAccountUrl)]
         public async Task<IActionResult> PutModifiedDetailAccountAccountsAsync(
             int faccountId, [FromBody] AccountItemRelationsViewModel relations)
@@ -328,7 +328,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/relations/ccenter/{ccenterId:min(1)}/accounts
         [HttpPost]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToCostCenterUrl)]
         public async Task<IActionResult> PostNewCostCenterAccountsAsync(
             int ccenterId, [FromBody] AccountItemRelationsViewModel relations)
@@ -345,7 +345,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/relations/ccenter/{ccenterId:min(1)}/accounts
         [HttpPut]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToCostCenterUrl)]
         public async Task<IActionResult> PutModifiedCostCenterAccountsAsync(
             int ccenterId, [FromBody] AccountItemRelationsViewModel relations)
@@ -372,7 +372,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/relations/project/{projectId:min(1)}/accounts
         [HttpPost]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToProjectUrl)]
         public async Task<IActionResult> PostNewProjectAccountsAsync(
             int projectId, [FromBody] AccountItemRelationsViewModel relations)
@@ -389,7 +389,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/relations/project/{projectId:min(1)}/accounts
         [HttpPut]
-        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
         [Route(AccountRelationApi.AccountsRelatedToProjectUrl)]
         public async Task<IActionResult> PutModifiedProjectAccountsAsync(
             int projectId, [FromBody] AccountItemRelationsViewModel relations)

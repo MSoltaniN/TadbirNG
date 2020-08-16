@@ -37,6 +37,7 @@ namespace SPPC.Tadbir.Model.Finance
             VoucherOriginId = (int)VoucherOriginValue.NormalVoucher;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
+            Lines = new List<VoucherLine>();
         }
 
         /// <summary>
