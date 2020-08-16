@@ -25,12 +25,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for all <#= name.ToLower()#> items
         /// </summary>
-        public const string <#= plural#>Url = "schools";
+        public const string <#= plural#>Url = "<#= plural.ToLower()#>";
 
         /// <summary>
         /// API client URL for a <#= name.ToLower()#> item specified by unique identifier
         /// </summary>
-        public const string <#= name#> = "schools/{0}";
+        public const string <#= name#> = "<#= plural.ToLower()#>/{0}";
 
         /// <summary>
         /// API server route URL for a <#= name.ToLower()#> item specified by unique identifier
