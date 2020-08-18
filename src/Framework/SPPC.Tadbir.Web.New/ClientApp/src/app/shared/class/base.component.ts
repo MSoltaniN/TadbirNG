@@ -1,6 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
-import { EnviromentComponent } from "./enviroment.component"
-import { BrowserStorageService } from '../services';
+import { EnviromentComponent } from '@sppc/shared/class/enviroment.component';
+import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
 import { MessageType, MessagePosition } from '@sppc/env/environment';
 
 
@@ -22,8 +22,9 @@ export class BaseComponent extends EnviromentComponent {
   constructor(public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
     super(bStorageService);
 
+   
+  } 
 
-  }
 
   /**
    * show message box on screen

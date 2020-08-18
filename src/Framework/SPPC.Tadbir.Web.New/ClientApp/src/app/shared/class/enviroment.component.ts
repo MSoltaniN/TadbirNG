@@ -1,7 +1,7 @@
 
 import { Inject } from "@angular/core";
 import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
-import { PermissionBrief } from "@sppc/core";
+import { PermissionBrief } from "@sppc/core/models/permissionBrief";
 
 
 
@@ -29,6 +29,7 @@ export class EnviromentComponent {
 
     return lang;
   }
+
 
 
   public get FiscalPeriodId(): number {

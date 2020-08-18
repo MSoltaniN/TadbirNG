@@ -2,16 +2,18 @@ import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventE
 import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces, GroupFilter, FilterViewModel } from '@sppc/shared/models';
 import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { BrowserStorageService, GridService, MetaDataService, AdvanceFilterService } from '@sppc/shared/services';
-import { DefaultComponent, Filter, FilterExpression, FilterExpressionBuilder } from '@sppc/shared/class';
+import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
+import { GridService } from '@sppc/shared/services/grid.service';
+import { MetaDataService } from '@sppc/shared/services/metadata.service';
+import { AdvanceFilterService } from '@sppc/shared/services/advance-filter.service';
+import { DefaultComponent} from '@sppc/shared/class/default.component';
+import { Filter } from '@sppc/shared/class/filter';
+import { FilterExpression } from '@sppc/shared/class/filterExpression';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { SettingService } from '@sppc/config/service';
-import { forEach } from '@angular/router/src/utils/collection';
+import { SettingService } from '@sppc/config/service/settings.service';
 import { MessageType } from '@sppc/env/environment.prod';
 import { RowArgs } from '@progress/kendo-angular-grid';
-import { guid } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
-import { String } from '@sppc/shared/class';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();

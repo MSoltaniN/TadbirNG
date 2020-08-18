@@ -233,7 +233,7 @@ export class DefaultComponent extends BaseComponent {
   */
   public set pageIndex(value: number) {
     this.skip = value;
-  }
+  }  
 
   /** set number value for grid current page */
   public get pageIndex(): number {
