@@ -94,21 +94,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
-        // POST: api/companies/validation
-        [HttpPost]
-        [Route(CompanyApi.CompanyValidationUrl)]
-        [AuthorizeRequest]
-        public async Task<IActionResult> PostValidationCompanyAsync([FromBody]CompanyDbViewModel company)
-        {
-            var result = await ValidationResultAsync(company);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            return Ok();
-        }
-
         /// <summary>
         /// به روش آسنکرون، شرکت مشخص شده با شناسه دیتابیسی را اصلاح می کند
         /// </summary>

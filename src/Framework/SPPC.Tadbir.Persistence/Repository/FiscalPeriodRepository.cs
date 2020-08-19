@@ -305,26 +305,6 @@ namespace SPPC.Tadbir.Persistence
             return canDelete;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات اولین دوره مالی را در محل ذخیره ایجاد می کند
-        /// </summary>
-        /// <param name="fiscalPeriod">دوره مالی مورد نظر برای ایجاد</param>
-        /// <returns>اطلاعات نمایشی دوره مالی ایجاد شده</returns>
-        public async Task<FiscalPeriodViewModel> SaveInitialFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod)
-        {
-            Verify.ArgumentNotNull(fiscalPeriod, "fiscalPeriod");
-            FiscalPeriod newFiscalPeriod = default(FiscalPeriod);
-
-            UnitOfWork.UseSystemContext();
-            CompanyConnection = await BuildConnectionStringAsync(fiscalPeriod.CompanyId);
-            UnitOfWork.UseCompanyContext();
-
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            newFiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriod);
-            await InsertAsync(repository, newFiscalPeriod);
-            return Mapper.Map<FiscalPeriodViewModel>(newFiscalPeriod);
-        }
-
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.FiscalPeriod; }

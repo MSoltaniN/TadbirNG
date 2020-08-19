@@ -137,7 +137,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPost]
         [Route(BranchApi.RootBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Create)]
-        public async Task<IActionResult> PostRootBranchValidationAsync([FromBody] BranchViewModel branch)
+        public async Task<IActionResult> PostNewBranchValidationAsync([FromBody] BranchViewModel branch)
         {
             if (!await _repository.IsValidBranchAsync(branch))
             {
@@ -145,28 +145,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات اولین شعبه را برای شرکت جاری در دیتابیس ایجاد می کند
-        /// </summary>
-        /// <param name="branch">اطلاعات اولین شعبه در شرکت جاری</param>
-        /// <returns>در صورت بودن شعبه در بالاترین سطح، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 201 (به معنی ایجاد شدن اطلاعات) را برمی گرداند</returns>
-        // POST: api/branches/init
-        [HttpPost]
-        [Route(BranchApi.BranchInitialUrl)]
-        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Create)]
-        public async Task<IActionResult> PostInitialBranchAsync([FromBody] BranchViewModel branch)
-        {
-            var result = BasicValidationResult(branch);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var outputItem = await _repository.SaveInitialBranchAsync(branch);
-            return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
         /// <summary>

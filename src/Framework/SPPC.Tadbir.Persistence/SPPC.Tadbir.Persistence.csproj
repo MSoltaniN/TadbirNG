@@ -57,6 +57,8 @@
     <Compile Remove="Repository\MetadataDecorator.cs" />
     <Compile Remove="Repository\RequisitionRepository.cs" />
     <Compile Remove="Repository\SimpleLoggingRepository.cs" />
+    <Compile Remove="Repository\WorkflowRepository.cs" />
+    <Compile Remove="Repository\WorkItemRepository.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -93,43 +93,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات اولین دوره مالی را برای شرکت جاری در دیتابیس ایجاد می کند
-        /// </summary>
-        /// <param name="fiscalPeriod">اطلاعات اولین دوره مالی در شرکت جاری</param>
-        /// <returns>در صورت بودن شعبه در بالاترین سطح، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 201 (به معنی ایجاد شدن اطلاعات) را برمی گرداند</returns>
-        // POST: api/fperiods/init
-        [HttpPost]
-        [Route(FiscalPeriodApi.FiscalPeriodInitialUrl)]
-        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
-        public async Task<IActionResult> PostInitialFiscalPeriodAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
-        {
-            var result = await ValidationResultAsync(fiscalPeriod);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var outputItem = await _repository.SaveInitialFiscalPeriodAsync(fiscalPeriod);
-            return StatusCode(StatusCodes.Status201Created, outputItem);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، معتبر بودن اطلاعات اولین دوره مالی را پیش از ایجاد بررسی می کند
-        /// </summary>
-        /// <param name="fiscalPeriod">اطلاعات اولیه دوره مالی جدید برای اعتبارسنجی</param>
-        /// <returns>در صورت بودن شعبه در بالاترین سطح، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 200 را برمی گرداند</returns>
-        // POST: api/fperiods/validation
-        [HttpPost]
-        [Route(FiscalPeriodApi.FiscalPeriodValidationUrl)]
-        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
-        public async Task<IActionResult> PostFiscalPeriodValidationAsync([FromBody]FiscalPeriodViewModel fiscalPeriod)
-        {
-            return await ValidationResultAsync(fiscalPeriod);
-        }
-
-        /// <summary>
         /// به روش آسنکرون، دوره مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر برای اصلاح</param>

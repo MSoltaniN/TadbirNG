@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers
         [HttpGet]
         [Route(VoucherApi.EnvironmentVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVouchersAsync()
         {
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
@@ -190,7 +190,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers/last
         [HttpGet]
         [Route(VoucherApi.LastVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
         public async Task<IActionResult> GetLastVoucherAsync()
         {
             var last = await _repository.GetLastVoucherAsync();
@@ -201,7 +201,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers/count/by-status
         [HttpGet]
         [Route(VoucherApi.VoucherCountByStatusUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetVouchersCountByStatusIdAsync()
         {
             int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
@@ -212,7 +212,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers/no-article
         [HttpGet]
         [Route(VoucherApi.VoucherWithNoArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetVouchersWithNoArticleAsync(DateTime from, DateTime to)
         {
             var (vouchers, itemCount) = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
@@ -225,7 +225,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers/unbalanced
         [HttpGet]
         [Route(VoucherApi.UnbalancedVouchers)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
         {
             var (vouchers, itemCount) = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
@@ -238,7 +238,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers/miss-number
         [HttpGet]
         [Route(VoucherApi.MissingVoucherNumberUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetMissingVoucherNumbersAsync(DateTime from, DateTime to)
         {
             var (voucherNumbers, itemCount) = await _repository.GetMissingVoucherNumbersAsync(GridOptions, from, to);
@@ -798,7 +798,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers/articles/sys-issue/{issueType}
         [HttpGet]
         [Route(VoucherApi.SystemIssueArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetSystemIssueArticlesAsync(string issueType, DateTime from, DateTime to)
         {
             var (articles, itemCount) = await _lineRepository.GetSystemIssueArticlesAsync(
@@ -821,7 +821,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/vouchers/{voucherId:min(1)}/articles
         [HttpPost]
         [Route(VoucherApi.VoucherArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.CreateLine))]
         public async Task<IActionResult> PostNewArticleAsync(
             int voucherId, [FromBody] VoucherLineViewModel article)
         {
@@ -857,7 +857,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/vouchers/articles/{articleId:min(1)}
         [HttpPut]
         [Route(VoucherApi.VoucherArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.EditLine))]
         public async Task<IActionResult> PutModifiedArticleAsync(
             int articleId, [FromBody] VoucherLineViewModel article)
         {
@@ -913,7 +913,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // DELETE: api/vouchers/articles/{articleId:min(1)}
         [HttpDelete]
         [Route(VoucherApi.VoucherArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.DeleteLine))]
         public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
         {
             var result = await ValidateLineDeleteResultAsync(articleId);
@@ -935,7 +935,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/vouchers/articles
         [HttpPut]
         [Route(VoucherApi.AllVoucherArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.DeleteLine))]
         public async Task<IActionResult> PutExistingArticlesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {

@@ -3801,3 +3801,9 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (44, 39, 148, N'BalanceByAccount', N'/finance/balance-by-account', N'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (45, 27, 115, N'LogSettings', N'/admin/log-settings', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.1.978
+UPDATE [Metadata].[Command]
+SET PermissionID = 54
+WHERE TitleKey IN(N'VoucherByNo', N'LastVoucher')
+

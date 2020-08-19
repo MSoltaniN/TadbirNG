@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SPPC.Tadbir.Api
 {
@@ -38,15 +37,5 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a company specified by unique identifier
         /// </summary>
         public const string CompanyUrl = "companies/{companyId:min(1)}";
-
-        /// <summary>
-        /// API client URL for validation a company
-        /// </summary>
-        public const string CompanyValidation = "companies/validation";
-
-        /// <summary>
-        /// API server route URL for validation a company
-        /// </summary>
-        public const string CompanyValidationUrl = "companies/validation";
     }
 }

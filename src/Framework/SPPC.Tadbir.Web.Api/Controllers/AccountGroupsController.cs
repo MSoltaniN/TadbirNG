@@ -83,7 +83,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accgroups/{groupId:min(1)}/accounts
         [HttpGet]
         [Route(AccountGroupApi.GroupLedgerAccountsUrl)]
-        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetGroupLedgerAccountsAsync(int groupId)
         {
             var accounts = await _repository.GetGroupLedgerAccountsAsync(groupId, GridOptions);

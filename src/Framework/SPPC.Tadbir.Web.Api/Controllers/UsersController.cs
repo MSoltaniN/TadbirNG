@@ -167,12 +167,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/users/{userName}/password
         [HttpPut]
         [Route(UserApi.UserPasswordUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
         public async Task<IActionResult> PutUserPasswordAsync(string userName, [FromBody] UserProfileViewModel profile)
         {
             if (profile == null)
             {
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.User));
+            }
+
+            if (userName != profile.UserName)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserName));
             }
 
             if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(profile.UserName))
@@ -188,11 +192,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (profile.NewPassword != profile.RepeatPassword)
             {
                 return BadRequest(_strings.Format(AppStrings.NewAndRepeatPasswordsDontMatch));
-            }
-
-            if (userName != profile.UserName)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserName));
             }
 
             //// NOTE: DO NOT check ModelState here, because plain-text passwords are replaced by hash values.
@@ -262,7 +261,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/users/login/company
         [HttpPut]
         [Route(UserApi.UserCompanyLoginStatusUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> PutUserCompanyLoginStatusAsync([FromBody] CompanyLoginViewModel companyLogin)
         {
             if (companyLogin == null)
@@ -293,10 +291,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(roles);
         }
 
+        // PUT: api/users/{userId:min(1)}/roles
+        [HttpPut]
+        [Route(UserApi.UserRolesUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.AssignRoles)]
+        public async Task<IActionResult> PutModifiedUserRolesAsync(
+            int userId, [FromBody] RelatedItemsViewModel userRoles)
+        {
+            var result = BasicValidationResult(userRoles, userId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveUserRolesAsync(userRoles);
+            return Ok();
+        }
+
         // GET: api/users/specialpassword/{specialpassword}
         [HttpGet]
         [Route(UserApi.CheckSpecialPasswordUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
+        [AuthorizeRequest]
         public async Task<IActionResult> CheckSpecialPasswordAsync(string specialPassword)
         {
             if (specialPassword == null)
@@ -316,30 +331,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.InvalidUserNameMessage));
             }
 
-            // SepecialPassword Hash--temporary
+            // SpecialPassword Hash--temporary
             // if (!CheckPassword(user.SepecialPassword, login.Password))
             if (!CheckPassword("b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576", specialPassword))
             {
                 return BadRequest(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
 
-            return Ok();
-        }
-
-        // PUT: api/users/{userId:min(1)}/roles
-        [HttpPut]
-        [Route(UserApi.UserRolesUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.AssignRoles)]
-        public async Task<IActionResult> PutModifiedUserRolesAsync(
-            int userId, [FromBody] RelatedItemsViewModel userRoles)
-        {
-            var result = BasicValidationResult(userRoles, userId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            await _repository.SaveUserRolesAsync(userRoles);
             return Ok();
         }
 

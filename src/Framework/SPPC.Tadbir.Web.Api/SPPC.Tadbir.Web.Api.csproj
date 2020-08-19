@@ -34,6 +34,7 @@
   </Target>
 
   <ItemGroup>
+    <Compile Remove="Controllers\CartableController.cs" />
     <Compile Remove="Controllers\InventoriesController.cs" />
     <Compile Remove="Controllers\LookupController.Finance.cs" />
     <Compile Remove="Controllers\RequisitionsController.cs" />

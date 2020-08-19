@@ -31,10 +31,4 @@ export class FiscalPeriodApi {
 
     // fperiods/{fpId:min(1)}/roles
     public static FiscalPeriodRoles = environment.BaseUrl + "/fperiods/{0}/roles";
-
-    // fperiods/validation
-    public static FiscalPeriodValidation = environment.BaseUrl + "/fperiods/validation";
-
-    // fperiods/init
-    public static FiscalPeriodInitial = environment.BaseUrl + "/fperiods/init";
 }

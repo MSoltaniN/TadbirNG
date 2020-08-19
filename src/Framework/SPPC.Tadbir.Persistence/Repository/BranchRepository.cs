@@ -278,26 +278,6 @@ namespace SPPC.Tadbir.Persistence
             return isValid;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات اولین شعبه سازمانی یک شرکت  را ایجاد می کند
-        /// </summary>
-        /// <param name="branch">شعبه سازمانی مورد نظر برای ایجاد</param>
-        /// <returns>اطلاعات نمایشی شعبه سازمانی ایجاد شده</returns>
-        public async Task<BranchViewModel> SaveInitialBranchAsync(BranchViewModel branch)
-        {
-            Verify.ArgumentNotNull(branch, "branch");
-            Branch newBranch = default(Branch);
-
-            UnitOfWork.UseSystemContext();
-            CompanyConnection = await BuildConnectionStringAsync(branch.CompanyId);
-            UnitOfWork.UseCompanyContext();
-
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            newBranch = Mapper.Map<Branch>(branch);
-            await InsertAsync(repository, newBranch);
-            return Mapper.Map<BranchViewModel>(newBranch);
-        }
-
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.Branch; }
