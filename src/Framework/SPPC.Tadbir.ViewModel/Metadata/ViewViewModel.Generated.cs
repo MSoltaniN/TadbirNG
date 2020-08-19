@@ -38,11 +38,18 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         public int Id { get; set; }
 
         /// <summary>
-        /// نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی
+        /// نام موجودیت یا نمای اطلاعاتی
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// نام یکتای موجودیت یا نمای اطلاعاتی
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public virtual string EntityName { get; set; }
 
         /// <summary>
         /// نوع موجودیت مرتبط با این نمای اطلاعاتی : پایه، عملیاتی و غیره

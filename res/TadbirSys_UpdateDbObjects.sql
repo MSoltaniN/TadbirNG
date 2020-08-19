@@ -3807,3 +3807,50 @@ UPDATE [Metadata].[Command]
 SET PermissionID = 54
 WHERE TitleKey IN(N'VoucherByNo', N'LastVoucher')
 
+-- 1.1.979
+ALTER TABLE [Metadata].[View]
+ADD [EntityName] NVARCHAR(64) NOT NULL
+CONSTRAINT DF_Metadata_View_EntityName DEFAULT N'TBA'
+WITH VALUES;
+GO
+
+UPDATE [Metadata].[View]
+SET [EntityName] = [Name]
+WHERE ViewID >= 1 AND ViewID <= 14
+
+UPDATE [Metadata].[View]
+SET [EntityName] = N'Journal'
+WHERE [Name] LIKE 'Journal%'
+
+UPDATE [Metadata].[View]
+SET [EntityName] = N'AccountBook'
+WHERE [Name] LIKE 'AccountBook%'
+
+UPDATE [Metadata].[View]
+SET [EntityName] = N'CurrencyBook'
+WHERE [Name] LIKE 'CurrencyBook%'
+
+UPDATE [Metadata].[View]
+SET [EntityName] = N'TestBalance'
+WHERE [Name] LIKE 'TestBalance%'
+
+UPDATE [Metadata].[View]
+SET [EntityName] = N'DetailAccountBalance'
+WHERE [Name] LIKE 'DetailAccountBalance%'
+
+UPDATE [Metadata].[View]
+SET [EntityName] = N'CostCenterBalance'
+WHERE [Name] LIKE 'CostCenterBalance%'
+
+UPDATE [Metadata].[View]
+SET [EntityName] = N'ProjectBalance'
+WHERE [Name] LIKE 'ProjectBalance%'
+
+UPDATE [Metadata].[View]
+SET [EntityName] = N'ProfitLoss'
+WHERE [Name] LIKE 'ProfitLoss%'
+
+UPDATE [Metadata].[View]
+SET [EntityName] = [Name]
+WHERE ViewID IN(30,31,41,42,58,59,60,61,63)
+

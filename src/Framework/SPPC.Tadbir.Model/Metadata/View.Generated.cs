@@ -32,9 +32,14 @@ namespace SPPC.Tadbir.Model.Metadata
         }
 
         /// <summary>
-        /// نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی
+        /// نام موجودیت یا نمای اطلاعاتی
         /// </summary>
         public virtual string Name { get; set; }
+
+        /// <summary>
+        /// نام یکتای موجودیت یا نمای اطلاعاتی
+        /// </summary>
+        public virtual string EntityName { get; set; }
 
         /// <summary>
         /// نوع موجودیت مرتبط با این نمای اطلاعاتی : پایه، عملیاتی و غیره
