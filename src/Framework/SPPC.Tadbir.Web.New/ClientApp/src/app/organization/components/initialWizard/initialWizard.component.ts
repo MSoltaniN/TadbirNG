@@ -173,13 +173,13 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
    * @param dataItem اطلاعات شرکت
    */
   companyValidation(dataItem: CompanyDb) {
-    this.companyService.companyValidation(CompanyApi.CompanyValidation, dataItem).subscribe(res => {
-      this.company = dataItem;
-      this.dialogRef.close();
-      this.openBranchEditor(new BranchInfo());
-    }, error => {
-      this.dialogModel.errorMessage = error;
-    })
+    //this.companyService.companyValidation(CompanyApi.CompanyValidation, dataItem).subscribe(res => {
+    //  this.company = dataItem;
+    //  this.dialogRef.close();
+    //  this.openBranchEditor(new BranchInfo());
+    //}, error => {
+    //  this.dialogModel.errorMessage = error;
+    //})
   }
 
   /**
@@ -187,14 +187,14 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
    * @param dataItem اطلاعات دوره مالی
    */
   fiscalPeriodValidation(dataItem: FiscalPeriod) {
-    this.fiscalPeriodService.fiscalPeriodValidation(FiscalPeriodApi.FiscalPeriodValidation, dataItem).subscribe(res => {
-      this.fiscalPeriod = dataItem;
+    //this.fiscalPeriodService.fiscalPeriodValidation(FiscalPeriodApi.FiscalPeriodValidation, dataItem).subscribe(res => {
+    //  this.fiscalPeriod = dataItem;
 
-      this.insertCompany();
+    //  this.insertCompany();
 
-    }, error => {
-      this.dialogModel.errorMessage = error;
-    })
+    //}, error => {
+    //  this.dialogModel.errorMessage = error;
+    //})
   }
 
   /**
@@ -210,30 +210,30 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
    * ذخیره شعبه
    * */
   insertBranch(company: any) {
-    if (this.branch) {
-      this.branch.companyId = company.id;
-      this.branchService.insert<Branch>(BranchApi.BranchInitial, this.branch).subscribe(res => {
-        this.insertFiscalPeriod(company, res);
-      })
-    }
-    else {
-      this.insertFiscalPeriod(company, undefined);
-    }
+    //if (this.branch) {
+    //  this.branch.companyId = company.id;
+    //  this.branchService.insert<Branch>(BranchApi.BranchInitial, this.branch).subscribe(res => {
+    //    this.insertFiscalPeriod(company, res);
+    //  })
+    //}
+    //else {
+    //  this.insertFiscalPeriod(company, undefined);
+    //}
   }
 
   /**
    * ذخیره دوره مالی
    * */
   insertFiscalPeriod(company: any, branch: any) {
-    if (this.fiscalPeriod) {
-      this.fiscalPeriod.companyId = company.id;
-      this.fiscalPeriodService.insert<FiscalPeriod>(FiscalPeriodApi.FiscalPeriodInitial, this.fiscalPeriod).subscribe(res => {
-        this.emitData(company, branch, res);
-      })
-    }
-    else {
-      this.emitData(company, branch, undefined);
-    }
+    //if (this.fiscalPeriod) {
+    //  this.fiscalPeriod.companyId = company.id;
+    //  this.fiscalPeriodService.insert<FiscalPeriod>(FiscalPeriodApi.FiscalPeriodInitial, this.fiscalPeriod).subscribe(res => {
+    //    this.emitData(company, branch, res);
+    //  })
+    //}
+    //else {
+    //  this.emitData(company, branch, undefined);
+    //}
   }
 
   /**

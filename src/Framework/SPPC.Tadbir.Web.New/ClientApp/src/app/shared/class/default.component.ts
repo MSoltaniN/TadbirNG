@@ -23,7 +23,9 @@ export class DefaultComponent extends BaseComponent {
   public metadataKey: string;
 
   /** array of property.this variable is a container for metadata */
-  public properties: Map<string, Array<Property>>;
+  public properties: Map<string, any>;
+
+  public baseEntityName: string;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService,
@@ -38,9 +40,10 @@ export class DefaultComponent extends BaseComponent {
 
     var propertiesValue = this.bStorageService.getMetadata(this.metadataKey);
     this.properties = new Map<string, Array<Property>>();
-    if (!propertiesValue) {
-      //this.properties = new Map<string, Array<Property>>();
-      this.properties.set(this.metadataKey, JSON.parse(propertiesValue));
+    if (!propertiesValue && propertiesValue != null) {
+      var result = JSON.parse(propertiesValue);
+      this.baseEntityName = result.entityName;
+      this.properties.set(this.metadataKey, result.columns);
     }
   }
 
@@ -137,25 +140,48 @@ export class DefaultComponent extends BaseComponent {
         this.metadataService.getMetaDataById(viewId).finally(() => {
           if (!this.properties.get(metaDataName)) return undefined;
           var result = this.properties.get(metaDataName);
-          return result;
+          return result.columns;
         }).subscribe((res1: any) => {
-          this.properties.set(metaDataName, res1.columns);
-          this.bStorageService.setMetadata(metaDataName, res1.columns);
+          this.properties.set(metaDataName, res1);
+          this.bStorageService.setMetadata(metaDataName, res1);
           var result = this.properties.get(metaDataName);
-          return result;
+          this.baseEntityName = result.entityName;
+          return result.columns;
         });
       }
       else {
         
-        if (!this.properties) this.properties = new Map<string, Array<Property>>();
+        if (!this.properties) this.properties = new Map<string, any>();
         var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, arr);
+        this.properties.set(metaDataName, arr.columns);
         if (!this.properties.get(metaDataName)) return undefined;
         var result = this.properties.get(metaDataName);
-        return result;
+        this.baseEntityName = result.entityName;
+        return result.columns;
       }
 
     }
+  }
+
+  async getEntityName(viewId: number): Promise<string> {
+    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
+
+    if (viewId) {
+      var item: string | null;
+      item = this.bStorageService.getMetadata(metaDataName);
+      if (!item) {
+        const response = await this.metadataService.getMetaDataById(viewId).toPromise();
+        let res: any = response;        
+        this.bStorageService.setMetadata(metaDataName, res);                
+        return res.entityName;
+      }
+      else {
+        if (!this.properties) this.properties = new Map<string, any>();
+        var result = JSON.parse(item != null ? item.toString() : "");
+        return result.entityName;
+      }
+    }
+
   }
 
   async getAllMetaDataByViewIdAsync(viewId: number): Promise<Array<Property>> {
@@ -168,17 +194,19 @@ export class DefaultComponent extends BaseComponent {
         const response = await this.metadataService.getMetaDataById(viewId).toPromise();
         let res: any = response;
         this.properties.set(metaDataName, res.columns);
-        this.bStorageService.setMetadata(metaDataName, res.columns);
-        var result = this.properties.get(metaDataName);
-        return result;
+        this.bStorageService.setMetadata(metaDataName, res);
+        //var result = this.properties.get(metaDataName);
+        this.baseEntityName = res.entityName;
+        return res.columns;
       }
       else {       
-        if (!this.properties) this.properties = new Map<string, Array<Property>>();
-        var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, arr);
+        if (!this.properties) this.properties = new Map<string, any>();
+        var result = JSON.parse(item != null ? item.toString() : "");
+        this.properties.set(metaDataName, result.columns);
         if (!this.properties.get(metaDataName)) return undefined;
-        var result = this.properties.get(metaDataName);
-        return result;
+        //var result = this.properties.get(metaDataName);
+        this.baseEntityName = result.entityName;
+        return result.columns;
       }
     }
 
