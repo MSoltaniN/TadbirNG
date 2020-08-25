@@ -5,7 +5,7 @@ import { State, SortDescriptor } from "@progress/kendo-data-query";
 import { BaseComponent } from "./base.component"
 import { Property } from "./metadata/property"
 import { Filter } from './filter';
-import { Renderer2, Injectable, Inject, Optional } from "@angular/core";
+import { Renderer2, Injectable, Inject, Optional, ViewChild } from "@angular/core";
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
 import {  BrowserStorageService,SessionKeys } from '@sppc/shared/services/browserStorage.service';
@@ -14,9 +14,9 @@ import { SettingService } from '@sppc/config/service/settings.service';
 import { ViewTreeConfig } from '@sppc/config/models';
 
 
-@Injectable()
-export class DefaultComponent extends BaseComponent {
 
+@Injectable()
+export class DefaultComponent extends BaseComponent {  
 
   public translateService: TranslateService
 

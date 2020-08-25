@@ -1,5 +1,5 @@
 import { DefaultComponent } from '@sppc/shared/class/default.component';
-import { Injectable, OnDestroy, Renderer2, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Injectable, OnDestroy, Renderer2, ChangeDetectorRef, NgZone, EventEmitter, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { GridService, BrowserStorageService, MetaDataService } from '../services';
@@ -15,13 +15,13 @@ import { MessageType } from '@sppc/env/environment';
 @Injectable()
 export class ListComponent extends DefaultComponent implements OnDestroy {
 
-  advanceFilters: FilterExpression;
-  advanceFilterList: Array<FilterRow>;  
-  selectedGroupFilter: number; 
+  public advanceFilters: FilterExpression;
+  public advanceFilterList: Array<FilterRow>;
+  public selectedGroupFilter: number;
 
   dialogService: DialogService;
   permission: Permissions;
-  filterDialogRef: DialogRef;
+  filterDialogRef: DialogRef;  
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public gridService: GridService,
     public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
@@ -33,10 +33,9 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   }
 
 
-  showAdvanceFilterComponent() {
-    debugger;
+  showAdvanceFilterComponent(viewId: number, onOk: EventEmitter<any>, onCancel: EventEmitter<any>) {    
     (async () => {
-      var entityName = await this.getEntityName(this.viewId);
+      var entityName = await this.getEntityName(viewId);
       var code = <number>GlobalPermissions.Filter
       if (!this.isAccess(entityName, code)) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
@@ -53,10 +52,10 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
         filterDialogModel.filters = this.advanceFilterList;
         filterDialogModel.gFilterSelected = this.selectedGroupFilter;
       }
-      filterDialogModel.viewId = this.viewId;
+      filterDialogModel.viewId = viewId;
       this.filterDialogRef.content.instance.cancel.subscribe((res) => {
         this.filterDialogRef.close();
-        this.onAdvanceFilterCancel();
+        onCancel.emit();
       });
 
       this.filterDialogRef.content.instance.result.subscribe((res) => {
@@ -64,23 +63,55 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
         this.advanceFilterList = res.filterList;
         this.selectedGroupFilter = res.gFilterSelected;
         this.filterDialogRef.close();
-        this.onAdvanceFilterOk();
+        onOk.emit();
       });
 
     })();
   }
 
+  showReportManager(viewId: number, parent: any, reportSetting: any, reportManager: any) {     
+    (async () => {
+      var entityName = await this.getEntityName(viewId);
+      var code = <number>GlobalPermissions.Print
+      if (!this.isAccess(entityName, code)) {
+        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+        return;
+      }
+
+      if (this.validateReport(parent)) {
+        if (!reportManager.directShowReport()) {
+          this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+          reportSetting.showReportSetting(parent.gridColumns, parent.entityTypeName, this.viewId, reportManager);
+        }
+      }     
+    })(); 
+  }
+
+  showQuickReportSetting(viewId: number, parent: any, reportSetting: any, reportManager:any) {    
+    (async () => {
+      var entityName = await this.getEntityName(viewId);
+      var code = <number>GlobalPermissions.Print
+      if (!this.isAccess(entityName, code)) {
+        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+        return;
+      }
+
+      if (this.validateReport(parent)) {
+        reportSetting.showReportSetting(parent.gridColumns, parent.entityTypeName, this.viewId, reportManager);
+      }
+    })();    
+  }
+
+  public validateReport(parent: any) {
+    if (!parent.rowData || parent.rowData.total == 0) {
+      this.showMessage(this.getText("Report.QuickReportValidate"));
+      return false;
+    }
+    return true;
+  }
+
   ngOnDestroy(): void {
     throw new Error("Method not implemented.");
   }
-
-  /**این تابع بعد از ایونت دکمه اوکی فرم فیلتر پیشرفته فراخوانی میشود*/
-  public onAdvanceFilterOk(): any {
-    /*console.log('base onGenerateParameters')*/
-  }
-
-  /**این تابع بعد از ایونت دکمه کنسل فرم فیلتر پیشرفته فراخوانی میشود*/
-  public onAdvanceFilterCancel(): any {
-    /*console.log('base onGenerateParameters')*/
-  }
+  
 }
