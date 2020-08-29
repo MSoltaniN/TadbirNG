@@ -15,8 +15,8 @@ import { Injectable } from "@angular/core";
 export enum GlobalPermissions {
   View = 1,
   Filter = 2,
-  Print = 32,
-  Export = 40
+  Print = 4,
+  Export = 8
 }
 
 
