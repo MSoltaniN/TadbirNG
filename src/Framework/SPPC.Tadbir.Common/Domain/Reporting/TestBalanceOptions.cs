@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Values
+namespace SPPC.Tadbir.Domain
 {
     /// <summary>
     /// داده نمایشی برای گزینه های عملیاتی در تراز آزمایشی

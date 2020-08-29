@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {

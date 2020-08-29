@@ -14,7 +14,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Metadata;
-using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Persistence
 {

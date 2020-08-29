@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Values
+namespace SPPC.Tadbir.Domain
 {
     /// <summary>
     /// مقادیر تعریف شده برای محدوده دسترسی به موجودیت ها در سطح شعبه های سازمانی را تعریف می کند

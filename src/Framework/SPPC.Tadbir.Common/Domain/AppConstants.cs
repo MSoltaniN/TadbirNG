@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Values
+namespace SPPC.Tadbir.Domain
 {
     /// <summary>
     /// Provides definitions for special-purpose constant values.

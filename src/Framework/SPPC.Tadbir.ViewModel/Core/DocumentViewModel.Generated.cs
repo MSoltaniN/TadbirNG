@@ -13,7 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {

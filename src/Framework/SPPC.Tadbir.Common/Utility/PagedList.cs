@@ -4,7 +4,7 @@ using System.Linq;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 
-namespace SPPC.Tadbir.Helpers
+namespace SPPC.Tadbir.Utility
 {
     /// <summary>
     /// کلاس کمکی برای نگهداری یک فهرست اطلاعاتی صفحه بندی شده و تعداد کل سطرهای آن

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Values
+namespace SPPC.Tadbir.Domain
 {
     /// <summary>
     /// اطلاعات کلی یکی از انواع تراز آزمایشی را نگهداری می کند

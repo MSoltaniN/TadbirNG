@@ -1,7 +1,7 @@
 ﻿using System;
 using SPPC.Framework.Presentation;
 
-namespace SPPC.Tadbir.Values
+namespace SPPC.Tadbir.Domain
 {
     /// <summary>
     /// اطلاعات پارامترهای مورد نیاز در گزارش دفتر حساب را نگهداری می کند

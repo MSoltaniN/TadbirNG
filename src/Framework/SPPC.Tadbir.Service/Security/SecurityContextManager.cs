@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Service

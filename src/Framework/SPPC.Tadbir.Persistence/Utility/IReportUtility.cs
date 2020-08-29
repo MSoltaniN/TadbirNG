@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 
 namespace SPPC.Tadbir.Persistence.Utility

@@ -3,8 +3,8 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Service;
-using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Web.Api.Extensions
 {

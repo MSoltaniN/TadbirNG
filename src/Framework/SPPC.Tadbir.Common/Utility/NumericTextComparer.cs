@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Helpers
+namespace SPPC.Tadbir.Utility
 {
     /// <summary>
     /// امکان مقایسه عددی دو مقدار متنی را فراهم می کند

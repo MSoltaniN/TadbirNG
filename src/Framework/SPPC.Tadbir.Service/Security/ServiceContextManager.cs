@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Web;
 using Microsoft.AspNetCore.Http;
 using SPPC.Framework.Common;
-using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Service

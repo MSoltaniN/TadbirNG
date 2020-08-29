@@ -1,7 +1,7 @@
 ﻿using System;
 using SPPC.Framework.Presentation;
 
-namespace SPPC.Tadbir.Values
+namespace SPPC.Tadbir.Domain
 {
     /// <summary>
     /// پارامترهای مورد نیاز برای محاسبه گزارش سود و زیان را نگهداری می کند

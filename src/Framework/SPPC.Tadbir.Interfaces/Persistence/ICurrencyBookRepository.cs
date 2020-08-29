@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence

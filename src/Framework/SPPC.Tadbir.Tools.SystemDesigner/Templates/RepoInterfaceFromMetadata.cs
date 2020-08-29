@@ -39,7 +39,7 @@ var plural = GetPluralName(entity.Name);
             #line default
             #line hidden
             this.Write("using System;\r\nusing System.Collections.Generic;\r\nusing System.Threading.Tasks;\r\n" +
-                    "using SPPC.Framework.Presentation;\r\nusing SPPC.Tadbir.Helpers;\r\n");
+                    "using SPPC.Framework.Presentation;\r\nusing SPPC.Tadbir.Utility;\r\n");
             
             #line 16 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoInterfaceFromMetadata.tt"
  if(entity.Area != "Auth")

@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
-using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Auth
 {

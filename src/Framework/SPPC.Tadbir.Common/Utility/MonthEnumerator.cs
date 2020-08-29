@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace SPPC.Tadbir.Helpers
+namespace SPPC.Tadbir.Utility
 {
     /// <summary>
     /// امکان شمارش ماه های موجود در یک محدوده تاریخی را فراهم می کند

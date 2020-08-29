@@ -1,6 +1,6 @@
 ﻿using System;
 using SPPC.Framework.Service;
-using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Service
 {

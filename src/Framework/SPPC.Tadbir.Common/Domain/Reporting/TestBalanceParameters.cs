@@ -2,7 +2,7 @@
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 
-namespace SPPC.Tadbir.Values
+namespace SPPC.Tadbir.Domain
 {
     /// <summary>
     /// اطلاعات پارامترهای مورد نیاز در گزارش تراز آزمایشی را نگهداری می کند

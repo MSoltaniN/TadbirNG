@@ -1,5 +1,5 @@
 ﻿using System;
-using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Extensions
 {

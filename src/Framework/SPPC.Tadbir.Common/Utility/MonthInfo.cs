@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Helpers
+namespace SPPC.Tadbir.Utility
 {
     /// <summary>
     /// اطلاعات ابتدا و انتهای یکی از ماه های یک تقویم را نگهداری می کند

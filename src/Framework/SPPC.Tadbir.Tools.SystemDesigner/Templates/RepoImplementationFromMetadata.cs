@@ -41,7 +41,7 @@ var camelCase = entity.Name.CamelCase();
             #line hidden
             this.Write("using System;\r\nusing System.Linq;\r\nusing System.Threading.Tasks;\r\nusing Microsoft" +
                     ".EntityFrameworkCore;\r\nusing SPPC.Framework.Common;\r\nusing SPPC.Framework.Presen" +
-                    "tation;\r\nusing SPPC.Tadbir.Helpers;\r\nusing SPPC.Tadbir.Model.");
+                    "tation;\r\nusing SPPC.Tadbir.Utility;\r\nusing SPPC.Tadbir.Model.");
             
             #line 19 "C:\Users\m_soltani\Source\Repos\tadbirng\src\Framework\SPPC.Tadbir.Tools.SystemDesigner\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
