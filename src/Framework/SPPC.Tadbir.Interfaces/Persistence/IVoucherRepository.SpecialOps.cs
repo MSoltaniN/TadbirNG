@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="type">مأخذ سند ویژه مورد نظر</param>
         /// <returns>در صورتی که سند ویژه صادر و ثبت شده باشد، مقدار بولی "درست" و
         /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
-        Task<bool> IsCurrentSpecialVoucherCheckedAsync(VoucherOriginValue type);
+        Task<bool> IsCurrentSpecialVoucherCheckedAsync(VoucherOriginId type);
 
         /// <summary>
         /// به روش آسنکرون، سند افتتاحیه مربوط به دوره مالی جاری را خوانده و برمی گرداند

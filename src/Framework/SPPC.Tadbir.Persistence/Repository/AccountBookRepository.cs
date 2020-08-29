@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Persistence
         {
             _system = system;
             _factory = factory;
-            _report = _factory.Create(ViewName.Account);
+            _report = _factory.Create(ViewId.Account);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace SPPC.Tadbir.Persistence
 
             var itemCriteria = await GetItemCriteriaAsync(parameters.ViewId, parameters.ItemId);
             await AddSpecialBookItemsAsync(
-                book, itemCriteria, VoucherOriginValue.OpeningVoucher, parameters.FromDate, parameters.ToDate,
+                book, itemCriteria, VoucherOriginId.OpeningVoucher, parameters.FromDate, parameters.ToDate,
                 parameters.GridOptions, parameters.IsByBranch);
 
             var monthEnum = new MonthEnumerator(parameters.FromDate, parameters.ToDate, new PersianCalendar());
@@ -278,10 +278,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await AddSpecialBookItemsAsync(
-                book, itemCriteria, VoucherOriginValue.ClosingTempAccounts, parameters.FromDate, parameters.ToDate,
+                book, itemCriteria, VoucherOriginId.ClosingTempAccounts, parameters.FromDate, parameters.ToDate,
                 parameters.GridOptions, parameters.IsByBranch);
             await AddSpecialBookItemsAsync(
-                book, itemCriteria, VoucherOriginValue.ClosingVoucher, parameters.FromDate, parameters.ToDate,
+                book, itemCriteria, VoucherOriginId.ClosingVoucher, parameters.FromDate, parameters.ToDate,
                 parameters.GridOptions, parameters.IsByBranch);
 
             book.SetItems(book.Items.Apply(parameters.GridOptions, false).ToArray());
@@ -291,16 +291,16 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task AddSpecialBookItemsAsync(
             AccountBookViewModel book, Expression<Func<VoucherLine, bool>> itemCriteria,
-            VoucherOriginValue origin, DateTime from, DateTime to, GridOptions gridOptions, bool byBranch = false)
+            VoucherOriginId origin, DateTime from, DateTime to, GridOptions gridOptions, bool byBranch = false)
         {
-            if (origin != VoucherOriginValue.NormalVoucher)
+            if (origin != VoucherOriginId.NormalVoucher)
             {
                 var date = await _report.GetSpecialVoucherDateAsync(origin);
                 if (date.HasValue && date.Value.IsBetween(from, to))
                 {
                     var lines = await Repository
                         .GetAllOperationQuery<VoucherLine>(
-                            ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
+                            ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                         .Where(line => line.Voucher.VoucherOriginId == (int)origin)
                         .Where(itemCriteria)
                         .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
@@ -355,7 +355,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(
-                    ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
+                    ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                 .Where(line => line.Voucher.Date.IsBetween(from, to))
                 .Where(itemCriteria)
                 .OrderBy(line => line.Voucher.Date)
@@ -378,19 +378,19 @@ namespace SPPC.Tadbir.Persistence
         private IQueryable<TreeEntity> GetAccountItemQuery(int viewId)
         {
             IQueryable<TreeEntity> items = null;
-            if (viewId == ViewName.Account)
+            if (viewId == ViewId.Account)
             {
                 items = Repository.GetAllQuery<Account>(viewId);
             }
-            else if (viewId == ViewName.DetailAccount)
+            else if (viewId == ViewId.DetailAccount)
             {
                 items = Repository.GetAllQuery<DetailAccount>(viewId);
             }
-            else if (viewId == ViewName.CostCenter)
+            else if (viewId == ViewId.CostCenter)
             {
                 items = Repository.GetAllQuery<CostCenter>(viewId);
             }
-            else if (viewId == ViewName.Project)
+            else if (viewId == ViewId.Project)
             {
                 items = Repository.GetAllQuery<Project>(viewId);
             }

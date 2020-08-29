@@ -6,7 +6,7 @@ namespace SPPC.Tadbir.Domain
     /// <summary>
     /// مقادیر سیستمی را برای وضعیت ثبتی یک مستند اداری تعریف می کند
     /// </summary>
-    public enum DocumentStatusValue
+    public enum DocumentStatusId
     {
         /// <summary>
         /// وضعیت نامشخص برای مستند اداری

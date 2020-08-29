@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.TestBalance, (int)TestBalancePermissions.View)]
         public async Task<IActionResult> GetTestBalanceTypesLookupAsync()
         {
-            var lookup = await _repository.GetBalanceTypesLookupAsync(ViewName.Account);
+            var lookup = await _repository.GetBalanceTypesLookupAsync(ViewId.Account);
             Localize(lookup);
             return Json(lookup);
         }
@@ -170,7 +170,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var gridOptions = GridOptions ?? new GridOptions();
             var parameters = _repository.BuildParameters(
-                ViewName.Account, from, to, mode, format, gridOptions, byBranch, options);
+                ViewId.Account, from, to, mode, format, gridOptions, byBranch, options);
             var balance = default(TestBalanceViewModel);
             switch (mode)
             {

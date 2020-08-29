@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<int> GetUnbalancedVoucherCountAsync()
         {
             return await _repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(v => !v.IsBalanced)
                 .CountAsync();
         }
@@ -137,7 +137,7 @@ namespace SPPC.Tadbir.Persistence
             decimal grossSales = await GetGrossSalesAsync(fromDate, toDate);
             var deficitAccounts = await _setRepository.GetSalesDeficitAccountsAsync();
             var amounts = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
                 .Where(line => deficitAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode))
                     && line.Voucher.Date.IsBetween(fromDate, toDate))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
@@ -150,7 +150,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var salesAccounts = await _setRepository.GetAccountSetItemsAsync(AccountCollectionId.Sales);
             var amounts = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
                 .Where(line => salesAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode))
                     && line.Voucher.Date.IsBetween(fromDate, toDate))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
@@ -163,7 +163,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accounts = await _setRepository.GetAccountSetItemsAsync(collectionId);
             return await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
                 .Where(line => accounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();

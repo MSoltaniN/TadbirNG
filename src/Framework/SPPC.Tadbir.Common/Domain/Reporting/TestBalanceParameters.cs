@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public TestBalanceParameters()
         {
-            ViewId = ViewName.Account;
+            ViewId = Domain.ViewId.Account;
             Mode = TestBalanceMode.Level;
             Format = TestBalanceFormat.SixColumn;
             IsByBranch = false;

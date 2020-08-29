@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null)
         {
             var query = GetVoucherLinesQuery(voucherId);
-            query = Repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
+            query = Repository.ApplyRowFilter(ref query, ViewId.VoucherLine);
             var lines = await query
                 .Select(line => Mapper.Map<VoucherLineViewModel>(line))
                 .ToListAsync();
@@ -84,7 +84,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var query = repository.GetEntityQuery()
                 .Where(line => line.Voucher.Id == voucherId);
-            query = Repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
+            query = Repository.ApplyRowFilter(ref query, ViewId.VoucherLine);
             return await query
                 .Select(line => Mapper.Map<TViewModel>(line))
                 .Apply(gridOptions, false)
@@ -419,7 +419,7 @@ namespace SPPC.Tadbir.Persistence
             List<VoucherLine> result = new List<VoucherLine>();
 
             var lines = await Repository.GetAllOperationQuery<VoucherLine>(
-                ViewName.VoucherLine,
+                ViewId.VoucherLine,
                 line => line.Voucher,
                 line => line.Account,
                 line => line.DetailAccount,
@@ -465,7 +465,7 @@ namespace SPPC.Tadbir.Persistence
         private IQueryable<VoucherLine> GetArticlesAsync(DateTime from, DateTime to)
         {
             var lines = Repository.GetAllOperationQuery<VoucherLine>(
-                ViewName.VoucherLine,
+                ViewId.VoucherLine,
                 line => line.Voucher,
                 line => line.Account,
                 line => line.DetailAccount,

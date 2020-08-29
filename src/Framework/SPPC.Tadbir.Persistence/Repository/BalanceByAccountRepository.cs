@@ -43,25 +43,25 @@ namespace SPPC.Tadbir.Persistence.Repository
             var result = new BalanceByAccountViewModel();
             switch (parameters.ViewId)
             {
-                case ViewName.Account:
+                case ViewId.Account:
                     {
                         result = await ReportByAccountAsync(parameters);
                         break;
                     }
 
-                case ViewName.DetailAccount:
+                case ViewId.DetailAccount:
                     {
                         result = await ReportByDetailAccountAsync(parameters);
                         break;
                     }
 
-                case ViewName.CostCenter:
+                case ViewId.CostCenter:
                     {
                         result = await ReportByCostCenterAsync(parameters);
                         break;
                     }
 
-                case ViewName.Project:
+                case ViewId.Project:
                     {
                         result = await ReportByProjectAsync(parameters);
                         break;
@@ -119,7 +119,7 @@ namespace SPPC.Tadbir.Persistence.Repository
 
             if (parameters.IsSelectedDetailAccount)
             {
-                if (parameters.ViewId == ViewName.DetailAccount)
+                if (parameters.ViewId == ViewId.DetailAccount)
                 {
                     query = query.Where(line => line.DetailId.HasValue);
                 }
@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Persistence.Repository
 
             if (parameters.IsSelectedCostCenter)
             {
-                if (parameters.ViewId == ViewName.CostCenter)
+                if (parameters.ViewId == ViewId.CostCenter)
                 {
                     query = query.Where(line => line.CostCenterId.HasValue);
                 }
@@ -139,7 +139,7 @@ namespace SPPC.Tadbir.Persistence.Repository
 
             if (parameters.IsSelectedProject)
             {
-                if (parameters.ViewId == ViewName.Project)
+                if (parameters.ViewId == ViewId.Project)
                 {
                     query = query.Where(line => line.ProjectId.HasValue);
                 }
@@ -503,7 +503,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         private async Task<IList<BalanceByAccountItemViewModel>> GetVoucherLinesAsync(BalanceByAccountParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                 line => line.Voucher,
                 line => line.Branch);
 
@@ -513,19 +513,19 @@ namespace SPPC.Tadbir.Persistence.Repository
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.ClosingVoucher);
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingVoucher);
             }
 
             if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.ClosingTempAccounts);
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingTempAccounts);
             }
 
             if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.OpeningVoucher);
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.OpeningVoucher);
             }
 
             IList<BalanceByAccountItemViewModel> lines = null;
@@ -661,7 +661,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             var groups = new List<IGrouping<string, BalanceByAccountItemViewModel>>();
 
-            if (parameters.IsSelectedAccount && parameters.ViewId != ViewName.Account)
+            if (parameters.IsSelectedAccount && parameters.ViewId != ViewId.Account)
             {
                 if (parameters.AccountId.HasValue)
                 {
@@ -741,7 +741,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             var groups = new List<IGrouping<string, BalanceByAccountItemViewModel>>();
 
-            if (parameters.IsSelectedDetailAccount && parameters.ViewId != ViewName.DetailAccount)
+            if (parameters.IsSelectedDetailAccount && parameters.ViewId != ViewId.DetailAccount)
             {
                 if (parameters.DetailAccountId.HasValue)
                 {
@@ -821,7 +821,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             var groups = new List<IGrouping<string, BalanceByAccountItemViewModel>>();
 
-            if (parameters.IsSelectedCostCenter && parameters.ViewId != ViewName.CostCenter)
+            if (parameters.IsSelectedCostCenter && parameters.ViewId != ViewId.CostCenter)
             {
                 if (parameters.CostCenterId.HasValue)
                 {
@@ -901,7 +901,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             var groups = new List<IGrouping<string, BalanceByAccountItemViewModel>>();
 
-            if (parameters.IsSelectedProject && parameters.ViewId != ViewName.Project)
+            if (parameters.IsSelectedProject && parameters.ViewId != ViewId.Project)
             {
                 if (parameters.ProjectId.HasValue)
                 {
@@ -1005,25 +1005,25 @@ namespace SPPC.Tadbir.Persistence.Repository
 
         private Func<BalanceByAccountItemViewModel, string> GetAccountGroupSelector(int groupLevel)
         {
-            int codeLength = _report.GetLevelCodeLength(ViewName.Account, groupLevel);
+            int codeLength = _report.GetLevelCodeLength(ViewId.Account, groupLevel);
             return item => item.AccountFullCode.Substring(0, codeLength);
         }
 
         private Func<BalanceByAccountItemViewModel, string> GetDetailAccountGroupSelector(int groupLevel)
         {
-            int codeLength = _report.GetLevelCodeLength(ViewName.DetailAccount, groupLevel);
+            int codeLength = _report.GetLevelCodeLength(ViewId.DetailAccount, groupLevel);
             return item => item.DetailAccountFullCode.Substring(0, codeLength);
         }
 
         private Func<BalanceByAccountItemViewModel, string> GetCostCenterGroupSelector(int groupLevel)
         {
-            int codeLength = _report.GetLevelCodeLength(ViewName.CostCenter, groupLevel);
+            int codeLength = _report.GetLevelCodeLength(ViewId.CostCenter, groupLevel);
             return item => item.CostCenterFullCode.Substring(0, codeLength);
         }
 
         private Func<BalanceByAccountItemViewModel, string> GetProjectGroupSelector(int groupLevel)
         {
-            int codeLength = _report.GetLevelCodeLength(ViewName.Project, groupLevel);
+            int codeLength = _report.GetLevelCodeLength(ViewId.Project, groupLevel);
             return item => item.ProjectFullCode.Substring(0, codeLength);
         }
 
@@ -1048,7 +1048,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             IEnumerable<BalanceByAccountItemViewModel> lines,
             BalanceByAccountParameters parameters)
         {
-            if (parameters.ViewId != ViewName.Account)
+            if (parameters.ViewId != ViewId.Account)
             {
                 if (parameters.AccountId.HasValue)
                 {
@@ -1129,12 +1129,12 @@ namespace SPPC.Tadbir.Persistence.Repository
             string fullCode,
             BalanceByAccountParameters parameters)
         {
-            if (parameters.ViewId == ViewName.Account ||
+            if (parameters.ViewId == ViewId.Account ||
                 (parameters.IsSelectedAccount && !parameters.AccountId.HasValue && !string.IsNullOrEmpty(line.AccountFullCode)))
             {
                 string accountFullCode = string.Empty;
 
-                if (parameters.ViewId == ViewName.Account)
+                if (parameters.ViewId == ViewId.Account)
                 {
                     accountFullCode = fullCode;
                 }
@@ -1142,7 +1142,7 @@ namespace SPPC.Tadbir.Persistence.Repository
                 {
                     if (parameters.AccountLevel.Value < line.AccountLevel)
                     {
-                        int codeLength = _report.GetLevelCodeLength(ViewName.Account, parameters.AccountLevel.Value);
+                        int codeLength = _report.GetLevelCodeLength(ViewId.Account, parameters.AccountLevel.Value);
                         accountFullCode = line.AccountFullCode.Substring(0, codeLength);
                     }
                 }
@@ -1165,12 +1165,12 @@ namespace SPPC.Tadbir.Persistence.Repository
             string fullCode,
             BalanceByAccountParameters parameters)
         {
-            if (parameters.ViewId == ViewName.DetailAccount ||
+            if (parameters.ViewId == ViewId.DetailAccount ||
                 (parameters.IsSelectedDetailAccount && !parameters.DetailAccountId.HasValue && !string.IsNullOrEmpty(line.DetailAccountFullCode)))
             {
                 string detailAccFullCode = string.Empty;
 
-                if (parameters.ViewId == ViewName.DetailAccount)
+                if (parameters.ViewId == ViewId.DetailAccount)
                 {
                     detailAccFullCode = fullCode;
                 }
@@ -1178,7 +1178,7 @@ namespace SPPC.Tadbir.Persistence.Repository
                 {
                     if (parameters.DetailAccountLevel.Value < line.DetailAccountLevel)
                     {
-                        int codeLength = _report.GetLevelCodeLength(ViewName.DetailAccount, parameters.DetailAccountLevel.Value);
+                        int codeLength = _report.GetLevelCodeLength(ViewId.DetailAccount, parameters.DetailAccountLevel.Value);
                         detailAccFullCode = line.DetailAccountFullCode.Substring(0, codeLength);
                     }
                 }
@@ -1201,12 +1201,12 @@ namespace SPPC.Tadbir.Persistence.Repository
             string fullCode,
             BalanceByAccountParameters parameters)
         {
-            if (parameters.ViewId == ViewName.CostCenter ||
+            if (parameters.ViewId == ViewId.CostCenter ||
                 (parameters.IsSelectedCostCenter && !parameters.CostCenterId.HasValue && !string.IsNullOrEmpty(line.CostCenterFullCode)))
             {
                 string cCenterFullCode = string.Empty;
 
-                if (parameters.ViewId == ViewName.CostCenter)
+                if (parameters.ViewId == ViewId.CostCenter)
                 {
                     cCenterFullCode = fullCode;
                 }
@@ -1214,7 +1214,7 @@ namespace SPPC.Tadbir.Persistence.Repository
                 {
                     if (parameters.CostCenterLevel.Value < line.CostCenterLevel)
                     {
-                        int codeLength = _report.GetLevelCodeLength(ViewName.CostCenter, parameters.CostCenterLevel.Value);
+                        int codeLength = _report.GetLevelCodeLength(ViewId.CostCenter, parameters.CostCenterLevel.Value);
                         cCenterFullCode = line.CostCenterFullCode.Substring(0, codeLength);
                     }
                 }
@@ -1237,12 +1237,12 @@ namespace SPPC.Tadbir.Persistence.Repository
             string fullCode,
             BalanceByAccountParameters parameters)
         {
-            if (parameters.ViewId == ViewName.Project ||
+            if (parameters.ViewId == ViewId.Project ||
                 (parameters.IsSelectedProject && !parameters.ProjectId.HasValue && !string.IsNullOrEmpty(line.ProjectFullCode)))
             {
                 string projectFullCode = string.Empty;
 
-                if (parameters.ViewId == ViewName.Project)
+                if (parameters.ViewId == ViewId.Project)
                 {
                     projectFullCode = fullCode;
                 }
@@ -1250,7 +1250,7 @@ namespace SPPC.Tadbir.Persistence.Repository
                 {
                     if (parameters.ProjectLevel.Value < line.ProjectLevel)
                     {
-                        int codeLength = _report.GetLevelCodeLength(ViewName.Project, parameters.ProjectLevel.Value);
+                        int codeLength = _report.GetLevelCodeLength(ViewId.Project, parameters.ProjectLevel.Value);
                         projectFullCode = line.ProjectFullCode.Substring(0, codeLength);
                     }
                 }
@@ -1287,7 +1287,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             return await Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine)
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
                 .Where(line => line.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Where(lineCriteria)
                 .Where(itemCriteria)

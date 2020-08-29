@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Persistence
                 var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Check, AppStrings.BalanceLabel));
             }
-            else if (voucher.StatusId != (int)DocumentStatusValue.NotChecked)
+            else if (voucher.StatusId != (int)DocumentStatusId.NotChecked)
             {
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Check));
@@ -114,11 +114,11 @@ namespace SPPC.Tadbir.Persistence
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.UndoConfirm));
             }
-            else if (voucher.StatusId == (int)DocumentStatusValue.NotChecked)
+            else if (voucher.StatusId == (int)DocumentStatusId.NotChecked)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.Check));
             }
-            else if (voucher.StatusId == (int)DocumentStatusValue.Finalized)
+            else if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.UndoFinalize));
             }
@@ -134,7 +134,7 @@ namespace SPPC.Tadbir.Persistence
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Confirm));
             }
-            else if (voucher.StatusId == (int)DocumentStatusValue.NotChecked)
+            else if (voucher.StatusId == (int)DocumentStatusId.NotChecked)
             {
                 var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Confirm, AppStrings.Check));
@@ -191,12 +191,12 @@ namespace SPPC.Tadbir.Persistence
         private string ValidateFinalize(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (voucher.StatusId == (int)DocumentStatusValue.Finalized)
+            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Finalize));
             }
-            else if (voucher.StatusId == (int)DocumentStatusValue.NotChecked)
+            else if (voucher.StatusId == (int)DocumentStatusId.NotChecked)
             {
                 var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Finalize, AppStrings.Check));
@@ -209,7 +209,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string error = String.Empty;
             var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
-            if (voucher.StatusId != (int)DocumentStatusValue.Finalized)
+            if (voucher.StatusId != (int)DocumentStatusId.Finalized)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoFinalize, AppStrings.Finalize));
             }
@@ -232,7 +232,7 @@ namespace SPPC.Tadbir.Persistence
         private string ValidateGroupUndoConfirmApprove(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (voucher.StatusId == (int)DocumentStatusValue.Finalized)
+            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
                 error = Context.Localize(AppStrings.CantGroupConfirmFinalizedItems);
             }

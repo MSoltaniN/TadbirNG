@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Framework.Service.Security;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -622,7 +623,7 @@ namespace SPPC.Tadbir.Persistence
                 login.FiscalPeriodName = fiscalPeriod?.Name;
                 login.InventoryMode = fiscalPeriod != null
                     ? fiscalPeriod.InventoryMode
-                    : (int)InventoryModeEnum.Perpetual;
+                    : (int)InventoryMode.Perpetual;
 
                 var branchRepo = UnitOfWork.GetAsyncRepository<Branch>();
                 var branch = await branchRepo.GetByIDAsync(branchId);

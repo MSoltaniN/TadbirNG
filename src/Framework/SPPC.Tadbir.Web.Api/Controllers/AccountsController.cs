@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
             Verify.ArgumentNotNull(config, "config");
             _config = config;
-            _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewName.Account).Result;
+            _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewId.Account).Result;
         }
 
         /// <summary>

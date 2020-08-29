@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Model.Finance
             ModifierName = String.Empty;
             ConfirmerName = String.Empty;
             ApproverName = String.Empty;
-            VoucherOriginId = (int)VoucherOriginValue.NormalVoucher;
+            VoucherOriginId = (int)Domain.VoucherOriginId.NormalVoucher;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
             Lines = new List<VoucherLine>();

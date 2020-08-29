@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var vouchers = await Repository
                 .GetAllOperationQuery<Voucher>(
-                    ViewName.Voucher, v => v.Lines, v => v.Status, v => v.Branch, v => v.Origin)
+                    ViewId.Voucher, v => v.Lines, v => v.Status, v => v.Branch, v => v.Origin)
                 .Where(item => item.SubjectType == 0)
                 .OrderBy(item => item.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
@@ -103,7 +103,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo)
         {
             var voucherByNo = await Repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(voucher => voucher.No == voucherNo)
                 .FirstOrDefaultAsync();
             return voucherByNo != null
@@ -118,7 +118,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> GetFirstVoucherAsync()
         {
             var firstVoucher = await Repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .OrderBy(voucher => voucher.No)
                 .FirstOrDefaultAsync();
             return firstVoucher != null
@@ -134,7 +134,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo)
         {
             var previous = await Repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(voucher => voucher.No < currentNo)
                 .OrderByDescending(voucher => voucher.No)
                 .FirstOrDefaultAsync();
@@ -151,7 +151,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> GetNextVoucherAsync(int currentNo)
         {
             var next = await Repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(voucher => voucher.No > currentNo)
                 .OrderBy(voucher => voucher.No)
                 .FirstOrDefaultAsync();
@@ -167,7 +167,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> GetLastVoucherAsync()
         {
             var lastVoucher = await Repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher)
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .OrderByDescending(voucher => voucher.No)
                 .FirstOrDefaultAsync();
             return lastVoucher != null
@@ -185,7 +185,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
             where TViewModel : class, new()
         {
-            return await Repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
+            return await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(item => item.SubjectType == 0)
                 .Select(item => Mapper.Map<TViewModel>(item))
                 .Apply(gridOptions, false)
@@ -197,7 +197,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="status">وضعیت ثبتی مورد نظر برای سند</param>
         /// <returns>تعداد سندهای دوره مالی جاری با وضعیت ثبتی مورد نظر</returns>
-        public async Task<int> GetCountByStatusAsync(DocumentStatusValue status)
+        public async Task<int> GetCountByStatusAsync(DocumentStatusId status)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             return await repository.GetCountByCriteriaAsync(
@@ -211,13 +211,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>محدوده سندهای قابل دسترسی توسط کاربر جاری</returns>
         public async Task<NumberedItemRangeViewModel> GetVoucherRangeInfoAsync()
         {
-            var query = Repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
+            var query = Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .OrderBy(voucher => voucher.No);
             var first = await query.FirstOrDefaultAsync();
             var last = await query.LastOrDefaultAsync();
             return new NumberedItemRangeViewModel()
             {
-                ViewId = ViewName.Voucher,
+                ViewId = ViewId.Voucher,
                 FirstNo = (first != null) ? first.No : 0,
                 LastNo = (last != null) ? last.No : 0
             };
@@ -259,7 +259,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucherView.Id == 0)
             {
                 voucher = Mapper.Map<Voucher>(voucherView);
-                voucher.StatusId = (int)DocumentStatusValue.NotChecked;
+                voucher.StatusId = (int)DocumentStatusId.NotChecked;
                 voucher.IssuedById = UserContext.Id;
                 voucher.ModifiedById = UserContext.Id;
                 voucher.IssuerName = voucher.ModifierName = displayName;
@@ -361,12 +361,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
         /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
-        public async Task SetVoucherStatusAsync(int voucherId, DocumentStatusValue status)
+        public async Task SetVoucherStatusAsync(int voucherId, DocumentStatusId status)
         {
-            Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
+            Verify.EnumValueIsDefined(typeof(DocumentStatusId), "status", (int)status);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var voucher = await repository.GetByIDAsync(voucherId);
-            var oldStatusVoucher = (DocumentStatusValue)voucher.StatusId;
+            var oldStatusVoucher = (DocumentStatusId)voucher.StatusId;
             if (voucher != null)
             {
                 voucher.StatusId = (int)status;
@@ -421,9 +421,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
         /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
-        public async Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status)
+        public async Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusId status)
         {
-            Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
+            Verify.EnumValueIsDefined(typeof(DocumentStatusId), "status", (int)status);
             if (items.Count() == 0)
             {
                 return;
@@ -433,7 +433,7 @@ namespace SPPC.Tadbir.Persistence
             var first = await repository.GetByIDAsync(items.First());
             if (first != null)
             {
-                var oldStatus = (DocumentStatusValue)first.StatusId;
+                var oldStatus = (DocumentStatusId)first.StatusId;
 
                 foreach (int item in items)
                 {
@@ -490,7 +490,7 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions, DateTime from, DateTime to)
         {
             var vouchers = Repository.GetAllOperationQuery<Voucher>(
-                ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
+                ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Where(voucher => voucher.Lines.Count == 0 && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
@@ -508,7 +508,7 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions, DateTime from, DateTime to)
         {
             var vouchers = Repository.GetAllOperationQuery<Voucher>(
-                ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
+                ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Where(voucher => !voucher.IsBalanced && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
@@ -526,7 +526,7 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions, DateTime from, DateTime to)
         {
             var missNumberList = new List<NumberListViewModel>();
-            var vouchers = await Repository.GetAllOperationQuery<Voucher>(ViewName.Voucher)
+            var vouchers = await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(voucher => voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
                 .Apply(gridOptions, false)
@@ -626,7 +626,7 @@ namespace SPPC.Tadbir.Persistence
             return (vouchersList, await filteredList.CountAsync());
         }
 
-        private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginValue origin)
+        private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginId origin)
         {
             var subject = SubjectType.Accounting;
             string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
@@ -646,7 +646,7 @@ namespace SPPC.Tadbir.Persistence
                 ModifiedById = UserContext.Id,
                 ModifierName = fullName,
                 No = no + 1,
-                StatusId = (int)DocumentStatusValue.NotChecked,
+                StatusId = (int)DocumentStatusId.NotChecked,
                 SubjectType = (short)subject,
                 Type = (short)VoucherType.NormalVoucher,
                 VoucherOriginId = (int)origin
@@ -708,14 +708,14 @@ namespace SPPC.Tadbir.Persistence
                 var repository = UnitOfWork.GetAsyncRepository<Document>();
                 var voucherRepository = UnitOfWork.GetAsyncRepository<Voucher>();
                 var document = await repository.GetSingleByCriteriaAsync(
-                    doc => doc.EntityId == voucher.Id && doc.Type.Id == (int)DocumentTypeValue.Voucher,
+                    doc => doc.EntityId == voucher.Id && doc.Type.Id == (int)Domain.DocumentTypeId.Voucher,
                     doc => doc.Actions);
                 if (document == null)
                 {
                     document = new Document()
                     {
                         EntityId = voucher.Id,
-                        TypeId = (int)DocumentTypeValue.Voucher
+                        TypeId = (int)Domain.DocumentTypeId.Voucher
                     };
                     var action = new DocumentAction()
                     {

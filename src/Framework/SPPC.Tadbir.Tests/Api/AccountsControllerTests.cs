@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         {
             _mockLocalizer.Setup(loc => loc[It.IsAny<string>()])
                 .Returns(new LocalizedString("Name", "Value"));
-            _mockConfig.Setup(cfg => cfg.GetViewTreeConfigByViewAsync(ViewName.Account))
+            _mockConfig.Setup(cfg => cfg.GetViewTreeConfigByViewAsync(ViewId.Account))
                 .ReturnsAsync(new ViewTreeFullConfig());
             _controller = new AccountsController(
                 _mockRepository.Object, _mockConfig.Object, _mockLocalizer.Object)

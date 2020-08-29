@@ -74,7 +74,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="origin">مأخذ مورد نظر برای محاسبه مانده</param>
         /// <returns>مانده حساب مشخص شده به صورت علامتدار : عدد مثبت نمایانگر مانده بدهکار
         /// و عدد منفی نمایانگر مانده بستانکار است</returns>
-        public async Task<decimal> GetBalanceAsync(int itemId, VoucherOriginValue origin)
+        public async Task<decimal> GetBalanceAsync(int itemId, VoucherOriginId origin)
         {
             decimal balance = 0.0M;
             var account = await GetItemAsync(itemId);
@@ -168,7 +168,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         }
 
         private async Task<decimal> GetBalanceByVoucherOriginAsync(
-            VoucherOriginValue origin, Expression<Func<VoucherLine, bool>> itemCriteria)
+            VoucherOriginId origin, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             return await GetBalanceAsync(
                 line => line.Voucher.VoucherOriginId == (int)origin, itemCriteria);

@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="origin">یکی از مأخذهای تعریف شده برای سندهای سیستمی</param>
         /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
-        Task<DateTime?> GetSpecialVoucherDateAsync(VoucherOriginValue origin);
+        Task<DateTime?> GetSpecialVoucherDateAsync(VoucherOriginId origin);
 
         /// <summary>
         /// آرتیکل های داده شده را بر حسب یکی از سطوح درختی مولفه حساب گروه بندی می کند

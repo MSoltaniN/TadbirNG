@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null)
         {
             var costCenters = await Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
+                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children)
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
                 .ToListAsync();
             await ReadAsync(gridOptions);
@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync()
         {
             var costCenters = await Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
+                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children)
                 .Where(cc => cc.ParentId == null)
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .ToListAsync();
@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Persistence
                 return null;
             }
 
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.CostCenter);
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.CostCenter);
             var treeConfig = fullConfig.Current;
             if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
             {
@@ -116,7 +116,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetCostCenterChildrenAsync(int costCenterId)
         {
             var children = await Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
+                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children)
                 .Where(cc => cc.ParentId == costCenterId)
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .ToListAsync();
@@ -352,7 +352,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             int count = await repository.GetCountByCriteriaAsync(cc => cc.Level == level);
-            await Config.SaveTreeLevelUsageAsync(ViewName.CostCenter, level, count);
+            await Config.SaveTreeLevelUsageAsync(ViewId.CostCenter, level, count);
         }
 
         private async Task CascadeUpdateFullCodeAsync(int costCenterId)

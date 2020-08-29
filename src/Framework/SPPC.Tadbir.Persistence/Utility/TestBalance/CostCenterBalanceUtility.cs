@@ -22,12 +22,12 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync()
         {
-            return await _helper.GetLevelBalanceTypesAsync(ViewName.CostCenter);
+            return await _helper.GetLevelBalanceTypesAsync(ViewId.CostCenter);
         }
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync()
         {
-            return await _helper.GetChildBalanceTypesAsync(ViewName.CostCenter);
+            return await _helper.GetChildBalanceTypesAsync(ViewId.CostCenter);
         }
 
         public IQueryable<VoucherLine> IncludeVoucherLineReference(IQueryable<VoucherLine> query)
@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 : await GetBalanceAsync(itemId, parameters.FromNo.Value);
             if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
-                balance += await GetBalanceAsync(itemId, VoucherOriginValue.OpeningVoucher);
+                balance += await GetBalanceAsync(itemId, VoucherOriginId.OpeningVoucher);
             }
 
             return balance;
@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         protected override Func<TModel, string> GetGroupSelector<TModel>(int groupLevel)
         {
-            int codeLength = GetLevelCodeLength(ViewName.CostCenter, groupLevel);
+            int codeLength = GetLevelCodeLength(ViewId.CostCenter, groupLevel);
             return item => item.CostCenterFullCode.Substring(0, codeLength);
         }
 

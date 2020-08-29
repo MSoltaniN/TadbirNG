@@ -334,10 +334,6 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => String.Format("{0} {1}", src.CreatedBy.Person.FirstName, src.CreatedBy.Person.LastName)))
                 .ForMember(
-                    dest => dest.Title,
-                    opts => opts.MapFrom(
-                        src => WorkItemTitle.ToLocalValue(src.Title)))
-                .ForMember(
                     dest => dest.DocumentId,
                     opts => opts.MapFrom(
                         src => (src.Documents.Count > 0) ? src.Documents[0].Document.Id : 0))
@@ -377,15 +373,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Date,
                     opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()))
-                .ForMember(
-                    dest => dest.DocumentType,
-                    opts => opts.MapFrom(
-                        src => DocumentTypeName.ToLocalValue(src.Document.Type.Name)))
-                .ForMember(
-                    dest => dest.Action,
-                    opts => opts.MapFrom(
-                        src => DocumentActionName.ToLocalValue(src.Action)));
+                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
 
             mapperConfig.CreateMap<Dictionary<string, object>, WorkflowInstanceViewModel>()
                 .ForMember(dest => dest.InstanceId, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "InstanceId")))

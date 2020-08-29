@@ -91,7 +91,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="status">وضعیت ثبتی مورد نظر برای سند</param>
         /// <returns>تعداد سندهای دوره مالی جاری با وضعیت ثبتی مورد نظر</returns>
-        Task<int> GetCountByStatusAsync(DocumentStatusValue status);
+        Task<int> GetCountByStatusAsync(DocumentStatusId status);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات محدوده سندهای قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
@@ -143,7 +143,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
         /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
-        Task SetVoucherStatusAsync(int voucherId, DocumentStatusValue status);
+        Task SetVoucherStatusAsync(int voucherId, DocumentStatusId status);
 
         /// <summary>
         /// به روش آسنکرون، وضعیت تایید سند مشخص شده را تغییر می دهد
@@ -166,7 +166,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای تغییر وضعیت</param>
         /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
-        Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusValue status);
+        Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusId status);
 
         /// <summary>
         /// به روش آسنکرون، وضعیت تأیید یا تصویب اسناد مالی مشخص شده را تغییر می دهد

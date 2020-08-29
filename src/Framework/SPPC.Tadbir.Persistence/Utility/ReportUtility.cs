@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="origin">یکی از مأخذهای تعریف شده برای سندهای سیستمی</param>
         /// <returns>تاریخ سند مورد نظر یا اگر سند مورد نظر پیدا نشود، بدون مقدار</returns>
-        public async Task<DateTime?> GetSpecialVoucherDateAsync(VoucherOriginValue origin)
+        public async Task<DateTime?> GetSpecialVoucherDateAsync(VoucherOriginId origin)
         {
             DateTime? voucherDate = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -294,7 +294,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         protected virtual Func<TModel, string> GetGroupSelector<TModel>(int groupLevel)
             where TModel : class, IAccountView
         {
-            int codeLength = GetLevelCodeLength(ViewName.Account, groupLevel);
+            int codeLength = GetLevelCodeLength(ViewId.Account, groupLevel);
             return item => item.AccountFullCode.Substring(0, codeLength);
         }
 

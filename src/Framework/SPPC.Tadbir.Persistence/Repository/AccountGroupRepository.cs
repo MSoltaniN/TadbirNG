@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions = null)
         {
             var accounts = await Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => acc.GroupId == groupId)
                 .Select(acc => Mapper.Map<AccountViewModel>(acc))
                 .ToListAsync();
@@ -172,7 +172,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var item in accountGroups)
             {
                 item.ChildCount = await Repository
-                    .GetAllQuery<Account>(ViewName.Account)
+                    .GetAllQuery<Account>(ViewId.Account)
                     .Where(acc => acc.GroupId == item.Id)
                     .CountAsync();
             }

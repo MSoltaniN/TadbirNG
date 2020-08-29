@@ -38,13 +38,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="type">مأخذ سند ویژه مورد نظر</param>
         /// <returns>در صورتی که سند ویژه صادر و ثبت شده باشد، مقدار بولی "درست" و
         /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
-        public async Task<bool> IsCurrentSpecialVoucherCheckedAsync(VoucherOriginValue type)
+        public async Task<bool> IsCurrentSpecialVoucherCheckedAsync(VoucherOriginId type)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             int closingCount = await repository.GetCountByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
                 v.VoucherOriginId == (int)type &&
-                v.StatusId >= (int)DocumentStatusValue.Checked);
+                v.StatusId >= (int)DocumentStatusId.Checked);
             return closingCount == 1;
         }
 
@@ -58,7 +58,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات نمایشی سند افتتاحیه در دوره مالی جاری</returns>
         public async Task<VoucherViewModel> GetOpeningVoucherAsync(bool isQuery = false, bool isDefault = true)
         {
-            var openingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginValue.OpeningVoucher);
+            var openingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginId.OpeningVoucher);
             if (openingVoucher == null)
             {
                 if (isQuery)
@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             int count = await repository.GetCountByCriteriaAsync(
                 v => v.FiscalPeriodId == previousId &&
-                v.VoucherOriginId == (int)VoucherOriginValue.ClosingVoucher);
+                v.VoucherOriginId == (int)VoucherOriginId.ClosingVoucher);
             return count == 1;
         }
 
@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات نمایشی سند بستن حساب های موقت در دوره مالی جاری</returns>
         public async Task<VoucherViewModel> GetClosingTempAccountsVoucherAsync()
         {
-            var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginValue.ClosingTempAccounts);
+            var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginId.ClosingTempAccounts);
             if (closingVoucher == null)
             {
                 var balanceItems = new List<AccountBalanceViewModel>();
@@ -115,7 +115,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> GetPeriodicClosingTempAccountsVoucherAsync(
             IList<AccountBalanceViewModel> balanceItems)
         {
-            var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginValue.ClosingTempAccounts);
+            var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginId.ClosingTempAccounts);
             if (closingVoucher == null)
             {
                 if (balanceItems.Count == 0)
@@ -137,7 +137,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات نمایشی سند اختتامیه در دوره مالی جاری</returns>
         public async Task<VoucherViewModel> GetClosingVoucherAsync()
         {
-            var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginValue.ClosingVoucher);
+            var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginId.ClosingVoucher);
             if (closingVoucher == null)
             {
                 closingVoucher = await IssueClosingVoucherAsync();
@@ -191,7 +191,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<Voucher> GetCurrentSpecialVoucherAsync(VoucherOriginValue origin)
+        private async Task<Voucher> GetCurrentSpecialVoucherAsync(VoucherOriginId origin)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var openingVoucher = await repository.GetSingleByCriteriaAsync(
@@ -478,7 +478,7 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 openingVoucher = await GetNewVoucherAsync(
-                    AppStrings.OpeningVoucher, VoucherOriginValue.OpeningVoucher);
+                    AppStrings.OpeningVoucher, VoucherOriginId.OpeningVoucher);
                 if (isDefault)
                 {
                     var branches = await GetBranchIdsAsync();
@@ -500,7 +500,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var lastClosing = await repository.GetSingleByCriteriaAsync(
                 v => v.FiscalPeriodId == previousId &&
-                v.VoucherOriginId == (int)VoucherOriginValue.ClosingVoucher,
+                v.VoucherOriginId == (int)VoucherOriginId.ClosingVoucher,
                 v => v.Lines);
             return lastClosing;
         }
@@ -519,7 +519,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Voucher> IssueOpeningFromLastBalanceAsync(Voucher lastClosingVoucher)
         {
             var openingVoucher = await GetNewVoucherAsync(
-                AppStrings.OpeningVoucher, VoucherOriginValue.OpeningVoucher);
+                AppStrings.OpeningVoucher, VoucherOriginId.OpeningVoucher);
             var branches = await GetBranchIdsAsync();
             foreach (int branchId in branches)
             {
@@ -707,7 +707,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Voucher> IssueClosingVoucherAsync()
         {
             var closingVoucher = await GetNewVoucherAsync(
-                AppStrings.ClosingVoucher, VoucherOriginValue.ClosingVoucher);
+                AppStrings.ClosingVoucher, VoucherOriginId.ClosingVoucher);
             var branches = await GetBranchIdsAsync();
             foreach (int branchId in branches)
             {
@@ -765,7 +765,7 @@ namespace SPPC.Tadbir.Persistence
             IList<AccountBalanceViewModel> balanceItems)
         {
             var closingVoucher = await GetNewVoucherAsync(
-                AppStrings.ClosingTempAccounts, VoucherOriginValue.ClosingTempAccounts);
+                AppStrings.ClosingTempAccounts, VoucherOriginId.ClosingTempAccounts);
             var branches = await GetBranchIdsAsync();
             foreach (int branchId in branches)
             {

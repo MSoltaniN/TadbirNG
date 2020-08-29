@@ -309,7 +309,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task InitializeDefaultAccounts()
         {
-            var accountTreeConfig = await GetViewTreeConfigByViewAsync(ViewName.Account);
+            var accountTreeConfig = await GetViewTreeConfigByViewAsync(ViewId.Account);
 
             var jsonPath = Path.Combine(_webRootPath, @"static\defaultAccount.json");
             var defaultAcc = JsonHelper.To<List<DefaultAccountViewModel>>(File.ReadAllText(jsonPath));

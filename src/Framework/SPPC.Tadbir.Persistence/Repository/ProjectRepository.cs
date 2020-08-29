@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null)
         {
             var projects = await Repository
-                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
+                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
                 .ToListAsync();
             await ReadAsync(gridOptions);
@@ -83,7 +83,7 @@ namespace SPPC.Tadbir.Persistence
                 return null;
             }
 
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.Project);
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.Project);
             var treeConfig = fullConfig.Current;
             if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
             {
@@ -102,7 +102,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync()
         {
             var projects = await Repository
-                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
+                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
                 .Where(prj => prj.ParentId == null)
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
                 .ToListAsync();
@@ -117,7 +117,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetProjectChildrenAsync(int projectId)
         {
             var children = await Repository
-                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
+                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
                 .Where(prj => prj.ParentId == projectId)
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
                 .ToListAsync();
@@ -353,7 +353,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             int count = await repository.GetCountByCriteriaAsync(prj => prj.Level == level);
-            await Config.SaveTreeLevelUsageAsync(ViewName.Project, level, count);
+            await Config.SaveTreeLevelUsageAsync(ViewId.Project, level, count);
         }
 
         private async Task CascadeUpdateFullCodeAsync(int projectId)

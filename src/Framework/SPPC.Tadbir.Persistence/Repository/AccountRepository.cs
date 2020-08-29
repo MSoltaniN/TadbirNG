@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
         {
             var accounts = await Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Select(item => Mapper.Map<AccountViewModel>(item))
                 .ToListAsync();
             await ReadAsync(gridOptions);
@@ -88,7 +88,7 @@ namespace SPPC.Tadbir.Persistence
                 return null;
             }
 
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.Account);
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.Account);
             var treeConfig = fullConfig.Current;
             if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
             {
@@ -117,7 +117,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsAsync()
         {
             var accounts = await Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => acc.ParentId == null)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .ToListAsync();
@@ -132,7 +132,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsByGroupIdAsync(int groupId)
         {
             var accounts = await Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => acc.ParentId == null && acc.GroupId == groupId)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .ToListAsync();
@@ -147,7 +147,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountChildrenAsync(int accountId)
         {
             var children = await Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => acc.ParentId == accountId)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .ToListAsync();
@@ -601,7 +601,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             int count = await repository.GetCountByCriteriaAsync(acc => acc.Level == level);
-            await Config.SaveTreeLevelUsageAsync(ViewName.Account, level, count);
+            await Config.SaveTreeLevelUsageAsync(ViewId.Account, level, count);
         }
 
         private async Task CascadeUpdateFullCodeAsync(int accountId)

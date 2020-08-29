@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountBookByRowAsync(
             int accountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.Account, accountId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.Account, accountId, from, to);
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/voucher-sum
@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountBookVoucherSumAsync(
             int accountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.Account, accountId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.Account, accountId, from, to);
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/daily-sum
@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountBookDailySumAsync(
             int accountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.Account, accountId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.Account, accountId, from, to);
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/monthly-sum
@@ -64,7 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountBookMonthlySumAsync(
             int accountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.Account, accountId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.Account, accountId, from, to);
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/by-row/by-branch
@@ -74,7 +74,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountBookByRowByBranchAsync(
             int accountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.Account, accountId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.Account, accountId, from, to, true);
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/voucher-sum/by-branch
@@ -84,7 +84,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountBookVoucherSumByBranchAsync(
             int accountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.Account, accountId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.Account, accountId, from, to, true);
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/daily-sum/by-branch
@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountBookDailySumByBranchAsync(
             int accountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.Account, accountId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.Account, accountId, from, to, true);
         }
 
         // GET: api/accbook/account/{accountId:min(1)}/monthly-sum/by-branch
@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountBookMonthlySumByBranchAsync(
             int accountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.Account, accountId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.Account, accountId, from, to, true);
         }
 
         #endregion
@@ -118,7 +118,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDetailAccountBookByRowAsync(
             int faccountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.DetailAccount, faccountId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.DetailAccount, faccountId, from, to);
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/voucher-sum
@@ -128,7 +128,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDetailAccountBookVoucherSumAsync(
             int faccountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.DetailAccount, faccountId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.DetailAccount, faccountId, from, to);
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/daily-sum
@@ -138,7 +138,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDetailAccountBookDailySumAsync(
             int faccountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.DetailAccount, faccountId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.DetailAccount, faccountId, from, to);
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/monthly-sum
@@ -148,7 +148,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDetailAccountBookMonthlySumAsync(
             int faccountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.DetailAccount, faccountId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.DetailAccount, faccountId, from, to);
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/by-row/by-branch
@@ -158,7 +158,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDetailAccountBookByRowByBranchAsync(
             int faccountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.DetailAccount, faccountId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.DetailAccount, faccountId, from, to, true);
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/voucher-sum/by-branch
@@ -168,7 +168,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDetailAccountBookVoucherSumByBranchAsync(
             int faccountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.DetailAccount, faccountId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.DetailAccount, faccountId, from, to, true);
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/daily-sum/by-branch
@@ -178,7 +178,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDetailAccountBookDailySumByBranchAsync(
             int faccountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.DetailAccount, faccountId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.DetailAccount, faccountId, from, to, true);
         }
 
         // GET: api/accbook/faccount/{faccountId:min(1)}/monthly-sum/by-branch
@@ -188,7 +188,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDetailAccountBookMonthlySumByBranchAsync(
             int faccountId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.DetailAccount, faccountId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.DetailAccount, faccountId, from, to, true);
         }
 
         #endregion
@@ -202,7 +202,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterBookByRowAsync(
             int ccenterId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.CostCenter, ccenterId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.CostCenter, ccenterId, from, to);
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/voucher-sum
@@ -212,7 +212,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterBookVoucherSumAsync(
             int ccenterId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.CostCenter, ccenterId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.CostCenter, ccenterId, from, to);
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/daily-sum
@@ -222,7 +222,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterBookDailySumAsync(
             int ccenterId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.CostCenter, ccenterId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.CostCenter, ccenterId, from, to);
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/monthly-sum
@@ -232,7 +232,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterBookMonthlySumAsync(
             int ccenterId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.CostCenter, ccenterId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.CostCenter, ccenterId, from, to);
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/by-row/by-branch
@@ -242,7 +242,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterBookByRowByBranchAsync(
             int ccenterId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.CostCenter, ccenterId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.CostCenter, ccenterId, from, to, true);
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/voucher-sum/by-branch
@@ -252,7 +252,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterBookVoucherSumByBranchAsync(
             int ccenterId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.CostCenter, ccenterId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.CostCenter, ccenterId, from, to, true);
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/daily-sum/by-branch
@@ -262,7 +262,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterBookDailySumByBranchAsync(
             int ccenterId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.CostCenter, ccenterId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.CostCenter, ccenterId, from, to, true);
         }
 
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/monthly-sum/by-branch
@@ -272,7 +272,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCostCenterBookMonthlySumByBranchAsync(
             int ccenterId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.CostCenter, ccenterId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.CostCenter, ccenterId, from, to, true);
         }
 
         #endregion
@@ -286,7 +286,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetProjectBookByRowAsync(
             int projectId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.Project, projectId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.Project, projectId, from, to);
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/voucher-sum
@@ -296,7 +296,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetProjectBookVoucherSumAsync(
             int projectId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.Project, projectId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.Project, projectId, from, to);
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/daily-sum
@@ -306,7 +306,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetProjectBookDailySumAsync(
             int projectId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.Project, projectId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.Project, projectId, from, to);
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/monthly-sum
@@ -316,7 +316,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetProjectBookMonthlySumAsync(
             int projectId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.Project, projectId, from, to);
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.Project, projectId, from, to);
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/by-row/by-branch
@@ -326,7 +326,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetProjectBookByRowByBranchAsync(
             int projectId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewName.Project, projectId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.Project, projectId, from, to, true);
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/voucher-sum/by-branch
@@ -336,7 +336,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetProjectBookVoucherSumByBranchAsync(
             int projectId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewName.Project, projectId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.Project, projectId, from, to, true);
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/daily-sum/by-branch
@@ -346,7 +346,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetProjectBookDailySumByBranchAsync(
             int projectId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewName.Project, projectId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.Project, projectId, from, to, true);
         }
 
         // GET: api/accbook/project/{projectId:min(1)}/monthly-sum/by-branch
@@ -356,7 +356,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetProjectBookMonthlySumByBranchAsync(
             int projectId, DateTime? from, DateTime? to)
         {
-            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewName.Project, projectId, from, to, true);
+            return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.Project, projectId, from, to, true);
         }
 
         #endregion

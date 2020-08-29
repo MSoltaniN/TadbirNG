@@ -77,7 +77,6 @@ namespace SPPC.Tadbir.Service
             if (!response.Succeeded)
             {
                 response.Result = ServiceResult.DeleteFailed;
-                response.Hint = Strings.HowToDeleteHint;
             }
 
             return response;

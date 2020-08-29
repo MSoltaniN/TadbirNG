@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accCollection = await Repository
                 .GetAllOperationQuery<AccountCollectionAccount>(
-                    ViewName.AccountCollectionAccount, col => col.Account, col => col.Account.Children)
+                    ViewId.AccountCollectionAccount, col => col.Account, col => col.Account.Children)
                 .Where(col => col.CollectionId == collectionId &&
                     col.BranchId == UserContext.BranchId &&
                     col.FiscalPeriodId == UserContext.FiscalPeriodId)

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Values
 {
@@ -15,7 +13,6 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public ProfitLossParameters()
         {
-            BalanceItems = new List<StartEndBalanceViewModel>();
         }
 
         /// <summary>
@@ -52,10 +49,5 @@ namespace SPPC.Tadbir.Values
         /// گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات
         /// </summary>
         public GridOptions GridOptions { get; set; }
-
-        /// <summary>
-        /// مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری برای حساب های موجودی کالا - سیستم ادواری
-        /// </summary>
-        public List<StartEndBalanceViewModel> BalanceItems { get; }
     }
 }

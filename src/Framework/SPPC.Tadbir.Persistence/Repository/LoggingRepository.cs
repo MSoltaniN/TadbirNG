@@ -55,16 +55,16 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="newStatus">وضعیت ثبتی جدید برای موجودیت عملیاتی</param>
         /// <param name="oldStatus"></param>
-        protected void OnDocumentStatus(DocumentStatusValue newStatus, DocumentStatusValue oldStatus)
+        protected void OnDocumentStatus(DocumentStatusId newStatus, DocumentStatusId oldStatus)
         {
             OperationId operation = OperationId.None;
             switch (newStatus)
             {
-                case DocumentStatusValue.NotChecked:
+                case DocumentStatusId.NotChecked:
                     operation = OperationId.UndoCheck;
                     break;
-                case DocumentStatusValue.Checked:
-                    if (oldStatus == DocumentStatusValue.Finalized)
+                case DocumentStatusId.Checked:
+                    if (oldStatus == DocumentStatusId.Finalized)
                     {
                         operation = OperationId.UndoFinalize;
                     }
@@ -74,7 +74,7 @@ namespace SPPC.Tadbir.Persistence
                     }
 
                     break;
-                case DocumentStatusValue.Finalized:
+                case DocumentStatusId.Finalized:
                     operation = OperationId.Finalize;
                     break;
                 default:
@@ -140,16 +140,16 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="newStatus">وضعیت  جدید سند حسابداری</param>
         /// <param name="oldStatus">وضعیت قبلی سند حسابداری</param>
-        protected OperationId GetGroupOperationCode(DocumentStatusValue newStatus, DocumentStatusValue oldStatus)
+        protected OperationId GetGroupOperationCode(DocumentStatusId newStatus, DocumentStatusId oldStatus)
         {
             OperationId operation = OperationId.None;
             switch (newStatus)
             {
-                case DocumentStatusValue.NotChecked:
+                case DocumentStatusId.NotChecked:
                     operation = OperationId.GroupUndoCheck;
                     break;
-                case DocumentStatusValue.Checked:
-                    if (oldStatus == DocumentStatusValue.Finalized)
+                case DocumentStatusId.Checked:
+                    if (oldStatus == DocumentStatusId.Finalized)
                     {
                         operation = OperationId.GroupUndoFinalize;
                     }
@@ -159,7 +159,7 @@ namespace SPPC.Tadbir.Persistence
                     }
 
                     break;
-                case DocumentStatusValue.Finalized:
+                case DocumentStatusId.Finalized:
                     operation = OperationId.GroupFinalize;
                     break;
                 default:

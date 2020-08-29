@@ -15,6 +15,7 @@ using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -404,11 +405,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var turnovers = new List<KeyValue>()
             {
-                new KeyValue { Key = TurnoverModeTitle.Unlimited, Value = TurnoverModeTitle.Unlimited },
-                new KeyValue { Key = TurnoverModeTitle.DebtorDuringPeriod, Value = TurnoverModeTitle.DebtorDuringPeriod },
-                new KeyValue { Key = TurnoverModeTitle.CreditorDuringPeriod, Value = TurnoverModeTitle.CreditorDuringPeriod },
-                new KeyValue { Key = TurnoverModeTitle.DebtorEndPeriod, Value = TurnoverModeTitle.DebtorEndPeriod },
-                new KeyValue { Key = TurnoverModeTitle.CreditorEndPeriod, Value = TurnoverModeTitle.CreditorEndPeriod },
+                new KeyValue { Key = AppStrings.Unlimited, Value = AppStrings.Unlimited },
+                new KeyValue { Key = AppStrings.DebtorDuringPeriod, Value = AppStrings.DebtorDuringPeriod },
+                new KeyValue { Key = AppStrings.CreditorDuringPeriod, Value = AppStrings.CreditorDuringPeriod },
+                new KeyValue { Key = AppStrings.DebtorEndPeriod, Value = AppStrings.DebtorEndPeriod },
+                new KeyValue { Key = AppStrings.CreditorEndPeriod, Value = AppStrings.CreditorEndPeriod },
             };
 
             return turnovers;

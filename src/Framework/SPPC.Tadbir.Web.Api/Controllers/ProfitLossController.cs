@@ -71,15 +71,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId,
             IList<StartEndBalanceViewModel> balanceItems = null)
         {
-            var parameters = GetParameters(from, to, tax, closing, ccenterId, projectId, balanceItems);
-            var profitLoss = await _repository.GetProfitLossAsync(parameters);
+            var parameters = GetParameters(from, to, tax, closing, ccenterId, projectId);
+            var profitLoss = await _repository.GetProfitLossAsync(parameters, balanceItems);
             Localize(profitLoss);
             return Json(profitLoss);
         }
 
         private ProfitLossParameters GetParameters(
-            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId,
-            IList<StartEndBalanceViewModel> balanceItems = null)
+            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId)
         {
             var parameters = new ProfitLossParameters()
             {
@@ -91,11 +90,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ProjectId = projectId,
                 GridOptions = GridOptions ?? new GridOptions()
             };
-
-            if (balanceItems != null)
-            {
-                parameters.BalanceItems.AddRange(balanceItems);
-            }
 
             return parameters;
         }

@@ -22,13 +22,13 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync()
         {
-            return await _helper.GetLevelBalanceTypesAsync(ViewName.Account);
+            return await _helper.GetLevelBalanceTypesAsync(ViewId.Account);
         }
 
         public async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync()
         {
             var lookup = new List<TestBalanceModeInfo>();
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.Account);
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.Account);
             var usedLevels = fullConfig.Current
                 .Levels
                 .Where(level => level.IsEnabled && level.IsUsed)
@@ -100,7 +100,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 : await GetBalanceAsync(itemId, parameters.FromNo.Value);
             if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
-                balance += await GetBalanceAsync(itemId, VoucherOriginValue.OpeningVoucher);
+                balance += await GetBalanceAsync(itemId, VoucherOriginId.OpeningVoucher);
             }
 
             return balance;

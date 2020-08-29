@@ -317,7 +317,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch);
             return await _report.GetRawReportByDateLinesAsync<JournalItemViewModel>(
                 query, parameters.FromDate, parameters.ToDate, parameters.GridOptions);
@@ -327,7 +327,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch);
             return await _report.GetRawReportByDateLinesAsync<JournalItemViewModel>(
@@ -429,7 +429,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch);
             return await _report.GetRawReportByDateByBranchLinesAsync<JournalItemViewModel>(
                 query, parameters.FromDate, parameters.ToDate, parameters.GridOptions);
@@ -439,7 +439,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch);
             return await _report.GetRawReportByDateByBranchLinesAsync<JournalItemViewModel>(
@@ -499,7 +499,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch);
             return await _report.GetRawReportByNumberLinesAsync<JournalItemViewModel>(
                 query, parameters.FromNo, parameters.ToNo, parameters.GridOptions);
@@ -509,7 +509,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch);
             return await _report.GetRawReportByNumberLinesAsync<JournalItemViewModel>(
@@ -569,7 +569,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.Branch);
             return await _report.GetRawReportByNumberByBranchLinesAsync<JournalItemViewModel>(
                 query, parameters.FromNo, parameters.ToNo, parameters.GridOptions);
@@ -579,7 +579,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Account, art => art.DetailAccount,
                     art => art.CostCenter, art => art.Project, art => art.Branch);
             return await _report.GetRawReportByNumberByBranchLinesAsync<JournalItemViewModel>(

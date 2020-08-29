@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
             Verify.ArgumentNotNull(config, "config");
             _config = config;
-            _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewName.DetailAccount).Result;
+            _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewId.DetailAccount).Result;
         }
 
         protected override string EntityNameKey

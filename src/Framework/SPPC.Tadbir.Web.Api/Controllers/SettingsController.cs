@@ -249,7 +249,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void Localize(ViewTreeFullConfig viewSettings, int viewId)
         {
-            if (viewId == ViewName.Account)
+            if (viewId == ViewId.Account)
             {
                 Array.ForEach(
                     viewSettings.Default.Levels.Where(level => level.No <= viewSettings.Default.MaxDepth).ToArray(),

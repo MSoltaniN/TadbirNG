@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions = null)
         {
             var detailAccounts = await Repository
-                .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
+                .GetAllQuery<DetailAccount>(ViewId.DetailAccount, facc => facc.Children)
                 .Select(item => Mapper.Map<DetailAccountViewModel>(item))
                 .ToListAsync();
             await ReadAsync(gridOptions);
@@ -58,7 +58,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<IList<KeyValue>> GetDetailAccountsLookupAsync(GridOptions gridOptions = null)
         {
-            return await Repository.GetAllLookupAsync<DetailAccount>(ViewName.DetailAccount, gridOptions);
+            return await Repository.GetAllLookupAsync<DetailAccount>(ViewId.DetailAccount, gridOptions);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Persistence
                 return null;
             }
 
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewName.DetailAccount);
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.DetailAccount);
             var treeConfig = fullConfig.Current;
             if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
             {
@@ -113,7 +113,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetRootDetailAccountsAsync()
         {
             var detailAccounts = await Repository
-                .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
+                .GetAllQuery<DetailAccount>(ViewId.DetailAccount, facc => facc.Children)
                 .Where(facc => facc.ParentId == null)
                 .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
                 .ToListAsync();
@@ -128,7 +128,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountChildrenAsync(int detailId)
         {
             var children = await Repository
-                .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
+                .GetAllQuery<DetailAccount>(ViewId.DetailAccount, facc => facc.Children)
                 .Where(facc => facc.ParentId == detailId)
                 .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
                 .ToListAsync();
@@ -365,7 +365,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             int count = await repository.GetCountByCriteriaAsync(facc => facc.Level == level);
-            await Config.SaveTreeLevelUsageAsync(ViewName.DetailAccount, level, count);
+            await Config.SaveTreeLevelUsageAsync(ViewId.DetailAccount, level, count);
         }
 
         private async Task CascadeUpdateFullCodeAsync(int faccountId)

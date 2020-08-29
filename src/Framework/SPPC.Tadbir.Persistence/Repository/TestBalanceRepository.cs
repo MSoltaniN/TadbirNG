@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToArray());
             SetSummaryItems(testBalance);
 
-            var source = (parameters.ViewId == ViewName.Account)
+            var source = (parameters.ViewId == ViewId.Account)
                 ? OperationSourceId.TestBalance
                 : OperationSourceId.ItemBalance;
             await OnSourceActionAsync(parameters.GridOptions, source,
@@ -117,7 +117,7 @@ namespace SPPC.Tadbir.Persistence
                 SetSummaryItems(testBalance);
             }
 
-            var source = (parameters.ViewId == ViewName.Account)
+            var source = (parameters.ViewId == ViewId.Account)
                 ? OperationSourceId.TestBalance
                 : OperationSourceId.ItemBalance;
             await OnSourceActionAsync(parameters.GridOptions, source,
@@ -256,7 +256,7 @@ namespace SPPC.Tadbir.Persistence
             TestBalanceParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewName.VoucherLine,
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     art => art.Voucher, art => art.Branch);
             query = _utility.IncludeVoucherLineReference(query);
 
@@ -264,19 +264,19 @@ namespace SPPC.Tadbir.Persistence
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.ClosingVoucher);
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingVoucher);
             }
 
             if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.ClosingTempAccounts);
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingTempAccounts);
             }
 
             if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginValue.OpeningVoucher);
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.OpeningVoucher);
             }
 
             IList<TestBalanceItemViewModel> lines = null;

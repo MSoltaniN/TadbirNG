@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetNewVoucherAsync()
         {
             bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(
-                VoucherOriginValue.ClosingVoucher);
+                VoucherOriginId.ClosingVoucher);
             if (isChecked)
             {
                 return BadRequest(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
@@ -335,7 +335,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.Checked);
             return Ok();
         }
 
@@ -357,7 +357,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.NotChecked);
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.NotChecked);
             return Ok();
         }
 
@@ -467,7 +467,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Finalized);
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.Finalized);
             return Ok();
         }
 
@@ -489,7 +489,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Checked);
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.Checked);
             return Ok();
         }
 
@@ -509,7 +509,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return await GroupStatusChangeResultAsync(
-                actionDetail.Items, AppStrings.Check, DocumentStatusValue.Checked);
+                actionDetail.Items, AppStrings.Check, DocumentStatusId.Checked);
         }
 
         /// <summary>
@@ -528,7 +528,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return await GroupStatusChangeResultAsync(
-                actionDetail.Items, AppStrings.UndoCheck, DocumentStatusValue.NotChecked);
+                actionDetail.Items, AppStrings.UndoCheck, DocumentStatusId.NotChecked);
         }
 
         /// <summary>
@@ -587,7 +587,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return await GroupStatusChangeResultAsync(
-                actionDetail.Items, AppStrings.Finalize, DocumentStatusValue.Finalized);
+                actionDetail.Items, AppStrings.Finalize, DocumentStatusId.Finalized);
         }
 
         /// <summary>
@@ -606,7 +606,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return await GroupStatusChangeResultAsync(
-                actionDetail.Items, AppStrings.UndoFinalize, DocumentStatusValue.Checked);
+                actionDetail.Items, AppStrings.UndoFinalize, DocumentStatusId.Checked);
         }
 
         /// <summary>
@@ -986,7 +986,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> GroupStatusChangeResultAsync(
-            IEnumerable<int> items, string action, DocumentStatusValue status)
+            IEnumerable<int> items, string action, DocumentStatusId status)
         {
             var validated = new List<int>();
             var notValidated = new List<GroupActionResultViewModel>();
@@ -1107,7 +1107,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             // Current fiscal period MUST have the closing temp accounts voucher
             if (!await _repository.IsCurrentSpecialVoucherCheckedAsync(
-                VoucherOriginValue.ClosingTempAccounts))
+                VoucherOriginId.ClosingTempAccounts))
             {
                 return BadRequest(_strings[AppStrings.ClosingAccountsVoucherNotIssuedOrChecked]);
             }
@@ -1127,7 +1127,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (typeKey == AppStrings.ClosingTempAccounts)
             {
                 // Rule 2 : Current fiscal period MUST NOT have any unchecked vouchers
-                int uncheckedCount = await _repository.GetCountByStatusAsync(DocumentStatusValue.NotChecked);
+                int uncheckedCount = await _repository.GetCountByStatusAsync(DocumentStatusId.NotChecked);
                 if (uncheckedCount > 0)
                 {
                     return BadRequest(_strings[AppStrings.CantIssueClosingVoucherWithUncheckedVouchers]);
@@ -1160,7 +1160,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private IActionResult CheckedValidationResult(VoucherViewModel voucher)
         {
-            if (voucher.StatusId != (int)DocumentStatusValue.NotChecked)
+            if (voucher.StatusId != (int)DocumentStatusId.NotChecked)
             {
                 return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher));
             }

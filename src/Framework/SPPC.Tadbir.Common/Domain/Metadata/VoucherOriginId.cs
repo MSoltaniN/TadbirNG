@@ -6,7 +6,7 @@ namespace SPPC.Tadbir.Domain
     /// <summary>
     /// این نوع داده شمارشی مقادیر سیستمی را برای مأخذ یک سند مالی تعریف می کند
     /// </summary>
-    public enum VoucherOriginValue
+    public enum VoucherOriginId
     {
         /// <summary>
         /// وضعیت نامشخص برای مأخذ سند

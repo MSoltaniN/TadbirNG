@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Persistence
             var userMap = await _lookupRepository.GetUserPersonsAsync();
             var vouchers = await Repository
                 .GetAllOperationQuery<Voucher>(
-                    ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
+                    ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
                 .Apply(gridOptions)
                 .ToListAsync();
@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             int count = await Repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher, voucher => voucher.Lines)
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher, voucher => voucher.Lines)
                 .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -229,7 +229,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return await Repository
                 .GetAllOperationQuery<VoucherLine>(
-                    ViewName.VoucherLine, line => line.Voucher, line => line.Account)
+                    ViewId.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.CompareWith(date) < 0
                     && line.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Where(itemCriteria)
@@ -242,7 +242,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return await Repository
                 .GetAllOperationQuery<VoucherLine>(
-                    ViewName.VoucherLine, line => line.Voucher, line => line.Account)
+                    ViewId.VoucherLine, line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.No < number
                     && line.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Where(itemCriteria)

@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Persistence
         {
             _system = system;
             _factory = factory;
-            _report = _factory.Create(ViewName.Account);
+            _report = _factory.Create(ViewId.Account);
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace SPPC.Tadbir.Persistence
 
             var itemCriteria = GetItemCriteria(bookParam);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherOriginValue.OpeningVoucher, bookParam);
+                VoucherOriginId.OpeningVoucher, bookParam);
 
             var monthEnum = new MonthEnumerator(bookParam.From, bookParam.To, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
@@ -326,9 +326,9 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherOriginValue.ClosingTempAccounts, bookParam);
+                VoucherOriginId.ClosingTempAccounts, bookParam);
             await AddSpecialBookItemsAsync(book, itemCriteria,
-                VoucherOriginValue.ClosingVoucher, bookParam);
+                VoucherOriginId.ClosingVoucher, bookParam);
 
             book.SetItems(book.Items.Apply(bookParam.GridOptions, false).ToArray());
             PrepareCurrencyBook(book, bookParam.GridOptions);
@@ -337,16 +337,16 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task AddSpecialBookItemsAsync(
            CurrencyBookViewModel book, IList<Expression<Func<VoucherLine, bool>>> itemCriteria,
-           VoucherOriginValue origin, CurrencyBookParameters bookParam)
+           VoucherOriginId origin, CurrencyBookParameters bookParam)
         {
-            if (origin != VoucherOriginValue.NormalVoucher)
+            if (origin != VoucherOriginId.NormalVoucher)
             {
                 var date = await _report.GetSpecialVoucherDateAsync(origin);
                 if (date.HasValue && date.Value.IsBetween(bookParam.From, bookParam.To))
                 {
                     var query = Repository
                         .GetAllOperationQuery<VoucherLine>(
-                            ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
+                            ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                         .Where(line => line.Voucher.VoucherOriginId == (int)origin);
 
                     foreach (var item in itemCriteria)
@@ -384,7 +384,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(
-                    ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
+                    ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
                 .Where(line => line.Voucher.Date.IsBetween(from, to));
             foreach (var item in itemCriteria)
             {
@@ -403,7 +403,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(
-                    ViewName.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch, line => line.Currency)
+                    ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch, line => line.Currency)
                 .Where(line => line.Voucher.Date.IsBetween(from, to));
 
             foreach (var item in itemCriteria)

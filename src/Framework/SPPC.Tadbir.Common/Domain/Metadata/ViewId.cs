@@ -6,9 +6,9 @@ namespace SPPC.Tadbir.Domain
     /// <summary>
     /// شناسه نماهای اطلاعاتی اصلی مورد استفاده در برنامه را تعریف می کند
     /// </summary>
-    public sealed class ViewName
+    public sealed class ViewId
     {
-        private ViewName()
+        private ViewId()
         {
         }
 

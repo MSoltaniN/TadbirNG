@@ -31,16 +31,16 @@ namespace SPPC.Tadbir.Persistence.Utility
             ITestBalanceUtility utility = null;
             switch (viewId)
             {
-                case ViewName.DetailAccount:
+                case ViewId.DetailAccount:
                     utility = new DetailAccountBalanceUtility(_context, _config, _helper);
                     break;
-                case ViewName.CostCenter:
+                case ViewId.CostCenter:
                     utility = new CostCenterBalanceUtility(_context, _config, _helper);
                     break;
-                case ViewName.Project:
+                case ViewId.Project:
                     utility = new ProjectBalanceUtility(_context, _config, _helper);
                     break;
-                case ViewName.Account:
+                case ViewId.Account:
                 default:
                     utility = new AccountBalanceUtility(_context, _config, _helper);
                     break;

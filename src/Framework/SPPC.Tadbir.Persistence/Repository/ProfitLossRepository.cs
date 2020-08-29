@@ -35,11 +35,14 @@ namespace SPPC.Tadbir.Persistence
         /// اطلاعات گزارش سود و زیان غیرمقایسه ای را محاسبه کرده و برمی گرداند
         /// </summary>
         /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
         /// <returns>اطلاعات گزارش سود و زیان غیرمقایسه ای</returns>
-        public async Task<ProfitLossViewModel> GetProfitLossAsync(ProfitLossParameters parameters)
+        public async Task<ProfitLossViewModel> GetProfitLossAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
-            var grossProfit = await GetGrossProfitItemsAsync(parameters);
+            var grossProfit = await GetGrossProfitItemsAsync(parameters, balanceItems);
             profitLoss.Items.AddRange(grossProfit);
             var operationProfit = await GetOperationalCostItemsAsync(grossProfit.Last(), parameters);
             profitLoss.Items.AddRange(operationProfit);
@@ -51,7 +54,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetGrossProfitItemsAsync(
-            ProfitLossParameters parameters)
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var items = new List<ProfitLossItemViewModel>
             {
@@ -69,7 +72,7 @@ namespace SPPC.Tadbir.Persistence
 
             ProfitLossItemViewModel productCost = (UserContext.InventoryMode == (int)InventoryMode.Perpetual)
                 ? await GetProductCostItemAsync(parameters)
-                : await GetPeriodicProductCostItemAsync(parameters);
+                : await GetPeriodicProductCostItemAsync(parameters, balanceItems);
 
             items.Add(netRevenue);
             items.Add(productCost);
@@ -93,13 +96,13 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<ProfitLossItemViewModel> GetPeriodicProductCostItemAsync(
-            ProfitLossParameters parameters)
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var lines = new List<ProfitLossLineViewModel>();
             lines.AddRange(await GetStartCollectionLinesAsync(
                 (int)AccountCollectionId.ProductInventory, parameters));
             decimal openingInventory = lines.Sum(line => line.Debit - line.Credit);
-            var inventoryLines = parameters.BalanceItems
+            var inventoryLines = balanceItems
                 .Select(item => new VoucherLineAmountsViewModel()
                 {
                     Debit = item.StartBalanceDebit,
@@ -116,7 +119,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.ToDate > parameters.FromDate)
             {
-                inventoryLines = parameters.BalanceItems
+                inventoryLines = balanceItems
                     .Select(item => new VoucherLineAmountsViewModel()
                     {
                         Debit = item.EndBalanceDebit,
@@ -290,7 +293,7 @@ namespace SPPC.Tadbir.Persistence
             if (!parameters.UseClosingTempVoucher)
             {
                 linesQuery = linesQuery
-                    .Where(line => line.Voucher.VoucherOriginId != (int)VoucherOriginValue.ClosingTempAccounts);
+                    .Where(line => line.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingTempAccounts);
             }
 
             if (parameters.CostCenterId != null)

@@ -28,16 +28,16 @@ namespace SPPC.Tadbir.Persistence.Utility
             IAccountItemUtility utility = null;
             switch (viewId)
             {
-                case ViewName.DetailAccount:
+                case ViewId.DetailAccount:
                     utility = new DetailAccountUtility(_context, _config);
                     break;
-                case ViewName.CostCenter:
+                case ViewId.CostCenter:
                     utility = new CostCenterUtility(_context, _config);
                     break;
-                case ViewName.Project:
+                case ViewId.Project:
                     utility = new ProjectUtility(_context, _config);
                     break;
-                case ViewName.Account:
+                case ViewId.Account:
                 default:
                     utility = new AccountUtility(_context, _config);
                     break;

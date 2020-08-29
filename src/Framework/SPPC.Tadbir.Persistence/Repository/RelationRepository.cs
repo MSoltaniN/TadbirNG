@@ -9,7 +9,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -150,7 +149,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(fullAccount, nameof(fullAccount));
             var account = await Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children,
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children,
                     acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters, acc => acc.AccountProjects)
                 .Where(acc => acc.Id == fullAccount.Account.Id)
                 .SingleOrDefaultAsync();
@@ -205,7 +204,7 @@ namespace SPPC.Tadbir.Persistence
             };
 
             var accountModel = Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children,
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children,
                     acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters, acc => acc.AccountProjects)
                 .Where(acc => acc.Id == fullAccount.Account.Id)
                 .SingleOrDefault();
@@ -262,7 +261,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ada => ada.DetailId)
                 .ToListAsync();
             var detailAccounts = await Repository
-                .GetAllQuery<DetailAccount>(ViewName.DetailAccount)
+                .GetAllQuery<DetailAccount>(ViewId.DetailAccount)
                 .Where(facc => relatedDetailIds.Contains(facc.Id))
                 .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
                 .Apply(gridOptions)
@@ -298,7 +297,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ac => ac.CostCenterId)
                 .ToListAsync();
             var costCenters = await Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter)
+                .GetAllQuery<CostCenter>(ViewId.CostCenter)
                 .Where(cc => relatedCenterIds.Contains(cc.Id))
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .Apply(gridOptions)
@@ -334,7 +333,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ap => ap.ProjectId)
                 .ToListAsync();
             var projects = await Repository
-                .GetAllQuery<Project>(ViewName.Project)
+                .GetAllQuery<Project>(ViewId.Project)
                 .Where(prj => relatedProjectIds.Contains(prj.Id))
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
                 .Apply(gridOptions)
@@ -363,7 +362,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
             var accounts = await Repository
-                .GetAllQuery<Account>(ViewName.Account)
+                .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
@@ -392,7 +391,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ac => ac.AccountId)
                 .ToListAsync();
             var accounts = await Repository
-                .GetAllQuery<Account>(ViewName.Account)
+                .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
@@ -421,7 +420,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ap => ap.AccountId)
                 .ToListAsync();
             var accounts = await Repository
-                .GetAllQuery<Account>(ViewName.Account)
+                .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .Apply(gridOptions)
@@ -1079,7 +1078,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ada => ada.DetailId)
                 .ToListAsync();
             var query = Repository
-                .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
+                .GetAllQuery<DetailAccount>(ViewId.DetailAccount, facc => facc.Children)
                 .Where(facc => !relatedDetailIds.Contains(facc.Id));
             if (useLeafItems)
             {
@@ -1110,7 +1109,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ac => ac.CostCenterId)
                 .ToListAsync();
             var query = Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
+                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children)
                 .Where(cc => !relatedCenterIds.Contains(cc.Id));
             if (useLeafItems)
             {
@@ -1141,7 +1140,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ap => ap.ProjectId)
                 .ToListAsync();
             var query = Repository
-                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
+                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
                 .Where(prj => !relatedProjectIds.Contains(prj.Id));
             if (useLeafItems)
             {
@@ -1171,7 +1170,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
             var query = Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
@@ -1198,7 +1197,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ac => ac.AccountId)
                 .ToListAsync();
             var query = Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
@@ -1225,7 +1224,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(ap => ap.AccountId)
                 .ToListAsync();
             var query = Repository
-                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
@@ -1374,11 +1373,11 @@ namespace SPPC.Tadbir.Persistence
             string errorKey = String.Empty;
             if (account == null)
             {
-                errorKey = FullAccountError.InvalidAccountInFullAccount;
+                errorKey = AppStrings.InvalidAccountInFullAccount;
             }
             else if (account.Children.Count > 0)
             {
-                errorKey = FullAccountError.NonLeafAccountInFullAccount;
+                errorKey = AppStrings.NonLeafAccountInFullAccount;
             }
 
             return errorKey;
@@ -1390,15 +1389,15 @@ namespace SPPC.Tadbir.Persistence
             string errorKey = String.Empty;
             if (criteria.RequiresDetailAccount && fullAccount.DetailAccount.Id == 0)
             {
-                errorKey = FullAccountError.MissingDetailAccountInFullAccount;
+                errorKey = AppStrings.MissingDetailAccountInFullAccount;
             }
             else if (criteria.RequiresCostCenter && fullAccount.CostCenter.Id == 0)
             {
-                errorKey = FullAccountError.MissingCostCenterInFullAccount;
+                errorKey = AppStrings.MissingCostCenterInFullAccount;
             }
             else if (criteria.RequiresProject && fullAccount.Project.Id == 0)
             {
-                errorKey = FullAccountError.MissingProjectInFullAccount;
+                errorKey = AppStrings.MissingProjectInFullAccount;
             }
 
             return errorKey;
@@ -1414,7 +1413,7 @@ namespace SPPC.Tadbir.Persistence
                     .Contains(fullAccount.DetailAccount.Id);
                 if (!isValidRelation)
                 {
-                    return FullAccountError.UnrelatedDetailAccountInFullAccount;
+                    return AppStrings.UnrelatedDetailAccountInFullAccount;
                 }
             }
 
@@ -1425,7 +1424,7 @@ namespace SPPC.Tadbir.Persistence
                     .Contains(fullAccount.CostCenter.Id);
                 if (!isValidRelation)
                 {
-                    return FullAccountError.UnrelatedCostCenterInFullAccount;
+                    return AppStrings.UnrelatedCostCenterInFullAccount;
                 }
             }
 
@@ -1436,7 +1435,7 @@ namespace SPPC.Tadbir.Persistence
                     .Contains(fullAccount.Project.Id);
                 if (!isValidRelation)
                 {
-                    return FullAccountError.UnrelatedProjectInFullAccount;
+                    return AppStrings.UnrelatedProjectInFullAccount;
                 }
             }
 
@@ -1516,16 +1515,16 @@ namespace SPPC.Tadbir.Persistence
             string errorKey = String.Empty;
             var detailAccount = await Repository
                 .GetAllQuery<DetailAccount>(
-                    ViewName.DetailAccount, facc => facc.Children, facc => facc.AccountDetailAccounts)
+                    ViewId.DetailAccount, facc => facc.Children, facc => facc.AccountDetailAccounts)
                 .Where(facc => facc.Id == detailId)
                 .SingleOrDefaultAsync();
             if (detailAccount == null)
             {
-                errorKey = FullAccountError.InvalidDetailAccountInFullAccount;
+                errorKey = AppStrings.InvalidDetailAccountInFullAccount;
             }
             else if (detailAccount.Children.Count > 0)
             {
-                errorKey = FullAccountError.NonLeafDetailAccountInFullAccount;
+                errorKey = AppStrings.NonLeafDetailAccountInFullAccount;
             }
 
             return errorKey;
@@ -1535,16 +1534,16 @@ namespace SPPC.Tadbir.Persistence
         {
             string errorKey = String.Empty;
             var costCenter = await Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children, cc => cc.AccountCostCenters)
+                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children, cc => cc.AccountCostCenters)
                 .Where(cc => cc.Id == costCenterId)
                 .SingleOrDefaultAsync();
             if (costCenter == null)
             {
-                errorKey = FullAccountError.InvalidCostCenterInFullAccount;
+                errorKey = AppStrings.InvalidCostCenterInFullAccount;
             }
             else if (costCenter.Children.Count > 0)
             {
-                errorKey = FullAccountError.NonLeafCostCenterInFullAccount;
+                errorKey = AppStrings.NonLeafCostCenterInFullAccount;
             }
 
             return errorKey;
@@ -1554,16 +1553,16 @@ namespace SPPC.Tadbir.Persistence
         {
             string errorKey = String.Empty;
             var project = await Repository
-                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children, prj => prj.AccountProjects)
+                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children, prj => prj.AccountProjects)
                 .Where(prj => prj.Id == projectId)
                 .SingleOrDefaultAsync();
             if (project == null)
             {
-                errorKey = FullAccountError.InvalidProjectInFullAccount;
+                errorKey = AppStrings.InvalidProjectInFullAccount;
             }
             else if (project.Children.Count > 0)
             {
-                errorKey = FullAccountError.NonLeafProjectInFullAccount;
+                errorKey = AppStrings.NonLeafProjectInFullAccount;
             }
 
             return errorKey;
@@ -1574,16 +1573,16 @@ namespace SPPC.Tadbir.Persistence
             string errorKey = String.Empty;
             var detailAccount = Repository
                 .GetAllQuery<DetailAccount>(
-                    ViewName.DetailAccount, facc => facc.Children, facc => facc.AccountDetailAccounts)
+                    ViewId.DetailAccount, facc => facc.Children, facc => facc.AccountDetailAccounts)
                 .Where(facc => facc.Id == detailId)
                 .SingleOrDefault();
             if (detailAccount == null)
             {
-                errorKey = FullAccountError.InvalidDetailAccountInFullAccount;
+                errorKey = AppStrings.InvalidDetailAccountInFullAccount;
             }
             else if (detailAccount.Children.Count > 0)
             {
-                errorKey = FullAccountError.NonLeafDetailAccountInFullAccount;
+                errorKey = AppStrings.NonLeafDetailAccountInFullAccount;
             }
 
             return errorKey;
@@ -1593,16 +1592,16 @@ namespace SPPC.Tadbir.Persistence
         {
             string errorKey = String.Empty;
             var costCenter = Repository
-                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children, cc => cc.AccountCostCenters)
+                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children, cc => cc.AccountCostCenters)
                 .Where(cc => cc.Id == costCenterId)
                 .SingleOrDefault();
             if (costCenter == null)
             {
-                errorKey = FullAccountError.InvalidCostCenterInFullAccount;
+                errorKey = AppStrings.InvalidCostCenterInFullAccount;
             }
             else if (costCenter.Children.Count > 0)
             {
-                errorKey = FullAccountError.NonLeafCostCenterInFullAccount;
+                errorKey = AppStrings.NonLeafCostCenterInFullAccount;
             }
 
             return errorKey;
@@ -1612,16 +1611,16 @@ namespace SPPC.Tadbir.Persistence
         {
             string errorKey = String.Empty;
             var project = Repository
-                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children, prj => prj.AccountProjects)
+                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children, prj => prj.AccountProjects)
                 .Where(prj => prj.Id == projectId)
                 .SingleOrDefault();
             if (project == null)
             {
-                errorKey = FullAccountError.InvalidProjectInFullAccount;
+                errorKey = AppStrings.InvalidProjectInFullAccount;
             }
             else if (project.Children.Count > 0)
             {
-                errorKey = FullAccountError.NonLeafProjectInFullAccount;
+                errorKey = AppStrings.NonLeafProjectInFullAccount;
             }
 
             return errorKey;
