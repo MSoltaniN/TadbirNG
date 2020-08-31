@@ -127,36 +127,40 @@ export class ProjectComponent extends AutoGridExplorerComponent<Project> impleme
   }
 
 
-  public showReport() {
+  //public showReport() {
 
-    if (this.validateReport()) {
-      /*this.reportManager.directShowReport().then(Response => {
-        if (!Response) {
-          this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
-          this.showReportSetting();
-        }
-      });*/
+  //  if (this.validateReport()) {
+  //    /*this.reportManager.directShowReport().then(Response => {
+  //      if (!Response) {
+  //        this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+  //        this.showReportSetting();
+  //      }
+  //    });*/
 
 
-      if (!this.reportManager.directShowReport()) {
-        this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
-        this.showReportSetting();
-      }
-    }
-  }
+  //    if (!this.reportManager.directShowReport()) {
+  //      this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+  //      this.showReportSetting();
+  //    }
+  //  }
+  //}
 
-  public validateReport() {
-    if (!this.rowData || this.rowData.total == 0) {
-      this.showMessage(this.getText("Report.QuickReportValidate"));
-      return false;
-    }
-    return true;
-  }
+  //public validateReport() {
+  //  if (!this.rowData || this.rowData.total == 0) {
+  //    this.showMessage(this.getText("Report.QuickReportValidate"));
+  //    return false;
+  //  }
+  //  return true;
+  //}
 
-  public showReportSetting() {
-    if (this.validateReport()) {
-      this.reportSetting.showReportSetting(this.gridColumns, this.entityTypeName, this.viewId, this.reportManager);
-    }
+  //public showReportSetting() {
+  //  if (this.validateReport()) {
+  //    this.reportSetting.showReportSetting(this.gridColumns, this.entityTypeName, this.viewId, this.reportManager);
+  //  }
+  //}
+
+  onAdvanceFilterOk(): any {
+    this.reloadGrid();
   }
 
 }

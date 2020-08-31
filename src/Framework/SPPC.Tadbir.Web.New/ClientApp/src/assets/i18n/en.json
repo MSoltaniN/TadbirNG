@@ -8,7 +8,8 @@
     "SummaryName": "Tadbir",
     "NotViewAccess": "You do not have access to view information",
     "Level": "Level",
-    "AccessDenied": "You do not have permission to access"
+    "AccessDenied": "You do not have permission to access",
+    "PleaseLoadData": "Please click the calculate button before Export"
   },
   "Enviroment": {
     "FiscalPeriod": "Fiscal Period",

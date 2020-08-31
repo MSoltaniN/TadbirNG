@@ -5,7 +5,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MessageService } from '@progress/kendo-angular-l10n';
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, ExcelModule, PDFModule } from '@progress/kendo-angular-grid';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
@@ -15,7 +15,6 @@ import { PopupModule } from '@progress/kendo-angular-popup';
 import { ContextMenuModule } from '@progress/kendo-angular-menu';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
-
 import { ToastrModule } from 'ngx-toastr';
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -115,7 +114,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
+    DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule, ExcelModule, PDFModule ,
     ButtonsModule,
     BrowserAnimationsModule,
     PopupModule, TreeViewModule, ContextMenuModule,
@@ -161,11 +160,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective, TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput,
     SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
-    ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent
+    ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, ExcelModule, PDFModule 
   ]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders { 
     // Forcing the whole app to use the returned providers from the AppModule only.
     return {
       ngModule: SharedModule,

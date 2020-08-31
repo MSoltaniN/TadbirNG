@@ -113,5 +113,8 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   ngOnDestroy(): void {
     throw new Error("Method not implemented.");
   }
-  
+
+  public get excelFileName(): string {
+    return new Date().toLocaleString().replace(' ', '') + ".xlsx";
+  }
 }

@@ -7,6 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { SettingService } from '@sppc/config/service';
 import { BrowserStorageService } from '@sppc/shared/services';
+import { GridComponent } from '@progress/kendo-angular-grid';
+import { Observable } from 'rxjs';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -28,6 +30,7 @@ export class LeftActionToolbarComponent extends BaseComponent implements OnInit 
   @Input() parentComponent: any;
   @Input() reportSetting: any;
   @Input() reportManager: any;
+  @Input() grid: GridComponent;
 
   @Output() onFilterOk = new EventEmitter();
   @Output() onFilterCancel = new EventEmitter();
@@ -51,4 +54,11 @@ export class LeftActionToolbarComponent extends BaseComponent implements OnInit 
   showReportManager() {
     this.parentComponent.showReportManager(this.viewId, this.parentComponent, this.reportSetting, this.reportManager);    
   }
+
+  public exportToExcel(): void {
+    this.grid.saveAsExcel();
+  }
+
+
+  
 }

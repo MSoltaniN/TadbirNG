@@ -12,7 +12,7 @@
 <report-setting></report-setting>
 <div class="panel-body">
   <kendo-grid id="{{viewId}}"
-              #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              #grid="kendoGrid" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
               [sortable]="{ allowUnsort: true, mode: 'multiple' }"
               [sort]="sort"
@@ -39,6 +39,7 @@
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
 
+    <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>    
     <ng-template kendoGridNoRecordsTemplate>
       {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
     </ng-template>
@@ -79,7 +80,7 @@
           <label for="radio1">{{ 'Balance.ByDate' | translate }}</label>
           <br />
           <input type="radio" name="rdbTestBalanceType" [(ngModel)]="testBalanceType" (change)="changeType()" class="k-radio" id="radio2" value="2" />
-          <label  for="radio2">{{ 'Balance.ByVoucher' | translate }}</label>
+          <label for="radio2">{{ 'Balance.ByVoucher' | translate }}</label>
         </div>
         <div class="sppc-float">
 
@@ -106,26 +107,19 @@
             <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
             <!--<button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'Journal.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>-->
 
-            
+
             <button kendoButton class="hidden-xs rm" title="{{ 'Balance.SubBalance' | translate }}" (click)="showSubAccountsBalance()"
                     [icon]="'filter-add-expression'" type="button"></button>
             <button kendoButton class="hidden-xs rm lm" title="{{ 'Balance.AccountBook' | translate }}" (click)="showAccountBook()"
                     [icon]="'dictionary-add'" type="button"></button>
             <!--<button kendoButton class="hidden-xs rm lm" title="{{ 'AdvanceFilter.Title' | translate }}" (click)="showAdvanceFilterComponent('TestBalance')"
-                    [icon]="'zoom'" type="button"></button>-->
-            <left-action-toolbar (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+          [icon]="'zoom'" type="button"></button>-->
+            <left-action-toolbar  class="sppc-float-diff"  (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
           </div>
 
         </div>
 
       </div>
-
-
-
-
-
-
-
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true"
@@ -226,6 +220,7 @@
       </kendo-grid-column>
 
     </kendo-grid-column-group>
+
   </kendo-grid>
 
   <div class="section-option col-sm-12" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">

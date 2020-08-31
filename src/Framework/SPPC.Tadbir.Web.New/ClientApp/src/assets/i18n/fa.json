@@ -8,7 +8,8 @@
     "SummaryName": "تدبیر",
     "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
     "Level": "سطح",
-    "AccessDenied": "شما اجازه دسترسی ندارید"
+    "AccessDenied": "شما اجازه دسترسی ندارید",
+    "PleaseLoadData": "لطفا قبل از تهیه خروجی دکمه محاسبه را کلیک کنید"
   },
   "Enviroment": {
     "FiscalPeriod": "دوره مالی",
