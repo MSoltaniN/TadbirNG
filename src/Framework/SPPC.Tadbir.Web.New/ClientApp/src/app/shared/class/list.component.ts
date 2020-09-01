@@ -21,7 +21,8 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
 
   dialogService: DialogService;
   permission: Permissions;
-  filterDialogRef: DialogRef;  
+  filterDialogRef: DialogRef;
+  excelFileName: string;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public gridService: GridService,
     public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
@@ -29,9 +30,9 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
     super(toastrService, translate, bStorageService, renderer, metadataService, settingService, '', undefined);
 
     this.dialogService = ServiceLocator.injector.get(DialogService);
-    this.permission = new Permissions();
+    this.permission = new Permissions();    
   }
-
+ 
 
   showAdvanceFilterComponent(viewId: number, onOk: EventEmitter<any>, onCancel: EventEmitter<any>) {    
     (async () => {
@@ -114,7 +115,8 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
     throw new Error("Method not implemented.");
   }
 
-  public get excelFileName(): string {
-    return new Date().toLocaleString().replace(' ', '') + ".xlsx";
-  }
+  //public get excelFileName(): string {
+  //  var date = new Date().toLocaleString().replace(' ', '') + ".xlsx";    
+  //  return date;    
+  //}
 }
