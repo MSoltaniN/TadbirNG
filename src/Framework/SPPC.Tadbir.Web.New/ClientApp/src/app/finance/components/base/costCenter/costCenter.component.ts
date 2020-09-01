@@ -160,6 +160,10 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
     }
   }
 
+  onAdvanceFilterOk(): any {
+    this.reloadGrid();
+  }
+
 
 }
 
