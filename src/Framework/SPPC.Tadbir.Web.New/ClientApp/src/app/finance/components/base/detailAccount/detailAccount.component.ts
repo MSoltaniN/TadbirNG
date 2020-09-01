@@ -160,6 +160,10 @@ export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAcco
     }
   }
 
+  onAdvanceFilterOk(): any {
+    this.reloadGrid();
+  }
+
 }
 
 

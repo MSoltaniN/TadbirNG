@@ -267,5 +267,9 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
     this.strSearch = undefined;
     this.selectedAccount = undefined;
   }
+
+  onAdvanceFilterOk(): any {
+    this.reloadGrid();
+  }
 }
 
