@@ -3294,4 +3294,7 @@
   <data name="SysOperationLogs" xml:space="preserve">
     <value>System logs</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
 </root>

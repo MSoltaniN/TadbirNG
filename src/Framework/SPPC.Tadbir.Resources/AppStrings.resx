@@ -3285,4 +3285,7 @@
   <data name="SysOperationLogs" xml:space="preserve">
     <value>رویدادهای سیستمی</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>ارسال</value>
+  </data>
 </root>
