@@ -29,7 +29,11 @@ export class DetailComponent extends BaseComponent {
     var propertiesValue = this.bStorageService.getMetadata(this.metadataKey);
 
     this.properties = new Map<string, Array<Property>>();
-    this.properties.set(this.metadataKey, JSON.parse(propertiesValue));
+    if (propertiesValue && propertiesValue != null) {
+      var result = JSON.parse(propertiesValue);      
+      this.properties.set(this.metadataKey, result.columns);
+    }
+    //this.properties.set(this.metadataKey, JSON.parse(propertiesValue));
   }
 
   public get editForm(): FormGroup {
@@ -41,8 +45,8 @@ export class DetailComponent extends BaseComponent {
           this.fillFormValidators();
           return this.form;
         }).subscribe((res1: any) => {
-          this.properties.set(this.metadataKey, res1.columns);
-          this.bStorageService.setMetadata(this.metadataKey, res1.columns);
+          this.properties.set(this.metadataKey, res1.columns);          
+          this.bStorageService.setMetadata(this.metadataKey, res1);
           return
         });
       }

@@ -100,7 +100,7 @@ import { AdvanceFilterComponent } from '@sppc/shared/components/advanceFilter/ad
 import { NotFoundComponent } from '@sppc/shared/components/notFound/notFound.component';
 import { ClosingTmpComponent } from '@sppc/finance/components/operational/voucher/closing-tmp.component';
 import { ErrorListComponent } from './components/errorList/errorList.component';
-import { LeftActionToolbarComponent } from './components/toolbar/lefttoolbar/leftActionToolbar.component';
+import { LeftActionToolbarComponent } from '@sppc/shared/components/toolbar/leftActionToolbar.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {

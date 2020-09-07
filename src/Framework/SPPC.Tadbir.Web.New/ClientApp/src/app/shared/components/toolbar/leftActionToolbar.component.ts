@@ -1,6 +1,5 @@
 import { Component, OnInit, Host, Input, EventEmitter, Output } from '@angular/core';
-import { BaseComponent, ListComponent } from '@sppc/shared/class';
-
+import { BaseComponent } from '@sppc/shared/class';
 import { Layout } from '@sppc/env/environment';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SettingService } from '@sppc/config/service';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { GridComponent } from '@progress/kendo-angular-grid';
-import { Observable } from 'rxjs';
+
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -22,7 +21,7 @@ export function getLayoutModule(layout: Layout) {
     provide: RTL,
     useFactory: getLayoutModule,
     deps: [Layout]
-  },ListComponent]
+  }]
 })
 export class LeftActionToolbarComponent extends BaseComponent implements OnInit {
 

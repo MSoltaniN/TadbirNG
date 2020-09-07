@@ -40,7 +40,7 @@ export class DefaultComponent extends BaseComponent {
 
     var propertiesValue = this.bStorageService.getMetadata(this.metadataKey);
     this.properties = new Map<string, Array<Property>>();
-    if (!propertiesValue && propertiesValue != null) {
+    if (propertiesValue && propertiesValue != null) {
       var result = JSON.parse(propertiesValue);
       this.baseEntityName = result.entityName;
       this.properties.set(this.metadataKey, result.columns);
@@ -142,7 +142,7 @@ export class DefaultComponent extends BaseComponent {
           var result = this.properties.get(metaDataName);
           return result.columns;
         }).subscribe((res1: any) => {
-          this.properties.set(metaDataName, res1);
+          this.properties.set(metaDataName, res1.columns);
           this.bStorageService.setMetadata(metaDataName, res1);
           var result = this.properties.get(metaDataName);
           this.baseEntityName = result.entityName;
