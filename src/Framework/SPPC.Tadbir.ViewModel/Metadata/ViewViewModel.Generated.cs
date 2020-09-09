@@ -81,5 +81,10 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// </summary>
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public virtual string SearchUrl { get; set; }
+        
+        /// <summary>
+        /// تاریخ آخرین تغییر
+        /// </summary>        
+        public virtual DateTime ModifiedDate { get; set; }
     }
 }
