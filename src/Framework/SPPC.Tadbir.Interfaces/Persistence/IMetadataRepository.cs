@@ -47,6 +47,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه دستورات در منوی پیش فرض کاربران</returns>
         Task<IList<CommandViewModel>> GetDefaultCommandsAsync();
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای همه موجودیت ها را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns> اطلاعات فراداده ای تعریف شده برای همه موجودیت ها</returns>
+        Task<IList<ViewViewModel>> GetViewsMetadataAsync();
+
         #region System Designer
 
         /// <summary>

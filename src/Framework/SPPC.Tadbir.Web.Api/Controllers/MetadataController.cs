@@ -67,6 +67,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
+        // GET: api/metadata/views
+        [HttpGet]
+        [Route(MetadataApi.ViewsMetadataUrl)]
+        public async Task<IActionResult> GetViewsMetadata()
+        {
+            var metadata = await _repository.GetViewsMetadataAsync();
+            return JsonReadResult(metadata);
+        }
+
         private IMetadataRepository _repository;
     }
 }

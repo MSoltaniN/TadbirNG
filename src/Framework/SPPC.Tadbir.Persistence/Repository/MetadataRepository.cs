@@ -171,5 +171,18 @@ namespace SPPC.Tadbir.Persistence
             columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
             return JsonHelper.From(columnConfig, false);
         }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای همه موجودیت ها را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <returns> اطلاعات فراداده ای تعریف شده برای همه موجودیت ها</returns>
+        public async Task<IList<ViewViewModel>> GetViewsMetadataAsync() 
+        {
+            var repository = UnitOfWork.GetAsyncRepository<View>();
+            return await repository
+                .GetEntityQuery()
+                .Select(item => Mapper.Map<ViewViewModel>(item))
+                .ToListAsync();
+        }
     }
 }

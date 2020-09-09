@@ -41,5 +41,15 @@ namespace SPPC.Tadbir.Api
         /// API client URL for permission metadata in security system
         /// </summary>
         public const string PermissionMetadataUrl = "metadata/permissions";
+
+        /// <summary>
+        /// API client URL for metadata of all views 
+        /// </summary>
+        public const string ViewsMetadata = "metadata/views";
+
+        /// <summary>
+        /// API server route URL for metadata of all views 
+        /// </summary>
+        public const string ViewsMetadataUrl = "metadata/views";
     }
 }
