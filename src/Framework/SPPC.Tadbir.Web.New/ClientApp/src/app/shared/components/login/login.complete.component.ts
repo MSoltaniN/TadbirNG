@@ -13,7 +13,7 @@ import { Command, ListFormViewConfig } from '@sppc/shared/models';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { DefaultComponent } from '@sppc/shared/class';
 import { InitialWizardComponent } from '@sppc/organization/components/initialWizard/initialWizard.component';
-
+import { String } from '@sppc/shared/class/source';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -90,11 +90,34 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.currentRoute = this.bStorageService.getCurrentRoute();
     this.disabledCompany = true;
     this.getCompany();
+    this.checkMetaDataObsolete();
   }
 
   //#endregion
 
   //#region Methods
+
+  checkMetaDataObsolete() {
+    var currentLang = this.currentlang;
+    this.metadata.getViews().subscribe((res:any) => {
+      var views: Array<any> = res;      
+      views.forEach((item) => {
+        var modifiedDate = item.modifiedDate;
+        var viewId = item.id;
+        var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', currentLang);
+        var metaDataString = this.bStorageService.getMetadata(metaDataName);       
+        if (metaDataString) {
+          var metaData = JSON.parse(metaDataString);
+          var oldModifiedDate = metaData.modifiedDate;
+          if (Date.parse(modifiedDate) > Date.parse(oldModifiedDate)) {
+            this.bStorageService.removeLocalStorage(metaDataName);
+            this.settingService.setSettingByViewId(viewId, null);
+          }
+        }
+      });
+      
+    });
+  }
 
   public companyChange(value: any): void {
     this.disabledBranch = true;

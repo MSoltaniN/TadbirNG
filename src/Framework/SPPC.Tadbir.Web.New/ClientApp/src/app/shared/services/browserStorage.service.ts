@@ -369,4 +369,8 @@ export class BrowserStorageService {
   removeSessionStorage(key:string) {
     sessionStorage.removeItem(key);    
   }
+
+  removeLocalStorage(key: string) {
+    localStorage.removeItem(key);
+  }
 }

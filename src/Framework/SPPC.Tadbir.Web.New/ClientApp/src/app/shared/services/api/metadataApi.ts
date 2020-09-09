@@ -22,4 +22,7 @@ export class MetadataApi {
 
     // metadata/permissions
     public static PermissionMetadata = environment.BaseUrl + "/metadata/permissions";
+
+    // metadata/views
+    public static ViewsMetaData = environment.BaseUrl + "/metadata/views";
 }

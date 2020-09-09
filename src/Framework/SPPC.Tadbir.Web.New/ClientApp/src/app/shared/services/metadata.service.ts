@@ -77,4 +77,18 @@ export class MetaDataService extends BaseService {
       .map(response => (<Response>response));
   }
 
+  getViews() {
+    var header = this.httpHeaders;
+    header = header.delete('Content-Type');
+    header = header.delete('X-Tadbir-AuthTicket');
+    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    header = header.append('X-Tadbir-AuthTicket', this.Ticket);
+
+    var options = { headers: header };
+
+    var url = MetadataApi.ViewsMetaData;
+    return this.http.get(url, options)
+      .map(response => (<Response>response));
+  }
+
 }
