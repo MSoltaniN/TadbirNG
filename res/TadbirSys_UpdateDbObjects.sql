@@ -4251,3 +4251,60 @@ INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [
 INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
     VALUES (11, 3, 45, 42, N'AccountsWithInvalidPeriodTurnover', N'/vouchers/articles/sys-issue/invalid-acc-turnover', NULL, 0)
 SET IDENTITY_INSERT [Reporting].[SystemIssue] OFF
+
+-- 1.1.985
+-- add Triggers for MetaData.Columns...
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE TRIGGER [Metadata].[TR_MetaDataView_Delete] ON [Metadata].[Column]
+AFTER Delete
+AS
+   update viw set ModifiedDate = GETDATE() from deleted del join [Metadata].[View] viw on del.ViewID = viw.ViewID
+   delete setting from deleted del join Config.UserSetting setting on del.ViewID = setting.ViewID and setting.ModelType = 'ListFormViewConfig'   
+
+
+GO
+
+ALTER TABLE [Metadata].[Column] ENABLE TRIGGER [TR_MetaDataView_Delete]
+GO
+
+-----------------------------
+
+CREATE TRIGGER [Metadata].[TR_MetaDataView_Insert] ON [Metadata].[Column]
+AFTER Insert 
+AS
+   update viw set ModifiedDate = GETDATE() from inserted ins join [Metadata].[View] viw on ins.ViewID = viw.ViewID
+   delete setting from inserted ins join Config.UserSetting setting on ins.ViewID = setting.ViewID and ModelType = 'ListFormViewConfig'   
+
+
+GO
+
+ALTER TABLE [Metadata].[Column] ENABLE TRIGGER [TR_MetaDataView_Insert]
+GO
+
+-----------------------------
+
+CREATE TRIGGER [Metadata].[TR_MetaDataView_Update] ON [Metadata].[Column]
+AFTER UPDATE 
+AS
+ 
+IF UPDATE([Name]) or UPDATE([Type]) or UPDATE([DotNetType]) or UPDATE(StorageType) or UPDATE([Length]) or UPDATE(MinLength) or  UPDATE(IsFixedLength)
+ or UPDATE(IsNullable) or UPDATE(AllowSorting) or UPDATE(AllowFiltering) or UPDATE(Visibility) or UPDATE(DisplayIndex) or UPDATE(Expression)
+BEGIN
+   update viw set ModifiedDate = GETDATE() from inserted ins join [Metadata].[View] viw on ins.ViewID = viw.ViewID
+   delete setting from inserted ins join Config.UserSetting setting on ins.ViewID = setting.ViewID and ModelType = 'ListFormViewConfig'   
+END
+
+GO
+
+ALTER TABLE [Metadata].[Column] ENABLE TRIGGER [TR_MetaDataView_Update]
+GO
+
+
+
