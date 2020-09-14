@@ -271,7 +271,7 @@
                   <div class="form-group">
                     <label class="control-label">{{ 'Account.CustomerTaxInfo.EconomicCode' | translate }}</label>
 
-                    <input type="text" class="k-textbox" formControlName="economicCode" />
+                    <input type="text" class="k-textbox" formControlName="economicCode" [OnlyNumber]/>
 
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.economicCode.valid || customerTaxForm.controls.economicCode.pristine">
                       <span *ngIf="customerTaxForm.controls.economicCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.EconomicCodeIsRequired' | translate }}</span>
