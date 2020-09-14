@@ -18,7 +18,7 @@ import { MetaDataService } from "@sppc/shared/services/metadata.service";
 import { GridService } from "@sppc/shared/services/grid.service";
 import {  BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";
-import { ErrorListComponent } from "../components/errorList/errorList.component";
+import { ErrorListComponent } from "@sppc/shared/components/errorList/errorList.component";
 import { Observable } from "rxjs";
 import { GridDataResult } from "@progress/kendo-angular-grid";
 import { FilterExpression } from '@sppc/shared/class/filterExpression';
