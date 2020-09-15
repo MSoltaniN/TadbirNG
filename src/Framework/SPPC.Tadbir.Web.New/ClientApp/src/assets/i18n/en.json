@@ -1132,6 +1132,7 @@
       "CustomerNameIsTooLong": "Customer name can have a maximum of 64 characters.",
       "CustomerCompanyNameIsTooLong": "Company name can have a maximum of 64 characters.",
       "EconomicCodeIsTooLong": "Economic code can have a maximum of 12 characters.",
+      "EconomicCodeMinCharacter": "Economic code can have a minimum of 12 characters.",
       "EconomicCodeIsRequired": "Economic code is required.",
       "NationalCodeIsRequired": "National code is required.",
       "NationalCodeIsTooLong": "National code can have a maximum of 11 characters.",

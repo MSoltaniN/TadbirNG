@@ -156,7 +156,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     customerName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
     personType: new FormControl('', Validators.required),
     buyerType: new FormControl('', Validators.required),
-    economicCode: new FormControl('', [Validators.maxLength(12)]),
+    economicCode: new FormControl('', [Validators.required,Validators.maxLength(12), Validators.minLength(12)]),
     address: new FormControl('', [Validators.required, Validators.maxLength(256)]),
     nationalCode: new FormControl('', [Validators.required, Validators.maxLength(11), SppcNationalCode.validNationalCode]),
     perCityCode: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(3)]),
@@ -526,6 +526,29 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     }
     else
       return true;
+  }
+
+  onBuyerTypesChange(item: any) {
+    //this mean Key == 4 
+    if (item.key == this.buyerTypes[3].key) {
+      this.customerTaxForm.controls['economicCode'].clearValidators();
+      this.customerTaxForm.controls['economicCode'].setValidators([Validators.minLength(12), Validators.maxLength(12)]);
+      this.customerTaxForm.controls['economicCode'].updateValueAndValidity();
+
+      this.customerTaxForm.controls['nationalCode'].clearValidators();
+      this.customerTaxForm.controls['nationalCode'].setValidators([Validators.maxLength(11)]);
+      this.customerTaxForm.controls['nationalCode'].updateValueAndValidity();
+    }
+    else
+    {
+      this.customerTaxForm.controls['economicCode'].clearValidators();
+      this.customerTaxForm.controls['economicCode'].setValidators([Validators.required,Validators.minLength(12), Validators.maxLength(12)]);
+      this.customerTaxForm.controls['economicCode'].updateValueAndValidity();
+
+      this.customerTaxForm.controls['nationalCode'].clearValidators();
+      this.customerTaxForm.controls['nationalCode'].setValidators([Validators.required, Validators.maxLength(11)]);
+      this.customerTaxForm.controls['nationalCode'].updateValueAndValidity();
+    }
   }
 
   onFileChange(event: any) {
