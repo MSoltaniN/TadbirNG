@@ -217,8 +217,7 @@
                     <label class="control-label">{{ 'Account.CustomerTaxInfo.BuyerType' | translate }}</label>
 
                     <kendo-dropdownlist class="ddl-acc"
-                                        [data]="buyerTypes"
-                                        (selectionChange)="onBuyerTypesChange($event)"
+                                        [data]="buyerTypes"                                        
                                         [textField]="'value'"
                                         [valueField]="'key'"
                                         [valuePrimitive]="true"
