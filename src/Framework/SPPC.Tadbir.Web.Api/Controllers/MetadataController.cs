@@ -49,6 +49,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(permissions);
         }
 
+        // GET: api/metadata/views
+        [HttpGet]
+        [Route(MetadataApi.ViewsMetadataUrl)]
+        public async Task<IActionResult> GetViewsMetadata()
+        {
+            var metadata = await _repository.GetViewsMetadataAsync();
+            return JsonReadResult(metadata);
+        }
+
         private void Localize(ViewViewModel metadata)
         {
             if (metadata != null)
@@ -65,15 +74,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     column.Settings = JsonHelper.From(config, false);
                 }
             }
-        }
-
-        // GET: api/metadata/views
-        [HttpGet]
-        [Route(MetadataApi.ViewsMetadataUrl)]
-        public async Task<IActionResult> GetViewsMetadata()
-        {
-            var metadata = await _repository.GetViewsMetadataAsync();
-            return JsonReadResult(metadata);
         }
 
         private IMetadataRepository _repository;
