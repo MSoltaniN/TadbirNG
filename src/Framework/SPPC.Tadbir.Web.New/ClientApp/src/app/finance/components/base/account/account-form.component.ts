@@ -158,7 +158,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     buyerType: new FormControl('', Validators.required),
     economicCode: new FormControl('', [Validators.maxLength(12), Validators.minLength(12)]),
     address: new FormControl('', [Validators.required, Validators.maxLength(256)]),
-    nationalCode: new FormControl('', [Validators.maxLength(11), SppcNationalCode.validNationalCode]),
+    nationalCode: new FormControl('', [Validators.minLength(11),Validators.maxLength(11), SppcNationalCode.validNationalCode]),
     perCityCode: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(3)]),
     phoneNo: new FormControl('', [Validators.required, Validators.maxLength(64), Validators.pattern("^[0-9-]+$")]),
     mobileNo: new FormControl('', [Validators.required, Validators.maxLength(64), Validators.pattern("^[0-9-]+$")]),
@@ -378,11 +378,11 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       this.customerTaxForm.patchValue({ customerFirstName: undefined });
 
       this.customerTaxForm.controls['nationalCode'].clearValidators();
-      this.customerTaxForm.controls['nationalCode'].setValidators([ Validators.maxLength(11)]);
+      this.customerTaxForm.controls['nationalCode'].setValidators([Validators.minLength(11),Validators.maxLength(11)]);
       this.customerTaxForm.controls['nationalCode'].updateValueAndValidity();
 
       this.customerTaxForm.controls['economicCode'].clearValidators();
-      this.customerTaxForm.controls['economicCode'].setValidators([Validators.maxLength(12)]);
+      this.customerTaxForm.controls['economicCode'].setValidators([Validators.minLength(12),Validators.maxLength(12)]);
       this.customerTaxForm.controls['economicCode'].updateValueAndValidity();
     }
     else {

@@ -288,19 +288,21 @@
                       <span *ngIf="customerTaxForm.value.personType == '2'">{{ 'Account.CustomerTaxInfo.NationalIndex' | translate }}</span>
                     </label>
 
-                    <input type="text" class="k-textbox" formControlName="nationalCode" />
+                    <input type="text" class="k-textbox" formControlName="nationalCode" [OnlyNumber]/>
 
                     <div class="k-tooltip k-tooltip-validation" [hidden]="customerTaxForm.controls.nationalCode.valid || customerTaxForm.controls.nationalCode.pristine">
 
                       <span *ngIf="customerTaxForm.value.personType == '1'">
                         <span *ngIf="customerTaxForm.controls.nationalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.NationalCodeIsRequired' | translate }}</span>
                         <span *ngIf="customerTaxForm.controls.nationalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.NationalCodeIsTooLong' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.nationalCode.errors?.minlength">{{ 'AllValidations.CustomerTaxInfo.NationalCodeMinCharacter' | translate }}</span>
                         <span *ngIf="customerTaxForm.controls.nationalCode.errors?.validNationalCode">{{ 'AllValidations.CustomerTaxInfo.NationalCodeNotValid' | translate }}</span>
                       </span>
 
                       <span *ngIf="customerTaxForm.value.personType == '2'">
                         <span *ngIf="customerTaxForm.controls.nationalCode.errors?.required">{{ 'AllValidations.CustomerTaxInfo.NationalIndexIsRequired' | translate }}</span>
                         <span *ngIf="customerTaxForm.controls.nationalCode.errors?.maxlength">{{ 'AllValidations.CustomerTaxInfo.NationalIndexIsTooLong' | translate }}</span>
+                        <span *ngIf="customerTaxForm.controls.nationalCode.errors?.minlength">{{ 'AllValidations.CustomerTaxInfo.NationalIndexMinCharacter' | translate }}</span>
                       </span>
 
 

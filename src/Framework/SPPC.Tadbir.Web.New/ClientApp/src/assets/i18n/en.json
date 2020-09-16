@@ -1139,6 +1139,8 @@
       "NationalCodeNotValid": "National code is not valid.",
       "NationalIndexIsRequired": "National index is required.",
       "NationalIndexIsTooLong": "National index can have a maximum of 11 characters.",
+      "NationalCodeMinCharacter": "National code can have a minimum of 11 characters.",
+      "NationalIndexMinCharacter": "National index can have a minimum of 11 characters.",
       "PerCityCodeIsRequired": "Area code is required.",
       "PerCityCodeIsTooLong": "Area code can have a maximum of 10 characters.",
       "PerCityCodeIsSmall": "Area code must a minimum of 3 characters.",
