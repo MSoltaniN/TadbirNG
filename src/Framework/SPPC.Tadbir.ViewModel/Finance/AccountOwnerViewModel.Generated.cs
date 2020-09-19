@@ -12,6 +12,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -21,66 +22,66 @@ namespace SPPC.Tadbir.ViewModel.Finance
     public partial class AccountOwnerViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AccountOwnerViewModel"/> class.
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         public AccountOwnerViewModel()
         {
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the نام بانک مربوط به حساب
+        /// نام بانک مربوط به حساب
         /// </summary>
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string BankName { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع حساب (جاری:0) (پس انداز:1)
+        /// نوع حساب (جاری:0) (پس انداز:1)
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int AccountType { get; set; }
 
         /// <summary>
-        /// Gets or sets the نام شعبه بانک 
+        /// نام شعبه بانک 
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string BankBranchName { get; set; }
 
         /// <summary>
-        /// Gets or sets the شاخص شعبه
+        /// شاخص شعبه
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string BranchIndex { get; set; }
 
         /// <summary>
-        /// Gets or sets the شماره حساب
+        /// شماره حساب
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(32, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string AccountNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the شماره کارت
+        /// شماره کارت
         /// </summary>
-        [MaxLength(32, ErrorMessage = "{0} must have at most {1} characters.")]
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string CardNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the شماره شبا
+        /// شماره شبا
         /// </summary>
-        [MaxLength(32, ErrorMessage = "{0} must have at most {1} characters.")]
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string ShabaNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the توضیحات 
+        /// توضیحات 
         /// </summary>
-        [MaxLength(512, ErrorMessage = "{0} must have at most {1} characters.")]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
     }
 }

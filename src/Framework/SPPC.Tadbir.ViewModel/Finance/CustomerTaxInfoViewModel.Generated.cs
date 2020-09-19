@@ -12,6 +12,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -21,108 +22,107 @@ namespace SPPC.Tadbir.ViewModel.Finance
     public partial class CustomerTaxInfoViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomerTaxInfoViewModel"/> class.
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         public CustomerTaxInfoViewModel()
         {
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the نام طرف حساب
+        /// نام طرف حساب
         /// </summary>
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string CustomerFirstName { get; set; }
 
         /// <summary>
-        /// Gets or sets the در صورتی که نوع شخص حقوقی باشد نام شرکت و در صورتی که حقیقی باشد نام خانوادگی
+        /// در صورتی که نوع شخص حقوقی باشد نام شرکت و در صورتی که حقیقی باشد نام خانوادگی
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(128, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string CustomerName { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع شخص
+        /// نوع شخص
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int PersonType { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع خریدار
+        /// نوع خریدار
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int BuyerType { get; set; }
 
         /// <summary>
-        /// Gets or sets the کد اقتصادی
+        /// کد اقتصادی
         /// </summary>
-        [MaxLength(12, ErrorMessage = "{0} must have at most {1} characters.")]
+        [StringLength(12, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string EconomicCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the آدرس
+        /// آدرس
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(256, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Address { get; set; }
 
         /// <summary>
-        /// Gets or sets the در صورتی که نوع شخص حقوقی باشد شناسه ملی و در صورتی که حقیقی باشد کد ملی میباشد
+        /// در صورتی که نوع شخص حقوقی باشد شناسه ملی و در صورتی که حقیقی باشد کد ملی میباشد
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(11, ErrorMessage = "{0} must have at most {1} characters.")]
+        [StringLength(11, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string NationalCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the پیش شماره تلفن
+        /// پیش شماره تلفن
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(10, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(10, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string PerCityCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the شماره تلفن ثابت
+        /// شماره تلفن ثابت
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(50, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(50, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string PhoneNo { get; set; }
 
         /// <summary>
-        /// Gets or sets the شماره تلفن همراه
+        /// شماره تلفن همراه
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(50, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(50, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string MobileNo { get; set; }
 
         /// <summary>
-        /// Gets or sets the کد پستی
+        /// کد پستی
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(10, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(10, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string PostalCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the کد استان
+        /// کد استان
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(4, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(4, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string ProvinceCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the کد شهر
+        /// کد شهر
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(16, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string CityCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the توضیحات
+        /// توضیحات
         /// </summary>
-        [MaxLength(1024, ErrorMessage = "{0} must have at most {1} characters.")]
+        [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
     }
 }
