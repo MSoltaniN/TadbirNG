@@ -599,9 +599,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.BaseCurrencyCredit, opts => opts.MapFrom(src => src.Credit))
                 .ForMember(dest => dest.BaseCurrencyDebit, opts => opts.MapFrom(src => src.Debit))
                 .ForMember(dest => dest.CurrencyRate, opts => opts.MapFrom(
-                    src => src.CurrencyValue.HasValue && src.Credit > 0
-                        ? src.Credit / src.CurrencyValue
-                        : src.Debit / src.CurrencyValue));
+                    src => CalculateCurrencyRate(src)));
             mapperConfig.CreateMap<VoucherLine, VoucherLineDetailViewModel>();
             mapperConfig.CreateMap<VoucherLine, BalanceByAccountItemViewModel>();
 
@@ -672,6 +670,20 @@ namespace SPPC.Tadbir.Mapper
             columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
             columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
             return columnConfig;
+        }
+
+        private static decimal CalculateCurrencyRate(VoucherLine line)
+        {
+            decimal rate = 0.0M;
+            if (line.CurrencyValue.HasValue && line.CurrencyValue > 0.0M)
+            {
+                int decimalCount = line.Currency.DecimalCount;
+                rate = line.Debit > 0
+                    ? Math.Round(line.Debit / line.CurrencyValue.Value, decimalCount)
+                    : Math.Round(line.Credit / line.CurrencyValue.Value, decimalCount);
+            }
+
+            return rate;
         }
 
         private static ICryptoService _crypto;

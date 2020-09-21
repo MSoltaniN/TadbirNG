@@ -297,7 +297,7 @@ namespace SPPC.Tadbir.Persistence
             var monthEnum = new MonthEnumerator(bookParam.From, bookParam.To, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
             {
-                var monthLines = GetRawAccountBookLines(itemCriteria, month.Start, month.End)
+                var monthLines = GetRawCurrencyBookLines(itemCriteria, month.Start, month.End)
                     .Where(art => art.Voucher.Type == (short)VoucherType.NormalVoucher)
                     .Select(art => Mapper.Map<CurrencyBookItemViewModel>(art))
                     .ToList();
@@ -376,25 +376,6 @@ namespace SPPC.Tadbir.Persistence
                     }
                 }
             }
-        }
-
-        private IQueryable<VoucherLine> GetRawAccountBookLines(
-            IList<Expression<Func<VoucherLine, bool>>> itemCriteria, DateTime from, DateTime to)
-        {
-            var query = Repository
-                .GetAllOperationQuery<VoucherLine>(
-                    ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
-                .Where(line => line.Voucher.Date.IsBetween(from, to));
-            foreach (var item in itemCriteria)
-            {
-                query = query.Where(item);
-            }
-
-            query = query
-            .OrderBy(line => line.Voucher.Date)
-            .ThenBy(line => line.Voucher.No)
-            .ThenBy(line => line.RowNo);
-            return query;
         }
 
         private IQueryable<VoucherLine> GetRawCurrencyBookLines(

@@ -8,6 +8,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -684,7 +685,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchName = item.BranchName,
                 Debit = itemGroup.Sum(art => art.Debit),
                 Credit = itemGroup.Sum(art => art.Credit),
-                Description = item.AccountName
+                Description = AppStrings.AsQuotedInVoucherLines
             };
 
             return journalItem;
