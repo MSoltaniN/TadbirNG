@@ -4306,5 +4306,16 @@ GO
 ALTER TABLE [Metadata].[Column] ENABLE TRIGGER [TR_MetaDataView_Update]
 GO
 
+-- 1.1.987
+UPDATE [Metadata].[Command]
+SET RouteUrl = N'/finance/vouchers/opening-voucher'
+WHERE TitleKey = N'IssueOpeningVoucher'
 
+UPDATE [Metadata].[Command]
+SET RouteUrl = N'/finance/vouchers/closing-voucher'
+WHERE TitleKey = N'IssueClosingVoucher'
+
+UPDATE [Metadata].[Command]
+SET RouteUrl = N'/finance/vouchers/close-temp-accounts'
+WHERE TitleKey = N'ClosingTempAccounts'
 
