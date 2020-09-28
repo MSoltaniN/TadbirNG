@@ -9,6 +9,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -27,12 +28,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
+        /// <param name="utility">امکانات تکمیلی برای کار با مجموعه های حساب را پیاده سازی می کند</param>
         public VoucherRepository(IRepositoryContext context, ISystemRepository system,
-            IUserRepository userRepository)
+            IUserRepository userRepository, IAccountCollectionUtility utility)
             : base(context, system?.Logger)
         {
             _system = system;
             _userRepository = userRepository;
+            _utility = utility;
         }
 
         /// <summary>
@@ -754,5 +757,6 @@ namespace SPPC.Tadbir.Persistence
 
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;
+        private readonly IAccountCollectionUtility _utility;
     }
 }

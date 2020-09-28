@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -22,13 +23,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی و شعب را تعریف می کند</param>
-        /// <param name="setRepository">امکان کار با مجموعه حساب ها را فراهم می کند</param>
+        /// <param name="utility">امکان کار با مجموعه حساب ها را فراهم می کند</param>
         public DashboardRepository(IRepositoryContext context,
-            ISecureRepository repository, IAccountSetRepository setRepository)
+            ISecureRepository repository, IAccountCollectionUtility utility)
             : base(context)
         {
             _repository = repository;
-            _setRepository = setRepository;
+            _utility = utility;
         }
 
         /// <summary>
@@ -84,10 +85,8 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<int> GetUnbalancedVoucherCountAsync()
         {
-            return await _repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(v => !v.IsBalanced)
-                .CountAsync();
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            return await repository.GetCountByCriteriaAsync(v => !v.IsBalanced);
         }
 
         private async Task<DashboardChartSeriesViewModel> GetMonthlyNetSalesAsync(
@@ -135,7 +134,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<decimal> GetNetSalesAsync(DateTime fromDate, DateTime toDate)
         {
             decimal grossSales = await GetGrossSalesAsync(fromDate, toDate);
-            var deficitAccounts = await _setRepository.GetSalesDeficitAccountsAsync();
+            var deficitAccounts = await GetSalesDeficitAccountsAsync();
             var amounts = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
                 .Where(line => deficitAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode))
@@ -148,28 +147,36 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<decimal> GetGrossSalesAsync(DateTime fromDate, DateTime toDate)
         {
-            var salesAccounts = await _setRepository.GetAccountSetItemsAsync(AccountCollectionId.Sales);
+            var salesAccounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.Sales);
             var amounts = await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
-                .Where(line => salesAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode))
+                .Where(line => salesAccounts.Any(item => line.AccountId == item.Id)
                     && line.Voucher.Date.IsBetween(fromDate, toDate))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();
             return amounts.Sum(am => am.Credit);
         }
 
+        private async Task<IEnumerable<Account>> GetSalesDeficitAccountsAsync()
+        {
+            var deficitAccounts = new List<Account>();
+            deficitAccounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.SalesRefund));
+            deficitAccounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.SalesDiscount));
+            return deficitAccounts;
+        }
+
         private async Task<IEnumerable<VoucherLineAmountsViewModel>> GetAccountSetAmountsAsync(
             AccountCollectionId collectionId)
         {
-            var accounts = await _setRepository.GetAccountSetItemsAsync(collectionId);
+            var accounts = await _utility.GetUsableAccountsAsync(collectionId);
             return await _repository
                 .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
-                .Where(line => accounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode)))
+                .Where(line => accounts.Any(item => line.AccountId == item.Id))
                 .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
                 .ToListAsync();
         }
 
         private readonly ISecureRepository _repository;
-        private readonly IAccountSetRepository _setRepository;
+        private readonly IAccountCollectionUtility _utility;
     }
 }

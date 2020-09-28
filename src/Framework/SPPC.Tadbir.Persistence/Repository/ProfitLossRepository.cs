@@ -62,9 +62,9 @@ namespace SPPC.Tadbir.Persistence
 
             var lines = new List<ProfitLossLineViewModel>();
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.FinalSales, parameters.ToDate, parameters));
+                AccountCollectionId.FinalSales, parameters.ToDate, parameters));
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.SalesRefundDiscount, parameters.ToDate, parameters));
+                AccountCollectionId.SalesRefundDiscount, parameters.ToDate, parameters));
             var netRevenue = GetReportItem(
                 lines, line => line.Credit - line.Debit, AppStrings.NetRevenue,
                 parameters.FromDate, parameters.ToDate);
@@ -87,7 +87,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var lines = new List<ProfitLossLineViewModel>();
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.SoldProductCost, parameters.ToDate, parameters));
+                AccountCollectionId.SoldProductCost, parameters.ToDate, parameters));
             var productCost = GetReportItem(
                 lines, line => line.Debit - line.Credit, AppStrings.SoldProductCost,
                 parameters.FromDate, parameters.ToDate);
@@ -99,7 +99,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var lines = new List<ProfitLossLineViewModel>();
             lines.AddRange(await GetStartCollectionLinesAsync(
-                (int)AccountCollectionId.ProductInventory, parameters));
+                AccountCollectionId.ProductInventory, parameters));
             decimal openingInventory = lines.Sum(line => line.Debit - line.Credit);
             var inventoryLines = balanceItems
                 .Select(item => new VoucherLineAmountsViewModel()
@@ -141,9 +141,9 @@ namespace SPPC.Tadbir.Persistence
             // Product Cost = Opening Inventory + Net Purchase - Inventory
             var lines = new List<ProfitLossLineViewModel>();
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.FinalPurchase, date, parameters));
+                AccountCollectionId.FinalPurchase, date, parameters));
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.PurchaseRefundDiscount, date, parameters));
+                AccountCollectionId.PurchaseRefundDiscount, date, parameters));
             decimal netPurchase = lines.Sum(line => line.Debit - line.Credit);
             decimal inventory = inventoryLines.Sum(item => item.Debit - item.Credit);
             return openingInventory + netPurchase - inventory;
@@ -160,7 +160,7 @@ namespace SPPC.Tadbir.Persistence
             var costItems = new List<ProfitLossItemViewModel>();
             var lines = new List<ProfitLossLineViewModel>();
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.OperationalCosts, parameters.ToDate, parameters));
+                AccountCollectionId.OperationalCosts, parameters.ToDate, parameters));
             foreach (var group in lines
                 .OrderBy(line => line.AccountId)
                 .GroupBy(line => line.AccountId))
@@ -198,7 +198,7 @@ namespace SPPC.Tadbir.Persistence
             var costItems = new List<ProfitLossItemViewModel>();
             var lines = new List<ProfitLossLineViewModel>();
             lines.AddRange(await GetCollectionLinesAsync(
-                (int)AccountCollectionId.OtherCostRevenue, parameters.ToDate, parameters));
+                AccountCollectionId.OtherCostRevenue, parameters.ToDate, parameters));
             foreach (var group in lines
                 .OrderBy(line => line.AccountId)
                 .GroupBy(line => line.AccountId))
@@ -249,7 +249,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<ProfitLossLineViewModel>> GetStartCollectionLinesAsync(
-            int collectionId, ProfitLossParameters parameters)
+            AccountCollectionId collectionId, ProfitLossParameters parameters)
         {
             var lines = new List<ProfitLossLineViewModel>();
             DateTime startDate = await GetCurrentFiscalStartDateAsync();
@@ -263,7 +263,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<ProfitLossLineViewModel>> GetCollectionLinesAsync(
-            int collectionId, DateTime until, ProfitLossParameters parameters)
+            AccountCollectionId collectionId, DateTime until, ProfitLossParameters parameters)
         {
             var lines = new List<ProfitLossLineViewModel>();
             DateTime startDate = await GetCurrentFiscalStartDateAsync();
@@ -277,9 +277,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<ProfitLossLineViewModel>> GetCollectionLinesAsync(
-            int collectionId, DateTime from, DateTime to, ProfitLossParameters parameters)
+            AccountCollectionId collectionId, DateTime from, DateTime to, ProfitLossParameters parameters)
         {
-            var accounts = await _utility.GetUsableCollectionAccountsAsync(collectionId);
+            var accounts = await _utility.GetUsableAccountsAsync(collectionId);
             var accountIds = accounts.Select(acc => acc.Id);
             var branchIds = GetChildTree(UserContext.BranchId);
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();

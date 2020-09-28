@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public short TypeLevel { get; set; }
 
         /// <summary>
-        /// حالت ادواری یا دوره ای دوره مالی
+        /// حالت ادواری یا دائمی دوره مالی
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [Range(0, 32767, ErrorMessage = ValidationMessages.NumberHasValueRange)]

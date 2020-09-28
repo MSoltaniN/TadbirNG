@@ -10,10 +10,10 @@ namespace SPPC.Tadbir.Persistence
     public interface IAccountCollectionRepository
     {
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی کلیه مجموعه های حساب را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات نمایشی طبقه بندی های مجموعه حساب را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>مجموعه ای از اطلاعات نمایشی مجموعه های حساب</returns>
-        Task<IList<AccountCollectionCategoryViewModel>> GetAccountCollectionCategoriesAsync();
+        /// <returns>مجموعه ای از اطلاعات نمایشی طبقه بندی های مجموعه حساب</returns>
+        Task<IList<AccountCollectionCategoryViewModel>> GetCollectionCategoriesAsync();
 
         /// <summary>
         /// به روش آسنکرون، حساب های انتخاب شده برای یک مجموعه حساب را خوانده و برمی گرداند

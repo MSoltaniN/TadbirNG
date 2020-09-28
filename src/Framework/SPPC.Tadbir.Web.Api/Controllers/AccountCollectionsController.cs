@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionCategoriesAsync()
         {
-            var accCollection = await _repository.GetAccountCollectionCategoriesAsync();
+            var accCollection = await _repository.GetCollectionCategoriesAsync();
             return Json(accCollection);
         }
 

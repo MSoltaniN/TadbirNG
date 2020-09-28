@@ -201,70 +201,24 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Account> GetBranchClosingAccountAsync(int branchId)
         {
-            var accounts = await GetCollectionItemsAsync((int)AccountCollectionId.ClosingAccount, branchId);
+            var accounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.ClosingAccount, true, branchId);
             return accounts.SingleOrDefault();
         }
 
         private async Task<IList<Account>> GetBranchAssetAccountsAsync(int branchId)
         {
             var accounts = new List<Account>();
-            accounts.AddRange(await GetCollectionItemsAsync((int)AccountCollectionId.LiquidAssets, branchId));
-            accounts.AddRange(await GetCollectionItemsAsync((int)AccountCollectionId.NonLiquidAssets, branchId));
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.LiquidAssets, true, branchId));
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.NonLiquidAssets, true, branchId));
             return accounts;
         }
 
         private async Task<IList<Account>> GetBranchCapitalLiabilityAccountsAsync(int branchId)
         {
             var accounts = new List<Account>();
-            accounts.AddRange(await GetCollectionItemsAsync((int)AccountCollectionId.LiquidLiabilities, branchId));
-            accounts.AddRange(await GetCollectionItemsAsync((int)AccountCollectionId.NonLiquidLiabilities, branchId));
-            accounts.AddRange(await GetCollectionItemsAsync((int)AccountCollectionId.OwnerEquities, branchId));
-            return accounts;
-        }
-
-        private async Task<IList<Account>> GetCollectionItemsAsync(int collection, int branchId)
-        {
-            var collectionAccounts = await GetInheritedCollectionAccountsAsync(collection, branchId);
-            var accountRepository = UnitOfWork.GetAsyncRepository<Account>();
-            var leafAccounts = await accountRepository
-                .GetEntityQuery(acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters,
-                    acc => acc.AccountProjects)
-                .Where(acc => acc.Children.Count == 0 &&
-                    collectionAccounts.Any(item => acc.FullCode.StartsWith(item.FullCode)))
-                .ToListAsync();
-            return leafAccounts;
-        }
-
-        private async Task<IEnumerable<Account>> GetInheritedCollectionAccountsAsync(
-            int collection, int branchId)
-        {
-            var accounts = new List<Account>();
-            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branch = await branchRepository.GetByIDWithTrackingAsync(branchId);
-            var currentBranch = branch;
-            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            while (currentBranch != null)
-            {
-                var collectionAccounts = await repository
-                    .GetEntityQuery()
-                    .Include(aca => aca.Account)
-                    .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
-                        aca.BranchId == currentBranch.Id &&
-                        aca.CollectionId == collection)
-                    .Select(aca => aca.Account)
-                    .ToListAsync();
-                if (collectionAccounts.Count > 0)
-                {
-                    accounts.AddRange(collectionAccounts);
-                    break;
-                }
-                else
-                {
-                    branchRepository.LoadReference(currentBranch, br => br.Parent);
-                    currentBranch = currentBranch.Parent;
-                }
-            }
-
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.LiquidLiabilities, true, branchId));
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.NonLiquidLiabilities, true, branchId));
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.OwnerEquities, true, branchId));
             return accounts;
         }
 
@@ -695,7 +649,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Account> GetBranchOpeningAccountAsync(int branchId)
         {
-            var accounts = await GetCollectionItemsAsync((int)AccountCollectionId.OpeningAccount, branchId);
+            var accounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.OpeningAccount, true, branchId);
             return accounts.SingleOrDefault();
         }
 
@@ -945,22 +899,22 @@ namespace SPPC.Tadbir.Persistence
         {
             var specialAccounts = new Dictionary<AccountCollectionId, IEnumerable<Account>>
             {
-                [AccountCollectionId.FinalSales] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.FinalSales, branchId),
-                [AccountCollectionId.Performance] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.Performance, branchId),
-                [AccountCollectionId.SalesRefundDiscount] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.SalesRefundDiscount, branchId),
-                [AccountCollectionId.SoldProductCost] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.SoldProductCost, branchId),
-                [AccountCollectionId.CurrentProfitLoss] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.CurrentProfitLoss, branchId),
-                [AccountCollectionId.OperationalCosts] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.OperationalCosts, branchId),
-                [AccountCollectionId.OtherCostRevenue] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.OtherCostRevenue, branchId),
-                [AccountCollectionId.AccumulatedProfitLoss] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.AccumulatedProfitLoss, branchId)
+                [AccountCollectionId.FinalSales] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.FinalSales, true, branchId),
+                [AccountCollectionId.Performance] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.Performance, true, branchId),
+                [AccountCollectionId.SalesRefundDiscount] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.SalesRefundDiscount, true, branchId),
+                [AccountCollectionId.SoldProductCost] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.SoldProductCost, true, branchId),
+                [AccountCollectionId.CurrentProfitLoss] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.CurrentProfitLoss, true, branchId),
+                [AccountCollectionId.OperationalCosts] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.OperationalCosts, true, branchId),
+                [AccountCollectionId.OtherCostRevenue] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.OtherCostRevenue, true, branchId),
+                [AccountCollectionId.AccumulatedProfitLoss] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.AccumulatedProfitLoss, true, branchId)
             };
             return specialAccounts;
         }
@@ -970,26 +924,26 @@ namespace SPPC.Tadbir.Persistence
         {
             var specialAccounts = new Dictionary<AccountCollectionId, IEnumerable<Account>>
             {
-                [AccountCollectionId.ProductInventory] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.ProductInventory, branchId),
-                [AccountCollectionId.Performance] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.Performance, branchId),
-                [AccountCollectionId.FinalSales] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.FinalSales, branchId),
-                [AccountCollectionId.SalesRefundDiscount] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.SalesRefundDiscount, branchId),
-                [AccountCollectionId.FinalPurchase] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.FinalPurchase, branchId),
-                [AccountCollectionId.PurchaseRefundDiscount] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.PurchaseRefundDiscount, branchId),
-                [AccountCollectionId.CurrentProfitLoss] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.CurrentProfitLoss, branchId),
-                [AccountCollectionId.OperationalCosts] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.OperationalCosts, branchId),
-                [AccountCollectionId.OtherCostRevenue] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.OtherCostRevenue, branchId),
-                [AccountCollectionId.AccumulatedProfitLoss] = await GetCollectionItemsAsync(
-                    (int)AccountCollectionId.AccumulatedProfitLoss, branchId)
+                [AccountCollectionId.ProductInventory] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.ProductInventory, true, branchId),
+                [AccountCollectionId.FinalSales] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.FinalSales, true, branchId),
+                [AccountCollectionId.Performance] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.Performance, true, branchId),
+                [AccountCollectionId.SalesRefundDiscount] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.SalesRefundDiscount, true, branchId),
+                [AccountCollectionId.FinalPurchase] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.FinalPurchase, true, branchId),
+                [AccountCollectionId.PurchaseRefundDiscount] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.PurchaseRefundDiscount, true, branchId),
+                [AccountCollectionId.CurrentProfitLoss] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.CurrentProfitLoss, true, branchId),
+                [AccountCollectionId.OperationalCosts] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.OperationalCosts, true, branchId),
+                [AccountCollectionId.OtherCostRevenue] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.OtherCostRevenue, true, branchId),
+                [AccountCollectionId.AccumulatedProfitLoss] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.AccumulatedProfitLoss, true, branchId)
             };
             return specialAccounts;
         }
