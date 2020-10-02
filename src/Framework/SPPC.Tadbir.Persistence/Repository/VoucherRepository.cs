@@ -104,13 +104,17 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی مشخص شده با شماره</returns>
         public async Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo)
         {
-            var voucherByNo = await Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(voucher => voucher.No == voucherNo)
-                .FirstOrDefaultAsync();
-            return voucherByNo != null
-                ? Mapper.Map<VoucherViewModel>(voucherByNo)
-                : null;
+            var byNo = default(VoucherViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucherByNo = await repository.GetFirstByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No == voucherNo);
+            if (voucherByNo != null)
+            {
+                byNo = Mapper.Map<VoucherViewModel>(voucherByNo);
+                await SetVoucherNavigationAsync(byNo);
+            }
+
+            return byNo;
         }
 
         /// <summary>
@@ -119,13 +123,20 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اولین سند مالی</returns>
         public async Task<VoucherViewModel> GetFirstVoucherAsync()
         {
-            var firstVoucher = await Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .OrderBy(voucher => voucher.No)
+            var first = default(VoucherViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var firstVoucher = await repository
+                .GetEntityQuery()
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .OrderBy(v => v.No)
                 .FirstOrDefaultAsync();
-            return firstVoucher != null
-                ? Mapper.Map<VoucherViewModel>(firstVoucher)
-                : null;
+            if (firstVoucher != null)
+            {
+                first = Mapper.Map<VoucherViewModel>(firstVoucher);
+                await SetVoucherNavigationAsync(first);
+            }
+
+            return first;
         }
 
         /// <summary>
@@ -135,14 +146,20 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی قبلی</returns>
         public async Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo)
         {
-            var previous = await Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(voucher => voucher.No < currentNo)
-                .OrderByDescending(voucher => voucher.No)
+            var previous = default(VoucherViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var previousVoucher = await repository
+                .GetEntityQuery()
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No < currentNo)
+                .OrderByDescending(v => v.No)
                 .FirstOrDefaultAsync();
-            return previous != null
-                ? Mapper.Map<VoucherViewModel>(previous)
-                : null;
+            if (previousVoucher != null)
+            {
+                previous = Mapper.Map<VoucherViewModel>(previousVoucher);
+                await SetVoucherNavigationAsync(previous);
+            }
+
+            return previous;
         }
 
         /// <summary>
@@ -152,14 +169,20 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی بعدی</returns>
         public async Task<VoucherViewModel> GetNextVoucherAsync(int currentNo)
         {
-            var next = await Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(voucher => voucher.No > currentNo)
-                .OrderBy(voucher => voucher.No)
+            var next = default(VoucherViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var nextVoucher = await repository
+                .GetEntityQuery()
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No > currentNo)
+                .OrderBy(v => v.No)
                 .FirstOrDefaultAsync();
-            return next != null
-                ? Mapper.Map<VoucherViewModel>(next)
-                : null;
+            if (nextVoucher != null)
+            {
+                next = Mapper.Map<VoucherViewModel>(nextVoucher);
+                await SetVoucherNavigationAsync(next);
+            }
+
+            return next;
         }
 
         /// <summary>
@@ -168,13 +191,20 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>آخرین سند مالی</returns>
         public async Task<VoucherViewModel> GetLastVoucherAsync()
         {
-            var lastVoucher = await Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .OrderByDescending(voucher => voucher.No)
+            var last = default(VoucherViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lastVoucher = await repository
+                .GetEntityQuery()
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .OrderByDescending(v => v.No)
                 .FirstOrDefaultAsync();
-            return lastVoucher != null
-                ? Mapper.Map<VoucherViewModel>(lastVoucher)
-                : null;
+            if (lastVoucher != null)
+            {
+                last = Mapper.Map<VoucherViewModel>(lastVoucher);
+                await SetVoucherNavigationAsync(last);
+            }
+
+            return last;
         }
 
         /// <summary>
@@ -753,6 +783,17 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             return await repository.GetCountByCriteriaAsync(line => line.VoucherId == voucherId);
+        }
+
+        private async Task SetVoucherNavigationAsync(VoucherViewModel voucher)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            int previousCount = await repository.GetCountByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No < voucher.No);
+            int nextCount = await repository.GetCountByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No > voucher.No);
+            voucher.HasPrevious = previousCount > 0;
+            voucher.HasNext = nextCount > 0;
         }
 
         private readonly ISystemRepository _system;
