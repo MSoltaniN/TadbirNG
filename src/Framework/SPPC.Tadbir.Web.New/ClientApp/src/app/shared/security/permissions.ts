@@ -89,6 +89,8 @@ export enum CurrencyPermissions {
     All = 127
 }
 
+
+
 export enum VoucherPermissions {
     None = 0,
     View = 1,
@@ -331,102 +333,106 @@ export enum ProfitLossPermissions {
 
 @Injectable()
 export class Permissions {
-  getPermission(entity: string, premissionName: string): number {
+  getPermission(enumeration: string, premissionName: string): number {
     var id: number = 0;
 
-    switch (entity.toLowerCase()) {
-      case "account":
+    switch (enumeration.toLowerCase()) {
+      case "accountpermissions":
         id = <any>AccountPermissions[<any>premissionName];
         break;
-      case "detailaccount":
+      case "detailaccountpermissions":
         id = <any>DetailAccountPermissions[<any>premissionName];
         break;
-      case "costcenter":
+      case "costcenterpermissions":
         id = <any>CostCenterPermissions[<any>premissionName];
         break;
-      case "project":
+      case "projectpermissions":
         id = <any>ProjectPermissions[<any>premissionName];
         break;
-      case "fiscalperiod":
+      case "fiscalperiodpermissions":
         id = <any>FiscalPeriodPermissions[<any>premissionName];
         break;
-      case "currency":
+      case "currencypermissions":
         id = <any>CurrencyPermissions[<any>premissionName];
         break;
-      case "currencyrate":
+      case "currencyratepermissions":
         id = <any>CurrencyRatePermissions[<any>premissionName];
         break;
-      case "voucher":
+      case "voucherpermissions":
         id = <any>VoucherPermissions[<any>premissionName];
         break;
-      case "branch":
+      case "managevoucherspermissions":
+        id = <any>ManageVouchersPermissions[<any>premissionName];
+        break;
+      case "branchpermissions":
         id = <any>BranchPermissions[<any>premissionName];
         break;
-      case "company":
+      case "companypermissions":
         id = <any>CompanyPermissions[<any>premissionName];
         break;
-      case "user":
+      case "userpermissions":
         id = <any>UserPermissions[<any>premissionName];
         break;
-      case "role":
+      case "rolepermissions":
         id = <any>RolePermissions[<any>premissionName];
         break;
-      case "accountgroup":
+      case "accountgrouppermissions":
         id = <any>AccountGroupPermissions[<any>premissionName];
         break;
-      case "accountcollection":
+      case "accountcollectionpermissions":
         id = <any>AccountCollectionPermissions[<any>premissionName];
         break;
-      case "accountrelations":
+      case "accountrelationspermissions":
         id = <any>AccountRelationPermissions[<any>premissionName];
         break;
-      case "rowaccess":
+      case "rowaccesspermissions":
         id = <any>RowAccessPermissions[<any>premissionName];
         break;
-      case "setting":
+      case "settingpermissions":
         id = <any>SettingPermissions[<any>premissionName];
         break;
-      case "logsetting":
+      case "logsettingpermissions":
         id = <any>LogSettingPermissions[<any>premissionName];
         break;
-      case "journal":
+      case "journalpermissions":
         id = <any>JournalPermissions[<any>premissionName];
         break;
-      case "accountbook":
+      case "accountbookpermissions":
         id = <any>AccountBookPermissions[<any>premissionName];
         break;
-      case "currencybook":
+      case "currencybookpermissions":
         id = <any>CurrencyBookPermissions[<any>premissionName];
         break;
-      case "systemissue":
+      case "systemissuepermissions":
         id = <any>SystemIssuePermissions[<any>premissionName];
         break;
       case "balancebyaccount":
         id = <any>BalanceByAccountPermissions[<any>premissionName];
         break;
-      case "operationlog":
+      case "operationlogpermissions":
         id = <any>OperationLogPermissions[<any>premissionName];
         break;
-      case "sysoperationlog":
+      case "sysoperationlogpermissions":
         id = <any>SysOperationLogPermissions[<any>premissionName];
         break;
-      case "testbalance":
+      case "testbalancepermissions":
         id = <any>TestBalancePermissions[<any>premissionName];
         break;
-      case "itembalance":
+      case "itembalancepermissions":
         id = <any>ItemBalancePermissions[<any>premissionName];
         break;
-      case "report":
+      case "reportpermissions":
         id = <any>ReportPermissions[<any>premissionName];
         break;
-      case "userreport":
+      case "userreportpermissions":
         id = <any>UserReportPermissions[<any>premissionName];
         break;
-      case "profitloss":
+      case "profitlosspermissions":
         id = <any>ProfitLossPermissions[<any>premissionName];
         break;
     }
 
     return id;
-  }
-};
+  }  
+  
+}

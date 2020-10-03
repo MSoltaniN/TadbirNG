@@ -139,7 +139,7 @@
             </kendo-grid>
 
             <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}" style="margin-top: 10px;">
-              <button class="k-button k-primary" [disabled]="!isChangedList" SppcPermissionCheck="Create" (sppcClick)="saveChanges()">{{ 'Buttons.Save' | translate }}</button>
+              <button class="k-button k-primary" [disabled]="!isChangedList" SppcPermissionCheck="Save" (sppcClick)="saveChanges()">{{ 'Buttons.Save' | translate }}</button>
             </div>
 
           </div>

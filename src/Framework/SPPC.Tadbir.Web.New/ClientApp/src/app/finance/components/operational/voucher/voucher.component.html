@@ -69,7 +69,7 @@
       <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
       <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="GroupCheck" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
+      <button *ngIf="groupOperation"  SppcPermissionCheck="GroupCheck;ManageVouchersPermissions" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
               title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
         <span class="k-icon k-i-check-outline"></span>
       </button>
@@ -78,16 +78,16 @@
         <span class="k-icon k-i-check-outline"></span>
       </button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="UndoGroupCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
+      <button *ngIf="groupOperation" SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
+      <button *ngIf="!groupOperation" SppcPermissionCheck="GroupUndoCheck;ManageVouchersPermissions" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="GroupFinalize" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon"
+      <button *ngIf="groupOperation" SppcPermissionCheck="GroupFinalize;ManageVouchersPermissions" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon"
               title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
@@ -96,7 +96,7 @@
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
       <div [style.display]="showFinancBtns ? 'inline-block' : 'none'">
-        <button *ngIf="groupOperation" SppcPermissionCheck="UndoGroupFinalize" (sppcClick)="onUnFinalizedHandler()" class="k-button k-button-icon"
+        <button *ngIf="groupOperation" SppcPermissionCheck="UndoGroupFinalize;ManageVouchersPermissions" (sppcClick)="onUnFinalizedHandler()" class="k-button k-button-icon"
                 title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
           <span class="k-icon k-i-track-changes-reject-all"></span>
         </button>
@@ -105,13 +105,13 @@
           <span class="k-icon k-i-track-changes-reject-all"></span>
         </button>
       </div>
-      <button SppcPermissionCheck="ConfirmGroup" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon"
+      <button SppcPermissionCheck="GroupConfirm;ManageVouchersPermissions" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon"
               title="{{'Voucher.ConfirmGroup'| translate}}">
         <span class="k-icon k-i-lock"></span>
       </button>
 
 
-      <button SppcPermissionCheck="UnConfirmGroup" (sppcClick)="onUnConfirmGroupHandler()" class="k-button k-button-icon"
+      <button SppcPermissionCheck="UndoConfirm" (sppcClick)="onUnConfirmGroupHandler()" class="k-button k-button-icon"
               title="{{'Voucher.UnConfirmGroup'| translate}}">
         <span class="k-icon k-i-unlock"></span>
       </button>
