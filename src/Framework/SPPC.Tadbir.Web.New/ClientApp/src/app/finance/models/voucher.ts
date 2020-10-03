@@ -38,4 +38,6 @@ export interface Voucher {
     approverName: string;
     description?: string;
     originName: string;
+    hasPrevious: boolean;
+    hasNext: boolean;
 }
