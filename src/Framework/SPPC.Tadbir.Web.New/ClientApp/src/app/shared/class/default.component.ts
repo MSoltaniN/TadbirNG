@@ -156,8 +156,8 @@ export class DefaultComponent extends BaseComponent {
         this.properties.set(metaDataName, arr.columns);
         if (!this.properties.get(metaDataName)) return undefined;
         var result = this.properties.get(metaDataName);
-        this.baseEntityName = result.entityName;
-        return result.columns;
+        this.baseEntityName = arr.entityName;
+        return arr.columns;
       }
 
     }

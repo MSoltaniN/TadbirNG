@@ -131,8 +131,8 @@
             <div class="clearfix"></div>
         </div>
         <div id="btn-section" [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en'}">
-            <button class="k-button k-primary" SppcPermissionCheck="ManageRelationships" (sppcClick)="onCreateRelation()" [disabled]="mainComponentSelectedItem == 0 || relatedComponentDropdownSelected == 0">{{ 'AccountRelations.CreateRelationBtn' | translate }}</button>
-            <button class="k-button" SppcPermissionCheck="ManageRelationships" (sppcClick)="DeleteRelation()" [disabled]="deleteKey.length == 0">{{ 'AccountRelations.DeleteRelationBtn' | translate }}</button>
+            <button class="k-button k-primary" SppcPermissionCheck="SaveRelationships" (sppcClick)="onCreateRelation()" [disabled]="mainComponentSelectedItem == 0 || relatedComponentDropdownSelected == 0">{{ 'AccountRelations.CreateRelationBtn' | translate }}</button>
+            <button class="k-button" SppcPermissionCheck="SaveRelationships" (sppcClick)="DeleteRelation()" [disabled]="deleteKey.length == 0">{{ 'AccountRelations.DeleteRelationBtn' | translate }}</button>
             <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
         </div>
     </div>
