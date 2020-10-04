@@ -30,9 +30,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(64);
-            builder.Property(e => e.Country)
-                .IsRequired()
-                .HasMaxLength(64);
             builder.Property(e => e.Code)
                 .IsRequired()
                 .HasMaxLength(8);
@@ -41,8 +38,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.MinorUnit)
                 .IsRequired()
                 .HasMaxLength(16);
-            builder.Property(e => e.Multiplier)
-                .IsRequired();
             builder.Property(e => e.DecimalCount)
                 .IsRequired();
             builder.Property(e => e.IsActive)

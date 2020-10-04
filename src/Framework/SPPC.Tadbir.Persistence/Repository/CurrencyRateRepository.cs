@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
@@ -36,13 +37,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         public async Task<PagedList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId, GridOptions gridOptions)
         {
-            var repository = UnitOfWork.GetAsyncRepository<CurrencyRate>();
-            var parentRepository = UnitOfWork.GetAsyncRepository<Currency>();
-            var currency = await parentRepository.GetByIDAsync(currencyId);
+            var currency = await Repository
+                .GetAllQuery<Currency>(ViewId.Currency)
+                .Where(curr => curr.Id == currencyId)
+                .FirstOrDefaultAsync();
             if (currency != null)
             {
-                var all = await repository
-                    .GetEntityQuery(rate => rate.Branch)
+                var all = await Repository
+                    .GetAllQuery<CurrencyRate>(ViewId.CurrencyRate, rate => rate.Branch)
                     .Where(rate => rate.CurrencyId == currencyId)
                     .OrderByDescending(rate => rate.Date)
                     .ThenByDescending(rate => rate.Time)
@@ -144,10 +146,11 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public async Task<bool> CurrencyHasRatesAsync(int currencyId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<CurrencyRate>();
-            var currencyRates = await repository
-                .GetCountByCriteriaAsync(rate => rate.CurrencyId == currencyId);
-            return currencyRates > 0 ? true : false;
+            int rateCount = await Repository
+                .GetAllQuery<CurrencyRate>(ViewId.CurrencyRate)
+                .Where(rate => rate.CurrencyId == currencyId)
+                .CountAsync();
+            return rateCount > 0;
         }
 
         internal override int? EntityType
@@ -198,6 +201,11 @@ namespace SPPC.Tadbir.Persistence
                 Log.EntityName = Context.Localize(Log.EntityName);
                 await TrySaveLogAsync();
             }
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
         }
 
         private IConfigRepository Config

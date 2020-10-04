@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -92,9 +91,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var path = GetLocalCurrencyDbPath();
             var currency = _repository.GetCurrencyByName(path, nameKey);
-            Localize(currency);
-            currency.BranchId = SecurityContext.User.BranchId;
-            currency.BranchName = SecurityContext.User.BranchName;
+            if (currency != null)
+            {
+                Localize(currency);
+                currency.BranchId = SecurityContext.User.BranchId;
+                currency.BranchName = SecurityContext.User.BranchName;
+            }
+
             return JsonReadResult(currency);
         }
 
@@ -165,16 +168,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Create)]
         public async Task<IActionResult> PostNewCurrencyAsync([FromBody] CurrencyViewModel currency)
         {
-            var result = BasicValidationResult(currency);
+            var result = await ValidationResultAsync(currency);
             if (result is BadRequestObjectResult)
             {
                 return result;
-            }
-
-            if (await _repository.IsDuplicateCurrencyAsync(currency.Code, currency.Id))
-            {
-                string message = _strings.Format(AppStrings.CurrencyAlreadyExists, currency.Code);
-                return BadRequest(message);
             }
 
             var outputItem = await _repository.SaveCurrencyAsync(currency);
@@ -193,7 +190,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Currency));
             }
 
-            var result = BasicValidationResult(currencyRate);
+            var result = ValidationResult(currencyRate);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -272,16 +269,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Edit)]
         public async Task<IActionResult> PutModifiedCurrencyAsync(int currencyId, [FromBody] CurrencyViewModel currency)
         {
-            var result = BasicValidationResult(currency, currencyId);
+            var result = await ValidationResultAsync(currency, currencyId);
             if (result is BadRequestObjectResult)
             {
                 return result;
-            }
-
-            if (await _repository.IsDuplicateCurrencyAsync(currency.Code, currency.Id))
-            {
-                string message = _strings.Format(AppStrings.CurrencyAlreadyExists, currency.Code);
-                return BadRequest(message);
             }
 
             var outputItem = await _repository.SaveCurrencyAsync(currency);
@@ -295,7 +286,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedCurrencyRateAsync(
             int rateId, [FromBody] CurrencyRateViewModel currencyRate)
         {
-            var result = BasicValidationResult(currencyRate, rateId);
+            var result = ValidationResult(currencyRate, rateId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -395,6 +386,46 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return GetGroupActionResult(message, currencyRate);
+        }
+
+        private async Task<IActionResult> ValidationResultAsync(CurrencyViewModel currency, int currencyId = 0)
+        {
+            var result = BasicValidationResult(currency, currencyId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsDuplicateCurrencyAsync(currency.Code, currency.Id))
+            {
+                string message = _strings.Format(AppStrings.CurrencyAlreadyExists, currency.Code);
+                return BadRequest(message);
+            }
+
+            result = BranchValidationResult(currency);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            return Ok();
+        }
+
+        private IActionResult ValidationResult(CurrencyRateViewModel rate, int rateId = 0)
+        {
+            var result = BasicValidationResult(rate, rateId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(rate);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            return Ok();
         }
 
         private void Localize(CurrencyViewModel currency)

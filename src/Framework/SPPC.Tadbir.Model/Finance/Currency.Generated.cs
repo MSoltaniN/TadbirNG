@@ -26,7 +26,6 @@ namespace SPPC.Tadbir.Model.Finance
         public Currency()
         {
             Name = String.Empty;
-            Country = String.Empty;
             Code = String.Empty;
             MinorUnit = String.Empty;
             Description = String.Empty;
@@ -38,11 +37,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// کلید متن چند زبانه برای نام ارز استاندارد
         /// </summary>
         public virtual string Name { get; set; }
-
-        /// <summary>
-        /// کلید متن چند زبانه برای نام کشور مربوطه
-        /// </summary>
-        public virtual string Country { get; set; }
 
         /// <summary>
         /// نمایه استاندارد بین المللی ارز، که معمولاً سه حرفی است
@@ -60,11 +54,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual string MinorUnit { get; set; }
 
         /// <summary>
-        /// ضریب تبدیل ارز اصلی به ارز جزء که برای ارزهای خارجی معمولاً 100 و گاهی 1000 است
-        /// </summary>
-        public virtual int Multiplier { get; set; }
-
-        /// <summary>
         /// تعداد ارقام اعشار مورد نیاز برای ارز
         /// </summary>
         public virtual short DecimalCount { get; set; }
@@ -80,9 +69,8 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual string Description { get; set; }
 
         /// <summary>
-        /// آیا این ارز، ارز پایه میباشد؟
+        /// مشخص می کند که این ارز به عنوان ارز پایه شرکت انتخاب شده یا نه
         /// </summary>
         public virtual bool IsDefaultCurrency { get; set; }
-
     }
 }

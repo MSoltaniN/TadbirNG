@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Resources;
@@ -27,12 +28,12 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        /// <param name="system">امکان دسترسی به امکانات سیستمی برنامه را فراهم می کند</param>
         /// <param name="access">امکان کار با دیتابیس های برنامه اکسس را فراهم می کند</param>
-        public CurrencyRepository(IRepositoryContext context, IOperationLogRepository log,
-            IAccessRepository access)
-            : base(context, log)
+        public CurrencyRepository(IRepositoryContext context, ISystemRepository system, IAccessRepository access)
+            : base(context, system.Logger)
         {
+            _system = system;
             _access = access;
         }
 
@@ -44,8 +45,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
-            var currencies = await repository
-                .GetEntityQuery(curr => curr.Branch)
+            var currencies = await Repository
+                .GetAllQuery<Currency>(ViewId.Currency, curr => curr.Branch)
                 .Select(item => Mapper.Map<CurrencyViewModel>(item))
                 .ToListAsync();
             await ReadAsync(gridOptions);
@@ -329,11 +330,9 @@ namespace SPPC.Tadbir.Persistence
         {
             currency.BranchScope = currencyViewModel.BranchScope;
             currency.Name = currencyViewModel.Name;
-            currency.Country = currencyViewModel.Country;
             currency.Code = currencyViewModel.Code;
             currency.TaxCode = currencyViewModel.TaxCode;
             currency.MinorUnit = currencyViewModel.MinorUnit;
-            currency.Multiplier = currencyViewModel.Multiplier;
             currency.DecimalCount = currencyViewModel.DecimalCount;
             currency.IsActive = currencyViewModel.IsActive;
             currency.Description = currencyViewModel.Description;
@@ -353,6 +352,11 @@ namespace SPPC.Tadbir.Persistence
                     AppStrings.MinorUnit, entity.MinorUnit, AppStrings.DecimalCount, entity.DecimalCount,
                     AppStrings.Description, entity.Description)
                 : null;
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
         }
 
         private List<CurrencyInfo> GetLocalCurrencyDatabase(string localDbPath)
@@ -405,6 +409,7 @@ namespace SPPC.Tadbir.Persistence
             repository.Insert(entity);
         }
 
+        private readonly ISystemRepository _system;
         private readonly IAccessRepository _access;
     }
 }

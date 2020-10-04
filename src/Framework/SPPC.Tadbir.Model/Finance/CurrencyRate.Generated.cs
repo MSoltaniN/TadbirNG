@@ -11,7 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -19,7 +18,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// اطلاعات تکمیلی را برای نرخ روزانه یا لحظه ای یکی از ارزهای تعریف شده نگهداری می کند
     /// </summary>
-    public partial class CurrencyRate : CoreEntity
+    public partial class CurrencyRate : BaseEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -46,12 +45,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual double Multiplier { get; set; }
 
         /// <summary>
-        /// محدوده دسترسی به نرخ ارز را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل
-        /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
-        /// </summary>
-        public virtual short BranchScope { get; set; }
-
-        /// <summary>
         /// شرح تکمیلی برای نگهداری جزئیات بیشتر در مورد نرخ ارز
         /// </summary>
         public virtual string Description { get; set; }
@@ -60,10 +53,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// ارزی که نرخ روزانه یا لحظه ای برای ان ثبت می شود
         /// </summary>
         public virtual Currency Currency { get; set; }
-
-        /// <summary>
-        /// شعبه ای که نرخ روزانه ارز برای استفاده در عملیات آن ثبت می شود
-        /// </summary>
-        public Branch Branch { get; set; }
     }
 }
