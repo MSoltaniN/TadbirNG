@@ -4319,3 +4319,6 @@ UPDATE [Metadata].[Command]
 SET RouteUrl = N'/finance/vouchers/close-temp-accounts'
 WHERE TitleKey = N'ClosingTempAccounts'
 
+-- 1.1.992
+DELETE FROM [Metadata].[Column]
+WHERE ViewID = 30 AND Name = N'Country'

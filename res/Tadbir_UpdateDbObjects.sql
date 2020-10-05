@@ -1386,3 +1386,25 @@ UPDATE [Core].[DocumentStatus]
 SET Name = N'NotChecked'
 WHERE Name = N'Draft'
 
+-- 1.1.991
+ALTER TABLE [Finance].[Currency]
+DROP CONSTRAINT [DF_Finance_Currency_Country]
+GO
+
+ALTER TABLE [Finance].[Currency]
+DROP COLUMN [Country]
+GO
+
+ALTER TABLE [Finance].[Currency]
+DROP CONSTRAINT [DF_Finance_Currency_Multiplier]
+GO
+
+ALTER TABLE [Finance].[Currency]
+DROP COLUMN [Multiplier]
+GO
+
+ALTER TABLE [Finance].[CurrencyRate]
+ADD [FiscalPeriodId] INT NOT NULL
+CONSTRAINT [DF_Finance_CurrencyRate_FiscalPeriodID] DEFAULT (0)
+WITH VALUES;
+GO

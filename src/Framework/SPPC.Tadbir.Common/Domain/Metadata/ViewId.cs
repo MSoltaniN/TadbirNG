@@ -76,5 +76,15 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی مجموعه حساب ها
         /// </summary>
         public const int AccountCollectionAccount = 14;
+
+        /// <summary>
+        /// نمای اطلاعاتی ارزها
+        /// </summary>
+        public const int Currency = 30;
+
+        /// <summary>
+        /// نمای اطلاعاتی نرخ های یک ارز
+        /// </summary>
+        public const int CurrencyRate = 31;
     }
 }

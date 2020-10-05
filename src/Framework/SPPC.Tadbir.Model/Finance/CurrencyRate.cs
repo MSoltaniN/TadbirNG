@@ -9,10 +9,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی ارز مرتبط با این نرخ
         /// </summary>
         public int CurrencyId { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای شعبه سازمانی که این نرخ ارز در آن تعریف می شود
-        /// </summary>
-        public int BranchId { get; set; }
     }
 }

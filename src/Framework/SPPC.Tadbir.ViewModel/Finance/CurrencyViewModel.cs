@@ -1,12 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CurrencyViewModel : ViewModelBase
+    public partial class CurrencyViewModel : ViewModelBase, IFiscalEntityView
     {
+        /// <summary>
+        /// شناسه دیتابیسی دوره مالی که ارز در آن تعریف شده است - این فیلد فعلاً استفاده نمی شود
+        /// </summary>
+        public int FiscalPeriodId { get; set; }
+
         /// <summary>
         /// شناسه دیتابیسی شعبه ای که ارز در آن تعریف شده است
         /// </summary>

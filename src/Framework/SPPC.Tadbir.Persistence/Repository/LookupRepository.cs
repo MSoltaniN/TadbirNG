@@ -153,8 +153,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetCurrenciesAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
-            return await repository
-                .GetEntityQuery()
+            return await Repository
+                .GetAllQuery<Currency>(ViewId.Currency)
                 .Select(curr => Mapper.Map<KeyValue>(curr))
                 .ToListAsync();
         }
@@ -165,9 +165,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ارز های تعریف شده</returns>
         public async Task<IEnumerable<CurrencyInfoViewModel>> GetCurrenciesInfoAsync(bool withRate)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Currency>();
-            var currencies = await repository
-                .GetEntityWithTrackingQuery()
+            var currencies = await Repository
+                .GetAllQuery<Currency>(ViewId.Currency)
                 .ToListAsync();
             var lookup = new List<CurrencyInfoViewModel>();
             foreach (var currency in currencies)
@@ -175,7 +174,7 @@ namespace SPPC.Tadbir.Persistence
                 var lookupItem = Mapper.Map<CurrencyInfoViewModel>(currency);
                 if (withRate)
                 {
-                    lookupItem.LastRate = await GetLastCurrencyRateAsync(repository, currency);
+                    lookupItem.LastRate = await GetLastCurrencyRateAsync(currency);
                 }
 
                 lookup.Add(lookupItem);
@@ -643,6 +642,11 @@ namespace SPPC.Tadbir.Persistence
             return String.Format("{0}, {1}", user.Person.LastName, user.Person.FirstName);
         }
 
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
         private IConfigRepository Config
         {
             get
@@ -651,17 +655,16 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static async Task<double> GetLastCurrencyRateAsync(
-            IAsyncRepository<Currency> repository, Currency currency)
+        private async Task<double> GetLastCurrencyRateAsync(Currency currency)
         {
-            await repository.LoadCollectionAsync(currency, curr => curr.Rates);
-            var lastRate = currency.Rates
+            var lastRate = await Repository
+                .GetAllQuery<CurrencyRate>(ViewId.CurrencyRate)
+                .Where(rate => rate.CurrencyId == currency.Id)
                 .OrderByDescending(rate => rate.Date)
                 .ThenByDescending(rate => rate.Time)
-                .FirstOrDefault();
-            return lastRate != null
-                ? lastRate.Multiplier
-                : 0.0F;
+                .Select(rate => rate.Multiplier)
+                .FirstOrDefaultAsync();
+            return lastRate;
         }
 
         private IQueryable<User> GetUserQuery(int userId)
