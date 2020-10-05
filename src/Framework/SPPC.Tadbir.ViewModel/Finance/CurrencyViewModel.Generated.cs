@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public CurrencyViewModel()
         {
             Name = String.Empty;
-            Country = String.Empty;
             Code = String.Empty;
             MinorUnit = String.Empty;
             Description = String.Empty;
@@ -53,13 +52,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string Name { get; set; }
 
         /// <summary>
-        /// کلید متن چند زبانه برای نام کشور مربوطه
-        /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Country { get; set; }
-
-        /// <summary>
         /// نمایه استاندارد بین المللی ارز، که معمولاً سه حرفی است
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
@@ -78,12 +70,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string MinorUnit { get; set; }
-
-        /// <summary>
-        /// ضریب تبدیل ارز اصلی به ارز جزء که برای ارزهای خارجی معمولاً 100 و گاهی 1000 است
-        /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int Multiplier { get; set; }
 
         /// <summary>
         /// تعداد ارقام اعشار مورد نیاز برای ارز

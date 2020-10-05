@@ -261,7 +261,6 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.DecimalCount, opts => opts.MapFrom(src => src.Currency.DecimalCount))
                 .ForMember(dest => dest.MinorUnit, opts => opts.MapFrom(src => src.Currency.MinorUnitKey))
                 .ForMember(dest => dest.MinorUnitKey, opts => opts.MapFrom(src => src.Currency.MinorUnitKey))
-                .ForMember(dest => dest.Multiplier, opts => opts.MapFrom(src => Math.Pow(10, src.Currency.DecimalCount)))
                 .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Currency.NameKey));
             mapperConfig.CreateMap<CurrencyViewModel, Currency>();
             mapperConfig.CreateMap<Currency, KeyValue>()
