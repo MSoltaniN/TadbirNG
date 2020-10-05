@@ -126,6 +126,7 @@ namespace SPPC.Tadbir.Persistence
                 repository.Insert(new AccountCollectionAccount()
                 {
                     AccountId = item.AccountId,
+                    CollectionId = item.CollectionId,
                     BranchId = UserContext.BranchId,
                     FiscalPeriodId = UserContext.FiscalPeriodId
                 });
