@@ -585,7 +585,10 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public bool IsPublicPermission(PermissionViewModel permission)
         {
-            return permission.GroupId != 29;
+            // 21 is the GroupID for LogSetting permissions
+            // NOTE: Hardcoding this value is bad practice, but defining a single-value enum type
+            // for permission groups is currently overkill.
+            return permission.GroupId != 21;
         }
 
         /// <inheritdoc/>

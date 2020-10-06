@@ -4322,3 +4322,9 @@ WHERE TitleKey = N'ClosingTempAccounts'
 -- 1.1.992
 DELETE FROM [Metadata].[Column]
 WHERE ViewID = 30 AND Name = N'Country'
+
+-- 1.1.995
+-- NOTE: Admin-only permissions cannot be assigned to non-admin roles
+DELETE FROM [Auth].[RolePermission]
+WHERE PermissionID IN(130,131)
+
