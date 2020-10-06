@@ -145,7 +145,7 @@
     <value>The role {0} is currently assigned to one or more users and cannot be deleted.</value>
   </data>
   <data name="CantDeleteNonLeafItem" xml:space="preserve">
-    <value>The {0} {1} has one or more subitems and cannot be deleted.</value>
+    <value>The {0} {1} has one or more subitems in one of existing fiscal periods or branches and cannot be deleted.</value>
   </data>
   <data name="CantDeleteUsedItem" xml:space="preserve">
     <value>The {0} {1} is used in one or more vouchers and cannot be deleted.</value>
@@ -3296,5 +3296,8 @@
   </data>
   <data name="Export" xml:space="preserve">
     <value>Export</value>
+  </data>
+  <data name="CantDeleteNonLeafBranch" xml:space="preserve">
+    <value>The branch '{0}' has one or more subitems and cannot be deleted.</value>
   </data>
 </root>

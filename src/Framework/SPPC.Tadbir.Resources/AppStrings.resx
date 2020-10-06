@@ -145,7 +145,7 @@
     <value>نقش {0} به یک یا چند کاربر  تخصیص داده شده و قابل حذف نیست.</value>
   </data>
   <data name="CantDeleteNonLeafItem" xml:space="preserve">
-    <value>{0} {1} دارای زیرمجموعه بوده و قابل حذف نیست.</value>
+    <value>{0} {1} در یکی از دوره های مالی یا شعبه های موجود دارای زیرمجموعه بوده و قابل حذف نیست.</value>
   </data>
   <data name="CantDeleteUsedItem" xml:space="preserve">
     <value>{0} {1} در یک یا چند سند مالی استفاده شده و قابل حذف نیست.</value>
@@ -3287,5 +3287,8 @@
   </data>
   <data name="Export" xml:space="preserve">
     <value>ارسال</value>
+  </data>
+  <data name="CantDeleteNonLeafBranch" xml:space="preserve">
+    <value>شعبه '{0}' دارای زیرمجموعه بوده و قابل حذف نیست.</value>
   </data>
 </root>
