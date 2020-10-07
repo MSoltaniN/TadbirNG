@@ -56,13 +56,7 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
       });     
   }
 
-  //function getEnumKeyByEnumValue(myEnum, enumValue) {
-  //let keys = Object.keys(myEnum).filter(x => myEnum[x] == enumValue);
-  //return keys.length > 0 ? keys[0] : null;
-  //}
-
-
-  haveAccess(): boolean {    
+  haveAccess(): boolean {        
     var eName = this.entityName;
     if (!this.entityName && !this.enum) {
       var viewId = (<any>this.parentComponet)._view.component.viewId;

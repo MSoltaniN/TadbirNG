@@ -406,7 +406,7 @@ export class Permissions {
       case "systemissuepermissions":
         id = <any>SystemIssuePermissions[<any>premissionName];
         break;
-      case "balancebyaccount":
+      case "balancebyaccountpermissions":
         id = <any>BalanceByAccountPermissions[<any>premissionName];
         break;
       case "operationlogpermissions":
