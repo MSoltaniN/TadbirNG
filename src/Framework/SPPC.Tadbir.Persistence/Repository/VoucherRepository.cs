@@ -70,6 +70,7 @@ namespace SPPC.Tadbir.Persistence
             if (existing != null)
             {
                 voucher = Mapper.Map<VoucherViewModel>(existing);
+                await SetVoucherNavigationAsync(voucher);
             }
 
             return voucher;

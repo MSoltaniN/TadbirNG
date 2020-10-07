@@ -126,6 +126,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         switch (params['mode']) {
           case "new": {
             this.newVoucher();
+            this.isLastVoucher = true;            
             break;
           }
           case "last": {
@@ -293,7 +294,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.voucherService.getModels(apiUrl).subscribe(res => {
 
       this.initVoucherForm(res);
-      this.errorMessage = undefined;
+      this.errorMessage = undefined;      
+      this.isLastVoucher = !res.hasNext;
+      this.isFirstVoucher = !res.hasPrevious;
     },
       err => {
         if (err.status == 404) {
@@ -312,7 +315,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   initVoucherForm(item: Voucher) {
 
     this.editForm.reset(item);
-
+    this.isLastVoucher = !item.hasNext;
+    this.isFirstVoucher = !item.hasPrevious;
     this.voucherModel = item;
     this.selectedType = this.voucherModel.type.toString();
   }
