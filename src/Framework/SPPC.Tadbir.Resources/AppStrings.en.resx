@@ -3300,4 +3300,7 @@
   <data name="CantDeleteNonLeafBranch" xml:space="preserve">
     <value>The branch '{0}' has one or more subitems and cannot be deleted.</value>
   </data>
+  <data name="InvalidFinalizedVoucherAction" xml:space="preserve">
+    <value>Action {0} cannot be done on a finalized voucher.</value>
+  </data>
 </root>

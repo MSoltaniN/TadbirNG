@@ -129,7 +129,12 @@ namespace SPPC.Tadbir.Persistence
         private string ValidateConfirm(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (voucher.IsConfirmed)
+            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
+            {
+                var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
+                error = Context.Localize(String.Format(template, AppStrings.Confirm));
+            }
+            else if (voucher.IsConfirmed || voucher.IsApproved)
             {
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Confirm));
@@ -147,7 +152,12 @@ namespace SPPC.Tadbir.Persistence
         {
             string error = String.Empty;
             var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
-            if (voucher.IsApproved)
+            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
+            {
+                template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
+                error = Context.Localize(String.Format(template, AppStrings.UndoConfirm));
+            }
+            else if (voucher.IsApproved)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoConfirm, AppStrings.UndoApprove));
             }
@@ -162,7 +172,12 @@ namespace SPPC.Tadbir.Persistence
         private string ValidateApprove(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (voucher.IsApproved)
+            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
+            {
+                var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
+                error = Context.Localize(String.Format(template, AppStrings.Approve));
+            }
+            else if (voucher.IsApproved)
             {
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Approve));
@@ -180,7 +195,12 @@ namespace SPPC.Tadbir.Persistence
         {
             string error = String.Empty;
             var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
-            if (!voucher.IsApproved)
+            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
+            {
+                template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
+                error = Context.Localize(String.Format(template, AppStrings.UndoApprove));
+            }
+            else if (!voucher.IsApproved)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoApprove, AppStrings.Approve));
             }

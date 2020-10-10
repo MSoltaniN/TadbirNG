@@ -3291,4 +3291,7 @@
   <data name="CantDeleteNonLeafBranch" xml:space="preserve">
     <value>شعبه '{0}' دارای زیرمجموعه بوده و قابل حذف نیست.</value>
   </data>
+  <data name="InvalidFinalizedVoucherAction" xml:space="preserve">
+    <value>عمل {0} روی سند ثبت قطعی شده امکان پذیر نیست.</value>
+  </data>
 </root>
