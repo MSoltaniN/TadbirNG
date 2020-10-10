@@ -26,7 +26,7 @@
             <span class="k-icon k-i-search"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.FirstVoucher' | translate }}" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.First)">
+          <button class="k-button" title="{{ 'Voucher.FirstVoucher' | translate }}" [disabled]="isFirstVoucher" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.First)">
             <span class="k-icon k-i-arrow-end-right"></span>
           </button>
 
@@ -38,7 +38,7 @@
             <span class="k-icon k-i-arrow-double-60-left"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.LastVoucher' | translate }}" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.Last)">
+          <button class="k-button" title="{{ 'Voucher.LastVoucher' | translate }}" [disabled]="isLastVoucher" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.Last)">
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
 
