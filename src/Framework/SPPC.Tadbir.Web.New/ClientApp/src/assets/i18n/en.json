@@ -667,7 +667,8 @@
     "SelectLevel": "Please select account level",
     "SelectCollection": "Please select account collection",
     "SelectedAccount": "This account is selected",
-    "AccountViewAccess": "You do not have access to viewing selected accounts"
+    "AccountViewAccess": "You do not have access to viewing selected accounts",
+    "AccountRemoveAccess": "This account is defined in the above branches and can not be deleted"
   },
   "Settings": {
     "AccountRelation": {
@@ -896,9 +897,9 @@
     "Yes": "Yes",
     "Not": "No",
     "OperationSuccessful": "Operation Successful",
-    "VouchersListThatHasError": "vouchers List That Has Error",    
+    "VouchersListThatHasError": "vouchers List That Has Error",
     "RowNo": "Row",
-    "VoucherNo": "Voucher Number" 
+    "VoucherNo": "Voucher Number"
 
   },
   "User": {
