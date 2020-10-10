@@ -63,15 +63,17 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
       eName = viewId ? ViewName[viewId] : (<any>this.parentComponet)._view.component.entityType;
     }
 
+    var enumName = "";
+
     if (!this.enum) {
-      eName = eName + "Permissions"
+      enumName = eName + "Permissions"
     }
     else {
-      eName = this.enum;
+      enumName = this.enum;
     }
 
     if (eName && this.permissions) {
-      var permission = this.permissionKeys.getPermission(eName, this.permissions);
+      var permission = this.permissionKeys.getPermission(enumName, this.permissions);
 
       if (permission)
         var isAccess = this.enviroment.isAccess(eName, permission);
