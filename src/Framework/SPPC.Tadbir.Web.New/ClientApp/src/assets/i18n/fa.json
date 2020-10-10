@@ -745,7 +745,8 @@
     "SelectLevel": "لطفا سطح حساب را انتخاب کنید",
     "SelectCollection": "لطفا مجموعه حساب را انتخاب کنید",
     "SelectedAccount": "این حساب انتخاب شده است",
-    "AccountViewAccess": "شما دسترسی دیدن حساب های انتخاب شده را ندارید"
+    "AccountViewAccess": "شما دسترسی دیدن حساب های انتخاب شده را ندارید",
+    "AccountRemoveAccess": "این حساب در شعبه های بالاتر تعریف شده است و قابل حذف نیست"
   },
   "Settings": {
     "AccountRelation": {
@@ -975,7 +976,7 @@
     "Yes": "بلی",
     "Not": "خیر",
     "OperationSuccessful": "عملیات  با موفقیت انجام شد",
-    "VouchersListThatHasError": "لیست اسنادی که با خطا مواجه شده اند",    
+    "VouchersListThatHasError": "لیست اسنادی که با خطا مواجه شده اند",
     "RowNo": "ردیف",
     "VoucherNo": "شماره سند"
   },
