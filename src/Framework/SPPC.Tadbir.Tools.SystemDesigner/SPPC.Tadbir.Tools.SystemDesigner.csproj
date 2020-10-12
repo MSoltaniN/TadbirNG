@@ -78,11 +78,23 @@
     <Compile Include="Commands\GenerateCsModelCommand.cs" />
     <Compile Include="Commands\GenerateRepositoryCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Designers\ParameterEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Designers\ParameterEditorForm.Designer.cs">
+      <DependentUpon>ParameterEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Designers\PermissionDesignerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Designers\PermissionDesignerForm.Designer.cs">
       <DependentUpon>PermissionDesignerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\ReportDesignerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Designers\ReportDesignerForm.Designer.cs">
+      <DependentUpon>ReportDesignerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\GenerateControllerForm.cs">
       <SubType>Form</SubType>
@@ -260,8 +272,14 @@
       <DependentUpon>ViewWizardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\XferRepository.cs" />
+    <EmbeddedResource Include="Designers\ParameterEditorForm.resx">
+      <DependentUpon>ParameterEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Designers\PermissionDesignerForm.resx">
       <DependentUpon>PermissionDesignerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Designers\ReportDesignerForm.resx">
+      <DependentUpon>ReportDesignerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GenerateControllerForm.resx">
       <DependentUpon>GenerateControllerForm.cs</DependentUpon>
