@@ -5,6 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
 import { ViewName, Permissions } from "@sppc/shared/security";
 import { EnviromentComponent } from "@sppc/shared/class";
+import { forEach } from "@angular/router/src/utils/collection";
 
 
 @Directive({
@@ -39,8 +40,8 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
   @Input()
   set SppcPermissionCheck(val : string) {
     if (val) {
-      this.enum = val.split(';')[1];
-      this.permissions = val.split(';')[0];
+      //this.enum = val.split(';')[1];
+      this.permissions = val;//.split(';')[0];
     }  
   }  
 
@@ -57,34 +58,36 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
   }
 
   haveAccess(): boolean {        
-    var eName = this.entityName;
-    if (!this.entityName && !this.enum) {
-      var viewId = (<any>this.parentComponet)._view.component.viewId;
-      eName = viewId ? ViewName[viewId] : (<any>this.parentComponet)._view.component.entityType;
-    }
 
-    var enumName = "";
+    this.permissions.split('|').forEach(it => {
+      var eName = this.entityName;
+      if (!this.entityName && !this.enum) {
+        var viewId = (<any>this.parentComponet)._view.component.viewId;
+        eName = viewId ? ViewName[viewId] : (<any>this.parentComponet)._view.component.entityType;
+      }
 
-    if (!this.enum) {
-      enumName = eName + "Permissions"
-    }
-    else {
-      enumName = this.enum;
-    }
+      var enumName = "";
+      var permissionName = it;
 
-    if (eName && this.permissions) {
-      var permission = this.permissionKeys.getPermission(enumName, this.permissions);
+      if (it.toString().indexOf(';') == -1) {
+        enumName = eName + "Permissions"
+      }
+      else {
+        enumName = it.toString().split(';')[1];
+        permissionName = it.toString().split(';')[0];
+      }    
 
-      if (permission)
-        var isAccess = this.enviroment.isAccess(eName, permission);
+      if (eName && this.permissions) {
+        var permission = this.permissionKeys.getPermission(enumName, permissionName);
 
-      return isAccess;
-    }
-    debugger;
-   
+        if (permission)
+          var isAccess = this.enviroment.isAccess(eName, permission);
 
+        if (!isAccess) return false;
+      }
+    });
 
-    return false;
+    return true;
   }
 
 
