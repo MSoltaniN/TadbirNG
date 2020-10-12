@@ -3294,4 +3294,7 @@
   <data name="InvalidFinalizedVoucherAction" xml:space="preserve">
     <value>عمل {0} روی سند ثبت قطعی شده امکان پذیر نیست.</value>
   </data>
+  <data name="ProfitLoss" xml:space="preserve">
+    <value>سود و زیان</value>
+  </data>
 </root>

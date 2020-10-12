@@ -38,7 +38,7 @@ const routes: Routes = [{
     { path: 'currency', component: CurrencyComponent },
     { path: 'detailAccount', component: DetailAccountComponent },
     { path: 'projects', component: ProjectComponent },
-    { path: 'profit-lost', component: ProfitLostComponent },
+    { path: 'profit-loss', component: ProfitLostComponent },
     { path: 'voucher', component: VoucherComponent },
     { path: 'vouchers/:mode', component: VoucherEditorComponent,
       data: { viewId: ViewName.Voucher },

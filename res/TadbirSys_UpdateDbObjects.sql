@@ -4328,3 +4328,12 @@ WHERE ViewID = 30 AND Name = N'Country'
 DELETE FROM [Auth].[RolePermission]
 WHERE PermissionID IN(130,131)
 
+-- 1.1.998
+UPDATE [Metadata].[Column]
+SET [Type] = N'Money'
+WHERE ViewID = 62 AND ([Name] LIKE '%Balance%' OR [Name] LIKE '%Turnover%')
+
+UPDATE [Metadata].[Column]
+SET [Name] = N'Group'
+WHERE ViewID = 64 AND [Name] = N'Category'
+

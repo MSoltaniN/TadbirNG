@@ -3303,4 +3303,7 @@
   <data name="InvalidFinalizedVoucherAction" xml:space="preserve">
     <value>Action {0} cannot be done on a finalized voucher.</value>
   </data>
+  <data name="ProfitLoss" xml:space="preserve">
+    <value>Profit/Loss</value>
+  </data>
 </root>
