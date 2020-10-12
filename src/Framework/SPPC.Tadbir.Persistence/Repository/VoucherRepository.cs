@@ -95,7 +95,9 @@ namespace SPPC.Tadbir.Persistence
                 SaveCount = 0
             };
 
-            return await SaveVoucherAsync(newVoucher);
+            newVoucher = await SaveVoucherAsync(newVoucher);
+            await SetVoucherNavigationAsync(newVoucher);
+            return newVoucher;
         }
 
         /// <summary>
