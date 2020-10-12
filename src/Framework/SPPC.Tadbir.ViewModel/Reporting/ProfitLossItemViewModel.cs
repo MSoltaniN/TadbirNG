@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// گروه محاسباتی گزارش - مانند سود ناخالص، هزینه های عملیاتی و غیره
         /// </summary>
-        public string Category { get; set; }
+        public string Group { get; set; }
 
         /// <summary>
         /// حساب ویژه مورد استفاده

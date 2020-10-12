@@ -98,7 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             foreach (var item in profitLoss.Items)
             {
-                item.Category = _strings[item.Category ?? String.Empty];
+                item.Group = _strings[item.Group ?? String.Empty];
                 item.Account = _strings[item.Account ?? String.Empty];
             }
         }

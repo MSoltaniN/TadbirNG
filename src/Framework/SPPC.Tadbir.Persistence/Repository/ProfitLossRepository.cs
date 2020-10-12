@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var items = new List<ProfitLossItemViewModel>
             {
-                new ProfitLossItemViewModel() { Category = AppStrings.GrossProfitCalculation }
+                new ProfitLossItemViewModel() { Group = AppStrings.GrossProfitCalculation }
             };
 
             var lines = new List<ProfitLossLineViewModel>();
@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Persistence
             items.Add(netRevenue);
             items.Add(productCost);
             var grossProfit = netRevenue - productCost;
-            grossProfit.Category = AppStrings.GrossProfit;
+            grossProfit.Group = AppStrings.GrossProfit;
             items.Add(grossProfit);
 
             return items;
@@ -154,7 +154,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var items = new List<ProfitLossItemViewModel>
             {
-                new ProfitLossItemViewModel() { Category = AppStrings.OperationalCost }
+                new ProfitLossItemViewModel() { Group = AppStrings.OperationalCost }
             };
 
             var costItems = new List<ProfitLossItemViewModel>();
@@ -173,7 +173,7 @@ namespace SPPC.Tadbir.Persistence
             items.AddRange(costItems);
             var totalCost = new ProfitLossItemViewModel()
             {
-                Category = AppStrings.OperationalCostTotal,
+                Group = AppStrings.OperationalCostTotal,
                 StartBalance = costItems.Sum(item => item.StartBalance),
                 PeriodTurnover = costItems.Sum(item => item.PeriodTurnover),
                 EndBalance = costItems.Sum(item => item.EndBalance),
@@ -181,7 +181,7 @@ namespace SPPC.Tadbir.Persistence
             };
             items.Add(totalCost);
             var operationProfit = grossProfit - totalCost;
-            operationProfit.Category = AppStrings.OperationalProfit;
+            operationProfit.Group = AppStrings.OperationalProfit;
             items.Add(operationProfit);
 
             return items;
@@ -192,7 +192,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var items = new List<ProfitLossItemViewModel>
             {
-                new ProfitLossItemViewModel() { Category = AppStrings.OtherCostAndRevenue }
+                new ProfitLossItemViewModel() { Group = AppStrings.OtherCostAndRevenue }
             };
 
             var costItems = new List<ProfitLossItemViewModel>();
@@ -211,7 +211,7 @@ namespace SPPC.Tadbir.Persistence
             items.AddRange(costItems);
             var netCost = new ProfitLossItemViewModel()
             {
-                Category = AppStrings.OtherCostAndRevenueNet,
+                Group = AppStrings.OtherCostAndRevenueNet,
                 StartBalance = costItems.Sum(item => item.StartBalance),
                 PeriodTurnover = costItems.Sum(item => item.PeriodTurnover),
                 EndBalance = costItems.Sum(item => item.EndBalance),
@@ -219,7 +219,7 @@ namespace SPPC.Tadbir.Persistence
             };
             items.Add(netCost);
             var beforeTax = operationProfit - netCost;
-            beforeTax.Category = AppStrings.ProfitBeforeTax;
+            beforeTax.Group = AppStrings.ProfitBeforeTax;
             items.Add(beforeTax);
 
             return items;
@@ -239,9 +239,10 @@ namespace SPPC.Tadbir.Persistence
                 },
                 new ProfitLossItemViewModel()
                 {
-                    Category = AppStrings.NetProfit,
+                    Group = AppStrings.NetProfit,
                     PeriodTurnover = beforeTax.PeriodTurnover - parameters.TaxAmount,
-                    EndBalance = beforeTax.EndBalance - parameters.TaxAmount
+                    EndBalance = beforeTax.EndBalance - parameters.TaxAmount,
+                    Balance = beforeTax.EndBalance - parameters.TaxAmount
                 }
             };
 

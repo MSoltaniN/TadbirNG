@@ -3256,7 +3256,7 @@
     <value>تصویب گروهی</value>
   </data>
   <data name="GroupConfirm" xml:space="preserve">
-    <value>تأیید گروهی</value>
+    <value>تایید/تصویب گروهی</value>
   </data>
   <data name="DocumentNotConfirmed" xml:space="preserve">
     <value>این سند هنوز تأیید نشده است.</value>
@@ -3271,7 +3271,7 @@
     <value>برگشت از ثبت گروهی</value>
   </data>
   <data name="GroupUndoConfirm" xml:space="preserve">
-    <value>رفع تایید/تصویب گروهی اسناد</value>
+    <value>رفع تایید/تصویب گروهی</value>
   </data>
   <data name="GroupUndoFinalize" xml:space="preserve">
     <value>برگشت از ثبت قطعی گروهی</value>
@@ -3293,5 +3293,8 @@
   </data>
   <data name="InvalidFinalizedVoucherAction" xml:space="preserve">
     <value>عمل {0} روی سند ثبت قطعی شده امکان پذیر نیست.</value>
+  </data>
+  <data name="ProfitLoss" xml:space="preserve">
+    <value>سود و زیان</value>
   </data>
 </root>

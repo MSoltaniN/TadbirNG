@@ -3265,7 +3265,7 @@
     <value>Group approve</value>
   </data>
   <data name="GroupConfirm" xml:space="preserve">
-    <value>Group confirm</value>
+    <value>Group confirm/approve</value>
   </data>
   <data name="DocumentNotConfirmed" xml:space="preserve">
     <value>This document is not yet confirmed.</value>
@@ -3280,7 +3280,7 @@
     <value>Group undo check</value>
   </data>
   <data name="GroupUndoConfirm" xml:space="preserve">
-    <value>Group undo confirm / approve</value>
+    <value>Group unconfirm / disapprove</value>
   </data>
   <data name="GroupUndoFinalize" xml:space="preserve">
     <value>Group undo finalize</value>
@@ -3302,5 +3302,8 @@
   </data>
   <data name="InvalidFinalizedVoucherAction" xml:space="preserve">
     <value>Action {0} cannot be done on a finalized voucher.</value>
+  </data>
+  <data name="ProfitLoss" xml:space="preserve">
+    <value>Profit/Loss</value>
   </data>
 </root>
