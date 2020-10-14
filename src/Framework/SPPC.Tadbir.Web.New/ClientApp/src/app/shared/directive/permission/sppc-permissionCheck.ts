@@ -59,6 +59,8 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
 
   haveAccess(): boolean {        
 
+    var isAccess: boolean = true;
+
     this.permissions.split('|').forEach(it => {
       var eName = this.entityName;
       if (!this.entityName && !this.enum) {
@@ -81,13 +83,12 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
         var permission = this.permissionKeys.getPermission(enumName, permissionName);
 
         if (permission)
-          var isAccess = this.enviroment.isAccess(eName, permission);
-
-        if (!isAccess) return false;
+          isAccess = isAccess && this.enviroment.isAccess(eName, permission);
+        
       }
     });
 
-    return true;
+    return isAccess;
   }
 
 
