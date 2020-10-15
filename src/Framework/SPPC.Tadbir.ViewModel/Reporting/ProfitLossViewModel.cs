@@ -22,6 +22,26 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public List<ProfitLossItemViewModel> Items { get; }
 
         /// <summary>
+        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند مرکز هزینه
+        /// </summary>
+        public List<ProfitLossByCostCentersViewModel> ItemsByCostCenters { get; }
+
+        /// <summary>
+        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند پروژه
+        /// </summary>
+        public List<ProfitLossByProjectsViewModel> ItemsByProjects { get; }
+
+        /// <summary>
+        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند شعبه
+        /// </summary>
+        public List<ProfitLossByBranchesViewModel> ItemsByBranches { get; }
+
+        /// <summary>
+        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند دوره مالی
+        /// </summary>
+        public List<ProfitLossByFiscalPeriodsViewModel> ItemsByFiscalPeriods { get; }
+
+        /// <summary>
         /// سطرهای اطلاعاتی گزارش را با مجموعه سطرهای اطلاعاتی داده شده جایگزین می کند
         /// </summary>
         /// <param name="items">سطرهای اطلاعاتی مورد نظر برای جایگزینی در مدل نمایشی</param>

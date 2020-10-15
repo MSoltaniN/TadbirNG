@@ -4342,3 +4342,76 @@ UPDATE [Auth].[PermissionGroup]
 SET [EntityName] = 'Vouchers'
 WHERE PermissionGroupID = 8
 
+
+-- 1.1.1003
+ALTER TABLE [Metadata].[Column]
+ADD [IsDynamic] BIT NOT NULL
+CONSTRAINT DF_Metadata_Column_IsDynamic DEFAULT (0)
+WITH VALUES;
+GO
+
+SET IDENTITY_INSERT [Metadata].[View] ON 
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
+    VALUES (65, 'ProfitLossByCostCenters', 'ProfitLoss', 0, 0, NULL, '', NULL)
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
+    VALUES (66, 'ProfitLossByProjects', 'ProfitLoss', 0, 0, NULL, '', NULL)
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
+    VALUES (67, 'ProfitLossByBranches', 'ProfitLoss', 0, 0, NULL, '', NULL)
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
+    VALUES (68, 'ProfitLossByFiscalPeriods', 'ProfitLoss', 0, 0, NULL, '', NULL)
+SET IDENTITY_INSERT [Metadata].[View] OFF 
+
+SET IDENTITY_INSERT [Metadata].[Column] ON 
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (670, 65, 'Group', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, 'AlwaysVisible', 0, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (671, 65, 'Account', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, NULL, 1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (672, 65, 'StartBalanceCostCenter', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 2, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (673, 65, 'PeriodTurnoverCostCenter', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 3, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (674, 65, 'EndBalanceCostCenter', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 4, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (675, 65, 'BalanceCostCenter', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, 'Hidden', 5, NULL)
+
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (676, 66, 'Group', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, 'AlwaysVisible', 0, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (677, 66, 'Account', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, NULL, 1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (678, 66, 'StartBalanceProject', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 2, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (679, 66, 'PeriodTurnoverProject', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 3, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (680, 66, 'EndBalanceProject', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 4, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (681, 66, 'BalanceProject', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, 'Hidden', 5, NULL)
+
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (682, 67, 'Group', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, 'AlwaysVisible', 0, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (683, 67, 'Account', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, NULL, 1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (684, 67, 'StartBalanceBranch', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 2, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (685, 67, 'PeriodTurnoverBranch', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 3, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (686, 67, 'EndBalanceBranch', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 4, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (687, 67, 'BalanceBranch', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, 'Hidden', 5, NULL)
+
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (688, 68, 'Group', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, 'AlwaysVisible', 0, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (689, 68, 'Account', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, NULL, 1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (690, 68, 'StartBalanceFiscalPeriod', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 2, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (691, 68, 'PeriodTurnoverFiscalPeriod', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 3, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (692, 68, 'EndBalanceFiscalPeriod', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, NULL, 4, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (693, 68, 'BalanceFiscalPeriod', 1, NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 0, 'Hidden', 5, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF 
+

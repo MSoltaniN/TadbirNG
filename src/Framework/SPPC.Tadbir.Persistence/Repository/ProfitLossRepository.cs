@@ -52,6 +52,58 @@ namespace SPPC.Tadbir.Persistence
             return profitLoss;
         }
 
+        /// <summary>
+        /// اطلاعات گزارش سود و زیان مقایسه ای را برای مراکز هزینه انتخابی محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
+        /// <returns>اطلاعات گزارش سود و زیان مقایسه ای برای چند مرکز هزینه</returns>
+        public async Task<ProfitLossViewModel> GetProfitLossByCostCentersAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            throw new NotImplementedException("In Progress...");
+        }
+
+        /// <summary>
+        /// اطلاعات گزارش سود و زیان مقایسه ای را برای پروژه های انتخابی محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
+        /// <returns>اطلاعات گزارش سود و زیان مقایسه ای برای چند پروژه</returns>
+        public async Task<ProfitLossViewModel> GetProfitLossByProjectsAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            throw new NotImplementedException("In Progress...");
+        }
+
+        /// <summary>
+        /// اطلاعات گزارش سود و زیان مقایسه ای را برای شعبه های انتخابی محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
+        /// <returns>اطلاعات گزارش سود و زیان مقایسه ای برای چند شعبه</returns>
+        public async Task<ProfitLossViewModel> GetProfitLossByBranchesAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            throw new NotImplementedException("In Progress...");
+        }
+
+        /// <summary>
+        /// اطلاعات گزارش سود و زیان مقایسه ای را برای دوره های مالی انتخابی محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
+        /// <returns>اطلاعات گزارش سود و زیان مقایسه ای برای چند دوره مالی</returns>
+        public async Task<ProfitLossViewModel> GetProfitLossByFiscalPeriodsAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            throw new NotImplementedException("In Progress...");
+        }
+
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetGrossProfitItemsAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
