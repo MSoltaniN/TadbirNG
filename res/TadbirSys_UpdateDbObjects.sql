@@ -4337,3 +4337,8 @@ UPDATE [Metadata].[Column]
 SET [Name] = N'Group'
 WHERE ViewID = 64 AND [Name] = N'Category'
 
+-- 1.1.1001
+UPDATE [Auth].[PermissionGroup]
+SET [EntityName] = 'Vouchers'
+WHERE PermissionGroupID = 8
+

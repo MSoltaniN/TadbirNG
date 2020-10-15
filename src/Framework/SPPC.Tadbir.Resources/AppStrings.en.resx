@@ -3255,9 +3255,6 @@
   <data name="GroupConfirmApprove" xml:space="preserve">
     <value>Group confirm/approve vouchers</value>
   </data>
-  <data name="CantGroupConfirmFinalizedItems" xml:space="preserve">
-    <value>Group unconfirmation cannot be performed on finalized items.</value>
-  </data>
   <data name="CantGroupConfirm" xml:space="preserve">
     <value>Group confirmation can be performed only on vouchers that were previously unconfirmed in group mode.</value>
   </data>

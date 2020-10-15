@@ -498,23 +498,19 @@ namespace SPPC.Tadbir.Persistence
         private async Task<bool> IsCommercialDebtorAndCreditorAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-
-            // 31: بدهکاران تجاری
-            // 32: بستانکاران تجاری
-            var collection = await repository.GetByCriteriaAsync(
-                col => (col.CollectionId == 31 || col.CollectionId == 32)
+            int count = await repository.GetCountByCriteriaAsync(
+                col => (col.CollectionId == (int)AccountCollectionId.BusinessDebtors
+                    || col.CollectionId == (int)AccountCollectionId.BusinessCreditors)
                     && col.AccountId == accountId);
-            return collection.Count() > 0 ? true : false;
+            return count > 0;
         }
 
         private async Task<bool> IsBankSubSetAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-
-            // 17: بانک
-            var collection = await repository.GetByCriteriaAsync(
-                col => col.CollectionId == 17 && col.AccountId == accountId);
-            return collection.Count() > 0 ? true : false;
+            int count = await repository.GetCountByCriteriaAsync(
+                col => col.CollectionId == (int)AccountCollectionId.Bank && col.AccountId == accountId);
+            return count > 0;
         }
 
         internal override int? EntityType

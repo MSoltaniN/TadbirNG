@@ -73,6 +73,11 @@ namespace SPPC.Tadbir.Security
         public const string Voucher = "Voucher";
 
         /// <summary>
+        /// نام موجودیت اسناد مالی - مورد استفاده در فرم مدیریت اسناد
+        /// </summary>
+        public const string Vouchers = "Vouchers";
+
+        /// <summary>
         /// نام موجودیت کاربر برنامه
         /// </summary>
         public const string User = "User";
