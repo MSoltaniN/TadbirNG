@@ -69,7 +69,7 @@
       <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
       <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
-      <button *ngIf="groupOperation"  SppcPermissionCheck="GroupCheck;ManageVouchersPermissions" EntityName="Voucher" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
+      <button *ngIf="groupOperation"  SppcPermissionCheck="GroupCheck;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
               title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
         <span class="k-icon k-i-check-outline"></span>
       </button>
@@ -82,12 +82,12 @@
               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="GroupUndoCheck;ManageVouchersPermissions" EntityName="Voucher" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
+      <button *ngIf="!groupOperation" SppcPermissionCheck="GroupUndoCheck;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="GroupFinalize;ManageVouchersPermissions" EntityName="Voucher" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon"
+      <button *ngIf="groupOperation" SppcPermissionCheck="GroupFinalize;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon"
               title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
@@ -105,7 +105,7 @@
           <span class="k-icon k-i-track-changes-reject-all"></span>
         </button>
       </div>
-      <button SppcPermissionCheck="GroupConfirm;ManageVouchersPermissions" EntityName="Voucher" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon"
+      <button SppcPermissionCheck="GroupConfirm;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon"
               title="{{'Voucher.ConfirmGroup'| translate}}" >
         <span class="k-icon k-i-lock"></span>
       </button>
