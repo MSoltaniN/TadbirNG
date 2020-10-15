@@ -20,34 +20,39 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک سرفصل حسابداری جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک سرفصل حسابداری موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک سرفصل حسابداری موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر سرفصل های حسابداری موجود
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ سرفصل های حسابداری موجود
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات سرفصل های حسابداری موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک سرفصل حسابداری جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک سرفصل حسابداری موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک سرفصل حسابداری موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت سرفصل حسابداری
         /// </summary>
-        All = 0x3f
+        All = 0x7f
     }
 
     /// <summary>
@@ -67,34 +72,39 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک تفصیلی شناور جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک تفصیلی شناور موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک تفصیلی شناور موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر تفصیلی های شناور موجود
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ تفصیلی های شناور موجود
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات تفصیلی های شناور موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک تفصیلی شناور جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک تفصیلی شناور موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک تفصیلی شناور موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت تفصیلی شناور
         /// </summary>
-        All = 0x3f
+        All = 0x7f
     }
 
     /// <summary>
@@ -114,34 +124,39 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک مرکز هزینه جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک مرکز هزینه موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک مرکز هزینه موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر مراکز هزینه موجود
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ مراکز هزینه موجود
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات مراکز هزینه موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک مرکز هزینه جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک مرکز هزینه موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک مرکز هزینه موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت مرکز هزینه
         /// </summary>
-        All = 0x3f
+        All = 0x7f
     }
 
     /// <summary>
@@ -161,34 +176,39 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک پروژه جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک پروژه موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک پروژه موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر پروژه های موجود
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ پروژه های موجود
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات پروژه های موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک پروژه جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک پروژه موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک پروژه موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت پروژه
         /// </summary>
-        All = 0x3f
+        All = 0x7f
     }
 
     /// <summary>
@@ -208,39 +228,44 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک دوره مالی جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک دوره مالی موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک دوره مالی موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر دوره های مالی موجود
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ دوره های مالی موجود
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات دوره های مالی موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک دوره مالی جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک دوره مالی موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک دوره مالی موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی اعطای دسترسی به یک دوره مالی برای یک یا چند نقش
         /// </summary>
-        AssignRoles = 0x40,
+        AssignRoles = 0x80,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت دوره های مالی
         /// </summary>
-        All = 0x7f
+        All = 0xff
     }
 
     /// <summary>
@@ -260,39 +285,44 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک ارز جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک ارز موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک ارز موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر ارزها در لیست
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ لیست ارزها
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات ارزهای موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک ارز جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک ارز موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک ارز موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی تغییر وضعیت یک ارز از فعال به غیرفعال یا بالعکس
         /// </summary>
-        ChangeStatus = 0x40,
+        ChangeStatus = 0x80,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت ارزها
         /// </summary>
-        All = 0x7f
+        All = 0xff
     }
 
     /// <summary>
@@ -404,39 +434,49 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
+        /// دسترسی فیلتر اسناد حسابداری
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
         /// دسترسی چاپ اسناد حسابداری
         /// </summary>
-        Print = 0x2,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات اسناد حسابداری
+        /// </summary>
+        Export = 0x8,
 
         /// <summary>
         /// دسترسی ثبت گروهی اسناد حسابداری
         /// </summary>
-        GroupCheck = 0x4,
+        GroupCheck = 0x10,
 
         /// <summary>
         /// دسترسی برگشت از ثبت گروهی اسناد حسابداری
         /// </summary>
-        GroupUndoCheck = 0x8,
+        GroupUndoCheck = 0x20,
 
         /// <summary>
         /// دسترسی تأیید / تصویب گروهی اسناد حسابداری
         /// </summary>
-        GroupConfirm = 0x10,
+        GroupConfirm = 0x40,
 
         /// <summary>
         /// دسترسی برگشت از تأیید / تصویب گروهی اسناد حسابداری
         /// </summary>
-        GroupUndoConfirm = 0x20,
+        GroupUndoConfirm = 0x80,
 
         /// <summary>
         /// دسترسی ثبت قطعی گروهی اسناد حسابداری
         /// </summary>
-        GroupFinalize = 0x40,
+        GroupFinalize = 0x100,
 
         /// <summary>
         /// کلیه دسترسی های تعریف شده برای فرم مدیریت اسناد حسابداری
         /// </summary>
-        All = 0x7f,
+        All = 0x1ff,
     }
 
     /// <summary>
@@ -456,39 +496,44 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک شعبه سازمانی جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک شعبه سازمانی موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک شعبه سازمانی موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر شعبه ها در لیست
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ لیست شعبه ها
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات شعبه های موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک شعبه سازمانی جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک شعبه سازمانی موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک شعبه سازمانی موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی اعطای دسترسی به یک شعبه برای یک یا چند نقش
         /// </summary>
-        AssignRoles = 0x40,
+        AssignRoles = 0x80,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت شعب سازمانی
         /// </summary>
-        All = 0x7f
+        All = 0xff
     }
 
     /// <summary>
@@ -518,9 +563,14 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات شرکت های موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت شرکت ها
         /// </summary>
-        All = 0x7
+        All = 0xf
     }
 
     /// <summary>
@@ -540,34 +590,39 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک کاربر جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک کاربر موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
         /// دسترسی فیلتر کاربران در لیست
         /// </summary>
-        Filter = 0x8,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ لیست کاربران
         /// </summary>
-        Print = 0x10,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات کاربران موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک کاربر جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک کاربر موجود
+        /// </summary>
+        Edit = 0x20,
 
         /// <summary>
         /// دسترسی تخصیص نقش به یک یا چند کاربر
         /// </summary>
-        AssignRoles = 0x20,
+        AssignRoles = 0x40,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت کاربران
         /// </summary>
-        All = 0x3f
+        All = 0x7f
     }
 
     /// <summary>
@@ -587,49 +642,54 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک نقش جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک نقش موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک نقش موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر نقش ها در لیست
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ لیست نقش ها
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات نقش های موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک نقش جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک نقش موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک نقش موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// Indicates permission to add/remove one or more users to/from a role
         /// </summary>
-        AssignUsers = 0x40,
+        AssignUsers = 0x80,
 
         /// <summary>
         /// Indicates permission to allow/disallow access to one or more branches in a role
         /// </summary>
-        AssignBranches = 0x80,
+        AssignBranches = 0x100,
 
         /// <summary>
         /// Indicates permission to allow/disallow access to one or more fiscal periods in a role
         /// </summary>
-        AssignFiscalPeriods = 0x100,
+        AssignFiscalPeriods = 0x200,
 
         /// <summary>
         /// Indicates all permissions available for managing a role
         /// </summary>
-        All = 0x1ff
+        All = 0x3ff
     }
 
     /// <summary>
@@ -649,34 +709,39 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک گروه حساب جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک گروه حساب موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک گروه حساب موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر گروه های حساب موجود
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ گروه های حساب موجود
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات گروه های حساب موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک گروه حساب جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک گروه حساب موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک گروه حساب موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت گروه حساب
         /// </summary>
-        All = 0x3f
+        All = 0x7f
     }
 
     /// <summary>
@@ -733,19 +798,24 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات لاگ های عملیاتی شرکتی موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی بایگانی لاگ های عملیاتی شرکتی
         /// </summary>
-        Archive = 0x8,
+        Archive = 0x10,
 
         /// <summary>
         /// دسترسی مشاهده لاگ های شرکتی بایگانی شده
         /// </summary>
-        ViewArchive = 0x10,
+        ViewArchive = 0x20,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت لاگ عملیاتی
         /// </summary>
-        All = 0x1f
+        All = 0x3f
     }
 
     /// <summary>
@@ -775,19 +845,24 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات لاگ های سیستمی موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی بایگانی لاگ های عملیاتی سیستمی
         /// </summary>
-        Archive = 0x8,
+        Archive = 0x10,
 
         /// <summary>
         /// دسترسی مشاهده لاگ های سیستمی بایگانی شده
         /// </summary>
-        ViewArchive = 0x10,
+        ViewArchive = 0x20,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت لاگ سیستمی
         /// </summary>
-        All = 0x2f
+        All = 0x3f
     }
 
     /// <summary>
@@ -979,34 +1054,39 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی ایجاد یک نرخ ارز جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک نرخ ارز موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک نرخ ارز موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
         /// دسترسی فیلتر نرخ های ارز در لیست
         /// </summary>
-        Filter = 0x10,
+        Filter = 0x2,
 
         /// <summary>
         /// دسترسی چاپ لیست نرخ های ارز
         /// </summary>
-        Print = 0x20,
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات نرخ های ارز موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک نرخ ارز جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک نرخ ارز موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک نرخ ارز موجود
+        /// </summary>
+        Delete = 0x40,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت نرخ های ارز
         /// </summary>
-        All = 0x3f
+        All = 0x7f
     }
 
     /// <summary>
@@ -1036,19 +1116,24 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات دفتر روزنامه
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی علامتگذاری ردیف های دفتر روزنامه
         /// </summary>
-        Mark = 0x8,
+        Mark = 0x10,
 
         /// <summary>
         /// دسترسی مشاهده دفتر روزنامه به تفکیک شعبه
         /// </summary>
-        ByBranch = 0x10,
+        ByBranch = 0x20,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای دفتر روزنامه
         /// </summary>
-        All = 0x1f
+        All = 0x3f
     }
 
     /// <summary>
@@ -1078,19 +1163,24 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات دفتر حساب
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی علامتگذاری ردیف های دفتر حساب
         /// </summary>
-        Mark = 0x8,
+        Mark = 0x10,
 
         /// <summary>
         /// دسترسی مشاهده دفتر حساب به تفکیک شعبه
         /// </summary>
-        ByBranch = 0x10,
+        ByBranch = 0x20,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای دفتر حساب
         /// </summary>
-        All = 0x1f
+        All = 0x3f
     }
 
     /// <summary>
@@ -1120,14 +1210,19 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات تراز آزمایشی
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی مشاهده تراز آزمایشی به تفکیک شعبه
         /// </summary>
-        ByBranch = 0x8,
+        ByBranch = 0x10,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای تراز آزمایشی
         /// </summary>
-        All = 0xf
+        All = 0x1f
     }
 
     /// <summary>
@@ -1157,19 +1252,24 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات دفتر عملیات ارزی
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی علامتگذاری ردیف های دفتر عملیات ارزی
         /// </summary>
-        Mark = 0x8,
+        Mark = 0x10,
 
         /// <summary>
         /// دسترسی مشاهده دفتر عملیات ارزی به تفکیک شعبه
         /// </summary>
-        ByBranch = 0x10,
+        ByBranch = 0x20,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای دفتر حساب
         /// </summary>
-        All = 0x1f
+        All = 0x3f
     }
 
     /// <summary>
@@ -1199,14 +1299,19 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات گردش و مانده سطوح شناور
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی مشاهده گردش و مانده سطوح شناور به تفکیک شعبه
         /// </summary>
-        ByBranch = 0x8,
+        ByBranch = 0x10,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای گردش و مانده سطوح شناور
         /// </summary>
-        All = 0xf
+        All = 0x1f
     }
 
     /// <summary>
@@ -1236,14 +1341,19 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات مانده به تفکیک حساب
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی مشاهده مانده به تفکیک حساب به تفکیک شعبه
         /// </summary>
-        ViewByBranch = 0x8,
+        ViewByBranch = 0x10,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مانده به تفکیک حساب
         /// </summary>
-        All = 0xf
+        All = 0x1f
     }
 
     /// <summary>
@@ -1290,8 +1400,13 @@ namespace SPPC.Tadbir.Security
         Print = 0x4,
 
         /// <summary>
+        /// دسترسی ارسال اطلاعات سود و زیان
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای سود و زیان
         /// </summary>
-        All = 0x7
+        All = 0xf
     }
 }
