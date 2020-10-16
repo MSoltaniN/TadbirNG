@@ -105,7 +105,36 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ProfitLossViewModel> GetProfitLossByProjectsAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
-            throw new NotImplementedException("In Progress...");
+            var profitLoss = new ProfitLossViewModel();
+            if (parameters.CompareItems.Count > 0)
+            {
+                int firstProjectId = parameters.CompareItems[0];
+                parameters.ProjectId = firstProjectId;
+                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                foreach (var item in profitLoss.Items)
+                {
+                    profitLoss.ItemsByProjects.Add(Mapper.Map<ProfitLossByProjectsViewModel>(item));
+                }
+
+                int itemIndex = 1;
+                while (itemIndex < parameters.CompareItems.Count)
+                {
+                    parameters.ProjectId = parameters.CompareItems[itemIndex];
+                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByProjects.Count)
+                    {
+                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByProjects.Count; lineIndex++)
+                        {
+                            CopyProjectValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByProjects[lineIndex]);
+                        }
+                    }
+
+                    itemIndex++;
+                }
+            }
+
+            return profitLoss;
         }
 
         /// <summary>
@@ -144,6 +173,19 @@ namespace SPPC.Tadbir.Persistence
             fieldName = String.Format("EndBalanceCostCenter{0}", index + 1);
             Reflector.CopyProperty(source, "EndBalance", item, fieldName);
             fieldName = String.Format("BalanceCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "Balance", item, fieldName);
+        }
+
+        private static void CopyProjectValues(int index,
+            ProfitLossItemViewModel source, ProfitLossByProjectsViewModel item)
+        {
+            string fieldName = String.Format("StartBalanceProject{0}", index + 1);
+            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
+            fieldName = String.Format("PeriodTurnoverProject{0}", index + 1);
+            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
+            fieldName = String.Format("EndBalanceProject{0}", index + 1);
+            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
+            fieldName = String.Format("BalanceProject{0}", index + 1);
             Reflector.CopyProperty(source, "Balance", item, fieldName);
         }
 

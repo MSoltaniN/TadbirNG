@@ -47,6 +47,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, tax, closing, null, projectId, _repository.GetProfitLossByCostCentersAsync);
         }
 
+        // GET: api/profit-loss/by-projects
+        [HttpGet]
+        [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
+        [Route(ProfitLossApi.ProfitLossByProjectsUrl)]
+        public async Task<IActionResult> GetProfitLossByProjectsAsync(
+            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId)
+        {
+            return await ComparativeProfitLossResultAsync(
+                from, to, tax, closing, ccenterId, null, _repository.GetProfitLossByProjectsAsync);
+        }
+
         // GET: api/profit-loss/simple
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -62,10 +73,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
         [Route(ProfitLossApi.ProfitLossSimpleByCostCentersUrl)]
         public async Task<IActionResult> GetSimpleProfitLossByCostCentersAsync(
-            DateTime date, decimal? tax, bool? closing, int? ccenterId, int? projectId)
+            DateTime date, decimal? tax, bool? closing, int? projectId)
         {
             return await ComparativeProfitLossResultAsync(
                 date, date, tax, closing, null, projectId, _repository.GetProfitLossByCostCentersAsync);
+        }
+
+        // GET: api/profit-loss/simple/by-projects
+        [HttpGet]
+        [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
+        [Route(ProfitLossApi.ProfitLossSimpleByProjectsUrl)]
+        public async Task<IActionResult> GetSimpleProfitLossByProjectsAsync(
+            DateTime date, decimal? tax, bool? closing, int? ccenterId)
+        {
+            return await ComparativeProfitLossResultAsync(
+                date, date, tax, closing, ccenterId, null, _repository.GetProfitLossByCostCentersAsync);
         }
 
         // PUT: api/profit-loss
