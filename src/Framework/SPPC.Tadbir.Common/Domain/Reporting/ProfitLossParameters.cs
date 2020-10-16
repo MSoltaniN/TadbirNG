@@ -48,6 +48,11 @@ namespace SPPC.Tadbir.Domain
         public int? ProjectId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی شعبه مورد نظر برای فیلتر اطلاعات
+        /// </summary>
+        public int? BranchId { get; set; }
+
+        /// <summary>
         /// گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات
         /// </summary>
         public GridOptions GridOptions { get; set; }

@@ -147,7 +147,36 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ProfitLossViewModel> GetProfitLossByBranchesAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
-            throw new NotImplementedException("In Progress...");
+            var profitLoss = new ProfitLossViewModel();
+            if (parameters.CompareItems.Count > 0)
+            {
+                int firstBranchId = parameters.CompareItems[0];
+                parameters.BranchId = firstBranchId;
+                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                foreach (var item in profitLoss.Items)
+                {
+                    profitLoss.ItemsByBranches.Add(Mapper.Map<ProfitLossByBranchesViewModel>(item));
+                }
+
+                int itemIndex = 1;
+                while (itemIndex < parameters.CompareItems.Count)
+                {
+                    parameters.BranchId = parameters.CompareItems[itemIndex];
+                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByBranches.Count)
+                    {
+                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByBranches.Count; lineIndex++)
+                        {
+                            CopyBranchValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByBranches[lineIndex]);
+                        }
+                    }
+
+                    itemIndex++;
+                }
+            }
+
+            return profitLoss;
         }
 
         /// <summary>
@@ -186,6 +215,19 @@ namespace SPPC.Tadbir.Persistence
             fieldName = String.Format("EndBalanceProject{0}", index + 1);
             Reflector.CopyProperty(source, "EndBalance", item, fieldName);
             fieldName = String.Format("BalanceProject{0}", index + 1);
+            Reflector.CopyProperty(source, "Balance", item, fieldName);
+        }
+
+        private static void CopyBranchValues(int index,
+            ProfitLossItemViewModel source, ProfitLossByBranchesViewModel item)
+        {
+            string fieldName = String.Format("StartBalanceBranch{0}", index + 1);
+            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
+            fieldName = String.Format("PeriodTurnoverBranch{0}", index + 1);
+            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
+            fieldName = String.Format("EndBalanceBranch{0}", index + 1);
+            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
+            fieldName = String.Format("BalanceBranch{0}", index + 1);
             Reflector.CopyProperty(source, "Balance", item, fieldName);
         }
 
@@ -419,14 +461,24 @@ namespace SPPC.Tadbir.Persistence
         {
             var accounts = await _utility.GetUsableAccountsAsync(collectionId);
             var accountIds = accounts.Select(acc => acc.Id);
-            var branchIds = GetChildTree(UserContext.BranchId);
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var linesQuery = repository
                 .GetEntityQuery(line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.IsBetween(from, to)
                     && line.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && accountIds.Contains(line.AccountId)
-                    && branchIds.Contains(line.BranchId));
+                    && accountIds.Contains(line.AccountId));
+            if (parameters.BranchId != null)
+            {
+                linesQuery = linesQuery
+                    .Where(line => line.BranchId == parameters.BranchId);
+            }
+            else
+            {
+                var branchIds = GetChildTree(UserContext.BranchId);
+                linesQuery = linesQuery
+                    .Where(line => branchIds.Contains(line.BranchId));
+            }
+
             if (!parameters.UseClosingTempVoucher)
             {
                 linesQuery = linesQuery
