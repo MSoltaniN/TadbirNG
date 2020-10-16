@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
@@ -62,7 +63,36 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ProfitLossViewModel> GetProfitLossByCostCentersAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
-            throw new NotImplementedException("In Progress...");
+            var profitLoss = new ProfitLossViewModel();
+            if (parameters.CompareItems.Count > 0)
+            {
+                int firstCostCenterId = parameters.CompareItems[0];
+                parameters.CostCenterId = firstCostCenterId;
+                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                foreach (var item in profitLoss.Items)
+                {
+                    profitLoss.ItemsByCostCenters.Add(Mapper.Map<ProfitLossByCostCentersViewModel>(item));
+                }
+
+                int itemIndex = 1;
+                while (itemIndex < parameters.CompareItems.Count)
+                {
+                    parameters.CostCenterId = parameters.CompareItems[itemIndex];
+                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByCostCenters.Count)
+                    {
+                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByCostCenters.Count; lineIndex++)
+                        {
+                            CopyCostCenterValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByCostCenters[lineIndex]);
+                        }
+                    }
+
+                    itemIndex++;
+                }
+            }
+
+            return profitLoss;
         }
 
         /// <summary>
@@ -102,6 +132,19 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             throw new NotImplementedException("In Progress...");
+        }
+
+        private static void CopyCostCenterValues(int index,
+            ProfitLossItemViewModel source, ProfitLossByCostCentersViewModel item)
+        {
+            string fieldName = String.Format("StartBalanceCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
+            fieldName = String.Format("PeriodTurnoverCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
+            fieldName = String.Format("EndBalanceCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
+            fieldName = String.Format("BalanceCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "Balance", item, fieldName);
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetGrossProfitItemsAsync(

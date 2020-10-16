@@ -604,6 +604,12 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<SystemIssue, SystemIssueViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
+
+            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByCostCentersViewModel>()
+                .ForMember(dest => dest.StartBalanceCostCenter1, opts => opts.MapFrom(src => src.StartBalance))
+                .ForMember(dest => dest.PeriodTurnoverCostCenter1, opts => opts.MapFrom(src => src.PeriodTurnover))
+                .ForMember(dest => dest.EndBalanceCostCenter1, opts => opts.MapFrom(src => src.EndBalance))
+                .ForMember(dest => dest.BalanceCostCenter1, opts => opts.MapFrom(src => src.Balance));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

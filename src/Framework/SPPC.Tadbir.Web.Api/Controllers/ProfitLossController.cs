@@ -9,6 +9,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -35,6 +36,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await ProfitLossResultAsync(from, to, tax, closing, ccenterId, projectId);
         }
 
+        // GET: api/profit-loss/by-ccenters
+        [HttpGet]
+        [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
+        [Route(ProfitLossApi.ProfitLossByCostCentersUrl)]
+        public async Task<IActionResult> GetProfitLossByCostCentersAsync(
+            DateTime from, DateTime to, decimal? tax, bool? closing, int? projectId)
+        {
+            return await ComparativeProfitLossResultAsync(
+                from, to, tax, closing, null, projectId, _repository.GetProfitLossByCostCentersAsync);
+        }
+
         // GET: api/profit-loss/simple
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -43,6 +55,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime date, decimal? tax, bool? closing, int? ccenterId, int? projectId)
         {
             return await ProfitLossResultAsync(date, date, tax, closing, ccenterId, projectId);
+        }
+
+        // GET: api/profit-loss/simple/by-ccenters
+        [HttpGet]
+        [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
+        [Route(ProfitLossApi.ProfitLossSimpleByCostCentersUrl)]
+        public async Task<IActionResult> GetSimpleProfitLossByCostCentersAsync(
+            DateTime date, decimal? tax, bool? closing, int? ccenterId, int? projectId)
+        {
+            return await ComparativeProfitLossResultAsync(
+                date, date, tax, closing, null, projectId, _repository.GetProfitLossByCostCentersAsync);
         }
 
         // PUT: api/profit-loss
@@ -77,6 +100,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(profitLoss);
         }
 
+        private async Task<IActionResult> ComparativeProfitLossResultAsync(
+            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId,
+            ComparativeReportFunction compareFunction)
+        {
+            var actionDetail = GetParameters<ActionDetailViewModel>();
+            if (actionDetail == null)
+            {
+                return await ProfitLossResultAsync(from, to, tax, closing, ccenterId, projectId);
+            }
+
+            var parameters = GetParameters(from, to, tax, closing, ccenterId, projectId);
+            parameters.CompareItems.AddRange(actionDetail.Items);
+            var profitLoss = await compareFunction(parameters, null);
+            Localize(profitLoss);
+            return Json(profitLoss);
+        }
+
         private ProfitLossParameters GetParameters(
             DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId)
         {
@@ -101,8 +141,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 item.Group = _strings[item.Group ?? String.Empty];
                 item.Account = _strings[item.Account ?? String.Empty];
             }
+
+            foreach (var item in profitLoss.ItemsByCostCenters)
+            {
+                item.Group = _strings[item.Group ?? String.Empty];
+                item.Account = _strings[item.Account ?? String.Empty];
+            }
+
+            foreach (var item in profitLoss.ItemsByProjects)
+            {
+                item.Group = _strings[item.Group ?? String.Empty];
+                item.Account = _strings[item.Account ?? String.Empty];
+            }
+
+            foreach (var item in profitLoss.ItemsByBranches)
+            {
+                item.Group = _strings[item.Group ?? String.Empty];
+                item.Account = _strings[item.Account ?? String.Empty];
+            }
+
+            foreach (var item in profitLoss.ItemsByFiscalPeriods)
+            {
+                item.Group = _strings[item.Group ?? String.Empty];
+                item.Account = _strings[item.Account ?? String.Empty];
+            }
         }
 
         private readonly IProfitLossRepository _repository;
+        private delegate Task<ProfitLossViewModel> ComparativeReportFunction(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems);
     }
 }
