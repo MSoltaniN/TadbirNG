@@ -3303,4 +3303,52 @@
   <data name="ProfitLoss" xml:space="preserve">
     <value>Profit/Loss</value>
   </data>
+  <data name="AccountBookSingle" xml:space="preserve">
+    <value>Account book</value>
+  </data>
+  <data name="AccountBookSingleSummary" xml:space="preserve">
+    <value>Account book</value>
+  </data>
+  <data name="AccountBookSummary" xml:space="preserve">
+    <value>Account book</value>
+  </data>
+  <data name="CurrencyBookSingle" xml:space="preserve">
+    <value>Currency book</value>
+  </data>
+  <data name="CurrencyBookSingleSummary" xml:space="preserve">
+    <value>Currency book</value>
+  </data>
+  <data name="CurrencyBookSummary" xml:space="preserve">
+    <value>Currency book</value>
+  </data>
+  <data name="GroupActionResult" xml:space="preserve">
+    <value>Group action result</value>
+  </data>
+  <data name="NumberList" xml:space="preserve">
+    <value>Number list</value>
+  </data>
+  <data name="OperationLogArchive" xml:space="preserve">
+    <value>Operation log archive</value>
+  </data>
+  <data name="ProfitLossByBranches" xml:space="preserve">
+    <value>Profit and loss by branches</value>
+  </data>
+  <data name="ProfitLossByCostCenters" xml:space="preserve">
+    <value>Profit and loss by cost centers</value>
+  </data>
+  <data name="ProfitLossByFiscalPeriods" xml:space="preserve">
+    <value>Profit and loss by fiscal periods</value>
+  </data>
+  <data name="ProfitLossByProjects" xml:space="preserve">
+    <value>Profit and loss by projects</value>
+  </data>
+  <data name="ProfitLossSimple" xml:space="preserve">
+    <value>Profit and loss</value>
+  </data>
+  <data name="SysOperationLogArchive" xml:space="preserve">
+    <value>System log archive</value>
+  </data>
+  <data name="VoucherLineDetail" xml:space="preserve">
+    <value>Voucher line detail</value>
+  </data>
 </root>

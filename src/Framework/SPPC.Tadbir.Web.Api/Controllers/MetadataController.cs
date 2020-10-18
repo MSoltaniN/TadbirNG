@@ -62,6 +62,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (metadata != null)
             {
+                metadata.Name = _strings[metadata.Name];
                 foreach (var column in metadata.Columns)
                 {
                     var config = JsonHelper.To<ColumnViewConfig>(column.Settings);
