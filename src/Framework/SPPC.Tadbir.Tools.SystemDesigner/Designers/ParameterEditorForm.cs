@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
@@ -16,5 +9,24 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         {
             InitializeComponent();
         }
+
+        private void ParameterEditorForm_Load(object sender, EventArgs e)
+        {
+            cmbControlType.SelectedIndex = 0;
+            cmbDataType.SelectedIndex = 0;
+            cmbOperator.SelectedIndex = 0;
+        }
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+       
     }
 }

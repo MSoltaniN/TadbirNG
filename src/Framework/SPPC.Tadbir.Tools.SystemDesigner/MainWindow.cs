@@ -69,5 +69,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
             //var Editor = new PermissionEditorForm();
             //Editor.ShowDialog();
         }
+
+        private void menuDesignersReport_Click(object sender, EventArgs e)
+        {
+            var designer = new ReportDesignerForm();
+            designer.ShowDialog();
+        }
     }
 }
