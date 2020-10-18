@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/vouchers
         [HttpGet]
         [Route(VoucherApi.EnvironmentVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVouchersAsync()
         {
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
@@ -500,7 +500,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route(VoucherApi.CheckVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupCheck)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.GroupCheck)]
         public async Task<IActionResult> PutExistingVouchersAsChecked([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -519,7 +519,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route(VoucherApi.UndoCheckVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupUndoCheck)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.GroupUndoCheck)]
         public async Task<IActionResult> PutExistingVouchersAsUnChecked([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -539,7 +539,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/vouchers/confirm
         [HttpPut]
         [Route(VoucherApi.ConfirmVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupConfirm)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.GroupConfirm)]
         public async Task<IActionResult> PutExistingVouchersAsConfirmed([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -559,7 +559,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/vouchers/confirm/undo
         [HttpPut]
         [Route(VoucherApi.UndoConfirmVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupUndoConfirm)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.GroupUndoConfirm)]
         public async Task<IActionResult> PutExistingVouchersAsUnConfirmed([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
@@ -578,7 +578,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route(VoucherApi.FinalizeVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)ManageVouchersPermissions.GroupFinalize)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.GroupFinalize)]
         public async Task<IActionResult> PutExistingVouchersAsFinalized([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)

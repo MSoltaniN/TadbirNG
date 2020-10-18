@@ -899,8 +899,8 @@
     "OperationSuccessful": "Operation Successful",
     "VouchersListThatHasError": "vouchers List That Has Error",
     "RowNo": "Row",
-    "VoucherNo": "Voucher Number"
-
+    "VoucherNo": "Voucher Number",
+    "PleaseSelectVouchers": "Please select vouchers"
   },
   "User": {
     "New": "New User",

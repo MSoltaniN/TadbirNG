@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SPPC.Framework.Presentation;
 
 namespace SPPC.Tadbir.Domain
@@ -13,6 +14,7 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         public ProfitLossParameters()
         {
+            CompareItems = new List<int>();
         }
 
         /// <summary>
@@ -46,8 +48,18 @@ namespace SPPC.Tadbir.Domain
         public int? ProjectId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی شعبه مورد نظر برای فیلتر اطلاعات
+        /// </summary>
+        public int? BranchId { get; set; }
+
+        /// <summary>
         /// گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات
         /// </summary>
         public GridOptions GridOptions { get; set; }
+
+        /// <summary>
+        /// مجموعه ای از شناسه های دیتابیسی اقلام انتخاب شده برای گزارش مقایسه ای
+        /// </summary>
+        public List<int> CompareItems { get; }
     }
 }

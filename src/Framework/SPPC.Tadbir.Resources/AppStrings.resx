@@ -3246,9 +3246,6 @@
   <data name="GroupConfirmApprove" xml:space="preserve">
     <value>تایید/تصویب گروهی اسناد</value>
   </data>
-  <data name="CantGroupConfirmFinalizedItems" xml:space="preserve">
-    <value>رفع تأیید گروهی اسناد ثبت قطعی شده امکانپذیر نیست.</value>
-  </data>
   <data name="CantGroupConfirm" xml:space="preserve">
     <value>تأیید گروهی فقط برای اسنادی امکانپذیر است که به صورت گروهی رفع تأیید شده باشند.</value>
   </data>

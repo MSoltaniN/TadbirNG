@@ -240,7 +240,22 @@ namespace SPPC.Tadbir.Persistence
         private string ValidateGroupConfirmApprove(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (String.IsNullOrEmpty(voucher.ConfirmerName)
+            if (voucher.IsConfirmed && voucher.IsApproved)
+            {
+                var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
+                error = Context.Localize(String.Format(template, AppStrings.Approve));
+            }
+            else if (voucher.StatusId == (int)DocumentStatusId.Finalized)
+            {
+                var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
+                error = Context.Localize(String.Format(template, AppStrings.GroupConfirm));
+            }
+            else if (voucher.StatusId == (int)DocumentStatusId.NotChecked)
+            {
+                var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
+                error = Context.Localize(String.Format(template, AppStrings.GroupConfirm, AppStrings.Check));
+            }
+            else if (String.IsNullOrEmpty(voucher.ConfirmerName)
                 && String.IsNullOrEmpty(voucher.ConfirmerName))
             {
                 error = Context.Localize(AppStrings.CantGroupConfirm);
@@ -254,7 +269,8 @@ namespace SPPC.Tadbir.Persistence
             string error = String.Empty;
             if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
-                error = Context.Localize(AppStrings.CantGroupConfirmFinalizedItems);
+                var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
+                error = Context.Localize(String.Format(template, AppStrings.GroupUndoConfirm));
             }
             else if (voucher.ConfirmedById == null
                 && voucher.ApprovedById == null)

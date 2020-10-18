@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
@@ -50,6 +51,184 @@ namespace SPPC.Tadbir.Persistence
             var netProfit = GetNetProfitItemsAsync(beforeTax.Last(), parameters);
             profitLoss.Items.AddRange(netProfit);
             return profitLoss;
+        }
+
+        /// <summary>
+        /// اطلاعات گزارش سود و زیان مقایسه ای را برای مراکز هزینه انتخابی محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
+        /// <returns>اطلاعات گزارش سود و زیان مقایسه ای برای چند مرکز هزینه</returns>
+        public async Task<ProfitLossViewModel> GetProfitLossByCostCentersAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            var profitLoss = new ProfitLossViewModel();
+            if (parameters.CompareItems.Count > 0)
+            {
+                int firstCostCenterId = parameters.CompareItems[0];
+                parameters.CostCenterId = firstCostCenterId;
+                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                foreach (var item in profitLoss.Items)
+                {
+                    profitLoss.ItemsByCostCenters.Add(Mapper.Map<ProfitLossByCostCentersViewModel>(item));
+                }
+
+                int itemIndex = 1;
+                while (itemIndex < parameters.CompareItems.Count)
+                {
+                    parameters.CostCenterId = parameters.CompareItems[itemIndex];
+                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByCostCenters.Count)
+                    {
+                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByCostCenters.Count; lineIndex++)
+                        {
+                            CopyCostCenterValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByCostCenters[lineIndex]);
+                        }
+                    }
+
+                    itemIndex++;
+                }
+            }
+
+            return profitLoss;
+        }
+
+        /// <summary>
+        /// اطلاعات گزارش سود و زیان مقایسه ای را برای پروژه های انتخابی محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
+        /// <returns>اطلاعات گزارش سود و زیان مقایسه ای برای چند پروژه</returns>
+        public async Task<ProfitLossViewModel> GetProfitLossByProjectsAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            var profitLoss = new ProfitLossViewModel();
+            if (parameters.CompareItems.Count > 0)
+            {
+                int firstProjectId = parameters.CompareItems[0];
+                parameters.ProjectId = firstProjectId;
+                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                foreach (var item in profitLoss.Items)
+                {
+                    profitLoss.ItemsByProjects.Add(Mapper.Map<ProfitLossByProjectsViewModel>(item));
+                }
+
+                int itemIndex = 1;
+                while (itemIndex < parameters.CompareItems.Count)
+                {
+                    parameters.ProjectId = parameters.CompareItems[itemIndex];
+                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByProjects.Count)
+                    {
+                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByProjects.Count; lineIndex++)
+                        {
+                            CopyProjectValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByProjects[lineIndex]);
+                        }
+                    }
+
+                    itemIndex++;
+                }
+            }
+
+            return profitLoss;
+        }
+
+        /// <summary>
+        /// اطلاعات گزارش سود و زیان مقایسه ای را برای شعبه های انتخابی محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
+        /// <returns>اطلاعات گزارش سود و زیان مقایسه ای برای چند شعبه</returns>
+        public async Task<ProfitLossViewModel> GetProfitLossByBranchesAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            var profitLoss = new ProfitLossViewModel();
+            if (parameters.CompareItems.Count > 0)
+            {
+                int firstBranchId = parameters.CompareItems[0];
+                parameters.BranchId = firstBranchId;
+                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                foreach (var item in profitLoss.Items)
+                {
+                    profitLoss.ItemsByBranches.Add(Mapper.Map<ProfitLossByBranchesViewModel>(item));
+                }
+
+                int itemIndex = 1;
+                while (itemIndex < parameters.CompareItems.Count)
+                {
+                    parameters.BranchId = parameters.CompareItems[itemIndex];
+                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
+                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByBranches.Count)
+                    {
+                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByBranches.Count; lineIndex++)
+                        {
+                            CopyBranchValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByBranches[lineIndex]);
+                        }
+                    }
+
+                    itemIndex++;
+                }
+            }
+
+            return profitLoss;
+        }
+
+        /// <summary>
+        /// اطلاعات گزارش سود و زیان مقایسه ای را برای دوره های مالی انتخابی محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تهیه گزارش</param>
+        /// <param name="balanceItems">مجموعه اطلاعات مانده ابتدا و انتهای دوره گزارشگیری
+        /// برای حساب های موجودی کالا - سیستم ادواری</param>
+        /// <returns>اطلاعات گزارش سود و زیان مقایسه ای برای چند دوره مالی</returns>
+        public async Task<ProfitLossViewModel> GetProfitLossByFiscalPeriodsAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            throw new NotImplementedException("In Progress...");
+        }
+
+        private static void CopyCostCenterValues(int index,
+            ProfitLossItemViewModel source, ProfitLossByCostCentersViewModel item)
+        {
+            string fieldName = String.Format("StartBalanceCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
+            fieldName = String.Format("PeriodTurnoverCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
+            fieldName = String.Format("EndBalanceCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
+            fieldName = String.Format("BalanceCostCenter{0}", index + 1);
+            Reflector.CopyProperty(source, "Balance", item, fieldName);
+        }
+
+        private static void CopyProjectValues(int index,
+            ProfitLossItemViewModel source, ProfitLossByProjectsViewModel item)
+        {
+            string fieldName = String.Format("StartBalanceProject{0}", index + 1);
+            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
+            fieldName = String.Format("PeriodTurnoverProject{0}", index + 1);
+            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
+            fieldName = String.Format("EndBalanceProject{0}", index + 1);
+            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
+            fieldName = String.Format("BalanceProject{0}", index + 1);
+            Reflector.CopyProperty(source, "Balance", item, fieldName);
+        }
+
+        private static void CopyBranchValues(int index,
+            ProfitLossItemViewModel source, ProfitLossByBranchesViewModel item)
+        {
+            string fieldName = String.Format("StartBalanceBranch{0}", index + 1);
+            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
+            fieldName = String.Format("PeriodTurnoverBranch{0}", index + 1);
+            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
+            fieldName = String.Format("EndBalanceBranch{0}", index + 1);
+            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
+            fieldName = String.Format("BalanceBranch{0}", index + 1);
+            Reflector.CopyProperty(source, "Balance", item, fieldName);
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetGrossProfitItemsAsync(
@@ -282,14 +461,24 @@ namespace SPPC.Tadbir.Persistence
         {
             var accounts = await _utility.GetUsableAccountsAsync(collectionId);
             var accountIds = accounts.Select(acc => acc.Id);
-            var branchIds = GetChildTree(UserContext.BranchId);
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var linesQuery = repository
                 .GetEntityQuery(line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.IsBetween(from, to)
                     && line.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && accountIds.Contains(line.AccountId)
-                    && branchIds.Contains(line.BranchId));
+                    && accountIds.Contains(line.AccountId));
+            if (parameters.BranchId != null)
+            {
+                linesQuery = linesQuery
+                    .Where(line => line.BranchId == parameters.BranchId);
+            }
+            else
+            {
+                var branchIds = GetChildTree(UserContext.BranchId);
+                linesQuery = linesQuery
+                    .Where(line => branchIds.Contains(line.BranchId));
+            }
+
             if (!parameters.UseClosingTempVoucher)
             {
                 linesQuery = linesQuery

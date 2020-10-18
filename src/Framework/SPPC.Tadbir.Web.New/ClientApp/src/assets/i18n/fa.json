@@ -978,7 +978,8 @@
     "OperationSuccessful": "عملیات  با موفقیت انجام شد",
     "VouchersListThatHasError": "لیست اسنادی که با خطا مواجه شده اند",
     "RowNo": "ردیف",
-    "VoucherNo": "شماره سند"
+    "VoucherNo": "شماره سند",
+    "PleaseSelectVouchers": "برای انجام این عملیات حداقل یک سند باید انتخاب شود"
   },
   "User": {
     "New": "کاربر جدید",
