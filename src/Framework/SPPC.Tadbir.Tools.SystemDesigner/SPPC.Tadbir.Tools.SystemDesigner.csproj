@@ -78,6 +78,12 @@
     <Compile Include="Commands\GenerateCsModelCommand.cs" />
     <Compile Include="Commands\GenerateRepositoryCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Designers\ManageReportsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Designers\ManageReportsForm.Designer.cs">
+      <DependentUpon>ManageReportsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Designers\ParameterEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -272,6 +278,9 @@
       <DependentUpon>ViewWizardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\XferRepository.cs" />
+    <EmbeddedResource Include="Designers\ManageReportsForm.resx">
+      <DependentUpon>ManageReportsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Designers\ParameterEditorForm.resx">
       <DependentUpon>ParameterEditorForm.cs</DependentUpon>
     </EmbeddedResource>

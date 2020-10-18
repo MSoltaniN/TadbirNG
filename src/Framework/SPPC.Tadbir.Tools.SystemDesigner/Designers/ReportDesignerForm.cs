@@ -70,7 +70,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             fileDialog.Filter = "mrt files (*.mrt)|*.mrt|All files (*.*)|*.*";
             if( fileDialog.ShowDialog() == DialogResult.OK)
             {
-                txtTemplateFile.Text = fileDialog.FileName;
+                txtTemplateEn.Text = fileDialog.FileName;
             }
         }
 
@@ -78,13 +78,13 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         {
            if( chkQuickReport.Checked == true )
             {
-                txtTemplateFile.Enabled = false;
-                btnBrowse.Enabled = false;
+                txtTemplateEn.Enabled = false;
+                btnBrowseEn.Enabled = false;
             }
            else
             {
-                txtTemplateFile.Enabled = true;
-                btnBrowse.Enabled = true;
+                txtTemplateEn.Enabled = true;
+                btnBrowseEn.Enabled = true;
             }
         }
 
@@ -296,7 +296,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
                 , 1
                 , maxReportId + 1
                 , txtEnglish.Text
-                , chkQuickReport.Checked ? "''" : GetNullableValue(txtTemplateFile.Text));
+                , chkQuickReport.Checked ? "''" : GetNullableValue(txtTemplateEn.Text));
             builder.AppendLine();
             builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
                 "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
@@ -305,7 +305,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
                 , 2
                 , maxReportId + 1
                 , txtPersian.Text
-                , chkQuickReport.Checked ? "''" : GetNullableValue(txtTemplateFile.Text));
+                , chkQuickReport.Checked ? "''" : GetNullableValue(txtTemplateEn.Text));
             builder.AppendLine();
             builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] OFF ");
             builder.AppendLine();
@@ -351,7 +351,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
                 MessageBox.Show("Please fill Persian Caption.");
                 return false;
             }
-            if (txtTemplateFile.Text == "" && chkQuickReport.Checked == false)
+            if (txtTemplateEn.Text == "" && chkQuickReport.Checked == false)
             {
                 MessageBox.Show("Please fill template file path.");
                 return false;
