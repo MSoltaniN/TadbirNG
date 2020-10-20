@@ -94,7 +94,8 @@
   },
   "Exports": {
     "True": "فعال",
-    "False": "غیر فعال"
+    "False": "غیر فعال",
+    "ExportToExcel": "ارسال به اکسل"
   },
     "Buttons": {
       "Ok": "تایید",
