@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -14,6 +15,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public ProfitLossViewModel()
         {
             Items = new List<ProfitLossItemViewModel>();
+            ItemsByCostCenters = new List<ProfitLossByCostCentersViewModel>();
+            ItemsByProjects = new List<ProfitLossByProjectsViewModel>();
+            ItemsByBranches = new List<ProfitLossByBranchesViewModel>();
+            ItemsByFiscalPeriods = new List<ProfitLossByFiscalPeriodsViewModel>();
         }
 
         /// <summary>
@@ -40,6 +45,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند دوره مالی
         /// </summary>
         public List<ProfitLossByFiscalPeriodsViewModel> ItemsByFiscalPeriods { get; }
+
+        /// <summary>
+        /// اطلاعات فراداده ای نمای لیستی که باید به صورت پویا با توجه به موارد انتخاب شده ساخته شود
+        /// </summary>
+        public ViewViewModel ViewMetadata { get; set; }
 
         /// <summary>
         /// سطرهای اطلاعاتی گزارش را با مجموعه سطرهای اطلاعاتی داده شده جایگزین می کند

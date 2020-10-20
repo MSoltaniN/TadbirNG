@@ -24,10 +24,13 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="metadata">امکان خواندن اطلاعات فراداده ای را فراهم می کند</param>
         /// <param name="utility">امکان استفاده از مجموعه حسابها را فراهم می کند</param>
-        public ProfitLossRepository(IRepositoryContext context, IAccountCollectionUtility utility)
+        public ProfitLossRepository(IRepositoryContext context, IMetadataRepository metadata,
+            IAccountCollectionUtility utility)
             : base(context)
         {
+            _metadata = metadata;
             _utility = utility;
         }
 
@@ -90,6 +93,9 @@ namespace SPPC.Tadbir.Persistence
 
                     itemIndex++;
                 }
+
+                profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+                    ViewId.ProfitLossByCostCenters, ViewId.CostCenter, parameters.CompareItems);
             }
 
             return profitLoss;
@@ -132,6 +138,9 @@ namespace SPPC.Tadbir.Persistence
 
                     itemIndex++;
                 }
+
+                profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+                    ViewId.ProfitLossByProjects, ViewId.Project, parameters.CompareItems);
             }
 
             return profitLoss;
@@ -174,6 +183,9 @@ namespace SPPC.Tadbir.Persistence
 
                     itemIndex++;
                 }
+
+                profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+                    ViewId.ProfitLossByBranches, ViewId.Branch, parameters.CompareItems);
             }
 
             return profitLoss;
@@ -228,6 +240,19 @@ namespace SPPC.Tadbir.Persistence
             fieldName = String.Format("EndBalanceBranch{0}", index + 1);
             Reflector.CopyProperty(source, "EndBalance", item, fieldName);
             fieldName = String.Format("BalanceBranch{0}", index + 1);
+            Reflector.CopyProperty(source, "Balance", item, fieldName);
+        }
+
+        private static void CopyFiscalPeriodValues(int index,
+            ProfitLossItemViewModel source, ProfitLossByBranchesViewModel item)
+        {
+            string fieldName = String.Format("StartBalanceFiscalPeriod{0}", index + 1);
+            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
+            fieldName = String.Format("PeriodTurnoverFiscalPeriod{0}", index + 1);
+            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
+            fieldName = String.Format("EndBalanceFiscalPeriod{0}", index + 1);
+            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
+            fieldName = String.Format("BalanceFiscalPeriod{0}", index + 1);
             Reflector.CopyProperty(source, "Balance", item, fieldName);
         }
 
@@ -565,6 +590,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private readonly IMetadataRepository _metadata;
         private readonly IAccountCollectionUtility _utility;
     }
 }
