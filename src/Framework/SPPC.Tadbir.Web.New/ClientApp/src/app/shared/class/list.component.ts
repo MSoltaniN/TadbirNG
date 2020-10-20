@@ -128,4 +128,8 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
     var name = localizedViewName + '-' + date + ".xlsx";
     return name;
   }
+
+  onFooterExportToExcel(header:any,footer:any) {
+
+  }
 }

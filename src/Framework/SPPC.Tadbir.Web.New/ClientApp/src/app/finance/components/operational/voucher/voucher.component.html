@@ -69,7 +69,7 @@
       <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
       <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
-      <button *ngIf="groupOperation"  SppcPermissionCheck="GroupCheck;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
+      <button *ngIf="groupOperation" SppcPermissionCheck="GroupCheck;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
               title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
         <span class="k-icon k-i-check-outline"></span>
       </button>
@@ -78,11 +78,11 @@
         <span class="k-icon k-i-check-outline"></span>
       </button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
+      <button *ngIf="groupOperation" SppcPermissionCheck="GroupUndoCheck;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="GroupUndoCheck;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
+      <button *ngIf="!groupOperation" SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
@@ -96,7 +96,7 @@
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
       <div [style.display]="showFinancBtns ? 'inline-block' : 'none'">
-        <button *ngIf="groupOperation"  (click)="onUnFinalizedHandler()" class="k-button k-button-icon"
+        <button *ngIf="groupOperation" (click)="onUnFinalizedHandler()" class="k-button k-button-icon"
                 title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
           <span class="k-icon k-i-track-changes-reject-all"></span>
         </button>
@@ -105,13 +105,20 @@
           <span class="k-icon k-i-track-changes-reject-all"></span>
         </button>
       </div>
-      <button SppcPermissionCheck="GroupConfirm;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon"
-              title="{{'Voucher.ConfirmGroup'| translate}}" >
+      <button *ngIf="groupOperation" SppcPermissionCheck="GroupConfirm;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon"
+              title="{{'Voucher.ConfirmGroup'| translate}}">
+        <span class="k-icon k-i-lock"></span>
+      </button>
+      <button *ngIf="!groupOperation" SppcPermissionCheck="Confirm" (sppcClick)="onConfirmHandler()" class="k-button k-button-icon"
+              title="{{'Voucher.ConfirmGroup'| translate}}">
         <span class="k-icon k-i-lock"></span>
       </button>
 
-
-      <button SppcPermissionCheck="UndoConfirm" (sppcClick)="onUnConfirmGroupHandler()" class="k-button k-button-icon"
+      <button *ngIf="groupOperation" SppcPermissionCheck="GroupUndoConfirm;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onUnConfirmGroupHandler(true)" class="k-button k-button-icon"
+              title="{{'Voucher.UnConfirmGroup'| translate}}">
+        <span class="k-icon k-i-unlock"></span>
+      </button>
+      <button *ngIf="!groupOperation" SppcPermissionCheck="UndoConfirm" (sppcClick)="onUnConfirmGroupHandler(false)" class="k-button k-button-icon"
               title="{{'Voucher.UnConfirmGroup'| translate}}">
         <span class="k-icon k-i-unlock"></span>
       </button>
