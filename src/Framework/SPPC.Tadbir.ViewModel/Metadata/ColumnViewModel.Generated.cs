@@ -99,6 +99,12 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         public bool IsNullable { get; set; }
 
         /// <summary>
+        /// مشخص می کند که این ستون حالت پویا دارد یا نه
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        public bool IsDynamic { get; set; }
+
+        /// <summary>
         /// مشخص می کند که آیا عمل مرتب سازی بر حسب مقادیر این ستون فعال هست یا نه
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
@@ -139,14 +145,5 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// </summary>
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string GroupName { get; set; }
-
-        /// <summary>
-        /// اطلاعات آبجکت مورد نظر را به صورت متنی برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات آبجکت مورد نظر به صورت متنی</returns>
-        public override string ToString()
-        {
-            return Name;
-        }
     }
 }

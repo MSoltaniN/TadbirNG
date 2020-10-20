@@ -622,6 +622,12 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.PeriodTurnoverBranch1, opts => opts.MapFrom(src => src.PeriodTurnover))
                 .ForMember(dest => dest.EndBalanceBranch1, opts => opts.MapFrom(src => src.EndBalance))
                 .ForMember(dest => dest.BalanceBranch1, opts => opts.MapFrom(src => src.Balance));
+
+            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByFiscalPeriodsViewModel>()
+                .ForMember(dest => dest.StartBalanceFiscalPeriod1, opts => opts.MapFrom(src => src.StartBalance))
+                .ForMember(dest => dest.PeriodTurnoverFiscalPeriod1, opts => opts.MapFrom(src => src.PeriodTurnover))
+                .ForMember(dest => dest.EndBalanceFiscalPeriod1, opts => opts.MapFrom(src => src.EndBalance))
+                .ForMember(dest => dest.BalanceFiscalPeriod1, opts => opts.MapFrom(src => src.Balance));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

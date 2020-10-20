@@ -24,6 +24,6 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// مجموعه ای از شناسه های دیتابیسی مستندات مورد نظر برای اقدام گروهی
         /// </summary>
-        public IList<int> Items { get; private set; }
+        public List<int> Items { get; }
     }
 }

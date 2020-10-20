@@ -49,6 +49,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .IsRequired();
             builder.Property(e => e.IsNullable)
                 .IsRequired();
+            builder.Property(e => e.IsDynamic)
+                .IsRequired();
             builder.Property(e => e.AllowSorting)
                 .IsRequired();
             builder.Property(e => e.AllowFiltering)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -26,7 +27,9 @@ namespace SPPC.Tadbir.Web.Api
                 ////.And(dateTo)
                 .Build();
             ////gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Id", Direction = "DESC" });
-            var json = JsonHelper.From(gridOptions, false);
+            var actionDetail = new ActionDetailViewModel();
+            actionDetail.Items.AddRange(new int[] { 1, 2, 3 });
+            var json = JsonHelper.From(actionDetail, false);
             var urlEncoded = WebUtility.UrlEncode(json);
             var base64 = Transform.ToBase64String(Encoding.UTF8.GetBytes(urlEncoded));
            BuildWebHost(args).Run();
