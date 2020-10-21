@@ -91,6 +91,10 @@
     "ReportSetting": "Quick Report Setting",
     "Print": "Print"
   },
+  "Exports": {
+    "True": "True",
+    "False": "False"
+  },
   "Buttons": {
     "Ok": "Ok",
     "Cancel": "Cancel",

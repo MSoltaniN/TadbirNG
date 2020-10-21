@@ -86,5 +86,25 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی نرخ های یک ارز
         /// </summary>
         public const int CurrencyRate = 31;
+
+        /// <summary>
+        /// نمای اطلاعاتی گزارش سود و زیان به تفکیک مراکز هزینه
+        /// </summary>
+        public const int ProfitLossByCostCenters = 65;
+
+        /// <summary>
+        /// نمای اطلاعاتی گزارش سود و زیان به تفکیک پروژه ها
+        /// </summary>
+        public const int ProfitLossByProjects = 66;
+
+        /// <summary>
+        /// نمای اطلاعاتی گزارش سود و زیان به تفکیک شعبه ها
+        /// </summary>
+        public const int ProfitLossByBranches = 67;
+
+        /// <summary>
+        /// نمای اطلاعاتی گزارش سود و زیان به تفکیک دوره های مالی
+        /// </summary>
+        public const int ProfitLossByFiscalPeriods = 68;
     }
 }

@@ -1408,3 +1408,20 @@ ADD [FiscalPeriodId] INT NOT NULL
 CONSTRAINT [DF_Finance_CurrencyRate_FiscalPeriodID] DEFAULT (0)
 WITH VALUES;
 GO
+
+-- 1.1.1010
+UPDATE [Metadata].[Operation]
+SET [Name] = 'GroupUndoCheck'
+WHERE [Name] = 'UndoGroupCheck'
+
+UPDATE [Metadata].[Operation]
+SET [Name] = 'GroupUndoFinalize'
+WHERE [Name] = 'UndoGroupFinalize'
+
+UPDATE [Metadata].[Operation]
+SET [Name] = 'GroupConfirm'
+WHERE [Name] = 'ConfirmGroup'
+
+UPDATE [Metadata].[Operation]
+SET [Name] = 'GroupUndoConfirm'
+WHERE [Name] = 'UnConfirmGroup'

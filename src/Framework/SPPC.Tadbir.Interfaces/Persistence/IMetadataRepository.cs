@@ -53,6 +53,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns> اطلاعات فراداده ای تعریف شده برای همه موجودیت ها</returns>
         Task<IList<ViewViewModel>> GetViewsMetadataAsync();
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای مرکب برای نمای لیستی مقایسه ای با اقلام داده شده را ساخته و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای لیستی مورد نظر</param>
+        /// <param name="itemViewId">شناسه دیتابیسی که نوع موجودیت اقلام داده شده را تعیین می کند</param>
+        /// <param name="items">مجموعه اقلام داده شده برای مقایسه</param>
+        /// <returns>اطلاعات فراداده ای مرکب برای نمای لیستی مقایسه ای</returns>
+        Task<ViewViewModel> GetCompoundViewMetadataAsync(int viewId, int itemViewId, IEnumerable<int> items);
+
         #region System Designer
 
         /// <summary>

@@ -184,6 +184,22 @@ export class DefaultComponent extends BaseComponent {
 
   }
 
+  getLocalizedViewName(viewId: number): string {
+    var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
+
+    if (viewId) {
+      var item: string | null;
+      item = this.bStorageService.getMetadata(metaDataName);
+      if (item) {
+        if (!this.properties) this.properties = new Map<string, any>();
+        var result = JSON.parse(item != null ? item.toString() : "");
+        return result.name;
+      }     
+    }
+
+    return "";
+  }
+
   async getAllMetaDataByViewIdAsync(viewId: number): Promise<Array<Property>> {
     var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
 

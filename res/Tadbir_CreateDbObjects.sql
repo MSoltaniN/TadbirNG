@@ -795,11 +795,11 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (43, N'PrintRat
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (44, N'GroupDeleteRates')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (45, N'ViewRates')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (46, N'GroupCheck')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (47, N'UndoGroupCheck')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (47, N'GroupUndoCheck')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (48, N'GroupFinalize')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (49, N'UndoGroupFinalize')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (50, N'ConfirmGroup')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (51, N'UnConfirmGroup')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (49, N'GroupUndoFinalize')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (50, N'GroupConfirm')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (51, N'GroupUndoConfirm')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON

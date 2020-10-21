@@ -81,6 +81,11 @@ namespace SPPC.Tadbir.Model.Metadata
         public virtual bool IsFixedLength { get; set; }
 
         /// <summary>
+        /// مشخص می کند که این ستون حالت پویا دارد یا نه
+        /// </summary>
+        public virtual bool IsDynamic { get; set; }
+
+        /// <summary>
         /// مشخص می کند که وارد کردن مقدار برای ستون اجباری است یا نه
         /// </summary>
         public virtual bool IsNullable { get; set; }

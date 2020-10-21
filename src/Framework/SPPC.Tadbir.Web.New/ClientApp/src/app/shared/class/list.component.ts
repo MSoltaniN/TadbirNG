@@ -11,6 +11,7 @@ import { Permissions, GlobalPermissions } from "@sppc/shared/security/permission
 import { FilterExpression } from '@sppc/shared/class/filterExpression';
 import { FilterRow } from "@sppc/shared/models";
 import { MessageType } from '@sppc/env/environment';
+import * as moment from 'jalali-moment';
 
 @Injectable()
 export class ListComponent extends DefaultComponent implements OnDestroy {
@@ -115,8 +116,20 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
     throw new Error("Method not implemented.");
   }
 
-  //public get excelFileName(): string {
-  //  var date = new Date().toLocaleString().replace(' ', '') + ".xlsx";    
-  //  return date;    
-  //}
+  public getExcelFileName()
+  {
+    var localizedViewName = this.getLocalizedViewName(this.viewId);
+    var date = '';
+    if (this.CurrentLanguage == 'fa')
+      date = moment().locale('fa').format('YYYY/MM/DD HH:mm').replace(' ', '-');
+    else
+      date = moment().locale('en').format('YYYY/MM/DD HH:mm').replace(' ', '-');
+
+    var name = localizedViewName + '-' + date + ".xlsx";
+    return name;
+  }
+
+  onFooterExportToExcel(header:any,footer:any) {
+
+  }
 }
