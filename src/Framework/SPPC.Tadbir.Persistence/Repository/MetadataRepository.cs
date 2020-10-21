@@ -59,9 +59,9 @@ namespace SPPC.Tadbir.Persistence
                 column.Settings = GetDynamicColumnSettings(column);
             }
 
-            metadata.SetColumns(metadata.Columns
+            metadata.Columns = metadata.Columns
                 .OrderBy(col => col.DisplayIndex)
-                .ToList());
+                .ToList();
             return metadata;
         }
 
@@ -81,9 +81,9 @@ namespace SPPC.Tadbir.Persistence
                 column.Settings = GetDynamicColumnSettings(column);
             }
 
-            metadata.SetColumns(metadata.Columns
+            metadata.Columns = metadata.Columns
                 .OrderBy(col => col.DisplayIndex)
-                .ToList());
+                .ToList();
             return metadata;
         }
 
