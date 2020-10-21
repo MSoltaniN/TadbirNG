@@ -218,7 +218,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Define Parameter";
-            this.Load += new System.EventHandler(this.ParameterEditorForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

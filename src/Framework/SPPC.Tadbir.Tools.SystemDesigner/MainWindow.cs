@@ -72,7 +72,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner
 
         private void menuDesignersReport_Click(object sender, EventArgs e)
         {
-            var designer = new ReportDesignerForm();
+            var designer = new ManageReportsForm();
             designer.ShowDialog();
         }
     }

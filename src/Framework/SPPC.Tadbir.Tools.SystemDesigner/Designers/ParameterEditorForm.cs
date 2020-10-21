@@ -10,12 +10,13 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             InitializeComponent();
         }
 
-        private void ParameterEditorForm_Load(object sender, EventArgs e)
+        public void SetupConrols()
         {
             cmbControlType.SelectedIndex = 0;
             cmbDataType.SelectedIndex = 0;
             cmbOperator.SelectedIndex = 0;
         }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
