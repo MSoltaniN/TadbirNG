@@ -66,5 +66,10 @@ namespace SPPC.Tadbir.Domain
         /// مجموعه ای از شناسه های دیتابیسی اقلام انتخاب شده برای گزارش مقایسه ای
         /// </summary>
         public List<int> CompareItems { get; }
+
+        public ProfitLossParameters GetCopy()
+        {
+            return (ProfitLossParameters)MemberwiseClone();
+        }
     }
 }
