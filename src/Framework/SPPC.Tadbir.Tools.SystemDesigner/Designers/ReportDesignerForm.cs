@@ -1,10 +1,7 @@
 ﻿using BabakSoft.Platform.Data;
-using SPPC.Framework.Helpers;
 using System;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
@@ -14,11 +11,12 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         public ReportDesignerForm()
         {
             InitializeComponent();
-            
+            Parameters = new DataTable("ParameterTable");
         }
 
-        public string sysConnection { get; set; }
-        public DataTable paramTable = new DataTable("ParameterTable");
+        public string SysConnection { get; set; }
+
+        public DataTable Parameters { get; set; }
 
         public void SetupControls()
         {
@@ -31,7 +29,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         #region General tab
         private void LoadListViews()
         {
-            var dal = new SqlDataLayer(sysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(SysConnection, ProviderType.SqlClient);
             cmbListViews.ValueMember = "ViewID";
             cmbListViews.DisplayMember = "Name";
             cmbListViews.DataSource = dal.Query(@"SELECT [ViewID], [Name] FROM [Metadata].[View] 
@@ -46,7 +44,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
 
         private void LoadParents()
         {
-            var dal = new SqlDataLayer(sysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(SysConnection, ProviderType.SqlClient);
             cmbParent.ValueMember = "ReportID";
             cmbParent.DisplayMember = "Code";
             cmbParent.DataSource = dal.Query(@"SELECT [ReportID],[Code] FROM [Reporting].[Report] 
@@ -105,6 +103,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         }
 
         #endregion
+
         #region Parameter tab
         private void LoadParameters()
         {
@@ -120,14 +119,14 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             if (paramForm.ShowDialog() == DialogResult.OK )
             {
                 DataRow dr;
-                dr = paramTable.NewRow();
+                dr = Parameters.NewRow();
                 dr["Name"] = paramForm.txtName.Text;
                 dr["FieldName"] = paramForm.txtFieldName.Text;
                 dr["CaptionKey"] = paramForm.txtCaptionKey.Text;
                 dr["Operator"] = paramForm.cmbOperator.SelectedItem.ToString();
                 dr["DataType"] = paramForm.cmbDataType.SelectedItem.ToString();
                 dr["ControlType"] = paramForm.cmbControlType.SelectedItem.ToString();
-                paramTable.Rows.Add(dr);
+                Parameters.Rows.Add(dr);
                 RefreshGrid();
             }
         }
@@ -138,7 +137,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             if (grdParameters.SelectedRows.Count > 0)
             {
                 paramId = Convert.ToInt32(grdParameters.SelectedRows[0].Cells["ParamId"].Value.ToString());
-                DataRow dr = paramTable.Select(string.Format("ParamId={0}", paramId)).FirstOrDefault();
+                DataRow dr = Parameters.Select(string.Format("ParamId={0}", paramId)).FirstOrDefault();
                 if (dr != null)
                 {
                     var paramForm = new ParameterEditorForm();
@@ -169,7 +168,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             if (grdParameters.SelectedRows.Count > 0)
             {
                 int paramId = Convert.ToInt32(grdParameters.SelectedRows[0].Cells["ParamId"].Value.ToString());
-                DataRow dr = paramTable.Select(string.Format("ParamId={0}", paramId)).FirstOrDefault();
+                DataRow dr = Parameters.Select(string.Format("ParamId={0}", paramId)).FirstOrDefault();
                 dr.Delete();
                 RefreshGrid();
             }
@@ -177,7 +176,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
 
         private void MakeDataTableParameter()
         {
-            if (paramTable.Columns.Count > 0)
+            if (Parameters.Columns.Count > 0)
                 return;
 
             DataColumn column;
@@ -189,7 +188,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             column.AutoIncrementSeed = 1;
             column.ReadOnly = true;
             column.Unique = true;
-            paramTable.Columns.Add(column);
+            Parameters.Columns.Add(column);
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
@@ -198,7 +197,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             column.Caption = "Name";
             column.ReadOnly = false;
             column.Unique = false;
-            paramTable.Columns.Add(column);
+            Parameters.Columns.Add(column);
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
@@ -207,7 +206,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             column.Caption = "FieldName";
             column.ReadOnly = false;
             column.Unique = false;
-            paramTable.Columns.Add(column);
+            Parameters.Columns.Add(column);
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
@@ -216,7 +215,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             column.Caption = "CaptionKey";
             column.ReadOnly = false;
             column.Unique = false;
-            paramTable.Columns.Add(column);
+            Parameters.Columns.Add(column);
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
@@ -225,7 +224,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             column.Caption = "Operator";
             column.ReadOnly = false;
             column.Unique = false;
-            paramTable.Columns.Add(column);
+            Parameters.Columns.Add(column);
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
@@ -234,7 +233,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             column.Caption = "DataType";
             column.ReadOnly = false;
             column.Unique = false;
-            paramTable.Columns.Add(column);
+            Parameters.Columns.Add(column);
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
@@ -243,16 +242,16 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             column.Caption = "ControlType";
             column.ReadOnly = false;
             column.Unique = false;
-            paramTable.Columns.Add(column);
+            Parameters.Columns.Add(column);
 
             DataColumn[] PrimaryKeyColumns = new DataColumn[1];
-            PrimaryKeyColumns[0] = paramTable.Columns["id"];
-            paramTable.PrimaryKey = PrimaryKeyColumns;
+            PrimaryKeyColumns[0] = Parameters.Columns["id"];
+            Parameters.PrimaryKey = PrimaryKeyColumns;
         }
 
         public void RefreshGrid()
         {
-            grdParameters.DataSource = paramTable;
+            grdParameters.DataSource = Parameters;
         }
 
         #endregion
@@ -287,13 +286,9 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             return true;
         }
 
-       
-
         private void Cancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
-        
     }
 }
