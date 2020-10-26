@@ -54,9 +54,7 @@ export class LeftActionToolbarComponent extends BaseComponent implements OnInit 
     this.parentComponent.showReportManager(this.viewId, this.parentComponent, this.reportSetting, this.reportManager);    
   }
 
-  public exportToExcel(): void {
-    this.grid.saveAsExcel();
-  }
+  
 
 
   

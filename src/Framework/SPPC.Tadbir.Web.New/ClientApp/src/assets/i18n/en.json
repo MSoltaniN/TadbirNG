@@ -93,7 +93,8 @@
   },
   "Exports": {
     "True": "True",
-    "False": "False"
+    "False": "False",
+    "ExportToExcel": "Export to excel"
   },
   "Buttons": {
     "Ok": "Ok",
