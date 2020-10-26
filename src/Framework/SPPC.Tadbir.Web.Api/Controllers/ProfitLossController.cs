@@ -69,6 +69,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, tax, closing, ccenterId, projectId, _repository.GetProfitLossByBranchesAsync);
         }
 
+        // GET: api/profit-loss/by-fperiods
+        [HttpGet]
+        [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
+        [Route(ProfitLossApi.ProfitLossByFiscalPeriodsUrl)]
+        public async Task<IActionResult> GetProfitLossByFiscalPeriodsAsync(
+            DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId)
+        {
+            return await ComparativeProfitLossResultAsync(
+                from, to, tax, closing, ccenterId, projectId, _repository.GetProfitLossByFiscalPeriodsAsync);
+        }
+
         // GET: api/profit-loss/simple
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -98,7 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             DateTime date, decimal? tax, bool? closing, int? ccenterId)
         {
             return await ComparativeProfitLossResultAsync(
-                date, date, tax, closing, ccenterId, null, _repository.GetProfitLossByCostCentersAsync);
+                date, date, tax, closing, ccenterId, null, _repository.GetProfitLossByProjectsAsync);
         }
 
         // GET: api/profit-loss/simple/by-branches
@@ -106,10 +117,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
         [Route(ProfitLossApi.ProfitLossSimpleByBranchesUrl)]
         public async Task<IActionResult> GetSimpleProfitLossByBranchesAsync(
-            DateTime date, decimal? tax, bool? closing, int? ccenterId)
+            DateTime date, decimal? tax, bool? closing, int? ccenterId, int? projectId)
         {
             return await ComparativeProfitLossResultAsync(
-                date, date, tax, closing, ccenterId, null, _repository.GetProfitLossByBranchesAsync);
+                date, date, tax, closing, ccenterId, projectId, _repository.GetProfitLossByBranchesAsync);
+        }
+
+        // GET: api/profit-loss/simple/by-fperiods
+        [HttpGet]
+        [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
+        [Route(ProfitLossApi.ProfitLossSimpleByFiscalPeriodsUrl)]
+        public async Task<IActionResult> GetSimpleProfitLossByFiscalPeriodsAsync(
+            DateTime date, decimal? tax, bool? closing, int? ccenterId, int? projectId)
+        {
+            return await ComparativeProfitLossResultAsync(
+                date, date, tax, closing, ccenterId, projectId, _repository.GetProfitLossByFiscalPeriodsAsync);
         }
 
         // PUT: api/profit-loss

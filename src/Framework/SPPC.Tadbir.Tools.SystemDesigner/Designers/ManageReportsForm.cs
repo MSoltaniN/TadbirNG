@@ -1,5 +1,4 @@
-﻿using BabakSoft.Platform.Data;
-using SPPC.Framework.Helpers;
+﻿using SPPC.Framework.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using BabakSoft.Platform.Data;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
 {
@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         {
             var form = new ReportDesignerForm()
             {
-                sysConnection = _sysConnection ,
+                SysConnection = _sysConnection ,
                
             };
             form.SetupControls();
@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
                 dr["EnTemplatePath"] = form.txtTemplateEn.Text;
                 dr["FaTemplatePath"] = form.txtTemplateFa.Text;
                 _reportTable.Rows.Add(dr);
-                _parmDtDic.Add(Convert.ToInt32(dr["ReportId"]), form.paramTable);
+                _paramDictionary.Add(Convert.ToInt32(dr["ReportId"]), form.Parameters);
                 LoadGridView();    
             }
         }
@@ -109,40 +109,40 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
                 DataRow dr = _reportTable.Select(string.Format("ReportID={0}", reportId)).FirstOrDefault();
                 if (dr != null)
                 {
-                    var form1 = new ReportDesignerForm()
+                    var designer = new ReportDesignerForm()
                     {
-                        sysConnection = _sysConnection
+                        SysConnection = _sysConnection
                     };
-                    form1.SetupControls();
-                    form1.cmbParent.SelectedValue = Convert.ToInt32(dr["ParentID"]);
-                    form1.cmbListViews.SelectedValue = Convert.ToInt32(dr["ViewID"]);
-                    form1.cmbSubsystem.SelectedIndex= Convert.ToInt32( dr["SubsystemID"]) -1;
-                    form1.txtServiceUrl.Text        = dr["ServiceUrl"].ToString();
-                    form1.chkIsGroup.Checked        = Convert.ToBoolean(dr["IsGroup"]);
-                    form1.chkSystemReport.Checked   = Convert.ToBoolean(dr["IsSystem"]);
-                    form1.chkSetAsDefault.Checked   = Convert.ToBoolean(dr["IsDefault"]);
-                    form1.chkQuickReport.Checked    = Convert.ToBoolean(dr["IsDynamic"]);
-                    form1.txtEnglish.Text           = dr["EnCaption"].ToString();
-                    form1.txtPersian.Text           = dr["FaCaption"].ToString();
-                    form1.txtTemplateEn.Text        = dr["EnTemplatePath"].ToString();
-                    form1.txtTemplateFa.Text        = dr["FaTemplatePath"].ToString();
-                    form1.paramTable                = _parmDtDic[Convert.ToInt32(dr["ReportId"])];
-                    form1.RefreshGrid();
-                    if (form1.ShowDialog() == DialogResult.OK)
+                    designer.SetupControls();
+                    designer.cmbParent.SelectedValue = Convert.ToInt32(dr["ParentID"]);
+                    designer.cmbListViews.SelectedValue = Convert.ToInt32(dr["ViewID"]);
+                    designer.cmbSubsystem.SelectedIndex= Convert.ToInt32( dr["SubsystemID"]) -1;
+                    designer.txtServiceUrl.Text        = dr["ServiceUrl"].ToString();
+                    designer.chkIsGroup.Checked        = Convert.ToBoolean(dr["IsGroup"]);
+                    designer.chkSystemReport.Checked   = Convert.ToBoolean(dr["IsSystem"]);
+                    designer.chkSetAsDefault.Checked   = Convert.ToBoolean(dr["IsDefault"]);
+                    designer.chkQuickReport.Checked    = Convert.ToBoolean(dr["IsDynamic"]);
+                    designer.txtEnglish.Text           = dr["EnCaption"].ToString();
+                    designer.txtPersian.Text           = dr["FaCaption"].ToString();
+                    designer.txtTemplateEn.Text        = dr["EnTemplatePath"].ToString();
+                    designer.txtTemplateFa.Text        = dr["FaTemplatePath"].ToString();
+                    designer.Parameters                = _paramDictionary[Convert.ToInt32(dr["ReportId"])];
+                    designer.RefreshGrid();
+                    if (designer.ShowDialog() == DialogResult.OK)
                     {
-                        dr["ParentID"       ] = form1.cmbParent.SelectedValue;
-                        dr["ViewID"         ] = form1.cmbListViews.SelectedValue;
-                        dr["SubsystemID"    ] = form1.cmbSubsystem.SelectedIndex + 1;
-                        dr["ServiceUrl"     ] = form1.txtServiceUrl.Text;
-                        dr["IsGroup"        ] = form1.chkIsGroup.Checked;
-                        dr["IsSystem"       ] = form1.chkSystemReport.Checked;
-                        dr["IsDefault"      ] = form1.chkSetAsDefault.Checked;
-                        dr["IsDynamic"      ] = form1.chkQuickReport.Checked;
-                        dr["EnCaption"      ] = form1.txtEnglish.Text;
-                        dr["FaCaption"      ] = form1.txtPersian.Text;
-                        dr["EnTemplatePath" ] = form1.txtTemplateEn.Text;
-                        dr["FaTemplatePath" ] = form1.txtTemplateFa.Text;
-                        _parmDtDic[Convert.ToInt32(dr["ReportId"])] = form1.paramTable;
+                        dr["ParentID"       ] = designer.cmbParent.SelectedValue;
+                        dr["ViewID"         ] = designer.cmbListViews.SelectedValue;
+                        dr["SubsystemID"    ] = designer.cmbSubsystem.SelectedIndex + 1;
+                        dr["ServiceUrl"     ] = designer.txtServiceUrl.Text;
+                        dr["IsGroup"        ] = designer.chkIsGroup.Checked;
+                        dr["IsSystem"       ] = designer.chkSystemReport.Checked;
+                        dr["IsDefault"      ] = designer.chkSetAsDefault.Checked;
+                        dr["IsDynamic"      ] = designer.chkQuickReport.Checked;
+                        dr["EnCaption"      ] = designer.txtEnglish.Text;
+                        dr["FaCaption"      ] = designer.txtPersian.Text;
+                        dr["EnTemplatePath" ] = designer.txtTemplateEn.Text;
+                        dr["FaTemplatePath" ] = designer.txtTemplateFa.Text;
+                        _paramDictionary[Convert.ToInt32(dr["ReportId"])] = designer.Parameters;
                         LoadGridView();
                     }
                 }
@@ -156,7 +156,7 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
                 int reportId = Convert.ToInt32(grdNewReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
                 DataRow dr = _reportTable.Select(string.Format("ReportID={0}", reportId)).FirstOrDefault();
                 dr.Delete();
-                _parmDtDic.Remove(Convert.ToInt32(dr["ReportId"]));
+                _paramDictionary.Remove(Convert.ToInt32(dr["ReportId"]));
                 LoadGridView();
             }
         }
@@ -167,81 +167,92 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             var dal = new SqlDataLayer(sysConnection, ProviderType.SqlClient);
             int maxReportId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ReportID]) FROM [Reporting].[Report]"));
             int maxLocalReport = Convert.ToInt32(dal.QueryScalar("SELECT MAX([LocalReportID]) FROM [Reporting].[LocalReport]"));
-            int maxPramId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ParamID]) FROM [Reporting].[Parameter]"));
-            int paramId = maxPramId + 1;
+            int maxParamId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ParamID]) FROM [Reporting].[Parameter]"));
             var builder = new StringBuilder();
             var solutionVersion = GetSolutionVersion();
 
             builder.AppendLine();
             builder.AppendFormat("-- {0}", solutionVersion);
             builder.AppendLine();
-            foreach (DataRow drRep in _reportTable.Rows)
+
+            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] ON");
+            int reportId = maxReportId + 1;
+            foreach (DataRow row in _reportTable.Rows)
             {
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] ON ");
                 builder.AppendLine("INSERT INTO [Reporting].[Report] " +
                      "([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])");
-                builder.AppendFormat("    VALUES ({0}, {1}, {2}, {3}, {4}, {5}, '{6}', {7}, {8}, {9}, {10})"
-                    , maxReportId + 1
-                    , Convert.ToInt32(drRep["ParentID"])
+                builder.AppendFormat("    VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})"
+                    , reportId++
+                    , Convert.ToInt32(row["ParentID"])
                     , 1
-                    , Convert.ToInt32(drRep["ViewID"])
-                    , Convert.ToInt32(drRep["SubsystemID"])
+                    , Convert.ToInt32(row["ViewID"])
+                    , Convert.ToInt32(row["SubsystemID"])
                     , "''"
-                    , drRep["ServiceUrl"].ToString()
-                    , Convert.ToBoolean(drRep["IsGroup"]) == true ? 1 : 0
-                    , Convert.ToBoolean(drRep["IsSystem"]) == true ? 1 : 0
-                    , Convert.ToBoolean(drRep["IsDefault"]) == true ? 1 : 0
-                    , Convert.ToBoolean(drRep["IsDynamic"]) == true ? 1 : 0);
+                    , GetNullableValue(row["ServiceUrl"].ToString())
+                    , Convert.ToBoolean(row["IsGroup"]) == true ? 1 : 0
+                    , Convert.ToBoolean(row["IsSystem"]) == true ? 1 : 0
+                    , Convert.ToBoolean(row["IsDefault"]) == true ? 1 : 0
+                    , Convert.ToBoolean(row["IsDynamic"]) == true ? 1 : 0);
                 builder.AppendLine();
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] OFF ");
-                builder.AppendLine();
+            }
 
-                builder.AppendLine();
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] ON ");
+            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] OFF");
+            builder.AppendLine();
+
+            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] ON");
+            int localReportId = maxLocalReport + 1;
+            reportId = maxReportId + 1;
+            foreach (DataRow row in _reportTable.Rows)
+            {
                 builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
                     "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
                 builder.AppendFormat("    VALUES ({0}, {1}, {2}, '{3}', {4})"
-                    , maxLocalReport++
+                    , localReportId++
                     , 1
-                    , maxReportId++
-                    , drRep["EnCaption"].ToString()
-                    , Convert.ToBoolean(drRep["IsDynamic"]) ? "NULL" : GetNullableValue(drRep["EnTemplatePath"].ToString()));
+                    , reportId
+                    , row["EnCaption"].ToString()
+                    , Convert.ToBoolean(row["IsDynamic"]) ? "NULL" : GetNullableValue(row["EnTemplatePath"].ToString()));
                 builder.AppendLine();
                 builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
                     "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
                 builder.AppendFormat("    VALUES ({0}, {1}, {2}, N'{3}', {4})"
-                    , maxLocalReport++
+                    , localReportId++
                     , 2
-                    , maxReportId++
-                    , drRep["FaCaption"].ToString()
-                    , Convert.ToBoolean(drRep["IsDynamic"]) ? "NULL" : GetNullableValue(drRep["FaTemplatePath"].ToString()));
+                    , reportId++
+                    , row["FaCaption"].ToString()
+                    , Convert.ToBoolean(row["IsDynamic"]) ? "NULL" : GetNullableValue(row["FaTemplatePath"].ToString()));
                 builder.AppendLine();
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] OFF ");
-                builder.AppendLine();
+            }
 
-                builder.AppendLine();
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] ON ");
+            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] OFF");
+            builder.AppendLine();
 
-                foreach (DataRow dr in _parmDtDic[Convert.ToInt32(drRep["ReportId"])].Rows )
+            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] ON");
+            int paramId = maxParamId + 1;
+            var sortedKeys = _paramDictionary.Keys.OrderBy(key => key);
+            foreach (int key in sortedKeys)
+            {
+                var parameters = _paramDictionary[key];
+                foreach (DataRow row in parameters.Rows)
                 {
                     builder.AppendLine("INSERT INTO [Reporting].[Parameter] " +
                      "([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])");
-                    builder.AppendFormat("    VALUES ({0}, {1}, '{2}', '{3}', '{4}', '{5}', '{6}', '{7}')"
+                    builder.AppendFormat("    VALUES ({0}, {1}, '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')"
                         , paramId++
-                        , maxReportId + 1
-                        , dr["Name"].ToString()
-                        , dr["FieldName"].ToString()
-                        , dr["Operator"].ToString()
-                        , dr["DataType"].ToString()
-                        , dr["ControlType"].ToString()
-                        , dr["CaptionKey"].ToString()
-                        , dr["CaptionKey"].ToString());
+                        , maxReportId + key
+                        , row["Name"].ToString()
+                        , row["FieldName"].ToString()
+                        , row["Operator"].ToString()
+                        , row["DataType"].ToString()
+                        , row["ControlType"].ToString()
+                        , row["CaptionKey"].ToString()
+                        , row["CaptionKey"].ToString());
                     builder.AppendLine();
                 }
-
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] OFF ");
-                builder.AppendLine();
             }
+
+            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] OFF");
+            builder.AppendLine();
 
             File.AppendAllText(_TadbirSysUpdateScript, builder.ToString());
 
@@ -250,22 +261,11 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
             Close();
         }
 
-        private string GetNullableValue(string nullable, string nullValue = null)
+        private string GetNullableValue(string nullable)
         {
-            string output;
-            if (nullValue == null)
-            {
-                output = String.IsNullOrEmpty(nullable)
-                    ? "NULL"
-                    : String.Format("'{0}'", nullable);
-            }
-            else
-            {
-                output = nullable == nullValue
-                    ? "NULL"
-                    : String.Format("'{0}'", nullable);
-            }
-            return output;
+            return String.IsNullOrEmpty(nullable)
+                ? "NULL"
+                : String.Format("N'{0}'", nullable);
         }
 
         private string GetSysConnectionString()
@@ -279,15 +279,16 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
         {
             Close();
         }
+
         private Version GetSolutionVersion()
         {
             var assemblyVersion = GetType().Assembly.GetName().Version;
-            return new Version(assemblyVersion.ToString());
+            return new Version(assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
         }
 
         private string _sysConnection;
         private DataTable _reportTable = new DataTable("ReportTable");
-        private Dictionary<int,DataTable> _parmDtDic = new Dictionary<int, DataTable>();
+        private Dictionary<int, DataTable> _paramDictionary = new Dictionary<int, DataTable>();
         private const string _TadbirSysUpdateScript = @"..\..\res\TadbirSys_UpdateDbObjects.sql";
     }
 }

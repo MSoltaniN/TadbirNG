@@ -201,7 +201,39 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ProfitLossViewModel> GetProfitLossByFiscalPeriodsAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
-            throw new NotImplementedException("In Progress...");
+            var profitLoss = new ProfitLossViewModel();
+            if (parameters.CompareItems.Count > 0)
+            {
+                int firstPeriodId = parameters.CompareItems[0];
+                var adjusted = await GetAdjustedParameters(parameters, firstPeriodId);
+                profitLoss = await GetProfitLossAsync(adjusted, balanceItems);
+                foreach (var item in profitLoss.Items)
+                {
+                    profitLoss.ItemsByFiscalPeriods.Add(Mapper.Map<ProfitLossByFiscalPeriodsViewModel>(item));
+                }
+
+                int itemIndex = 1;
+                while (itemIndex < parameters.CompareItems.Count)
+                {
+                    adjusted = await GetAdjustedParameters(parameters, parameters.CompareItems[itemIndex]);
+                    var itemProfitLoss = await GetProfitLossAsync(adjusted, balanceItems);
+                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByFiscalPeriods.Count)
+                    {
+                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByFiscalPeriods.Count; lineIndex++)
+                        {
+                            CopyFiscalPeriodValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByFiscalPeriods[lineIndex]);
+                        }
+                    }
+
+                    itemIndex++;
+                }
+
+                profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+                    ViewId.ProfitLossByFiscalPeriods, ViewId.FiscalPeriod, parameters.CompareItems);
+            }
+
+            return profitLoss;
         }
 
         private static void CopyCostCenterValues(int index,
@@ -244,7 +276,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private static void CopyFiscalPeriodValues(int index,
-            ProfitLossItemViewModel source, ProfitLossByBranchesViewModel item)
+            ProfitLossItemViewModel source, ProfitLossByFiscalPeriodsViewModel item)
         {
             string fieldName = String.Format("StartBalanceFiscalPeriod{0}", index + 1);
             Reflector.CopyProperty(source, "StartBalance", item, fieldName);
@@ -457,7 +489,8 @@ namespace SPPC.Tadbir.Persistence
             AccountCollectionId collectionId, ProfitLossParameters parameters)
         {
             var lines = new List<ProfitLossLineViewModel>();
-            DateTime startDate = await GetCurrentFiscalStartDateAsync();
+            int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
+            DateTime startDate = await GetFiscalStartDateAsync(fiscalPeriodId);
             if (startDate != DateTime.MinValue)
             {
                 lines.AddRange(
@@ -471,7 +504,8 @@ namespace SPPC.Tadbir.Persistence
             AccountCollectionId collectionId, DateTime until, ProfitLossParameters parameters)
         {
             var lines = new List<ProfitLossLineViewModel>();
-            DateTime startDate = await GetCurrentFiscalStartDateAsync();
+            int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
+            DateTime startDate = await GetFiscalStartDateAsync(fiscalPeriodId);
             if (startDate != DateTime.MinValue)
             {
                 lines.AddRange(
@@ -490,8 +524,10 @@ namespace SPPC.Tadbir.Persistence
             var linesQuery = repository
                 .GetEntityQuery(line => line.Voucher, line => line.Account)
                 .Where(line => line.Voucher.Date.IsBetween(from, to)
-                    && line.FiscalPeriodId == UserContext.FiscalPeriodId
                     && accountIds.Contains(line.AccountId));
+            int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
+            linesQuery = linesQuery
+                .Where(line => line.FiscalPeriodId == fiscalPeriodId);
             if (parameters.BranchId != null)
             {
                 linesQuery = linesQuery
@@ -559,14 +595,28 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private async Task<DateTime> GetCurrentFiscalStartDateAsync()
+        private async Task<DateTime> GetFiscalStartDateAsync(int fiscalPeriodId)
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             return await repository
                 .GetEntityQuery()
-                .Where(fp => fp.Id == UserContext.FiscalPeriodId)
+                .Where(fp => fp.Id == fiscalPeriodId)
                 .Select(fp => fp.StartDate)
                 .SingleOrDefaultAsync();
+        }
+
+        private async Task<ProfitLossParameters> GetAdjustedParameters(
+            ProfitLossParameters parameters, int fiscalPeriodId)
+        {
+            var adjusted = parameters.GetCopy();
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var fiscalPeriod = await repository.GetByIDAsync(fiscalPeriodId);
+            adjusted.FromDate = new DateTime(
+                fiscalPeriod.StartDate.Year, parameters.FromDate.Month, parameters.FromDate.Day);
+            adjusted.ToDate = new DateTime(
+                fiscalPeriod.StartDate.Year, parameters.ToDate.Month, parameters.ToDate.Day, 11, 59, 59);
+            adjusted.FiscalPeriodId = fiscalPeriodId;
+            return adjusted;
         }
 
         private IEnumerable<int> GetChildTree(int branchId)
