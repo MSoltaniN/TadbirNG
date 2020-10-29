@@ -282,17 +282,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مقدار فیلد FullCode والد هر تفصیلی شناور را برمیگرداند
+        /// به روش آسنکرون، کد کامل تفصیلی شناور با شناسه داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه والد هر تفصیلی شناور</param>
-        /// <returns>اگر تفصیلی شناور والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
-        public async Task<string> GetDetailAccountFullCodeAsync(int parentId)
+        /// <param name="faccountId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
+        /// <returns>اگر تفصیلی شناور با شناسه داده شده وجود نداشته باشد مقدار خالی
+        /// و در غیر این صورت کد کامل را برمی گرداند</returns>
+        public async Task<string> GetDetailAccountFullCodeAsync(int faccountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDAsync(parentId);
+            var detailAccount = await repository.GetByIDAsync(faccountId);
             if (detailAccount == null)
             {
-                return string.Empty;
+                return String.Empty;
             }
 
             return detailAccount.FullCode;

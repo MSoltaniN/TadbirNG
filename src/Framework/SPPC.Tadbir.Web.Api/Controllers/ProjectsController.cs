@@ -86,7 +86,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpGet]
         [Route(ProjectApi.NewChildProjectUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create)]
-        public async Task<IActionResult> NewProjectAsync(int projectId)
+        public async Task<IActionResult> GetNewProjectAsync(int projectId)
         {
             var newProject = await _repository.GetNewChildProjectAsync(
                 projectId > 0 ? projectId : (int?)null);
@@ -100,6 +100,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Project));
             }
 
+            if (projectId > 0 && await _repository.IsUsedProjectAsync(projectId))
+            {
+                var parent = await _repository.GetProjectAsync(projectId);
+                var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
+                return BadRequest(
+                    _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.Project, parentInfo));
+            }
+
             return Json(newProject);
         }
 
@@ -111,7 +119,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpGet]
         [Route(ProjectApi.RootProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
-        public async Task<IActionResult> GetRootAccountsAsync()
+        public async Task<IActionResult> GetRootProjectsAsync()
         {
             var projects = await _repository.GetRootProjectsAsync();
             return Json(projects);
@@ -135,21 +143,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، کد کامل پروژه مشخص شده با شناسه را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه دیتابیسی پروژه مورد نظر</param>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر</param>
         /// <returns>کد کامل پروژه</returns>
-        // GET: api/projects/{parentId:int}/fullcode
+        // GET: api/projects/{projectId:int}/fullcode
         [HttpGet]
         [HttpGet]
         [Route(ProjectApi.ProjectFullCodeUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create | (int)ProjectPermissions.Edit)]
-        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        public async Task<IActionResult> GetFullCodeAsync(int projectId)
         {
-            if (parentId <= 0)
+            if (projectId <= 0)
             {
                 return Ok(String.Empty);
             }
 
-            string fullCode = await _repository.GetProjectFullCodeAsync(parentId);
+            string fullCode = await _repository.GetProjectFullCodeAsync(projectId);
             return Ok(fullCode);
         }
 
@@ -291,6 +299,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (await _repository.IsDuplicateNameAsync(project))
             {
                 return BadRequest(_strings.Format(AppStrings.DuplicateNameValue, AppStrings.Project, project.Name));
+            }
+
+            if (project.ParentId.HasValue && await _repository.IsUsedProjectAsync(project.ParentId.Value))
+            {
+                var parent = await _repository.GetProjectAsync(project.ParentId.Value);
+                var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
+                return BadRequest(
+                    _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.Project, parentInfo));
             }
 
             result = BranchValidationResult(project);

@@ -874,10 +874,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var outputLine = await _lineRepository.SaveArticleAsync(article);
-            result = (outputLine != null)
-                ? Ok(outputLine)
-                : NotFound() as IActionResult;
-            return result;
+            return JsonReadResult(outputLine);
         }
 
         /// <summary>

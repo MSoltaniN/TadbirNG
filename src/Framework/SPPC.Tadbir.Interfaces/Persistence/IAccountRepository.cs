@@ -101,12 +101,12 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsAssociationChildAccountAsync(AccountViewModel account);
 
         /// <summary>
-        /// به روش آسنکرون، با توجه به مجموعه حساب پدر حساب، مشخص میکند که حساب قابلیت اضافه شدن دارد یا نه
+        /// به روش آسنکرون، مشخص میکند که حساب با شناسه داده شده می تواند زیرمجموعه داشته باشد یا نه
         /// </summary>
-        /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>
-        /// <returns>اگر حساب شرایط اضافه شدن با توجه به مجموعه حساب والد را داشته باشد مقدار"درست"
-        /// و در غیر این صورت مقدار "نادرست" را برمیگرداند</returns>
-        Task<bool> IsAccountCollectionValidAsync(AccountViewModel accountViewModel);
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <returns>اگر حساب مورد نظر امکان داشتن زیرمجموعه را داشته باشد مقدار"درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمیگرداند</returns>
+        Task<bool> CanHaveChildrenAsync(int accountId);
 
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده توسط رکوردهای اطلاعاتی دیگر
@@ -143,11 +143,12 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsUsedInAccountCollectionAsync(int accountId);
 
         /// <summary>
-        /// به روش آسنکرون، کد کامل حساب والد داده شده را برمی گرداند
+        /// به روش آسنکرون، کد کامل حساب با شناسه داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه حساب والد مورد نظر</param>
-        /// <returns>اگر حساب والد وجود نداشته باشد مقدار خالی و در غیر این صورت کد کامل والد را برمی گرداند</returns>
-        Task<string> GetAccountFullCodeAsync(int parentId);
+        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
+        /// <returns>اگر حساب با شناسه داده شده وجود نداشته باشد مقدار خالی
+        /// و در غیر این صورت کد کامل را برمی گرداند</returns>
+        Task<string> GetAccountFullCodeAsync(int accountId);
 
         /// <summary>
         /// به روش آسنکرون، تعداد کل حساب های ثبت شده را برمی گرداند

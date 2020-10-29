@@ -116,6 +116,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Account));
             }
 
+            if (accountId > 0 && await _repository.IsUsedAccountAsync(accountId))
+            {
+                var parent = await _repository.GetAccountAsync(accountId);
+                var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
+                return BadRequest(
+                    _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.Account, parentInfo));
+            }
+
             return Json(newAccountFull);
         }
 
@@ -166,20 +174,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، کد کامل سرفصل حسابداری مشخص شده با شناسه را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه دیتابیسی سرفصل حسابداری مورد نظر</param>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر</param>
         /// <returns>کد کامل سرفصل حسابداری</returns>
-        // GET: api/accounts/{parentId:int}/fullcode
+        // GET: api/accounts/{accountId:int}/fullcode
         [HttpGet]
         [Route(AccountApi.AccountFullCodeUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create | (int)AccountPermissions.Edit)]
-        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        public async Task<IActionResult> GetFullCodeAsync(int accountId)
         {
-            if (parentId <= 0)
+            if (accountId <= 0)
             {
                 return Ok(String.Empty);
             }
 
-            string fullCode = await _repository.GetAccountFullCodeAsync(parentId);
+            string fullCode = await _repository.GetAccountFullCodeAsync(accountId);
             return Ok(fullCode);
         }
 
@@ -351,7 +359,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DuplicateNameValue, AppStrings.Account, account.Name));
             }
 
-            if (account.ParentId != null && await _repository.IsAccountCollectionValidAsync(account))
+            if (account.ParentId.HasValue && await _repository.IsUsedAccountAsync(account.ParentId.Value))
+            {
+                var parent = await _repository.GetAccountAsync(account.ParentId.Value);
+                var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
+                return BadRequest(
+                    _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.Account, parentInfo));
+            }
+
+            if (account.ParentId.HasValue && !await _repository.CanHaveChildrenAsync(account.ParentId.Value))
             {
                 return BadRequest(_strings.Format(AppStrings.CantInsertLeafAccount));
             }

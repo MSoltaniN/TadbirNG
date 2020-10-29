@@ -3351,4 +3351,7 @@
   <data name="VoucherLineDetail" xml:space="preserve">
     <value>Voucher line detail</value>
   </data>
+  <data name="CantCreateChildForUsedParent" xml:space="preserve">
+    <value>The {0} '{1}' cannot have children because it is being used in voucher lines of an exisitng branch and/or fiscal period.</value>
+  </data>
 </root>

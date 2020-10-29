@@ -269,15 +269,15 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کد کامل مرکز هزینه والد داده شده را برمی گرداند
+        /// به روش آسنکرون، کد کامل مرکز هزینه با شناسه داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه مرکز هزینه والد مورد نظر</param>
-        /// <returns>اگر مرکز هزینه والد وجود نداشته باشد مقدار خالی و در غیر این صورت کد کامل والد را برمی گرداند
-        /// </returns>
-        public async Task<string> GetCostCenterFullCodeAsync(int parentId)
+        /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
+        /// <returns>اگر مرکز هزینه با شناسه داده شده وجود نداشته باشد مقدار خالی
+        /// و در غیر این صورت کد کامل را برمی گرداند</returns>
+        public async Task<string> GetCostCenterFullCodeAsync(int costCenterId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(parentId);
+            var costCenter = await repository.GetByIDAsync(costCenterId);
             if (costCenter == null)
             {
                 return String.Empty;

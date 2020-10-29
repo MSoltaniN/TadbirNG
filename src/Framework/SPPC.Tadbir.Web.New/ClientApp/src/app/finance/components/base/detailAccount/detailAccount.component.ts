@@ -44,8 +44,8 @@ export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAcco
     public cdref: ChangeDetectorRef, public ngZone: NgZone) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.DetailAccount,
       "DetailAccount.LedgerDetailAccount", "DetailAccount.EditorTitleNew", "DetailAccount.EditorTitleEdit",
-      DetailAccountApi.EnvironmentDetailAccounts, DetailAccountApi.EnvironmentDetailAccountsLedger, DetailAccountApi.DetailAccount, DetailAccountApi.DetailAccountChildren,
-      DetailAccountApi.EnvironmentNewChildDetailAccount, cdref, ngZone)
+      DetailAccountApi.EnvironmentDetailAccounts, DetailAccountApi.RootDetailAccounts, DetailAccountApi.DetailAccount, DetailAccountApi.DetailAccountChildren,
+      DetailAccountApi.NewChildDetailAccount, cdref, ngZone)
   }
 
 

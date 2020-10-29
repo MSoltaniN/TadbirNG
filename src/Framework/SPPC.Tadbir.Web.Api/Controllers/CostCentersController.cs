@@ -100,6 +100,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.CostCenter));
             }
 
+            if (ccenterId > 0 && await _repository.IsUsedCostCenterAsync(ccenterId))
+            {
+                var parent = await _repository.GetCostCenterAsync(ccenterId);
+                var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
+                return BadRequest(
+                    _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.CostCenter, parentInfo));
+            }
+
             return Json(newCenter);
         }
 
@@ -135,20 +143,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، کد کامل مرکز هزینه مشخص شده با شناسه را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر</param>
         /// <returns>کد کامل مرکز هزینه</returns>
-        // GET: api/ccenters/{parentId:int}/fullcode
+        // GET: api/ccenters/{ccenterId:int}/fullcode
         [HttpGet]
         [Route(CostCenterApi.CostCenterFullCodeUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create | (int)CostCenterPermissions.Edit)]
-        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        public async Task<IActionResult> GetFullCodeAsync(int ccenterId)
         {
-            if (parentId <= 0)
+            if (ccenterId <= 0)
             {
                 return Ok(String.Empty);
             }
 
-            string fullCode = await _repository.GetCostCenterFullCodeAsync(parentId);
+            string fullCode = await _repository.GetCostCenterFullCodeAsync(ccenterId);
             return Ok(fullCode);
         }
 
@@ -291,6 +299,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return BadRequest(_strings.Format(
                     AppStrings.DuplicateNameValue, AppStrings.CostCenter, costCenter.Name));
+            }
+
+            if (costCenter.ParentId.HasValue
+                && await _repository.IsUsedCostCenterAsync(costCenter.ParentId.Value))
+            {
+                var parent = await _repository.GetCostCenterAsync(costCenter.ParentId.Value);
+                var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
+                return BadRequest(
+                    _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.CostCenter, parentInfo));
             }
 
             result = BranchValidationResult(costCenter);

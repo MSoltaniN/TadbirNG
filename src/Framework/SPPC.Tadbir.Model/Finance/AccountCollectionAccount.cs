@@ -7,7 +7,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی سرفصل حسابداری در این ارتباط
         /// </summary>
-        public int AccountId { get; set; }
+        public virtual int AccountId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مجموعه حساب در این ارتباط

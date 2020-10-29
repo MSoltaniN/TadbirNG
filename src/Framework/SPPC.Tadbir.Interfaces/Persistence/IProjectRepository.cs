@@ -108,11 +108,11 @@ namespace SPPC.Tadbir.Persistence
         Task<bool?> HasChildrenAsync(int projectId);
 
         /// <summary>
-        /// به روش آسنکرون، کد کامل پروژه والد داده شده را برمی گرداند
+        /// به روش آسنکرون، کد کامل پروژه با شناسه داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه پروژه والد مورد نظر</param>
-        /// <returns>اگر پروژه والد وجود نداشته باشد مقدار خالی و در غیر این صورت کد کامل والد را برمی گرداند
-        /// </returns>
-        Task<string> GetProjectFullCodeAsync(int parentId);
+        /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
+        /// <returns>اگر پروژه با شناسه داده شده وجود نداشته باشد مقدار خالی
+        /// و در غیر این صورت کد کامل را برمی گرداند</returns>
+        Task<string> GetProjectFullCodeAsync(int projectId);
     }
 }

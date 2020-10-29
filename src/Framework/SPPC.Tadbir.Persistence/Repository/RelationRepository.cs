@@ -1515,7 +1515,7 @@ namespace SPPC.Tadbir.Persistence
             string errorKey = String.Empty;
             var detailAccount = await Repository
                 .GetAllQuery<DetailAccount>(
-                    ViewId.DetailAccount, facc => facc.Children, facc => facc.AccountDetailAccounts)
+                    ViewId.DetailAccount, facc => facc.Children)
                 .Where(facc => facc.Id == detailId)
                 .SingleOrDefaultAsync();
             if (detailAccount == null)
@@ -1534,7 +1534,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string errorKey = String.Empty;
             var costCenter = await Repository
-                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children, cc => cc.AccountCostCenters)
+                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children)
                 .Where(cc => cc.Id == costCenterId)
                 .SingleOrDefaultAsync();
             if (costCenter == null)
@@ -1553,7 +1553,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string errorKey = String.Empty;
             var project = await Repository
-                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children, prj => prj.AccountProjects)
+                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
                 .Where(prj => prj.Id == projectId)
                 .SingleOrDefaultAsync();
             if (project == null)

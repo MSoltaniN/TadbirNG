@@ -34,14 +34,14 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentDetailAccountsLookupUrl = "faccounts/lookup";
 
         /// <summary>
-        /// API client URL for detail accounts ledger defined in current environment
+        /// API client URL for root detail accounts defined in current environment
         /// </summary>
-        public const string EnvironmentDetailAccountsLedger = "faccounts/ledger";
+        public const string RootDetailAccounts = "faccounts/root";
 
         /// <summary>
-        /// API server route URL for detail accounts ledger defined in current environment
+        /// API server route URL for root detail accounts defined in current environment
         /// </summary>
-        public const string EnvironmentDetailAccountsLedgerUrl = "faccounts/ledger";
+        public const string RootDetailAccountsUrl = "faccounts/root";
 
         /// <summary>
         /// API client URL for a detail account item specified by unique identifier
@@ -66,21 +66,21 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for a new child for a parent detail account specified by unique identifier
         /// </summary>
-        public const string EnvironmentNewChildDetailAccount = "faccounts/{0}/children/new";
+        public const string NewChildDetailAccount = "faccounts/{0}/children/new";
 
         /// <summary>
         /// API server route URL for a new child for a parent detail account specified by unique identifier
         /// </summary>
-        public const string EnvironmentNewChildDetailAccountUrl = "faccounts/{faccountId:int}/children/new";
+        public const string NewChildDetailAccountUrl = "faccounts/{faccountId:int}/children/new";
 
         /// <summary>
         /// API client URL for detail account full code
         /// </summary>
-        public const string DetailAccountFullCode = "faccounts/fullcode/{0}";
+        public const string DetailAccountFullCode = "faccounts/{0}/fullcode";
 
         /// <summary>
         /// API server route URL for detail account full code
         /// </summary>
-        public const string DetailAccountFullCodeUrl = "faccounts/fullcode/{parentId}";
+        public const string DetailAccountFullCodeUrl = "faccounts/{faccountId:int}/fullcode";
     }
 }

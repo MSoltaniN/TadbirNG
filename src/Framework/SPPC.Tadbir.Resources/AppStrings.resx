@@ -3342,4 +3342,7 @@
   <data name="VoucherLineDetail" xml:space="preserve">
     <value>جزئیات آرتیکل مالی</value>
   </data>
+  <data name="CantCreateChildForUsedParent" xml:space="preserve">
+    <value>{0} '{1}' در آرتیکل های مالی یکی از شعبه ها یا دوره های مالی استفاده شده و نمی توان برای آن زیرمجموعه تعریف کرد.</value>
+  </data>
 </root>

@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for account full code
         /// </summary>
-        public const string AccountFullCodeUrl = "accounts/{parentId:int}/fullcode";
+        public const string AccountFullCodeUrl = "accounts/{accountId:int}/fullcode";
 
         /// <summary>
         /// API client URL for accounts count

@@ -335,30 +335,29 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، با توجه به مجموعه حساب پدر حساب، مشخص میکند که حساب قابلیت اضافه شدن دارد یا نه
+        /// به روش آسنکرون، مشخص میکند که حساب با شناسه داده شده می تواند زیرمجموعه داشته باشد یا نه
         /// </summary>
-        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
-        /// <returns>اگر حساب شرایط اضافه شدن با توجه به مجموعه حساب والد را داشته باشد مقدار"درست"
-        /// و در غیر این صورت مقدار "نادرست" را برمیگرداند</returns>
-        public async Task<bool> IsAccountCollectionValidAsync(AccountViewModel account)
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <returns>اگر حساب مورد نظر امکان داشتن زیرمجموعه را داشته باشد مقدار"درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمیگرداند</returns>
+        public async Task<bool> CanHaveChildrenAsync(int accountId)
         {
-            Verify.ArgumentNotNull(account, nameof(account));
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             var collectionAccounts = await repository
-                .GetByCriteriaAsync(acc => acc.AccountId == account.ParentId, ac => ac.Collection);
+                .GetByCriteriaAsync(aca => aca.AccountId == accountId, aca => aca.Collection);
 
             if (collectionAccounts.Count() == 0)
             {
-                return false;
+                return true;
             }
             else
             {
                 var collections = collectionAccounts
-                    .Select(ac => ac.Collection)
+                    .Select(aca => aca.Collection)
                     .Distinct();
                 return collections
-                    .Where(f => f.TypeLevel == (int)TypeLevel.LeafAccounts)
-                    .Count() > 0;
+                    .Where(coll => coll.TypeLevel == (int)TypeLevel.LeafAccounts)
+                    .Count() == 0;
             }
         }
 
@@ -373,7 +372,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var articleCount = await repository
-                .GetCountByCriteriaAsync(art => art.Account.Id == accountId);
+                .GetCountByCriteriaAsync(art => art.AccountId == accountId);
             return (articleCount > 0);
         }
 
@@ -422,28 +421,29 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مشخص میکند که آیا حساب انتخاب شده در مجموعه حسابی وجود دارد یا نه
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <returns>در حالتی که حساب مشخص شده در کجکوعه حسابی باشد مقدار "درست" و در غیر این صورت
+        /// <returns>در حالتی که حساب مشخص شده در مجموعه حسابی باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsUsedInAccountCollectionAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             var accountCount = await repository
-                .GetCountByCriteriaAsync(ac => ac.Account.Id == accountId);
+                .GetCountByCriteriaAsync(aca => aca.AccountId == accountId);
             return (accountCount > 0);
         }
 
         /// <summary>
-        /// به روش آسنکرون، کد کامل حساب والد داده شده را برمی گرداند
+        /// به روش آسنکرون، کد کامل حساب با شناسه داده شده را برمی گرداند
         /// </summary>
-        /// <param name="parentId">شناسه حساب والد مورد نظر</param>
-        /// <returns>اگر حساب والد وجود نداشته باشد مقدار خالی و در غیر این صورت کد کامل والد را برمی گرداند</returns>
-        public async Task<string> GetAccountFullCodeAsync(int parentId)
+        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
+        /// <returns>اگر حساب با شناسه داده شده وجود نداشته باشد مقدار خالی
+        /// و در غیر این صورت کد کامل را برمی گرداند</returns>
+        public async Task<string> GetAccountFullCodeAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(parentId);
+            var account = await repository.GetByIDAsync(accountId);
             if (account == null)
             {
-                return string.Empty;
+                return String.Empty;
             }
 
             return account.FullCode;
