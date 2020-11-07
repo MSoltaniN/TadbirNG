@@ -113,8 +113,7 @@
                               [valueField]="'key'"
                               [valuePrimitive]="true"
                               [value]="branchScopeSelected"
-                              [(ngModel)]="branchScopeSelected"
-                              (ngModelChange)="changeParam()">
+                              [(ngModel)]="branchScopeSelected">
             <ng-template kendoDropDownListValueTemplate let-dataItem>
               {{ dataItem?.value | translate }}
             </ng-template>
@@ -165,8 +164,7 @@
                               [valueField]="'key'"
                               [valuePrimitive]="true"
                               [value]="voucherStatusSelected"
-                              [(ngModel)]="voucherStatusSelected"
-                              (ngModelChange)="onChangeVoucherStatus()">
+                              [(ngModel)]="voucherStatusSelected" >
             <ng-template kendoDropDownListValueTemplate let-dataItem>
               {{ dataItem?.value | translate }}
             </ng-template>
@@ -193,8 +191,7 @@
                                 [valueField]="'key'"
                                 [valuePrimitive]="true"
                                 [value]="comparativeItemSelected"
-                                [(ngModel)]="comparativeItemSelected"
-                                (ngModelChange)="changeType()">
+                                [(ngModel)]="comparativeItemSelected" >
               <ng-template kendoDropDownListValueTemplate let-dataItem>
                 {{ dataItem?.value | translate }}
               </ng-template>
@@ -210,8 +207,7 @@
 
           <kendo-switch [onLabel]="('AccountBook.OnLabel' | translate)"
                         [offLabel]="('AccountBook.OffLabel' | translate)"
-                        [(ngModel)]="closing"
-                        (ngModelChange)="changeBranchSeparation()">
+                        [(ngModel)]="closing">
           </kendo-switch>
         </div>
 
