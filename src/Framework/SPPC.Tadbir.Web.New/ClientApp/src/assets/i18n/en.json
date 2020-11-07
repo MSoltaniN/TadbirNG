@@ -374,6 +374,14 @@
     "Balance": "Balance",
     "BranchName": "Branch Name"
   },
+  "ProfitLoss": {
+    "CostCenter": "مرکز هزینه",
+    "Branch": "شعبه",
+    "Project": "پروژه",
+    "VoucherStatus": "وضعیت اسناد",
+    "FilterByRef": "رفرنس برابر با",
+    "Comparative": "مقایسه ای"
+  },
   "AccountBookSummary": {
     "RowNo": "Row No",
     "VoucherDate": "Voucher Date",
@@ -1040,6 +1048,9 @@
     "RolesTitle": "Fiscal Period Roles List",
     "CreateFiscalPeriod": "Create Fiscal Period",
     "ChangeFiscalPeriod": "Change Fiscal Period"
+  },
+  "ProfitLoss": {
+    "Branch": "Branch"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period",
