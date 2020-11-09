@@ -471,7 +471,8 @@ namespace SPPC.Tadbir.Persistence
                 line => line.CostCenter,
                 line => line.Project,
                 line => line.Currency)
-                .Where(line => line.Voucher.Date.Date >= from.Date && line.Voucher.Date.Date <= to.Date);
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to));
             return lines;
         }
 

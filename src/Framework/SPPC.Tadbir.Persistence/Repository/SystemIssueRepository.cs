@@ -56,9 +56,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         private async Task<IList<SystemIssue>> FilterInaccessibleIssues()
         {
             var repository = UnitOfWork.GetAsyncRepository<SystemIssue>();
-
             var userPermissions = await GetUserPermissionIdsAsync();
-
             bool isAdmin = UserContext.Roles.Contains(AppConstants.AdminRoleId);
 
             if (isAdmin)

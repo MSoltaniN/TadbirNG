@@ -79,7 +79,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public bool IsBalanced { get; set; }
 
         /// <summary>
-        /// نوع سیستمی سند، مانند سند عادی، افتتاحیه، اختتامیه و ...
+        /// نوع سیستمی سند، مانند سند عادی
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public short Type { get; set; }

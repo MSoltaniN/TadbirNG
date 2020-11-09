@@ -222,16 +222,16 @@ namespace SPPC.Tadbir.Persistence
                 itemCriteria.Add(line => line.Account.FullCode.StartsWith(account.FullCode));
             }
 
-            if (bookParam.FAccountId != null)
+            if (bookParam.DetailAccountId != null)
             {
-                var detailAccount = GetAccountItem<DetailAccount>(bookParam.FAccountId.Value);
+                var detailAccount = GetAccountItem<DetailAccount>(bookParam.DetailAccountId.Value);
                 Verify.ArgumentNotNull(detailAccount, nameof(detailAccount));
                 itemCriteria.Add(line => line.Account.FullCode.StartsWith(detailAccount.FullCode));
             }
 
-            if (bookParam.CCenterId != null)
+            if (bookParam.CostCenterId != null)
             {
-                var costCenter = GetAccountItem<CostCenter>(bookParam.CCenterId.Value);
+                var costCenter = GetAccountItem<CostCenter>(bookParam.CostCenterId.Value);
                 Verify.ArgumentNotNull(costCenter, nameof(costCenter));
                 itemCriteria.Add(line => line.Account.FullCode.StartsWith(costCenter.FullCode));
             }
@@ -243,7 +243,7 @@ namespace SPPC.Tadbir.Persistence
                 itemCriteria.Add(line => line.Account.FullCode.StartsWith(project.FullCode));
             }
 
-            if (!bookParam.CurrFree && byCurrency)
+            if (!bookParam.CurrencyFree && byCurrency)
             {
                 itemCriteria.Add(line => line.CurrencyId != null);
             }
@@ -384,7 +384,8 @@ namespace SPPC.Tadbir.Persistence
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(
                     ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch, line => line.Currency)
-                .Where(line => line.Voucher.Date.IsBetween(from, to));
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to));
 
             foreach (var item in itemCriteria)
             {

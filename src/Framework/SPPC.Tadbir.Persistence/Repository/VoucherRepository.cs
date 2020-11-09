@@ -526,7 +526,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var vouchers = Repository.GetAllOperationQuery<Voucher>(
                 ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
-                .Where(voucher => voucher.Lines.Count == 0 && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
+                .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
+                    && voucher.Lines.Count == 0
+                    && voucher.Date.IsBetween(from, to))
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
             return await GetListAndCountAsync(gridOptions, vouchers);
@@ -544,7 +546,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var vouchers = Repository.GetAllOperationQuery<Voucher>(
                 ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
-                .Where(voucher => !voucher.IsBalanced && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
+                .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
+                    && !voucher.IsBalanced
+                    && voucher.Date.IsBetween(from, to))
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
             return await GetListAndCountAsync(gridOptions, vouchers);
@@ -562,7 +566,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var missNumberList = new List<NumberListViewModel>();
             var vouchers = await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(voucher => voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
+                .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
+                    && voucher.Date.IsBetween(from, to))
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
                 .Apply(gridOptions, false)
                 .ToListAsync();

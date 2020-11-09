@@ -523,7 +523,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var linesQuery = repository
                 .GetEntityQuery(line => line.Voucher, line => line.Account)
-                .Where(line => line.Voucher.Date.IsBetween(from, to)
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to)
                     && accountIds.Contains(line.AccountId));
             int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
             linesQuery = linesQuery

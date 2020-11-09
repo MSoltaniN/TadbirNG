@@ -710,6 +710,10 @@ INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (2, N'Checked')
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (3, N'Finalized')
 SET IDENTITY_INSERT [Core].[DocumentStatus] OFF
 
+SET IDENTITY_INSERT [Core].[DocumentType] ON
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (1, N'Voucher')
+SET IDENTITY_INSERT [Core].[DocumentType] OFF
+
 SET IDENTITY_INSERT [Config].[Setting] ON
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (1, 'AccountRelationsSettings', 2, 1, 'RelationsConfig', N'{"useLeafDetails": true, "useLeafCostCenters": true,"useLeafProjects": true}', N'{"useLeafDetails": true, "useLeafCostCenters": true,"useLeafProjects": true}', 'AccountRelationsSettingsDescription', 1)
@@ -1327,4 +1331,4 @@ GO
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.1.918')
+VALUES(1, '1.1.1010')
