@@ -138,6 +138,14 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsDuplicateVoucherDailyNoAsync(VoucherViewModel voucher);
 
         /// <summary>
+        /// مشخص می کند که سند حسابداری داده شده قابل تبدیل به سند پیش نویس هست یا نه؟
+        /// </summary>
+        /// <param name="voucher">اطلاعات نمایشی سند حسابداری مورد نظر</param>
+        /// <returns>اگر سند داده شده قابل تبدیل به سند پیش نویس باشد مقدار بولی درست و در غیر این صورت
+        /// مقدار بولی نادرست را برمی گرداند</returns>
+        bool CanSaveAsDraftVoucher(VoucherViewModel voucher);
+
+        /// <summary>
         /// وضعیت ثبتی سند مالی را به وضعیت داده شده تغییر می دهد
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>

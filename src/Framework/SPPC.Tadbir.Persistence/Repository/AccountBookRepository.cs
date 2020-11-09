@@ -355,7 +355,8 @@ namespace SPPC.Tadbir.Persistence
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(
                     ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
-                .Where(line => line.Voucher.Date.IsBetween(from, to))
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to))
                 .Where(itemCriteria)
                 .OrderBy(line => line.Voucher.Date)
                 .ThenBy(line => line.Voucher.No)

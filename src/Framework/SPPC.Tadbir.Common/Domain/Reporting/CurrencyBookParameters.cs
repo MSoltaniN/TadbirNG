@@ -36,12 +36,12 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// شناسه دیتابیسی تفصیلی شناور انتخاب شده برای گزارش گیری
         /// </summary>
-        public int? FAccountId { get; set; }
+        public int? DetailAccountId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مرکز هزینه انتخاب شده برای گزارش گیری
         /// </summary>
-        public int? CCenterId { get; set; }
+        public int? CostCenterId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی پروژه انتخاب شده برای گزارش گیری
@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// در حالت کلیه ارزها سطرهای بدون ارز هم آورده شود یا خیر؟
         /// </summary>
-        public bool CurrFree { get; set; } = false;
+        public bool CurrencyFree { get; set; } = false;
 
         /// <summary>
         /// گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات

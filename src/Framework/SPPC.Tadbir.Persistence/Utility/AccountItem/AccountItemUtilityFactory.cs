@@ -12,10 +12,12 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
-        public AccountItemUtilityFactory(IRepositoryContext context, IConfigRepository config)
+        /// <param name="repository">امکان اعمال فیلترهای سطری و شعبه روی اطلاعات را فراهم می کند</param>
+        public AccountItemUtilityFactory(IRepositoryContext context, IConfigRepository config, ISecureRepository repository)
         {
             _context = context;
             _config = config;
+            _repository = repository;
         }
 
         /// <summary>
@@ -29,17 +31,17 @@ namespace SPPC.Tadbir.Persistence.Utility
             switch (viewId)
             {
                 case ViewId.DetailAccount:
-                    utility = new DetailAccountUtility(_context, _config);
+                    utility = new DetailAccountUtility(_context, _config, _repository);
                     break;
                 case ViewId.CostCenter:
-                    utility = new CostCenterUtility(_context, _config);
+                    utility = new CostCenterUtility(_context, _config, _repository);
                     break;
                 case ViewId.Project:
-                    utility = new ProjectUtility(_context, _config);
+                    utility = new ProjectUtility(_context, _config, _repository);
                     break;
                 case ViewId.Account:
                 default:
-                    utility = new AccountUtility(_context, _config);
+                    utility = new AccountUtility(_context, _config, _repository);
                     break;
             }
 
@@ -48,5 +50,6 @@ namespace SPPC.Tadbir.Persistence.Utility
 
         private readonly IRepositoryContext _context;
         private readonly IConfigRepository _config;
+        private readonly ISecureRepository _repository;
     }
 }

@@ -3345,4 +3345,10 @@
   <data name="CantCreateChildForUsedParent" xml:space="preserve">
     <value>{0} '{1}' در آرتیکل های مالی یکی از شعبه ها یا دوره های مالی استفاده شده و نمی توان برای آن زیرمجموعه تعریف کرد.</value>
   </data>
+  <data name="CantSaveAsDraftVoucher" xml:space="preserve">
+    <value>این سند ثبت قطعی یا تأیید شده و قابل تبدیل به سند پیش نویس نیست.</value>
+  </data>
+  <data name="InvalidDraftVoucherAction" xml:space="preserve">
+    <value>عمل {0} روی سند پیش نویس امکان پذیر نیست.</value>
+  </data>
 </root>

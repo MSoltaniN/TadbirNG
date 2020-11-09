@@ -160,7 +160,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
         }
 
-        #region report by Account
+        #region Report by Account
 
         private async Task<BalanceByAccountViewModel> ReportByAccountAsync(BalanceByAccountParameters parameters)
         {
@@ -244,7 +244,7 @@ namespace SPPC.Tadbir.Persistence.Repository
 
         #endregion
 
-        #region report by DetailAccount
+        #region Report by DetailAccount
 
         private async Task<BalanceByAccountViewModel> ReportByDetailAccountAsync(BalanceByAccountParameters parameters)
         {
@@ -329,7 +329,7 @@ namespace SPPC.Tadbir.Persistence.Repository
 
         #endregion
 
-        #region report by CostCenter
+        #region Report by CostCenter
 
         private async Task<BalanceByAccountViewModel> ReportByCostCenterAsync(BalanceByAccountParameters parameters)
         {
@@ -414,7 +414,7 @@ namespace SPPC.Tadbir.Persistence.Repository
 
         #endregion
 
-        #region report by Project
+        #region Report by Project
 
         private async Task<BalanceByAccountViewModel> ReportByProjectAsync(BalanceByAccountParameters parameters)
         {
@@ -502,9 +502,8 @@ namespace SPPC.Tadbir.Persistence.Repository
         private async Task<IList<BalanceByAccountItemViewModel>> GetVoucherLinesAsync(BalanceByAccountParameters parameters)
         {
             var query = Repository
-                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
-                line => line.Voucher,
-                line => line.Branch);
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine, line => line.Voucher, line => line.Branch)
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft);
 
             query = IncludeLineReference(query, parameters);
 
@@ -1031,10 +1030,10 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             var balanceItem = lines.First();
 
-            await GetAccountFromVoucherLineAsync(balanceItem, fullCode, parameters);
-            await GetDetailAccountFromVoucherLineAsync(balanceItem, fullCode, parameters);
-            await GetCostCenterFromVoucherLineAsync(balanceItem, fullCode, parameters);
-            await GetProjectFromVoucherLineAsync(balanceItem, fullCode, parameters);
+            await SetItemAccountAsync(balanceItem, fullCode, parameters);
+            await SetItemDetailAccountAsync(balanceItem, fullCode, parameters);
+            await SetItemCostCenterAsync(balanceItem, fullCode, parameters);
+            await SetItemProjectAsync(balanceItem, fullCode, parameters);
 
             balanceItem.StartBalance = await GetInitialBalanceAsync(balanceItem.AccountId, parameters);
             balanceItem.Debit = lines.Sum(line => line.Debit);
@@ -1123,7 +1122,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             return await repository.GetByIDAsync(projectId);
         }
 
-        private async Task GetAccountFromVoucherLineAsync(
+        private async Task SetItemAccountAsync(
             BalanceByAccountItemViewModel line,
             string fullCode,
             BalanceByAccountParameters parameters)
@@ -1159,7 +1158,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
         }
 
-        private async Task GetDetailAccountFromVoucherLineAsync(
+        private async Task SetItemDetailAccountAsync(
             BalanceByAccountItemViewModel line,
             string fullCode,
             BalanceByAccountParameters parameters)
@@ -1195,7 +1194,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
         }
 
-        private async Task GetCostCenterFromVoucherLineAsync(
+        private async Task SetItemCostCenterAsync(
             BalanceByAccountItemViewModel line,
             string fullCode,
             BalanceByAccountParameters parameters)
@@ -1231,7 +1230,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
         }
 
-        private async Task GetProjectFromVoucherLineAsync(
+        private async Task SetItemProjectAsync(
             BalanceByAccountItemViewModel line,
             string fullCode,
             BalanceByAccountParameters parameters)
@@ -1287,7 +1286,8 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             return await Repository
                 .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
-                .Where(line => line.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Where(lineCriteria)
                 .Where(itemCriteria)
                 .Select(line => line.Debit - line.Credit)

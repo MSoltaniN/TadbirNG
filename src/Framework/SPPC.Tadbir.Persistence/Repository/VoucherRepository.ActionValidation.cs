@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
         /// <param name="action">عمل مورد نظر</param>
-        /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت پیغام خطا را برمی گرداند
+        /// <returns>در صورت مجاز بودن عمل، رفرنس بدون مقدار و در غیر این صورت پیغام خطا را برمی گرداند
         /// </returns>
         public async Task<GroupActionResultViewModel> ValidateVoucherActionAsync(int voucherId, string action)
         {
@@ -129,7 +129,12 @@ namespace SPPC.Tadbir.Persistence
         private string ValidateConfirm(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
+            if (voucher.SubjectType == (short)SubjectType.Draft)
+            {
+                var template = Context.Localize(AppStrings.InvalidDraftVoucherAction);
+                error = Context.Localize(String.Format(template, AppStrings.Confirm));
+            }
+            else if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
                 var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
                 error = Context.Localize(String.Format(template, AppStrings.Confirm));
@@ -211,7 +216,12 @@ namespace SPPC.Tadbir.Persistence
         private string ValidateFinalize(VoucherViewModel voucher)
         {
             string error = String.Empty;
-            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
+            if (voucher.SubjectType == (short)SubjectType.Draft)
+            {
+                var template = Context.Localize(AppStrings.InvalidDraftVoucherAction);
+                error = Context.Localize(String.Format(template, AppStrings.Finalize));
+            }
+            else if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
                 var template = Context.Localize(AppStrings.RepeatedVoucherActionMessage);
                 error = Context.Localize(String.Format(template, AppStrings.Finalize));
@@ -256,7 +266,7 @@ namespace SPPC.Tadbir.Persistence
                 error = Context.Localize(String.Format(template, AppStrings.GroupConfirm, AppStrings.Check));
             }
             else if (String.IsNullOrEmpty(voucher.ConfirmerName)
-                && String.IsNullOrEmpty(voucher.ConfirmerName))
+                && String.IsNullOrEmpty(voucher.ApproverName))
             {
                 error = Context.Localize(AppStrings.CantGroupConfirm);
             }
