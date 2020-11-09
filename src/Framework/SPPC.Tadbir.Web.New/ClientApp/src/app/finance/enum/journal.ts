@@ -142,16 +142,4 @@ export enum ArticleTypesResourceKey {
   UncheckedVoucherLines = '3'
 }
 
-export enum ComparativeResource {
-  Branch = "ProfitLoss.Branch",  
-  FiscalPeriod = "ProfitLoss.FiscalPeriod",  
-  Project = "ProfitLoss.Project",
-  CostCenter = "ProfitLoss.CostCenter"
-}
 
-export enum ComparativeKeys {
-  Branch = "1",
-  FiscalPeriod = "2",
-  Project = "3",
-  CostCenter = "4"
-}

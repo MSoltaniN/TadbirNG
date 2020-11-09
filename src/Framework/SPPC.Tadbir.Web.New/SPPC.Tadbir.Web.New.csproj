@@ -77,6 +77,7 @@
     <None Remove="ClientApp\src\app\finance\components\operational\voucher\closing-tmp.component.ts" />
     <None Remove="ClientApp\src\app\finance\components\reporting\profitLoss\profitLost.component.ts" />
     <None Remove="ClientApp\src\app\finance\enum\balance.ts" />
+    <None Remove="ClientApp\src\app\finance\enum\profitLoss.ts" />
     <None Remove="ClientApp\src\app\finance\models\index.ts" />
     <None Remove="ClientApp\src\app\finance\models\inventoryBalance.ts" />
     <None Remove="ClientApp\src\app\finance\models\ItemBalanceModeInfo.ts" />
@@ -850,6 +851,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\finance\components\operational\voucher\closing-tmp.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\components\reporting\profitLoss\profitLost.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\enum\balance.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\finance\enum\profitLoss.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\inventoryBalance.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\ItemBalanceModeInfo.ts" />

@@ -556,6 +556,23 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، موجودیت تعریف شده را به صورت کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns> موجودیت پایه تعریف شده</returns>
+        public async Task<IList<ViewSummaryViewModel>> GetEntityViewAsync(int viewId)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<View>();
+            var views = await repository
+                .GetByCriteriaAsync(view => view.Id == viewId);
+            var lookup = views
+                .Select(view => Mapper.Map<ViewSummaryViewModel>(view))
+                .ToList();
+            UnitOfWork.UseCompanyContext();
+            return lookup;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، موجودیت های تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های تعریف شده</returns>

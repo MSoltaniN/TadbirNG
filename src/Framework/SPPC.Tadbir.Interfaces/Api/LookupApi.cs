@@ -63,6 +63,11 @@ namespace SPPC.Tadbir.Api
         public const string BaseEntityViewsUrl = "lookup/views/base";
 
         /// <summary>
+        /// API server route URL for lookup a entity views
+        /// </summary>
+        public const string EntityViewUrl = "lookup/view/{viewId}";
+
+        /// <summary>
         /// API client URL for lookup collection of all hierarchy views
         /// </summary>
         public const string TreeViews = "lookup/views/tree";
