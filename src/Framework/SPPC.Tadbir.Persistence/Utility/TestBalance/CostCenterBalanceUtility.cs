@@ -13,8 +13,8 @@ namespace SPPC.Tadbir.Persistence.Utility
     internal class CostCenterBalanceUtility : CostCenterUtility, ITestBalanceUtility
     {
         public CostCenterBalanceUtility(IRepositoryContext context, IConfigRepository config,
-            ITestBalanceHelper helper)
-            : base(context, config)
+            ISecureRepository repository, ITestBalanceHelper helper)
+            : base(context, config, repository)
         {
             _helper = helper;
         }

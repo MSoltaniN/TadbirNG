@@ -1074,6 +1074,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.OutOfFiscalPeriodDate));
             }
 
+            if (voucher.Id > 0 && !_repository.CanSaveAsDraftVoucher(voucher))
+            {
+                return BadRequest(_strings[AppStrings.CantSaveAsDraftVoucher]);
+            }
+
             return Ok();
         }
 

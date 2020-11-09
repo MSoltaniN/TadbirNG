@@ -357,14 +357,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مقدار بولی درست در صورت تکراری بودن شماره، در غیر این صورت مقدار بولی نادرست</returns>
         public async Task<bool> IsDuplicateVoucherNoAsync(VoucherViewModel voucher)
         {
-            Verify.ArgumentNotNull(voucher, "voucher");
+            Verify.ArgumentNotNull(voucher, nameof(voucher));
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var duplicates = await repository
-                .GetByCriteriaAsync(vch => vch.Id != voucher.Id
+            int count = await repository
+                .GetCountByCriteriaAsync(vch => vch.Id != voucher.Id
                     && vch.No == voucher.No
                     && vch.SubjectType == voucher.SubjectType
                     && vch.FiscalPeriod.Id == voucher.FiscalPeriodId);
-            return (duplicates.Count > 0);
+            return count > 0;
         }
 
         /// <summary>
@@ -384,11 +384,31 @@ namespace SPPC.Tadbir.Persistence
                         && voucher.Date.CompareWith(v.Date) == 0
                         && v.DailyNo != 0
                         && v.DailyNo == voucher.DailyNo
+                        && v.SubjectType == voucher.SubjectType
                         && v.FiscalPeriodId == voucher.FiscalPeriodId);
                 isDuplicate = (count > 0);
             }
 
             return isDuplicate;
+        }
+
+        /// <summary>
+        /// مشخص می کند که سند حسابداری داده شده قابل تبدیل به سند پیش نویس هست یا نه؟
+        /// </summary>
+        /// <param name="voucher">اطلاعات نمایشی سند حسابداری مورد نظر</param>
+        /// <returns>اگر سند داده شده از نوی مفهومی پیش نویس باشد یا در یکی از وضعیت های ثبت نشده یا ثبت شده
+        /// باشد مقدار بولی درست و در غیر این صورت مقدار بولی نادرست را برمی گرداند</returns>
+        public bool CanSaveAsDraftVoucher(VoucherViewModel voucher)
+        {
+            Verify.ArgumentNotNull(voucher, nameof(voucher));
+            bool canSave = true;
+            if (voucher.SubjectType == (short)SubjectType.Draft)
+            {
+                canSave = voucher.StatusId != (int)DocumentStatusId.Finalized
+                    && !voucher.IsConfirmed;    // checkng IsApproved is redundant here
+            }
+
+            return canSave;
         }
 
         /// <summary>
@@ -615,7 +635,7 @@ namespace SPPC.Tadbir.Persistence
         {
             voucher.No = voucherView.No;
             voucher.DailyNo = voucherView.DailyNo;
-            voucher.Type = voucherView.Type;
+            voucher.SubjectType = voucherView.SubjectType;
             voucher.Date = voucherView.Date;
             voucher.Reference = voucherView.Reference;
             voucher.Association = voucherView.Association;

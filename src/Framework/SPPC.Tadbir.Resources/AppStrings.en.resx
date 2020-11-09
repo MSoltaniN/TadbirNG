@@ -3354,4 +3354,10 @@
   <data name="CantCreateChildForUsedParent" xml:space="preserve">
     <value>The {0} '{1}' cannot have children because it is being used in voucher lines of an exisitng branch and/or fiscal period.</value>
   </data>
+  <data name="CantSaveAsDraftVoucher" xml:space="preserve">
+    <value>This voucher is either confirmed or finalized and cannot be saved as draft.</value>
+  </data>
+  <data name="InvalidDraftVoucherAction" xml:space="preserve">
+    <value>Action {0} cannot be done on a draft voucher.</value>
+  </data>
 </root>

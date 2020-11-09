@@ -13,8 +13,8 @@ namespace SPPC.Tadbir.Persistence.Utility
     internal class DetailAccountBalanceUtility : DetailAccountUtility, ITestBalanceUtility
     {
         public DetailAccountBalanceUtility(IRepositoryContext context, IConfigRepository config,
-            ITestBalanceHelper helper)
-            : base(context, config)
+            ISecureRepository repository, ITestBalanceHelper helper)
+            : base(context, config, repository)
         {
             _helper = helper;
         }
