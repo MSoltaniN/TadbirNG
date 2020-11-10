@@ -4634,3 +4634,8 @@ INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName],
     VALUES (122, 61, 'VoucherStatus', 'VoucherStatusId', 'EQ', 'System.Int32', 'TextBox', 'VoucherStatus', 'VoucherStatus')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
+-- 1.0.1017
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [IsDynamic], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (694, 2, 'TypeName', 0, NULL, NULL, 'System.String', 'nvarchar', 'string', 0, 0, 0, 0, 0, 0, NULL, 16, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF

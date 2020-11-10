@@ -49,7 +49,6 @@ namespace SPPC.Tadbir.Persistence
             var vouchers = await Repository
                 .GetAllOperationQuery<Voucher>(
                     ViewId.Voucher, v => v.Lines, v => v.Status, v => v.Branch, v => v.Origin)
-                .Where(item => item.SubjectType == 0)
                 .OrderBy(item => item.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
                 .ToListAsync();
@@ -91,7 +90,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = UserContext.BranchId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 Type = (short)VoucherType.NormalVoucher,
-                SubjectType = (short)SubjectType.Accounting,
+                SubjectType = (short)SubjectType.Normal,
                 SaveCount = 0
             };
 
@@ -221,7 +220,7 @@ namespace SPPC.Tadbir.Persistence
             where TViewModel : class, new()
         {
             return await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(item => item.SubjectType == 0)
+                .Where(item => item.SubjectType == (short)SubjectType.Normal)
                 .Select(item => Mapper.Map<TViewModel>(item))
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -688,7 +687,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginId origin)
         {
-            var subject = SubjectType.Accounting;
+            var subject = SubjectType.Normal;
             string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
             DateTime date = await GetLastVoucherDateAsync();
             int no = await GetLastVoucherNoAsync();

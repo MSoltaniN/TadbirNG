@@ -62,9 +62,9 @@ namespace SPPC.Tadbir.Domain
     public enum SubjectType
     {
         /// <summary>
-        /// نوع مفهومی سند حسابداری
+        /// نوع مفهومی سند عادی
         /// </summary>
-        Accounting = 0,
+        Normal = 0,
 
         /// <summary>
         /// نوع مفهومی سند پیش نویس

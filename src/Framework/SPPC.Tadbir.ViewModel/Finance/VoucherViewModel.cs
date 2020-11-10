@@ -57,6 +57,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string OriginName { get; set; }
 
         /// <summary>
+        /// نام نوع مفهومی سند مالی
+        /// </summary>
+        public string TypeName { get; set; }
+
+        /// <summary>
         /// مشخص می کند که شماره سندی بعد از این سند وجود دارد یا نه
         /// </summary>
         public bool HasNext { get; set; }

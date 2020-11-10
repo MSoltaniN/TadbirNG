@@ -29,6 +29,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         {
             Reference = String.Empty;
             Association = String.Empty;
+            TypeName = Domain.SubjectType.Normal.ToString();
             IssuerName = String.Empty;
             ModifierName = String.Empty;
             ConfirmerName = String.Empty;

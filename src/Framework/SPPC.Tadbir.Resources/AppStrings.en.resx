@@ -3360,4 +3360,16 @@
   <data name="InvalidDraftVoucherAction" xml:space="preserve">
     <value>Action {0} cannot be done on a draft voucher.</value>
   </data>
+  <data name="Budgeting" xml:space="preserve">
+    <value>Budgeting</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="TypeName" xml:space="preserve">
+    <value>Voucher type</value>
+  </data>
 </root>
