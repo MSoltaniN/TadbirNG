@@ -186,7 +186,12 @@
     "SearchBy": "جستجو بر اساس",
     "DisplayableColumns": "فیلدها جهت نمایش",
     "SearchType": "نوع جستجو",
-    "SearchTitle": "جستجو"
+    "SearchTitle": "جستجو",
+    "MaxSelectionCount": "شما فقط مجاز به انتخاب {0} رکورد میباشید",
+    "SelectProject": "لطفا پروژه را انتخاب کنید",
+    "SelectCostCenter": "لطفا مرکز هزینه را انتخاب کنید",
+    "FilterByRef": "لطفا رفرنس را وارد کنید"
+
   },
   "ItemBalance": {
     "DetailAccount": "تفصیلی شناور",
@@ -418,7 +423,8 @@
     "Comparative": "مقایسه ای",
     "Tax": "مالیات",
     "Closing": "در نظر گرفتن سند بستن حسابهای موقت",
-    "ComparativeSelect": "لطفا مولفه مورد نظر برای گزارش مقایسه ای انتخاب کنید"
+    "ComparativeSelect": "لطفا مولفه مورد نظر برای گزارش مقایسه ای انتخاب کنید",
+    "ComparativeSelectItems": "لطفا در حالت مقایسه ای آیتم های ها مورد نظر برای مقایسه را انتخاب کنید"
   },
   "Balance": {
     "ByDate": "بر اساس تاریخ",
