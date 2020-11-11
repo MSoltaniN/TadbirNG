@@ -3351,4 +3351,16 @@
   <data name="InvalidDraftVoucherAction" xml:space="preserve">
     <value>عمل {0} روی سند پیش نویس امکان پذیر نیست.</value>
   </data>
+  <data name="Budgeting" xml:space="preserve">
+    <value>بودجه</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>پیش نویس</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>عادی</value>
+  </data>
+  <data name="TypeName" xml:space="preserve">
+    <value>نوع سند</value>
+  </data>
 </root>
