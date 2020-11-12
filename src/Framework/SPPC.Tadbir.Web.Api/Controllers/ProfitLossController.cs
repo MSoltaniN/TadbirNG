@@ -208,25 +208,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 item.Account = _strings[item.Account ?? String.Empty];
             }
 
-            foreach (var item in profitLoss.ItemsByCostCenters)
-            {
-                item.Group = _strings[item.Group ?? String.Empty];
-                item.Account = _strings[item.Account ?? String.Empty];
-            }
-
-            foreach (var item in profitLoss.ItemsByProjects)
-            {
-                item.Group = _strings[item.Group ?? String.Empty];
-                item.Account = _strings[item.Account ?? String.Empty];
-            }
-
-            foreach (var item in profitLoss.ItemsByBranches)
-            {
-                item.Group = _strings[item.Group ?? String.Empty];
-                item.Account = _strings[item.Account ?? String.Empty];
-            }
-
-            foreach (var item in profitLoss.ItemsByFiscalPeriods)
+            foreach (var item in profitLoss.ComparativeItems)
             {
                 item.Group = _strings[item.Group ?? String.Empty];
                 item.Account = _strings[item.Account ?? String.Empty];

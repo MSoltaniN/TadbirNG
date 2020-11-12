@@ -74,7 +74,7 @@ namespace SPPC.Tadbir.Persistence
                 profitLoss = await GetProfitLossAsync(parameters, balanceItems);
                 foreach (var item in profitLoss.Items)
                 {
-                    profitLoss.ItemsByCostCenters.Add(Mapper.Map<ProfitLossByCostCentersViewModel>(item));
+                    profitLoss.ComparativeItems.Add(Mapper.Map<ProfitLossByItemsViewModel>(item));
                 }
 
                 int itemIndex = 1;
@@ -82,12 +82,12 @@ namespace SPPC.Tadbir.Persistence
                 {
                     parameters.CostCenterId = parameters.CompareItems[itemIndex];
                     var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByCostCenters.Count)
+                    if (itemProfitLoss.Items.Count == profitLoss.ComparativeItems.Count)
                     {
-                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByCostCenters.Count; lineIndex++)
+                        for (int lineIndex = 0; lineIndex < profitLoss.ComparativeItems.Count; lineIndex++)
                         {
-                            CopyCostCenterValues(itemIndex,
-                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByCostCenters[lineIndex]);
+                            CopyItemValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ComparativeItems[lineIndex]);
                         }
                     }
 
@@ -96,6 +96,7 @@ namespace SPPC.Tadbir.Persistence
 
                 profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
                     ViewId.ProfitLossByCostCenters, ViewId.CostCenter, parameters.CompareItems);
+                profitLoss.Items.Clear();
             }
 
             return profitLoss;
@@ -119,7 +120,7 @@ namespace SPPC.Tadbir.Persistence
                 profitLoss = await GetProfitLossAsync(parameters, balanceItems);
                 foreach (var item in profitLoss.Items)
                 {
-                    profitLoss.ItemsByProjects.Add(Mapper.Map<ProfitLossByProjectsViewModel>(item));
+                    profitLoss.ComparativeItems.Add(Mapper.Map<ProfitLossByItemsViewModel>(item));
                 }
 
                 int itemIndex = 1;
@@ -127,12 +128,12 @@ namespace SPPC.Tadbir.Persistence
                 {
                     parameters.ProjectId = parameters.CompareItems[itemIndex];
                     var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByProjects.Count)
+                    if (itemProfitLoss.Items.Count == profitLoss.ComparativeItems.Count)
                     {
-                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByProjects.Count; lineIndex++)
+                        for (int lineIndex = 0; lineIndex < profitLoss.ComparativeItems.Count; lineIndex++)
                         {
-                            CopyProjectValues(itemIndex,
-                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByProjects[lineIndex]);
+                            CopyItemValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ComparativeItems[lineIndex]);
                         }
                     }
 
@@ -141,6 +142,7 @@ namespace SPPC.Tadbir.Persistence
 
                 profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
                     ViewId.ProfitLossByProjects, ViewId.Project, parameters.CompareItems);
+                profitLoss.Items.Clear();
             }
 
             return profitLoss;
@@ -164,7 +166,7 @@ namespace SPPC.Tadbir.Persistence
                 profitLoss = await GetProfitLossAsync(parameters, balanceItems);
                 foreach (var item in profitLoss.Items)
                 {
-                    profitLoss.ItemsByBranches.Add(Mapper.Map<ProfitLossByBranchesViewModel>(item));
+                    profitLoss.ComparativeItems.Add(Mapper.Map<ProfitLossByItemsViewModel>(item));
                 }
 
                 int itemIndex = 1;
@@ -172,12 +174,12 @@ namespace SPPC.Tadbir.Persistence
                 {
                     parameters.BranchId = parameters.CompareItems[itemIndex];
                     var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByBranches.Count)
+                    if (itemProfitLoss.Items.Count == profitLoss.ComparativeItems.Count)
                     {
-                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByBranches.Count; lineIndex++)
+                        for (int lineIndex = 0; lineIndex < profitLoss.ComparativeItems.Count; lineIndex++)
                         {
-                            CopyBranchValues(itemIndex,
-                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByBranches[lineIndex]);
+                            CopyItemValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ComparativeItems[lineIndex]);
                         }
                     }
 
@@ -186,6 +188,7 @@ namespace SPPC.Tadbir.Persistence
 
                 profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
                     ViewId.ProfitLossByBranches, ViewId.Branch, parameters.CompareItems);
+                profitLoss.Items.Clear();
             }
 
             return profitLoss;
@@ -209,7 +212,7 @@ namespace SPPC.Tadbir.Persistence
                 profitLoss = await GetProfitLossAsync(adjusted, balanceItems);
                 foreach (var item in profitLoss.Items)
                 {
-                    profitLoss.ItemsByFiscalPeriods.Add(Mapper.Map<ProfitLossByFiscalPeriodsViewModel>(item));
+                    profitLoss.ComparativeItems.Add(Mapper.Map<ProfitLossByItemsViewModel>(item));
                 }
 
                 int itemIndex = 1;
@@ -217,12 +220,12 @@ namespace SPPC.Tadbir.Persistence
                 {
                     adjusted = await GetAdjustedParameters(parameters, parameters.CompareItems[itemIndex]);
                     var itemProfitLoss = await GetProfitLossAsync(adjusted, balanceItems);
-                    if (itemProfitLoss.Items.Count == profitLoss.ItemsByFiscalPeriods.Count)
+                    if (itemProfitLoss.Items.Count == profitLoss.ComparativeItems.Count)
                     {
-                        for (int lineIndex = 0; lineIndex < profitLoss.ItemsByFiscalPeriods.Count; lineIndex++)
+                        for (int lineIndex = 0; lineIndex < profitLoss.ComparativeItems.Count; lineIndex++)
                         {
-                            CopyFiscalPeriodValues(itemIndex,
-                                itemProfitLoss.Items[lineIndex], profitLoss.ItemsByFiscalPeriods[lineIndex]);
+                            CopyItemValues(itemIndex,
+                                itemProfitLoss.Items[lineIndex], profitLoss.ComparativeItems[lineIndex]);
                         }
                     }
 
@@ -231,60 +234,22 @@ namespace SPPC.Tadbir.Persistence
 
                 profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
                     ViewId.ProfitLossByFiscalPeriods, ViewId.FiscalPeriod, parameters.CompareItems);
+                profitLoss.Items.Clear();
             }
 
             return profitLoss;
         }
 
-        private static void CopyCostCenterValues(int index,
-            ProfitLossItemViewModel source, ProfitLossByCostCentersViewModel item)
+        private static void CopyItemValues(int index,
+            ProfitLossItemViewModel source, ProfitLossByItemsViewModel item)
         {
-            string fieldName = String.Format("StartBalanceCostCenter{0}", index + 1);
+            string fieldName = String.Format("StartBalanceItem{0}", index + 1);
             Reflector.CopyProperty(source, "StartBalance", item, fieldName);
-            fieldName = String.Format("PeriodTurnoverCostCenter{0}", index + 1);
+            fieldName = String.Format("PeriodTurnoverItem{0}", index + 1);
             Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
-            fieldName = String.Format("EndBalanceCostCenter{0}", index + 1);
+            fieldName = String.Format("EndBalanceItem{0}", index + 1);
             Reflector.CopyProperty(source, "EndBalance", item, fieldName);
-            fieldName = String.Format("BalanceCostCenter{0}", index + 1);
-            Reflector.CopyProperty(source, "Balance", item, fieldName);
-        }
-
-        private static void CopyProjectValues(int index,
-            ProfitLossItemViewModel source, ProfitLossByProjectsViewModel item)
-        {
-            string fieldName = String.Format("StartBalanceProject{0}", index + 1);
-            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
-            fieldName = String.Format("PeriodTurnoverProject{0}", index + 1);
-            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
-            fieldName = String.Format("EndBalanceProject{0}", index + 1);
-            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
-            fieldName = String.Format("BalanceProject{0}", index + 1);
-            Reflector.CopyProperty(source, "Balance", item, fieldName);
-        }
-
-        private static void CopyBranchValues(int index,
-            ProfitLossItemViewModel source, ProfitLossByBranchesViewModel item)
-        {
-            string fieldName = String.Format("StartBalanceBranch{0}", index + 1);
-            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
-            fieldName = String.Format("PeriodTurnoverBranch{0}", index + 1);
-            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
-            fieldName = String.Format("EndBalanceBranch{0}", index + 1);
-            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
-            fieldName = String.Format("BalanceBranch{0}", index + 1);
-            Reflector.CopyProperty(source, "Balance", item, fieldName);
-        }
-
-        private static void CopyFiscalPeriodValues(int index,
-            ProfitLossItemViewModel source, ProfitLossByFiscalPeriodsViewModel item)
-        {
-            string fieldName = String.Format("StartBalanceFiscalPeriod{0}", index + 1);
-            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
-            fieldName = String.Format("PeriodTurnoverFiscalPeriod{0}", index + 1);
-            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
-            fieldName = String.Format("EndBalanceFiscalPeriod{0}", index + 1);
-            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
-            fieldName = String.Format("BalanceFiscalPeriod{0}", index + 1);
+            fieldName = String.Format("BalanceItem{0}", index + 1);
             Reflector.CopyProperty(source, "Balance", item, fieldName);
         }
 

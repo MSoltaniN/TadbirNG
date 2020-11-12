@@ -606,29 +606,11 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<SystemIssue, SystemIssueViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
 
-            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByCostCentersViewModel>()
-                .ForMember(dest => dest.StartBalanceCostCenter1, opts => opts.MapFrom(src => src.StartBalance))
-                .ForMember(dest => dest.PeriodTurnoverCostCenter1, opts => opts.MapFrom(src => src.PeriodTurnover))
-                .ForMember(dest => dest.EndBalanceCostCenter1, opts => opts.MapFrom(src => src.EndBalance))
-                .ForMember(dest => dest.BalanceCostCenter1, opts => opts.MapFrom(src => src.Balance));
-
-            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByProjectsViewModel>()
-                .ForMember(dest => dest.StartBalanceProject1, opts => opts.MapFrom(src => src.StartBalance))
-                .ForMember(dest => dest.PeriodTurnoverProject1, opts => opts.MapFrom(src => src.PeriodTurnover))
-                .ForMember(dest => dest.EndBalanceProject1, opts => opts.MapFrom(src => src.EndBalance))
-                .ForMember(dest => dest.BalanceProject1, opts => opts.MapFrom(src => src.Balance));
-
-            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByBranchesViewModel>()
-                .ForMember(dest => dest.StartBalanceBranch1, opts => opts.MapFrom(src => src.StartBalance))
-                .ForMember(dest => dest.PeriodTurnoverBranch1, opts => opts.MapFrom(src => src.PeriodTurnover))
-                .ForMember(dest => dest.EndBalanceBranch1, opts => opts.MapFrom(src => src.EndBalance))
-                .ForMember(dest => dest.BalanceBranch1, opts => opts.MapFrom(src => src.Balance));
-
-            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByFiscalPeriodsViewModel>()
-                .ForMember(dest => dest.StartBalanceFiscalPeriod1, opts => opts.MapFrom(src => src.StartBalance))
-                .ForMember(dest => dest.PeriodTurnoverFiscalPeriod1, opts => opts.MapFrom(src => src.PeriodTurnover))
-                .ForMember(dest => dest.EndBalanceFiscalPeriod1, opts => opts.MapFrom(src => src.EndBalance))
-                .ForMember(dest => dest.BalanceFiscalPeriod1, opts => opts.MapFrom(src => src.Balance));
+            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByItemsViewModel>()
+                .ForMember(dest => dest.StartBalanceItem1, opts => opts.MapFrom(src => src.StartBalance))
+                .ForMember(dest => dest.PeriodTurnoverItem1, opts => opts.MapFrom(src => src.PeriodTurnover))
+                .ForMember(dest => dest.EndBalanceItem1, opts => opts.MapFrom(src => src.EndBalance))
+                .ForMember(dest => dest.BalanceItem1, opts => opts.MapFrom(src => src.Balance));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

@@ -58,6 +58,9 @@
     <Compile Remove="Finance\TransactionSummaryViewModel.cs" />
     <Compile Remove="Finance\TransactionViewModel.cs" />
     <Compile Remove="Finance\TransactionViewModel.Generated.cs" />
+    <Compile Remove="Reporting\ProfitLossByBranchesViewModel.cs" />
+    <Compile Remove="Reporting\ProfitLossByFiscalPeriodsViewModel.cs" />
+    <Compile Remove="Reporting\ProfitLossByProjectsViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
