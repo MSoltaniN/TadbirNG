@@ -144,6 +144,7 @@
                                     [valueField]="'key'"
                                     [valuePrimitive]="true"
                                     [value]="selectedType"
+                                    (ngModelChange)="voucherTypeListChange($event )"                                    
                                     [(ngModel)]="selectedType"
                                     [ngModelOptions]="{standalone: true}"
                                     formControlName="type">

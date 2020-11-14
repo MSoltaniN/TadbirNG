@@ -913,7 +913,8 @@
     "VouchersListThatHasError": "vouchers List That Has Error",
     "RowNo": "Row",
     "VoucherNo": "Voucher Number",
-    "PleaseSelectVouchers": "Please select vouchers"
+    "PleaseSelectVouchers": "Please select vouchers",
+    "SubjectTypeValidation": "The voucher has been approved or confirmed and it is not possible to convert it into a draft voucher"
   },
   "User": {
     "New": "New User",

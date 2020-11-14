@@ -370,7 +370,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var types = new List<KeyValue>()
             {
-                new KeyValue { Key = "0", Value = "NormalVoucher" }
+                new KeyValue { Key = "0", Value = "NormalVoucher" },
+                new KeyValue { Key = "1", Value = "Draft" }
             };
 
             return types;

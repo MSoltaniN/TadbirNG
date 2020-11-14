@@ -11,11 +11,12 @@ import { VoucherService, VoucherInfo, InventoryBalanceInfo } from '@sppc/finance
 import { VoucherApi } from '@sppc/finance/service/api';
 import { Voucher } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
-import { DocumentStatusValue, VoucherOperations } from '@sppc/finance/enum';
+import { DocumentStatusValue, VoucherOperations, VoucherSubjectTypes } from '@sppc/finance/enum';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 import { Item } from '@sppc/shared/models';
 import { InventoryBalance } from '@sppc/finance/models/inventoryBalance';
+import { setTime } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -318,7 +319,18 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.isLastVoucher = !item.hasNext;
     this.isFirstVoucher = !item.hasPrevious;
     this.voucherModel = item;
-    this.selectedType = this.voucherModel.type.toString();
+    //this.selectedType = this.voucherModel.type.toString();
+    this.selectedType = this.voucherModel.subjectType.toString();
+  }
+
+  voucherTypeListChange(value) {
+    if (this.selectedType == VoucherSubjectTypes.Normal && value == VoucherSubjectTypes.Draft) {
+      if (this.voucherModel.confirmedById != null || this.voucherModel.statusId == DocumentStatusValue.Finalized) {
+        this.showMessage(this.getText("Voucher.SubjectTypeValidation"));
+        setTimeout(() => { this.selectedType = VoucherSubjectTypes.Normal });        
+        return;
+      }
+    }
   }
 
   getVoucherType() {
@@ -335,6 +347,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.statusId = this.voucherModel.statusId;
       model.saveCount = this.voucherModel.saveCount;
+      model.subjectType = parseInt(this.selectedType);
+
       if (model.reference == '')
         model.reference = null;
 
