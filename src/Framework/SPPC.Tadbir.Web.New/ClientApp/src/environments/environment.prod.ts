@@ -113,7 +113,9 @@ export const Entities = {
   OperationLogArchive: 'OperationLogArchive',
   ProfitLost: 'ProfitLost',
   GroupActionResult: 'GroupActionResult',
-  ProfitLossSimple: 'ProfitLossSimple'
+  ProfitLossSimple: 'ProfitLossSimple',
+  ComparativeProfitLoss: 'ComparativeProfitLoss',
+  ComparativeProfitLossSimple: 'ComparativeProfitLossSimple'
 }
 
 export const ColumnVisibility =
