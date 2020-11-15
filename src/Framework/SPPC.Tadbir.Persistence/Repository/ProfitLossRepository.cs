@@ -67,6 +67,9 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
+            int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
+                ? ViewId.ComparativeProfitLossSimple
+                : ViewId.ComparativeProfitLoss;
             if (parameters.CompareItems.Count > 0)
             {
                 int firstCostCenterId = parameters.CompareItems[0];
@@ -95,7 +98,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
-                    ViewId.ProfitLossByCostCenters, ViewId.CostCenter, parameters.CompareItems);
+                    viewId, ViewId.CostCenter, parameters.CompareItems);
                 profitLoss.Items.Clear();
             }
 
@@ -113,6 +116,9 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
+            int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
+                ? ViewId.ComparativeProfitLossSimple
+                : ViewId.ComparativeProfitLoss;
             if (parameters.CompareItems.Count > 0)
             {
                 int firstProjectId = parameters.CompareItems[0];
@@ -141,7 +147,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
-                    ViewId.ProfitLossByProjects, ViewId.Project, parameters.CompareItems);
+                    viewId, ViewId.Project, parameters.CompareItems);
                 profitLoss.Items.Clear();
             }
 
@@ -159,6 +165,9 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
+            int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
+                ? ViewId.ComparativeProfitLossSimple
+                : ViewId.ComparativeProfitLoss;
             if (parameters.CompareItems.Count > 0)
             {
                 int firstBranchId = parameters.CompareItems[0];
@@ -187,7 +196,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
-                    ViewId.ProfitLossByBranches, ViewId.Branch, parameters.CompareItems);
+                    viewId, ViewId.Branch, parameters.CompareItems);
                 profitLoss.Items.Clear();
             }
 
@@ -205,6 +214,9 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
+            int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
+                ? ViewId.ComparativeProfitLossSimple
+                : ViewId.ComparativeProfitLoss;
             if (parameters.CompareItems.Count > 0)
             {
                 int firstPeriodId = parameters.CompareItems[0];
@@ -233,7 +245,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
-                    ViewId.ProfitLossByFiscalPeriods, ViewId.FiscalPeriod, parameters.CompareItems);
+                    viewId, ViewId.FiscalPeriod, parameters.CompareItems);
                 profitLoss.Items.Clear();
             }
 

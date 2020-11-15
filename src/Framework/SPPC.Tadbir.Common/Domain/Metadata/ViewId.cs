@@ -88,23 +88,13 @@ namespace SPPC.Tadbir.Domain
         public const int CurrencyRate = 31;
 
         /// <summary>
-        /// نمای اطلاعاتی گزارش سود و زیان به تفکیک مراکز هزینه
+        /// نمای اطلاعاتی گزارش سود و زیان مقایسه ای با سه ستون مبلغ
         /// </summary>
-        public const int ProfitLossByCostCenters = 65;
+        public const int ComparativeProfitLoss = 65;
 
         /// <summary>
-        /// نمای اطلاعاتی گزارش سود و زیان به تفکیک پروژه ها
+        /// نمای اطلاعاتی گزارش سود و زیان مقایسه ای با یک ستون مبلغ
         /// </summary>
-        public const int ProfitLossByProjects = 66;
-
-        /// <summary>
-        /// نمای اطلاعاتی گزارش سود و زیان به تفکیک شعبه ها
-        /// </summary>
-        public const int ProfitLossByBranches = 67;
-
-        /// <summary>
-        /// نمای اطلاعاتی گزارش سود و زیان به تفکیک دوره های مالی
-        /// </summary>
-        public const int ProfitLossByFiscalPeriods = 68;
+        public const int ComparativeProfitLossSimple = 66;
     }
 }
