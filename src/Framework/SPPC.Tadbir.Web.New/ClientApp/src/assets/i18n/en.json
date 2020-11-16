@@ -375,12 +375,20 @@
     "BranchName": "Branch Name"
   },
   "ProfitLoss": {
-    "CostCenter": "مرکز هزینه",
-    "Branch": "شعبه",
-    "Project": "پروژه",
-    "VoucherStatus": "وضعیت اسناد",
-    "FilterByRef": "رفرنس برابر با",
-    "Comparative": "مقایسه ای"
+    "Branch": "Branch",
+    "CostCenter": "CostCenter",
+    "Project": "Project",
+    "VoucherStatus": "Voucher Status",
+    "FilterByRef": "Filter By Ref",
+    "FiscalPeriod": "Fiscal Period",
+    "Comparative": "Comparative",
+    "Tax": "Tax",
+    "Closing": "Closing vouchers",
+    "ComparativeSelect": "Please select items for the comparison report",
+    "ComparativeSelectItems": "Please select the items you want to compare in comparison mode",
+    "SelectCostCenter": "Please select a cost center",
+    "SelectProject": "Please select a project",
+    "FilterByRefMsg": "Please enter a reference filter"
   },
   "AccountBookSummary": {
     "RowNo": "Row No",
@@ -1049,9 +1057,6 @@
     "RolesTitle": "Fiscal Period Roles List",
     "CreateFiscalPeriod": "Create Fiscal Period",
     "ChangeFiscalPeriod": "Change Fiscal Period"
-  },
-  "ProfitLoss": {
-    "Branch": "Branch"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period",
