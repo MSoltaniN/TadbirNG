@@ -6,7 +6,9 @@
 </view-identifier>
 
 <app-bread-cumb [entityTypeName]="'CurrencyBook'"></app-bread-cumb>
-
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="currentFilter" [QuickFilter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
+<report-setting></report-setting>
 <div class="panel-body">
 
 
