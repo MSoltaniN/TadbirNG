@@ -1,8 +1,13 @@
-
+<view-identifier [ViewID]="viewId">
+  <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="true"></report-param>
+  <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="true"></report-param>
+  <report-param ParamName='VoucherStatus' [ParamValue]="voucherStatusSelected"
+                [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
+</view-identifier>
 
 <app-bread-cumb [entityTypeName]="'AccountBook'"></app-bread-cumb>
 
-<div class="panel-body">  
+<div class="panel-body">
   <kendo-grid id="{{viewId}}"
               style="width:100%;"
               #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
@@ -60,6 +65,7 @@
                                    (columnsList)="getColumns($event)">
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+      <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
       <button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'AccountBook.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>
       <button kendoButton class="sppc-float-diff" (click)="openSelectForm()" [icon]="'search'" type="button"></button>
     </ng-template>

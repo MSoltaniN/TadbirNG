@@ -1,3 +1,9 @@
+<view-identifier [ViewID]="viewId">
+  <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="true"></report-param>
+  <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="true"></report-param>
+  <report-param ParamName='VoucherStatus' [ParamValue]="voucherStatusSelected"
+                [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
+</view-identifier>
 
 <app-bread-cumb [entityTypeName]="'ProfitLost'"></app-bread-cumb>
 <div class="panel-body">
@@ -56,10 +62,7 @@
             </auto-generated-grid-setting>
             <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
 
-            <button kendoButton class="hidden-xs rm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showReportSetting()"
-                    [icon]="'form-element'" type="button"></button>
-            <button kendoButton class="hidden-xs rm" title="{{ 'Report.Print' | translate }}" (click)="showReport()"
-                    [icon]="'printer'" type="button"></button>
+            <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
           </div>
 
         </div>
@@ -108,7 +111,7 @@
       <div class="col-md-12">
         <div class="col-xs-12 col-sm-3 form-group sppc-float">
           <label for="chkBranch">{{ 'ProfitLoss.Branch' | translate }}</label>
-          <kendo-dropdownlist [data]="branchScope"                              
+          <kendo-dropdownlist [data]="branchScope"
                               [textField]="'value'"
                               [valueField]="'key'"
                               [valuePrimitive]="true"
@@ -126,7 +129,7 @@
         <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
           <label for="chkCostCenter">
             <input type="checkbox" id="chkCostCenter" (ngModelChange)="chkCostCenterChange($event)" [(ngModel)]="costCenterSelected" /> {{ 'ProfitLoss.CostCenter' | translate }}
-          </label>          
+          </label>
           <div class="form-group">
             <input type="text" class="k-textbox acc-code" [ngModel]="selectedCostCenterModel?.fullCode" [attr.disabled]="!costCenterSelected ? '' : null" title="{{selectedCostCenterModel?.fullCode}}"
                    [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
@@ -149,14 +152,14 @@
 
         <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label class="control-label">{{ 'ProfitLoss.Tax' | translate }}</label>
-          <input type="text" class="k-textbox" [OnlyNumber] [(ngModel)]="tax"  />
+          <input type="text" class="k-textbox" [OnlyNumber] [(ngModel)]="tax" />
         </div>
 
-        
+
       </div>
-      
+
       <div class="col-md-12">
-        <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}" >
+        <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label class="control-label">{{ 'ProfitLoss.VoucherStatus' | translate }}</label>
 
           <kendo-dropdownlist [data]="voucherStatus"
@@ -164,7 +167,7 @@
                               [valueField]="'key'"
                               [valuePrimitive]="true"
                               [value]="voucherStatusSelected"
-                              [(ngModel)]="voucherStatusSelected" >
+                              [(ngModel)]="voucherStatusSelected">
             <ng-template kendoDropDownListValueTemplate let-dataItem>
               {{ dataItem?.value | translate }}
             </ng-template>
@@ -175,14 +178,14 @@
         </div>
         <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label for="chkProject">
-            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" [(ngModel)]="showFilterByRef"  /> {{ 'ProfitLoss.FilterByRef' | translate }}
-          </label>          
-          <input type="text" class="k-textbox ref" [attr.disabled]="!showFilterByRef ? '' : null"  [(ngModel)]="filterByRef" />           
+            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" [(ngModel)]="showFilterByRef" /> {{ 'ProfitLoss.FilterByRef' | translate }}
+          </label>
+          <input type="text" class="k-textbox ref" [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
         </div>
 
         <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label class="col-sm-3" for="chkComparative">
-            <input type="checkbox" id="chkComparative"  [(ngModel)]="comparativeSelected" /> {{ 'ProfitLoss.Comparative' | translate }}
+            <input type="checkbox" id="chkComparative" [(ngModel)]="comparativeSelected" /> {{ 'ProfitLoss.Comparative' | translate }}
           </label>
           <div class="comparative">
             <kendo-dropdownlist [data]="comparative"
@@ -191,7 +194,7 @@
                                 [valueField]="'key'"
                                 [valuePrimitive]="true"
                                 [value]="comparativeItemSelected"
-                                [(ngModel)]="comparativeItemSelected" >
+                                [(ngModel)]="comparativeItemSelected">
               <ng-template kendoDropDownListValueTemplate let-dataItem>
                 {{ dataItem?.value | translate }}
               </ng-template>
@@ -211,7 +214,7 @@
           </kendo-switch>
         </div>
 
-      </div>     
+      </div>
       <div class="col-xs-12 col-sm-3 form-group">
         <button class="k-button k-primary" SppcPermissionCheck="Filter" EntityName="TestBalance" (sppcClick)="getReportData()"
                 [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en','btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">

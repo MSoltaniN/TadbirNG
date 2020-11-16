@@ -1,3 +1,6 @@
+<view-identifier [ViewID]="viewId">
+  <report-param ParamName='currencyId' [ParamValue]="selectedCurrencyId" [ParamInFilter]="false"></report-param>
+</view-identifier>
 
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
 
@@ -92,6 +95,7 @@
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
 
+      <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true"
