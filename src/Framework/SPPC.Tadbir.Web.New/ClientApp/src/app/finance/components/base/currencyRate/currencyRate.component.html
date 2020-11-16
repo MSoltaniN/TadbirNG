@@ -3,7 +3,8 @@
 </view-identifier>
 
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
-
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
 <report-setting></report-setting>
 <div class="panel-body">
   <kendo-grid id="{{viewId}}"

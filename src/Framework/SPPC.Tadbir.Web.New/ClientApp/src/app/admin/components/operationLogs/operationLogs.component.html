@@ -1,10 +1,11 @@
 <view-identifier [ViewID]="viewId">
-  <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="false"></report-param>
-  <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="false"></report-param>
+  <report-param ParamName='fromDate' [ParamValue]="startDate" [ParamInFilter]="false"></report-param>
+  <report-param ParamName='toDate' [ParamValue]="endDate" [ParamInFilter]="false"></report-param>
 </view-identifier>
 
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
-
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="currentFilter" [QuickFilter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
 <report-setting></report-setting>
 <div class="panel-body">
   <kendo-grid id="{{viewId}}"

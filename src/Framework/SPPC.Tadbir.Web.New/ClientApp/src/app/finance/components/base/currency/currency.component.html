@@ -1,6 +1,8 @@
-
+<view-identifier [ViewID]="viewId">  
+</view-identifier>
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
-
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
 <report-setting></report-setting>
 <div class="panel-body">
   <kendo-grid id="{{viewId}}"
@@ -68,6 +70,7 @@
                                    (columnsList)="getColumns($event)">
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+      <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true"
