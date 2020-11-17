@@ -4876,3 +4876,8 @@ INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName],
     VALUES (163, 77, 'VoucherStatus', 'VoucherStatusId', 'EQ', 'System.Int32', 'TextBox', 'VoucherStatus', 'VoucherStatus')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
+-- 1.1.1021
+UPDATE [Metadata].[Column]
+SET [DotNetType] = 'System.Int32', [StorageType] = 'int', [ScriptType] = 'number', [Length] = 0
+WHERE ViewID IN(15,16,17,18,22,23,24,25)
+
