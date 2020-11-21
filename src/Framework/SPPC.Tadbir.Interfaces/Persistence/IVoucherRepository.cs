@@ -89,8 +89,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد سندهای دوره مالی جاری با وضعیت ثبتی داده شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="status">وضعیت ثبتی مورد نظر برای سند</param>
+        /// <param name="subject">نوع مفهومی اسناد مورد نظر که به طور پیش فرض سند عادی است</param>
         /// <returns>تعداد سندهای دوره مالی جاری با وضعیت ثبتی مورد نظر</returns>
-        Task<int> GetCountByStatusAsync(DocumentStatusId status);
+        Task<int> GetCountByStatusAsync(DocumentStatusId status, SubjectType subject = SubjectType.Normal);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات محدوده سندهای قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
