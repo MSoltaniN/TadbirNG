@@ -57,8 +57,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TadbirSolutionInfo.cs = TadbirSolutionInfo.cs
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{31064D34-EDBB-482E-863F-C96DD57766F6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.Tests", "SPPC.Tadbir.Tests\SPPC.Tadbir.Tests.csproj", "{73B0D106-8F18-4C7F-BD63-4A99667CEAF5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.Model", "SPPC.Framework.Model\SPPC.Framework.Model.csproj", "{93E47F2B-FBD5-4C88-9D91-76B87B76EEB4}"
