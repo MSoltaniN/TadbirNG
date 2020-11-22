@@ -55,7 +55,7 @@
     <ng-template kendoGridToolbarTemplate>
       <div class="row">
         <div class="col-xs-12 col-sm-6 sppc-float">
-          <sppc-dateRangeSelector [viewName]="'voucher'" [InitializeDate]="false" [ValidateFPDate]="false" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+          <sppc-dateRangeSelector [viewName]="'voucher'" [InitializeDate]="false" [saveStates]="false"  [ValidateFPDate]="false" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
         </div>
         <div class="col-xs-12 col-sm-6">
           <button (click)="editHandler()" class="k-button k-button-icon  pull-left" [disabled]="selectedRows.length != 1" title="{{ 'OperationLog.Detail' | translate }}"><span class="k-icon k-i-info"></span></button>
