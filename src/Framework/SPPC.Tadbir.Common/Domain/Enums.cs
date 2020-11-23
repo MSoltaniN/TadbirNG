@@ -128,4 +128,20 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         CreditorEndPeriod = 3
     }
+
+    /// <summary>
+    /// داده شمارشی برای انواع تقویم مورد استفاده در برنامه
+    /// </summary>
+    public enum CalendarType
+    {
+        /// <summary>
+        /// تقویم شمسی یا جلالی
+        /// </summary>
+        Jalali = 0,
+
+        /// <summary>
+        /// تقویم میلادی
+        /// </summary>
+        Gregorian = 1
+    }
 }

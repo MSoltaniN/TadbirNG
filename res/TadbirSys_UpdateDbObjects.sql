@@ -4881,3 +4881,12 @@ UPDATE [Metadata].[Column]
 SET [DotNetType] = 'System.Int32', [StorageType] = 'int', [ScriptType] = 'number', [Length] = 0
 WHERE ViewID IN(15,16,17,18,22,23,24,25)
 
+-- 1.1.1024
+UPDATE [Metadata].[View]
+SET SearchUrl = '/fperiods/company/{companyid}'
+WHERE Name = 'FiscalPeriod'
+
+UPDATE [Metadata].[View]
+SET SearchUrl = '/branches/company/{companyid}'
+WHERE Name = 'Branch'
+

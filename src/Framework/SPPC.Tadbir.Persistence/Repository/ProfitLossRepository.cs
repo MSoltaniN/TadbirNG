@@ -25,12 +25,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="metadata">امکان خواندن اطلاعات فراداده ای را فراهم می کند</param>
+        /// <param name="config">امکان خواندن تنظیمات جاری برنامه را فراهم می کند</param>
         /// <param name="utility">امکان استفاده از مجموعه حسابها را فراهم می کند</param>
         public ProfitLossRepository(IRepositoryContext context, IMetadataRepository metadata,
-            IAccountCollectionUtility utility)
+            IConfigRepository config, IAccountCollectionUtility utility)
             : base(context)
         {
             _metadata = metadata;
+            _config = config;
             _utility = utility;
         }
 
@@ -549,7 +551,8 @@ namespace SPPC.Tadbir.Persistence
             var filteredLines = await linesQuery.ToListAsync();
             return filteredLines
                 .Select(line => Mapper.Map<ProfitLossLineViewModel>(line))
-                .Apply(parameters.GridOptions, false);
+                .Apply(parameters.GridOptions, false)
+                .ApplyQuickFilter(parameters.GridOptions);
         }
 
         private ProfitLossItemViewModel GetReportItem(
@@ -589,11 +592,27 @@ namespace SPPC.Tadbir.Persistence
             var adjusted = parameters.GetCopy();
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriod = await repository.GetByIDAsync(fiscalPeriodId);
-            adjusted.FromDate = new DateTime(
-                fiscalPeriod.StartDate.Year, parameters.FromDate.Month, parameters.FromDate.Day);
-            adjusted.ToDate = new DateTime(
-                fiscalPeriod.StartDate.Year, parameters.ToDate.Month, parameters.ToDate.Day, 11, 59, 59);
             adjusted.FiscalPeriodId = fiscalPeriodId;
+
+            int calendarType = await _config.GetCurrentCalendarAsync();
+            if (calendarType == (int)CalendarType.Jalali)
+            {
+                var periodStart = JalaliDateTime.FromDateTime(fiscalPeriod.StartDate);
+                var fromDate = JalaliDateTime.FromDateTime(parameters.FromDate);
+                var toDate = JalaliDateTime.FromDateTime(parameters.ToDate);
+                adjusted.FromDate = new JalaliDateTime(
+                    periodStart.Year, fromDate.Month, fromDate.Day).ToGregorian();
+                adjusted.ToDate = new JalaliDateTime(
+                    periodStart.Year, toDate.Month, toDate.Day).ToGregorian();
+            }
+            else
+            {
+                adjusted.FromDate = new DateTime(
+                    fiscalPeriod.StartDate.Year, parameters.FromDate.Month, parameters.FromDate.Day);
+                adjusted.ToDate = new DateTime(
+                    fiscalPeriod.EndDate.Year, parameters.ToDate.Month, parameters.ToDate.Day, 11, 59, 59);
+            }
+
             return adjusted;
         }
 
@@ -619,6 +638,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IMetadataRepository _metadata;
+        private readonly IConfigRepository _config;
         private readonly IAccountCollectionUtility _utility;
     }
 }
