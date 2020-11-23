@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
@@ -28,22 +29,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetBalanceByAccountAsync()
         {
             var parameters = GetParameters<BalanceByAccountParameters>();
-
             if (parameters == null)
             {
-                return BadRequest("اطلاعات ارسالی به سرور معتبر نیست");
+                return BadRequest();
             }
 
+            var gridOptions = GridOptions ?? new GridOptions();
+            parameters.GridOptions = gridOptions;
             var report = await _repository.GetBalanceByAccountAsync(parameters);
 
             SetItemCount(report.Items.Count);
-            report.SetItems(report.Items.ApplyPaging(parameters.GridOptions).ToList());
-            int rowNo = (parameters.GridOptions.Paging.PageSize * (parameters.GridOptions.Paging.PageIndex - 1)) + 1;
-            foreach (var item in report.Items)
-            {
-                item.RowNo = rowNo++;
-            }
-
+            report.SetItems(report.Items
+                .ApplyPaging(gridOptions)
+                .ToList());
+            SetRowNumbers(report.Items);
             return Json(report);
         }
 

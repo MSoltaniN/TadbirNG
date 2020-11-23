@@ -560,16 +560,16 @@ SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
 
 
 SET IDENTITY_INSERT [Metadata].[View] ON
-INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (1, 'Account', 'Account', 1, 1, N'/lookup/accounts')
+INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (1, 'Account', 'Account', 1, 1, N'/lookup/accounts', N'/accounts')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (2, 'Voucher', 'Voucher', 0, 1, N'/lookup/vouchers')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (3, 'VoucherLine', 'VoucherLine', 0, 1, N'/lookup/vouchers/lines')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (4, 'User', 'User', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (5, 'Role', 'Role', 0, 0, N'')
-INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (6, 'DetailAccount', 'DetailAccount', 1, 1, N'/lookup/faccounts')
-INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (7, 'CostCenter', 'CostCenter', 1, 1, N'/lookup/ccenters')
-INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (8, 'Project', 'Project', 1, 1, N'/lookup/projects')
-INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (9, 'FiscalPeriod', 'FiscalPeriod', 0, 1, N'')
-INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (10, 'Branch', 'Branch', 0, 0, N'')
+INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (6, 'DetailAccount', 'DetailAccount', 1, 1, N'/lookup/faccounts', N'/faccounts')
+INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (7, 'CostCenter', 'CostCenter', 1, 1, N'/lookup/ccenters', N'/ccenters')
+INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (8, 'Project', 'Project', 1, 1, N'/lookup/projects', N'/projects')
+INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (9, 'FiscalPeriod', 'FiscalPeriod', 0, 1, N'', N'/fperiods/company/{companyid}')
+INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (10, 'Branch', 'Branch', 0, 0, N'', N'/branches/company/{companyid}')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (11, 'CompanyDb', 'CompanyDb', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (12, 'AccountGroup', 'AccountGroup', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (13, 'OperationLog', 'OperationLog', 0, 0, N'')
