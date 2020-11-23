@@ -63,6 +63,16 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، نوع تقویم پیش فرض برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مقدار عددی متناظر با نوع شمارشی موجود برای تقویم پیش فرض</returns>
+        public async Task<int> GetCurrentCalendarAsync()
+        {
+            var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
+            return systemConfig.DefaultCalendar;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تاریخ داده شده را با توجه به تنظیمات تقویم پیش فرض به صورت رشته متنی برمی گرداند
         /// </summary>
         /// <param name="date">تاریخ مورد نظر برای نمایش متنی</param>
@@ -71,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string dateDisplay = date.ToShortDateString(false);
             var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
-            if (systemConfig.DefaultCalendar == 0)
+            if (systemConfig.DefaultCalendar == (int)CalendarType.Jalali)
             {
                 dateDisplay = JalaliDateTime
                     .FromDateTime(date)
@@ -290,7 +300,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static string GetCalendarName(int calendar)
         {
-            return (calendar == 1)
+            return (calendar == (int)CalendarType.Gregorian)
                 ? AppStrings.Gregorian
                 : AppStrings.Persian;
         }
