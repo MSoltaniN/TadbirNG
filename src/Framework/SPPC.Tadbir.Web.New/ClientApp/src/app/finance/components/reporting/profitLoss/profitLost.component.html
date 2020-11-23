@@ -167,7 +167,8 @@
                               [valueField]="'key'"
                               [valuePrimitive]="true"
                               [value]="voucherStatusSelected"
-                              [(ngModel)]="voucherStatusSelected">
+                              [(ngModel)]="voucherStatusSelected"
+                               (ngModelChange)="onChangeVoucherStatus()">
             <ng-template kendoDropDownListValueTemplate let-dataItem>
               {{ dataItem?.value | translate }}
             </ng-template>

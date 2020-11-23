@@ -35,8 +35,10 @@ export class VoucherInfo implements Voucher {
   approverName: string;
   description?: string;
   originName: string;
+  originId: string;
   hasPrevious: boolean;
   hasNext: boolean;
+  typeName: string;
 }
 
 export class InventoryBalanceInfo implements InventoryBalance {  
