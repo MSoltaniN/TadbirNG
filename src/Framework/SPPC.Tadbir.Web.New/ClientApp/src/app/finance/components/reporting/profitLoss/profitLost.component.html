@@ -179,14 +179,14 @@
         </div>
         <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label for="chkProject">
-            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" [(ngModel)]="showFilterByRef" /> {{ 'ProfitLoss.FilterByRef' | translate }}
+            <input type="checkbox" name="showFilterByRef" id="showFilterByRef"  class="k-checkbox" [(ngModel)]="showFilterByRef" /> {{ 'ProfitLoss.FilterByRef' | translate }}
           </label>
           <input type="text" class="k-textbox ref" [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
         </div>
 
         <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label class="col-sm-3" for="chkComparative">
-            <input type="checkbox" id="chkComparative" [(ngModel)]="comparativeSelected" /> {{ 'ProfitLoss.Comparative' | translate }}
+            <input type="checkbox" id="chkComparative" (ngModelChange)="onChangeComparativeSelected($event)" [(ngModel)]="comparativeSelected" /> {{ 'ProfitLoss.Comparative' | translate }}
           </label>
           <div class="comparative">
             <kendo-dropdownlist [data]="comparative"
