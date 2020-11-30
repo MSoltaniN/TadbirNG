@@ -39,8 +39,8 @@ export function getLayoutModule(layout: Layout) {
 .btn-compute-default {margin-top: 25px; border: 2px solid #337ab7; color: #337ab7; padding: 5px 25px;}
 .btn-compute { color: #337ab7; transition: All 0.3s 0.1s ease-out;}
 .btn-compute-selectable{ color: #fff; background-image: linear-gradient(#c1e3ff, #337ab7);}
-/deep/.k-grid tr.k-alt {background-color: rgb(248, 251, 253)!important;}
-/deep/.k-grid[dir="rtl"] td, .k-rtl .k-grid td { border-width: 0 0px 0 0!important;border: 0!important;}
+/deep/ sppc-profitlost .k-grid tr.k-alt {background-color: rgb(248, 251, 253)!important;}
+/deep/ sppc-profitlost .k-grid[dir="rtl"] td, .k-rtl .k-grid td { border-width: 0 0px 0 0!important;border: 0!important;}
 .section-account button { margin: 0 2px; }
 .section-account .acc-name{ width: 88% }
 .section-account .acc-code{ width: 57%; position: absolute; top: -5px; }
