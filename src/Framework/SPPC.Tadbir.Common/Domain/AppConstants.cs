@@ -53,6 +53,11 @@ namespace SPPC.Tadbir.Domain
         public const string TotalCountHeaderName = "X-Total-Count";
 
         /// <summary>
+        /// Name of request header used for license checking
+        /// </summary>
+        public const string LicenseHeaderName = "X-Tadbir-License";
+
+        /// <summary>
         /// نام هدر برای گرفتن پارامترها از درخواست
         /// </summary>
         public const string ParametersHeaderName = "X-Tadbir-Parameters";

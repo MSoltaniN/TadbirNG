@@ -1,10 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using SPPC.Framework.Common;
+using SPPC.Framework.Cryptography;
+using SPPC.Licensing.Local.Persistence;
+using SPPC.Licensing.Model;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -64,6 +70,11 @@ namespace SPPC.Tadbir.Web.Api.Filters
         public override void OnActionExecuting(ActionExecutingContext actionContext)
         {
             Verify.ArgumentNotNull(actionContext, "actionContext");
+            ////if (!CheckLicense(actionContext))
+            ////{
+            ////    string reason = "Access denied because license is missing, invalid or tampered.";
+            ////    actionContext.Result = new BadRequestObjectResult(reason);
+            ////}
 
             string authTicket = null;
             if (!IsValidRequest(actionContext, out authTicket))
@@ -109,7 +120,36 @@ namespace SPPC.Tadbir.Web.Api.Filters
             return isAuthorized;
         }
 
+        private bool CheckLicense(ActionExecutingContext actionContext)
+        {
+            string signature = null;
+            bool validated = false;
+            var headers = actionContext.HttpContext.Request.Headers;
+            if (headers[AppConstants.LicenseHeaderName] != StringValues.Empty)
+            {
+                signature = headers[AppConstants.LicenseHeaderName].First();
+                var license = Encoding.UTF8.GetBytes(File.ReadAllText(_licensePath, Encoding.UTF8));
+                var signer = new DigitalSigner(LoadCertificate());
+                validated = signer.VerifyData(license, signature);
+            }
+
+            return validated;
+        }
+
+        private X509Certificate2 LoadCertificate()
+        {
+            string serverLicensePath = Path.Combine(_serverRoot, Constants.LicenseFile);
+            string certificatePath = Path.Combine(_serverRoot, Constants.CertificateFile);
+            var utility = new LicenseUtility();
+            string licenseData = File.ReadAllText(serverLicensePath);
+            var license = utility.LoadLicense(licenseData);
+            var manager = new CertificateManager();
+            return manager.GetFromFile(certificatePath, license.Secret);
+        }
+
         private readonly PermissionBriefViewModel[] _requiredPermissions;
         private readonly ITextEncoder<SecurityContext> _contextDecoder;
+        private readonly string _licensePath = @"..\..\..\wwwroot\static\license";
+        private readonly string _serverRoot = @"..\..\..\..\SPPC.Licensing.Local.Web\wwwroot";
     }
 }

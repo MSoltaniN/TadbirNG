@@ -4,8 +4,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using SPPC.Framework.Common;
+using SPPC.Framework.Service.Security;
 
-namespace SPPC.Framework.Service.Security
+namespace SPPC.Framework.Cryptography
 {
     /// <summary>
     /// Provides cryptographic operations required for protecting sensitive data using relatively strong
@@ -28,6 +29,7 @@ namespace SPPC.Framework.Service.Security
         /// <returns>SHA256 hash of given data</returns>
         public byte[] CreateHash(byte[] data)
         {
+            Verify.ArgumentNotNullOrEmpty(data, nameof(data));
             using (var sha256 = SHA256.Create())
             {
                 return sha256.ComputeHash(data);
@@ -77,6 +79,8 @@ namespace SPPC.Framework.Service.Security
         /// <returns>String representation of encrypted data</returns>
         public string Encrypt(string data)
         {
+            Verify.ArgumentNotNullOrEmptyString(data, nameof(data));
+
             byte[] cipher;
             byte[] wrappedCipher;
             using (Aes aes = Aes.Create())
@@ -108,6 +112,8 @@ namespace SPPC.Framework.Service.Security
         /// <returns>Original data retrieved from encrypted form</returns>
         public string Decrypt(string cipher)
         {
+            Verify.ArgumentNotNullOrEmptyString(cipher, nameof(cipher));
+
             byte[] key, iv;
             byte[] cipherBytes = Transform.FromBase64String(cipher);
             byte[] unwrappedCipher = UnwrapCipher(cipherBytes, out key, out iv);
