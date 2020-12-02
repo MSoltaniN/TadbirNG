@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using BabakSoft.Platform.Data;
 using SPPC.Framework.Cryptography;
@@ -8,6 +9,11 @@ namespace SPPC.Licensing.Persistence
 {
     public class LicenseRepository
     {
+        public LicenseRepository()
+        {
+            _connection = ConfigurationManager.ConnectionStrings["LicenseDb"].ConnectionString;
+        }
+
         #region Customer Operations
 
         public int InsertCustomer(CustomerModel customer)
@@ -173,6 +179,6 @@ WHERE LicenseKey = '{0}'", licenseKey);
             return Convert.ToBase64String(secret);
         }
 
-        private readonly string _connection = @"Server=(localdb)\MSSQLLocalDB;Database=NGLicense;Trusted_Connection=True";
+        private readonly string _connection;
     }
 }

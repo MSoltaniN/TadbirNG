@@ -176,10 +176,10 @@ namespace SPPC.Tools.TadbirActivator
             };
 
             var manager = new CertificateManager();
-            _certificate = manager.GetFromStore(_issuerName);
+            _certificate = manager.GetFromStore(Constants.IssuerName);
             if (_certificate == null)
             {
-                _certificate = manager.GenerateSelfSigned(_issuerName, _subjectName);
+                _certificate = manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
             }
 
             activation.ClientKey = Convert.ToBase64String(_certificate.GetPublicKey());
@@ -208,8 +208,6 @@ namespace SPPC.Tools.TadbirActivator
             File.WriteAllBytes(path, certificateBytes);
         }
 
-        private readonly string _issuerName = "CN=Tadbir Licensing CA";
-        private readonly string _subjectName = "CN=Tadbir";
         private readonly string _serverUrl = "http://localhost:1447";
         private X509Certificate2 _certificate;
     }

@@ -9,7 +9,8 @@ namespace SPPC.Licensing.Model
         {
         }
 
-        public const string SubjectName = "CN=Tadbir Licensing CA";
+        public const string IssuerName = "CN=Tadbir Licensing CA";
+        public const string SubjectName = "CN=Tadbir";
         public const string CertificateFile = "tadbir.pfx";
         public const string LicenseFile = "tadbir.lic";
         public const string InstanceHeaderName = "X-Tadbir-Instance";

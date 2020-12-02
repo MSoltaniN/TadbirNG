@@ -103,7 +103,10 @@ namespace SPPC.Licensing.Local.Persistence
             string uniqueId = String.Empty;
             var items = new string[]
             {
-                GetProcessorId(), GetVolumeSerial(), GetMainBoardSerial(), GetFirstMacAddress()
+                GetProcessorId(),
+                GetVolumeSerial(),
+                GetMainBoardSerial(),
+                GetFirstMacAddress()
             };
 
             if (items.Length > 0)
