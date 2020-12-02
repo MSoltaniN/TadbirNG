@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1267
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tools.LicenseManager", "SPPC.Tools.LicenseManager\SPPC.Tools.LicenseManager.csproj", "{B6BC1ACC-744E-49ED-8208-AABCC474C832}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Licensing.Local.Web", "SPPC.Licensing.Local.Web\SPPC.Licensing.Local.Web.csproj", "{AE3F8F2B-F5F7-4AB1-B7C3-95C441D30886}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Licensing.Web", "SPPC.Licensing.Web\SPPC.Licensing.Web.csproj", "{7839D130-E5A2-45DE-8874-8CECC962588D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Framework.Cryptography", "SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj", "{A6F88800-173B-407B-B3BD-9BBCB0F5ADF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tools.TadbirActivator", "SPPC.Tools.TadbirActivator\SPPC.Tools.TadbirActivator.csproj", "{76867A6A-6F1A-4C43-8D10-CA05E8E5FCC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Licensing.Model", "SPPC.Licensing.Model\SPPC.Licensing.Model.csproj", "{A28B5298-308F-4EDB-8C46-ED1A82B40F9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Licensing.Persistence", "SPPC.Licensing.Persistence\SPPC.Licensing.Persistence.csproj", "{59E80763-F216-4FF2-8C45-78C027750026}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackEnd", "BackEnd", "{1684867B-1087-4581-9261-0E31E4DCAD11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrossCutting", "CrossCutting", "{85E2566E-3A1E-479D-8BE4-682383FCBAAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{9CFB1892-1F91-4C0F-9442-70E9DA26F2F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Licensing.Local.Persistence", "SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj", "{C61AE91D-386C-4CA8-914E-135752C86E79}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6BC1ACC-744E-49ED-8208-AABCC474C832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6BC1ACC-744E-49ED-8208-AABCC474C832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6BC1ACC-744E-49ED-8208-AABCC474C832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6BC1ACC-744E-49ED-8208-AABCC474C832}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE3F8F2B-F5F7-4AB1-B7C3-95C441D30886}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE3F8F2B-F5F7-4AB1-B7C3-95C441D30886}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE3F8F2B-F5F7-4AB1-B7C3-95C441D30886}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE3F8F2B-F5F7-4AB1-B7C3-95C441D30886}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7839D130-E5A2-45DE-8874-8CECC962588D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7839D130-E5A2-45DE-8874-8CECC962588D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7839D130-E5A2-45DE-8874-8CECC962588D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7839D130-E5A2-45DE-8874-8CECC962588D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F88800-173B-407B-B3BD-9BBCB0F5ADF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F88800-173B-407B-B3BD-9BBCB0F5ADF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F88800-173B-407B-B3BD-9BBCB0F5ADF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F88800-173B-407B-B3BD-9BBCB0F5ADF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76867A6A-6F1A-4C43-8D10-CA05E8E5FCC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76867A6A-6F1A-4C43-8D10-CA05E8E5FCC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76867A6A-6F1A-4C43-8D10-CA05E8E5FCC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76867A6A-6F1A-4C43-8D10-CA05E8E5FCC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A28B5298-308F-4EDB-8C46-ED1A82B40F9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A28B5298-308F-4EDB-8C46-ED1A82B40F9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A28B5298-308F-4EDB-8C46-ED1A82B40F9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A28B5298-308F-4EDB-8C46-ED1A82B40F9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59E80763-F216-4FF2-8C45-78C027750026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59E80763-F216-4FF2-8C45-78C027750026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59E80763-F216-4FF2-8C45-78C027750026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59E80763-F216-4FF2-8C45-78C027750026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C61AE91D-386C-4CA8-914E-135752C86E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C61AE91D-386C-4CA8-914E-135752C86E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C61AE91D-386C-4CA8-914E-135752C86E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C61AE91D-386C-4CA8-914E-135752C86E79}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B6BC1ACC-744E-49ED-8208-AABCC474C832} = {9CFB1892-1F91-4C0F-9442-70E9DA26F2F0}
+		{AE3F8F2B-F5F7-4AB1-B7C3-95C441D30886} = {1684867B-1087-4581-9261-0E31E4DCAD11}
+		{7839D130-E5A2-45DE-8874-8CECC962588D} = {1684867B-1087-4581-9261-0E31E4DCAD11}
+		{A6F88800-173B-407B-B3BD-9BBCB0F5ADF8} = {85E2566E-3A1E-479D-8BE4-682383FCBAAA}
+		{76867A6A-6F1A-4C43-8D10-CA05E8E5FCC5} = {9CFB1892-1F91-4C0F-9442-70E9DA26F2F0}
+		{A28B5298-308F-4EDB-8C46-ED1A82B40F9C} = {85E2566E-3A1E-479D-8BE4-682383FCBAAA}
+		{59E80763-F216-4FF2-8C45-78C027750026} = {1684867B-1087-4581-9261-0E31E4DCAD11}
+		{C61AE91D-386C-4CA8-914E-135752C86E79} = {1684867B-1087-4581-9261-0E31E4DCAD11}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68BED23F-5C7F-4C65-B421-5AA80D3CD18C}
+	EndGlobalSection
+EndGlobal
