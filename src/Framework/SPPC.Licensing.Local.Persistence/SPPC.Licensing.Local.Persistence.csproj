@@ -53,6 +53,10 @@
       <Project>{a6f88800-173b-407b-b3bd-9bbcb0f5adf8}</Project>
       <Name>SPPC.Framework.Cryptography</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{10A16ED5-F293-471C-8790-73122CFA1E56}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj">
       <Project>{8cc522e7-d132-4ede-b5dd-eb80b6e65405}</Project>
       <Name>SPPC.Licensing.Model</Name>

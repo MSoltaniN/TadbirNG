@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Framework.Service.Security
+namespace SPPC.Framework.Cryptography
 {
     /// <summary>
     /// Defines cryptographic operations required for protecting sensitive data.

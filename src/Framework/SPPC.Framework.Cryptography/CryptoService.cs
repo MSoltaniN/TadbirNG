@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using SPPC.Framework.Common;
-using SPPC.Framework.Service.Security;
 
 namespace SPPC.Framework.Cryptography
 {

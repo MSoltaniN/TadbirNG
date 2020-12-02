@@ -3,7 +3,7 @@ using System.Linq;
 using AutoMapper;
 using Moq;
 using NUnit.Framework;
-using SPPC.Framework.Service.Security;
+using SPPC.Framework.Cryptography;
 
 namespace SPPC.Tadbir.Mapper.Tests
 {

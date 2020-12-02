@@ -2,17 +2,20 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Cryptography;
+using SPPC.Licensing.Interfaces;
 using SPPC.Licensing.Model;
-using SPPC.Licensing.Persistence;
 
 namespace SPPC.Licensing.Web.Controllers
 {
     [Produces("application/json")]
     public class LicenseController : Controller
     {
-        public LicenseController()
+        public LicenseController(ILicenseRepository repository, ILicenseUtility utility,
+            IEncodedSerializer serializer)
         {
-            _repository = new LicenseRepository();
+            _repository = repository;
+            _utility = utility;
+            _serializer = serializer;
         }
 
         // GET: api/license
@@ -20,9 +23,8 @@ namespace SPPC.Licensing.Web.Controllers
         [Route("license")]
         public IActionResult GetAppLicense()
         {
-            var licenseCheck = GetLicenseCheckData();
-            _utility = new LicenseUtility(licenseCheck);
-            var result = GetValidationResult(licenseCheck, out bool succeeded);
+            _utility.LicenseCheck = GetLicenseCheckData();
+            var result = GetValidationResult(_utility.LicenseCheck, out bool succeeded);
             if (!succeeded)
             {
                 return result;
@@ -71,8 +73,7 @@ namespace SPPC.Licensing.Web.Controllers
             var header = Request.Headers[Constants.LicenseCheckHeaderName];
             if (!String.IsNullOrEmpty(header))
             {
-                var serializer = new JsonSerializer();
-                licenseCheck = serializer.Deserialize<LicenseCheckModel>(header);
+                _serializer.Deserialize<LicenseCheckModel>(header);
             }
 
             return licenseCheck;
@@ -106,7 +107,8 @@ namespace SPPC.Licensing.Web.Controllers
             return Ok();
         }
 
-        private readonly LicenseRepository _repository;
-        private LicenseUtility _utility;
+        private readonly ILicenseRepository _repository;
+        private readonly ILicenseUtility _utility;
+        private readonly IEncodedSerializer _serializer;
     }
 }

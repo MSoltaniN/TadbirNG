@@ -5,7 +5,7 @@ using SPPC.Framework.Helpers;
 
 namespace SPPC.Framework.Cryptography
 {
-    public class JsonSerializer
+    public class JsonSerializer : IEncodedSerializer
     {
         public string Serialize<T>(T data)
         {

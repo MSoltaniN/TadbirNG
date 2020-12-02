@@ -3,11 +3,12 @@ using System.Configuration;
 using System.Data;
 using BabakSoft.Platform.Data;
 using SPPC.Framework.Cryptography;
+using SPPC.Licensing.Interfaces;
 using SPPC.Licensing.Model;
 
 namespace SPPC.Licensing.Persistence
 {
-    public class LicenseRepository
+    public class LicenseRepository : ILicenseRepository
     {
         public LicenseRepository()
         {

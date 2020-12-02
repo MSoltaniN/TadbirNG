@@ -16,7 +16,7 @@ using Org.BouncyCastle.X509;
 
 namespace SPPC.Framework.Cryptography
 {
-    public class CertificateManager
+    public class CertificateManager : ICertificateManager
     {
         public CertificateManager()
         {
@@ -32,7 +32,40 @@ namespace SPPC.Framework.Cryptography
             return selfSigned;
         }
 
-        public X509Certificate2 GenerateRoot(string subjectName, ref AsymmetricKeyParameter CaPrivateKey)
+        public void AddToStore(X509Certificate2 cert, StoreName st, StoreLocation sl)
+        {
+            try
+            {
+                X509Store store = new X509Store(st, sl);
+                store.Open(OpenFlags.ReadWrite);
+                store.Add(cert);
+                store.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("{0}ERROR: Could not add certificate to store {1} in {2}.",
+                    Environment.NewLine, st.ToString(), sl.ToString());
+                Console.WriteLine("Reason : {0}", ex.Message);
+            }
+        }
+
+        public X509Certificate2 GetFromStore(string issuerName)
+        {
+            var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadOnly);
+            var foundItems = store.Certificates.Find(X509FindType.FindByIssuerDistinguishedName, issuerName, true);
+            return foundItems.Count > 0
+                ? foundItems[0]
+                : null;
+        }
+
+        public X509Certificate2 GetFromFile(string path, string password)
+        {
+            var rawData = File.ReadAllBytes(path);
+            return new X509Certificate2(rawData, password);
+        }
+
+        private X509Certificate2 GenerateRoot(string subjectName, ref AsymmetricKeyParameter CaPrivateKey)
         {
             const int keyStrength = 2048;
 
@@ -87,39 +120,6 @@ namespace SPPC.Framework.Cryptography
             CaPrivateKey = issuerKeyPair.Private;
 
             return x509;
-        }
-
-        public void AddToStore(X509Certificate2 cert, StoreName st, StoreLocation sl)
-        {
-            try
-            {
-                X509Store store = new X509Store(st, sl);
-                store.Open(OpenFlags.ReadWrite);
-                store.Add(cert);
-                store.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("{0}ERROR: Could not add certificate to store {1} in {2}.",
-                    Environment.NewLine, st.ToString(), sl.ToString());
-                Console.WriteLine("Reason : {0}", ex.Message);
-            }
-        }
-
-        public X509Certificate2 GetFromStore(string issuerName)
-        {
-            var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-            store.Open(OpenFlags.ReadOnly);
-            var foundItems = store.Certificates.Find(X509FindType.FindByIssuerDistinguishedName, issuerName, true);
-            return foundItems.Count > 0
-                ? foundItems[0]
-                : null;
-        }
-
-        public X509Certificate2 GetFromFile(string path, string password)
-        {
-            var rawData = File.ReadAllBytes(path);
-            return new X509Certificate2(rawData, password);
         }
 
         private X509Certificate2 GenerateSelfSigned(
@@ -195,7 +195,6 @@ namespace SPPC.Framework.Cryptography
 
             x509.PrivateKey = DotNetUtilities.ToRSA(rsaparams);
             return x509;
-
         }
     }
 }

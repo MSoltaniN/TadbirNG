@@ -3,17 +3,20 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Cryptography;
+using SPPC.Licensing.Interfaces;
 using SPPC.Licensing.Model;
 
 namespace SPPC.Licensing.Persistence
 {
-    public class LicenseUtility
+    public class LicenseUtility : ILicenseUtility
     {
-        public LicenseUtility(LicenseCheckModel licenseCheck)
+        public LicenseUtility(ILicenseRepository repository, IDigitalSigner signer)
         {
-            _licenseCheck = licenseCheck;
-            _repository = new LicenseRepository();
+            _repository = repository;
+            _signer = signer;
         }
+
+        public LicenseCheckModel LicenseCheck { get; set; }
 
         public LicenseStatus ValidateLicense()
         {
@@ -44,26 +47,25 @@ namespace SPPC.Licensing.Persistence
 
         public string GetActiveLicense()
         {
+            _signer.Certificate = _certificate;
             ResetLicense();
-            var serializer = new JsonSerializer();
             var json = JsonHelper.From(_license);
             var license = Encoding.UTF8.GetBytes(json);
-            var signer = new DigitalSigner(_certificate);
-            return signer.SignData(license);
+            return _signer.SignData(license);
         }
 
         private bool EnsureLicenseExists()
         {
             _license = _repository.GetLicense(
-                _licenseCheck.InstanceKey.LicenseKey, _licenseCheck.InstanceKey.CustomerKey);
+                LicenseCheck.InstanceKey.LicenseKey, LicenseCheck.InstanceKey.CustomerKey);
             return _license != null;
         }
 
         private bool EnsureCertificateExists()
         {
-            if (!String.IsNullOrEmpty(_licenseCheck.Certificate))
+            if (!String.IsNullOrEmpty(LicenseCheck.Certificate))
             {
-                var rawData = Convert.FromBase64String(_licenseCheck.Certificate);
+                var rawData = Convert.FromBase64String(LicenseCheck.Certificate);
                 _certificate = new X509Certificate2(rawData, _license.Secret);
             }
 
@@ -78,7 +80,7 @@ namespace SPPC.Licensing.Persistence
 
         private bool EnsureRunsOnOriginalHardware()
         {
-            return String.Compare(_license.HardwareKey, _licenseCheck.HardwardKey) == 0;
+            return String.Compare(_license.HardwareKey, LicenseCheck.HardwardKey) == 0;
         }
 
         private bool EnsureLicenseNotExpired()
@@ -96,9 +98,9 @@ namespace SPPC.Licensing.Persistence
             _license.InstanceKey = null;
         }
 
+        private readonly ILicenseRepository _repository;
+        private readonly IDigitalSigner _signer;
         private LicenseModel _license;
         private X509Certificate2 _certificate;
-        private readonly LicenseCheckModel _licenseCheck;
-        private readonly LicenseRepository _repository;
     }
 }
