@@ -1,17 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using SPPC.Framework.Common;
-using SPPC.Framework.Cryptography;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -30,6 +29,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
         public AuthorizeRequestAttribute()
         {
             _contextDecoder = new Base64Encoder<SecurityContext>();
+            _utility = LicenseUtility.CreateDefault();
         }
 
         /// <summary>
@@ -38,9 +38,9 @@ namespace SPPC.Tadbir.Web.Api.Filters
         /// <param name="entity">موجودیت محافظت شده ای که مجوزدهی امنیتی باید برای آن انجام شود</param>
         /// <param name="permission">دسترسی امنیتی مورد نیاز برای ادامه عملیات</param>
         public AuthorizeRequestAttribute(string entity, int permission)
+            : this()
         {
             Verify.ArgumentNotNullOrWhitespace(entity, "entity");
-            _contextDecoder = new Base64Encoder<SecurityContext>();
             _requiredPermissions = new PermissionBriefViewModel[]
             {
                 new PermissionBriefViewModel(entity, permission)
@@ -128,27 +128,17 @@ namespace SPPC.Tadbir.Web.Api.Filters
             if (headers[AppConstants.LicenseHeaderName] != StringValues.Empty)
             {
                 signature = headers[AppConstants.LicenseHeaderName].First();
-                var license = Encoding.UTF8.GetBytes(File.ReadAllText(_licensePath, Encoding.UTF8));
-                var signer = new DigitalSigner(LoadCertificate());
-                validated = signer.VerifyData(license, signature);
+                string license = File.ReadAllText(_licensePath, Encoding.UTF8);
+                _utility.LicensePath = Path.Combine(_serverRoot, Constants.LicenseFile);
+                validated = _utility.ValidateSignature(license, signature);
             }
 
             return validated;
         }
 
-        private X509Certificate2 LoadCertificate()
-        {
-            string serverLicensePath = Path.Combine(_serverRoot, Constants.LicenseFile);
-            string certificatePath = Path.Combine(_serverRoot, Constants.CertificateFile);
-            var utility = new LicenseUtility();
-            string licenseData = File.ReadAllText(serverLicensePath);
-            var license = utility.LoadLicense(licenseData);
-            var manager = new CertificateManager();
-            return manager.GetFromFile(certificatePath, license.Secret);
-        }
-
         private readonly PermissionBriefViewModel[] _requiredPermissions;
         private readonly ITextEncoder<SecurityContext> _contextDecoder;
+        private readonly ILicenseUtility _utility;
         private readonly string _licensePath = @"..\..\..\wwwroot\static\license";
         private readonly string _serverRoot = @"..\..\..\..\SPPC.Licensing.Local.Web\wwwroot";
     }

@@ -201,7 +201,7 @@ namespace SPPC.Tools.TadbirActivator
 
         private void ExportCertificate(string root, string licenseData)
         {
-            var utility = new LicenseUtility();
+            var utility = LicenseUtility.CreateDefault();
             string path = Path.Combine(root, Constants.CertificateFile);
             var license = utility.LoadLicense(licenseData);
             var certificateBytes = _certificate.Export(X509ContentType.Pkcs12, license.Secret);

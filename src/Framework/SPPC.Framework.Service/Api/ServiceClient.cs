@@ -24,8 +24,8 @@ namespace SPPC.Framework.Service
         /// </remarks>
         public ServiceClient()
         {
-            var root = "http://localhost:8801/";  // Temporarily hard-coded
-            _httpClient = new HttpClient() { BaseAddress = new Uri(root), Timeout = Timeout.InfiniteTimeSpan };
+            ServiceRoot = "http://localhost:8801/";  // Temporarily hard-coded
+            _httpClient = new HttpClient() { BaseAddress = new Uri(ServiceRoot), Timeout = Timeout.InfiniteTimeSpan };
         }
 
         /// <summary>
@@ -39,11 +39,17 @@ namespace SPPC.Framework.Service
         public ServiceClient(string root)
         {
             Verify.ArgumentNotNullOrEmptyString(root, nameof(root));
+            ServiceRoot = root;
             _httpClient = new HttpClient() { BaseAddress = new Uri(root), Timeout = Timeout.InfiniteTimeSpan };
         }
 
         /// <summary>
-        /// Adds an HTTP header specified by name and value to all requests
+        /// Gets or sets the URL for API service
+        /// </summary>
+        public string ServiceRoot { get; set; }
+
+        /// <summary>
+        /// Adds a single-valued HTTP header specified by name and value to all requests
         /// </summary>
         /// <param name="name">Name of header to add</param>
         /// <param name="value">Single value to set in added header</param>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Cryptography;
 using SPPC.Licensing.Interfaces;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Api;
 
 namespace SPPC.Licensing.Web.Controllers
 {
@@ -20,7 +21,7 @@ namespace SPPC.Licensing.Web.Controllers
 
         // GET: api/license
         [HttpGet]
-        [Route("license")]
+        [Route(LicenseApi.LicenseUrl)]
         public IActionResult GetAppLicense()
         {
             _utility.LicenseCheck = GetLicenseCheckData();
@@ -36,7 +37,7 @@ namespace SPPC.Licensing.Web.Controllers
 
         // PUT: api/license/activate
         [HttpPut]
-        [Route("license/activate")]
+        [Route(LicenseApi.ActivateLicenseUrl)]
         public IActionResult PutLicenseAsActivated([FromBody] ActivationModel activation)
         {
             if (activation == null)

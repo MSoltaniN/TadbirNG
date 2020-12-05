@@ -106,6 +106,10 @@
       <Project>{a28b5298-308f-4edb-8c46-ed1a82b40f9c}</Project>
       <Name>SPPC.Licensing.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
+      <Project>{d1f6c20d-75c8-4b50-b4c3-4a695158b45e}</Project>
+      <Name>SPPC.Tadbir.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

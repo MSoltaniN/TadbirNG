@@ -5,28 +5,34 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Service;
-using SPPC.Licensing.Local.Persistence;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Licensing.Local.Web.Controllers
 {
     [Produces("application/json")]
     public class LicenseController : Controller
     {
-        public LicenseController(IHostingEnvironment host)
+        public LicenseController(IHostingEnvironment host, IEncodedSerializer serializer,
+            ILicenseUtility utility, IApiClient apiClient)
         {
             _host = host;
+            _serializer = serializer;
+            _utility = utility;
+            _apiClient = apiClient;
+
+            _utility.LicensePath = Path.Combine(_host.WebRootPath, Constants.LicenseFile);
+            _apiClient.ServiceRoot = _serverRoot;
         }
 
         // GET: api/license
         [HttpGet]
-        [Route("license")]
+        [Route(LicenseApi.LicenseUrl)]
         public IActionResult GetAppLicense()
         {
-            var instance = GetInstance();
-            string licensePath = Path.Combine(_host.WebRootPath, Constants.LicenseFile);
-            _utility = new LicenseUtility(licensePath, instance);
-            var result = GetValidationResult(instance, out bool succeeded);
+            _utility.Instance = GetInstance();
+            var result = GetValidationResult(_utility.Instance, out bool succeeded);
             if (!succeeded)
             {
                 return result;
@@ -38,30 +44,26 @@ namespace SPPC.Licensing.Local.Web.Controllers
 
         // GET: api/license/online
         [HttpGet]
-        [Route("license/online")]
+        [Route(LicenseApi.OnlineLicenseUrl)]
         public IActionResult GetOnlineAppLicense()
         {
-            var instance = GetInstance();
-            string licensePath = Path.Combine(_host.WebRootPath, Constants.LicenseFile);
-            _utility = new LicenseUtility(licensePath, instance);
-            var result = GetQuickValidationResult(instance, out bool succeeded);
+            _utility.Instance = GetInstance();
+            var result = GetQuickValidationResult(_utility.Instance, out bool succeeded);
             if (!succeeded)
             {
                 return result;
             }
 
-            var licenseCheck = GetLicenseCheck(instance);
-            var serviceClient = new ServiceClient(_serverRoot);
-            serviceClient.AddHeader(Constants.LicenseCheckHeaderName, GetLicenseCheckData(licenseCheck));
-            var signature = serviceClient.Get<string>("license");
+            var licenseCheck = GetLicenseCheck(_utility.Instance);
+            _apiClient.AddHeader(Constants.LicenseCheckHeaderName, GetLicenseCheckData(licenseCheck));
+            var signature = _apiClient.Get<string>(LicenseApi.License);
             Response.Headers.Add(Constants.LicenseHeaderName, signature);
             return Ok();
         }
 
-        private static string GetLicenseCheckData(LicenseCheckModel licenseCheck)
+        private string GetLicenseCheckData(LicenseCheckModel licenseCheck)
         {
-            var serializer = new JsonSerializer();
-            return serializer.Serialize(licenseCheck);
+            return _serializer.Serialize(licenseCheck);
         }
 
         private IActionResult GetValidationResult(InstanceModel instance, out bool succeeded)
@@ -145,15 +147,16 @@ namespace SPPC.Licensing.Local.Web.Controllers
             var header = Request.Headers[Constants.InstanceHeaderName];
             if (!String.IsNullOrEmpty(header))
             {
-                var serializer = new JsonSerializer();
-                instance = serializer.Deserialize<InstanceModel>(header);
+                instance = _serializer.Deserialize<InstanceModel>(header);
             }
 
             return instance;
         }
 
         private readonly IHostingEnvironment _host;
+        private readonly IEncodedSerializer _serializer;
+        private readonly ILicenseUtility _utility;
+        private readonly IApiClient _apiClient;
         private readonly string _serverRoot = "http://localhost:1447";
-        private LicenseUtility _utility;
     }
 }

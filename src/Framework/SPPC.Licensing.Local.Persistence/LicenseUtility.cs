@@ -2,22 +2,34 @@
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Licensing.Local.Persistence
 {
-    public class LicenseUtility
+    public class LicenseUtility : ILicenseUtility
     {
-        public LicenseUtility()
+        public LicenseUtility(ICryptoService crypto, IDigitalSigner signer,
+            IEncodedSerializer serializer, ICertificateManager manager)
         {
+            _crypto = crypto;
+            _signer = signer;
+            _serializer = serializer;
+            _manager = manager;
         }
 
-        public LicenseUtility(string licensePath, InstanceModel instance)
+        public string LicensePath { get; set; }
+
+        public InstanceModel Instance { get; set; }
+
+        public static ILicenseUtility CreateDefault()
         {
-            _licensePath = licensePath;
-            _instance = instance;
+            var crypto = new CryptoService();
+            return new LicenseUtility(
+                crypto, new DigitalSigner(crypto), new JsonSerializer(), new CertificateManager());
         }
 
         public LicenseStatus ValidateLicense()
@@ -67,7 +79,7 @@ namespace SPPC.Licensing.Local.Persistence
                 status = LicenseStatus.Corrupt;
             }
 
-            string root = Path.GetDirectoryName(_licensePath);
+            string root = Path.GetDirectoryName(LicensePath);
             string certificatePath = Path.Combine(root, Constants.CertificateFile);
             if (!File.Exists(certificatePath))
             {
@@ -77,32 +89,41 @@ namespace SPPC.Licensing.Local.Persistence
             return status;
         }
 
+        public bool ValidateSignature(string apiLicense, string signature)
+        {
+            Verify.ArgumentNotNullOrEmptyString(apiLicense, nameof(apiLicense));
+            Verify.ArgumentNotNullOrEmptyString(signature, nameof(signature));
+            byte[] apiLicenseBytes = Encoding.UTF8.GetBytes(apiLicense);
+            string licenseData = File.ReadAllText(LicensePath, Encoding.UTF8);
+            _license = LoadLicense(licenseData);
+            _signer.Certificate = LoadCerificate();
+            return _signer.VerifyData(apiLicenseBytes, signature);
+        }
+
         public string GetActiveLicense()
         {
-            var signer = new DigitalSigner(LoadCerificate());
+            _signer.Certificate = _certificate;
             ResetLicense();
             string license = JsonHelper.From(_license);
             var licenseBytes = Encoding.UTF8.GetBytes(license);
-            return signer.SignData(licenseBytes);
+            return _signer.SignData(licenseBytes);
         }
 
         public LicenseModel LoadLicense(string licenseData)
         {
-            var serializer = new JsonSerializer();
-            var crypto = new CryptoService();
-            var base64 = crypto.Decrypt(licenseData);
-            return serializer.Deserialize<LicenseModel>(base64);
+            var base64 = _crypto.Decrypt(licenseData);
+            return _serializer.Deserialize<LicenseModel>(base64);
         }
 
         private bool EnsureLicenseExists()
         {
-            return File.Exists(_licensePath);
+            return File.Exists(LicensePath);
         }
 
         private bool EnsureLicenseNotCorrupt()
         {
             bool isCorrupt = false;
-            string licenseData = File.ReadAllText(_licensePath);
+            string licenseData = File.ReadAllText(LicensePath);
             if (!String.IsNullOrEmpty(licenseData))
             {
                 try
@@ -142,7 +163,7 @@ namespace SPPC.Licensing.Local.Persistence
 
         private bool EnsureInstanceIsValid()
         {
-            return _license.InstanceKey.Equals(_instance);
+            return _license.InstanceKey.Equals(Instance);
         }
 
         private bool EnsureLicenseNotExpired()
@@ -162,14 +183,15 @@ namespace SPPC.Licensing.Local.Persistence
 
         private X509Certificate2 LoadCerificate()
         {
-            string root = Path.GetDirectoryName(_licensePath);
+            string root = Path.GetDirectoryName(LicensePath);
             string certificatePath = Path.Combine(root, Constants.CertificateFile);
-            var manager = new CertificateManager();
-            return manager.GetFromFile(certificatePath, _license.Secret);
+            return _manager.GetFromFile(certificatePath, _license.Secret);
         }
 
-        private readonly string _licensePath;
-        private readonly InstanceModel _instance;
+        private readonly ICryptoService _crypto;
+        private readonly IDigitalSigner _signer;
+        private readonly IEncodedSerializer _serializer;
+        private readonly ICertificateManager _manager;
         private LicenseModel _license;
         private X509Certificate2 _certificate;
     }
