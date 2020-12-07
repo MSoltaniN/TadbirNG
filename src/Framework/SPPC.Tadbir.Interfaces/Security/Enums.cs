@@ -480,6 +480,120 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به اسناد پیش نویس را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum DraftVoucherPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اسناد پیش نویس
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده اسناد پیش نویس
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد سند پیش نویس
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی اصلاح سند پیش نویس
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف سند پیش نویس
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی چاپ اسناد پیش نویس
+        /// </summary>
+        Print = 0x10,
+
+        /// <summary>
+        /// دسترسی ایجاد آرتیکل مالی
+        /// </summary>
+        CreateLine = 0x20,
+
+        /// <summary>
+        /// دسترسی اصلاح آرتیکل مالی
+        /// </summary>
+        EditLine = 0x40,
+
+        /// <summary>
+        /// دسترسی حذف آرتیکل مالی
+        /// </summary>
+        DeleteLine = 0x80,
+
+        /// <summary>
+        /// دسترسی ثبت سند پیش نویس
+        /// </summary>
+        Check = 0x100,
+
+        /// <summary>
+        /// دسترسی برگشت از ثبت سند پیش نویس
+        /// </summary>
+        UndoCheck = 0x200,
+
+        /// <summary>
+        /// دسترسی حرکت روی اسناد پیش نویس
+        /// </summary>
+        Navigate = 0x400,
+
+        /// <summary>
+        /// کلیه دسترسی های تعریف شده برای اسناد پیش نویس
+        /// </summary>
+        All = 0x7ff
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به فرم مدیریت اسناد پیش نویس را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum ManageDraftVouchersPermissions
+    {
+        /// <summary>
+        /// دسترسی مشاهده اسناد پیش نویس
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر اسناد پیش نویس
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ اسناد پیش نویس
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات اسناد پیش نویس
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ثبت گروهی اسناد پیش نویس
+        /// </summary>
+        GroupCheck = 0x10,
+
+        /// <summary>
+        /// دسترسی برگشت از ثبت گروهی اسناد پیش نویس
+        /// </summary>
+        GroupUndoCheck = 0x20,
+
+        /// <summary>
+        /// کلیه دسترسی های تعریف شده برای فرم مدیریت اسناد حسابداری
+        /// </summary>
+        All = 0x3f,
+    }
+
+    /// <summary>
     /// فلگ های تعریف شده برای دسترسی های امنیتی به شعب سازمانی را تعریف می کند
     /// </summary>
     [Flags]

@@ -282,6 +282,90 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string ClosingVoucherUrl = "vouchers/closing";
 
+        #region Voucher Resources - Draft
+
+        /// <summary>
+        /// API client URL for all draft vouchers defined in current environment
+        /// </summary>
+        public const string EnvironmentDraftVouchers = "vouchers/draft";
+
+        /// <summary>
+        /// API server route URL for all draft vouchers defined in current environment
+        /// </summary>
+        public const string EnvironmentDraftVouchersUrl = "vouchers/draft";
+
+        /// <summary>
+        /// API client URL for a single draft voucher specified by identifier
+        /// </summary>
+        public const string DraftVoucher = "vouchers/draft/{0}";
+
+        /// <summary>
+        /// API server route URL for a single draft voucher specified by identifier
+        /// </summary>
+        public const string DraftVoucherUrl = "vouchers/draft/{voucherId:min(1)}";
+
+        /// <summary>
+        /// API client URL for a newly initialized and saved draft voucher
+        /// </summary>
+        public const string NewDraftVoucher = "vouchers/draft/new";
+
+        /// <summary>
+        /// API server route URL for a newly initialized and saved draft voucher
+        /// </summary>
+        public const string NewDraftVoucherUrl = "vouchers/draft/new";
+
+        /// <summary>
+        /// API client URL for a single draft voucher specified by number
+        /// </summary>
+        public const string DraftVoucherByNo = "vouchers/draft/by-no/{0}";
+
+        /// <summary>
+        /// API server route URL for a single draft voucher specified by number
+        /// </summary>
+        public const string DraftVoucherByNoUrl = "vouchers/draft/by-no/{voucherNo:min(1)}";
+
+        /// <summary>
+        /// API client URL for the first draft voucher in current environment
+        /// </summary>
+        public const string FirstDraftVoucher = "vouchers/draft/first";
+
+        /// <summary>
+        /// API server route URL for the first draft voucher in current environment
+        /// </summary>
+        public const string FirstDraftVoucherUrl = "vouchers/draft/first";
+
+        /// <summary>
+        /// API client URL for previous draft voucher in current environment
+        /// </summary>
+        public const string PreviousDraftVoucher = "vouchers/draft/{0}/previous";
+
+        /// <summary>
+        /// API server route URL for previous draft voucher in current environment
+        /// </summary>
+        public const string PreviousDraftVoucherUrl = "vouchers/draft/{voucherNo:min(1)}/previous";
+
+        /// <summary>
+        /// API client URL for next draft voucher in current environment
+        /// </summary>
+        public const string NextDraftVoucher = "vouchers/draft/{0}/next";
+
+        /// <summary>
+        /// API server route URL for next draft voucher in current environment
+        /// </summary>
+        public const string NextDraftVoucherUrl = "vouchers/draft/{voucherNo:min(1)}/next";
+
+        /// <summary>
+        /// API client URL for the last draft voucher in current environment
+        /// </summary>
+        public const string LastDraftVoucher = "vouchers/draft/last";
+
+        /// <summary>
+        /// API server route URL for the last draft voucher in current environment
+        /// </summary>
+        public const string LastDraftVoucherUrl = "vouchers/draft/last";
+
+        #endregion
+
         #region Voucher Operations - Single
 
         /// <summary>

@@ -78,8 +78,9 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، سند مالی جدیدی را با مقادیر پیشنهادی ایجاد کرده و برمی گرداند
         /// </summary>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند جدید که پیش فرض آن سند عادی است</param>
         /// <returns>سند مالی جدید با مقادیر پیشنهادی</returns>
-        public async Task<VoucherViewModel> GetNewVoucherAsync()
+        public async Task<VoucherViewModel> GetNewVoucherAsync(SubjectType subject = SubjectType.Normal)
         {
             int lastNo = await GetLastVoucherNoAsync();
             DateTime lastDate = await GetLastVoucherDateAsync();
@@ -90,7 +91,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = UserContext.BranchId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 Type = (short)VoucherType.NormalVoucher,
-                SubjectType = (short)SubjectType.Normal,
+                SubjectType = (short)subject,
                 SaveCount = 0
             };
 
@@ -103,13 +104,17 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، سند مالی با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherNo">شماره یکی از اسناد مالی موجود</param>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>سند مالی مشخص شده با شماره</returns>
-        public async Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo)
+        public async Task<VoucherViewModel> GetVoucherByNoAsync(
+            int voucherNo, SubjectType subject = SubjectType.Normal)
         {
             var byNo = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var voucherByNo = await repository.GetFirstByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No == voucherNo);
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.No == voucherNo
+                    && v.SubjectType == (short)subject);
             if (voucherByNo != null)
             {
                 byNo = Mapper.Map<VoucherViewModel>(voucherByNo);
@@ -122,14 +127,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اولین سند مالی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>اولین سند مالی</returns>
-        public async Task<VoucherViewModel> GetFirstVoucherAsync()
+        public async Task<VoucherViewModel> GetFirstVoucherAsync(SubjectType subject = SubjectType.Normal)
         {
             var first = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var firstVoucher = await repository
                 .GetEntityQuery()
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.SubjectType == (short)subject)
                 .OrderBy(v => v.No)
                 .FirstOrDefaultAsync();
             if (firstVoucher != null)
@@ -145,14 +152,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>سند مالی قبلی</returns>
-        public async Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo)
+        public async Task<VoucherViewModel> GetPreviousVoucherAsync(
+            int currentNo, SubjectType subject = SubjectType.Normal)
         {
             var previous = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var previousVoucher = await repository
                 .GetEntityQuery()
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No < currentNo)
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.No < currentNo
+                    && v.SubjectType == (short)subject)
                 .OrderByDescending(v => v.No)
                 .FirstOrDefaultAsync();
             if (previousVoucher != null)
@@ -168,14 +179,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات سند مالی بعدی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>سند مالی بعدی</returns>
-        public async Task<VoucherViewModel> GetNextVoucherAsync(int currentNo)
+        public async Task<VoucherViewModel> GetNextVoucherAsync(
+            int currentNo, SubjectType subject = SubjectType.Normal)
         {
             var next = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var nextVoucher = await repository
                 .GetEntityQuery()
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No > currentNo)
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.No > currentNo
+                    && v.SubjectType == (short)subject)
                 .OrderBy(v => v.No)
                 .FirstOrDefaultAsync();
             if (nextVoucher != null)
@@ -190,14 +205,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>آخرین سند مالی</returns>
-        public async Task<VoucherViewModel> GetLastVoucherAsync()
+        public async Task<VoucherViewModel> GetLastVoucherAsync(SubjectType subject = SubjectType.Normal)
         {
             var last = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var lastVoucher = await repository
                 .GetEntityQuery()
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.SubjectType == (short)subject)
                 .OrderByDescending(v => v.No)
                 .FirstOrDefaultAsync();
             if (lastVoucher != null)
@@ -298,7 +315,8 @@ namespace SPPC.Tadbir.Persistence
                 voucher.StatusId = (int)DocumentStatusId.NotChecked;
                 voucher.IssuedById = UserContext.Id;
                 voucher.ModifiedById = UserContext.Id;
-                voucher.IssuerName = voucher.ModifierName = displayName;
+                voucher.IssuerName =
+                    voucher.ModifierName = displayName;
                 await InsertAsync(repository, voucher);
             }
             else
@@ -406,7 +424,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucher.SubjectType == (short)SubjectType.Draft)
             {
                 canSave = voucher.StatusId != (int)DocumentStatusId.Finalized
-                    && !voucher.IsConfirmed;    // checkng IsApproved is redundant here
+                    && !voucher.IsConfirmed;    // checking IsApproved is redundant here
             }
 
             return canSave;
@@ -422,12 +440,12 @@ namespace SPPC.Tadbir.Persistence
             Verify.EnumValueIsDefined(typeof(DocumentStatusId), "status", (int)status);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var voucher = await repository.GetByIDAsync(voucherId);
-            var oldStatusVoucher = (DocumentStatusId)voucher.StatusId;
+            var oldStatus = (DocumentStatusId)voucher.StatusId;
             if (voucher != null)
             {
                 voucher.StatusId = (int)status;
                 repository.Update(voucher);
-                OnDocumentStatus(status, oldStatusVoucher);
+                OnDocumentStatus(status, oldStatus);
                 await FinalizeActionAsync(voucher);
             }
         }
@@ -714,12 +732,13 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private async Task<DateTime> GetLastVoucherDateAsync()
+        private async Task<DateTime> GetLastVoucherDateAsync(SubjectType type = SubjectType.Normal)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var lastByDate = await repository
                 .GetEntityQuery()
-                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && voucher.SubjectType == (short)type)
                 .OrderByDescending(voucher => voucher.Date)
                 .FirstOrDefaultAsync();
             DateTime lastDate;
@@ -737,12 +756,13 @@ namespace SPPC.Tadbir.Persistence
             return lastDate;
         }
 
-        private async Task<int> GetLastVoucherNoAsync()
+        private async Task<int> GetLastVoucherNoAsync(SubjectType type = SubjectType.Normal)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var lastByNo = await repository
                 .GetEntityQuery()
-                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && voucher.SubjectType == (short)type)
                 .OrderByDescending(voucher => voucher.No)
                 .FirstOrDefaultAsync();
             return (lastByNo != null) ? lastByNo.No : 0;
@@ -818,9 +838,13 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             int previousCount = await repository.GetCountByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No < voucher.No);
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.No < voucher.No
+                    && v.SubjectType == voucher.SubjectType);
             int nextCount = await repository.GetCountByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No > voucher.No);
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.No > voucher.No
+                    && v.SubjectType == voucher.SubjectType);
             voucher.HasPrevious = previousCount > 0;
             voucher.HasNext = nextCount > 0;
         }

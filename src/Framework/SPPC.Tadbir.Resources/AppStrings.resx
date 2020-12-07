@@ -3363,4 +3363,19 @@
   <data name="TypeName" xml:space="preserve">
     <value>نوع سند</value>
   </data>
+  <data name="DraftVoucher" xml:space="preserve">
+    <value>سند پیش نویس</value>
+  </data>
+  <data name="DraftVouchers" xml:space="preserve">
+    <value>اسناد مالی پیش نویس</value>
+  </data>
+  <data name="DraftVoucherByNo" xml:space="preserve">
+    <value>سند پیش نویس شماره...</value>
+  </data>
+  <data name="LastDraftVoucher" xml:space="preserve">
+    <value>آخرین سند پیش نویس</value>
+  </data>
+  <data name="NewDraftVoucher" xml:space="preserve">
+    <value>سند پیش نویس جدید</value>
+  </data>
 </root>
