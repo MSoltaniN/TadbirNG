@@ -294,6 +294,7 @@ namespace SPPC.Tadbir.Persistence
                     dynamicColumn.Name = column.Name.Replace("Item", String.Empty);
                     var title = String.Format("{0} - {1}", Context.Localize(dynamicColumn.Name), name);
                     var config = GetDynamicColumnConfig(dynamicColumn, 200);
+                    config.Name = fieldName;
                     config.ExtraSmall.Title =
                         config.Small.Title =
                         config.Medium.Title =

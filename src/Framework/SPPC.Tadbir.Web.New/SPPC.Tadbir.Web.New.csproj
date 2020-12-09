@@ -97,6 +97,7 @@
     <None Remove="ClientApp\src\app\core\index.ts" />
     <None Remove="ClientApp\src\app\finance\index.ts" />
     <None Remove="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
+    <None Remove="ClientApp\src\app\shared\components\reportManagement\reportSettings.component.ts" />
     <None Remove="ClientApp\src\app\shared\directive\persistState\PersistState.ts" />
     <None Remove="ClientApp\src\app\shared\enum\operationId.ts" />
     <None Remove="ClientApp\src\app\shared\index.ts" />
@@ -871,6 +872,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\core\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\reportManagement\reportSettings.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\directive\persistState\persistState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\enum\operationId.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\index.ts" />

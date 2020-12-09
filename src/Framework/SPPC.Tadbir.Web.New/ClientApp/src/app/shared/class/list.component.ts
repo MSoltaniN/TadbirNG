@@ -105,7 +105,7 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   }
 
   public validateReport(parent: any) {
-    if (!parent.rowData || parent.rowData.total == 0) {
+    if (!parent.rowData || (parent.rowData.data.length == 0)) {
       this.showMessage(this.getText("Report.QuickReportValidate"));
       return false;
     }

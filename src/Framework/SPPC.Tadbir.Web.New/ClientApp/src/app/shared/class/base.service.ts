@@ -52,6 +52,63 @@ export class BaseService extends EnviromentComponent{
 
   /**
    * لیست رکوردها بر اساس فیلتر و مرتب سازی
+   * @param apiUrl آدرس‌ کامل api  
+   * @param orderby مرتب سازی
+   * @param filters فیلتر
+   */
+  public getAllForReport(apiUrl: string, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = 1) {
+
+    var sort = new Array<GridOrderBy>();
+    if (orderby && orderby.length > 0) {
+      for (let item of orderby) {
+        sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
+      }
+    }
+    var postItem = { filter: filter, sortColumns: sort, operation: operationId, quickFilter: quickFilter };
+    var searchHeaders = this.httpHeaders;
+    var postBody = JSON.stringify(postItem);
+    var base64Body = btoa(encodeURIComponent(postBody));
+    if (searchHeaders)
+      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+
+    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .map(response => <any>(<HttpResponse<any>>response));
+  }
+
+  /**
+   * لیست رکوردها بر اساس فیلتر و مرتب سازی
+   * @param apiUrl آدرس‌ کامل api  
+   * @param orderby مرتب سازی
+   * @param filters فیلتر
+   */
+  public getAllByParamsForReport(apiUrl: string, params: any,orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = 1) {
+
+    var sort = new Array<GridOrderBy>();
+    if (orderby && orderby.length > 0) {
+      for (let item of orderby) {
+        sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
+      }
+    }
+    var postItem = { filter: filter, sortColumns: sort, operation: operationId, quickFilter: quickFilter };
+    var searchHeaders = this.httpHeaders;
+
+    if (searchHeaders) {
+
+      var postBody = JSON.stringify(postItem);
+      base64Body = btoa(encodeURIComponent(postBody));
+      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+
+      postBody = JSON.stringify(params);
+      var base64Body = btoa(encodeURIComponent(postBody));
+      searchHeaders = searchHeaders.append('X-Tadbir-Parameters', base64Body);
+    }
+
+    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .map(response => <any>(<HttpResponse<any>>response));
+  }
+
+  /**
+   * لیست رکوردها بر اساس فیلتر و مرتب سازی
    * @param apiUrl آدرس‌ کامل api
    * @param start شماره شروع رکورد
    * @param count تعداد رکورد

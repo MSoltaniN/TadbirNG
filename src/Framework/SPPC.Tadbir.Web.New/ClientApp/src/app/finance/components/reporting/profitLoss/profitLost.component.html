@@ -1,16 +1,18 @@
-<view-identifier [ViewID]="viewId">
+<view-identifier [ViewID]="viewId" [IsDynamicColumns]="comparativeSelected" [DynamicMetadata]="gridColumns" >
   <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="true"></report-param>
   <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="true"></report-param>
   <report-param ParamName='VoucherStatus' [ParamValue]="voucherStatusSelected"
                 [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
 </view-identifier>
-
+<report-management [ViewIdentity]="viewIdentity" [ReportSettings.hideVerticalLine]="false" [ReportSettings.hideHorizobtalLine]="false" [Grid]="grid" [Sort]="sort"
+                   [Filter]="currentFilter" [QuickFilter]="reportFilter" [Parameters]="param" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
+<report-setting></report-setting>
 <app-bread-cumb [entityTypeName]="'ProfitLost'"></app-bread-cumb>
 <div class="panel-body">
   <kendo-grid id="{{viewId}}"
               #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
-              [sortable]="{ allowUnsort: false, mode: 'multiple' }"
+              [sortable]="false"
               [sort]="sort"
               [pageSize]="pageSize"
               [skip]="skip"
@@ -52,7 +54,7 @@
       <div class="col-md-12  no-padding no-margin">
         <div class="sppc-float">
           <div>
-            <sppc-dateRangeSelector [viewName]="'testBalance'" [saveStates]="false"  (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+            <sppc-dateRangeSelector [viewName]="'testBalance'" [saveStates]="false" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
           </div>
         </div>
         <div class="pull-left">
@@ -168,7 +170,7 @@
                               [valuePrimitive]="true"
                               [value]="voucherStatusSelected"
                               [(ngModel)]="voucherStatusSelected"
-                               (ngModelChange)="onChangeVoucherStatus()">
+                              (ngModelChange)="onChangeVoucherStatus()">
             <ng-template kendoDropDownListValueTemplate let-dataItem>
               {{ dataItem?.value | translate }}
             </ng-template>
@@ -179,7 +181,7 @@
         </div>
         <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label for="chkProject">
-            <input type="checkbox" name="showFilterByRef" id="showFilterByRef"  class="k-checkbox" (ngModelChange)="onChangeFilterByRef($event)" [(ngModel)]="showFilterByRef" /> {{ 'ProfitLoss.FilterByRef' | translate }}
+            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" (ngModelChange)="onChangeFilterByRef($event)" [(ngModel)]="showFilterByRef" /> {{ 'ProfitLoss.FilterByRef' | translate }}
           </label>
           <input type="text" class="k-textbox ref" [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
         </div>

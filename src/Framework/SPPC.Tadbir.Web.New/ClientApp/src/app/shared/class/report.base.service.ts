@@ -4,16 +4,17 @@ import { Observable } from "rxjs/Observable";
 import { FilterExpression } from "./filterExpression";
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { BrowserStorageService } from "../services";
+import { BaseService } from "./base.service";
 
 
 
 
 
-export class ReportBaseService extends EnviromentComponent{
+export class ReportBaseService extends BaseService{
 
  
   constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
-    super(bStorageService);
+    super(http,bStorageService);
    
   }
 
@@ -34,33 +35,7 @@ export class ReportBaseService extends EnviromentComponent{
 
   public get option() {
     return { headers: this.httpHeaders }
-  }
-
-
-  /**
-   * لیست رکوردها بر اساس فیلتر و مرتب سازی
-   * @param apiUrl آدرس‌ کامل api  
-   * @param orderby مرتب سازی
-   * @param filters فیلتر
-   */
-  public getAll(apiUrl: string, orderby?: any, filter?: FilterExpression,quickFilter?:FilterExpression,operationId:number = 1) {
-    
-    var sort = new Array<GridOrderBy>();
-    if (orderby && orderby.length > 0) {
-      for (let item of orderby) {
-        sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
-      }
-    }
-    var postItem = { filter: filter, sortColumns: sort, operation: operationId, quickFilter: quickFilter};
-    var searchHeaders = this.httpHeaders;
-    var postBody = JSON.stringify(postItem);
-    var base64Body = btoa(encodeURIComponent(postBody));
-    if (searchHeaders)
-      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
-
-    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
-      .map(response => <any>(<HttpResponse<any>>response));
-  }
+  }  
 
   /**
    * 

@@ -27,7 +27,7 @@
         [icon]="'save'" type="button"></button>-->
     </ng-template>
     <ng-container *ngFor="let vc of getAllColumns()">
-      <ng-container *ngIf="vc.groupName ===''">
+      <ng-container *ngIf="vc.groupName==='' || vc.groupName === null">
         <kendo-grid-column  media="(min-width: 450px)" *ngFor="let item of getSimpleColumns(vc)"
                            [width]="item.width" field="{{item.name}}">
           <ng-template kendoGridHeaderTemplate>
@@ -43,7 +43,7 @@
         </kendo-grid-column>
       </ng-container>
         
-      <ng-container *ngIf="vc.groupName !='' && groupColumnNotCreated(vc)" >
+      <ng-container *ngIf="vc.groupName != null && vc.groupName !='' && groupColumnNotCreated(vc)" >
         <kendo-grid-column-group title="{{ vc.groupName }}"  media="(min-width: 450px)">
           <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of getColumnRows(vc)" [width]="item.width" field="{{item.name}}">
 
