@@ -44,14 +44,6 @@ namespace SPPC.Licensing.Persistence
             license = repository
                 .GetByCriteria(lic => lic.LicenseKey == licenseKey)
                 .SingleOrDefault();
-            if (license != null)
-            {
-                license.InstanceKey = new InstanceModel()
-                {
-                    CustomerKey = customerKey,
-                    LicenseKey = licenseKey
-                };
-            }
 
             return license;
         }
@@ -62,10 +54,12 @@ namespace SPPC.Licensing.Persistence
             license = GetLicense(activation?.InstanceKey?.LicenseKey, activation?.InstanceKey?.CustomerKey);
             if (license != null)
             {
+                var repository = UnitOfWork.GetRepository<LicenseModel>();
                 license.HardwareKey = activation.HardwareKey;
                 license.ClientKey = activation.ClientKey;
                 license.Secret = GetNewLicenseSecret();
                 license.IsActivated = true;
+                repository.Update(license);
                 UnitOfWork.Commit();
             }
 
@@ -77,7 +71,7 @@ namespace SPPC.Licensing.Persistence
             var customerRepository = UnitOfWork.GetRepository<CustomerModel>();
             int customerId = customerRepository
                 .GetEntityQuery()
-                .Where(cus => cus.CustomerKey == license.InstanceKey.CustomerKey)
+                .Where(cus => cus.CustomerKey == license.CustomerKey)
                 .Select(cus => cus.Id)
                 .FirstOrDefault();
             if (customerId > 0 && license.Id == 0)
@@ -108,13 +102,13 @@ namespace SPPC.Licensing.Persistence
             return isActivated;
         }
 
-        private IUnitOfWork UnitOfWork { get; }
-
-        private string GetNewLicenseSecret()
+        private static string GetNewLicenseSecret()
         {
             var secret = RandomGenerator.Generate(16);
             return Convert.ToBase64String(secret);
         }
+
+        private IUnitOfWork UnitOfWork { get; }
 
         private readonly IEncodedSerializer _serializer;
         private readonly ICryptoService _crypto;

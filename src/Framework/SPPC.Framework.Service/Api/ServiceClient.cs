@@ -24,8 +24,6 @@ namespace SPPC.Framework.Service
         /// </remarks>
         public ServiceClient()
         {
-            ServiceRoot = "http://localhost:8801/";  // Temporarily hard-coded
-            _httpClient = new HttpClient() { BaseAddress = new Uri(ServiceRoot), Timeout = Timeout.InfiniteTimeSpan };
         }
 
         /// <summary>
@@ -40,13 +38,27 @@ namespace SPPC.Framework.Service
         {
             Verify.ArgumentNotNullOrEmptyString(root, nameof(root));
             ServiceRoot = root;
-            _httpClient = new HttpClient() { BaseAddress = new Uri(root), Timeout = Timeout.InfiniteTimeSpan };
         }
 
         /// <summary>
         /// Gets or sets the URL for API service
         /// </summary>
-        public string ServiceRoot { get; set; }
+        public string ServiceRoot
+        {
+            get
+            {
+                return _serviceRoot;
+            }
+            set
+            {
+                _serviceRoot = value;
+                _httpClient = new HttpClient()
+                {
+                    BaseAddress = new Uri(_serviceRoot),
+                    Timeout = Timeout.InfiniteTimeSpan
+                };
+            }
+        }
 
         /// <summary>
         /// Adds a single-valued HTTP header specified by name and value to all requests
@@ -251,6 +263,7 @@ namespace SPPC.Framework.Service
         /// Internal object used for sending HTTP requests
         /// </summary>
         protected HttpClient _httpClient;
+        private string _serviceRoot;
         private bool _disposed = false;
     }
 }

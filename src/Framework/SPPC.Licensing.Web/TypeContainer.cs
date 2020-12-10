@@ -42,6 +42,7 @@ namespace SPPC.Licensing.Web
             _services.AddDbContext<LicenseContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("LicenseDb")));
             _services.AddScoped<LicenseContext>();
+            _services.AddTransient<DbContext, LicenseContext>();
             _services.AddTransient<ICustomerRepository, CustomerRepository>();
             _services.AddTransient<ILicenseRepository, LicenseRepository>();
         }

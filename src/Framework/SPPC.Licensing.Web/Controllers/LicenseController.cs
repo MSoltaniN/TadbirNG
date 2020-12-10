@@ -93,7 +93,7 @@ namespace SPPC.Licensing.Web.Controllers
             var header = Request.Headers[Constants.LicenseCheckHeaderName];
             if (!String.IsNullOrEmpty(header))
             {
-                _serializer.Deserialize<LicenseCheckModel>(header);
+                licenseCheck = _serializer.Deserialize<LicenseCheckModel>(header);
             }
 
             return licenseCheck;

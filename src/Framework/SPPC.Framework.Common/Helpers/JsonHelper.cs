@@ -40,9 +40,12 @@ namespace SPPC.Framework.Helpers
             {
                 var serializer = new JsonSerializer
                 {
-                    Formatting = indented ? Formatting.Indented : Formatting.None,
-                    ContractResolver = new CustomJsonContractResolver(ignoredProperties)
+                    Formatting = indented ? Formatting.Indented : Formatting.None
                 };
+                if (ignoredProperties != null && ignoredProperties.Length > 0)
+                {
+                    serializer.ContractResolver = new CustomJsonContractResolver(ignoredProperties);
+                }
 
                 serializer.Serialize(writer, value);
                 return writer.ToString();

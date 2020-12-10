@@ -14,6 +14,9 @@ namespace SPPC.Licensing.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("LicenseID");
+            builder.Property(e => e.CustomerKey)
+                .IsRequired()
+                .HasMaxLength(36);
             builder.Property(e => e.LicenseKey)
                 .IsRequired()
                 .HasMaxLength(36);
@@ -36,6 +39,8 @@ namespace SPPC.Licensing.Persistence.Mapping
                 .IsRequired();
             builder.Property(e => e.IsActivated)
                 .IsRequired();
+            builder.Property(e => e.RowGuid);
+            builder.Property(e => e.ModifiedDate);
 
             builder.HasOne(e => e.Customer)
                 .WithMany(p => p.Licenses)

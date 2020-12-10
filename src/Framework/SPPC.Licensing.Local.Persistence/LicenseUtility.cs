@@ -103,8 +103,12 @@ namespace SPPC.Licensing.Local.Persistence
         public string GetActiveLicense()
         {
             _signer.Certificate = _certificate;
-            ResetLicense();
-            string license = JsonHelper.From(_license);
+            var ignored = new string[]
+            {
+                "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey",
+                "ClientKey", "Secret", "Customer", "RowGuid", "ModifiedDate", "IsActivated"
+            };
+            string license = JsonHelper.From(_license, true, ignored);
             var licenseBytes = Encoding.UTF8.GetBytes(license);
             return _signer.SignData(licenseBytes);
         }
@@ -163,7 +167,8 @@ namespace SPPC.Licensing.Local.Persistence
 
         private bool EnsureInstanceIsValid()
         {
-            return _license.InstanceKey.Equals(Instance);
+            return _license.CustomerKey == Instance.CustomerKey
+                && _license.LicenseKey == Instance.LicenseKey;
         }
 
         private bool EnsureLicenseNotExpired()
@@ -171,14 +176,6 @@ namespace SPPC.Licensing.Local.Persistence
             var now = DateTime.Now.Date;
             return now >= _license.StartDate
                 && now <= _license.EndDate;
-        }
-
-        private void ResetLicense()
-        {
-            _license.ClientKey =
-                _license.HardwareKey =
-                _license.Secret = null;
-            _license.InstanceKey = null;
         }
 
         private X509Certificate2 LoadCerificate()

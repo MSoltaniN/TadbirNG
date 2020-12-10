@@ -139,7 +139,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
         private readonly PermissionBriefViewModel[] _requiredPermissions;
         private readonly ITextEncoder<SecurityContext> _contextDecoder;
         private readonly ILicenseUtility _utility;
-        private readonly string _licensePath = @"..\..\..\wwwroot\static\license";
-        private readonly string _serverRoot = @"..\..\..\..\SPPC.Licensing.Local.Web\wwwroot";
+        private readonly string _licensePath = @"wwwroot\static\license";
+        private readonly string _serverRoot = @"..\SPPC.Licensing.Local.Web\wwwroot";
     }
 }

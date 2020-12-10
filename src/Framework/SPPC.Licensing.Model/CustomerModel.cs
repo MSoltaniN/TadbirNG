@@ -11,6 +11,8 @@ namespace SPPC.Licensing.Model
         public CustomerModel()
         {
             Licenses = new List<LicenseModel>();
+            RowGuid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now.Date;
         }
 
         public int Id { get; set; }

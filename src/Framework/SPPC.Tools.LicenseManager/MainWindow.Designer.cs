@@ -230,14 +230,14 @@
             this.cmbEmployeeCount.Location = new System.Drawing.Point(13, 132);
             this.cmbEmployeeCount.Name = "cmbEmployeeCount";
             this.cmbEmployeeCount.Size = new System.Drawing.Size(327, 26);
-            this.cmbEmployeeCount.TabIndex = 7;
+            this.cmbEmployeeCount.TabIndex = 5;
             // 
             // label4
             // 
             this.label4.Location = new System.Drawing.Point(387, 140);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 18);
-            this.label4.TabIndex = 6;
+            this.label4.TabIndex = 4;
             this.label4.Text = "تعداد پرسنل :";
             // 
             // txtHqAddress
@@ -247,14 +247,14 @@
             this.txtHqAddress.Multiline = true;
             this.txtHqAddress.Name = "txtHqAddress";
             this.txtHqAddress.Size = new System.Drawing.Size(327, 101);
-            this.txtHqAddress.TabIndex = 5;
+            this.txtHqAddress.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.Location = new System.Drawing.Point(346, 179);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(135, 18);
-            this.label3.TabIndex = 4;
+            this.label3.TabIndex = 6;
             this.label3.Text = "نشانی دفتر مرکزی :";
             // 
             // cmbIndustry
@@ -275,8 +275,8 @@
             "خدمات مالی",
             "ساختمانی",
             "صنایع شیمیایی",
+            "صنایع غذایی",
             "صنایع معدن",
-            "غذا و نوشیدنی",
             "کشاورزی",
             "ماهیگیری و ترابری دریایی",
             "مهندسی برق و مکانیک",

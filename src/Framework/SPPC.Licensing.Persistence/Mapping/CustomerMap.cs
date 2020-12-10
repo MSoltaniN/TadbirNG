@@ -10,7 +10,7 @@ namespace SPPC.Licensing.Persistence.Mapping
     {
         internal static void BuildMapping(EntityTypeBuilder<CustomerModel> builder)
         {
-            builder.ToTable("License");
+            builder.ToTable("Customer");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("CustomerID");
@@ -26,6 +26,7 @@ namespace SPPC.Licensing.Persistence.Mapping
                 .IsRequired()
                 .HasMaxLength(64);
             builder.Property(e => e.HeadquartersAddress)
+                .HasColumnName("MainAddress")
                 .IsRequired()
                 .HasMaxLength(512);
             builder.Property(e => e.ContactFirstName)
@@ -42,6 +43,8 @@ namespace SPPC.Licensing.Persistence.Mapping
             builder.Property(e => e.CellPhone)
                 .IsRequired()
                 .HasMaxLength(16);
+            builder.Property(e => e.RowGuid);
+            builder.Property(e => e.ModifiedDate);
         }
     }
 }

@@ -47,8 +47,12 @@ namespace SPPC.Licensing.Persistence
         public string GetActiveLicense()
         {
             _signer.Certificate = _certificate;
-            ResetLicense();
-            var json = JsonHelper.From(_license);
+            var ignored = new string[]
+            {
+                "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey",
+                "ClientKey", "Secret", "Customer", "RowGuid", "ModifiedDate", "IsActivated"
+            };
+            var json = JsonHelper.From(_license, true, ignored);
             var license = Encoding.UTF8.GetBytes(json);
             return _signer.SignData(license);
         }
@@ -87,14 +91,6 @@ namespace SPPC.Licensing.Persistence
             var now = DateTime.Now.Date;
             return now >= _license.StartDate
                 && now <= _license.EndDate;
-        }
-
-        private void ResetLicense()
-        {
-            _license.ClientKey =
-                _license.HardwareKey =
-                _license.Secret = null;
-            _license.InstanceKey = null;
         }
 
         private readonly ILicenseRepository _repository;

@@ -13,13 +13,18 @@ namespace SPPC.Licensing.Model
             UserCount = 10;
             StartDate = now;
             EndDate = new DateTime(now.Year + 1, now.Month, now.Day);
+            RowGuid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now.Date;
         }
 
         public int Id { get; set; }
 
         public int CustomerId { get; set; }
 
-        public InstanceModel InstanceKey { get; set; }
+        [Display(Name = "شناسه مشتری")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(36, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string CustomerKey { get; set; }
 
         [Display(Name = "شناسه مجوز")]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

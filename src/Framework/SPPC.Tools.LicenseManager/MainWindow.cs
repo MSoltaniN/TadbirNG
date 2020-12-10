@@ -37,15 +37,17 @@ namespace SPPC.Tools.LicenseManager
                 return;
             }
 
-            SaveCustomerFile();
+            this.Cursor = Cursors.WaitCursor;
             string error = _service.InsertCustomer(Customer);
             if (!String.IsNullOrEmpty(error))
             {
+                this.Cursor = Cursors.Default;
                 MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
                     MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
                 return;
             }
 
+            this.Cursor = Cursors.Default;
             MessageBox.Show(this, "مشتری با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
                 MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
         }
@@ -57,15 +59,17 @@ namespace SPPC.Tools.LicenseManager
                 return;
             }
 
-            SaveLicenseFile();
+            this.Cursor = Cursors.WaitCursor;
             string error = _service.InsertLicense(License);
             if (!String.IsNullOrEmpty(error))
             {
+                this.Cursor = Cursors.Default;
                 MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
                     MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
                 return;
             }
 
+            this.Cursor = Cursors.Default;
             MessageBox.Show(this, "مجوز تدبیر با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
                 MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
         }
@@ -73,7 +77,12 @@ namespace SPPC.Tools.LicenseManager
         private void SaveInstance_Click(object sender, EventArgs e)
         {
             string path = ConfigurationManager.AppSettings["InstanceIdPath"];
-            string json = JsonHelper.From(License.InstanceKey);
+            var instance = new InstanceModel()
+            {
+                CustomerKey = License.CustomerKey,
+                LicenseKey = License.LicenseKey
+            };
+            string json = JsonHelper.From(instance);
             File.WriteAllText(path, json);
             CreateApiServiceLicense();
             MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
@@ -99,8 +108,8 @@ namespace SPPC.Tools.LicenseManager
 
             // License bindings
             spnUserCount.DataBindings.Add("Value", License, "UserCount");
-            dtpStartDate.DataBindings.Add("Value", License, "ContractStart");
-            dtpEndDate.DataBindings.Add("Value", License, "ContractEnd");
+            dtpStartDate.DataBindings.Add("Value", License, "StartDate");
+            dtpEndDate.DataBindings.Add("Value", License, "EndDate");
         }
 
         private void LoadDefaults()
@@ -126,18 +135,6 @@ namespace SPPC.Tools.LicenseManager
             return true;
         }
 
-        private void SaveCustomerFile()
-        {
-            var json = JsonHelper.From(Customer);
-            if (!Directory.Exists("Customers"))
-            {
-                Directory.CreateDirectory("Customers");
-            }
-
-            string path = String.Format(@".\Customers\{0}.json", Customer.CustomerKey);
-            File.WriteAllText(path, json);
-        }
-
         private bool SaveLicense()
         {
             if (!ValidateLicense())
@@ -145,25 +142,10 @@ namespace SPPC.Tools.LicenseManager
                 return false;
             }
 
-            License.InstanceKey = new InstanceModel()
-            {
-                CustomerKey = Customer.CustomerKey,
-                LicenseKey = Guid.NewGuid().ToString()
-            };
+            License.CustomerKey = Customer.CustomerKey;
+            License.LicenseKey = Guid.NewGuid().ToString();
             License.Edition = cmbEdition.SelectedItem.ToString();
             return true;
-        }
-
-        private void SaveLicenseFile()
-        {
-            var json = JsonHelper.From(License);
-            if (!Directory.Exists("Licenses"))
-            {
-                Directory.CreateDirectory("Licenses");
-            }
-
-            string path = String.Format(@".\Licenses\{0}.json", License.InstanceKey.LicenseKey);
-            File.WriteAllText(path, json);
         }
 
         private bool ValidateCustomer()
@@ -293,11 +275,12 @@ namespace SPPC.Tools.LicenseManager
         {
             var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
             var copy = License.GetCopy();
-            copy.InstanceKey = null;
-            copy.ClientKey =
-                copy.HardwareKey =
-                copy.Secret = null;
-            var json = JsonHelper.From(copy);
+            var ignored = new string[]
+            {
+                "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey",
+                "ClientKey", "Secret", "Customer", "RowGuid", "ModifiedDate", "IsActivated"
+            };
+            var json = JsonHelper.From(copy, true, ignored);
             File.WriteAllText(path, json);
             return;
         }

@@ -12,6 +12,6 @@ namespace SPPC.Licensing.Model
         BadCertificate = 4,     // Licensing certificate has been replaced
         HardwareMismatch = 5,   // Hardware ID does not match with the ID from activation
         InstanceMismatch = 6,   // Instance ID does not match with activated instance ID
-        Expired = 7             // License file is OK but the license is expired
+        Expired = 7,            // License file is OK but the license is expired
     }
 }
