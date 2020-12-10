@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Api
 {
     /// <summary>
-    /// Defines API server routes and API client operation URLs for working with Advanced Filters.
+    /// Defines API server routes and API client operation URLs for working with licenses.
     /// </summary>
     public sealed class LicenseApi
     {
@@ -41,5 +41,9 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for activating the application license (online server only)
         /// </summary>
         public const string ActivateLicenseUrl = "license/activate";
+
+        public const string Licenses = "licenses";
+
+        public const string LicensesUrl = "licenses";
     }
 }

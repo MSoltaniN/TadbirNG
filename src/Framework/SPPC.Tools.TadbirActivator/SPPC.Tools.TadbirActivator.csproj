@@ -98,6 +98,10 @@
       <Project>{a6f88800-173b-407b-b3bd-9bbcb0f5adf8}</Project>
       <Name>SPPC.Framework.Cryptography</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj">
+      <Project>{671ADBE3-B49B-4A77-BE4F-326C914C1867}</Project>
+      <Name>SPPC.Licensing.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj">
       <Project>{c61ae91d-386c-4ca8-914e-135752c86e79}</Project>
       <Name>SPPC.Licensing.Local.Persistence</Name>

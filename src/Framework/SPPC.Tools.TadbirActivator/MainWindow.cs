@@ -12,6 +12,7 @@ using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Tools.TadbirActivator.Properties;
+using SPPC.Licensing.Service;
 
 namespace SPPC.Tools.TadbirActivator
 {
@@ -20,6 +21,7 @@ namespace SPPC.Tools.TadbirActivator
         public MainWindow()
         {
             InitializeComponent();
+            _service = new LicenseService(new ServiceClient(Constants.OnlineServerRoot));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -40,12 +42,11 @@ namespace SPPC.Tools.TadbirActivator
         private void Activate_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            var client = new ServiceClient(_serverUrl);
             var activation = GetActivationData();
             try
             {
-                var response = client.Update<ActivationModel, string>(activation, "/license/activate");
-                if (String.IsNullOrEmpty(response))
+                string license = _service.GetActivatedLicense(activation);
+                if (String.IsNullOrEmpty(license))
                 {
                     MessageBox.Show(this, Resources.Warn_AlreadyActivated, Resources.SuccessfulOperation,
                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
@@ -56,8 +57,8 @@ namespace SPPC.Tools.TadbirActivator
 
                 string licenseRoot = ConfigurationManager.AppSettings["LicensePath"];
                 string licensePath = Path.Combine(licenseRoot, Constants.LicenseFile);
-                File.WriteAllText(licensePath, response);
-                ExportCertificate(licenseRoot, response);
+                File.WriteAllText(licensePath, license);
+                ExportCertificate(licenseRoot, license);
                 MessageBox.Show(this, Resources.Info_ActivationSucceeded, Resources.SuccessfulOperation,
                     MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
@@ -208,7 +209,7 @@ namespace SPPC.Tools.TadbirActivator
             File.WriteAllBytes(path, certificateBytes);
         }
 
-        private readonly string _serverUrl = "http://localhost:1447";
+        private readonly ILicenseService _service;
         private X509Certificate2 _certificate;
     }
 }

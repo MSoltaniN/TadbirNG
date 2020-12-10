@@ -16,5 +16,6 @@ namespace SPPC.Licensing.Model
         public const string InstanceHeaderName = "X-Tadbir-Instance";
         public const string LicenseHeaderName = "X-Tadbir-License";
         public const string LicenseCheckHeaderName = "X-Tadbir-LicenseCheck";
+        public const string OnlineServerRoot = "http://localhost:1447";
     }
 }

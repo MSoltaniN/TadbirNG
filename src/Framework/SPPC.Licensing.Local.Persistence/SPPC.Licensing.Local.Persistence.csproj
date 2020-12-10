@@ -43,6 +43,7 @@
     <Compile Include="HardwareKey.cs" />
     <Compile Include="LicenseUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\LicenseService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
@@ -56,6 +57,10 @@
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
       <Project>{10A16ED5-F293-471C-8790-73122CFA1E56}</Project>
       <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj">
+      <Project>{671ADBE3-B49B-4A77-BE4F-326C914C1867}</Project>
+      <Name>SPPC.Licensing.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj">
       <Project>{8cc522e7-d132-4ede-b5dd-eb80b6e65405}</Project>

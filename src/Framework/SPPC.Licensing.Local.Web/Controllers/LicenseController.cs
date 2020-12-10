@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Cryptography;
-using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
+using SPPC.Licensing.Service;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Licensing;
 
@@ -15,15 +15,14 @@ namespace SPPC.Licensing.Local.Web.Controllers
     public class LicenseController : Controller
     {
         public LicenseController(IHostingEnvironment host, IEncodedSerializer serializer,
-            ILicenseUtility utility, IApiClient apiClient)
+            ILicenseUtility utility, ILicenseService service)
         {
             _host = host;
             _serializer = serializer;
             _utility = utility;
-            _apiClient = apiClient;
+            _service = service;
 
             _utility.LicensePath = Path.Combine(_host.WebRootPath, Constants.LicenseFile);
-            _apiClient.ServiceRoot = _serverRoot;
         }
 
         // GET: api/license
@@ -55,15 +54,9 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
 
             var licenseCheck = GetLicenseCheck(_utility.Instance);
-            _apiClient.AddHeader(Constants.LicenseCheckHeaderName, GetLicenseCheckData(licenseCheck));
-            var signature = _apiClient.Get<string>(LicenseApi.License);
+            string signature = _service.GetLicense(_serializer.Serialize(licenseCheck));
             Response.Headers.Add(Constants.LicenseHeaderName, signature);
             return Ok();
-        }
-
-        private string GetLicenseCheckData(LicenseCheckModel licenseCheck)
-        {
-            return _serializer.Serialize(licenseCheck);
         }
 
         private IActionResult GetValidationResult(InstanceModel instance, out bool succeeded)
@@ -156,7 +149,6 @@ namespace SPPC.Licensing.Local.Web.Controllers
         private readonly IHostingEnvironment _host;
         private readonly IEncodedSerializer _serializer;
         private readonly ILicenseUtility _utility;
-        private readonly IApiClient _apiClient;
-        private readonly string _serverRoot = "http://localhost:1447";
+        private readonly ILicenseService _service;
     }
 }

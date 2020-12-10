@@ -3,7 +3,9 @@ using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
+using SPPC.Licensing.Service;
 
 namespace SPPC.Tools.LicenseManager
 {
@@ -14,6 +16,7 @@ namespace SPPC.Tools.LicenseManager
             InitializeComponent();
             License = new LicenseModel();
             Customer = new CustomerModel();
+            _service = new LicenseService(new ServiceClient(Constants.OnlineServerRoot));
         }
 
         public LicenseModel License { get; set; }
@@ -35,7 +38,14 @@ namespace SPPC.Tools.LicenseManager
             }
 
             SaveCustomerFile();
-            //_repository.InsertCustomer(Customer);
+            string error = _service.InsertCustomer(Customer);
+            if (!String.IsNullOrEmpty(error))
+            {
+                MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                return;
+            }
+
             MessageBox.Show(this, "مشتری با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
                 MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
         }
@@ -48,7 +58,14 @@ namespace SPPC.Tools.LicenseManager
             }
 
             SaveLicenseFile();
-            //_repository.InsertLicense(License);
+            string error = _service.InsertLicense(License);
+            if (!String.IsNullOrEmpty(error))
+            {
+                MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                return;
+            }
+
             MessageBox.Show(this, "مجوز تدبیر با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
                 MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
         }
@@ -58,7 +75,7 @@ namespace SPPC.Tools.LicenseManager
             string path = ConfigurationManager.AppSettings["InstanceIdPath"];
             string json = JsonHelper.From(License.InstanceKey);
             File.WriteAllText(path, json);
-            CreateApiServiceCertificate();
+            CreateApiServiceLicense();
             MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
                 "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Exclamation,
                 MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
@@ -272,7 +289,7 @@ namespace SPPC.Tools.LicenseManager
             return (int)selected;
         }
 
-        private void CreateApiServiceCertificate()
+        private void CreateApiServiceLicense()
         {
             var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
             var copy = License.GetCopy();
@@ -284,5 +301,7 @@ namespace SPPC.Tools.LicenseManager
             File.WriteAllText(path, json);
             return;
         }
+
+        private readonly ILicenseService _service;
     }
 }

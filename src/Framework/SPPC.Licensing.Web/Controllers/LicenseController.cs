@@ -61,6 +61,25 @@ namespace SPPC.Licensing.Web.Controllers
             return Ok(encrypted);
         }
 
+        // POST: api/licenses
+        [HttpPost]
+        [Route(LicenseApi.LicensesUrl)]
+        public IActionResult PostNewLicense([FromBody] LicenseModel license)
+        {
+            if (license == null)
+            {
+                return BadRequest("Request failed because license data is missing or malformed.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _repository.InsertLicense(license);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
         private bool EnsureValidRequest(ActivationModel activation)
         {
             int licenseId = _repository.GetLicenseId(
