@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SPPC.Framework.Cryptography;
-using SPPC.Licensing.Interfaces;
+using SPPC.Framework.Persistence;
 using SPPC.Licensing.Persistence;
+using SPPC.Licensing.Persistence.Context;
 
 namespace SPPC.Licensing.Web
 {
@@ -36,6 +38,11 @@ namespace SPPC.Licensing.Web
 
         private void AddPersistenceTypes()
         {
+            _services.AddTransient<IUnitOfWork, UnitOfWork>();
+            _services.AddDbContext<LicenseContext>(options =>
+                options.UseSqlServer(_configuration.GetConnectionString("LicenseDb")));
+            _services.AddScoped<LicenseContext>();
+            _services.AddTransient<ICustomerRepository, CustomerRepository>();
             _services.AddTransient<ILicenseRepository, LicenseRepository>();
         }
 

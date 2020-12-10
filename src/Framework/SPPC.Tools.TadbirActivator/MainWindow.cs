@@ -92,10 +92,10 @@ namespace SPPC.Tools.TadbirActivator
                 builder.AppendFormat("{0} : {1}", Resources.UserCount, license.UserCount);
                 builder.AppendLine();
                 builder.AppendFormat("{0} : {1}", Resources.ContractStart,
-                    JalaliDateTime.FromDateTime(license.ContractStart).ToShortDateString());
+                    JalaliDateTime.FromDateTime(license.StartDate).ToShortDateString());
                 builder.AppendLine();
                 builder.AppendFormat("{0} : {1}", Resources.ContractEnd,
-                    JalaliDateTime.FromDateTime(license.ContractEnd).ToShortDateString());
+                    JalaliDateTime.FromDateTime(license.EndDate).ToShortDateString());
                 builder.AppendLine();
                 builder.AppendFormat("{0} : {1}", Resources.ActiveModules, GetActiveModules(license.ActiveModules));
                 builder.AppendLine();

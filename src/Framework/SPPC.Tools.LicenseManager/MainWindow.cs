@@ -4,7 +4,6 @@ using System.IO;
 using System.Windows.Forms;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
-using SPPC.Licensing.Persistence;
 
 namespace SPPC.Tools.LicenseManager
 {
@@ -15,7 +14,6 @@ namespace SPPC.Tools.LicenseManager
             InitializeComponent();
             License = new LicenseModel();
             Customer = new CustomerModel();
-            _repository = new LicenseRepository();
         }
 
         public LicenseModel License { get; set; }
@@ -37,7 +35,7 @@ namespace SPPC.Tools.LicenseManager
             }
 
             SaveCustomerFile();
-            _repository.InsertCustomer(Customer);
+            //_repository.InsertCustomer(Customer);
             MessageBox.Show(this, "مشتری با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
                 MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
         }
@@ -50,7 +48,7 @@ namespace SPPC.Tools.LicenseManager
             }
 
             SaveLicenseFile();
-            _repository.InsertLicense(License);
+            //_repository.InsertLicense(License);
             MessageBox.Show(this, "مجوز تدبیر با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
                 MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
         }
@@ -286,7 +284,5 @@ namespace SPPC.Tools.LicenseManager
             File.WriteAllText(path, json);
             return;
         }
-
-        private readonly LicenseRepository _repository;
     }
 }

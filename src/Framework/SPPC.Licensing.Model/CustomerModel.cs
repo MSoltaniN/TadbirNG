@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Framework.Domain;
 
 namespace SPPC.Licensing.Model
 {
-    public class CustomerModel
+    public class CustomerModel : IEntity
     {
+        public CustomerModel()
+        {
+            Licenses = new List<LicenseModel>();
+        }
+
+        public int Id { get; set; }
+
         public string CustomerKey { get; set; }
 
         public string CompanyName { get; set; }
@@ -24,5 +32,11 @@ namespace SPPC.Licensing.Model
         public string WorkFax { get; set; }
 
         public string CellPhone { get; set; }
+
+        public IList<LicenseModel> Licenses { get; }
+
+        public Guid RowGuid { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Cryptography;
-using SPPC.Licensing.Interfaces;
+using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
 
 namespace SPPC.Licensing.Persistence
@@ -86,8 +85,8 @@ namespace SPPC.Licensing.Persistence
         private bool EnsureLicenseNotExpired()
         {
             var now = DateTime.Now.Date;
-            return now >= _license.ContractStart
-                && now <= _license.ContractEnd;
+            return now >= _license.StartDate
+                && now <= _license.EndDate;
         }
 
         private void ResetLicense()

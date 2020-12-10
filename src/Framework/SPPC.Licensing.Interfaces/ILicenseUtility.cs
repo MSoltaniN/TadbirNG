@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SPPC.Licensing.Model;
 
-namespace SPPC.Licensing.Interfaces
+namespace SPPC.Licensing.Persistence
 {
     public interface ILicenseUtility
     {

@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Cryptography;
-using SPPC.Licensing.Interfaces;
 using SPPC.Licensing.Model;
+using SPPC.Licensing.Persistence;
 using SPPC.Tadbir.Api;
 
 namespace SPPC.Licensing.Web.Controllers

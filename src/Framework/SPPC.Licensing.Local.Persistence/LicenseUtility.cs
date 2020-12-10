@@ -169,8 +169,8 @@ namespace SPPC.Licensing.Local.Persistence
         private bool EnsureLicenseNotExpired()
         {
             var now = DateTime.Now.Date;
-            return now >= _license.ContractStart
-                && now <= _license.ContractEnd;
+            return now >= _license.StartDate
+                && now <= _license.EndDate;
         }
 
         private void ResetLicense()

@@ -70,10 +70,6 @@
       <Project>{8cc522e7-d132-4ede-b5dd-eb80b6e65405}</Project>
       <Name>SPPC.Licensing.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPPC.Licensing.Persistence\SPPC.Licensing.Persistence.csproj">
-      <Project>{59e80763-f216-4ff2-8c45-78c027750026}</Project>
-      <Name>SPPC.Licensing.Persistence</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

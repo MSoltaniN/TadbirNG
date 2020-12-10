@@ -1,19 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
+using SPPC.Framework.Domain;
 
 namespace SPPC.Licensing.Model
 {
-    public class LicenseModel
+    public class LicenseModel : IEntity
     {
         public LicenseModel()
         {
             var now = DateTime.Now.Date;
             UserCount = 10;
-            ContractStart = now;
-            ContractEnd = new DateTime(now.Year + 1, now.Month, now.Day);
+            StartDate = now;
+            EndDate = new DateTime(now.Year + 1, now.Month, now.Day);
         }
 
+        public int Id { get; set; }
+
+        public int CustomerId { get; set; }
+
         public InstanceModel InstanceKey { get; set; }
+
+        public string LicenseKey { get; set; }
 
         public string HardwareKey { get; set; }
 
@@ -25,11 +31,19 @@ namespace SPPC.Licensing.Model
 
         public string Edition { get; set; }
 
-        public DateTime ContractStart { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime ContractEnd { get; set; }
+        public DateTime EndDate { get; set; }
 
         public int ActiveModules { get; set; }
+
+        public bool IsActivated { get; set; }
+
+        public CustomerModel Customer { get; set; }
+
+        public Guid RowGuid { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
 
         public LicenseModel GetCopy()
         {

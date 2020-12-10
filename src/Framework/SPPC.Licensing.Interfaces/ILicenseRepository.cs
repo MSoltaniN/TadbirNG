@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using SPPC.Licensing.Model;
 
-namespace SPPC.Licensing.Interfaces
+namespace SPPC.Licensing.Persistence
 {
     public interface ILicenseRepository
     {
-        int InsertCustomer(CustomerModel customer);
+        void InsertCustomer(CustomerModel customer);
 
         int GetLicenseId(string customerKey, string licenseKey);
 
@@ -14,7 +14,7 @@ namespace SPPC.Licensing.Interfaces
 
         LicenseModel GetActivatedLicense(ActivationModel activation);
 
-        int InsertLicense(LicenseModel license);
+        void InsertLicense(LicenseModel license);
 
         string GetEncryptedLicense(LicenseModel license);
 
