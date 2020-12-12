@@ -758,6 +758,7 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (12, N'Projec
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (15, N'Setting')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (16, N'TaxCurrency')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (17, N'Voucher')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (18, N'DraftVoucher')
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON

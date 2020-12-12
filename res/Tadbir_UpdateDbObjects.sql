@@ -1425,3 +1425,45 @@ WHERE [Name] = 'ConfirmGroup'
 UPDATE [Metadata].[Operation]
 SET [Name] = 'GroupUndoConfirm'
 WHERE [Name] = 'UnConfirmGroup'
+
+-- 1.1.1034
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (52, N'ConvertToNormal')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (18, N'DraftVoucher')
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (123, 1, 2, NULL, 18, 1, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (124, 1, 2, NULL, 18, 2, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (125, 1, 2, NULL, 18, 3, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (126, 1, 2, NULL, 18, 4, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (127, 1, 2, NULL, 18, 6, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (128, 1, 2, NULL, 18, 11, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (129, 1, 2, NULL, 18, 12, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (130, 1, 2, NULL, 18, 21, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (131, 1, 2, NULL, 18, 36, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (132, 1, 2, NULL, 18, 37, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (133, 1, 2, NULL, 18, 38, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (134, 1, 2, NULL, 18, 39, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (135, 1, 2, NULL, 18, 46, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (136, 1, 2, NULL, 18, 47, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (137, 1, 2, NULL, 18, 52, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

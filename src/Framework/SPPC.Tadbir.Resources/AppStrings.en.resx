@@ -3387,4 +3387,7 @@
   <data name="NewDraftVoucher" xml:space="preserve">
     <value>New draft voucher</value>
   </data>
+  <data name="ConvertToNormal" xml:space="preserve">
+    <value>Convert to normal voucher</value>
+  </data>
 </root>

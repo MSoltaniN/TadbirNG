@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
@@ -30,17 +31,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository">امکان مدیریت اطلاعات اسناد مالی را فراهم می کند</param>
         /// <param name="lineRepository">امکان مدیریت اطلاعات آرتیکل های مالی را فراهم می کند</param>
+        /// <param name="draftRepository">امکان مدیریت اطلاعات اسناد پیش نویس را فراهم می کند</param>
+        /// <param name="draftLineRepository">امکان مدیریت اطلاعات آرتیکل های پیش نویس را فراهم می کند</param>
         /// <param name="relationRepository">امکان خواندن ارتباطات موجود در  بردار حساب را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         public VouchersController(
             IVoucherRepository repository,
             IVoucherLineRepository lineRepository,
+            IDraftVoucherRepository draftRepository,
+            IDraftVoucherLineRepository draftLineRepository,
             IRelationRepository relationRepository,
             IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
             _lineRepository = lineRepository;
+            _draftRepository = draftRepository;
+            _draftLineRepository = draftLineRepository;
             _relationRepository = relationRepository;
         }
 
@@ -175,6 +182,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(VoucherApi.EnvironmentVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.View)]
         public async Task<IActionResult> GetEnvironmentVouchersAsync()
+        {
+            return await GetVoucherListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه اسناد مالی (عادی و پیش نویس) قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده اسناد مالی - عادی و پیش نویس</returns>
+        // GET: api/vouchers
+        [HttpGet]
+        [Route(VoucherApi.AllEnvironmentVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.View)]
+        [AuthorizeRequest(SecureEntity.DraftVouchers, (int)ManageDraftVouchersPermissions.View)]
+        public async Task<IActionResult> GetAllEnvironmentVouchersAsync()
         {
             return await GetVoucherListAsync();
         }
@@ -360,7 +381,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputVoucher = await _repository.SaveVoucherAsync(voucher);
+            var repository = GetVoucherRepository();
+            var outputVoucher = await repository.SaveVoucherAsync(voucher);
             return StatusCode(StatusCodes.Status201Created, outputVoucher);
         }
 
@@ -400,7 +422,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 await _repository.SetVoucherDailyNoAsync(voucher);
             }
 
-            var outputVoucher = await _repository.SaveVoucherAsync(voucher);
+            var repository = GetVoucherRepository();
+            var outputVoucher = await repository.SaveVoucherAsync(voucher);
             result = (outputVoucher != null)
                 ? Ok(outputVoucher)
                 : NotFound() as IActionResult;
@@ -425,7 +448,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.Checked);
+            var repository = GetVoucherRepository();
+            await repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.Checked);
             return Ok();
         }
 
@@ -447,7 +471,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.NotChecked);
+            var repository = GetVoucherRepository();
+            await repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.NotChecked);
             return Ok();
         }
 
@@ -610,7 +635,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(VoucherApi.UndoCheckVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.GroupUndoCheck)]
-        public async Task<IActionResult> PutExistingVouchersAsUnChecked([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutExistingVouchersAsUnchecked([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {
@@ -717,7 +742,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result.ErrorMessage);
             }
 
-            await _repository.DeleteVoucherAsync(voucherId);
+            var repository = GetVoucherRepository();
+            await repository.DeleteVoucherAsync(voucherId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -734,7 +760,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingVouchersAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            return await GroupDeleteResultAsync(actionDetail, _repository.DeleteVouchersAsync);
+            var repository = GetVoucherRepository();
+            return await GroupDeleteResultAsync(actionDetail, repository.DeleteVouchersAsync);
         }
 
         // GET: api/vouchers/opening/query
@@ -934,7 +961,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputLine = await _lineRepository.SaveArticleAsync(article);
+            var lineRepository = GetLineRepository();
+            var outputLine = await lineRepository.SaveArticleAsync(article);
             return StatusCode(StatusCodes.Status201Created, outputLine);
         }
 
@@ -963,7 +991,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputLine = await _lineRepository.SaveArticleAsync(article);
+            var lineRepository = GetLineRepository();
+            var outputLine = await lineRepository.SaveArticleAsync(article);
             return JsonReadResult(outputLine);
         }
 
@@ -1009,7 +1038,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result.ErrorMessage);
             }
 
-            await _lineRepository.DeleteArticleAsync(articleId);
+            var lineRepository = GetLineRepository();
+            await lineRepository.DeleteArticleAsync(articleId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -1026,7 +1056,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingArticlesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            return await GroupDeleteLineResultAsync(actionDetail, _lineRepository.DeleteArticlesAsync);
+            var lineRepository = GetLineRepository();
+            return await GroupDeleteLineResultAsync(actionDetail, lineRepository.DeleteArticlesAsync);
         }
 
         #endregion
@@ -1090,7 +1121,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            await _repository.SetVouchersStatusAsync(validated, status);
+            var repository = GetVoucherRepository();
+            await repository.SetVouchersStatusAsync(validated, status);
             return Ok(notValidated);
         }
 
@@ -1349,7 +1381,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IActionResult> GetVoucherListAsync()
         {
-            var vouchers = await _repository.GetVouchersAsync(GridOptions);
+            var repository = GetVoucherRepository();
+            var vouchers = await repository.GetVouchersAsync(GridOptions);
             Localize(vouchers.Items);
             return JsonListResult(vouchers);
         }
@@ -1371,7 +1404,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
             }
 
-            var newVoucher = await _repository.GetNewVoucherAsync(subject);
+            var repository = GetVoucherRepository();
+            var newVoucher = await repository.GetNewVoucherAsync(subject);
             return Json(newVoucher);
         }
 
@@ -1415,8 +1449,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(last);
         }
 
+        private IVoucherRepository GetVoucherRepository()
+        {
+            var repository = default(IVoucherRepository);
+            var gridOptions = GridOptions ?? new GridOptions();
+            if (gridOptions.Filter != null)
+            {
+                repository = gridOptions.Filter.ToString().Contains("SubjectType == 1")
+                    ? _draftRepository
+                    : _repository;
+            }
+
+            return repository;
+        }
+
+        private IVoucherLineRepository GetLineRepository()
+        {
+            var repository = default(IVoucherLineRepository);
+            var gridOptions = GridOptions ?? new GridOptions();
+            if (gridOptions.Filter != null)
+            {
+                repository = gridOptions.Filter.ToString().Contains("SubjectType == 1")
+                    ? _draftLineRepository
+                    : _lineRepository;
+            }
+
+            return repository;
+        }
+
         private readonly IVoucherRepository _repository;
         private readonly IVoucherLineRepository _lineRepository;
+        private readonly IDraftVoucherRepository _draftRepository;
+        private readonly IDraftVoucherLineRepository _draftLineRepository;
         private readonly IRelationRepository _relationRepository;
     }
 }

@@ -14,7 +14,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Resources;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -34,7 +33,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
             Description = String.Empty;
             IsActive = true;
             IsCurrencyAdjustable = true;
-            TurnoverMode = AppStrings.Unlimited;
+            TurnoverMode = "Unlimited";
         }
 
         /// <summary>

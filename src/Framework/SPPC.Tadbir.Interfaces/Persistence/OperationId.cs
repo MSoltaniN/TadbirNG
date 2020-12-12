@@ -264,8 +264,13 @@ namespace SPPC.Tadbir.Persistence
         GroupConfirm = 50,
 
         /// <summary>
-        /// کد عملیاتی  رفع تایید گروهی اسناد
+        /// کد عملیاتی رفع تایید گروهی اسناد
         /// </summary>
         GroupUndoConfirm = 51,
+
+        /// <summary>
+        /// کد عملیاتی تبدیل به سند عادی
+        /// </summary>
+        ConvertToNormal = 52,
     }
 }

@@ -23,6 +23,16 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentVouchersUrl = "vouchers";
 
         /// <summary>
+        /// API client URL for all vouchers (normal and draft) defined in current environment
+        /// </summary>
+        public const string AllEnvironmentVouchers = "vouchers/all";
+
+        /// <summary>
+        /// API server route URL for all vouchers (normal and draft) defined in current environment
+        /// </summary>
+        public const string AllEnvironmentVouchersUrl = "vouchers/all";
+
+        /// <summary>
         /// API client URL for count of all vouchers defined in current environment
         /// </summary>
         public const string EnvironmentItemCount = "vouchers/count";

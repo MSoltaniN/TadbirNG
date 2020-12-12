@@ -24,4 +24,8 @@
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ProjectCLI.exe -cmd:reskey -res:$(ProjectDir)AppStrings.resx -ns:$(ProjectName)" />
+  </Target>
+
 </Project>

@@ -75,7 +75,6 @@
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Configuration\SPPC.Tadbir.Configuration.csproj" />
-    <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />
   </ItemGroup>
 
 </Project>

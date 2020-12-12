@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
     /// امکانات احراز هویت و مجوزدهی امنیتی را با استفاده از
     /// مکانیزم فیلترهای درخواست پیاده سازی می کند
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public sealed class AuthorizeRequestAttribute : ActionFilterAttribute
     {
         /// <summary>
