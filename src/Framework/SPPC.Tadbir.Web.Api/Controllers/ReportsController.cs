@@ -856,13 +856,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     txtDataCell.TextFormat = new Stimulsoft.Report.Components.TextFormats.StiNumberFormatService(1, ".", 0, ",", 3, true, false, " ");
                 }
 
-                ////txtDataCell.Border = new StiBorder(StiBorderSides.Bottom | StiBorderSides.Left | StiBorderSides.Right, Color.Black, 1, StiPenStyle.Solid);
-
                 txtDataCell.Width = width;
                 txtDataCell.Text.Value = GetColumnValue(orderdColumns[i], dataSourceName, string.Empty);
                 txtDataCell.ClientRectangle = new RectangleD(left, top, width, txtDataCell.Height);
                 left = txtDataCell.Left + width;
 
+                if (quickReportViewModel.ReportViewSetting != null)
+                {
+                    if (quickReportViewModel.ReportViewSetting.HideHorizontalLine && quickReportViewModel.ReportViewSetting.HideVerticalLine)
+                    {
+                        txtDataCell.Border = new StiBorder(StiBorderSides.None, txtDataCell.Border.Color, txtDataCell.Border.Size, txtDataCell.Border.Style);
+                    }
+
+                    if (quickReportViewModel.ReportViewSetting.HideHorizontalLine && !quickReportViewModel.ReportViewSetting.HideVerticalLine)
+                    {
+                        txtDataCell.Border = new StiBorder(StiBorderSides.Left | StiBorderSides.Right, txtDataCell.Border.Color, txtDataCell.Border.Size, txtDataCell.Border.Style);
+                    }
+
+                    if (!quickReportViewModel.ReportViewSetting.HideHorizontalLine && quickReportViewModel.ReportViewSetting.HideVerticalLine)
+                    {
+                        txtDataCell.Border = new StiBorder(StiBorderSides.Bottom, txtDataCell.Border.Color, txtDataCell.Border.Size, txtDataCell.Border.Style);
+                    }
+                }
                 dataBand.Components.Add(txtDataCell);
             }
 

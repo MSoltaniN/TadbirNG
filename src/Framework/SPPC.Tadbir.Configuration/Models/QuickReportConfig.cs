@@ -34,5 +34,10 @@ namespace SPPC.Tadbir.Configuration.Models
         /// لیست پارامتر های فرم برای گزارش فوری
         /// </summary>
         public IList<QuickReportParameterConfig> Parameters { get; set; }
+
+        /// <summary>
+        /// تنظیمات گزارش فوری
+        /// </summary>
+        public QuickReportViewSetting ReportViewSetting { get; set; }
     }
 }

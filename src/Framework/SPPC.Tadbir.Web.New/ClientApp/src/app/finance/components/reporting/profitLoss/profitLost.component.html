@@ -4,7 +4,7 @@
   <report-param ParamName='VoucherStatus' [ParamValue]="voucherStatusSelected"
                 [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
 </view-identifier>
-<report-management [ViewIdentity]="viewIdentity" [ReportSettings.hideVerticalLine]="false" [ReportSettings.hideHorizobtalLine]="false" [Grid]="grid" [Sort]="sort"
+<report-management [ViewIdentity]="viewIdentity" [ViewSettings]="viewSetting" [Grid]="grid" [Sort]="sort"
                    [Filter]="currentFilter" [QuickFilter]="reportFilter" [Parameters]="param" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
 <report-setting></report-setting>
 <app-bread-cumb [entityTypeName]="'ProfitLost'"></app-bread-cumb>
