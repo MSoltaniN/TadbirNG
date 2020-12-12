@@ -10,15 +10,13 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// </summary>
         public List<ColumnViewModel> Columns { get; set; }
 
+        /// <summary>
+        /// کپی جدیدی از این کلاس با مقادیر موجود در نمونه جاری ساخته و برمی گرداند
+        /// </summary>
+        /// <returns>کپی جدید با اطلاعات نمونه جاری</returns>
         public ViewViewModel GetCopy()
         {
             return (ViewViewModel)MemberwiseClone();
-        }
-
-        public void SetColumns(IEnumerable<ColumnViewModel> columns)
-        {
-            Columns.Clear();
-            Columns.AddRange(columns);
         }
     }
 }

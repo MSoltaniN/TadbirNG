@@ -63,7 +63,7 @@ namespace SPPC.Tools.TadbirActivator
                     MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
             }
-            catch (Exception ex)
+            catch
             {
                 MessageBox.Show(this, Resources.Error_NoInternet, Resources.ErrorMessage,
                     MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,

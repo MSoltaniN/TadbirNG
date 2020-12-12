@@ -16,12 +16,24 @@ using Org.BouncyCastle.X509;
 
 namespace SPPC.Framework.Cryptography
 {
+    /// <summary>
+    /// عملیات مورد نیاز برای مدیریت گواهینامه های امنیتی را پیاده سازی می کند
+    /// </summary>
     public class CertificateManager : ICertificateManager
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس ایجاد می کند
+        /// </summary>
         public CertificateManager()
         {
         }
 
+        /// <summary>
+        /// یک گواهینامه امنیتی جدید خودامضا با مشخصات داده شده را ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <param name="issuerName">نام مورد نظر برای صادرکننده گواهینامه</param>
+        /// <param name="subjectName">نام مورد نظر برای موضوع گواهینامه</param>
+        /// <returns>گواهینامه خودامضای جدید</returns>
         public X509Certificate2 GenerateSelfSigned(string issuerName, string subjectName)
         {
             AsymmetricKeyParameter myCAprivateKey = null;
@@ -32,23 +44,34 @@ namespace SPPC.Framework.Cryptography
             return selfSigned;
         }
 
-        public void AddToStore(X509Certificate2 cert, StoreName st, StoreLocation sl)
+        /// <summary>
+        /// گواهینامه امنیتی را در انباره با مشخصات داده شده اضافه می کند
+        /// </summary>
+        /// <param name="certificate">گواهینامه مورد نظر برای اضافه کردن به انباره</param>
+        /// <param name="name">نام انباره گواهینامه مورد نظر</param>
+        /// <param name="location">موقعیت سیستمی انباره گواهینامه مورد نظر</param>
+        public void AddToStore(X509Certificate2 certificate, StoreName name, StoreLocation location)
         {
             try
             {
-                X509Store store = new X509Store(st, sl);
+                X509Store store = new X509Store(name, location);
                 store.Open(OpenFlags.ReadWrite);
-                store.Add(cert);
+                store.Add(certificate);
                 store.Close();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("{0}ERROR: Could not add certificate to store {1} in {2}.",
-                    Environment.NewLine, st.ToString(), sl.ToString());
+                    Environment.NewLine, name.ToString(), location.ToString());
                 Console.WriteLine("Reason : {0}", ex.Message);
             }
         }
 
+        /// <summary>
+        /// اولین گواهینامه امنیتی موجود با نام صادرکننده داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="issuerName">نام صادرکننده مورد نظر برای خواندن گواهینامه</param>
+        /// <returns>گواهینامه امنیتی خوانده شده یا رفرنس بدون مقدار در صورت پیدا نشدن گواهینامه</returns>
         public X509Certificate2 GetFromStore(string issuerName)
         {
             var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
@@ -59,6 +82,13 @@ namespace SPPC.Framework.Cryptography
                 : null;
         }
 
+        /// <summary>
+        /// گواهینامه امنیتی را از روی فایل مشخص شده بارگذاری کرده و برمی گرداند
+        /// </summary>
+        /// <param name="path">مسیر فیزیکی فایل گواهینامه</param>
+        /// <param name="password">رمز مورد نیاز برای خواندن اطلاعات گواهینامه از روی فایل</param>
+        /// <returns>گواهینامه بارگذاری شده از روی فایل</returns>
+        /// <remarks>در صورت نادرست بودن رمز داده شده، خطا ایجاد می شود</remarks>
         public X509Certificate2 GetFromFile(string path, string password)
         {
             var rawData = File.ReadAllBytes(path);

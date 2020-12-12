@@ -67,6 +67,10 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         public List<int> CompareItems { get; }
 
+        /// <summary>
+        /// کپی جدیدی از این کلاس با مقادیر موجود در نمونه جاری ساخته و برمی گرداند
+        /// </summary>
+        /// <returns>کپی جدید با اطلاعات نمونه جاری</returns>
         public ProfitLossParameters GetCopy()
         {
             return (ProfitLossParameters)MemberwiseClone();

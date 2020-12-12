@@ -42,8 +42,14 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string ActivateLicenseUrl = "license/activate";
 
+        /// <summary>
+        /// API client URL for all application licenses
+        /// </summary>
         public const string Licenses = "licenses";
 
+        /// <summary>
+        /// API server route URL for all application licenses
+        /// </summary>
         public const string LicensesUrl = "licenses";
     }
 }

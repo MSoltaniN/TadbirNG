@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace SPPC.Licensing.Model
 {
+    /// <summary>
+    /// Defines a unique program installation for a specific customer
+    /// </summary>
     public class InstanceModel : IEquatable<InstanceModel>
     {
         /// <summary>
@@ -20,6 +23,16 @@ namespace SPPC.Licensing.Model
             bool sameCustomer = (String.Compare(other.CustomerKey, CustomerKey) == 0);
             bool sameLicense = (String.Compare(other.LicenseKey, LicenseKey) == 0);
             return sameCustomer && sameLicense;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals((InstanceModel)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return CustomerKey.GetHashCode() | LicenseKey.GetHashCode();
         }
     }
 }

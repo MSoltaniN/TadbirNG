@@ -32,7 +32,9 @@ CREATE TABLE [dbo].[Customer](
 	[ContactLastName]  NVARCHAR(64)  NOT NULL,
 	[WorkPhone]        NVARCHAR(16)  NULL,
 	[WorkFax]          NVARCHAR(16)  NOT NULL,
-	[CellPhone]        NVARCHAR(16)  NOT NULL
+	[CellPhone]        NVARCHAR(16)  NOT NULL,
+    [RowGuid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Customer_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Customer_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([CustomerID] ASC)
 ) ON [PRIMARY]
 GO
@@ -40,6 +42,7 @@ GO
 CREATE TABLE [dbo].[License](
 	[LicenseID]     INT          IDENTITY(1,1) NOT NULL,
 	[CustomerID]    INT          NOT NULL,
+	[CustomerKey]   CHAR(36)     NULL,
 	[LicenseKey]    CHAR(36)     NOT NULL,
 	[HardwareKey]   VARCHAR(256) NULL,
 	[ClientKey]     VARCHAR(512) NULL,
@@ -49,7 +52,9 @@ CREATE TABLE [dbo].[License](
 	[StartDate]     DATETIME     NOT NULL,
 	[EndDate]       DATETIME     NOT NULL,
 	[ActiveModules] INT          NOT NULL,
-	[IsActivated]   BIT          CONSTRAINT [DF_License_IsActivated] DEFAULT (0) NOT NULL
+	[IsActivated]   BIT          CONSTRAINT [DF_License_IsActivated] DEFAULT (0) NOT NULL,
+    [RowGuid]       UNIQUEIDENTIFIER CONSTRAINT [DF_License_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]  DATETIME         CONSTRAINT [DF_License_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_License] PRIMARY KEY CLUSTERED ([LicenseID] ASC)
     , CONSTRAINT [FK_License_Customer] FOREIGN KEY ([CustomerID]) REFERENCES [Customer]([CustomerID])
 ) ON [PRIMARY]
