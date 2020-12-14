@@ -110,5 +110,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست و تعداد آرتیکل ها</returns>
         Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetSystemIssueArticlesAsync(
             GridOptions gridOptions, string issueType, DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، نوع مفهومی سند را با توجه به شناسه آرتیکل داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
+        /// <returns>نوع مفهومی سند مرتبط با شناسه آرتیکل داده شده</returns>
+        Task<int> GetLineSubjectTypeAsync(int articleId);
     }
 }

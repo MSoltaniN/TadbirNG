@@ -227,5 +227,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
         Task<ValueTuple<IList<NumberListViewModel>, int>> GetMissingVoucherNumbersAsync(
             GridOptions gridOptions, DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، نوع مفهومی سند با شناسه داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <returns>نوع مفهومی سند با شناسه داده شده</returns>
+        Task<int> GetSubjectTypeAsync(int voucherId);
     }
 }

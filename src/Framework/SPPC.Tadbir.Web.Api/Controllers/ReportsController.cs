@@ -878,6 +878,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         txtDataCell.Border = new StiBorder(StiBorderSides.Bottom, txtDataCell.Border.Color, txtDataCell.Border.Size, txtDataCell.Border.Style);
                     }
                 }
+
                 dataBand.Components.Add(txtDataCell);
             }
 
