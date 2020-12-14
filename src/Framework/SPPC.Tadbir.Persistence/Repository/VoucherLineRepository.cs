@@ -330,6 +330,21 @@ namespace SPPC.Tadbir.Persistence
             return result;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نوع مفهومی سند را با توجه به شناسه آرتیکل داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
+        /// <returns>نوع مفهومی سند مرتبط با شناسه آرتیکل داده شده</returns>
+        public async Task<int> GetLineSubjectTypeAsync(int articleId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            return await repository
+                .GetEntityQuery(line => line.Voucher)
+                .Where(line => line.Id == articleId)
+                .Select(line => line.Voucher.SubjectType)
+                .FirstOrDefaultAsync();
+        }
+
         /// <inheritdoc/>
         protected override async Task FinalizeActionAsync(VoucherLine entity)
         {

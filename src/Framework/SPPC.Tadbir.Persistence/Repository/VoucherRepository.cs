@@ -82,8 +82,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>سند مالی جدید با مقادیر پیشنهادی</returns>
         public async Task<VoucherViewModel> GetNewVoucherAsync(SubjectType subject = SubjectType.Normal)
         {
-            int lastNo = await GetLastVoucherNoAsync();
-            DateTime lastDate = await GetLastVoucherDateAsync();
+            int lastNo = await GetLastVoucherNoAsync(subject);
+            DateTime lastDate = await GetLastVoucherDateAsync(subject);
             var newVoucher = new VoucherViewModel()
             {
                 Date = lastDate,
@@ -638,6 +638,21 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return (missNumberList, 0);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، نوع مفهومی سند با شناسه داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <returns>نوع مفهومی سند با شناسه داده شده</returns>
+        public async Task<int> GetSubjectTypeAsync(int voucherId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            return await repository
+                .GetEntityQuery()
+                .Where(v => v.Id == voucherId)
+                .Select(v => v.SubjectType)
+                .FirstOrDefaultAsync();
         }
 
         internal override int? EntityType
