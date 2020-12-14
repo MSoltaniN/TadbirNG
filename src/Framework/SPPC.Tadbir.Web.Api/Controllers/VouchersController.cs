@@ -1464,7 +1464,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private IVoucherRepository GetVoucherRepository()
         {
-            var repository = default(IVoucherRepository);
+            var repository = _repository;
             var gridOptions = GridOptions ?? new GridOptions();
             if (gridOptions.Filter != null)
             {

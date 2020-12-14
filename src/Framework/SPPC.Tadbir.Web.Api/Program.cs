@@ -17,11 +17,11 @@ namespace SPPC.Tadbir.Web.Api
             var builder = new FilterExpressionBuilder();
             var gridOptions = new GridOptions();
             var branch = new GridFilter() { FieldName = "BranchId", FieldTypeName = "System.Int32", Operator = GridFilterOperator.IsEqualTo, Value = "1" };
-            var status = new GridFilter() { FieldName = "VoucherStatusId", FieldTypeName = "System.Int32", Operator = GridFilterOperator.IsEqualTo, Value = "2" };
+            var subject = new GridFilter() { FieldName = "SubjectType", FieldTypeName = "System.Int32", Operator = GridFilterOperator.IsEqualTo, Value = "1" };
             var dateFrom = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsGreaterOrEqualTo, Value = "2018-03-21" };
             var dateTo = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsLessOrEqualTo, Value = "2018-05-21" };
             gridOptions.Filter = builder
-                .New(status)
+                .New(subject)
                 ////.And(status)
                 ////.New(dateFrom)
                 ////.And(dateTo)
@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.Web.Api
             ////gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Id", Direction = "DESC" });
             var actionDetail = new ActionDetailViewModel();
             actionDetail.Items.AddRange(new int[] { 1, 2, 3 });
-            var json = JsonHelper.From(actionDetail, false);
+            var json = JsonHelper.From(gridOptions, false);
             var urlEncoded = WebUtility.UrlEncode(json);
             var base64 = Transform.ToBase64String(Encoding.UTF8.GetBytes(urlEncoded));
            BuildWebHost(args).Run();
