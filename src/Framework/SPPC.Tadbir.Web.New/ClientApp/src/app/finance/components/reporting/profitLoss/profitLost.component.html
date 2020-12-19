@@ -30,7 +30,7 @@
               (dataStateChange)="onDataStateChange()"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
-
+    <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
     <ng-template kendoGridNoRecordsTemplate>
       {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
     </ng-template>
