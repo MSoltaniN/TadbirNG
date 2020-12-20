@@ -3378,7 +3378,10 @@
   <data name="NewDraftVoucher" xml:space="preserve">
     <value>سند پیش نویس جدید</value>
   </data>
-  <data name="ConvertToNormal" xml:space="preserve">
+  <data name="GroupNormalize" xml:space="preserve">
+    <value>تبدیل گروهی به سند عادی</value>
+  </data>
+  <data name="Normalize" xml:space="preserve">
     <value>تبدیل به سند عادی</value>
   </data>
 </root>

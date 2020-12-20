@@ -271,6 +271,11 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// کد عملیاتی تبدیل به سند عادی
         /// </summary>
-        ConvertToNormal = 52,
+        Normalize = 52,
+
+        /// <summary>
+        /// کد عملیاتی تبدیل گروهی به سند عادی
+        /// </summary>
+        GroupNormalize = 53,
     }
 }

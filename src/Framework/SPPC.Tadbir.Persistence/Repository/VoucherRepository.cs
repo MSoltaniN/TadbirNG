@@ -508,7 +508,6 @@ namespace SPPC.Tadbir.Persistence
             if (first != null)
             {
                 var oldStatus = (DocumentStatusId)first.StatusId;
-
                 foreach (int item in items)
                 {
                     var voucher = await repository.GetByIDAsync(item);
@@ -520,7 +519,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 var operationId = GetGroupOperationCode(status, oldStatus);
-                await OnEntityGroupChangeStatus(items, operationId);
+                await OnEntityGroupChangeAsync(items, operationId);
             }
         }
 
@@ -549,7 +548,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 var operationId = isConfirmed ? OperationId.GroupConfirm : OperationId.GroupUndoConfirm;
-                await OnEntityGroupChangeStatus(items, operationId);
+                await OnEntityGroupChangeAsync(items, operationId);
             }
         }
 
@@ -559,7 +558,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="from">تاریخ شروع گزارش</param>
         /// <param name="to">تاریخ پایان گزارش</param>
-        /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
+        /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>p
         public async Task<ValueTuple<IList<VoucherViewModel>, int>> GetVouchersWithNoArticleAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
@@ -695,6 +694,18 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        protected async Task<int> GetLastVoucherNoAsync(SubjectType type = SubjectType.Normal)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lastByNo = await repository
+                .GetEntityQuery()
+                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && voucher.SubjectType == (short)type)
+                .OrderByDescending(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return (lastByNo != null) ? lastByNo.No : 0;
+        }
+
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
@@ -769,18 +780,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return lastDate;
-        }
-
-        private async Task<int> GetLastVoucherNoAsync(SubjectType type = SubjectType.Normal)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var lastByNo = await repository
-                .GetEntityQuery()
-                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && voucher.SubjectType == (short)type)
-                .OrderByDescending(voucher => voucher.No)
-                .FirstOrDefaultAsync();
-            return (lastByNo != null) ? lastByNo.No : 0;
         }
 
         private async Task<int> GetNextDailyNoAsync(DateTime date, SubjectType subject)

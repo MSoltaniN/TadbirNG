@@ -546,9 +546,14 @@ namespace SPPC.Tadbir.Security
         Navigate = 0x400,
 
         /// <summary>
+        /// دسترسی تبدیل سند پیش نویس به سند عادی
+        /// </summary>
+        Normalize = 0x800,
+
+        /// <summary>
         /// کلیه دسترسی های تعریف شده برای اسناد پیش نویس
         /// </summary>
-        All = 0x7ff
+        All = 0xfff
     }
 
     /// <summary>

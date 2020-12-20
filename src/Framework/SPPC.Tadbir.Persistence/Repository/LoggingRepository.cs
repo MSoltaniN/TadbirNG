@@ -109,7 +109,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="itemIds">شناسه اسناد</param>
         /// <param name="operation">شناسه عملیات گروهی</param>
-        protected async Task OnEntityGroupChangeStatus(IEnumerable<int> itemIds, OperationId operation)
+        protected async Task OnEntityGroupChangeAsync(IEnumerable<int> itemIds, OperationId operation)
         {
             OnEntityAction(operation);
             Log.Description = Context.Localize(String.Format(

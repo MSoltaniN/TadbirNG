@@ -1467,3 +1467,16 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (137, 1, 2, NULL, 18, 52, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.1040
+UPDATE [Metadata].[Operation]
+SET Name = 'Normalize' WHERE OperationID = 52
+
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (53, N'UndoNormalize')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (138, 1, 2, NULL, 18, 53, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

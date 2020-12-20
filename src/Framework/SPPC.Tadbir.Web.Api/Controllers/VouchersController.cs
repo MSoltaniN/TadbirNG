@@ -59,9 +59,223 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return AppStrings.Voucher; }
         }
 
-        #region Voucher Operations
+        #region Voucher Resources - Normal
 
-        #region Draft Voucher Operations
+        /// <summary>
+        /// به روش آسنکرون، کلیه اسناد مالی قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده اسناد مالی</returns>
+        // GET: api/vouchers
+        [HttpGet]
+        [Route(VoucherApi.EnvironmentVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.View)]
+        public async Task<IActionResult> GetEnvironmentVouchersAsync()
+        {
+            return await GetVoucherListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه اسناد مالی (عادی و پیش نویس) قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده اسناد مالی - عادی و پیش نویس</returns>
+        // GET: api/vouchers
+        [HttpGet]
+        [Route(VoucherApi.AllEnvironmentVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.View)]
+        [AuthorizeRequest(SecureEntity.DraftVouchers, (int)ManageDraftVouchersPermissions.View)]
+        public async Task<IActionResult> GetAllEnvironmentVouchersAsync()
+        {
+            return await GetVoucherListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی سند مالی مشخص شده با شناسه دیتابیسی را برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر</param>
+        /// <returns>اطلاعات نمایشی سند مالی</returns>
+        // GET: api/vouchers/{voucherId:int}
+        [HttpGet]
+        [Route(VoucherApi.VoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetVoucherAsync(int voucherId)
+        {
+            return await GetSingleVoucherAsync(voucherId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سند مالی جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی سند مالی جدید با مقادیر پیشنهادی</returns>
+        // GET: api/vouchers/new
+        [HttpGet]
+        [Route(VoucherApi.NewVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
+        public async Task<IActionResult> GetNewVoucherAsync()
+        {
+            return await GetNewVoucherBySubjectAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی مشخص شده با شماره را برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند مالی مورد نظر</param>
+        /// <returns>اطلاعات نمایشی سند مالی مورد نظر</returns>
+        // GET: api/vouchers/by-no/{voucherNo:min(1)}
+        [HttpGet]
+        [Route(VoucherApi.VoucherByNoUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetVoucherByNoAsync(int voucherNo)
+        {
+            return await GetVoucherByNoBySubjectAsync(voucherNo);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین سند مالی قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی اولین سند مالی قابل دسترسی</returns>
+        // GET: api/vouchers/first
+        [HttpGet]
+        [Route(VoucherApi.FirstVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
+        public async Task<IActionResult> GetFirstVoucherAsync()
+        {
+            return await GetFirstVoucherByTypeAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی پیش از شماره مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند مالی فعلی</param>
+        /// <returns>اطلاعات نمایشی سند مالی قابل دسترسی قبلی</returns>
+        // GET: api/vouchers/{voucherNo:min(1)}/previous
+        [HttpGet]
+        [Route(VoucherApi.PreviousVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
+        public async Task<IActionResult> GetPreviousVoucherAsync(int voucherNo)
+        {
+            return await GetPreviousVoucherByTypeAsync(voucherNo);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی بعد از شماره مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند مالی فعلی</param>
+        /// <returns>اطلاعات نمایشی سند مالی قابل دسترسی بعدی</returns>
+        // GET: api/vouchers/{voucherNo:min(1)}/next
+        [HttpGet]
+        [Route(VoucherApi.NextVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
+        public async Task<IActionResult> GetNextVoucherAsync(int voucherNo)
+        {
+            return await GetNextVoucherByTypeAsync(voucherNo);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آخرین سند مالی قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی آخرین سند مالی قابل دسترسی</returns>
+        // GET: api/vouchers/last
+        [HttpGet]
+        [Route(VoucherApi.LastVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
+        public async Task<IActionResult> GetLastVoucherAsync()
+        {
+            return await GetLastVoucherByTypeAsync();
+        }
+
+        // GET: api/vouchers/opening/query
+        [HttpGet]
+        [Route(VoucherApi.OpeningVoucherQueryUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetOpeningVoucherAsync()
+        {
+            var openingVoucher = await _repository.GetOpeningVoucherAsync(true);
+            if (openingVoucher != null)
+            {
+                Localize(openingVoucher);
+                return Json(openingVoucher);
+            }
+            else
+            {
+                bool hasPrevious = await _repository.HasPreviousClosingVoucherAsync();
+                bool needsPrompt = !hasPrevious;
+                return Json(needsPrompt);
+            }
+        }
+
+        // GET: api/vouchers/opening?isDefault={bool}
+        [HttpGet]
+        [Route(VoucherApi.OpeningVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetOrIssueOpeningVoucherAsync(bool? isDefault)
+        {
+            var result = await SpecialVoucherValidationResultAsync(AppStrings.OpeningVoucher);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            bool isDefaultVoucher = isDefault ?? true;
+            var openingVoucher = await _repository.GetOpeningVoucherAsync(false, isDefaultVoucher);
+            Localize(openingVoucher);
+            return Json(openingVoucher);
+        }
+
+        // GET: api/vouchers/closing-tmp
+        [HttpGet]
+        [Route(VoucherApi.ClosingAccountsVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetOrIssueClosingAccountsVoucherAsync()
+        {
+            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync();
+            Localize(closingAccountsVoucher);
+            return Json(closingAccountsVoucher);
+        }
+
+        // PUT: api/vouchers/closing-tmp
+        [HttpPut]
+        [Route(VoucherApi.ClosingAccountsVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync(
+            [FromBody] IList<AccountBalanceViewModel> balanceItems)
+        {
+            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(balanceItems);
+            Localize(closingAccountsVoucher);
+            return Json(closingAccountsVoucher);
+        }
+
+        // GET: api/vouchers/closing
+        [HttpGet]
+        [Route(VoucherApi.ClosingVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetOrIssueClosingVoucherAsync()
+        {
+            var result = await ClosingVoucherValidationResultAsync();
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var closingVoucher = await _repository.GetClosingVoucherAsync();
+            Localize(closingVoucher);
+            return Json(closingVoucher);
+        }
+
+        #endregion
+
+        #region Voucher Resources - Draft
 
         /// <summary>
         /// به روش آسنکرون، کلیه اسناد مالی پیش نویس قابل دسترس در محیط جاری برنامه را برمی گرداند
@@ -173,190 +387,179 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه اسناد مالی قابل دسترس در محیط جاری برنامه را برمی گرداند
-        /// </summary>
-        /// <returns>لیست صفحه بندی شده اسناد مالی</returns>
-        // GET: api/vouchers
-        [HttpGet]
-        [Route(VoucherApi.EnvironmentVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentVouchersAsync()
-        {
-            return await GetVoucherListAsync();
-        }
+        #region Voucher Articles Resources
 
         /// <summary>
-        /// به روش آسنکرون، کلیه اسناد مالی (عادی و پیش نویس) قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// به روش آسنکرون، کلیه آرتیکل های سند داده شده را برمی گرداند
         /// </summary>
-        /// <returns>لیست صفحه بندی شده اسناد مالی - عادی و پیش نویس</returns>
-        // GET: api/vouchers
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <returns>فهرست صفحه بندی شده آرتیکل های سند</returns>
+        // GET: api/vouchers/{voucherId:min(1)}/articles
         [HttpGet]
-        [Route(VoucherApi.AllEnvironmentVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.View)]
-        [AuthorizeRequest(SecureEntity.DraftVouchers, (int)ManageDraftVouchersPermissions.View)]
-        public async Task<IActionResult> GetAllEnvironmentVouchersAsync()
-        {
-            return await GetVoucherListAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی سند مالی مشخص شده با شناسه دیتابیسی را برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر</param>
-        /// <returns>اطلاعات نمایشی سند مالی</returns>
-        // GET: api/vouchers/{voucherId:int}
-        [HttpGet]
-        [Route(VoucherApi.VoucherUrl)]
+        [Route(VoucherApi.VoucherArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetVoucherAsync(int voucherId)
+        public async Task<IActionResult> GetArticlesAsync(int voucherId)
         {
-            return await GetSingleVoucherAsync(voucherId);
+            var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
+            SetItemCount(articles.TotalCount);
+            Localize(articles.Items);
+            return Json(articles.Items);
         }
 
         /// <summary>
-        /// به روش آسنکرون، سند مالی جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات آرتیکل مالی مشخص شده را برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات نمایشی سند مالی جدید با مقادیر پیشنهادی</returns>
-        // GET: api/vouchers/new
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر</param>
+        /// <returns>اطلاعات نمایشی آرتیکل مالی</returns>
+        // GET: api/vouchers/articles/{articleId:min(1)}
         [HttpGet]
-        [Route(VoucherApi.NewVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
-        public async Task<IActionResult> GetNewVoucherAsync()
-        {
-            return await GetNewVoucherBySubjectAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات سند مالی مشخص شده با شماره را برمی گرداند
-        /// </summary>
-        /// <param name="voucherNo">شماره سند مالی مورد نظر</param>
-        /// <returns>اطلاعات نمایشی سند مالی مورد نظر</returns>
-        // GET: api/vouchers/by-no/{voucherNo:min(1)}
-        [HttpGet]
-        [Route(VoucherApi.VoucherByNoUrl)]
+        [Route(VoucherApi.VoucherArticleUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetVoucherByNoAsync(int voucherNo)
+        public async Task<IActionResult> GetArticleAsync(int articleId)
         {
-            return await GetVoucherByNoBySubjectAsync(voucherNo);
+            var article = await _lineRepository.GetArticleAsync(articleId);
+            Localize(article);
+            return JsonReadResult(article);
         }
 
         /// <summary>
-        /// به روش آسنکرون، محدوده شماره سندهای قابل دسترسی توسط کاربر جاری را برمی گرداند
+        /// به روش آسنکرون، آرتیکل مالی داده شده را ایجاد می کند
         /// </summary>
-        /// <returns>اطلاعات محدوده شماره سندها</returns>
-        // GET: api/vouchers/range
-        [HttpGet]
-        [Route(VoucherApi.EnvironmentItemRangeUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentVoucherRangeAsync()
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی</param>
+        /// <param name="article">اطلاعات کامل آرتیکل مالی جدید</param>
+        /// <returns>اطلاعات آرتیکل مالی بعد از ایجاد در دیتابیس</returns>
+        // POST: api/vouchers/{voucherId:min(1)}/articles
+        [HttpPost]
+        [Route(VoucherApi.VoucherArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.CreateLine))]
+        public async Task<IActionResult> PostNewArticleAsync(
+            int voucherId, [FromBody] VoucherLineViewModel article)
         {
-            var range = await _repository.GetVoucherRangeInfoAsync();
-            return Json(range);
+            var result = VoucherLineValidationResultAsync(article);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(article);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var lineRepository = await GetLineRepositoryFromVoucherAsync(voucherId);
+            var outputLine = await lineRepository.SaveArticleAsync(article);
+            return StatusCode(StatusCodes.Status201Created, outputLine);
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات اولین سند مالی قابل دسترسی را برمی گرداند
+        /// به روش آسنکرون، آرتیکل مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
         /// </summary>
-        /// <returns>اطلاعات نمایشی اولین سند مالی قابل دسترسی</returns>
-        // GET: api/vouchers/first
-        [HttpGet]
-        [Route(VoucherApi.FirstVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
-        public async Task<IActionResult> GetFirstVoucherAsync()
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر برای اصلاح</param>
+        /// <param name="article">اطلاعات اصلاح شده آرتیکل مالی</param>
+        /// <returns>اطلاعات آرتیکل مالی بعد از اصلاح در دیتابیس</returns>
+        // PUT: api/vouchers/articles/{articleId:min(1)}
+        [HttpPut]
+        [Route(VoucherApi.VoucherArticleUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.EditLine))]
+        public async Task<IActionResult> PutModifiedArticleAsync(
+            int articleId, [FromBody] VoucherLineViewModel article)
         {
-            return await GetFirstVoucherByTypeAsync();
+            var result = VoucherLineValidationResultAsync(article, articleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(article);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var lineRepository = await GetLineRepositoryAsync(articleId);
+            var outputLine = await lineRepository.SaveArticleAsync(article);
+            return JsonReadResult(outputLine);
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات سند مالی پیش از شماره مشخص شده را برمی گرداند
+        /// به روش آسنکرون، اطلاعات علامتگذاری آرتیکل مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
         /// </summary>
-        /// <param name="voucherNo">شماره سند مالی فعلی</param>
-        /// <returns>اطلاعات نمایشی سند مالی قابل دسترسی قبلی</returns>
-        // GET: api/vouchers/{voucherNo:min(1)}/previous
-        [HttpGet]
-        [Route(VoucherApi.PreviousVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
-        public async Task<IActionResult> GetPreviousVoucherAsync(int voucherNo)
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی</param>
+        /// <param name="mark">اطلاعات اصلاح شده علامتگذاری آرتیکل مالی</param>
+        /// <returns>در صورت بروز خطا، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
+        // PUT: api/vouchers/articles/{articleId:min(1)}/mark
+        [HttpPut]
+        [Route(VoucherApi.VoucherArticleMarkUrl)]
+        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.Mark)]
+        public async Task<IActionResult> PutModifiedArticleMarkAsync(
+            int articleId, [FromBody] VoucherLineMarkViewModel mark)
         {
-            return await GetPreviousVoucherByTypeAsync(voucherNo);
+            var result = BasicValidationResult(mark, AppStrings.VoucherLineMark, articleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _lineRepository.SaveArticleMarkAsync(mark);
+            return Ok();
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات سند مالی بعد از شماره مشخص شده را برمی گرداند
+        /// به روش آسنکرون، آرتیکل مالی مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
-        /// <param name="voucherNo">شماره سند مالی فعلی</param>
-        /// <returns>اطلاعات نمایشی سند مالی قابل دسترسی بعدی</returns>
-        // GET: api/vouchers/{voucherNo:min(1)}/next
-        [HttpGet]
-        [Route(VoucherApi.NextVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
-        public async Task<IActionResult> GetNextVoucherAsync(int voucherNo)
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // DELETE: api/vouchers/articles/{articleId:min(1)}
+        [HttpDelete]
+        [Route(VoucherApi.VoucherArticleUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.DeleteLine))]
+        public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
         {
-            return await GetNextVoucherByTypeAsync(voucherNo);
+            var result = await ValidateLineDeleteResultAsync(articleId);
+            if (result != null)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            var lineRepository = await GetLineRepositoryAsync(articleId);
+            await lineRepository.DeleteArticleAsync(articleId);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات آخرین سند مالی قابل دسترسی را برمی گرداند
+        /// به روش آسنکرون، آرتیکل های مالی داده شده را - در صورت امکان - حذف می کند
         /// </summary>
-        /// <returns>اطلاعات نمایشی آخرین سند مالی قابل دسترسی</returns>
-        // GET: api/vouchers/last
-        [HttpGet]
-        [Route(VoucherApi.LastVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Navigate)]
-        public async Task<IActionResult> GetLastVoucherAsync()
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/vouchers/articles
+        [HttpPut]
+        [Route(VoucherApi.AllVoucherArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.DeleteLine))]
+        public async Task<IActionResult> PutExistingArticlesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
         {
-            return await GetLastVoucherByTypeAsync();
+            if (actionDetail == null || actionDetail.Items.Count == 0)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var lineRepository = await GetLineRepositoryAsync(actionDetail.Items[0]);
+            return await GroupDeleteLineResultAsync(actionDetail, lineRepository.DeleteArticlesAsync);
         }
 
-        // GET: api/vouchers/count/by-status
-        [HttpGet]
-        [Route(VoucherApi.VoucherCountByStatusUrl)]
-        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
-        public async Task<IActionResult> GetVouchersCountByStatusIdAsync()
-        {
-            int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
+        #endregion
 
-            return Ok(itemCount);
-        }
-
-        // GET: api/vouchers/no-article
-        [HttpGet]
-        [Route(VoucherApi.VoucherWithNoArticleUrl)]
-        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
-        public async Task<IActionResult> GetVouchersWithNoArticleAsync(DateTime from, DateTime to)
-        {
-            var (vouchers, itemCount) = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
-            SetItemCount(itemCount);
-            Localize(vouchers.ToArray());
-            SetRowNumbers(vouchers);
-            return Json(vouchers);
-        }
-
-        // GET: api/vouchers/unbalanced
-        [HttpGet]
-        [Route(VoucherApi.UnbalancedVouchers)]
-        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
-        public async Task<IActionResult> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
-        {
-            var (vouchers, itemCount) = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
-            SetItemCount(itemCount);
-            Localize(vouchers.ToArray());
-            SetRowNumbers(vouchers);
-            return Json(vouchers);
-        }
-
-        // GET: api/vouchers/miss-number
-        [HttpGet]
-        [Route(VoucherApi.MissingVoucherNumberUrl)]
-        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
-        public async Task<IActionResult> GetMissingVoucherNumbersAsync(DateTime from, DateTime to)
-        {
-            var (voucherNumbers, itemCount) = await _repository.GetMissingVoucherNumbersAsync(GridOptions, from, to);
-            SetItemCount(itemCount);
-            SetRowNumbers(voucherNumbers);
-            return Json(voucherNumbers);
-        }
+        #region Voucher Operations - Single
 
         /// <summary>
         /// به روش آسنکرون، سند مالی داده شده را ایجاد می کند
@@ -428,6 +631,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ? Ok(outputVoucher)
                 : NotFound() as IActionResult;
             return result;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سند مالی مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // DELETE: api/vouchers/{voucherId:int}
+        [HttpDelete]
+        [Route(VoucherApi.VoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingVoucherAsync(int voucherId)
+        {
+            var result = await ValidateDeleteResultAsync(voucherId);
+            if (result != null)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            var repository = await GetVoucherRepositoryAsync(voucherId);
+            await repository.DeleteVoucherAsync(voucherId);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
@@ -609,6 +835,48 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، نوع مفهومی سند مشخص شده را به سند عادی تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر برای تغییر نوع</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
+        // PUT: api/vouchers/{voucherId:int}/normalize
+        [HttpPut]
+        [Route(VoucherApi.NormalizeVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Normalize)]
+        public async Task<IActionResult> PutExistingDraftVoucherAsNormalized(int voucherId)
+        {
+            await _draftRepository.NormalizeVoucherAsync(voucherId);
+            return Ok();
+        }
+
+        #endregion
+
+        #region Voucher Operations - Group
+
+        /// <summary>
+        /// به روش آسنکرون، اسناد مالی داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/vouchers
+        [HttpPut]
+        [Route(VoucherApi.EnvironmentVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
+        public async Task<IActionResult> PutExistingVouchersAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null || actionDetail.Items.Count == 0)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var repository = await GetVoucherRepositoryAsync(actionDetail.Items[0]);
+            return await GroupDeleteResultAsync(actionDetail, repository.DeleteVouchersAsync);
+        }
+
+        /// <summary>
         /// ثبت گروهی اسناد
         /// </summary>
         /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده </param>
@@ -725,189 +993,67 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، سند مالی مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// به روش آسنکرون، نوع مفهومی اسناد پیش نویس مشخص شده را به سند عادی تغییر می دهد
         /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای حذف</param>
-        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // DELETE: api/vouchers/{voucherId:int}
-        [HttpDelete]
-        [Route(VoucherApi.VoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingVoucherAsync(int voucherId)
-        {
-            var result = await ValidateDeleteResultAsync(voucherId);
-            if (result != null)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-
-            var repository = await GetVoucherRepositoryAsync(voucherId);
-            await repository.DeleteVoucherAsync(voucherId);
-            return StatusCode(StatusCodes.Status204NoContent);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اسناد مالی داده شده را - در صورت امکان - حذف می کند
-        /// </summary>
-        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
-        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/vouchers
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات تبدیل گروهی</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
+        // PUT: api/vouchers/normalize
         [HttpPut]
-        [Route(VoucherApi.EnvironmentVouchersUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
-        public async Task<IActionResult> PutExistingVouchersAsDeletedAsync(
+        [Route(VoucherApi.NormalizeVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Normalize)]
+        public async Task<IActionResult> PutExistingDraftVouchersAsNormalized(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null || actionDetail.Items.Count == 0)
+            if (actionDetail == null)
             {
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var repository = await GetVoucherRepositoryAsync(actionDetail.Items[0]);
-            return await GroupDeleteResultAsync(actionDetail, repository.DeleteVouchersAsync);
-        }
-
-        // GET: api/vouchers/opening/query
-        [HttpGet]
-        [Route(VoucherApi.OpeningVoucherQueryUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetOpeningVoucherAsync()
-        {
-            var openingVoucher = await _repository.GetOpeningVoucherAsync(true);
-            if (openingVoucher != null)
-            {
-                Localize(openingVoucher);
-                return Json(openingVoucher);
-            }
-            else
-            {
-                bool hasPrevious = await _repository.HasPreviousClosingVoucherAsync();
-                bool needsPrompt = !hasPrevious;
-                return Json(needsPrompt);
-            }
-        }
-
-        // GET: api/vouchers/opening?isDefault={bool}
-        [HttpGet]
-        [Route(VoucherApi.OpeningVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetOrIssueOpeningVoucherAsync(bool? isDefault)
-        {
-            var result = await SpecialVoucherValidationResultAsync(AppStrings.OpeningVoucher);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            bool isDefaultVoucher = isDefault ?? true;
-            var openingVoucher = await _repository.GetOpeningVoucherAsync(false, isDefaultVoucher);
-            Localize(openingVoucher);
-            return Json(openingVoucher);
-        }
-
-        // GET: api/vouchers/closing-tmp
-        [HttpGet]
-        [Route(VoucherApi.ClosingAccountsVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetOrIssueClosingAccountsVoucherAsync()
-        {
-            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync();
-            Localize(closingAccountsVoucher);
-            return Json(closingAccountsVoucher);
-        }
-
-        // PUT: api/vouchers/closing-tmp
-        [HttpPut]
-        [Route(VoucherApi.ClosingAccountsVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync(
-            [FromBody] IList<AccountBalanceViewModel> balanceItems)
-        {
-            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(balanceItems);
-            Localize(closingAccountsVoucher);
-            return Json(closingAccountsVoucher);
-        }
-
-        // GET: api/vouchers/closing
-        [HttpGet]
-        [Route(VoucherApi.ClosingVoucherUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetOrIssueClosingVoucherAsync()
-        {
-            var result = await ClosingVoucherValidationResultAsync();
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var closingVoucher = await _repository.GetClosingVoucherAsync();
-            Localize(closingVoucher);
-            return Json(closingVoucher);
+            await _draftRepository.NormalizeVouchersAsync(actionDetail.Items);
+            return Ok();
         }
 
         #endregion
 
-        #region Article Operations
+        #region System Issue Resources
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه آرتیکل های سند داده شده را برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
-        /// <returns>فهرست صفحه بندی شده آرتیکل های سند</returns>
-        // GET: api/vouchers/{voucherId:min(1)}/articles
+        // GET: api/vouchers/no-article
         [HttpGet]
-        [Route(VoucherApi.VoucherArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetArticlesAsync(int voucherId)
+        [Route(VoucherApi.VoucherWithNoArticleUrl)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
+        public async Task<IActionResult> GetVouchersWithNoArticleAsync(DateTime from, DateTime to)
         {
-            var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
-            SetItemCount(articles.TotalCount);
-            Localize(articles.Items);
-            return Json(articles.Items);
+            var (vouchers, itemCount) = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
+            SetItemCount(itemCount);
+            Localize(vouchers.ToArray());
+            SetRowNumbers(vouchers);
+            return Json(vouchers);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات آرتیکل مالی مشخص شده را برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر</param>
-        /// <returns>اطلاعات نمایشی آرتیکل مالی</returns>
-        // GET: api/vouchers/articles/{articleId:min(1)}
+        // GET: api/vouchers/unbalanced
         [HttpGet]
-        [Route(VoucherApi.VoucherArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetArticleAsync(int articleId)
+        [Route(VoucherApi.UnbalancedVouchers)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
+        public async Task<IActionResult> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
         {
-            var article = await _lineRepository.GetArticleAsync(articleId);
-            Localize(article);
-            return JsonReadResult(article);
+            var (vouchers, itemCount) = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
+            SetItemCount(itemCount);
+            Localize(vouchers.ToArray());
+            SetRowNumbers(vouchers);
+            return Json(vouchers);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، تعداد کل آرتیکل های موجود را برمی گرداند
-        /// </summary>
-        /// <returns>تعداد کل آرتیکل های موجود</returns>
-        // GET: api/vouchers/articles/count
+        // GET: api/vouchers/miss-number
         [HttpGet]
-        [Route(VoucherApi.VoucherArticlesCountUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetArticlesCountAsync()
+        [Route(VoucherApi.MissingVoucherNumberUrl)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
+        public async Task<IActionResult> GetMissingVoucherNumbersAsync(DateTime from, DateTime to)
         {
-            int itemsCount = await _lineRepository.GetAllArticlesCountAsync();
-            return Ok(itemsCount);
+            var (voucherNumbers, itemCount) = await _repository.GetMissingVoucherNumbersAsync(GridOptions, from, to);
+            SetItemCount(itemCount);
+            SetRowNumbers(voucherNumbers);
+            return Json(voucherNumbers);
         }
 
         /// <summary>
@@ -934,142 +1080,46 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(articles);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، آرتیکل مالی داده شده را ایجاد می کند
-        /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مالی</param>
-        /// <param name="article">اطلاعات کامل آرتیکل مالی جدید</param>
-        /// <returns>اطلاعات آرتیکل مالی بعد از ایجاد در دیتابیس</returns>
-        // POST: api/vouchers/{voucherId:min(1)}/articles
-        [HttpPost]
-        [Route(VoucherApi.VoucherArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.CreateLine))]
-        public async Task<IActionResult> PostNewArticleAsync(
-            int voucherId, [FromBody] VoucherLineViewModel article)
-        {
-            var result = VoucherLineValidationResultAsync(article);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(article);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var lineRepository = await GetLineRepositoryFromVoucherAsync(voucherId);
-            var outputLine = await lineRepository.SaveArticleAsync(article);
-            return StatusCode(StatusCodes.Status201Created, outputLine);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، آرتیکل مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر برای اصلاح</param>
-        /// <param name="article">اطلاعات اصلاح شده آرتیکل مالی</param>
-        /// <returns>اطلاعات آرتیکل مالی بعد از اصلاح در دیتابیس</returns>
-        // PUT: api/vouchers/articles/{articleId:min(1)}
-        [HttpPut]
-        [Route(VoucherApi.VoucherArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.EditLine))]
-        public async Task<IActionResult> PutModifiedArticleAsync(
-            int articleId, [FromBody] VoucherLineViewModel article)
-        {
-            var result = VoucherLineValidationResultAsync(article, articleId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(article);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var lineRepository = await GetLineRepositoryAsync(articleId);
-            var outputLine = await lineRepository.SaveArticleAsync(article);
-            return JsonReadResult(outputLine);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات علامتگذاری آرتیکل مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی</param>
-        /// <param name="mark">اطلاعات اصلاح شده علامتگذاری آرتیکل مالی</param>
-        /// <returns>در صورت بروز خطا، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 200 را برمی گرداند</returns>
-        // PUT: api/vouchers/articles/{articleId:min(1)}/mark
-        [HttpPut]
-        [Route(VoucherApi.VoucherArticleMarkUrl)]
-        [AuthorizeRequest(SecureEntity.Journal, (int)JournalPermissions.Mark)]
-        public async Task<IActionResult> PutModifiedArticleMarkAsync(
-            int articleId, [FromBody] VoucherLineMarkViewModel mark)
-        {
-            var result = BasicValidationResult(mark, AppStrings.VoucherLineMark, articleId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            await _lineRepository.SaveArticleMarkAsync(mark);
-            return Ok();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، آرتیکل مالی مشخص شده با شناسه دیتابیسی را حذف می کند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر برای حذف</param>
-        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // DELETE: api/vouchers/articles/{articleId:min(1)}
-        [HttpDelete]
-        [Route(VoucherApi.VoucherArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.DeleteLine))]
-        public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
-        {
-            var result = await ValidateLineDeleteResultAsync(articleId);
-            if (result != null)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-
-            var lineRepository = await GetLineRepositoryAsync(articleId);
-            await lineRepository.DeleteArticleAsync(articleId);
-            return StatusCode(StatusCodes.Status204NoContent);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، آرتیکل های مالی داده شده را - در صورت امکان - حذف می کند
-        /// </summary>
-        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
-        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/vouchers/articles
-        [HttpPut]
-        [Route(VoucherApi.AllVoucherArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.DeleteLine))]
-        public async Task<IActionResult> PutExistingArticlesAsDeletedAsync(
-            [FromBody] ActionDetailViewModel actionDetail)
-        {
-            if (actionDetail == null || actionDetail.Items.Count == 0)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var lineRepository = await GetLineRepositoryAsync(actionDetail.Items[0]);
-            return await GroupDeleteLineResultAsync(actionDetail, lineRepository.DeleteArticlesAsync);
-        }
-
         #endregion
+
+        /// <summary>
+        /// به روش آسنکرون، محدوده شماره سندهای قابل دسترسی توسط کاربر جاری را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات محدوده شماره سندها</returns>
+        // GET: api/vouchers/range
+        [HttpGet]
+        [Route(VoucherApi.EnvironmentItemRangeUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetEnvironmentVoucherRangeAsync()
+        {
+            var range = await _repository.GetVoucherRangeInfoAsync();
+            return Json(range);
+        }
+
+        // GET: api/vouchers/count/by-status
+        [HttpGet]
+        [Route(VoucherApi.VoucherCountByStatusUrl)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
+        public async Task<IActionResult> GetVouchersCountByStatusIdAsync()
+        {
+            int itemCount = await _repository.GetCountAsync<VoucherViewModel>(GridOptions);
+
+            return Ok(itemCount);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد کل آرتیکل های موجود را برمی گرداند
+        /// </summary>
+        /// <returns>تعداد کل آرتیکل های موجود</returns>
+        // GET: api/vouchers/articles/count
+        [HttpGet]
+        [Route(VoucherApi.VoucherArticlesCountUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetArticlesCountAsync()
+        {
+            int itemsCount = await _lineRepository.GetAllArticlesCountAsync();
+            return Ok(itemsCount);
+        }
 
         /// <summary>
         /// به روش آسنکرون، عمل حذف را برای سند مالی مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
