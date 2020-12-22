@@ -69,40 +69,19 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
+            var profitLossItems = new List<ProfitLossViewModel>();
             int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
                 ? ViewId.ComparativeProfitLossSimple
                 : ViewId.ComparativeProfitLoss;
-            if (parameters.CompareItems.Count > 0)
+            foreach (int itemId in parameters.CompareItems)
             {
-                int firstCostCenterId = parameters.CompareItems[0];
-                parameters.CostCenterId = firstCostCenterId;
-                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                foreach (var item in profitLoss.Items)
-                {
-                    profitLoss.ComparativeItems.Add(Mapper.Map<ProfitLossByItemsViewModel>(item));
-                }
-
-                int itemIndex = 1;
-                while (itemIndex < parameters.CompareItems.Count)
-                {
-                    parameters.CostCenterId = parameters.CompareItems[itemIndex];
-                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                    if (itemProfitLoss.Items.Count == profitLoss.ComparativeItems.Count)
-                    {
-                        for (int lineIndex = 0; lineIndex < profitLoss.ComparativeItems.Count; lineIndex++)
-                        {
-                            CopyItemValues(itemIndex,
-                                itemProfitLoss.Items[lineIndex], profitLoss.ComparativeItems[lineIndex]);
-                        }
-                    }
-
-                    itemIndex++;
-                }
-
-                profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
-                    viewId, ViewId.CostCenter, parameters.CompareItems);
-                profitLoss.Items.Clear();
+                parameters.CostCenterId = itemId;
+                profitLossItems.Add(await GetProfitLossAsync(parameters, balanceItems));
             }
+
+            profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
+            profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+                viewId, ViewId.CostCenter, parameters.CompareItems);
 
             return profitLoss;
         }
@@ -118,40 +97,19 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
+            var profitLossItems = new List<ProfitLossViewModel>();
             int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
                 ? ViewId.ComparativeProfitLossSimple
                 : ViewId.ComparativeProfitLoss;
-            if (parameters.CompareItems.Count > 0)
+            foreach (int itemId in parameters.CompareItems)
             {
-                int firstProjectId = parameters.CompareItems[0];
-                parameters.ProjectId = firstProjectId;
-                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                foreach (var item in profitLoss.Items)
-                {
-                    profitLoss.ComparativeItems.Add(Mapper.Map<ProfitLossByItemsViewModel>(item));
-                }
-
-                int itemIndex = 1;
-                while (itemIndex < parameters.CompareItems.Count)
-                {
-                    parameters.ProjectId = parameters.CompareItems[itemIndex];
-                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                    if (itemProfitLoss.Items.Count == profitLoss.ComparativeItems.Count)
-                    {
-                        for (int lineIndex = 0; lineIndex < profitLoss.ComparativeItems.Count; lineIndex++)
-                        {
-                            CopyItemValues(itemIndex,
-                                itemProfitLoss.Items[lineIndex], profitLoss.ComparativeItems[lineIndex]);
-                        }
-                    }
-
-                    itemIndex++;
-                }
-
-                profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
-                    viewId, ViewId.Project, parameters.CompareItems);
-                profitLoss.Items.Clear();
+                parameters.ProjectId = itemId;
+                profitLossItems.Add(await GetProfitLossAsync(parameters, balanceItems));
             }
+
+            profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
+            profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+                viewId, ViewId.Project, parameters.CompareItems);
 
             return profitLoss;
         }
@@ -167,40 +125,19 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
+            var profitLossItems = new List<ProfitLossViewModel>();
             int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
                 ? ViewId.ComparativeProfitLossSimple
                 : ViewId.ComparativeProfitLoss;
-            if (parameters.CompareItems.Count > 0)
+            foreach (int itemId in parameters.CompareItems)
             {
-                int firstBranchId = parameters.CompareItems[0];
-                parameters.BranchId = firstBranchId;
-                profitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                foreach (var item in profitLoss.Items)
-                {
-                    profitLoss.ComparativeItems.Add(Mapper.Map<ProfitLossByItemsViewModel>(item));
-                }
-
-                int itemIndex = 1;
-                while (itemIndex < parameters.CompareItems.Count)
-                {
-                    parameters.BranchId = parameters.CompareItems[itemIndex];
-                    var itemProfitLoss = await GetProfitLossAsync(parameters, balanceItems);
-                    if (itemProfitLoss.Items.Count == profitLoss.ComparativeItems.Count)
-                    {
-                        for (int lineIndex = 0; lineIndex < profitLoss.ComparativeItems.Count; lineIndex++)
-                        {
-                            CopyItemValues(itemIndex,
-                                itemProfitLoss.Items[lineIndex], profitLoss.ComparativeItems[lineIndex]);
-                        }
-                    }
-
-                    itemIndex++;
-                }
-
-                profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
-                    viewId, ViewId.Branch, parameters.CompareItems);
-                profitLoss.Items.Clear();
+                parameters.BranchId = itemId;
+                profitLossItems.Add(await GetProfitLossAsync(parameters, balanceItems));
             }
+
+            profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
+            profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+                viewId, ViewId.Branch, parameters.CompareItems);
 
             return profitLoss;
         }
@@ -216,55 +153,37 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
+            var profitLossItems = new List<ProfitLossViewModel>();
             int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
                 ? ViewId.ComparativeProfitLossSimple
                 : ViewId.ComparativeProfitLoss;
-            if (parameters.CompareItems.Count > 0)
+            foreach (int itemId in parameters.CompareItems)
             {
-                int firstPeriodId = parameters.CompareItems[0];
-                var adjusted = await GetAdjustedParameters(parameters, firstPeriodId);
-                profitLoss = await GetProfitLossAsync(adjusted, balanceItems);
-                foreach (var item in profitLoss.Items)
-                {
-                    profitLoss.ComparativeItems.Add(Mapper.Map<ProfitLossByItemsViewModel>(item));
-                }
-
-                int itemIndex = 1;
-                while (itemIndex < parameters.CompareItems.Count)
-                {
-                    adjusted = await GetAdjustedParameters(parameters, parameters.CompareItems[itemIndex]);
-                    var itemProfitLoss = await GetProfitLossAsync(adjusted, balanceItems);
-                    if (itemProfitLoss.Items.Count == profitLoss.ComparativeItems.Count)
-                    {
-                        for (int lineIndex = 0; lineIndex < profitLoss.ComparativeItems.Count; lineIndex++)
-                        {
-                            CopyItemValues(itemIndex,
-                                itemProfitLoss.Items[lineIndex], profitLoss.ComparativeItems[lineIndex]);
-                        }
-                    }
-
-                    itemIndex++;
-                }
-
-                profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
-                    viewId, ViewId.FiscalPeriod, parameters.CompareItems);
-                profitLoss.Items.Clear();
+                var adjusted = await GetAdjustedParameters(parameters, itemId);
+                profitLossItems.Add(await GetProfitLossAsync(adjusted, balanceItems));
             }
+
+            profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
+            profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+                viewId, ViewId.FiscalPeriod, parameters.CompareItems);
 
             return profitLoss;
         }
 
-        private static void CopyItemValues(int index,
-            ProfitLossItemViewModel source, ProfitLossByItemsViewModel item)
+        private static void CopyItemValues(
+            int index, ProfitLossItemViewModel source, ProfitLossByItemsViewModel target)
         {
+            target.Group = source.Group;
+            target.Account = source.Account;
+
             string fieldName = String.Format("StartBalanceItem{0}", index + 1);
-            Reflector.CopyProperty(source, "StartBalance", item, fieldName);
+            Reflector.CopyProperty(source, "StartBalance", target, fieldName);
             fieldName = String.Format("PeriodTurnoverItem{0}", index + 1);
-            Reflector.CopyProperty(source, "PeriodTurnover", item, fieldName);
+            Reflector.CopyProperty(source, "PeriodTurnover", target, fieldName);
             fieldName = String.Format("EndBalanceItem{0}", index + 1);
-            Reflector.CopyProperty(source, "EndBalance", item, fieldName);
+            Reflector.CopyProperty(source, "EndBalance", target, fieldName);
             fieldName = String.Format("BalanceItem{0}", index + 1);
-            Reflector.CopyProperty(source, "Balance", item, fieldName);
+            Reflector.CopyProperty(source, "Balance", target, fieldName);
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetGrossProfitItemsAsync(
@@ -635,6 +554,119 @@ namespace SPPC.Tadbir.Persistence
                 var item = repository.GetByID(child.Id, br => br.Children);
                 AddChildren(item, children);
             }
+        }
+
+        private IEnumerable<string> GetAccounts(IList<ProfitLossItemViewModel> items, string from, string to)
+        {
+            var accounts = new List<string>();
+            int fromIndex = items.IndexOf(items.Where(item => item.Group == from).Single());
+            int toIndex = items.IndexOf(items.Where(item => item.Group == to).Single());
+            for (int index = fromIndex + 1; index < toIndex; index++)
+            {
+                accounts.Add(items[index].Account);
+            }
+
+            return accounts;
+        }
+
+        private IEnumerable<ProfitLossByItemsViewModel> MergeItems(IList<ProfitLossViewModel> items)
+        {
+            var mergedItems = new List<ProfitLossByItemsViewModel>();
+            var operationalCostAccounts = new List<string>();
+            var otherCostAccounts = new List<string>();
+            foreach (var item in items)
+            {
+                operationalCostAccounts.AddRange(
+                    GetAccounts(item.Items, AppStrings.OperationalCost, AppStrings.OperationalCostTotal));
+                otherCostAccounts.AddRange(
+                    GetAccounts(item.Items, AppStrings.OtherCostAndRevenue, AppStrings.OtherCostAndRevenueNet));
+            }
+
+            operationalCostAccounts = operationalCostAccounts
+                .Distinct()
+                .OrderBy(acc => acc)
+                .ToList();
+            otherCostAccounts = otherCostAccounts
+                .Distinct()
+                .OrderBy(acc => acc)
+                .ToList();
+            int mergedItemCount = operationalCostAccounts.Count + otherCostAccounts.Count + 12;
+            for (int i = 0; i < mergedItemCount; i++)
+            {
+                mergedItems.Add(new ProfitLossByItemsViewModel());
+            }
+
+            var operationalCostItems = new List<ProfitLossItemViewModel>();
+            var otherCostItems = new List<ProfitLossItemViewModel>();
+            int itemIndex = 0;
+            foreach (var item in items)
+            {
+                int index = item.Items.IndexOf(
+                    item.Items.Where(vm => vm.Group == AppStrings.OperationalCost).Single());
+                foreach (string account in operationalCostAccounts)
+                {
+                    var accountItem = item.Items
+                        .Where(vm => vm.Account == account)
+                        .SingleOrDefault();
+                    if (accountItem == null)
+                    {
+                        var newItem = new ProfitLossItemViewModel()
+                        {
+                            Account = account,
+                            StartBalance = 0.0M,
+                            PeriodTurnover = 0.0M,
+                            EndBalance = 0.0M,
+                            Balance = 0.0M
+                        };
+                        operationalCostItems.Add(newItem);
+                    }
+                    else
+                    {
+                        operationalCostItems.Add(accountItem);
+                        item.Items.Remove(accountItem);
+                    }
+                }
+
+                item.Items.InsertRange(index + 1, operationalCostItems);
+
+                index = item.Items.IndexOf(
+                    item.Items.Where(vm => vm.Group == AppStrings.OtherCostAndRevenue).Single());
+                foreach (string account in otherCostAccounts)
+                {
+                    var accountItem = item.Items
+                        .Where(vm => vm.Account == account)
+                        .SingleOrDefault();
+                    if (accountItem == null)
+                    {
+                        var newItem = new ProfitLossItemViewModel()
+                        {
+                            Account = account,
+                            StartBalance = 0.0M,
+                            PeriodTurnover = 0.0M,
+                            EndBalance = 0.0M,
+                            Balance = 0.0M
+                        };
+                        otherCostItems.Add(newItem);
+                    }
+                    else
+                    {
+                        otherCostItems.Add(accountItem);
+                        item.Items.Remove(accountItem);
+                    }
+                }
+
+                item.Items.InsertRange(index + 1, otherCostItems);
+                for (int lineIndex = 0; lineIndex < item.Items.Count; lineIndex++)
+                {
+                    CopyItemValues(itemIndex, item.Items[lineIndex], mergedItems[lineIndex]);
+                }
+
+                operationalCostItems.Clear();
+                otherCostItems.Clear();
+                itemIndex++;
+            }
+
+            return mergedItems;
         }
 
         private readonly IMetadataRepository _metadata;
