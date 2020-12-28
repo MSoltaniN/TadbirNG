@@ -806,7 +806,7 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (49, N'GroupUnd
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (50, N'GroupConfirm')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (51, N'GroupUndoConfirm')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (52, N'Normalize')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (53, N'UndoNormalize')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (53, N'GroupNormalize')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -817,6 +817,7 @@ INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (4,
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (5, N'ItemBalance')
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (6, N'BalanceByAccount')
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (9, N'EnvironmentParams')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (10, N'ProfitLoss')
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSourceList] ON
@@ -869,6 +870,11 @@ INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VA
 INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (47, N'BalanceByAllCostCenters')
 INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (48, N'BalanceByOneProject')
 INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (49, N'BalanceByAllProjects')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (50, N'ProfitLoss')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (51, N'ProfitLossByCostCenter')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (52, N'ProfitLossByProject')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (53, N'ProfitLossByBranch')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (54, N'ProfitLossByFiscalPeriod')
 SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF
 
 SET IDENTITY_INSERT [Metadata].[Subsystem] ON
@@ -1281,6 +1287,12 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (137, 1, 2, NULL, 18, 52, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (138, 1, 2, NULL, 18, 53, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (139, 1, 3, 10, NULL, 1, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (140, 1, 3, 10, NULL, 5, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (141, 1, 3, 10, NULL, 6, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 

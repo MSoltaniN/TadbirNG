@@ -277,5 +277,10 @@ namespace SPPC.Tadbir.Persistence
         /// کد عملیاتی تبدیل گروهی به سند عادی
         /// </summary>
         GroupNormalize = 53,
+
+        /// <summary>
+        /// کد عملیاتی ارسال اطلاعات لیست به فایل
+        /// </summary>
+        Export = 54
     }
 }

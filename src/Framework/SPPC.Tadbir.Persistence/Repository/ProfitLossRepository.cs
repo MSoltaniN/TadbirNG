@@ -18,21 +18,19 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات دیتابیسی مورد نیاز برای تهیه گزارش سود و زیان را پیاده سازی می کند
     /// </summary>
-    public class ProfitLossRepository : RepositoryBase, IProfitLossRepository
+    public class ProfitLossRepository : LoggingRepository<Account, object>, IProfitLossRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="metadata">امکان خواندن اطلاعات فراداده ای را فراهم می کند</param>
-        /// <param name="config">امکان خواندن تنظیمات جاری برنامه را فراهم می کند</param>
+        /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="utility">امکان استفاده از مجموعه حسابها را فراهم می کند</param>
-        public ProfitLossRepository(IRepositoryContext context, IMetadataRepository metadata,
-            IConfigRepository config, IAccountCollectionUtility utility)
-            : base(context)
+        public ProfitLossRepository(IRepositoryContext context, ISystemRepository system,
+            IAccountCollectionUtility utility)
+            : base(context, system.Logger)
         {
-            _metadata = metadata;
-            _config = config;
+            _system = system;
             _utility = utility;
         }
 
@@ -55,6 +53,8 @@ namespace SPPC.Tadbir.Persistence
             profitLoss.Items.AddRange(beforeTax);
             var netProfit = GetNetProfitItemsAsync(beforeTax.Last(), parameters);
             profitLoss.Items.AddRange(netProfit);
+
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLoss);
             return profitLoss;
         }
 
@@ -80,9 +80,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
-            profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+            profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
                 viewId, ViewId.CostCenter, parameters.CompareItems);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLossByCostCenter);
             return profitLoss;
         }
 
@@ -108,9 +109,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
-            profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+            profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
                 viewId, ViewId.Project, parameters.CompareItems);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLossByProject);
             return profitLoss;
         }
 
@@ -136,9 +138,10 @@ namespace SPPC.Tadbir.Persistence
             }
 
             profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
-            profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+            profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
                 viewId, ViewId.Branch, parameters.CompareItems);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLossByBranch);
             return profitLoss;
         }
 
@@ -164,10 +167,26 @@ namespace SPPC.Tadbir.Persistence
             }
 
             profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
-            profitLoss.ViewMetadata = await _metadata.GetCompoundViewMetadataAsync(
+            profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
                 viewId, ViewId.FiscalPeriod, parameters.CompareItems);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLossByFiscalPeriod);
             return profitLoss;
+        }
+
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.ProfitLoss; }
+        }
+
+        private IMetadataRepository Metadata
+        {
+            get { return _system.Metadata; }
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
         }
 
         private static void CopyItemValues(
@@ -546,7 +565,7 @@ namespace SPPC.Tadbir.Persistence
             var fiscalPeriod = await repository.GetByIDAsync(fiscalPeriodId);
             adjusted.FiscalPeriodId = fiscalPeriodId;
 
-            int calendarType = await _config.GetCurrentCalendarAsync();
+            int calendarType = await Config.GetCurrentCalendarAsync();
             if (calendarType == (int)CalendarType.Jalali)
             {
                 var periodStart = JalaliDateTime.FromDateTime(fiscalPeriod.StartDate);
@@ -696,8 +715,7 @@ namespace SPPC.Tadbir.Persistence
             return mergedItems;
         }
 
-        private readonly IMetadataRepository _metadata;
-        private readonly IConfigRepository _config;
+        private readonly ISystemRepository _system;
         private readonly IAccountCollectionUtility _utility;
     }
 }

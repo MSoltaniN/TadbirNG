@@ -3384,4 +3384,16 @@
   <data name="Normalize" xml:space="preserve">
     <value>تبدیل به سند عادی</value>
   </data>
+  <data name="ProfitLossByBranch" xml:space="preserve">
+    <value>مقایسه شعبه ها</value>
+  </data>
+  <data name="ProfitLossByCostCenter" xml:space="preserve">
+    <value>مقایسه مراکز هزینه</value>
+  </data>
+  <data name="ProfitLossByFiscalPeriod" xml:space="preserve">
+    <value>مقایسه دوره های مالی</value>
+  </data>
+  <data name="ProfitLossByProject" xml:space="preserve">
+    <value>مقایسه پروژه ها</value>
+  </data>
 </root>

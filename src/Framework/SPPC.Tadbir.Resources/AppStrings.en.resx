@@ -3301,7 +3301,7 @@
     <value>Action {0} cannot be done on a finalized voucher.</value>
   </data>
   <data name="ProfitLoss" xml:space="preserve">
-    <value>Profit/Loss</value>
+    <value>Profit / Loss</value>
   </data>
   <data name="AccountBookSingle" xml:space="preserve">
     <value>Account book</value>
@@ -3331,16 +3331,16 @@
     <value>Operation log archive</value>
   </data>
   <data name="ProfitLossByBranches" xml:space="preserve">
-    <value>Profit and loss by branches</value>
+    <value>Profit / loss by branches</value>
   </data>
   <data name="ProfitLossByCostCenters" xml:space="preserve">
-    <value>Profit and loss by cost centers</value>
+    <value>Profit / loss by cost centers</value>
   </data>
   <data name="ProfitLossByFiscalPeriods" xml:space="preserve">
-    <value>Profit and loss by fiscal periods</value>
+    <value>Profit / loss by fiscal periods</value>
   </data>
   <data name="ProfitLossByProjects" xml:space="preserve">
-    <value>Profit and loss by projects</value>
+    <value>Profit / loss by projects</value>
   </data>
   <data name="ProfitLossSimple" xml:space="preserve">
     <value>Profit and loss</value>
@@ -3392,5 +3392,17 @@
   </data>
   <data name="Normalize" xml:space="preserve">
     <value>Convert to normal voucher</value>
+  </data>
+  <data name="ProfitLossByBranch" xml:space="preserve">
+    <value>By branches</value>
+  </data>
+  <data name="ProfitLossByCostCenter" xml:space="preserve">
+    <value>By cost centers</value>
+  </data>
+  <data name="ProfitLossByFiscalPeriod" xml:space="preserve">
+    <value>By fiscal periods</value>
+  </data>
+  <data name="ProfitLossByProject" xml:space="preserve">
+    <value>By projects</value>
   </data>
 </root>
