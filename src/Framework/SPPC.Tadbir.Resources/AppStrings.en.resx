@@ -3405,4 +3405,10 @@
   <data name="ProfitLossByProject" xml:space="preserve">
     <value>By projects</value>
   </data>
+  <data name="ExportRates" xml:space="preserve">
+    <value>Export currency rates</value>
+  </data>
+  <data name="FilterRates" xml:space="preserve">
+    <value>Filter currency rates</value>
+  </data>
 </root>

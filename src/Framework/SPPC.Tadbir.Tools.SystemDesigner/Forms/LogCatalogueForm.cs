@@ -167,12 +167,12 @@ namespace SPPC.Tadbir.Tools.SystemDesigner.Forms
             var all = lbxSourceEntity.DataSource as List<LogSettingModel>;
             foreach (var item in all)
             {
-                foreach (int operationId in item.Operations)
+                foreach (int operationId in item.Operations.OrderBy(opId => opId))
                 {
                     script.AppendFormat(@"INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6})",
                     id++, item.SubsystemId, item.SourceTypeId, item.SourceId.HasValue ? item.SourceId.Value.ToString() : "NULL",
-                    item.EntityTypeId.HasValue ? item.EntityTypeId.Value.ToString() : "NULL", operationId, 0);
+                    item.EntityTypeId.HasValue ? item.EntityTypeId.Value.ToString() : "NULL", operationId, 1);
                     script.AppendLine();
                 }
             }

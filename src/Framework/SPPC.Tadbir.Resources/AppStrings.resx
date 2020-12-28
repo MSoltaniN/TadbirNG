@@ -3396,4 +3396,10 @@
   <data name="ProfitLossByProject" xml:space="preserve">
     <value>مقایسه پروژه ها</value>
   </data>
+  <data name="ExportRates" xml:space="preserve">
+    <value>ارسال نرخ های ارز</value>
+  </data>
+  <data name="FilterRates" xml:space="preserve">
+    <value>فیلتر نرخ های ارز</value>
+  </data>
 </root>
