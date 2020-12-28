@@ -44,16 +44,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ProfitLossViewModel> GetProfitLossAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
-            var profitLoss = new ProfitLossViewModel();
-            var grossProfit = await GetGrossProfitItemsAsync(parameters, balanceItems);
-            profitLoss.Items.AddRange(grossProfit);
-            var operationProfit = await GetOperationalCostItemsAsync(grossProfit.Last(), parameters);
-            profitLoss.Items.AddRange(operationProfit);
-            var beforeTax = await GetOtherCostRevenueItemsAsync(operationProfit.Last(), parameters);
-            profitLoss.Items.AddRange(beforeTax);
-            var netProfit = GetNetProfitItemsAsync(beforeTax.Last(), parameters);
-            profitLoss.Items.AddRange(netProfit);
-
+            var profitLoss = await CalculateProfitLossAsync(parameters, balanceItems);
             await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLoss);
             return profitLoss;
         }
@@ -76,7 +67,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (int itemId in parameters.CompareItems)
             {
                 parameters.CostCenterId = itemId;
-                profitLossItems.Add(await GetProfitLossAsync(parameters, balanceItems));
+                profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
             }
 
             profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
@@ -105,7 +96,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (int itemId in parameters.CompareItems)
             {
                 parameters.ProjectId = itemId;
-                profitLossItems.Add(await GetProfitLossAsync(parameters, balanceItems));
+                profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
             }
 
             profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
@@ -134,7 +125,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (int itemId in parameters.CompareItems)
             {
                 parameters.BranchId = itemId;
-                profitLossItems.Add(await GetProfitLossAsync(parameters, balanceItems));
+                profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
             }
 
             profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
@@ -163,7 +154,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (int itemId in parameters.CompareItems)
             {
                 var adjusted = await GetAdjustedParametersAsync(parameters, itemId);
-                profitLossItems.Add(await GetProfitLossAsync(adjusted, balanceItems));
+                profitLossItems.Add(await CalculateProfitLossAsync(adjusted, balanceItems));
             }
 
             profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
@@ -236,6 +227,21 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return projected;
+        }
+
+        private async Task<ProfitLossViewModel> CalculateProfitLossAsync(
+            ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
+        {
+            var profitLoss = new ProfitLossViewModel();
+            var grossProfit = await GetGrossProfitItemsAsync(parameters, balanceItems);
+            profitLoss.Items.AddRange(grossProfit);
+            var operationProfit = await GetOperationalCostItemsAsync(grossProfit.Last(), parameters);
+            profitLoss.Items.AddRange(operationProfit);
+            var beforeTax = await GetOtherCostRevenueItemsAsync(operationProfit.Last(), parameters);
+            profitLoss.Items.AddRange(beforeTax);
+            var netProfit = GetNetProfitItemsAsync(beforeTax.Last(), parameters);
+            profitLoss.Items.AddRange(netProfit);
+            return profitLoss;
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetGrossProfitItemsAsync(
