@@ -3411,4 +3411,7 @@
   <data name="FilterRates" xml:space="preserve">
     <value>Filter currency rates</value>
   </data>
+  <data name="FilterByRef" xml:space="preserve">
+    <value>Filter by reference</value>
+  </data>
 </root>

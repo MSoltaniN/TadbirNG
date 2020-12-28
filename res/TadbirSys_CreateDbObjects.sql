@@ -2253,6 +2253,10 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (194, 33, N'GroupCheck', 16)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (195, 33, N'GroupUndoCheck', 32)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (196, 32, N'Normalize', 2048)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (196, 26, N'FilterByRef', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (197, 28, N'FilterByRef', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (198, 29, N'FilterByRef', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (199, 31, N'FilterByRef', 16)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 

@@ -1339,9 +1339,14 @@ namespace SPPC.Tadbir.Security
         ByBranch = 0x10,
 
         /// <summary>
+        /// دسترسی فیلتر تراز آزمایشی بر حسب رفرنس
+        /// </summary>
+        FilterByRef = 0x20,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای تراز آزمایشی
         /// </summary>
-        All = 0x1f
+        All = 0x3f
     }
 
     /// <summary>
@@ -1428,9 +1433,14 @@ namespace SPPC.Tadbir.Security
         ByBranch = 0x10,
 
         /// <summary>
+        /// دسترسی فیلتر گردش و مانده سطوح شناور بر حسب رفرنس
+        /// </summary>
+        FilterByRef = 0x20,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای گردش و مانده سطوح شناور
         /// </summary>
-        All = 0x1f
+        All = 0x3f
     }
 
     /// <summary>
@@ -1470,9 +1480,14 @@ namespace SPPC.Tadbir.Security
         ViewByBranch = 0x10,
 
         /// <summary>
+        /// دسترسی فیلتر مانده به تفکیک حساب بر حسب رفرنس
+        /// </summary>
+        FilterByRef = 0x20,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مانده به تفکیک حساب
         /// </summary>
-        All = 0x1f
+        All = 0x3f
     }
 
     /// <summary>
@@ -1524,8 +1539,13 @@ namespace SPPC.Tadbir.Security
         Export = 0x8,
 
         /// <summary>
+        /// دسترسی فیلتر اطلاعات سود و زیان بر حسب رفرنس
+        /// </summary>
+        FilterByRef = 0x10,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای سود و زیان
         /// </summary>
-        All = 0xf
+        All = 0x1f
     }
 }

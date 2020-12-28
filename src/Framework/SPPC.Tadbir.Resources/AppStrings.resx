@@ -3402,4 +3402,7 @@
   <data name="FilterRates" xml:space="preserve">
     <value>فیلتر نرخ های ارز</value>
   </data>
+  <data name="FilterByRef" xml:space="preserve">
+    <value>فیلتر بر اساس رفرنس</value>
+  </data>
 </root>
