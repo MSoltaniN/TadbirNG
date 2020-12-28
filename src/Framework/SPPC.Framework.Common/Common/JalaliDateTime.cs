@@ -178,6 +178,16 @@ namespace SPPC.Framework.Common
         }
 
         /// <summary>
+        /// Determines if the Jalali date represented by this object is a leap day
+        /// </summary>
+        /// <returns>True if this object represents a leap day; otherwise, returns false</returns>
+        public bool IsLeapDay()
+        {
+            var calendar = new PersianCalendar();
+            return calendar.IsLeapDay(_year, _month, _day);
+        }
+
+        /// <summary>
         /// Returns the local string representation of the DateTime value of this object.
         /// </summary>
         /// <returns>Local string representation of the underlying date</returns>

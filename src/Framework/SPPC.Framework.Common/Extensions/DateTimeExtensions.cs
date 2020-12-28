@@ -72,7 +72,7 @@ namespace SPPC.Framework.Extensions
         /// <param name="from">ابتدای محدوده تاریخی مورد نظر</param>
         /// <param name="to">انتهای محدوده تاریخی مورد نظر</param>
         /// <returns>اگر تاریخ جاری بین دو تاریخ داده شده باشد مقدار "درست" و
-        /// پدر غیر این صورت مقدار "نادرست" را برمی گرداند.</returns>
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         /// <remarks>این متد مقادیر ساعت را در تمام آبجکت های تاریخ نادیده می گیرد و
         /// تاریخ ابتدا و انتها را هم جزو محدوده در نظر می گیرد.</remarks>
         public static bool IsBetween(this DateTime dateTime, DateTime from, DateTime to)
@@ -80,6 +80,18 @@ namespace SPPC.Framework.Extensions
             Verify.ArgumentNotNull(dateTime);
             return dateTime.CompareWith(from) >= 0
                 && dateTime.CompareWith(to) <= 0;
+        }
+
+        /// <summary>
+        /// مشخص می کند که روز مشخص در تاریخ جاری روز خاص سال کبیسه هست یا نه؟
+        /// </summary>
+        /// <param name="dateTime">آبجکتی که این متد توسط آن فراخوانی می شود</param>
+        /// <returns>اگر روز مشخص در تاریخ جاری روز کبیسه باشد مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        public static bool IsLeapDay(this DateTime dateTime)
+        {
+            var calendar = new GregorianCalendar();
+            return calendar.IsLeapDay(dateTime.Year, dateTime.Month, dateTime.Day);
         }
     }
 }

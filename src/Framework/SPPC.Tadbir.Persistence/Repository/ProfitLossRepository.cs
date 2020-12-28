@@ -159,7 +159,7 @@ namespace SPPC.Tadbir.Persistence
                 : ViewId.ComparativeProfitLoss;
             foreach (int itemId in parameters.CompareItems)
             {
-                var adjusted = await GetAdjustedParameters(parameters, itemId);
+                var adjusted = await GetAdjustedParametersAsync(parameters, itemId);
                 profitLossItems.Add(await GetProfitLossAsync(adjusted, balanceItems));
             }
 
@@ -184,6 +184,39 @@ namespace SPPC.Tadbir.Persistence
             Reflector.CopyProperty(source, "EndBalance", target, fieldName);
             fieldName = String.Format("BalanceItem{0}", index + 1);
             Reflector.CopyProperty(source, "Balance", target, fieldName);
+        }
+
+        private static DateTime MapDateToYear(DateTime source, int year)
+        {
+            var projected = source.Date;
+            if (source.IsLeapDay())
+            {
+                projected = new DateTime(year, source.Month, source.Day - 1);
+            }
+            else
+            {
+                projected = new DateTime(year, source.Month, source.Day);
+            }
+
+            return projected;
+        }
+
+        private static DateTime MapJalaliDateToYear(DateTime source, int year)
+        {
+            var projected = source.Date;
+            var jalali = JalaliDateTime.FromDateTime(source);
+            if (jalali.IsLeapDay())
+            {
+                projected = new JalaliDateTime(year, jalali.Month, jalali.Day - 1)
+                    .ToGregorian();
+            }
+            else
+            {
+                projected = new JalaliDateTime(year, jalali.Month, jalali.Day)
+                    .ToGregorian();
+            }
+
+            return projected;
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetGrossProfitItemsAsync(
@@ -505,7 +538,7 @@ namespace SPPC.Tadbir.Persistence
                 .SingleOrDefaultAsync();
         }
 
-        private async Task<ProfitLossParameters> GetAdjustedParameters(
+        private async Task<ProfitLossParameters> GetAdjustedParametersAsync(
             ProfitLossParameters parameters, int fiscalPeriodId)
         {
             var adjusted = parameters.GetCopy();
@@ -517,19 +550,13 @@ namespace SPPC.Tadbir.Persistence
             if (calendarType == (int)CalendarType.Jalali)
             {
                 var periodStart = JalaliDateTime.FromDateTime(fiscalPeriod.StartDate);
-                var fromDate = JalaliDateTime.FromDateTime(parameters.FromDate);
-                var toDate = JalaliDateTime.FromDateTime(parameters.ToDate);
-                adjusted.FromDate = new JalaliDateTime(
-                    periodStart.Year, fromDate.Month, fromDate.Day).ToGregorian();
-                adjusted.ToDate = new JalaliDateTime(
-                    periodStart.Year, toDate.Month, toDate.Day).ToGregorian();
+                adjusted.FromDate = MapJalaliDateToYear(parameters.FromDate, periodStart.Year);
+                adjusted.ToDate = MapJalaliDateToYear(parameters.ToDate, periodStart.Year);
             }
             else
             {
-                adjusted.FromDate = new DateTime(
-                    fiscalPeriod.StartDate.Year, parameters.FromDate.Month, parameters.FromDate.Day);
-                adjusted.ToDate = new DateTime(
-                    fiscalPeriod.EndDate.Year, parameters.ToDate.Month, parameters.ToDate.Day, 11, 59, 59);
+                adjusted.FromDate = MapDateToYear(parameters.FromDate, fiscalPeriod.StartDate.Year);
+                adjusted.ToDate = MapDateToYear(parameters.ToDate, fiscalPeriod.StartDate.Year);
             }
 
             return adjusted;
