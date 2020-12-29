@@ -3384,7 +3384,25 @@
   <data name="Normalize" xml:space="preserve">
     <value>تبدیل به سند عادی</value>
   </data>
-  <data name="AllVouchers" xml:space="preserve">
-    <value>کلیه اسناد</value>
+  <data name="ProfitLossByBranch" xml:space="preserve">
+    <value>مقایسه شعبه ها</value>
+  </data>
+  <data name="ProfitLossByCostCenter" xml:space="preserve">
+    <value>مقایسه مراکز هزینه</value>
+  </data>
+  <data name="ProfitLossByFiscalPeriod" xml:space="preserve">
+    <value>مقایسه دوره های مالی</value>
+  </data>
+  <data name="ProfitLossByProject" xml:space="preserve">
+    <value>مقایسه پروژه ها</value>
+  </data>
+  <data name="ExportRates" xml:space="preserve">
+    <value>ارسال نرخ های ارز</value>
+  </data>
+  <data name="FilterRates" xml:space="preserve">
+    <value>فیلتر نرخ های ارز</value>
+  </data>
+  <data name="FilterByRef" xml:space="preserve">
+    <value>فیلتر بر اساس رفرنس</value>
   </data>
 </root>

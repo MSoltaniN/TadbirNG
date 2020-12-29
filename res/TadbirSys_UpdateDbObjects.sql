@@ -4926,3 +4926,11 @@ SET IDENTITY_INSERT [Metadata].[Command] OFF
 SET IDENTITY_INSERT [Auth].[Permission] ON
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (196, 32, N'Normalize', 2048)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+-- 1.1.1046
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (197, 26, N'FilterByRef', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (198, 28, N'FilterByRef', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (199, 29, N'FilterByRef', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (200, 31, N'FilterByRef', 16)
+SET IDENTITY_INSERT [Auth].[Permission] OFF

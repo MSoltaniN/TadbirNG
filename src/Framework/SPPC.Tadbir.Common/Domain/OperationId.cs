@@ -277,5 +277,20 @@ namespace SPPC.Tadbir.Persistence
         /// کد عملیاتی تبدیل گروهی به سند عادی
         /// </summary>
         GroupNormalize = 53,
+
+        /// <summary>
+        /// کد عملیاتی ارسال اطلاعات لیست به فایل
+        /// </summary>
+        Export = 54,
+
+        /// <summary>
+        /// کد عملیاتی ارسال اطلاعات نرخ های ارز به فایل
+        /// </summary>
+        ExportRates = 55,
+
+        /// <summary>
+        /// کد عملیاتی فیلتر پیشرفته نرخ های ارز
+        /// </summary>
+        FilterRates = 56,
     }
 }
