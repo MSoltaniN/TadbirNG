@@ -3367,7 +3367,7 @@
     <value>سند پیش نویس</value>
   </data>
   <data name="DraftVouchers" xml:space="preserve">
-    <value>اسناد مالی پیش نویس</value>
+    <value>اسناد پیش نویس</value>
   </data>
   <data name="DraftVoucherByNo" xml:space="preserve">
     <value>سند پیش نویس شماره...</value>
@@ -3407,5 +3407,8 @@
   </data>
   <data name="AllVouchers" xml:space="preserve">
     <value>کلیه اسناد</value>
+  </data>
+  <data name="NormalVouchers" xml:space="preserve">
+    <value>اسناد عادی</value>
   </data>
 </root>

@@ -3415,6 +3415,9 @@
     <value>Filter by reference</value>
   </data>
   <data name="AllVouchers" xml:space="preserve">
-    <value>All Vouchers</value>
+    <value>All vouchers</value>
+  </data>
+  <data name="NormalVouchers" xml:space="preserve">
+    <value>Normal vouchers</value>
   </data>
 </root>
