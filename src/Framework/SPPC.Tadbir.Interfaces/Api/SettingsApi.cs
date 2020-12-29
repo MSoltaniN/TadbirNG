@@ -136,6 +136,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string SystemConfigUrl = "settings/sysconfig";
 
+        /// <summary>
+        /// API client URL for customized labels in a form specified by unique identifier
+        /// </summary>
+        public const string FormLabelsConfig = "settings/labels/forms/{0}";
+
+        /// <summary>
+        /// API server route URL for customized labels in a form specified by unique identifier
+        /// </summary>
+        public const string FormLabelsConfigUrl = "settings/labels/forms/{formId:min(1)}";
+
         #region Log Settings API
 
         /// <summary>

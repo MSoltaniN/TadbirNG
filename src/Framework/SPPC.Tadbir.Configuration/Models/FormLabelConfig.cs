@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Configuration.Models
 {
     /// <summary>
-    /// تنظیمات مورد استفاده برای سفارشی سازی عناوین فرم های گزارشی را نگهداری می کند
+    /// تنظیمات مورد استفاده برای سفارشی سازی عناوین یک فرم گزارشی را نگهداری می کند
     /// </summary>
     public class FormLabelConfig
     {

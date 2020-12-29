@@ -199,5 +199,18 @@ namespace SPPC.Tadbir.Persistence
 
             await UnitOfWork.CommitAsync();
         }
+
+        /// <summary>
+        /// به روش آسنکرون، شناسه دیتابیسی متناظر با کد دو حرفی استاندارد یک زبان را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeCode">کد دو حرفی استاندارد زبان مورد نظر</param>
+        /// <returns>شناسه دیتابیسی متناظر با کد زبانی داده شده</returns>
+        public async Task<int> GetLocaleIdAsync(string localeCode)
+        {
+            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
+            var repository = UnitOfWork.GetAsyncRepository<Locale>();
+            var locale = await repository.GetSingleByCriteriaAsync(loc => loc.Code == localeCode);
+            return (locale != null ? locale.Id : 0);
+        }
     }
 }

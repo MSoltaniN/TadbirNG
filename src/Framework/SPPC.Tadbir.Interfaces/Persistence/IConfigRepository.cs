@@ -87,7 +87,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="formId">شناسه دیتابیسی فرم گزارشی</param>
         /// <param name="localeId">شناسه دیتابیسی زبان مورد نظر برای محلی سازی متن عناوین</param>
         /// <returns>تنظیمات موجود برای عناوین سفارشی</returns>
-        Task<FormLabelConfig> GetFormLabelConfigAsync(int formId, int localeId);
+        Task<FormLabelFullConfig> GetFormLabelConfigAsync(int formId, int localeId);
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت عناوین سفارشی یک فرم گزارشی را ذخیره می کند

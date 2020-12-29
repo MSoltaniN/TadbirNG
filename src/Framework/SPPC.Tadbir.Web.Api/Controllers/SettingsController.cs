@@ -247,6 +247,39 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/settings/labels/forms/{formId:min(1)}
+        [HttpGet]
+        [Route(SettingsApi.FormLabelsConfigUrl)]
+        [AuthorizeRequest]
+        public async Task<IActionResult> GetFormLabelSettingsAsync(int formId)
+        {
+            var locale = GetPrimaryRequestLanguage();
+            var localeId = await _systemRepository.GetLocaleIdAsync(locale);
+            var fullConfig = await _repository.GetFormLabelConfigAsync(formId, localeId);
+            return JsonReadResult(fullConfig);
+        }
+
+        // PUT: api/settings/labels/forms/{formId:min(1)}
+        [HttpPut]
+        [Route(SettingsApi.FormLabelsConfigUrl)]
+        [AuthorizeRequest]
+        public async Task<IActionResult> PutModifiedFormLabelSettingsAsync(
+            int formId, [FromBody] FormLabelConfig labelConfig)
+        {
+            if (labelConfig == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
+            }
+
+            if (labelConfig.FormId != formId)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Settings));
+            }
+
+            await _repository.SaveFormLabelConfigAsync(labelConfig);
+            return Ok();
+        }
+
         private void Localize(ViewTreeFullConfig viewSettings, int viewId)
         {
             if (viewId == ViewId.Account)
@@ -309,7 +342,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (reportSettings != null)
             {
-                var localCode = GetAcceptLanguages().Substring(0, 2);
+                var localCode = GetPrimaryRequestLanguage();
                 foreach (var column in reportSettings.Columns)
                 {
                     var userTitle = column.UserTitleMap

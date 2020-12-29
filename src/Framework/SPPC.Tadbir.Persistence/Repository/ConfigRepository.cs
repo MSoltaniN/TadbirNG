@@ -286,16 +286,17 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="formId">شناسه دیتابیسی فرم گزارشی</param>
         /// <param name="localeId">شناسه دیتابیسی زبان مورد نظر برای محلی سازی متن عناوین</param>
         /// <returns>تنظیمات موجود برای عناوین سفارشی</returns>
-        public async Task<FormLabelConfig> GetFormLabelConfigAsync(int formId, int localeId)
+        public async Task<FormLabelFullConfig> GetFormLabelConfigAsync(int formId, int localeId)
         {
-            var labelConfig = default(FormLabelConfig);
-            var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
+            var labelConfig = default(FormLabelFullConfig);
+            var repository = UnitOfWork.GetAsyncRepository<LabelSetting>();
             var config = await repository
-                .GetSingleByCriteriaAsync(cfg => cfg.ViewId == 1 // Temporary code
-                    && cfg.ModelType == typeof(ViewTreeConfig).Name);
+                .GetSingleByCriteriaAsync(cfg => cfg.ModelType == typeof(FormLabelConfig).Name
+                    && cfg.CustomForm.Id == formId
+                    && cfg.LocaleId == localeId);
             if (config != null)
             {
-                labelConfig = Mapper.Map<FormLabelConfig>(config);
+                labelConfig = Mapper.Map<FormLabelFullConfig>(config);
             }
 
             return labelConfig;
@@ -307,11 +308,30 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="labelConfig">اطلاعات تنظیمات عناوین سفارشی</param>
         public async Task SaveFormLabelConfigAsync(FormLabelConfig labelConfig)
         {
+            Verify.ArgumentNotNull(labelConfig, nameof(labelConfig));
+            var repository = UnitOfWork.GetAsyncRepository<LabelSetting>();
+            var existing = await repository.GetSingleByCriteriaAsync(
+                cfg => cfg.CustomForm.Id == labelConfig.FormId && cfg.LocaleId == labelConfig.LocaleId);
+            if (existing != null)
+            {
+                existing.Values = CorrectLabelConfigCasing(
+                    JsonHelper.From(labelConfig, false, null, false));
+                repository.Update(existing);
+                await UnitOfWork.CommitAsync();
+            }
         }
 
         internal override OperationSourceId OperationSource
         {
             get { return OperationSourceId.EnvironmentParams; }
+        }
+
+        private static string CorrectLabelConfigCasing(string labelConfig)
+        {
+            return labelConfig
+                .Replace("FormId", "formId")
+                .Replace("LocaleId", "localeId")
+                .Replace("LabelMap", "labelMap");
         }
 
         private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)

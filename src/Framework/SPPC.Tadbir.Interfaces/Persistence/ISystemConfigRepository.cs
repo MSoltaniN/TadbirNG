@@ -47,5 +47,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
         /// <param name="userConfig">تنظیمات کاربری برای گزارش فوری</param>
         Task SaveQuickReportConfigAsync(int userId, QuickReportConfig userConfig);
+
+        /// <summary>
+        /// به روش آسنکرون، شناسه دیتابیسی متناظر با کد دو حرفی استاندارد یک زبان را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeCode">کد دو حرفی استاندارد زبان مورد نظر</param>
+        /// <returns>شناسه دیتابیسی متناظر با کد زبانی داده شده</returns>
+        Task<int> GetLocaleIdAsync(string localeCode);
     }
 }

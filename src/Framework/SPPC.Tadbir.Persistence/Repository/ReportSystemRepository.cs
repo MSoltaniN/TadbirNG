@@ -149,19 +149,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، شناسه دیتابیسی متناظر با کد دو حرفی استاندارد یک زبان را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="localeCode">کد دو حرفی استاندارد زبان مورد نظر</param>
-        /// <returns>شناسه دیتابیسی متناظر با کد زبانی داده شده</returns>
-        public async Task<int> GetLocaleIdAsync(string localeCode)
-        {
-            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
-            var repository = UnitOfWork.GetAsyncRepository<Locale>();
-            var locale = await repository.GetSingleByCriteriaAsync(loc => loc.Code == localeCode);
-            return (locale != null ? locale.Id : 0);
-        }
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات یک گزارش ذخیره شده کاربری را ذخیره یا بروزرسانی می کند
         /// </summary>
         /// <param name="report">اطلاعات محلی شده گزارش کاربری</param>

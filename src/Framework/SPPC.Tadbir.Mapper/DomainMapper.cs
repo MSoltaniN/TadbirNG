@@ -500,11 +500,20 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Values,
                     opts => opts.MapFrom(
-                        src => JsonHelper.From(src.Current, false, null)))
+                        src => JsonHelper.From(src.Current, false, null, true)))
                 .ForMember(
                     dest => dest.DefaultValues,
                     opts => opts.MapFrom(
-                        src => JsonHelper.From(src.Default, false, null)));
+                        src => JsonHelper.From(src.Default, false, null, true)));
+            mapperConfig.CreateMap<LabelSetting, FormLabelFullConfig>()
+                .ForMember(
+                    dest => dest.Current,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.To<FormLabelConfig>(src.Values)))
+                .ForMember(
+                    dest => dest.Default,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.To<FormLabelConfig>(src.DefaultValues)));
             mapperConfig.CreateMap<Column, QuickSearchColumnConfig>()
                 .ForMember(
                     dest => dest.Title,
