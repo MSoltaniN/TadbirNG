@@ -159,6 +159,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await ProfitLossResultAsync(date, date, tax, closing, ccenterId, projectId, balanceItems);
         }
 
+        private static string LocalizeLabel(IDictionary<string, string> labelMap, string label)
+        {
+            string localized = label;
+            if (!String.IsNullOrEmpty(label) && labelMap.ContainsKey(label))
+            {
+                localized = labelMap[label];
+            }
+
+            return localized;
+        }
+
         private async Task<IActionResult> ProfitLossResultAsync(
             DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId,
             IList<StartEndBalanceViewModel> balanceItems = null)
@@ -212,22 +223,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var labelConfig = fullConfig.Current;
             foreach (var item in profitLoss.Items)
             {
-                item.Group = item.Group != null
-                    ? labelConfig.LabelMap[item.Group]
-                    : item.Group;
-                item.Account = item.Account != null
-                    ? labelConfig.LabelMap[item.Account]
-                    : item.Account;
+                item.Group = LocalizeLabel(labelConfig.LabelMap, item.Group);
+                item.Account = LocalizeLabel(labelConfig.LabelMap, item.Account);
             }
 
             foreach (var item in profitLoss.ComparativeItems)
             {
-                item.Group = item.Group != null
-                    ? labelConfig.LabelMap[item.Group]
-                    : item.Group;
-                item.Account = item.Account != null
-                    ? labelConfig.LabelMap[item.Account]
-                    : item.Account;
+                item.Group = LocalizeLabel(labelConfig.LabelMap, item.Group);
+                item.Account = LocalizeLabel(labelConfig.LabelMap, item.Account);
             }
         }
 
