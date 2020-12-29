@@ -329,7 +329,8 @@ export enum TestBalancePermissions {
     Print = 4,
     Export = 8,
     ByBranch = 16,
-    All = 31
+    FilterByRef = 32,
+    All = 63
 }
 
 export enum CurrencyBookPermissions {
@@ -350,7 +351,8 @@ export enum ItemBalancePermissions {
     Print = 4,
     Export = 8,
     ByBranch = 16,
-    All = 31
+    FilterByRef = 32,
+    All = 63
 }
 
 export enum BalanceByAccountPermissions {
@@ -360,7 +362,8 @@ export enum BalanceByAccountPermissions {
     Print = 4,
     Export = 8,
     ViewByBranch = 16,
-    All = 31
+    FilterByRef = 32,
+    All = 63
 }
 
 export enum SystemIssuePermissions {
@@ -374,7 +377,8 @@ export enum ProfitLossPermissions {
     Filter = 2,
     Print = 4,
     Export = 8,
-    All = 15
+    FilterByRef = 16,
+    All = 31
 }
 
 @Injectable()

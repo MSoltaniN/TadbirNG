@@ -181,7 +181,7 @@
         </div>
         <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label for="chkProject">
-            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" (ngModelChange)="onChangeFilterByRef($event)" [(ngModel)]="showFilterByRef" /> {{ 'ProfitLoss.FilterByRef' | translate }}
+            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" (ngModelChange)="onChangeFilterByRef($event)"  [(ngModel)]="showFilterByRef" /> {{ 'ProfitLoss.FilterByRef' | translate }}
           </label>
           <input type="text" class="k-textbox ref" [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
         </div>
