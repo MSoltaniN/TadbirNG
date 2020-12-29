@@ -127,6 +127,33 @@ export enum ManageVouchersPermissions {
     All = 511
 }
 
+export enum DraftVoucherPermissions {  
+  None = 0,
+  View = 1,
+  Create = 2,
+  Edit = 4,
+  Delete = 8,
+  Print = 16,
+  CreateLine = 32,
+  EditLine = 64,
+  DeleteLine = 128,
+  Check = 256,
+  UndoCheck = 512,
+  Navigate = 1024,
+  Normalize = 2048,
+  All = 4095
+}
+
+export enum ManageDraftVouchersPermissions {  
+  View = 1,
+  Filter = 2,
+  Print = 4,
+  Export = 8,
+  GroupCheck = 16,
+  GroupUndoCheck = 32,
+  All = 63
+}
+
 export enum BranchPermissions {
     None = 0,
     View = 1,
@@ -448,6 +475,12 @@ export class Permissions {
         break;
       case "profitlosspermissions":
         id = <any>ProfitLossPermissions[<any>premissionName];
+        break;
+      case "draftvoucherpermissions":
+        id = <any>DraftVoucherPermissions[<any>premissionName];
+        break;
+      case "managedraftvoucherspermissions":
+        id = <any>ManageDraftVouchersPermissions[<any>premissionName];
         break;
     }
 

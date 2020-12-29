@@ -245,6 +245,11 @@ namespace SPPC.Tadbir.Resources
         public const string AllUsers = "AllUsers";
 
         /// <summary>
+        /// Default text : کلیه اسناد
+        /// </summary>
+        public const string AllVouchers = "AllVouchers";
+
+        /// <summary>
         /// Default text : محیط برنامه
         /// </summary>
         public const string AppEnvironment = "AppEnvironment";

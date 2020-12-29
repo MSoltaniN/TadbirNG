@@ -46,6 +46,13 @@ const routes: Routes = [{
         team: MetaDataResolver
       }
     },
+    {
+      path: 'vouchers/:mode/:type', component: VoucherEditorComponent,
+      data: { viewId: ViewName.Voucher },
+      resolve: {
+        team: MetaDataResolver
+      }
+    },
     { path: 'account-book', component: AccountBookComponent },
     { path: 'journal', component: JournalComponent },
     { path: 'currency-rate/:id', component: currencyRateComponent },

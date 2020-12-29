@@ -867,6 +867,7 @@
     "CurrencyRate": "نرخ ارز",
     "CurrencyValue": "مبلغ ارز",
     "CurrencyName": "نوع ارز",
+    "ApproveActionNotPermitted": "عملیات تایید یا تصویب سند فقط برای اسناد عادی امکان پذیر می باشد",
     "NewWithDifference": "آرتیکل جدید به میزان اختلاف",
     "ArticleDescription": "شرح آرتیکل",
     "FullAccount": {
@@ -1007,7 +1008,12 @@
     "RowNo": "ردیف",
     "VoucherNo": "شماره سند",
     "PleaseSelectVouchers": "برای انجام این عملیات حداقل یک سند باید انتخاب شود",
-    "SubjectTypeValidation": "سند مورد نظر تایید یا ثبت قطعی شده است و امکان تبدیل آن به سند پیش نویس وجود ندارد"
+    "SubjectTypeValidation": "سند مورد نظر تایید یا ثبت قطعی شده است و امکان تبدیل آن به سند پیش نویس وجود ندارد",
+    "AddNewNotPossible": "لطفا برای ایجاد سند جدید، نوع سند (عادی / پیش نویس) را انتخاب کنید ",
+    "PleaseSelectOneTypeOfVouchers": "شما فقط مجاز به انتخاب یک نوع از اسناد مالی می باشید",
+    "PleaseSelectNormalVouchers": "شما فقط مجاز به انتخاب اسناد عادی می باشید",
+    "PleaseSelectDraftVouchers": "شما فقط مجاز به انتخاب اسناد پیش نویس می باشید",
+    "Normalize": "تبدیل به سند عادی"
   },
   "User": {
     "New": "کاربر جدید",
