@@ -115,7 +115,8 @@ export const Entities = {
   GroupActionResult: 'GroupActionResult',
   ProfitLossSimple: 'ProfitLossSimple',
   ComparativeProfitLoss: 'ComparativeProfitLoss',
-  ComparativeProfitLossSimple: 'ComparativeProfitLossSimple'
+  ComparativeProfitLossSimple: 'ComparativeProfitLossSimple',
+  DraftVoucher: 'DraftVoucher'
 }
 
 export const ColumnVisibility =

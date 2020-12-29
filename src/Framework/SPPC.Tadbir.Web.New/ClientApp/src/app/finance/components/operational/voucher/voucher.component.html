@@ -64,63 +64,45 @@
         </div>
       </div>
 
-      <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Voucher.New' | translate }}"></button>
+      <button kendoGridAddCommand [SppcPermissionCheck]="createPermission" [EntityName]="entityNamePermission" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Voucher.New' | translate }}"></button>
 
-      <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
-      <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+      <button [SppcPermissionCheck]="Edit" [EntityName]="entityNamePermission" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+      <button [SppcPermissionCheck]="Delete" [EntityName]="entityNamePermission" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="GroupCheck;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
-              title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
-        <span class="k-icon k-i-check-outline"></span>
-      </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="Check" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
+      <button [SppcPermissionCheck]="checkPermission" [EntityName]="entityNamePermission" (sppcClick)="onCheckHandler()" class="k-button k-button-icon"
               title="{{ (commitGroup ? 'Voucher.CommitGroup':'Voucher.Commit') | translate}}">
         <span class="k-icon k-i-check-outline"></span>
       </button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="GroupUndoCheck;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
-              title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
-        <span class="k-icon k-i-close-outline"></span>
-      </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="UndoCheck" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
+      <button [SppcPermissionCheck]="unCheckPermission" [EntityName]="entityNamePermission" (sppcClick)="onUnCheckHandler()" class="k-button k-button-icon"
               title="{{ (returnFromCommitGroup ? 'Voucher.ReturnFromCommitGroup':'Voucher.ReturnFromCommit') | translate}}">
         <span class="k-icon k-i-close-outline"></span>
       </button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="GroupFinalize;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon"
+      <button [SppcPermissionCheck]="finalizePermission" [EntityName]="entityNamePermission" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon"
               title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
         <span class="k-icon k-i-track-changes-accept-all"></span>
       </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="Finalize" (sppcClick)="onFinalizeHandler()" class="k-button k-button-icon"
-              title="{{ (finalizedGroup ? 'Voucher.FinalizedGroup':'Voucher.Finalized') | translate}}">
-        <span class="k-icon k-i-track-changes-accept-all"></span>
-      </button>
+
       <div [style.display]="showFinancBtns ? 'inline-block' : 'none'">
-        <button *ngIf="groupOperation" (click)="onUnFinalizedHandler()" class="k-button k-button-icon"
-                title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
-          <span class="k-icon k-i-track-changes-reject-all"></span>
-        </button>
-        <button *ngIf="!groupOperation" (click)="onUnFinalizedHandler()" class="k-button k-button-icon"
+        <button (click)="onUnFinalizedHandler()" class="k-button k-button-icon"
                 title="{{ (returnFromFinalizedGroup ? 'Voucher.ReturnFromFinalizedGroup':'Voucher.ReturnFromFinalized') | translate}}">
           <span class="k-icon k-i-track-changes-reject-all"></span>
         </button>
       </div>
-      <button *ngIf="groupOperation" SppcPermissionCheck="GroupConfirm;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon"
-              title="{{'Voucher.ConfirmGroup'| translate}}">
-        <span class="k-icon k-i-lock"></span>
-      </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="Confirm" (sppcClick)="onConfirmHandler()" class="k-button k-button-icon"
+      <button [SppcPermissionCheck]="confirmPermission" [EntityName]="entityNamePermission" (sppcClick)="onConfirmGroupHandler()" class="k-button k-button-icon"
               title="{{'Voucher.ConfirmGroup'| translate}}">
         <span class="k-icon k-i-lock"></span>
       </button>
 
-      <button *ngIf="groupOperation" SppcPermissionCheck="GroupUndoConfirm;ManageVouchersPermissions" EntityName="Vouchers" (sppcClick)="onUnConfirmGroupHandler(true)" class="k-button k-button-icon"
+      <button [SppcPermissionCheck]="undoConfirmPermission" [EntityName]="entityNamePermission" (sppcClick)="onUnConfirmGroupHandler(true)" class="k-button k-button-icon"
               title="{{'Voucher.UnConfirmGroup'| translate}}">
         <span class="k-icon k-i-unlock"></span>
       </button>
-      <button *ngIf="!groupOperation" SppcPermissionCheck="UndoConfirm" (sppcClick)="onUnConfirmGroupHandler(false)" class="k-button k-button-icon"
-              title="{{'Voucher.UnConfirmGroup'| translate}}">
-        <span class="k-icon k-i-unlock"></span>
+
+      <button [SppcPermissionCheck]="normalizePermission" [EntityName]="entityNamePermission" (sppcClick)="onNormalizeHandler(true)" class="k-button k-button-icon"
+              title="{{'Voucher.Normalize'| translate}}">
+        <span class="k-icon k-i-reset"></span>
       </button>
 
 
@@ -129,8 +111,33 @@
                                    (columnsList)="getColumns($event)">
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-
-
+      <div class="col-xs-12 col-sm-2 voucher-top-filter">        
+        <kendo-dropdownlist [data]="branchScope" class="ddl-branch-type"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="branchSelected"
+                            [(ngModel)]="branchSelected"
+                            (ngModelChange)="changeParam();getVouchers();">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
+       </div>
+       <div class="col-xs-12 col-sm-2 voucher-top-filter">         
+          <kendo-dropdownlist [data]="voucherTypeList" class="ddl-type"
+                              [textField]="'value'"
+                              [valueField]="'key'"
+                              [valuePrimitive]="true"
+                              [value]="selectedSubjectType"
+                              (valueChange)="voucherTypeListChange($event)"
+                              [(ngModel)]="selectedSubjectType"
+                              [ngModelOptions]="{standalone: true}">
+          </kendo-dropdownlist>
+        </div>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true"
@@ -182,33 +189,7 @@
 
     </kendo-grid-column>
 
-  </kendo-grid>
-
-  <div class="col-xs-12 col-sm-4 form-group">
-    <button class="k-button k-primary sppc-float-diff" (click)="getVouchers()" style="margin-top: 25px;">
-      {{ 'Buttons.Compute' | translate }}
-    </button>
-  </div>
-
-  <div class="col-xs-12 col-sm-5 form-group " style="margin-top: 25px;" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-    <label class="control-label" style="padding:10px">{{ 'Voucher.SelectBranch' | translate }}</label>
-
-    <kendo-dropdownlist [data]="branchScope" class="ddl-type"
-                        [textField]="'value'"
-                        [valueField]="'key'"
-                        [valuePrimitive]="true"
-                        [value]="branchSelected"
-                        [(ngModel)]="branchSelected"
-                        (ngModelChange)="changeParam();">
-      <ng-template kendoDropDownListValueTemplate let-dataItem>
-        {{ dataItem?.value | translate }}
-      </ng-template>
-      <ng-template kendoDropDownListItemTemplate let-dataItem>
-        {{ dataItem?.value | translate }}
-      </ng-template>
-    </kendo-dropdownlist>
-  </div>
-
+  </kendo-grid> 
 </div>
 
 <kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">

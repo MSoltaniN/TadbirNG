@@ -3384,4 +3384,7 @@
   <data name="Normalize" xml:space="preserve">
     <value>تبدیل به سند عادی</value>
   </data>
+  <data name="AllVouchers" xml:space="preserve">
+    <value>کلیه اسناد</value>
+  </data>
 </root>

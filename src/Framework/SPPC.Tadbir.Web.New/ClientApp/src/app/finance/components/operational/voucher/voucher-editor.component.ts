@@ -97,11 +97,14 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   @Input() isOpenFromList: boolean = false;
   //@Output() reloadGrid: EventEmitter<any> = new EventEmitter();
 
-  isShowBreadcrumb: boolean = true;
+  isShowBreadcrumb: boolean = true; 
   isFirstVoucher: boolean = false;
   isLastVoucher: boolean = false;
   voucherOperationsItem: any;
   deleteConfirmMsg: string;
+  subjectMode: number;  
+  subjectModeTitle: string;
+  entityNamePermission: string;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
@@ -115,15 +118,21 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   ngOnInit() {
     this.voucherOperationsItem = VoucherOperations;
-
+    this.entityNamePermission = "Voucher";
     this.editForm.reset();
 
     if (this.voucherItem) {
       this.initVoucherForm(this.voucherItem);
       this.isShowBreadcrumb = false;
+      this.subjectMode = this.voucherItem.subjectType;
+      if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
     }
-    else {
+    else {      
       this.activeRoute.params.subscribe(params => {
+        if (!this.subjectMode) {
+          this.subjectMode = params['type'] == "draft" ? 1 : 0;
+          if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
+        }
         switch (params['mode']) {
           case "new": {
             this.newVoucher();
@@ -132,7 +141,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           }
           case "last": {
             this.isLastVoucher = true;
-            this.getVoucher(VoucherApi.LastVoucher);
+            if(this.subjectMode == 0)
+              this.getVoucher(VoucherApi.LastVoucher);
+            else
+              this.getVoucher(VoucherApi.LastDraftVoucher);
             break;
           }
           case "by-no": {
@@ -141,25 +153,40 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           }
           case "first": {
             this.isFirstVoucher = true;
-            this.getVoucher(VoucherApi.FirstVoucher);
+            if (this.subjectMode == 0)
+              this.getVoucher(VoucherApi.FirstVoucher);
+            else
+              this.getVoucher(VoucherApi.FirstDraftVoucher);
             break
           }
           case "next": {
             var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no')
-            if (voucherNo)
-              this.getVoucher(String.Format(VoucherApi.NextVoucher, voucherNo), true);
+            if (voucherNo) {
+              if (this.subjectMode == 0)
+                this.getVoucher(String.Format(VoucherApi.NextVoucher, voucherNo), true);
+              else
+                this.getVoucher(String.Format(VoucherApi.NextDraftVoucher, voucherNo), true);
+            }
             break
           }
           case "previous": {
             var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no')
-            if (voucherNo)
-              this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
+            if (voucherNo) {
+              if (this.subjectMode == 0)
+                this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
+              else
+                this.getVoucher(String.Format(VoucherApi.PreviousDraftVoucher, voucherNo), true);
+              
+            }
             break
           }
           case "opening-voucher": {                      
             var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
             if (voucherNo) {
-              this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+              if (this.subjectMode == 0)
+                this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+              else
+                this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
             }
             else {
               this.openingVoucherQuery();
@@ -175,7 +202,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               if (this.InventoryMode == 0) {
                 var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
                 if (voucherNo) {
-                  this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+                  if (this.subjectMode == 0)
+                    this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+                  else
+                    this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
                 }
                 else {
                   this.checkClosingTmp();
@@ -222,7 +252,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.voucherService.getClosingAccountsVoucherMode1().subscribe(result => {
       var voucherNo = result.no;
       if (voucherNo) {
-        this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+        if(this.subjectMode == 0)
+          this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+        else
+          this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
       }
     }, err => {
       if (err.status == 400) {
@@ -263,12 +296,18 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
 
   newVoucher() {
-    this.getVoucher(VoucherApi.NewVoucher);
+    if(this.subjectMode == 0)
+      this.getVoucher(VoucherApi.NewVoucher);
+    else
+      this.getVoucher(VoucherApi.NewDraftVoucher);
   }
 
   getNewVoucher() {
     if (this.voucherItem || this.isOpenFromList)
-      this.getVoucher(VoucherApi.NewVoucher);
+      if (this.subjectMode == 0)
+        this.getVoucher(VoucherApi.NewVoucher);
+      else
+        this.getVoucher(VoucherApi.NewDraftVoucher);
     else {
       this.redirectTo('/finance/vouchers/new')
     }
@@ -286,7 +325,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no',mode: 'by-no' } });
     }
     else {
-      this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+      if (this.subjectMode == 0)
+        this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+      else
+        this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
     }
 
   }
@@ -336,6 +378,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   getVoucherType() {
     this.lookupService.getModels(LookupApi.VoucherSysTypes).subscribe(res => {
       this.voucherTypeList = res;
+      if (this.subjectMode == 0)
+        this.subjectModeTitle = res[1].value;
+
+      if (this.subjectMode == 1)
+        this.subjectModeTitle = res[2].value;
     })
   }
 
@@ -369,42 +416,70 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   nextVoucher() {
     if (this.voucherItem || this.isOpenFromList) {
-      this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
+      if (this.subjectMode == 0)
+        this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
+      else
+        this.getVoucher(String.Format(VoucherApi.NextDraftVoucher, this.voucherModel.no));
       this.isFirstVoucher = false;
       this.isLastVoucher = false;
     }
-    else
-      this.router.navigate(['/finance/vouchers/next'], { queryParams: { no: this.voucherModel.no } });
+    else {
+      if (this.subjectMode == 0)
+        this.router.navigate(['/finance/vouchers/next'], { queryParams: { no: this.voucherModel.no } });
+      else
+        this.router.navigate(['/finance/vouchers/next/draft'], { queryParams: { no: this.voucherModel.no } });
+    }
   }
 
   previousVoucher() {
     if (this.voucherItem || this.isOpenFromList) {
-      this.getVoucher(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no));
+      if (this.subjectMode == 0)
+        this.getVoucher(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no));
+      else
+        this.getVoucher(String.Format(VoucherApi.PreviousDraftVoucher, this.voucherModel.no));
       this.isFirstVoucher = false;
       this.isLastVoucher = false;
     }
-    else
-      this.router.navigate(['/finance/vouchers/previous'], { queryParams: { no: this.voucherModel.no } });
+    else {
+      if(this.subjectMode == 0)
+        this.router.navigate(['/finance/vouchers/previous'], { queryParams: { no: this.voucherModel.no } });
+      else
+        this.router.navigate(['/finance/vouchers/previous/draft'], { queryParams: { no: this.voucherModel.no } });
+    }
   }
 
   firstVoucher() {
     if (this.voucherItem || this.isOpenFromList) {
-      this.getVoucher(VoucherApi.FirstVoucher);
+      if (this.subjectMode == 0)
+        this.getVoucher(VoucherApi.FirstVoucher);
+      else
+        this.getVoucher(VoucherApi.FirstDraftVoucher);
       this.isFirstVoucher = true;
       this.isLastVoucher = false;
     }
-    else
-      this.router.navigate(['/finance/vouchers/first']);
+    else {
+      if (this.subjectMode == 0)
+        this.router.navigate(['/finance/vouchers/first']);
+      else
+        this.router.navigate(['/finance/vouchers/first/draft']);
+    }
   }
 
   lastVoucher() {
     if (this.voucherItem || this.isOpenFromList) {
-      this.getVoucher(VoucherApi.LastVoucher);
+      if (this.subjectMode == 0)
+        this.getVoucher(VoucherApi.LastVoucher);
+      else
+        this.getVoucher(VoucherApi.LastDraftVoucher);
       this.isFirstVoucher = false;
       this.isLastVoucher = true;
     }
-    else
-      this.router.navigate(['/finance/vouchers/last']);
+    else {
+      if (this.subjectMode == 0)
+        this.router.navigate(['/finance/vouchers/last']);
+      else
+        this.router.navigate(['/finance/vouchers/last/draft']);
+    }
   }
 
   searchVoucher() {
@@ -531,9 +606,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     if (confirm) {     
       this.voucherService.delete(String.Format(VoucherApi.Voucher, this.voucherModel.id)).subscribe(response => {
         this.showMessage(this.getText('Messages.DeleteOperationSuccessful'), MessageType.Info);
-        
+
+        var url = VoucherApi.NextVoucher;
+        if (this.subjectMode == 1)
+          url = VoucherApi.NextDraftVoucher;
         //try for next voucher
-        this.voucherService.getModels(String.Format(VoucherApi.NextVoucher, this.voucherModel.no)).subscribe(voucher => {
+        this.voucherService.getModels(String.Format(url, this.voucherModel.no)).subscribe(voucher => {
           if (voucher) {
             this.router.navigate(['/finance/vouchers/by-no'], { queryParams: { no: voucher.no } });
           }
@@ -542,6 +620,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           }
         }, (error => {
               //if next voucher not exists try for previous voucher
+              var url = VoucherApi.PreviousVoucher;
+              if (this.subjectMode == 1)
+                url = VoucherApi.PreviousDraftVoucher;
               this.voucherService.getModels(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no)).subscribe(voucher => {
                 if (voucher) {
                   this.router.navigate(['/finance/vouchers/by-no'], { queryParams: { no: voucher.no } });

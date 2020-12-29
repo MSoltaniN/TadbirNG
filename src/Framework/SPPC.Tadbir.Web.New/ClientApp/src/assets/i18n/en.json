@@ -922,7 +922,8 @@
     "RowNo": "Row",
     "VoucherNo": "Voucher Number",
     "PleaseSelectVouchers": "Please select vouchers",
-    "SubjectTypeValidation": "The voucher has been approved or confirmed and it is not possible to convert it into a draft voucher"
+    "SubjectTypeValidation": "The voucher has been approved or confirmed and it is not possible to convert it into a draft voucher",
+    "AddNewNotPossible": "in this mode new voucher not possible"
   },
   "User": {
     "New": "New User",

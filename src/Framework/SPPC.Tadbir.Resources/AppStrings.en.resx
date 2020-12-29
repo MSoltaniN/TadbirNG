@@ -3393,4 +3393,7 @@
   <data name="Normalize" xml:space="preserve">
     <value>Convert to normal voucher</value>
   </data>
+  <data name="AllVouchers" xml:space="preserve">
+    <value>All Vouchers</value>
+  </data>
 </root>
