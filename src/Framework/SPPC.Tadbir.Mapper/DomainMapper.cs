@@ -496,7 +496,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<ViewTreeFullConfig, ViewSetting>()
                 .ForMember(dest => dest.ViewId, opts => opts.MapFrom(src => src.Default.ViewId))
                 .ForMember(dest => dest.ModelType, opts => opts.UseValue(typeof(ViewTreeConfig).Name))
-                .ForMember(dest => dest.SettingId, opts => opts.UseValue(5)) // TODO: Remove this hard-coded value later
+                .ForMember(dest => dest.SettingId, opts => opts.UseValue((int)SettingId.ViewTree))
                 .ForMember(
                     dest => dest.Values,
                     opts => opts.MapFrom(

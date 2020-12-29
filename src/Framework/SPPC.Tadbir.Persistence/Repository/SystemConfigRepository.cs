@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -120,7 +121,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var newUserConfig = new UserSetting()
                 {
-                    SettingId = 4,      // TODO: Remove this hard-coded value
+                    SettingId = (int)SettingId.ListFormView,
                     ViewId = userConfig.ViewId,
                     User = await userRepository.GetByIDAsync(userId),
                     ModelType = typeof(ListFormViewConfig).Name,
@@ -181,7 +182,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var newUserConfig = new UserSetting()
                 {
-                    SettingId = 7,      // TODO: Remove this hard-coded value
+                    SettingId = (int)SettingId.QuickReport,
                     ViewId = userConfig.ViewId,
                     User = await userRepository.GetByIDAsync(userId),
                     ModelType = typeof(QuickReportConfig).Name,

@@ -159,7 +159,7 @@ namespace SPPC.Tadbir.Persistence
                 UnitOfWork.UseCompanyContext();
                 var newUserConfig = new UserSetting()
                 {
-                    SettingId = 6,      // TODO: Remove this hard-coded value
+                    SettingId = (int)SettingId.QuickSearch,
                     ViewId = userConfig.ViewId,
                     User = user,
                     ModelType = typeof(QuickSearchConfig).Name,
@@ -229,7 +229,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var configItem in configItems)
             {
                 var existing = await repository.GetSingleByCriteriaAsync(
-                    cfg => cfg.ViewId == configItem.Default.ViewId && cfg.SettingId == 5);
+                    cfg => cfg.ViewId == configItem.Default.ViewId && cfg.SettingId == (int)SettingId.ViewTree);
                 if (existing != null)
                 {
                     existing.Values = JsonHelper.From(configItem.Current, false);
@@ -278,6 +278,35 @@ namespace SPPC.Tadbir.Persistence
             {
                 await InitializeDefaultAccounts();
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات موجود برای عناوین سفارشی فرم گزارشی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="formId">شناسه دیتابیسی فرم گزارشی</param>
+        /// <param name="localeId">شناسه دیتابیسی زبان مورد نظر برای محلی سازی متن عناوین</param>
+        /// <returns>تنظیمات موجود برای عناوین سفارشی</returns>
+        public async Task<FormLabelConfig> GetFormLabelConfigAsync(int formId, int localeId)
+        {
+            var labelConfig = default(FormLabelConfig);
+            var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
+            var config = await repository
+                .GetSingleByCriteriaAsync(cfg => cfg.ViewId == 1 // Temporary code
+                    && cfg.ModelType == typeof(ViewTreeConfig).Name);
+            if (config != null)
+            {
+                labelConfig = Mapper.Map<FormLabelConfig>(config);
+            }
+
+            return labelConfig;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت عناوین سفارشی یک فرم گزارشی را ذخیره می کند
+        /// </summary>
+        /// <param name="labelConfig">اطلاعات تنظیمات عناوین سفارشی</param>
+        public async Task SaveFormLabelConfigAsync(FormLabelConfig labelConfig)
+        {
         }
 
         internal override OperationSourceId OperationSource
