@@ -3414,4 +3414,7 @@
   <data name="FilterByRef" xml:space="preserve">
     <value>Filter by reference</value>
   </data>
+  <data name="AllVouchers" xml:space="preserve">
+    <value>All Vouchers</value>
+  </data>
 </root>
