@@ -20,10 +20,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class ProfitLossController : ApiControllerBase
     {
         public ProfitLossController(
-            IProfitLossRepository repository, IStringLocalizer<AppStrings> strings = null)
+            IProfitLossRepository repository, IConfigRepository configRepository,
+            ISystemConfigRepository systemRepository, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
+            _systemRepository = systemRepository;
+            _configRepository = configRepository;
         }
 
         // GET: api/profit-loss
@@ -156,13 +159,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await ProfitLossResultAsync(date, date, tax, closing, ccenterId, projectId, balanceItems);
         }
 
+        private static string LocalizeLabel(IDictionary<string, string> labelMap, string label)
+        {
+            string localized = label;
+            if (!String.IsNullOrEmpty(label) && labelMap.ContainsKey(label))
+            {
+                localized = labelMap[label];
+            }
+
+            return localized;
+        }
+
         private async Task<IActionResult> ProfitLossResultAsync(
             DateTime from, DateTime to, decimal? tax, bool? closing, int? ccenterId, int? projectId,
             IList<StartEndBalanceViewModel> balanceItems = null)
         {
             var parameters = GetParameters(from, to, tax, closing, ccenterId, projectId);
             var profitLoss = await _repository.GetProfitLossAsync(parameters, balanceItems);
-            Localize(profitLoss);
+            await LocalizeAsync(profitLoss);
             return Json(profitLoss);
         }
 
@@ -179,7 +193,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var parameters = GetParameters(from, to, tax, closing, ccenterId, projectId);
             parameters.CompareItems.AddRange(actionDetail.Items);
             var profitLoss = await compareFunction(parameters, null);
-            Localize(profitLoss);
+            await LocalizeAsync(profitLoss);
             return Json(profitLoss);
         }
 
@@ -200,22 +214,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return parameters;
         }
 
-        private void Localize(ProfitLossViewModel profitLoss)
+        private async Task LocalizeAsync(ProfitLossViewModel profitLoss)
         {
+            var locale = GetPrimaryRequestLanguage();
+            int localeId = await _systemRepository.GetLocaleIdAsync(locale);
+            var fullConfig = await _configRepository.GetFormLabelConfigAsync(
+                CustomFormId.ProfitLoss, localeId);
+            var labelConfig = fullConfig.Current;
             foreach (var item in profitLoss.Items)
             {
-                item.Group = _strings[item.Group ?? String.Empty];
-                item.Account = _strings[item.Account ?? String.Empty];
+                item.Group = LocalizeLabel(labelConfig.LabelMap, item.Group);
+                item.Account = LocalizeLabel(labelConfig.LabelMap, item.Account);
             }
 
             foreach (var item in profitLoss.ComparativeItems)
             {
-                item.Group = _strings[item.Group ?? String.Empty];
-                item.Account = _strings[item.Account ?? String.Empty];
+                item.Group = LocalizeLabel(labelConfig.LabelMap, item.Group);
+                item.Account = LocalizeLabel(labelConfig.LabelMap, item.Account);
             }
         }
 
         private readonly IProfitLossRepository _repository;
+        private readonly ISystemConfigRepository _systemRepository;
+        private readonly IConfigRepository _configRepository;
         private delegate Task<ProfitLossViewModel> ComparativeReportFunction(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems);
     }

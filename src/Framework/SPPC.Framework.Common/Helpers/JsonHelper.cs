@@ -19,10 +19,12 @@ namespace SPPC.Framework.Helpers
         /// <param name="indented">Indicates if JSON output needs to be formatted in a readable, indented form.
         /// Default is true.</param>
         /// <param name="ignoredProperties">Array of property names to ignore during serialization</param>
+        /// <param name="useCamelCase">Indicates if JSON output needs to use Camel-Case property names</param>
         /// <returns>Input object serialized as JSON</returns>
-        public static string From<T>(T value, bool indented = true, string[] ignoredProperties = null)
+        public static string From<T>(T value, bool indented = true, string[] ignoredProperties = null,
+            bool useCamelCase = true)
         {
-            return From((object)value, indented, ignoredProperties);
+            return From((object)value, indented, ignoredProperties, useCamelCase);
         }
 
         /// <summary>
@@ -32,8 +34,10 @@ namespace SPPC.Framework.Helpers
         /// <param name="indented">Indicates if JSON output needs to be formatted in a readable, indented form.
         /// Default is true.</param>
         /// <param name="ignoredProperties">Array of property names to ignore during serialization</param>
+        /// <param name="useCamelCase">Indicates if JSON output needs to use Camel-Case property names</param>
         /// <returns>Input object serialized as JSON</returns>
-        public static string From(object value, bool indented = true, string[] ignoredProperties = null)
+        public static string From(object value, bool indented = true, string[] ignoredProperties = null,
+            bool useCamelCase = true)
         {
             Verify.ArgumentNotNull(value, "value");
             using (var writer = new StringWriter(new StringBuilder()))
@@ -41,8 +45,12 @@ namespace SPPC.Framework.Helpers
                 var serializer = new JsonSerializer
                 {
                     Formatting = indented ? Formatting.Indented : Formatting.None,
-                    ContractResolver = new CustomJsonContractResolver(ignoredProperties)
                 };
+
+                if (useCamelCase)
+                {
+                    serializer.ContractResolver = new CustomJsonContractResolver(ignoredProperties);
+                }
 
                 serializer.Serialize(writer, value);
                 return writer.ToString();

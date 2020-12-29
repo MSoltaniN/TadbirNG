@@ -496,15 +496,24 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<ViewTreeFullConfig, ViewSetting>()
                 .ForMember(dest => dest.ViewId, opts => opts.MapFrom(src => src.Default.ViewId))
                 .ForMember(dest => dest.ModelType, opts => opts.UseValue(typeof(ViewTreeConfig).Name))
-                .ForMember(dest => dest.SettingId, opts => opts.UseValue(5)) // TODO: Remove this hard-coded value later
+                .ForMember(dest => dest.SettingId, opts => opts.UseValue((int)SettingId.ViewTree))
                 .ForMember(
                     dest => dest.Values,
                     opts => opts.MapFrom(
-                        src => JsonHelper.From(src.Current, false, null)))
+                        src => JsonHelper.From(src.Current, false, null, true)))
                 .ForMember(
                     dest => dest.DefaultValues,
                     opts => opts.MapFrom(
-                        src => JsonHelper.From(src.Default, false, null)));
+                        src => JsonHelper.From(src.Default, false, null, true)));
+            mapperConfig.CreateMap<LabelSetting, FormLabelFullConfig>()
+                .ForMember(
+                    dest => dest.Current,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.To<FormLabelConfig>(src.Values)))
+                .ForMember(
+                    dest => dest.Default,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.To<FormLabelConfig>(src.DefaultValues)));
             mapperConfig.CreateMap<Column, QuickSearchColumnConfig>()
                 .ForMember(
                     dest => dest.Title,
