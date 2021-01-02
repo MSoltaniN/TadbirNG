@@ -128,7 +128,9 @@ export const Entities = {
   ProfitLossSimple: 'ProfitLossSimple',
   ComparativeProfitLoss: 'ComparativeProfitLoss',
   ComparativeProfitLossSimple: 'ComparativeProfitLossSimple',
-  DraftVoucher:'DraftVoucher'
+  DraftVoucher: 'DraftVoucher',
+  DraftVouchers: 'DraftVouchers',
+  Vouchers: 'Vouchers'
 }
 
 export const ColumnVisibility =

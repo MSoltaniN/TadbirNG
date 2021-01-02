@@ -1013,7 +1013,12 @@
     "PleaseSelectOneTypeOfVouchers": "شما فقط مجاز به انتخاب یک نوع از اسناد مالی می باشید",
     "PleaseSelectNormalVouchers": "شما فقط مجاز به انتخاب اسناد عادی می باشید",
     "PleaseSelectDraftVouchers": "شما فقط مجاز به انتخاب اسناد پیش نویس می باشید",
-    "Normalize": "تبدیل به سند عادی"
+    "Normalize": "تبدیل به سند عادی",
+    "AllVoucherAccessDenied": "مجوز دسترسی به کلیه اسناد وجود ندارد",
+    "NormalVoucherAccessDenied": "مجوز دسترسی به اسناد عادی وجود ندارد",
+    "DraftVoucherAccessDenied": "مجوز دسترسی به اسناد پیش نویس وجود ندارد",
+    "NormalVoucher": "سند عادی",
+    "DraftVoucher": "سند پیش نویس"
   },
   "User": {
     "New": "کاربر جدید",

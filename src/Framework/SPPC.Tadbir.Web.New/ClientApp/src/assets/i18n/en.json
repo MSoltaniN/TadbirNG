@@ -923,7 +923,16 @@
     "VoucherNo": "Voucher Number",
     "PleaseSelectVouchers": "Please select vouchers",
     "SubjectTypeValidation": "The voucher has been approved or confirmed and it is not possible to convert it into a draft voucher",
-    "AddNewNotPossible": "in this mode new voucher not possible"
+    "AddNewNotPossible": "in this mode new voucher not possible",
+    "PleaseSelectOneTypeOfVouchers": "You are only allowed to select one type of financial vouchers",
+    "PleaseSelectNormalVouchers": "You are only allowed to select normal vouchers",
+    "PleaseSelectDraftVouchers": "You are only allowed to select draft vouchers",
+    "Normalize": "Convert to normal voucher",
+    "AllVoucherAccessDenied": "There is no permission to access all vouchers",
+    "NormalVoucherAccessDenied": "There is no permission to access all normal vouchers",
+    "DraftVoucherAccessDenied": "There is no permission to access all draft vouchers",
+    "NormalVoucher": "Normal Voucher",
+    "DraftVoucher": "Draft Voucher"
   },
   "User": {
     "New": "New User",

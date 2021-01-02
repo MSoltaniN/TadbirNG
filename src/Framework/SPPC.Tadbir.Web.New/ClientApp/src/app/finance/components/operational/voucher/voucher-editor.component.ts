@@ -376,14 +376,14 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   getVoucherType() {
-    this.lookupService.getModels(LookupApi.VoucherSysTypes).subscribe(res => {
-      this.voucherTypeList = res;
+    //this.lookupService.getModels(LookupApi.VoucherSysTypes).subscribe(res => {
+      //this.voucherTypeList = res;
       if (this.subjectMode == 0)
-        this.subjectModeTitle = res[1].value;
+        this.subjectModeTitle = this.getText("Voucher.NormalVoucher");
 
       if (this.subjectMode == 1)
-        this.subjectModeTitle = res[2].value;
-    })
+        this.subjectModeTitle = this.getText("Voucher.DraftVoucher");
+    //})
   }
 
   onSave(e?: any): void {
