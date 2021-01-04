@@ -104,6 +104,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   deleteConfirmMsg: string;
   subjectMode: number;  
   subjectModeTitle: string;
+  draftTitle: string;
+  normalTitle: string;
   entityNamePermission: string;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
@@ -117,6 +119,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
 
   ngOnInit() {
+    this.draftTitle = this.getText("Voucher.NormalVoucher");    
+    this.normalTitle = this.getText("Voucher.DraftVoucher");
     this.voucherOperationsItem = VoucherOperations;
     this.entityNamePermission = "Voucher";
     this.editForm.reset();
@@ -126,6 +130,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.isShowBreadcrumb = false;
       this.subjectMode = this.voucherItem.subjectType;
       if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
+      this.getVoucherType();
     }
     else {      
       this.activeRoute.params.subscribe(params => {
@@ -133,6 +138,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           this.subjectMode = params['type'] == "draft" ? 1 : 0;
           if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
         }
+
+        this.getVoucherType();
+
         switch (params['mode']) {
           case "new": {
             this.newVoucher();
@@ -225,7 +233,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       })
     }
 
-    this.getVoucherType();
+    
   }
 
   openingVoucherQuery() {
@@ -309,7 +317,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       else
         this.getVoucher(VoucherApi.NewDraftVoucher);
     else {
-      this.redirectTo('/finance/vouchers/new')
+      if (this.subjectMode == 0)
+        this.redirectTo('/finance/vouchers/new')
+      else
+        this.redirectTo('/finance/vouchers/new/draft')
+      
     }
   }
 
@@ -375,15 +387,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
   }
 
-  getVoucherType() {
-    //this.lookupService.getModels(LookupApi.VoucherSysTypes).subscribe(res => {
-      //this.voucherTypeList = res;
-      if (this.subjectMode == 0)
-        this.subjectModeTitle = this.getText("Voucher.NormalVoucher");
+  getVoucherType() {    
+    if (this.subjectMode == 0)
+      this.subjectModeTitle = this.normalTitle;
 
-      if (this.subjectMode == 1)
-        this.subjectModeTitle = this.getText("Voucher.DraftVoucher");
-    //})
+    if (this.subjectMode == 1)
+      this.subjectModeTitle = this.draftTitle;    
   }
 
   onSave(e?: any): void {
