@@ -3420,4 +3420,10 @@
   <data name="NormalVouchers" xml:space="preserve">
     <value>Normal vouchers</value>
   </data>
+  <data name="BalanceSheet" xml:space="preserve">
+    <value>Balance sheet</value>
+  </data>
+  <data name="BalanceSheetReport" xml:space="preserve">
+    <value>Balance sheet report</value>
+  </data>
 </root>

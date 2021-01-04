@@ -2054,6 +2054,7 @@ INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName])
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (31, N'ProfitLossReport', N'ProfitLoss')
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (32, N'DraftVouchers', N'DraftVoucher')
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (33, N'ManageEntities,DraftVouchers', N'DraftVouchers')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (34, N'BalanceSheetReport', N'BalanceSheet')
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -2257,6 +2258,11 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (198, 28, N'FilterByRef', 32)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (199, 29, N'FilterByRef', 32)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (200, 31, N'FilterByRef', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (201, 34, N'View', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (202, 34, N'Filter', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (203, 34, N'Print', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (204, 34, N'Export', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (205, 34, N'FilterByRef', 16)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 
@@ -3228,6 +3234,7 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (47, 11, 180, N'NewDraftVoucher', N'/finance/vouchers/new', N'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (48, 11, 189, N'DraftVoucherByNo', N'/finance/vouchers/by-no', N'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (49, 11, 189, N'LastDraftVoucher', N'/finance/vouchers/last', N'list', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (50, 39, 201, N'BalanceSheet', N'/finance/bal-sheet', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 

@@ -1548,4 +1548,46 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x1f
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به گزارش ترازنامه را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum BalanceSheetPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به ترازنامه
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده ترازنامه
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر اطلاعات ترازنامه
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ اطلاعات ترازنامه
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات ترازنامه
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی فیلتر اطلاعات ترازنامه بر حسب رفرنس
+        /// </summary>
+        FilterByRef = 0x10,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای ترازنامه
+        /// </summary>
+        All = 0x1f
+    }
 }

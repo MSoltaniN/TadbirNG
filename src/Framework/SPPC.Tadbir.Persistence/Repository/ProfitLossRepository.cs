@@ -229,6 +229,19 @@ namespace SPPC.Tadbir.Persistence
             return projected;
         }
 
+        private static IEnumerable<string> GetAccounts(IList<ProfitLossItemViewModel> items, string from, string to)
+        {
+            var accounts = new List<string>();
+            int fromIndex = items.IndexOf(items.Where(item => item.Group == from).Single());
+            int toIndex = items.IndexOf(items.Where(item => item.Group == to).Single());
+            for (int index = fromIndex + 1; index < toIndex; index++)
+            {
+                accounts.Add(items[index].Account);
+            }
+
+            return accounts;
+        }
+
         private async Task<ProfitLossViewModel> CalculateProfitLossAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
@@ -606,19 +619,6 @@ namespace SPPC.Tadbir.Persistence
                 var item = repository.GetByID(child.Id, br => br.Children);
                 AddChildren(item, children);
             }
-        }
-
-        private IEnumerable<string> GetAccounts(IList<ProfitLossItemViewModel> items, string from, string to)
-        {
-            var accounts = new List<string>();
-            int fromIndex = items.IndexOf(items.Where(item => item.Group == from).Single());
-            int toIndex = items.IndexOf(items.Where(item => item.Group == to).Single());
-            for (int index = fromIndex + 1; index < toIndex; index++)
-            {
-                accounts.Add(items[index].Account);
-            }
-
-            return accounts;
         }
 
         private IEnumerable<ProfitLossByItemsViewModel> MergeItems(IList<ProfitLossViewModel> items)

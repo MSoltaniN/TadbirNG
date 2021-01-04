@@ -176,5 +176,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت سود و زیان
         /// </summary>
         public const string ProfitLoss = "ProfitLoss";
+
+        /// <summary>
+        /// نام موجودیت ترازنامه
+        /// </summary>
+        public const string BalanceSheet = "BalanceSheet";
     }
 }

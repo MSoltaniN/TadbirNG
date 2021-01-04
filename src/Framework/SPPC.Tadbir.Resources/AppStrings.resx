@@ -3411,4 +3411,10 @@
   <data name="NormalVouchers" xml:space="preserve">
     <value>اسناد عادی</value>
   </data>
+  <data name="BalanceSheet" xml:space="preserve">
+    <value>ترازنامه</value>
+  </data>
+  <data name="BalanceSheetReport" xml:space="preserve">
+    <value>گزارش ترازنامه</value>
+  </data>
 </root>
