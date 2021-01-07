@@ -388,7 +388,8 @@
     "ComparativeSelectItems": "Please select the items you want to compare in comparison mode",
     "SelectCostCenter": "Please select a cost center",
     "SelectProject": "Please select a project",
-    "FilterByRefMsg": "Please enter a reference filter"
+    "FilterByRefMsg": "Please enter a reference filter",
+    "ChangeLabel": "Change labels"
   },
   "AccountBookSummary": {
     "RowNo": "Row No",

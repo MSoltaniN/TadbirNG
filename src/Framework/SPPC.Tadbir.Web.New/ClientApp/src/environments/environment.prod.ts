@@ -121,6 +121,11 @@ export const Entities = {
   Vouchers: 'Vouchers'
 }
 
+export const CustomForm =
+{
+  ProfitLoss: "1"
+}
+
 export const ColumnVisibility =
 {
   Default: "Default",

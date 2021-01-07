@@ -122,7 +122,7 @@
     "Previous": "قبلی",
     "NextStep": "مرحله بعد",
     "PreviousStep": "مرحله قبل",
-    "ComingBack": "بازگشت"
+    "ComingBack": "بازگشت"    
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -427,7 +427,12 @@
     "ComparativeSelectItems": "لطفا در حالت مقایسه ای آیتم های ها مورد نظر برای مقایسه را انتخاب کنید",
     "SelectCostCenter": "لطفا مرکز هزینه را انتخاب کنید",
     "SelectProject": "لطفا پروژه را انتخاب کنید",
-    "FilterByRefMsg": "لطفا فیلتر رفرنس را وارد کنید"
+    "FilterByRefMsg": "لطفا فیلتر رفرنس را وارد کنید",
+    "ChangeLabel": "تغییر عناوین گزارش",
+    "Labels": "عناوین گزارش",
+    "ResetDefault": "عناوین پیش فرض",
+    "LabelsChangedSuccessfully": "عناوین گزارش با موفقیت ثبت شد",
+    "LabelsChangedError": "ثبت عناوین گزارش با خطا مواجه شد"
   },
   "Balance": {
     "ByDate": "بر اساس تاریخ",

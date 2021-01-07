@@ -63,7 +63,8 @@
                                          (columnsList)="getColumns($event)">
             </auto-generated-grid-setting>
             <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-
+            <button kendoButton class="hidden-xs rm lm" title="{{ 'ProfitLoss.CustomizeLabel' | translate }}" (click)="onLabelCustomizeClick()"
+                    [icon]="'dictionary-add'" type="button"></button>
             <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
           </div>
 
