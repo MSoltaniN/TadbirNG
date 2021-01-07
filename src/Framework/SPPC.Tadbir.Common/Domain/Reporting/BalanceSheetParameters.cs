@@ -22,6 +22,11 @@ namespace SPPC.Tadbir.Domain
         public DateTime Date { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی دوره مالی قبل - اختیاری
+        /// </summary>
+        public int? FiscalPeriodId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی مرکز هزینه مورد نظر برای فیلتر اطلاعات - اختیاری
         /// </summary>
         public int? CostCenterId { get; set; }

@@ -3426,4 +3426,40 @@
   <data name="BalanceSheetReport" xml:space="preserve">
     <value>Balance sheet report</value>
   </data>
+  <data name="AssetsSum" xml:space="preserve">
+    <value>Total assets</value>
+  </data>
+  <data name="LiabilitiesOwnerEquitiesSum" xml:space="preserve">
+    <value>Total liabilities and owner equities</value>
+  </data>
+  <data name="LiquidAssets" xml:space="preserve">
+    <value>Liquid assets</value>
+  </data>
+  <data name="LiquidAssetsSum" xml:space="preserve">
+    <value>Total liquid assets</value>
+  </data>
+  <data name="LiquidLiabilities" xml:space="preserve">
+    <value>Liquid liabilities</value>
+  </data>
+  <data name="LiquidLiabilitiesSum" xml:space="preserve">
+    <value>Total liquid liabilities</value>
+  </data>
+  <data name="NonLiquidAssets" xml:space="preserve">
+    <value>Non-liquid assets</value>
+  </data>
+  <data name="NonLiquidAssetsSum" xml:space="preserve">
+    <value>Total non-liquid assets</value>
+  </data>
+  <data name="NonLiquidLiabilities" xml:space="preserve">
+    <value>Non-liquid liabilities</value>
+  </data>
+  <data name="NonLiquidLiabilitiesSum" xml:space="preserve">
+    <value>Total non-liquid liabilities</value>
+  </data>
+  <data name="OwnerEquities" xml:space="preserve">
+    <value>Owner equities</value>
+  </data>
+  <data name="OwnerEquitiesSum" xml:space="preserve">
+    <value>Total owner equities</value>
+  </data>
 </root>

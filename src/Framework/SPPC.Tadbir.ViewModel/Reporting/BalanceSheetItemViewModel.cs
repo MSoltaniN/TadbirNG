@@ -23,12 +23,12 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// مانده یکی از حساب های دارایی یا جمع مقادیر مانده
         /// </summary>
-        public decimal AssetsBalance { get; set; }
+        public decimal? AssetsBalance { get; set; }
 
         /// <summary>
         /// مانده یکی از حساب های دارایی یا جمع مقادیر مانده در دوره مالی قبل
         /// </summary>
-        public decimal PreviousAssetsBalance { get; set; }
+        public decimal? AssetsPreviousBalance { get; set; }
 
         /// <summary>
         /// نام حساب بدهی یا عنوان کلی در گزارش
@@ -38,11 +38,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// مانده یکی از حساب های بدهی یا جمع مقادیر مانده
         /// </summary>
-        public decimal LiabilitiesBalance { get; set; }
+        public decimal? LiabilitiesBalance { get; set; }
 
         /// <summary>
         /// مانده یکی از حساب های بدهی یا جمع مقادیر مانده در دوره مالی قبل
         /// </summary>
-        public decimal PreviousLiabilitiesBalance { get; set; }
+        public decimal? LiabilitiesPreviousBalance { get; set; }
     }
 }
