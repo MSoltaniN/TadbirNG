@@ -8,6 +8,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -40,34 +41,107 @@ namespace SPPC.Tadbir.Persistence
             var balanceSheet = new BalanceSheetViewModel();
             _previousFiscalPeriodId = await GetPreviousFiscalPeriodIdAsync();
 
+            // Calculate and add liquid asset/liability items...
+            balanceSheet.Items.Add(
+                GetReportHeaderItem(AppStrings.LiquidAssets, AppStrings.LiquidLiabilities));
             var assets = await GetLiquidAssetItemsAsync(parameters);
             var liabilities = await GetLiquidLiabilityItemsAsync(parameters);
-            balanceSheet.Items.AddRange(GetMergedLiquidItems(assets, liabilities));
+            var merged = GetMergedReportItems(assets, liabilities);
+            var liquidSummary = GetReportSummaryItems(
+                merged, AppStrings.LiquidAssetsSum, AppStrings.LiquidLiabilitiesSum);
+            balanceSheet.Items.AddRange(merged);
+            balanceSheet.Items.AddRange(liquidSummary);
 
+            // Calculate and add non-liquid asset/liability items...
+            balanceSheet.Items.Add(
+                GetReportHeaderItem(AppStrings.NonLiquidAssets, AppStrings.NonLiquidLiabilities));
             assets = await GetNonLiquidAssetItemsAsync(parameters);
             liabilities = await GetNonLiquidLiabilityItemsAsync(parameters);
-            balanceSheet.Items.AddRange(GetMergedNonLiquidItems(assets, liabilities));
+            merged = GetMergedReportItems(assets, liabilities);
+            var nonLiquidSummary = GetReportSummaryItems(
+                merged, AppStrings.NonLiquidAssetsSum, AppStrings.NonLiquidLiabilitiesSum);
+            balanceSheet.Items.AddRange(merged);
+            balanceSheet.Items.AddRange(nonLiquidSummary);
 
-            balanceSheet.Items.AddRange(await GetOwnerEquityItemsAsync(parameters));
+            // Calculate and add owner equity items...
+            balanceSheet.Items.Add(
+                GetReportHeaderItem(null, AppStrings.OwnerEquities));
+            var equity = await GetOwnerEquityItemsAsync(parameters);
+            var equitySummary = GetReportSummaryItems(equity, null, AppStrings.OwnerEquitiesSum);
+            balanceSheet.Items.AddRange(equity);
+            balanceSheet.Items.AddRange(equitySummary);
+
+            // Calculate and add total item...
+            var total = liquidSummary[1] + nonLiquidSummary[1] + equitySummary[1];
+            total.Assets = AppStrings.AssetsSum;
+            total.Liabilities = AppStrings.LiabilitiesOwnerEquitiesSum;
+            balanceSheet.Items.Add(total);
 
             return balanceSheet;
         }
 
-        private static IList<BalanceSheetItemViewModel> GetMergedLiquidItems(
+        private static IList<BalanceSheetItemViewModel> GetMergedReportItems(
             IList<BalanceSheetItemViewModel> assets, IList<BalanceSheetItemViewModel> liabilities)
         {
-            throw new NotImplementedException();
+            var merged = new List<BalanceSheetItemViewModel>();
+            int minSize = Math.Min(assets.Count, liabilities.Count);
+            int maxSize = Math.Max(assets.Count, liabilities.Count);
+            for (int i = 0; i < minSize; i++)
+            {
+                var asset = assets[i];
+                var liability = liabilities[i];
+                merged.Add(new BalanceSheetItemViewModel()
+                {
+                    Assets = asset.Assets,
+                    AssetsBalance = asset.AssetsBalance,
+                    AssetsPreviousBalance = asset.AssetsPreviousBalance,
+                    Liabilities = liability.Liabilities,
+                    LiabilitiesBalance = liability.LiabilitiesBalance,
+                    LiabilitiesPreviousBalance = liability.LiabilitiesPreviousBalance
+                });
+            }
+
+            for (int i = minSize; i < maxSize; i++)
+            {
+                if (i < assets.Count)
+                {
+                    merged.Add(assets[i].GetCopy());
+                }
+                else
+                {
+                    merged.Add(liabilities[i].GetCopy());
+                }
+            }
+
+            return merged;
         }
 
-        private static IList<BalanceSheetItemViewModel> GetMergedNonLiquidItems(
-            IList<BalanceSheetItemViewModel> assets, IList<BalanceSheetItemViewModel> liabilities)
+        private static BalanceSheetItemViewModel GetReportHeaderItem(string asset, string liability)
         {
-            throw new NotImplementedException();
+            return new BalanceSheetItemViewModel()
+            {
+                Assets = asset,
+                Liabilities = liability
+            };
         }
 
-        private static string GetReportLabel(string label)
+        private static BalanceSheetItemViewModel[] GetReportSummaryItems(
+            IEnumerable<BalanceSheetItemViewModel> items, string asset, string liability)
         {
-            return String.Format("{0}:", label);
+            return new BalanceSheetItemViewModel[]
+            {
+                new BalanceSheetItemViewModel(),
+                new BalanceSheetItemViewModel()
+                {
+                    Assets = asset,
+                    AssetsBalance = items.Sum(item => item.AssetsBalance),
+                    AssetsPreviousBalance = items.Sum(item => item.AssetsPreviousBalance),
+                    Liabilities = liability,
+                    LiabilitiesBalance = items.Sum(item => item.LiabilitiesBalance),
+                    LiabilitiesPreviousBalance = items.Sum(item => item.LiabilitiesPreviousBalance)
+                },
+                new BalanceSheetItemViewModel()
+            };
         }
 
         private static IEnumerable<BalanceSheetItemViewModel> GetReportItems(
@@ -84,10 +158,10 @@ namespace SPPC.Tadbir.Persistence
                 var item = new BalanceSheetItemViewModel();
                 var balance = lines
                     .Where(line => line.AccountId == account.Key)
-                    .Sum(line => line.Debit = line.Credit);
+                    .Sum(line => line.Debit - line.Credit);
                 var previousBalance = previousLines
                     .Where(line => line.AccountId == account.Key)
-                    .Sum(line => line.Debit = line.Credit);
+                    .Sum(line => line.Debit - line.Credit);
                 if (isAsset)
                 {
                     item.Assets = account.Value;
@@ -121,49 +195,46 @@ namespace SPPC.Tadbir.Persistence
         private async Task<IList<BalanceSheetItemViewModel>> GetLiquidAssetItemsAsync(
             BalanceSheetParameters parameters)
         {
-            var liquidAssets = new List<BalanceSheetItemViewModel>();
-            var lines = await GetCollectionLinesAsync(
-                AccountCollectionId.LiquidAssets, parameters.Date, parameters, UserContext.FiscalPeriodId);
-            var previousLines = _previousFiscalPeriodId.HasValue
-                ? await GetCollectionLinesAsync(
-                    AccountCollectionId.LiquidAssets, parameters.Date, parameters, _previousFiscalPeriodId.Value)
-                : new List<VoucherLineDetailViewModel>();
-            liquidAssets.AddRange(GetReportItems(lines, previousLines, true));
-
-            return liquidAssets;
+            return await GetReportItemsAsync(parameters, AccountCollectionId.LiquidAssets, true);
         }
 
         private async Task<IList<BalanceSheetItemViewModel>> GetLiquidLiabilityItemsAsync(
             BalanceSheetParameters parameters)
         {
-            var liquidLiabilities = new List<BalanceSheetItemViewModel>();
-            var lines = await GetCollectionLinesAsync(
-                AccountCollectionId.LiquidLiabilities, parameters.Date, parameters, UserContext.FiscalPeriodId);
-            var previousLines = _previousFiscalPeriodId.HasValue
-                ? await GetCollectionLinesAsync(
-                    AccountCollectionId.LiquidLiabilities, parameters.Date, parameters, _previousFiscalPeriodId.Value)
-                : new List<VoucherLineDetailViewModel>();
-            liquidLiabilities.AddRange(GetReportItems(lines, previousLines, false));
-
-            return liquidLiabilities;
+            return await GetReportItemsAsync(parameters, AccountCollectionId.LiquidLiabilities, false);
         }
 
         private async Task<IList<BalanceSheetItemViewModel>> GetNonLiquidAssetItemsAsync(
             BalanceSheetParameters parameters)
         {
-            throw new NotImplementedException();
+            return await GetReportItemsAsync(parameters, AccountCollectionId.NonLiquidAssets, true);
         }
 
         private async Task<IList<BalanceSheetItemViewModel>> GetNonLiquidLiabilityItemsAsync(
             BalanceSheetParameters parameters)
         {
-            throw new NotImplementedException();
+            return await GetReportItemsAsync(parameters, AccountCollectionId.NonLiquidLiabilities, false);
         }
 
         private async Task<IList<BalanceSheetItemViewModel>> GetOwnerEquityItemsAsync(
             BalanceSheetParameters parameters)
         {
-            throw new NotImplementedException();
+            return await GetReportItemsAsync(parameters, AccountCollectionId.OwnerEquities, false);
+        }
+
+        private async Task<IList<BalanceSheetItemViewModel>> GetReportItemsAsync(
+            BalanceSheetParameters parameters, AccountCollectionId collectionId, bool isAsset)
+        {
+            var reportItems = new List<BalanceSheetItemViewModel>();
+            var lines = await GetCollectionLinesAsync(
+                collectionId, parameters.Date, parameters, UserContext.FiscalPeriodId);
+            var previousLines = _previousFiscalPeriodId.HasValue
+                ? await GetCollectionLinesAsync(
+                    collectionId, parameters.Date, parameters, _previousFiscalPeriodId.Value)
+                : new List<VoucherLineDetailViewModel>();
+            reportItems.AddRange(GetReportItems(lines, previousLines, isAsset));
+
+            return reportItems;
         }
 
         private async Task<IEnumerable<VoucherLineDetailViewModel>> GetCollectionLinesAsync(
