@@ -432,7 +432,8 @@
     "Labels": "عناوین گزارش",
     "ResetDefault": "عناوین پیش فرض",
     "LabelsChangedSuccessfully": "عناوین گزارش با موفقیت ثبت شد",
-    "LabelsChangedError": "ثبت عناوین گزارش با خطا مواجه شد"
+    "LabelsChangedError": "ثبت عناوین گزارش با خطا مواجه شد",
+    "CustomizeLabel": "تغییر عناوین گزارش"
   },
   "Balance": {
     "ByDate": "بر اساس تاریخ",

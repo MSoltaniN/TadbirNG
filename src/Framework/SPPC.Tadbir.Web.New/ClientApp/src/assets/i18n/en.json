@@ -389,7 +389,8 @@
     "SelectCostCenter": "Please select a cost center",
     "SelectProject": "Please select a project",
     "FilterByRefMsg": "Please enter a reference filter",
-    "ChangeLabel": "Change labels"
+    "ChangeLabel": "Change labels",
+    "CustomizeLabel": "Change labels"
   },
   "AccountBookSummary": {
     "RowNo": "Row No",
