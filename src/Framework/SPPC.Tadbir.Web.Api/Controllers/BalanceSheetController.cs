@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Presentation;
@@ -11,6 +8,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -39,6 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var parameters = GetParameters(date, closing, ccenterId, projectId);
             var balanceSheet = await _repository.GetBalanceSheetAsync(parameters);
+            Localize(balanceSheet);
             return Json(balanceSheet);
         }
 
@@ -55,6 +54,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             };
 
             return parameters;
+        }
+
+        private void Localize(BalanceSheetViewModel balanceSheet)
+        {
+            foreach (var item in balanceSheet.Items)
+            {
+                item.Assets = GetReportLabel(item.Assets);
+                item.Liabilities = GetReportLabel(item.Liabilities);
+            }
+        }
+
+        private string GetReportLabel(string label)
+        {
+            return !String.IsNullOrEmpty(label)
+                ? String.Format("{0}:", _strings[label])
+                : String.Empty;
         }
 
         private readonly IBalanceSheetRepository _repository;
