@@ -1,4 +1,36 @@
-﻿USE [NGTadbirSys]
+﻿USE master;
+GO
+
+CREATE LOGIN [NgTadbirUser]
+WITH PASSWORD = 'Demo1234',
+DEFAULT_DATABASE = master,
+CHECK_POLICY = OFF,
+CHECK_EXPIRATION = OFF;
+GO
+
+ALTER SERVER ROLE securityadmin ADD MEMBER NgTadbirUser;
+GO
+
+ALTER SERVER ROLE dbcreator ADD MEMBER NgTadbirUser;
+GO
+
+CREATE DATABASE NGTadbirSys
+ON
+( NAME = NGTadbirSys,
+    FILENAME = 'C:\SqlDb\NGTadbirSys.mdf',
+    SIZE = 10MB,
+    FILEGROWTH = 5MB )
+LOG ON
+( NAME = NGMyTadbirSys_log,
+    FILENAME = 'C:\SqlDb\NGTadbirSys_log.ldf',
+    SIZE = 5MB,
+    FILEGROWTH = 5% );
+GO
+
+ALTER AUTHORIZATION ON DATABASE::NGTadbirSys TO NgTadbirUser;
+GO
+
+USE [NGTadbirSys]
 GO
 
 SET ANSI_NULLS ON

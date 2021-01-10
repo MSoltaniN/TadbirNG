@@ -1,4 +1,25 @@
-﻿
+﻿USE master;
+GO
+
+CREATE DATABASE NGTadbir
+ON
+( NAME = NGTadbirSys,
+    FILENAME = 'C:\SqlDb\NGTadbir.mdf',
+    SIZE = 10MB,
+    FILEGROWTH = 5MB )
+LOG ON
+( NAME = NGTadbirSys_log,
+    FILENAME = 'C:\SqlDb\NGTadbir_log.ldf',
+    SIZE = 5MB,
+    FILEGROWTH = 5% );
+GO
+
+ALTER AUTHORIZATION ON DATABASE::NGTadbir TO NgTadbirUser;
+GO
+
+USE [NGTadbir]
+GO
+
 SET ANSI_NULLS ON
 GO
 
