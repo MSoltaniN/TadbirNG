@@ -1902,3 +1902,23 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (164, 1, 1, 11, NULL, 7, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.1056
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name]) VALUES (12, N'BalanceSheet')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (165, 1, 3, 12, NULL, 1, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (166, 1, 3, 12, NULL, 5, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (167, 1, 3, 12, NULL, 6, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (168, 1, 3, 12, NULL, 54, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+SET IDENTITY_INSERT [Metadata].[OperationSourceList] ON
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (55, N'BalanceSheet')
+SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF

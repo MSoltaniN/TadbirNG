@@ -60,5 +60,6 @@ namespace SPPC.Tadbir.Persistence
         ProfitLossByProject = 52,
         ProfitLossByBranch = 53,
         ProfitLossByFiscalPeriod = 54,
+        BalanceSheet = 55
     }
 }
