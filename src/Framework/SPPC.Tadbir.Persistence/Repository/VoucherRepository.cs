@@ -20,7 +20,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را پیاده سازی می کند.
     /// </summary>
-    public partial class VoucherRepository : LoggingRepository<Voucher, VoucherViewModel>, IVoucherRepository
+    public partial class VoucherRepository
+        : EntityLoggingRepository<Voucher, VoucherViewModel>, IVoucherRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -694,6 +695,11 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شماره آخرین سند موجود با نوع مفهومی داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">نوع مفهومی مورد نظر برای سند</param>
+        /// <returns>شماره آخرین سند موجود با نوع داده شده</returns>
         protected async Task<int> GetLastVoucherNoAsync(SubjectType type = SubjectType.Normal)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();

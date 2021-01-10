@@ -18,7 +18,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات تفصیلی های شناور را پیاده سازی می کند.
     /// </summary>
-    public class DetailAccountRepository : LoggingRepository<DetailAccount, DetailAccountViewModel>, IDetailAccountRepository
+    public class DetailAccountRepository
+        : EntityLoggingRepository<DetailAccount, DetailAccountViewModel>, IDetailAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

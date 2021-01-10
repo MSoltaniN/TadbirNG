@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات دیتابیسی مورد نیاز برای تهیه گزارش سود و زیان را پیاده سازی می کند
     /// </summary>
-    public class ProfitLossRepository : LoggingRepository<Account, object>, IProfitLossRepository
+    public class ProfitLossRepository : LoggingRepositoryBase, IProfitLossRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

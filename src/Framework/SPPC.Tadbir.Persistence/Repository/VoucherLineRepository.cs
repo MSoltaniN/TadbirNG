@@ -18,7 +18,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات آرتیکل های مالی را پیاده سازی می کند.
     /// </summary>
-    public class VoucherLineRepository : LoggingRepository<VoucherLine, VoucherLineViewModel>, IVoucherLineRepository
+    public class VoucherLineRepository
+        : EntityLoggingRepository<VoucherLine, VoucherLineViewModel>, IVoucherLineRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

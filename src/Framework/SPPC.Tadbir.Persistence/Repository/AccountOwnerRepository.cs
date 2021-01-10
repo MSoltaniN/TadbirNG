@@ -11,7 +11,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات بانکی حساب را تعریف میکند
     /// </summary>
-    public class AccountOwnerRepository : LoggingRepository<AccountOwner, AccountOwnerViewModel>, IAccountOwnerRepository
+    public class AccountOwnerRepository
+        : EntityLoggingRepository<AccountOwner, AccountOwnerViewModel>, IAccountOwnerRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

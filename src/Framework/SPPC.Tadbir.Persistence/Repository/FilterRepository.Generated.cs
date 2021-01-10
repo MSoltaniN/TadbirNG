@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت فیلترها را پیاده سازی میکند
     /// </summary>
-    public class FilterRepository : LoggingRepository<Filter, FilterViewModel>, IFilterRepository
+    public class FilterRepository : EntityLoggingRepository<Filter, FilterViewModel>, IFilterRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

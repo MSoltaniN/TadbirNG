@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت ارتباطات بین مولفه های مختلف بردار حساب را پیاده سازی می کند
     /// </summary>
-    public class RelationRepository : LoggingRepository<Account, object>, IRelationRepository
+    public class RelationRepository : LoggingRepositoryBase, IRelationRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -1345,9 +1345,9 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        internal override int? EntityType
+        internal override OperationSourceId OperationSource
         {
-            get { return (int?)EntityTypeId.AccountRelations; }
+            get { return OperationSourceId.AccountRelations; }
         }
 
         private ISecureRepository Repository
@@ -1643,12 +1643,9 @@ namespace SPPC.Tadbir.Persistence
                     var operationId = gridOptions != null
                         ? (OperationId)gridOptions.Operation
                         : operation;
-                    OnEntityAction(operationId);
-                    Log.Description = GetRelationLogDescription(accountItem, fromItem, toItem);
-                    Log.EntityName = accountItem.Name;
-                    Log.EntityCode = accountItem.FullCode;
-                    Log.EntityDescription = accountItem.Description ?? String.Empty;
-                    await TrySaveLogAsync();
+                    string description = GetRelationLogDescription(accountItem, fromItem, toItem);
+                    await OnSourceActionAsync(operationId, description,
+                        accountItem.Name, accountItem.FullCode, accountItem.Description ?? String.Empty);
                 }
             }
         }

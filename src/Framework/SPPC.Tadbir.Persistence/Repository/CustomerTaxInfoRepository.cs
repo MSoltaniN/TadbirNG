@@ -9,7 +9,8 @@ namespace SPPC.Tadbir.Persistence.Repository
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات مالیاتی طرف حساب را تعریف میکند
     /// </summary>
-    public class CustomerTaxInfoRepository : LoggingRepository<CustomerTaxInfo, CustomerTaxInfoViewModel>, ICustomerTaxInfoRepository
+    public class CustomerTaxInfoRepository
+        : EntityLoggingRepository<CustomerTaxInfo, CustomerTaxInfoViewModel>, ICustomerTaxInfoRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

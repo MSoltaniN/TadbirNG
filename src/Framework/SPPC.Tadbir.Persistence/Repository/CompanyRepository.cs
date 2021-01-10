@@ -22,7 +22,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت شرکت را پیاده سازی میکند.
     /// </summary>
-    public class CompanyRepository : SystemLoggingRepository<CompanyDb, CompanyDbViewModel>, ICompanyRepository
+    public class CompanyRepository
+        : SystemEntityLoggingRepository<CompanyDb, CompanyDbViewModel>, ICompanyRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

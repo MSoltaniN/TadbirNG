@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر روزنامه را پیاده سازی می کند
     /// </summary>
-    public class JournalRepository : LoggingRepository<Account, object>, IJournalRepository
+    public class JournalRepository : LoggingRepositoryBase, IJournalRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

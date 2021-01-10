@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Persistence.Repository
     /// <summary>
     /// عملیات مورد نیاز برای خواندن اطلاعات گزارش مانده به تفکیک حساب را پیاده سازی می کند
     /// </summary>
-    public class BalanceByAccountRepository : LoggingRepository<Account, object>, IBalanceByAccountRepository
+    public class BalanceByAccountRepository : LoggingRepositoryBase, IBalanceByAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

@@ -22,7 +22,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت ارزها را پیاده سازی میکند
     /// </summary>
-    public class CurrencyRepository : LoggingRepository<Currency, CurrencyViewModel>, ICurrencyRepository
+    public class CurrencyRepository
+        : EntityLoggingRepository<Currency, CurrencyViewModel>, ICurrencyRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
