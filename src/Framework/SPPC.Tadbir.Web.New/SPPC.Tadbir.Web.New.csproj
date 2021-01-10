@@ -71,12 +71,16 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\admin\components\operationLogs\operationLogs-setting.component.ts" />
     <None Remove="ClientApp\src\app\admin\models\entityType.ts" />
+    <None Remove="ClientApp\src\app\config\models\formLabelConfig.ts" />
+    <None Remove="ClientApp\src\app\config\models\formLabelFullConfig.ts" />
     <None Remove="ClientApp\src\app\config\models\testBalanceConfig.ts" />
     <None Remove="ClientApp\src\app\core\models\index.ts" />
     <None Remove="ClientApp\src\app\core\services\index.ts" />
     <None Remove="ClientApp\src\app\finance\components\operational\voucher\closing-tmp.component.ts" />
     <None Remove="ClientApp\src\app\finance\components\reporting\profitLoss\profitLost.component.ts" />
+    <None Remove="ClientApp\src\app\finance\components\reporting\profitLoss\profitLost.labels.components.ts" />
     <None Remove="ClientApp\src\app\finance\enum\balance.ts" />
+    <None Remove="ClientApp\src\app\finance\enum\profitLoss.ts" />
     <None Remove="ClientApp\src\app\finance\models\index.ts" />
     <None Remove="ClientApp\src\app\finance\models\inventoryBalance.ts" />
     <None Remove="ClientApp\src\app\finance\models\ItemBalanceModeInfo.ts" />
@@ -96,6 +100,7 @@
     <None Remove="ClientApp\src\app\core\index.ts" />
     <None Remove="ClientApp\src\app\finance\index.ts" />
     <None Remove="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
+    <None Remove="ClientApp\src\app\shared\components\reportManagement\quickReportViewSetting.ts" />
     <None Remove="ClientApp\src\app\shared\directive\persistState\PersistState.ts" />
     <None Remove="ClientApp\src\app\shared\enum\operationId.ts" />
     <None Remove="ClientApp\src\app\shared\index.ts" />
@@ -844,12 +849,16 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\admin\components\operationLogs\operationLogs-setting.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\admin\models\entityType.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\config\models\formLabelConfig.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\config\models\formLabelFullConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\config\models\testBalanceConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\services\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\components\operational\voucher\closing-tmp.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\components\reporting\profitLoss\profitLost.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\finance\components\reporting\profitLoss\profitLost.labels.components.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\enum\balance.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\finance\enum\profitLoss.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\inventoryBalance.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\ItemBalanceModeInfo.ts" />
@@ -869,6 +878,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\core\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\components\reportManagement\quickReportViewSetting.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\directive\persistState\persistState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\enum\operationId.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\index.ts" />

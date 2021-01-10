@@ -78,6 +78,16 @@ namespace SPPC.Tadbir.Security
         public const string Vouchers = "Vouchers";
 
         /// <summary>
+        /// نام موجودیت سند مالی پیش نویس
+        /// </summary>
+        public const string DraftVoucher = "DraftVoucher";
+
+        /// <summary>
+        /// نام موجودیت اسناد مالی پیش نویس - مورد استفاده در فرم مدیریت اسناد
+        /// </summary>
+        public const string DraftVouchers = "DraftVouchers";
+
+        /// <summary>
         /// نام موجودیت کاربر برنامه
         /// </summary>
         public const string User = "User";
@@ -166,5 +176,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت سود و زیان
         /// </summary>
         public const string ProfitLoss = "ProfitLoss";
+
+        /// <summary>
+        /// نام موجودیت ترازنامه
+        /// </summary>
+        public const string BalanceSheet = "BalanceSheet";
     }
 }

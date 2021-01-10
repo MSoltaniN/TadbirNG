@@ -12,6 +12,7 @@ import { SettingsApi } from "./api";
 import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 import { DateRangeType, SettingKey } from "@sppc/shared/enum";
 import { TestBalanceConfig } from "../models/testBalanceConfig";
+import { FormLabelConfig } from "../models/formLabelConfig";
 
 
 
@@ -187,6 +188,22 @@ export class SettingService extends BaseService {
   putUserQuickSearchSettings(userId: number, setting: QuickSearchConfig) {
     var url = String.Format(SettingsApi.QuickSearchSettingsByUser, userId);
     var body = JSON.stringify(setting);
+    var options = { headers: this.httpHeaders };
+    return this.http.put(url, body, options)
+      .map(res => res)
+      .catch(this.handleError);
+  }
+
+  getFormLabelSettingsAsync(formId: number) {
+    var url = String.Format(SettingsApi.FormLabelsConfig, formId);
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
+
+  putModifiedFormLabelSettingsAsync(formId: number, formLabel: FormLabelConfig) {
+    var url = String.Format(SettingsApi.FormLabelsConfig, formId);
+    var body = JSON.stringify(formLabel);
     var options = { headers: this.httpHeaders };
     return this.http.put(url, body, options)
       .map(res => res)

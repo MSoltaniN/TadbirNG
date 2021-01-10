@@ -40,4 +40,5 @@ export interface Voucher {
     originName: string;
     hasPrevious: boolean;
     hasNext: boolean;
+    typeName: string;
 }

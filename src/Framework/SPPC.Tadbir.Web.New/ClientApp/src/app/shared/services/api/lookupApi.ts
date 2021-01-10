@@ -26,6 +26,9 @@ export class LookupApi {
     // lookup/views
     public static EntityViews = environment.BaseUrl + "/lookup/views";
 
+    // lookup/views
+    public static EntityView = environment.BaseUrl + "/lookup/view/{0}";
+
     // lookup/views/base
     public static BaseEntityViews = environment.BaseUrl + "/lookup/views/base";
 

@@ -141,3 +141,5 @@ export enum ArticleTypesResourceKey {
   MarkedVoucherLines = '2',
   UncheckedVoucherLines = '3'
 }
+
+

@@ -111,6 +111,11 @@ namespace SPPC.Tadbir.Persistence
             return BuildConnectionString(company);
         }
 
+        /// <summary>
+        /// رشته اتصال شرکت با اطلاعات داده شده را ساخته و برمی گرداند
+        /// </summary>
+        /// <param name="company">اطلاعات شرکت مورد نظر برای ساختن رشته اتصال</param>
+        /// <returns>رشته اتصال ساخته شده با اطلاعات شرکت</returns>
         protected static string BuildConnectionString(CompanyDb company)
         {
             if (company == null)

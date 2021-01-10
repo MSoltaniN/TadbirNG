@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
@@ -56,7 +57,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="from">تاریخ ابتدای محدوده تاریخی مورد نظر</param>
         /// <param name="to">تاریخ انتهای محدوده تاریخی مورد نظر</param>
         /// <returns>مبالغ گردش محاسبه شده برای مولفه حساب</returns>
-        Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(int itemId, DateTime from, DateTime to);
+        Task<VoucherLineAmountsViewModel> GetTurnoverAsync(int itemId, DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، مبالغ گردش بدهکار و بستانکار برای مولفه حساب مورد نظر را
@@ -66,7 +67,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="from">اولین سند در محدوده مورد نظر</param>
         /// <param name="to">آخرین سند در محدوده مورد نظر</param>
         /// <returns>مبالغ گردش محاسبه شده برای مولفه حساب</returns>
-        Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(int itemId, int from, int to);
+        Task<VoucherLineAmountsViewModel> GetTurnoverAsync(int itemId, int from, int to);
 
         /// <summary>
         /// عبارت شرطی مورد نیاز برای انجام محاسبات مولفه حساب را برمی گرداند

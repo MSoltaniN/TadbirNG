@@ -113,7 +113,17 @@ export const Entities = {
   OperationLogArchive: 'OperationLogArchive',
   ProfitLost: 'ProfitLost',
   GroupActionResult: 'GroupActionResult',
-  ProfitLossSimple: 'ProfitLossSimple'
+  ProfitLossSimple: 'ProfitLossSimple',
+  ComparativeProfitLoss: 'ComparativeProfitLoss',
+  ComparativeProfitLossSimple: 'ComparativeProfitLossSimple',
+  DraftVoucher: 'DraftVoucher',
+  DraftVouchers: 'DraftVouchers',
+  Vouchers: 'Vouchers'
+}
+
+export const CustomForm =
+{
+  ProfitLoss: "1"
 }
 
 export const ColumnVisibility =

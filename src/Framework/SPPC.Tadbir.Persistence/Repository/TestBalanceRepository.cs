@@ -15,7 +15,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای خواندن اطلاعات گزارش تراز آزمایشی را پیاده سازی می کند
     /// </summary>
-    public class TestBalanceRepository : LoggingRepository<Account, object>, ITestBalanceRepository
+    public class TestBalanceRepository : LoggingRepositoryBase, ITestBalanceRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

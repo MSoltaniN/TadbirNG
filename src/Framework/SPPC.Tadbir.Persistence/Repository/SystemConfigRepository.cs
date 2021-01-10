@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -120,7 +121,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var newUserConfig = new UserSetting()
                 {
-                    SettingId = 4,      // TODO: Remove this hard-coded value
+                    SettingId = (int)SettingId.ListFormView,
                     ViewId = userConfig.ViewId,
                     User = await userRepository.GetByIDAsync(userId),
                     ModelType = typeof(ListFormViewConfig).Name,
@@ -181,7 +182,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var newUserConfig = new UserSetting()
                 {
-                    SettingId = 7,      // TODO: Remove this hard-coded value
+                    SettingId = (int)SettingId.QuickReport,
                     ViewId = userConfig.ViewId,
                     User = await userRepository.GetByIDAsync(userId),
                     ModelType = typeof(QuickReportConfig).Name,
@@ -197,6 +198,19 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، شناسه دیتابیسی متناظر با کد دو حرفی استاندارد یک زبان را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeCode">کد دو حرفی استاندارد زبان مورد نظر</param>
+        /// <returns>شناسه دیتابیسی متناظر با کد زبانی داده شده</returns>
+        public async Task<int> GetLocaleIdAsync(string localeCode)
+        {
+            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
+            var repository = UnitOfWork.GetAsyncRepository<Locale>();
+            var locale = await repository.GetSingleByCriteriaAsync(loc => loc.Code == localeCode);
+            return (locale != null ? locale.Id : 0);
         }
     }
 }

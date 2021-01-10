@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
@@ -370,7 +369,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var types = new List<KeyValue>()
             {
-                new KeyValue { Key = "0", Value = "NormalVoucher" }
+                new KeyValue { Key = "-1", Value = "AllVouchers" },
+                new KeyValue { Key = "0", Value = "NormalVouchers" },
+                new KeyValue { Key = "1", Value = "DraftVouchers" }
             };
 
             return types;
@@ -550,6 +551,23 @@ namespace SPPC.Tadbir.Persistence
             var lookup = views
                 .Select(view => Mapper.Map<ViewSummaryViewModel>(view))
                 .Apply(gridOptions)
+                .ToList();
+            UnitOfWork.UseCompanyContext();
+            return lookup;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، موجودیت تعریف شده را به صورت کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns> موجودیت پایه تعریف شده</returns>
+        public async Task<IList<ViewSummaryViewModel>> GetEntityViewAsync(int viewId)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<View>();
+            var views = await repository
+                .GetByCriteriaAsync(view => view.Id == viewId);
+            var lookup = views
+                .Select(view => Mapper.Map<ViewSummaryViewModel>(view))
                 .ToList();
             UnitOfWork.UseCompanyContext();
             return lookup;

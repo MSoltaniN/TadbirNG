@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
-using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Repository;
@@ -91,6 +91,8 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IRoleRepository, RoleRepository>();
             _services.AddTransient<IVoucherRepository, VoucherRepository>();
             _services.AddTransient<IVoucherLineRepository, VoucherLineRepository>();
+            _services.AddTransient<IDraftVoucherRepository, DraftVoucherRepository>();
+            _services.AddTransient<IDraftVoucherLineRepository, DraftVoucherLineRepository>();
             _services.AddTransient<IFiscalPeriodRepository, FiscalPeriodRepository>();
             _services.AddTransient<IBranchRepository, BranchRepository>();
             _services.AddTransient<ICompanyRepository, CompanyRepository>();
@@ -120,6 +122,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ICustomerTaxInfoRepository, CustomerTaxInfoRepository>();
             _services.AddTransient<IAccountOwnerRepository, AccountOwnerRepository>();
             _services.AddTransient<IProfitLossRepository, ProfitLossRepository>();
+            _services.AddTransient<IBalanceSheetRepository, BalanceSheetRepository>();
         }
 
         private void AddServiceTypes()

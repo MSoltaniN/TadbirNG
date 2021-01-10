@@ -990,6 +990,41 @@
         <Relation multiplicity="OneToOne" endpointName="Account" entityName="Account" hasKey="False" isRequired="True" joinTable="" description="حساب انتخاب شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity name="CustomForm" area="Metadata" identifier="Id" type="CoreEntity" description="اطلاعات فراداده ای یکی از فرم های گزارشی قابل سفارشی سازی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CustomFormID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="کلید متن چندزبانه برای نام فرم گزارشی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="شرح تکمیلی برای اطلاعات فراداده ای" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="10/13/9378" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations />
+    </Entity>
     <Entity name="DetailAccount" area="Finance" identifier="Id" type="BaseEntity" description="اطلاعات یک تفصیلی شناور مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -1351,6 +1386,50 @@
       </Properties>
       <Relations />
     </Entity>
+    <Entity name="LabelSetting" area="Config" identifier="Id" type="CoreEntity" description="تنظیمات کلی یکی از فرم های گزارشی قابل سفارشی سازی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="LabelSettingID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="ModelType" type="String" isValidated="True" description="نوع کلاس مدل مورد استفاده برای نگهداری مقادیر تنظیمات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModelType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModelType" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Model Type" visible="True" width="120" />
+          <ValidationRule name="ModelType_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="Values" type="String" isValidated="True" description="ریز اطلاعات تنظیمات که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtValues" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Values" type="ntext" nullable="False" />
+          <ColumnView name="Values" visible="True" width="120" />
+          <ValidationRule name="Values_Validation" required="True" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="DefaultValues" type="String" isValidated="True" description="ریز اطلاعات تنظیمات پیش فرض که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDefaultValues" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="DefaultValues" type="ntext" nullable="False" />
+          <ColumnView name="Default Values" visible="True" width="120" />
+          <ValidationRule name="DefaultValues_Validation" required="True" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Setting" entityName="Setting" hasKey="True" isRequired="True" joinTable="" description="تنظیمات والد این تنظیمات که اطلاعات کمکی این نوع از تنظیمات را شامل می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CustomForm" entityName="CustomForm" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فرم گزارشی خاص مرتبط با این تنظیمات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
     <Entity name="Locale" area="Metadata" identifier="Id" type="CoreEntity" description="اطلاعات فراداده ای یکی از زبان های مورد پشتیبانی توسط برنامه را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -1537,15 +1616,7 @@
       </Properties>
       <Relations />
     </Entity>
-    <Entity description="اطلاعات سوابق عملیاتی برنامه را در هر شرکت نگهداری می کند" name="OperationLog" area="Core" identifier="Id" type="FiscalEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه ای که لاگ عملیاتی در آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که لاگ عملیاتی در آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Operation" entityName="Operation" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Source" entityName="OperationSource" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای فرم عملیاتی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="EntityType" entityName="EntityType" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای موجودیت مورد استفاده در عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="SourceList" entityName="OperationSourceList" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای نمای لیستی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+    <Entity name="OperationLog" area="Core" identifier="Id" type="FiscalEntity" description="اطلاعات سوابق عملیاتی برنامه را در هر شرکت نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -1644,8 +1715,6 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات بایگانی سوابق عملیاتی برنامه را در هر شرکت نگهداری می کند" name="OperationLogArchive" area="Core" identifier="Id" type="FiscalEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه ای که لاگ عملیاتی در آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که لاگ عملیاتی در آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -1654,6 +1723,8 @@
         <Relation multiplicity="ManyToOne" endpointName="EntityType" entityName="EntityType" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای موجودیت مورد استفاده در عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="SourceList" entityName="OperationSourceList" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای نمای لیستی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="OperationLogArchive" area="Core" identifier="Id" type="FiscalEntity" description="اطلاعات بایگانی سوابق عملیاتی برنامه را در هر شرکت نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -1752,9 +1823,16 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه ای که لاگ عملیاتی در آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که لاگ عملیاتی در آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Operation" entityName="Operation" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Source" entityName="OperationSource" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای فرم عملیاتی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="EntityType" entityName="EntityType" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای موجودیت مورد استفاده در عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="SourceList" entityName="OperationSourceList" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای نمای لیستی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
     </Entity>
-    <Entity description="اطلاعات فراداده ای فرمهای عملیاتی یا عملیات بدون فرم شرکتی یا سیستمی را نگهداری می کند" name="OperationSource" area="Metadata" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations />
+    <Entity name="OperationSource" area="Metadata" identifier="Id" type="CoreEntity" description="اطلاعات فراداده ای فرمهای عملیاتی یا عملیات بدون فرم شرکتی یا سیستمی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -1787,9 +1865,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="10/13/9378" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات فراداده ای نماهای مختلف یک فرم لیستی شرکتی یا سیستمی را نگهداری می کند" name="OperationSourceList" area="Metadata" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations />
+    </Entity>
+    <Entity name="OperationSourceList" area="Metadata" identifier="Id" type="CoreEntity" description="اطلاعات فراداده ای نماهای مختلف یک فرم لیستی شرکتی یا سیستمی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -1822,9 +1900,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات فراداده ای را برای یکی از انواع عملیات در برنامه نگهداری می کند" name="OperationSourceType" area="Metadata" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations />
+    </Entity>
+    <Entity name="OperationSourceType" area="Metadata" identifier="Id" type="CoreEntity" description="اطلاعات فراداده ای را برای یکی از انواع عملیات در برنامه نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -1851,11 +1929,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="10/13/9378" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations />
     </Entity>
-    <Entity description="اطلاعات یکی از پارامترهای مورد نیاز برای اجرای گزارش را نگهداری می کند" name="Parameter" area="Reporting" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Report" entityName="Report" hasKey="True" isRequired="True" joinTable="" description="گزارش سیستمی یا ذخیره شده مرجع که این پارامتر در آن استفاده می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+    <Entity name="Parameter" area="Reporting" identifier="Id" type="CoreEntity" description="اطلاعات یکی از پارامترهای مورد نیاز برای اجرای گزارش را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -1930,11 +2006,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a potential access grant for a unit of functionality in the application" name="Permission" area="Auth" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Group" entityName="PermissionGroup" hasKey="True" isRequired="True" joinTable="" description="Main permission group that contains this permission" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Report" entityName="Report" hasKey="True" isRequired="True" joinTable="" description="گزارش سیستمی یا ذخیره شده مرجع که این پارامتر در آن استفاده می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Permission" area="Auth" identifier="Id" type="CoreEntity" description="Represents a potential access grant for a unit of functionality in the application" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -1973,11 +2049,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a category used for organizing related permissions." name="PermissionGroup" area="Auth" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="Permission" entityName="Permission" hasKey="False" isRequired="True" joinTable="" description="Collection of all permissions defined in this group" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Group" entityName="PermissionGroup" hasKey="True" isRequired="True" joinTable="" description="Main permission group that contains this permission" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="PermissionGroup" area="Auth" identifier="Id" type="CoreEntity" description="Represents a category used for organizing related permissions." clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2016,11 +2092,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents information about a business person" name="Person" area="Contact" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="True" isRequired="True" joinTable="" description="Application user that represents this user in security subsystem" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Permission" entityName="Permission" hasKey="False" isRequired="True" joinTable="" description="Collection of all permissions defined in this group" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Person" area="Contact" identifier="Id" type="CoreEntity" description="Represents information about a business person" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2053,11 +2129,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات اصلی کالا را نگهداری می کند" name="Product" area="Corporate" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Category" entityName="ProductCategory" hasKey="True" isRequired="True" joinTable="" description="طبقه بندی کالا" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="True" isRequired="True" joinTable="" description="Application user that represents this user in security subsystem" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Product" area="Corporate" identifier="Id" type="CoreEntity" description="اطلاعات اصلی کالا را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2108,11 +2184,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات یکی از طبقه بندی های کالا را نگهداری می کند" name="ProductCategory" area="Corporate" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="ProductCategory" hasKey="True" isRequired="True" joinTable="" description="طبقه بندی والد در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Category" entityName="ProductCategory" hasKey="True" isRequired="True" joinTable="" description="طبقه بندی کالا" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="ProductCategory" area="Corporate" identifier="Id" type="CoreEntity" description="اطلاعات یکی از طبقه بندی های کالا را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2163,14 +2239,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات یک پروژه مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند" name="Project" area="Finance" identifier="Id" type="BaseEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Project" hasKey="True" isRequired="False" joinTable="" description="حساب والد (پدر) برای این پروژه که در سطح بالایی آن در ساختار درختی تعریف شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که این پروژه در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که این پروژه در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Account" entityName="Account" hasKey="False" isRequired="True" joinTable="AccountProject" description="مجموعه ای از حساب های مرتبط با این پروژه" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="ProductCategory" hasKey="True" isRequired="True" joinTable="" description="طبقه بندی والد در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Project" area="Finance" identifier="Id" type="BaseEntity" description="اطلاعات یک پروژه مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2227,9 +2300,14 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Project" hasKey="True" isRequired="False" joinTable="" description="حساب والد (پدر) برای این پروژه که در سطح بالایی آن در ساختار درختی تعریف شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که این پروژه در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که این پروژه در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Account" entityName="Account" hasKey="False" isRequired="True" joinTable="AccountProject" description="مجموعه ای از حساب های مرتبط با این پروژه" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
     </Entity>
-    <Entity description="استان را نگهداری میکند" name="Province" area="Metadata" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations />
+    <Entity name="Province" area="Metadata" identifier="Id" type="CoreEntity" description="استان را نگهداری میکند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2262,15 +2340,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations />
     </Entity>
-    <Entity description="اطلاعات یک گزارش در برنامه را نگهداری می کند" name="Report" area="Reporting" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Report" hasKey="True" isRequired="True" joinTable="" description="گروه بندی اصلی این گزارش در ساختار درختی گزارشات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="True" isRequired="True" joinTable="" description="کاربر ایجادکننده یک گزارش ذخیره شده کاربری" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="LocalReport" entityName="LocalReport" hasKey="False" isRequired="True" joinTable="" description="مجوعه ای از گزارش های محلی شده برای این گزارش" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="Parameter" entityName="Parameter" hasKey="False" isRequired="True" joinTable="" description="مجموعه ای از پاراکترهای مورد نیاز برای پیش نمایش یا چاپ گزارش" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="View" entityName="ReportView" hasKey="True" isRequired="True" joinTable="" description="فرمی که به عنوان منبع داده اصلی این گزارش در برنامه شناخته می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+    <Entity name="Report" area="Reporting" identifier="Id" type="CoreEntity" description="اطلاعات یک گزارش در برنامه را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2351,11 +2423,15 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات یکی از فرم های برنامه را که قابلیت طراحی گزارش چاپی دارند، نگهداری می کند" name="ReportView" area="Metadata" identifier="Id" type="" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="Report" entityName="Report" hasKey="False" isRequired="True" joinTable="" description="مجموعه ای از گزارش های ذخیره شده سیستمی یا کاربری که اطلاعات این فرم را نمایش می دهند" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Report" hasKey="True" isRequired="True" joinTable="" description="گروه بندی اصلی این گزارش در ساختار درختی گزارشات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="True" isRequired="True" joinTable="" description="کاربر ایجادکننده یک گزارش ذخیره شده کاربری" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="LocalReport" entityName="LocalReport" hasKey="False" isRequired="True" joinTable="" description="مجوعه ای از گزارش های محلی شده برای این گزارش" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Parameter" entityName="Parameter" hasKey="False" isRequired="True" joinTable="" description="مجموعه ای از پاراکترهای مورد نیاز برای پیش نمایش یا چاپ گزارش" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="View" entityName="ReportView" hasKey="True" isRequired="True" joinTable="" description="فرمی که به عنوان منبع داده اصلی این گزارش در برنامه شناخته می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="ReportView" area="Metadata" identifier="Id" type="" description="اطلاعات یکی از فرم های برنامه را که قابلیت طراحی گزارش چاپی دارند، نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2388,14 +2464,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a logical authority used in a role-based security subsystem." name="Role" area="Auth" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToMany" endpointName="User" entityName="User" hasKey="False" isRequired="True" joinTable="UserRole" description="Collection of all application users that this role is assigned to them" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Permission" entityName="Permission" hasKey="False" isRequired="True" joinTable="RolePermission" description="Collection of all operational permissions that are enabled for this role" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Branch" entityName="Branch" hasKey="False" isRequired="True" joinTable="RoleBranch" description="Collection of all branches that this role can access" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Company" entityName="CompanyDb" hasKey="False" isRequired="True" joinTable="RoleCompany" description="Collection of all companies that this role can access" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Report" entityName="Report" hasKey="False" isRequired="True" joinTable="" description="مجموعه ای از گزارش های ذخیره شده سیستمی یا کاربری که اطلاعات این فرم را نمایش می دهند" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Role" area="Auth" identifier="Id" type="CoreEntity" description="Represents a logical authority used in a role-based security subsystem." clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2428,12 +2501,14 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات مدرسه را نگهداری می کند" name="School" area="Core" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="City" entityName="City" hasKey="True" isRequired="True" joinTable="" description="شهری که مدرسه در آن قرار گرفته است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Province" entityName="Province" hasKey="True" isRequired="True" joinTable="" description="استانی که مدرسه در آن قرار گرفته است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="User" entityName="User" hasKey="False" isRequired="True" joinTable="UserRole" description="Collection of all application users that this role is assigned to them" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Permission" entityName="Permission" hasKey="False" isRequired="True" joinTable="RolePermission" description="Collection of all operational permissions that are enabled for this role" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Branch" entityName="Branch" hasKey="False" isRequired="True" joinTable="RoleBranch" description="Collection of all branches that this role can access" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Company" entityName="CompanyDb" hasKey="False" isRequired="True" joinTable="RoleCompany" description="Collection of all companies that this role can access" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="School" area="Core" identifier="Id" type="CoreEntity" description="اطلاعات مدرسه را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2502,11 +2577,12 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات یکی از تنظیمات برنامه را نگهداری می کند" name="Setting" area="Config" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Setting" hasKey="True" isRequired="True" joinTable="" description="تنظیمات والد برای این تنظیمات در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="City" entityName="City" hasKey="True" isRequired="True" joinTable="" description="شهری که مدرسه در آن قرار گرفته است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Province" entityName="Province" hasKey="True" isRequired="True" joinTable="" description="استانی که مدرسه در آن قرار گرفته است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Setting" area="Config" identifier="Id" type="CoreEntity" description="اطلاعات یکی از تنظیمات برنامه را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2581,9 +2657,11 @@
           <ValidationRule name="IsStandalone_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
       </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Setting" hasKey="True" isRequired="True" joinTable="" description="تنظیمات والد برای این تنظیمات در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
     </Entity>
-    <Entity description="اطلاعات فراداده ای را برای یکی از زیرسیستم های برنامه نگهداری می کند" name="Subsystem" area="Metadata" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations />
+    <Entity name="Subsystem" area="Metadata" identifier="Id" type="CoreEntity" description="اطلاعات فراداده ای را برای یکی از زیرسیستم های برنامه نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2610,13 +2688,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="10/13/9378" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations />
     </Entity>
-    <Entity description="اطلاعات تنظیمات لاگ سیستمی را برای یک عملیات، یک موجودیت یا یک فرم عملیاتی نگهداری می کند" name="SysLogSetting" area="Config" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Source" entityName="OperationSource" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای فرم عملیاتی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="EntityType" entityName="EntityType" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای موجودیت مورد استفاده در عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Operation" entityName="Operation" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+    <Entity name="SysLogSetting" area="Config" identifier="Id" type="CoreEntity" description="اطلاعات تنظیمات لاگ سیستمی را برای یک عملیات، یک موجودیت یا یک فرم عملیاتی نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2643,16 +2717,13 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="10/13/9378" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات سوابق عملیات سیستمی را نگهداری می کند" name="SysOperationLog" area="Core" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Operation" entityName="Operation" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Source" entityName="OperationSource" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای فرم عملیاتی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="EntityType" entityName="EntityType" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای موجودیت مورد استفاده در عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="SourceList" entityName="View" hasKey="True" isRequired="True" joinTable="" description="نمای اطلاعاتی لیستی به کار رفته حین انجام عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="True" isRequired="True" joinTable="" description="کاربری که عملیات سیستمی توسط او انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Company" entityName="CompanyDb" hasKey="True" isRequired="True" joinTable="" description="شرکتی که عملیات سیستمی در دیتابیس آن انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Operation" entityName="Operation" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="SysOperationLog" area="Core" identifier="Id" type="CoreEntity" description="اطلاعات سوابق عملیات سیستمی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2727,8 +2798,6 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات بایگانی سوابق عملیات سیستمی را نگهداری می کند" name="SysOperationLogArchive" area="Core" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Operation" entityName="Operation" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Source" entityName="OperationSource" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای فرم عملیاتی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -2737,6 +2806,8 @@
         <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="True" isRequired="True" joinTable="" description="کاربری که عملیات سیستمی توسط او انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Company" entityName="CompanyDb" hasKey="True" isRequired="True" joinTable="" description="شرکتی که عملیات سیستمی در دیتابیس آن انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="SysOperationLogArchive" area="Core" identifier="Id" type="CoreEntity" description="اطلاعات بایگانی سوابق عملیات سیستمی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2811,13 +2882,16 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="آیتم های مربوط به کنترل سیستم را نگهداری میکند" name="SystemIssue" area="Reporting" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="SystemIssue" hasKey="True" isRequired="False" joinTable="" description="والد در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Permission" entityName="Permission" hasKey="True" isRequired="False" joinTable="" description="دسترسی امنیتی مورد نیاز کاربر " clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="View" entityName="View" hasKey="True" isRequired="False" joinTable="" description="موجودیتی که این ستون در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Operation" entityName="Operation" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Source" entityName="OperationSource" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای فرم عملیاتی مورد استفاده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="EntityType" entityName="EntityType" hasKey="True" isRequired="True" joinTable="" description="اطلاعات فراداده ای موجودیت مورد استفاده در عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="SourceList" entityName="View" hasKey="True" isRequired="True" joinTable="" description="نمای اطلاعاتی لیستی به کار رفته حین انجام عملیات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="True" isRequired="True" joinTable="" description="کاربری که عملیات سیستمی توسط او انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Company" entityName="CompanyDb" hasKey="True" isRequired="True" joinTable="" description="شرکتی که عملیات سیستمی در دیتابیس آن انجام شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="SystemIssue" area="Reporting" identifier="Id" type="CoreEntity" description="آیتم های مربوط به کنترل سیستم را نگهداری میکند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2856,9 +2930,13 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="12/31/9999" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="SystemIssue" hasKey="True" isRequired="False" joinTable="" description="والد در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Permission" entityName="Permission" hasKey="True" isRequired="False" joinTable="" description="دسترسی امنیتی مورد نیاز کاربر " clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="View" entityName="View" hasKey="True" isRequired="False" joinTable="" description="موجودیتی که این ستون در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
     </Entity>
-    <Entity description="اطلاعات رسمی ارز مرتبط مالیاتی را، که مستقیماً از فایل اکسس اداره مالیات خوانده می شود، نگهداری می کند" name="TaxCurrency" area="Finance" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations />
+    <Entity name="TaxCurrency" area="Finance" identifier="Id" type="CoreEntity" description="اطلاعات رسمی ارز مرتبط مالیاتی را، که مستقیماً از فایل اکسس اداره مالیات خوانده می شود، نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2891,12 +2969,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="10/13/9378" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations />
     </Entity>
-    <Entity description="Represents an application user recognized by the security subsystem" name="User" area="Auth" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations>
-        <Relation multiplicity="OneToOne" endpointName="Person" entityName="Person" hasKey="False" isRequired="True" joinTable="" description="Business person that this user represents" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" isRequired="True" joinTable="UserRole" description="Collection of all application-defined roles that are assigned to this user" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+    <Entity name="User" area="Auth" identifier="Id" type="CoreEntity" description="Represents an application user recognized by the security subsystem" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2941,14 +3016,12 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات یکی از تنظیمات قابل کنترل توسط کاربر را نگهداری می کند" name="UserSetting" area="Config" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Setting" entityName="Setting" hasKey="True" isRequired="True" joinTable="" description="اطلاعات عمومی تنظیمات برای این تنظیمات کاربری" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="True" isRequired="True" joinTable="" description="اطلاعات کاربری برای تنظیماتی که به تفکیک کاربران قابل تعریف هستند" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="True" isRequired="True" joinTable="" description="اطلاعات نقش برای تنظیماتی که به تفکیک نقش ها قابل تعریف هستند" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="EntityView" entityName="Entity" hasKey="True" isRequired="True" joinTable="" description="اطلاعات متادیتای نمای موجودیت مرتبط با این تنظیمات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToOne" endpointName="Person" entityName="Person" hasKey="False" isRequired="True" joinTable="" description="Business person that this user represents" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" isRequired="True" joinTable="UserRole" description="Collection of all application-defined roles that are assigned to this user" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="UserSetting" area="Config" identifier="Id" type="CoreEntity" description="اطلاعات یکی از تنظیمات قابل کنترل توسط کاربر را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -2987,11 +3060,14 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="اطلاعات فراداده ای یک نمای اطلاعاتی در برنامه را نگهداری می کند" name="View" area="Metadata" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="Column" entityName="Column" hasKey="False" isRequired="True" joinTable="" description="مجموعه ای از ستون های تعریف شده برای نمای اطلاعاتی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Setting" entityName="Setting" hasKey="True" isRequired="True" joinTable="" description="اطلاعات عمومی تنظیمات برای این تنظیمات کاربری" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="True" isRequired="True" joinTable="" description="اطلاعات کاربری برای تنظیماتی که به تفکیک کاربران قابل تعریف هستند" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="True" isRequired="True" joinTable="" description="اطلاعات نقش برای تنظیماتی که به تفکیک نقش ها قابل تعریف هستند" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="EntityView" entityName="Entity" hasKey="True" isRequired="True" joinTable="" description="اطلاعات متادیتای نمای موجودیت مرتبط با این تنظیمات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="View" area="Metadata" identifier="Id" type="CoreEntity" description="اطلاعات فراداده ای یک نمای اطلاعاتی در برنامه را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3054,12 +3130,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="تنظیمات مورد استفاده در محدودسازی سطرهای اطلاعاتی قابل دسترسی را نگهداری می کند" name="ViewRowPermission" area="Auth" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="True" isRequired="True" joinTable="" description="نقش امنیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="View" entityName="Entity" hasKey="True" isRequired="True" joinTable="" description="موجودیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Column" entityName="Column" hasKey="False" isRequired="True" joinTable="" description="مجموعه ای از ستون های تعریف شده برای نمای اطلاعاتی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="ViewRowPermission" area="Auth" identifier="Id" type="CoreEntity" description="تنظیمات مورد استفاده در محدودسازی سطرهای اطلاعاتی قابل دسترسی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3110,9 +3185,12 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="True" isRequired="True" joinTable="" description="نقش امنیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="View" entityName="Entity" hasKey="True" isRequired="True" joinTable="" description="موجودیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
     </Entity>
-    <Entity description="اطلاعات تنظیمات موجود برای یکی از نماهای اطلاعاتی برنامه را نگهداری می کند" name="ViewSetting" area="Config" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations />
+    <Entity name="ViewSetting" area="Config" identifier="Id" type="CoreEntity" description="اطلاعات تنظیمات موجود برای یکی از نماهای اطلاعاتی برنامه را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3163,16 +3241,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations />
     </Entity>
-    <Entity description="سند مالی که اطلاعات پولی مرتبط با یک پیشامد مالی را در سازمان نگهداری می کند" name="Voucher" area="Finance" identifier="Id" type="OperationalEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که پیشامد مالی در آن ثبت شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="Line" entityName="VoucherLine" hasKey="False" isRequired="True" joinTable="" description="مجموعه ای از آرتیکل های موجود در سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که سند مالی برای آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToOne" endpointName="Document" entityName="Document" hasKey="True" isRequired="False" joinTable="" description="مستند اداری مرتبط با این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Status" entityName="DocumentStatus" hasKey="True" isRequired="True" joinTable="" description="وضعیت ثبتی این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="VoucherOrigin" entityName="VoucherOrigin" hasKey="True" isRequired="True" joinTable="" description="مأخذ این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+    <Entity name="Voucher" area="Finance" identifier="Id" type="OperationalEntity" description="سند مالی که اطلاعات پولی مرتبط با یک پیشامد مالی را در سازمان نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3307,19 +3378,16 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند" name="VoucherLine" area="Finance" identifier="Id" type="FiscalEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Voucher" entityName="Voucher" hasKey="True" isRequired="True" joinTable="" description="سند مالی که این آرتیکل برای آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" isRequired="True" joinTable="" description="مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="DetailAccount" entityName="DetailAccount" hasKey="True" isRequired="False" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" isRequired="False" joinTable="" description="مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" isRequired="False" joinTable="" description="مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" isRequired="False" joinTable="" description="پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="True" isRequired="True" joinTable="" description="شناسه دیتابیسی کاربر ایجاد کننده آرتیکل" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که پیشامد مالی در آن ثبت شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Line" entityName="VoucherLine" hasKey="False" isRequired="True" joinTable="" description="مجموعه ای از آرتیکل های موجود در سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که سند مالی برای آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToOne" endpointName="Document" entityName="Document" hasKey="True" isRequired="False" joinTable="" description="مستند اداری مرتبط با این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Status" entityName="DocumentStatus" hasKey="True" isRequired="True" joinTable="" description="وضعیت ثبتی این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="VoucherOrigin" entityName="VoucherOrigin" hasKey="True" isRequired="True" joinTable="" description="مأخذ این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="VoucherLine" area="Finance" identifier="Id" type="FiscalEntity" description="آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3400,9 +3468,19 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Voucher" entityName="Voucher" hasKey="True" isRequired="True" joinTable="" description="سند مالی که این آرتیکل برای آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" isRequired="True" joinTable="" description="مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="DetailAccount" entityName="DetailAccount" hasKey="True" isRequired="False" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" isRequired="False" joinTable="" description="مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" isRequired="False" joinTable="" description="مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" isRequired="False" joinTable="" description="پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="True" isRequired="True" joinTable="" description="شناسه دیتابیسی کاربر ایجاد کننده آرتیکل" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
     </Entity>
-    <Entity description="اطلاعات یکی از ماخذهای تعریف شده برای یک سند مالی را نگهداری می کند" name="VoucherOrigin" area="Finance" identifier="Id" type="CoreEntity" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations />
+    <Entity name="VoucherOrigin" area="Finance" identifier="Id" type="CoreEntity" description="اطلاعات یکی از ماخذهای تعریف شده برای یک سند مالی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3429,13 +3507,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations />
     </Entity>
-    <Entity description="یک ردیف کار را در کارتابل کاربران یا نقش ها نشان می دهد" name="WorkItem" area="Workflow" identifier="Id" type="" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="False" isRequired="True" joinTable="" description="کاربر ایجاد کننده کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Target" entityName="Role" hasKey="False" isRequired="True" joinTable="" description="نقش سازمانی که باید گیرنده کار باشد" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="Document" entityName="WorkItemDocument" hasKey="False" isRequired="True" joinTable="" description="رکوردهای موجودیت مرتبط با کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+    <Entity name="WorkItem" area="Workflow" identifier="Id" type="" description="یک ردیف کار را در کارتابل کاربران یا نقش ها نشان می دهد" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3498,11 +3572,13 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="یک رکورد از موجودیت مرتبط با یک کار را نشان می دهد" name="WorkItemDocument" area="Workflow" identifier="Id" type="" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="WorkItem" entityName="WorkItem" hasKey="False" isRequired="True" joinTable="" description="کاری که طی عملیات برنامه روی این موجودیت انجام شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="False" isRequired="True" joinTable="" description="کاربر ایجاد کننده کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Target" entityName="Role" hasKey="False" isRequired="True" joinTable="" description="نقش سازمانی که باید گیرنده کار باشد" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Document" entityName="WorkItemDocument" hasKey="False" isRequired="True" joinTable="" description="رکوردهای موجودیت مرتبط با کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="WorkItemDocument" area="Workflow" identifier="Id" type="" description="یک رکورد از موجودیت مرتبط با یک کار را نشان می دهد" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3535,12 +3611,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="یک رکورد از سوابق عملیات انجام شده روی یک موجودیت را نشان می دهد." name="WorkItemHistory" area="Workflow" identifier="Id" type="" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="False" isRequired="True" joinTable="" description="کاربر ایجاد کننده کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="False" isRequired="True" joinTable="" description="نقش اقدام کننده روی کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="WorkItem" entityName="WorkItem" hasKey="False" isRequired="True" joinTable="" description="کاری که طی عملیات برنامه روی این موجودیت انجام شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="WorkItemHistory" area="Workflow" identifier="Id" type="" description="یک رکورد از سوابق عملیات انجام شده روی یک موجودیت را نشان می دهد." clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -3621,6 +3696,10 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="False" isRequired="True" joinTable="" description="کاربر ایجاد کننده کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="False" isRequired="True" joinTable="" description="نقش اقدام کننده روی کار" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
     </Entity>
   </Entities>
   <Storage name="Framework.xml" connection="..\..\..\res" media="XmlFile" />

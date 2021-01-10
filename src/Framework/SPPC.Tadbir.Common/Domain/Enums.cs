@@ -62,9 +62,9 @@ namespace SPPC.Tadbir.Domain
     public enum SubjectType
     {
         /// <summary>
-        /// نوع مفهومی سند حسابداری
+        /// نوع مفهومی سند عادی
         /// </summary>
-        Accounting = 0,
+        Normal = 0,
 
         /// <summary>
         /// نوع مفهومی سند پیش نویس
@@ -127,5 +127,68 @@ namespace SPPC.Tadbir.Domain
         /// محدودیت بستانکار در انتهای دوره
         /// </summary>
         CreditorEndPeriod = 3
+    }
+
+    /// <summary>
+    /// داده شمارشی برای انواع تقویم مورد استفاده در برنامه
+    /// </summary>
+    public enum CalendarType
+    {
+        /// <summary>
+        /// تقویم شمسی یا جلالی
+        /// </summary>
+        Jalali = 0,
+
+        /// <summary>
+        /// تقویم میلادی
+        /// </summary>
+        Gregorian = 1
+    }
+
+    /// <summary>
+    /// داده شمارشی برای سطوح مختلف کنترل و مدیریت تنظیمات
+    /// </summary>
+    public enum ConfigType
+    {
+        /// <summary>
+        /// سطح دسترسی برای تنظیمات حساس برنامه که معمولاً با رمز خاصی قابل مشاهده و تغییر است
+        /// </summary>
+        SuperAdmin = 1,
+
+        /// <summary>
+        /// سطح دسترسی برای تنظیمات راهبری که در اختیار تمام کاربران نقش راهبر سیستم قرار می گیرد
+        /// </summary>
+        Admin = 2,
+
+        /// <summary>
+        /// سطح دسترسی عمومی که در اختیار تمام کاربران برنامه قرار دارد
+        /// </summary>
+        User = 3
+    }
+
+    /// <summary>
+    /// داده شمارشی برای سطوح مختلف اعمال تنظیمات در برنامه
+    /// </summary>
+    public enum ConfigScopeType
+    {
+        /// <summary>
+        /// اعمال تنظیمات در سطح کل برنامه
+        /// </summary>
+        Global = 0,
+
+        /// <summary>
+        /// اعمال تنظیمات در سطح زیرسیستم
+        /// </summary>
+        Subsystem = 1,
+
+        /// <summary>
+        /// اعمال تنظیمات در سطح موجودیت یا نمای اطلاعاتی
+        /// </summary>
+        Entity = 2,
+
+        /// <summary>
+        /// اعمال تنظیمات در سطح فرم یا گزارش - یکسان برای تمام نماهای فرم یا گزارش
+        /// </summary>
+        Form = 3
     }
 }

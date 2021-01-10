@@ -12,23 +12,23 @@ import { environment } from '@sppc/env/environment';
 import { Observable } from 'rxjs';
 
 
-export class CurrencyEntity implements Currency {
-  id: number = 0;
-  name: string;
-  country: string;
-  code: string;
-  minorUnit: string;
-  minorUnitKey: string;
-  multiplier: number;
-  decimalCount: number;
-  description?: string;
-  branchScope: number = 0;
-  isActive: boolean;
-  branchId: number;
-  branchName: string;
-  taxCode: number;
-  isDefaultCurrency: boolean = false;
-}
+  export class CurrencyEntity implements Currency {
+    id: number = 0;
+    name: string;
+    country: string;
+    code: string;
+    minorUnit: string;
+    minorUnitKey: string;
+    multiplier: number;
+    decimalCount: number;
+    description?: string;
+    branchScope: number = 0;
+    isActive: boolean;
+    branchId: number;
+    branchName: string;
+    taxCode: number;
+    isDefaultCurrency: boolean = false;
+  }
 
 export class CurrencyRateInfo implements CurrencyRate {
   currencyId: number;

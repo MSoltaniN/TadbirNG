@@ -58,6 +58,9 @@
     <Compile Remove="Finance\TransactionSummaryViewModel.cs" />
     <Compile Remove="Finance\TransactionViewModel.cs" />
     <Compile Remove="Finance\TransactionViewModel.Generated.cs" />
+    <Compile Remove="Reporting\ProfitLossByBranchesViewModel.cs" />
+    <Compile Remove="Reporting\ProfitLossByFiscalPeriodsViewModel.cs" />
+    <Compile Remove="Reporting\ProfitLossByProjectsViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,7 +75,6 @@
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Configuration\SPPC.Tadbir.Configuration.csproj" />
-    <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />
   </ItemGroup>
 
 </Project>

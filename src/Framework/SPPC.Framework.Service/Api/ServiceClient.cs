@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service.Extensions;
 
@@ -23,8 +24,50 @@ namespace SPPC.Framework.Service
         /// </remarks>
         public ServiceClient()
         {
-            var root = "http://localhost:8801/";  // Temporarily hard-coded
-            _httpClient = new HttpClient() { BaseAddress = new Uri(root), Timeout = Timeout.InfiniteTimeSpan };
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceClient"/> class.
+        /// </summary>
+        /// <remarks>
+        /// This utility class requires the root URL of Web API service to be specified in an appSettings entry
+        /// inside main configuration file of the client assembly. The key for this entry must be 'ServiceRoot'
+        /// and the value must be the full URL of service root.
+        /// </remarks>
+        public ServiceClient(string root)
+        {
+            Verify.ArgumentNotNullOrEmptyString(root, nameof(root));
+            ServiceRoot = root;
+        }
+
+        /// <summary>
+        /// Gets or sets the URL for API service
+        /// </summary>
+        public string ServiceRoot
+        {
+            get
+            {
+                return _serviceRoot;
+            }
+            set
+            {
+                _serviceRoot = value;
+                _httpClient = new HttpClient()
+                {
+                    BaseAddress = new Uri(_serviceRoot),
+                    Timeout = Timeout.InfiniteTimeSpan
+                };
+            }
+        }
+
+        /// <summary>
+        /// Adds a single-valued HTTP header specified by name and value to all requests
+        /// </summary>
+        /// <param name="name">Name of header to add</param>
+        /// <param name="value">Single value to set in added header</param>
+        public void AddHeader(string name, string value)
+        {
+            _httpClient.DefaultRequestHeaders.Add(name, value);
         }
 
         /// <summary>
@@ -89,6 +132,28 @@ namespace SPPC.Framework.Service
         }
 
         /// <summary>
+        /// Inserts data by sending an HTTP POST request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to insert</typeparam>
+        /// <typeparam name="TValue">Type of data returned by API method</typeparam>
+        /// <param name="data">Data to insert</param>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        public TValue Insert<T, TValue>(T data, string apiUrl, params object[] apiUrlArgs)
+        {
+            var value = default(TValue);
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = _httpClient.PostAsJsonAsync(url, data).Result;
+            var serviceResponse = GetResponse(response);
+            if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            {
+                value = JsonHelper.To<TValue>(response.Content.ReadAsStringAsync().Result);
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// Updates data by sending an HTTP PUT request to a Web API service.
         /// </summary>
         /// <typeparam name="T">Type of data to update</typeparam>
@@ -100,6 +165,28 @@ namespace SPPC.Framework.Service
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.PutAsJsonAsync(url, data).Result;
             return GetResponse(response);
+        }
+
+        /// <summary>
+        /// Updates data by sending an HTTP PUT request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to update</typeparam>
+        /// <typeparam name="TValue">Type of data returned by API method</typeparam>
+        /// <param name="data">Data to update</param>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        public TValue Update<T, TValue>(T data, string apiUrl, params object[] apiUrlArgs)
+        {
+            var value = default(TValue);
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = _httpClient.PutAsJsonAsync(url, data).Result;
+            var serviceResponse = GetResponse(response);
+            if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            {
+                value = JsonHelper.To<TValue>(response.Content.ReadAsStringAsync().Result);
+            }
+
+            return value;
         }
 
         /// <summary>
@@ -176,6 +263,7 @@ namespace SPPC.Framework.Service
         /// Internal object used for sending HTTP requests
         /// </summary>
         protected HttpClient _httpClient;
+        private string _serviceRoot;
         private bool _disposed = false;
     }
 }

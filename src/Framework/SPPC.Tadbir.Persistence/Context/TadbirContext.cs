@@ -57,6 +57,7 @@ namespace SPPC.Tadbir.Persistence
             CurrencyMap.BuildMapping(modelBuilder.Entity<Currency>());
             CurrencyRateMap.BuildMapping(modelBuilder.Entity<CurrencyRate>());
             CustomerTaxInfoMap.BuildMapping(modelBuilder.Entity<CustomerTaxInfo>());
+            CustomFormMap.BuildMapping(modelBuilder.Entity<CustomForm>());
             DetailAccountMap.BuildMapping(modelBuilder.Entity<DetailAccount>());
             DocumentMap.BuildMapping(modelBuilder.Entity<Document>());
             DocumentActionMap.BuildMapping(modelBuilder.Entity<DocumentAction>());
@@ -65,6 +66,7 @@ namespace SPPC.Tadbir.Persistence
             EntityTypeMap.BuildMapping(modelBuilder.Entity<EntityType>());
             FilterMap.BuildMapping(modelBuilder.Entity<Filter>());
             FiscalPeriodMap.BuildMapping(modelBuilder.Entity<FiscalPeriod>());
+            LabelSettingMap.BuildMapping(modelBuilder.Entity<LabelSetting>());
             LogSettingMap.BuildMapping(modelBuilder.Entity<LogSetting>());
             OperationMap.BuildMapping(modelBuilder.Entity<Operation>());
             OperationLogMap.BuildMapping(modelBuilder.Entity<OperationLog>());

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;
 
@@ -13,7 +14,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات پایه مورد نیاز برای ذخیره و بازیابی تنظیمات را پیاده سازی می کند
     /// </summary>
-    public class BaseConfigRepository : LoggingRepository<Setting, object>, IBaseConfigRepository
+    public class BaseConfigRepository : LoggingRepositoryBase, IBaseConfigRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -36,7 +37,8 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllAsync();
             await OnSourceActionAsync(OperationId.View);
             return allConfig
-                .Where(cfg => !(cfg.Type == 3 && cfg.ScopeType == 2) && cfg.IsStandalone)
+                .Where(cfg => cfg.IsStandalone
+                    && !(cfg.Type == (short)ConfigType.User && cfg.ScopeType < (short)ConfigScopeType.Entity))
                 .Select(cfg => Mapper.Map<SettingBriefViewModel>(cfg))
                 .ToList();
         }

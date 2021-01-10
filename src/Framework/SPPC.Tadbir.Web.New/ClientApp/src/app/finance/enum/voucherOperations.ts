@@ -9,3 +9,8 @@ export enum VoucherOperations {
   CheckVoucher = 7
 }
 
+
+export enum VoucherSubjectTypes {
+  Normal = "0",
+  Draft = "1",
+}

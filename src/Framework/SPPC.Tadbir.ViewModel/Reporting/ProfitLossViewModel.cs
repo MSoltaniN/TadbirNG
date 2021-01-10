@@ -15,10 +15,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public ProfitLossViewModel()
         {
             Items = new List<ProfitLossItemViewModel>();
-            ItemsByCostCenters = new List<ProfitLossByCostCentersViewModel>();
-            ItemsByProjects = new List<ProfitLossByProjectsViewModel>();
-            ItemsByBranches = new List<ProfitLossByBranchesViewModel>();
-            ItemsByFiscalPeriods = new List<ProfitLossByFiscalPeriodsViewModel>();
+            ComparativeItems = new List<ProfitLossByItemsViewModel>();
         }
 
         /// <summary>
@@ -27,24 +24,9 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public List<ProfitLossItemViewModel> Items { get; }
 
         /// <summary>
-        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند مرکز هزینه
+        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای
         /// </summary>
-        public List<ProfitLossByCostCentersViewModel> ItemsByCostCenters { get; }
-
-        /// <summary>
-        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند پروژه
-        /// </summary>
-        public List<ProfitLossByProjectsViewModel> ItemsByProjects { get; }
-
-        /// <summary>
-        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند شعبه
-        /// </summary>
-        public List<ProfitLossByBranchesViewModel> ItemsByBranches { get; }
-
-        /// <summary>
-        /// مجموعه سطرهای محاسبه شده برای گزارش مقایسه ای چند دوره مالی
-        /// </summary>
-        public List<ProfitLossByFiscalPeriodsViewModel> ItemsByFiscalPeriods { get; }
+        public List<ProfitLossByItemsViewModel> ComparativeItems { get; }
 
         /// <summary>
         /// اطلاعات فراداده ای نمای لیستی که باید به صورت پویا با توجه به موارد انتخاب شده ساخته شود

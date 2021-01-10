@@ -34,6 +34,8 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   @Input() isDisplayFromDate: boolean = true;
   @Input() isDisplayToDate: boolean = true;
 
+  @Input() saveStates: boolean = true;
+
   @Input() InitializeDate: boolean = true;
   @Input() ValidateFPDate: boolean = true;
 
@@ -193,7 +195,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
    * @param toDate
    */
   saveTemporarilyDate(fromDate: Date, toDate: Date) {
-    if (this.viewName) {
+    if (this.viewName && this.saveStates) {
       var sessionFromDate = "fromDate" + this.viewName;
       var sessionToDate = "toDate" + this.viewName;
 

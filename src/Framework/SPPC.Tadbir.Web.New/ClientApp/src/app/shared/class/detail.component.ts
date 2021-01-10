@@ -23,17 +23,18 @@ export class DetailComponent extends BaseComponent {
     @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number) {
     super(toastrService, bStorageService);
 
-    this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.CurrentLanguage);
+    if (viewId > 0) {
+      this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.CurrentLanguage);
 
-    this.localizeMsg();
-    var propertiesValue = this.bStorageService.getMetadata(this.metadataKey);
+      this.localizeMsg();
+      var propertiesValue = this.bStorageService.getMetadata(this.metadataKey);
 
-    this.properties = new Map<string, Array<Property>>();
-    if (propertiesValue && propertiesValue != null) {
-      var result = JSON.parse(propertiesValue);      
-      this.properties.set(this.metadataKey, result.columns);
+      this.properties = new Map<string, Array<Property>>();
+      if (propertiesValue && propertiesValue != null) {
+        var result = JSON.parse(propertiesValue);
+        this.properties.set(this.metadataKey, result.columns);
+      }
     }
-    //this.properties.set(this.metadataKey, JSON.parse(propertiesValue));
   }
 
   public get editForm(): FormGroup {

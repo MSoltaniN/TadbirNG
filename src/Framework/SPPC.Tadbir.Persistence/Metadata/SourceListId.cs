@@ -54,6 +54,12 @@ namespace SPPC.Tadbir.Persistence
         BalanceByOneCostCenter = 46,
         BalanceByAllCostCenters = 47,
         BalanceByOneProject = 48,
-        BalanceByAllProjects = 49
+        BalanceByAllProjects = 49,
+        ProfitLoss = 50,
+        ProfitLossByCostCenter = 51,
+        ProfitLossByProject = 52,
+        ProfitLossByBranch = 53,
+        ProfitLossByFiscalPeriod = 54,
+        BalanceSheet = 55
     }
 }

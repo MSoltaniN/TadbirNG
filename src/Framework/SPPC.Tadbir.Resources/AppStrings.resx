@@ -3345,4 +3345,112 @@
   <data name="CantCreateChildForUsedParent" xml:space="preserve">
     <value>{0} '{1}' در آرتیکل های مالی یکی از شعبه ها یا دوره های مالی استفاده شده و نمی توان برای آن زیرمجموعه تعریف کرد.</value>
   </data>
+  <data name="CantSaveAsDraftVoucher" xml:space="preserve">
+    <value>این سند ثبت قطعی یا تأیید شده و قابل تبدیل به سند پیش نویس نیست.</value>
+  </data>
+  <data name="InvalidDraftVoucherAction" xml:space="preserve">
+    <value>عمل {0} روی سند پیش نویس امکان پذیر نیست.</value>
+  </data>
+  <data name="Budgeting" xml:space="preserve">
+    <value>بودجه</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>پیش‌نویس</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>عادی</value>
+  </data>
+  <data name="TypeName" xml:space="preserve">
+    <value>نوع سند</value>
+  </data>
+  <data name="DraftVoucher" xml:space="preserve">
+    <value>سند پیش‌نویس</value>
+  </data>
+  <data name="DraftVouchers" xml:space="preserve">
+    <value>اسناد پیش‌نویس</value>
+  </data>
+  <data name="DraftVoucherByNo" xml:space="preserve">
+    <value>سند پیش‌نویس شماره...</value>
+  </data>
+  <data name="LastDraftVoucher" xml:space="preserve">
+    <value>آخرین سند پیش نویس</value>
+  </data>
+  <data name="NewDraftVoucher" xml:space="preserve">
+    <value>سند پیش نویس جدید</value>
+  </data>
+  <data name="GroupNormalize" xml:space="preserve">
+    <value>تبدیل گروهی به سند عادی</value>
+  </data>
+  <data name="Normalize" xml:space="preserve">
+    <value>تبدیل به سند عادی</value>
+  </data>
+  <data name="ProfitLossByBranch" xml:space="preserve">
+    <value>مقایسه شعبه ها</value>
+  </data>
+  <data name="ProfitLossByCostCenter" xml:space="preserve">
+    <value>مقایسه مراکز هزینه</value>
+  </data>
+  <data name="ProfitLossByFiscalPeriod" xml:space="preserve">
+    <value>مقایسه دوره های مالی</value>
+  </data>
+  <data name="ProfitLossByProject" xml:space="preserve">
+    <value>مقایسه پروژه ها</value>
+  </data>
+  <data name="ExportRates" xml:space="preserve">
+    <value>ارسال نرخ های ارز</value>
+  </data>
+  <data name="FilterRates" xml:space="preserve">
+    <value>فیلتر نرخ های ارز</value>
+  </data>
+  <data name="FilterByRef" xml:space="preserve">
+    <value>فیلتر بر اساس رفرنس</value>
+  </data>
+  <data name="AllVouchers" xml:space="preserve">
+    <value>کلیه اسناد</value>
+  </data>
+  <data name="NormalVouchers" xml:space="preserve">
+    <value>اسناد عادی</value>
+  </data>
+  <data name="BalanceSheet" xml:space="preserve">
+    <value>ترازنامه</value>
+  </data>
+  <data name="BalanceSheetReport" xml:space="preserve">
+    <value>گزارش ترازنامه</value>
+  </data>
+  <data name="AssetsSum" xml:space="preserve">
+    <value>جمع دارایی ها</value>
+  </data>
+  <data name="LiabilitiesOwnerEquitiesSum" xml:space="preserve">
+    <value>جمع بدهی ها و حقوق صاحبان سرمایه</value>
+  </data>
+  <data name="LiquidAssets" xml:space="preserve">
+    <value>دارایی های جاری</value>
+  </data>
+  <data name="LiquidAssetsSum" xml:space="preserve">
+    <value>جمع دارایی های جاری</value>
+  </data>
+  <data name="LiquidLiabilities" xml:space="preserve">
+    <value>بدهی های جاری</value>
+  </data>
+  <data name="LiquidLiabilitiesSum" xml:space="preserve">
+    <value>جمع بدهی های جاری</value>
+  </data>
+  <data name="NonLiquidAssets" xml:space="preserve">
+    <value>دارایی های غیرجاری</value>
+  </data>
+  <data name="NonLiquidAssetsSum" xml:space="preserve">
+    <value>جمع دارایی های غیرجاری</value>
+  </data>
+  <data name="NonLiquidLiabilities" xml:space="preserve">
+    <value>بدهی های غیرجاری</value>
+  </data>
+  <data name="NonLiquidLiabilitiesSum" xml:space="preserve">
+    <value>جمع بدهی های غیرجاری</value>
+  </data>
+  <data name="OwnerEquities" xml:space="preserve">
+    <value>حقوق صاحبان سرمایه</value>
+  </data>
+  <data name="OwnerEquitiesSum" xml:space="preserve">
+    <value>جمع حقوق صاحبان سرمایه</value>
+  </data>
 </root>

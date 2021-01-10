@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
-using SPPC.Framework.Service.Security;
+using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Service;
 

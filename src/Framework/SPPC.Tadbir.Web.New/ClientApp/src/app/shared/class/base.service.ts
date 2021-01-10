@@ -52,6 +52,63 @@ export class BaseService extends EnviromentComponent{
 
   /**
    * لیست رکوردها بر اساس فیلتر و مرتب سازی
+   * @param apiUrl آدرس‌ کامل api  
+   * @param orderby مرتب سازی
+   * @param filters فیلتر
+   */
+  public getAllForReport(apiUrl: string, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = 1) {
+
+    var sort = new Array<GridOrderBy>();
+    if (orderby && orderby.length > 0) {
+      for (let item of orderby) {
+        sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
+      }
+    }
+    var postItem = { filter: filter, sortColumns: sort, operation: operationId, quickFilter: quickFilter };
+    var searchHeaders = this.httpHeaders;
+    var postBody = JSON.stringify(postItem);
+    var base64Body = btoa(encodeURIComponent(postBody));
+    if (searchHeaders)
+      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+
+    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .map(response => <any>(<HttpResponse<any>>response));
+  }
+
+  /**
+   * لیست رکوردها بر اساس فیلتر و مرتب سازی
+   * @param apiUrl آدرس‌ کامل api  
+   * @param orderby مرتب سازی
+   * @param filters فیلتر
+   */
+  public getAllByParamsForReport(apiUrl: string, params: any,orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = 1) {
+
+    var sort = new Array<GridOrderBy>();
+    if (orderby && orderby.length > 0) {
+      for (let item of orderby) {
+        sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
+      }
+    }
+    var postItem = { filter: filter, sortColumns: sort, operation: operationId, quickFilter: quickFilter };
+    var searchHeaders = this.httpHeaders;
+
+    if (searchHeaders) {
+
+      var postBody = JSON.stringify(postItem);
+      base64Body = btoa(encodeURIComponent(postBody));
+      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+
+      postBody = JSON.stringify(params);
+      var base64Body = btoa(encodeURIComponent(postBody));
+      searchHeaders = searchHeaders.append('X-Tadbir-Parameters', base64Body);
+    }
+
+    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .map(response => <any>(<HttpResponse<any>>response));
+  }
+
+  /**
+   * لیست رکوردها بر اساس فیلتر و مرتب سازی
    * @param apiUrl آدرس‌ کامل api
    * @param start شماره شروع رکورد
    * @param count تعداد رکورد
@@ -90,13 +147,34 @@ export class BaseService extends EnviromentComponent{
    * @param apiUrl آدرس‌ کامل api
    * @param params پارامتر های فرم   
    */
-  public getAllByParams(apiUrl: string, params:any) {
+  public getAllByParams(apiUrl: string, params: any, start?: number, count?: number, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, listChangedValue?: boolean) {
 
-    var searchHeaders = this.httpHeaders;
-    var postBody = JSON.stringify(params);
-    var base64Body = btoa(encodeURIComponent(postBody));
-    if (searchHeaders)
+    var searchHeaders = this.httpHeaders;  
+
+    var gridPaging = { pageIndex: start, pageSize: count };
+    var sort = new Array<GridOrderBy>();
+    if (orderby && orderby.length > 0) {
+      for (let item of orderby) {
+        sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
+      }
+    }
+
+    if (listChangedValue == undefined)
+      listChangedValue = true;
+
+    var postItem = { paging: gridPaging, filter: filter, quickFilter: quickFilter, sortColumns: sort, listChanged: listChangedValue };
+    
+    
+    if (searchHeaders) {
+
+      var postBody = JSON.stringify(postItem);
+      base64Body = btoa(encodeURIComponent(postBody));
+      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+
+      postBody = JSON.stringify(params);
+      var base64Body = btoa(encodeURIComponent(postBody));
       searchHeaders = searchHeaders.append('X-Tadbir-Parameters', base64Body);
+    }        
 
     return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
       .map(response => <any>(<HttpResponse<any>>response));

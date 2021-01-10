@@ -19,6 +19,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
+        /// <param name="context">امکانات مشترک مورد نیاز برای عملیات دیتابیسی را فراهم می کند</param>
         public ReportSystemRepository(IRepositoryContext context)
             : base(context)
         {
@@ -146,19 +147,6 @@ namespace SPPC.Tadbir.Persistence
             var report = await repository.GetSingleByCriteriaAsync(
                 rep => rep.ViewId == viewId && rep.IsDefault);
             return Mapper.Map<ReportSummaryViewModel>(report);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، شناسه دیتابیسی متناظر با کد دو حرفی استاندارد یک زبان را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="localeCode">کد دو حرفی استاندارد زبان مورد نظر</param>
-        /// <returns>شناسه دیتابیسی متناظر با کد زبانی داده شده</returns>
-        public async Task<int> GetLocaleIdAsync(string localeCode)
-        {
-            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
-            var repository = UnitOfWork.GetAsyncRepository<Locale>();
-            var locale = await repository.GetSingleByCriteriaAsync(loc => loc.Code == localeCode);
-            return (locale != null ? locale.Id : 0);
         }
 
         /// <summary>

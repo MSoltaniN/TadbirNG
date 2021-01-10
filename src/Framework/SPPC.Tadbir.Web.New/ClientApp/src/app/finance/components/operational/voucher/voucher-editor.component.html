@@ -16,41 +16,41 @@
       <div class="row">
         <div class="col-xs-12 sppc-float" style="margin-top: 5px;">
 
-          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" SppcPermissionCheck="Create" (sppcClick)="voucherOperation(voucherOperationsItem.New)">
+          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" SppcPermissionCheck="Create" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.New)">
             <span class="k-icon k-i-file-add"></span>
           </button>
 
-          <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+          <button SppcPermissionCheck="Delete" [EntityName]="entityNamePermission" (sppcClick)="removeHandler()" c.lass="k-button k-button-icon" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
           <button class="k-button" title="{{ 'Voucher.SearchVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Search)">
             <span class="k-icon k-i-search"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.FirstVoucher' | translate }}" [disabled]="isFirstVoucher" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.First)">
+          <button class="k-button" title="{{ 'Voucher.FirstVoucher' | translate }}" [disabled]="isFirstVoucher" SppcPermissionCheck="Navigate" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.First)">
             <span class="k-icon k-i-arrow-end-right"></span>
           </button>
 
-          <button class="k-button" [disabled]="isFirstVoucher" title="{{ 'Voucher.PreviousVoucher' | translate }}" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.Previous)">
+          <button class="k-button" [disabled]="isFirstVoucher" title="{{ 'Voucher.PreviousVoucher' | translate }}" SppcPermissionCheck="Navigate" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.Previous)">
             <span class="k-icon k-i-arrow-double-60-right"></span>
           </button>
 
-          <button class="k-button" [disabled]="isLastVoucher" title="{{ 'Voucher.NextVoucher' | translate }}" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.Next)">
+          <button class="k-button" [disabled]="isLastVoucher" title="{{ 'Voucher.NextVoucher' | translate }}" SppcPermissionCheck="Navigate" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.Next)">
             <span class="k-icon k-i-arrow-double-60-left"></span>
           </button>
 
-          <button class="k-button" title="{{ 'Voucher.LastVoucher' | translate }}" [disabled]="isLastVoucher" SppcPermissionCheck="Navigate" (sppcClick)="voucherOperation(voucherOperationsItem.Last)">
+          <button class="k-button" title="{{ 'Voucher.LastVoucher' | translate }}" [disabled]="isLastVoucher" SppcPermissionCheck="Navigate" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.Last)">
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
 
-          <button class="k-button" [disabled]="!editForm.valid" SppcPermissionCheck="Edit" (sppcClick)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
+          <button class="k-button" [disabled]="!editForm.valid" SppcPermissionCheck="Edit" [EntityName]="entityNamePermission" (sppcClick)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
             <span class="k-icon k-i-save"></span>
           </button>
 
-          <button class="k-button" SppcPermissionCheck="Check" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId > 1" title="{{ 'Voucher.Commit' | translate }}">
+          <button class="k-button" SppcPermissionCheck="Check" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId > 1" title="{{ 'Voucher.Commit' | translate }}">
             <span class="k-icon k-i-check-outline"></span>
           </button>
 
-          <button class="k-button" SppcPermissionCheck="UndoCheck" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId < 2" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
+          <button class="k-button" SppcPermissionCheck="UndoCheck" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId < 2" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
             <span class="k-icon k-i-close-outline"></span>
           </button>
 
@@ -139,18 +139,8 @@
 
                 <label for="type" class="control-label">{{ 'Voucher.Type' | translate }}</label>
 
-                <kendo-dropdownlist [data]="voucherTypeList" class="ddl-type"
-                                    [textField]="'value'"
-                                    [valueField]="'key'"
-                                    [valuePrimitive]="true"
-                                    [value]="selectedType"
-                                    [(ngModel)]="selectedType"
-                                    [ngModelOptions]="{standalone: true}"
-                                    formControlName="type">
-                </kendo-dropdownlist>
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.type.valid || editForm.controls.type.pristine">
-                  <span *ngIf="editForm.controls.type.errors?.required">{{ 'AllValidations.Voucher.TypeIsRequired' | translate }}</span>
-                </div>
+                <input *ngIf="subjectMode === 0" type="text" class="k-textbox" value="{{ 'Voucher.NormalVoucher' | translate }}" readonly />
+                <input *ngIf="subjectMode === 1" type="text" class="k-textbox" value="{{ 'Voucher.DraftVoucher' | translate }}" readonly />
 
               </div>
             </div>
@@ -165,9 +155,9 @@
 
     <div class="row" *ngIf="voucherModel">
       <div class="col-xs-12">
-
         <div class="voucher-form-content">
-          <voucherLine [voucherID]="voucherModel.id"
+          <voucherLine [subjectMode]="subjectMode" 
+                       [voucherID]="voucherModel.id"
                        [documentStatus]="voucherModel.statusId"
                        [saveCount]="voucherModel.saveCount">
           </voucherLine>

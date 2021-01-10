@@ -25,6 +25,11 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   filterDialogRef: DialogRef;
   excelFileName: string;
 
+  /**این تابع قبل از نمایش تنظیمات گزارش فوری اجرا میشود*/
+  public onBeforeQuickReportSetting() {
+    /*console.log('base ondatabind')*/
+  }
+
   constructor(public toastrService: ToastrService, public translate: TranslateService, public gridService: GridService,
     public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
     public cdref: ChangeDetectorRef, public ngZone: NgZone) {
@@ -83,6 +88,7 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
       if (this.validateReport(parent)) {
         if (!reportManager.directShowReport()) {
           this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+          this.onBeforeQuickReportSetting();
           reportSetting.showReportSetting(parent.gridColumns, parent.entityTypeName, this.viewId, reportManager);
         }
       }     
@@ -99,13 +105,14 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
       }
 
       if (this.validateReport(parent)) {
+        this.onBeforeQuickReportSetting();
         reportSetting.showReportSetting(parent.gridColumns, parent.entityTypeName, this.viewId, reportManager);
       }
     })();    
   }
 
   public validateReport(parent: any) {
-    if (!parent.rowData || parent.rowData.total == 0) {
+    if (!parent.rowData || (parent.rowData.data.length == 0)) {
       this.showMessage(this.getText("Report.QuickReportValidate"));
       return false;
     }

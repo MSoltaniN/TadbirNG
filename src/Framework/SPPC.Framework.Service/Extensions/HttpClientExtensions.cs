@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using SPPC.Framework.Helpers;
 
 namespace SPPC.Framework.Service.Extensions
 {
@@ -43,7 +41,7 @@ namespace SPPC.Framework.Service.Extensions
 
         private static StringContent GetJsonContent<T>(T data)
         {
-            var jsonData = JsonConvert.SerializeObject(data);
+            var jsonData = JsonHelper.From(data);
             var content = new StringContent(jsonData);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return content;

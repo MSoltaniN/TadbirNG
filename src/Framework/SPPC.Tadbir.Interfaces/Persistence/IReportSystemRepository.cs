@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -70,13 +69,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="viewId">شناسه دیتابیسی یکی از فرم های قابل چاپ</param>
         /// <returns>اطلاعات خلاصه گزارش پیش فرض</returns>
         Task<ReportSummaryViewModel> GetDefaultReportByViewAsync(int viewId);
-
-        /// <summary>
-        /// به روش آسنکرون، شناسه دیتابیسی متناظر با کد دو حرفی استاندارد یک زبان را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="localeCode">کد دو حرفی استاندارد زبان مورد نظر</param>
-        /// <returns>شناسه دیتابیسی متناظر با کد زبانی داده شده</returns>
-        Task<int> GetLocaleIdAsync(string localeCode);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک گزارش ذخیره شده کاربری را ذخیره یا بروزرسانی می کند

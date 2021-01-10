@@ -182,6 +182,12 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<ViewSummaryViewModel>> GetBaseEntityViewsAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، موجودیت تعریف شده را به صورت کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>یک موجودیت های پایه تعریف شده</returns>
+        Task<IList<ViewSummaryViewModel>> GetEntityViewAsync(int viewId);
+
+        /// <summary>
         /// به روش آسنکرون، موجودیت های تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های تعریف شده</returns>

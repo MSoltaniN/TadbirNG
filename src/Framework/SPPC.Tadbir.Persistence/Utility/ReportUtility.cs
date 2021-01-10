@@ -42,10 +42,11 @@ namespace SPPC.Tadbir.Persistence.Utility
             DateTime from, DateTime to, GridOptions gridOptions)
         {
             var lines = await query
-                .Where(art => art.Voucher.Date.IsBetween(from, to))
-                .OrderBy(art => art.Voucher.Date)
-                    .ThenBy(art => art.Voucher.No)
-                .Select(art => Mapper.Map<TModel>(art))
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to))
+                .OrderBy(line => line.Voucher.Date)
+                    .ThenBy(line => line.Voucher.No)
+                .Select(line => Mapper.Map<TModel>(line))
                 .ToListAsync();
             return lines
                 .ApplyQuickFilter(gridOptions)
@@ -65,11 +66,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             DateTime from, DateTime to, GridOptions gridOptions)
         {
             var lines = await query
-                .Where(art => art.Voucher.Date.IsBetween(from, to))
-                .OrderBy(art => art.Voucher.Date)
-                    .ThenBy(art => art.Voucher.No)
-                        .ThenBy(art => art.BranchId)
-                .Select(art => Mapper.Map<TModel>(art))
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to))
+                .OrderBy(line => line.Voucher.Date)
+                    .ThenBy(line => line.Voucher.No)
+                        .ThenBy(line => line.BranchId)
+                .Select(line => Mapper.Map<TModel>(line))
                 .ToListAsync();
             return lines
                 .ApplyQuickFilter(gridOptions)
@@ -89,10 +91,11 @@ namespace SPPC.Tadbir.Persistence.Utility
             int from, int to, GridOptions gridOptions)
         {
             var lines = await query
-                .Where(art => art.Voucher.No >= from
-                    && art.Voucher.No <= to)
-                .OrderBy(art => art.Voucher.No)
-                .Select(art => Mapper.Map<TModel>(art))
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.No >= from
+                    && line.Voucher.No <= to)
+                .OrderBy(line => line.Voucher.No)
+                .Select(line => Mapper.Map<TModel>(line))
                 .ToListAsync();
             return lines
                 .ApplyQuickFilter(gridOptions)
@@ -112,11 +115,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             int from, int to, GridOptions gridOptions)
         {
             var lines = await query
-                .Where(art => art.Voucher.No >= from
-                    && art.Voucher.No <= to)
-                .OrderBy(art => art.Voucher.No)
-                    .ThenBy(art => art.BranchId)
-                .Select(art => Mapper.Map<TModel>(art))
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.No >= from
+                    && line.Voucher.No <= to)
+                .OrderBy(line => line.Voucher.No)
+                    .ThenBy(line => line.BranchId)
+                .Select(line => Mapper.Map<TModel>(line))
                 .ToListAsync();
             return lines
                 .ApplyQuickFilter(gridOptions)

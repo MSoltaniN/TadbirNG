@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت شعب را پیاده سازی میکند.
     /// </summary>
-    public class BranchRepository : LoggingRepository<Branch, BranchViewModel>, IBranchRepository
+    public class BranchRepository : EntityLoggingRepository<Branch, BranchViewModel>, IBranchRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

@@ -18,7 +18,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات آرتیکل های مالی را پیاده سازی می کند.
     /// </summary>
-    public class VoucherLineRepository : LoggingRepository<VoucherLine, VoucherLineViewModel>, IVoucherLineRepository
+    public class VoucherLineRepository
+        : EntityLoggingRepository<VoucherLine, VoucherLineViewModel>, IVoucherLineRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -330,6 +331,21 @@ namespace SPPC.Tadbir.Persistence
             return result;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نوع مفهومی سند را با توجه به شناسه آرتیکل داده شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
+        /// <returns>نوع مفهومی سند مرتبط با شناسه آرتیکل داده شده</returns>
+        public async Task<int> GetLineSubjectTypeAsync(int articleId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            return await repository
+                .GetEntityQuery(line => line.Voucher)
+                .Where(line => line.Id == articleId)
+                .Select(line => line.Voucher.SubjectType)
+                .FirstOrDefaultAsync();
+        }
+
         /// <inheritdoc/>
         protected override async Task FinalizeActionAsync(VoucherLine entity)
         {
@@ -471,7 +487,8 @@ namespace SPPC.Tadbir.Persistence
                 line => line.CostCenter,
                 line => line.Project,
                 line => line.Currency)
-                .Where(line => line.Voucher.Date.Date >= from.Date && line.Voucher.Date.Date <= to.Date);
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to));
             return lines;
         }
 

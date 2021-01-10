@@ -17,7 +17,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات گروه های حساب را پیاده سازی می کند.
     /// </summary>
-    public class AccountGroupRepository : LoggingRepository<AccountGroup, AccountGroupViewModel>, IAccountGroupRepository
+    public class AccountGroupRepository
+        : EntityLoggingRepository<AccountGroup, AccountGroupViewModel>, IAccountGroupRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

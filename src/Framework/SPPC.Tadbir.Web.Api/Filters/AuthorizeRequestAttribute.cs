@@ -1,11 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using SPPC.Framework.Common;
+using SPPC.Licensing.Local.Persistence;
+using SPPC.Licensing.Model;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -15,7 +20,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
     /// امکانات احراز هویت و مجوزدهی امنیتی را با استفاده از
     /// مکانیزم فیلترهای درخواست پیاده سازی می کند
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public sealed class AuthorizeRequestAttribute : ActionFilterAttribute
     {
         /// <summary>
@@ -24,6 +29,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
         public AuthorizeRequestAttribute()
         {
             _contextDecoder = new Base64Encoder<SecurityContext>();
+            _utility = LicenseUtility.CreateDefault();
         }
 
         /// <summary>
@@ -32,9 +38,9 @@ namespace SPPC.Tadbir.Web.Api.Filters
         /// <param name="entity">موجودیت محافظت شده ای که مجوزدهی امنیتی باید برای آن انجام شود</param>
         /// <param name="permission">دسترسی امنیتی مورد نیاز برای ادامه عملیات</param>
         public AuthorizeRequestAttribute(string entity, int permission)
+            : this()
         {
             Verify.ArgumentNotNullOrWhitespace(entity, "entity");
-            _contextDecoder = new Base64Encoder<SecurityContext>();
             _requiredPermissions = new PermissionBriefViewModel[]
             {
                 new PermissionBriefViewModel(entity, permission)
@@ -64,6 +70,11 @@ namespace SPPC.Tadbir.Web.Api.Filters
         public override void OnActionExecuting(ActionExecutingContext actionContext)
         {
             Verify.ArgumentNotNull(actionContext, "actionContext");
+            ////if (!CheckLicense(actionContext))
+            ////{
+            ////    string reason = "Access denied because license is missing, invalid or tampered.";
+            ////    actionContext.Result = new BadRequestObjectResult(reason);
+            ////}
 
             string authTicket = null;
             if (!IsValidRequest(actionContext, out authTicket))
@@ -109,7 +120,26 @@ namespace SPPC.Tadbir.Web.Api.Filters
             return isAuthorized;
         }
 
+        private bool CheckLicense(ActionExecutingContext actionContext)
+        {
+            string signature = null;
+            bool validated = false;
+            var headers = actionContext.HttpContext.Request.Headers;
+            if (headers[AppConstants.LicenseHeaderName] != StringValues.Empty)
+            {
+                signature = headers[AppConstants.LicenseHeaderName].First();
+                string license = File.ReadAllText(_licensePath, Encoding.UTF8);
+                _utility.LicensePath = Path.Combine(_serverRoot, Constants.LicenseFile);
+                validated = _utility.ValidateSignature(license, signature);
+            }
+
+            return validated;
+        }
+
         private readonly PermissionBriefViewModel[] _requiredPermissions;
         private readonly ITextEncoder<SecurityContext> _contextDecoder;
+        private readonly ILicenseUtility _utility;
+        private readonly string _licensePath = @"wwwroot\static\license";
+        private readonly string _serverRoot = @"..\SPPC.Licensing.Local.Web\wwwroot";
     }
 }

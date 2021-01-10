@@ -4,10 +4,10 @@ using System.Data.Common;
 using System.Linq;
 using AutoMapper;
 using SPPC.Framework.Common;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
@@ -217,7 +217,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.DebitSum, opts => opts.MapFrom(src => VoucherHelper.GetDebitSum(src)))
                 .ForMember(dest => dest.CreditSum, opts => opts.MapFrom(src => VoucherHelper.GetCreditSum(src)))
                 .ForMember(dest => dest.IsApproved, opts => opts.MapFrom(src => src.ApprovedById != null))
-                .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null));
+                .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null))
+                .ForMember(dest => dest.TypeName, opts => opts.MapFrom(src => VoucherHelper.GetTypeName(src)));
             mapperConfig.CreateMap<Voucher, GroupActionResultViewModel>();
             mapperConfig.CreateMap<VoucherViewModel, Voucher>();
             mapperConfig.CreateMap<Voucher, KeyValue>()
@@ -495,15 +496,24 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<ViewTreeFullConfig, ViewSetting>()
                 .ForMember(dest => dest.ViewId, opts => opts.MapFrom(src => src.Default.ViewId))
                 .ForMember(dest => dest.ModelType, opts => opts.UseValue(typeof(ViewTreeConfig).Name))
-                .ForMember(dest => dest.SettingId, opts => opts.UseValue(5)) // TODO: Remove this hard-coded value later
+                .ForMember(dest => dest.SettingId, opts => opts.UseValue((int)SettingId.ViewTree))
                 .ForMember(
                     dest => dest.Values,
                     opts => opts.MapFrom(
-                        src => JsonHelper.From(src.Current, false, null)))
+                        src => JsonHelper.From(src.Current, false, null, true)))
                 .ForMember(
                     dest => dest.DefaultValues,
                     opts => opts.MapFrom(
-                        src => JsonHelper.From(src.Default, false, null)));
+                        src => JsonHelper.From(src.Default, false, null, true)));
+            mapperConfig.CreateMap<LabelSetting, FormLabelFullConfig>()
+                .ForMember(
+                    dest => dest.Current,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.To<FormLabelConfig>(src.Values)))
+                .ForMember(
+                    dest => dest.Default,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.To<FormLabelConfig>(src.DefaultValues)));
             mapperConfig.CreateMap<Column, QuickSearchColumnConfig>()
                 .ForMember(
                     dest => dest.Title,
@@ -605,29 +615,11 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<SystemIssue, SystemIssueViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
 
-            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByCostCentersViewModel>()
-                .ForMember(dest => dest.StartBalanceCostCenter1, opts => opts.MapFrom(src => src.StartBalance))
-                .ForMember(dest => dest.PeriodTurnoverCostCenter1, opts => opts.MapFrom(src => src.PeriodTurnover))
-                .ForMember(dest => dest.EndBalanceCostCenter1, opts => opts.MapFrom(src => src.EndBalance))
-                .ForMember(dest => dest.BalanceCostCenter1, opts => opts.MapFrom(src => src.Balance));
-
-            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByProjectsViewModel>()
-                .ForMember(dest => dest.StartBalanceProject1, opts => opts.MapFrom(src => src.StartBalance))
-                .ForMember(dest => dest.PeriodTurnoverProject1, opts => opts.MapFrom(src => src.PeriodTurnover))
-                .ForMember(dest => dest.EndBalanceProject1, opts => opts.MapFrom(src => src.EndBalance))
-                .ForMember(dest => dest.BalanceProject1, opts => opts.MapFrom(src => src.Balance));
-
-            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByBranchesViewModel>()
-                .ForMember(dest => dest.StartBalanceBranch1, opts => opts.MapFrom(src => src.StartBalance))
-                .ForMember(dest => dest.PeriodTurnoverBranch1, opts => opts.MapFrom(src => src.PeriodTurnover))
-                .ForMember(dest => dest.EndBalanceBranch1, opts => opts.MapFrom(src => src.EndBalance))
-                .ForMember(dest => dest.BalanceBranch1, opts => opts.MapFrom(src => src.Balance));
-
-            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByFiscalPeriodsViewModel>()
-                .ForMember(dest => dest.StartBalanceFiscalPeriod1, opts => opts.MapFrom(src => src.StartBalance))
-                .ForMember(dest => dest.PeriodTurnoverFiscalPeriod1, opts => opts.MapFrom(src => src.PeriodTurnover))
-                .ForMember(dest => dest.EndBalanceFiscalPeriod1, opts => opts.MapFrom(src => src.EndBalance))
-                .ForMember(dest => dest.BalanceFiscalPeriod1, opts => opts.MapFrom(src => src.Balance));
+            mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByItemsViewModel>()
+                .ForMember(dest => dest.StartBalanceItem1, opts => opts.MapFrom(src => src.StartBalance))
+                .ForMember(dest => dest.PeriodTurnoverItem1, opts => opts.MapFrom(src => src.PeriodTurnover))
+                .ForMember(dest => dest.EndBalanceItem1, opts => opts.MapFrom(src => src.EndBalance))
+                .ForMember(dest => dest.BalanceItem1, opts => opts.MapFrom(src => src.Balance));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

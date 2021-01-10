@@ -1,6 +1,11 @@
+<view-identifier [ViewID]="viewId">
+  <report-param ParamName='fromDate' [ParamValue]="startDate" [ParamInFilter]="false"></report-param>
+  <report-param ParamName='toDate' [ParamValue]="endDate" [ParamInFilter]="false"></report-param>
+</view-identifier>
 
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
-
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="currentFilter" [QuickFilter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
 <report-setting></report-setting>
 <div class="panel-body">
   <kendo-grid id="{{viewId}}"
@@ -50,7 +55,7 @@
     <ng-template kendoGridToolbarTemplate>
       <div class="row">
         <div class="col-xs-12 col-sm-6 sppc-float">
-          <sppc-dateRangeSelector [viewName]="'voucher'" [InitializeDate]="false" [ValidateFPDate]="false" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+          <sppc-dateRangeSelector [viewName]="'voucher'" [InitializeDate]="false" [saveStates]="false"  [ValidateFPDate]="false" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
         </div>
         <div class="col-xs-12 col-sm-6">
           <button (click)="editHandler()" class="k-button k-button-icon  pull-left" [disabled]="selectedRows.length != 1" title="{{ 'OperationLog.Detail' | translate }}"><span class="k-icon k-i-info"></span></button>
@@ -59,6 +64,8 @@
                                        (columnsList)="getColumns($event)">
           </auto-generated-grid-setting>
           <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+
+          <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
         </div>
       </div>
     </ng-template>

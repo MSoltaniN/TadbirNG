@@ -32,41 +32,47 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، سند مالی جدیدی را با مقادیر پیشنهادی ایجاد کرده و برمی گرداند
         /// </summary>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند جدید که پیش فرض آن سند عادی است</param>
         /// <returns>سند مالی جدید با مقادیر پیشنهادی</returns>
-        Task<VoucherViewModel> GetNewVoucherAsync();
+        Task<VoucherViewModel> GetNewVoucherAsync(SubjectType subject = SubjectType.Normal);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherNo">شماره یکی از اسناد مالی موجود</param>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>سند مالی مشخص شده با شماره</returns>
-        Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo);
+        Task<VoucherViewModel> GetVoucherByNoAsync(int voucherNo, SubjectType subject = SubjectType.Normal);
 
         /// <summary>
         /// به روش آسنکرون، اولین سند مالی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>اولین سند مالی</returns>
-        Task<VoucherViewModel> GetFirstVoucherAsync();
+        Task<VoucherViewModel> GetFirstVoucherAsync(SubjectType subject = SubjectType.Normal);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>سند مالی قبلی</returns>
-        Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo);
+        Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo, SubjectType subject = SubjectType.Normal);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی بعدی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>سند مالی بعدی</returns>
-        Task<VoucherViewModel> GetNextVoucherAsync(int currentNo);
+        Task<VoucherViewModel> GetNextVoucherAsync(int currentNo, SubjectType subject = SubjectType.Normal);
 
         /// <summary>
         /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
         /// <returns>آخرین سند مالی</returns>
-        Task<VoucherViewModel> GetLastVoucherAsync();
+        Task<VoucherViewModel> GetLastVoucherAsync(SubjectType subject = SubjectType.Normal);
 
         /// <summary>
         /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند
@@ -89,8 +95,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد سندهای دوره مالی جاری با وضعیت ثبتی داده شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="status">وضعیت ثبتی مورد نظر برای سند</param>
+        /// <param name="subject">نوع مفهومی اسناد مورد نظر که به طور پیش فرض سند عادی است</param>
         /// <returns>تعداد سندهای دوره مالی جاری با وضعیت ثبتی مورد نظر</returns>
-        Task<int> GetCountByStatusAsync(DocumentStatusId status);
+        Task<int> GetCountByStatusAsync(DocumentStatusId status, SubjectType subject = SubjectType.Normal);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات محدوده سندهای قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
@@ -136,6 +143,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucher">سند مالی که تکراری بودن شماره روزانه آن باید بررسی شود</param>
         /// <returns>مقدار بولی درست در صورت تکراری بودن شماره، در غیر این صورت مقدار بولی نادرست</returns>
         Task<bool> IsDuplicateVoucherDailyNoAsync(VoucherViewModel voucher);
+
+        /// <summary>
+        /// مشخص می کند که سند حسابداری داده شده قابل تبدیل به سند پیش نویس هست یا نه؟
+        /// </summary>
+        /// <param name="voucher">اطلاعات نمایشی سند حسابداری مورد نظر</param>
+        /// <returns>اگر سند داده شده قابل تبدیل به سند پیش نویس باشد مقدار بولی درست و در غیر این صورت
+        /// مقدار بولی نادرست را برمی گرداند</returns>
+        bool CanSaveAsDraftVoucher(VoucherViewModel voucher);
 
         /// <summary>
         /// وضعیت ثبتی سند مالی را به وضعیت داده شده تغییر می دهد
@@ -212,5 +227,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
         Task<ValueTuple<IList<NumberListViewModel>, int>> GetMissingVoucherNumbersAsync(
             GridOptions gridOptions, DateTime from, DateTime to);
+
+        /// <summary>
+        /// به روش آسنکرون، نوع مفهومی سند با شناسه داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
+        /// <returns>نوع مفهومی سند با شناسه داده شده</returns>
+        Task<int> GetSubjectTypeAsync(int voucherId);
     }
 }

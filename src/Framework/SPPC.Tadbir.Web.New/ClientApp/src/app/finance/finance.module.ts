@@ -41,6 +41,7 @@ import { SystemIssueComponent } from '@sppc/finance/components/reporting/systemI
 import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/balanceByAccount/balanceByAccount.component';
 import { ProfitLostComponent } from './components/reporting/profitLoss/profitLost.component';
 import { ProfitLostService } from './service/profitLost.service';
+import { ProfitLostLabelsComponent } from './components/reporting/profitLoss/profitLost.labels.components';
 
 @NgModule({
   imports: [
@@ -52,9 +53,9 @@ import { ProfitLostService } from './service/profitLost.service';
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
     ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
     currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent, BalanceByAccountComponent,
-    ItemBalanceComponent, ProfitLostComponent],
+    ItemBalanceComponent, ProfitLostComponent,ProfitLostLabelsComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
-    ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent],
+    ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent, ProfitLostLabelsComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
     FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService, ItemBalanceService, SystemIssueService, ProfitLostService],
   schemas: [NO_ERRORS_SCHEMA]

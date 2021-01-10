@@ -3301,7 +3301,7 @@
     <value>Action {0} cannot be done on a finalized voucher.</value>
   </data>
   <data name="ProfitLoss" xml:space="preserve">
-    <value>Profit/Loss</value>
+    <value>Profit / Loss</value>
   </data>
   <data name="AccountBookSingle" xml:space="preserve">
     <value>Account book</value>
@@ -3331,16 +3331,16 @@
     <value>Operation log archive</value>
   </data>
   <data name="ProfitLossByBranches" xml:space="preserve">
-    <value>Profit and loss by branches</value>
+    <value>Profit / loss by branches</value>
   </data>
   <data name="ProfitLossByCostCenters" xml:space="preserve">
-    <value>Profit and loss by cost centers</value>
+    <value>Profit / loss by cost centers</value>
   </data>
   <data name="ProfitLossByFiscalPeriods" xml:space="preserve">
-    <value>Profit and loss by fiscal periods</value>
+    <value>Profit / loss by fiscal periods</value>
   </data>
   <data name="ProfitLossByProjects" xml:space="preserve">
-    <value>Profit and loss by projects</value>
+    <value>Profit / loss by projects</value>
   </data>
   <data name="ProfitLossSimple" xml:space="preserve">
     <value>Profit and loss</value>
@@ -3353,5 +3353,113 @@
   </data>
   <data name="CantCreateChildForUsedParent" xml:space="preserve">
     <value>The {0} '{1}' cannot have children because it is being used in voucher lines of an exisitng branch and/or fiscal period.</value>
+  </data>
+  <data name="CantSaveAsDraftVoucher" xml:space="preserve">
+    <value>This voucher is either confirmed or finalized and cannot be saved as draft.</value>
+  </data>
+  <data name="InvalidDraftVoucherAction" xml:space="preserve">
+    <value>Action {0} cannot be done on a draft voucher.</value>
+  </data>
+  <data name="Budgeting" xml:space="preserve">
+    <value>Budgeting</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="TypeName" xml:space="preserve">
+    <value>Voucher type</value>
+  </data>
+  <data name="DraftVoucher" xml:space="preserve">
+    <value>Draft voucher</value>
+  </data>
+  <data name="DraftVouchers" xml:space="preserve">
+    <value>Draft vouchers</value>
+  </data>
+  <data name="DraftVoucherByNo" xml:space="preserve">
+    <value>Draft voucher by number...</value>
+  </data>
+  <data name="LastDraftVoucher" xml:space="preserve">
+    <value>Last draft voucher</value>
+  </data>
+  <data name="NewDraftVoucher" xml:space="preserve">
+    <value>New draft voucher</value>
+  </data>
+  <data name="GroupNormalize" xml:space="preserve">
+    <value>Group convert to normal voucher</value>
+  </data>
+  <data name="Normalize" xml:space="preserve">
+    <value>Convert to normal voucher</value>
+  </data>
+  <data name="ProfitLossByBranch" xml:space="preserve">
+    <value>By branches</value>
+  </data>
+  <data name="ProfitLossByCostCenter" xml:space="preserve">
+    <value>By cost centers</value>
+  </data>
+  <data name="ProfitLossByFiscalPeriod" xml:space="preserve">
+    <value>By fiscal periods</value>
+  </data>
+  <data name="ProfitLossByProject" xml:space="preserve">
+    <value>By projects</value>
+  </data>
+  <data name="ExportRates" xml:space="preserve">
+    <value>Export currency rates</value>
+  </data>
+  <data name="FilterRates" xml:space="preserve">
+    <value>Filter currency rates</value>
+  </data>
+  <data name="FilterByRef" xml:space="preserve">
+    <value>Filter by reference</value>
+  </data>
+  <data name="AllVouchers" xml:space="preserve">
+    <value>All vouchers</value>
+  </data>
+  <data name="NormalVouchers" xml:space="preserve">
+    <value>Normal vouchers</value>
+  </data>
+  <data name="BalanceSheet" xml:space="preserve">
+    <value>Balance sheet</value>
+  </data>
+  <data name="BalanceSheetReport" xml:space="preserve">
+    <value>Balance sheet report</value>
+  </data>
+  <data name="AssetsSum" xml:space="preserve">
+    <value>Total assets</value>
+  </data>
+  <data name="LiabilitiesOwnerEquitiesSum" xml:space="preserve">
+    <value>Total liabilities and owner equities</value>
+  </data>
+  <data name="LiquidAssets" xml:space="preserve">
+    <value>Liquid assets</value>
+  </data>
+  <data name="LiquidAssetsSum" xml:space="preserve">
+    <value>Total liquid assets</value>
+  </data>
+  <data name="LiquidLiabilities" xml:space="preserve">
+    <value>Liquid liabilities</value>
+  </data>
+  <data name="LiquidLiabilitiesSum" xml:space="preserve">
+    <value>Total liquid liabilities</value>
+  </data>
+  <data name="NonLiquidAssets" xml:space="preserve">
+    <value>Non-liquid assets</value>
+  </data>
+  <data name="NonLiquidAssetsSum" xml:space="preserve">
+    <value>Total non-liquid assets</value>
+  </data>
+  <data name="NonLiquidLiabilities" xml:space="preserve">
+    <value>Non-liquid liabilities</value>
+  </data>
+  <data name="NonLiquidLiabilitiesSum" xml:space="preserve">
+    <value>Total non-liquid liabilities</value>
+  </data>
+  <data name="OwnerEquities" xml:space="preserve">
+    <value>Owner equities</value>
+  </data>
+  <data name="OwnerEquitiesSum" xml:space="preserve">
+    <value>Total owner equities</value>
   </data>
 </root>

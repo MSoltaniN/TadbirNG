@@ -83,10 +83,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 From = from,
                 To = to,
                 AccountId = accountId,
-                FAccountId = faccountId,
-                CCenterId = ccenterId,
+                DetailAccountId = faccountId,
+                CostCenterId = ccenterId,
                 ProjectId = projectId,
-                CurrFree = currFree,
+                CurrencyFree = currFree,
                 GridOptions = GridOptions ?? new GridOptions()
             };
 
@@ -130,8 +130,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 From = from,
                 To = to,
                 AccountId = accountId,
-                FAccountId = faccountId,
-                CCenterId = ccenterId,
+                DetailAccountId = faccountId,
+                CostCenterId = ccenterId,
                 ProjectId = projectId,
                 GridOptions = GridOptions ?? new GridOptions()
             };

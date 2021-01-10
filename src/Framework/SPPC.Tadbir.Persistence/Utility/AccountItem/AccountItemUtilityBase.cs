@@ -22,9 +22,11 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
-        public AccountItemUtilityBase(IRepositoryContext context, IConfigRepository config)
+        /// <param name="repository">امکان اعمال فیلترهای شعبه و سطری را فراهم می کند</param>
+        public AccountItemUtilityBase(IRepositoryContext context, IConfigRepository config, ISecureRepository repository)
             : base(context, config)
         {
+            _repository = repository;
         }
 
         /// <summary>
@@ -93,9 +95,9 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="from">تاریخ ابتدای محدوده تاریخی مورد نظر</param>
         /// <param name="to">تاریخ انتهای محدوده تاریخی مورد نظر</param>
         /// <returns>مبالغ گردش محاسبه شده برای مولفه حساب</returns>
-        public async Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(int itemId, DateTime from, DateTime to)
+        public async Task<VoucherLineAmountsViewModel> GetTurnoverAsync(int itemId, DateTime from, DateTime to)
         {
-            var turnover = default(ValueTuple<decimal, decimal>);
+            var turnover = default(VoucherLineAmountsViewModel);
             var account = await GetItemAsync(itemId);
             if (account != null)
             {
@@ -113,9 +115,9 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="from">اولین سند در محدوده مورد نظر</param>
         /// <param name="to">آخرین سند در محدوده مورد نظر</param>
         /// <returns>مبالغ گردش محاسبه شده برای مولفه حساب</returns>
-        public async Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(int itemId, int from, int to)
+        public async Task<VoucherLineAmountsViewModel> GetTurnoverAsync(int itemId, int from, int to)
         {
-            var turnover = default(ValueTuple<decimal, decimal>);
+            var turnover = default(VoucherLineAmountsViewModel);
             var account = await GetItemAsync(itemId);
             if (account != null)
             {
@@ -173,13 +175,13 @@ namespace SPPC.Tadbir.Persistence.Utility
                 line => line.Voucher.VoucherOriginId == (int)origin, itemCriteria);
         }
 
-        private async Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(
+        private async Task<VoucherLineAmountsViewModel> GetTurnoverAsync(
             DateTime from, DateTime to, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             return await GetTurnoverAsync(line => line.Voucher.Date.IsBetween(from, to), itemCriteria);
         }
 
-        private async Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(
+        private async Task<VoucherLineAmountsViewModel> GetTurnoverAsync(
             int from, int to, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             return await GetTurnoverAsync(
@@ -196,27 +198,33 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .Sum();
         }
 
-        private async Task<ValueTuple<decimal, decimal>> GetTurnoverAsync(
+        private async Task<VoucherLineAmountsViewModel> GetTurnoverAsync(
             Expression<Func<VoucherLine, bool>> lineCriteria,
             Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             var lines = await GetFilteredLinesAsync(lineCriteria, itemCriteria);
             var amounts = lines
                 .Select(line => new VoucherLineAmountsViewModel() { Debit = line.Debit, Credit = line.Credit });
-            return (amounts.Sum(item => item.Debit), amounts.Sum(item => item.Credit));
+            return new VoucherLineAmountsViewModel()
+            {
+                Debit = amounts.Sum(item => item.Debit),
+                Credit = amounts.Sum(item => item.Credit)
+            };
         }
 
         private async Task<List<VoucherLine>> GetFilteredLinesAsync(
             Expression<Func<VoucherLine, bool>> lineCriteria,
             Expression<Func<VoucherLine, bool>> itemCriteria)
         {
-            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            return await repository
-                .GetEntityQuery()
-                .Where(line => line.FiscalPeriodId == UserContext.FiscalPeriodId)
+            return await _repository
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Where(lineCriteria)
                 .Where(itemCriteria)
                 .ToListAsync();
         }
+
+        private readonly ISecureRepository _repository;
     }
 }

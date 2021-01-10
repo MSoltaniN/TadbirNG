@@ -185,14 +185,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(ReportApi.EnvironmentQuickReportUrl)]
         public IActionResult PutEnvironmentUserQuickReport([FromBody] QuickReportConfig qr, int unit)
         {
-            Stimulsoft.Report.StiReport quickReport = new Stimulsoft.Report.StiReport();
-            Stimulsoft.Report.StiReport quickReportTemplate = new Stimulsoft.Report.StiReport();
+            StiReport quickReport = new StiReport();
+            StiReport quickReportTemplate = new StiReport();
 
             bool outOf = false;
             quickReport.ReportUnit = StiReportUnitType.Inches;
             var dataSourceName = "root";
             string reportTemplate = string.Empty;
-            string reportLang = this.GetAcceptLanguages() == "fa-IR,fa" ? "fa" : "en";
+            string reportLang = GetPrimaryRequestLanguage();
 
             // load template for adding styles
             var qtemplate = GetQuickReportTemplateAsync().Result;
@@ -856,12 +856,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     txtDataCell.TextFormat = new Stimulsoft.Report.Components.TextFormats.StiNumberFormatService(1, ".", 0, ",", 3, true, false, " ");
                 }
 
-                ////txtDataCell.Border = new StiBorder(StiBorderSides.Bottom | StiBorderSides.Left | StiBorderSides.Right, Color.Black, 1, StiPenStyle.Solid);
-
                 txtDataCell.Width = width;
                 txtDataCell.Text.Value = GetColumnValue(orderdColumns[i], dataSourceName, string.Empty);
                 txtDataCell.ClientRectangle = new RectangleD(left, top, width, txtDataCell.Height);
                 left = txtDataCell.Left + width;
+
+                if (quickReportViewModel.ReportViewSetting != null)
+                {
+                    if (quickReportViewModel.ReportViewSetting.HideHorizontalLine && quickReportViewModel.ReportViewSetting.HideVerticalLine)
+                    {
+                        txtDataCell.Border = new StiBorder(StiBorderSides.None, txtDataCell.Border.Color, txtDataCell.Border.Size, txtDataCell.Border.Style);
+                    }
+
+                    if (quickReportViewModel.ReportViewSetting.HideHorizontalLine && !quickReportViewModel.ReportViewSetting.HideVerticalLine)
+                    {
+                        txtDataCell.Border = new StiBorder(StiBorderSides.Left | StiBorderSides.Right, txtDataCell.Border.Color, txtDataCell.Border.Size, txtDataCell.Border.Style);
+                    }
+
+                    if (!quickReportViewModel.ReportViewSetting.HideHorizontalLine && quickReportViewModel.ReportViewSetting.HideVerticalLine)
+                    {
+                        txtDataCell.Border = new StiBorder(StiBorderSides.Bottom, txtDataCell.Border.Color, txtDataCell.Border.Size, txtDataCell.Border.Style);
+                    }
+                }
 
                 dataBand.Components.Add(txtDataCell);
             }
@@ -898,8 +914,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<int> GetCurrentLocaleIdAsync()
         {
-            var localCode = GetAcceptLanguages().Substring(0, 2);
-            return await _sysRepository.GetLocaleIdAsync(localCode);
+            var localCode = GetPrimaryRequestLanguage();
+            return await _configRepository.GetLocaleIdAsync(localCode);
         }
 
         private async Task<LocalReportViewModel> GetQuickReportTemplateAsync()
@@ -912,8 +928,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private void Localize(IList<VoucherSummaryViewModel> report)
         {
             var now = DateTime.Now;
-            var languages = GetAcceptLanguages();
-            if (languages.StartsWith("fa"))
+            var languages = GetPrimaryRequestLanguage();
+            if (languages == "fa")
             {
                 Array.ForEach(report.ToArray(),
                     summary => summary.Date = JalaliDateTime
@@ -937,8 +953,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var now = DateTime.Now;
-            var languages = GetAcceptLanguages();
-            if (languages.StartsWith("fa"))
+            var languages = GetPrimaryRequestLanguage();
+            if (languages == "fa")
             {
                 standardVoucher.Date = JalaliDateTime
                     .FromDateTime(now.Parse(standardVoucher.Date, false))

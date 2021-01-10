@@ -278,6 +278,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(baseLookup);
         }
 
+        // GET: api/lookup/views/{viewId:min(1)}
+        [HttpGet]
+        [Route(LookupApi.EntityViewUrl)]
+        public async Task<IActionResult> GetViewLookupAsync(int viewId)
+        {
+            var baseLookup = await _repository.GetEntityViewAsync(viewId);
+            Array.ForEach(baseLookup.ToArray(), lookup => lookup.Name = _strings[lookup.Name]);
+            return Json(baseLookup);
+        }
+
         // GET: api/lookup/views/tree
         [HttpGet]
         [Route(LookupApi.TreeViewsUrl)]

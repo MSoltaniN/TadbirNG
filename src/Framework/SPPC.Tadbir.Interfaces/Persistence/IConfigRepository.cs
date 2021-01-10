@@ -19,6 +19,12 @@ namespace SPPC.Tadbir.Persistence
         void GetCurrentFiscalDateRange(out DateTime start, out DateTime end);
 
         /// <summary>
+        /// به روش آسنکرون، نوع تقویم پیش فرض برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مقدار عددی متناظر با نوع شمارشی موجود برای تقویم پیش فرض</returns>
+        Task<int> GetCurrentCalendarAsync();
+
+        /// <summary>
         /// به روش آسنکرون، تاریخ داده شده را با توجه به تنظیمات تقویم پیش فرض به صورت رشته متنی برمی گرداند
         /// </summary>
         /// <param name="date">تاریخ مورد نظر برای نمایش متنی</param>
@@ -74,5 +80,19 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="configItem">تنظیمات پیکربندی سیستم</param>
         /// <param name="rootPath">آدرس ریشه نرم افزار در سرور</param>
         Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath);
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات موجود برای عناوین سفارشی فرم گزارشی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="formId">شناسه دیتابیسی فرم گزارشی</param>
+        /// <param name="localeId">شناسه دیتابیسی زبان مورد نظر برای محلی سازی متن عناوین</param>
+        /// <returns>تنظیمات موجود برای عناوین سفارشی</returns>
+        Task<FormLabelFullConfig> GetFormLabelConfigAsync(int formId, int localeId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت عناوین سفارشی یک فرم گزارشی را ذخیره می کند
+        /// </summary>
+        /// <param name="labelConfig">اطلاعات تنظیمات عناوین سفارشی</param>
+        Task SaveFormLabelConfigAsync(FormLabelConfig labelConfig);
     }
 }

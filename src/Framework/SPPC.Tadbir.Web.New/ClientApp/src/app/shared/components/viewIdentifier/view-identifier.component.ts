@@ -11,6 +11,10 @@ export class ViewIdentifierComponent implements OnInit, AfterViewInit {
   
   @Input() public ViewID: string;
 
+  @Input() public IsDynamicColumns: boolean;
+
+  @Input() public DynamicMetadata: any[];
+
   @Input() public ID: string;
 
   //@ViewChildren(ReportParamComponent) reportParams: ReportParamComponent;

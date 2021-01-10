@@ -12,6 +12,8 @@ namespace SPPC.Tadbir.Api
         {
         }
 
+        #region Voucher Resources - Normal
+
         /// <summary>
         /// API client URL for all vouchers defined in current environment
         /// </summary>
@@ -23,24 +25,14 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentVouchersUrl = "vouchers";
 
         /// <summary>
-        /// API client URL for count of all vouchers defined in current environment
+        /// API client URL for all vouchers (normal and draft) defined in current environment
         /// </summary>
-        public const string EnvironmentItemCount = "vouchers/count";
+        public const string AllEnvironmentVouchers = "vouchers/all";
 
         /// <summary>
-        /// API server route URL for count of all vouchers defined in current environment
+        /// API server route URL for all vouchers (normal and draft) defined in current environment
         /// </summary>
-        public const string EnvironmentItemCountUrl = "vouchers/count";
-
-        /// <summary>
-        /// API client URL for first and last voucher number accessible in current environment
-        /// </summary>
-        public const string EnvironmentItemRange = "vouchers/range";
-
-        /// <summary>
-        /// API server route URL for first and last voucher number accessible in current environment
-        /// </summary>
-        public const string EnvironmentItemRangeUrl = "vouchers/range";
+        public const string AllEnvironmentVouchersUrl = "vouchers/all";
 
         /// <summary>
         /// API client URL for a single voucher specified by identifier
@@ -113,14 +105,132 @@ namespace SPPC.Tadbir.Api
         public const string LastVoucherUrl = "vouchers/last";
 
         /// <summary>
-        /// API client URL for number of voucher by statusId
+        /// API client URL for querying existence of the opening voucher in current environment
         /// </summary>
-        public const string VoucherCountByStatus = "vouchers/count/by-status";
+        public const string OpeningVoucherQuery = "vouchers/opening/query";
 
         /// <summary>
-        /// API server URL for number of voucher by statusId
+        /// API server route URL for querying existence of the opening voucher in current environment
         /// </summary>
-        public const string VoucherCountByStatusUrl = "vouchers/count/by-status";
+        public const string OpeningVoucherQueryUrl = "vouchers/opening/query";
+
+        /// <summary>
+        /// API client URL for the opening voucher in current environment
+        /// </summary>
+        public const string OpeningVoucher = "vouchers/opening";
+
+        /// <summary>
+        /// API server route URL for the opening voucher in current environment
+        /// </summary>
+        public const string OpeningVoucherUrl = "vouchers/opening";
+
+        /// <summary>
+        /// API client URL for the closing temp accounts voucher in current environment
+        /// </summary>
+        public const string ClosingAccountsVoucher = "vouchers/closing-tmp";
+
+        /// <summary>
+        /// API server route URL for the closing temp accounts voucher in current environment
+        /// </summary>
+        public const string ClosingAccountsVoucherUrl = "vouchers/closing-tmp";
+
+        /// <summary>
+        /// API client URL for the closing voucher in current environment
+        /// </summary>
+        public const string ClosingVoucher = "vouchers/closing";
+
+        /// <summary>
+        /// API server route URL for the closing voucher in current environment
+        /// </summary>
+        public const string ClosingVoucherUrl = "vouchers/closing";
+
+        #endregion
+
+        #region Voucher Resources - Draft
+
+        /// <summary>
+        /// API client URL for all draft vouchers defined in current environment
+        /// </summary>
+        public const string EnvironmentDraftVouchers = "vouchers/draft";
+
+        /// <summary>
+        /// API server route URL for all draft vouchers defined in current environment
+        /// </summary>
+        public const string EnvironmentDraftVouchersUrl = "vouchers/draft";
+
+        /// <summary>
+        /// API client URL for a single draft voucher specified by identifier
+        /// </summary>
+        public const string DraftVoucher = "vouchers/draft/{0}";
+
+        /// <summary>
+        /// API server route URL for a single draft voucher specified by identifier
+        /// </summary>
+        public const string DraftVoucherUrl = "vouchers/draft/{voucherId:min(1)}";
+
+        /// <summary>
+        /// API client URL for a newly initialized and saved draft voucher
+        /// </summary>
+        public const string NewDraftVoucher = "vouchers/draft/new";
+
+        /// <summary>
+        /// API server route URL for a newly initialized and saved draft voucher
+        /// </summary>
+        public const string NewDraftVoucherUrl = "vouchers/draft/new";
+
+        /// <summary>
+        /// API client URL for a single draft voucher specified by number
+        /// </summary>
+        public const string DraftVoucherByNo = "vouchers/draft/by-no/{0}";
+
+        /// <summary>
+        /// API server route URL for a single draft voucher specified by number
+        /// </summary>
+        public const string DraftVoucherByNoUrl = "vouchers/draft/by-no/{voucherNo:min(1)}";
+
+        /// <summary>
+        /// API client URL for the first draft voucher in current environment
+        /// </summary>
+        public const string FirstDraftVoucher = "vouchers/draft/first";
+
+        /// <summary>
+        /// API server route URL for the first draft voucher in current environment
+        /// </summary>
+        public const string FirstDraftVoucherUrl = "vouchers/draft/first";
+
+        /// <summary>
+        /// API client URL for previous draft voucher in current environment
+        /// </summary>
+        public const string PreviousDraftVoucher = "vouchers/draft/{0}/previous";
+
+        /// <summary>
+        /// API server route URL for previous draft voucher in current environment
+        /// </summary>
+        public const string PreviousDraftVoucherUrl = "vouchers/draft/{voucherNo:min(1)}/previous";
+
+        /// <summary>
+        /// API client URL for next draft voucher in current environment
+        /// </summary>
+        public const string NextDraftVoucher = "vouchers/draft/{0}/next";
+
+        /// <summary>
+        /// API server route URL for next draft voucher in current environment
+        /// </summary>
+        public const string NextDraftVoucherUrl = "vouchers/draft/{voucherNo:min(1)}/next";
+
+        /// <summary>
+        /// API client URL for the last draft voucher in current environment
+        /// </summary>
+        public const string LastDraftVoucher = "vouchers/draft/last";
+
+        /// <summary>
+        /// API server route URL for the last draft voucher in current environment
+        /// </summary>
+        public const string LastDraftVoucherUrl = "vouchers/draft/last";
+
+        #endregion
+
+        #region Voucher Article Resources
 
         /// <summary>
         /// API client URL for all available articles
@@ -141,16 +251,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all articles in a single voucher specified by identifier
         /// </summary>
         public const string VoucherArticlesUrl = "vouchers/{voucherId:min(1)}/articles";
-
-        /// <summary>
-        /// API client URL for count of all articles in a voucher specified by identifier
-        /// </summary>
-        public const string VoucherArticleCount = "vouchers/{0}/articles/count";
-
-        /// <summary>
-        /// API server route URL for count of all articles in a voucher specified by identifier
-        /// </summary>
-        public const string VoucherArticleCountUrl = "vouchers/{voucherId:min(1)}/articles/count";
 
         /// <summary>
         /// API client URL for a single voucher article specified by identifier
@@ -192,95 +292,7 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string VoucherArticleMetadataUrl = "vouchers/articles/metadata";
 
-        /// <summary>
-        /// API client URL for count of all articles
-        /// </summary>
-        public const string VoucherArticlesCount = "vouchers/articles/count";
-
-        /// <summary>
-        /// API server route URL for count of all articles
-        /// </summary>
-        public const string VoucherArticlesCountUrl = "vouchers/articles/count";
-
-        /// <summary>
-        /// API client URL for vouchers with no article
-        /// </summary>
-        public const string VoucherWithNoArticle = "vouchers/no-article";
-
-        /// <summary>
-        /// API server route URL for vouchers with no article
-        /// </summary>
-        public const string VoucherWithNoArticleUrl = "vouchers/no-article";
-
-        /// <summary>
-        /// API client URL for unbalanced vouchers
-        /// </summary>
-        public const string UnbalancedVouchers = "vouchers/unbalanced";
-
-        /// <summary>
-        /// API server route URL for unbalanced vouchers
-        /// </summary>
-        public const string UnbalancedVouchersUrl = "vouchers/unbalanced";
-
-        /// <summary>
-        /// API client URL for unbalanced vouchers
-        /// </summary>
-        public const string MissingVoucherNumber = "vouchers/miss-number";
-
-        /// <summary>
-        /// API server route URL for unbalanced vouchers
-        /// </summary>
-        public const string MissingVoucherNumberUrl = "vouchers/miss-number";
-
-        /// <summary>
-        /// API client URL for system issue articles
-        /// </summary>
-        public const string SystemIssueArticles = "vouchers/articles/sys-issue/{0}";
-
-        /// <summary>
-        /// API server route URL for system issue articles
-        /// </summary>
-        public const string SystemIssueArticlesUrl = "vouchers/articles/sys-issue/{issueType}";
-
-        /// <summary>
-        /// API client URL for querying existence of the opening voucher in current environment
-        /// </summary>
-        public const string OpeningVoucherQuery = "vouchers/opening/query";
-
-        /// <summary>
-        /// API server route URL for querying existence of the opening voucher in current environment
-        /// </summary>
-        public const string OpeningVoucherQueryUrl = "vouchers/opening/query";
-
-        /// <summary>
-        /// API client URL for the opening voucher in current environment
-        /// </summary>
-        public const string OpeningVoucher = "vouchers/opening";
-
-        /// <summary>
-        /// API server route URL for the opening voucher in current environment
-        /// </summary>
-        public const string OpeningVoucherUrl = "vouchers/opening";
-
-        /// <summary>
-        /// API client URL for the closing temp accounts voucher in current environment
-        /// </summary>
-        public const string ClosingAccountsVoucher = "vouchers/closing-tmp";
-
-        /// <summary>
-        /// API server route URL for the closing temp accounts voucher in current environment
-        /// </summary>
-        public const string ClosingAccountsVoucherUrl = "vouchers/closing-tmp";
-
-        /// <summary>
-        /// API client URL for the closing voucher in current environment
-        /// </summary>
-        public const string ClosingVoucher = "vouchers/closing";
-
-        /// <summary>
-        /// API server route URL for the closing voucher in current environment
-        /// </summary>
-        public const string ClosingVoucherUrl = "vouchers/closing";
+        #endregion
 
         #region Voucher Operations - Single
 
@@ -364,47 +376,57 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string UndoApproveVoucherUrl = "vouchers/{voucherId:min(1)}/approve/undo";
 
+        /// <summary>
+        /// API client URL for normalizing (changing Draft type to Normal) a single voucher specified by identifier
+        /// </summary>
+        public const string NormalizeVoucher = "vouchers/{0}/normalize";
+
+        /// <summary>
+        /// API server route URL for normalizing (changing Draft type to Normal) a single voucher specified by identifier
+        /// </summary>
+        public const string NormalizeVoucherUrl = "vouchers/{voucherId:min(1)}/normalize";
+
         #endregion
 
         #region Voucher Operations - Group
 
         /// <summary>
-        /// API client URL for checking (changing document group  status  to Checked)
+        /// API client URL for checking (changing document status to Checked) multiple vouchers
         /// </summary>
         public const string CheckVouchers = "vouchers/check";
 
         /// <summary>
-        /// API server route URL for checking (changing document group  status  to Checked)
+        /// API server route URL for checking (changing document status to Checked) multiple vouchers
         /// </summary>
         public const string CheckVouchersUrl = "vouchers/check";
 
         /// <summary>
-        /// API client URL for undoing check (changing document group  status  to Undoing Check)
+        /// API client URL for undoing check (changing document status to NotChecked) in multiple vouchers
         /// </summary>
         public const string UndoCheckVouchers = "vouchers/check/undo";
 
         /// <summary>
-        /// API server route URL for undoing check (changing document group  status  to Undoing Check)
+        /// API server route URL for undoing check (changing document status to NotChecked) in multiple vouchers
         /// </summary>
         public const string UndoCheckVouchersUrl = "vouchers/check/undo";
 
         /// <summary>
-        /// API client URL for finalizing (changing document group  status  to Finalize)
+        /// API client URL for finalizing (changing document status to Finalize) multiple vouchers
         /// </summary>
         public const string FinalizeVouchers = "vouchers/finalize";
 
         /// <summary>
-        /// API server route URL for finalizing (changing document group  status  to Finalize)
+        /// API server route URL for finalizing (changing document status to Finalize) multiple vouchers
         /// </summary>
         public const string FinalizeVouchersUrl = "vouchers/finalize";
 
         /// <summary>
-        /// API client URL for undoing finalize (changing document group  status  to check)
+        /// API client URL for undoing finalize (changing document status to Checked) in multiple vouchers
         /// </summary>
         public const string UndoFinalizeVouchers = "vouchers/finalize/undo";
 
         /// <summary>
-        /// API server route URL for undoing finalize (changing document group  status  to check)
+        /// API server route URL for undoing finalize (changing document status to Checked) in multiple vouchers
         /// </summary>
         public const string UndoFinalizeVouchersUrl = "vouchers/finalize/undo";
 
@@ -419,12 +441,12 @@ namespace SPPC.Tadbir.Api
         public const string ConfirmVouchersUrl = "vouchers/confirm";
 
         /// <summary>
-        /// API client URL for undoing confirmation and undoing approval document group
+        /// API client URL for undoing confirmation/approval in multiple vouchers
         /// </summary>
         public const string UndoConfirmVouchers = "vouchers/confirm/undo";
 
         /// <summary>
-        /// API server route URL for undoing confirmation and undoing approval document group
+        /// API server route URL for undoing confirmation/approval in multiple vouchers
         /// </summary>
         public const string UndoConfirmVouchersUrl = "vouchers/confirm/undo";
 
@@ -438,6 +460,90 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string ApproveVouchersUrl = "vouchers/approve";
 
+        /// <summary>
+        /// API client URL for normalizing (changing Draft type to Normal) multiple vouchers
+        /// </summary>
+        public const string NormalizeVouchers = "vouchers/normalize";
+
+        /// <summary>
+        /// API server route URL for normalizing (changing Draft type to Normal) multiple vouchers
+        /// </summary>
+        public const string NormalizeVouchersUrl = "vouchers/normalize";
+
         #endregion
+
+        #region System Issue Resources
+
+        /// <summary>
+        /// API client URL for vouchers with no article
+        /// </summary>
+        public const string VoucherWithNoArticle = "vouchers/no-article";
+
+        /// <summary>
+        /// API server route URL for vouchers with no article
+        /// </summary>
+        public const string VoucherWithNoArticleUrl = "vouchers/no-article";
+
+        /// <summary>
+        /// API client URL for unbalanced vouchers
+        /// </summary>
+        public const string UnbalancedVouchers = "vouchers/unbalanced";
+
+        /// <summary>
+        /// API server route URL for unbalanced vouchers
+        /// </summary>
+        public const string UnbalancedVouchersUrl = "vouchers/unbalanced";
+
+        /// <summary>
+        /// API client URL for unbalanced vouchers
+        /// </summary>
+        public const string MissingVoucherNumber = "vouchers/miss-number";
+
+        /// <summary>
+        /// API server route URL for unbalanced vouchers
+        /// </summary>
+        public const string MissingVoucherNumberUrl = "vouchers/miss-number";
+
+        /// <summary>
+        /// API client URL for system issue articles
+        /// </summary>
+        public const string SystemIssueArticles = "vouchers/articles/sys-issue/{0}";
+
+        /// <summary>
+        /// API server route URL for system issue articles
+        /// </summary>
+        public const string SystemIssueArticlesUrl = "vouchers/articles/sys-issue/{issueType}";
+
+        #endregion
+
+        /// <summary>
+        /// API client URL for first and last voucher number accessible in current environment
+        /// </summary>
+        public const string EnvironmentItemRange = "vouchers/range";
+
+        /// <summary>
+        /// API server route URL for first and last voucher number accessible in current environment
+        /// </summary>
+        public const string EnvironmentItemRangeUrl = "vouchers/range";
+
+        /// <summary>
+        /// API client URL for number of voucher by statusId
+        /// </summary>
+        public const string VoucherCountByStatus = "vouchers/count/by-status";
+
+        /// <summary>
+        /// API server URL for number of voucher by statusId
+        /// </summary>
+        public const string VoucherCountByStatusUrl = "vouchers/count/by-status";
+
+        /// <summary>
+        /// API client URL for count of all articles
+        /// </summary>
+        public const string VoucherArticlesCount = "vouchers/articles/count";
+
+        /// <summary>
+        /// API server route URL for count of all articles
+        /// </summary>
+        public const string VoucherArticlesCountUrl = "vouchers/articles/count";
     }
 }

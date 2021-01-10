@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -10,7 +9,7 @@ namespace SPPC.Framework.Helpers
     /// <summary>
     /// Custom contract resolver used for controlling JSON serialization using <see cref="JsonSerializer"/> class.
     /// </summary>
-    public class CustomJsonContractResolver : DefaultContractResolver, IContractResolver
+    public class CustomJsonContractResolver : CamelCasePropertyNamesContractResolver, IContractResolver
     {
         /// <summary>
         /// Creates a new instance of the <see cref="CustomJsonContractResolver"/> class

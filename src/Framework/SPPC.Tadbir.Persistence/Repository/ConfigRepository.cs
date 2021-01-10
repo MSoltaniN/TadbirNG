@@ -63,6 +63,16 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، نوع تقویم پیش فرض برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مقدار عددی متناظر با نوع شمارشی موجود برای تقویم پیش فرض</returns>
+        public async Task<int> GetCurrentCalendarAsync()
+        {
+            var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
+            return systemConfig.DefaultCalendar;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تاریخ داده شده را با توجه به تنظیمات تقویم پیش فرض به صورت رشته متنی برمی گرداند
         /// </summary>
         /// <param name="date">تاریخ مورد نظر برای نمایش متنی</param>
@@ -71,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string dateDisplay = date.ToShortDateString(false);
             var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
-            if (systemConfig.DefaultCalendar == 0)
+            if (systemConfig.DefaultCalendar == (int)CalendarType.Jalali)
             {
                 dateDisplay = JalaliDateTime
                     .FromDateTime(date)
@@ -149,7 +159,7 @@ namespace SPPC.Tadbir.Persistence
                 UnitOfWork.UseCompanyContext();
                 var newUserConfig = new UserSetting()
                 {
-                    SettingId = 6,      // TODO: Remove this hard-coded value
+                    SettingId = (int)SettingId.QuickSearch,
                     ViewId = userConfig.ViewId,
                     User = user,
                     ModelType = typeof(QuickSearchConfig).Name,
@@ -219,7 +229,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var configItem in configItems)
             {
                 var existing = await repository.GetSingleByCriteriaAsync(
-                    cfg => cfg.ViewId == configItem.Default.ViewId && cfg.SettingId == 5);
+                    cfg => cfg.ViewId == configItem.Default.ViewId && cfg.SettingId == (int)SettingId.ViewTree);
                 if (existing != null)
                 {
                     existing.Values = JsonHelper.From(configItem.Current, false);
@@ -270,9 +280,58 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات موجود برای عناوین سفارشی فرم گزارشی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="formId">شناسه دیتابیسی فرم گزارشی</param>
+        /// <param name="localeId">شناسه دیتابیسی زبان مورد نظر برای محلی سازی متن عناوین</param>
+        /// <returns>تنظیمات موجود برای عناوین سفارشی</returns>
+        public async Task<FormLabelFullConfig> GetFormLabelConfigAsync(int formId, int localeId)
+        {
+            var labelConfig = default(FormLabelFullConfig);
+            var repository = UnitOfWork.GetAsyncRepository<LabelSetting>();
+            var config = await repository
+                .GetSingleByCriteriaAsync(cfg => cfg.ModelType == typeof(FormLabelConfig).Name
+                    && cfg.CustomForm.Id == formId
+                    && cfg.LocaleId == localeId);
+            if (config != null)
+            {
+                labelConfig = Mapper.Map<FormLabelFullConfig>(config);
+            }
+
+            return labelConfig;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت عناوین سفارشی یک فرم گزارشی را ذخیره می کند
+        /// </summary>
+        /// <param name="labelConfig">اطلاعات تنظیمات عناوین سفارشی</param>
+        public async Task SaveFormLabelConfigAsync(FormLabelConfig labelConfig)
+        {
+            Verify.ArgumentNotNull(labelConfig, nameof(labelConfig));
+            var repository = UnitOfWork.GetAsyncRepository<LabelSetting>();
+            var existing = await repository.GetSingleByCriteriaAsync(
+                cfg => cfg.CustomForm.Id == labelConfig.FormId && cfg.LocaleId == labelConfig.LocaleId);
+            if (existing != null)
+            {
+                existing.Values = CorrectLabelConfigCasing(
+                    JsonHelper.From(labelConfig, false, null, false));
+                repository.Update(existing);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
         internal override OperationSourceId OperationSource
         {
             get { return OperationSourceId.EnvironmentParams; }
+        }
+
+        private static string CorrectLabelConfigCasing(string labelConfig)
+        {
+            return labelConfig
+                .Replace("FormId", "formId")
+                .Replace("LocaleId", "localeId")
+                .Replace("LabelMap", "labelMap");
         }
 
         private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
@@ -290,7 +349,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static string GetCalendarName(int calendar)
         {
-            return (calendar == 1)
+            return (calendar == (int)CalendarType.Gregorian)
                 ? AppStrings.Gregorian
                 : AppStrings.Persian;
         }

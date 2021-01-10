@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
-using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات کاربران را پیاده سازی می کند
     /// </summary>
-    public class UserRepository : SystemLoggingRepository<User, UserViewModel>, IUserRepository
+    public class UserRepository : SystemEntityLoggingRepository<User, UserViewModel>, IUserRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -392,7 +392,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public override async Task InsertAsync(IRepository<User> repository,
+        protected override async Task InsertAsync(IRepository<User> repository,
             User entity, OperationId operation = OperationId.Create)
         {
             OnEntityAction(operation);
@@ -402,7 +402,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public override async Task UpdateAsync(IRepository<User> repository,
+        protected override async Task UpdateAsync(IRepository<User> repository,
             User entity, UserViewModel entityView, OperationId operation = OperationId.Edit)
         {
             var clone = CloneUser(entity);

@@ -22,7 +22,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات نقش ها را پیاده سازی می کند
     /// </summary>
-    public class RoleRepository : SystemLoggingRepository<Role, RoleFullViewModel>, IRoleRepository
+    public class RoleRepository
+        : SystemEntityLoggingRepository<Role, RoleFullViewModel>, IRoleRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -592,7 +593,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public override async Task InsertAsync(IRepository<Role> repository,
+        protected override async Task InsertAsync(IRepository<Role> repository,
             Role entity, OperationId operation = OperationId.Create)
         {
             OnEntityAction(operation);
@@ -602,7 +603,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public override async Task UpdateAsync(IRepository<Role> repository,
+        protected override async Task UpdateAsync(IRepository<Role> repository,
             Role entity, RoleFullViewModel entityView, OperationId operation = OperationId.Edit)
         {
             var clone = new Role() { Id = entity.Id, Name = entity.Name, Description = entity.Description };
@@ -617,7 +618,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public override async Task DeleteAsync(IRepository<Role> repository,
+        protected override async Task DeleteAsync(IRepository<Role> repository,
             Role entity, OperationId operation = OperationId.Delete)
         {
             OnEntityAction(operation);
