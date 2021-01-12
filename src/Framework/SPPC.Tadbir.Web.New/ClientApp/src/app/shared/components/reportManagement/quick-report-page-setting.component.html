@@ -1,0 +1,54 @@
+<div style="padding:15px;" (keydown.esc)="escPress()">  
+  <div class="form-group">
+    <label class="control-label">{{ 'Report.PaperSize' | translate }}</label>
+
+    <kendo-dropdownlist [data]="paperSizes"
+                        [textField]="'name'"
+                        [valueField]="'id'"
+                        [valuePrimitive]="true"
+                        [value]="paperSizeSelected"
+                        [(ngModel)]="paperSizeSelected">
+    </kendo-dropdownlist>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{ 'Report.PaperOrientation' | translate }}</label>
+
+  <kendo-dropdownlist [data]="paperOrientations"
+                        [textField]="'name'"
+                        [valueField]="'id'"
+                        [valuePrimitive]="true"
+                        [value]="paperOrientationSelected"
+                        [(ngModel)]="paperOrientationSelected">
+    </kendo-dropdownlist>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{ 'Report.LeftMargin' | translate }}</label>
+
+    <input type="text" class="k-textbox" [OnlyNumber] />
+  </div>
+
+  <div class="form-group">
+    <label  class="control-label">{{ 'Report.RightMargin' | translate }}</label>
+
+    <input type="text" class="k-textbox" [OnlyNumber] />
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{ 'Report.TopMargin' | translate }}</label>
+
+    <input type="text" class="k-textbox" [OnlyNumber]  />
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{ 'Report.BottomMargin' | translate }}</label>
+
+    <input type="text" class="k-textbox" [OnlyNumber]  />
+  </div>    
+
+</div>
+<kendo-dialog-actions>
+  <button class="k-button k-primary"  (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+  <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+</kendo-dialog-actions>-->

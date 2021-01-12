@@ -101,6 +101,7 @@ import { NotFoundComponent } from '@sppc/shared/components/notFound/notFound.com
 import { ClosingTmpComponent } from '@sppc/finance/components/operational/voucher/closing-tmp.component';
 import { ErrorListComponent } from './components/errorList/errorList.component';
 import { LeftActionToolbarComponent } from '@sppc/shared/components/toolbar/leftActionToolbar.component';
+import { QuickReportPageSettingComponent } from './components/reportManagement/quick-report-page-setting.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -141,10 +142,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReplaceLineBreaksPipe, DialogComponent, GridFilterComponent, SppcBranchScope, SppcDatepicker, SppcDateRangeSelector, SppcDropDownList, SppcDisplayFullAccountComponent,
     SppcFullAccountComponent, SppcGridDatepicker, SppcGridDateFilter, FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective,
     TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput, SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective,
-    FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent, NotFoundComponent,ClosingTmpComponent,ErrorListComponent, LeftActionToolbarComponent
+    FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent,
+    NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, QuickReportPageSettingComponent
   ],
 
-  entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent, AdvanceFilterComponent,ErrorListComponent],
+  entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent, AdvanceFilterComponent,ErrorListComponent,QuickReportPageSettingComponent],
 
   //providers: [BrowserStorageService, DashboardService, GridService, LookupService, MetaDataService, ReportingService, 
   //  { provide: MessageService, useClass: GridMessageService },
@@ -160,7 +162,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective, TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput,
     SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
-    ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, ExcelModule, PDFModule 
+    ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, ExcelModule, PDFModule, QuickReportPageSettingComponent
   ]
 })
 export class SharedModule {

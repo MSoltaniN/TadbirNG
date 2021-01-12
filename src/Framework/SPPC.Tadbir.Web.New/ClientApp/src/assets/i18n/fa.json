@@ -90,7 +90,14 @@
     "QuickReportValidate": "لطفا قبل از ایجاد گزارش فوری دکمه محاسبه را کلیک کنید",
     "PleaseSetQReportSetting": "لطفا قبل از چاپ گزارش فوری، تنظیمات ستون های گزارش را در فرم تنظیمات گزارش فوری مشخص کنید",
     "ReportSetting": "تنظیمات گزارش فوری",
-    "Print": "چاپ"
+    "Print": "چاپ",
+    "ReportPageSetting": "تنظیمات صفحه",
+    "PaperSize": "اندازه صفحه",
+    "PaperOrientation": "جهت صفحه",
+    "LeftMargin": "حاشیه چپ",
+    "RightMargin": "حاشیه راست",
+    "TopMargin": "حاشیه بالا",
+    "BottomMargin": "حاشیه پایین"
   },
   "Exports": {
     "True": "فعال",
