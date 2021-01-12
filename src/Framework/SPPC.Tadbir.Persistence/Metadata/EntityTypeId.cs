@@ -8,7 +8,6 @@ namespace SPPC.Tadbir.Persistence
         None = 0,
         Account = 1,
         AccountCollectionAccount = 2,
-        AccountRelations = 3,
         AccountGroup = 4,
         Branch = 5,
         CostCenter = 6,

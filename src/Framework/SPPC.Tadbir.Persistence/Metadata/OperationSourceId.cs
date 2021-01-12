@@ -15,6 +15,8 @@ namespace SPPC.Tadbir.Persistence
         AppLogin = 7,
         AppEnvironment = 8,
         EnvironmentParams = 9,
-        ProfitLoss = 10
+        ProfitLoss = 10,
+        AccountRelations = 11,
+        BalanceSheet = 12
     }
 }

@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات پایه مورد نیاز برای ذخیره و بازیابی تنظیمات را پیاده سازی می کند
     /// </summary>
-    public class BaseConfigRepository : LoggingRepository<Setting, object>, IBaseConfigRepository
+    public class BaseConfigRepository : LoggingRepositoryBase, IBaseConfigRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

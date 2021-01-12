@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر عملیات ارزی را تعریف می کند
     /// </summary>
-    public class CurrencyBookRepository : LoggingRepository<Account, object>, ICurrencyBookRepository
+    public class CurrencyBookRepository : LoggingRepositoryBase, ICurrencyBookRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

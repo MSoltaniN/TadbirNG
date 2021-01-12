@@ -21,9 +21,6 @@
               "src/assets"
             ],
             "styles": [
-              //{
-              //  "input": "node_modules/@progress/kendo-theme-default/scss/all.scss"
-              //},              
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/stimulsoft/stimulsoft.viewer.office2013.whiteblue.css",
@@ -81,9 +78,6 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              //{
-              //  "input": "node_modules/@progress/kendo-theme-default/scss/all.scss"
-              //},
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
@@ -141,5 +135,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": "29d489a2-2a22-4057-94b8-af131c98c5f1"
   }
 }

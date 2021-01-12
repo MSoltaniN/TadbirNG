@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای محاسبه اطلاعات گزارش دفتر حساب را پیاده سازی می کند
     /// </summary>
-    public class AccountBookRepository : LoggingRepository<Account, object>, IAccountBookRepository
+    public class AccountBookRepository : LoggingRepositoryBase, IAccountBookRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// عملیات مورد نیاز برای مدیریت مجموعه حساب را تعریف می کند.
     /// </summary>
     public class AccountCollectionRepository
-        : LoggingRepository<AccountCollectionAccount, AccountCollectionAccountViewModel>, IAccountCollectionRepository
+        : EntityLoggingRepository<AccountCollectionAccount, AccountCollectionAccountViewModel>, IAccountCollectionRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

@@ -22,7 +22,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     ///  عملیات مورد نیاز برای مدیریت اطلاعات دوره مالی را پیاده سازی می کند.
     /// </summary>
-    public class FiscalPeriodRepository : LoggingRepository<FiscalPeriod, FiscalPeriodViewModel>, IFiscalPeriodRepository
+    public class FiscalPeriodRepository
+        : EntityLoggingRepository<FiscalPeriod, FiscalPeriodViewModel>, IFiscalPeriodRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

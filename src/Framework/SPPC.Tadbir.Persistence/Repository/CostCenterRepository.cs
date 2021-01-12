@@ -17,7 +17,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات مراکز هزینه را پیاده سازی می کند.
     /// </summary>
-    public class CostCenterRepository : LoggingRepository<CostCenter, CostCenterViewModel>, ICostCenterRepository
+    public class CostCenterRepository
+        : EntityLoggingRepository<CostCenter, CostCenterViewModel>, ICostCenterRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

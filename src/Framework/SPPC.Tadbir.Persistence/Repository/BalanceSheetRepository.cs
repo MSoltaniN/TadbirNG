@@ -18,15 +18,17 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت و محاسبه گزارش ترازنامه را پیاده سازی می کند
     /// </summary>
-    public class BalanceSheetRepository : RepositoryBase, IBalanceSheetRepository
+    public class BalanceSheetRepository : LoggingRepositoryBase, IBalanceSheetRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز برای عملیات دیتابیسی را فراهم می کند</param>
+        /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی را در برنامه فراهم می کند</param>
         /// <param name="utility">امکان استفاده از مجموعه حسابها را فراهم می کند</param>
-        public BalanceSheetRepository(IRepositoryContext context, IAccountCollectionUtility utility)
-            : base(context)
+        public BalanceSheetRepository(IRepositoryContext context,
+            IOperationLogRepository logRepository, IAccountCollectionUtility utility)
+            : base(context, logRepository)
         {
             _utility = utility;
         }
@@ -77,7 +79,13 @@ namespace SPPC.Tadbir.Persistence
             total.Liabilities = AppStrings.LiabilitiesOwnerEquitiesSum;
             balanceSheet.Items.Add(total);
 
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceSheet);
             return balanceSheet;
+        }
+
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.BalanceSheet; }
         }
 
         private static IList<BalanceSheetItemViewModel> GetMergedReportItems(
