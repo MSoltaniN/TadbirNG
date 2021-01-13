@@ -1,5 +1,6 @@
 import { QuickReportColumnConfig } from "./QuickReportColumnConfig";
 import { QuickReportViewSetting } from "../components/reportManagement/QuickReportViewSetting";
+import { ReportPageSetting } from "./reportPageSetting";
 
 export interface QuickReportConfig {
 
@@ -12,6 +13,8 @@ export interface QuickReportConfig {
   columns: Array<QuickReportColumnConfig>;
 
   parameters: any;
+
+  pageSetting: ReportPageSetting;
 }
 
 
@@ -22,4 +25,5 @@ export class QuickReportConfigInfo implements QuickReportConfig {
     inchValue: number;
     columns: QuickReportColumnConfig[];
     reportViewSetting: QuickReportViewSetting;
+    pageSetting: ReportPageSetting;
 }

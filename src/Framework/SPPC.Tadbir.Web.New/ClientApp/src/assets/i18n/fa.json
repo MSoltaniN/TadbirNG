@@ -91,13 +91,21 @@
     "PleaseSetQReportSetting": "لطفا قبل از چاپ گزارش فوری، تنظیمات ستون های گزارش را در فرم تنظیمات گزارش فوری مشخص کنید",
     "ReportSetting": "تنظیمات گزارش فوری",
     "Print": "چاپ",
-    "ReportPageSetting": "تنظیمات صفحه",
-    "PaperSize": "اندازه صفحه",
-    "PaperOrientation": "جهت صفحه",
-    "LeftMargin": "حاشیه چپ",
-    "RightMargin": "حاشیه راست",
-    "TopMargin": "حاشیه بالا",
-    "BottomMargin": "حاشیه پایین"
+    "PageSetting": {
+      "A4": "A4",
+      "A3": "A3",
+      "FitToPage": "عرض اتوماتیک",
+      "Portrait": "عمودی",
+      "Landscape": "افقی",
+      "ReportPageSetting": "تنظیمات صفحه",
+      "PaperSize": "اندازه صفحه",
+      "PaperOrientation": "جهت صفحه",
+      "LeftMargin": "حاشیه چپ",
+      "RightMargin": "حاشیه راست",
+      "TopMargin": "حاشیه بالا",
+      "BottomMargin": "حاشیه پایین",
+      "AutoSizeColumns": "تنظیم اتوماتیک ستون ها"
+    }
   },
   "Exports": {
     "True": "فعال",
