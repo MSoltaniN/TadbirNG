@@ -1,6 +1,6 @@
 ﻿using System;
 using SPPC.Framework.Common;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
 {

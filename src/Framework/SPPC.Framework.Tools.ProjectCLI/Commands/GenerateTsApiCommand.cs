@@ -3,7 +3,8 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using SPPC.Framework.Common;
-using SPPC.Framework.Tools.ProjectCLI.Templates;
+using SPPC.Tools.Transforms;
+using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Framework.Tools.ProjectCLI
 {

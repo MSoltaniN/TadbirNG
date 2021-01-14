@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using SPPC.Tadbir.Tools.SystemDesigner.Commands;
 using SPPC.Tadbir.Tools.SystemDesigner.Forms;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using SPPC.Tools.Model;
 using SPPC.Tadbir.Tools.SystemDesigner.Wizards.NewCrudEntityWizard;
 using SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard;
 using SPPC.Tadbir.Tools.SystemDesigner.Designers;

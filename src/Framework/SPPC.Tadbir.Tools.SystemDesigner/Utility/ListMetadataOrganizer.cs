@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using BabakSoft.Platform.Data;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using SPPC.Tools.Model;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Utility

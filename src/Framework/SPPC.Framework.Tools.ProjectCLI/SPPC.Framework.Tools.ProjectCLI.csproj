@@ -61,9 +61,6 @@
     <Reference Include="BabakSoft.Platform.Interfaces">
       <HintPath>..\..\..\lib\BabakSoft.Platform.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="BabakSoft.Platform.Metadata">
-      <HintPath>..\..\..\lib\BabakSoft.Platform.Metadata.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\lib\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -94,31 +91,6 @@
     <Compile Include="Models\ConnectionStringsModel.cs" />
     <Compile Include="Models\LoggingModel.cs" />
     <Compile Include="Models\LogLevelModel.cs" />
-    <Compile Include="NamespaceUtil.cs" />
-    <Compile Include="Templates\CsFluentMappingFromMetadata.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CsFluentMappingFromMetadata.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\CsFluentMappingFromMetadata.Custom.cs" />
-    <Compile Include="Templates\CsPocoFromXmlMetadata.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CsPocoFromXmlMetadata.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\CsPocoFromXmlMetadata.Custom.cs" />
-    <Compile Include="Templates\CsViewModelFromMetadata.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CsViewModelFromMetadata.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\CsViewModelFromMetadata.Custom.cs" />
-    <Compile Include="Templates\ResXKeyClass.cs">
-      <DependentUpon>ResXKeyClass.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Templates\ResXKeyClass.Custom.cs" />
     <Compile Include="Shell\CliCommand.cs" />
     <Compile Include="Shell\CliConfiguration.cs" />
     <Compile Include="Shell\CliParameter.cs" />
@@ -127,57 +99,15 @@
     <Compile Include="Commands\GenerateTsApiCommand.cs" />
     <Compile Include="Commands\GenerateTsModelCommand.cs" />
     <Compile Include="Shell\ICliCommand.cs" />
-    <Compile Include="Templates\JsResFromCsViewModels.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JsResFromCsViewModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\JsResFromCsViewModels.Custom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyMetadata.cs" />
-    <Compile Include="StringExtensions.cs" />
-    <Compile Include="Templates\SqlCreateTableFromMetadata.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SqlCreateTableFromMetadata.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\SqlCreateTableFromMetadata.Custom.cs" />
-    <Compile Include="Templates\TsApiFromCsApi.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TsApiFromCsApi.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\TsApiFromCsApi.Custom.cs" />
-    <Compile Include="Templates\TsModelFromCsViewModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TsModelFromCsViewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\TsPermissionsFromCsPermissions.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TsPermissionsFromCsPermissions.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\TsPermissionsFromCsPermissions.Custom.cs" />
-    <Compile Include="Templates\TsConstTypeFromCsValueClass.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TsConstTypeFromCsValueClass.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\TsConstTypeFromCsValueClass.Custom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Compile Include="Templates\TsModelFromCsViewModel.Custom.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="cli-config.json" />
     <None Include="packages.config" />
-    <None Include="Templates\TsModelFromCsViewModel.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>TsModelFromCsViewModel.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -199,50 +129,14 @@
       <Project>{1359a987-13f0-4013-be47-017287889165}</Project>
       <Name>SPPC.Tadbir.ViewModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Templates\JsResFromCsViewModels.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>JsResFromCsViewModels.cs</LastGenOutput>
-    </None>
-    <None Include="Templates\TsApiFromCsApi.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>TsApiFromCsApi.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Templates\ResXKeyClass.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ResXKeyClass.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Templates\TsPermissionsFromCsPermissions.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>TsPermissionsFromCsPermissions.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Templates\CsPocoFromXmlMetadata.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>CsPocoFromXmlMetadata.cs</LastGenOutput>
-    </None>
-    <None Include="Templates\CsFluentMappingFromMetadata.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>CsFluentMappingFromMetadata.cs</LastGenOutput>
-    </None>
-    <None Include="Templates\CsViewModelFromMetadata.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>CsViewModelFromMetadata.cs</LastGenOutput>
-    </None>
-    <Content Include="Templates\SqlCreateTableFromMetadata.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>SqlCreateTableFromMetadata.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\TsConstTypeFromCsValueClass.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>
-    </Content>
+    <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj">
+      <Project>{51242dcb-f03e-4a84-b9ff-434d62f4778a}</Project>
+      <Name>SPPC.Tools.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Transforms\SPPC.Tools.Transforms.csproj">
+      <Project>{9b4b433a-a376-4d2d-9092-f215bddbae7e}</Project>
+      <Name>SPPC.Tools.Transforms</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">

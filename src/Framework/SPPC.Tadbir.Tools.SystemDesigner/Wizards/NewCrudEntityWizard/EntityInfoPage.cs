@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
-using BabakSoft.Platform.Metadata;
+using SPPC.Tools.Model;
 using BabakSoft.Platform.Persistence;
 using System.Linq;
 using System.Configuration;

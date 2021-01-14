@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9B4B433A-A376-4D2D-9092-F215BDDBAE7E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SPPC.Tools.Transforms</RootNamespace>
+    <AssemblyName>SPPC.Tools.Transforms</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\FrameworkSolutionInfo.cs">
+      <Link>FrameworkSolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Templates\BlankController.cs">
+      <DependentUpon>BlankController.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\BlankController.Custom.cs" />
+    <Compile Include="Templates\CsApiClass.cs">
+      <DependentUpon>CsApiClass.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\CsApiClass.Custom.cs" />
+    <Compile Include="Templates\CsFluentMappingFromMetadata.cs">
+      <DependentUpon>CsFluentMappingFromMetadata.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\CsFluentMappingFromMetadata.Custom.cs" />
+    <Compile Include="Templates\CsPocoFromXmlMetadata.cs">
+      <DependentUpon>CsPocoFromXmlMetadata.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\CsPocoFromXmlMetadata.Custom.cs" />
+    <Compile Include="Templates\CsViewModelFromMetadata.cs">
+      <DependentUpon>CsViewModelFromMetadata.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\CsViewModelFromMetadata.Custom.cs" />
+    <Compile Include="Templates\EmptyCrudController.cs">
+      <DependentUpon>EmptyCrudController.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\EmptyCrudController.Custom.cs" />
+    <Compile Include="Templates\JsResFromCsViewModels.cs">
+      <DependentUpon>JsResFromCsViewModels.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\JsResFromCsViewModels.Custom.cs" />
+    <Compile Include="Templates\ResXKeyClass.cs">
+      <DependentUpon>ResXKeyClass.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\ResXKeyClass.Custom.cs" />
+    <Compile Include="Templates\TsConstTypeFromCsValueClass.cs">
+      <DependentUpon>TsConstTypeFromCsValueClass.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\TsConstTypeFromCsValueClass.Custom.cs" />
+    <Compile Include="Templates\TsPermissionsFromCsPermissions.cs">
+      <DependentUpon>TsPermissionsFromCsPermissions.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\TsPermissionsFromCsPermissions.Custom.cs" />
+    <Compile Include="Utility\ITextTemplate.cs" />
+    <Compile Include="Utility\NamespaceUtil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\RepoImplementationFromMetadata.cs">
+      <DependentUpon>RepoImplementationFromMetadata.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\RepoImplementationFromMetadata.Custom.cs" />
+    <Compile Include="Templates\RepoInterfaceFromMetadata.cs">
+      <DependentUpon>RepoInterfaceFromMetadata.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\RepoInterfaceFromMetadata.Custom.cs" />
+    <Compile Include="Templates\SqlCreateTableFromMetadata.cs">
+      <DependentUpon>SqlCreateTableFromMetadata.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\SqlCreateTableFromMetadata.Custom.cs" />
+    <Compile Include="Templates\StarterCrudController.cs">
+      <DependentUpon>StarterCrudController.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\StarterCrudController.Custom.cs" />
+    <Compile Include="Utility\StringExtensions.cs" />
+    <Compile Include="Templates\TsApiFromCsApi.cs">
+      <DependentUpon>TsApiFromCsApi.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\TsApiFromCsApi.Custom.cs" />
+    <Compile Include="Templates\TsModelFromCsViewModel.cs">
+      <DependentUpon>TsModelFromCsViewModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\TsModelFromCsViewModel.Custom.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\BlankController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BlankController.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\CsApiClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsApiClass.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\EmptyCrudController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EmptyCrudController.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TsConstTypeFromCsValueClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Templates\TsPermissionsFromCsPermissions.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsPermissionsFromCsPermissions.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\ResXKeyClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ResXKeyClass.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\JsResFromCsViewModels.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>JsResFromCsViewModels.cs</LastGenOutput>
+    </None>
+    <Content Include="Templates\RepoImplementationFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepoImplementationFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\RepoInterfaceFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepoInterfaceFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\SqlCreateTableFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SqlCreateTableFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\StarterCrudController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StarterCrudController.cs</LastGenOutput>
+    </Content>
+    <None Include="Templates\TsModelFromCsViewModel.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsModelFromCsViewModel.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\TsApiFromCsApi.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsApiFromCsApi.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\CsViewModelFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsViewModelFromMetadata.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\CsPocoFromXmlMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsPocoFromXmlMetadata.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\CsFluentMappingFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsFluentMappingFromMetadata.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
+      <Project>{18c0b0da-db22-4482-b6b7-b98d4decd8b4}</Project>
+      <Name>SPPC.Framework.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj">
+      <Project>{51242dcb-f03e-4a84-b9ff-434d62f4778a}</Project>
+      <Name>SPPC.Tools.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

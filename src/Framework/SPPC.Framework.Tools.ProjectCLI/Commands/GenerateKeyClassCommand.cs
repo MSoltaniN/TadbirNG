@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using SPPC.Framework.Common;
-using SPPC.Framework.Tools.ProjectCLI.Templates;
+using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Framework.Tools.ProjectCLI
 {

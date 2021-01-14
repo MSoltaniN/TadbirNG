@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using SPPC.Framework.Helpers;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using SPPC.Tools.Model;
 using HAP = HtmlAgilityPack;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Utility

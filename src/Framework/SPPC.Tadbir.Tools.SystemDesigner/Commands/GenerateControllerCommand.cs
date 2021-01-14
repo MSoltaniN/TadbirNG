@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using SPPC.Framework.Common;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
-using SPPC.Tadbir.Tools.SystemDesigner.Templates;
+using SPPC.Tools.Model;
+using SPPC.Tools.Transforms;
+using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
 {

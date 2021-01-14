@@ -2,10 +2,10 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using BabakSoft.Platform.Metadata;
 using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Common;
-using SPPC.Framework.Tools.ProjectCLI.Templates;
+using SPPC.Tools.Model;
+using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Framework.Tools.ProjectCLI
 {

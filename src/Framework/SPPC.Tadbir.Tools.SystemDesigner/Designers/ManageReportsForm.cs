@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using BabakSoft.Platform.Data;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Designers
 {

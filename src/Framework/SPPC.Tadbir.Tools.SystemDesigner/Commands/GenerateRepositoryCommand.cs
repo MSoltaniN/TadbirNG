@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using BabakSoft.Platform.Metadata;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
-using SPPC.Tadbir.Tools.SystemDesigner.Templates;
+using SPPC.Tools.Model;
+using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Commands
 {

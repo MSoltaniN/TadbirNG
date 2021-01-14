@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using BabakSoft.Platform.Data;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using SPPC.Tools.Model;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Designers

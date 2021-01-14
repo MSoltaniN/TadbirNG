@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using BabakSoft.Platform.Data;
 using SPPC.Framework.Helpers;
-using SPPC.Tadbir.Tools.SystemDesigner.Models;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tadbir.Tools.SystemDesigner.Wizards.ViewWizard
 {
