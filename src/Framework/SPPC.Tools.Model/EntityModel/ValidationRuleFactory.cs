@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using SPPC.Framework.Common;
 
 namespace SPPC.Tools.Model
 {
@@ -18,17 +18,17 @@ namespace SPPC.Tools.Model
             var rule = new ValidationRule() { Name = "Validation", Type = ValidationRuleType.Value, Minimum = "0" };
             switch (type)
             {
-                case BuiltinType.String:
+                case BuiltinType.Text:
                     rule.Type = ValidationRuleType.Length;
                     rule.Maximum = "64";
                     break;
-                case BuiltinType.Decimal:
+                case BuiltinType.DecimalNumber:
                     rule.Maximum = Decimal.MaxValue.ToString();
                     break;
-                case BuiltinType.Double:
+                case BuiltinType.DoublePrecision:
                     rule.Maximum = Double.MaxValue.ToString();
                     break;
-                case BuiltinType.Single:
+                case BuiltinType.SinglePrecision:
                     rule.Maximum = Single.MaxValue.ToString();
                     break;
                 case BuiltinType.DateTime:
@@ -40,33 +40,33 @@ namespace SPPC.Tools.Model
                     rule.Minimum = TimeSpan.MinValue.ToString();
                     rule.Maximum = TimeSpan.MaxValue.ToString();
                     break;
-                case BuiltinType.Byte:
+                case BuiltinType.TinyNumber:
                     rule.Maximum = Byte.MaxValue.ToString();
                     break;
-                case BuiltinType.Int16:
+                case BuiltinType.SmallNumber:
                     rule.Maximum = Int16.MaxValue.ToString();
                     break;
-                case BuiltinType.Int32:
+                case BuiltinType.Number:
                     rule.Maximum = Int32.MaxValue.ToString();
                     break;
-                case BuiltinType.Int64:
+                case BuiltinType.BigNumber:
                     rule.Maximum = Int64.MaxValue.ToString();
                     break;
-                case BuiltinType.SByte:
+                case BuiltinType.SignedTinyNumber:
                     rule.Maximum = SByte.MaxValue.ToString();
                     break;
-                case BuiltinType.UInt16:
+                case BuiltinType.UnsignedSmallNumber:
                     rule.Maximum = UInt16.MaxValue.ToString();
                     break;
-                case BuiltinType.UInt32:
+                case BuiltinType.UnsignedNumber:
                     rule.Maximum = UInt32.MaxValue.ToString();
                     break;
-                case BuiltinType.UInt64:
+                case BuiltinType.UnsignedBigNumber:
                     rule.Maximum = UInt64.MaxValue.ToString();
                     break;
-                case BuiltinType.Char:
+                case BuiltinType.Character:
                 case BuiltinType.Boolean:
-                case BuiltinType.Guid:
+                case BuiltinType.SystemGuid:
                     rule.Minimum = String.Empty;
                     break;
                 default:

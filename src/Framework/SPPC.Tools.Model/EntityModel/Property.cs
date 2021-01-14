@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using SPPC.Framework.Common;
 
 namespace SPPC.Tools.Model
 {
