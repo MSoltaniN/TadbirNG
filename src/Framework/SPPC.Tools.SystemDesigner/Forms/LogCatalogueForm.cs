@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using BabakSoft.Platform.Data;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Forms
@@ -16,7 +16,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         public LogCatalogueForm()
         {
             InitializeComponent();
-            _dal = new SqlDataLayer(_connection, ProviderType.SqlClient);
+            _dal = new SqlDataLayer(_connection);
         }
 
         protected override void OnLoad(EventArgs e)

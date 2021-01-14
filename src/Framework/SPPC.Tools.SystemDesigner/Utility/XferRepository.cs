@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using BabakSoft.Platform.Data;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tools.SystemDesigner.Utility
@@ -12,8 +12,8 @@ namespace SPPC.Tools.SystemDesigner.Utility
     {
         public XferRepository(string sourceConnection, string targetConnection)
         {
-            _dalFrom = new SqlDataLayer(sourceConnection, ProviderType.SqlClient);
-            _dalTo = new SqlDataLayer(targetConnection, ProviderType.SqlClient);
+            _dalFrom = new SqlDataLayer(sourceConnection);
+            _dalTo = new SqlDataLayer(targetConnection);
         }
 
         public void XferFiscalPeriods()

@@ -1,8 +1,8 @@
-﻿using BabakSoft.Platform.Data;
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using SPPC.Framework.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
@@ -29,7 +29,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
         #region General tab
         private void LoadListViews()
         {
-            var dal = new SqlDataLayer(SysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(SysConnection);
             cmbListViews.ValueMember = "ViewID";
             cmbListViews.DisplayMember = "Name";
             cmbListViews.DataSource = dal.Query(@"SELECT [ViewID], [Name] FROM [Metadata].[View] 
@@ -44,7 +44,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void LoadParents()
         {
-            var dal = new SqlDataLayer(SysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(SysConnection);
             cmbParent.ValueMember = "ReportID";
             cmbParent.DisplayMember = "Code";
             cmbParent.DataSource = dal.Query(@"SELECT [ReportID],[Code] FROM [Reporting].[Report] 

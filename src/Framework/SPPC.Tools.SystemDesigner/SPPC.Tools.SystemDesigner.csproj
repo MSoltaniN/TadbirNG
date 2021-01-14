@@ -36,10 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BabakSoft.Platform.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\BabakSoft.Platform.Data.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\lib\HtmlAgilityPack.1.11.10\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -51,6 +47,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlClient, Version=4.5.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\System.Data.SqlClient.4.6.1\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -265,6 +264,10 @@
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
       <Project>{18c0b0da-db22-4482-b6b7-b98d4decd8b4}</Project>
       <Name>SPPC.Framework.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj">
+      <Project>{ecf8782b-d0b5-47a5-ad26-d7156ee7b65d}</Project>
+      <Name>SPPC.Framework.Persistence</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj">
       <Project>{81da88f6-b2af-4568-b56b-35cc3368f850}</Project>

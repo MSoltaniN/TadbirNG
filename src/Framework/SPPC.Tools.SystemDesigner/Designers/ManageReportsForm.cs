@@ -6,8 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using BabakSoft.Platform.Data;
 using SPPC.Tools.Model;
+using SPPC.Framework.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
@@ -165,7 +165,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
         private void Generate_Click(object sender, EventArgs e)
         {
             var sysConnection = GetSysConnectionString();
-            var dal = new SqlDataLayer(sysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(sysConnection);
             int maxReportId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ReportID]) FROM [Reporting].[Report]"));
             int maxLocalReport = Convert.ToInt32(dal.QueryScalar("SELECT MAX([LocalReportID]) FROM [Reporting].[LocalReport]"));
             int maxParamId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ParamID]) FROM [Reporting].[Parameter]"));

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
-using BabakSoft.Platform.Data;
+using SPPC.Framework.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
 {
@@ -42,7 +42,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
                     ,c.DisplayIndex
                   FROM [Metadata].[Column] c WHERE c.ViewID = {0}", selectedViewId);
 
-                var dal = new SqlDataLayer(SysConnection, ProviderType.SqlClient);
+                var dal = new SqlDataLayer(SysConnection);
                 var result = dal.Query(query);
                 gvColumns.DataSource = result;
             }

@@ -8,8 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using BabakSoft.Platform.Data;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Cli
@@ -39,7 +39,7 @@ namespace SPPC.Tools.SystemDesigner.Cli
         private string[] GetCompanyConnectionStrings(string sysConnection)
         {
             var connections = new List<string>();
-            var dal = new SqlDataLayer(sysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(sysConnection);
             var result = dal.Query("SELECT DbName, Server, UserName, Password FROM [Config].[CompanyDb]");
             foreach (DataRow row in result.Rows)
             {
@@ -94,7 +94,7 @@ namespace SPPC.Tools.SystemDesigner.Cli
 
         private Version GetDatabaseVersion(string connection)
         {
-            var dal = new SqlDataLayer(connection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(connection);
             var result = dal.QueryScalar("SELECT Number FROM [Core].[Version]");
             return new Version(result.ToString());
         }

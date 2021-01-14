@@ -4,9 +4,9 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using BabakSoft.Platform.Data;
 using SPPC.Tools.Model;
 using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Framework.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Utility
 {
@@ -164,7 +164,7 @@ namespace SPPC.Tools.SystemDesigner.Utility
             return value ? 1 : 0;
         }
 
-        private static readonly DataLayerBase _dal = new SqlDataLayer(_connection, ProviderType.SqlClient);
+        private static readonly DataLayerBase _dal = new SqlDataLayer(_connection);
         private const string _connection = "Server=.;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=true";
     }
 }

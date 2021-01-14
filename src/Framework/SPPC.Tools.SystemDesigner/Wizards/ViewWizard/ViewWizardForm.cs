@@ -2,8 +2,8 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using BabakSoft.Platform.Data;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
@@ -28,7 +28,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         private void LoadViews()
         {
             _sysConnection = GetSysConnectionString();
-            var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(_sysConnection);
             WizardModel.ViewItems = dal.Query("SELECT ViewID, Name FROM [Metadata].[View]");
         }
 
@@ -118,7 +118,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         private void GenerateScript()
         {
             var sysConnection = GetSysConnectionString();
-            var dal = new SqlDataLayer(sysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(sysConnection);
             int maxViewId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ViewID]) FROM [Metadata].[View]"));
             int maxColumnId = Convert.ToInt32( dal.QueryScalar("SELECT MAX([ColumnID]) FROM [Metadata].[Column]"));
             var view = WizardModel.View;

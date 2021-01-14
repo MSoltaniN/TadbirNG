@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using BabakSoft.Platform.Data;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Framework.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
@@ -90,7 +90,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
                 return;
             }
 
-            var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(_sysConnection);
             int maxGroupId = Convert.ToInt32(
                 dal.QueryScalar("SELECT MAX(PermissionGroupID) FROM [Auth].[PermissionGroup]"));
             int maxPermissionId = Convert.ToInt32(
@@ -158,7 +158,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void ApplyPermissionGroup()
         {
-            var dal = new SqlDataLayer(_sysConnection, ProviderType.SqlClient);
+            var dal = new SqlDataLayer(_sysConnection);
             var lastId = dal.QueryScalar("SELECT MAX(pg.PermissionGroupID) FROM [Auth].[PermissionGroup] pg");
             Model.PermissionGroup.Id = Convert.ToInt32(lastId)+1;
         }
