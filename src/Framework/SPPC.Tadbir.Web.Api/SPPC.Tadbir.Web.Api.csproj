@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" BeforeTargets="PostBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ProjectCLI.exe -cmd:refdb " />
+    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:refdb " />
   </Target>
 
   <ItemGroup>

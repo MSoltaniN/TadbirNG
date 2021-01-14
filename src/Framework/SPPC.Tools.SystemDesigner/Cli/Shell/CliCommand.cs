@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tools.ProjectCLI
+namespace SPPC.Tools.SystemDesigner.Cli
 {
     public class CliCommand
     {

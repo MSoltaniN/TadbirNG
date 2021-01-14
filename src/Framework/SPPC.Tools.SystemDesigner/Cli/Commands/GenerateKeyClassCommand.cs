@@ -3,7 +3,7 @@ using System.IO;
 using SPPC.Framework.Common;
 using SPPC.Tools.Transforms.Templates;
 
-namespace SPPC.Tools.ProjectCLI
+namespace SPPC.Tools.SystemDesigner.Cli
 {
     public class GenerateKeyClassCommand : ICliCommand
     {

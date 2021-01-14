@@ -10,7 +10,7 @@
         }
       ],
       "description": "Generates TypeScript view model interfaces from existing C# view model classes.",
-      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsModelCommand, ProjectCLI"
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateTsModelCommand, ngdes"
     },
     {
       "name": "tsapi",
@@ -22,7 +22,7 @@
         }
       ],
       "description": "Generates TypeScript Api classes from existing C# classes.",
-      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsApiCommand, ProjectCLI"
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateTsApiCommand, ngdes"
     },
     {
       "name": "jsres",
@@ -39,7 +39,7 @@
         }
       ],
       "description": "Generates localized JSON objects containing multi-language strings.",
-      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateJsResourceCommand, ProjectCLI"
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateJsResourceCommand, ngdes"
     },
     {
       "name": "reskey",
@@ -56,21 +56,21 @@
         }
       ],
       "description": "Generates a C# class containing existing keys in resource files as constant string fields.",
-      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateKeyClassCommand, ProjectCLI"
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateKeyClassCommand, ngdes"
     },
     {
       "name": "tssec",
       "parameters": [
       ],
       "description": "Generates TypeScript security types from existing C# types.",
-      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsSecurityCommand, ProjectCLI"
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateTsSecurityCommand, ngdes"
     },
     {
       "name": "refdb",
       "parameters": [
       ],
       "description": "Refreshes system and company databases with latest schema changes.",
-      "handlerType": "SPPC.Framework.Tools.ProjectCLI.RefreshDatabasesCommand, ProjectCLI"
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.RefreshDatabasesCommand, ngdes"
     },
     {
       "name": "csmodel",
@@ -82,7 +82,7 @@
         }
       ],
       "description": "Generates C# model layer classes from XML entity metadata.",
-      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateCsModelCommand, ProjectCLI"
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateCsModelCommand, ngdes"
     }
   ]
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Forms;
-using BS = BabakSoft.Platform.Common;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -42,11 +42,11 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
                         .FirstOrDefault();
                     if (type != null)
                     {
-                        var propertyNames = BS::Reflector.GetPropertyNames(type);
+                        var propertyNames = Reflector.GetPropertyNames(type);
                         int itemCount = propertyNames.Count();
                         foreach (var name in propertyNames)
                         {
-                            var column = GetColumn(name, BS::Reflector.GetPropertyType(type, name), type);
+                            var column = GetColumn(name, Reflector.GetPropertyType(type, name), type);
                             Columns.Add(column);
                         }
                     }
@@ -69,7 +69,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
             
             if (column.ScriptType == "string")
             {
-                if (BS::Reflector.GetPropertyAttribute(
+                if (Reflector.GetPropertyAttribute(
                     TargetType, name, typeof(StringLengthAttribute)) is StringLengthAttribute lengthAttribute)
                 {
                     column.Length = lengthAttribute.MaximumLength;

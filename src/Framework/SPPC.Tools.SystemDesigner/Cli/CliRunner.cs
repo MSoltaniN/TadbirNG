@@ -5,12 +5,11 @@ using System.Linq;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 
-namespace SPPC.Tools.ProjectCLI
+namespace SPPC.Tools.SystemDesigner.Cli
 {
-    class Program
+    public static class CliRunner
     {
-        [STAThread]
-        static int Main(string[] args)
+        public static int Run(string[] args)
         {
             DisplayBanner();
             if (!EnsureHasConfiguration())
@@ -50,7 +49,7 @@ namespace SPPC.Tools.ProjectCLI
             Console.WriteLine();
             Console.WriteLine("============================================================");
             Console.WriteLine("SPPC Framework : Project Command-Line Interface (v1.1)");
-            Console.WriteLine("(c) Copyright 2018, SPPC, All Rights Reserved");
+            Console.WriteLine("(c) Copyright {0}, SPPC, All Rights Reserved", DateTime.Now.Year);
             Console.WriteLine("============================================================");
             Console.WriteLine();
         }
@@ -149,7 +148,7 @@ namespace SPPC.Tools.ProjectCLI
             return param;
         }
 
-        private static readonly string _jsonConfigUri = "SPPC.Tools.ProjectCLI.cli-config.json";
+        private static readonly string _jsonConfigUri = "SPPC.Tools.SystemDesigner.Cli.cli-config.json";
         private static readonly string _commandParam = "cmd";
         private static CliConfiguration _config;
     }

@@ -10,8 +10,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using BabakSoft.Platform.Data;
 using SPPC.Framework.Helpers;
+using SPPC.Tools.Model;
 
-namespace SPPC.Tools.ProjectCLI
+namespace SPPC.Tools.SystemDesigner.Cli
 {
     public class RefreshDatabasesCommand : ICliCommand
     {

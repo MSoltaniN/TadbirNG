@@ -7,7 +7,7 @@
     <ProjectGuid>{3817C0C9-B129-409B-BEB7-E3627837EBAC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>SPPC.Tools.SystemDesigner</RootNamespace>
-    <AssemblyName>SPPC.Tools.SystemDesigner</AssemblyName>
+    <AssemblyName>ngdes</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,10 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BabakSoft.Platform.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\BabakSoft.Platform.Common.dll</HintPath>
-    </Reference>
     <Reference Include="BabakSoft.Platform.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\BabakSoft.Platform.Data.dll</HintPath>
@@ -59,7 +55,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -69,6 +64,19 @@
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Cli\CliRunner.cs" />
+    <Compile Include="Cli\Commands\GenerateCsModelCommand.cs" />
+    <Compile Include="Cli\Commands\GenerateJsResourceCommand.cs" />
+    <Compile Include="Cli\Commands\GenerateKeyClassCommand.cs" />
+    <Compile Include="Cli\Commands\GenerateTsApiCommand.cs" />
+    <Compile Include="Cli\Commands\GenerateTsModelCommand.cs" />
+    <Compile Include="Cli\Commands\GenerateTsSecurityCommand.cs" />
+    <Compile Include="Cli\Commands\RefreshDatabasesCommand.cs" />
+    <Compile Include="Cli\Shell\CliCommand.cs" />
+    <Compile Include="Cli\Shell\CliConfiguration.cs" />
+    <Compile Include="Cli\Shell\CliParameter.cs" />
+    <Compile Include="Cli\Shell\CliResult.cs" />
+    <Compile Include="Cli\Shell\ICliCommand.cs" />
     <Compile Include="Commands\CrudEntityWizardCommand.cs" />
     <Compile Include="Commands\GenerateCsApiCommand.cs" />
     <Compile Include="Commands\GenerateControllerCommand.cs" />
@@ -240,6 +248,7 @@
     <EmbeddedResource Include="Wizards\ViewWizard\ViewWizardForm.resx">
       <DependentUpon>ViewWizardForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Cli\cli-config.json" />
     <None Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

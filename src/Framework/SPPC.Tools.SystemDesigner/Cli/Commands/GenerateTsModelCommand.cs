@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using SPPC.Framework.Common;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
 
-namespace SPPC.Tools.ProjectCLI
+namespace SPPC.Tools.SystemDesigner.Cli
 {
-    public class GenerateTsApiCommand : ICliCommand
+    public class GenerateTsModelCommand : ICliCommand
     {
-        public GenerateTsApiCommand(params string[] args)
+        public GenerateTsModelCommand(params string[] args)
         {
             if (args.Length < 1)
             {
@@ -23,9 +24,8 @@ namespace SPPC.Tools.ProjectCLI
 
         public void Execute()
         {
-            string tsApiPath = ConfigurationManager.AppSettings["TsAppPath"];
-            string csAssembly = ConfigurationManager.AppSettings["CsInterfacesAssembly"];
-            string csNamespace = ConfigurationManager.AppSettings["CsApiNamespace"];
+            string tsAppPath = ConfigurationManager.AppSettings["TsAppPath"];
+            string csAssembly = ConfigurationManager.AppSettings["CsViewModelAssemblies"];
             string csOutPath = ConfigurationManager.AppSettings["CsOutputPath"];
             var assembly = Assembly.Load(csAssembly);
             if (assembly == null)
@@ -37,14 +37,18 @@ namespace SPPC.Tools.ProjectCLI
 
             foreach (string typeName in _typeNames)
             {
-                string tsTypeName = typeName.CamelCase();
-                string fullName = String.Format("{0}.{1}", csNamespace, typeName);
-                string generatedPath = String.Format(@"{0}\{1}.ts", tsApiPath, tsTypeName);
+                string tsTypeName = typeName
+                    .Split('.')
+                    .Last()
+                    .Replace("ViewModel", String.Empty)
+                    .CamelCase();
+                string fullName = String.Format("{0}.{1}", csAssembly, typeName);
+                string generatedPath = String.Format(@"{0}\{1}.ts", tsAppPath, tsTypeName);
                 string assemblyPath = String.Format(@"{0}\{1}.dll", csOutPath, csAssembly);
                 var csType = assembly.GetType(fullName);
 
-                Console.WriteLine("Generating TypeScript Api class '{0}'...", typeName);
-                var template = new TsApiFromCsApi(csType);
+                Console.WriteLine("Generating TypeScript model '{0}' for '{1}'...", tsTypeName, typeName);
+                var template = new TsModelFromCsViewModel(csType);
                 File.WriteAllText(generatedPath, template.TransformText());
             }
         }
