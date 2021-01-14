@@ -30,6 +30,7 @@
         {
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.menuDesigners = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDesignersMetadata = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDesignersPermission = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddPermissionGroup = new System.Windows.Forms.ToolStripMenuItem();
             this.menuEditPermissionGroup = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,19 +56,27 @@
             this.menuManage});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.mainMenu.Size = new System.Drawing.Size(754, 24);
+            this.mainMenu.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.mainMenu.Size = new System.Drawing.Size(1005, 28);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "Menu Bar";
             // 
             // menuDesigners
             // 
             this.menuDesigners.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuDesignersMetadata,
             this.menuDesignersPermission,
             this.menuDesignersReport});
             this.menuDesigners.Name = "menuDesigners";
-            this.menuDesigners.Size = new System.Drawing.Size(70, 20);
+            this.menuDesigners.Size = new System.Drawing.Size(86, 24);
             this.menuDesigners.Text = "&Designers";
+            // 
+            // menuDesignersMetadata
+            // 
+            this.menuDesignersMetadata.Name = "menuDesignersMetadata";
+            this.menuDesignersMetadata.Size = new System.Drawing.Size(307, 26);
+            this.menuDesignersMetadata.Text = "&Metadata Designer";
+            this.menuDesignersMetadata.Click += new System.EventHandler(this.DesignersMetadata_Click);
             // 
             // menuDesignersPermission
             // 
@@ -77,42 +86,42 @@
             this.menuDesignersPermission.Name = "menuDesignersPermission";
             this.menuDesignersPermission.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.P)));
-            this.menuDesignersPermission.Size = new System.Drawing.Size(254, 22);
+            this.menuDesignersPermission.Size = new System.Drawing.Size(307, 26);
             this.menuDesignersPermission.Text = "&Permission Designer";
             // 
             // menuAddPermissionGroup
             // 
             this.menuAddPermissionGroup.Name = "menuAddPermissionGroup";
-            this.menuAddPermissionGroup.Size = new System.Drawing.Size(193, 22);
+            this.menuAddPermissionGroup.Size = new System.Drawing.Size(231, 26);
             this.menuAddPermissionGroup.Text = "Add Permission Group";
             this.menuAddPermissionGroup.Click += new System.EventHandler(this.AddPermissionGroup_Click);
             // 
             // menuEditPermissionGroup
             // 
             this.menuEditPermissionGroup.Name = "menuEditPermissionGroup";
-            this.menuEditPermissionGroup.Size = new System.Drawing.Size(193, 22);
+            this.menuEditPermissionGroup.Size = new System.Drawing.Size(231, 26);
             this.menuEditPermissionGroup.Text = "Edit Permission Group";
             this.menuEditPermissionGroup.Click += new System.EventHandler(this.EditPermissionGroup_Click);
             // 
             // menuDesignersReport
             // 
             this.menuDesignersReport.Name = "menuDesignersReport";
-            this.menuDesignersReport.Size = new System.Drawing.Size(254, 22);
+            this.menuDesignersReport.Size = new System.Drawing.Size(307, 26);
             this.menuDesignersReport.Text = "&Report Designer";
-            this.menuDesignersReport.Click += new System.EventHandler(this.menuDesignersReport_Click);
+            this.menuDesignersReport.Click += new System.EventHandler(this.DesignersReport_Click);
             // 
             // menuGenerate
             // 
             this.menuGenerate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuGenerateBlankController});
             this.menuGenerate.Name = "menuGenerate";
-            this.menuGenerate.Size = new System.Drawing.Size(66, 20);
+            this.menuGenerate.Size = new System.Drawing.Size(81, 24);
             this.menuGenerate.Text = "&Generate";
             // 
             // menuGenerateBlankController
             // 
             this.menuGenerateBlankController.Name = "menuGenerateBlankController";
-            this.menuGenerateBlankController.Size = new System.Drawing.Size(157, 22);
+            this.menuGenerateBlankController.Size = new System.Drawing.Size(185, 26);
             this.menuGenerateBlankController.Text = "API Controller...";
             this.menuGenerateBlankController.Click += new System.EventHandler(this.GenerateApiController_Click);
             // 
@@ -122,20 +131,20 @@
             this.menuWizardsViewWizard,
             this.menuWizardsCrudManager});
             this.menuWizards.Name = "menuWizards";
-            this.menuWizards.Size = new System.Drawing.Size(60, 20);
+            this.menuWizards.Size = new System.Drawing.Size(74, 24);
             this.menuWizards.Text = "Wizards";
             // 
             // menuWizardsViewWizard
             // 
             this.menuWizardsViewWizard.Name = "menuWizardsViewWizard";
-            this.menuWizardsViewWizard.Size = new System.Drawing.Size(203, 22);
+            this.menuWizardsViewWizard.Size = new System.Drawing.Size(246, 26);
             this.menuWizardsViewWizard.Text = "View Wizard";
             this.menuWizardsViewWizard.Click += new System.EventHandler(this.WizardsViewWizard_Click);
             // 
             // menuWizardsCrudManager
             // 
             this.menuWizardsCrudManager.Name = "menuWizardsCrudManager";
-            this.menuWizardsCrudManager.Size = new System.Drawing.Size(203, 22);
+            this.menuWizardsCrudManager.Size = new System.Drawing.Size(246, 26);
             this.menuWizardsCrudManager.Text = "CRUD Manager Wizard...";
             this.menuWizardsCrudManager.Click += new System.EventHandler(this.WizardsCrudManager_Click);
             // 
@@ -145,30 +154,31 @@
             this.menuManageLogCatalog,
             this.menuManageSecurityTicket});
             this.menuManage.Name = "menuManage";
-            this.menuManage.Size = new System.Drawing.Size(62, 20);
+            this.menuManage.Size = new System.Drawing.Size(75, 24);
             this.menuManage.Text = "&Manage";
             // 
             // menuManageLogCatalog
             // 
             this.menuManageLogCatalog.Name = "menuManageLogCatalog";
-            this.menuManageLogCatalog.Size = new System.Drawing.Size(150, 22);
+            this.menuManageLogCatalog.Size = new System.Drawing.Size(179, 26);
             this.menuManageLogCatalog.Text = "Log Catalog";
             this.menuManageLogCatalog.Click += new System.EventHandler(this.ManageLogCatalog_Click);
             // 
             // menuManageSecurityTicket
             // 
             this.menuManageSecurityTicket.Name = "menuManageSecurityTicket";
-            this.menuManageSecurityTicket.Size = new System.Drawing.Size(150, 22);
+            this.menuManageSecurityTicket.Size = new System.Drawing.Size(179, 26);
             this.menuManageSecurityTicket.Text = "Security Ticket";
             this.menuManageSecurityTicket.Click += new System.EventHandler(this.ManageSecurityTicket_Click);
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(754, 586);
+            this.ClientSize = new System.Drawing.Size(1005, 721);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tadbir NG - System Designer";
@@ -195,6 +205,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuAddPermissionGroup;
         private System.Windows.Forms.ToolStripMenuItem menuEditPermissionGroup;
         private System.Windows.Forms.ToolStripMenuItem menuDesignersReport;
+        private System.Windows.Forms.ToolStripMenuItem menuDesignersMetadata;
     }
 }
 

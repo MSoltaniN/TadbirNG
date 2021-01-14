@@ -6,6 +6,7 @@ using SPPC.Tools.Model;
 using SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard;
 using SPPC.Tools.SystemDesigner.Wizards.ViewWizard;
 using SPPC.Tools.SystemDesigner.Designers;
+using SPPC.Tools.MetaDesigner;
 
 namespace SPPC.Tools.SystemDesigner
 {
@@ -70,10 +71,16 @@ namespace SPPC.Tools.SystemDesigner
             //Editor.ShowDialog();
         }
 
-        private void menuDesignersReport_Click(object sender, EventArgs e)
+        private void DesignersReport_Click(object sender, EventArgs e)
         {
             var designer = new ManageReportsForm();
-            designer.ShowDialog();
+            designer.ShowDialog(this);
+        }
+
+        private void DesignersMetadata_Click(object sender, EventArgs e)
+        {
+            var designer = new MetadataDesigner();
+            designer.ShowDialog(this);
         }
     }
 }

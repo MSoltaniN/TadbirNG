@@ -1,4 +1,4 @@
-﻿namespace SPPC.Tools.MetaDesigner.MetaDesigner
+﻿namespace SPPC.Tools.MetaDesigner
 {
     partial class MetadataDesigner
     {
@@ -174,9 +174,11 @@
             this.Controls.Add(this.mainSplitView);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuStrip = this.mainMenu;
+            this.MinimizeBox = false;
             this.Name = "MetadataDesigner";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Metadata Designer Tool";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Metadata Designer";
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.mainSplitView.Panel1.ResumeLayout(false);

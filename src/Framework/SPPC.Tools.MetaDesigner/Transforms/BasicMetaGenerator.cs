@@ -31,13 +31,13 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             var entity = new Entity() { Name = name, Identifier = "Id", Repository = repository };
 
             // Generate and add Id property...
-            var property = GenerateProperty("Id", BuiltinType.Number);
+            var property = GenerateProperty("Id", BuiltinType.Int32);
             property.Storage.Name = String.Format("{0}ID", name);
             property.IsValidated = false;
             entity.Properties.Add(property);
 
             // Generate and add RowGuid property...
-            property = GenerateProperty("RowGuid", BuiltinType.SystemGuid);
+            property = GenerateProperty("RowGuid", BuiltinType.Guid);
             property.Storage.Name = "rowguid";
             property.ValidationRule.Required = true;
             property.IsValidated = false;
@@ -121,10 +121,10 @@ namespace SPPC.Tools.MetaDesigner.Transforms
 
         private Property GetDefaultIdProperty(string entityName)
         {
-            var idProperty = GenerateProperty("ID", BuiltinType.Number);
+            var idProperty = GenerateProperty("ID", BuiltinType.Int32);
             idProperty.Column.Visible = false;
             idProperty.Storage.Name = String.Format("{0}ID", entityName);
-            idProperty.View = GetDefaultView(String.Format("{0}ID", entityName), BuiltinType.Text);
+            idProperty.View = GetDefaultView(String.Format("{0}ID", entityName), BuiltinType.String);
             idProperty.ValidationRule = new ValidationRule()
             {
                 Name = "ID_Validation",

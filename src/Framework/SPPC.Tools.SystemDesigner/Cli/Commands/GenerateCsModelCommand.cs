@@ -2,8 +2,8 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Common;
+using SPPC.Tools.MetaDesigner.Persistence;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms.Templates;
 
@@ -111,6 +111,6 @@ namespace SPPC.Tools.SystemDesigner.Cli
             File.WriteAllText(path, transformed);
         }
 
-        private string[] _entities;
+        private readonly string[] _entities;
     }
 }

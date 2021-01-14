@@ -36,12 +36,12 @@ namespace SPPC.Tools.MetaDesigner.Configuration
 
         private MetaDesignerSection LoadSection()
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var configSection = config.GetSection("SPPC.Tools.MetaDesigner.metaDesigner") as MetaDesignerSection;
+            var configSection = ConfigurationManager.GetSection("sppc.tools.metaDesigner") as MetaDesignerSection;
+            //var configSection = config.GetSection("sppc.tools.metaDesigner") as MetaDesignerSection;
             if (configSection == null)
             {
                 throw new ConfigurationErrorsException(
-                    "Could not find configuration section 'SPPC.Tools.MetaDesigner.metaDesigner' in the main configuration file.");
+                    "Could not find configuration section 'sppc.tools.metaDesigner' in the main configuration file.");
             }
 
             return configSection;

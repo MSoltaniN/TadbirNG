@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using SPPC.Tools.MetaDesigner.Common;
 using SPPC.Tools.MetaDesigner.Engine;
 
-namespace SPPC.Tools.MetaDesigner.MetaDesigner
+namespace SPPC.Tools.MetaDesigner
 {
     public partial class MetadataDesigner : Form
     {

@@ -3,7 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using SPPC.Framework.Common;
-using SPPC.Tools.Transforms;
+using SPPC.Tools.Model;
 using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tools.SystemDesigner.Cli
@@ -49,6 +49,6 @@ namespace SPPC.Tools.SystemDesigner.Cli
             }
         }
 
-        private string[] _typeNames;
+        private readonly string[] _typeNames;
     }
 }

@@ -12,12 +12,12 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             var viewType = ViewType.TextBox;
             switch (type)
             {
-                case BuiltinType.Text:
-                case BuiltinType.Character:
-                case BuiltinType.SystemGuid:
-                case BuiltinType.DecimalNumber:
-                case BuiltinType.DoublePrecision:
-                case BuiltinType.SinglePrecision:
+                case BuiltinType.String:
+                case BuiltinType.Char:
+                case BuiltinType.Guid:
+                case BuiltinType.Decimal:
+                case BuiltinType.Double:
+                case BuiltinType.Single:
                     viewType = ViewType.TextBox;
                     break;
                 case BuiltinType.Boolean:
@@ -27,14 +27,14 @@ namespace SPPC.Tools.MetaDesigner.Transforms
                 case BuiltinType.TimeSpan:
                     viewType = ViewType.DatePicker;
                     break;
-                case BuiltinType.TinyNumber:
-                case BuiltinType.SmallNumber:
-                case BuiltinType.Number:
-                case BuiltinType.BigNumber:
-                case BuiltinType.SignedTinyNumber:
-                case BuiltinType.UnsignedSmallNumber:
-                case BuiltinType.UnsignedNumber:
-                case BuiltinType.UnsignedBigNumber:
+                case BuiltinType.Byte:
+                case BuiltinType.Int16:
+                case BuiltinType.Int32:
+                case BuiltinType.Int64:
+                case BuiltinType.SByte:
+                case BuiltinType.UInt16:
+                case BuiltinType.UInt32:
+                case BuiltinType.UInt64:
                     viewType = ViewType.SpinButton;
                     break;
                 default:

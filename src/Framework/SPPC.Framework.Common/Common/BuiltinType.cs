@@ -11,67 +11,68 @@ namespace SPPC.Framework.Common
         /// <summary>
         /// The System.String data type
         /// </summary>
-        Text,
+#pragma warning disable CA1720 // Identifier contains type name
+        String,
 
         /// <summary>
         /// The System.Char data type
         /// </summary>
-        Character,
+        Char,
 
         /// <summary>
         /// The System.Byte data type
         /// </summary>
-        TinyNumber,
+        Byte,
 
         /// <summary>
         /// The System.SByte data type
         /// </summary>
-        SignedTinyNumber,
+        SByte,
 
         /// <summary>
         /// The System.Int16 data type
         /// </summary>
-        SmallNumber,
+        Int16,
 
         /// <summary>
         /// The System.UInt16 data type
         /// </summary>
-        UnsignedSmallNumber,
+        UInt16,
 
         /// <summary>
         /// The System.Int32 data type
         /// </summary>
-        Number,
+        Int32,
 
         /// <summary>
         /// The System.UInt32 data type
         /// </summary>
-        UnsignedNumber,
+        UInt32,
 
         /// <summary>
         /// The System.Int64 data type
         /// </summary>
-        BigNumber,
+        Int64,
 
         /// <summary>
         /// The System.UInt64 data type
         /// </summary>
-        UnsignedBigNumber,
+        UInt64,
 
         /// <summary>
         /// The System.Decimal data type
         /// </summary>
-        DecimalNumber,
+        Decimal,
 
         /// <summary>
         /// The System.Single data type
         /// </summary>
-        SinglePrecision,
+        Single,
 
         /// <summary>
         /// The System.Double data type
         /// </summary>
-        DoublePrecision,
+        Double,
 
         /// <summary>
         /// The System.DateTime data type
@@ -91,6 +92,7 @@ namespace SPPC.Framework.Common
         /// <summary>
         /// The System.Guid data type
         /// </summary>
-        SystemGuid
+        Guid
+#pragma warning restore CA1720 // Identifier contains type name
     }
 }

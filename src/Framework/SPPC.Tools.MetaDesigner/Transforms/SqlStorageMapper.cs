@@ -11,18 +11,18 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             var storageType = String.Empty;
             switch (type)
             {
-                case BuiltinType.Text:
+                case BuiltinType.String:
                     storageType = String.Format("nvarchar({0})", length);
                     break;
-                case BuiltinType.Character:
+                case BuiltinType.Char:
                     storageType = "nchar(1)";
                     break;
-                case BuiltinType.SystemGuid:
+                case BuiltinType.Guid:
                     storageType = "uniqueidentifier";
                     break;
-                case BuiltinType.DecimalNumber:
-                case BuiltinType.DoublePrecision:
-                case BuiltinType.SinglePrecision:
+                case BuiltinType.Decimal:
+                case BuiltinType.Double:
+                case BuiltinType.Single:
                     storageType = "float";
                     break;
                 case BuiltinType.Boolean:
@@ -34,20 +34,20 @@ namespace SPPC.Tools.MetaDesigner.Transforms
                 case BuiltinType.TimeSpan:
                     storageType = "time(7)";
                     break;
-                case BuiltinType.TinyNumber:
-                case BuiltinType.SignedTinyNumber:
+                case BuiltinType.Byte:
+                case BuiltinType.SByte:
                     storageType = "tinyint";
                     break;
-                case BuiltinType.SmallNumber:
-                case BuiltinType.UnsignedSmallNumber:
+                case BuiltinType.Int16:
+                case BuiltinType.UInt16:
                     storageType = "smallint";
                     break;
-                case BuiltinType.Number:
-                case BuiltinType.UnsignedNumber:
+                case BuiltinType.Int32:
+                case BuiltinType.UInt32:
                     storageType = "int";
                     break;
-                case BuiltinType.BigNumber:
-                case BuiltinType.UnsignedBigNumber:
+                case BuiltinType.Int64:
+                case BuiltinType.UInt64:
                     storageType = "bigint";
                     break;
                 default:

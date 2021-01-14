@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using SPPC.Tools.Model;
-using BabakSoft.Platform.Persistence;
 using System.Linq;
 using System.Configuration;
+using SPPC.Tools.MetaDesigner.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
 {
