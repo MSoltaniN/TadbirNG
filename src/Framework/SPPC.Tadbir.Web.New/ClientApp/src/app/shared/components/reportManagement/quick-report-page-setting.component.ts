@@ -41,15 +41,15 @@ export class QuickReportPageSettingComponent extends DetailComponent implements 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
 
   dialogRef: DialogRef;
-  dialogModel: any;
+  dialogModel: any;   
 
-  autoResize: boolean;
-  pageSizeSelected: string;
-  pageOrientationSelected: string;
-  bottomMargin: number;
-  topMargin: number;
-  leftMargin: number;
-  rightMargin: number;
+  columnFitPage: boolean = true;
+  pageSizeSelected: string = "A4";
+  pageOrientationSelected: string = "Portrait";
+  bottomMargin: number = 0;
+  topMargin: number = 0;
+  leftMargin: number = 0;
+  rightMargin: number = 0;
 
   min: number = 0;
   max: number = 6;
@@ -72,7 +72,7 @@ export class QuickReportPageSettingComponent extends DetailComponent implements 
   onSave(): void {
 
     var reportSetting = new ReportPageSetting();
-    reportSetting.columnAutoResize = this.autoResize;
+    reportSetting.columnFitPage = this.columnFitPage;
     reportSetting.marginBottom = this.bottomMargin;
     reportSetting.marginLeft = this.leftMargin;
     reportSetting.marginRight = this.rightMargin;
@@ -80,7 +80,7 @@ export class QuickReportPageSettingComponent extends DetailComponent implements 
     reportSetting.pageOrientation = this.pageOrientationSelected;
     reportSetting.pageSize = this.pageSizeSelected;
 
-    this.result.emit({setting: reportSetting });
+    this.result.emit(reportSetting);
   }
 
 }

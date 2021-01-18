@@ -104,7 +104,7 @@
       "RightMargin": "حاشیه راست",
       "TopMargin": "حاشیه بالا",
       "BottomMargin": "حاشیه پایین",
-      "AutoSizeColumns": "تنظیم اتوماتیک ستون ها"
+      "AutoSizeColumns": "متناسب با عرض صفحه"
     }
   },
   "Exports": {

@@ -14,16 +14,16 @@ export interface QuickReportConfig {
 
   parameters: any;
 
-  pageSetting: ReportPageSetting;
+  reportPageSetting: ReportPageSetting;
 }
 
 
-export class QuickReportConfigInfo implements QuickReportConfig {
+export class QuickReportConfigInfo implements QuickReportConfig {    
     parameters: any;
     viewId: number;
     title: string;
     inchValue: number;
     columns: QuickReportColumnConfig[];
     reportViewSetting: QuickReportViewSetting;
-    pageSetting: ReportPageSetting;
+    reportPageSetting: ReportPageSetting;
 }

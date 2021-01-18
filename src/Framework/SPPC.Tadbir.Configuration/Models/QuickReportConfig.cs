@@ -39,5 +39,10 @@ namespace SPPC.Tadbir.Configuration.Models
         /// تنظیمات گزارش فوری
         /// </summary>
         public QuickReportViewSetting ReportViewSetting { get; set; }
+
+        /// <summary>
+        /// تنظیمات صفحه گزارش فوری
+        /// </summary>
+        public ReportPageSetting ReportPageSetting { get; set; }
     }
 }
