@@ -146,6 +146,29 @@ namespace SPPC.Framework.Common
         }
 
         /// <summary>
+        /// Determines if a CLR type is among simple data types in .NET System namespace.
+        /// </summary>
+        /// <param name="type">The CLR type that must be checked.</param>
+        /// <returns>True if the given type is the base System.Object type, an enum type or one of common types
+        /// defined in BuiltinType enumeration type.</returns>
+        public static bool IsBuiltin(Type type)
+        {
+            if (type.IsEnum || type == typeof(object))
+            {
+                return true;
+            }
+            else if (type.FullName.StartsWith("System."))
+            {
+                var typeName = type.FullName.Replace("System.", String.Empty);
+                return Enum.GetNames(typeof(BuiltinType)).Contains(typeName);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Determines if a specified property in a source object is a generic collection.
         /// </summary>
         /// <param name="source">The object to read the property from</param>
