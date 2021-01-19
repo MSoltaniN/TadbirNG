@@ -135,6 +135,9 @@
   <data name="Cheque" xml:space="preserve">
     <value>چک</value>
   </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>نام شرکت</value>
+  </data>
   <data name="ContractEnd" xml:space="preserve">
     <value>پایان قرارداد</value>
   </data>

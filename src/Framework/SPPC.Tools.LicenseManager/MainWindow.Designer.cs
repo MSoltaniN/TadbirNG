@@ -73,7 +73,7 @@
             this.btnSaveCustomer = new System.Windows.Forms.Button();
             this.btnSaveLicense = new System.Windows.Forms.Button();
             this.btnSaveInstance = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tabCustomer.SuspendLayout();
             this.grpContact.SuspendLayout();
@@ -267,6 +267,7 @@
             "بازرگانی",
             "پالایشگاه نفت و گاز",
             "تولید فلز خام",
+            "تولید نرم افزار",
             "جنگلداری - چوب و کاغذ",
             "خدمات ارتباطی و پستی",
             "خدمات بهداشتی / پزشکی",
@@ -555,25 +556,25 @@
             this.btnSaveInstance.UseVisualStyleBackColor = true;
             this.btnSaveInstance.Click += new System.EventHandler(this.SaveInstance_Click);
             // 
-            // btnCancel
+            // btnExit
             // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.btnCancel.Location = new System.Drawing.Point(438, 613);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(83, 40);
-            this.btnCancel.TabIndex = 4;
-            this.btnCancel.Text = "انصراف";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.Cancel_Click);
+            this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnExit.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.btnExit.Location = new System.Drawing.Point(438, 613);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(83, 40);
+            this.btnExit.TabIndex = 4;
+            this.btnExit.Text = "خروج";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.Exit_Click);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
+            this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(529, 664);
-            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSaveInstance);
             this.Controls.Add(this.btnSaveLicense);
             this.Controls.Add(this.btnSaveCustomer);
@@ -646,7 +647,7 @@
         private System.Windows.Forms.CheckBox chkAccounting;
         private System.Windows.Forms.Button btnSaveLicense;
         private System.Windows.Forms.Button btnSaveInstance;
-        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnExit;
     }
 }
 

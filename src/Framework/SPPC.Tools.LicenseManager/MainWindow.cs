@@ -16,7 +16,6 @@ namespace SPPC.Tools.LicenseManager
             InitializeComponent();
             License = new LicenseModel();
             Customer = new CustomerModel();
-            _service = new LicenseService(new ServiceClient(Constants.OnlineServerRoot));
         }
 
         public LicenseModel License { get; set; }
@@ -30,6 +29,20 @@ namespace SPPC.Tools.LicenseManager
             LoadDefaults();
         }
 
+        private ILicenseService Service
+        {
+            get
+            {
+                if (_service == null)
+                {
+                    string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
+                    _service = new LicenseService(new ServiceClient(root));
+                }
+
+                return _service;
+            }
+        }
+
         private void SaveCustomer_Click(object sender, EventArgs e)
         {
             if (!SaveCustomer())
@@ -38,7 +51,7 @@ namespace SPPC.Tools.LicenseManager
             }
 
             this.Cursor = Cursors.WaitCursor;
-            string error = _service.InsertCustomer(Customer);
+            string error = Service.InsertCustomer(Customer);
             if (!String.IsNullOrEmpty(error))
             {
                 this.Cursor = Cursors.Default;
@@ -60,7 +73,7 @@ namespace SPPC.Tools.LicenseManager
             }
 
             this.Cursor = Cursors.WaitCursor;
-            string error = _service.InsertLicense(License);
+            string error = Service.InsertLicense(License);
             if (!String.IsNullOrEmpty(error))
             {
                 this.Cursor = Cursors.Default;
@@ -90,7 +103,7 @@ namespace SPPC.Tools.LicenseManager
                 MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
         }
 
-        private void Cancel_Click(object sender, EventArgs e)
+        private void Exit_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -274,17 +287,25 @@ namespace SPPC.Tools.LicenseManager
         private void CreateApiServiceLicense()
         {
             var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
-            var copy = License.GetCopy();
-            var ignored = new string[]
-            {
-                "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey",
-                "ClientKey", "Secret", "Customer", "RowGuid", "ModifiedDate", "IsActivated"
-            };
-            var json = JsonHelper.From(copy, true, ignored);
+            var license = GetLicenseData();
+            var json = JsonHelper.From(license, true);
             File.WriteAllText(path, json);
             return;
         }
 
-        private readonly ILicenseService _service;
+        private LicenseViewModel GetLicenseData()
+        {
+            return new LicenseViewModel()
+            {
+                CustomerName = Customer.CompanyName,
+                Edition = License.Edition,
+                UserCount = License.UserCount,
+                ActiveModules = License.ActiveModules,
+                StartDate = License.StartDate,
+                EndDate = License.EndDate
+            };
+        }
+
+        private ILicenseService _service;
     }
 }

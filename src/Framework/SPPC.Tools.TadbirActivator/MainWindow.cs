@@ -21,7 +21,6 @@ namespace SPPC.Tools.TadbirActivator
         public MainWindow()
         {
             InitializeComponent();
-            _service = new LicenseService(new ServiceClient(Constants.OnlineServerRoot));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -39,13 +38,27 @@ namespace SPPC.Tools.TadbirActivator
             txtLicenseInfo.Text = licenseInfo;
         }
 
+        private ILicenseService Service
+        {
+            get
+            {
+                if (_service == null)
+                {
+                    string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
+                    _service = new LicenseService(new ServiceClient(root));
+                }
+
+                return _service;
+            }
+        }
+
         private void Activate_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
             var activation = GetActivationData();
             try
             {
-                string license = _service.GetActivatedLicense(activation);
+                string license = Service.GetActivatedLicense(activation);
                 if (String.IsNullOrEmpty(license))
                 {
                     MessageBox.Show(this, Resources.Warn_AlreadyActivated, Resources.SuccessfulOperation,
@@ -85,9 +98,11 @@ namespace SPPC.Tools.TadbirActivator
             if (File.Exists(licensePath))
             {
                 string json = File.ReadAllText(licensePath);
-                var license = JsonHelper.To<LicenseModel>(json);
+                var license = JsonHelper.To<LicenseViewModel>(json);
 
                 var builder = new StringBuilder();
+                builder.AppendFormat("{0} : {1}", Resources.CompanyName, license.CustomerName);
+                builder.AppendLine();
                 builder.AppendFormat("{0} : {1}", Resources.AppEdition, license.Edition);
                 builder.AppendLine();
                 builder.AppendFormat("{0} : {1}", Resources.UserCount, license.UserCount);
@@ -209,7 +224,7 @@ namespace SPPC.Tools.TadbirActivator
             File.WriteAllBytes(path, certificateBytes);
         }
 
-        private readonly ILicenseService _service;
+        private ILicenseService _service;
         private X509Certificate2 _certificate;
     }
 }

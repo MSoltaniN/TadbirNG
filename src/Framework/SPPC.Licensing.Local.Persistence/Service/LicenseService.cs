@@ -16,7 +16,6 @@ namespace SPPC.Licensing.Service
         public LicenseService(IApiClient apiClient)
         {
             _apiClient = apiClient;
-            _apiClient.ServiceRoot = Constants.OnlineServerRoot;
         }
 
         public string GetActivatedLicense(ActivationModel activation)

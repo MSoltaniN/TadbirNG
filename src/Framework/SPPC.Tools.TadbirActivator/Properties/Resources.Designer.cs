@@ -115,6 +115,15 @@ namespace SPPC.Tools.TadbirActivator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to نام شرکت.
+        /// </summary>
+        internal static string CompanyName {
+            get {
+                return ResourceManager.GetString("CompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to پایان قرارداد.
         /// </summary>
         internal static string ContractEnd {
