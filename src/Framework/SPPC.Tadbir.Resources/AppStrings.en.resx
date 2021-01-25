@@ -3462,4 +3462,22 @@
   <data name="OwnerEquitiesSum" xml:space="preserve">
     <value>Total owner equities</value>
   </data>
+  <data name="Assets" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="AssetsBalance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="AssetsPreviousBalance" xml:space="preserve">
+    <value>Last period balance</value>
+  </data>
+  <data name="Liabilities" xml:space="preserve">
+    <value>Liabilities</value>
+  </data>
+  <data name="LiabilitiesBalance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="LiabilitiesPreviousBalance" xml:space="preserve">
+    <value>Last period balance</value>
+  </data>
 </root>

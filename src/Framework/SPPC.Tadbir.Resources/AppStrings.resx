@@ -3453,4 +3453,22 @@
   <data name="OwnerEquitiesSum" xml:space="preserve">
     <value>جمع حقوق صاحبان سرمایه</value>
   </data>
+  <data name="Assets" xml:space="preserve">
+    <value>دارایی ها</value>
+  </data>
+  <data name="AssetsBalance" xml:space="preserve">
+    <value>مانده</value>
+  </data>
+  <data name="AssetsPreviousBalance" xml:space="preserve">
+    <value>مانده دوره قبل</value>
+  </data>
+  <data name="Liabilities" xml:space="preserve">
+    <value>بدهی ها</value>
+  </data>
+  <data name="LiabilitiesBalance" xml:space="preserve">
+    <value>مانده</value>
+  </data>
+  <data name="LiabilitiesPreviousBalance" xml:space="preserve">
+    <value>مانده دوره قبل</value>
+  </data>
 </root>

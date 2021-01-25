@@ -66,7 +66,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
-    <ProjectReference Include="..\SPPC.Tadbir.Configuration\SPPC.Tadbir.Configuration.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
   </ItemGroup>
 

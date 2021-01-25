@@ -81,8 +81,6 @@ namespace SPPC.Licensing.Persistence
                 repository.Insert(license);
                 UnitOfWork.Commit();
             }
-
-            throw new NotImplementedException();
         }
 
         public string GetEncryptedLicense(LicenseModel license)

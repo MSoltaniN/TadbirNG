@@ -359,6 +359,20 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
+        /// If no active transaction is currently pending, closes the connection
+        /// associated with the given command, otherwise leaves the connection open.
+        /// </summary>
+        /// <param name="dbCommand">An instance of provider-specific command object
+        /// </param>
+        protected static void DisposeCommand(IDbCommand dbCommand)
+        {
+            if (dbCommand != null && dbCommand.Connection != null)
+            {
+                dbCommand.Connection.Close();
+            }
+        }
+
+        /// <summary>
         /// Reads information about parameters of an existing stored procedure
         /// from database schema catalogs. Derived classes should implement
         /// this method, since the base class version does nothing.
@@ -527,20 +541,6 @@ namespace SPPC.Framework.Persistence
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// If no active transaction is currently pending, closes the connection
-        /// associated with the given command, otherwise leaves the connection open.
-        /// </summary>
-        /// <param name="dbCommand">An instance of provider-specific command object
-        /// </param>
-        protected void DisposeCommand(IDbCommand dbCommand)
-        {
-            if (dbCommand != null && dbCommand.Connection != null)
-            {
-                dbCommand.Connection.Close();
-            }
         }
 
         /// <summary>

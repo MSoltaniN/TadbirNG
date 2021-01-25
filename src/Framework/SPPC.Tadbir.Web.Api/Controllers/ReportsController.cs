@@ -222,7 +222,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             quickReport.Styles.AddRange(quickReportTemplate.Styles);
 
             // load template for adding styles
-
             quickReport = SetPageSetting(quickReport, qr);
             quickReport = CreateReportFooterBand(quickReport, quickReportTemplate);
             quickReport = CreateReportHeaderBand(quickReport, quickReportTemplate);
@@ -567,7 +566,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private static StiReport CreateHeaderBand(StiReport report, IList<QuickReportColumnConfig> columns,
-            int oneInchInPixels, string dataSourceName, StiReport reportTemplate, string lang,bool fitToPage)
+            int oneInchInPixels, string dataSourceName, StiReport reportTemplate, string lang, bool fitToPage)
         {
             int visibleColumnCount = columns.Count(c => c.Visible);
             if (visibleColumnCount == 0)
@@ -748,7 +747,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private static StiReport CreateDataBand(StiReport report, QuickReportConfig quickReportViewModel,
-            string dataSourceName, StiReport reportTemplate, string lang, int inchValue,bool fitToPage)
+            string dataSourceName, StiReport reportTemplate, string lang, int inchValue, bool fitToPage)
         {
             string ctrlName = "dataBand" + dataSourceName;
 

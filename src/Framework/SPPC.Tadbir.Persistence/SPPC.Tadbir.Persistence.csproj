@@ -81,7 +81,6 @@
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />
-    <ProjectReference Include="..\SPPC.Workflow.Persistence\SPPC.Workflow.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
