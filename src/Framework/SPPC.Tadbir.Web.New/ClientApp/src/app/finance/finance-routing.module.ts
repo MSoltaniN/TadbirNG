@@ -23,6 +23,7 @@ import { SystemIssueComponent } from '@sppc/finance//components/reporting/system
 import { ItemBalanceComponent } from './components/reporting/itemBalance/itemBalance.component';
 import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/balanceByAccount/balanceByAccount.component';
 import { ProfitLostComponent } from './components/reporting/profitLoss/profitLost.component';
+import { BalanceSheetComponent } from './components/reporting/balanceSheet/balanceSheet.component';
 
 
 const routes: Routes = [{
@@ -61,6 +62,7 @@ const routes: Routes = [{
     { path: 'currency-book', component: CurrencyBookComponent },
     { path: 'system-issue', component: SystemIssueComponent },
     { path: 'balance-by-account', component: BalanceByAccountComponent },
+    { path: 'bal-sheet', component: BalanceSheetComponent },
   ]
 }];
 

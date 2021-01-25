@@ -42,6 +42,7 @@ import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/ba
 import { ProfitLostComponent } from './components/reporting/profitLoss/profitLost.component';
 import { ProfitLostService } from './service/profitLost.service';
 import { ProfitLostLabelsComponent } from './components/reporting/profitLoss/profitLost.labels.components';
+import { BalanceSheetComponent } from './components/reporting/balanceSheet/balanceSheet.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,7 @@ import { ProfitLostLabelsComponent } from './components/reporting/profitLoss/pro
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
     ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
     currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent, BalanceByAccountComponent,
-    ItemBalanceComponent, ProfitLostComponent,ProfitLostLabelsComponent],
+    ItemBalanceComponent, ProfitLostComponent, ProfitLostLabelsComponent, BalanceSheetComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent, ProfitLostLabelsComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,

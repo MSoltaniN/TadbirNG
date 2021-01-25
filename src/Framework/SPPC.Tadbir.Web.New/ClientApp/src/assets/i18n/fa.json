@@ -137,7 +137,7 @@
     "Previous": "قبلی",
     "NextStep": "مرحله بعد",
     "PreviousStep": "مرحله قبل",
-    "ComingBack": "بازگشت"    
+    "ComingBack": "بازگشت"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -178,7 +178,8 @@
     "CurrencyBook": "دفتر عملیات ارزی",
     "SystemIssue": "کنترل سیستم",
     "BalanceByAccount": "مانده به تفکیک حساب",
-    "ProfitLoss": "سود و زیان"
+    "ProfitLoss": "سود و زیان",
+    "BalanceSheet": "ترازنامه"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -449,6 +450,18 @@
     "LabelsChangedSuccessfully": "عناوین گزارش با موفقیت ثبت شد",
     "LabelsChangedError": "ثبت عناوین گزارش با خطا مواجه شد",
     "CustomizeLabel": "تغییر عناوین گزارش"
+  },
+  "BalanceSheet": {
+    "Branch": "شعبه",
+    "CostCenter": "مرکز هزینه",
+    "Project": "پروژه",
+    "VoucherStatus": "وضعیت اسناد",
+    "FilterByRef": "رفرنس برابر با",            
+    "Closing": "در نظر گرفتن سند اختتامیه",
+    "SelectCostCenter": "لطفا مرکز هزینه را انتخاب کنید",
+    "SelectProject": "لطفا پروژه را انتخاب کنید",
+    "FilterByRefMsg": "لطفا فیلتر رفرنس را وارد کنید",
+    "ToDate": "تاریخ"
   },
   "Balance": {
     "ByDate": "بر اساس تاریخ",

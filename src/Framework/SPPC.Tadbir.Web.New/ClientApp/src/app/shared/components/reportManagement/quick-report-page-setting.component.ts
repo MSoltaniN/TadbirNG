@@ -81,6 +81,10 @@ export class QuickReportPageSettingComponent extends DetailComponent implements 
     reportSetting.pageSize = this.pageSizeSelected;
 
     this.result.emit(reportSetting);
+  }  
+
+  escPress() {
+    this.onCancel();
   }
 
 }

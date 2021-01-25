@@ -12,7 +12,7 @@ import {  BrowserStorageService,SessionKeys } from '@sppc/shared/services/browse
 import {  MetaDataService } from '@sppc/shared/services/metadata.service';
 import { SettingService } from '@sppc/config/service/settings.service';
 import { ViewTreeConfig } from '@sppc/config/models';
-
+import * as moment from 'jalali-moment';
 
 
 @Injectable()
@@ -509,8 +509,27 @@ export class DefaultComponent extends BaseComponent {
     this.bStorageService.setLanguage(value);
 
     this.localizeMsg(this.entityType);
+  }
 
+  compareDate(dateA: Date, dateB: Date): number {
 
+    var dateValueA = moment(dateA).format('YYYY/MM/DD');
+    var dateValueB = moment(dateB).format('YYYY/MM/DD');
+
+    let dA = new Date(dateValueA + ' ' + '00:00:00');
+    let dB = new Date(dateValueB + ' ' + '00:00:00');
+
+    var diff = dA.getTime() - dB.getTime();
+    var diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+
+    //اگر دو تاریخ مساوی باشد
+    if (diffDays == 0) return 0;
+
+    //اگر تاریخ اول از تاریخ دوم بزرگتر باشد
+    if (diffDays > 0) return 1;
+
+    //اگر تاریخ اول از تاریخ دوم کوچکتر باشد
+    if (diffDays < 0) return -1;
   }
 
   async metadataResolver(viewId: number) {

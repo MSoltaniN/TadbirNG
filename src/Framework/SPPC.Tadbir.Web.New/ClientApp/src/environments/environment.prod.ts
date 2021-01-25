@@ -118,7 +118,8 @@ export const Entities = {
   ComparativeProfitLossSimple: 'ComparativeProfitLossSimple',
   DraftVoucher: 'DraftVoucher',
   DraftVouchers: 'DraftVouchers',
-  Vouchers: 'Vouchers'
+  Vouchers: 'Vouchers',
+  BalanceSheet:'BalanceSheet'
 }
 
 export const CustomForm =
