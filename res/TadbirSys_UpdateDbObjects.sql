@@ -4973,3 +4973,20 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
     VALUES (700, 67, 'LiabilitiesPreviousBalance', NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 1, 0, 0, NULL, 5, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF 
 
+-- 1.1.1065
+SET IDENTITY_INSERT [Reporting].Report ON
+
+insert into Reporting.Report(ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+values(80,19,1,67,1,'BalanceSheet','bal-sheet',0,1,1,1)
+
+insert into Reporting.LocalReport(LocaleID,ReportID,Caption)
+values(1,80,'BalanceSheet')
+insert into Reporting.LocalReport(LocaleID,ReportID,Caption)
+values(2,80,N'ترازنامه')
+insert into Reporting.LocalReport(LocaleID,ReportID,Caption)
+values(3,80,'BalanceSheet')
+insert into Reporting.LocalReport(LocaleID,ReportID,Caption)
+values(4,80,'BalanceSheet')
+
+SET IDENTITY_INSERT [Reporting].Report OFF
+
