@@ -1,6 +1,6 @@
 export enum PageSize {  
   A4 = "A4",
-  A3 = "A4"
+  A3 = "A3"
 }
 
 export enum PageSizeResource {  

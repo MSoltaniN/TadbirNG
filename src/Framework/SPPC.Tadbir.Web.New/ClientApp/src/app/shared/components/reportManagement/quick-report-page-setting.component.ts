@@ -44,7 +44,7 @@ export class QuickReportPageSettingComponent extends DetailComponent implements 
   dialogModel: any;   
 
   columnFitPage: boolean = true;
-  pageSizeSelected: string = "A4";
+  pageSizeSelected: string;// = "A4";
   pageOrientationSelected: string = "Portrait";
   bottomMargin: number = 0;
   topMargin: number = 0;

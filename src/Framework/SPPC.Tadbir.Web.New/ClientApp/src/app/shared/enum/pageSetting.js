@@ -1,7 +1,7 @@
 export var PageSize;
 (function (PageSize) {
     PageSize["A4"] = "A4";
-    PageSize["A3"] = "A4";
+    PageSize["A3"] = "A3";
 })(PageSize || (PageSize = {}));
 export var PageSizeResource;
 (function (PageSizeResource) {
