@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -96,6 +96,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   @Input() voucherItem: Voucher;
   @Input() isOpenFromList: boolean = false;
   //@Output() reloadGrid: EventEmitter<any> = new EventEmitter();
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
 
   isShowBreadcrumb: boolean = true; 
   isFirstVoucher: boolean = false;
@@ -638,7 +639,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                 }                
               }, (error => {
                   //if previous voucher not exists show voucher list
-                  this.router.navigate(['/finance/voucher']);
+                  this.cancel.emit();
+                  this.router.navigate(['/finance/voucher']);                  
               }))
         }));
 
