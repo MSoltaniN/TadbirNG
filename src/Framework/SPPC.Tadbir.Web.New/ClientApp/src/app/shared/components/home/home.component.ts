@@ -55,6 +55,7 @@ export class HomeComponent extends DefaultComponent implements OnInit {
   voucherNo: number;
   returnUrl: string;
   mode: string;
+  type: string;
 
   closingTmpData: any;
 
@@ -67,6 +68,10 @@ export class HomeComponent extends DefaultComponent implements OnInit {
 
     this.returnUrl = this.activeRoute.snapshot.queryParamMap.get('returnUrl');
     this.mode = this.activeRoute.snapshot.queryParamMap.get('mode');
+
+    if (this.activeRoute.snapshot.queryParamMap.get('type')) {
+      this.type = this.activeRoute.snapshot.queryParamMap.get('type');
+    }
 
     switch (this.mode) {
       case 'closing-tmp':
@@ -136,7 +141,10 @@ export class HomeComponent extends DefaultComponent implements OnInit {
 
   passVoucherId() {
     this.close();
-    this.router.navigate([this.returnUrl], { queryParams: { no: this.voucherNo } });
+    if (this.type != '')
+      this.router.navigate([this.returnUrl], { queryParams: { no: this.voucherNo, type: this.type } });
+    else
+      this.router.navigate([this.returnUrl], { queryParams: { no: this.voucherNo } });
   }
 
   public close() {

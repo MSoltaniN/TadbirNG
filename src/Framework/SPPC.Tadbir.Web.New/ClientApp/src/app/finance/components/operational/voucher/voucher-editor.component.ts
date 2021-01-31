@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, Output, EventEmitter, DebugElement } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -17,6 +17,7 @@ import { LookupApi } from '@sppc/shared/services/api';
 import { Item } from '@sppc/shared/models';
 import { InventoryBalance } from '@sppc/finance/models/inventoryBalance';
 import { setTime } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
+import { debug } from 'util';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -333,15 +334,19 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   byNoVoucher() {
     var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
-
+    debugger;
     if (!voucherNo) {
-      this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no',mode: 'by-no' } });
+      if (this.subjectMode == 0)
+        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
+      else
+        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no', type:'draft' } });
     }
     else {
-      if (this.subjectMode == 0)
+      var type = this.activeRoute.snapshot.queryParamMap.get('type');
+      if (this.subjectMode == 1 || type == 'draft')
+        this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);        
+      else 
         this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
-      else
-        this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
     }
 
   }
@@ -376,6 +381,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.voucherModel = item;
     //this.selectedType = this.voucherModel.type.toString();
     this.selectedType = this.voucherModel.subjectType.toString();
+    this.subjectMode = this.voucherModel.subjectType;
   }
 
   voucherTypeListChange(value) {
@@ -618,24 +624,28 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         this.showMessage(this.getText('Messages.DeleteOperationSuccessful'), MessageType.Info);
 
         var url = VoucherApi.NextVoucher;
-        if (this.subjectMode == 1)
+        var urlNo = '/finance/vouchers/by-no';
+        if (this.subjectMode == 1) {
           url = VoucherApi.NextDraftVoucher;
+          urlNo = '/finance/vouchers/draft/by-no';
+        }
         //try for next voucher
         this.voucherService.getModels(String.Format(url, this.voucherModel.no)).subscribe(voucher => {
           if (voucher) {
-            this.router.navigate(['/finance/vouchers/by-no'], { queryParams: { no: voucher.no } });
+            this.router.navigate([urlNo], { queryParams: { no: voucher.no } });
           }
           else {
             
           }
         }, (error => {
               //if next voucher not exists try for previous voucher
-              var url = VoucherApi.PreviousVoucher;
-              if (this.subjectMode == 1)
-                url = VoucherApi.PreviousDraftVoucher;
-              this.voucherService.getModels(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no)).subscribe(voucher => {
+            var url = VoucherApi.PreviousVoucher;            
+            if (this.subjectMode == 1) {
+              url = VoucherApi.PreviousDraftVoucher;              
+            }
+              this.voucherService.getModels(String.Format(url, this.voucherModel.no)).subscribe(voucher => {
                 if (voucher) {
-                  this.router.navigate(['/finance/vouchers/by-no'], { queryParams: { no: voucher.no } });
+                  this.router.navigate([urlNo], { queryParams: { no: voucher.no } });
                 }                
               }, (error => {
                   //if previous voucher not exists show voucher list
