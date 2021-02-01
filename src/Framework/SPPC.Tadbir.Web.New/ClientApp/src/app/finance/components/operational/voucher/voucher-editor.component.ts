@@ -621,13 +621,14 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   deleteModel(confirm: boolean) {
     if (confirm) {     
       this.voucherService.delete(String.Format(VoucherApi.Voucher, this.voucherModel.id)).subscribe(response => {
+        debugger;
         this.showMessage(this.getText('Messages.DeleteOperationSuccessful'), MessageType.Info);
 
         var url = VoucherApi.NextVoucher;
         var urlNo = '/finance/vouchers/by-no';
         if (this.subjectMode == 1) {
           url = VoucherApi.NextDraftVoucher;
-          urlNo = '/finance/vouchers/draft/by-no';
+          urlNo = '/finance/vouchers/by-no/draft';
         }
         //try for next voucher
         this.voucherService.getModels(String.Format(url, this.voucherModel.no)).subscribe(voucher => {
