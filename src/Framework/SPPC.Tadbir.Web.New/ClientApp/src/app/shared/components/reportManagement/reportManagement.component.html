@@ -1,4 +1,4 @@
-<kendo-dialog [minWidth]="400" [width]="innerWidth" *ngIf="active" class="permission-dialog"
+<kendo-dialog [minWidth]="400" [ngStyle]="{'height.%': 100}" [width]="innerWidth" *ngIf="active" class="permission-dialog"
               [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (close)="closeDialog()">
   <!--[minHeight]="400" [height]="innerHeight"-->
   <kendo-dialog-titlebar>
