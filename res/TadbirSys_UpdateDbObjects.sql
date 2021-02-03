@@ -4974,19 +4974,18 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
 SET IDENTITY_INSERT [Metadata].[Column] OFF 
 
 -- 1.1.1065
-SET IDENTITY_INSERT [Reporting].Report ON
+SET IDENTITY_INSERT [Reporting].[Report] ON
 
-insert into Reporting.Report(ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
-values(80,19,1,67,1,'BalanceSheet','bal-sheet',0,1,1,1)
+INSERT INTO [Reporting].[Report] (ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+VALUES (80,19,1,67,1,'BalanceSheet','bal-sheet',0,1,1,1)
 
-insert into Reporting.LocalReport(LocaleID,ReportID,Caption)
-values(1,80,'BalanceSheet')
-insert into Reporting.LocalReport(LocaleID,ReportID,Caption)
-values(2,80,N'ترازنامه')
-insert into Reporting.LocalReport(LocaleID,ReportID,Caption)
-values(3,80,'BalanceSheet')
-insert into Reporting.LocalReport(LocaleID,ReportID,Caption)
-values(4,80,'BalanceSheet')
+SET IDENTITY_INSERT [Reporting].[Report] OFF
 
-SET IDENTITY_INSERT [Reporting].Report OFF
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
 
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+VALUES (249,1,80,'BalanceSheet')
+INSERT INTO Reporting.LocalReport(LocalReportID,LocaleID,ReportID,Caption)
+VALUES (250,2,80,N'ترازنامه')
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF

@@ -264,7 +264,13 @@ namespace SPPC.Tadbir.Persistence
             AccountCollectionId collectionId, DateTime from, DateTime to, BalanceSheetParameters parameters,
             int fiscalPeriodId)
         {
+            var lines = new List<VoucherLineDetailViewModel>();
             var accounts = await _utility.GetUsableAccountsAsync(collectionId);
+            if (accounts.Count == 0)
+            {
+                return lines;
+            }
+
             var accountIds = accounts.Select(acc => acc.Id);
             var branchIds = GetChildTree(UserContext.BranchId);
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();

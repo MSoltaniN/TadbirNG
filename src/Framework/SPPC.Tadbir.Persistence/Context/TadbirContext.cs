@@ -105,7 +105,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="optionsBuilder">Builder used for configuring data context</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(ConnectionString);
+            optionsBuilder.UseSqlServer(ConnectionString, sqlServerOptions => sqlServerOptions.CommandTimeout(600));
             base.OnConfiguring(optionsBuilder);
         }
 

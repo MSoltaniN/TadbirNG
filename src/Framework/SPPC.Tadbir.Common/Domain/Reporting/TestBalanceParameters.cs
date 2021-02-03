@@ -1,6 +1,5 @@
 ﻿using System;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Domain
 {
