@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.CrossCutting.Caching;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
@@ -51,7 +52,20 @@ namespace SPPC.Tadbir.Persistence
             var testBalance = new TestBalanceViewModel();
 
             profiler.Start();
-            var lines = await GetRawBalanceLinesAsync(parameters);
+
+            RedisCacheManager redisCacheManager = new RedisCacheManager();
+            IList<TestBalanceItemViewModel> lines = null;
+
+            if (!redisCacheManager.ContainKey("lines"))
+            {
+                lines = await GetRawBalanceLinesAsync(parameters);
+                redisCacheManager.Set("lines", lines);
+            }
+            else
+            {
+                lines = redisCacheManager.Get<IList<TestBalanceItemViewModel>>("lines");
+            }
+
             profiler.Report("Finished reading articles.");
             Func<TestBalanceItemViewModel, bool> filter;
             int index = 0;
