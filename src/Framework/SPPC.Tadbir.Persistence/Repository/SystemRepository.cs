@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// امکانات دیتابیس های سیستمی را به صورت یکجا در اختیار کلاس های لایه دیتابیس قرار می دهد
+    /// امکانات عمومی و پرکاربرد سیستمی را به صورت یکجا در اختیار کلاس های لایه دیتابیس قرار می دهد
     /// </summary>
     public class SystemRepository : ISystemRepository
     {

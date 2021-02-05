@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
-using SPPC.Framework.Presentation;
 
 namespace SPPC.Framework.Persistence
 {

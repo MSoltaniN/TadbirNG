@@ -210,7 +210,6 @@ namespace SPPC.Tadbir.Persistence
         private IQueryable<TEntity> ApplyBranchFilter<TEntity>(IQueryable<TEntity> records)
             where TEntity : class, IBaseEntity
         {
-            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var tree = GetParentTree(UserContext.BranchId);
             var queryable = records
                 .Where(entity => entity.FiscalPeriodId <= UserContext.FiscalPeriodId &&
@@ -225,7 +224,6 @@ namespace SPPC.Tadbir.Persistence
         private IQueryable<TEntity> ApplyBranchFilterForLookup<TEntity>(IQueryable<TEntity> records)
             where TEntity : class, IBaseEntity
         {
-            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var childTree = GetChildTree(UserContext.BranchId);
             var tree = GetParentTree(UserContext.BranchId);
             var queryable = records
@@ -242,7 +240,6 @@ namespace SPPC.Tadbir.Persistence
             IQueryable<TEntity> records)
             where TEntity : class, IFiscalEntity
         {
-            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var childTree = GetChildTree(UserContext.BranchId);
             var queryable = records
                 .Where(entity => entity.FiscalPeriodId == UserContext.FiscalPeriodId &&

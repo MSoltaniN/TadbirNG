@@ -10,6 +10,10 @@ namespace SPPC.Framework.Common
     /// </summary>
     public class BasicProfiler
     {
+        /// <summary>
+        /// Creates a new instance of this class and initializes a new profiling session
+        /// </summary>
+        /// <param name="useCase">Short description of the use case in a single profiling session</param>
         public BasicProfiler(string useCase)
         {
             _stopwatch = new Stopwatch();
@@ -18,6 +22,9 @@ namespace SPPC.Framework.Common
             NewSession(useCase);
         }
 
+        /// <summary>
+        /// Starts timing for an operation
+        /// </summary>
         public void Start()
         {
             if (_stopwatch.Elapsed == TimeSpan.Zero)
@@ -30,6 +37,10 @@ namespace SPPC.Framework.Common
             }
         }
 
+        /// <summary>
+        /// Ends last timing operation and logs the information about operation result
+        /// </summary>
+        /// <param name="info">Short description of last operation result</param>
         public void Report(string info)
         {
             _stopwatch.Stop();
@@ -39,6 +50,9 @@ namespace SPPC.Framework.Common
             _report.AppendLine();
         }
 
+        /// <summary>
+        /// Ends this profiling session and logs session profiling results to a log file
+        /// </summary>
         public void End()
         {
             _report.AppendFormat("Total elapsed : {0}", _totalElapsed);

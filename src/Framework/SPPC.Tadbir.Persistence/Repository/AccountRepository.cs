@@ -495,24 +495,6 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
-        private async Task<bool> IsCommercialDebtorAndCreditorAsync(int accountId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            int count = await repository.GetCountByCriteriaAsync(
-                col => (col.CollectionId == (int)AccountCollectionId.BusinessDebtors
-                    || col.CollectionId == (int)AccountCollectionId.BusinessCreditors)
-                    && col.AccountId == accountId);
-            return count > 0;
-        }
-
-        private async Task<bool> IsBankSubSetAsync(int accountId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            int count = await repository.GetCountByCriteriaAsync(
-                col => col.CollectionId == (int)AccountCollectionId.Bank && col.AccountId == accountId);
-            return count > 0;
-        }
-
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.Account; }
@@ -584,6 +566,24 @@ namespace SPPC.Tadbir.Persistence
             var lastCode = (existingCodes.Count() > 0) ? Int64.Parse(existingCodes.Max()) : 0;
             var newCode = Math.Min(lastCode + 1, maxCode);
             return newCode.ToString(format);
+        }
+
+        private async Task<bool> IsCommercialDebtorAndCreditorAsync(int accountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            int count = await repository.GetCountByCriteriaAsync(
+                col => (col.CollectionId == (int)AccountCollectionId.BusinessDebtors
+                    || col.CollectionId == (int)AccountCollectionId.BusinessCreditors)
+                    && col.AccountId == accountId);
+            return count > 0;
+        }
+
+        private async Task<bool> IsBankSubSetAsync(int accountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            int count = await repository.GetCountByCriteriaAsync(
+                col => col.CollectionId == (int)AccountCollectionId.Bank && col.AccountId == accountId);
+            return count > 0;
         }
 
         /// <summary>

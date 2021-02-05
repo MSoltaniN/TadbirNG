@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.CrossCutting.Redis;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Finance;
@@ -344,6 +345,27 @@ namespace SPPC.Tadbir.Persistence
                 .Where(line => line.Id == articleId)
                 .Select(line => line.Voucher.SubjectType)
                 .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون اطلاعات اصلی آرتیکل های مالی را به حافظه کش اضافه می کند
+        /// </summary>
+        public async Task AddLinesToCacheAsync()
+        {
+            var cache = new RedisCacheManager();
+            if (!cache.ContainKey("lines"))
+            {
+                cache.Delete("lines");
+                var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+                var lines = await repository
+                    .GetEntityQuery(line => line.Voucher, line => line.Account,
+                        line => line.DetailAccount, line => line.CostCenter,
+                        line => line.Project, line => line.Currency)
+                    .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft)
+                    .Select(line => Mapper.Map<VoucherLineDetailViewModel>(line))
+                    .ToListAsync();
+                cache.Set("lines", lines);
+            }
         }
 
         /// <inheritdoc/>

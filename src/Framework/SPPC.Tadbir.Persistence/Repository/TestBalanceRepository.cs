@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.CrossCutting.Caching;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
@@ -47,30 +45,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<TestBalanceViewModel> GetLevelBalanceAsync(
             int level, TestBalanceParameters parameters)
         {
-            var profiler = new BasicProfiler("Original logic, No optimization, 4-Column Test Balance");
             _utility = _factory.Create(parameters.ViewId);
             var testBalance = new TestBalanceViewModel();
+            var lines = await GetRawBalanceLinesAsync(parameters);
 
-            profiler.Start();
-
-            RedisCacheManager redisCacheManager = new RedisCacheManager();
-            IList<TestBalanceItemViewModel> lines = null;
-
-            if (!redisCacheManager.ContainKey("lines"))
-            {
-                lines = await GetRawBalanceLinesAsync(parameters);
-                redisCacheManager.Set("lines", lines);
-            }
-            else
-            {
-                lines = redisCacheManager.Get<IList<TestBalanceItemViewModel>>("lines");
-            }
-
-            profiler.Report("Finished reading articles.");
             Func<TestBalanceItemViewModel, bool> filter;
             int index = 0;
-
-            profiler.Start();
             while (index < level)
             {
                 filter = _utility.GetCurrentlevelFilter(index);
@@ -96,8 +76,6 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(parameters.GridOptions, false)
                 .ToArray());
             SetSummaryItems(testBalance);
-            profiler.Report("Finished report calculation.");
-            profiler.End();
 
             var source = (parameters.ViewId == ViewId.Account)
                 ? OperationSourceId.TestBalance
@@ -272,18 +250,6 @@ namespace SPPC.Tadbir.Persistence
                 && item.OperationSumCredit == 0.0M
                 && item.EndBalanceDebit == 0.0M
                 && item.EndBalanceCredit == 0.0M;
-        }
-
-        private async Task<TestBalanceViewModel> GetAlternateLevelBalanceAsync(
-            int level, TestBalanceParameters parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task<IEnumerable<Account>> GetAccountListAsync(
-            TestBalanceParameters parameters)
-        {
-            throw new NotImplementedException();
         }
 
         private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(

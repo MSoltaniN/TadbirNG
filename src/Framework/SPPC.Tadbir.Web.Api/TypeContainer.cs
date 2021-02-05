@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.CrossCutting;
+using SPPC.Tadbir.CrossCutting.Redis;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Repository;
@@ -140,6 +142,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ITestBalanceUtilityFactory, TestBalanceUtilityFactory>();
             _services.AddTransient<ITestBalanceHelper, TestBalanceHelper>();
             _services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
+            _services.AddTransient<ICacheManager, RedisCacheManager>();
         }
 
         private readonly IServiceCollection _services;
