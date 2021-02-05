@@ -36,6 +36,6 @@ namespace SPPC.Tadbir.CrossCutting
         /// <param name="key">کلید متنی برای مشخص کردن اطلاعات در حافظه کش</param>
         /// <returns>در صورت وجود اطلاعات در حافظه کش مقدار بولی "درست" و در غیر این صورت
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
-        bool ContainKey(string key);
+        bool ContainsKey(string key);
     }
 }

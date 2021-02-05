@@ -13,6 +13,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Repository;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 
 namespace SPPC.Tadbir.Web.Api
@@ -143,6 +144,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ITestBalanceHelper, TestBalanceHelper>();
             _services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
             _services.AddTransient<ICacheManager, RedisCacheManager>();
+            _services.AddTransient<ICacheUtility<VoucherLineDetailViewModel>, LineCacheUtility>();
         }
 
         private readonly IServiceCollection _services;

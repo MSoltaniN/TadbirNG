@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.CrossCutting.Redis;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Extensions;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -28,12 +28,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
+        /// <param name="cache">امکان مدیریت اطلاعات آرتیکل های سند را در حافظه کش فراهم می کند</param>
         public VoucherLineRepository(IRepositoryContext context, ISystemRepository system,
-            IRelationRepository relations)
+            IRelationRepository relations, ICacheUtility<VoucherLineDetailViewModel> cache)
             : base(context, system?.Logger)
         {
             _system = system;
             _relationRepository = relations;
+            _cache = cache;
         }
 
         /// <summary>
@@ -184,14 +186,16 @@ namespace SPPC.Tadbir.Persistence
                 line.CreatedById = UserContext.Id;
                 await InsertAsync(repository, line, OperationId.CreateLine);
                 await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
+                await UpdateLineCacheAsync(line.Id, CacheOperation.Add);
             }
             else
             {
-                line = await repository.GetByIDAsync(lineView.Id, vl => vl.Account);
+                line = await repository.GetByIDAsync(lineView.Id);
                 if (line != null)
                 {
                     await UpdateAsync(repository, line, lineView, OperationId.EditLine);
                     await UpdateVoucherBalanceStatusAsync(lineView.VoucherId);
+                    await UpdateLineCacheAsync(line.Id, CacheOperation.Update);
                 }
             }
 
@@ -228,6 +232,7 @@ namespace SPPC.Tadbir.Persistence
                 await DeleteAsync(repository, article, OperationId.DeleteLine);
                 await UpdateRowNumbersAsync(article);
                 await UpdateVoucherBalanceStatusAsync(article.VoucherId);
+                await UpdateLineCacheAsync(articleId, CacheOperation.Delete);
             }
         }
 
@@ -253,6 +258,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 await UpdateVoucherBalanceStatusAsync(voucherId);
                 await UpdateRowNumbersAsync(voucherId);
+                _cache.Delete(items);
             }
 
             await OnEntityGroupDeleted(items, OperationId.GroupDeleteLines);
@@ -352,20 +358,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         public async Task AddLinesToCacheAsync()
         {
-            var cache = new RedisCacheManager();
-            if (!cache.ContainKey("lines"))
-            {
-                cache.Delete("lines");
-                var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-                var lines = await repository
-                    .GetEntityQuery(line => line.Voucher, line => line.Account,
-                        line => line.DetailAccount, line => line.CostCenter,
-                        line => line.Project, line => line.Currency)
-                    .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft)
-                    .Select(line => Mapper.Map<VoucherLineDetailViewModel>(line))
-                    .ToListAsync();
-                cache.Set("lines", lines);
-            }
+            var query = GetLineCacheQuery();
+            var lines = await query
+                .Select(line => Mapper.Map<VoucherLineDetailViewModel>(line))
+                .ToListAsync();
+            _cache.Add(lines);
         }
 
         /// <inheritdoc/>
@@ -417,7 +414,7 @@ namespace SPPC.Tadbir.Persistence
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
-                    AppStrings.Account, account, AppStrings.Debit, entity.Debit,
+                    AppStrings.Account, account.FullCode, AppStrings.Debit, entity.Debit,
                     AppStrings.Credit, entity.Credit, AppStrings.Description, entity.Description)
                 : null;
         }
@@ -613,6 +610,45 @@ namespace SPPC.Tadbir.Persistence
             return lineQuery;
         }
 
+        private IQueryable<VoucherLine> GetLineCacheQuery()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            return repository
+                .GetEntityQuery(line => line.Voucher, line => line.Account,
+                    line => line.DetailAccount, line => line.CostCenter,
+                    line => line.Project, line => line.Currency, line => line.Branch)
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft);
+        }
+
+        private async Task UpdateLineCacheAsync(int lineId, CacheOperation operation)
+        {
+            if (operation == CacheOperation.Delete)
+            {
+                _cache.Delete(lineId);
+            }
+            else
+            {
+                var query = GetLineCacheQuery();
+                var line = await query
+                    .Where(vl => vl.Id == lineId)
+                    .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
+                    .SingleOrDefaultAsync();
+                if (line == null)
+                {
+                    return;     // Draft voucher lines are currently NOT cached
+                }
+
+                if (operation == CacheOperation.Add)
+                {
+                    _cache.Add(line);
+                }
+                else
+                {
+                    _cache.Update(line);
+                }
+            }
+        }
+
         private async Task<int> GetNextRowNoAsync(int voucherId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
@@ -664,5 +700,6 @@ namespace SPPC.Tadbir.Persistence
 
         private readonly ISystemRepository _system;
         private readonly IRelationRepository _relationRepository;
+        private readonly ICacheUtility<VoucherLineDetailViewModel> _cache;
     }
 }

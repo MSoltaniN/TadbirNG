@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.CrossCutting.Redis
             {
                 using (var client = manager.GetClient())
                 {
-                    client.Set<T>(key, value);
+                    client.Set(key, value);
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.CrossCutting.Redis
         /// <param name="key">کلید متنی برای مشخص کردن اطلاعات در حافظه کش</param>
         /// <returns>در صورت وجود اطلاعات در حافظه کش مقدار بولی "درست" و در غیر این صورت
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
-        public bool ContainKey(string key)
+        public bool ContainsKey(string key)
         {
             using (var manager = new RedisManagerPool(_hostUrl))
             {
