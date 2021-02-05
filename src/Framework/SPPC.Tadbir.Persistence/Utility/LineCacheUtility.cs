@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.CrossCutting;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -21,14 +22,33 @@ namespace SPPC.Tadbir.Persistence.Utility
         }
 
         /// <summary>
+        /// کلید متنی مورد نیاز برای دسترسی به اطلاعات در حافظه کش
+        /// </summary>
+        public string CacheKey
+        {
+            get { return "lines"; }
+        }
+
+        /// <summary>
+        /// مشخص می کند که اطلاعاتی در حافظه کش وجود دارد یا نه
+        /// </summary>
+        /// <returns>در صورت وجود اطلاعات در حافظه کش مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        public bool HasData()
+        {
+            return _cache.ContainsKey(CacheKey);
+        }
+
+        /// <summary>
         /// مجموعه ای از آرتیکل ها را در حافظه کش ذخیره می کند
         /// </summary>
         /// <param name="lines">مجموعه آرتیکل های مورد نظر برای ذخیره در حافظه کش</param>
         public void Add(List<VoucherLineDetailViewModel> lines)
         {
-            if (!_cache.ContainsKey(_linesCacheKey))
+            Verify.ArgumentNotNull(lines, nameof(lines));
+            if (!HasData())
             {
-                _cache.Set(_linesCacheKey, lines);
+                _cache.Set(CacheKey, lines);
             }
         }
 
@@ -36,13 +56,14 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// آرتیکل جدیدی را به مجموعه موجود در حافظه کش اضافه می کند
         /// </summary>
         /// <param name="line">آرتیکل جدید که باید به حافظه کش اضافه شود</param>
-        public void Add(VoucherLineDetailViewModel line)
+        public void Insert(VoucherLineDetailViewModel line)
         {
-            if (_cache.ContainsKey(_linesCacheKey))
+            Verify.ArgumentNotNull(line, nameof(line));
+            if (HasData())
             {
-                var lines = _cache.Get<List<VoucherLineDetailViewModel>>(_linesCacheKey);
+                var lines = _cache.Get<List<VoucherLineDetailViewModel>>(CacheKey);
                 lines.Add(line);
-                _cache.Set(_linesCacheKey, lines);
+                _cache.Set(CacheKey, lines);
             }
         }
 
@@ -52,12 +73,13 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="line">آرتیکل تغییریافته که باید در حافظه کش به روزرسانی شود</param>
         public void Update(VoucherLineDetailViewModel line)
         {
-            if (_cache.ContainsKey(_linesCacheKey))
+            Verify.ArgumentNotNull(line, nameof(line));
+            if (HasData())
             {
-                var lines = _cache.Get<List<VoucherLineDetailViewModel>>(_linesCacheKey);
+                var lines = _cache.Get<List<VoucherLineDetailViewModel>>(CacheKey);
                 lines.RemoveAll(vl => line.Id == line.Id);
                 lines.Add(line);
-                _cache.Set(_linesCacheKey, lines);
+                _cache.Set(CacheKey, lines);
             }
         }
 
@@ -67,11 +89,11 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="lineId">شناسه دیتابیسی آرتیکلی که باید از حافظه کش حذف شود</param>
         public void Delete(int lineId)
         {
-            if (_cache.ContainsKey(_linesCacheKey))
+            if (HasData())
             {
-                var lines = _cache.Get<List<VoucherLineDetailViewModel>>(_linesCacheKey);
+                var lines = _cache.Get<List<VoucherLineDetailViewModel>>(CacheKey);
                 lines.RemoveAll(line => line.Id == lineId);
-                _cache.Set(_linesCacheKey, lines);
+                _cache.Set(CacheKey, lines);
             }
         }
 
@@ -81,15 +103,26 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="lineIds">شناسه های دیتابیسی آرتیکل هایی که باید از حافظه کش حذف شوند</param>
         public void Delete(IEnumerable<int> lineIds)
         {
-            if (_cache.ContainsKey(_linesCacheKey))
+            Verify.ArgumentNotNull(lineIds, nameof(lineIds));
+            if (HasData())
             {
-                var lines = _cache.Get<List<VoucherLineDetailViewModel>>(_linesCacheKey);
+                var lines = _cache.Get<List<VoucherLineDetailViewModel>>(CacheKey);
                 lines.RemoveAll(line => lineIds.Contains(line.Id));
-                _cache.Set(_linesCacheKey, lines);
+                _cache.Set(CacheKey, lines);
             }
         }
 
-        private const string _linesCacheKey = "lines";
+        /// <summary>
+        /// اطلاعات موجودیت ها را به طور کامل از حافظه کش پاک می کند
+        /// </summary>
+        public void Clear()
+        {
+            if (HasData())
+            {
+                _cache.Delete(CacheKey);
+            }
+        }
+
         private readonly ICacheManager _cache;
     }
 }

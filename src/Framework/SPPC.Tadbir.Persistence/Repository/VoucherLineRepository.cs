@@ -358,11 +358,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         public async Task AddLinesToCacheAsync()
         {
-            var query = GetLineCacheQuery();
-            var lines = await query
-                .Select(line => Mapper.Map<VoucherLineDetailViewModel>(line))
-                .ToListAsync();
-            _cache.Add(lines);
+            if (!_cache.HasData())
+            {
+                var query = GetLineCacheQuery();
+                var lines = await query
+                    .Select(line => Mapper.Map<VoucherLineDetailViewModel>(line))
+                    .ToListAsync();
+                _cache.Add(lines);
+            }
         }
 
         /// <inheritdoc/>
@@ -640,7 +643,7 @@ namespace SPPC.Tadbir.Persistence
 
                 if (operation == CacheOperation.Add)
                 {
-                    _cache.Add(line);
+                    _cache.Insert(line);
                 }
                 else
                 {
