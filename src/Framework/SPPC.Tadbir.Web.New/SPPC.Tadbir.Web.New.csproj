@@ -869,7 +869,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\finance\models\testBalanceModeInfo.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\api\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\index.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\finance\service\ItemBalance.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\finance\service\itemBalance.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\profitLost.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\finance\service\testBalance.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service.locator.ts" />

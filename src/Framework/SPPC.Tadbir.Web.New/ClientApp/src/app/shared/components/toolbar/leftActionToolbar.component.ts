@@ -15,8 +15,8 @@ export function getLayoutModule(layout: Layout) {
 
 @Component({
   selector: 'left-action-toolbar',
-  templateUrl: './leftactiontoolbar.component.html',
-  styleUrls: ['./leftactiontoolbar.component.css'],
+  templateUrl: './leftActionToolbar.component.html',
+  styleUrls: ['./leftActionToolbar.component.css'],
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,

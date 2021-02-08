@@ -19,7 +19,7 @@ import { BalanceDisplayTypeResource, VoucherStatusResource, BranchScopeResource,
 import { SelectFormComponent } from '@sppc/shared/controls';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { VoucherApi, AccountBookApi } from '@sppc/finance/service/api';
-import { ItemBalanceApi } from '@sppc/finance/service/api/ItemBalanceApi';
+import { ItemBalanceApi } from '@sppc/finance/service/api/itemBalanceApi';
 import { String }  from '@sppc/shared/class';
 import { AccountInfo, ItemBalanceService } from '@sppc/finance/service';
 import { ItemBalanceModeInfo } from '@sppc/finance/models/ItemBalanceModeInfo';
