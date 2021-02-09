@@ -73,6 +73,7 @@ namespace SPPC.Framework.Common
             _report.AppendLine();
             _report.AppendLine("-----------------------------------------------------------------------------");
             File.AppendAllText(_logFile, _report.ToString());
+            _totalElapsed = TimeSpan.Zero;
         }
 
         private const string _logFile = "profile.log";

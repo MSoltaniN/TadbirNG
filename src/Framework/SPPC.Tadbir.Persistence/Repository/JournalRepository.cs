@@ -220,7 +220,9 @@ namespace SPPC.Tadbir.Persistence
         private static JournalViewModel BuildJournal(
             IEnumerable<JournalItemViewModel> journalItems, GridOptions gridOptions)
         {
-            var filteredItems = journalItems.Apply(gridOptions, false);
+            var filteredItems = journalItems
+                .Apply(gridOptions, false)
+                .ToList();
             var journal = new JournalViewModel
             {
                 TotalCount = filteredItems.Count(),
