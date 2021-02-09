@@ -7,7 +7,6 @@ using SPPC.Framework.Domain;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
 {

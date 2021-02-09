@@ -368,6 +368,17 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون آرتیکل های مالی را از حافظه کش حذف می کند
+        /// </summary>
+        public void DeleteLinesInCache()
+        {
+            if (_cache.HasData())
+            {
+                _cache.Clear();
+            }
+        }
+
         /// <inheritdoc/>
         protected override async Task FinalizeActionAsync(VoucherLine entity)
         {

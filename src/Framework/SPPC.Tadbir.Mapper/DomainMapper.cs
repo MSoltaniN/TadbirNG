@@ -615,6 +615,18 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<SystemIssue, SystemIssueViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
 
+            mapperConfig.CreateMap<VoucherLineDetailViewModel, TestBalanceItemViewModel>()
+                .ForMember(dest => dest.TurnoverDebit, opts => opts.MapFrom(src => src.Debit))
+                .ForMember(dest => dest.TurnoverCredit, opts => opts.MapFrom(src => src.Credit))
+                .ForMember(dest => dest.StartBalanceDebit, opts => opts.Ignore())
+                .ForMember(dest => dest.StartBalanceCredit, opts => opts.Ignore())
+                .ForMember(dest => dest.OperationSumDebit, opts => opts.Ignore())
+                .ForMember(dest => dest.OperationSumCredit, opts => opts.Ignore())
+                .ForMember(dest => dest.CorrectionsDebit, opts => opts.Ignore())
+                .ForMember(dest => dest.CorrectionsCredit, opts => opts.Ignore())
+                .ForMember(dest => dest.EndBalanceDebit, opts => opts.Ignore())
+                .ForMember(dest => dest.EndBalanceCredit, opts => opts.Ignore());
+
             mapperConfig.CreateMap<ProfitLossItemViewModel, ProfitLossByItemsViewModel>()
                 .ForMember(dest => dest.StartBalanceItem1, opts => opts.MapFrom(src => src.StartBalance))
                 .ForMember(dest => dest.PeriodTurnoverItem1, opts => opts.MapFrom(src => src.PeriodTurnover))

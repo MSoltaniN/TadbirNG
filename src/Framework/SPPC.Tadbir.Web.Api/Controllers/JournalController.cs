@@ -344,8 +344,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void PrepareJournal(JournalViewModel journal, GridOptions gridOptions)
         {
-            SetItemCount(journal.Items.Count());
-            journal.SetItems(journal.Items.ApplyPaging(gridOptions).ToList());
+            SetItemCount(journal.TotalCount);
             Localize(journal);
             SetRowNumbers(journal.Items);
         }

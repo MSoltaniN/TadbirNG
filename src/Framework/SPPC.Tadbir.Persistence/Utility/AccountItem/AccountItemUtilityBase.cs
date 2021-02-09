@@ -23,8 +23,10 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         /// <param name="repository">امکان اعمال فیلترهای شعبه و سطری را فراهم می کند</param>
-        public AccountItemUtilityBase(IRepositoryContext context, IConfigRepository config, ISecureRepository repository)
-            : base(context, config)
+        /// <param name="cache"></param>
+        public AccountItemUtilityBase(IRepositoryContext context, IConfigRepository config,
+            ISecureRepository repository, ICacheUtility<VoucherLineDetailViewModel> cache)
+            : base(context, config, cache)
         {
             _repository = repository;
         }

@@ -23,6 +23,12 @@ namespace SPPC.Tadbir.Persistence.Utility
         bool HasData();
 
         /// <summary>
+        /// اطلاعات موجود در حافظه کش را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات موجود در حافظه کش پس از تبدیل به نوع مورد نیاز</returns>
+        IEnumerable<TItem> Get();
+
+        /// <summary>
         /// مجموعه ای از موجودیت ها را در حافظه کش ذخیره می کند
         /// </summary>
         /// <param name="items">مجموعه موجودیت های مورد نظر برای ذخیره در حافظه کش</param>

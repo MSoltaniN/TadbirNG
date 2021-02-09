@@ -16,9 +16,11 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="cache">امکان انجام عملیات مختلف با سرور کش را فراهم می کند</param>
-        public LineCacheUtility(ICacheManager cache)
+        /// <param name="repository"></param>
+        public LineCacheUtility(ICacheManager cache, ISecureCacheRepository repository)
         {
             _cache = cache;
+            _repository = repository;
         }
 
         /// <summary>
@@ -37,6 +39,22 @@ namespace SPPC.Tadbir.Persistence.Utility
         public bool HasData()
         {
             return _cache.ContainsKey(CacheKey);
+        }
+
+        /// <summary>
+        /// اطلاعات موجود در حافظه کش را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات موجود در حافظه کش پس از تبدیل به نوع مورد نیاز</returns>
+        public IEnumerable<VoucherLineDetailViewModel> Get()
+        {
+            var outItems = new List<VoucherLineDetailViewModel>();
+            if (!HasData())
+            {
+                return outItems;
+            }
+
+            var lines = _cache.Get<List<VoucherLineDetailViewModel>>(CacheKey);
+            return _repository.ApplyOperationBranchFilter(lines);
         }
 
         /// <summary>
@@ -124,5 +142,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         }
 
         private readonly ICacheManager _cache;
+        private readonly ISecureCacheRepository _repository;
     }
 }

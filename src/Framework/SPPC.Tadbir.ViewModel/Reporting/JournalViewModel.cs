@@ -32,13 +32,8 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public decimal CreditSum { get; set; }
 
         /// <summary>
-        /// سطرهای اطلاعاتی گزارش را با مجوعه سطرهای اطلاعاتی داده شده جایگزین می کند
+        /// تعداد کل سطرهای گزارش پس از اعمال فیلترهای سریع و فیلترهای ستونی
         /// </summary>
-        /// <param name="items">سطرهای اطلاعاتی مورد نظر برای جایگزینی در مدل نمایشی</param>
-        public void SetItems(IEnumerable<JournalItemViewModel> items)
-        {
-            Items.Clear();
-            Items.AddRange(items);
-        }
+        public int TotalCount { get; set; }
     }
 }

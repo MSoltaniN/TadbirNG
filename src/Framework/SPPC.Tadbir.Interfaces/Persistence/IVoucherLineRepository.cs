@@ -122,5 +122,10 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون اطلاعات اصلی آرتیکل های مالی را به حافظه کش اضافه می کند
         /// </summary>
         Task AddLinesToCacheAsync();
+
+        /// <summary>
+        /// به روش آسنکرون آرتیکل های مالی را از حافظه کش حذف می کند
+        /// </summary>
+        void DeleteLinesInCache();
     }
 }

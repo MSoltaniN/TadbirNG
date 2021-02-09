@@ -1,11 +1,12 @@
 ﻿using System;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
     /// <summary>
     /// اطلاعات مفصل مورد نیاز برای یک آرتیکل مالی را نگهداری می کند
     /// </summary>
-    public class VoucherLineDetailViewModel : ViewModelBase
+    public class VoucherLineDetailViewModel : ViewModelBase, IFiscalEntity
     {
         /// <summary>
         /// شناسه دیتابیسی آرتیکل مالی
@@ -52,6 +53,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public decimal Credit { get; set; }
 
+        public string Mark { get; set; }
+
         /// <summary>
         /// شرح آرتیکل مالی
         /// </summary>
@@ -72,6 +75,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public string AccountName { get; set; }
 
+        public short AccountLevel { get; set; }
+
         /// <summary>
         /// شناسه دیتابیسی تفصیلی شناور مورد استفاده در آرتیکل مالی
         /// </summary>
@@ -86,6 +91,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// نام تفصیلی شناور مورد استفاده در آرتیکل مالی
         /// </summary>
         public string DetailAccountName { get; set; }
+
+        public short DetailAccountLevel { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مرکز هزینه مورد استفاده در آرتیکل مالی
@@ -102,6 +109,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public string CostCenterName { get; set; }
 
+        public short CostCenterLevel { get; set; }
+
         /// <summary>
         /// شناسه دیتابیسی پروژه مورد استفاده در آرتیکل مالی
         /// </summary>
@@ -117,6 +126,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public string ProjectName { get; set; }
 
+        public short ProjectLevel { get; set; }
+
         /// <summary>
         /// نام ارز مورد استفاده در آرتیکل مالی
         /// </summary>
@@ -131,5 +142,22 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی شعبه ایجادکننده آرتیکل سند
         /// </summary>
         public int BranchId { get; set; }
+
+        public string BranchName { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی دوره مالی که آرتیکل سند در آن ایجاد شده است
+        /// </summary>
+        public int FiscalPeriodId { get; set; }
+
+        /// <summary>
+        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
+        /// </summary>
+        public Guid RowGuid { get; set; }
+
+        /// <summary>
+        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
     }
 }

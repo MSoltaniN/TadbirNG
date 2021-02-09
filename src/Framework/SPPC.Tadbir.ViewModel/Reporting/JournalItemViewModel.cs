@@ -24,6 +24,21 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public int VoucherNo { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی وضعیت ثبتی سند مالی
+        /// </summary>
+        public int VoucherStatusId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربر تاییدکننده سند مالی
+        /// </summary>
+        public int? VoucherConfirmedById { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربر تصویب کننده سند مالی
+        /// </summary>
+        public int? VoucherApprovedById { get; set; }
+
+        /// <summary>
         /// کد کامل سرفصل حسابداری مورد استفاده در ردیف سند، ستون شماره حساب در نمای لیستی
         /// </summary>
         public string AccountFullCode { get; set; }
@@ -97,20 +112,5 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// شناسه دیتابیسی شعبه ای که آرتیکل برای آن ایجاد شده است
         /// </summary>
         public int BranchId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی وضعیت ثبتی سند مالی
-        /// </summary>
-        public int VoucherStatusId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی کاربر تاییدکننده سند مالی
-        /// </summary>
-        public int? VoucherConfirmedById { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی کاربر تصویب کننده سند مالی
-        /// </summary>
-        public int? VoucherApprovedById { get; set; }
     }
 }

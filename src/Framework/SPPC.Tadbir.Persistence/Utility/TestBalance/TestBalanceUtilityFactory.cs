@@ -1,4 +1,5 @@
 ﻿using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
@@ -14,13 +15,16 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="config">امکان مدیریت تنظیمات شرکتی را فراهم می کند</param>
         /// <param name="repository">امکان اعمال فیلترهای شعبه و سطری را فراهم می کند</param>
         /// <param name="helper">امکانات کمکی برای محاسبات مانده را فراهم می کند</param>
+        /// <param name="cache"></param>
         public TestBalanceUtilityFactory(IRepositoryContext context,
-            IConfigRepository config, ISecureRepository repository, ITestBalanceHelper helper)
+            IConfigRepository config, ISecureRepository repository, ITestBalanceHelper helper,
+            ICacheUtility<VoucherLineDetailViewModel> cache)
         {
             _context = context;
             _config = config;
             _repository = repository;
             _helper = helper;
+            _cache = cache;
         }
 
         /// <summary>
@@ -34,17 +38,17 @@ namespace SPPC.Tadbir.Persistence.Utility
             switch (viewId)
             {
                 case ViewId.DetailAccount:
-                    utility = new DetailAccountBalanceUtility(_context, _config, _repository, _helper);
+                    utility = new DetailAccountBalanceUtility(_context, _config, _repository, _cache, _helper);
                     break;
                 case ViewId.CostCenter:
-                    utility = new CostCenterBalanceUtility(_context, _config, _repository, _helper);
+                    utility = new CostCenterBalanceUtility(_context, _config, _repository, _cache, _helper);
                     break;
                 case ViewId.Project:
-                    utility = new ProjectBalanceUtility(_context, _config, _repository, _helper);
+                    utility = new ProjectBalanceUtility(_context, _config, _repository, _cache, _helper);
                     break;
                 case ViewId.Account:
                 default:
-                    utility = new AccountBalanceUtility(_context, _config, _repository, _helper);
+                    utility = new AccountBalanceUtility(_context, _config, _repository, _cache, _helper);
                     break;
             }
 
@@ -55,5 +59,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         private readonly IConfigRepository _config;
         private readonly ISecureRepository _repository;
         private readonly ITestBalanceHelper _helper;
+        private readonly ICacheUtility<VoucherLineDetailViewModel> _cache;
     }
 }

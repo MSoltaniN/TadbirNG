@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
@@ -17,8 +18,10 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         /// <param name="repository">امکان اعمال فیلترهای شعبه و سطری را فراهم می کند</param>
-        public CostCenterUtility(IRepositoryContext context, IConfigRepository config, ISecureRepository repository)
-            : base(context, config, repository)
+        /// <param name="cache"></param>
+        public CostCenterUtility(IRepositoryContext context, IConfigRepository config,
+            ISecureRepository repository, ICacheUtility<VoucherLineDetailViewModel> cache)
+            : base(context, config, repository, cache)
         {
         }
 

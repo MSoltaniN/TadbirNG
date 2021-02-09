@@ -569,6 +569,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// آرتیکل های مالی را از حافظه کش حذف می کند
+        /// </summary>
+        // DELETE: api/vouchers/articles
+        [HttpDelete]
+        [Route(VoucherApi.AllVoucherArticlesUrl)]
+        public IActionResult DeleteVoucherLinesInCache()
+        {
+            _lineRepository.DeleteLinesInCache();
+            return Ok();
+        }
+
         #endregion
 
         #region Voucher Operations - Single
