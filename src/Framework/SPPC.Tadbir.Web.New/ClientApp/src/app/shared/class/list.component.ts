@@ -10,8 +10,9 @@ import { AdvanceFilterComponent } from "@sppc/shared/components/advanceFilter/ad
 import { Permissions, GlobalPermissions } from "@sppc/shared/security/permissions";
 import { FilterExpression } from '@sppc/shared/class/filterExpression';
 import { FilterRow } from "@sppc/shared/models";
-import { MessageType } from '@sppc/env/environment';
+import { MessageType, Entities } from '@sppc/env/environment';
 import * as moment from 'jalali-moment';
+import { ViewName } from "@sppc/shared/security";
 
 @Injectable()
 export class ListComponent extends DefaultComponent implements OnDestroy {
@@ -126,6 +127,11 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   public getExcelFileName()
   {
     var localizedViewName = this.getLocalizedViewName(this.viewId);
+
+    if (this.viewId == ViewName[Entities.ComparativeProfitLoss] || this.viewId == ViewName[Entities.ComparativeProfitLossSimple]) {
+      localizedViewName = this.getText("ProfitLoss.ComparativeProfitLoss");
+    }
+    
     var date = '';
     if (this.CurrentLanguage == 'fa')
       date = moment().locale('fa').format('YYYY/MM/DD HH:mm').replace(' ', '-');
