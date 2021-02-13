@@ -31,6 +31,7 @@ export const SessionKeys = {
   SelectedFiscalPeriod: 'SelectedFiscalPeriod',
   ItemBalance: 'itemBalance',
   OperationLog: 'OperationLog',
+  BalanceSheet: 'BalanceSheet',
 }
 
 
