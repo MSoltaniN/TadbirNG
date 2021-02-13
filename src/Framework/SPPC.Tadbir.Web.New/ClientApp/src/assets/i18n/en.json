@@ -382,6 +382,7 @@
     "FilterByRef": "Filter By Ref",
     "FiscalPeriod": "Fiscal Period",
     "Comparative": "Comparative",
+    "ComparativeProfitLoss": "Comparative-profitLoss",
     "Tax": "Tax",
     "Closing": "Closing vouchers",
     "ComparativeSelect": "Please select items for the comparison report",

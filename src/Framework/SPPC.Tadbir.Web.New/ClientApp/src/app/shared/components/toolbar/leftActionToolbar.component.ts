@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SettingService } from '@sppc/config/service';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { GridComponent } from '@progress/kendo-angular-grid';
+import { GlobalPermissions } from '@sppc/shared/security';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -40,6 +41,7 @@ export class LeftActionToolbarComponent extends BaseComponent implements OnInit 
   }
 
   ngOnInit() {
+    
   }
 
   showAdvanceFilterComponent() {
@@ -52,10 +54,5 @@ export class LeftActionToolbarComponent extends BaseComponent implements OnInit 
 
   showReportManager() {
     this.parentComponent.showReportManager(this.viewId, this.parentComponent, this.reportSetting, this.reportManager);    
-  }
-
-  
-
-
-  
+  } 
 }
