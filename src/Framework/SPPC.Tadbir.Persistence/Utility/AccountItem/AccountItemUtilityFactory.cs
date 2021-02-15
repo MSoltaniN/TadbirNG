@@ -1,5 +1,4 @@
 ﻿using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
@@ -14,14 +13,11 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
         /// <param name="repository">امکان اعمال فیلترهای سطری و شعبه روی اطلاعات را فراهم می کند</param>
-        /// <param name="cache"></param>
-        public AccountItemUtilityFactory(IRepositoryContext context, IConfigRepository config,
-            ISecureRepository repository, ICacheUtility<VoucherLineDetailViewModel> cache)
+        public AccountItemUtilityFactory(IRepositoryContext context, IConfigRepository config, ISecureRepository repository)
         {
             _context = context;
             _config = config;
             _repository = repository;
-            _cache = cache;
         }
 
         /// <summary>
@@ -35,17 +31,17 @@ namespace SPPC.Tadbir.Persistence.Utility
             switch (viewId)
             {
                 case ViewId.DetailAccount:
-                    utility = new DetailAccountUtility(_context, _config, _repository, _cache);
+                    utility = new DetailAccountUtility(_context, _config, _repository);
                     break;
                 case ViewId.CostCenter:
-                    utility = new CostCenterUtility(_context, _config, _repository, _cache);
+                    utility = new CostCenterUtility(_context, _config, _repository);
                     break;
                 case ViewId.Project:
-                    utility = new ProjectUtility(_context, _config, _repository, _cache);
+                    utility = new ProjectUtility(_context, _config, _repository);
                     break;
                 case ViewId.Account:
                 default:
-                    utility = new AccountUtility(_context, _config, _repository, _cache);
+                    utility = new AccountUtility(_context, _config, _repository);
                     break;
             }
 
@@ -55,6 +51,5 @@ namespace SPPC.Tadbir.Persistence.Utility
         private readonly IRepositoryContext _context;
         private readonly IConfigRepository _config;
         private readonly ISecureRepository _repository;
-        private readonly ICacheUtility<VoucherLineDetailViewModel> _cache;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
@@ -9,7 +10,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
@@ -23,13 +23,10 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات برنامه را فراهم می کند</param>
-        /// <param name="cache">امکان مدیریت اطلاعات آرتیکل های مالی را در حافظه کش فراهم می کند</param>
-        public ReportUtility(IRepositoryContext context, IConfigRepository config,
-            ICacheUtility<VoucherLineDetailViewModel> cache)
+        public ReportUtility(IRepositoryContext context, IConfigRepository config)
         {
             Config = config;
             _context = context;
-            _cache = cache;
         }
 
         /// <summary>
@@ -41,16 +38,19 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="to">تاریخ پایان در دوره گزارشگیری</param>
         /// <param name="gridOptions">فیلترهای سریع مورد نیاز که لازم است پیش از تجمیع اطلاعات گزارش اعمال شوند</param>
         /// <returns>آرتیکل های اولیه برای استفاده در گزارش</returns>
-        public IEnumerable<TModel> GetRawReportByDateLines<TModel>(
+        public async Task<List<TModel>> GetRawReportByDateLinesAsync<TModel>(IQueryable<VoucherLine> query,
             DateTime from, DateTime to, GridOptions gridOptions)
         {
-            var lines = _cache.Get();
-            return lines
-                .Where(line => line.VoucherDate.IsBetween(from, to))
-                .OrderBy(line => line.VoucherDate)
-                    .ThenBy(line => line.VoucherNo)
+            var lines = await query
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to))
+                .OrderBy(line => line.Voucher.Date)
+                    .ThenBy(line => line.Voucher.No)
                 .Select(line => Mapper.Map<TModel>(line))
-                .ApplyQuickFilter(gridOptions);
+                .ToListAsync();
+            return lines
+                .ApplyQuickFilter(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -62,16 +62,18 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="to">تاریخ پایان در دوره گزارشگیری</param>
         /// <param name="gridOptions">فیلترهای سریع مورد نیاز که لازم است پیش از تجمیع اطلاعات گزارش اعمال شوند</param>
         /// <returns>آرتیکل های اولیه برای استفاده در گزارش</returns>
-        public IEnumerable<TModel> GetRawReportByDateByBranchLines<TModel>(
+        public async Task<List<TModel>> GetRawReportByDateByBranchLinesAsync<TModel>(IQueryable<VoucherLine> query,
             DateTime from, DateTime to, GridOptions gridOptions)
         {
-            var lines = _cache.Get();
-            return lines
-                .Where(line => line.VoucherDate.IsBetween(from, to))
-                .OrderBy(line => line.VoucherDate)
-                    .ThenBy(line => line.VoucherNo)
+            var lines = await query
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.Date.IsBetween(from, to))
+                .OrderBy(line => line.Voucher.Date)
+                    .ThenBy(line => line.Voucher.No)
                         .ThenBy(line => line.BranchId)
                 .Select(line => Mapper.Map<TModel>(line))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(gridOptions)
                 .ToList();
         }
@@ -85,15 +87,17 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="to">شماره آخرین سند در دوره گزارشگیری</param>
         /// <param name="gridOptions">فیلترهای سریع مورد نیاز که لازم است پیش از تجمیع اطلاعات گزارش اعمال شوند</param>
         /// <returns>آرتیکل های اولیه برای استفاده در گزارش</returns>
-        public IEnumerable<TModel> GetRawReportByNumberLines<TModel>(
+        public async Task<List<TModel>> GetRawReportByNumberLinesAsync<TModel>(IQueryable<VoucherLine> query,
             int from, int to, GridOptions gridOptions)
         {
-            var lines = _cache.Get();
-            return lines
-                .Where(line => line.VoucherNo >= from
-                    && line.VoucherNo <= to)
-                .OrderBy(line => line.VoucherNo)
+            var lines = await query
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.No >= from
+                    && line.Voucher.No <= to)
+                .OrderBy(line => line.Voucher.No)
                 .Select(line => Mapper.Map<TModel>(line))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(gridOptions)
                 .ToList();
         }
@@ -107,16 +111,18 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="to">تاریخ پایان در دوره گزارشگیری</param>
         /// <param name="gridOptions">فیلترهای سریع مورد نیاز که لازم است پیش از تجمیع اطلاعات گزارش اعمال شوند</param>
         /// <returns>آرتیکل های اولیه برای استفاده در گزارش</returns>
-        public IEnumerable<TModel> GetRawReportByNumberByBranchLines<TModel>(
+        public async Task<List<TModel>> GetRawReportByNumberByBranchLinesAsync<TModel>(IQueryable<VoucherLine> query,
             int from, int to, GridOptions gridOptions)
         {
-            var lines = _cache.Get();
-            return lines
-                .Where(line => line.VoucherNo >= from
-                    && line.VoucherNo <= to)
-                .OrderBy(line => line.VoucherNo)
+            var lines = await query
+                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
+                    && line.Voucher.No >= from
+                    && line.Voucher.No <= to)
+                .OrderBy(line => line.Voucher.No)
                     .ThenBy(line => line.BranchId)
                 .Select(line => Mapper.Map<TModel>(line))
+                .ToListAsync();
+            return lines
                 .ApplyQuickFilter(gridOptions)
                 .ToList();
         }
@@ -296,6 +302,5 @@ namespace SPPC.Tadbir.Persistence.Utility
         }
 
         private readonly IRepositoryContext _context;
-        private readonly ICacheUtility<VoucherLineDetailViewModel> _cache;
     }
 }

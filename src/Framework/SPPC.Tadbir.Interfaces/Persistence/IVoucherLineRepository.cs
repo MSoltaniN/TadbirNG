@@ -117,15 +117,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
         /// <returns>نوع مفهومی سند مرتبط با شناسه آرتیکل داده شده</returns>
         Task<int> GetLineSubjectTypeAsync(int articleId);
-
-        /// <summary>
-        /// به روش آسنکرون اطلاعات اصلی آرتیکل های مالی را به حافظه کش اضافه می کند
-        /// </summary>
-        Task AddLinesToCacheAsync();
-
-        /// <summary>
-        /// به روش آسنکرون آرتیکل های مالی را از حافظه کش حذف می کند
-        /// </summary>
-        void DeleteLinesInCache();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using SPPC.Framework.Presentation;
 
 namespace SPPC.Tadbir.Persistence
@@ -31,6 +32,18 @@ namespace SPPC.Tadbir.Persistence
                 filter = filter.Replace("&&", "AND");
                 filter = filter.Replace("||", "OR");
                 Query = String.Format(Query, filter);
+            }
+        }
+
+        public void AddFilter(string filter)
+        {
+            int index = Query.IndexOf("{{0}}");
+            if (index != -1)
+            {
+                var builder = new StringBuilder(Query);
+                Query = builder
+                    .Insert(index, filter)
+                    .ToString();
             }
         }
     }

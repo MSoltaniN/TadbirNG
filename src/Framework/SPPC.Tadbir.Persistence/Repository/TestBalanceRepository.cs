@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -46,8 +47,7 @@ namespace SPPC.Tadbir.Persistence
         {
             _utility = _factory.Create(parameters.ViewId);
             var testBalance = new TestBalanceViewModel();
-            var lines = GetRawBalanceLines(parameters);
-
+            var lines = await GetRawBalanceLinesAsync(parameters);
             Func<TestBalanceItemViewModel, bool> filter;
             int index = 0;
             while (index < level)
@@ -100,7 +100,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 int groupLevel = accountItem.Level + 1;
                 var lineFilter = _utility.GetUpperlevelFilter(groupLevel);
-                IEnumerable<TestBalanceItemViewModel> lines = GetRawBalanceLines(parameters);
+                IEnumerable<TestBalanceItemViewModel> lines = await GetRawBalanceLinesAsync(parameters);
                 lines = _utility.FilterBalanceLines(lines, accountItem);
                 foreach (var lineGroup in _utility.GetTurnoverGroups(lines, groupLevel, lineFilter))
                 {
@@ -251,39 +251,44 @@ namespace SPPC.Tadbir.Persistence
                 && item.EndBalanceCredit == 0.0M;
         }
 
-        private IEnumerable<TestBalanceItemViewModel> GetRawBalanceLines(
+        private async Task<IList<TestBalanceItemViewModel>> GetRawBalanceLinesAsync(
             TestBalanceParameters parameters)
         {
-            IEnumerable<TestBalanceItemViewModel> lines = null;
+            var query = Repository
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
+                    art => art.Voucher, art => art.Branch);
+            query = _utility.IncludeVoucherLineReference(query);
+
+            var options = parameters.Options;
+            if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
+            {
+                query = query.Where(
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingVoucher);
+            }
+
+            if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
+            {
+                query = query.Where(
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingTempAccounts);
+            }
+
+            if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+            {
+                query = query.Where(
+                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.OpeningVoucher);
+            }
+
+            IList<TestBalanceItemViewModel> lines = null;
             if (parameters.FromDate != null && parameters.ToDate != null)
             {
-                lines = _utility.GetRawReportByDateLines<TestBalanceItemViewModel>(
-                    parameters.FromDate.Value, parameters.ToDate.Value, parameters.GridOptions);
+                lines = await _utility.GetRawReportByDateLinesAsync<TestBalanceItemViewModel>(
+                    query, parameters.FromDate.Value, parameters.ToDate.Value, parameters.GridOptions);
             }
             else if (parameters.FromNo != null && parameters.ToNo != null)
             {
-                lines = _utility.GetRawReportByNumberLines<TestBalanceItemViewModel>(
-                    parameters.FromNo.Value, parameters.ToNo.Value, parameters.GridOptions);
+                lines = await _utility.GetRawReportByNumberLinesAsync<TestBalanceItemViewModel>(
+                    query, parameters.FromNo.Value, parameters.ToNo.Value, parameters.GridOptions);
             }
-
-            //var options = parameters.Options;
-            //if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
-            //{
-            //    query = query.Where(
-            //        art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingVoucher);
-            //}
-
-            //if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
-            //{
-            //    query = query.Where(
-            //        art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingTempAccounts);
-            //}
-
-            //if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
-            //{
-            //    query = query.Where(
-            //        art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.OpeningVoucher);
-            //}
 
             return lines;
         }
