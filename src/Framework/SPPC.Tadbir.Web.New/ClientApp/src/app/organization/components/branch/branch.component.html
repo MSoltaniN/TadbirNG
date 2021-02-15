@@ -82,7 +82,7 @@
                       (dblclick)="rowDoubleClickHandler()"
                       sppc-auto-generated-grid-reorder
                       sppc-auto-generated-grid-resize>
-
+            <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
             <ng-template kendoGridNoRecordsTemplate>
               {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
             </ng-template>
@@ -122,6 +122,7 @@
                                            (columnsList)="getColumns($event)">
               </auto-generated-grid-setting>
               <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+              <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [quickReportDisabled]="true" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
             </ng-template>
 
             <kendo-grid-checkbox-column showSelectAll="true"

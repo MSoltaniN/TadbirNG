@@ -229,6 +229,10 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     }
   }
 
+  onAdvanceFilterOk() {
+    this.reloadGrid();
+  }
+
   getNewTicket(branchId: number, fpId: number) {
     var companyLoginModel = new CompanyLoginInfo();
     companyLoginModel.companyId = this.CompanyId;

@@ -38,7 +38,7 @@
               (dataStateChange)="onDataStateChange()"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
-
+    <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
     <ng-template kendoGridNoRecordsTemplate>
       {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
     </ng-template>
@@ -75,10 +75,10 @@
       <div class="col-md-12  no-padding no-margin">
         <div class="test-balance sppc-float">
           <input type="radio" name="rdbitemBalanceType" [(ngModel)]="itemBalanceType" (change)="changeType()" id="radio1" class="k-radio" value="1" />
-          <label  for="radio1">{{ 'ItemBalance.ByDate' | translate }}</label>
+          <label for="radio1">{{ 'ItemBalance.ByDate' | translate }}</label>
           <br />
           <input type="radio" name="rdbitemBalanceType" [(ngModel)]="itemBalanceType" (change)="changeType()" class="k-radio" id="radio2" value="2" />
-          <label  for="radio2">{{ 'ItemBalance.ByVoucher' | translate }}</label>
+          <label for="radio2">{{ 'ItemBalance.ByVoucher' | translate }}</label>
         </div>
         <div class="sppc-float">
 
@@ -109,8 +109,7 @@
             <button kendoButton class="hidden-xs rm" title="{{ 'ItemBalance.SubBalance' | translate }}" (click)="showSubAccountsBalance()"
                     [icon]="'filter-add-expression'" type="button"></button>
             <button kendoButton class="hidden-xs rm lm" title="{{ 'ItemBalance.AccountBook' | translate }}" (click)="showAccountBook()"
-                    [icon]="'dictionary-add'" type="button"></button>
-            <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+                    [icon]="'dictionary-add'" type="button"></button>            
           </div>
 
         </div>

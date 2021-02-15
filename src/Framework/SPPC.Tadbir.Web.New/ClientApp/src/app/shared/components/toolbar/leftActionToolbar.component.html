@@ -1,8 +1,8 @@
-<button kendoButton class="hidden-xs lm" title="{{ 'AdvanceFilter.Title' | translate }}" (click)="showAdvanceFilterComponent()"
+<button *ngIf="advanceFilterDisabled == false" kendoButton class="hidden-xs lm" title="{{ 'AdvanceFilter.Title' | translate }}" (click)="showAdvanceFilterComponent()"
         [icon]="'zoom'" type="button"></button>
-<button kendoButton class="hidden-xs lm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showQuickReportSetting()"
+<button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs lm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showQuickReportSetting()"
         [icon]="'form-element'" type="button"></button>
-<button kendoButton class="hidden-xs lm" title="{{ 'Report.Print' | translate }}" (click)="showReportManager()"
+<button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs lm" title="{{ 'Report.Print' | translate }}" (click)="showReportManager()"
         [icon]="'printer'" type="button"></button>
-<button class="hidden-xs lm" kendoGridExcelCommand [icon]="'file-excel'"  title="{{ 'Exports.ExportToExcel' | translate }}"></button>
+<button *ngIf="exportDisabled == false" class="hidden-xs lm" kendoGridExcelCommand [icon]="'file-excel'"  title="{{ 'Exports.ExportToExcel' | translate }}"></button>
 

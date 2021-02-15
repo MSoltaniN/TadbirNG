@@ -32,9 +32,13 @@ export class LeftActionToolbarComponent extends BaseComponent implements OnInit 
   @Input() reportManager: any;
   @Input() grid: GridComponent;
 
+  @Input() quickReportDisabled: boolean = false;
+  @Input() exportDisabled: boolean = false;
+  @Input() advanceFilterDisabled: boolean = false;
+
   @Output() onFilterOk = new EventEmitter();
   @Output() onFilterCancel = new EventEmitter();
-
+   
   constructor(public toastrService: ToastrService, public translate: TranslateService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
 
     super(toastrService, bStorageService);

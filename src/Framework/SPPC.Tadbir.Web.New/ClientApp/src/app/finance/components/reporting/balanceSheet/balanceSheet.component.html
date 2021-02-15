@@ -62,7 +62,7 @@
                                          (columnsList)="getColumns($event)">
             </auto-generated-grid-setting>
             <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>            
-            <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+            <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [advanceFilterDisabled]="true" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
           </div>
 
         </div>

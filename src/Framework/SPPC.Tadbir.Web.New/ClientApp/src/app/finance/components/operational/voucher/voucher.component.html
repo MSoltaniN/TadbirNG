@@ -38,7 +38,7 @@
               (dblclick)="rowDoubleClickHandler()"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
-
+    <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
     <ng-template kendoGridNoRecordsTemplate>
       {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
     </ng-template>
@@ -111,7 +111,8 @@
                                    (columnsList)="getColumns($event)">
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-      <div class="col-xs-12 col-sm-2 voucher-top-filter">        
+      <left-action-toolbar class="sppc-float-diff" [advanceFilterDisabled]="true" [quickReportDisabled]="true" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+      <div class="col-xs-12 col-sm-2 voucher-top-filter">
         <kendo-dropdownlist [data]="branchScope" class="ddl-branch-type"
                             [textField]="'value'"
                             [valueField]="'key'"
@@ -126,18 +127,18 @@
             {{ dataItem?.value | translate }}
           </ng-template>
         </kendo-dropdownlist>
-       </div>
-       <div class="col-xs-12 col-sm-2 voucher-top-filter">         
-          <kendo-dropdownlist [data]="voucherTypeList" class="ddl-type"
-                              [textField]="'value'"
-                              [valueField]="'key'"
-                              [valuePrimitive]="true"
-                              [value]="selectedSubjectType"
-                              (valueChange)="voucherTypeListChange($event)"
-                              [(ngModel)]="selectedSubjectType"
-                              [ngModelOptions]="{standalone: true}">
-          </kendo-dropdownlist>
-        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 voucher-top-filter">
+        <kendo-dropdownlist [data]="voucherTypeList" class="ddl-type"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="selectedSubjectType"
+                            (valueChange)="voucherTypeListChange($event)"
+                            [(ngModel)]="selectedSubjectType"
+                            [ngModelOptions]="{standalone: true}">
+        </kendo-dropdownlist>
+      </div>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true"

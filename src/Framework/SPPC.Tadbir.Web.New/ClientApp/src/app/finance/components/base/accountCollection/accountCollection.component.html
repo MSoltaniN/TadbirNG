@@ -93,6 +93,7 @@
                         [kendoGridSelectBy]="'id'"
                         (filterChange)="filterChange($event)"
                         sppc-auto-generated-grid-reorder sppc-auto-generated-grid-resize>
+              <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
               <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                    pagerOf="{{ 'Paging.Of' | translate }}"
                                    pagerItems="{{ 'Paging.Record' | translate }}">
