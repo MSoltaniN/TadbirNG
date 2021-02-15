@@ -557,30 +557,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await GroupDeleteLineResultAsync(actionDetail, lineRepository.DeleteArticlesAsync);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات ضروری آرتیکل های مالی را به حافظه کش اضافه می کند
-        /// </summary>
-        // POST: api/vouchers/articles
-        [HttpPost]
-        [Route(VoucherApi.AllVoucherArticlesUrl)]
-        public async Task<IActionResult> PostVoucherLinesToCacheAsync()
-        {
-            await _lineRepository.AddLinesToCacheAsync();
-            return Ok();
-        }
-
-        /// <summary>
-        /// آرتیکل های مالی را از حافظه کش حذف می کند
-        /// </summary>
-        // DELETE: api/vouchers/articles
-        [HttpDelete]
-        [Route(VoucherApi.AllVoucherArticlesUrl)]
-        public IActionResult DeleteVoucherLinesInCache()
-        {
-            _lineRepository.DeleteLinesInCache();
-            return Ok();
-        }
-
         #endregion
 
         #region Voucher Operations - Single

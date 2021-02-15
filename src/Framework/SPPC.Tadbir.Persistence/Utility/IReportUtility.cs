@@ -18,44 +18,48 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// آرتیکل های فیلتر شده و تجمیع نشده را برای یک گزارش خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TModel">نوع مدل نمایشی مورد نیاز برای نگاشت اطلاعات آرتیکل</typeparam>
+        /// <param name="query">پرس و جوی آماده شده برای اعمال فیلترهای اضافه</param>
         /// <param name="from">تاریخ شروع در دوره گزارشگیری</param>
         /// <param name="to">تاریخ پایان در دوره گزارشگیری</param>
         /// <param name="gridOptions">فیلترهای سریع مورد نیاز که لازم است پیش از تجمیع اطلاعات گزارش اعمال شوند</param>
         /// <returns>آرتیکل های اولیه برای استفاده در گزارش</returns>
-        IEnumerable<TModel> GetRawReportByDateLines<TModel>(
+        Task<List<TModel>> GetRawReportByDateLinesAsync<TModel>(IQueryable<VoucherLine> query,
             DateTime from, DateTime to, GridOptions gridOptions);
 
         /// <summary>
         /// آرتیکل های فیلتر شده و تجمیع نشده و به تفکیک شعبه را برای یک گزارش خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TModel">نوع مدل نمایشی مورد نیاز برای نگاشت اطلاعات آرتیکل</typeparam>
+        /// <param name="query">پرس و جوی آماده شده برای اعمال فیلترهای اضافه</param>
         /// <param name="from">تاریخ شروع در دوره گزارشگیری</param>
         /// <param name="to">تاریخ پایان در دوره گزارشگیری</param>
         /// <param name="gridOptions">فیلترهای سریع مورد نیاز که لازم است پیش از تجمیع اطلاعات گزارش اعمال شوند</param>
         /// <returns>آرتیکل های اولیه برای استفاده در گزارش</returns>
-        IEnumerable<TModel> GetRawReportByDateByBranchLines<TModel>(
+        Task<List<TModel>> GetRawReportByDateByBranchLinesAsync<TModel>(IQueryable<VoucherLine> query,
             DateTime from, DateTime to, GridOptions gridOptions);
 
         /// <summary>
         /// آرتیکل های فیلتر شده و تجمیع نشده را برای یک گزارش خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TModel">نوع مدل نمایشی مورد نیاز برای نگاشت اطلاعات آرتیکل</typeparam>
+        /// <param name="query">پرس و جوی آماده شده برای اعمال فیلترهای اضافه</param>
         /// <param name="from">شماره اولین سند در دوره گزارشگیری</param>
         /// <param name="to">شماره آخرین سند در دوره گزارشگیری</param>
         /// <param name="gridOptions">فیلترهای سریع مورد نیاز که لازم است پیش از تجمیع اطلاعات گزارش اعمال شوند</param>
         /// <returns>آرتیکل های اولیه برای استفاده در گزارش</returns>
-        IEnumerable<TModel> GetRawReportByNumberLines<TModel>(
+        Task<List<TModel>> GetRawReportByNumberLinesAsync<TModel>(IQueryable<VoucherLine> query,
             int from, int to, GridOptions gridOptions);
 
         /// <summary>
         /// آرتیکل های فیلتر شده و تجمیع نشده و به تفکیک شعبه را برای یک گزارش خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TModel">نوع مدل نمایشی مورد نیاز برای نگاشت اطلاعات آرتیکل</typeparam>
+        /// <param name="query">پرس و جوی آماده شده برای اعمال فیلترهای اضافه</param>
         /// <param name="from">تاریخ شروع در دوره گزارشگیری</param>
         /// <param name="to">تاریخ پایان در دوره گزارشگیری</param>
         /// <param name="gridOptions">فیلترهای سریع مورد نیاز که لازم است پیش از تجمیع اطلاعات گزارش اعمال شوند</param>
         /// <returns>آرتیکل های اولیه برای استفاده در گزارش</returns>
-        IEnumerable<TModel> GetRawReportByNumberByBranchLines<TModel>(
+        Task<List<TModel>> GetRawReportByNumberByBranchLinesAsync<TModel>(IQueryable<VoucherLine> query,
             int from, int to, GridOptions gridOptions);
 
         /// <summary>

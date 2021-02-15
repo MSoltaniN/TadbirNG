@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
@@ -14,9 +13,8 @@ namespace SPPC.Tadbir.Persistence.Utility
     internal class CostCenterBalanceUtility : CostCenterUtility, ITestBalanceUtility
     {
         public CostCenterBalanceUtility(IRepositoryContext context, IConfigRepository config,
-            ISecureRepository repository, ICacheUtility<VoucherLineDetailViewModel> cache,
-            ITestBalanceHelper helper)
-            : base(context, config, repository, cache)
+            ISecureRepository repository, ITestBalanceHelper helper)
+            : base(context, config, repository)
         {
             _helper = helper;
         }
