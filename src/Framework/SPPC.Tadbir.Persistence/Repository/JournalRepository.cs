@@ -221,9 +221,13 @@ namespace SPPC.Tadbir.Persistence
             IEnumerable<JournalItemViewModel> journalItems, GridOptions gridOptions)
         {
             var journal = new JournalViewModel();
-            journal.Items.AddRange(journalItems.Apply(gridOptions, false));
-            journal.DebitSum = journal.Items.Sum(item => item.Debit);
-            journal.CreditSum = journal.Items.Sum(item => item.Credit);
+            var filteredItems = journalItems
+                .Apply(gridOptions, false)
+                .ToList();
+            journal.TotalCount = filteredItems.Count;
+            journal.DebitSum = filteredItems.Sum(item => item.Debit);
+            journal.CreditSum = filteredItems.Sum(item => item.Credit);
+            journal.Items.AddRange(filteredItems.ApplyPaging(gridOptions));
             return journal;
         }
 
