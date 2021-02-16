@@ -45,5 +45,10 @@ namespace SPPC.Tadbir.Domain
         /// گزینه های مورد استفاده برای مرتب سازی، فیلتر و صفحه بندی اطلاعات گزارش
         /// </summary>
         public GridOptions GridOptions { get; set; }
+
+        public JournalParameters GetCopy()
+        {
+            return (JournalParameters)MemberwiseClone();
+        }
     }
 }

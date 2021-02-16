@@ -1,43 +1,33 @@
 ﻿using System;
 using System.Text;
-using SPPC.Framework.Presentation;
+using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.Persistence
 {
     public class ReportQuery
     {
-        public ReportQuery(string query = null)
+        public ReportQuery(string query)
         {
             Query = query;
         }
 
         public string Query { get; private set; }
 
-        public void ApplyOptions(GridOptions options)
+        public void ApplyDefaultFilters(string environmentFilter, string quickFilter)
         {
-            string filter = options.QuickFilter != null
-                ? String.Format(" AND {0}", options.QuickFilter.ToString())
+            Verify.ArgumentNotNullOrEmptyString(environmentFilter, nameof(environmentFilter));
+            string filter1 = String.Format(" AND {0}", environmentFilter);
+            string filter2 = !String.IsNullOrEmpty(quickFilter)
+                ? String.Format(" AND {0}", quickFilter)
                 : String.Empty;
-            if (!String.IsNullOrEmpty(filter))
-            {
-                filter = filter.Replace("Voucher", "v.");
-                filter = filter.Replace("== null", " IS NULL");
-                filter = filter.Replace("!= null", "IS NOT NULL");
-                filter = filter.Replace("==", " =");
-                filter = filter.Replace("!=", " <>");
-                filter = filter.Replace(">=", " >=");
-                filter = filter.Replace("<=", " <=");
-                filter = filter.Replace("BranchId", "vl.BranchId");
-                filter = filter.Replace("Mark", "vl.Mark");
-                filter = filter.Replace("&&", "AND");
-                filter = filter.Replace("||", "OR");
-                Query = String.Format(Query, filter);
-            }
+            filter1 = TranslateQuery(filter1);
+            filter2 = TranslateQuery(filter2);
+            Query = String.Format(Query, filter1, filter2);
         }
 
         public void AddFilter(string filter)
         {
-            int index = Query.IndexOf("{{0}}");
+            int index = Query.IndexOf("{0}");
             if (index != -1)
             {
                 var builder = new StringBuilder(Query);
@@ -45,6 +35,29 @@ namespace SPPC.Tadbir.Persistence
                     .Insert(index, filter)
                     .ToString();
             }
+        }
+
+        private string TranslateQuery(string query)
+        {
+            var builder = new StringBuilder(query);
+            if (!String.IsNullOrEmpty(query))
+            {
+                builder = builder
+                    .Replace("Voucher", "v.")
+                    .Replace("== null", " IS NULL")
+                    .Replace("!= null", " IS NOT NULL")
+                    .Replace("==", " =")
+                    .Replace("!=", " <>")
+                    .Replace(">=", " >=")
+                    .Replace("<=", " <=")
+                    .Replace("FiscalPeriodId", "v.FiscalPeriodId")
+                    .Replace("BranchId", "vl.BranchId")
+                    .Replace("Mark", "vl.Mark")
+                    .Replace("&&", "AND")
+                    .Replace("||", "OR");
+            }
+
+            return builder.ToString();
         }
     }
 }
