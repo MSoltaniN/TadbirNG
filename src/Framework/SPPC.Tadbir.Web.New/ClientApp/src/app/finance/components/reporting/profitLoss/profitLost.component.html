@@ -103,7 +103,7 @@
         {{ getRowValue(item.name,dataItem,item.scriptType)  }}
       </ng-template>
 
-      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'" dir="ltr">
         {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
       </ng-template>
 

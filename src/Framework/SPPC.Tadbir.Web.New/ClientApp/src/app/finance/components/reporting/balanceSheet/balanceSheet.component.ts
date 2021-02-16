@@ -48,6 +48,7 @@ export function getLayoutModule(layout: Layout) {
 .section-account .acc-code-rtl { left: 30px; }
 .section-account .acc-code-ltr { right: 30px; }
 .section-account label {width:35%}
+/deep/ .k-grid td {direction:ltr!important}
 `],
   providers: [{
     provide: RTL,
