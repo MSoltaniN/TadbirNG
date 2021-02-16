@@ -295,8 +295,8 @@ namespace SPPC.Tadbir.Persistence
             int length = GetLevelCodeLength(0);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
-            var debitItems = GetLedgerSummaryByDateItems(parameters, length, byBranch, true);
-            var creditItems = GetLedgerSummaryByDateItems(parameters, length, byBranch, false);
+            var debitItems = GetLedgerSummaryByDateItems(parameters, length, byBranch, false, true);
+            var creditItems = GetLedgerSummaryByDateItems(parameters, length, byBranch, false, false);
             journal.TotalCount = debitItems.Count() + creditItems.Count();
             journal.DebitSum = debitItems.Sum(item => item.Debit);
             journal.CreditSum = creditItems.Sum(item => item.Credit);
@@ -326,8 +326,8 @@ namespace SPPC.Tadbir.Persistence
                 monthParams.FromDate = month.Start;
                 monthParams.ToDate = month.End;
 
-                var debitItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true);
-                var creditItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, false);
+                var debitItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true, true);
+                var creditItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true, false);
                 monthJournal.AddRange(MergeByDate(debitItems, creditItems));
 
                 if (monthJournal.Count > 0)
@@ -511,14 +511,27 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IEnumerable<JournalItemViewModel> GetLedgerSummaryByDateItems(
-            JournalParameters parameters, int length, bool byBranch, bool isDebit)
+            JournalParameters parameters, int length, bool byBranch, bool isMonthly, bool isDebit)
         {
+            string command = String.Empty;
             var query = default(ReportQuery);
-            string command = !byBranch
-                ? String.Format(JournalQuery.LedgerSummaryByDate, length,
-                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
-                : String.Format(JournalQuery.LedgerSummaryByDateByBranch, length,
-                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false));
+            if (isMonthly)
+            {
+                command = !byBranch
+                    ? String.Format(JournalQuery.MonthlyLedgerSummary, length,
+                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
+                    : String.Format(JournalQuery.MonthlyLedgerSummaryByBranch, length,
+                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false));
+            }
+            else
+            {
+                command = !byBranch
+                    ? String.Format(JournalQuery.LedgerSummaryByDate, length,
+                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
+                    : String.Format(JournalQuery.LedgerSummaryByDateByBranch, length,
+                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false));
+            }
+
             if (isDebit)
             {
                 query = new ReportQuery(command);
@@ -532,6 +545,7 @@ namespace SPPC.Tadbir.Persistence
 
             ApplyEnvironmentFilters(query, parameters.GridOptions);
             var result = DbConsole.ExecuteQuery(query.Query);
+
             return result.Rows
                 .Cast<DataRow>()
                 .Select(row => GetJournalItem(row));
@@ -680,12 +694,12 @@ namespace SPPC.Tadbir.Persistence
         {
             var items = new List<JournalItemViewModel>();
             foreach (var byNum in first
-                .OrderBy(item => item.VoucherDate)
-                .GroupBy(item => item.VoucherDate))
+                .OrderBy(item => item.VoucherDate.Date)
+                .GroupBy(item => item.VoucherDate.Date))
             {
                 items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
                 items.AddRange(second
-                    .Where(item => item.VoucherDate == byNum.Key)
+                    .Where(item => item.VoucherDate.Date == byNum.Key)
                     .OrderBy(item => item.AccountFullCode));
             }
 
@@ -704,10 +718,9 @@ namespace SPPC.Tadbir.Persistence
 
         private JournalItemViewModel GetJournalItem(DataRow row)
         {
-            return new JournalItemViewModel()
+            var item = new JournalItemViewModel()
             {
                 RowNo = ValueOrDefault<int>(row, "RowNum"),
-                VoucherDate = ValueOrDefault<DateTime>(row, "Date"),
                 VoucherNo = ValueOrDefault<int>(row, "No"),
                 AccountFullCode = ValueOrDefault(row, "FullCode"),
                 AccountName = ValueOrDefault(row, "Name"),
@@ -723,6 +736,11 @@ namespace SPPC.Tadbir.Persistence
                 Mark = ValueOrDefault(row, "Mark"),
                 BranchName = ValueOrDefault(row, "BranchName")
             };
+
+            item.VoucherDate = row.Table.Columns.Contains("Date")
+                ? DateTime.Parse(row["Date"].ToString())
+                : DateTime.MinValue;
+            return item;
         }
 
         private T ValueOrDefault<T>(DataRow row, string field)

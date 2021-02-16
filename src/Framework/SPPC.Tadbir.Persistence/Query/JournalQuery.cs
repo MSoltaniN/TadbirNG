@@ -134,13 +134,13 @@ WHERE RowNum >= {2}
 ORDER BY RowNum";
 
         internal const string ByDateByLevel = @"
-SELECT v.Date, v.No, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1
+SELECT CONVERT(date, v.Date) AS Date, v.No, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
 WHERE v.Date >= '{1}' AND v.Date <= '{2}' AND vl.Debit > 0{{0}} {{1}}
-GROUP BY v.Date, v.No, SUBSTRING(acc.FullCode, 1, {0})
-ORDER BY v.Date, v.No, SUBSTRING(acc.FullCode, 1, {0})";
+GROUP BY CONVERT(date, v.Date), v.No, SUBSTRING(acc.FullCode, 1, {0})
+ORDER BY CONVERT(date, v.Date), v.No, SUBSTRING(acc.FullCode, 1, {0})";
 
         internal const string ByNoByLevel = @"
 SELECT v.Date, v.No, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1
@@ -152,14 +152,14 @@ GROUP BY v.No, v.Date, SUBSTRING(acc.FullCode, 1, {0})
 ORDER BY v.No, SUBSTRING(acc.FullCode, 1, {0})";
 
         internal const string ByDateByLevelByBranch = @"
-SELECT v.Date, v.No, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name
+SELECT CONVERT(date, v.Date) AS Date, v.No, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
 WHERE v.Date >= '{1}' AND v.Date <= '{2}' AND vl.Debit > 0{{0}} {{1}}
-GROUP BY v.Date, v.No, SUBSTRING(acc.FullCode, 1, {0}), br.Name
-ORDER BY v.Date, v.No, SUBSTRING(acc.FullCode, 1, {0}), br.Name";
+GROUP BY CONVERT(date, v.Date), v.No, SUBSTRING(acc.FullCode, 1, {0}), br.Name
+ORDER BY CONVERT(date, v.Date), v.No, SUBSTRING(acc.FullCode, 1, {0}), br.Name";
 
         internal const string ByNoByLevelByBranch = @"
 SELECT v.Date, v.No, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name
@@ -210,22 +210,41 @@ GROUP BY SUBSTRING(acc.FullCode, 1, {0}), br.Name
 ORDER BY SUBSTRING(acc.FullCode, 1, {0}), br.Name";
 
         internal const string LedgerSummaryByDate = @"
-SELECT v.Date, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1
+SELECT CONVERT(date, v.Date) AS Date, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
 WHERE v.Date >= '{1}' AND v.Date <= '{2}' AND vl.Debit > 0{{0}} {{1}}
-GROUP BY v.Date, SUBSTRING(acc.FullCode, 1, {0})
-ORDER BY v.Date, SUBSTRING(acc.FullCode, 1, {0})";
+GROUP BY CONVERT(date, v.Date), SUBSTRING(acc.FullCode, 1, {0})
+ORDER BY CONVERT(date, v.Date), SUBSTRING(acc.FullCode, 1, {0})";
 
         internal const string LedgerSummaryByDateByBranch = @"
-SELECT v.Date, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name
+SELECT CONVERT(date, v.Date) AS Date, SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
 WHERE v.Date >= '{1}' AND v.Date <= '{2}' AND vl.Debit > 0{{0}} {{1}}
-GROUP BY v.Date, SUBSTRING(acc.FullCode, 1, {0}), br.Name
-ORDER BY v.Date, SUBSTRING(acc.FullCode, 1, {0}), br.Name";
+GROUP BY CONVERT(date, v.Date), SUBSTRING(acc.FullCode, 1, {0}), br.Name
+ORDER BY CONVERT(date, v.Date), SUBSTRING(acc.FullCode, 1, {0}), br.Name";
+
+        internal const string MonthlyLedgerSummary = @"
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1
+FROM [Finance].[VoucherLine] vl
+    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
+    INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
+WHERE v.Date >= '{1}' AND v.Date <= '{2}' AND vl.Debit > 0{{0}} {{1}}
+GROUP BY SUBSTRING(acc.FullCode, 1, {0})
+ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
+
+        internal const string MonthlyLedgerSummaryByBranch = @"
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name
+FROM [Finance].[VoucherLine] vl
+    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
+    INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
+    INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
+WHERE v.Date >= '{1}' AND v.Date <= '{2}' AND vl.Debit > 0{{0}} {{1}}
+GROUP BY SUBSTRING(acc.FullCode, 1, {0}), br.Name
+ORDER BY SUBSTRING(acc.FullCode, 1, {0}), br.Name";
     }
 }
