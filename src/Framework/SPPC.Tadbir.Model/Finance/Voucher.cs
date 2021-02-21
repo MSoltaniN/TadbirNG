@@ -18,6 +18,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی مأخذ این سند مالی
         /// </summary>
-        public virtual int VoucherOriginId { get; set; }
+        public virtual int OriginId { get; set; }
     }
 }

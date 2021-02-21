@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Finance_Voucher_Core_Status");
             builder.HasOne(e => e.Origin)
                 .WithMany()
-                .HasForeignKey(e => e.VoucherOriginId)
+                .HasForeignKey(e => e.OriginId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Voucher_Finance_VoucherOrigin");
         }

@@ -286,7 +286,7 @@ namespace SPPC.Tadbir.Persistence
             if (!parameters.UseClosingVoucher)
             {
                 linesQuery = linesQuery
-                    .Where(line => line.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingVoucher);
+                    .Where(line => line.Voucher.OriginId != (int)VoucherOriginId.ClosingVoucher);
             }
 
             if (parameters.CostCenterId != null)

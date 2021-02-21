@@ -513,7 +513,7 @@ namespace SPPC.Tadbir.Persistence
             if (!parameters.UseClosingTempVoucher)
             {
                 linesQuery = linesQuery
-                    .Where(line => line.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingTempAccounts);
+                    .Where(line => line.Voucher.OriginId != (int)VoucherOriginId.ClosingTempAccounts);
             }
 
             if (parameters.CostCenterId != null)

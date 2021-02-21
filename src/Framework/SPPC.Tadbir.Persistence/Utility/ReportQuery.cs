@@ -63,6 +63,7 @@ namespace SPPC.Tadbir.Persistence
                     .Replace("FiscalPeriodId", "v.FiscalPeriodId")
                     .Replace("BranchId", "vl.BranchId")
                     .Replace("Level", "acc.Level")
+                    .Replace("FullCode", "acc.FullCode")
                     .Replace("Mark", "vl.Mark")
                     .Replace("&&", "AND")
                     .Replace("||", "OR");

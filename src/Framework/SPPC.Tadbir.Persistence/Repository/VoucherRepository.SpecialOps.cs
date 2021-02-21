@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             int closingCount = await repository.GetCountByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
-                v.VoucherOriginId == (int)type &&
+                v.OriginId == (int)type &&
                 v.StatusId >= (int)DocumentStatusId.Checked);
             return closingCount == 1;
         }
@@ -84,7 +84,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             int count = await repository.GetCountByCriteriaAsync(
                 v => v.FiscalPeriodId == previousId &&
-                v.VoucherOriginId == (int)VoucherOriginId.ClosingVoucher);
+                v.OriginId == (int)VoucherOriginId.ClosingVoucher);
             return count == 1;
         }
 
@@ -195,7 +195,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var openingVoucher = await repository.GetSingleByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
-                v.VoucherOriginId == (int)origin);
+                v.OriginId == (int)origin);
             return openingVoucher;
         }
 
@@ -453,7 +453,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var lastClosing = await repository.GetSingleByCriteriaAsync(
                 v => v.FiscalPeriodId == previousId &&
-                v.VoucherOriginId == (int)VoucherOriginId.ClosingVoucher,
+                v.OriginId == (int)VoucherOriginId.ClosingVoucher,
                 v => v.Lines);
             return lastClosing;
         }

@@ -346,7 +346,7 @@ namespace SPPC.Tadbir.Persistence
                     var query = Repository
                         .GetAllOperationQuery<VoucherLine>(
                             ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
-                        .Where(line => line.Voucher.VoucherOriginId == (int)origin);
+                        .Where(line => line.Voucher.OriginId == (int)origin);
 
                     foreach (var item in itemCriteria)
                     {

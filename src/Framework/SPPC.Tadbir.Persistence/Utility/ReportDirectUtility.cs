@@ -213,6 +213,28 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
         }
 
+        public async Task<TreeEntity> GetItemAsync(int viewId, int itemId)
+        {
+            var accountItem = default(TreeEntity);
+            switch (viewId)
+            {
+                case ViewId.Account:
+                    accountItem = await GetItemAsync<Account>(itemId);
+                    break;
+                case ViewId.DetailAccount:
+                    accountItem = await GetItemAsync<DetailAccount>(itemId);
+                    break;
+                case ViewId.CostCenter:
+                    accountItem = await GetItemAsync<CostCenter>(itemId);
+                    break;
+                case ViewId.Project:
+                    accountItem = await GetItemAsync<Project>(itemId);
+                    break;
+            }
+
+            return accountItem;
+        }
+
         private IAppUnitOfWork UnitOfWork
         {
             get { return _context.UnitOfWork; }
@@ -295,6 +317,13 @@ namespace SPPC.Tadbir.Persistence.Utility
                 item.CostCenterName = treeItemMap[item.AccountFullCode];
                 item.ProjectName = treeItemMap[item.AccountFullCode];
             }
+        }
+
+        private async Task<T> GetItemAsync<T>(int itemId)
+            where T : TreeEntity
+        {
+            var repository = UnitOfWork.GetAsyncRepository<T>();
+            return await repository.GetByIDAsync(itemId);
         }
 
         private readonly IRepositoryContext _context;

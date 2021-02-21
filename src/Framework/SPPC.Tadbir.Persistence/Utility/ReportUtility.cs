@@ -136,7 +136,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         {
             DateTime? voucherDate = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetFirstByCriteriaAsync(v => v.VoucherOriginId == (int)origin);
+            var voucher = await repository.GetFirstByCriteriaAsync(v => v.OriginId == (int)origin);
             if (voucher != null)
             {
                 voucherDate = voucher.Date;

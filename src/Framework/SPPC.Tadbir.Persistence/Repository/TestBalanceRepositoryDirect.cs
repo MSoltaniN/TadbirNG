@@ -87,7 +87,36 @@ namespace SPPC.Tadbir.Persistence
         public async Task<TestBalanceViewModel> GetChildrenBalanceAsync(
             int accountId, TestBalanceParameters parameters)
         {
-            throw new NotImplementedException();
+            var balance = new TestBalanceViewModel();
+            var accountItem = await _utility.GetItemAsync(parameters.ViewId, accountId);
+            if (accountItem != null)
+            {
+                var items = new List<TestBalanceItemViewModel>();
+                int level = accountItem.Level + 1;
+                var filter = String.Format("Level >= {0} AND FullCode LIKE '{1}%'", level, accountItem.FullCode);
+                var query = GetLevelQuery(level, parameters, filter);
+                items.AddRange(GetQueryResult(query));
+
+                if (parameters.Format >= TestBalanceFormat.SixColumn)
+                {
+                    AddInitialBalances(items, parameters);
+                }
+
+                if (parameters.Format >= TestBalanceFormat.EightColumn)
+                {
+                    AddOperationSums(items);
+                }
+
+                items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
+                await PrepareBalanceAsync(balance, items, parameters);
+            }
+
+            var source = (parameters.ViewId == ViewId.Account)
+                ? OperationSourceId.TestBalance
+                : OperationSourceId.ItemBalance;
+            await OnSourceActionAsync(parameters.GridOptions, source,
+                (SourceListId)GetSourceList(parameters.Format, GetComponentName(parameters.ViewId)));
+            return balance;
         }
 
         /// <summary>
@@ -415,8 +444,8 @@ namespace SPPC.Tadbir.Persistence
                 }
                 else
                 {
-                    var fromNo = parameters.FromDate.Value;
-                    var toNo = parameters.ToDate.Value;
+                    var fromNo = parameters.FromNo.Value;
+                    var toNo = parameters.ToNo.Value;
                     query = parameters.IsByBranch
                         ? new ReportQuery(String.Format(BalanceQuery.FourColumnByNoByBranch, length, componentName,
                             fieldName, fromNo, toNo))
@@ -453,8 +482,15 @@ namespace SPPC.Tadbir.Persistence
             {
                 var branchIds = _utility.GetChildTree(UserContext.BranchId);
                 string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
-                predicates.Add(String.Format(
-                    "(BranchId = {0} OR BranchId IN({1}))", UserContext.BranchId, branchList));
+                if (!String.IsNullOrEmpty(branchList))
+                {
+                    predicates.Add(String.Format(
+                        "(BranchId = {0} OR BranchId IN({1}))", UserContext.BranchId, branchList));
+                }
+                else
+                {
+                    predicates.Add(String.Format("BranchId = {0}", UserContext.BranchId));
+                }
             }
 
             predicates.Add(String.Format("FiscalPeriodId = {0}", UserContext.FiscalPeriodId));

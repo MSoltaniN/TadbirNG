@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
@@ -49,5 +50,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             int viewId, IEnumerable<TestBalanceItemViewModel> items, int level);
 
         Task SetItemNamesAsync(int viewId, IEnumerable<TestBalanceItemViewModel> items);
+
+        Task<TreeEntity> GetItemAsync(int viewId, int itemId);
     }
 }

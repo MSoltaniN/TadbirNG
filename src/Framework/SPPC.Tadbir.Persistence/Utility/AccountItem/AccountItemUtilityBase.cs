@@ -172,7 +172,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             VoucherOriginId origin, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             return await GetBalanceAsync(
-                line => line.Voucher.VoucherOriginId == (int)origin, itemCriteria);
+                line => line.Voucher.OriginId == (int)origin, itemCriteria);
         }
 
         private async Task<VoucherLineAmountsViewModel> GetTurnoverAsync(

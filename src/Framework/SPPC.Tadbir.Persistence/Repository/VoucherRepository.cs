@@ -760,7 +760,7 @@ namespace SPPC.Tadbir.Persistence
                 StatusId = (int)DocumentStatusId.NotChecked,
                 SubjectType = (short)subject,
                 Type = (short)VoucherType.NormalVoucher,
-                VoucherOriginId = (int)origin
+                OriginId = (int)origin
             };
         }
 

@@ -508,7 +508,7 @@ CREATE TABLE [Finance].[Voucher] (
     [BranchID]        INT              NOT NULL,
     [DocumentID]      INT              NULL,
     [StatusID]        INT              NOT NULL,
-	[VoucherOriginID] INT              CONSTRAINT [DF_Finance_Voucher_VoucherOriginID] DEFAULT (1) NOT NULL,
+	[OriginID]        INT              CONSTRAINT [DF_Finance_Voucher_OriginID] DEFAULT (1) NOT NULL,
     [IssuedByID]      INT              NOT NULL,
     [ModifiedByID]    INT              NOT NULL,
     [ConfirmedByID]   INT              NULL,
@@ -534,7 +534,7 @@ CREATE TABLE [Finance].[Voucher] (
     , CONSTRAINT [FK_Finance_Voucher_Finance_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Finance_Voucher_Finance_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
     , CONSTRAINT [FK_Finance_Voucher_Finance_Status] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
-	, CONSTRAINT [FK_Finance_Voucher_Finance_VoucherOrigin] FOREIGN KEY ([VoucherOriginID]) REFERENCES [Finance].[VoucherOrigin]([OriginID])
+	, CONSTRAINT [FK_Finance_Voucher_Finance_VoucherOrigin] FOREIGN KEY ([OriginID]) REFERENCES [Finance].[VoucherOrigin]([OriginID])
 )
 GO
 
@@ -1498,4 +1498,4 @@ GO
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.1.1048')
+VALUES(1, '1.1.1080')

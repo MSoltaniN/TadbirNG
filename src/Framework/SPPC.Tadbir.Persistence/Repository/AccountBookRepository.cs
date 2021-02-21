@@ -300,7 +300,7 @@ namespace SPPC.Tadbir.Persistence
                     var lines = await Repository
                         .GetAllOperationQuery<VoucherLine>(
                             ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch)
-                        .Where(line => line.Voucher.VoucherOriginId == (int)origin)
+                        .Where(line => line.Voucher.OriginId == (int)origin)
                         .Where(itemCriteria)
                         .Select(art => Mapper.Map<AccountBookItemViewModel>(art))
                         .ToListAsync();

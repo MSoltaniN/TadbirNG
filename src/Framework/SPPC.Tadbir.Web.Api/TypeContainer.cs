@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IAccountBookRepository, AccountBookRepository>();
             _services.AddTransient<ICurrencyRepository, CurrencyRepository>();
             _services.AddTransient<ICurrencyRateRepository, CurrencyRateRepository>();
-            _services.AddTransient<ITestBalanceRepository, TestBalanceRepository>();
+            _services.AddTransient<ITestBalanceRepository, TestBalanceRepositoryDirect>();
             _services.AddTransient<IAccessRepository, AccessRepository>();
             _services.AddTransient<ICurrencyBookRepository, CurrencyBookRepository>();
             _services.AddTransient<ISystemRepository, SystemRepository>();
@@ -139,6 +139,7 @@ namespace SPPC.Tadbir.Web.Api
         {
             _services.AddTransient<IDomainMapper, DomainMapper>();
             _services.AddTransient<IReportUtility, ReportUtility>();
+            _services.AddTransient<IReportDirectUtility, ReportDirectUtility>();
             _services.AddTransient<IAccountCollectionUtility, AccountCollectionUtility>();
             _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
             _services.AddTransient<ITestBalanceUtilityFactory, TestBalanceUtilityFactory>();

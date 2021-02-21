@@ -511,19 +511,19 @@ namespace SPPC.Tadbir.Persistence.Repository
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingVoucher);
+                    art => art.Voucher.OriginId != (int)VoucherOriginId.ClosingVoucher);
             }
 
             if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.ClosingTempAccounts);
+                    art => art.Voucher.OriginId != (int)VoucherOriginId.ClosingTempAccounts);
             }
 
             if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
                 query = query.Where(
-                    art => art.Voucher.VoucherOriginId != (int)VoucherOriginId.OpeningVoucher);
+                    art => art.Voucher.OriginId != (int)VoucherOriginId.OpeningVoucher);
             }
 
             IList<BalanceByAccountItemViewModel> lines = null;
