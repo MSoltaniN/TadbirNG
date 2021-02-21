@@ -23,6 +23,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public List<TestBalanceItemViewModel> Items { get; }
 
         /// <summary>
+        /// تعداد کل سطرهای گزارش
+        /// </summary>
+        public int TotalCount { get; set; }
+
+        /// <summary>
         /// سطر پایانی گزارش شامل مقادیر جمع کل محاسبه شده برای ستون های گزارش
         /// </summary>
         public TestBalanceItemViewModel Total { get; set; }

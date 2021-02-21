@@ -181,8 +181,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     break;
             }
 
-            SetItemCount(balance.Items.Count);
-            balance.SetBalanceItems(balance.Items.ApplyPaging(gridOptions).ToList());
+            SetItemCount(balance.TotalCount);
             SetRowNumbers(balance.Items);
             return Json(balance);
         }

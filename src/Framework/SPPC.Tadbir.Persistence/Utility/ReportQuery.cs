@@ -37,6 +37,16 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        public void SetFilter(string filter)
+        {
+            int index = Query.IndexOf("{0}");
+            if (index != -1)
+            {
+                string translated = TranslateQuery(filter);
+                Query = String.Format(Query, translated);
+            }
+        }
+
         private string TranslateQuery(string query)
         {
             var builder = new StringBuilder(query);
@@ -52,6 +62,7 @@ namespace SPPC.Tadbir.Persistence
                     .Replace("<=", " <=")
                     .Replace("FiscalPeriodId", "v.FiscalPeriodId")
                     .Replace("BranchId", "vl.BranchId")
+                    .Replace("Level", "acc.Level")
                     .Replace("Mark", "vl.Mark")
                     .Replace("&&", "AND")
                     .Replace("||", "OR");
