@@ -124,7 +124,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var builder = new StringBuilder();
-            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
+            builder.AppendFormat("Server={0};Database={1};Connect Timeout=600;", company.Server, company.DbName);
             if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
             {
                 builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",

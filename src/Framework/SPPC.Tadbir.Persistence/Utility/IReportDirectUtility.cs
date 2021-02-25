@@ -49,8 +49,12 @@ namespace SPPC.Tadbir.Persistence.Utility
         Task<IEnumerable<TestBalanceItemViewModel>> GetZeroBalanceItemsAsync(
             int viewId, IEnumerable<TestBalanceItemViewModel> items, int level);
 
-        Task SetItemNamesAsync(int viewId, IEnumerable<TestBalanceItemViewModel> items);
+        ReportQuery GetItemLookupQuery(int viewId, int length);
 
         Task<TreeEntity> GetItemAsync(int viewId, int itemId);
+
+        Task<DateTime> GetFiscalPeriodStartAsync(int fpId);
+
+        Task<int> GetFirstVoucherNoAsync(int fpId);
     }
 }

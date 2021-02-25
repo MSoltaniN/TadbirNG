@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
@@ -43,24 +44,35 @@ namespace SPPC.Tadbir.Persistence
         {
             var balance = new TestBalanceViewModel();
             var items = new List<TestBalanceItemViewModel>();
+            int length = 0;
             string filter = String.Empty;
             var query = default(ReportQuery);
             int index = 0;
+
+            Profiler.NewSession("Starting item balance report, detail accounts, level2, 6-column...");
             while (index < level)
             {
+                length = _utility.GetLevelCodeLength(parameters.ViewId, index);
+                Profiler.Start();
                 filter = String.Format("Level == {0}", index);
-                query = GetLevelQuery(index, parameters, filter);
+                query = GetLevelQuery(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
                 index++;
+                Profiler.Report(String.Format("Upper level balance completed : [{0}]", index));
             }
 
+            length = _utility.GetLevelCodeLength(parameters.ViewId, level);
+            Profiler.Start();
             filter = String.Format("Level >= {0}", level);
-            query = GetLevelQuery(level, parameters, filter);
+            query = GetLevelQuery(length, parameters, filter);
             items.AddRange(GetQueryResult(query));
+            Profiler.Report("Main level balance completed.");
 
             if (parameters.Format >= TestBalanceFormat.SixColumn)
             {
-                AddInitialBalances(items, parameters);
+                Profiler.Start();
+                AddInitialBalances(length, items, parameters);
+                Profiler.Report("Initial balances calculated.");
             }
 
             if (parameters.Format >= TestBalanceFormat.EightColumn)
@@ -68,8 +80,13 @@ namespace SPPC.Tadbir.Persistence
                 AddOperationSums(items);
             }
 
+            Profiler.Start();
             items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
-            await PrepareBalanceAsync(balance, items, parameters);
+            Profiler.Report("Zero balance items added/removed.");
+            Profiler.Start();
+            PrepareBalance(balance, items, parameters, length);
+            Profiler.Report("Report preparation completed.");
+            Profiler.End();
             var source = (parameters.ViewId == ViewId.Account)
                 ? OperationSourceId.TestBalance
                 : OperationSourceId.ItemBalance;
@@ -94,12 +111,13 @@ namespace SPPC.Tadbir.Persistence
                 var items = new List<TestBalanceItemViewModel>();
                 int level = accountItem.Level + 1;
                 var filter = String.Format("Level >= {0} AND FullCode LIKE '{1}%'", level, accountItem.FullCode);
-                var query = GetLevelQuery(level, parameters, filter);
+                int length = _utility.GetLevelCodeLength(parameters.ViewId, level);
+                var query = GetLevelQuery(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
 
                 if (parameters.Format >= TestBalanceFormat.SixColumn)
                 {
-                    AddInitialBalances(items, parameters);
+                    AddInitialBalances(length, items, parameters);
                 }
 
                 if (parameters.Format >= TestBalanceFormat.EightColumn)
@@ -108,7 +126,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
-                await PrepareBalanceAsync(balance, items, parameters);
+                PrepareBalance(balance, items, parameters, length);
             }
 
             var source = (parameters.ViewId == ViewId.Account)
@@ -279,29 +297,59 @@ namespace SPPC.Tadbir.Persistence
                 .ToList();
         }
 
-        private async Task PrepareBalanceAsync(
+        private void PrepareBalance(
             TestBalanceViewModel balance, IEnumerable<TestBalanceItemViewModel> items,
-            TestBalanceParameters parameters)
+            TestBalanceParameters parameters, int length)
         {
             SetSummaryItems(balance, items);
             balance.Items.AddRange(items.ApplyPaging(parameters.GridOptions));
-            await _utility.SetItemNamesAsync(parameters.ViewId, balance.Items);
+            SetItemNames(parameters.ViewId, length, balance.Items);
         }
 
         private void AddInitialBalances(
-            IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
+            int length, IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
         {
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            if (parameters.IsByBranch)
+            {
+                AddInitialBalanceByBranch(length, items, parameters);
+                return;
+            }
+
+            var initMap = new Dictionary<string, decimal>();
+            var openingMap = new Dictionary<string, decimal>();
+            var query = GetInitBalanceQuery(length, parameters);
+            var result = DbConsole.ExecuteQuery(query.Query);
+            foreach (DataRow row in result.Rows)
+            {
+                initMap.Add(_utility.ValueOrDefault(row, "FullCode"),
+                    _utility.ValueOrDefault<decimal>(row, "Balance"));
+            }
+
+            bool openingAsInitBalance =
+                (parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0;
+            if (openingAsInitBalance)
+            {
+                query = GetInitBalanceQuery(length, parameters, true);
+                result = DbConsole.ExecuteQuery(query.Query);
+                foreach (DataRow row in result.Rows)
+                {
+                    openingMap.Add(_utility.ValueOrDefault(row, "FullCode"),
+                        _utility.ValueOrDefault<decimal>(row, "Balance"));
+                }
+            }
+
             foreach (var item in items)
             {
-                var query = GetItemBalanceQuery(item.AccountFullCode, parameters);
-                var result = DbConsole.ExecuteQuery(query.Query);
-                decimal balance = _utility.ValueOrDefault<decimal>(result.Rows[0], "Balance");
-                if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+                decimal balance = 0.0M;
+                if (initMap.ContainsKey(item.AccountFullCode))
                 {
-                    query = GetItemBalanceQuery(item.AccountFullCode, parameters, true);
-                    result = DbConsole.ExecuteQuery(query.Query);
-                    balance += _utility.ValueOrDefault<decimal>(result.Rows[0], "Balance");
+                    balance = initMap[item.AccountFullCode];
+                }
+
+                if (openingAsInitBalance && openingMap.ContainsKey(item.AccountFullCode))
+                {
+                    balance += openingMap[item.AccountFullCode];
                 }
 
                 item.StartBalanceDebit = Math.Max(0, balance);
@@ -314,37 +362,94 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private ReportQuery GetItemBalanceQuery(
-            string fullCode, TestBalanceParameters parameters, bool isOpening = false)
+        private void AddInitialBalanceByBranch(
+            int length, IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
         {
-            var query = default(ReportQuery);
-            string componentName = GetComponentName(parameters.ViewId);
-            string fieldName = parameters.ViewId == ViewId.DetailAccount
-                ? "Detail"
-                : componentName;
-            if (parameters.FromDate.HasValue)
+            var initMap = new Dictionary<FullCodeBranch, decimal>();
+            var openingMap = new Dictionary<FullCodeBranch, decimal>();
+            var query = GetInitBalanceQuery(length, parameters);
+            var result = DbConsole.ExecuteQuery(query.Query);
+            foreach (DataRow row in result.Rows)
             {
-                var fromDate = parameters.FromDate.Value;
-                query = isOpening
-                    ? new ReportQuery(String.Format(
-                        BalanceQuery.OpeningVoucherBalanceByDate, componentName, fieldName,
-                        fromDate.ToShortDateString(false), fullCode))
-                    : new ReportQuery(String.Format(
-                        BalanceQuery.BalanceByDate, componentName, fieldName,
-                        fromDate.ToShortDateString(false), fullCode));
-            }
-            else
-            {
-                var fromNo = parameters.FromNo.Value;
-                query = isOpening
-                    ? new ReportQuery(String.Format(
-                        BalanceQuery.OpeningVoucherBalanceByNo, componentName, fieldName, fromNo, fullCode))
-                    : new ReportQuery(String.Format(
-                        BalanceQuery.BalanceByNo, componentName, fieldName, fromNo, fullCode));
+                var codeBranch = new FullCodeBranch()
+                {
+                    FullCode = _utility.ValueOrDefault(row, "FullCode"),
+                    BranchName = _utility.ValueOrDefault(row, "BranchName")
+                };
+                initMap.Add(codeBranch, _utility.ValueOrDefault<decimal>(row, "Balance"));
             }
 
-            query.SetFilter(GetEnvironmentFilters(parameters));
-            return query;
+            bool openingAsInitBalance =
+                (parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0;
+            if (openingAsInitBalance)
+            {
+                query = GetInitBalanceQuery(length, parameters, true);
+                result = DbConsole.ExecuteQuery(query.Query);
+                foreach (DataRow row in result.Rows)
+                {
+                    var codeBranch = new FullCodeBranch()
+                    {
+                        FullCode = _utility.ValueOrDefault(row, "FullCode"),
+                        BranchName = _utility.ValueOrDefault(row, "BranchName")
+                    };
+                    openingMap.Add(codeBranch, _utility.ValueOrDefault<decimal>(row, "Balance"));
+                }
+            }
+
+            foreach (var item in items)
+            {
+                decimal balance = 0.0M;
+                var codeBranch = new FullCodeBranch()
+                {
+                    FullCode = item.AccountFullCode,
+                    BranchName = item.BranchName
+                };
+                if (initMap.ContainsKey(codeBranch))
+                {
+                    balance = initMap[codeBranch];
+                }
+
+                if (openingAsInitBalance && openingMap.ContainsKey(codeBranch))
+                {
+                    balance += openingMap[codeBranch];
+                }
+
+                item.StartBalanceDebit = Math.Max(0, balance);
+                item.StartBalanceCredit = Math.Abs(Math.Min(0, balance));
+
+                balance = item.StartBalanceDebit + item.TurnoverDebit
+                    - (item.StartBalanceCredit + item.TurnoverCredit);
+                item.EndBalanceDebit = Math.Max(0, balance);
+                item.EndBalanceCredit = Math.Abs(Math.Min(0, balance));
+            }
+        }
+
+        private void SetItemNames(int viewId, int length, IEnumerable<TestBalanceItemViewModel> items)
+        {
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            var query = _utility.GetItemLookupQuery(viewId, length);
+            var result = DbConsole.ExecuteQuery(query.Query);
+
+            var itemMap = new Dictionary<string, string>(result.Rows.Count);
+            foreach (DataRow row in result.Rows)
+            {
+                string key = _utility.ValueOrDefault(row, "FullCode");
+                string value = _utility.ValueOrDefault(row, "Name");
+                itemMap.Add(key, value);
+            }
+
+            foreach (var item in items)
+            {
+                // NOTE: All codes are set to be identical in each balance item
+                if (itemMap.ContainsKey(item.AccountFullCode))
+                {
+                    string name = itemMap[item.AccountFullCode];
+                    item.AccountName =
+                        item.DetailAccountName =
+                        item.CostCenterName =
+                        item.ProjectName = name;
+                }
+            }
         }
 
         private string GetComponentName(int viewId)
@@ -398,21 +503,21 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private ReportQuery GetLevelQuery(int level, TestBalanceParameters parameters, string otherFilter = null)
+        private ReportQuery GetLevelQuery(
+            int length, TestBalanceParameters parameters, string otherFilter = null)
         {
             var query = default(ReportQuery);
-            int length = _utility.GetLevelCodeLength(parameters.ViewId, level);
             string componentName = GetComponentName(parameters.ViewId);
             string fieldName = parameters.ViewId == ViewId.DetailAccount
                 ? "Detail"
                 : componentName;
 
-            if (parameters.Format == TestBalanceFormat.TwoColumn)
+            if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
-                if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
+                var fromDate = parameters.FromDate.Value;
+                var toDate = parameters.ToDate.Value;
+                if (parameters.Format == TestBalanceFormat.TwoColumn)
                 {
-                    var fromDate = parameters.FromDate.Value;
-                    var toDate = parameters.ToDate.Value;
                     query = parameters.IsByBranch
                         ? new ReportQuery(String.Format(BalanceQuery.TwoColumnByDateByBranch, length, componentName,
                             fieldName, fromDate.ToShortDateString(false), toDate.ToShortDateString(false)))
@@ -421,31 +526,27 @@ namespace SPPC.Tadbir.Persistence
                 }
                 else
                 {
-                    var fromNo = parameters.FromNo.Value;
-                    var toNo = parameters.ToNo.Value;
-                    query = parameters.IsByBranch
-                        ? new ReportQuery(String.Format(BalanceQuery.TwoColumnByNoByBranch, length, componentName,
-                            fieldName, fromNo, toNo))
-                        : new ReportQuery(String.Format(BalanceQuery.TwoColumnByNo, length, componentName,
-                            fieldName, fromNo, toNo));
-                }
-            }
-            else if (parameters.Format >= TestBalanceFormat.FourColumn)
-            {
-                if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
-                {
-                    var fromDate = parameters.FromDate.Value;
-                    var toDate = parameters.ToDate.Value;
                     query = parameters.IsByBranch
                         ? new ReportQuery(String.Format(BalanceQuery.FourColumnByDateByBranch, length, componentName,
                             fieldName, fromDate.ToShortDateString(false), toDate.ToShortDateString(false)))
                         : new ReportQuery(String.Format(BalanceQuery.FourColumnByDate, length, componentName,
                             fieldName, fromDate.ToShortDateString(false), toDate.ToShortDateString(false)));
                 }
+            }
+            else
+            {
+                var fromNo = parameters.FromNo.Value;
+                var toNo = parameters.ToNo.Value;
+                if (parameters.Format == TestBalanceFormat.TwoColumn)
+                {
+                    query = parameters.IsByBranch
+                        ? new ReportQuery(String.Format(BalanceQuery.TwoColumnByNoByBranch, length, componentName,
+                            fieldName, fromNo, toNo))
+                        : new ReportQuery(String.Format(BalanceQuery.TwoColumnByNo, length, componentName,
+                            fieldName, fromNo, toNo));
+                }
                 else
                 {
-                    var fromNo = parameters.FromNo.Value;
-                    var toNo = parameters.ToNo.Value;
                     query = parameters.IsByBranch
                         ? new ReportQuery(String.Format(BalanceQuery.FourColumnByNoByBranch, length, componentName,
                             fieldName, fromNo, toNo))
@@ -455,6 +556,60 @@ namespace SPPC.Tadbir.Persistence
             }
 
             query.SetFilter(GetEnvironmentFilters(parameters, otherFilter));
+            return query;
+        }
+
+        private ReportQuery GetInitBalanceQuery(
+            int length, TestBalanceParameters parameters, bool isOpening = false)
+        {
+            var query = default(ReportQuery);
+            string componentName = GetComponentName(parameters.ViewId);
+            string fieldName = parameters.ViewId == ViewId.DetailAccount
+                ? "Detail"
+                : componentName;
+
+            if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
+            {
+                var fromDate = parameters.FromDate.Value;
+                if (isOpening)
+                {
+                    query = parameters.IsByBranch
+                        ? new ReportQuery(String.Format(BalanceQuery.OpeningBalanceByDateByBranch, length, componentName,
+                            fieldName, fromDate.ToShortDateString(false)))
+                        : new ReportQuery(String.Format(BalanceQuery.OpeningBalanceByDate, length, componentName,
+                            fieldName, fromDate.ToShortDateString(false)));
+                }
+                else
+                {
+                    query = parameters.IsByBranch
+                        ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch, length, componentName,
+                            fieldName, fromDate.ToShortDateString(false)))
+                        : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate, length, componentName,
+                            fieldName, fromDate.ToShortDateString(false)));
+                }
+            }
+            else
+            {
+                var fromNo = parameters.FromNo.Value;
+                if (isOpening)
+                {
+                    query = parameters.IsByBranch
+                        ? new ReportQuery(String.Format(BalanceQuery.OpeningBalanceByNoByBranch, length, componentName,
+                            fieldName, fromNo))
+                        : new ReportQuery(String.Format(BalanceQuery.OpeningBalanceByNo, length, componentName,
+                            fieldName, fromNo));
+                }
+                else
+                {
+                    query = parameters.IsByBranch
+                        ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch, length, componentName,
+                            fieldName, fromNo))
+                        : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo, length, componentName,
+                            fieldName, fromNo));
+                }
+            }
+
+            query.SetFilter(GetEnvironmentFilters(parameters));
             return query;
         }
 

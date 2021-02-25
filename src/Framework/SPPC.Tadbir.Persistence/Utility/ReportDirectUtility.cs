@@ -194,23 +194,41 @@ namespace SPPC.Tadbir.Persistence.Utility
             return zeroItems;
         }
 
-        public async Task SetItemNamesAsync(int viewId, IEnumerable<TestBalanceItemViewModel> items)
+        public ReportQuery GetItemLookupQuery(int viewId, int length)
         {
+            var query = default(ReportQuery);
+            string componentName = String.Empty;
+            string fieldName = String.Empty;
             switch (viewId)
             {
                 case ViewId.Account:
-                    await SetItemNamesAsync<Account>(items);
+                    componentName = typeof(Account).Name;
+                    fieldName = componentName;
                     break;
                 case ViewId.DetailAccount:
-                    await SetItemNamesAsync<DetailAccount>(items);
+                    componentName = typeof(DetailAccount).Name;
+                    fieldName = "Detail";
                     break;
                 case ViewId.CostCenter:
-                    await SetItemNamesAsync<CostCenter>(items);
+                    componentName = typeof(CostCenter).Name;
+                    fieldName = componentName;
                     break;
                 case ViewId.Project:
-                    await SetItemNamesAsync<Project>(items);
+                    componentName = typeof(Project).Name;
+                    fieldName = componentName;
+                    break;
+                default:
                     break;
             }
+
+            if (!String.IsNullOrEmpty(componentName))
+            {
+                string command = String.Format(AccountItemQuery.ItemLookup,
+                    length, componentName, _context.UserContext.FiscalPeriodId);
+                query = new ReportQuery(command);
+            }
+
+            return query;
         }
 
         public async Task<TreeEntity> GetItemAsync(int viewId, int itemId)
@@ -233,6 +251,27 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             return accountItem;
+        }
+
+        public async Task<DateTime> GetFiscalPeriodStartAsync(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            return await repository
+                .GetEntityQuery()
+                .Where(fp => fp.Id == fpId)
+                .Select(fp => fp.StartDate)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<int> GetFirstVoucherNoAsync(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            return await repository
+                .GetEntityQuery()
+                .Where(v => v.FiscalPeriodId == fpId)
+                .OrderBy(v => v.No)
+                .Select(v => v.No)
+                .FirstOrDefaultAsync();
         }
 
         private IAppUnitOfWork UnitOfWork
@@ -290,33 +329,6 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .GetAllQuery<T>(viewId, tree => tree.Branch)
                 .Where(tree => !usedCodes.Contains(tree.FullCode) && tree.Level == level)
                 .ToListAsync();
-        }
-
-        private async Task SetItemNamesAsync<T>(IEnumerable<TestBalanceItemViewModel> items)
-            where T : TreeEntity
-        {
-            var repository = UnitOfWork.GetRepository<T>();
-            var fullCodes = items
-                .Select(item => item.AccountFullCode);  // ALL codes are set to be identical
-            var treeItems = await repository
-                .GetEntityQuery()
-                .Where(tree => fullCodes.Contains(tree.FullCode))
-                .Select(tree => new KeyValuePair<string, string>(tree.FullCode, tree.Name))
-                .ToListAsync();
-            var treeItemMap = new Dictionary<string, string>(treeItems.Count);
-            foreach (var keyValue in treeItems)
-            {
-                treeItemMap.Add(keyValue.Key, keyValue.Value);
-            }
-
-            foreach (var item in items)
-            {
-                // NOTE: All codes are set to be identical in each balance item
-                item.AccountName = treeItemMap[item.AccountFullCode];
-                item.DetailAccountName = treeItemMap[item.AccountFullCode];
-                item.CostCenterName = treeItemMap[item.AccountFullCode];
-                item.ProjectName = treeItemMap[item.AccountFullCode];
-            }
         }
 
         private async Task<T> GetItemAsync<T>(int itemId)
