@@ -24,9 +24,19 @@ using Stimulsoft.Report.Components.Table;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class ReportsController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="sysRepository"></param>
+        /// <param name="system"></param>
+        /// <param name="strings"></param>
         public ReportsController(IReportRepository repository, IReportSystemRepository sysRepository,
             ISystemConfigRepository system, IStringLocalizer<AppStrings> strings)
             : base(strings)
@@ -38,6 +48,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Report Management API
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/reports/sys/tree
         [HttpGet]
         [Route(ReportApi.ReportsHierarchyUrl)]
@@ -48,6 +62,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(tree);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/reports/sys/view/{viewId:min(1)}
         [HttpGet]
         [Route(ReportApi.ReportsByViewUrl)]
@@ -58,6 +77,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(tree);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="subsysId"></param>
+        /// <returns></returns>
         // GET: api/reports/sys/subsys/{subsysId:min(1)}
         [HttpGet]
         [Route(ReportApi.ReportsBySubsystemUrl)]
@@ -68,6 +92,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(tree);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
         // GET: api/reports/sys/{reportId:min(1)}
         [HttpGet]
         [Route(ReportApi.ReportUrl)]
@@ -79,6 +108,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(report);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
         // GET: api/reports/sys/{reportId:min(1)}/design
         [HttpGet]
         [Route(ReportApi.ReportDesignUrl)]
@@ -89,6 +123,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(reportDesign);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route(ReportApi.ReportsByViewDefaultUrl)]
         public async Task<IActionResult> GetDefaultReportByViewAsync(int viewId)
@@ -97,6 +136,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(report);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="report"></param>
+        /// <returns></returns>
         // POST: api/reports/sys
         [HttpPost]
         [Route(ReportApi.ReportsUrl)]
@@ -114,6 +158,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <param name="report"></param>
+        /// <returns></returns>
         // PUT: api/reports/sys/{reportId:min(1)}
         [HttpPut]
         [Route(ReportApi.ReportUrl)]
@@ -132,6 +182,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <param name="report"></param>
+        /// <returns></returns>
         // PUT: api/reports/sys/{reportId:min(1)}/caption
         [HttpPut]
         [Route(ReportApi.ReportCaptionUrl)]
@@ -150,6 +206,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route(ReportApi.ReportDefaultUrl)]
         [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.SetDefault)]
@@ -159,6 +220,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
         // DELETE: api/reports/sys/{reportId:min(1)}
         [HttpDelete]
         [Route(ReportApi.ReportUrl)]
@@ -180,6 +246,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="qr"></param>
+        /// <param name="unit"></param>
+        /// <returns></returns>
         // PUT: api/reports/sys/quickreport/{unit:min(1)}
         [HttpPut]
         [Route(ReportApi.EnvironmentQuickReportUrl)]
@@ -252,6 +324,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Business Reports API
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/reports/metadata/{viewId:min(1)}
         [HttpGet]
         [Route(ReportApi.ReportMetadataByViewUrl)]
@@ -261,6 +338,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/reports/voucher/sum-by-date
         [HttpGet]
         [Route(ReportApi.EnvironmentVoucherSummaryByDateUrl)]
@@ -274,6 +355,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(report);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/reports/voucher/std-form
         [HttpGet]
         [Route(ReportApi.VoucherStandardFormUrl)]
@@ -285,6 +370,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(standardForm);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/reports/voucher/std-form-detail
         [HttpGet]
         [Route(ReportApi.VoucherStandardFormWithDetailUrl)]
@@ -327,9 +416,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private const double LandscapeWidth = 11.69;
         private const double PortraitWidth = 8.27;
-        private const string A4 = "A4";
-        private const string A3 = "A3";
-        private const string A5 = "A5";
 
         private static StiReport FillLocalVariables(StiReport report, string header)
         {
@@ -486,10 +572,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var ph = (StiPageHeaderBand)report.Pages[0].Components.ToList().Last(p => p.GetType() == typeof(StiPageHeaderBand));
             ph.Components.Clear();
 
-            StiPanel panel = new StiPanel();
-            panel.CanGrow = true;
-            panel.Width = report.Pages[0].Width;
-            panel.PrintOn = table.PrintOnAllPages ? StiPrintOnType.AllPages : StiPrintOnType.OnlyFirstPage;
+            StiPanel panel = new StiPanel
+            {
+                CanGrow = true,
+                Width = report.Pages[0].Width,
+                PrintOn = table.PrintOnAllPages ? StiPrintOnType.AllPages : StiPrintOnType.OnlyFirstPage
+            };
             panel.Components.Add(table);
             ph.Components.Add(panel);
             table.CreateCell();
@@ -627,8 +715,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (headerBand == null)
             {
-                headerBand = new StiColumnHeaderBand();
-                headerBand.Name = name;
+                headerBand = new StiColumnHeaderBand
+                {
+                    Name = name
+                };
             }
             else
             {

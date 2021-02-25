@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Helpers;
@@ -11,15 +10,28 @@ using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class MetadataController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="strings"></param>
         public MetadataController(IMetadataRepository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewName"></param>
+        /// <returns></returns>
         // GET: api/metadata/view/{viewName}
         [HttpGet]
         [Route(MetadataApi.ViewMetadataUrl)]
@@ -30,6 +42,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/metadata/view/{viewId:min(1)}
         [HttpGet]
         [Route(MetadataApi.ViewMetadataByIdUrl)]
@@ -40,6 +57,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/metadata/permissions
         [HttpGet]
         [Route(MetadataApi.PermissionMetadataUrl)]
@@ -49,6 +70,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(permissions);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/metadata/views
         [HttpGet]
         [Route(MetadataApi.ViewsMetadataUrl)]

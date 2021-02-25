@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
@@ -15,9 +13,18 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class JournalController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="config"></param>
+        /// <param name="strings"></param>
         public JournalController(IJournalRepository repository, IConfigRepository config,
             IStringLocalizer<AppStrings> strings)
             : base(strings)
@@ -28,6 +35,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Journal By Date
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/by-row
         [HttpGet]
         [Route(JournalApi.JournalByDateByRowUrl)]
@@ -39,6 +52,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/by-row-detail
         [HttpGet]
         [Route(JournalApi.JournalByDateByRowDetailUrl)]
@@ -50,6 +69,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/by-ledger
         [HttpGet]
         [Route(JournalApi.JournalByDateByLedgerUrl)]
@@ -61,6 +86,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/by-subsid
         [HttpGet]
         [Route(JournalApi.JournalByDateBySubsidiaryUrl)]
@@ -72,6 +103,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/summary
         [HttpGet]
         [Route(JournalApi.JournalByDateLedgerSummaryUrl)]
@@ -83,6 +120,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/sum-by-date
         [HttpGet]
         [Route(JournalApi.JournalByDateLedgerSummaryByDateUrl)]
@@ -94,6 +137,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/sum-by-month
         [HttpGet]
         [Route(JournalApi.JournalByDateMonthlyLedgerSummaryUrl)]
@@ -109,6 +158,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Journal By Date By Branch
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/by-row/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByDateByRowByBranchUrl)]
@@ -120,6 +175,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/by-row-detail/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByDateByRowDetailByBranchUrl)]
@@ -131,6 +192,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/by-ledger/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByDateByLedgerByBranchUrl)]
@@ -142,6 +209,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/by-subsid/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByDateBySubsidiaryByBranchUrl)]
@@ -153,6 +226,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/summary/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByDateLedgerSummaryByBranchUrl)]
@@ -164,6 +243,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/sum-by-date/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByDateLedgerSummaryByDateByBranchUrl)]
@@ -175,6 +260,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByDateResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-date/sum-by-month/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByDateMonthlyLedgerSummaryByBranchUrl)]
@@ -190,6 +281,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Journal By No
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/by-row
         [HttpGet]
         [Route(JournalApi.JournalByNoByRowUrl)]
@@ -200,6 +297,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByNumberResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/by-row-detail
         [HttpGet]
         [Route(JournalApi.JournalByNoByRowDetailUrl)]
@@ -210,6 +313,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByNumberResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/by-ledger
         [HttpGet]
         [Route(JournalApi.JournalByNoByLedgerUrl)]
@@ -220,6 +329,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByNumberResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/by-subsid
         [HttpGet]
         [Route(JournalApi.JournalByNoBySubsidiaryUrl)]
@@ -230,6 +345,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByNumberResultAsync(from, to, mode, false);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/summary
         [HttpGet]
         [Route(JournalApi.JournalByNoLedgerSummaryUrl)]
@@ -244,6 +365,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Journal By No By Branch
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/by-row/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByNoByRowByBranchUrl)]
@@ -254,6 +381,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByNumberResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/by-row-detail/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByNoByRowDetailByBranchUrl)]
@@ -264,6 +397,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByNumberResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/by-ledger/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByNoByLedgerByBranchUrl)]
@@ -274,6 +413,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByNumberResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/by-subsid/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByNoBySubsidiaryByBranchUrl)]
@@ -284,6 +429,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await JournalByNumberResultAsync(from, to, mode, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/reports/journal/by-no/summary/by-branch
         [HttpGet]
         [Route(JournalApi.JournalByNoLedgerSummaryByBranchUrl)]
@@ -310,7 +461,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var journal = isByBranch
                 ? await _repository.GetJournalByDateByBranchAsync(parameters)
                 : await _repository.GetJournalByDateAsync(parameters);
-            PrepareJournal(journal, parameters.GridOptions);
+            PrepareJournal(journal);
             return Json(journal);
         }
 
@@ -327,7 +478,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var journal = isByBranch
                 ? await _repository.GetJournalByNoByBranchAsync(parameters)
                 : await _repository.GetJournalByNoAsync(parameters);
-            PrepareJournal(journal, parameters.GridOptions);
+            PrepareJournal(journal);
             return Json(journal);
         }
 
@@ -342,7 +493,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private void PrepareJournal(JournalViewModel journal, GridOptions gridOptions)
+        private void PrepareJournal(JournalViewModel journal)
         {
             SetItemCount(journal.TotalCount);
             Localize(journal);

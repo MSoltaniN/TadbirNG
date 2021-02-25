@@ -4,15 +4,30 @@ using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class ReportQuery
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="query"></param>
         public ReportQuery(string query)
         {
             Query = query;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         public string Query { get; private set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="environmentFilter"></param>
+        /// <param name="quickFilter"></param>
         public void ApplyDefaultFilters(string environmentFilter, string quickFilter)
         {
             Verify.ArgumentNotNullOrEmptyString(environmentFilter, nameof(environmentFilter));
@@ -25,6 +40,10 @@ namespace SPPC.Tadbir.Persistence
             Query = String.Format(Query, filter1, filter2);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="filter"></param>
         public void AddFilter(string filter)
         {
             int index = Query.IndexOf("{0}");
@@ -37,6 +56,10 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="filter"></param>
         public void SetFilter(string filter)
         {
             int index = Query.IndexOf("{0}");
@@ -47,7 +70,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private string TranslateQuery(string query)
+        private static string TranslateQuery(string query)
         {
             var builder = new StringBuilder(query);
             if (!String.IsNullOrEmpty(query))

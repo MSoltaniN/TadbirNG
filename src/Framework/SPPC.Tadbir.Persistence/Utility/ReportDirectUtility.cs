@@ -12,14 +12,27 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class ReportDirectUtility : IReportDirectUtility
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="system"></param>
         public ReportDirectUtility(IRepositoryContext context, ISystemRepository system)
         {
             _context = context;
             _system = system;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
         public IEnumerable<int> GetChildTree(int branchId)
         {
             var tree = new List<int>();
@@ -29,6 +42,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             return tree;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
         public int GetLevelCodeLength(int viewId, int level)
         {
             var fullConfig = Config
@@ -42,6 +61,13 @@ namespace SPPC.Tadbir.Persistence.Utility
             return codeLength;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="row"></param>
+        /// <param name="field"></param>
+        /// <returns></returns>
         public T ValueOrDefault<T>(DataRow row, string field)
         {
             var value = default(T);
@@ -53,6 +79,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             return value;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="field"></param>
+        /// <returns></returns>
         public string ValueOrDefault(DataRow row, string field)
         {
             string value = null;
@@ -194,6 +226,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             return zeroItems;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public ReportQuery GetItemLookupQuery(int viewId, int length)
         {
             var query = default(ReportQuery);
@@ -231,6 +269,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             return query;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         public async Task<TreeEntity> GetItemAsync(int viewId, int itemId)
         {
             var accountItem = default(TreeEntity);
@@ -253,6 +297,11 @@ namespace SPPC.Tadbir.Persistence.Utility
             return accountItem;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fpId"></param>
+        /// <returns></returns>
         public async Task<DateTime> GetFiscalPeriodStartAsync(int fpId)
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
@@ -263,6 +312,11 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .SingleOrDefaultAsync();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fpId"></param>
+        /// <returns></returns>
         public async Task<int> GetFirstVoucherNoAsync(int fpId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();

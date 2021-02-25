@@ -44,7 +44,7 @@ namespace SPPC.Tools.SystemDesigner
         public const string InsertAccount =
             @"INSERT INTO [Finance].[Account]
            ([AccountID]
-		   ,[ParentID]
+           ,[ParentID]
            ,[GroupID]
            ,[FiscalPeriodID]
            ,[BranchID]
@@ -59,7 +59,7 @@ namespace SPPC.Tools.SystemDesigner
            ,[TurnoverMode]
            ,[Description])
      VALUES
-           ('{0}',{1},{2},'{3}','1',NULL,'0', N'{4}', N'{5}',N'{6}','{7}', '1', '1', '-1', N'{7}')";
+           ('{0}',{1},{2},'{3}','1',NULL,'0', N'{4}', N'{5}',N'{6}','{7}', '1', '1', '-1', N'{8}')";
 
         public const string InsertDetailAccount =
             @"INSERT INTO [Finance].[DetailAccount]

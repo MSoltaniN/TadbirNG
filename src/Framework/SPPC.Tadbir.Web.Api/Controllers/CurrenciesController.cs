@@ -20,9 +20,20 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class CurrenciesController : ValidatingController<CurrencyViewModel>
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="rateRepository"></param>
+        /// <param name="host"></param>
+        /// <param name="crypto"></param>
+        /// <param name="strings"></param>
         public CurrenciesController(ICurrencyRepository repository, ICurrencyRateRepository rateRepository,
             IHostingEnvironment host, ICryptoService crypto, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
@@ -33,11 +44,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _crypto = crypto;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.Currency; }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/currencies
         [HttpGet]
         [Route(CurrencyApi.CurrenciesUrl)]
@@ -53,6 +71,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(currencies);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="currencyId"></param>
+        /// <returns></returns>
         // GET: api/currencies/{currencyId:min(1)}
         [HttpGet]
         [Route(CurrencyApi.CurrencyUrl)]
@@ -64,6 +87,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(currency);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="currencyId"></param>
+        /// <returns></returns>
         // GET: api/currencies/{currencyId:min(1)}/rates
         [HttpGet]
         [Route(CurrencyApi.CurrencyRatesUrl)]
@@ -74,6 +102,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(allRates);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="rateId"></param>
+        /// <returns></returns>
         // GET: api/currencies/rates/{rateId:min(1)}
         [HttpGet]
         [Route(CurrencyApi.CurrencyRateUrl)]
@@ -84,6 +117,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(currencyRate);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="nameKey"></param>
+        /// <returns></returns>
         // GET: api/currencies/info/{nameKey}
         [HttpGet]
         [Route(CurrencyApi.CurrencyInfoByNameUrl)]
@@ -101,6 +139,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(currency);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/currencies/names/lookup
         [HttpGet]
         [Route(CurrencyApi.CurrencyNamesLookupUrl)]
@@ -116,6 +158,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(sortedList);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="faccountId"></param>
+        /// <returns></returns>
         // GET: api/currencies/default/account/{accountId:min(1)}/faccount/{faccountId:min(1)}
         [HttpGet]
         [Route(CurrencyApi.DefaultCurrencyByFullAccountUrl)]
@@ -126,6 +174,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(currencyInfo);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/currencies/tax
         [HttpGet]
         [Route(CurrencyApi.TaxCurrenciesUrl)]
@@ -137,6 +189,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(taxCurrencies);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="currencyId"></param>
+        /// <returns></returns>
         // GET: api/currencies/{currencyId:min(1)}/has-rates
         [HttpGet]
         [Route(CurrencyApi.CurrencyHasRatesUrl)]
@@ -147,6 +204,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok(hasRate);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="nameKey"></param>
+        /// <returns></returns>
         // POST: api/currencies/default/{nameKey}
         [HttpPost]
         [Route(CurrencyApi.DefaultCurrencyUrl)]
@@ -162,6 +224,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(outputItem);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <returns></returns>
         // POST: api/currencies
         [HttpPost]
         [Route(CurrencyApi.CurrenciesUrl)]
@@ -178,6 +245,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="currencyId"></param>
+        /// <param name="currencyRate"></param>
+        /// <returns></returns>
         // POST: api/currencies/{currencyId:min(1)}/rates
         [HttpPost]
         [Route(CurrencyApi.CurrencyRatesUrl)]
@@ -200,6 +273,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // POST: api/currencies/tax
         [HttpPost]
         [Route(CurrencyApi.TaxCurrenciesUrl)]
@@ -231,6 +308,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // POST: api/currencies/tax
         // TODO: temporary
         [HttpPost]
@@ -263,6 +344,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="currencyId"></param>
+        /// <param name="currency"></param>
+        /// <returns></returns>
         // PUT: api/currencies/{currencyId:min(1)}
         [HttpPut]
         [Route(CurrencyApi.CurrencyUrl)]
@@ -279,6 +366,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return OkReadResult(outputItem);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="rateId"></param>
+        /// <param name="currencyRate"></param>
+        /// <returns></returns>
         // PUT: api/currencies/rates/{rateId:min(1)}
         [HttpPut]
         [Route(CurrencyApi.CurrencyRateUrl)]
@@ -296,6 +389,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return OkReadResult(outputItem);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="currencyId"></param>
+        /// <returns></returns>
         // DELETE: api/currencies/{currencyId:min(1)}
         [HttpDelete]
         [Route(CurrencyApi.CurrencyUrl)]
@@ -312,6 +410,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="rateId"></param>
+        /// <returns></returns>
         // DELETE: api/currencies/rates/{rateId:min(1)}
         [HttpDelete]
         [Route(CurrencyApi.CurrencyRateUrl)]
@@ -328,6 +431,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="actionDetail"></param>
+        /// <returns></returns>
         // PUT: api/currencies
         [HttpPut]
         [Route(CurrencyApi.CurrenciesUrl)]
@@ -338,6 +446,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await GroupDeleteResultAsync(actionDetail, _repository.DeleteCurrenciesAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="actionDetail"></param>
+        /// <returns></returns>
         // PUT: api/currency/rates
         [HttpPut]
         [Route(CurrencyApi.DeleteCurrencyRatesUrl)]
@@ -348,6 +461,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await GroupDeleteResultAsync(actionDetail, _rateRepository.DeleteCurrencyRatesAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
             string message = String.Empty;
@@ -372,6 +490,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return GetGroupActionResult(message, currency);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         protected async Task<GroupActionResultViewModel> ValidateRateDeleteAsync(int item)
         {
             string message = String.Empty;

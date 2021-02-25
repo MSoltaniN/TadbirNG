@@ -46,6 +46,10 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         public GridOptions GridOptions { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         public JournalParameters GetCopy()
         {
             return (JournalParameters)MemberwiseClone();

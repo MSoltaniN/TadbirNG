@@ -4,3 +4,4 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1202:Elements must be ordered by access", Justification = "Conventional code organization", Scope = "member", Target = "~M:SPPC.Licensing.Persistence.Context.LicenseContext.Dispose")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1202:Elements must be ordered by access", Justification = "Conventional code organization", Scope = "member", Target = "~M:SPPC.Licensing.Persistence.LicenseUtility.Dispose")]

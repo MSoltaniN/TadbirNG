@@ -17,9 +17,20 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class SettingsController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="log"></param>
+        /// <param name="system"></param>
+        /// <param name="strings"></param>
+        /// <param name="host"></param>
         public SettingsController(IConfigRepository repository, ILogConfigRepository log,
             ISystemConfigRepository system, IStringLocalizer<AppStrings> strings, IHostingEnvironment host)
             : base(strings)
@@ -30,6 +41,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _host = host;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/settings
         [HttpGet]
         [Route(SettingsApi.AllSettingsUrl)]
@@ -45,6 +60,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(allSettings);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         // PUT: api/settings
         [HttpPut]
         [Route(SettingsApi.AllSettingsUrl)]
@@ -60,6 +80,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="settingId"></param>
+        /// <returns></returns>
         // GET: api/settings/{settingId:min(1)}
         [HttpGet]
         [Route(SettingsApi.SettingUrl)]
@@ -75,6 +100,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(setting);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // GET: api/settings/list/users/{userId:min(1)}
         [HttpGet]
         [Route(SettingsApi.ListSettingsByUserUrl)]
@@ -85,6 +115,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(listSettings);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/settings/list/users/{userId:min(1)}/views/{viewId:min(1)}
         [HttpGet]
         [Route(SettingsApi.ListSettingsByUserAndViewUrl)]
@@ -95,6 +131,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(listSettings);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <returns></returns>
         // PUT: api/settings/sysconfig
         [HttpPut]
         [Route(SettingsApi.SystemConfigUrl)]
@@ -110,6 +151,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         // PUT: api/settings/list/users/{userId:min(1)}
         [HttpPut]
         [Route(SettingsApi.ListSettingsByUserUrl)]
@@ -125,6 +172,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/settings/qsearch/users/{userId:min(1)}/views/{viewId:min(1)}
         [HttpGet]
         [Route(SettingsApi.QuickSearchSettingsByUserAndViewUrl)]
@@ -135,6 +188,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(searchSettings);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         // PUT: api/settings/qsearch/users/{userId:min(1)}
         [HttpPut]
         [Route(SettingsApi.QuickSearchSettingsByUserUrl)]
@@ -150,6 +209,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/settings/qreport/users/{userId:min(1)}/views/{viewId:min(1)}
         [HttpGet]
         [Route(SettingsApi.QuickReportSettingsByUserAndViewUrl)]
@@ -160,6 +225,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(reportSettings);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         // PUT: api/settings/qreport/users/{userId:min(1)}
         [HttpPut]
         [Route(SettingsApi.QuickReportSettingsByUserUrl)]
@@ -175,6 +246,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/settings/views/{viewId:min(1)}/tree
         [HttpGet]
         [Route(SettingsApi.ViewTreeSettingsByViewUrl)]
@@ -186,6 +262,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(viewSettings);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         // PUT: api/settings/views/tree
         [HttpPut]
         [Route(SettingsApi.ViewTreeSettingsUrl)]
@@ -201,6 +282,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/settings/log
         [HttpGet]
         [Route(SettingsApi.LogSettingsUrl)]
@@ -213,6 +298,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(result);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/settings/sys/log
         [HttpGet]
         [Route(SettingsApi.SystemLogSettingsUrl)]
@@ -225,6 +314,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(result);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="modifiedItems"></param>
+        /// <returns></returns>
         // PUT: api/settings/log
         [HttpPut]
         [Route(SettingsApi.LogSettingsUrl)]
@@ -236,6 +330,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="modifiedItems"></param>
+        /// <returns></returns>
         // PUT: api/settings/sys/log
         [HttpPut]
         [Route(SettingsApi.SystemLogSettingsUrl)]
@@ -247,6 +346,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="formId"></param>
+        /// <returns></returns>
         // GET: api/settings/labels/forms/{formId:min(1)}
         [HttpGet]
         [Route(SettingsApi.FormLabelsConfigUrl)]
@@ -259,6 +363,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(fullConfig);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="formId"></param>
+        /// <param name="labelConfig"></param>
+        /// <returns></returns>
         // PUT: api/settings/labels/forms/{formId:min(1)}
         [HttpPut]
         [Route(SettingsApi.FormLabelsConfigUrl)]

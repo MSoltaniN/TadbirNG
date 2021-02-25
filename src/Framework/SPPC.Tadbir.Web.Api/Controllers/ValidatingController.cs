@@ -156,6 +156,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="actionDetail"></param>
+        /// <param name="groupDelete"></param>
+        /// <returns></returns>
         protected async Task<IActionResult> GroupDeleteResultAsync(
             ActionDetailViewModel actionDetail, GroupDeleteAsyncDelegate groupDelete)
         {
@@ -187,6 +193,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok(notValidated);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="error"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         protected GroupActionResultViewModel GetGroupActionResult<TModel>(string error, TModel model)
             where TModel : class, new()
         {

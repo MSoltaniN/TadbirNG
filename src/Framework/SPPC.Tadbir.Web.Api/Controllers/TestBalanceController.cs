@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
@@ -17,16 +15,27 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
-
     public class TestBalanceController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="strings"></param>
         public TestBalanceController(ITestBalanceRepository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/testbal/lookup/types
         [HttpGet]
         [Route(TestBalanceApi.TestBalanceTypeLookupUrl)]
@@ -40,6 +49,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Specific Level reports
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/levels/{level:min(1)}/2-col
         [HttpGet]
         [Route(TestBalanceApi.TwoColumnLevelBalanceUrl)]
@@ -51,6 +69,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, 0, level - 1);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/levels/{level:min(1)}/4-col
         [HttpGet]
         [Route(TestBalanceApi.FourColumnLevelBalanceUrl)]
@@ -62,6 +89,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, 0, level - 1);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/levels/{level:min(1)}/6-col
         [HttpGet]
         [Route(TestBalanceApi.SixColumnLevelBalanceUrl)]
@@ -74,6 +110,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, 0, level - 1);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/levels/{level:min(1)}/8-col
         [HttpGet]
         [Route(TestBalanceApi.EightColumnLevelBalanceUrl)]
@@ -85,6 +130,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, 0, level - 1);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/levels/{level:min(1)}/10-col
         [HttpGet]
         [Route(TestBalanceApi.TenColumnLevelBalanceUrl)]
@@ -100,6 +154,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Child Items Level reports
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/{accountId:min(1)}/items/2-col
         [HttpGet]
         [Route(TestBalanceApi.TwoColumnChildItemsBalanceUrl)]
@@ -111,6 +174,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, accountId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/{accountId:min(1)}/items/4-col
         [HttpGet]
         [Route(TestBalanceApi.FourColumnChildItemsBalanceUrl)]
@@ -122,6 +194,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, accountId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/{accountId:min(1)}/items/6-col
         [HttpGet]
         [Route(TestBalanceApi.SixColumnChildItemsBalanceUrl)]
@@ -133,6 +214,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, accountId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/{accountId:min(1)}/items/8-col
         [HttpGet]
         [Route(TestBalanceApi.EightColumnChildItemsBalanceUrl)]
@@ -144,6 +234,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, byBranch, options, accountId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="byBranch"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         // GET: api/testbal/{accountId:min(1)}/items/10-col
         [HttpGet]
         [Route(TestBalanceApi.TenColumnChildItemsBalanceUrl)]

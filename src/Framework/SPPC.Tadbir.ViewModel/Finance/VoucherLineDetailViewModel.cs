@@ -53,6 +53,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public decimal Credit { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public string Mark { get; set; }
 
         /// <summary>
@@ -75,6 +78,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public string AccountName { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public short AccountLevel { get; set; }
 
         /// <summary>
@@ -92,6 +98,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public string DetailAccountName { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public short DetailAccountLevel { get; set; }
 
         /// <summary>
@@ -109,6 +118,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public string CostCenterName { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public short CostCenterLevel { get; set; }
 
         /// <summary>
@@ -126,6 +138,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public string ProjectName { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public short ProjectLevel { get; set; }
 
         /// <summary>
@@ -143,6 +158,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public int BranchId { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public string BranchName { get; set; }
 
         /// <summary>

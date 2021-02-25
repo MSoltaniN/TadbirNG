@@ -4,7 +4,6 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
@@ -13,6 +12,9 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class TestBalanceRepositoryDirect : LoggingRepositoryBase, ITestBalanceRepository
     {
         /// <summary>
@@ -49,30 +51,23 @@ namespace SPPC.Tadbir.Persistence
             var query = default(ReportQuery);
             int index = 0;
 
-            Profiler.NewSession("Starting item balance report, detail accounts, level2, 6-column...");
             while (index < level)
             {
                 length = _utility.GetLevelCodeLength(parameters.ViewId, index);
-                Profiler.Start();
                 filter = String.Format("Level == {0}", index);
                 query = GetLevelQuery(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
                 index++;
-                Profiler.Report(String.Format("Upper level balance completed : [{0}]", index));
             }
 
             length = _utility.GetLevelCodeLength(parameters.ViewId, level);
-            Profiler.Start();
             filter = String.Format("Level >= {0}", level);
             query = GetLevelQuery(length, parameters, filter);
             items.AddRange(GetQueryResult(query));
-            Profiler.Report("Main level balance completed.");
 
             if (parameters.Format >= TestBalanceFormat.SixColumn)
             {
-                Profiler.Start();
                 AddInitialBalances(length, items, parameters);
-                Profiler.Report("Initial balances calculated.");
             }
 
             if (parameters.Format >= TestBalanceFormat.EightColumn)
@@ -80,13 +75,8 @@ namespace SPPC.Tadbir.Persistence
                 AddOperationSums(items);
             }
 
-            Profiler.Start();
             items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
-            Profiler.Report("Zero balance items added/removed.");
-            Profiler.Start();
             PrepareBalance(balance, items, parameters, length);
-            Profiler.Report("Report preparation completed.");
-            Profiler.End();
             var source = (parameters.ViewId == ViewId.Account)
                 ? OperationSourceId.TestBalance
                 : OperationSourceId.ItemBalance;
@@ -276,6 +266,30 @@ namespace SPPC.Tadbir.Persistence
                 && item.EndBalanceCredit == 0.0M;
         }
 
+        private static string GetComponentName(int viewId)
+        {
+            string componentName = String.Empty;
+            switch (viewId)
+            {
+                case ViewId.Account:
+                    componentName = "Account";
+                    break;
+                case ViewId.DetailAccount:
+                    componentName = "DetailAccount";
+                    break;
+                case ViewId.CostCenter:
+                    componentName = "CostCenter";
+                    break;
+                case ViewId.Project:
+                    componentName = "Project";
+                    break;
+                default:
+                    break;
+            }
+
+            return componentName;
+        }
+
         private async Task<List<TestBalanceItemViewModel>> ApplyZeroBalanceOptionAsync(
             IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters, int level)
         {
@@ -450,30 +464,6 @@ namespace SPPC.Tadbir.Persistence
                         item.ProjectName = name;
                 }
             }
-        }
-
-        private string GetComponentName(int viewId)
-        {
-            string componentName = String.Empty;
-            switch (viewId)
-            {
-                case ViewId.Account:
-                    componentName = "Account";
-                    break;
-                case ViewId.DetailAccount:
-                    componentName = "DetailAccount";
-                    break;
-                case ViewId.CostCenter:
-                    componentName = "CostCenter";
-                    break;
-                case ViewId.Project:
-                    componentName = "Project";
-                    break;
-                default:
-                    break;
-            }
-
-            return componentName;
         }
 
         private IEnumerable<TestBalanceItemViewModel> GetQueryResult(ReportQuery query)

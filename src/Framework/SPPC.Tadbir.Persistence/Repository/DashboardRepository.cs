@@ -44,14 +44,14 @@ namespace SPPC.Tadbir.Persistence
             var monthEnum = new MonthEnumerator(currentPeriod.StartDate, currentPeriod.EndDate, calendar);
             var months = monthEnum.GetMonths();
             return new DashboardSummariesViewModel();
-            //{
-            //    LiquidRatio = await CalculateLiquidRatioAsync(),
-            //    UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
-            //    BankBalance = await CalculateBankBalanceAsync(),
-            //    CashierBalance = await CalculateCashierBalanceAsync(),
-            //    NetSales = await GetMonthlyNetSalesAsync(months),
-            //    GrossSales = await GetMonthlyGrossSalesAsync(months)
-            //};
+            ////{
+            ////    LiquidRatio = await CalculateLiquidRatioAsync(),
+            ////    UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
+            ////    BankBalance = await CalculateBankBalanceAsync(),
+            ////    CashierBalance = await CalculateCashierBalanceAsync(),
+            ////    NetSales = await GetMonthlyNetSalesAsync(months),
+            ////    GrossSales = await GetMonthlyGrossSalesAsync(months)
+            ////};
         }
 
         private static decimal CalculateBalance(IEnumerable<VoucherLineAmountsViewModel> amounts)

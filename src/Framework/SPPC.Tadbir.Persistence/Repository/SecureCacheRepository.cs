@@ -13,13 +13,26 @@ using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class SecureCacheRepository : RepositoryBase, ISecureCacheRepository
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="context"></param>
         public SecureCacheRepository(IRepositoryContext context)
             : base(context)
         {
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public IEnumerable<TModel> ApplyOperationBranchFilter<TModel>(IEnumerable<TModel> items)
             where TModel : class, IFiscalEntity
         {

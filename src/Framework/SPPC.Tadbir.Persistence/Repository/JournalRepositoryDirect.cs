@@ -16,6 +16,9 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class JournalRepositoryDirect : LoggingRepositoryBase, IJournalRepository
     {
         /// <summary>
@@ -206,6 +209,324 @@ namespace SPPC.Tadbir.Persistence
             get { return _system.Config; }
         }
 
+        private static T ValueOrDefault<T>(DataRow row, string field)
+        {
+            var value = default(T);
+            if (row.Table.Columns.Contains(field))
+            {
+                value = (T)Convert.ChangeType(row[field], typeof(T));
+            }
+
+            return value;
+        }
+
+        private static string ValueOrDefault(DataRow row, string field)
+        {
+            string value = null;
+            if (row.Table.Columns.Contains(field))
+            {
+                value = row[field].ToString();
+            }
+
+            return value;
+        }
+
+        private static ReportQuery GetJournalByRowQuery(JournalParameters parameters,
+            bool byNo = false, bool byBranch = false, bool hasDetail = false)
+        {
+            var query = default(ReportQuery);
+            var paging = parameters.GridOptions.Paging;
+            int fromRow = (paging.PageSize * (paging.PageIndex - 1)) + 1;
+            int toRow = paging.PageSize * paging.PageIndex;
+            if (byNo)
+            {
+                if (byBranch)
+                {
+                    query = hasDetail
+                    ? new ReportQuery(String.Format(JournalQuery.ByNoByRowDetailByBranch,
+                        parameters.FromNo, parameters.ToNo, fromRow, toRow))
+                    : new ReportQuery(String.Format(JournalQuery.ByNoByRowByBranch,
+                        parameters.FromNo, parameters.ToNo, fromRow, toRow));
+                }
+                else
+                {
+                    query = hasDetail
+                    ? new ReportQuery(String.Format(JournalQuery.ByNoByRowDetail,
+                        parameters.FromNo, parameters.ToNo, fromRow, toRow))
+                    : new ReportQuery(String.Format(JournalQuery.ByNoByRow,
+                        parameters.FromNo, parameters.ToNo, fromRow, toRow));
+                }
+            }
+            else
+            {
+                if (byBranch)
+                {
+                    query = hasDetail
+                    ? new ReportQuery(String.Format(JournalQuery.ByDateByRowDetailsByBranch,
+                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
+                        fromRow, toRow))
+                    : new ReportQuery(String.Format(JournalQuery.ByDateByRowByBranch,
+                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
+                        fromRow, toRow));
+                }
+                else
+                {
+                    query = hasDetail
+                    ? new ReportQuery(String.Format(JournalQuery.ByDateByRowDetails,
+                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
+                        fromRow, toRow))
+                    : new ReportQuery(String.Format(JournalQuery.ByDateByRow,
+                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
+                        fromRow, toRow));
+                }
+            }
+
+            return query;
+        }
+
+        private static ReportQuery GetJournalByLevelQuery(
+            JournalParameters parameters, int length, bool byNo, bool isDebit)
+        {
+            var query = default(ReportQuery);
+            string command = !byNo
+                ? String.Format(JournalQuery.ByDateByLevel, length,
+                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
+                : String.Format(JournalQuery.ByNoByLevel, length, parameters.FromNo, parameters.ToNo);
+            if (isDebit)
+            {
+                query = new ReportQuery(command);
+            }
+            else
+            {
+                query = new ReportQuery(command
+                    .Replace("Debit", "Credit")
+                    .Replace("Credit1", "Debit"));
+            }
+
+            return query;
+        }
+
+        private static ReportQuery GetJournalByLevelByBranchQuery(
+            JournalParameters parameters, int length, bool byNo, bool isDebit)
+        {
+            var query = default(ReportQuery);
+            string command = !byNo
+                ? String.Format(JournalQuery.ByDateByLevelByBranch, length,
+                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
+                : String.Format(JournalQuery.ByNoByLevelByBranch, length, parameters.FromNo, parameters.ToNo);
+            if (isDebit)
+            {
+                query = new ReportQuery(command);
+            }
+            else
+            {
+                query = new ReportQuery(command
+                    .Replace("Debit", "Credit")
+                    .Replace("Credit1", "Debit"));
+            }
+
+            return query;
+        }
+
+        private static ReportQuery GetJournalLedgerSummaryQuery(
+            JournalParameters parameters, int length, bool byNo, bool isDebit)
+        {
+            var query = default(ReportQuery);
+            string command = !byNo
+                ? String.Format(JournalQuery.ByDateLedgerSummary, length,
+                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
+                : String.Format(JournalQuery.ByNoLedgerSummary, length, parameters.FromNo, parameters.ToNo);
+            if (isDebit)
+            {
+                query = new ReportQuery(command);
+            }
+            else
+            {
+                query = new ReportQuery(command
+                    .Replace("Debit", "Credit")
+                    .Replace("Credit1", "Debit"));
+            }
+
+            return query;
+        }
+
+        private static ReportQuery GetJournalLedgerSummaryByBranchQuery(
+            JournalParameters parameters, int length, bool byNo, bool isDebit)
+        {
+            var query = default(ReportQuery);
+            string command = !byNo
+                ? String.Format(JournalQuery.ByDateLedgerSummaryByBranch, length,
+                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
+                : String.Format(JournalQuery.ByNoLedgerSummaryByBranch, length, parameters.FromNo, parameters.ToNo);
+            if (isDebit)
+            {
+                query = new ReportQuery(command);
+            }
+            else
+            {
+                query = new ReportQuery(command
+                    .Replace("Debit", "Credit")
+                    .Replace("Credit1", "Debit"));
+            }
+
+            return query;
+        }
+
+        private static IEnumerable<JournalItemViewModel> MergeByNumber(
+            IEnumerable<JournalItemViewModel> first, IEnumerable<JournalItemViewModel> second,
+            GridOptions gridOptions)
+        {
+            var items = new List<JournalItemViewModel>();
+
+            // NOTE: This is the obvious logic for merging by number. However, it performs
+            // very poorly with big-to-huge collections...
+            ////foreach (var byNum in first
+            ////    .OrderBy(item => item.VoucherNo)
+            ////    .GroupBy(item => item.VoucherNo))
+            ////{
+            ////    items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
+            ////    items.AddRange(second
+            ////        .Where(item => item.VoucherNo == byNum.Key)
+            ////        .OrderBy(item => item.AccountFullCode));
+            ////}
+
+            var grossItems = first
+                .Concat(second)
+                .OrderBy(item => item.VoucherNo)
+                .ApplyPaging(gridOptions);
+            int totalCount = grossItems.Count();
+            if (totalCount == 0)
+            {
+                return items;
+            }
+
+            int minNo = grossItems.Min(item => item.VoucherNo);
+            int maxNo = grossItems.Max(item => item.VoucherNo);
+            int previousCount = first
+                .Concat(second)
+                .Where(item => item.VoucherNo < minNo)
+                .Count();
+
+            foreach (var byNum in first
+                .Where(item => item.VoucherNo >= minNo && item.VoucherNo <= maxNo)
+                .OrderBy(item => item.VoucherNo)
+                .GroupBy(item => item.VoucherNo))
+            {
+                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
+                items.AddRange(second
+                    .Where(item => item.VoucherNo == byNum.Key)
+                    .OrderBy(item => item.AccountFullCode));
+            }
+
+            var paging = gridOptions.Paging;
+            int fromIndex = paging.PageSize * (paging.PageIndex - 1);
+            return items.Skip(fromIndex - previousCount).Take(paging.PageSize);
+        }
+
+        private static IEnumerable<JournalItemViewModel> MergeByNumber(
+            IEnumerable<JournalItemViewModel> first, IEnumerable<JournalItemViewModel> second,
+            IEnumerable<JournalItemViewModel> third, IEnumerable<JournalItemViewModel> fourth,
+            GridOptions gridOptions)
+        {
+            var items = new List<JournalItemViewModel>();
+            var grossItems = first
+                .Concat(second)
+                .Concat(third)
+                .Concat(fourth)
+                .OrderBy(item => item.VoucherNo)
+                .ApplyPaging(gridOptions);
+            int totalCount = grossItems.Count();
+            if (totalCount == 0)
+            {
+                return items;
+            }
+
+            int minNo = grossItems.Min(item => item.VoucherNo);
+            int maxNo = grossItems.Max(item => item.VoucherNo);
+            int previousCount = first
+                .Concat(second)
+                .Concat(third)
+                .Concat(fourth)
+                .Where(item => item.VoucherNo < minNo)
+                .Count();
+
+            foreach (var byNum in first
+                .Where(item => item.VoucherNo >= minNo && item.VoucherNo <= maxNo)
+                .OrderBy(item => item.VoucherNo)
+                .GroupBy(item => item.VoucherNo))
+            {
+                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
+                items.AddRange(second
+                    .Where(item => item.VoucherNo == byNum.Key)
+                    .OrderBy(item => item.AccountFullCode));
+                items.AddRange(third
+                    .Where(item => item.VoucherNo == byNum.Key)
+                    .OrderBy(item => item.AccountFullCode));
+                items.AddRange(fourth
+                    .Where(item => item.VoucherNo == byNum.Key)
+                    .OrderBy(item => item.AccountFullCode));
+            }
+
+            var paging = gridOptions.Paging;
+            int fromIndex = paging.PageSize * (paging.PageIndex - 1);
+            return items.Skip(fromIndex - previousCount).Take(paging.PageSize);
+        }
+
+        private static IEnumerable<JournalItemViewModel> MergeByDate(
+            IEnumerable<JournalItemViewModel> first, IEnumerable<JournalItemViewModel> second,
+            GridOptions gridOptions)
+        {
+            var items = new List<JournalItemViewModel>();
+            var grossItems = first
+                .Concat(second)
+                .OrderBy(item => item.VoucherDate)
+                .ApplyPaging(gridOptions);
+            int totalCount = grossItems.Count();
+            if (totalCount == 0)
+            {
+                return items;
+            }
+
+            var minDate = grossItems.Min(item => item.VoucherDate);
+            var maxDate = grossItems.Max(item => item.VoucherDate);
+            int previousCount = first
+                .Concat(second)
+                .Where(item => item.VoucherDate < minDate)
+                .Count();
+
+            foreach (var byNum in first
+                .Where(item => item.VoucherDate >= minDate && item.VoucherDate <= maxDate)
+                .OrderBy(item => item.VoucherDate)
+                .GroupBy(item => item.VoucherDate))
+            {
+                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
+                items.AddRange(second
+                    .Where(item => item.VoucherDate == byNum.Key)
+                    .OrderBy(item => item.AccountFullCode));
+            }
+
+            var paging = gridOptions.Paging;
+            int fromIndex = paging.PageSize * (paging.PageIndex - 1);
+            return items.Skip(fromIndex - previousCount).Take(paging.PageSize);
+        }
+
+        private static IEnumerable<JournalItemViewModel> MergeByDate(
+            IEnumerable<JournalItemViewModel> first, IEnumerable<JournalItemViewModel> second)
+        {
+            var items = new List<JournalItemViewModel>();
+            foreach (var byNum in first
+                .OrderBy(item => item.VoucherDate.Date)
+                .GroupBy(item => item.VoucherDate.Date))
+            {
+                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
+                items.AddRange(second
+                    .Where(item => item.VoucherDate.Date == byNum.Key)
+                    .OrderBy(item => item.AccountFullCode));
+            }
+
+            return items;
+        }
+
         private JournalViewModel GetJournalByRow(JournalParameters parameters,
             bool byNo = false, bool byBranch = false, bool hasDetail = false)
         {
@@ -342,59 +663,6 @@ namespace SPPC.Tadbir.Persistence
             return journal;
         }
 
-        private ReportQuery GetJournalByRowQuery(JournalParameters parameters,
-            bool byNo = false, bool byBranch = false, bool hasDetail = false)
-        {
-            var query = default(ReportQuery);
-            var paging = parameters.GridOptions.Paging;
-            int fromRow = (paging.PageSize * (paging.PageIndex - 1)) + 1;
-            int toRow = paging.PageSize * paging.PageIndex;
-            if (byNo)
-            {
-                if (byBranch)
-                {
-                    query = hasDetail
-                    ? new ReportQuery(String.Format(JournalQuery.ByNoByRowDetailByBranch,
-                        parameters.FromNo, parameters.ToNo, fromRow, toRow))
-                    : new ReportQuery(String.Format(JournalQuery.ByNoByRowByBranch,
-                        parameters.FromNo, parameters.ToNo, fromRow, toRow));
-                }
-                else
-                {
-                    query = hasDetail
-                    ? new ReportQuery(String.Format(JournalQuery.ByNoByRowDetail,
-                        parameters.FromNo, parameters.ToNo, fromRow, toRow))
-                    : new ReportQuery(String.Format(JournalQuery.ByNoByRow,
-                        parameters.FromNo, parameters.ToNo, fromRow, toRow));
-                }
-            }
-            else
-            {
-                if (byBranch)
-                {
-                    query = hasDetail
-                    ? new ReportQuery(String.Format(JournalQuery.ByDateByRowDetailsByBranch,
-                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
-                        fromRow, toRow))
-                    : new ReportQuery(String.Format(JournalQuery.ByDateByRowByBranch,
-                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
-                        fromRow, toRow));
-                }
-                else
-                {
-                    query = hasDetail
-                    ? new ReportQuery(String.Format(JournalQuery.ByDateByRowDetails,
-                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
-                        fromRow, toRow))
-                    : new ReportQuery(String.Format(JournalQuery.ByDateByRow,
-                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
-                        fromRow, toRow));
-                }
-            }
-
-            return query;
-        }
-
         private IEnumerable<JournalItemViewModel> GetByLevelItems(
             JournalParameters parameters, int length, bool byNo, bool byBranch, bool isDebit, string filter = "")
         {
@@ -409,50 +677,6 @@ namespace SPPC.Tadbir.Persistence
                 .Select(row => GetJournalItem(row));
         }
 
-        private ReportQuery GetJournalByLevelQuery(
-            JournalParameters parameters, int length, bool byNo, bool isDebit)
-        {
-            var query = default(ReportQuery);
-            string command = !byNo
-                ? String.Format(JournalQuery.ByDateByLevel, length,
-                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
-                : String.Format(JournalQuery.ByNoByLevel, length, parameters.FromNo, parameters.ToNo);
-            if (isDebit)
-            {
-                query = new ReportQuery(command);
-            }
-            else
-            {
-                query = new ReportQuery(command
-                    .Replace("Debit", "Credit")
-                    .Replace("Credit1", "Debit"));
-            }
-
-            return query;
-        }
-
-        private ReportQuery GetJournalByLevelByBranchQuery(
-            JournalParameters parameters, int length, bool byNo, bool isDebit)
-        {
-            var query = default(ReportQuery);
-            string command = !byNo
-                ? String.Format(JournalQuery.ByDateByLevelByBranch, length,
-                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
-                : String.Format(JournalQuery.ByNoByLevelByBranch, length, parameters.FromNo, parameters.ToNo);
-            if (isDebit)
-            {
-                query = new ReportQuery(command);
-            }
-            else
-            {
-                query = new ReportQuery(command
-                    .Replace("Debit", "Credit")
-                    .Replace("Credit1", "Debit"));
-            }
-
-            return query;
-        }
-
         private IEnumerable<JournalItemViewModel> GetLedgerSummaryItems(
             JournalParameters parameters, int length, bool byNo, bool byBranch, bool isDebit)
         {
@@ -464,50 +688,6 @@ namespace SPPC.Tadbir.Persistence
             return result.Rows
                 .Cast<DataRow>()
                 .Select(row => GetJournalItem(row));
-        }
-
-        private ReportQuery GetJournalLedgerSummaryQuery(
-            JournalParameters parameters, int length, bool byNo, bool isDebit)
-        {
-            var query = default(ReportQuery);
-            string command = !byNo
-                ? String.Format(JournalQuery.ByDateLedgerSummary, length,
-                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
-                : String.Format(JournalQuery.ByNoLedgerSummary, length, parameters.FromNo, parameters.ToNo);
-            if (isDebit)
-            {
-                query = new ReportQuery(command);
-            }
-            else
-            {
-                query = new ReportQuery(command
-                    .Replace("Debit", "Credit")
-                    .Replace("Credit1", "Debit"));
-            }
-
-            return query;
-        }
-
-        private ReportQuery GetJournalLedgerSummaryByBranchQuery(
-            JournalParameters parameters, int length, bool byNo, bool isDebit)
-        {
-            var query = default(ReportQuery);
-            string command = !byNo
-                ? String.Format(JournalQuery.ByDateLedgerSummaryByBranch, length,
-                    parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
-                : String.Format(JournalQuery.ByNoLedgerSummaryByBranch, length, parameters.FromNo, parameters.ToNo);
-            if (isDebit)
-            {
-                query = new ReportQuery(command);
-            }
-            else
-            {
-                query = new ReportQuery(command
-                    .Replace("Debit", "Credit")
-                    .Replace("Credit1", "Debit"));
-            }
-
-            return query;
         }
 
         private IEnumerable<JournalItemViewModel> GetLedgerSummaryByDateItems(
@@ -551,161 +731,6 @@ namespace SPPC.Tadbir.Persistence
                 .Select(row => GetJournalItem(row));
         }
 
-        private IEnumerable<JournalItemViewModel> MergeByNumber(
-            IEnumerable<JournalItemViewModel> first, IEnumerable<JournalItemViewModel> second,
-            GridOptions gridOptions)
-        {
-            var items = new List<JournalItemViewModel>();
-
-            // NOTE: This is the obvious logic for merging by number. However, it performs
-            // very poorly with big-to-huge collections...
-            ////foreach (var byNum in first
-            ////    .OrderBy(item => item.VoucherNo)
-            ////    .GroupBy(item => item.VoucherNo))
-            ////{
-            ////    items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-            ////    items.AddRange(second
-            ////        .Where(item => item.VoucherNo == byNum.Key)
-            ////        .OrderBy(item => item.AccountFullCode));
-            ////}
-
-            var grossItems = first
-                .Concat(second)
-                .OrderBy(item => item.VoucherNo)
-                .ApplyPaging(gridOptions);
-            int totalCount = grossItems.Count();
-            if (totalCount == 0)
-            {
-                return items;
-            }
-
-            int minNo = grossItems.Min(item => item.VoucherNo);
-            int maxNo = grossItems.Max(item => item.VoucherNo);
-            int previousCount = first
-                .Concat(second)
-                .Where(item => item.VoucherNo < minNo)
-                .Count();
-
-            foreach (var byNum in first
-                .Where(item => item.VoucherNo >= minNo && item.VoucherNo <= maxNo)
-                .OrderBy(item => item.VoucherNo)
-                .GroupBy(item => item.VoucherNo))
-            {
-                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-                items.AddRange(second
-                    .Where(item => item.VoucherNo == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
-            }
-
-            var paging = gridOptions.Paging;
-            int fromIndex = paging.PageSize * (paging.PageIndex - 1);
-            return items.Skip(fromIndex - previousCount).Take(paging.PageSize);
-        }
-
-        private IEnumerable<JournalItemViewModel> MergeByNumber(
-            IEnumerable<JournalItemViewModel> first, IEnumerable<JournalItemViewModel> second,
-            IEnumerable<JournalItemViewModel> third, IEnumerable<JournalItemViewModel> fourth,
-            GridOptions gridOptions)
-        {
-            var items = new List<JournalItemViewModel>();
-            var grossItems = first
-                .Concat(second)
-                .Concat(third)
-                .Concat(fourth)
-                .OrderBy(item => item.VoucherNo)
-                .ApplyPaging(gridOptions);
-            int totalCount = grossItems.Count();
-            if (totalCount == 0)
-            {
-                return items;
-            }
-
-            int minNo = grossItems.Min(item => item.VoucherNo);
-            int maxNo = grossItems.Max(item => item.VoucherNo);
-            int previousCount = first
-                .Concat(second)
-                .Concat(third)
-                .Concat(fourth)
-                .Where(item => item.VoucherNo < minNo)
-                .Count();
-
-            foreach (var byNum in first
-                .Where(item => item.VoucherNo >= minNo && item.VoucherNo <= maxNo)
-                .OrderBy(item => item.VoucherNo)
-                .GroupBy(item => item.VoucherNo))
-            {
-                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-                items.AddRange(second
-                    .Where(item => item.VoucherNo == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
-                items.AddRange(third
-                    .Where(item => item.VoucherNo == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
-                items.AddRange(fourth
-                    .Where(item => item.VoucherNo == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
-            }
-
-            var paging = gridOptions.Paging;
-            int fromIndex = paging.PageSize * (paging.PageIndex - 1);
-            return items.Skip(fromIndex - previousCount).Take(paging.PageSize);
-        }
-
-        private IEnumerable<JournalItemViewModel> MergeByDate(
-            IEnumerable<JournalItemViewModel> first, IEnumerable<JournalItemViewModel> second,
-            GridOptions gridOptions)
-        {
-            var items = new List<JournalItemViewModel>();
-            var grossItems = first
-                .Concat(second)
-                .OrderBy(item => item.VoucherDate)
-                .ApplyPaging(gridOptions);
-            int totalCount = grossItems.Count();
-            if (totalCount == 0)
-            {
-                return items;
-            }
-
-            var minDate = grossItems.Min(item => item.VoucherDate);
-            var maxDate = grossItems.Max(item => item.VoucherDate);
-            int previousCount = first
-                .Concat(second)
-                .Where(item => item.VoucherDate < minDate)
-                .Count();
-
-            foreach (var byNum in first
-                .Where(item => item.VoucherDate >= minDate && item.VoucherDate <= maxDate)
-                .OrderBy(item => item.VoucherDate)
-                .GroupBy(item => item.VoucherDate))
-            {
-                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-                items.AddRange(second
-                    .Where(item => item.VoucherDate == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
-            }
-
-            var paging = gridOptions.Paging;
-            int fromIndex = paging.PageSize * (paging.PageIndex - 1);
-            return items.Skip(fromIndex - previousCount).Take(paging.PageSize);
-        }
-
-        private IEnumerable<JournalItemViewModel> MergeByDate(
-            IEnumerable<JournalItemViewModel> first, IEnumerable<JournalItemViewModel> second)
-        {
-            var items = new List<JournalItemViewModel>();
-            foreach (var byNum in first
-                .OrderBy(item => item.VoucherDate.Date)
-                .GroupBy(item => item.VoucherDate.Date))
-            {
-                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-                items.AddRange(second
-                    .Where(item => item.VoucherDate.Date == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
-            }
-
-            return items;
-        }
-
         private async Task PrepareJournalAsync(
             JournalViewModel journal, IEnumerable<JournalItemViewModel> items, GridOptions gridOptions)
         {
@@ -741,28 +766,6 @@ namespace SPPC.Tadbir.Persistence
                 ? DateTime.Parse(row["Date"].ToString())
                 : DateTime.MinValue;
             return item;
-        }
-
-        private T ValueOrDefault<T>(DataRow row, string field)
-        {
-            var value = default(T);
-            if (row.Table.Columns.Contains(field))
-            {
-                value = (T)Convert.ChangeType(row[field], typeof(T));
-            }
-
-            return value;
-        }
-
-        private string ValueOrDefault(DataRow row, string field)
-        {
-            string value = null;
-            if (row.Table.Columns.Contains(field))
-            {
-                value = row[field].ToString();
-            }
-
-            return value;
         }
 
         private int GetLevelCodeLength(int level)

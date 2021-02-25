@@ -7,7 +7,7 @@ using SPPC.Licensing.Model;
 
 namespace SPPC.Licensing.Persistence
 {
-    public class LicenseUtility : ILicenseUtility
+    public class LicenseUtility : ILicenseUtility, IDisposable
     {
         public LicenseUtility(ILicenseRepository repository, IDigitalSigner signer)
         {
@@ -93,9 +93,41 @@ namespace SPPC.Licensing.Persistence
                 && now <= _license.EndDate;
         }
 
+        #region IDisposable Support
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) below.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Supports correct implementation of the Disposable pattern for this class.
+        /// </summary>
+        /// <param name="disposing">Indicates if this instance is currently being disposed</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _disposed = true;
+            }
+        }
+
+        #endregion
+
         private readonly ILicenseRepository _repository;
         private readonly IDigitalSigner _signer;
         private LicenseModel _license;
         private X509Certificate2 _certificate;
+        private bool _disposed = false;
     }
 }

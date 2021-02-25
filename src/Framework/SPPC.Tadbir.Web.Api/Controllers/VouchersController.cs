@@ -183,6 +183,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await GetLastVoucherByTypeAsync();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/vouchers/opening/query
         [HttpGet]
         [Route(VoucherApi.OpeningVoucherQueryUrl)]
@@ -203,6 +207,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="isDefault"></param>
+        /// <returns></returns>
         // GET: api/vouchers/opening?isDefault={bool}
         [HttpGet]
         [Route(VoucherApi.OpeningVoucherUrl)]
@@ -221,6 +230,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(openingVoucher);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/vouchers/closing-tmp
         [HttpGet]
         [Route(VoucherApi.ClosingAccountsVoucherUrl)]
@@ -238,6 +251,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(closingAccountsVoucher);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="balanceItems"></param>
+        /// <returns></returns>
         // PUT: api/vouchers/closing-tmp
         [HttpPut]
         [Route(VoucherApi.ClosingAccountsVoucherUrl)]
@@ -256,6 +274,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(closingAccountsVoucher);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/vouchers/closing
         [HttpGet]
         [Route(VoucherApi.ClosingVoucherUrl)]
@@ -1018,6 +1040,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region System Issue Resources
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/vouchers/no-article
         [HttpGet]
         [Route(VoucherApi.VoucherWithNoArticleUrl)]
@@ -1031,6 +1059,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(vouchers);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/vouchers/unbalanced
         [HttpGet]
         [Route(VoucherApi.UnbalancedVouchers)]
@@ -1044,6 +1078,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(vouchers);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/vouchers/miss-number
         [HttpGet]
         [Route(VoucherApi.MissingVoucherNumberUrl)]
@@ -1096,6 +1136,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(range);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/vouchers/count/by-status
         [HttpGet]
         [Route(VoucherApi.VoucherCountByStatusUrl)]

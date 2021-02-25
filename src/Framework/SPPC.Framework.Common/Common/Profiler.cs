@@ -13,7 +13,6 @@ namespace SPPC.Framework.Common
         /// <summary>
         /// Creates a new instance of this class and initializes a new profiling session
         /// </summary>
-        /// <param name="useCase">Short description of the use case in a single profiling session</param>
         static Profiler()
         {
             _stopwatch = new Stopwatch();

@@ -11,20 +11,36 @@ using SPPC.Tadbir.Web.Api.Extensions;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class FiltersController : ValidatingController<FilterViewModel>
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="strings"></param>
         public FiltersController(IFilterRepository repository, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.Filter; }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/filters/views/{viewId:min(1)}
         [HttpGet]
         [Route(FilterApi.FiltersByViewUrl)]
@@ -34,6 +50,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(filters);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="filterId"></param>
+        /// <returns></returns>
         // GET: api/filters/{filterId:min(1)}
         [HttpGet]
         [Route(FilterApi.FilterUrl)]
@@ -43,6 +64,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(filter);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         // POST: api/filters
         [HttpPost]
         [Route(FilterApi.FiltersUrl)]
@@ -58,6 +84,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="filterId"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         // PUT: api/filters/{filterId:min(1)}
         [HttpPut]
         [Route(FilterApi.FilterUrl)]
@@ -73,6 +105,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return OkReadResult(outputItem);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="filterId"></param>
+        /// <returns></returns>
         // DELETE: api/filters/{filterId:min(1)}
         [HttpDelete]
         [Route(FilterApi.FilterUrl)]
@@ -88,6 +125,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;

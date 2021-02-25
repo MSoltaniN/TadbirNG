@@ -20,9 +20,19 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class UsersController : ValidatingController<UserViewModel>
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="crypto"></param>
+        /// <param name="encoder"></param>
+        /// <param name="strings"></param>
         public UsersController(
             IUserRepository repository,
             ICryptoService crypto,
@@ -35,11 +45,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _contextEncoder = encoder;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.User; }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/users
         [HttpGet]
         [Route(UserApi.UsersUrl)]
@@ -50,6 +67,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(users);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         // GET: api/users/name/{userName}
         [HttpGet]
         [Route(UserApi.UserByNameUrl)]
@@ -65,6 +87,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(user);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // GET: api/users/{userId:min(1)}
         [HttpGet]
         [Route(UserApi.UserUrl)]
@@ -76,6 +103,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(user);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/users/current/commands
         [HttpGet]
         [Route(UserApi.CurrentUserCommandsUrl)]
@@ -99,6 +130,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(commands);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/users/default/commands
         [HttpGet]
         [Route(UserApi.UserDefaultCommandsUrl)]
@@ -109,6 +144,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(commands);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         // POST: api/users
         [HttpPost]
         [Route(UserApi.UsersUrl)]
@@ -125,6 +165,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created, outputUser);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         // PUT: api/users/{userId:min(1)}
         [HttpPut]
         [Route(UserApi.UserUrl)]
@@ -154,6 +200,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // PUT: api/users/{userId:int}/login
         [HttpPut]
         [Route(UserApi.UserLastLoginUrl)]
@@ -164,6 +215,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="profile"></param>
+        /// <returns></returns>
         // PUT: api/users/{userName}/password
         [HttpPut]
         [Route(UserApi.UserPasswordUrl)]
@@ -212,6 +269,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // GET: api/users/{userId:min(1)}/context
         [HttpGet]
         [Route(UserApi.UserContextUrl)]
@@ -221,6 +283,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(userContext);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         // PUT: api/users/login
         [HttpPut]
         [Route(UserApi.UserLoginStatusUrl)]
@@ -258,6 +325,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="companyLogin"></param>
+        /// <returns></returns>
         // PUT: api/users/login/company
         [HttpPut]
         [Route(UserApi.UserCompanyLoginStatusUrl)]
@@ -280,6 +352,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok(userContext);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // GET: api/users/{userId:min(1)}/roles
         [HttpGet]
         [Route(UserApi.UserRolesUrl)]
@@ -291,6 +368,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(roles);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userRoles"></param>
+        /// <returns></returns>
         // PUT: api/users/{userId:min(1)}/roles
         [HttpPut]
         [Route(UserApi.UserRolesUrl)]
@@ -308,6 +391,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="specialPassword"></param>
+        /// <returns></returns>
         // GET: api/users/specialpassword/{specialpassword}
         [HttpGet]
         [Route(UserApi.CheckSpecialPasswordUrl)]
@@ -341,6 +429,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // GET: api/users/{userId:min(1)}/ticket
         [HttpGet]
         [Route("users/{userId:min(1)}/ticket")]

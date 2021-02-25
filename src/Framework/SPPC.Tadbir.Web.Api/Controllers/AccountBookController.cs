@@ -13,9 +13,18 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class AccountBookController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="config"></param>
+        /// <param name="strings"></param>
         public AccountBookController(IAccountBookRepository repository,
             IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
@@ -26,6 +35,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Account Books
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/account/{accountId:min(1)}/by-row
         [HttpGet]
         [Route(AccountBookApi.AccountBookByRowUrl)]
@@ -36,6 +52,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.Account, accountId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/account/{accountId:min(1)}/voucher-sum
         [HttpGet]
         [Route(AccountBookApi.AccountBookVoucherSumUrl)]
@@ -46,6 +69,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.Account, accountId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/account/{accountId:min(1)}/daily-sum
         [HttpGet]
         [Route(AccountBookApi.AccountBookDailySumUrl)]
@@ -56,6 +86,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.Account, accountId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/account/{accountId:min(1)}/monthly-sum
         [HttpGet]
         [Route(AccountBookApi.AccountBookMonthlySumUrl)]
@@ -66,6 +103,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.Account, accountId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/account/{accountId:min(1)}/by-row/by-branch
         [HttpGet]
         [Route(AccountBookApi.AccountBookByRowByBranchUrl)]
@@ -76,6 +120,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.Account, accountId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/account/{accountId:min(1)}/voucher-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.AccountBookVoucherSumByBranchUrl)]
@@ -86,6 +137,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.Account, accountId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/account/{accountId:min(1)}/daily-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.AccountBookDailySumByBranchUrl)]
@@ -96,6 +154,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.Account, accountId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/account/{accountId:min(1)}/monthly-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.AccountBookMonthlySumByBranchUrl)]
@@ -110,6 +175,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region DetailAccount Books
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/faccount/{faccountId:min(1)}/by-row
         [HttpGet]
         [Route(AccountBookApi.DetailAccountBookByRowUrl)]
@@ -120,6 +192,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.DetailAccount, faccountId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/faccount/{faccountId:min(1)}/voucher-sum
         [HttpGet]
         [Route(AccountBookApi.DetailAccountBookVoucherSumUrl)]
@@ -130,6 +209,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.DetailAccount, faccountId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/faccount/{faccountId:min(1)}/daily-sum
         [HttpGet]
         [Route(AccountBookApi.DetailAccountBookDailySumUrl)]
@@ -140,6 +226,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.DetailAccount, faccountId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/faccount/{faccountId:min(1)}/monthly-sum
         [HttpGet]
         [Route(AccountBookApi.DetailAccountBookMonthlySumUrl)]
@@ -150,6 +243,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.DetailAccount, faccountId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/faccount/{faccountId:min(1)}/by-row/by-branch
         [HttpGet]
         [Route(AccountBookApi.DetailAccountBookByRowByBranchUrl)]
@@ -160,6 +260,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.DetailAccount, faccountId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/faccount/{faccountId:min(1)}/voucher-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.DetailAccountBookVoucherSumByBranchUrl)]
@@ -170,6 +277,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.DetailAccount, faccountId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/faccount/{faccountId:min(1)}/daily-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.DetailAccountBookDailySumByBranchUrl)]
@@ -180,6 +294,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.DetailAccount, faccountId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/faccount/{faccountId:min(1)}/monthly-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.DetailAccountBookMonthlySumByBranchUrl)]
@@ -194,6 +315,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region CostCenter Books
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/by-row
         [HttpGet]
         [Route(AccountBookApi.CostCenterBookByRowUrl)]
@@ -204,6 +332,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.CostCenter, ccenterId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/voucher-sum
         [HttpGet]
         [Route(AccountBookApi.CostCenterBookVoucherSumUrl)]
@@ -214,6 +349,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.CostCenter, ccenterId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/daily-sum
         [HttpGet]
         [Route(AccountBookApi.CostCenterBookDailySumUrl)]
@@ -224,6 +366,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.CostCenter, ccenterId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/monthly-sum
         [HttpGet]
         [Route(AccountBookApi.CostCenterBookMonthlySumUrl)]
@@ -234,6 +383,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.CostCenter, ccenterId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/by-row/by-branch
         [HttpGet]
         [Route(AccountBookApi.CostCenterBookByRowByBranchUrl)]
@@ -244,6 +400,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.CostCenter, ccenterId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/voucher-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.CostCenterBookVoucherSumByBranchUrl)]
@@ -254,6 +417,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.CostCenter, ccenterId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/daily-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.CostCenterBookDailySumByBranchUrl)]
@@ -264,6 +434,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.CostCenter, ccenterId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/ccenter/{ccenterId:min(1)}/monthly-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.CostCenterBookMonthlySumByBranchUrl)]
@@ -278,6 +455,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Project Books
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/project/{projectId:min(1)}/by-row
         [HttpGet]
         [Route(AccountBookApi.ProjectBookByRowUrl)]
@@ -288,6 +472,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.Project, projectId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/project/{projectId:min(1)}/voucher-sum
         [HttpGet]
         [Route(AccountBookApi.ProjectBookVoucherSumUrl)]
@@ -298,6 +489,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.Project, projectId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/project/{projectId:min(1)}/daily-sum
         [HttpGet]
         [Route(AccountBookApi.ProjectBookDailySumUrl)]
@@ -308,6 +506,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.Project, projectId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/project/{projectId:min(1)}/monthly-sum
         [HttpGet]
         [Route(AccountBookApi.ProjectBookMonthlySumUrl)]
@@ -318,6 +523,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.MonthlySum, ViewId.Project, projectId, from, to);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/project/{projectId:min(1)}/by-row/by-branch
         [HttpGet]
         [Route(AccountBookApi.ProjectBookByRowByBranchUrl)]
@@ -328,6 +540,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.ByRows, ViewId.Project, projectId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/project/{projectId:min(1)}/voucher-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.ProjectBookVoucherSumByBranchUrl)]
@@ -338,6 +557,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.VoucherSum, ViewId.Project, projectId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/project/{projectId:min(1)}/daily-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.ProjectBookDailySumByBranchUrl)]
@@ -348,6 +574,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await AccountBookResultAsync(AccountBookMode.DailySum, ViewId.Project, projectId, from, to, true);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // GET: api/accbook/project/{projectId:min(1)}/monthly-sum/by-branch
         [HttpGet]
         [Route(AccountBookApi.ProjectBookMonthlySumByBranchUrl)]
@@ -362,6 +595,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Account Item Navigation
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         // GET: api/accbook/view/{viewId:min(1)}/item/{itemId:min(1)}/prev
         [HttpGet]
         [Route(AccountBookApi.PreviousEnvironmentItemUrl)]
@@ -371,6 +610,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(previous);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         // GET: api/accbook/view/{viewId:min(1)}/item/{itemId:min(1)}/next
         [HttpGet]
         [Route(AccountBookApi.NextEnvironmentItemUrl)]

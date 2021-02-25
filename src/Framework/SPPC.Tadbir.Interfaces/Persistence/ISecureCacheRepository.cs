@@ -5,8 +5,17 @@ using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    ///
+    /// </summary>
     public interface ISecureCacheRepository
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
         IEnumerable<TModel> ApplyOperationBranchFilter<TModel>(IEnumerable<TModel> items)
             where TModel : class, IFiscalEntity;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
@@ -13,9 +12,18 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class AccountRelationsController : ValidatingController<AccountItemRelationsViewModel>
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="configRepository"></param>
+        /// <param name="strings"></param>
         public AccountRelationsController(
             IRelationRepository repository, IConfigRepository configRepository, IStringLocalizer<AppStrings> strings)
             : base(strings)
@@ -25,11 +33,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _config = configRepository.GetConfigByTypeAsync<RelationsConfig>().Result;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.AccountRelations; }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/relations/accounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
@@ -40,6 +55,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/relations/faccounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
@@ -50,6 +69,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(detailAccounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/relations/ccenters
         [HttpGet]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
@@ -60,6 +83,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(costCenters);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/relations/projects
         [HttpGet]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
@@ -70,6 +97,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(projects);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/relations/accounts/lookup
         [HttpGet]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
@@ -80,6 +111,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/relations/faccounts/lookup
         [HttpGet]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
@@ -90,6 +125,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(detailAccounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/relations/ccenters/lookup
         [HttpGet]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
@@ -100,6 +139,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(costCenters);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/relations/projects/lookup
         [HttpGet]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
@@ -110,6 +153,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(projects);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/account/{accountId:min(1)}/faccounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -120,6 +168,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(detailAccounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/account/{accountId:min(1)}/faccounts/usable
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -130,6 +183,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(detailAccounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // POST: api/relations/account/{accountId:min(1)}/faccounts
         [HttpPost]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -147,6 +206,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // PUT: api/relations/account/{accountId:min(1)}/faccounts
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -164,6 +229,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/account/{accountId:min(1)}/ccenters
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -174,6 +244,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(costCenters);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/account/{accountId:min(1)}/ccenters/usable
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -184,6 +259,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(costCenters);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // POST: api/relations/account/{accountId:min(1)}/ccenters
         [HttpPost]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -201,6 +282,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // PUT: api/relations/account/{accountId:min(1)}/ccenters
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -218,6 +305,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/account/{accountId:min(1)}/projects
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -228,6 +320,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(projects);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/account/{accountId:min(1)}/projects/usable
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -238,6 +335,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(projects);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // POST: api/relations/account/{accountId:min(1)}/projects
         [HttpPost]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -255,6 +358,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // PUT: api/relations/account/{accountId:min(1)}/projects
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -272,6 +381,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <returns></returns>
         // GET: api/relations/faccount/{faccountId:min(1)}/accounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -282,6 +396,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // POST: api/relations/faccount/{faccountId:min(1)}/accounts
         [HttpPost]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -299,6 +419,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // PUT: api/relations/faccount/{faccountId:min(1)}/accounts
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -316,6 +442,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <returns></returns>
         // GET: api/relations/ccenter/{ccenterId:min(1)}/accounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -326,6 +457,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // POST: api/relations/ccenter/{ccenterId:min(1)}/accounts
         [HttpPost]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -343,6 +480,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // PUT: api/relations/ccenter/{ccenterId:min(1)}/accounts
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -360,6 +503,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/relations/project/{projectId:min(1)}/accounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
@@ -370,6 +518,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // POST: api/relations/project/{projectId:min(1)}/accounts
         [HttpPost]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -387,6 +541,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
         // PUT: api/relations/project/{projectId:min(1)}/accounts
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.SaveRelationships)]
@@ -404,6 +564,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/free/accounts/{accountId:min(1)}/faccounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
@@ -415,6 +580,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(detailAccounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/free/accounts/{accountId:min(1)}/ccenters
         [HttpGet]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
@@ -426,6 +596,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(costCenters);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
         // GET: api/relations/free/accounts/{accountId:min(1)}/projects
         [HttpGet]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
@@ -437,6 +612,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(projects);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="faccountId"></param>
+        /// <returns></returns>
         // GET: api/relations/free/faccounts/{faccountId:min(1)}/accounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
@@ -448,6 +628,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="ccenterId"></param>
+        /// <returns></returns>
         // GET: api/relations/free/ccenters/{ccenterId:min(1)}/accounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
@@ -459,6 +644,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/relations/free/projects/{projectId:min(1)}/accounts
         [HttpGet]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]

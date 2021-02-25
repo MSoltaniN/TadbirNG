@@ -16,9 +16,18 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public partial class LookupController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="config"></param>
+        /// <param name="strings"></param>
         public LookupController(ILookupRepository repository,
             IConfigRepository config, IStringLocalizer<AppStrings> strings)
             : base(strings)
@@ -30,6 +39,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Finance Subsystem API
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/accounts
         [HttpGet]
         [Route(LookupApi.EnvironmentAccountsUrl)]
@@ -40,6 +53,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accountLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/faccounts
         [HttpGet]
         [Route(LookupApi.EnvironmentDetailAccountsUrl)]
@@ -50,6 +67,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/costcenters
         [HttpGet]
         [Route(LookupApi.EnvironmentCostCentersUrl)]
@@ -60,6 +81,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/projects
         [HttpGet]
         [Route(LookupApi.EnvironmentProjectsUrl)]
@@ -70,6 +95,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/vouchers
         [HttpGet]
         [Route(LookupApi.EnvironmentVouchersUrl)]
@@ -93,6 +122,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/vouchers/lines
         [HttpGet]
         [Route(LookupApi.EnvironmentVoucherLinesUrl)]
@@ -110,6 +143,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/currencies
         [HttpGet]
         [Route(LookupApi.CurrenciesUrl)]
@@ -121,6 +158,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(localized);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="withRate"></param>
+        /// <returns></returns>
         // GET: api/lookup/currencies/info[?withRate={true|false}]
         [HttpGet]
         [Route(LookupApi.CurrenciesInfoUrl)]
@@ -132,6 +174,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(localized);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // GET: api/lookup/companies/user/{userId:min(1)}
         [HttpGet]
         [Route(LookupApi.UserAccessibleCompaniesUrl)]
@@ -141,6 +188,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accessibleCompanies);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // GET: api/lookup/fps/company/{companyId:min(1)}/user/{userId:min(1)}
         [HttpGet]
         [Route(LookupApi.UserAccessibleCompanyFiscalPeriodsUrl)]
@@ -151,6 +204,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(fiscalPeriodLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         // GET: api/lookup/branches/company/{companyId:min(1)}/user/{userId:min(1)}
         [HttpGet]
         [Route(LookupApi.UserAccessibleCompanyBranchesUrl)]
@@ -161,6 +220,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(branchLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/accgroup/categories
         [HttpGet]
         [Route(LookupApi.AccountGroupCategoriesUrl)]
@@ -172,6 +235,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(sortedLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/accgroups
         [HttpGet]
         [Route(LookupApi.AccountGroupsUrl)]
@@ -182,6 +249,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accGroupLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/types/voucher
         [HttpGet]
         [Route(LookupApi.VoucherSysTypesUrl)]
@@ -193,6 +264,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(localized);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/types/voucher-line
         [HttpGet]
         [Route(LookupApi.VoucherLineTypesUrl)]
@@ -204,6 +279,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(localized);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/accturnovermodes
         [HttpGet]
         [Route(LookupApi.AccountTurnoversUrl)]
@@ -215,6 +294,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(localizedTurnoversLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/inv-acc
         [HttpGet]
         [Route(LookupApi.InventoryAccountsUrl)]
@@ -229,6 +312,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Security Subsystem API
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/roles
         [HttpGet]
         [Route(LookupApi.RolesUrl)]
@@ -240,6 +327,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(sortedLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/users
         [HttpGet]
         [Route(LookupApi.UsersUrl)]
@@ -255,6 +346,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Metadata Subsystem API
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/views
         [HttpGet]
         [Route(LookupApi.EntityViewsUrl)]
@@ -268,6 +363,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(viewsLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/views/base
         [HttpGet]
         [Route(LookupApi.BaseEntityViewsUrl)]
@@ -278,6 +377,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(baseLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/lookup/views/{viewId:min(1)}
         [HttpGet]
         [Route(LookupApi.EntityViewUrl)]
@@ -288,6 +392,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(baseLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/views/tree
         [HttpGet]
         [Route(LookupApi.TreeViewsUrl)]
@@ -298,6 +406,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(treesLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
         // GET: api/lookup/accbook/views/{viewId:min(1)}/levels
         [HttpGet]
         [Route(LookupApi.AccountBookLevelsUrl)]
@@ -312,6 +425,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(levels);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/entities
         [HttpGet]
         [Route(LookupApi.EntityTypesUrl)]
@@ -323,6 +440,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(sortedLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/sys/entities
         [HttpGet]
         [Route(LookupApi.SystemEntityTypesUrl)]
@@ -334,6 +455,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(sortedLookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/lookup/provinces
         [HttpGet]
         [Route(LookupApi.ProvincesUrl)]
@@ -343,6 +468,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="provinceCode"></param>
+        /// <returns></returns>
         // GET: api/lookup/cities/{provinceCode}
         [HttpGet]
         [Route(LookupApi.CitiesUrl)]

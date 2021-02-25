@@ -15,9 +15,17 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class OperationLogsController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="strings"></param>
         public OperationLogsController(IOperationLogRepository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
@@ -26,6 +34,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Company Log Operations
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/system/oplog
         [HttpGet]
         [Route(OperationLogApi.OperationLogsUrl)]
@@ -37,6 +49,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(operationLogs);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/system/oplog/archive
         [HttpGet]
         [Route(OperationLogApi.OperationLogsArchiveUrl)]
@@ -48,6 +64,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(logArchive);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/system/oplog/all
         [HttpGet]
         [Route(OperationLogApi.AllOperationLogsUrl)]
@@ -60,6 +80,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(mergedLogs);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // POST: api/system/oplog/archive
         [HttpPost]
         [Route(OperationLogApi.OperationLogsArchiveUrl)]
@@ -76,11 +102,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="actionDetail"></param>
+        /// <returns></returns>
         // PUT: api/system/oplog
         [HttpPut]
         [Route(OperationLogApi.OperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.OperationLog, (int)OperationLogPermissions.Archive)]
-        public async Task<IActionResult> PutSelectedLogsAsArchived([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutSelectedLogsAsArchived(
+            [FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {
@@ -91,6 +123,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // POST: api/system/oplog
         [HttpPost]
         [Route(OperationLogApi.OperationLogsUrl)]
@@ -105,11 +143,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="actionDetail"></param>
+        /// <returns></returns>
         // PUT: api/system/oplog/archive
         [HttpPut]
         [Route(OperationLogApi.OperationLogsArchiveUrl)]
         [AuthorizeRequest]
-        public async Task<IActionResult> PutSelectedArchivedLogsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutSelectedArchivedLogsAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {
@@ -124,6 +168,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region System Log Operations
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/system/sys-oplog
         [HttpGet]
         [Route(OperationLogApi.SysOperationLogsUrl)]
@@ -135,6 +183,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(operationLogs);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/system/sys-oplog/archive
         [HttpGet]
         [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
@@ -146,6 +198,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(logArchive);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/system/sys-oplog/all
         [HttpGet]
         [Route(OperationLogApi.AllSysOperationLogsUrl)]
@@ -158,6 +214,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonListResult(mergedLogs);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // POST: api/system/sys-oplog/archive
         [HttpPost]
         [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
@@ -174,11 +236,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="actionDetail"></param>
+        /// <returns></returns>
         // PUT: api/system/sys-oplog
         [HttpPut]
         [Route(OperationLogApi.SysOperationLogsUrl)]
         [AuthorizeRequest(SecureEntity.SysOperationLog, (int)SysOperationLogPermissions.Archive)]
-        public async Task<IActionResult> PutSelectedSysLogsAsArchived([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutSelectedSysLogsAsArchived(
+            [FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {
@@ -189,6 +257,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
         // POST: api/system/sys-oplog
         [HttpPost]
         [Route(OperationLogApi.SysOperationLogsUrl)]
@@ -203,11 +277,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="actionDetail"></param>
+        /// <returns></returns>
         // PUT: api/system/sys-oplog/archive
         [HttpPut]
         [Route(OperationLogApi.SysOperationLogsArchiveUrl)]
         [AuthorizeRequest]
-        public async Task<IActionResult> PutSelectedArchivedSysLogsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutSelectedArchivedSysLogsAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {

@@ -16,9 +16,19 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class ProfitLossController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="configRepository"></param>
+        /// <param name="systemRepository"></param>
+        /// <param name="strings"></param>
         public ProfitLossController(
             IProfitLossRepository repository, IConfigRepository configRepository,
             ISystemConfigRepository systemRepository, IStringLocalizer<AppStrings> strings = null)
@@ -29,6 +39,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _configRepository = configRepository;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -39,6 +59,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await ProfitLossResultAsync(from, to, tax, closing, ccenterId, projectId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/by-ccenters
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -50,6 +79,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, tax, closing, null, projectId, _repository.GetProfitLossByCostCentersAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/by-projects
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -61,6 +99,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, tax, closing, ccenterId, null, _repository.GetProfitLossByProjectsAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/by-branches
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -72,6 +120,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, tax, closing, ccenterId, projectId, _repository.GetProfitLossByBranchesAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/by-fperiods
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -83,6 +141,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from, to, tax, closing, ccenterId, projectId, _repository.GetProfitLossByFiscalPeriodsAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/simple
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -93,6 +160,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await ProfitLossResultAsync(date, date, tax, closing, ccenterId, projectId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/simple/by-ccenters
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -104,6 +179,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 date, date, tax, closing, null, projectId, _repository.GetProfitLossByCostCentersAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/simple/by-projects
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -115,6 +198,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 date, date, tax, closing, ccenterId, null, _repository.GetProfitLossByProjectsAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/simple/by-branches
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -126,6 +218,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 date, date, tax, closing, ccenterId, projectId, _repository.GetProfitLossByBranchesAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/profit-loss/simple/by-fperiods
         [HttpGet]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -137,6 +238,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 date, date, tax, closing, ccenterId, projectId, _repository.GetProfitLossByFiscalPeriodsAsync);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <param name="balanceItems"></param>
+        /// <returns></returns>
         // PUT: api/profit-loss
         [HttpPut]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]
@@ -148,6 +260,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await ProfitLossResultAsync(from, to, tax, closing, ccenterId, projectId, balanceItems);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="tax"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <param name="balanceItems"></param>
+        /// <returns></returns>
         // PUT: api/profit-loss/simple
         [HttpPut]
         [AuthorizeRequest(SecureEntity.ProfitLoss, (int)ProfitLossPermissions.View)]

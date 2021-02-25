@@ -13,15 +13,31 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class BalanceSheetController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="strings"></param>
         public BalanceSheetController(IBalanceSheetRepository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="closing"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/bal-sheet
         [HttpGet]
         [AuthorizeRequest(SecureEntity.BalanceSheet, (int)BalanceSheetPermissions.View)]

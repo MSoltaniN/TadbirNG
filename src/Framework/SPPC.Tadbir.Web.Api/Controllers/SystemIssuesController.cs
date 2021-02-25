@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -12,10 +11,18 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
 
     public class SystemIssuesController : ValidatingController<SystemIssueViewModel>
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="strings"></param>
         public SystemIssuesController(
             ISystemIssueRepository repository, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
@@ -23,11 +30,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         protected override string EntityNameKey
         {
             get { return AppStrings.SystemIssue; }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/sysissues
         [HttpGet]
         [Route(SystemIssueApi.SystemIssuesUrl)]

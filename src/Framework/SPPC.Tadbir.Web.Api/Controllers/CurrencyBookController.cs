@@ -15,9 +15,18 @@ using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [Produces("application/json")]
     public class CurrencyBookController : ApiControllerBase
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="config"></param>
+        /// <param name="strings"></param>
         public CurrencyBookController(ICurrencyBookRepository repository,
             IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
@@ -26,6 +35,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _configRepository = config;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="byBranch"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="accountId"></param>
+        /// <param name="faccountId"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/currbook/by-row/by-branch/{byBranch}
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookByRowUrl)]
@@ -37,6 +57,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 byBranch, from, to, accountId, faccountId, ccenterId, projectId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="byBranch"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="accountId"></param>
+        /// <param name="faccountId"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/currbook/voucher-sum/by-branch/{byBranch}
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookVoucherSumUrl)]
@@ -48,6 +79,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 byBranch, from, to, accountId, faccountId, ccenterId, projectId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="byBranch"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="accountId"></param>
+        /// <param name="faccountId"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/currbook/daily-sum/by-branch/{byBranch}
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookDailySumUrl)]
@@ -59,6 +101,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 byBranch, from, to, accountId, faccountId, ccenterId, projectId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="byBranch"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="accountId"></param>
+        /// <param name="faccountId"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/currbook/monthly-sum/by-branch/{byBranch}
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookMonthlySumUrl)]
@@ -70,6 +123,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 byBranch, from, to, accountId, faccountId, ccenterId, projectId);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="currFree"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="accountId"></param>
+        /// <param name="faccountId"></param>
+        /// <param name="ccenterId"></param>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         // GET: api/currbook/all-currencies/{currFree}
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookAllCurrenciesUrl)]

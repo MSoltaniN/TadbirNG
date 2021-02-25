@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Text;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -10,8 +9,15 @@ using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Web.Api
 {
+    /// <summary>
+    ///
+    /// </summary>
     public static class Program
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var builder = new FilterExpressionBuilder();
@@ -35,6 +41,11 @@ namespace SPPC.Tadbir.Web.Api
            BuildWebHost(args).Run();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()

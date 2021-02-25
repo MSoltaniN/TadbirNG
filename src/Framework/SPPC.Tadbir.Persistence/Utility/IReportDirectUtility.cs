@@ -8,14 +8,41 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
+    /// <summary>
+    ///
+    /// </summary>
     public interface IReportDirectUtility
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
         IEnumerable<int> GetChildTree(int branchId);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
         int GetLevelCodeLength(int viewId, int level);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="row"></param>
+        /// <param name="field"></param>
+        /// <returns></returns>
         T ValueOrDefault<T>(DataRow row, string field);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="field"></param>
+        /// <returns></returns>
         string ValueOrDefault(DataRow row, string field);
 
         /// <summary>
@@ -49,12 +76,34 @@ namespace SPPC.Tadbir.Persistence.Utility
         Task<IEnumerable<TestBalanceItemViewModel>> GetZeroBalanceItemsAsync(
             int viewId, IEnumerable<TestBalanceItemViewModel> items, int level);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
         ReportQuery GetItemLookupQuery(int viewId, int length);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         Task<TreeEntity> GetItemAsync(int viewId, int itemId);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fpId"></param>
+        /// <returns></returns>
         Task<DateTime> GetFiscalPeriodStartAsync(int fpId);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fpId"></param>
+        /// <returns></returns>
         Task<int> GetFirstVoucherNoAsync(int fpId);
     }
 }
