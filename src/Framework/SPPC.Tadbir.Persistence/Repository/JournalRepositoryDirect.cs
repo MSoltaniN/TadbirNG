@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -26,10 +26,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        public JournalRepositoryDirect(IRepositoryContext context, ISystemRepository system)
+        /// <param name="utility"></param>
+        public JournalRepositoryDirect(IRepositoryContext context, ISystemRepository system,
+            IReportDirectUtility utility)
             : base(context, system.Logger)
         {
             _system = system;
+            _utility = utility;
         }
 
         /// <summary>
@@ -209,28 +212,6 @@ namespace SPPC.Tadbir.Persistence
             get { return _system.Config; }
         }
 
-        private static T ValueOrDefault<T>(DataRow row, string field)
-        {
-            var value = default(T);
-            if (row.Table.Columns.Contains(field))
-            {
-                value = (T)Convert.ChangeType(row[field], typeof(T));
-            }
-
-            return value;
-        }
-
-        private static string ValueOrDefault(DataRow row, string field)
-        {
-            string value = null;
-            if (row.Table.Columns.Contains(field))
-            {
-                value = row[field].ToString();
-            }
-
-            return value;
-        }
-
         private static ReportQuery GetJournalByRowQuery(JournalParameters parameters,
             bool byNo = false, bool byBranch = false, bool hasDetail = false)
         {
@@ -377,19 +358,6 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions)
         {
             var items = new List<JournalItemViewModel>();
-
-            // NOTE: This is the obvious logic for merging by number. However, it performs
-            // very poorly with big-to-huge collections...
-            ////foreach (var byNum in first
-            ////    .OrderBy(item => item.VoucherNo)
-            ////    .GroupBy(item => item.VoucherNo))
-            ////{
-            ////    items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-            ////    items.AddRange(second
-            ////        .Where(item => item.VoucherNo == byNum.Key)
-            ////        .OrderBy(item => item.AccountFullCode));
-            ////}
-
             var grossItems = first
                 .Concat(second)
                 .OrderBy(item => item.VoucherNo)
@@ -559,7 +527,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters, bool byNo = false, bool byBranch = false)
         {
             var journal = new JournalViewModel();
-            int length = GetLevelCodeLength(0);
+            int length = _utility.GetLevelCodeLength(0);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             var debitItems = GetByLevelItems(parameters, length, byNo, byBranch, true);
@@ -577,8 +545,8 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters, bool byNo = false, bool byBranch = false)
         {
             var journal = new JournalViewModel();
-            int ledgerLength = GetLevelCodeLength(0);
-            int subsidLength = GetLevelCodeLength(1);
+            int ledgerLength = _utility.GetLevelCodeLength(0);
+            int subsidLength = _utility.GetLevelCodeLength(1);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             var subsidDebit = GetByLevelItems(parameters, subsidLength, byNo, byBranch, true, " AND acc.Level >= 1 ");
@@ -599,7 +567,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var journal = new JournalViewModel();
             var items = new List<JournalItemViewModel>();
-            int length = GetLevelCodeLength(0);
+            int length = _utility.GetLevelCodeLength(0);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             items.AddRange(GetLedgerSummaryItems(parameters, length, byNo, byBranch, true));
@@ -613,7 +581,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters, bool byBranch = false)
         {
             var journal = new JournalViewModel();
-            int length = GetLevelCodeLength(0);
+            int length = _utility.GetLevelCodeLength(0);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             var debitItems = GetLedgerSummaryByDateItems(parameters, length, byBranch, false, true);
@@ -632,7 +600,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var journal = new JournalViewModel();
             var items = new List<JournalItemViewModel>();
-            int length = GetLevelCodeLength(0);
+            int length = _utility.GetLevelCodeLength(0);
             int calendarType = await Config.GetCurrentCalendarAsync();
             Calendar calendar = (calendarType == (int)CalendarType.Jalali)
                 ? new PersianCalendar() as Calendar
@@ -745,40 +713,27 @@ namespace SPPC.Tadbir.Persistence
         {
             var item = new JournalItemViewModel()
             {
-                RowNo = ValueOrDefault<int>(row, "RowNum"),
-                VoucherNo = ValueOrDefault<int>(row, "No"),
-                AccountFullCode = ValueOrDefault(row, "FullCode"),
-                AccountName = ValueOrDefault(row, "Name"),
-                DetailAccountFullCode = ValueOrDefault(row, "DetailFullCode"),
-                DetailAccountName = ValueOrDefault(row, "DetailName"),
-                CostCenterFullCode = ValueOrDefault(row, "CostFullCode"),
-                CostCenterName = ValueOrDefault(row, "CostName"),
-                ProjectFullCode = ValueOrDefault(row, "ProjectFullCode"),
-                ProjectName = ValueOrDefault(row, "ProjectName"),
-                Description = ValueOrDefault(row, "Description"),
-                Debit = ValueOrDefault<Decimal>(row, "Debit"),
-                Credit = ValueOrDefault<Decimal>(row, "Credit"),
-                Mark = ValueOrDefault(row, "Mark"),
-                BranchName = ValueOrDefault(row, "BranchName")
+                RowNo = _utility.ValueOrDefault<int>(row, "RowNum"),
+                VoucherNo = _utility.ValueOrDefault<int>(row, "No"),
+                AccountFullCode = _utility.ValueOrDefault(row, "FullCode"),
+                AccountName = _utility.ValueOrDefault(row, "Name"),
+                DetailAccountFullCode = _utility.ValueOrDefault(row, "DetailFullCode"),
+                DetailAccountName = _utility.ValueOrDefault(row, "DetailName"),
+                CostCenterFullCode = _utility.ValueOrDefault(row, "CostFullCode"),
+                CostCenterName = _utility.ValueOrDefault(row, "CostName"),
+                ProjectFullCode = _utility.ValueOrDefault(row, "ProjectFullCode"),
+                ProjectName = _utility.ValueOrDefault(row, "ProjectName"),
+                Description = _utility.ValueOrDefault(row, "Description"),
+                Debit = _utility.ValueOrDefault<Decimal>(row, "Debit"),
+                Credit = _utility.ValueOrDefault<Decimal>(row, "Credit"),
+                Mark = _utility.ValueOrDefault(row, "Mark"),
+                BranchName = _utility.ValueOrDefault(row, "BranchName")
             };
 
             item.VoucherDate = row.Table.Columns.Contains("Date")
                 ? DateTime.Parse(row["Date"].ToString())
                 : DateTime.MinValue;
             return item;
-        }
-
-        private int GetLevelCodeLength(int level)
-        {
-            var fullConfig = Config
-                .GetViewTreeConfigByViewAsync(ViewId.Account)
-                .Result;
-            var treeConfig = fullConfig.Current;
-            int codeLength = treeConfig.Levels
-                .Where(cfg => cfg.No <= level + 1)
-                .Select(cfg => (int)cfg.CodeLength)
-                .Sum();
-            return codeLength;
         }
 
         private async Task SetNameAndDescriptionAsync(List<JournalItemViewModel> items)
@@ -815,7 +770,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var branchIds = GetChildTree(UserContext.BranchId);
+                var branchIds = _utility.GetChildTree(UserContext.BranchId);
                 string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
                 environmentFilter = String.Format(
                     "{0} AND (BranchId = {1} OR BranchId IN({2}))", fpFilter, UserContext.BranchId, branchList);
@@ -824,26 +779,7 @@ namespace SPPC.Tadbir.Persistence
             query.ApplyDefaultFilters(environmentFilter, quickFilter);
         }
 
-        private IEnumerable<int> GetChildTree(int branchId)
-        {
-            var tree = new List<int>();
-            var repository = UnitOfWork.GetRepository<Branch>();
-            var branch = repository.GetByID(branchId, br => br.Children);
-            AddChildren(branch, tree);
-            return tree;
-        }
-
-        private void AddChildren(Branch branch, IList<int> children)
-        {
-            var repository = UnitOfWork.GetRepository<Branch>();
-            foreach (var child in branch.Children)
-            {
-                children.Add(child.Id);
-                var item = repository.GetByID(child.Id, br => br.Children);
-                AddChildren(item, children);
-            }
-        }
-
         private readonly ISystemRepository _system;
+        private readonly IReportDirectUtility _utility;
     }
 }

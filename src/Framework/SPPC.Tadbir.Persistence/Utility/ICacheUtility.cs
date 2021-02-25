@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         /// کلید متنی مورد نیاز برای دسترسی به اطلاعات در حافظه کش
         /// </summary>
-        string CacheKey { get; }
+        string CacheKey { get; set; }
 
         /// <summary>
         /// مشخص می کند که اطلاعاتی در حافظه کش وجود دارد یا نه

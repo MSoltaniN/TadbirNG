@@ -45,6 +45,16 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public int GetLevelCodeLength(int level)
+        {
+            return GetLevelCodeLength(ViewId.Account, level);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="viewId"></param>
         /// <param name="level"></param>
         /// <returns></returns>

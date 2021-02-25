@@ -48,18 +48,12 @@ namespace SPPC.Tools.MetaDesigner.Engine
 
         private void RaiseItemAddedEvent(object item, IEnumerable collection)
         {
-            if (ItemAdded != null)
-            {
-                ItemAdded(this, new CollectionChangedEventArgs(collection, item));
-            }
+            ItemAdded?.Invoke(this, new CollectionChangedEventArgs(collection, item));
         }
 
         private void RaiseItemRemovedEvent(object item, IEnumerable collection)
         {
-            if (ItemRemoved != null)
-            {
-                ItemRemoved(this, new CollectionChangedEventArgs(collection, item));
-            }
+            ItemRemoved?.Invoke(this, new CollectionChangedEventArgs(collection, item));
         }
 
         private Tree _repositoryTree;

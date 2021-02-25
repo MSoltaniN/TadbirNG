@@ -142,11 +142,8 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IReportDirectUtility, ReportDirectUtility>();
             _services.AddTransient<IAccountCollectionUtility, AccountCollectionUtility>();
             _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
-            _services.AddTransient<ITestBalanceUtilityFactory, TestBalanceUtilityFactory>();
-            _services.AddTransient<ITestBalanceHelper, TestBalanceHelper>();
             _services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
             _services.AddTransient<ICacheManager, RedisCacheManager>();
-            _services.AddTransient<ICacheUtility<VoucherLineDetailViewModel>, LineCacheUtility>();
         }
 
         private readonly IServiceCollection _services;

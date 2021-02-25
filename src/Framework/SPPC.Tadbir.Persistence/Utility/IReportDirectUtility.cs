@@ -23,6 +23,13 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        int GetLevelCodeLength(int level);
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="viewId"></param>
         /// <param name="level"></param>
         /// <returns></returns>

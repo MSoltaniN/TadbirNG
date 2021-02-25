@@ -9,7 +9,8 @@ namespace SPPC.Tools.MetaDesigner.Engine
 {
     public class AddItemCommand : RepositoryCommand, IRepositoryCommand
     {
-        public AddItemCommand() : base()
+        public AddItemCommand()
+            : base()
         {
         }
 
@@ -39,10 +40,12 @@ namespace SPPC.Tools.MetaDesigner.Engine
 
         protected override IDictionary<string, string> GetRequiredParameters()
         {
-            var requiredParams = new Dictionary<string, string>();
-            requiredParams.Add("collection", String.Empty);
-            requiredParams.Add("wrapper", typeof(IRepositoryModel).AssemblyQualifiedName);
-            requiredParams.Add("editor", typeof(Form).AssemblyQualifiedName);
+            var requiredParams = new Dictionary<string, string>
+            {
+                { "collection", String.Empty },
+                { "wrapper", typeof(IRepositoryModel).AssemblyQualifiedName },
+                { "editor", typeof(Form).AssemblyQualifiedName }
+            };
             return requiredParams;
         }
     }
