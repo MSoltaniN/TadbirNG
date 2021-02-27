@@ -460,6 +460,22 @@ namespace SPPC.Tadbir.Persistence
             return leafAccounts;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از رفرنس های استفاده شده در سندهای مالی را برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه رفرنس های استفاده شده در سندهای مالی</returns>
+        public async Task<IEnumerable<string>> GetVoucherReferencesAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            return await repository
+                .GetEntityQuery()
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && !String.IsNullOrEmpty(v.Reference))
+                .Select(v => v.Reference)
+                .Distinct()
+                .ToListAsync();
+        }
+
         #endregion
 
         #region Security Subsystem lookup

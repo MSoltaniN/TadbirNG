@@ -148,6 +148,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از حساب های موجودی کالا</returns>
         Task<IList<AccountViewModel>> GetInventoryAccountsAsync();
 
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از رفرنس های استفاده شده در سندهای مالی را برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه رفرنس های استفاده شده در سندهای مالی</returns>
+        Task<IEnumerable<string>> GetVoucherReferencesAsync();
+
         #endregion
 
         #region Security Subsystem lookup

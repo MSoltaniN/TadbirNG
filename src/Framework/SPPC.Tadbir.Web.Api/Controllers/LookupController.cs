@@ -308,6 +308,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(inventoryAccounts);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/lookup/vouchers/references
+        [HttpGet]
+        [Route(LookupApi.VoucherReferencesUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetVoucherReferencesAsync()
+        {
+            var references = await _repository.GetVoucherReferencesAsync();
+            return Json(references);
+        }
+
         #endregion
 
         #region Security Subsystem API

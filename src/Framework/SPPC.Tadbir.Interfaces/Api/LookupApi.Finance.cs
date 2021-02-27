@@ -189,6 +189,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string InventoryAccountsUrl = "lookup/inv-acc";
 
+        /// <summary>
+        /// API client URL for all reference values used in vouchers
+        /// </summary>
+        public const string VoucherReferences = "lookup/vouchers/references";
+
+        /// <summary>
+        /// API server route URL for all reference values used in vouchers
+        /// </summary>
+        public const string VoucherReferencesUrl = "lookup/vouchers/references";
+
         #endregion
     }
 }

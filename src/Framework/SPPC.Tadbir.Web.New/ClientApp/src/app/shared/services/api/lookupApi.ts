@@ -101,5 +101,9 @@ export class LookupApi {
     // lookup/cities/{provinceCode}
     public static Cities = environment.BaseUrl + "/lookup/cities/{0}";
 
+    // lookup/inv-acc
     public static InventoryAccounts = environment.BaseUrl + "/lookup/inv-acc"
+
+    // lookup/vouchers/references
+    public static VoucherReferences = environment.BaseUrl + "/lookup/vouchers/references";
 }
