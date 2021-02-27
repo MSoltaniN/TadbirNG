@@ -58,7 +58,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   public fiscalPeriodId: string = '';
 
   currentRoute: string;
-  exceptionsRoute: Array<string> = ["/finance/vouchers/opening-voucher", "/finance/vouchers/closing-voucher", "/finance/vouchers/close-temp-accounts"]
+  exceptionsRoute: Array<string> = ["/finance/vouchers/opening-voucher", "/finance/vouchers/closing-voucher", "/finance/vouchers/close-temp-accounts","/finance/vouchers/by-no"]
 
 
   public dialogRef: DialogRef;
@@ -255,7 +255,11 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.router.navigate([url]);
       }
       else {
+        debugger
         var currentRoute = this.bStorageService.getCurrentRoute();
+        if (currentRoute && currentRoute.lastIndexOf('?') > 0)
+          currentRoute = currentRoute.substring(0, currentRoute.lastIndexOf('?'));
+
         var findIndex = this.exceptionsRoute.findIndex(url => url === currentRoute);
         if (currentRoute && findIndex == -1) {
           this.bStorageService.removeCurrentRoute();
