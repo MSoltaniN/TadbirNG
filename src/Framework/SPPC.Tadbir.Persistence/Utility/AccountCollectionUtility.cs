@@ -62,7 +62,8 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="collectionId">شناسه دیتابیسی مجموعه حساب مورد نظر</param>
         /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
         /// <returns>حساب های ارث بری شده برای مجموعه حساب</returns>
-        public async Task<IEnumerable<Account>> GetInheritedAccountsAsync(AccountCollectionId collectionId, int branchId)
+        public async Task<IEnumerable<Account>> GetInheritedAccountsAsync(
+            AccountCollectionId collectionId, int branchId)
         {
             var accounts = new List<Account>();
             var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();

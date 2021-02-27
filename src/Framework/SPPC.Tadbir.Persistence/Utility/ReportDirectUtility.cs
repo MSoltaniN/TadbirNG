@@ -8,6 +8,8 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
@@ -39,6 +41,27 @@ namespace SPPC.Tadbir.Persistence.Utility
             var repository = UnitOfWork.GetRepository<Branch>();
             var branch = repository.GetByID(branchId, br => br.Children);
             AddChildren(branch, tree);
+            return tree;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
+        public IEnumerable<int> GetParentTree(int branchId)
+        {
+            var tree = new List<int>();
+            var repository = UnitOfWork.GetRepository<Branch>();
+            var branch = repository.GetByIDWithTracking(branchId);
+            var currentBranch = branch;
+            while (currentBranch != null)
+            {
+                tree.Add(currentBranch.Id);
+                repository.LoadReference(currentBranch, br => br.Parent);
+                currentBranch = currentBranch.Parent;
+            }
+
             return tree;
         }
 
@@ -338,6 +361,65 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="collectionId"></param>
+        /// <param name="withRelations"></param>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
+        public IEnumerable<AccountItemBriefViewModel> GetUsableAccountsAsync(
+            AccountCollectionId collectionId, bool withRelations = false, int? branchId = null)
+        {
+            _context.DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            int inBranchId = branchId ?? UserContext.BranchId;
+            var accounts = GetInheritedAccountsAsync(collectionId, inBranchId);
+            var tree = GetChildTree(inBranchId)
+                .ToList();
+            tree.Insert(0, UserContext.BranchId);
+            string branchList = String.Join(",", tree);
+            string itemsCommand = String.Format(
+                AccountItemQuery.EnvironmentAccounts, UserContext.FiscalPeriodId,
+                branchList, UserContext.BranchId);
+            string filter = String.Join(" OR ", accounts
+                .Select(acc => String.Format("acc.FullCode LIKE '{0}%'", acc.FullCode)));
+            itemsCommand = String.Format("{0} AND {1} AND ({2})",
+                itemsCommand, AccountItemQuery.LeafAccountFilter, filter);
+            var result = _context.DbConsole.ExecuteQuery(itemsCommand);
+            return result.Rows
+                .Cast<DataRow>()
+                .Select(row => GetAccountInfo(row));
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="collectionId"></param>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
+        public IEnumerable<AccountItemBriefViewModel> GetInheritedAccountsAsync(
+            AccountCollectionId collectionId, int branchId)
+        {
+            _context.DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            var accounts = new List<AccountItemBriefViewModel>();
+            var parentTree = GetParentTree(branchId);
+            foreach (int parentId in parentTree)
+            {
+                var query = new ReportQuery(String.Format(
+                    AccountItemQuery.CollectionAccounts, _context.UserContext.FiscalPeriodId,
+                    parentId, (int)collectionId));
+                var result = _context.DbConsole.ExecuteQuery(query.Query);
+                if (result.Rows.Count > 0)
+                {
+                    accounts.AddRange(result.Rows
+                        .Cast<DataRow>()
+                        .Select(row => GetAccountInfo(row)));
+                }
+            }
+
+            return accounts;
+        }
+
         private IAppUnitOfWork UnitOfWork
         {
             get { return _context.UnitOfWork; }
@@ -346,6 +428,21 @@ namespace SPPC.Tadbir.Persistence.Utility
         private IConfigRepository Config
         {
             get { return _system.Config; }
+        }
+
+        private UserContextViewModel UserContext
+        {
+            get { return _context.UserContext; }
+        }
+
+        private AccountItemBriefViewModel GetAccountInfo(DataRow row)
+        {
+            return new AccountItemBriefViewModel()
+            {
+                Id = ValueOrDefault<int>(row, "Id"),
+                Name = ValueOrDefault(row, "Name"),
+                FullCode = ValueOrDefault(row, "FullCode")
+            };
         }
 
         private void AddChildren(Branch branch, IList<int> children)
