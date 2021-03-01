@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
@@ -19,6 +21,13 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="branchId"></param>
         /// <returns></returns>
         IEnumerable<int> GetChildTree(int branchId);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
+        IEnumerable<int> GetParentTree(int branchId);
 
         /// <summary>
         ///
@@ -51,6 +60,14 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="field"></param>
         /// <returns></returns>
         string ValueOrDefault(DataRow row, string field);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="gridOptions"></param>
+        /// <param name="fiscalPeriodId"></param>
+        /// <returns></returns>
+        string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId);
 
         /// <summary>
         /// به روش آسنکرون، فهرست سطوح قابل استفاده برای گزارشگیری را
@@ -104,7 +121,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="fpId"></param>
         /// <returns></returns>
-        Task<DateTime> GetFiscalPeriodStartAsync(int fpId);
+        Task<DateTime> GetFiscalPeriodEndAsync(int fpId);
 
         /// <summary>
         ///
@@ -112,5 +129,32 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="fpId"></param>
         /// <returns></returns>
         Task<int> GetFirstVoucherNoAsync(int fpId);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fiscalPeriodId"></param>
+        /// <param name="originId"></param>
+        /// <returns></returns>
+        Task<bool> HasSpecialVoucherAsync(int fiscalPeriodId, VoucherOriginId originId);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="collectionId"></param>
+        /// <param name="withRelations"></param>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
+        IEnumerable<AccountItemBriefViewModel> GetUsableAccountsAsync(
+            AccountCollectionId collectionId, bool withRelations = false, int? branchId = null);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="collectionId"></param>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
+        IEnumerable<AccountItemBriefViewModel> GetInheritedAccountsAsync(
+            AccountCollectionId collectionId, int branchId);
     }
 }
