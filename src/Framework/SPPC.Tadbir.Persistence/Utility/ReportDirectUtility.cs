@@ -69,6 +69,53 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
+        public string GetItemName(int viewId)
+        {
+            string itemName = String.Empty;
+            switch (viewId)
+            {
+                case ViewId.Account:
+                    itemName = typeof(Account).Name;
+                    break;
+                case ViewId.DetailAccount:
+                    itemName = typeof(DetailAccount).Name;
+                    break;
+                case ViewId.CostCenter:
+                    itemName = typeof(CostCenter).Name;
+                    break;
+                case ViewId.Project:
+                    itemName = typeof(Project).Name;
+                    break;
+            }
+
+            return itemName;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
+        public string GetFieldName(int viewId)
+        {
+            string fieldName = String.Empty;
+            if (viewId == ViewId.DetailAccount)
+            {
+                fieldName = "Detail";
+            }
+            else
+            {
+                fieldName = GetItemName(viewId);
+            }
+
+            return fieldName;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
         public int GetLevelCodeLength(int level)
