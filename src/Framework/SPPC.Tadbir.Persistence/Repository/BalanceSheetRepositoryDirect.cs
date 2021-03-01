@@ -330,7 +330,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var endDate = _utility.GetFiscalPeriodEndAsync(previousFpId);
                 result = GetBalanceQueryResult(
-                    AccountItemQuery.BalanceByDate, length, endDate, filter, gridOptions, previousFpId);
+                    AccountItemQuery.PreviousBalanceByCode, length, endDate, filter, gridOptions, previousFpId);
             }
             else
             {

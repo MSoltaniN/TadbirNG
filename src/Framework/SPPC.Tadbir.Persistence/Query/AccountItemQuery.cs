@@ -7,11 +7,12 @@ namespace SPPC.Tadbir.Persistence
     {
         internal const string ItemLookup = @"
 SELECT DISTINCT(SUBSTRING(acc.FullCode, 1, {0})) AS FullCode,
+    (SELECT {1}ID FROM [Finance].[{1}] WHERE FullCode = SUBSTRING(acc.FullCode, 1, {0})) AS Id,
     (SELECT Name FROM [Finance].[{1}] WHERE FullCode = SUBSTRING(acc.FullCode, 1, {0})) AS Name
 FROM [Finance].[{1}] acc
 WHERE acc.FiscalPeriodID = {2}";
 
-        internal const string BalanceByDate = @"
+        internal const string PreviousBalanceByCode = @"
 SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
@@ -29,12 +30,12 @@ WHERE v.OriginId = {3} AND ({4}) AND {{0}}
 GROUP BY SUBSTRING(acc.FullCode, 1, {0})
 ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
 
-        internal const string BalanceByNo = @"
+        internal const string BalanceByDate = @"
 SELECT SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{1}ID = acc.{0}ID
-WHERE v.No < '{2}' AND acc.FullCode LIKE '{3}%' AND {{0}}";
+WHERE v.Date < '{2}' AND acc.FullCode LIKE '{3}%' AND {{0}}";
 
         internal const string OpeningVoucherBalanceByNo = @"
 SELECT SUM(vl.Debit - vl.Credit) AS Balance
