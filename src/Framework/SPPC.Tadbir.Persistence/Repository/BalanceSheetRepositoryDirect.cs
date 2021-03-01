@@ -401,13 +401,8 @@ namespace SPPC.Tadbir.Persistence
             var balanceMap = new Dictionary<string, decimal>(result.Rows.Count);
             foreach (DataRow row in result.Rows)
             {
-                decimal balance = _utility.ValueOrDefault<decimal>(row, "Balance");
-                if (value is int && (int)value == (int)VoucherOriginId.OpeningVoucher)
-                {
-                    balance = -balance;
-                }
-
-                balanceMap.Add(_utility.ValueOrDefault(row, "FullCode"), balance);
+                balanceMap.Add(_utility.ValueOrDefault(row, "FullCode"),
+                    _utility.ValueOrDefault<decimal>(row, "Balance"));
             }
 
             return balanceMap;

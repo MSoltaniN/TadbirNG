@@ -53,6 +53,7 @@
     <Compile Remove="Mapping\Finance\FullDetailTypeMap.cs" />
     <Compile Remove="Mapping\Finance\TransactionLineMap.cs" />
     <Compile Remove="Mapping\Finance\TransactionMap.cs" />
+    <Compile Remove="Repository\BalanceSheetRepository.cs" />
     <Compile Remove="Repository\InventoryRepository.cs" />
     <Compile Remove="Repository\MetadataDecorator.cs" />
     <Compile Remove="Repository\RequisitionRepository.cs" />
