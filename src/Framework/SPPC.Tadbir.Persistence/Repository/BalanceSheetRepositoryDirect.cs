@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
@@ -214,26 +215,27 @@ namespace SPPC.Tadbir.Persistence
             int length, BalanceSheetParameters parameters, AccountCollectionId collectionId, bool isAsset)
         {
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            var lines = new List<BalanceSheetItemViewModel>();
+            var items = new List<BalanceSheetItemViewModel>();
             DateTime startDate = await GetFiscalStartDateAsync(UserContext.FiscalPeriodId);
             if (startDate != DateTime.MinValue)
             {
                 var accounts = _utility.GetUsableAccountsAsync(collectionId);
                 if (accounts.Count() == 0)
                 {
-                    return lines;
+                    return items;
                 }
 
                 string accountList = String.Join(",", accounts.Select(acc => acc.Id));
                 var query = await GetSheetQueryAsync(startDate, parameters, accountList, length);
                 var result = DbConsole.ExecuteQuery(query.Query);
-                lines.AddRange(result.Rows
+                items.AddRange(result.Rows
                     .Cast<DataRow>()
                     .Select(row => GetSheetItem(row, isAsset)));
-                await SetItemNamesAsync(lines, isAsset);
+                await SetPreviousBalancesAsync(length, parameters.GridOptions, items, isAsset);
+                await SetItemNamesAsync(items, isAsset);
             }
 
-            return lines;
+            return items;
         }
 
         private async Task<ReportQuery> GetSheetQueryAsync(
@@ -291,10 +293,67 @@ namespace SPPC.Tadbir.Persistence
             return new BalanceSheetItemViewModel()
             {
                 Assets = isAsset ? name : null,
-                AssetsBalance = isAsset ? balance : 0.0M,
+                AssetsBalance = isAsset ? balance : (decimal?)null,
                 Liabilities = isAsset ? null : name,
-                LiabilitiesBalance = isAsset ? 0.0M : balance
+                LiabilitiesBalance = isAsset ? (decimal?)null : balance
             };
+        }
+
+        private async Task SetPreviousBalancesAsync(int length, GridOptions gridOptions,
+            IEnumerable<BalanceSheetItemViewModel> items, bool isAsset)
+        {
+            int fpId = UserContext.FiscalPeriodId;
+            var fullCodes = isAsset
+                ? items.Where(item => !String.IsNullOrEmpty(item.Assets))
+                       .Select(item => item.Assets)
+                : items.Where(item => !String.IsNullOrEmpty(item.Liabilities))
+                       .Select(item => item.Liabilities);
+            string filter = String.Join(
+                " OR ", fullCodes.Select(code => String.Format("acc.FullCode LIKE '{0}%'", code)));
+
+            int previousFpId = _previousFiscalPeriodId ?? 0;
+            var result = new Dictionary<string, decimal>();
+            if (await _utility.HasSpecialVoucherAsync(fpId, VoucherOriginId.OpeningVoucher))
+            {
+                result = GetBalanceQueryResult(
+                    AccountItemQuery.SpecialVoucherBalanceByCode, length,
+                    (int)VoucherOriginId.OpeningVoucher, filter, gridOptions, fpId);
+            }
+            else if (previousFpId > 0
+                && await _utility.HasSpecialVoucherAsync(previousFpId, VoucherOriginId.ClosingVoucher))
+            {
+                result = GetBalanceQueryResult(
+                    AccountItemQuery.SpecialVoucherBalanceByCode, length,
+                    (int)VoucherOriginId.ClosingVoucher, filter, gridOptions, previousFpId);
+            }
+            else if (previousFpId > 0)
+            {
+                var endDate = _utility.GetFiscalPeriodEndAsync(previousFpId);
+                result = GetBalanceQueryResult(
+                    AccountItemQuery.BalanceByDate, length, endDate, filter, gridOptions, previousFpId);
+            }
+            else
+            {
+                foreach (string fullCode in fullCodes)
+                {
+                    result.Add(fullCode, 0.0M);
+                }
+            }
+
+            foreach (var item in items)
+            {
+                if ((!String.IsNullOrEmpty(item.Assets) && result.ContainsKey(item.Assets))
+                    || (!String.IsNullOrEmpty(item.Liabilities) && result.ContainsKey(item.Liabilities)))
+                {
+                    item.AssetsPreviousBalance = isAsset ? result[item.Assets] : (decimal?)null;
+                    item.LiabilitiesPreviousBalance = isAsset ? (decimal?)null : result[item.Liabilities];
+                }
+                else
+                {
+                    item.AssetsPreviousBalance = isAsset ? 0.0M : (decimal?)null;
+                    item.LiabilitiesPreviousBalance = isAsset ? (decimal?)null : 0.0M;
+                }
+            }
         }
 
         private async Task SetItemNamesAsync(IList<BalanceSheetItemViewModel> items, bool isAsset)
@@ -329,38 +388,41 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private Dictionary<string, decimal> GetBalanceQueryResult(
+            string query, int length, object value, string filter, GridOptions gridOptions, int fpId)
+        {
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            string command = String.Format(query, length, "Account", "Account", value, filter);
+            command = command.Replace(" AND ()", String.Empty);
+            var balanceQuery = new ReportQuery(command);
+            balanceQuery.SetFilter(_utility.GetEnvironmentFilters(gridOptions, fpId));
+            var result = DbConsole.ExecuteQuery(balanceQuery.Query);
+
+            var balanceMap = new Dictionary<string, decimal>(result.Rows.Count);
+            foreach (DataRow row in result.Rows)
+            {
+                decimal balance = _utility.ValueOrDefault<decimal>(row, "Balance");
+                if (value is int && (int)value == (int)VoucherOriginId.OpeningVoucher)
+                {
+                    balance = -balance;
+                }
+
+                balanceMap.Add(_utility.ValueOrDefault(row, "FullCode"), balance);
+            }
+
+            return balanceMap;
+        }
+
         private string GetEnvironmentFilters(BalanceSheetParameters parameters)
         {
-            var predicates = new List<string>();
+            var builder = new StringBuilder(
+                _utility.GetEnvironmentFilters(parameters.GridOptions, UserContext.FiscalPeriodId));
             if (!parameters.UseClosingVoucher)
             {
-                predicates.Add(String.Format("VoucherOriginId != 4"));
+                builder.Append("AND VoucherOriginID != 4");
             }
 
-            var quickFilter = parameters.GridOptions.QuickFilter?.ToString();
-            if (quickFilter == null || quickFilter.IndexOf("BranchId") == -1)
-            {
-                var branchIds = _utility.GetChildTree(UserContext.BranchId);
-                string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
-                if (!String.IsNullOrEmpty(branchList))
-                {
-                    predicates.Add(String.Format(
-                        "(BranchId = {0} OR BranchId IN({1}))", UserContext.BranchId, branchList));
-                }
-                else
-                {
-                    predicates.Add(String.Format("BranchId = {0}", UserContext.BranchId));
-                }
-            }
-
-            predicates.Add(String.Format("FiscalPeriodId = {0}", UserContext.FiscalPeriodId));
-            predicates.Add(String.Format("VoucherSubjectType != {0}", (int)SubjectType.Draft));
-            if (!String.IsNullOrEmpty(quickFilter))
-            {
-                predicates.Add(quickFilter);
-            }
-
-            return String.Join(" AND ", predicates);
+            return builder.ToString();
         }
 
         private readonly IRepositoryContext _context;

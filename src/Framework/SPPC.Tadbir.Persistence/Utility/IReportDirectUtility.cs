@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -61,6 +62,14 @@ namespace SPPC.Tadbir.Persistence.Utility
         string ValueOrDefault(DataRow row, string field);
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="gridOptions"></param>
+        /// <param name="fiscalPeriodId"></param>
+        /// <returns></returns>
+        string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId);
+
+        /// <summary>
         /// به روش آسنکرون، فهرست سطوح قابل استفاده برای گزارشگیری را
         /// برای مولفه حساب داده شده خوانده و برمی گرداند
         /// </summary>
@@ -112,7 +121,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="fpId"></param>
         /// <returns></returns>
-        Task<DateTime> GetFiscalPeriodStartAsync(int fpId);
+        Task<DateTime> GetFiscalPeriodEndAsync(int fpId);
 
         /// <summary>
         ///
@@ -120,6 +129,14 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="fpId"></param>
         /// <returns></returns>
         Task<int> GetFirstVoucherNoAsync(int fpId);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fiscalPeriodId"></param>
+        /// <param name="originId"></param>
+        /// <returns></returns>
+        Task<bool> HasSpecialVoucherAsync(int fiscalPeriodId, VoucherOriginId originId);
 
         /// <summary>
         ///

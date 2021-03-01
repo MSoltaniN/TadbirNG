@@ -605,44 +605,25 @@ namespace SPPC.Tadbir.Persistence
 
         private string GetEnvironmentFilters(TestBalanceParameters parameters, string otherFilters = null)
         {
-            var predicates = new List<string>();
+            var predicates = new List<string>
+            {
+                _utility.GetEnvironmentFilters(parameters.GridOptions, UserContext.FiscalPeriodId)
+            };
+
             var options = parameters.Options;
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
             {
-                predicates.Add(String.Format("VoucherOriginId != 4"));
+                predicates.Add(String.Format("VoucherOriginID != 4"));
             }
 
             if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
             {
-                predicates.Add(String.Format("VoucherOriginId != 3"));
+                predicates.Add(String.Format("VoucherOriginID != 3"));
             }
 
             if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
             {
-                predicates.Add(String.Format("VoucherOriginId != 2"));
-            }
-
-            var quickFilter = parameters.GridOptions.QuickFilter?.ToString();
-            if (quickFilter == null || quickFilter.IndexOf("BranchId") == -1)
-            {
-                var branchIds = _utility.GetChildTree(UserContext.BranchId);
-                string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
-                if (!String.IsNullOrEmpty(branchList))
-                {
-                    predicates.Add(String.Format(
-                        "(BranchId = {0} OR BranchId IN({1}))", UserContext.BranchId, branchList));
-                }
-                else
-                {
-                    predicates.Add(String.Format("BranchId = {0}", UserContext.BranchId));
-                }
-            }
-
-            predicates.Add(String.Format("FiscalPeriodId = {0}", UserContext.FiscalPeriodId));
-            predicates.Add(String.Format("VoucherSubjectType != {0}", (int)SubjectType.Draft));
-            if (!String.IsNullOrEmpty(quickFilter))
-            {
-                predicates.Add(quickFilter);
+                predicates.Add(String.Format("VoucherOriginID != 2"));
             }
 
             if (!String.IsNullOrEmpty(otherFilters))

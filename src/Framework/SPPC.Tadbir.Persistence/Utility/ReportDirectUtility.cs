@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Corporate;
@@ -110,6 +111,41 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             return value;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="gridOptions"></param>
+        /// <param name="fiscalPeriodId"></param>
+        /// <returns></returns>
+        public string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId)
+        {
+            var predicates = new List<string>();
+            var quickFilter = gridOptions.QuickFilter?.ToString();
+            if (quickFilter == null || quickFilter.IndexOf("BranchId") == -1)
+            {
+                var branchIds = GetChildTree(UserContext.BranchId);
+                string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
+                if (!String.IsNullOrEmpty(branchList))
+                {
+                    predicates.Add(String.Format(
+                        "(BranchId = {0} OR BranchId IN({1}))", UserContext.BranchId, branchList));
+                }
+                else
+                {
+                    predicates.Add(String.Format("BranchId = {0}", UserContext.BranchId));
+                }
+            }
+
+            predicates.Add(String.Format("FiscalPeriodId = {0}", fiscalPeriodId));
+            predicates.Add(String.Format("VoucherSubjectType != {0}", (int)SubjectType.Draft));
+            if (!String.IsNullOrEmpty(quickFilter))
+            {
+                predicates.Add(quickFilter);
+            }
+
+            return String.Join(" AND ", predicates);
         }
 
         /// <summary>
@@ -335,13 +371,13 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="fpId"></param>
         /// <returns></returns>
-        public async Task<DateTime> GetFiscalPeriodStartAsync(int fpId)
+        public async Task<DateTime> GetFiscalPeriodEndAsync(int fpId)
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             return await repository
                 .GetEntityQuery()
                 .Where(fp => fp.Id == fpId)
-                .Select(fp => fp.StartDate)
+                .Select(fp => fp.EndDate)
                 .SingleOrDefaultAsync();
         }
 
@@ -359,6 +395,24 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .OrderBy(v => v.No)
                 .Select(v => v.No)
                 .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fiscalPeriodId"></param>
+        /// <param name="originId"></param>
+        /// <returns></returns>
+        public async Task<bool> HasSpecialVoucherAsync(int fiscalPeriodId, VoucherOriginId originId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            int specialVoucherId = await repository
+                .GetEntityQuery()
+                .Where(v => v.FiscalPeriodId == fiscalPeriodId
+                    && v.OriginId == (int)originId)
+                .Select(v => v.Id)
+                .FirstOrDefaultAsync();
+            return specialVoucherId > 0;
         }
 
         /// <summary>

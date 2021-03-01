@@ -12,18 +12,22 @@ FROM [Finance].[{1}] acc
 WHERE acc.FiscalPeriodID = {2}";
 
         internal const string BalanceByDate = @"
-SELECT SUM(vl.Debit - vl.Credit) AS Balance
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
-    INNER JOIN [Finance].[{0}] acc ON vl.{1}ID = acc.{0}ID
-WHERE v.Date < '{2}' AND acc.FullCode LIKE '{3}%' AND {{0}}";
+    INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
+WHERE v.Date <= '{3}' AND ({4}) AND {{0}}
+GROUP BY SUBSTRING(acc.FullCode, 1, {0})
+ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
 
-        internal const string OpeningVoucherBalanceByDate = @"
-SELECT SUM(vl.Debit - vl.Credit) AS Balance
+        internal const string SpecialVoucherBalanceByCode = @"
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
-    INNER JOIN [Finance].[{0}] acc ON vl.{1}ID = acc.{0}ID
-WHERE v.Date >= {2} AND v.VoucherOriginId = 2 AND acc.FullCode LIKE '{3}%' AND {{0}}";
+    INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
+WHERE v.OriginId = {3} AND ({4}) AND {{0}}
+GROUP BY SUBSTRING(acc.FullCode, 1, {0})
+ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
 
         internal const string BalanceByNo = @"
 SELECT SUM(vl.Debit - vl.Credit) AS Balance
