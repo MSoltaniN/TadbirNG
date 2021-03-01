@@ -5,11 +5,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '@progress/kendo-angular-dialog';
-import { Layout } from '@sppc/env/environment';
+import { Layout, MessageType } from '@sppc/env/environment';
 import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { DefaultComponent } from '@sppc/shared/class';
 import { VoucherService } from '@sppc/finance/service';
+import { error } from 'protractor';
 
 
 
@@ -118,7 +119,11 @@ export class HomeComponent extends DefaultComponent implements OnInit {
     this.voucherService.getOpeningVoucher(true).subscribe(result => {
       this.close();
       this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
-    });
+    }, (msg) => {
+        this.showMessage(msg, MessageType.Warning);
+        this.router.navigate(['/finance/voucher']);
+      }
+    );
   }
 
   closingDataChanged(data:any) {
@@ -129,6 +134,9 @@ export class HomeComponent extends DefaultComponent implements OnInit {
     this.voucherService.getClosingAccountsVoucher(this.closingTmpData).subscribe(result => {
       this.close();
       this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
+    }, (msg) => {
+        this.showMessage(msg, MessageType.Warning);
+        this.router.navigate(['/finance/voucher']);
     });
   }
 
@@ -136,6 +144,9 @@ export class HomeComponent extends DefaultComponent implements OnInit {
     this.voucherService.getOpeningVoucher(false).subscribe(result => {
       this.close();
       this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
+    }, (msg) => {
+        this.showMessage(msg, MessageType.Warning);
+        this.router.navigate(['/finance/voucher']);
     });
   }
 
