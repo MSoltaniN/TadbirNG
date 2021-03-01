@@ -448,7 +448,8 @@ namespace SPPC.Tadbir.Persistence
             foreach (DataRow row in result.Rows)
             {
                 string key = _utility.ValueOrDefault(row, "FullCode");
-                string value = _utility.ValueOrDefault(row, "Name");
+                string value = String.Join(",",
+                    _utility.ValueOrDefault<int>(row, "Id"), _utility.ValueOrDefault(row, "Name"));
                 itemMap.Add(key, value);
             }
 
@@ -457,11 +458,15 @@ namespace SPPC.Tadbir.Persistence
                 // NOTE: All codes are set to be identical in each balance item
                 if (itemMap.ContainsKey(item.AccountFullCode))
                 {
-                    string name = itemMap[item.AccountFullCode];
+                    var idName = itemMap[item.AccountFullCode].Split(',');
+                    item.AccountId =
+                        item.DetailAccountId =
+                        item.CostCenterId =
+                        item.ProjectId = Int32.Parse(idName[0]);
                     item.AccountName =
                         item.DetailAccountName =
                         item.CostCenterName =
-                        item.ProjectName = name;
+                        item.ProjectName = idName[1];
                 }
             }
         }
