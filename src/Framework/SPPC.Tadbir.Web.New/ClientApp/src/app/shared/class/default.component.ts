@@ -13,6 +13,7 @@ import {  MetaDataService } from '@sppc/shared/services/metadata.service';
 import { SettingService } from '@sppc/config/service/settings.service';
 import { ViewTreeConfig } from '@sppc/config/models';
 import * as moment from 'jalali-moment';
+import { Braces } from '../models';
 
 
 @Injectable()
@@ -444,7 +445,45 @@ export class DefaultComponent extends BaseComponent {
 
   }
 
+  addFilterExpressionWithBrace(sourceExpression: FilterExpression, filter: Filter , end : boolean = false): FilterExpression {
+    var id1 = "1";
+    var id2 = "2";
 
+    if (sourceExpression == null) {
+      var startBrace = new Array<Braces>();
+      
+      var brace1: Braces = { brace: "(", outerId: id2 };
+      startBrace.push(brace1);
+
+      var firstFilter = new FilterExpression();
+      filter.braces = startBrace;
+      firstFilter.filter = filter;
+      firstFilter.operator = " && ";
+
+      sourceExpression = new FilterExpression();
+      sourceExpression.operator = " && ";
+      sourceExpression.children.push(firstFilter);
+    }
+    else {
+      var nextFilter = new FilterExpression();
+
+      if (end) {
+        var endBrace = new Array<Braces>();        
+        var brace2: Braces = { brace: ")", outerId: id1 };
+        endBrace.push(brace2);
+        filter.braces = endBrace;
+      }
+
+      nextFilter.filter = filter;
+      nextFilter.operator = " || ";    
+
+      sourceExpression.children.push(nextFilter);
+    }
+
+    
+    
+    return sourceExpression;
+  }
   /**
    * this method localize CRUD messages 
    */

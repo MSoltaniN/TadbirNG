@@ -237,7 +237,7 @@
                                 [valuePrimitive]="true"
                                 [value]="displayTypeSelected"
                                 [(ngModel)]="displayTypeSelected"
-                                (ngModelChange)="changeType();showSelectForm()">              
+                                (ngModelChange)="changeType();showSelectForm()">
             </kendo-dropdownlist>
           </div>
           <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
@@ -285,8 +285,8 @@
 
             <input type="text" class="k-textbox acc-name sppc-float" [attr.disabled]="disableAccountLookup ? '' : null" [ngModel]="selectedModel?.name" title="{{selectedModel?.name}}" readonly />
 
-            <button kendoButton class="sppc-float" [icon]="'search'"  [attr.disabled]="disableAccountLookup ? '' : null" (click)="openSelectForm()" type="button"></button>
-            <button kendoButton class="sppc-float" [icon]="'arrow-right'"  [attr.disabled]="disableAccountLookup ? '' : null" (click)="previousModel()" title="{{ 'Buttons.Previous' | translate }}" type="button"></button>
+            <button kendoButton class="sppc-float" [icon]="'search'" [attr.disabled]="disableAccountLookup ? '' : null" (click)="openSelectForm()" type="button"></button>
+            <button kendoButton class="sppc-float" [icon]="'arrow-right'" [attr.disabled]="disableAccountLookup ? '' : null" (click)="previousModel()" title="{{ 'Buttons.Previous' | translate }}" type="button"></button>
             <button kendoButton class="sppc-float" [icon]="'arrow-left'" [attr.disabled]="disableAccountLookup ? '' : null" (click)="nextModel()" title="{{ 'Buttons.Next' | translate }}" type="button"></button>
           </div>
           <div class="col-xs-12 col-sm-4 form-group">
@@ -313,23 +313,28 @@
             <kendo-switch [onLabel]="('Journal.OnLabel' | translate)"
                           [offLabel]="('Journal.OffLabel' | translate)"
                           [(ngModel)]="selectedBranchSeparation"
-                          (valueChange)="valueChangeBranchSeparation($event);" >
+                          (valueChange)="valueChangeBranchSeparation($event);">
             </kendo-switch>
           </div>
         </div>
-
+        <div class="form-group">
+          <div class="col-xs-12 col-sm-4 sppc-float">            
+              <label class="control-label">{{ 'Balance.FilterByRef' | translate }}</label>
+              <kendo-multiselect [data]="referenceValues" [(ngModel)]="selectedReferences"></kendo-multiselect>            
+          </div>
+        </div>
       </div>
       <div class="col-xs-12 col-sm-3">
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
-            <input type="checkbox" name="useClosingVoucher" id="useClosingVoucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" (ngModelChange)="saveStates()"/>
-            <span  for="useClosingVoucher">{{ 'Balance.Closing' | translate }}</span>
+            <input type="checkbox" name="useClosingVoucher" id="useClosingVoucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" (ngModelChange)="saveStates()" />
+            <span for="useClosingVoucher">{{ 'Balance.Closing' | translate }}</span>
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
-            <input type="checkbox" name="useClosingTempVoucher" id="useClosingTempVoucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" (ngModelChange)="saveStates()"/>
-            <span  for="useClosingTempVoucher">{{ 'Balance.CloseAccounts' | translate }}</span>
+            <input type="checkbox" name="useClosingTempVoucher" id="useClosingTempVoucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" (ngModelChange)="saveStates()" />
+            <span for="useClosingTempVoucher">{{ 'Balance.CloseAccounts' | translate }}</span>
           </div>
         </div>
         <!--<div class="col-xs-12 col-sm-12 form-group">
@@ -341,31 +346,22 @@
     <hr />-->
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
-            <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="saveStates()"/>
+            <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="saveStates()" />
             <span for="showZeroBalanceItems">{{ 'Balance.ShowZeroRemains' | translate }}</span>
           </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 form-group">
-          <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
-            <input type="text" class="k-textbox ref"  [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
-          </div>
-          <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
-            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="showFilterByRefChange()" />
-            <span for="showFilterByRef">{{ 'Balance.FilterByRef' | translate }}</span>
-          </div>
+        </div>        
+      </div>      
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-4 form-group">
+          <!--SppcPermissionCheck="Filter"-->
+          <button class="k-button k-primary sppc-float-diff"
+                  EntityName="TestBalance" (click)="getReportData(selectedModel?.id);updateBreadCrumb();"
+                  [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
+            {{ 'Buttons.Compute' | translate }}
+          </button>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-4 form-group">
-        <!--SppcPermissionCheck="Filter"-->
-        <button class="k-button k-primary sppc-float-diff"
-                EntityName="TestBalance" (click)="getReportData(selectedModel?.id);updateBreadCrumb();"
-                [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
-          {{ 'Buttons.Compute' | translate }}
-        </button>
-      </div>
-    </div>    
-  </div>
   </div>
   
