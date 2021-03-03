@@ -8,6 +8,7 @@ export interface QuickReportColumnConfig {
   type: string;
   visible: boolean;
   groupName: string;
+  dataType: string;
 }
 
 export class QuickReportColumnConfigInfo implements QuickReportColumnConfig {
@@ -20,4 +21,5 @@ export class QuickReportColumnConfigInfo implements QuickReportColumnConfig {
   visible: boolean;
   dataType: string;
   groupName: string;
+  dataType: string;
 }

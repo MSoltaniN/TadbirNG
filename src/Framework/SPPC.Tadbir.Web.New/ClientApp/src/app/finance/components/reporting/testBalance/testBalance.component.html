@@ -40,7 +40,7 @@
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
 
-    <kendo-grid-excel [fileName]="excelFileName"  [fetchData]="allData"></kendo-grid-excel>    
+    <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
     <ng-template kendoGridNoRecordsTemplate>
       {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
     </ng-template>
@@ -108,14 +108,16 @@
             <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
             <!--<button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'Journal.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>-->
 
+             c
+
 
             <button kendoButton class="hidden-xs rm" title="{{ 'Balance.SubBalance' | translate }}" (click)="showSubAccountsBalance()"
                     [icon]="'filter-add-expression'" type="button"></button>
             <button kendoButton class="hidden-xs rm lm" title="{{ 'Balance.AccountBook' | translate }}" (click)="showAccountBook()"
                     [icon]="'dictionary-add'" type="button"></button>
             <!--<button kendoButton class="hidden-xs rm lm" title="{{ 'AdvanceFilter.Title' | translate }}" (click)="showAdvanceFilterComponent('TestBalance')"
-          [icon]="'zoom'" type="button"></button>-->
-            <left-action-toolbar  class="sppc-float-diff"  (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+            [icon]="'zoom'" type="button"></button>-->
+            <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
           </div>
 
         </div>
@@ -318,9 +320,9 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="col-xs-12 col-sm-4 sppc-float">            
-              <label class="control-label">{{ 'Balance.FilterByRef' | translate }}</label>
-              <kendo-multiselect [data]="referenceValues" [(ngModel)]="selectedReferences"></kendo-multiselect>            
+          <div class="col-xs-12 col-sm-4 sppc-float">
+            <label class="control-label">{{ 'Balance.FilterByRef' | translate }}</label>
+            <kendo-multiselect [data]="referenceValues" [(ngModel)]="selectedReferences"></kendo-multiselect>
           </div>
         </div>
       </div>
@@ -338,30 +340,32 @@
           </div>
         </div>
         <!--<div class="col-xs-12 col-sm-12 form-group">
-      <div class="voucher-status-item">
-        <input type="checkbox" name="openingVoucherAsInitBalance" id="openingVoucherAsInitBalance" class="k-checkbox" [(ngModel)]="openingVoucherAsInitBalance" />
-        <label class="k-checkbox-label" for="openingVoucherAsInitBalance">{{ 'Balance.OpeningVoucher' | translate }}</label>
-      </div>
-    </div>
-    <hr />-->
+          <div class="voucher-status-item">
+            <input type="checkbox" name="openingVoucherAsInitBalance" id="openingVoucherAsInitBalance" class="k-checkbox" [(ngModel)]="openingVoucherAsInitBalance" />
+            <label class="k-checkbox-label" for="openingVoucherAsInitBalance">{{ 'Balance.OpeningVoucher' | translate }}</label>
+          </div>
+        </div>
+        <hr />-->
         <div class="col-xs-12 col-sm-12 form-group">
+          s-
+          s=
           <div class="voucher-status-item">
             <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="saveStates()" />
             <span for="showZeroBalanceItems">{{ 'Balance.ShowZeroRemains' | translate }}</span>
           </div>
-        </div>        
-      </div>      
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-4 form-group">
-          <!--SppcPermissionCheck="Filter"-->
-          <button class="k-button k-primary sppc-float-diff"
-                  EntityName="TestBalance" (click)="getReportData(selectedModel?.id);updateBreadCrumb();"
-                  [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
-            {{ 'Buttons.Compute' | translate }}
-          </button>
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 form-group">
+        <!--SppcPermissionCheck="Filter"-->
+        <button class="k-button k-primary sppc-float-diff"
+                EntityName="TestBalance" (click)="getReportData(selectedModel?.id);updateBreadCrumb();"
+                [ngClass]="{'btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
+          {{ 'Buttons.Compute' | translate }}
+        </button>
+      </div>
+    </div>
   </div>
+</div>
   
