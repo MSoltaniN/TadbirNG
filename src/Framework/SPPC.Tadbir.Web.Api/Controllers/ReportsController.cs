@@ -311,8 +311,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             quickReport = CreateDataBand(quickReport, qr, dataSourceName, quickReportTemplate, reportLang, inchValue, fitToPage);
             quickReport = FillLocalVariables(quickReport, qr.Title);
 
-            ////SettingsController settingsController = new SettingsController();
-            ////settingsController.PutModifiedQReportSettingsByUserAsync(this.SecurityContext.User.Id, qr);
             _configRepository.SaveQuickReportConfigAsync(this.SecurityContext.User.Id, qr);
 
             var jsonData = quickReport.SaveToJsonString();
@@ -779,6 +777,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         txtHeaderCell.Height = txtHeaderCell.Height * 2;
                         txtHeaderCell.GrowToHeight = true;
                         txtHeaderCell.CanShrink = false;
+                        lastWidth = 0;
                     }
                     else if (isGroupExist)
                     {
@@ -786,23 +785,37 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         if (orderdColumns[i].GroupName == lastGroupName)
                         {
                             StiText txtGroupText = (StiText)txtHeaderCell.Clone(true);
-                            txtGroupText.Width = txtHeaderCell.Width + lastWidth;
+                            var txtHeaderCellWidth = txtHeaderCell.Width;
+                            if (fitToPage)
+                            {
+                                var widthPercent = txtHeaderCellWidth / tableWidth * 100;
+                                txtHeaderCellWidth = (widthPercent * pageWidth) / 100;
+                            }
+
+                            txtGroupText.Width = txtHeaderCellWidth + lastWidth;
                             txtGroupText.Text.Value = lastGroupName;
                             txtGroupText.CanShrink = false;
                             txtGroupText.ClientRectangle = new RectangleD(left - lastWidth, top, txtGroupText.Width, txtGroupText.Height);
                             headerBand.Components.Add(txtGroupText);
-
+                            lastWidth = 0;
                             lastGroupName = string.Empty;
                         }
                         else if (!string.IsNullOrEmpty(orderdColumns[i].GroupName) && orderdColumns.Count(cc => cc.GroupName == orderdColumns[i].GroupName) == 1)
                         {
                             StiText txtGroupText = (StiText)txtHeaderCell.Clone(true);
-                            txtGroupText.Width = txtHeaderCell.Width;
+                            var txtHeaderCellWidth = txtHeaderCell.Width;
+                            if (fitToPage)
+                            {
+                                var widthPercent = txtHeaderCellWidth / tableWidth * 100;
+                                txtHeaderCellWidth = (widthPercent * pageWidth) / 100;
+                            }
+
+                            txtGroupText.Width = txtHeaderCellWidth;
                             txtGroupText.Text.Value = orderdColumns[i].GroupName;
                             txtGroupText.CanShrink = false;
                             txtGroupText.ClientRectangle = new RectangleD(left, top, txtGroupText.Width, txtGroupText.Height);
                             headerBand.Components.Add(txtGroupText);
-
+                            lastWidth = 0;
                             lastGroupName = string.Empty;
                         }
                         else
@@ -817,18 +830,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     else
                     {
                         top = 0;
+                        lastWidth = 0;
                     }
                 }
 
                 txtHeaderCell.Text.Value = !string.IsNullOrEmpty(column.UserTitle) ? column.UserTitle : column.Title;
+                if (isGroupExist && lastWidth > 0)
+                {
+                    width = lastWidth;
+                }
+
                 if (fitToPage)
                 {
                     var widthPercent = width / tableWidth * 100;
                     width = (widthPercent * pageWidth) / 100;
+
+                    lastWidth = width;
+                    txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
+                    left = txtHeaderCell.Left + width;
+                }
+                else
+                {
+                    txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
+                    left = txtHeaderCell.Left + width;
+                    lastWidth = width;
                 }
 
-                txtHeaderCell.ClientRectangle = new RectangleD(left, top, width, txtHeaderCell.Height);
-                left = txtHeaderCell.Left + width;
                 headerBand.Components.Add(txtHeaderCell);
             }
 
