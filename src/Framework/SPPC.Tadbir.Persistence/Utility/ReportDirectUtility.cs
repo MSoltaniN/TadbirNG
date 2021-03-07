@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Presentation;
@@ -475,18 +476,27 @@ namespace SPPC.Tadbir.Persistence.Utility
             _context.DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             int inBranchId = branchId ?? UserContext.BranchId;
             var accounts = GetInheritedAccountsAsync(collectionId, inBranchId);
+            if (accounts.Count() == 0)
+            {
+                return new List<AccountItemBriefViewModel>();
+            }
+
             var tree = GetChildTree(inBranchId)
                 .ToList();
             tree.Insert(0, UserContext.BranchId);
             string branchList = String.Join(",", tree);
-            string itemsCommand = String.Format(
+            var cmdBuilder = new StringBuilder(String.Format(
                 AccountItemQuery.EnvironmentAccounts, UserContext.FiscalPeriodId,
-                branchList, UserContext.BranchId);
+                branchList, UserContext.BranchId));
+            cmdBuilder.AppendFormat(" AND {0}", AccountItemQuery.LeafAccountFilter);
             string filter = String.Join(" OR ", accounts
                 .Select(acc => String.Format("acc.FullCode LIKE '{0}%'", acc.FullCode)));
-            itemsCommand = String.Format("{0} AND {1} AND ({2})",
-                itemsCommand, AccountItemQuery.LeafAccountFilter, filter);
-            var result = _context.DbConsole.ExecuteQuery(itemsCommand);
+            if (!String.IsNullOrEmpty(filter))
+            {
+                cmdBuilder.AppendFormat(" AND ({0})", filter);
+            }
+
+            var result = _context.DbConsole.ExecuteQuery(cmdBuilder.ToString());
             return result.Rows
                 .Cast<DataRow>()
                 .Select(row => GetAccountInfo(row));

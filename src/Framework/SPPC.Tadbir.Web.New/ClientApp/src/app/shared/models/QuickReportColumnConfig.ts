@@ -19,7 +19,6 @@ export class QuickReportColumnConfigInfo implements QuickReportColumnConfig {
   userTitle: string;
   type: string;
   visible: boolean;
-  dataType: string;
   groupName: string;
   dataType: string;
 }

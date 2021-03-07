@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -223,6 +224,7 @@ namespace SPPC.Tadbir.Persistence
 
         private void CreateDatabase(CompanyDbViewModel company, string webRoot)
         {
+            var sqlBuilder = new StringBuilder();
             if (!IsDuplicateDatabaseName(company.DbName))
             {
                 var scriptPath = Path.Combine(webRoot, @"static\Tadbir_CreateDbObjects.sql");
@@ -231,30 +233,36 @@ namespace SPPC.Tadbir.Persistence
                     throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
                 }
 
-                string companyScript = String.Format(
+                sqlBuilder.AppendFormat(
                     @"CREATE DATABASE {0}
                     GO
                     USE {0}
                     GO",
                     company.DbName);
-
-                companyScript += Environment.NewLine;
-                companyScript += File.ReadAllText(scriptPath);
-                DbConsole.ExecuteNonQuery(companyScript);
+                sqlBuilder.AppendLine();
+                sqlBuilder.Append(File.ReadAllText(scriptPath));
+                DbConsole.ExecuteNonQuery(sqlBuilder.ToString());
+                sqlBuilder.Clear();
             }
 
-            CreateDatabaseLogin(company);
+            if (String.IsNullOrEmpty(company.UserName))
+            {
+                sqlBuilder.AppendFormat(@"
+                    ALTER AUTHORIZATION ON DATABASE::{0} TO NgTadbirUser;
+                    GO", company.DbName);
+                DbConsole.ExecuteNonQuery(sqlBuilder.ToString());
+            }
+            else
+            {
+                CreateDatabaseLogin(company);
+            }
+
             SetServerName(company);
         }
 
         private void CreateDatabaseLogin(CompanyDbViewModel company)
         {
-            if (String.IsNullOrEmpty(company.UserName))
-            {
-                return;
-            }
-
-            string loginScript = string.Format(
+            string loginScript = String.Format(
                 @"CREATE LOGIN [{0}] WITH PASSWORD = '{1}', CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF;
                     GO
                     Use [{2}];

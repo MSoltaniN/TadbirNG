@@ -21,7 +21,7 @@ ON
     SIZE = 10MB,
     FILEGROWTH = 5MB )
 LOG ON
-( NAME = NGMyTadbirSys_log,
+( NAME = NGTadbirSys_log,
     FILENAME = 'C:\SqlDb\NGTadbirSys_log.ldf',
     SIZE = 5MB,
     FILEGROWTH = 5% );

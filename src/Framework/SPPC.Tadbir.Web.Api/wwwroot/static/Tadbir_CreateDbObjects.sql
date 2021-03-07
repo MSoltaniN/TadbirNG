@@ -1,26 +1,4 @@
-﻿USE master;
-GO
-
-CREATE DATABASE NGTadbir
-ON
-( NAME = NGTadbirSys,
-    FILENAME = 'C:\SqlDb\NGTadbir.mdf',
-    SIZE = 10MB,
-    FILEGROWTH = 5MB )
-LOG ON
-( NAME = NGTadbirSys_log,
-    FILENAME = 'C:\SqlDb\NGTadbir_log.ldf',
-    SIZE = 5MB,
-    FILEGROWTH = 5% );
-GO
-
-ALTER AUTHORIZATION ON DATABASE::NGTadbir TO NgTadbirUser;
-GO
-
-USE [NGTadbir]
-GO
-
-SET ANSI_NULLS ON
+﻿SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
@@ -298,6 +276,21 @@ CREATE TABLE [Config].[ViewSetting] (
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_ViewSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Config_ViewSetting] PRIMARY KEY CLUSTERED ([ViewSettingID] ASC)
 	, CONSTRAINT [FK_Config_ViewSetting_Config_Setting] FOREIGN KEY ([SettingID]) REFERENCES [Config].[Setting]([SettingID])
+)
+GO
+
+CREATE TABLE [Config].[LabelSetting] (
+    [LabelSettingID] INT              IDENTITY (1, 1) NOT NULL,
+    [SettingID]      INT              NOT NULL,
+    [CustomFormID]   INT              NOT NULL,
+	[LocaleID]       INT              NOT NULL,
+	[ModelType]      VARCHAR(128)     NOT NULL,
+	[Values]         NTEXT            NOT NULL,
+	[DefaultValues]  NTEXT            NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_LabelSetting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_LabelSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Config_LabelSetting] PRIMARY KEY CLUSTERED ([LabelSettingID] ASC)
+    , CONSTRAINT [FK_Config_LabelSetting_Config_Setting] FOREIGN KEY ([SettingID]) REFERENCES [Config].[Setting]([SettingID])
 )
 GO
 
@@ -755,7 +748,7 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (5, 'ViewTreeSettings', 2, 2, 'ViewTreeConfig', N'{}', N'{}', 'ViewTreeSettingsDescription', 0)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
-    VALUES (6, 'QuickSearchSettings', 3, 2, 'QuickSearchConfig', N'{}', N'{}', 'QuickSearchSettingsDescription', 1)
+    VALUES (6, 'QuickSearchSettings', 3, 2, 'QuickSearchConfig', N'{}', N'{}', 'QuickSearchSettingsDescription', 0)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":2,"defaultCalendar":0,"usesDefaultCoding":true}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":2,"defaultCalendar":0,"usesDefaultCoding":true}', 'SystemConfigurationDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
@@ -839,6 +832,9 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (50, N'GroupCon
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (51, N'GroupUndoConfirm')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (52, N'Normalize')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (53, N'GroupNormalize')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (54, N'Export')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (55, N'ExportRates')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (56, N'FilterRates')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
