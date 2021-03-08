@@ -370,7 +370,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accountTreeConfig = await GetViewTreeConfigByViewAsync(ViewId.Account);
 
-            var jsonPath = Path.Combine(_webRootPath, @"static\defaultAccount.json");
+            var jsonPath = Path.Combine(_webRootPath, @"static\DefaultAccounts.json");
             var defaultAcc = JsonHelper.To<List<DefaultAccountViewModel>>(File.ReadAllText(jsonPath));
 
             UpdateDefaultAccountCodeRecursive(defaultAcc, accountTreeConfig, string.Empty);
@@ -440,7 +440,7 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             DbConsole.ExecuteNonQuery(script);
 
-            var accCollections = Path.Combine(_webRootPath, @"static\accountCollection.txt");
+            var accCollections = Path.Combine(_webRootPath, @"static\CollectionAccounts.sql");
             script = File.ReadAllText(accCollections);
             script = script.Replace("%branchId%", UserContext.BranchId.ToString())
                 .Replace("%fiscalPeriodId%", UserContext.FiscalPeriodId.ToString());

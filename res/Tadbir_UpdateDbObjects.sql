@@ -1922,3 +1922,8 @@ SET IDENTITY_INSERT [Config].[LogSetting] OFF
 SET IDENTITY_INSERT [Metadata].[OperationSourceList] ON
 INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (55, N'BalanceSheet')
 SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF
+
+-- 1.1.1091
+UPDATE [Config].[Setting]
+SET IsStandalone = 0
+WHERE TitleKey = 'QuickSearchSettings'

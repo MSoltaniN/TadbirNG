@@ -49,5 +49,14 @@ namespace SPPC.Tadbir.Domain
         /// گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات
         /// </summary>
         public GridOptions GridOptions { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public AccountBookParameters GetCopy()
+        {
+            return (AccountBookParameters)MemberwiseClone();
+        }
     }
 }
