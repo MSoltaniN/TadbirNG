@@ -311,6 +311,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             quickReport = CreateDataBand(quickReport, qr, dataSourceName, quickReportTemplate, reportLang, inchValue, fitToPage);
             quickReport = FillLocalVariables(quickReport, qr.Title);
 
+            ////SettingsController settingsController = new SettingsController();
+            ////settingsController.PutModifiedQReportSettingsByUserAsync(this.SecurityContext.User.Id, qr);
             _configRepository.SaveQuickReportConfigAsync(this.SecurityContext.User.Id, qr);
 
             var jsonData = quickReport.SaveToJsonString();
@@ -652,7 +654,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private static StiReport CreateHeaderBand(StiReport report, IList<QuickReportColumnConfig> columns,
-            int oneInchInPixels, string dataSourceName, StiReport reportTemplate, string lang, bool fitToPage)
+    int oneInchInPixels, string dataSourceName, StiReport reportTemplate, string lang, bool fitToPage)
         {
             int visibleColumnCount = columns.Count(c => c.Visible);
             if (visibleColumnCount == 0)
@@ -767,7 +769,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     txtHeaderCell.Parent = headerBand;
 
                     txtHeaderCell.CanGrow = true;
-                    txtHeaderCell.GrowToHeight = true;
                     txtHeaderCell.WordWrap = true;
 
                     if (string.IsNullOrEmpty(orderdColumns[i].GroupName) && isGroupExist)
@@ -855,7 +856,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     left = txtHeaderCell.Left + width;
                     lastWidth = width;
                 }
-
+                txtHeaderCell.GrowToHeight = true;
                 headerBand.Components.Add(txtHeaderCell);
             }
 
