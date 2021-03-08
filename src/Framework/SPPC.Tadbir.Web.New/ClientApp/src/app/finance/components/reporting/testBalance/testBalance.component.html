@@ -107,10 +107,7 @@
             </auto-generated-grid-setting>
             <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
             <!--<button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'Journal.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>-->
-
-             c
-
-
+            
             <button kendoButton class="hidden-xs rm" title="{{ 'Balance.SubBalance' | translate }}" (click)="showSubAccountsBalance()"
                     [icon]="'filter-add-expression'" type="button"></button>
             <button kendoButton class="hidden-xs rm lm" title="{{ 'Balance.AccountBook' | translate }}" (click)="showAccountBook()"
