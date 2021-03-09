@@ -316,7 +316,8 @@ namespace SPPC.Tadbir.Persistence
                 : BookQuery.SpecialVoucher;
             var builder = new StringBuilder(String.Format(bookQuery,
                 _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
-                (int)originId, fullCode));
+                parameters.FromDate.ToShortDateString(false),
+                parameters.ToDate.ToShortDateString(false), (int)originId, fullCode));
             var debitItems = GetQueryResult(builder.ToString(), parameters);
             builder.Replace("Debit", "Credit")
                 .Replace("Credit1", "Debit");
