@@ -35,6 +35,10 @@
     <None Remove="Utility\**" />
   </ItemGroup>
 
+  <Target Name="PostBuild" BeforeTargets="PostBuildEvent">
+    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:refdb " />
+  </Target>
+
   <ItemGroup>
     <Compile Remove="Controllers\CartableController.cs" />
     <Compile Remove="Controllers\InventoriesController.cs" />

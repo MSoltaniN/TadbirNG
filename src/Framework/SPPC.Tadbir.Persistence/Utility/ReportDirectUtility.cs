@@ -146,24 +146,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="row"></param>
-        /// <param name="field"></param>
-        /// <returns></returns>
-        public T ValueOrDefault<T>(DataRow row, string field)
-        {
-            var value = default(T);
-            if (row.Table.Columns.Contains(field) && row[field] != DBNull.Value)
-            {
-                value = (T)Convert.ChangeType(row[field], typeof(T));
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="gridOptions"></param>
         /// <param name="fiscalPeriodId"></param>
         /// <returns></returns>
@@ -208,6 +190,24 @@ namespace SPPC.Tadbir.Persistence.Utility
             if (row.Table.Columns.Contains(field))
             {
                 value = row[field].ToString();
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="row"></param>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public T ValueOrDefault<T>(DataRow row, string field)
+        {
+            var value = default(T);
+            if (row.Table.Columns.Contains(field) && row[field] != DBNull.Value)
+            {
+                value = (T)Convert.ChangeType(row[field], typeof(T));
             }
 
             return value;

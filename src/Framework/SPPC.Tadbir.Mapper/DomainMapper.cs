@@ -275,7 +275,8 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<FiscalPeriod, FiscalPeriodViewModel>();
             mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
-               .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId);
+                .ForMember(dest => dest.InventoryMode, opts => opts.MapFrom(src => src.InventoryModeField))
+                .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId);
             mapperConfig.CreateMap<FiscalPeriod, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
