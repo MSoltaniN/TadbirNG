@@ -46,22 +46,25 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، سند بستن حساب های موقت مربوط به دوره مالی جاری را
         /// برای سیستم ثبت دائمی خوانده و برمی گرداند
         /// </summary>
+        /// <param name="mustIssue">مشخص می کند که سند مورد نظر، در صورت وجود نداشتن، باید صادر شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند بستن حساب های موقت در دوره مالی جاری</returns>
-        Task<VoucherViewModel> GetClosingTempAccountsVoucherAsync();
+        Task<VoucherViewModel> GetClosingTempAccountsVoucherAsync(bool mustIssue = true);
 
         /// <summary>
         /// به روش آسنکرون، سند بستن حساب های موقت مربوط به دوره مالی جاری را
         /// برای سیستم ثبت ادواری خوانده و برمی گرداند
         /// </summary>
         /// <param name="balanceItems">مجموعه مقادیر مانده موجودی انبار - برای سیستم ثبت ادواری</param>
+        /// <param name="mustIssue">مشخص می کند که سند مورد نظر، در صورت وجود نداشتن، باید صادر شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند بستن حساب های موقت در دوره مالی جاری</returns>
         Task<VoucherViewModel> GetPeriodicClosingTempAccountsVoucherAsync(
-            IList<AccountBalanceViewModel> balanceItems);
+            IList<AccountBalanceViewModel> balanceItems, bool mustIssue = true);
 
         /// <summary>
         /// به روش آسنکرون، سند اختتامیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="mustIssue">مشخص می کند که سند مورد نظر، در صورت وجود نداشتن، باید صادر شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند اختتامیه در دوره مالی جاری</returns>
-        Task<VoucherViewModel> GetClosingVoucherAsync();
+        Task<VoucherViewModel> GetClosingVoucherAsync(bool mustIssue = true);
     }
 }
