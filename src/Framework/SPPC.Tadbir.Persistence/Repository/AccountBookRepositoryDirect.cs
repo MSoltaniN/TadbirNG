@@ -5,10 +5,13 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
@@ -64,9 +67,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>
         /// <param name="itemId">شناسه دیتابیسی مولفه حساب جاری</param>
         /// <returns>اطلاعات نمایشی مختصر برای مولفه حساب قبلی</returns>
-        public Task<AccountItemBriefViewModel> GetPreviousAccountItemAsync(int viewId, int itemId)
+        public async Task<AccountItemBriefViewModel> GetPreviousAccountItemAsync(int viewId, int itemId)
         {
-            throw new NotImplementedException();
+            var previous = default(AccountItemBriefViewModel);
+            var accountItem = await _utility.GetItemAsync(viewId, itemId);
+            var previousItem = await GetAccountItemQuery(viewId)
+                .Where(item => item.Id < itemId && item.Level == accountItem.Level)
+                .OrderByDescending(item => item.Id)
+                .FirstOrDefaultAsync();
+            if (previousItem != null)
+            {
+                previous = Mapper.Map<AccountItemBriefViewModel>(previousItem);
+            }
+
+            return previous;
         }
 
         /// <summary>
@@ -75,14 +89,30 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>
         /// <param name="itemId">شناسه دیتابیسی مولفه حساب جاری</param>
         /// <returns>اطلاعات نمایشی مختصر برای مولفه حساب بعدی</returns>
-        public Task<AccountItemBriefViewModel> GetNextAccountItemAsync(int viewId, int itemId)
+        public async Task<AccountItemBriefViewModel> GetNextAccountItemAsync(int viewId, int itemId)
         {
-            throw new NotImplementedException();
+            var next = default(AccountItemBriefViewModel);
+            var accountItem = await _utility.GetItemAsync(viewId, itemId);
+            var nextItem = await GetAccountItemQuery(viewId)
+                .Where(item => item.Id > itemId && item.Level == accountItem.Level)
+                .OrderBy(item => item.Id)
+                .FirstOrDefaultAsync();
+            if (nextItem != null)
+            {
+                next = Mapper.Map<AccountItemBriefViewModel>(nextItem);
+            }
+
+            return next;
         }
 
         internal override OperationSourceId OperationSource
         {
             get { return OperationSourceId.AccountBook; }
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
         }
 
         private IConfigRepository Config
@@ -192,7 +222,7 @@ namespace SPPC.Tadbir.Persistence
                 await GetFirstBookItemAsync(parameters)
             };
 
-            var bookItems = GetQueryResult(fullCode, bookQuery, parameters);
+            var bookItems = GetQueryResult(fullCode, bookQuery, parameters, byNo);
             foreach (var item in bookItems)
             {
                 item.Description = AppStrings.AsQuotedInJournal;
@@ -206,7 +236,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<AccountBookViewModel> GetMonthlySummaryBookAsync(
             string fullCode, AccountBookParameters parameters)
         {
-            string bookQuery = GetSummaryQuery(false, parameters.IsByBranch);
+            string bookQuery = parameters.IsByBranch ? BookQuery.MonthlySumByBranch : BookQuery.MonthlySum;
             var book = new AccountBookViewModel();
             var items = new List<AccountBookItemViewModel>
             {
@@ -234,7 +264,7 @@ namespace SPPC.Tadbir.Persistence
                     item.VoucherDate = month.End;
                 }
 
-                items.AddRange(monthlyBook);
+                items.AddRange(monthlyBook.Where(item => item.Debit > 0.0M || item.Credit > 0.0M));
             }
 
             items.AddRange(GetQueryResult(fullCode, VoucherOriginId.ClosingTempAccounts, parameters));
@@ -244,7 +274,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private List<AccountBookItemViewModel> GetQueryResult(
-            string fullCode, string bookQuery, AccountBookParameters parameters)
+            string fullCode, string bookQuery, AccountBookParameters parameters, bool byNo = false)
         {
             var builder = new StringBuilder(String.Format(bookQuery,
                 _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
@@ -254,11 +284,28 @@ namespace SPPC.Tadbir.Persistence
             builder.Replace("Debit", "Credit")
                 .Replace("Credit1", "Debit");
             var creditItems = GetQueryResult(builder.ToString(), parameters);
-            return debitItems
-                .Concat(creditItems)
-                .OrderBy(item => item.VoucherDate)
-                .ThenBy(item => item.Credit)
-                .ToList();
+            var result = new List<AccountBookItemViewModel>();
+            if (byNo)
+            {
+                result = debitItems
+                    .Concat(creditItems)
+                    .OrderBy(item => item.VoucherDate)
+                    .ThenBy(item => item.VoucherNo)
+                    .ThenBy(item => item.BranchName)
+                    .ThenBy(item => item.Credit)
+                    .ToList();
+            }
+            else
+            {
+                result = debitItems
+                    .Concat(creditItems)
+                    .OrderBy(item => item.VoucherDate)
+                    .ThenBy(item => item.BranchName)
+                    .ThenBy(item => item.Credit)
+                    .ToList();
+            }
+
+            return result;
         }
 
         private IEnumerable<AccountBookItemViewModel> GetQueryResult(
@@ -276,7 +323,7 @@ namespace SPPC.Tadbir.Persistence
             var creditItems = GetQueryResult(builder.ToString(), parameters);
             var mergedItems = debitItems
                 .Concat(creditItems)
-                .OrderBy(item => item.VoucherDate)
+                .OrderBy(item => item.BranchName)
                 .ThenBy(item => item.Credit)
                 .ToList();
             foreach (var item in mergedItems)
@@ -339,6 +386,29 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return firstItem;
+        }
+
+        private IQueryable<TreeEntity> GetAccountItemQuery(int viewId)
+        {
+            IQueryable<TreeEntity> items = null;
+            if (viewId == ViewId.Account)
+            {
+                items = Repository.GetAllQuery<Account>(viewId);
+            }
+            else if (viewId == ViewId.DetailAccount)
+            {
+                items = Repository.GetAllQuery<DetailAccount>(viewId);
+            }
+            else if (viewId == ViewId.CostCenter)
+            {
+                items = Repository.GetAllQuery<CostCenter>(viewId);
+            }
+            else if (viewId == ViewId.Project)
+            {
+                items = Repository.GetAllQuery<Project>(viewId);
+            }
+
+            return items;
         }
 
         private readonly ISystemRepository _system;

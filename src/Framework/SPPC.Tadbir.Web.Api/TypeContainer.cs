@@ -111,7 +111,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IReportSystemRepository, ReportSystemRepository>();
             _services.AddTransient<IAccountCollectionRepository, AccountCollectionRepository>();
             _services.AddTransient<IJournalRepository, JournalRepositoryDirect>();
-            _services.AddTransient<IAccountBookRepository, AccountBookRepository>();
+            _services.AddTransient<IAccountBookRepository, AccountBookRepositoryDirect>();
             _services.AddTransient<ICurrencyRepository, CurrencyRepository>();
             _services.AddTransient<ICurrencyRateRepository, CurrencyRateRepository>();
             _services.AddTransient<ITestBalanceRepository, TestBalanceRepositoryDirect>();
