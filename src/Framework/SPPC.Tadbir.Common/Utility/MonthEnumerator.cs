@@ -69,7 +69,7 @@ namespace SPPC.Tadbir.Utility
                     month = 1;
                 }
 
-                current = Calendar.AddMonths(current, 1);
+                current = Calendar.ToDateTime(year, month, 1, 0, 0, 0, 0);
             }
 
             if (months.Count > 0)

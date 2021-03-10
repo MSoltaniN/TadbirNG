@@ -297,7 +297,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             IList<StartEndBalanceViewModel> balanceItems = null)
         {
             var parameters = GetParameters(from, to, tax, closing, ccenterId, projectId);
-            var profitLoss = await _repository.GetProfitLossAsync(parameters, balanceItems);
+            var profitLoss = await _repository.GetProfitLossAsync(
+                parameters, balanceItems ?? new List<StartEndBalanceViewModel>());
             await LocalizeAsync(profitLoss);
             return Json(profitLoss);
         }

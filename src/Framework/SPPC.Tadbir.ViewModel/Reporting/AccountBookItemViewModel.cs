@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// تاریخ سند مالی
         /// </summary>
-        public DateTime VoucherDate { get; set; }
+        public DateTime? VoucherDate { get; set; }
 
         /// <summary>
         /// شماره سند مالی، ستون شماره در نمای لیستی

@@ -517,9 +517,9 @@ namespace SPPC.Tadbir.Persistence
                     parameters.FromNo, parameters.ToNo));
             ApplyEnvironmentFilters(query, parameters.GridOptions);
             result = DbConsole.ExecuteQuery(query.Query);
-            journal.TotalCount = Int32.Parse(result.Rows[0]["TotalCount"].ToString());
-            journal.DebitSum = Decimal.Parse(result.Rows[0]["DebitSum"].ToString());
-            journal.CreditSum = Decimal.Parse(result.Rows[0]["CreditSum"].ToString());
+            journal.TotalCount = _utility.ValueOrDefault<int>(result.Rows[0], "TotalCount");
+            journal.DebitSum = _utility.ValueOrDefault<decimal>(result.Rows[0], "DebitSum");
+            journal.CreditSum = _utility.ValueOrDefault<decimal>(result.Rows[0], "CreditSum");
             return journal;
         }
 
@@ -772,8 +772,17 @@ namespace SPPC.Tadbir.Persistence
             {
                 var branchIds = _utility.GetChildTree(UserContext.BranchId);
                 string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
-                environmentFilter = String.Format(
-                    "{0} AND (BranchId = {1} OR BranchId IN({2}))", fpFilter, UserContext.BranchId, branchList);
+                if (!String.IsNullOrEmpty(branchList))
+                {
+                    environmentFilter = String.Format(
+                        "{0} AND (BranchId = {1} OR BranchId IN({2}))",
+                        fpFilter, UserContext.BranchId, branchList);
+                }
+                else
+                {
+                    environmentFilter = String.Format(
+                        "{0} AND BranchId = {1}", fpFilter, UserContext.BranchId);
+                }
             }
 
             query.ApplyDefaultFilters(environmentFilter, quickFilter);

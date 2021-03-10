@@ -240,13 +240,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueClosingAccountsVoucherAsync()
         {
-            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
-            if (result is BadRequestObjectResult)
+            var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync(false);
+            if (closingAccountsVoucher == null)
             {
-                return result;
+                var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
+                if (result is BadRequestObjectResult)
+                {
+                    return result;
+                }
+
+                closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync();
             }
 
-            var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync();
             Localize(closingAccountsVoucher);
             return Json(closingAccountsVoucher);
         }
@@ -263,13 +268,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutOrIssueClosingAccountsVoucherAsync(
             [FromBody] IList<AccountBalanceViewModel> balanceItems)
         {
-            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
-            if (result is BadRequestObjectResult)
+            var closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(
+                balanceItems, false);
+            if (closingAccountsVoucher == null)
             {
-                return result;
+                var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
+                if (result is BadRequestObjectResult)
+                {
+                    return result;
+                }
+
+                closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(
+                    balanceItems ?? new List<AccountBalanceViewModel>());
             }
 
-            var closingAccountsVoucher = await _repository.GetPeriodicClosingTempAccountsVoucherAsync(balanceItems);
             Localize(closingAccountsVoucher);
             return Json(closingAccountsVoucher);
         }
@@ -284,13 +296,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueClosingVoucherAsync()
         {
-            var result = await ClosingVoucherValidationResultAsync();
-            if (result is BadRequestObjectResult)
+            var closingVoucher = await _repository.GetClosingVoucherAsync(false);
+            if (closingVoucher == null)
             {
-                return result;
+                var result = await ClosingVoucherValidationResultAsync();
+                if (result is BadRequestObjectResult)
+                {
+                    return result;
+                }
+
+                closingVoucher = await _repository.GetClosingVoucherAsync();
             }
 
-            var closingVoucher = await _repository.GetClosingVoucherAsync();
             Localize(closingVoucher);
             return Json(closingVoucher);
         }

@@ -92,17 +92,20 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، سند بستن حساب های موقت مربوط به دوره مالی جاری را
         /// برای سیستم ثبت دائمی خوانده و برمی گرداند
         /// </summary>
+        /// <param name="mustIssue">مشخص می کند که سند مورد نظر، در صورت وجود نداشتن، باید صادر شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند بستن حساب های موقت در دوره مالی جاری</returns>
-        public async Task<VoucherViewModel> GetClosingTempAccountsVoucherAsync()
+        public async Task<VoucherViewModel> GetClosingTempAccountsVoucherAsync(bool mustIssue = true)
         {
             var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginId.ClosingTempAccounts);
-            if (closingVoucher == null)
+            if (closingVoucher == null && mustIssue)
             {
                 var balanceItems = new List<AccountBalanceViewModel>();
                 closingVoucher = await IssueClosingTempAccountsVoucherAsync(balanceItems);
             }
 
-            return Mapper.Map<VoucherViewModel>(closingVoucher);
+            return (closingVoucher != null)
+                ? Mapper.Map<VoucherViewModel>(closingVoucher)
+                : null;
         }
 
         /// <summary>
@@ -110,12 +113,13 @@ namespace SPPC.Tadbir.Persistence
         /// برای سیستم ثبت ادواری خوانده و برمی گرداند
         /// </summary>
         /// <param name="balanceItems">مجموعه مقادیر مانده موجودی انبار - برای سیستم ثبت ادواری</param>
+        /// <param name="mustIssue">مشخص می کند که سند مورد نظر، در صورت وجود نداشتن، باید صادر شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند بستن حساب های موقت در دوره مالی جاری</returns>
         public async Task<VoucherViewModel> GetPeriodicClosingTempAccountsVoucherAsync(
-            IList<AccountBalanceViewModel> balanceItems)
+            IList<AccountBalanceViewModel> balanceItems, bool mustIssue = true)
         {
             var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginId.ClosingTempAccounts);
-            if (closingVoucher == null)
+            if (closingVoucher == null && mustIssue)
             {
                 if (balanceItems.Count == 0)
                 {
@@ -127,22 +131,27 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            return Mapper.Map<VoucherViewModel>(closingVoucher);
+            return (closingVoucher != null)
+                ? Mapper.Map<VoucherViewModel>(closingVoucher)
+                : null;
         }
 
         /// <summary>
         /// به روش آسنکرون، سند اختتامیه مربوط به دوره مالی جاری را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="mustIssue">مشخص می کند که سند مورد نظر، در صورت وجود نداشتن، باید صادر شود یا نه</param>
         /// <returns>اطلاعات نمایشی سند اختتامیه در دوره مالی جاری</returns>
-        public async Task<VoucherViewModel> GetClosingVoucherAsync()
+        public async Task<VoucherViewModel> GetClosingVoucherAsync(bool mustIssue = true)
         {
             var closingVoucher = await GetCurrentSpecialVoucherAsync(VoucherOriginId.ClosingVoucher);
-            if (closingVoucher == null)
+            if (closingVoucher == null && mustIssue)
             {
                 closingVoucher = await IssueClosingVoucherAsync();
             }
 
-            return Mapper.Map<VoucherViewModel>(closingVoucher);
+            return (closingVoucher != null)
+                ? Mapper.Map<VoucherViewModel>(closingVoucher)
+                : null;
         }
 
         #region Common Operations

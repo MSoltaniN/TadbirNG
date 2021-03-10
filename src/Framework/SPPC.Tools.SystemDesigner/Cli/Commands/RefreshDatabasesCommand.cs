@@ -19,11 +19,14 @@ namespace SPPC.Tools.SystemDesigner.Cli
         public void Execute()
         {
             string sysConnection = GetSysConnectionString();
-            UpdateDatabaseFromScript(sysConnection, "SysUpdateScriptPath");
-            var companyConnections = GetCompanyConnectionStrings(sysConnection);
-            foreach (string connection in companyConnections)
+            if (sysConnection.IndexOf("130.185.76.7") == -1)
             {
-                UpdateDatabaseFromScript(connection, "UpdateScriptPath");
+                UpdateDatabaseFromScript(sysConnection, "SysUpdateScriptPath");
+                var companyConnections = GetCompanyConnectionStrings(sysConnection);
+                foreach (string connection in companyConnections)
+                {
+                    UpdateDatabaseFromScript(connection, "UpdateScriptPath");
+                }
             }
 
             RefereshRuntimeCreateTadbirDBScripts();
