@@ -445,7 +445,7 @@ export class DefaultComponent extends BaseComponent {
 
   }
 
-  addFilterExpressionWithBrace(sourceExpression: FilterExpression, filter: Filter , end : boolean = false): FilterExpression {
+  addFilterExpressionWithBrace(sourceExpression: FilterExpression, filter: Filter , end : boolean = false,makeBraces:boolean = true): FilterExpression {
     var firstExpressionId = "1";
     var lastExpressionId = "2";
 
@@ -456,7 +456,7 @@ export class DefaultComponent extends BaseComponent {
       startBrace.push(brace1);
 
       var firstFilter = new FilterExpression();
-      filter.braces = startBrace;
+      filter.braces = (makeBraces == true)  ? startBrace : undefined;
       filter.id = firstExpressionId;
       firstFilter.filter = filter;
       firstFilter.operator = " && ";
@@ -473,7 +473,7 @@ export class DefaultComponent extends BaseComponent {
         var brace2: Braces = { brace: ")", outerId: firstExpressionId};
         endBrace.push(brace2);
         filter.id = lastExpressionId;
-        filter.braces = endBrace;
+        filter.braces = (makeBraces == true) ? endBrace : undefined;
       }
 
       nextFilter.filter = filter;

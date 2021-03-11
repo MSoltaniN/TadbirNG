@@ -317,25 +317,29 @@
               </ng-template>
             </kendo-dropdownlist>
           </div>
-          <div class="col-xs-12 col-sm-3 form-group">            
-              <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
-                <input type="text" class="k-textbox ref" [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
-              </div>
-              <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
-                <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="showFilterByRefChange()" />
-                <span  for="showFilterByRef">{{ 'ItemBalance.FilterByRef' | translate }}</span>
-              </div>            
+          <!--<div class="col-xs-12 col-sm-3 form-group">
+      <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
+        <input type="text" class="k-textbox ref" [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
+      </div>
+      <div class="col-sm-6 col-xs-12 col-md-6 col-lg-6 ref-filter">
+        <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" [(ngModel)]="showFilterByRef" (ngModelChange)="showFilterByRefChange()" />
+        <span  for="showFilterByRef">{{ 'ItemBalance.FilterByRef' | translate }}</span>
+      </div>
+    </div>-->
+          <div class="col-xs-12 col-sm-3 sppc-float">
+            <label class="control-label">{{ 'Balance.FilterByRef' | translate }}</label>
+            <kendo-multiselect [data]="referenceValues" [(ngModel)]="selectedReferences"></kendo-multiselect>
           </div>
           <div class="col-xs-12 col-sm-3 form-group">
-              <label class="control-label">{{ 'Journal.BranchSeparation' | translate }}</label>
+            <label class="control-label">{{ 'Journal.BranchSeparation' | translate }}</label>
 
-              <kendo-switch [onLabel]="('Journal.OnLabel' | translate)"
-                            [offLabel]="('Journal.OffLabel' | translate)"
-                            [(ngModel)]="selectedBranchSeparation"
-                            (valueChange)="valueChangeBranchSeparation($event);">
-              </kendo-switch>
-            </div>
+            <kendo-switch [onLabel]="('Journal.OnLabel' | translate)"
+                          [offLabel]="('Journal.OffLabel' | translate)"
+                          [(ngModel)]="selectedBranchSeparation"
+                          (valueChange)="valueChangeBranchSeparation($event);">
+            </kendo-switch>
           </div>
+        </div>
         </div>
       <div class="col-xs-12 col-sm-2 left-pane">
         <div class="col-xs-12 col-sm-12 form-group">

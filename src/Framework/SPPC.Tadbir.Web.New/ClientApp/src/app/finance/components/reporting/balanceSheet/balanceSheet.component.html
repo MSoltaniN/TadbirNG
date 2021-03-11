@@ -172,11 +172,9 @@
             </ng-template>
           </kendo-dropdownlist>
         </div>
-        <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-          <label for="chkProject">
-            <input type="checkbox" name="showFilterByRef" id="showFilterByRef" class="k-checkbox" (ngModelChange)="onChangeFilterByRef($event)" [(ngModel)]="showFilterByRef" /> {{ 'BalanceSheet.FilterByRef' | translate }}
-          </label>
-          <input type="text" class="k-textbox ref" [attr.disabled]="!showFilterByRef ? '' : null" [(ngModel)]="filterByRef" />
+        <div class="col-xs-12 col-sm-4 sppc-float">
+          <label class="control-label">{{ 'Balance.FilterByRef' | translate }}</label>
+          <kendo-multiselect [data]="referenceValues" [(ngModel)]="selectedReferences"></kendo-multiselect>
         </div>        
         <div class="col-xs-12 col-sm-4 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
           <label class="control-label">{{ 'BalanceSheet.Closing' | translate }}</label>
