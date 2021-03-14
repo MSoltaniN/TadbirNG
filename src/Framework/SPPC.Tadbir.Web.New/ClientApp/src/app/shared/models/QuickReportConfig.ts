@@ -1,5 +1,5 @@
 import { QuickReportColumnConfig } from "./QuickReportColumnConfig";
-import { QuickReportViewSetting } from "../components/reportManagement/QuickReportViewSetting";
+import { QuickReportViewSetting } from "../components/reportManagement/quickReportViewSetting";
 import { ReportPageSetting } from "./reportPageSetting";
 
 export interface QuickReportConfig {
