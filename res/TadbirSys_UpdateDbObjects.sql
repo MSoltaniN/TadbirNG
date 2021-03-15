@@ -4989,3 +4989,28 @@ INSERT INTO Reporting.LocalReport(LocalReportID,LocaleID,ReportID,Caption)
 VALUES (250,2,80,N'ترازنامه')
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+-- 1.1.1099
+SET IDENTITY_INSERT [Reporting].[Report] ON
+
+INSERT INTO [Reporting].[Report] (ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+VALUES (78,19,1,65,2,'',NULL,0,1,1,1)
+
+INSERT INTO [Reporting].[Report] (ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+VALUES (79,19,1,66,2,'',NULL,0,1,1,1)
+
+INSERT INTO [Reporting].[Report] (ReportID,ParentID,CreatedByID,ViewID,SubsystemID,Code,ServiceUrl,IsGroup,IsSystem,IsDefault,IsDynamic)
+VALUES (81,18,1,2,2,'Vouchers','vouchers',0,1,1,1)
+
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+
+INSERT INTO [Reporting].[LocalReport] (LocalReportID,LocaleID,ReportID,Caption)
+VALUES (251,1,81,'Vouchers')
+INSERT INTO Reporting.LocalReport(LocalReportID,LocaleID,ReportID,Caption)
+VALUES (252,2,81,N'اسناد مالی')
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+Update [Reporting].[Report] Set ParentID = 20 Where ReportID = 39
