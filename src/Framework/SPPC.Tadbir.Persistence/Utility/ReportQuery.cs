@@ -21,6 +21,34 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         ///
         /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public static string TranslateQuery(string query)
+        {
+            var builder = new StringBuilder(query);
+            if (!String.IsNullOrEmpty(query))
+            {
+                builder = builder
+                    .Replace("Voucher", "v.")
+                    .Replace("== null", " IS NULL")
+                    .Replace("!= null", " IS NOT NULL")
+                    .Replace("==", " =")
+                    .Replace("!=", " <>")
+                    .Replace(">=", " >=")
+                    .Replace("<=", " <=")
+                    .Replace("BranchId", "vl.BranchId")
+                    .Replace("Level", "acc.Level")
+                    .Replace("Mark", "vl.Mark")
+                    .Replace("&&", "AND")
+                    .Replace("||", "OR");
+            }
+
+            return builder.ToString();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         public string Query { get; private set; }
 
         /// <summary>
@@ -68,30 +96,6 @@ namespace SPPC.Tadbir.Persistence
                 string translated = TranslateQuery(filter);
                 Query = String.Format(Query, translated);
             }
-        }
-
-        private static string TranslateQuery(string query)
-        {
-            var builder = new StringBuilder(query);
-            if (!String.IsNullOrEmpty(query))
-            {
-                builder = builder
-                    .Replace("Voucher", "v.")
-                    .Replace("== null", " IS NULL")
-                    .Replace("!= null", " IS NOT NULL")
-                    .Replace("==", " =")
-                    .Replace("!=", " <>")
-                    .Replace(">=", " >=")
-                    .Replace("<=", " <=")
-                    .Replace("FiscalPeriodId", "v.FiscalPeriodId")
-                    .Replace("BranchId", "vl.BranchId")
-                    .Replace("Level", "acc.Level")
-                    .Replace("Mark", "vl.Mark")
-                    .Replace("&&", "AND")
-                    .Replace("||", "OR");
-            }
-
-            return builder.ToString();
         }
     }
 }

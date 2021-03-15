@@ -149,17 +149,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             return query;
         }
 
-        private static IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetGroupByItems(
-            IEnumerable<BalanceByAccountItemViewModel> items, Func<BalanceByAccountItemViewModel, string> selector1)
-        {
-            foreach (var byFirst in items
-                .OrderBy(selector1)
-                .GroupBy(selector1))
-            {
-                yield return byFirst;
-            }
-        }
-
         #region Report by Account
 
         private async Task<BalanceByAccountViewModel> ReportByAccountAsync(BalanceByAccountParameters parameters)
@@ -973,58 +962,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             return groups;
         }
 
-        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetAccountGroups(
-            IEnumerable<BalanceByAccountItemViewModel> lines, int groupLevel, Func<BalanceByAccountItemViewModel, bool> lineFilter)
-        {
-            var selector = GetAccountGroupSelector(groupLevel);
-            return GetGroupByItems(lines.Where(lineFilter), selector);
-        }
-
-        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetDetailAccountGroups(
-            IEnumerable<BalanceByAccountItemViewModel> lines, int groupLevel, Func<BalanceByAccountItemViewModel, bool> lineFilter)
-        {
-            var selector = GetDetailAccountGroupSelector(groupLevel);
-            return GetGroupByItems(lines.Where(lineFilter), selector);
-        }
-
-        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetCostCenterGroups(
-            IEnumerable<BalanceByAccountItemViewModel> lines, int groupLevel, Func<BalanceByAccountItemViewModel, bool> lineFilter)
-        {
-            var selector = GetCostCenterGroupSelector(groupLevel);
-            return GetGroupByItems(lines.Where(lineFilter), selector);
-        }
-
-        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetProjectGroups(
-            IEnumerable<BalanceByAccountItemViewModel> lines, int groupLevel, Func<BalanceByAccountItemViewModel, bool> lineFilter)
-        {
-            var selector = GetProjectGroupSelector(groupLevel);
-            return GetGroupByItems(lines.Where(lineFilter), selector);
-        }
-
-        private Func<BalanceByAccountItemViewModel, string> GetAccountGroupSelector(int groupLevel)
-        {
-            int codeLength = _report.GetLevelCodeLength(ViewId.Account, groupLevel);
-            return item => item.AccountFullCode.Substring(0, codeLength);
-        }
-
-        private Func<BalanceByAccountItemViewModel, string> GetDetailAccountGroupSelector(int groupLevel)
-        {
-            int codeLength = _report.GetLevelCodeLength(ViewId.DetailAccount, groupLevel);
-            return item => item.DetailAccountFullCode.Substring(0, codeLength);
-        }
-
-        private Func<BalanceByAccountItemViewModel, string> GetCostCenterGroupSelector(int groupLevel)
-        {
-            int codeLength = _report.GetLevelCodeLength(ViewId.CostCenter, groupLevel);
-            return item => item.CostCenterFullCode.Substring(0, codeLength);
-        }
-
-        private Func<BalanceByAccountItemViewModel, string> GetProjectGroupSelector(int groupLevel)
-        {
-            int codeLength = _report.GetLevelCodeLength(ViewId.Project, groupLevel);
-            return item => item.ProjectFullCode.Substring(0, codeLength);
-        }
-
         private async Task<BalanceByAccountItemViewModel> GetBalanceByAccountItemAsync(
             IEnumerable<BalanceByAccountItemViewModel> lines, BalanceByAccountParameters parameters, string fullCode)
         {
@@ -1061,41 +998,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
 
             return lines.ToList();
-        }
-
-        private async Task<decimal> GetInitialBalanceAsync(int accountId, BalanceByAccountParameters parameters)
-        {
-            decimal balance = parameters.IsByDate
-                ? await GetBalanceAsync(accountId, parameters.FromDate.Value)
-                : await GetBalanceAsync(accountId, parameters.FromNo.Value);
-
-            return balance;
-        }
-
-        private async Task<decimal> GetBalanceAsync(int accountId, DateTime date)
-        {
-            decimal balance = 0.0M;
-            var account = await GetAccountAsync(accountId);
-            if (account != null)
-            {
-                balance = await GetItemBalanceAsync(
-                    date, line => line.Account.FullCode.StartsWith(account.FullCode));
-            }
-
-            return balance;
-        }
-
-        private async Task<decimal> GetBalanceAsync(int accountId, int number)
-        {
-            decimal balance = 0.0M;
-            var account = await GetAccountAsync(accountId);
-            if (account != null)
-            {
-                balance = await GetItemBalanceAsync(
-                    number, line => line.Account.FullCode.StartsWith(account.FullCode));
-            }
-
-            return balance;
         }
 
         private async Task<Account> GetAccountAsync(int accountId)
@@ -1266,6 +1168,43 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
         }
 
+        #region Balance Helper Methods
+
+        private async Task<decimal> GetInitialBalanceAsync(int accountId, BalanceByAccountParameters parameters)
+        {
+            decimal balance = parameters.IsByDate
+                ? await GetBalanceAsync(accountId, parameters.FromDate.Value)
+                : await GetBalanceAsync(accountId, parameters.FromNo.Value);
+
+            return balance;
+        }
+
+        private async Task<decimal> GetBalanceAsync(int accountId, DateTime date)
+        {
+            decimal balance = 0.0M;
+            var account = await GetAccountAsync(accountId);
+            if (account != null)
+            {
+                balance = await GetItemBalanceAsync(
+                    date, line => line.Account.FullCode.StartsWith(account.FullCode));
+            }
+
+            return balance;
+        }
+
+        private async Task<decimal> GetBalanceAsync(int accountId, int number)
+        {
+            decimal balance = 0.0M;
+            var account = await GetAccountAsync(accountId);
+            if (account != null)
+            {
+                balance = await GetItemBalanceAsync(
+                    number, line => line.Account.FullCode.StartsWith(account.FullCode));
+            }
+
+            return balance;
+        }
+
         private async Task<decimal> GetItemBalanceAsync(
            DateTime date, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
@@ -1293,6 +1232,75 @@ namespace SPPC.Tadbir.Persistence.Repository
                 .Select(line => line.Debit - line.Credit)
                 .SumAsync();
         }
+
+        #endregion
+
+        #region Grouping Helper Methods
+
+        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetAccountGroups(
+            IEnumerable<BalanceByAccountItemViewModel> lines, int groupLevel, Func<BalanceByAccountItemViewModel, bool> lineFilter)
+        {
+            var selector = GetAccountGroupSelector(groupLevel);
+            return GetGroupByItems(lines.Where(lineFilter), selector);
+        }
+
+        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetDetailAccountGroups(
+            IEnumerable<BalanceByAccountItemViewModel> lines, int groupLevel, Func<BalanceByAccountItemViewModel, bool> lineFilter)
+        {
+            var selector = GetDetailAccountGroupSelector(groupLevel);
+            return GetGroupByItems(lines.Where(lineFilter), selector);
+        }
+
+        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetCostCenterGroups(
+            IEnumerable<BalanceByAccountItemViewModel> lines, int groupLevel, Func<BalanceByAccountItemViewModel, bool> lineFilter)
+        {
+            var selector = GetCostCenterGroupSelector(groupLevel);
+            return GetGroupByItems(lines.Where(lineFilter), selector);
+        }
+
+        private IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetProjectGroups(
+            IEnumerable<BalanceByAccountItemViewModel> lines, int groupLevel, Func<BalanceByAccountItemViewModel, bool> lineFilter)
+        {
+            var selector = GetProjectGroupSelector(groupLevel);
+            return GetGroupByItems(lines.Where(lineFilter), selector);
+        }
+
+        private Func<BalanceByAccountItemViewModel, string> GetAccountGroupSelector(int groupLevel)
+        {
+            int codeLength = _report.GetLevelCodeLength(ViewId.Account, groupLevel);
+            return item => item.AccountFullCode.Substring(0, codeLength);
+        }
+
+        private Func<BalanceByAccountItemViewModel, string> GetDetailAccountGroupSelector(int groupLevel)
+        {
+            int codeLength = _report.GetLevelCodeLength(ViewId.DetailAccount, groupLevel);
+            return item => item.DetailAccountFullCode.Substring(0, codeLength);
+        }
+
+        private Func<BalanceByAccountItemViewModel, string> GetCostCenterGroupSelector(int groupLevel)
+        {
+            int codeLength = _report.GetLevelCodeLength(ViewId.CostCenter, groupLevel);
+            return item => item.CostCenterFullCode.Substring(0, codeLength);
+        }
+
+        private Func<BalanceByAccountItemViewModel, string> GetProjectGroupSelector(int groupLevel)
+        {
+            int codeLength = _report.GetLevelCodeLength(ViewId.Project, groupLevel);
+            return item => item.ProjectFullCode.Substring(0, codeLength);
+        }
+
+        private static IEnumerable<IGrouping<string, BalanceByAccountItemViewModel>> GetGroupByItems(
+            IEnumerable<BalanceByAccountItemViewModel> items, Func<BalanceByAccountItemViewModel, string> selector1)
+        {
+            foreach (var byFirst in items
+                .OrderBy(selector1)
+                .GroupBy(selector1))
+            {
+                yield return byFirst;
+            }
+        }
+
+        #endregion
 
         private readonly ISystemRepository _system;
         private readonly IReportUtility _report;

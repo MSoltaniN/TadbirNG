@@ -173,8 +173,8 @@ namespace SPPC.Tadbir.Persistence.Utility
                 }
             }
 
-            predicates.Add(String.Format("FiscalPeriodId = {0}", fiscalPeriodId));
-            predicates.Add(String.Format("VoucherSubjectType != {0}", (int)SubjectType.Draft));
+            predicates.Add(String.Format("v.FiscalPeriodId = {0}", fiscalPeriodId));
+            predicates.Add(String.Format("v.SubjectType <> {0}", (int)SubjectType.Draft));
             if (!String.IsNullOrEmpty(quickFilter))
             {
                 predicates.Add(quickFilter);
