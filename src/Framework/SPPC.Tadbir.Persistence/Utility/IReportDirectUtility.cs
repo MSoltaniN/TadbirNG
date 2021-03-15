@@ -80,8 +80,9 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="gridOptions"></param>
         /// <param name="fiscalPeriodId"></param>
+        /// <param name="branchId"></param>
         /// <returns></returns>
-        string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId);
+        string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId, int? branchId = null);
 
         /// <summary>
         /// به روش آسنکرون، فهرست سطوح قابل استفاده برای گزارشگیری را
@@ -129,6 +130,13 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="itemId"></param>
         /// <returns></returns>
         Task<TreeEntity> GetItemAsync(int viewId, int itemId);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fpId"></param>
+        /// <returns></returns>
+        Task<DateTime> GetFiscalPeriodStartAsync(int fpId);
 
         /// <summary>
         ///

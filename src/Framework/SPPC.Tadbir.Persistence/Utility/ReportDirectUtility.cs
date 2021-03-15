@@ -148,12 +148,17 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="gridOptions"></param>
         /// <param name="fiscalPeriodId"></param>
+        /// <param name="branchId"></param>
         /// <returns></returns>
-        public string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId)
+        public string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId, int? branchId = null)
         {
             var predicates = new List<string>();
             var quickFilter = gridOptions.QuickFilter?.ToString();
-            if (quickFilter == null || quickFilter.IndexOf("BranchId") == -1)
+            if (branchId != null)
+            {
+                predicates.Add(String.Format("BranchId = {0}", branchId));
+            }
+            else if (quickFilter == null || quickFilter.IndexOf("BranchId") == -1)
             {
                 var branchIds = GetChildTree(UserContext.BranchId);
                 string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
@@ -412,6 +417,21 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             return accountItem;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fpId"></param>
+        /// <returns></returns>
+        public async Task<DateTime> GetFiscalPeriodStartAsync(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            return await repository
+                .GetEntityQuery()
+                .Where(fp => fp.Id == fpId)
+                .Select(fp => fp.StartDate)
+                .SingleOrDefaultAsync();
         }
 
         /// <summary>

@@ -57,6 +57,7 @@
     <Compile Remove="Repository\BalanceSheetRepository.cs" />
     <Compile Remove="Repository\InventoryRepository.cs" />
     <Compile Remove="Repository\MetadataDecorator.cs" />
+    <Compile Remove="Repository\ProfitLossRepository.cs" />
     <Compile Remove="Repository\RequisitionRepository.cs" />
     <Compile Remove="Repository\SimpleLoggingRepository.cs" />
     <Compile Remove="Repository\WorkflowRepository.cs" />

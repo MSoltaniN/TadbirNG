@@ -246,6 +246,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<ProfitLossViewModel> CalculateProfitLossAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var profitLoss = new ProfitLossViewModel();
             var grossProfit = await GetGrossProfitItemsAsync(parameters, balanceItems);
             profitLoss.Items.AddRange(grossProfit);
@@ -313,7 +314,79 @@ namespace SPPC.Tadbir.Persistence
         private async Task<ProfitLossItemViewModel> GetPeriodicProductCostItemAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
-            throw new NotImplementedException();
+            var accounts = new List<AccountItemBriefViewModel>();
+            accounts.AddRange(_utility.GetUsableAccounts(
+                AccountCollectionId.ProductInventory, false, parameters.BranchId));
+            int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
+            var startDate = await _utility.GetFiscalPeriodStartAsync(fiscalPeriodId);
+            var paramCopy = parameters.GetCopy();
+            paramCopy.FromDate = startDate;
+            paramCopy.ToDate = startDate;
+            var inventoryItems = await GetReportItemsAsync(
+                accounts, paramCopy, ProfitLossQuery.BalanceTotalSelect,
+                ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
+                DebitCredit, AppStrings.NetRevenue);
+
+            var inventoryItem = inventoryItems.FirstOrDefault();
+            decimal openingInventory = inventoryItem != null ? inventoryItem.PeriodTurnover.Value : 0.0M;
+            var inventoryLines = balanceItems
+                .Select(item => new VoucherLineAmountsViewModel()
+                {
+                    Debit = item.StartBalanceDebit,
+                    Credit = item.StartBalanceCredit
+                });
+            decimal startCost = await GetPeriodicProductCostBalanceAsync(
+                parameters.FromDate, openingInventory, inventoryLines, parameters);
+            var costItem = new ProfitLossItemViewModel()
+            {
+                Account = AppStrings.SoldProductCost,
+                StartBalance = startCost,
+                Balance = startCost
+            };
+
+            if (parameters.ToDate > parameters.FromDate)
+            {
+                inventoryLines = balanceItems
+                    .Select(item => new VoucherLineAmountsViewModel()
+                    {
+                        Debit = item.EndBalanceDebit,
+                        Credit = item.EndBalanceCredit
+                    });
+                decimal endCost = await GetPeriodicProductCostBalanceAsync(
+                    parameters.ToDate, openingInventory, inventoryLines, parameters);
+                costItem.EndBalance = endCost;
+                costItem.Balance = 0.0M;
+                costItem.PeriodTurnover = endCost - startCost;
+            }
+
+            return costItem;
+        }
+
+        private async Task<decimal> GetPeriodicProductCostBalanceAsync(
+            DateTime date, decimal openingInventory, IEnumerable<VoucherLineAmountsViewModel> inventoryLines,
+            ProfitLossParameters parameters)
+        {
+            // Product Cost = Opening Inventory + Net Purchase - Inventory
+            var accounts = new List<AccountItemBriefViewModel>();
+            accounts.AddRange(_utility.GetUsableAccounts(
+                AccountCollectionId.FinalPurchase, false, parameters.BranchId));
+            accounts.AddRange(_utility.GetUsableAccounts(
+                AccountCollectionId.PurchaseRefundDiscount, false, parameters.BranchId));
+
+            int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
+            var startDate = await _utility.GetFiscalPeriodStartAsync(fiscalPeriodId);
+            var paramCopy = parameters.GetCopy();
+            paramCopy.FromDate = startDate;
+            paramCopy.ToDate = date;
+            var purchaseItems = await GetReportItemsAsync(
+                accounts, paramCopy, ProfitLossQuery.BalanceTotalSelect,
+                ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
+                DebitCredit, AppStrings.NetRevenue);
+
+            var purchaseItem = purchaseItems.FirstOrDefault();
+            decimal netPurchase = purchaseItem != null ? purchaseItem.PeriodTurnover.Value : 0.0M;
+            decimal inventory = inventoryLines.Sum(item => item.Debit - item.Credit);
+            return openingInventory + netPurchase - inventory;
         }
 
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetOperationalCostItemsAsync(
@@ -409,7 +482,11 @@ namespace SPPC.Tadbir.Persistence
             string select, string end, string initEnd, string balanceFunc, string account = null)
         {
             string accountFilter = String.Join(" OR ",
-                accounts.Select(acc => String.Format("FullCode LIKE '{0}%'", acc.FullCode)));
+                accounts.Select(acc => String.Format("acc.FullCode LIKE '{0}%'", acc.FullCode)));
+            if (String.IsNullOrEmpty(accountFilter))
+            {
+                return new List<ProfitLossItemViewModel>();
+            }
 
             var filterParams = new List<string>()
                 {
@@ -426,7 +503,7 @@ namespace SPPC.Tadbir.Persistence
                 select, initEnd, balanceFunc, filterParams.ToArray(), parameters);
             var initBalance = DbConsole.ExecuteQuery(query.Query);
 
-            return GetReportItems(initBalance, turnover, balanceFunc);
+            return GetReportItems(initBalance, turnover, account);
         }
 
         private IEnumerable<ProfitLossItemViewModel> GetReportItems(
@@ -445,16 +522,26 @@ namespace SPPC.Tadbir.Persistence
 
             foreach (var row in turnover.Rows.Cast<DataRow>())
             {
+                var balance = _utility.ValueOrDefault<decimal>(row, "Balance");
                 string accountName = _utility.ValueOrDefault(row, "Name") ?? account;
                 var item = items
                     .Where(pli => pli.Account == accountName)
                     .FirstOrDefault();
                 if (item != null)
                 {
-                    var balance = _utility.ValueOrDefault<decimal>(row, "Balance");
                     item.PeriodTurnover = balance;
                     item.EndBalance = item.StartBalance + item.PeriodTurnover;
                     item.Balance = item.StartBalance + item.PeriodTurnover;
+                }
+                else
+                {
+                    items.Add(new ProfitLossItemViewModel()
+                    {
+                        Account = accountName,
+                        PeriodTurnover = balance,
+                        EndBalance = balance,
+                        Balance = balance
+                    });
                 }
             }
 
