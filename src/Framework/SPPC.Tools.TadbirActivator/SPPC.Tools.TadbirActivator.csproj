@@ -92,6 +92,10 @@
       <Project>{18c0b0da-db22-4482-b6b7-b98d4decd8b4}</Project>
       <Name>SPPC.Framework.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj">
+      <Project>{1607d275-f638-4094-8be7-1341ce5a82d6}</Project>
+      <Name>SPPC.Framework.Cryptography</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
       <Project>{10a16ed5-f293-471c-8790-73122cfa1e56}</Project>
       <Name>SPPC.Framework.Interfaces</Name>
@@ -100,16 +104,12 @@
       <Project>{81da88f6-b2af-4568-b56b-35cc3368f850}</Project>
       <Name>SPPC.Framework.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj">
-      <Project>{a6f88800-173b-407b-b3bd-9bbcb0f5adf8}</Project>
-      <Name>SPPC.Framework.Cryptography</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj">
       <Project>{671ADBE3-B49B-4A77-BE4F-326C914C1867}</Project>
       <Name>SPPC.Licensing.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj">
-      <Project>{c61ae91d-386c-4ca8-914e-135752c86e79}</Project>
+      <Project>{db90efcb-6aed-4e39-8d70-4bb740d2bd91}</Project>
       <Name>SPPC.Licensing.Local.Persistence</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj">

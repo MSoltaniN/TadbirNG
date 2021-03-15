@@ -7,7 +7,6 @@ using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Crypto.Prng;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
@@ -95,13 +94,20 @@ namespace SPPC.Framework.Cryptography
             return new X509Certificate2(rawData, password);
         }
 
-        private X509Certificate2 GenerateRoot(string subjectName, ref AsymmetricKeyParameter CaPrivateKey)
+        private static SecureRandom GetSecureRandom()
+        {
+            byte[] seed = RandomGenerator.Generate(32);
+            SecureRandom random = SecureRandom.GetInstance("SHA256PRNG");
+            random.SetSeed(seed);
+            return random;
+        }
+
+        private static X509Certificate2 GenerateRoot(string subjectName, ref AsymmetricKeyParameter caPrivateKey)
         {
             const int keyStrength = 2048;
 
             // Generating Random Numbers
-            CryptoApiRandomGenerator randomGenerator = new CryptoApiRandomGenerator();
-            SecureRandom random = new SecureRandom(randomGenerator);
+            var random = GetSecureRandom();
 
             // The Certificate Generator
             X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
@@ -147,19 +153,18 @@ namespace SPPC.Framework.Cryptography
 #pragma warning restore CS0618 // Type or member is obsolete
             X509Certificate2 x509 = new X509Certificate2(certificate.GetEncoded());
 
-            CaPrivateKey = issuerKeyPair.Private;
+            caPrivateKey = issuerKeyPair.Private;
 
             return x509;
         }
 
-        private X509Certificate2 GenerateSelfSigned(
+        private static X509Certificate2 GenerateSelfSigned(
             string subjectName, string issuerName, AsymmetricKeyParameter issuerPrivKey)
         {
             const int keyStrength = 2048;
 
             // Generating Random Numbers
-            CryptoApiRandomGenerator randomGenerator = new CryptoApiRandomGenerator();
-            SecureRandom random = new SecureRandom(randomGenerator);
+            var random = GetSecureRandom();
 
             // The Certificate Generator
             X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
@@ -213,7 +218,7 @@ namespace SPPC.Framework.Cryptography
             Asn1Sequence seq = (Asn1Sequence)Asn1Object.FromByteArray(info.ParsePrivateKey().GetDerEncoded());
             if (seq.Count != 9)
             {
-                //throw new PemException("malformed sequence in RSA private key");
+                ////throw new PemException("malformed sequence in RSA private key");
             }
 
 #pragma warning disable CS0618 // Type or member is obsolete

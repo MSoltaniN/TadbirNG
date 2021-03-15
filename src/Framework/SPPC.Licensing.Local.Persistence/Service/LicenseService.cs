@@ -7,6 +7,9 @@ using SPPC.Tadbir.Api;
 
 namespace SPPC.Licensing.Service
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class LicenseService : ILicenseService
     {
         /// <summary>
@@ -18,12 +21,22 @@ namespace SPPC.Licensing.Service
             _apiClient = apiClient;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="activation"></param>
+        /// <returns></returns>
         public string GetActivatedLicense(ActivationModel activation)
         {
             Verify.ArgumentNotNull(activation, nameof(activation));
             return _apiClient.Update<ActivationModel, string>(activation, LicenseApi.ActivateLicense);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="licenseCheck"></param>
+        /// <returns></returns>
         public string GetLicense(string licenseCheck)
         {
             Verify.ArgumentNotNullOrEmptyString(licenseCheck, nameof(licenseCheck));
@@ -31,6 +44,11 @@ namespace SPPC.Licensing.Service
             return _apiClient.Get<string>(LicenseApi.License);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         public string InsertCustomer(CustomerModel customer)
         {
             string error = String.Empty;
@@ -44,6 +62,11 @@ namespace SPPC.Licensing.Service
             return error;
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="license"></param>
+        /// <returns></returns>
         public string InsertLicense(LicenseModel license)
         {
             string error = String.Empty;

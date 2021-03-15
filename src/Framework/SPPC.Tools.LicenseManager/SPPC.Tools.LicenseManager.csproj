@@ -85,7 +85,7 @@
       <Name>SPPC.Licensing.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj">
-      <Project>{c61ae91d-386c-4ca8-914e-135752c86e79}</Project>
+      <Project>{db90efcb-6aed-4e39-8d70-4bb740d2bd91}</Project>
       <Name>SPPC.Licensing.Local.Persistence</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj">

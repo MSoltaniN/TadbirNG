@@ -29,7 +29,7 @@ namespace SPPC.Framework.Cryptography
         /// متن کدشده داده شده را تبدیل به آبجکت اولیه می کند
         /// </summary>
         /// <typeparam name="T">نوع کلاس آبجکت مورد نظر برای تبدیل</typeparam>
-        /// <param name="encoded">شکل متنی کدشده داده شده برای تبدیل</param>
+        /// <param name="base64">شکل متنی کدشده داده شده برای تبدیل</param>
         /// <returns>آبجکت تبدیل شده</returns>
         public T Deserialize<T>(string base64)
         {
