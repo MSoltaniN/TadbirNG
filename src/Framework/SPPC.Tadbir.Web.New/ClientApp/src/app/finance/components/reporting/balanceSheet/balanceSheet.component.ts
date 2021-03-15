@@ -17,7 +17,7 @@ import { ViewIdentifierComponent, ReportViewerComponent } from "@sppc/shared/com
 import { ReportManagementComponent } from "@sppc/shared/components/reportManagement/reportManagement.component";
 import { QuickReportSettingComponent } from "@sppc/shared/components/reportManagement/QuickReport-Setting.component";
 import { VoucherService } from "@sppc/finance/service";
-import { QuickReportViewSetting } from "@sppc/shared/components/reportManagement/QuickReportViewSetting";
+import { QuickReportViewSetting } from "@sppc/shared/components/reportManagement/quickReportViewSetting";
 import { BalanceSheetApi } from "@sppc/finance/service/api/balanceSheetApi";
 import { LookupApi } from "@sppc/shared/services/api";
 
