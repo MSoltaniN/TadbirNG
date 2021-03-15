@@ -64,22 +64,32 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityWithTrackingQuery(rep => rep.Parent, rep => rep.LocalReports)
                 .Where(rep => rep.ViewId == viewId)
                 .ToListAsync();
+
+            List<Report> outReports = new List<Report>();
             if (reports.Count > 0)
             {
-                var first = reports[0];
-                var parent = first.Parent;
-                while (parent != null)
+                outReports.AddRange(reports);
+                foreach (var report in reports)
                 {
-                    reports.Add(parent);
-                    await repository.LoadReferenceAsync(parent, rep => rep.Parent);
-                    await repository.LoadCollectionAsync(parent, rep => rep.LocalReports);
-                    parent = parent.Parent;
+                    var first = report;
+                    var parent = first.Parent;
+                    while (parent != null)
+                    {
+                        if (!outReports.Contains(parent))
+                        {
+                            outReports.Add(parent);
+                        }
+
+                        await repository.LoadReferenceAsync(parent, rep => rep.Parent);
+                        await repository.LoadCollectionAsync(parent, rep => rep.LocalReports);
+                        parent = parent.Parent;
+                    }
                 }
 
-                tree = reports
-                    .Select(rep => Mapper.Map<TreeItemViewModel>(rep))
-                    .ToList();
-                Localize(localeId, reports, tree);
+                tree = outReports
+                        .Select(rep => Mapper.Map<TreeItemViewModel>(rep))
+                        .ToList();
+                Localize(localeId, outReports, tree);
             }
 
             return tree;
