@@ -470,12 +470,12 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="withRelations"></param>
         /// <param name="branchId"></param>
         /// <returns></returns>
-        public IEnumerable<AccountItemBriefViewModel> GetUsableAccountsAsync(
+        public IEnumerable<AccountItemBriefViewModel> GetUsableAccounts(
             AccountCollectionId collectionId, bool withRelations = false, int? branchId = null)
         {
             _context.DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             int inBranchId = branchId ?? UserContext.BranchId;
-            var accounts = GetInheritedAccountsAsync(collectionId, inBranchId);
+            var accounts = GetInheritedAccounts(collectionId, inBranchId);
             if (accounts.Count() == 0)
             {
                 return new List<AccountItemBriefViewModel>();
@@ -508,7 +508,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="collectionId"></param>
         /// <param name="branchId"></param>
         /// <returns></returns>
-        public IEnumerable<AccountItemBriefViewModel> GetInheritedAccountsAsync(
+        public IEnumerable<AccountItemBriefViewModel> GetInheritedAccounts(
             AccountCollectionId collectionId, int branchId)
         {
             _context.DbConsole.ConnectionString = UnitOfWork.CompanyConnection;

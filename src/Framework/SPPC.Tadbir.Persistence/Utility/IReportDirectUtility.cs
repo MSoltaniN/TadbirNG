@@ -159,7 +159,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="withRelations"></param>
         /// <param name="branchId"></param>
         /// <returns></returns>
-        IEnumerable<AccountItemBriefViewModel> GetUsableAccountsAsync(
+        IEnumerable<AccountItemBriefViewModel> GetUsableAccounts(
             AccountCollectionId collectionId, bool withRelations = false, int? branchId = null);
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="collectionId"></param>
         /// <param name="branchId"></param>
         /// <returns></returns>
-        IEnumerable<AccountItemBriefViewModel> GetInheritedAccountsAsync(
+        IEnumerable<AccountItemBriefViewModel> GetInheritedAccounts(
             AccountCollectionId collectionId, int branchId);
     }
 }
