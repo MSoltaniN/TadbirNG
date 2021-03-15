@@ -219,7 +219,7 @@ namespace SPPC.Tadbir.Persistence
             DateTime startDate = await GetFiscalStartDateAsync(UserContext.FiscalPeriodId);
             if (startDate != DateTime.MinValue)
             {
-                var accounts = _utility.GetUsableAccountsAsync(collectionId);
+                var accounts = _utility.GetUsableAccounts(collectionId);
                 if (accounts.Count() == 0)
                 {
                     return items;

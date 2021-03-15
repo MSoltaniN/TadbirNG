@@ -856,6 +856,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     left = txtHeaderCell.Left + width;
                     lastWidth = width;
                 }
+
                 txtHeaderCell.GrowToHeight = true;
                 headerBand.Components.Add(txtHeaderCell);
             }

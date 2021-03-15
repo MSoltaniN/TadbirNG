@@ -100,7 +100,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var items = new List<TestBalanceItemViewModel>();
                 int level = accountItem.Level + 1;
-                var filter = String.Format("Level >= {0} AND FullCode LIKE '{1}%'", level, accountItem.FullCode);
+                var filter = String.Format("Level >= {0} AND acc.FullCode LIKE '{1}%'", level, accountItem.FullCode);
                 int length = _utility.GetLevelCodeLength(parameters.ViewId, level);
                 var query = GetLevelQuery(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));

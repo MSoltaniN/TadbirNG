@@ -80,8 +80,9 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="gridOptions"></param>
         /// <param name="fiscalPeriodId"></param>
+        /// <param name="branchId"></param>
         /// <returns></returns>
-        string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId);
+        string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId, int? branchId = null);
 
         /// <summary>
         /// به روش آسنکرون، فهرست سطوح قابل استفاده برای گزارشگیری را
@@ -135,6 +136,13 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// </summary>
         /// <param name="fpId"></param>
         /// <returns></returns>
+        Task<DateTime> GetFiscalPeriodStartAsync(int fpId);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fpId"></param>
+        /// <returns></returns>
         Task<DateTime> GetFiscalPeriodEndAsync(int fpId);
 
         /// <summary>
@@ -159,7 +167,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="withRelations"></param>
         /// <param name="branchId"></param>
         /// <returns></returns>
-        IEnumerable<AccountItemBriefViewModel> GetUsableAccountsAsync(
+        IEnumerable<AccountItemBriefViewModel> GetUsableAccounts(
             AccountCollectionId collectionId, bool withRelations = false, int? branchId = null);
 
         /// <summary>
@@ -168,7 +176,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="collectionId"></param>
         /// <param name="branchId"></param>
         /// <returns></returns>
-        IEnumerable<AccountItemBriefViewModel> GetInheritedAccountsAsync(
+        IEnumerable<AccountItemBriefViewModel> GetInheritedAccounts(
             AccountCollectionId collectionId, int branchId);
     }
 }
