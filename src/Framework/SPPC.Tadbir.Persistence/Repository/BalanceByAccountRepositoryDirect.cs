@@ -132,7 +132,8 @@ namespace SPPC.Tadbir.Persistence.Repository
                 CostCenterFullCode = _utility.ValueOrDefault(row, "CostCenterFullCode"),
                 ProjectFullCode = _utility.ValueOrDefault(row, "ProjectFullCode"),
                 Debit = _utility.ValueOrDefault<decimal>(row, "DebitSum"),
-                Credit = _utility.ValueOrDefault<decimal>(row, "CreditSum")
+                Credit = _utility.ValueOrDefault<decimal>(row, "CreditSum"),
+                BranchName = _utility.ValueOrDefault(row, "BranchName")
             };
         }
 
@@ -271,6 +272,11 @@ namespace SPPC.Tadbir.Persistence.Repository
                 selectBuilder.AppendFormat(", SUBSTRING(prj.FullCode, 1, {0}) AS ProjectFullCode", length);
             }
 
+            if (parameters.IsByBranch)
+            {
+                selectBuilder.Append(", br.Name AS BranchName");
+            }
+
             return selectBuilder.ToString();
         }
 
@@ -292,7 +298,7 @@ namespace SPPC.Tadbir.Persistence.Repository
                     : "LEFT OUTER JOIN";
                 fromBuilder.AppendLine();
                 fromBuilder.AppendFormat(
-                    "   {0} [Finance].[DetailAccount] facc ON facc.DetailAccountID = vl.DetailID", joinType);
+                    "    {0} [Finance].[DetailAccount] facc ON facc.DetailAccountID = vl.DetailID", joinType);
             }
 
             if (parameters.IsSelectedCostCenter)
@@ -313,6 +319,13 @@ namespace SPPC.Tadbir.Persistence.Repository
                 fromBuilder.AppendLine();
                 fromBuilder.AppendFormat(
                     "    {0} [Finance].[Project] prj ON prj.ProjectID = vl.ProjectID", joinType);
+            }
+
+            if (parameters.IsByBranch)
+            {
+                fromBuilder.AppendLine();
+                fromBuilder.Append(
+                    "    INNER JOIN [Corporate].[Branch] br ON br.BranchID = vl.BranchID");
             }
 
             return fromBuilder.ToString();
@@ -474,6 +487,12 @@ namespace SPPC.Tadbir.Persistence.Repository
                     groupClauses.Add(clause);
                     orderClauses.Add(clause);
                 }
+            }
+
+            if (parameters.IsByBranch)
+            {
+                groupClauses.Add("br.BranchID, br.Name");
+                orderClauses.Add("br.BranchID");
             }
 
             groupByBuilder.AppendLine(String.Join(", ", groupClauses));
