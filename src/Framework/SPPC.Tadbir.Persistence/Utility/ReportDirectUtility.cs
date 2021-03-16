@@ -358,24 +358,19 @@ namespace SPPC.Tadbir.Persistence.Utility
         {
             var query = default(ReportQuery);
             string componentName = String.Empty;
-            string fieldName = String.Empty;
             switch (viewId)
             {
                 case ViewId.Account:
                     componentName = typeof(Account).Name;
-                    fieldName = componentName;
                     break;
                 case ViewId.DetailAccount:
                     componentName = typeof(DetailAccount).Name;
-                    fieldName = "Detail";
                     break;
                 case ViewId.CostCenter:
                     componentName = typeof(CostCenter).Name;
-                    fieldName = componentName;
                     break;
                 case ViewId.Project:
                     componentName = typeof(Project).Name;
-                    fieldName = componentName;
                     break;
                 default:
                     break;
