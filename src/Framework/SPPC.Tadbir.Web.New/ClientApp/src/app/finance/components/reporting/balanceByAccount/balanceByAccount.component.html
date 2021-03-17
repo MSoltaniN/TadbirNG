@@ -61,10 +61,10 @@
     <ng-template kendoGridToolbarTemplate>
 
       <div class="report-type sppc-float">
-        <input type="radio" name="rdbReportType" [(ngModel)]="reportType" id="radio1" class="k-radio" value="1" />
+        <input type="radio" name="rdbReportType" [(ngModel)]="reportType" id="radio1" class="k-radio" value="1" (ngModelChange)="onTypeChanged()"/>
         <span>{{ 'Journal.ByDate' | translate }}</span>
         <br />
-        <input type="radio" name="rdbReportType" [(ngModel)]="reportType" class="k-radio" id="radio2" value="2" />
+        <input type="radio" name="rdbReportType" [(ngModel)]="reportType" class="k-radio" id="radio2" value="2" (ngModelChange)="onTypeChanged()"/>
         <span>{{ 'Journal.ByVoucher' | translate }}</span>
       </div>
 
