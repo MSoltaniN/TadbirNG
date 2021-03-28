@@ -3,9 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
 import { BrowserStorageService } from '@sppc/shared/services';
 import { Voucher } from '@sppc/finance/models';
-import { BaseService, FilterExpression } from '@sppc/shared/class';
+import { BaseService, FilterExpression, Filter } from '@sppc/shared/class';
 import { InventoryBalance } from '../models/inventoryBalance';
 import { VoucherApi } from './api';
+import { VoucherStatusResource } from '../enum';
 
 
 export class VoucherInfo implements Voucher {
@@ -121,6 +122,37 @@ export class VoucherService extends BaseService {
 
     return this.http.get(apiUrl, options)
       .map(response => <any>(<Response>response));
+  }
+
+  public getStatusFilter(voucherStatus:string) {
+    let statusFilter: Filter[] = [];    
+    var statusKey = "";
+    switch (voucherStatus) {
+      case "2": {
+        statusFilter.push(new Filter("StatusId", "1", "== {0}", "System.Int32"));
+        statusKey = VoucherStatusResource.NotCommitted;
+        break;
+      }
+      case "3": {
+        statusFilter.push(new Filter("StatusId", "2", "== {0}", "System.Int32"));
+        statusKey = VoucherStatusResource.NotFinalized;
+        break;
+      }
+      case "4": {
+        statusFilter.push(new Filter("ConfirmedById", "", "== null", ""));
+        statusKey = VoucherStatusResource.NotConfirmed;
+        break;
+      }
+      case "5": {
+        statusFilter.push(new Filter("ConfirmedById", "", "!= null", ""));
+        statusFilter.push(new Filter("ApprovedById", "", "== null", ""));
+        statusKey = VoucherStatusResource.NotApproved;
+        break;
+      }
+      default:
+    }
+    
+    return { filter: statusFilter, key: statusKey };
   }
 
 }
