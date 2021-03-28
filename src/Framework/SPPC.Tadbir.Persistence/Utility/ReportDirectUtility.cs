@@ -564,6 +564,8 @@ namespace SPPC.Tadbir.Persistence.Utility
             return query
                 .Replace("Voucher", "v.")
                 .Replace("Date", "v.Date")
+                .Replace("== null", " IS NULL")
+                .Replace("!= null", " IS NOT NULL")
                 .Replace("\"", "'")
                 .Replace("&&", "AND")
                 .Replace("||", "OR")

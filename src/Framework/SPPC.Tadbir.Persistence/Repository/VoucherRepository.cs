@@ -237,7 +237,6 @@ namespace SPPC.Tadbir.Persistence
             where TViewModel : class, new()
         {
             return await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(item => item.SubjectType == (short)SubjectType.Normal)
                 .Select(item => Mapper.Map<TViewModel>(item))
                 .Apply(gridOptions, false)
                 .CountAsync();
