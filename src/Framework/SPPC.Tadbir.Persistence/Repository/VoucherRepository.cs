@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -30,12 +31,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
         /// <param name="utility">امکانات تکمیلی برای کار با مجموعه های حساب را پیاده سازی می کند</param>
+        /// <param name="report"></param>
         public VoucherRepository(IRepositoryContext context, ISystemRepository system,
-            IUserRepository userRepository, IAccountCollectionUtility utility)
+            IUserRepository userRepository, IAccountCollectionUtility utility,
+            IReportDirectUtility report)
             : base(context, system?.Logger)
         {
             _system = system;
             _userRepository = userRepository;
+            _report = report;
             _utility = utility;
         }
 
@@ -47,12 +51,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null)
         {
-            var vouchers = await Repository
-                .GetAllOperationQuery<Voucher>(
-                    ViewId.Voucher, v => v.Lines, v => v.Status, v => v.Branch, v => v.Origin)
-                .OrderBy(item => item.Date)
-                .Select(item => Mapper.Map<VoucherViewModel>(item))
-                .ToListAsync();
+            var vouchers = GetVoucherItems(gridOptions);
             await ReadAsync(gridOptions);
             return new PagedList<VoucherViewModel>(vouchers, gridOptions);
         }
@@ -737,6 +736,24 @@ namespace SPPC.Tadbir.Persistence
             return (vouchersList, await filteredList.CountAsync());
         }
 
+        private static string GetTypeName(short subjectType)
+        {
+            string typeName = SubjectType.Normal.ToString();
+            switch (subjectType)
+            {
+                case (short)SubjectType.Draft:
+                    typeName = SubjectType.Draft.ToString();
+                    break;
+                case (short)SubjectType.Budgeting:
+                    typeName = SubjectType.Budgeting.ToString();
+                    break;
+                default:
+                    break;
+            }
+
+            return typeName;
+        }
+
         private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginId origin)
         {
             var subject = SubjectType.Normal;
@@ -869,8 +886,52 @@ namespace SPPC.Tadbir.Persistence
             voucher.HasNext = nextCount > 0;
         }
 
+        private IEnumerable<VoucherViewModel> GetVoucherItems(GridOptions gridOptions)
+        {
+            var options = gridOptions ?? new GridOptions();
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            string filters = _report.TranslateQuery(_report.GetEnvironmentFilters(
+                gridOptions, UserContext.FiscalPeriodId, null, false));
+            string listQuery = String.Format(VoucherQuery.EnvironmentVouchers, filters);
+            var query = new ReportQuery(listQuery);
+            var result = DbConsole.ExecuteQuery(query.Query);
+            var vouchers = new List<VoucherViewModel>();
+            vouchers.AddRange(result.Rows.Cast<DataRow>()
+                .Select(row => GetVoucherItem(row)));
+            return vouchers;
+        }
+
+        private VoucherViewModel GetVoucherItem(DataRow row)
+        {
+            var subjectType = _report.ValueOrDefault<short>(row, "SubjectType");
+            int confirmedById = _report.ValueOrDefault<int>(row, "ConfirmedById");
+            int approvedById = _report.ValueOrDefault<int>(row, "ApprovedById");
+            var voucherItem = new VoucherViewModel()
+            {
+                Id = _report.ValueOrDefault<int>(row, "VoucherID"),
+                No = _report.ValueOrDefault<int>(row, "No"),
+                Date = _report.ValueOrDefault<DateTime>(row, "Date"),
+                Description = _report.ValueOrDefault(row, "Description"),
+                StatusName = _report.ValueOrDefault(row, "StatusName"),
+                Reference = _report.ValueOrDefault(row, "Reference"),
+                Association = _report.ValueOrDefault(row, "Association"),
+                DailyNo = _report.ValueOrDefault<int>(row, "DailyNo"),
+                IsBalanced = _report.ValueOrDefault<bool>(row, "IsBalanced"),
+                ConfirmerName = _report.ValueOrDefault(row, "ConfirmerName"),
+                ApproverName = _report.ValueOrDefault(row, "ApproverName"),
+                IsConfirmed = confirmedById > 0,
+                IsApproved = approvedById > 0,
+                BranchName = _report.ValueOrDefault(row, "BranchName"),
+                IssuerName = _report.ValueOrDefault(row, "IssuerName"),
+                OriginName = _report.ValueOrDefault(row, "OriginName"),
+                TypeName = GetTypeName(subjectType)
+            };
+            return voucherItem;
+        }
+
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;
+        private readonly IReportDirectUtility _report;
         private readonly IAccountCollectionUtility _utility;
     }
 }

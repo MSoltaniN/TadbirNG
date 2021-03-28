@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
@@ -149,8 +150,10 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="gridOptions"></param>
         /// <param name="fiscalPeriodId"></param>
         /// <param name="branchId"></param>
+        /// <param name="noDraft"></param>
         /// <returns></returns>
-        public string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId, int? branchId = null)
+        public string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId,
+            int? branchId = null, bool noDraft = true)
         {
             var predicates = new List<string>();
             var quickFilter = gridOptions.QuickFilter?.ToString();
@@ -174,7 +177,11 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             predicates.Add(String.Format("v.FiscalPeriodId = {0}", fiscalPeriodId));
-            predicates.Add(String.Format("v.SubjectType <> {0}", (int)SubjectType.Draft));
+            if (noDraft)
+            {
+                predicates.Add(String.Format("v.SubjectType <> {0}", (int)SubjectType.Draft));
+            }
+
             if (!String.IsNullOrEmpty(quickFilter))
             {
                 predicates.Add(quickFilter);
@@ -544,6 +551,24 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             return accounts;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public string TranslateQuery(string query)
+        {
+            Verify.ArgumentNotNull(query, nameof(query));
+            return query
+                .Replace("Date", "v.Date")
+                .Replace("\"", "'")
+                .Replace("&&", "AND")
+                .Replace("||", "OR")
+                .Replace("==", "=")
+                .Replace("!=", "<>")
+                .Replace("BranchId", "v.BranchID");
         }
 
         private IAppUnitOfWork UnitOfWork

@@ -67,6 +67,57 @@ namespace SPPC.Tadbir.Persistence.Repository
                 && item.EndBalance == 0.0M;
         }
 
+        private static string GetFromClause(BalanceByAccountParameters parameters)
+        {
+            var fromBuilder = new StringBuilder(@"FROM [Finance].[Voucher] v
+    INNER JOIN [Finance].[VoucherLine] vl ON v.VoucherID = vl.VoucherID");
+            if (parameters.IsSelectedAccount)
+            {
+                fromBuilder.AppendLine();
+                fromBuilder.Append(
+                    "    INNER JOIN [Finance].[Account] acc ON acc.AccountID = vl.AccountID");
+            }
+
+            if (parameters.IsSelectedDetailAccount)
+            {
+                string joinType = parameters.ViewId == ViewId.DetailAccount
+                    ? "INNER JOIN"
+                    : "LEFT OUTER JOIN";
+                fromBuilder.AppendLine();
+                fromBuilder.AppendFormat(
+                    "    {0} [Finance].[DetailAccount] facc ON facc.DetailAccountID = vl.DetailID", joinType);
+            }
+
+            if (parameters.IsSelectedCostCenter)
+            {
+                string joinType = parameters.ViewId == ViewId.CostCenter
+                    ? "INNER JOIN"
+                    : "LEFT OUTER JOIN";
+                fromBuilder.AppendLine();
+                fromBuilder.AppendFormat(
+                    "    {0} [Finance].[CostCenter] cc ON cc.CostCenterID = vl.CostCenterID", joinType);
+            }
+
+            if (parameters.IsSelectedProject)
+            {
+                string joinType = parameters.ViewId == ViewId.Project
+                    ? "INNER JOIN"
+                    : "LEFT OUTER JOIN";
+                fromBuilder.AppendLine();
+                fromBuilder.AppendFormat(
+                    "    {0} [Finance].[Project] prj ON prj.ProjectID = vl.ProjectID", joinType);
+            }
+
+            if (parameters.IsByBranch)
+            {
+                fromBuilder.AppendLine();
+                fromBuilder.Append(
+                    "    INNER JOIN [Corporate].[Branch] br ON br.BranchID = vl.BranchID");
+            }
+
+            return fromBuilder.ToString();
+        }
+
         private IEnumerable<BalanceByAccountItemViewModel> GetMergedItems(
             DataTable initBalance, DataTable turnover)
         {
@@ -278,57 +329,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
 
             return selectBuilder.ToString();
-        }
-
-        private string GetFromClause(BalanceByAccountParameters parameters)
-        {
-            var fromBuilder = new StringBuilder(@"FROM [Finance].[Voucher] v
-    INNER JOIN [Finance].[VoucherLine] vl ON v.VoucherID = vl.VoucherID");
-            if (parameters.IsSelectedAccount)
-            {
-                fromBuilder.AppendLine();
-                fromBuilder.Append(
-                    "    INNER JOIN [Finance].[Account] acc ON acc.AccountID = vl.AccountID");
-            }
-
-            if (parameters.IsSelectedDetailAccount)
-            {
-                string joinType = parameters.ViewId == ViewId.DetailAccount
-                    ? "INNER JOIN"
-                    : "LEFT OUTER JOIN";
-                fromBuilder.AppendLine();
-                fromBuilder.AppendFormat(
-                    "    {0} [Finance].[DetailAccount] facc ON facc.DetailAccountID = vl.DetailID", joinType);
-            }
-
-            if (parameters.IsSelectedCostCenter)
-            {
-                string joinType = parameters.ViewId == ViewId.CostCenter
-                    ? "INNER JOIN"
-                    : "LEFT OUTER JOIN";
-                fromBuilder.AppendLine();
-                fromBuilder.AppendFormat(
-                    "    {0} [Finance].[CostCenter] cc ON cc.CostCenterID = vl.CostCenterID", joinType);
-            }
-
-            if (parameters.IsSelectedProject)
-            {
-                string joinType = parameters.ViewId == ViewId.Project
-                    ? "INNER JOIN"
-                    : "LEFT OUTER JOIN";
-                fromBuilder.AppendLine();
-                fromBuilder.AppendFormat(
-                    "    {0} [Finance].[Project] prj ON prj.ProjectID = vl.ProjectID", joinType);
-            }
-
-            if (parameters.IsByBranch)
-            {
-                fromBuilder.AppendLine();
-                fromBuilder.Append(
-                    "    INNER JOIN [Corporate].[Branch] br ON br.BranchID = vl.BranchID");
-            }
-
-            return fromBuilder.ToString();
         }
 
         private async Task<string> GetWhereClauseAsync(BalanceByAccountParameters parameters)
