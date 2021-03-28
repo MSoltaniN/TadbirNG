@@ -19,9 +19,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
         /// <param name="utility">امکانات تکمیلی برای کار با مجموعه های حساب را پیاده سازی می کند</param>
+        /// <param name="report"></param>
         public DraftVoucherRepository(IRepositoryContext context, ISystemRepository system,
-            IUserRepository userRepository, IAccountCollectionUtility utility)
-            : base(context, system, userRepository, utility)
+            IUserRepository userRepository, IAccountCollectionUtility utility,
+            IReportDirectUtility report)
+            : base(context, system, userRepository, utility, report)
         {
         }
 
