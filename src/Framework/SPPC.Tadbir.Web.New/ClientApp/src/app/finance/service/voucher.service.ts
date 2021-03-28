@@ -127,32 +127,38 @@ export class VoucherService extends BaseService {
   public getStatusFilter(voucherStatus:string) {
     let statusFilter: Filter[] = [];    
     var statusKey = "";
+    var urlKey = "";
+
     switch (voucherStatus) {
       case "2": {
         statusFilter.push(new Filter("StatusId", "1", "== {0}", "System.Int32"));
         statusKey = VoucherStatusResource.NotCommitted;
+        urlKey = "/#/finance/voucher/committed";
         break;
       }
       case "3": {
         statusFilter.push(new Filter("StatusId", "2", "== {0}", "System.Int32"));
         statusKey = VoucherStatusResource.NotFinalized;
+        urlKey = "/#/finance/voucher/finalized";
         break;
       }
       case "4": {
         statusFilter.push(new Filter("ConfirmedById", "", "== null", ""));
         statusKey = VoucherStatusResource.NotConfirmed;
+        urlKey = "/#/finance/voucher/confirmed";
         break;
       }
       case "5": {
         statusFilter.push(new Filter("ConfirmedById", "", "!= null", ""));
         statusFilter.push(new Filter("ApprovedById", "", "== null", ""));
         statusKey = VoucherStatusResource.NotApproved;
+        urlKey = "/#/finance/voucher/approved";
         break;
       }
       default:
     }
     
-    return { filter: statusFilter, key: statusKey };
+    return { filter: statusFilter, key: statusKey, url: urlKey };
   }
 
 }
