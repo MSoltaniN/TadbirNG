@@ -562,6 +562,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         {
             Verify.ArgumentNotNull(query, nameof(query));
             return query
+                .Replace("Voucher", "v.")
                 .Replace("Date", "v.Date")
                 .Replace("\"", "'")
                 .Replace("&&", "AND")

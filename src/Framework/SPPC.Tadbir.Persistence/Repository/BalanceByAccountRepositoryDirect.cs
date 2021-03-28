@@ -277,6 +277,11 @@ namespace SPPC.Tadbir.Persistence.Repository
         private Dictionary<string, string> GetItemLookup(
             int length, string componentName, IEnumerable<string> fullCodes)
         {
+            if (fullCodes.Count() == 0)
+            {
+                return new Dictionary<string, string>();
+            }
+
             string fullCodeList = String.Join(",", fullCodes
                 .Where(item => item != null)
                 .Distinct()
