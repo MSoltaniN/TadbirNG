@@ -1053,7 +1053,11 @@
     "NormalVoucherAccessDenied": "مجوز دسترسی به اسناد عادی وجود ندارد",
     "DraftVoucherAccessDenied": "مجوز دسترسی به اسناد پیش نویس وجود ندارد",
     "NormalVoucher": "سند عادی",
-    "DraftVoucher": "سند پیش نویس"
+    "DraftVoucher": "سند پیش نویس",
+    "ConfirmedVouchers": "اسناد تایید نشده",
+    "ApprovedVouchers": "اسناد تصویب نشده",
+    "CommittedVouchers": "اسناد ثبت نشده",
+    "FinalizedVouchers": "اسناد ثبت قطعی نشده"    
   },
   "User": {
     "New": "کاربر جدید",

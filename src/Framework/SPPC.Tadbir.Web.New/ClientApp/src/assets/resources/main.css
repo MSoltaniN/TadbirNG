@@ -466,3 +466,7 @@ body.tRtl .sppc-input-num {
   text-decoration: underline!important;
 }
 
+.k-link.lbl {
+  padding-left: 5px!important;
+  padding-right: 8px!important;
+}
