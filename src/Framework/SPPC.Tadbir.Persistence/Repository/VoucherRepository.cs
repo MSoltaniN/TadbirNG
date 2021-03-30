@@ -889,8 +889,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var options = gridOptions ?? new GridOptions();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            string filters = _report.TranslateQuery(_report.GetEnvironmentFilters(
-                gridOptions, UserContext.FiscalPeriodId, null, false));
+            string filters = _report.TranslateQuery(GetEnvironmentFilters(gridOptions));
             string listQuery = String.Format(VoucherQuery.EnvironmentVouchers, filters);
             var query = new ReportQuery(listQuery);
             var result = DbConsole.ExecuteQuery(query.Query);
@@ -898,6 +897,20 @@ namespace SPPC.Tadbir.Persistence
             vouchers.AddRange(result.Rows.Cast<DataRow>()
                 .Select(row => GetVoucherItem(row)));
             return vouchers;
+        }
+
+        private string GetEnvironmentFilters(GridOptions gridOptions)
+        {
+            var predicates = new List<string>
+            {
+                String.Format("v.FiscalPeriodID = {0}", UserContext.FiscalPeriodId)
+            };
+            if (gridOptions.QuickFilter != null)
+            {
+                predicates.Add(gridOptions.QuickFilter.ToString());
+            }
+
+            return String.Join(",", predicates);
         }
 
         private VoucherViewModel GetVoucherItem(DataRow row)

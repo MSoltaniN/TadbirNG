@@ -83,7 +83,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="branchId"></param>
         /// <param name="noDraft"></param>
         /// <returns></returns>
-        string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId,
+        string GetEnvironmentFilters(GridOptions gridOptions = null, int? fiscalPeriodId = null,
             int? branchId = null, bool noDraft = true);
 
         /// <summary>
