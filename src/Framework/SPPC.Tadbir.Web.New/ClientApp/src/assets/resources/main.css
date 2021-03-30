@@ -462,3 +462,7 @@ body.tRtl .sppc-input-num {
 .sppc-switch.k-switch[dir="rtl"] .k-switch-label-on {
   right: -45px !important;
 }
+.tostrlink {
+  text-decoration: underline!important;
+}
+

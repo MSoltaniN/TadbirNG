@@ -52,7 +52,7 @@ export class BaseComponent extends EnviromentComponent {
 
     switch (type) {
       case MessageType.Info:
-        this.toastrService.info(text, title, { positionClass: posCss, enableHtml: true });
+        this.toastrService.info(text, title, { positionClass: posCss, enableHtml: true,disableTimeOut:true });
         break;
       case MessageType.Warning:
         this.toastrService.warning(text, title, { positionClass: posCss, enableHtml: true  });
