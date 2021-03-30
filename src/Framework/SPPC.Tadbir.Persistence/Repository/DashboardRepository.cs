@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
@@ -22,14 +22,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی و شعب را تعریف می کند</param>
-        /// <param name="utility">امکان کار با مجموعه حساب ها را فراهم می کند</param>
-        public DashboardRepository(IRepositoryContext context,
-            ISecureRepository repository, IAccountCollectionUtility utility)
+        /// <param name="report"></param>
+        public DashboardRepository(IRepositoryContext context, IReportDirectUtility report)
             : base(context)
         {
-            _repository = repository;
-            _utility = utility;
+            _report = report;
         }
 
         /// <summary>
@@ -43,42 +40,22 @@ namespace SPPC.Tadbir.Persistence
             var currentPeriod = await repository.GetByIDAsync(UserContext.FiscalPeriodId);
             var monthEnum = new MonthEnumerator(currentPeriod.StartDate, currentPeriod.EndDate, calendar);
             var months = monthEnum.GetMonths();
-            return new DashboardSummariesViewModel();
-            ////{
-            ////    LiquidRatio = await CalculateLiquidRatioAsync(),
-            ////    UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
-            ////    BankBalance = await CalculateBankBalanceAsync(),
-            ////    CashierBalance = await CalculateCashierBalanceAsync(),
-            ////    NetSales = await GetMonthlyNetSalesAsync(months),
-            ////    GrossSales = await GetMonthlyGrossSalesAsync(months)
-            ////};
+            return new DashboardSummariesViewModel()
+            {
+                LiquidRatio = CalculateLiquidRatio(),
+                UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
+                BankBalance = GetCollectionBalance(AccountCollectionId.Bank),
+                CashierBalance = GetCollectionBalance(AccountCollectionId.Cashier),
+                NetSales = GetMonthlyNetSales(months),
+                GrossSales = GetMonthlyGrossSales(months)
+            };
         }
 
-        private static decimal CalculateBalance(IEnumerable<VoucherLineAmountsViewModel> amounts)
+        private decimal CalculateLiquidRatio()
         {
-            decimal debitSum = amounts.Sum(am => am.Debit);
-            decimal creditSum = amounts.Sum(am => am.Credit);
-            return debitSum - creditSum;
-        }
-
-        private async Task<decimal> CalculateBankBalanceAsync()
-        {
-            var amounts = await GetAccountSetAmountsAsync(AccountCollectionId.Bank);
-            return CalculateBalance(amounts);
-        }
-
-        private async Task<decimal> CalculateCashierBalanceAsync()
-        {
-            var amounts = await GetAccountSetAmountsAsync(AccountCollectionId.Cashier);
-            return CalculateBalance(amounts);
-        }
-
-        private async Task<decimal> CalculateLiquidRatioAsync()
-        {
-            var assetAmounts = await GetAccountSetAmountsAsync(AccountCollectionId.LiquidAssets);
-            var liabilityAmounts = await GetAccountSetAmountsAsync(AccountCollectionId.LiquidLiabilities);
-            decimal liquidAssets = CalculateBalance(assetAmounts);
-            decimal liquidLiabilities = Math.Max(1.0M, Math.Abs(CalculateBalance(liabilityAmounts)));
+            decimal liquidAssets = GetCollectionBalance(AccountCollectionId.LiquidAssets);
+            decimal liquidLiabilities = Math.Max(1.0M, Math.Abs(
+                GetCollectionBalance(AccountCollectionId.LiquidLiabilities)));
             decimal liquidRatio = Math.Round(liquidAssets / liquidLiabilities, 2);
             return liquidRatio;
         }
@@ -86,10 +63,11 @@ namespace SPPC.Tadbir.Persistence
         private async Task<int> GetUnbalancedVoucherCountAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            return await repository.GetCountByCriteriaAsync(v => !v.IsBalanced);
+            return await repository.GetCountByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId && !v.IsBalanced);
         }
 
-        private async Task<DashboardChartSeriesViewModel> GetMonthlyNetSalesAsync(
+        private DashboardChartSeriesViewModel GetMonthlyNetSales(
             IEnumerable<MonthInfo> months)
         {
             var series = new DashboardChartSeriesViewModel()
@@ -99,7 +77,7 @@ namespace SPPC.Tadbir.Persistence
             };
             foreach (var month in months)
             {
-                decimal netSales = await GetNetSalesAsync(month.Start, month.End);
+                decimal netSales = GetNetSales(month.Start, month.End);
                 series.Points.Add(new DashboardChartPointViewModel()
                 {
                     XValue = month.Name,
@@ -110,9 +88,10 @@ namespace SPPC.Tadbir.Persistence
             return series;
         }
 
-        private async Task<DashboardChartSeriesViewModel> GetMonthlyGrossSalesAsync(
+        private DashboardChartSeriesViewModel GetMonthlyGrossSales(
             IEnumerable<MonthInfo> months)
         {
+            var accounts = _report.GetUsableAccounts(AccountCollectionId.Sales);
             var series = new DashboardChartSeriesViewModel()
             {
                 Title = "GrossMonthlySalesChartTitle",
@@ -120,7 +99,7 @@ namespace SPPC.Tadbir.Persistence
             };
             foreach (var month in months)
             {
-                decimal grossSales = await GetGrossSalesAsync(month.Start, month.End);
+                decimal grossSales = GetCollectionBalance(accounts, month.Start, month.End);
                 series.Points.Add(new DashboardChartPointViewModel()
                 {
                     XValue = month.Name,
@@ -131,52 +110,62 @@ namespace SPPC.Tadbir.Persistence
             return series;
         }
 
-        private async Task<decimal> GetNetSalesAsync(DateTime fromDate, DateTime toDate)
+        private decimal GetNetSales(DateTime fromDate, DateTime toDate)
         {
-            decimal grossSales = await GetGrossSalesAsync(fromDate, toDate);
-            var deficitAccounts = await GetSalesDeficitAccountsAsync();
-            var amounts = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
-                .Where(line => deficitAccounts.Any(item => line.Account.FullCode.StartsWith(item.FullCode))
-                    && line.Voucher.Date.IsBetween(fromDate, toDate))
-                .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
-                .ToListAsync();
-            decimal deficit = amounts.Sum(am => am.Debit);
-            return grossSales - deficit;
+            var salesAccounts = _report.GetUsableAccounts(AccountCollectionId.Sales);
+            decimal grossSales = GetCollectionBalance(salesAccounts, fromDate, toDate);
+            var reducerAccounts = GetSalesReducerAccounts();
+            decimal refundDiscount = GetCollectionBalance(reducerAccounts, fromDate, toDate);
+            return grossSales - refundDiscount;
         }
 
-        private async Task<decimal> GetGrossSalesAsync(DateTime fromDate, DateTime toDate)
+        private IEnumerable<AccountItemBriefViewModel> GetSalesReducerAccounts()
         {
-            var salesAccounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.Sales);
-            var amounts = await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
-                .Where(line => salesAccounts.Any(item => line.AccountId == item.Id)
-                    && line.Voucher.Date.IsBetween(fromDate, toDate))
-                .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
-                .ToListAsync();
-            return amounts.Sum(am => am.Credit);
-        }
-
-        private async Task<IEnumerable<Account>> GetSalesDeficitAccountsAsync()
-        {
-            var deficitAccounts = new List<Account>();
-            deficitAccounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.SalesRefund));
-            deficitAccounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.SalesDiscount));
+            var deficitAccounts = new List<AccountItemBriefViewModel>();
+            deficitAccounts.AddRange(_report.GetUsableAccounts(AccountCollectionId.SalesRefund));
+            deficitAccounts.AddRange(_report.GetUsableAccounts(AccountCollectionId.SalesDiscount));
             return deficitAccounts;
         }
 
-        private async Task<IEnumerable<VoucherLineAmountsViewModel>> GetAccountSetAmountsAsync(
-            AccountCollectionId collectionId)
+        private decimal GetCollectionBalance(AccountCollectionId collectionId)
         {
-            var accounts = await _utility.GetUsableAccountsAsync(collectionId);
-            return await _repository
-                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine)
-                .Where(line => accounts.Any(item => line.AccountId == item.Id))
-                .Select(line => Mapper.Map<VoucherLineAmountsViewModel>(line))
-                .ToListAsync();
+            var accounts = _report.GetUsableAccounts(collectionId);
+            return GetCollectionBalance(accounts);
         }
 
-        private readonly ISecureRepository _repository;
-        private readonly IAccountCollectionUtility _utility;
+        private decimal GetCollectionBalance(IEnumerable<AccountItemBriefViewModel> accounts,
+            DateTime? from = null, DateTime? to = null)
+        {
+            decimal balance = 0.0M;
+            var reportQuery = default(ReportQuery);
+            if (accounts.Count() > 0)
+            {
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+                var filterBuilder = new StringBuilder(_report.GetEnvironmentFilters());
+                filterBuilder.AppendFormat(" AND vl.AccountID IN({0})",
+                    String.Join(",", accounts.Select(acc => acc.Id)));
+                filterBuilder.Replace("BranchId", "vl.BranchID");
+                if (from == null || to == null)
+                {
+                    reportQuery = new ReportQuery(String.Format(
+                        DashboardQuery.CollectionBalance, filterBuilder.ToString()));
+                }
+                else
+                {
+                    var query = new ReportQuery(String.Format(
+                        DashboardQuery.CollectionBalanceByDate, from, to, filterBuilder.ToString()));
+                }
+
+                var result = DbConsole.ExecuteQuery(reportQuery.Query);
+                if (result.Rows.Count > 0)
+                {
+                    balance = _report.ValueOrDefault<decimal>(result.Rows[0], "Balance");
+                }
+            }
+
+            return balance;
+        }
+
+        private readonly IReportDirectUtility _report;
     }
 }

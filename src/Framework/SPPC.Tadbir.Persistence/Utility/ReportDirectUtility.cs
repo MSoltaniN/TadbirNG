@@ -152,11 +152,12 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="branchId"></param>
         /// <param name="noDraft"></param>
         /// <returns></returns>
-        public string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId,
+        public string GetEnvironmentFilters(GridOptions gridOptions = null, int? fiscalPeriodId = null,
             int? branchId = null, bool noDraft = true)
         {
             var predicates = new List<string>();
-            var quickFilter = gridOptions.QuickFilter?.ToString();
+            int fpId = fiscalPeriodId ?? UserContext.FiscalPeriodId;
+            var quickFilter = gridOptions?.QuickFilter?.ToString();
             if (branchId != null)
             {
                 predicates.Add(String.Format("BranchId = {0}", branchId));
@@ -176,7 +177,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 }
             }
 
-            predicates.Add(String.Format("v.FiscalPeriodId = {0}", fiscalPeriodId));
+            predicates.Add(String.Format("v.FiscalPeriodId = {0}", fpId));
             if (noDraft)
             {
                 predicates.Add(String.Format("v.SubjectType <> {0}", (int)SubjectType.Draft));
