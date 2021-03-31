@@ -130,7 +130,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       var myDate = new Date(dateValue + ' ' + '23:59:59');
     }
     else {
-      myDate = new Date(dateValue + ' ' + '00:00:01');
+      myDate = new Date(dateValue + ' ' + '00:00:00');
     }
     return moment(myDate).format('YYYY/MM/DD HH:mm:ss');
   }
