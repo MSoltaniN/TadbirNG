@@ -199,7 +199,7 @@
                             [valuePrimitive]="true"
                             [value]="voucherStatusSelected"
                             [(ngModel)]="voucherStatusSelected"
-                            (ngModelChange)="changeParam()">
+                            (ngModelChange)="onChangeVoucherStatus();changeParam()">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
