@@ -910,7 +910,7 @@ namespace SPPC.Tadbir.Persistence
                 predicates.Add(gridOptions.QuickFilter.ToString());
             }
 
-            return String.Join(",", predicates);
+            return String.Join(" AND ", predicates);
         }
 
         private VoucherViewModel GetVoucherItem(DataRow row)

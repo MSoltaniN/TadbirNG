@@ -100,7 +100,7 @@ CREATE TABLE [Metadata].[View] (
     [ViewID]                 INT              IDENTITY (1, 1) NOT NULL,
     [Name]                   VARCHAR(64)      NOT NULL,
     [EntityName]             NVARCHAR(64)     NOT NULL,
-    [EntityType]             NVARCHAR(32)     NOT NULL,
+    [EntityType]             NVARCHAR(32)     NULL,
     [IsHierarchy]            BIT              NOT NULL,
     [IsCartableIntegrated]   BIT              NOT NULL,
     [FetchUrl]               NVARCHAR(512)    NOT NULL,
