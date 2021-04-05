@@ -30,13 +30,14 @@ namespace SPPC.Tadbir.Persistence
             {
                 builder = builder
                     .Replace("Voucher", "v.")
+                    .Replace('"', '\'')
                     .Replace("== null", " IS NULL")
                     .Replace("!= null", " IS NOT NULL")
                     .Replace("==", " =")
                     .Replace("!=", " <>")
                     .Replace(">=", " >=")
                     .Replace("<=", " <=")
-                    .Replace("BranchId", "vl.BranchId")
+                    .Replace("BranchId", "vl.BranchID")
                     .Replace("Level", "acc.Level")
                     .Replace("Mark", "vl.Mark")
                     .Replace("&&", "AND")

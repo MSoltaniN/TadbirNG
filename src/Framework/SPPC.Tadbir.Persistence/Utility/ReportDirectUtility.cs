@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
@@ -149,11 +150,14 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="gridOptions"></param>
         /// <param name="fiscalPeriodId"></param>
         /// <param name="branchId"></param>
+        /// <param name="noDraft"></param>
         /// <returns></returns>
-        public string GetEnvironmentFilters(GridOptions gridOptions, int fiscalPeriodId, int? branchId = null)
+        public string GetEnvironmentFilters(GridOptions gridOptions = null, int? fiscalPeriodId = null,
+            int? branchId = null, bool noDraft = true)
         {
             var predicates = new List<string>();
-            var quickFilter = gridOptions.QuickFilter?.ToString();
+            int fpId = fiscalPeriodId ?? UserContext.FiscalPeriodId;
+            var quickFilter = gridOptions?.QuickFilter?.ToString();
             if (branchId != null)
             {
                 predicates.Add(String.Format("BranchId = {0}", branchId));
@@ -173,8 +177,12 @@ namespace SPPC.Tadbir.Persistence.Utility
                 }
             }
 
-            predicates.Add(String.Format("v.FiscalPeriodId = {0}", fiscalPeriodId));
-            predicates.Add(String.Format("v.SubjectType <> {0}", (int)SubjectType.Draft));
+            predicates.Add(String.Format("v.FiscalPeriodId = {0}", fpId));
+            if (noDraft)
+            {
+                predicates.Add(String.Format("v.SubjectType <> {0}", (int)SubjectType.Draft));
+            }
+
             if (!String.IsNullOrEmpty(quickFilter))
             {
                 predicates.Add(quickFilter);
@@ -358,24 +366,19 @@ namespace SPPC.Tadbir.Persistence.Utility
         {
             var query = default(ReportQuery);
             string componentName = String.Empty;
-            string fieldName = String.Empty;
             switch (viewId)
             {
                 case ViewId.Account:
                     componentName = typeof(Account).Name;
-                    fieldName = componentName;
                     break;
                 case ViewId.DetailAccount:
                     componentName = typeof(DetailAccount).Name;
-                    fieldName = "Detail";
                     break;
                 case ViewId.CostCenter:
                     componentName = typeof(CostCenter).Name;
-                    fieldName = componentName;
                     break;
                 case ViewId.Project:
                     componentName = typeof(Project).Name;
-                    fieldName = componentName;
                     break;
                 default:
                     break;
@@ -549,6 +552,27 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             return accounts;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public string TranslateQuery(string query)
+        {
+            Verify.ArgumentNotNull(query, nameof(query));
+            return query
+                .Replace("Voucher", "v.")
+                .Replace("Date", "v.Date")
+                .Replace("== null", " IS NULL")
+                .Replace("!= null", " IS NOT NULL")
+                .Replace("\"", "'")
+                .Replace("&&", "AND")
+                .Replace("||", "OR")
+                .Replace("==", "=")
+                .Replace("!=", "<>")
+                .Replace("BranchId", "v.BranchID");
         }
 
         private IAppUnitOfWork UnitOfWork

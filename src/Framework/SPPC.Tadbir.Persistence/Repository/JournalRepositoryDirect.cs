@@ -762,7 +762,7 @@ namespace SPPC.Tadbir.Persistence
         private void ApplyEnvironmentFilters(ReportQuery query, GridOptions gridOptions)
         {
             string environmentFilter = String.Empty;
-            string fpFilter = String.Format(" FiscalPeriodId = {0}", UserContext.FiscalPeriodId);
+            string fpFilter = String.Format(" v.FiscalPeriodID = {0}", UserContext.FiscalPeriodId);
             var quickFilter = gridOptions.QuickFilter?.ToString();
             if (quickFilter != null && quickFilter.IndexOf("BranchId") != -1)
             {
@@ -775,13 +775,13 @@ namespace SPPC.Tadbir.Persistence
                 if (!String.IsNullOrEmpty(branchList))
                 {
                     environmentFilter = String.Format(
-                        "{0} AND (BranchId = {1} OR BranchId IN({2}))",
+                        "{0} AND (BranchID = {1} OR BranchID IN({2}))",
                         fpFilter, UserContext.BranchId, branchList);
                 }
                 else
                 {
                     environmentFilter = String.Format(
-                        "{0} AND BranchId = {1}", fpFilter, UserContext.BranchId);
+                        "{0} AND BranchID = {1}", fpFilter, UserContext.BranchId);
                 }
             }
 

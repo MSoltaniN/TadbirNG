@@ -6,7 +6,7 @@
 
 <report-viewer id='compviewer'></report-viewer>
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-                   [Filter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl" [MetadataType]="metadataType"></report-management>
+                    [Filter]="defaultFilter" [QuickFilter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl" [MetadataType]="metadataType"></report-management>
 
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
 <report-setting></report-setting>
@@ -129,7 +129,7 @@
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-2 voucher-top-filter">
-        <kendo-dropdownlist [data]="voucherTypeList" class="ddl-type"
+        <kendo-dropdownlist [data]="voucherTypeList" style="width:100%" class="ddl-type"
                             [textField]="'value'"
                             [valueField]="'key'"
                             [valuePrimitive]="true"
@@ -138,6 +138,12 @@
                             [(ngModel)]="selectedSubjectType"
                             [ngModelOptions]="{standalone: true}">
         </kendo-dropdownlist>
+      </div>
+      <div *ngIf="voucherStatusTypeSelected == true" class="col-xs-12 col-sm-2 k-indicator-container voucher-top-filter">
+        <div class="k-grid-draggable-header k-group-indicator" style="touch-action: none;padding-right: 0px;">
+          <span class="k-link lbl">{{ voucherStatusTypeLabel }}</span>
+          <a class="k-button k-button-icon k-bare" href="/#/finance/voucher" ><span class="k-icon k-i-group-delete"></span></a>
+         </div>
       </div>
     </ng-template>
 

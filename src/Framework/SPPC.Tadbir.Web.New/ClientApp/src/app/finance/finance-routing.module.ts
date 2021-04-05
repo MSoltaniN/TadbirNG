@@ -40,7 +40,8 @@ const routes: Routes = [{
     { path: 'detailAccount', component: DetailAccountComponent },
     { path: 'projects', component: ProjectComponent },
     { path: 'profit-loss', component: ProfitLostComponent },
-    { path: 'voucher', component: VoucherComponent },
+    { path: 'voucher', component: VoucherComponent },    
+    { path: 'voucher/:mode', component: VoucherComponent },
     { path: 'vouchers/:mode', component: VoucherEditorComponent,
       data: { viewId: ViewName.Voucher },
       resolve: {

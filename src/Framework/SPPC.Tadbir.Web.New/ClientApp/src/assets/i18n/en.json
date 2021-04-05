@@ -55,8 +55,8 @@
     "SelectedItems": "selected items",
     "TreeLevelsAreTooDeep": "Tree levels deeper than {0} is not allowed.",
     "IncorrectFileFormat": "The file format is incorrect",
-    "UploadSuccessful": "Upload Successful",
-    "VoucherNumberByStatus": "The system has {0} {1} vouchers.",
+    "UploadSuccessful": "Upload Successful",    
+    "VoucherNumberByStatus": "<a class='tostrlink' href='{2}'>The system has {0} {1} vouchers</a>",
     "OperationSuccessful": "Operation successful",
     "VoucherDeleteConfirm": "are you sure to delete voucher?",
     "DeleteOperationSuccessful": "delete operation successful"
@@ -935,7 +935,11 @@
     "NormalVoucherAccessDenied": "There is no permission to access all normal vouchers",
     "DraftVoucherAccessDenied": "There is no permission to access all draft vouchers",
     "NormalVoucher": "Normal Voucher",
-    "DraftVoucher": "Draft Voucher"
+    "DraftVoucher": "Draft Voucher",
+    "ConfirmedVouchers": "Unconfirmed Vouchers",
+    "ApprovedVouchers": "Unapproved Vouchers",
+    "CommittedVouchers": "Uncommitted Vouchers",
+    "FinalizedVouchers": "Unfinalized Vouchers"
   },
   "User": {
     "New": "New User",

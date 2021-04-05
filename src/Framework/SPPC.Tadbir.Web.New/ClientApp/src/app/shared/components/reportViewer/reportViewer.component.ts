@@ -234,16 +234,27 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
         var registerData = false;
         if (quickReportViewInfo) {
-          var dateColumns = quickReportViewInfo.columns.filter(c => c.dataType && c.dataType.toLowerCase() === "system.datetime");
+          var dateColumns = quickReportViewInfo.columns.filter(c => c.dataType && (c.dataType.toLowerCase() === "system.datetime"
+            || c.dataType.toLowerCase() === "system.date"));
+
+          var timeSpanColumns = quickReportViewInfo.columns.filter(c => c.dataType && (c.dataType.toLowerCase() === "system.timespan"));
+          var boolColumns = quickReportViewInfo.columns.filter(c => c.dataType && (c.dataType.toLowerCase() === "system.boolean"));
+
           if (dateColumns.length > 0 && this.CurrentLanguage == "fa") {
             var convertedData = reportRows;
             convertedData = this.convertToShamsiDate(convertedData, dateColumns);
+            convertedData = this.formatTimeSpan(convertedData, timeSpanColumns);
+            convertedData = this.formatBoolean(convertedData, boolColumns);
+
             this.report.regData("data", "data", convertedData);
             registerData = true;
           }
           else if (dateColumns.length > 0) {
             var convertedData = reportRows;
             convertedData = this.convertToMiladiDate(convertedData, dateColumns);
+            convertedData = this.formatTimeSpan(convertedData, timeSpanColumns);
+            convertedData = this.formatBoolean(convertedData, boolColumns);
+
             this.report.regData("data", "data", convertedData);
             registerData = true;
           }
@@ -310,6 +321,39 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         if (rows[index][item.name]) {
           let momentDate = moment(rows[index][item.name]).locale('fa').format("YYYY/MM/DD");
           rows[index][item.name] = momentDate;
+        }
+      })
+
+
+    }
+    return rows;
+  }
+
+  formatTimeSpan(rows: any, cols: Array<QuickReportColumnConfig>) {
+
+    for (var index = 0; index < rows.length; index++) {
+      cols.forEach(function (item) {
+        if (rows[index][item.name]) {
+          var time = (rows[index][item.name]).toString().split('.')[0];          
+          rows[index][item.name] = time;
+        }
+      })
+    }
+    return rows;
+  }
+
+  formatBoolean(rows: any, cols: Array<QuickReportColumnConfig>) {
+    let trueText = this.getText('Report.TrueLabel');
+    let falseText = this.getText('Report.FalseLabel');
+
+    for (var index = 0; index < rows.length; index++) {
+      cols.forEach(function (item) {
+        if (rows[index][item.name] != null) {          
+          if (rows[index][item.name] == true)
+            rows[index][item.name] = trueText;
+
+          if (rows[index][item.name] == false)
+            rows[index][item.name] = falseText;
         }
       })
     }

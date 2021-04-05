@@ -305,8 +305,12 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<Account, AccountFullDataViewModel>()
                 .ForMember(dest => dest.Account, opt => opt.MapFrom(src => src))
-                .ForMember(dest => dest.CustomerTaxInfo, opt => opt.MapFrom(src => src.CustomerTaxInfo != null ? src.CustomerTaxInfo : new CustomerTaxInfo()))
-                .ForMember(dest => dest.AccountOwner, opt => opt.MapFrom(src => src.AccountOwner != null ? src.AccountOwner : new AccountOwner()));
+                .ForMember(dest => dest.CustomerTaxInfo,
+                    opt => opt.MapFrom(src => src.CustomerTaxInfo ?? new CustomerTaxInfo()))
+                .ForMember(dest => dest.AccountOwner,
+                    opt => opt.MapFrom(src => src.AccountOwner ?? new AccountOwner()));
+
+            mapperConfig.CreateMap<BalanceByAccountItemViewModel, FullAccountCodeBranch>();
         }
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)

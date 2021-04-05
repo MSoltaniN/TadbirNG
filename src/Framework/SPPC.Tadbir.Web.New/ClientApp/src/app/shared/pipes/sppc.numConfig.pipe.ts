@@ -30,7 +30,7 @@ export class SppcNumConfigPipe implements PipeTransform {
         result = this.setSeperator(value, config.separatorSymbol);
       }
     }
-    if (parseInt(value) > 0 && hasDecimal) {
+    if (parseInt(value) != 0 && parseInt(value) != NaN && hasDecimal) {
       result = this.setDecimalPrecision(result, config);
     }
 

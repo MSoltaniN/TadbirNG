@@ -9,7 +9,7 @@
 <app-bread-cumb [entityTypeName]="'Journal'"></app-bread-cumb>
 <!--<report-viewer id='compviewer'></report-viewer>-->
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-[Filter]="reportFilter" [RowData]="rowData" ></report-management>
+[Filter]="currentFilter" [QuickFilter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl" ></report-management>
 <report-setting></report-setting>
 <div class="panel-body">  
   <kendo-grid id="{{viewId}}"
@@ -199,7 +199,7 @@
                             [valuePrimitive]="true"
                             [value]="voucherStatusSelected"
                             [(ngModel)]="voucherStatusSelected"
-                            (ngModelChange)="changeParam()">
+                            (ngModelChange)="onChangeVoucherStatus();changeParam()">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
