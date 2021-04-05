@@ -1,8 +1,27 @@
 version: '3.4'
 
+volumes:
+ productdata:
+ 
+networks:
+ frontend:
+ backend:
+
 services:
-  sppc.tadbir.web.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
+
+ sppcTadbirDB:
+  ports: 
+    - 14433:1433
+
+ sppc.tadbir.web.api:
+  environment:
+   - ASPNETCORE_ENVIRONMENT=Development
+   - ASPNETCORE_URLS=http://+:80
+  ports:
+   - 3000:80
+  
+ loadBalancer:
+  profiles:
+   - donotstart
+
+ sppcTadbirWebNew:

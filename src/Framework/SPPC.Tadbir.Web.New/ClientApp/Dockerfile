@@ -1,10 +1,9 @@
-FROM node:12 
-#AS build
-EXPOSE 3000
+### STAGE 1: Build ### 
+ #node:12 node:15.8.0-alpine3.10
+FROM node:15.8.0-alpine3.10 AS build
 
 # Create app directory
 WORKDIR /usr/src/app
-
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -28,12 +27,15 @@ RUN npm install -g @angular/cli@6.2.9
 COPY . .
 #COPY /dist .
 
-#RUN ng build --prod --output-path=dist
-##CMD ng serve --host 0.0.0.0 --port 4200
+ENV NODE_OPTIONS=--max_old_space_size=8192
+RUN ng build --prod --output-path=dist
+#RUN node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod
+#RUN ng serve --host 0.0.0.0 --port 4200
 ##CMD [ "node", "protractor.conf.js" ]
 
 
 ### STAGE 2: Run ###
-#FROM nginx:1.17.1-alpine
-#COPY nginx.conf /etc/nginx/nginx.conf
-#COPY --from=build /usr/src/app/dist/node-app /usr/share/nginx/html
+FROM nginx:1.17.1-alpine
+EXPOSE 4200
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
