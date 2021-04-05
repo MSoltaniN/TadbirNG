@@ -105,7 +105,9 @@
       "TopMargin": "حاشیه بالا",
       "BottomMargin": "حاشیه پایین",
       "AutoSizeColumns": "متناسب با عرض صفحه"
-    }
+    },
+    "TrueLabel": "بله",
+    "FalseLabel": "خیر"
   },
   "Exports": {
     "True": "فعال",

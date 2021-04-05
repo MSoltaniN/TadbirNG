@@ -935,7 +935,11 @@
     "NormalVoucherAccessDenied": "There is no permission to access all normal vouchers",
     "DraftVoucherAccessDenied": "There is no permission to access all draft vouchers",
     "NormalVoucher": "Normal Voucher",
-    "DraftVoucher": "Draft Voucher"
+    "DraftVoucher": "Draft Voucher",
+    "ConfirmedVouchers": "Unconfirmed Vouchers",
+    "ApprovedVouchers": "Unapproved Vouchers",
+    "CommittedVouchers": "Uncommitted Vouchers",
+    "FinalizedVouchers": "Unfinalized Vouchers"
   },
   "User": {
     "New": "New User",

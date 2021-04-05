@@ -6,7 +6,7 @@
 
 <report-viewer id='compviewer'></report-viewer>
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-                   [Filter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl" [MetadataType]="metadataType"></report-management>
+                    [Filter]="defaultFilter" [QuickFilter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl" [MetadataType]="metadataType"></report-management>
 
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
 <report-setting></report-setting>
