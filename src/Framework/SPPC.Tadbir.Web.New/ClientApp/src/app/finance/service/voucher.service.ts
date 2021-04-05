@@ -131,13 +131,13 @@ export class VoucherService extends BaseService {
 
     switch (voucherStatus) {
       case "2": {
-        statusFilter.push(new Filter("StatusId", "1", "< {0}", "System.Int32"));
+        statusFilter.push(new Filter("StatusId", "1", "== {0}", "System.Int32"));
         statusKey = VoucherStatusResource.NotCommitted;
         urlKey = "/#/finance/voucher/committed";
         break;
       }
       case "3": {
-        statusFilter.push(new Filter("StatusId", "2", "!= {0}", "System.Int32"));
+        statusFilter.push(new Filter("StatusId", "3", "!= {0}", "System.Int32"));
         statusKey = VoucherStatusResource.NotFinalized;
         urlKey = "/#/finance/voucher/finalized";
         break;
