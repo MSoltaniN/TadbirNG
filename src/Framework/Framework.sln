@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1267
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{B7A38D32-B537-4AD3-8C4F-62CC0C9D4779}"
 EndProject
@@ -110,6 +110,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.Cryptography", "SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj", "{1607D275-F638-4094-8BE7-1341CE5A82D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Licensing.Local.Persistence", "SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj", "{DB90EFCB-6AED-4E39-8D70-4BB740D2BD91}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5F950AA7-B364-4EC3-A654-42A9E3B3249B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -450,6 +452,16 @@ Global
 		{DB90EFCB-6AED-4E39-8D70-4BB740D2BD91}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DB90EFCB-6AED-4E39-8D70-4BB740D2BD91}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB90EFCB-6AED-4E39-8D70-4BB740D2BD91}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.Demo|Any CPU.Build.0 = Debug|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.LiveHost|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.LiveHost|Any CPU.Build.0 = Debug|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F950AA7-B364-4EC3-A654-42A9E3B3249B}.Staging|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
