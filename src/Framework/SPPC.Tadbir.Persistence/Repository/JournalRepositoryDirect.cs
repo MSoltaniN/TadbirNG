@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
@@ -55,24 +56,24 @@ namespace SPPC.Tadbir.Persistence
                     journal = GetJournalByRow(parameters, false, false, true);
                     break;
                 case JournalMode.ByLedger:
-                    journal = await GetJournalByLedgerAsync(parameters);
                     sourceList = SourceListId.JournalByDateByLedger;
+                    journal = await GetJournalByLedgerAsync(parameters);
                     break;
                 case JournalMode.BySubsidiary:
-                    journal = await GetJournalBySubsidiaryAsync(parameters);
                     sourceList = SourceListId.JournalByDateBySubsidiary;
+                    journal = await GetJournalBySubsidiaryAsync(parameters);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalLedgerSummaryAsync(parameters);
                     sourceList = SourceListId.JournalByDateSummary;
+                    journal = await GetJournalLedgerSummaryAsync(parameters);
                     break;
                 case JournalMode.LedgerSummaryByDate:
-                    journal = await GetJournalLedgerSummaryByDateAsync(parameters);
                     sourceList = SourceListId.JournalByDateSummaryByDate;
+                    journal = await GetJournalLedgerSummaryByDateAsync(parameters);
                     break;
                 case JournalMode.MonthlyLedgerSummary:
-                    journal = await GetJournalMonthlyLedgerSummaryAsync(parameters);
                     sourceList = SourceListId.JournalByDateSummaryByMonth;
+                    journal = await GetJournalMonthlyLedgerSummaryAsync(parameters);
                     break;
                 default:
                     break;
@@ -94,32 +95,32 @@ namespace SPPC.Tadbir.Persistence
             switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
-                    journal = GetJournalByRow(parameters, false, true, false);
                     sourceList = SourceListId.JournalByDateByRow;
+                    journal = GetJournalByRow(parameters, false, true, false);
                     break;
                 case JournalMode.ByRowsWithDetail:
-                    journal = GetJournalByRow(parameters, false, true, true);
                     sourceList = SourceListId.JournalByDateByRowDetail;
+                    journal = GetJournalByRow(parameters, false, true, true);
                     break;
                 case JournalMode.ByLedger:
-                    journal = await GetJournalByLedgerAsync(parameters, false, true);
                     sourceList = SourceListId.JournalByDateByLedger;
+                    journal = await GetJournalByLedgerAsync(parameters, false, true);
                     break;
                 case JournalMode.BySubsidiary:
-                    journal = await GetJournalBySubsidiaryAsync(parameters, false, true);
                     sourceList = SourceListId.JournalByDateBySubsidiary;
+                    journal = await GetJournalBySubsidiaryAsync(parameters, false, true);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalLedgerSummaryAsync(parameters, false, true);
                     sourceList = SourceListId.JournalByDateSummary;
+                    journal = await GetJournalLedgerSummaryAsync(parameters, false, true);
                     break;
                 case JournalMode.LedgerSummaryByDate:
-                    journal = await GetJournalLedgerSummaryByDateAsync(parameters, true);
                     sourceList = SourceListId.JournalByDateSummaryByDate;
+                    journal = await GetJournalLedgerSummaryByDateAsync(parameters, true);
                     break;
                 case JournalMode.MonthlyLedgerSummary:
-                    journal = await GetJournalMonthlyLedgerSummaryAsync(parameters, true);
                     sourceList = SourceListId.JournalByDateSummaryByMonth;
+                    journal = await GetJournalMonthlyLedgerSummaryAsync(parameters, true);
                     break;
                 default:
                     break;
@@ -141,24 +142,24 @@ namespace SPPC.Tadbir.Persistence
             switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
-                    journal = GetJournalByRow(parameters, true);
                     sourceList = SourceListId.JournalByNoByRow;
+                    journal = GetJournalByRow(parameters, true);
                     break;
                 case JournalMode.ByRowsWithDetail:
-                    journal = GetJournalByRow(parameters, true, false, true);
                     sourceList = SourceListId.JournalByNoByRowDetail;
+                    journal = GetJournalByRow(parameters, true, false, true);
                     break;
                 case JournalMode.ByLedger:
-                    journal = await GetJournalByLedgerAsync(parameters, true);
                     sourceList = SourceListId.JournalByNoByLedger;
+                    journal = await GetJournalByLedgerAsync(parameters, true);
                     break;
                 case JournalMode.BySubsidiary:
-                    journal = await GetJournalBySubsidiaryAsync(parameters, true);
                     sourceList = SourceListId.JournalByNoBySubsidiary;
+                    journal = await GetJournalBySubsidiaryAsync(parameters, true);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalLedgerSummaryAsync(parameters, true);
                     sourceList = SourceListId.JournalByNoSummary;
+                    journal = await GetJournalLedgerSummaryAsync(parameters, true);
                     break;
                 default:
                     break;
@@ -180,24 +181,24 @@ namespace SPPC.Tadbir.Persistence
             switch (parameters.Mode)
             {
                 case JournalMode.ByRows:
-                    journal = GetJournalByRow(parameters, true, true, false);
                     sourceList = SourceListId.JournalByNoByRow;
+                    journal = GetJournalByRow(parameters, true, true, false);
                     break;
                 case JournalMode.ByRowsWithDetail:
-                    journal = GetJournalByRow(parameters, true, true, true);
                     sourceList = SourceListId.JournalByNoByRowDetail;
+                    journal = GetJournalByRow(parameters, true, true, true);
                     break;
                 case JournalMode.ByLedger:
-                    journal = await GetJournalByLedgerAsync(parameters, true, true);
                     sourceList = SourceListId.JournalByNoByLedger;
+                    journal = await GetJournalByLedgerAsync(parameters, true, true);
                     break;
                 case JournalMode.BySubsidiary:
-                    journal = await GetJournalBySubsidiaryAsync(parameters, true, true);
                     sourceList = SourceListId.JournalByNoBySubsidiary;
+                    journal = await GetJournalBySubsidiaryAsync(parameters, true, true);
                     break;
                 case JournalMode.LedgerSummary:
-                    journal = await GetJournalLedgerSummaryAsync(parameters, true, true);
                     sourceList = SourceListId.JournalByNoSummary;
+                    journal = await GetJournalLedgerSummaryAsync(parameters, true, true);
                     break;
                 default:
                     break;
@@ -210,59 +211,6 @@ namespace SPPC.Tadbir.Persistence
         private IConfigRepository Config
         {
             get { return _system.Config; }
-        }
-
-        private static ReportQuery GetJournalByRowQuery(JournalParameters parameters,
-            bool byNo = false, bool byBranch = false, bool hasDetail = false)
-        {
-            var query = default(ReportQuery);
-            var paging = parameters.GridOptions.Paging;
-            int fromRow = (paging.PageSize * (paging.PageIndex - 1)) + 1;
-            int toRow = paging.PageSize * paging.PageIndex;
-            if (byNo)
-            {
-                if (byBranch)
-                {
-                    query = hasDetail
-                    ? new ReportQuery(String.Format(JournalQuery.ByNoByRowDetailByBranch,
-                        parameters.FromNo, parameters.ToNo, fromRow, toRow))
-                    : new ReportQuery(String.Format(JournalQuery.ByNoByRowByBranch,
-                        parameters.FromNo, parameters.ToNo, fromRow, toRow));
-                }
-                else
-                {
-                    query = hasDetail
-                    ? new ReportQuery(String.Format(JournalQuery.ByNoByRowDetail,
-                        parameters.FromNo, parameters.ToNo, fromRow, toRow))
-                    : new ReportQuery(String.Format(JournalQuery.ByNoByRow,
-                        parameters.FromNo, parameters.ToNo, fromRow, toRow));
-                }
-            }
-            else
-            {
-                if (byBranch)
-                {
-                    query = hasDetail
-                    ? new ReportQuery(String.Format(JournalQuery.ByDateByRowDetailsByBranch,
-                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
-                        fromRow, toRow))
-                    : new ReportQuery(String.Format(JournalQuery.ByDateByRowByBranch,
-                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
-                        fromRow, toRow));
-                }
-                else
-                {
-                    query = hasDetail
-                    ? new ReportQuery(String.Format(JournalQuery.ByDateByRowDetails,
-                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
-                        fromRow, toRow))
-                    : new ReportQuery(String.Format(JournalQuery.ByDateByRow,
-                        parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
-                        fromRow, toRow));
-                }
-            }
-
-            return query;
         }
 
         private static ReportQuery GetJournalByLevelQuery(
@@ -375,20 +323,79 @@ namespace SPPC.Tadbir.Persistence
                 .Where(item => item.VoucherNo < minNo)
                 .Count();
 
-            foreach (var byNum in first
-                .Where(item => item.VoucherNo >= minNo && item.VoucherNo <= maxNo)
-                .OrderBy(item => item.VoucherNo)
-                .GroupBy(item => item.VoucherNo))
+            if (gridOptions.Filter != null)
             {
-                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-                items.AddRange(second
-                    .Where(item => item.VoucherNo == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
+                items.AddRange(GetFilteredMergeByNo(first, second, minNo, maxNo, previousCount));
+            }
+            else
+            {
+                foreach (var byNum in first
+                    .Where(item => item.VoucherNo >= minNo && item.VoucherNo <= maxNo)
+                    .OrderBy(item => item.VoucherNo)
+                    .GroupBy(item => item.VoucherNo))
+                {
+                    items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
+                    items.AddRange(second
+                        .Where(item => item.VoucherNo == byNum.Key)
+                        .OrderBy(item => item.AccountFullCode));
+                }
             }
 
             var paging = gridOptions.Paging;
             int fromIndex = paging.PageSize * (paging.PageIndex - 1);
             return items.Skip(fromIndex - previousCount).Take(paging.PageSize);
+        }
+
+        private static IEnumerable<JournalItemViewModel> GetFilteredMergeByNo(
+            IEnumerable<JournalItemViewModel> debit, IEnumerable<JournalItemViewModel> credit,
+            int minNo, int maxNo, int previousCount)
+        {
+            var merged = debit
+                .Concat(credit)
+                .Where(item => item.VoucherNo >= minNo
+                    && item.VoucherNo <= maxNo)
+                .OrderBy(item => item.VoucherNo)
+                    .ThenBy(item => item.Credit)
+                    .ThenBy(item => item.AccountFullCode)
+                .ToList();
+            var sortedCredit = new List<JournalItemViewModel>();
+            int start = 0;
+            int count = 0;
+            for (int i = 0; i < merged.Count; i++)
+            {
+                var current = merged[i];
+                int currentNo = current.VoucherNo;
+                while (current.Credit > 0.0M && current.VoucherNo == currentNo)
+                {
+                    start = i;
+                    sortedCredit.Add(current);
+                    count++;
+                    if ((start + count) < merged.Count)
+                    {
+                        current = merged[start + count];
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (sortedCredit.Count > 1)
+                {
+                    sortedCredit = sortedCredit.OrderBy(item => item.AccountFullCode).ToList();
+                    int index = 0;
+                    for (int j = start; j < start + count; j++)
+                    {
+                        merged[j] = sortedCredit[index];
+                        index++;
+                    }
+                }
+
+                count = 0;
+                sortedCredit.Clear();
+            }
+
+            return merged;
         }
 
         private static IEnumerable<JournalItemViewModel> MergeByNumber(
@@ -418,26 +425,88 @@ namespace SPPC.Tadbir.Persistence
                 .Where(item => item.VoucherNo < minNo)
                 .Count();
 
-            foreach (var byNum in first
-                .Where(item => item.VoucherNo >= minNo && item.VoucherNo <= maxNo)
-                .OrderBy(item => item.VoucherNo)
-                .GroupBy(item => item.VoucherNo))
+            if (gridOptions.Filter != null)
             {
-                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-                items.AddRange(second
-                    .Where(item => item.VoucherNo == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
-                items.AddRange(third
-                    .Where(item => item.VoucherNo == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
-                items.AddRange(fourth
-                    .Where(item => item.VoucherNo == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
+                items.AddRange(GetFilteredMergeByNo(first, second, third, fourth, minNo, maxNo, previousCount));
+            }
+            else
+            {
+                foreach (var byNum in first
+                    .Where(item => item.VoucherNo >= minNo && item.VoucherNo <= maxNo)
+                    .OrderBy(item => item.VoucherNo)
+                    .GroupBy(item => item.VoucherNo))
+                {
+                    items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
+                    items.AddRange(second
+                        .Where(item => item.VoucherNo == byNum.Key)
+                        .OrderBy(item => item.AccountFullCode));
+                    items.AddRange(third
+                        .Where(item => item.VoucherNo == byNum.Key)
+                        .OrderBy(item => item.AccountFullCode));
+                    items.AddRange(fourth
+                        .Where(item => item.VoucherNo == byNum.Key)
+                        .OrderBy(item => item.AccountFullCode));
+                }
             }
 
             var paging = gridOptions.Paging;
             int fromIndex = paging.PageSize * (paging.PageIndex - 1);
             return items.Skip(fromIndex - previousCount).Take(paging.PageSize);
+        }
+
+        private static IEnumerable<JournalItemViewModel> GetFilteredMergeByNo(
+            IEnumerable<JournalItemViewModel> debitS, IEnumerable<JournalItemViewModel> debitL,
+            IEnumerable<JournalItemViewModel> creditS, IEnumerable<JournalItemViewModel> creditL,
+            int minNo, int maxNo, int previousCount)
+        {
+            var merged = debitS
+                .Concat(debitL)
+                .Concat(creditS)
+                .Concat(creditL)
+                .Where(item => item.VoucherNo >= minNo
+                    && item.VoucherNo <= maxNo)
+                .OrderBy(item => item.VoucherNo)
+                    .ThenBy(item => item.Credit)
+                    .ThenBy(item => item.AccountFullCode)
+                .ToList();
+            var sortedCredit = new List<JournalItemViewModel>();
+            int start = 0;
+            int count = 0;
+            for (int i = 0; i < merged.Count; i++)
+            {
+                var current = merged[i];
+                int currentNo = current.VoucherNo;
+                while (current.Credit > 0.0M && current.VoucherNo == currentNo)
+                {
+                    start = i;
+                    sortedCredit.Add(current);
+                    count++;
+                    if ((start + count) < merged.Count)
+                    {
+                        current = merged[start + count];
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (sortedCredit.Count > 1)
+                {
+                    sortedCredit = sortedCredit.OrderBy(item => item.AccountFullCode).ToList();
+                    int index = 0;
+                    for (int j = start; j < start + count; j++)
+                    {
+                        merged[j] = sortedCredit[index];
+                        index++;
+                    }
+                }
+
+                count = 0;
+                sortedCredit.Clear();
+            }
+
+            return merged;
         }
 
         private static IEnumerable<JournalItemViewModel> MergeByDate(
@@ -462,15 +531,22 @@ namespace SPPC.Tadbir.Persistence
                 .Where(item => item.VoucherDate < minDate)
                 .Count();
 
-            foreach (var byNum in first
-                .Where(item => item.VoucherDate >= minDate && item.VoucherDate <= maxDate)
-                .OrderBy(item => item.VoucherDate)
-                .GroupBy(item => item.VoucherDate))
+            if (gridOptions.Filter != null)
             {
-                items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
-                items.AddRange(second
-                    .Where(item => item.VoucherDate == byNum.Key)
-                    .OrderBy(item => item.AccountFullCode));
+                items.AddRange(GetFilteredMergeByDate(first, second, minDate, maxDate, previousCount));
+            }
+            else
+            {
+                foreach (var byNum in first
+                    .Where(item => item.VoucherDate >= minDate && item.VoucherDate <= maxDate)
+                    .OrderBy(item => item.VoucherDate)
+                    .GroupBy(item => item.VoucherDate))
+                {
+                    items.AddRange(byNum.OrderBy(item => item.AccountFullCode));
+                    items.AddRange(second
+                        .Where(item => item.VoucherDate == byNum.Key)
+                        .OrderBy(item => item.AccountFullCode));
+                }
             }
 
             var paging = gridOptions.Paging;
@@ -493,6 +569,125 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return items;
+        }
+
+        private static IEnumerable<JournalItemViewModel> GetFilteredMergeByDate(
+            IEnumerable<JournalItemViewModel> debit, IEnumerable<JournalItemViewModel> credit,
+            DateTime minDate, DateTime maxDate, int previousCount)
+        {
+            var merged = debit
+                .Concat(credit)
+                .Where(item => item.VoucherDate >= minDate
+                    && item.VoucherDate <= maxDate)
+                .OrderBy(item => item.VoucherDate)
+                    .ThenBy(item => item.Credit)
+                    .ThenBy(item => item.AccountFullCode)
+                .ToList();
+            var sortedCredit = new List<JournalItemViewModel>();
+            int start = 0;
+            int count = 0;
+            for (int i = 0; i < merged.Count; i++)
+            {
+                var current = merged[i];
+                DateTime currentDate = current.VoucherDate;
+                while (current.Credit > 0.0M && current.VoucherDate == currentDate)
+                {
+                    start = i;
+                    sortedCredit.Add(current);
+                    count++;
+                    if ((start + count) < merged.Count)
+                    {
+                        current = merged[start + count];
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (sortedCredit.Count > 1)
+                {
+                    sortedCredit = sortedCredit.OrderBy(item => item.AccountFullCode).ToList();
+                    int index = 0;
+                    for (int j = start; j < start + count; j++)
+                    {
+                        merged[j] = sortedCredit[index];
+                        index++;
+                    }
+                }
+
+                count = 0;
+                sortedCredit.Clear();
+            }
+
+            return merged;
+        }
+
+        private static bool HasColumnFilterOrSort(GridOptions gridOptions)
+        {
+            return gridOptions.Filter != null
+                || gridOptions.SortColumns.Count > 0;
+        }
+
+        private ReportQuery GetJournalByRowQuery(JournalParameters parameters,
+            bool byNo = false, bool byBranch = false, bool hasDetail = false)
+        {
+            var query = default(ReportQuery);
+            var paging = parameters.GridOptions.Paging;
+            int fromRow = (paging.PageSize * (paging.PageIndex - 1)) + 1;
+            int toRow = paging.PageSize * paging.PageIndex;
+            string sorting = _utility.GetColumnSorting(parameters.GridOptions);
+            if (String.IsNullOrEmpty(sorting))
+            {
+                sorting = byBranch
+                    ? ByBranchDefaultSorting
+                    : ByRowDefaultSorting;
+            }
+
+            if (byNo)
+            {
+                if (byBranch)
+                {
+                    query = hasDetail
+                    ? new ReportQuery(String.Format(JournalQuery.ByNoByRowDetailByBranch,
+                        sorting, parameters.FromNo, parameters.ToNo, fromRow, toRow))
+                    : new ReportQuery(String.Format(JournalQuery.ByNoByRowByBranch,
+                        sorting, parameters.FromNo, parameters.ToNo, fromRow, toRow));
+                }
+                else
+                {
+                    query = hasDetail
+                    ? new ReportQuery(String.Format(JournalQuery.ByNoByRowDetail,
+                        sorting, parameters.FromNo, parameters.ToNo, fromRow, toRow))
+                    : new ReportQuery(String.Format(JournalQuery.ByNoByRow,
+                        sorting, parameters.FromNo, parameters.ToNo, fromRow, toRow));
+                }
+            }
+            else
+            {
+                if (byBranch)
+                {
+                    query = hasDetail
+                    ? new ReportQuery(String.Format(JournalQuery.ByDateByRowDetailsByBranch,
+                        sorting, parameters.FromDate.ToShortDateString(false),
+                        parameters.ToDate.ToShortDateString(false), fromRow, toRow))
+                    : new ReportQuery(String.Format(JournalQuery.ByDateByRowByBranch,
+                        sorting, parameters.FromDate.ToShortDateString(false),
+                        parameters.ToDate.ToShortDateString(false), fromRow, toRow));
+                }
+                else
+                {
+                    query = hasDetail
+                    ? new ReportQuery(String.Format(JournalQuery.ByDateByRowDetails,
+                        sorting, parameters.FromDate.ToShortDateString(false),
+                        parameters.ToDate.ToShortDateString(false), fromRow, toRow))
+                    : new ReportQuery(String.Format(JournalQuery.ByDateByRow,
+                        sorting, parameters.FromDate.ToShortDateString(false),
+                        parameters.ToDate.ToShortDateString(false), fromRow, toRow));
+                }
+            }
+
+            return query;
         }
 
         private JournalViewModel GetJournalByRow(JournalParameters parameters,
@@ -532,11 +727,44 @@ namespace SPPC.Tadbir.Persistence
 
             var debitItems = GetByLevelItems(parameters, length, byNo, byBranch, true);
             var creditItems = GetByLevelItems(parameters, length, byNo, byBranch, false);
+            if (HasColumnFilterOrSort(parameters.GridOptions))
+            {
+                return await GetFilteredJournalByLedgerAsync(
+                    debitItems, creditItems, parameters.GridOptions);
+            }
+
             journal.TotalCount = debitItems.Count() + creditItems.Count();
             journal.DebitSum = debitItems.Sum(item => item.Debit);
             journal.CreditSum = creditItems.Sum(item => item.Credit);
             journal.Items.AddRange(MergeByNumber(debitItems, creditItems, parameters.GridOptions));
             await SetNameAndDescriptionAsync(journal.Items);
+
+            return journal;
+        }
+
+        private async Task<JournalViewModel> GetFilteredJournalByLedgerAsync(
+            List<JournalItemViewModel> debit, List<JournalItemViewModel> credit,
+            GridOptions gridOptions, bool byNo = true)
+        {
+            await SetNameAndDescriptionAsync(debit);
+            await SetNameAndDescriptionAsync(credit);
+            var filteredDebit = debit.Apply(gridOptions, false);
+            var filteredCredit = credit.Apply(gridOptions, false);
+            var journal = new JournalViewModel
+            {
+                TotalCount = filteredDebit.Count() + filteredCredit.Count(),
+                DebitSum = filteredDebit.Sum(item => item.Debit),
+                CreditSum = filteredCredit.Sum(item => item.Credit)
+            };
+
+            if (byNo)
+            {
+                journal.Items.AddRange(MergeByNumber(filteredDebit, filteredCredit, gridOptions));
+            }
+            else
+            {
+                journal.Items.AddRange(MergeByDate(filteredDebit, filteredCredit, gridOptions));
+            }
 
             return journal;
         }
@@ -553,12 +781,46 @@ namespace SPPC.Tadbir.Persistence
             var ledgerDebit = GetByLevelItems(parameters, ledgerLength, byNo, byBranch, true, " AND acc.Level = 0 ");
             var subsidCredit = GetByLevelItems(parameters, subsidLength, byNo, byBranch, false, " AND acc.Level >= 1 ");
             var ledgerCredit = GetByLevelItems(parameters, ledgerLength, byNo, byBranch, false, " AND acc.Level = 0 ");
+            if (HasColumnFilterOrSort(parameters.GridOptions))
+            {
+                return await GetFilteredJournalBySubsidiaryAsync(
+                    ledgerDebit, ledgerCredit, subsidDebit, subsidCredit, parameters.GridOptions);
+            }
+
             journal.TotalCount = subsidDebit.Count() + subsidCredit.Count() + ledgerDebit.Count() + ledgerCredit.Count();
             journal.DebitSum = subsidDebit.Sum(item => item.Debit) + ledgerDebit.Sum(item => item.Debit);
             journal.CreditSum = subsidCredit.Sum(item => item.Credit) + ledgerCredit.Sum(item => item.Credit);
             journal.Items.AddRange(MergeByNumber(subsidDebit, ledgerDebit, subsidCredit, ledgerCredit, parameters.GridOptions));
             await SetNameAndDescriptionAsync(journal.Items);
 
+            return journal;
+        }
+
+        private async Task<JournalViewModel> GetFilteredJournalBySubsidiaryAsync(
+            List<JournalItemViewModel> ledgerDebit, List<JournalItemViewModel> ledgerCredit,
+            List<JournalItemViewModel> subsidDebit, List<JournalItemViewModel> subsidCredit,
+            GridOptions gridOptions)
+        {
+            await SetNameAndDescriptionAsync(ledgerDebit);
+            await SetNameAndDescriptionAsync(ledgerCredit);
+            await SetNameAndDescriptionAsync(subsidDebit);
+            await SetNameAndDescriptionAsync(subsidCredit);
+            var filteredDebitL = ledgerDebit.Apply(gridOptions, false);
+            var filteredCreditL = ledgerCredit.Apply(gridOptions, false);
+            var filteredDebitS = subsidDebit.Apply(gridOptions, false);
+            var filteredCreditS = subsidCredit.Apply(gridOptions, false);
+            var journal = new JournalViewModel
+            {
+                TotalCount = filteredDebitL.Count() + filteredDebitS.Count()
+                    + filteredCreditL.Count() + filteredCreditS.Count(),
+                DebitSum = filteredDebitL.Sum(item => item.Debit)
+                    + filteredDebitS.Sum(item => item.Debit),
+                CreditSum = filteredCreditL.Sum(item => item.Credit)
+                    + filteredCreditS.Sum(item => item.Credit)
+            };
+
+            journal.Items.AddRange(MergeByNumber(
+                filteredDebitS, filteredDebitL, filteredCreditS, filteredCreditL, gridOptions));
             return journal;
         }
 
@@ -573,6 +835,14 @@ namespace SPPC.Tadbir.Persistence
             items.AddRange(GetLedgerSummaryItems(parameters, length, byNo, byBranch, true));
             items.AddRange(GetLedgerSummaryItems(parameters, length, byNo, byBranch, false));
 
+            if (HasColumnFilterOrSort(parameters.GridOptions))
+            {
+                await SetNameAndDescriptionAsync(items);
+                items = items
+                    .Apply(parameters.GridOptions, false)
+                    .ToList();
+            }
+
             await PrepareJournalAsync(journal, items, parameters.GridOptions);
             return journal;
         }
@@ -586,6 +856,12 @@ namespace SPPC.Tadbir.Persistence
 
             var debitItems = GetLedgerSummaryByDateItems(parameters, length, byBranch, false, true);
             var creditItems = GetLedgerSummaryByDateItems(parameters, length, byBranch, false, false);
+            if (HasColumnFilterOrSort(parameters.GridOptions))
+            {
+                return await GetFilteredJournalByLedgerAsync(
+                    debitItems.ToList(), creditItems.ToList(), parameters.GridOptions, false);
+            }
+
             journal.TotalCount = debitItems.Count() + creditItems.Count();
             journal.DebitSum = debitItems.Sum(item => item.Debit);
             journal.CreditSum = creditItems.Sum(item => item.Credit);
@@ -617,7 +893,16 @@ namespace SPPC.Tadbir.Persistence
 
                 var debitItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true, true);
                 var creditItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true, false);
-                monthJournal.AddRange(MergeByDate(debitItems, creditItems));
+                if (HasColumnFilterOrSort(parameters.GridOptions))
+                {
+                    var filtered = await GetFilteredJournalByLedgerAsync(
+                        debitItems.ToList(), creditItems.ToList(), parameters.GridOptions, false);
+                    monthJournal.AddRange(filtered.Items);
+                }
+                else
+                {
+                    monthJournal.AddRange(MergeByDate(debitItems, creditItems));
+                }
 
                 if (monthJournal.Count > 0)
                 {
@@ -631,18 +916,20 @@ namespace SPPC.Tadbir.Persistence
             return journal;
         }
 
-        private IEnumerable<JournalItemViewModel> GetByLevelItems(
+        private List<JournalItemViewModel> GetByLevelItems(
             JournalParameters parameters, int length, bool byNo, bool byBranch, bool isDebit, string filter = "")
         {
             var query = !byBranch
                 ? GetJournalByLevelQuery(parameters, length, byNo, isDebit)
                 : GetJournalByLevelByBranchQuery(parameters, length, byNo, isDebit);
-            query.AddFilter(filter);
-            ApplyEnvironmentFilters(query, parameters.GridOptions);
+            var filterBuilder = new StringBuilder(_utility.GetEnvironmentFilters(parameters.GridOptions));
+            filterBuilder.Append(filter);
+            query.SetFilter(filterBuilder.ToString());
             var result = DbConsole.ExecuteQuery(query.Query);
             return result.Rows
                 .Cast<DataRow>()
-                .Select(row => GetJournalItem(row));
+                .Select(row => GetJournalItem(row))
+                .ToList();
         }
 
         private IEnumerable<JournalItemViewModel> GetLedgerSummaryItems(
@@ -651,7 +938,7 @@ namespace SPPC.Tadbir.Persistence
             var query = !byBranch
                 ? GetJournalLedgerSummaryQuery(parameters, length, byNo, isDebit)
                 : GetJournalLedgerSummaryByBranchQuery(parameters, length, byNo, isDebit);
-            ApplyEnvironmentFilters(query, parameters.GridOptions);
+            query.SetFilter(_utility.GetEnvironmentFilters(parameters.GridOptions));
             var result = DbConsole.ExecuteQuery(query.Query);
             return result.Rows
                 .Cast<DataRow>()
@@ -691,7 +978,7 @@ namespace SPPC.Tadbir.Persistence
                     .Replace("Credit1", "Debit"));
             }
 
-            ApplyEnvironmentFilters(query, parameters.GridOptions);
+            query.SetFilter(_utility.GetEnvironmentFilters(parameters.GridOptions));
             var result = DbConsole.ExecuteQuery(query.Query);
 
             return result.Rows
@@ -706,7 +993,10 @@ namespace SPPC.Tadbir.Persistence
             journal.DebitSum = items.Sum(item => item.Debit);
             journal.CreditSum = items.Sum(item => item.Credit);
             journal.Items.AddRange(items.ApplyPaging(gridOptions));
-            await SetNameAndDescriptionAsync(journal.Items);
+            if (gridOptions.Filter == null)
+            {
+                await SetNameAndDescriptionAsync(journal.Items);
+            }
         }
 
         private JournalItemViewModel GetJournalItem(DataRow row)
@@ -715,12 +1005,12 @@ namespace SPPC.Tadbir.Persistence
             {
                 RowNo = _utility.ValueOrDefault<int>(row, "RowNum"),
                 VoucherNo = _utility.ValueOrDefault<int>(row, "No"),
-                AccountFullCode = _utility.ValueOrDefault(row, "FullCode"),
-                AccountName = _utility.ValueOrDefault(row, "Name"),
-                DetailAccountFullCode = _utility.ValueOrDefault(row, "DetailFullCode"),
-                DetailAccountName = _utility.ValueOrDefault(row, "DetailName"),
-                CostCenterFullCode = _utility.ValueOrDefault(row, "CostFullCode"),
-                CostCenterName = _utility.ValueOrDefault(row, "CostName"),
+                AccountFullCode = _utility.ValueOrDefault(row, "AccountFullCode"),
+                AccountName = _utility.ValueOrDefault(row, "AccountName"),
+                DetailAccountFullCode = _utility.ValueOrDefault(row, "DetailAccountFullCode"),
+                DetailAccountName = _utility.ValueOrDefault(row, "DetailAccountName"),
+                CostCenterFullCode = _utility.ValueOrDefault(row, "CostCenterFullCode"),
+                CostCenterName = _utility.ValueOrDefault(row, "CostCenterName"),
                 ProjectFullCode = _utility.ValueOrDefault(row, "ProjectFullCode"),
                 ProjectName = _utility.ValueOrDefault(row, "ProjectName"),
                 Description = _utility.ValueOrDefault(row, "Description"),
@@ -729,6 +1019,16 @@ namespace SPPC.Tadbir.Persistence
                 Mark = _utility.ValueOrDefault(row, "Mark"),
                 BranchName = _utility.ValueOrDefault(row, "BranchName")
             };
+
+            if (String.IsNullOrEmpty(item.AccountFullCode))
+            {
+                item.AccountFullCode = _utility.ValueOrDefault(row, "FullCode");
+            }
+
+            if (String.IsNullOrEmpty(item.AccountName))
+            {
+                item.AccountName = _utility.ValueOrDefault(row, "Name");
+            }
 
             item.VoucherDate = row.Table.Columns.Contains("Date")
                 ? DateTime.Parse(row["Date"].ToString())
@@ -761,33 +1061,17 @@ namespace SPPC.Tadbir.Persistence
 
         private void ApplyEnvironmentFilters(ReportQuery query, GridOptions gridOptions)
         {
-            string environmentFilter = String.Empty;
-            string fpFilter = String.Format(" v.FiscalPeriodID = {0}", UserContext.FiscalPeriodId);
-            var quickFilter = gridOptions.QuickFilter?.ToString();
-            if (quickFilter != null && quickFilter.IndexOf("BranchId") != -1)
+            var filterBuilder = new StringBuilder(_utility.GetEnvironmentFilters(gridOptions));
+            if (gridOptions.Filter != null)
             {
-                environmentFilter = fpFilter;
-            }
-            else
-            {
-                var branchIds = _utility.GetChildTree(UserContext.BranchId);
-                string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
-                if (!String.IsNullOrEmpty(branchList))
-                {
-                    environmentFilter = String.Format(
-                        "{0} AND (BranchID = {1} OR BranchID IN({2}))",
-                        fpFilter, UserContext.BranchId, branchList);
-                }
-                else
-                {
-                    environmentFilter = String.Format(
-                        "{0} AND BranchID = {1}", fpFilter, UserContext.BranchId);
-                }
+                filterBuilder.AppendFormat(" AND {0}", _utility.GetColumnFilters(gridOptions));
             }
 
-            query.ApplyDefaultFilters(environmentFilter, quickFilter);
+            query.SetFilter(filterBuilder.ToString());
         }
 
+        private const string ByRowDefaultSorting = "v.Date, v.No, vl.RowNo";
+        private const string ByBranchDefaultSorting = "v.Date, v.No, vl.BranchId";
         private readonly ISystemRepository _system;
         private readonly IReportDirectUtility _utility;
     }

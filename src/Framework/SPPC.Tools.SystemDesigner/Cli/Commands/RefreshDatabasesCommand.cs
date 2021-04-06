@@ -121,7 +121,8 @@ namespace SPPC.Tools.SystemDesigner.Cli
                     }
                     else
                     {
-                        blocks.Add(ver, script.Substring(match.Index) + string.Format(" \n UPDATE [Core].[Version] SET Number = '{0}'", ver.ToString()));
+                        blocks.Add(ver, script.Substring(match.Index)
+                            + String.Format(" \n UPDATE [Core].[Version] SET Number = '{0}'", ver.ToString()));
                     }
                 }
             }

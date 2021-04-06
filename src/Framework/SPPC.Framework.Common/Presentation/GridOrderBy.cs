@@ -32,7 +32,8 @@ namespace SPPC.Framework.Presentation
         /// <returns>نمایش متنی برای این نمونه</returns>
         public override string ToString()
         {
-            return String.Format("{0} {1}", FieldName, Direction);
+            string fieldName = String.Format("{0}{1}", Char.ToUpper(FieldName[0]), FieldName.Substring(1));
+            return String.Format("{0} {1}", fieldName, Direction);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -38,8 +37,6 @@ namespace SPPC.Tadbir.Persistence
                     .Replace(">=", " >=")
                     .Replace("<=", " <=")
                     .Replace("BranchId", "vl.BranchID")
-                    .Replace("Level", "acc.Level")
-                    .Replace("Mark", "vl.Mark")
                     .Replace("&&", "AND")
                     .Replace("||", "OR");
             }
@@ -50,40 +47,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         ///
         /// </summary>
-        public string Query { get; private set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="environmentFilter"></param>
-        /// <param name="quickFilter"></param>
-        public void ApplyDefaultFilters(string environmentFilter, string quickFilter)
-        {
-            Verify.ArgumentNotNullOrEmptyString(environmentFilter, nameof(environmentFilter));
-            string filter1 = String.Format(" AND {0}", environmentFilter);
-            string filter2 = !String.IsNullOrEmpty(quickFilter)
-                ? String.Format(" AND {0}", quickFilter)
-                : String.Empty;
-            filter1 = TranslateQuery(filter1);
-            filter2 = TranslateQuery(filter2);
-            Query = String.Format(Query, filter1, filter2);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
-        public void AddFilter(string filter)
-        {
-            int index = Query.IndexOf("{0}");
-            if (index != -1)
-            {
-                var builder = new StringBuilder(Query);
-                Query = builder
-                    .Insert(index, filter)
-                    .ToString();
-            }
-        }
+        public string Query { get; set; }
 
         /// <summary>
         ///
