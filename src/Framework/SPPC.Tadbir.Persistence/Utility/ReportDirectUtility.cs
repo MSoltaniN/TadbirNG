@@ -666,11 +666,6 @@ namespace SPPC.Tadbir.Persistence.Utility
             return builder.ToString();
         }
 
-        private static string TranslateSorting(string query)
-        {
-            return null;
-        }
-
         private IAppUnitOfWork UnitOfWork
         {
             get { return _context.UnitOfWork; }

@@ -325,7 +325,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (gridOptions.Filter != null)
             {
-                items.AddRange(GetFilteredMergeByNo(first, second, minNo, maxNo, previousCount));
+                items.AddRange(GetFilteredMergeByNo(first, second, minNo, maxNo));
             }
             else
             {
@@ -348,7 +348,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static IEnumerable<JournalItemViewModel> GetFilteredMergeByNo(
             IEnumerable<JournalItemViewModel> debit, IEnumerable<JournalItemViewModel> credit,
-            int minNo, int maxNo, int previousCount)
+            int minNo, int maxNo)
         {
             var merged = debit
                 .Concat(credit)
@@ -427,7 +427,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (gridOptions.Filter != null)
             {
-                items.AddRange(GetFilteredMergeByNo(first, second, third, fourth, minNo, maxNo, previousCount));
+                items.AddRange(GetFilteredMergeByNo(first, second, third, fourth, minNo, maxNo));
             }
             else
             {
@@ -457,7 +457,7 @@ namespace SPPC.Tadbir.Persistence
         private static IEnumerable<JournalItemViewModel> GetFilteredMergeByNo(
             IEnumerable<JournalItemViewModel> debitS, IEnumerable<JournalItemViewModel> debitL,
             IEnumerable<JournalItemViewModel> creditS, IEnumerable<JournalItemViewModel> creditL,
-            int minNo, int maxNo, int previousCount)
+            int minNo, int maxNo)
         {
             var merged = debitS
                 .Concat(debitL)
@@ -533,7 +533,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (gridOptions.Filter != null)
             {
-                items.AddRange(GetFilteredMergeByDate(first, second, minDate, maxDate, previousCount));
+                items.AddRange(GetFilteredMergeByDate(first, second, minDate, maxDate));
             }
             else
             {
@@ -573,7 +573,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static IEnumerable<JournalItemViewModel> GetFilteredMergeByDate(
             IEnumerable<JournalItemViewModel> debit, IEnumerable<JournalItemViewModel> credit,
-            DateTime minDate, DateTime maxDate, int previousCount)
+            DateTime minDate, DateTime maxDate)
         {
             var merged = debit
                 .Concat(credit)
