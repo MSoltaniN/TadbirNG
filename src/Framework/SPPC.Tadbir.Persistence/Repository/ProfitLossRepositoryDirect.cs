@@ -290,11 +290,21 @@ namespace SPPC.Tadbir.Persistence
             accounts.AddRange(_utility.GetUsableAccounts(
                 AccountCollectionId.SalesRefundDiscount, false, parameters.BranchId));
 
-            var netRevenue = await GetReportItemsAsync(
+            var items = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceTotalSelect,
                 ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
                 CreditDebit, AppStrings.NetRevenue);
-            return netRevenue.First();
+            var netRevenue = items.Count() > 0
+                ? items.First()
+                : new ProfitLossItemViewModel()
+                {
+                    Account = AppStrings.NetRevenue,
+                    StartBalance = 0.0M,
+                    PeriodTurnover = 0.0M,
+                    EndBalance = 0.0M,
+                    Balance = 0.0M
+                };
+            return netRevenue;
         }
 
         private async Task<ProfitLossItemViewModel> GetProductCostItemAsync(
@@ -304,11 +314,21 @@ namespace SPPC.Tadbir.Persistence
             accounts.AddRange(_utility.GetUsableAccounts(
                 AccountCollectionId.SoldProductCost, false, parameters.BranchId));
 
-            var productCost = await GetReportItemsAsync(
+            var items = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceTotalSelect,
                 ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
                 DebitCredit, AppStrings.SoldProductCost);
-            return productCost.First();
+            var productCost = items.Count() > 0
+                ? items.First()
+                : new ProfitLossItemViewModel()
+                {
+                    Account = AppStrings.SoldProductCost,
+                    StartBalance = 0.0M,
+                    PeriodTurnover = 0.0M,
+                    EndBalance = 0.0M,
+                    Balance = 0.0M
+                };
+            return productCost;
         }
 
         private async Task<ProfitLossItemViewModel> GetPeriodicProductCostItemAsync(

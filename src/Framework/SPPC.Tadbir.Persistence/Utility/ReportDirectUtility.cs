@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -189,6 +190,40 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             return String.Join(" AND ", predicates);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="gridOptions"></param>
+        /// <returns></returns>
+        public string GetColumnFilters(GridOptions gridOptions)
+        {
+            string columnFilters = gridOptions.Filter?.ToString();
+            if (!String.IsNullOrEmpty(columnFilters))
+            {
+                columnFilters = TranslateFieldNames(columnFilters);
+                columnFilters = TranslateOperators(columnFilters);
+            }
+
+            return columnFilters;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="gridOptions"></param>
+        /// <returns></returns>
+        public string GetColumnSorting(GridOptions gridOptions)
+        {
+            string columnSorting = String.Empty;
+            if (gridOptions.SortColumns.Count > 0)
+            {
+                columnSorting = String.Join(", ", gridOptions.SortColumns.Select(item => item.ToString()));
+                columnSorting = TranslateFieldNames(columnSorting);
+            }
+
+            return columnSorting;
         }
 
         /// <summary>
@@ -575,6 +610,62 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .Replace("BranchId", "v.BranchID");
         }
 
+        private static string TranslateFieldNames(string query)
+        {
+            var builder = new StringBuilder(query);
+            return builder
+                .Replace("Voucher", "v.")
+                .Replace("DetailAccount", "facc.")
+                .Replace("Account", "acc.")
+                .Replace("CostCenter", "cc.")
+                .Replace("Project", "prj.")
+                .Replace("Description", "vl.Description")
+                .Replace("Debit", "vl.Debit")
+                .Replace("Credit", "vl.Credit")
+                .Replace("Mark", "vl.Mark")
+                .Replace("BranchName", "br.Name")
+                .ToString();
+        }
+
+        private static string TranslateOperators(string query)
+        {
+            var builder = new StringBuilder(query)
+                .Replace("== null", " IS NULL")
+                .Replace("!= null", " IS NOT NULL")
+                .Replace("\"", "'")
+                .Replace("&&", "AND")
+                .Replace("||", "OR")
+                .Replace("==", "=")
+                .Replace("!=", "<>");
+
+            string result = builder.ToString();
+            var regEx = new Regex(StartsWithRegex);
+            foreach (Match match in regEx.Matches(result))
+            {
+                builder.Replace(match.ToString(), String.Format(" LIKE N'{0}%'", match.Groups[1]));
+            }
+
+            regEx = new Regex(EndsWithRegex);
+            foreach (Match match in regEx.Matches(result))
+            {
+                builder.Replace(match.ToString(), String.Format(" LIKE N'%{0}'", match.Groups[1]));
+            }
+
+            regEx = new Regex(ContainsRegex);
+            foreach (Match match in regEx.Matches(result))
+            {
+                builder.Replace(match.ToString(), String.Format(" LIKE N'%{0}%'", match.Groups[1]));
+            }
+
+            regEx = new Regex(NotContainsRegex);
+            foreach (Match match in regEx.Matches(result))
+            {
+                builder.Replace(match.ToString(), String.Format(" NOT LIKE N'%{0}%'", match.Groups[1]));
+            }
+
+            return builder.ToString();
+        }
+
         private IAppUnitOfWork UnitOfWork
         {
             get { return _context.UnitOfWork; }
@@ -654,6 +745,10 @@ namespace SPPC.Tadbir.Persistence.Utility
             return await repository.GetByIDAsync(itemId);
         }
 
+        private const string StartsWithRegex = @"\.StartsWith\('(\w{1,})'\)";
+        private const string EndsWithRegex = @"\.EndsWith\('(\w{1,})'\)";
+        private const string ContainsRegex = @"\.Contains\('(\w{1,})'\)";
+        private const string NotContainsRegex = @"\.IndexOf\('(\w{1,})'\) = -1";
         private readonly IRepositoryContext _context;
         private readonly ISystemRepository _system;
     }

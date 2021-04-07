@@ -87,6 +87,20 @@ namespace SPPC.Tadbir.Persistence.Utility
             int? branchId = null, bool noDraft = true);
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="gridOptions"></param>
+        /// <returns></returns>
+        string GetColumnFilters(GridOptions gridOptions);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="gridOptions"></param>
+        /// <returns></returns>
+        string GetColumnSorting(GridOptions gridOptions);
+
+        /// <summary>
         /// به روش آسنکرون، فهرست سطوح قابل استفاده برای گزارشگیری را
         /// برای مولفه حساب داده شده خوانده و برمی گرداند
         /// </summary>
