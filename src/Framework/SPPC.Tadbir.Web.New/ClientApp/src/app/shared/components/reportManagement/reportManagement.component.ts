@@ -518,6 +518,10 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     return paramArrays;
   }
 
+  /**
+   * نمایش دیالوگ گزارشات
+   * @param params
+   */
   public previewReport(params: ParameterInfo[] = null) {
     this.showReportViewer = true;
     this.showReportDesigner = false;
@@ -564,7 +568,9 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
     var sort = this.currentSort;
     var quickFilter = this.currentQuickFilter;
-    this.currentQuickReportViewInfo.reportViewSetting = this.ViewSettings;
+
+    if (this.qReport)
+      this.currentQuickReportViewInfo.reportViewSetting = this.ViewSettings;
 
     if (!this.Parameters || this.Parameters.length == 0) {
       this.reportingService.getAllForReport(serviceUrl,
@@ -616,6 +622,11 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     }
   }
 
+  /**
+   * پارامتر های آدرس روت را در آدرس جایگزین میکند
+   * @param url
+   * @param params
+   */
   replaceServiceUrlParams(url: string, params: ReportParamComponent[]): string {
     
     if (params.length > 0) {
@@ -630,6 +641,11 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     return url;
   }
 
+  /**
+   * این تابع آدرس روت مربوط به دیتای گزارش را فرمت دهی میکند
+   * @param url
+   * @param params
+   */
   changeServiceUrl(url: string, params: ParameterInfo[]): string {   
 
     var queryStringParams = params.filter(p => p.controlType === 'QueryString');
@@ -645,21 +661,23 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     });
     return url;
   }
-
-
-
-
+   
   saveDesignOfReport(id: string) {
     var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + id.replace('designerTab', ''), false);
     designer.invokeSaveReport();
   }
 
+  /**
+   * محیط طراحی را در تب باز شده رفرش میکند
+   * @param designer
+   */
   updateTemplateInTab(designer: any) {
     var tab = this.tabsComponent.dynamicTabs.find(t => t.Id == "designerTab" + this.currentReportId);
     var designData = designer.report.saveToJsonString();
     tab.template = designData;
   }
 
+  /** محیط طراحی گزارش را نمایش میدهد */
   designReport() {
     var current = this.currentReportId;
     if (this.qReport)
@@ -737,6 +755,10 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     }
   }
 
+  /**
+   * حذف گزارش
+   * @param deleteFlag
+   */
   deleteReport(deleteFlag: boolean) {
     this.deleteConfirm = false;
     if (deleteFlag) {
@@ -773,6 +795,10 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     this.active = false;
   }
 
+  /**
+  * تابعی برای تشخیص کلاس های مربوط به درخت گزارشات برای نمایش آیکن ها
+  * @param dataItem
+  */
   public iconClass(dataItem: any): any {
     return {
       'k-i-change-manually': !dataItem.isGroup && !dataItem.isSystem,
@@ -782,6 +808,10 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     };
   }
 
+  /**
+   * تابعی برای ست کردن کلاس های مربوط به درخت گزارشات برای نمایش آیکن ها
+   * @param dataItem
+   */
   public setClass(dataItem: any): any {
 
     var cssClass = '';
@@ -811,88 +841,19 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     var jsonString = localStorage.getItem("s" + viewId + this.currentlang + userId);
     if (jsonString) {
       var res = <QuickReportConfigInfo>JSON.parse(jsonString);
-      this.DecisionMakingForShowReport(res);
+      this.showDefaultReport(res);
       return true;
     }
     
     return false;
 
   }
-
-
-  createQuickReportConfig(viewId : number) {
-
-    this.getAllMetaDataByViewIdAsync(viewId).then(response => {
-
-      if (response) {
-        var propeties = response;
-
-
-        var columnIndex = 0;
-        var thArray = this.Grid.wrapper.nativeElement.getElementsByTagName('TH');
-        var columns: Array<QuickReportColumnConfig> = new Array<QuickReportColumnConfig>();
-        this.Grid.leafColumns.forEach(function (item) {
-          var qr: QuickReportColumnConfigInfo = new QuickReportColumnConfigInfo();
-          var column = item as ColumnComponent;
-          if (column.field) {
-            qr.name = column.field;
-            if (column.width)
-              qr.width = column.width;
-            else
-              qr.width = thArray[columnIndex].offsetWidth;
-
-            
-            var property = propeties.filter(p => p.name.toLowerCase() === column.field.toLowerCase());
-            if (property.length > 0)
-              qr.dataType = property[0].dotNetType;
-
-            qr.visible = true;
-            qr.title = column.displayTitle;
-            
-            if (property[0].storageType == "money")
-              qr.type = property[0].storageType;
-            else
-              qr.type = property[0].scriptType;
-
-            qr.groupName = property[0].groupName;
-
-            columns.push(qr);
-
-            columnIndex++;
-          }
-        });        
-
-        var dpi_x = document.getElementById('dpi').offsetWidth;
-        var viewInfo = new QuickReportConfigInfo();
-        viewInfo.columns = columns;
-        //this.viewInfo.inchValue = dpi_x;
-        //this.viewInfo.reportLang = this.CurrentLanguage;
-        return viewInfo;
-      }
-    });
-
-    return null;
-  }
-
-
-  /*
-  public DecisionMakingForShowReport(viewInfo: QuickReportViewInfo = null) {
-    var showQReport: boolean = false;
-    var treeData: Array<TreeItem> = null;
-    var url = String.Format(ReportApi.ReportsByView, this.ViewIdentity.ViewID);
-
-    this.reportingService.getAll(url)
-      .subscribe((res: any) => {
-        treeData = <Array<TreeItem>>res.body;
-        if (treeData.filter((t: any) => t.isDynamic === true).length > 0)
-          showQReport = true;
-        var defaultReport = treeData.filter((t: any) => t.isDefault === true)[0];
-        this.switchReport(showQReport, treeData, defaultReport, viewInfo);
-      });
-  }*/
-
-
-   public DecisionMakingForShowReport(viewInfo: QuickReportConfigInfo = null) {
+     
+  /**
+   * این متد براساس گزارش دیفالت شده را نمایش میدهد یا گزارش فوری نمایش میدهد یا گزارش طراجی شده را نمایش میدهد
+   * @param viewInfo
+   */
+  public showDefaultReport(viewInfo: QuickReportConfigInfo = null) {
     var showQReport: boolean = false;
     var treeData: Array<TreeItem> = null;
     var url = String.Format(ReportApi.ReportsByView, this.ViewIdentity.ViewID);
@@ -912,7 +873,13 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
       });
   }
 
-
+  /**
+   * در این تابع تصمیم برای نمایش گزارش فوری یا گزارش طراحی شده انجام میشود
+   * @param showQReport
+   * @param treeData
+   * @param defReport
+   * @param viewInfo
+   */
   switchReport(showQReport: boolean, treeData: any, defReport: any, viewInfo: QuickReportConfigInfo) {
     var columnIndex = 0;
 
@@ -970,61 +937,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     }
   }
 
-  /*
-  switchReport(showQReport: boolean, treeData: any, defReport: any, viewInfo: QuickReportViewInfo) {
-    var columnIndex = 0;
-
-    var params: Array<ReportParamComponent> = null;
-    if (this.ViewIdentity.params.length > 0)
-      params = this.ViewIdentity.params.toArray();
-
-    if (showQReport) {
-
-    
-      viewInfo.reportTitle = defReport.caption;
-
-      //get parameters for quick report
-      var url = String.Format(ReportApi.Report, defReport.id);
-      this.reportingService.getAll(url).subscribe((res: Response) => {
-
-        var printInfo: PrintInfo = <any>res.body;
-        this.currentPrintInfo = printInfo;
-        if (printInfo.parameters.length > 0) {
-          var reportParameters = printInfo.parameters;
-          params.forEach(function (p) {
-            if (p.ParamReportVisible == false) {
-              var index = reportParameters.findIndex(f => f.name === p.ParamName);
-              if (index >= 0)
-                reportParameters.splice(index, 1);
-            }
-
-          });
-          viewInfo.parameters = reportParameters;
-        }
-
-        this.reportingService.putEnvironmentUserQuickReport(ReportApi.EnvironmentQuickReport, viewInfo)
-          .subscribe((response: any) => {
-
-            var design = response.designJson;
-            var outOfPage = response.outOfPage;
-            if (outOfPage) {
-              this.showMessage(this.getText('Report.ReportIsOutOfPage'));
-            }
-            var id = this.ViewIdentity.ViewID;
-            this.showQuickReport(id, params, this.Filter, this.Sort, design, treeData, viewInfo);
-          });
-
-      });
-   
-
-    }
-    else {
-      if (this.ViewIdentity.params.length > 0)
-        params = this.ViewIdentity.params.toArray();
-      this.showDialog(this.ViewIdentity.ViewID, params, this.Filter, this.Sort, treeData);
-    }
-  }
-*/
+ 
 
 
 }

@@ -308,7 +308,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       }
       else {
 
-        this.report = ReportsQueries.registerReport(this.Code, this.report, reportData);
+        this.report = ReportsQueries.registerReport(this.Code, this.report, reportData,this.bStorageService.getLanguage());
         this.showDesginedReportViewer(reportData, this.report);
       }
     }, 10);

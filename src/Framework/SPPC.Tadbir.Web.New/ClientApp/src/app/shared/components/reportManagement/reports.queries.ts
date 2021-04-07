@@ -3,9 +3,13 @@ import * as moment from 'jalali-moment';
 
 export class ReportsQueries {
 
-  public static registerReport(reportCode: string, report: any, data: any) {
+  static language: string;
+
+  public static registerReport(reportCode: string, report: any, data: any, currentLanguage:string) {
         
     var outReport = null;
+    this.language = currentLanguage;
+
     switch (reportCode) {
       //VouchersStdForm Report
       case "Voucher-Std-Form":
@@ -23,7 +27,12 @@ export class ReportsQueries {
     report.regData("Vouchers", "VouchersStdForm", reportData.rows.lines);
 
     moment.locale('en');
-    var momentDate = moment(new Date()).locale('fa').format("YYYY/MM/DD");
+    var momentDate = null;
+
+    if (this.language == "fa")
+      momentDate = moment(new Date()).locale('fa').format("YYYY/MM/DD");
+    else
+      momentDate = moment(new Date()).locale('en').format("YYYY/MM/DD");
 
     //set parameters in report
     report.dictionary.variables.getByName("currentDate").valueObject = momentDate;
