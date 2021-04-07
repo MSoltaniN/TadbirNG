@@ -6,7 +6,7 @@ import { Voucher } from '@sppc/finance/models';
 import { BaseService, FilterExpression, Filter } from '@sppc/shared/class';
 import { InventoryBalance } from '../models/inventoryBalance';
 import { VoucherApi } from './api';
-import { VoucherStatusResource } from '../enum';
+import { VoucherStatusResource, VoucherMessageResource } from '../enum';
 
 
 export class VoucherInfo implements Voucher {
@@ -124,33 +124,35 @@ export class VoucherService extends BaseService {
       .map(response => <any>(<Response>response));
   }
 
-  public getStatusFilter(voucherStatus:string) {
+  public getStatusFilter(voucherStatus:string,forVoucherEntity:boolean=false) {
     let statusFilter: Filter[] = [];    
     var statusKey = "";
     var urlKey = "";
+    var entity = "Voucher";
+    if (!forVoucherEntity) entity = "";
 
     switch (voucherStatus) {
       case "2": {
-        statusFilter.push(new Filter("StatusId", "1", "== {0}", "System.Int32"));
-        statusKey = VoucherStatusResource.NotCommitted;
+        statusFilter.push(new Filter(entity + "StatusId", "1", "== {0}", "System.Int32"));
+        statusKey = VoucherMessageResource.NotCommitted;
         urlKey = "/#/finance/voucher/committed";
         break;
       }
       case "3": {
-        statusFilter.push(new Filter("StatusId", "3", "!= {0}", "System.Int32"));
-        statusKey = VoucherStatusResource.NotFinalized;
+        statusFilter.push(new Filter(entity + "StatusId", "3", "!= {0}", "System.Int32"));
+        statusKey = VoucherMessageResource.NotFinalized;
         urlKey = "/#/finance/voucher/finalized";
         break;
       }
       case "4": {
-        statusFilter.push(new Filter("ConfirmedById", "", "== null", ""));
-        statusKey = VoucherStatusResource.NotConfirmed;
+        statusFilter.push(new Filter(entity + "ConfirmedById", "", "== null", ""));
+        statusKey = VoucherMessageResource.NotConfirmed;
         urlKey = "/#/finance/voucher/confirmed";
         break;
       }
       case "5": {        
-        statusFilter.push(new Filter("ApprovedById", "", "== null", ""));
-        statusKey = VoucherStatusResource.NotApproved;
+        statusFilter.push(new Filter(entity + "ApprovedById", "", "== null", ""));
+        statusKey = VoucherMessageResource.NotApproved;
         urlKey = "/#/finance/voucher/approved";
         break;
       }
