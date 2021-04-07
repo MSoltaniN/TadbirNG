@@ -290,6 +290,12 @@ namespace SPPC.Tadbir.Persistence
             return componentName;
         }
 
+        private static bool HasColumnFilterOrSort(GridOptions gridOptions)
+        {
+            return gridOptions.Filter != null
+                || gridOptions.SortColumns.Count > 0;
+        }
+
         private async Task<List<TestBalanceItemViewModel>> ApplyZeroBalanceOptionAsync(
             IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters, int level)
         {
@@ -315,9 +321,19 @@ namespace SPPC.Tadbir.Persistence
             TestBalanceViewModel balance, IEnumerable<TestBalanceItemViewModel> items,
             TestBalanceParameters parameters, int length)
         {
-            SetSummaryItems(balance, items);
-            balance.Items.AddRange(items.ApplyPaging(parameters.GridOptions));
-            SetItemNames(parameters.ViewId, length, balance.Items);
+            if (HasColumnFilterOrSort(parameters.GridOptions))
+            {
+                SetItemNames(parameters.ViewId, length, items);
+                var filtered = items.Apply(parameters.GridOptions, false);
+                SetSummaryItems(balance, filtered);
+                balance.Items.AddRange(filtered.ApplyPaging(parameters.GridOptions));
+            }
+            else
+            {
+                SetSummaryItems(balance, items);
+                balance.Items.AddRange(items.ApplyPaging(parameters.GridOptions));
+                SetItemNames(parameters.ViewId, length, balance.Items);
+            }
         }
 
         private void AddInitialBalances(

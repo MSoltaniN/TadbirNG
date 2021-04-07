@@ -891,25 +891,27 @@ namespace SPPC.Tadbir.Persistence
                 monthParams.FromDate = month.Start;
                 monthParams.ToDate = month.End;
 
-                var debitItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true, true);
-                var creditItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true, false);
+                var debitItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true, true)
+                    .ToList();
+                var creditItems = GetLedgerSummaryByDateItems(monthParams, length, byBranch, true, false)
+                    .ToList();
+                Array.ForEach(debitItems.ToArray(), item => item.VoucherDate = month.End);
+                Array.ForEach(creditItems.ToArray(), item => item.VoucherDate = month.End);
                 if (HasColumnFilterOrSort(parameters.GridOptions))
                 {
-                    var filtered = await GetFilteredJournalByLedgerAsync(
-                        debitItems.ToList(), creditItems.ToList(), parameters.GridOptions, false);
-                    monthJournal.AddRange(filtered.Items);
+                    await SetNameAndDescriptionAsync(debitItems);
+                    await SetNameAndDescriptionAsync(creditItems);
+                    var filteredDebit = debitItems.Apply(parameters.GridOptions, false);
+                    var filteredCredit = creditItems.Apply(parameters.GridOptions, false);
+                    monthJournal.AddRange(MergeByDate(filteredDebit, filteredCredit));
                 }
                 else
                 {
                     monthJournal.AddRange(MergeByDate(debitItems, creditItems));
                 }
 
-                if (monthJournal.Count > 0)
-                {
-                    Array.ForEach(monthJournal.ToArray(), item => item.VoucherDate = month.End);
-                    items.AddRange(monthJournal);
-                    monthJournal.Clear();
-                }
+                items.AddRange(monthJournal);
+                monthJournal.Clear();
             }
 
             await PrepareJournalAsync(journal, items, parameters.GridOptions);
