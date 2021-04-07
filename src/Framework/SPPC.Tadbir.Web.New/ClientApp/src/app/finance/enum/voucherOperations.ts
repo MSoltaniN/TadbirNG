@@ -14,3 +14,17 @@ export enum VoucherSubjectTypes {
   Normal = "0",
   Draft = "1",
 }
+
+export enum VoucherMessageResource {
+  /** ثبت نشده*/
+  NotCommitted = "Voucher.VoucherStatuses.NotCommitted",
+
+  /** ثبت قطعی نشده*/
+  NotFinalized = "Voucher.VoucherStatuses.NotFinalized",
+
+  /** تایید نشده*/
+  NotConfirmed = "Voucher.VoucherStatuses.NotConfirmed",
+
+  /** تصویب نشده*/
+  NotApproved = "Voucher.VoucherStatuses.NotApproved",
+}
