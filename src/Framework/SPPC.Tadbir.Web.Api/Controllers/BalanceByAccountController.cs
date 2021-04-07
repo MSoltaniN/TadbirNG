@@ -49,9 +49,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             parameters.GridOptions = gridOptions;
             var report = await _repository.GetBalanceByAccountAsync(parameters);
-
-            SetItemCount(report.Items.Count);
-            report.SetItems(report.Items
+            var filtered = report.Items.Apply(gridOptions, false);
+            SetItemCount(filtered.Count());
+            report.SetItems(filtered
                 .ApplyPaging(gridOptions)
                 .ToList());
             SetRowNumbers(report.Items);

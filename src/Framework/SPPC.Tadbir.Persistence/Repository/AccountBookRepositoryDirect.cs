@@ -123,18 +123,29 @@ namespace SPPC.Tadbir.Persistence
         private static void PrepareAccountBook(AccountBookViewModel book,
             IList<AccountBookItemViewModel> items, GridOptions gridOptions)
         {
-            decimal balance = items[0].Balance;
-            foreach (var item in items.Skip(1))
+            var filteredItems = items
+                .Skip(1)
+                .Apply(gridOptions, false)
+                .ToList();
+            if (filteredItems.Count == 0)
+            {
+                book.Items.Add(items[0]);
+                return;
+            }
+
+            filteredItems.Insert(0, items[0]);
+            decimal balance = filteredItems[0].Balance;
+            foreach (var item in filteredItems.Skip(1))
             {
                 balance = balance + item.Debit - item.Credit;
                 item.Balance = balance;
             }
 
-            book.DebitSum = items.Sum(item => item.Debit);
-            book.CreditSum = items.Sum(item => item.Credit);
-            book.Balance = items.Last().Balance;
-            book.TotalCount = items.Count;
-            book.Items.AddRange(items.ApplyPaging(gridOptions));
+            book.DebitSum = filteredItems.Sum(item => item.Debit);
+            book.CreditSum = filteredItems.Sum(item => item.Credit);
+            book.Balance = filteredItems.Last().Balance;
+            book.TotalCount = filteredItems.Count;
+            book.Items.AddRange(filteredItems.ApplyPaging(gridOptions));
         }
 
         private static string GetSummaryQuery(bool byNo, bool byBranch)
@@ -202,8 +213,13 @@ namespace SPPC.Tadbir.Persistence
                 _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
                 parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
                 fullCode));
-            query.SetFilter(_utility.GetEnvironmentFilters(
-                parameters.GridOptions, UserContext.FiscalPeriodId));
+            var filterBuilder = new StringBuilder(_utility.GetEnvironmentFilters(parameters.GridOptions));
+            if (parameters.GridOptions.Filter != null)
+            {
+                filterBuilder.AppendFormat(" AND {0}", _utility.GetColumnFilters(parameters.GridOptions));
+            }
+
+            query.SetFilter(filterBuilder.ToString());
             var result = DbConsole.ExecuteQuery(query.Query);
             items.AddRange(result.Rows
                 .Cast<DataRow>()
