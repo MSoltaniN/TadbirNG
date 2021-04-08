@@ -8241,3 +8241,8 @@ update Reporting.LocalReport set Template =  N'{
   }
 }'
 where ReportID = 40 and LocaleID = 2
+
+-- 1.1.1114
+UPDATE [Metadata].[Column]
+SET IsNullable = 1
+WHERE ViewID = 11 AND Name = 'Server'

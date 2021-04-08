@@ -54,7 +54,6 @@ export class CompanyFormComponent extends DetailComponent implements OnInit {
     setTimeout(() => {
       this.editForm.reset(this.model);
       this.editForm.get('dbName').setValidators([Validators.required, Validators.maxLength(128), Validators.pattern("^[a-zA-Z-_]+$")]);
-      this.editForm.patchValue({ server: "." });
     })
   }
 

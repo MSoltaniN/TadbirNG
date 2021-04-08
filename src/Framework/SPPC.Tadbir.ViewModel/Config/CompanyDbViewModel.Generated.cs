@@ -57,7 +57,6 @@ namespace SPPC.Tadbir.ViewModel.Config
         /// <summary>
         /// نام یا آدرس آی پی سرور دیتابیس
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Server { get; set; }
 

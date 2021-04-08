@@ -200,7 +200,6 @@ namespace SPPC.Tadbir.Persistence
         protected override void UpdateExisting(CompanyDbViewModel companyViewModel, CompanyDb company)
         {
             company.Name = companyViewModel.Name;
-            company.Server = companyViewModel.Server;
             company.UserName = companyViewModel.UserName;
             company.Password = companyViewModel.Password;
             company.Description = companyViewModel.Description;
