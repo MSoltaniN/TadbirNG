@@ -17,6 +17,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int BranchId { get; set; }
 
         /// <summary>
+        /// نام شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد
+        /// </summary>
+        public string BranchName { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد
         /// </summary>
         public int FiscalPeriodId { get; set; }
