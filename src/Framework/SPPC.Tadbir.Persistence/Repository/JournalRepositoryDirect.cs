@@ -1016,8 +1016,8 @@ namespace SPPC.Tadbir.Persistence
                 ProjectFullCode = _utility.ValueOrDefault(row, "ProjectFullCode"),
                 ProjectName = _utility.ValueOrDefault(row, "ProjectName"),
                 Description = _utility.ValueOrDefault(row, "Description"),
-                Debit = _utility.ValueOrDefault<Decimal>(row, "Debit"),
-                Credit = _utility.ValueOrDefault<Decimal>(row, "Credit"),
+                Debit = _utility.ValueOrDefault<decimal>(row, "Debit"),
+                Credit = _utility.ValueOrDefault<decimal>(row, "Credit"),
                 Mark = _utility.ValueOrDefault(row, "Mark"),
                 BranchName = _utility.ValueOrDefault(row, "BranchName")
             };
