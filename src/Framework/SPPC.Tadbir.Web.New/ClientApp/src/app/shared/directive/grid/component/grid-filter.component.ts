@@ -91,7 +91,7 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
           var filterInput = false;
           var element: any = event.srcElement;
           var object = element;
-          if (element.hasAttribute('kendofilterinput')) {
+          if (element.hasAttribute('kendofilterinput') || element.classList.contains("dp-picker-input")) {
             filterInput = true;
           }
           else {
