@@ -32,11 +32,12 @@ namespace SPPC.Tadbir.Persistence
                     .Replace('"', '\'')
                     .Replace("== null", " IS NULL")
                     .Replace("!= null", " IS NOT NULL")
-                    .Replace("==", " =")
-                    .Replace("!=", " <>")
-                    .Replace(">=", " >=")
-                    .Replace("<=", " <=")
+                    .Replace("==", "=")
+                    .Replace("!=", "<>")
+                    .Replace(">=", ">=")
+                    .Replace("<=", "<=")
                     .Replace("BranchId", "vl.BranchID")
+                    .Replace("Reference = '", "Reference = N'")
                     .Replace("&&", "AND")
                     .Replace("||", "OR");
             }
