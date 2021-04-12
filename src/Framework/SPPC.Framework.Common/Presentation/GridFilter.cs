@@ -70,17 +70,12 @@ namespace SPPC.Framework.Presentation
             string op = null;
             var quotedTypes = new string[]
             {
-                "System.String", "System.DateTime", "System.TimeSpan"
+                "System.String", "System.Date", "System.DateTime", "System.TimeSpan"
             };
 
             if (quotedTypes.Contains(FieldTypeName))
             {
                 op = Operator.Replace("{0}", "\"{0}\"");
-            }
-            else if (FieldTypeName == "System.Date")
-            {
-                op = Operator.Replace("{0}", "\"{0}\"");
-                op = String.Format(".Date{0}", op);
             }
             else if (FieldTypeName == "System.Date?")
             {
