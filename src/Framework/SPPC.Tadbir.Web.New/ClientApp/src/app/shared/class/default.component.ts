@@ -280,7 +280,7 @@ export class DefaultComponent extends BaseComponent {
     this.skip = value;
   }  
 
-  /** set number value for grid current page */
+  /** get number value for grid current page */
   public get pageIndex(): number {
     if (this.skip == 0)
       return 1;

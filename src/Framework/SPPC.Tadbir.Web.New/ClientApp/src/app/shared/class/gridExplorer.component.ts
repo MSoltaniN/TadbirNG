@@ -20,6 +20,7 @@ import { MetaDataService } from "@sppc/shared/services/metadata.service";
 import { GridService } from "@sppc/shared/services/grid.service";
 import {  BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 import { Entities, MessageType } from "@sppc/env/environment";
+import { ReloadOption } from "./reload-option";
 
 
 
@@ -393,7 +394,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
 
 
   //#region grid
-  reloadGrid(insertedModel?: any) {
+  reloadGrid(options?: ReloadOption) {
     //if (this.viewAccess) {
     this.grid.loading = true;
     var filter = this.currentFilter;
@@ -401,7 +402,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
       this.skip = this.skip - this.pageSize;
     }
 
-    if (insertedModel)
+    if (options && options.InsertedModel)
       this.goToLastPage(this.totalRecords);
 
     var parent_Id = this.parentId ? this.parentId.toString() : "null";
@@ -610,7 +611,9 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
           this.dialogModel.model = undefined;
 
           this.selectedRows = [];
-          this.reloadGrid(insertedModel);
+          var options = new ReloadOption();
+          options.InsertedModel = insertedModel;
+          this.reloadGrid(options);
 
           this.refreshTreeNodes(insertedModel);
 

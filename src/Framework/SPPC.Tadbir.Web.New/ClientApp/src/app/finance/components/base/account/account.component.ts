@@ -17,6 +17,7 @@ import { ViewName, AccountPermissions } from '@sppc/shared/security';
 import { SelectFormComponent } from '@sppc/shared/controls';
 import { Account } from '@sppc/finance/models';
 import { AccountFullData } from '@sppc/finance/models/accountFullData';
+import { ReloadOption } from '@sppc/shared/class/reload-option';
 
 
 //#endregion
@@ -178,7 +179,10 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
           this.selectedRows = [];
           //log is off after update insert
           this.listChanged = false;
-          this.reloadGrid(insertedModel);
+
+          var options = new ReloadOption();
+          options.InsertedModel = insertedModel;
+          this.reloadGrid(options);          
 
           this.refreshTreeNodes(insertedModel);
 

@@ -64,8 +64,7 @@ export class SppcAutoGridFilter {
             mutations.forEach(function (mutation) {
               if (mutation.type == 'attributes' && mutation.attributeName == "ng-reflect-value") {
                 //var temp = <any>self.filterCellTemplate.templateRef;
-                //temp._parentView.component.reloadGrid();
-            
+                //temp._parentView.component.reloadGrid();            
               }
             });
           });
