@@ -9,6 +9,8 @@ import { Layout } from "@sppc/env/environment";
 import { BrowserStorageService } from "@sppc/shared/services";
 import { SettingService } from "@sppc/config/service";
 import { BaseComponent } from "@sppc/shared/class";
+import { ReloadOption } from "@sppc/shared/class/reload-option";
+import { ReloadStatusType } from "@sppc/shared/enum";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -110,7 +112,10 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
 
             event.stopPropagation();
             setTimeout(() => {
-              this.parentComponent.reloadGrid();
+              var reloadOption = new ReloadOption();
+              reloadOption.Status = ReloadStatusType.AfterFilter;
+
+              this.parentComponent.reloadGrid(reloadOption);
             }, 300);
           }
       }
