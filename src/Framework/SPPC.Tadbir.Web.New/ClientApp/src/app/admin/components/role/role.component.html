@@ -113,7 +113,7 @@
 </div>
 
 <role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [isNew]="isNew" [errorMessage]="errorMessage"
-                     (save)="saveHandler($event)"
+                     (save)="saveRole($event)"
                      (cancel)="cancelHandler()">
 </role-form-component>
 <role-user-form-component [usersList]="usersList" [roleUser]="roleUsersData" [errorMessage]="errorMessage" [roleName]="roleName"
