@@ -34,7 +34,7 @@ export class UserFormComponent extends DetailComponent {
   });
 
   //create properties
-  active: boolean = false;
+  @Input() public active: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = "";
 

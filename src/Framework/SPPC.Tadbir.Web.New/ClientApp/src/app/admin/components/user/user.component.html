@@ -103,7 +103,7 @@
   </kendo-grid>
 </div>
 
-<user-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+<user-form-component [model]="editDataItem" [active]="isActive" [isNew]="isNew" [errorMessage]="errorMessage"
                      (save)="saveUser($event)"
                      (cancel)="cancelHandler()">
 </user-form-component>

@@ -112,7 +112,7 @@
   </kendo-grid>
 </div>
 
-<role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [isNew]="isNew" [errorMessage]="errorMessage"
+<role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [active]="isActive" [isNew]="isNew" [errorMessage]="errorMessage"
                      (save)="saveRole($event)"
                      (cancel)="cancelHandler()">
 </role-form-component>

@@ -44,9 +44,9 @@ export class RoleFormComponent extends DetailComponent {
   public treeData: TreeNodeInfo[] = new Array<TreeNodeInfo>();
 
   //create properties    
-  public selectedRows: number[] = [];
-  active: boolean = false;
+  public selectedRows: number[] = [];  
 
+  @Input() public active: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
