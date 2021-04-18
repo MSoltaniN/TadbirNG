@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
@@ -103,7 +104,7 @@ namespace SPPC.Tadbir.Persistence
                 series.Points.Add(new DashboardChartPointViewModel()
                 {
                     XValue = month.Name,
-                    YValue = grossSales
+                    YValue = Math.Abs(Math.Min(0, grossSales))
                 });
             }
 
@@ -114,6 +115,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var salesAccounts = _report.GetUsableAccounts(AccountCollectionId.Sales);
             decimal grossSales = GetCollectionBalance(salesAccounts, fromDate, toDate);
+            grossSales = Math.Abs(Math.Min(0, grossSales));
             var reducerAccounts = GetSalesReducerAccounts();
             decimal refundDiscount = GetCollectionBalance(reducerAccounts, fromDate, toDate);
             return grossSales - refundDiscount;
@@ -152,8 +154,10 @@ namespace SPPC.Tadbir.Persistence
                 }
                 else
                 {
-                    var query = new ReportQuery(String.Format(
-                        DashboardQuery.CollectionBalanceByDate, from, to, filterBuilder.ToString()));
+                    var fromDate = from.Value.ToShortDateString(false);
+                    var toDate = to.Value.ToShortDateString(false);
+                    reportQuery = new ReportQuery(String.Format(
+                        DashboardQuery.CollectionBalanceByDate, fromDate, toDate, filterBuilder.ToString()));
                 }
 
                 var result = DbConsole.ExecuteQuery(reportQuery.Query);

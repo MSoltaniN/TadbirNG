@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
@@ -54,14 +55,14 @@ namespace SPPC.Tadbir.Persistence
             while (index < level)
             {
                 length = _utility.GetLevelCodeLength(parameters.ViewId, index);
-                filter = String.Format("Level == {0}", index);
+                filter = String.Format("acc.Level == {0}", index);
                 query = GetLevelQuery(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
                 index++;
             }
 
             length = _utility.GetLevelCodeLength(parameters.ViewId, level);
-            filter = String.Format("Level >= {0}", level);
+            filter = String.Format("acc.Level >= {0}", level);
             query = GetLevelQuery(length, parameters, filter);
             items.AddRange(GetQueryResult(query));
 
@@ -100,7 +101,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var items = new List<TestBalanceItemViewModel>();
                 int level = accountItem.Level + 1;
-                var filter = String.Format("Level >= {0} AND acc.FullCode LIKE '{1}%'", level, accountItem.FullCode);
+                var filter = String.Format("acc.Level >= {0} AND acc.FullCode LIKE '{1}%'", level, accountItem.FullCode);
                 int length = _utility.GetLevelCodeLength(parameters.ViewId, level);
                 var query = GetLevelQuery(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
@@ -337,7 +338,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private void AddInitialBalances(
-            int length, IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
+            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
         {
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             if (parameters.IsByBranch)
@@ -347,7 +348,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var initMap = new Dictionary<string, decimal>();
-            var openingMap = new Dictionary<string, decimal>();
             var query = GetInitBalanceQuery(length, parameters);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
@@ -364,39 +364,26 @@ namespace SPPC.Tadbir.Persistence
                 result = DbConsole.ExecuteQuery(query.Query);
                 foreach (DataRow row in result.Rows)
                 {
-                    openingMap.Add(_utility.ValueOrDefault(row, "FullCode"),
-                        _utility.ValueOrDefault<decimal>(row, "Balance"));
+                    string fullCode = _utility.ValueOrDefault(row, "FullCode");
+                    decimal balance = _utility.ValueOrDefault<decimal>(row, "Balance");
+                    if (initMap.ContainsKey(fullCode))
+                    {
+                        initMap[fullCode] = initMap[fullCode] + balance;
+                    }
+                    else
+                    {
+                        initMap.Add(fullCode, balance);
+                    }
                 }
             }
 
-            foreach (var item in items)
-            {
-                decimal balance = 0.0M;
-                if (initMap.ContainsKey(item.AccountFullCode))
-                {
-                    balance = initMap[item.AccountFullCode];
-                }
-
-                if (openingAsInitBalance && openingMap.ContainsKey(item.AccountFullCode))
-                {
-                    balance += openingMap[item.AccountFullCode];
-                }
-
-                item.StartBalanceDebit = Math.Max(0, balance);
-                item.StartBalanceCredit = Math.Abs(Math.Min(0, balance));
-
-                balance = item.StartBalanceDebit + item.TurnoverDebit
-                    - (item.StartBalanceCredit + item.TurnoverCredit);
-                item.EndBalanceDebit = Math.Max(0, balance);
-                item.EndBalanceCredit = Math.Abs(Math.Min(0, balance));
-            }
+            MergeByCode(items, initMap);
         }
 
         private void AddInitialBalanceByBranch(
-            int length, IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
+            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
         {
             var initMap = new Dictionary<FullCodeBranch, decimal>();
-            var openingMap = new Dictionary<FullCodeBranch, decimal>();
             var query = GetInitBalanceQuery(length, parameters);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
@@ -422,35 +409,107 @@ namespace SPPC.Tadbir.Persistence
                         FullCode = _utility.ValueOrDefault(row, "FullCode"),
                         BranchName = _utility.ValueOrDefault(row, "BranchName")
                     };
-                    openingMap.Add(codeBranch, _utility.ValueOrDefault<decimal>(row, "Balance"));
+                    decimal balance = _utility.ValueOrDefault<decimal>(row, "Balance");
+                    if (initMap.ContainsKey(codeBranch))
+                    {
+                        initMap[codeBranch] = initMap[codeBranch] + balance;
+                    }
+                    else
+                    {
+                        initMap.Add(codeBranch, balance);
+                    }
                 }
             }
 
-            foreach (var item in items)
+            MergeByCodeBranch(items, initMap);
+        }
+
+        private void MergeByCode(
+            List<TestBalanceItemViewModel> items, Dictionary<string, decimal> initMap)
+        {
+            var allCodes = initMap.Keys
+                .Cast<string>()
+                .Concat(items.Select(item => item.AccountFullCode))
+                .Distinct();
+
+            foreach (var code in allCodes)
             {
                 decimal balance = 0.0M;
-                var codeBranch = new FullCodeBranch()
+                var item = items.Where(it => it.AccountFullCode == code).FirstOrDefault();
+                if (item != null && initMap.ContainsKey(code))
                 {
-                    FullCode = item.AccountFullCode,
-                    BranchName = item.BranchName
-                };
-                if (initMap.ContainsKey(codeBranch))
+                    balance = initMap[code];
+                    item.StartBalanceDebit = Math.Max(0, balance);
+                    item.StartBalanceCredit = Math.Abs(Math.Min(0, balance));
+                    balance = item.StartBalanceDebit + item.TurnoverDebit
+                        - (item.StartBalanceCredit + item.TurnoverCredit);
+                    item.EndBalanceDebit = Math.Max(0, balance);
+                    item.EndBalanceCredit = Math.Abs(Math.Min(0, balance));
+                }
+                else if (item == null && initMap.ContainsKey(code))
+                {
+                    balance = initMap[code];
+                    item = new TestBalanceItemViewModel()
+                    {
+                        AccountFullCode = code,
+                        DetailAccountFullCode = code,
+                        CostCenterFullCode = code,
+                        ProjectFullCode = code,
+                        StartBalanceDebit = Math.Max(0, balance),
+                        StartBalanceCredit = Math.Abs(Math.Min(0, balance)),
+                        EndBalanceDebit = Math.Max(0, balance),
+                        EndBalanceCredit = Math.Abs(Math.Min(0, balance))
+                    };
+                    items.Add(item);
+                }
+            }
+        }
+
+        private void MergeByCodeBranch(
+            List<TestBalanceItemViewModel> items, Dictionary<FullCodeBranch, decimal> initMap)
+        {
+            var allCodeBranches = initMap.Keys
+                .Cast<FullCodeBranch>()
+                .Concat(items.Select(item =>
+                    new FullCodeBranch()
+                    {
+                        FullCode = item.AccountFullCode,
+                        BranchName = item.BranchName
+                    }));
+
+            foreach (var codeBranch in allCodeBranches)
+            {
+                decimal balance = 0.0M;
+                var item = items
+                    .Where(it => it.AccountFullCode == codeBranch.FullCode
+                        && it.BranchName == codeBranch.BranchName).FirstOrDefault();
+                if (item != null && initMap.ContainsKey(codeBranch))
                 {
                     balance = initMap[codeBranch];
+                    item.StartBalanceDebit = Math.Max(0, balance);
+                    item.StartBalanceCredit = Math.Abs(Math.Min(0, balance));
+                    balance = item.StartBalanceDebit + item.TurnoverDebit
+                        - (item.StartBalanceCredit + item.TurnoverCredit);
+                    item.EndBalanceDebit = Math.Max(0, balance);
+                    item.EndBalanceCredit = Math.Abs(Math.Min(0, balance));
                 }
-
-                if (openingAsInitBalance && openingMap.ContainsKey(codeBranch))
+                else if (item == null && initMap.ContainsKey(codeBranch))
                 {
-                    balance += openingMap[codeBranch];
+                    balance = initMap[codeBranch];
+                    item = new TestBalanceItemViewModel()
+                    {
+                        AccountFullCode = codeBranch.FullCode,
+                        DetailAccountFullCode = codeBranch.FullCode,
+                        CostCenterFullCode = codeBranch.FullCode,
+                        ProjectFullCode = codeBranch.FullCode,
+                        BranchName = codeBranch.BranchName,
+                        StartBalanceDebit = Math.Max(0, balance),
+                        StartBalanceCredit = Math.Abs(Math.Min(0, balance)),
+                        EndBalanceDebit = Math.Max(0, balance),
+                        EndBalanceCredit = Math.Abs(Math.Min(0, balance))
+                    };
+                    items.Add(item);
                 }
-
-                item.StartBalanceDebit = Math.Max(0, balance);
-                item.StartBalanceCredit = Math.Abs(Math.Min(0, balance));
-
-                balance = item.StartBalanceDebit + item.TurnoverDebit
-                    - (item.StartBalanceCredit + item.TurnoverCredit);
-                item.EndBalanceDebit = Math.Max(0, balance);
-                item.EndBalanceCredit = Math.Abs(Math.Min(0, balance));
             }
         }
 
@@ -620,18 +679,43 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            query.SetFilter(GetEnvironmentFilters(parameters));
+            var filterBuilder = new StringBuilder(GetEnvironmentFilters(parameters));
+            if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) <= 0)
+            {
+                filterBuilder.Append(" AND v.OriginID != 2");
+            }
+
+            query.SetFilter(filterBuilder.ToString());
             return query;
         }
 
-        private string GetEnvironmentFilters(TestBalanceParameters parameters, string otherFilters = null)
+        private string GetEnvironmentFilters(TestBalanceParameters parameters, string otherFilters)
+        {
+            var predicates = GetEnvironmentFilters(parameters.GridOptions, parameters.Options);
+            predicates.Add(otherFilters);
+
+            if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+            {
+                predicates.Add(String.Format("VoucherOriginID != 2"));
+            }
+
+            return String.Join(" AND ", predicates);
+        }
+
+        private string GetEnvironmentFilters(TestBalanceParameters parameters)
+        {
+            var predicates = GetEnvironmentFilters(parameters.GridOptions, parameters.Options);
+
+            return String.Join(" AND ", predicates);
+        }
+
+        private List<string> GetEnvironmentFilters(GridOptions gridOptions, TestBalanceOptions options)
         {
             var predicates = new List<string>
             {
-                _utility.GetEnvironmentFilters(parameters.GridOptions, UserContext.FiscalPeriodId)
+                _utility.GetEnvironmentFilters(gridOptions)
             };
 
-            var options = parameters.Options;
             if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
             {
                 predicates.Add(String.Format("VoucherOriginID != 4"));
@@ -642,17 +726,7 @@ namespace SPPC.Tadbir.Persistence
                 predicates.Add(String.Format("VoucherOriginID != 3"));
             }
 
-            if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
-            {
-                predicates.Add(String.Format("VoucherOriginID != 2"));
-            }
-
-            if (!String.IsNullOrEmpty(otherFilters))
-            {
-                predicates.Add(otherFilters);
-            }
-
-            return String.Join(" AND ", predicates);
+            return predicates;
         }
 
         private readonly IReportDirectUtility _utility;
