@@ -1337,6 +1337,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            if ((article.Debit == 0m) && (article.Credit == 0m))
+            {
+                return BadRequest(_strings.Format(AppStrings.ZeroDebitAndCreditNotAllowed));
+            }
+
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
                 return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));

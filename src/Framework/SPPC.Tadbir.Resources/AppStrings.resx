@@ -3471,4 +3471,7 @@
   <data name="LiabilitiesPreviousBalance" xml:space="preserve">
     <value>مانده دوره قبل</value>
   </data>
+  <data name="ZeroDebitAndCreditNotAllowed" xml:space="preserve">
+    <value>مبلغ بدهکار و بستانکار صفر در آرتیکل نادرست است.</value>
+  </data>
 </root>

@@ -3480,4 +3480,7 @@
   <data name="LiabilitiesPreviousBalance" xml:space="preserve">
     <value>Last period balance</value>
   </data>
+  <data name="ZeroDebitAndCreditNotAllowed" xml:space="preserve">
+    <value>Zero amount in both debit and credit is not allowed.</value>
+  </data>
 </root>
