@@ -338,9 +338,69 @@ namespace SPPC.Tadbir.Persistence.Repository
 
         private async Task<string> GetWhereClauseAsync(BalanceByAccountParameters parameters)
         {
+            var whereBuilder = new StringBuilder(await GetCommonWhereClauseAsync(parameters));
+            var options = (TestBalanceOptions)parameters.Options;
+            if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+            {
+                whereBuilder.AppendFormat(
+                    " AND v.OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher);
+            }
+
+            return whereBuilder.ToString();
+        }
+
+        private async Task<string> GetInitWhereClauseAsync(BalanceByAccountParameters parameters)
+        {
+            var options = (TestBalanceOptions)parameters.Options;
+            string newPredicate = String.Empty;
+            string whereClause = await GetCommonWhereClauseAsync(parameters);
+            if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
+            {
+                string predicate = String.Format("v.Date >= '{0}' AND v.Date <= '{1}'",
+                    parameters.FromDate.Value.ToShortDateString(false),
+                    parameters.ToDate.Value.ToShortDateString(false));
+                if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) == 0)
+                {
+                    newPredicate = String.Format(
+                        "(v.Date < '{0}' AND v.OriginID <> 2)",
+                        parameters.FromDate.Value.ToShortDateString(false));
+                }
+                else
+                {
+                    newPredicate = String.Format(
+                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = 2))",
+                        parameters.FromDate.Value.ToShortDateString(false));
+                }
+
+                whereClause = whereClause.Replace(predicate, newPredicate);
+            }
+            else
+            {
+                string predicate = String.Format("v.No >= {0} AND v.No <= {1}",
+                    parameters.FromNo, parameters.ToNo);
+                if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) == 0)
+                {
+                    newPredicate = String.Format(
+                        "(v.No < {0} AND v.OriginID <> 2)", parameters.FromNo.Value);
+                }
+                else
+                {
+                    newPredicate = String.Format(
+                        "(v.No < {0} OR (v.No >= {0} AND v.OriginID = 2))",
+                        parameters.FromNo.Value);
+                }
+
+                whereClause = whereClause.Replace(predicate, newPredicate);
+            }
+
+            return whereClause;
+        }
+
+        private async Task<string> GetCommonWhereClauseAsync(BalanceByAccountParameters parameters)
+        {
             var whereBuilder = new StringBuilder("WHERE ");
             whereBuilder.Append(ReportQuery.TranslateQuery(
-                _utility.GetEnvironmentFilters(parameters.GridOptions, UserContext.FiscalPeriodId)));
+                _utility.GetEnvironmentFilters(parameters.GridOptions)));
 
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
@@ -365,12 +425,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             {
                 whereBuilder.AppendFormat(
                     " AND v.OriginID <> {0}", (int)VoucherOriginId.ClosingTempAccounts);
-            }
-
-            if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
-            {
-                whereBuilder.AppendFormat(
-                    " AND v.OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher);
             }
 
             if (parameters.AccountId.HasValue)
@@ -401,28 +455,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             }
 
             return whereBuilder.ToString();
-        }
-
-        private async Task<string> GetInitWhereClauseAsync(BalanceByAccountParameters parameters)
-        {
-            string whereClause = await GetWhereClauseAsync(parameters);
-            if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
-            {
-                string predicate = String.Format("AND v.Date >= '{0}' AND v.Date <= '{1}'",
-                    parameters.FromDate.Value.ToShortDateString(false),
-                    parameters.ToDate.Value.ToShortDateString(false));
-                whereClause = whereClause.Replace(predicate,
-                    String.Format("AND v.Date < '{0}'", parameters.FromDate.Value.ToShortDateString(false)));
-            }
-            else
-            {
-                string predicate = String.Format("AND v.No >= {0} AND v.No <= {1}",
-                    parameters.FromNo, parameters.ToNo);
-                whereClause = whereClause.Replace(predicate,
-                    String.Format("AND v.No < {0}", parameters.FromNo));
-            }
-
-            return whereClause;
         }
 
         private string GetGroupByClause(BalanceByAccountParameters parameters)

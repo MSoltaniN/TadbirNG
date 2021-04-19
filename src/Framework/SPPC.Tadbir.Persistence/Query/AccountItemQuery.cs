@@ -49,7 +49,7 @@ SELECT SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{1}ID = acc.{0}ID
-WHERE v.No >= {2} AND v.VoucherOriginId = 2 AND acc.FullCode LIKE '{3}%' AND {{0}}";
+WHERE v.No >= {2} AND v.OriginId = 2 AND acc.FullCode LIKE '{3}%' AND {{0}}";
 
         internal const string CollectionAccounts = @"
 SELECT acc.AccountID AS Id, acc.Name, acc.FullCode
