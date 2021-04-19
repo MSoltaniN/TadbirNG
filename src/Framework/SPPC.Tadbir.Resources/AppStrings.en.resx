@@ -3298,7 +3298,7 @@
     <value>The branch '{0}' has one or more subitems and cannot be deleted.</value>
   </data>
   <data name="InvalidFinalizedVoucherAction" xml:space="preserve">
-    <value>Action {0} cannot be done on a finalized voucher.</value>
+    <value>This operation is not available for finalized vouchers.</value>
   </data>
   <data name="ProfitLoss" xml:space="preserve">
     <value>Profit / Loss</value>

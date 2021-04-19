@@ -106,7 +106,11 @@ namespace SPPC.Tadbir.Persistence
         {
             string error = String.Empty;
             var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
-            if (voucher.IsApproved)
+            if (voucher.StatusId == (int)DocumentStatusId.Finalized)
+            {
+                error = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
+            }
+            else if (voucher.IsApproved)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.UndoApprove));
             }
@@ -117,10 +121,6 @@ namespace SPPC.Tadbir.Persistence
             else if (voucher.StatusId == (int)DocumentStatusId.NotChecked)
             {
                 error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.Check));
-            }
-            else if (voucher.StatusId == (int)DocumentStatusId.Finalized)
-            {
-                error = Context.Localize(String.Format(template, AppStrings.UndoCheck, AppStrings.UndoFinalize));
             }
 
             return error;
@@ -136,8 +136,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
-                var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
-                error = Context.Localize(String.Format(template, AppStrings.Confirm));
+                error = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
             }
             else if (voucher.IsConfirmed || voucher.IsApproved)
             {
@@ -159,8 +158,7 @@ namespace SPPC.Tadbir.Persistence
             var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
             if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
-                template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
-                error = Context.Localize(String.Format(template, AppStrings.UndoConfirm));
+                error = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
             }
             else if (voucher.IsApproved)
             {
@@ -179,8 +177,7 @@ namespace SPPC.Tadbir.Persistence
             string error = String.Empty;
             if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
-                var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
-                error = Context.Localize(String.Format(template, AppStrings.Approve));
+                error = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
             }
             else if (voucher.IsApproved)
             {
@@ -202,8 +199,7 @@ namespace SPPC.Tadbir.Persistence
             var template = Context.Localize(AppStrings.InvalidVoucherActionMessage);
             if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
-                template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
-                error = Context.Localize(String.Format(template, AppStrings.UndoApprove));
+                error = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
             }
             else if (!voucher.IsApproved)
             {
@@ -257,8 +253,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
-                var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
-                error = Context.Localize(String.Format(template, AppStrings.GroupConfirm));
+                error = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
             }
             else if (voucher.StatusId == (int)DocumentStatusId.NotChecked)
             {
@@ -279,8 +274,7 @@ namespace SPPC.Tadbir.Persistence
             string error = String.Empty;
             if (voucher.StatusId == (int)DocumentStatusId.Finalized)
             {
-                var template = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
-                error = Context.Localize(String.Format(template, AppStrings.GroupUndoConfirm));
+                error = Context.Localize(AppStrings.InvalidFinalizedVoucherAction);
             }
             else if (voucher.ConfirmedById == null
                 && voucher.ApprovedById == null)
