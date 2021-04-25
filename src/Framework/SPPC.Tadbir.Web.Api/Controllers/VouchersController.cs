@@ -566,7 +566,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateLineDeleteResultAsync(articleId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             var lineRepository = await GetLineRepositoryAsync(articleId);
@@ -589,7 +589,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null || actionDetail.Items.Count == 0)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             var lineRepository = await GetLineRepositoryAsync(actionDetail.Items[0]);
@@ -687,7 +687,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(voucherId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             var repository = await GetVoucherRepositoryAsync(voucherId);
@@ -908,7 +908,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null || actionDetail.Items.Count == 0)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             var repository = await GetVoucherRepositoryAsync(actionDetail.Items[0]);
@@ -927,7 +927,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             return await GroupStatusChangeResultAsync(
@@ -946,7 +946,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             return await GroupStatusChangeResultAsync(
@@ -966,7 +966,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             return await GroupConfirmApproveResultAsync(
@@ -986,7 +986,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             return await GroupConfirmApproveResultAsync(
@@ -1005,7 +1005,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             return await GroupStatusChangeResultAsync(
@@ -1024,7 +1024,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             return await GroupStatusChangeResultAsync(
@@ -1046,7 +1046,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             await _draftRepository.NormalizeVouchersAsync(actionDetail.Items);
@@ -1277,18 +1277,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (model == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, modelType));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, modelType));
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequestResult(ModelState);
             }
 
             int id = (int)Reflector.GetProperty(model, "Id");
             if (modelId != id)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, modelType));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, modelType));
             }
 
             return Ok();
@@ -1304,12 +1304,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateVoucherNoAsync(voucher))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.VoucherNo));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.VoucherNo));
             }
 
             if (await _repository.IsDuplicateVoucherDailyNoAsync(voucher))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DailyNo));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DailyNo));
             }
 
             var fiscalPeriod = await _repository.GetVoucherFiscalPeriodAsync(voucher);
@@ -1317,12 +1317,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 || voucher.Date < fiscalPeriod.StartDate
                 || voucher.Date > fiscalPeriod.EndDate)
             {
-                return BadRequest(_strings.Format(AppStrings.OutOfFiscalPeriodDate));
+                return BadRequestResult(_strings.Format(AppStrings.OutOfFiscalPeriodDate));
             }
 
             if (voucher.Id > 0 && !_repository.CanSaveAsDraftVoucher(voucher))
             {
-                return BadRequest(_strings[AppStrings.CantSaveAsDraftVoucher]);
+                return BadRequestResult(_strings[AppStrings.CantSaveAsDraftVoucher]);
             }
 
             return Ok();
@@ -1339,12 +1339,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if ((article.Debit == 0m) && (article.Credit == 0m))
             {
-                return BadRequest(_strings.Format(AppStrings.ZeroDebitAndCreditNotAllowed));
+                return BadRequestResult(_strings.Format(AppStrings.ZeroDebitAndCreditNotAllowed));
             }
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
-                return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
+                return BadRequestResult(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
             }
 
             return Ok();
@@ -1362,7 +1362,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!await _repository.IsCurrentSpecialVoucherCheckedAsync(
                 VoucherOriginId.ClosingTempAccounts))
             {
-                return BadRequest(_strings[AppStrings.ClosingAccountsVoucherNotIssuedOrChecked]);
+                return BadRequestResult(_strings[AppStrings.ClosingAccountsVoucherNotIssuedOrChecked]);
             }
 
             return Ok();
@@ -1374,7 +1374,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!await _repository.CanIssueSpecialVoucherAsync(SecurityContext.User.BranchId))
             {
                 string message = _strings.Format(AppStrings.CantIssueVoucherFromLowerBranch, typeKey);
-                return BadRequest(message);
+                return BadRequestResult(message);
             }
 
             if (typeKey == AppStrings.ClosingTempAccounts)
@@ -1383,7 +1383,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 int uncheckedCount = await _repository.GetCountByStatusAsync(DocumentStatusId.NotChecked);
                 if (uncheckedCount > 0)
                 {
-                    return BadRequest(_strings[AppStrings.CantIssueClosingVoucherWithUncheckedVouchers]);
+                    return BadRequestResult(_strings[AppStrings.CantIssueClosingVoucherWithUncheckedVouchers]);
                 }
             }
 
@@ -1415,7 +1415,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (voucher.StatusId != (int)DocumentStatusId.NotChecked)
             {
-                return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher));
+                return BadRequestResult(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher));
             }
 
             return Ok();
@@ -1426,7 +1426,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var error = await _repository.ValidateVoucherActionAsync(voucherId, action);
             if (error != null)
             {
-                return BadRequest(error.ErrorMessage);
+                return BadRequestResult(error.ErrorMessage);
             }
 
             if (IsVoucherMainAction(action))
@@ -1434,7 +1434,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 int lineCount = await _lineRepository.GetArticleCountAsync<VoucherLineViewModel>(voucherId);
                 if (lineCount == 0)
                 {
-                    return BadRequest(_strings.Format(AppStrings.InvalidEmptyVoucherAction, action));
+                    return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyVoucherAction, action));
                 }
             }
 
@@ -1446,7 +1446,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             var validated = new List<int>();
@@ -1530,7 +1530,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 VoucherOriginId.ClosingVoucher);
             if (isChecked)
             {
-                return BadRequest(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
+                return BadRequestResult(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
             }
 
             var repository = GetVoucherRepository(subject);

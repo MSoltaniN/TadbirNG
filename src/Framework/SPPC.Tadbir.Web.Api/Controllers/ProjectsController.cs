@@ -92,19 +92,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 projectId > 0 ? projectId : (int?)null);
             if (newProject == null)
             {
-                return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Project));
+                return BadRequestResult(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Project));
             }
 
             if (newProject.Level == -1)
             {
-                return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Project));
+                return BadRequestResult(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Project));
             }
 
             if (projectId > 0 && await _repository.IsUsedProjectAsync(projectId))
             {
                 var parent = await _repository.GetProjectAsync(projectId);
                 var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
-                return BadRequest(
+                return BadRequestResult(
                     _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.Project, parentInfo));
             }
 
@@ -220,7 +220,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(projectId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteProjectAsync(projectId);
@@ -292,20 +292,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateFullCodeAsync(project))
             {
-                return BadRequest(_strings.Format(
+                return BadRequestResult(_strings.Format(
                     AppStrings.DuplicateCodeValue, AppStrings.Project, project.FullCode));
             }
 
             if (await _repository.IsDuplicateNameAsync(project))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateNameValue, AppStrings.Project, project.Name));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateNameValue, AppStrings.Project, project.Name));
             }
 
             if (project.ParentId.HasValue && await _repository.IsUsedProjectAsync(project.ParentId.Value))
             {
                 var parent = await _repository.GetProjectAsync(project.ParentId.Value);
                 var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
-                return BadRequest(
+                return BadRequestResult(
                     _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.Project, parentInfo));
             }
 

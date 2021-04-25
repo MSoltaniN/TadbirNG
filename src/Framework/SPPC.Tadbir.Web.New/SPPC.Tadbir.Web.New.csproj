@@ -109,6 +109,7 @@
     <None Remove="ClientApp\src\app\shared\enum\pageSetting.ts" />
     <None Remove="ClientApp\src\app\shared\index.ts" />
     <None Remove="ClientApp\src\app\shared\models\columnFilter.ts" />
+    <None Remove="ClientApp\src\app\shared\models\error.ts" />
     <None Remove="ClientApp\src\app\shared\models\filterViewModel.ts" />
     <None Remove="ClientApp\src\app\shared\models\index.ts" />
     <None Remove="ClientApp\src\app\shared\models\reportPageSetting.ts" />
@@ -891,6 +892,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\enum\operationId.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\enum\pageSetting.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\error.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\filterViewModel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\reportPageSetting.ts" />

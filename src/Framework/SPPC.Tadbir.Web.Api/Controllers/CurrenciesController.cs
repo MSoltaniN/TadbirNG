@@ -260,7 +260,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (currencyRate.CurrencyId != currencyId)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Currency));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Currency));
             }
 
             var result = ValidationResult(currencyRate);
@@ -403,7 +403,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(currencyId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteCurrencyAsync(currencyId);
@@ -424,7 +424,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateRateDeleteAsync(rateId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _rateRepository.DeleteCurrencyRateAsync(rateId);
@@ -522,7 +522,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (await _repository.IsDuplicateCurrencyAsync(currency.Code, currency.Id))
             {
                 string message = _strings.Format(AppStrings.CurrencyAlreadyExists, currency.Code);
-                return BadRequest(message);
+                return BadRequestResult(message);
             }
 
             result = BranchValidationResult(currency);

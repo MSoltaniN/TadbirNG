@@ -132,7 +132,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(companyId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteCompanyAsync(companyId);
@@ -186,12 +186,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateCompanyAsync(company))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DbName));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DbName));
             }
 
             if (_repository.IsDuplicateCompanyUserNameAsync(company))
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidDatabaseUserName));
+                return BadRequestResult(_strings.Format(AppStrings.InvalidDatabaseUserName));
             }
 
             return Ok();

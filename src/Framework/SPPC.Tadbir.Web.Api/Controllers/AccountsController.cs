@@ -108,19 +108,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 accountId > 0 ? accountId : (int?)null);
             if (newAccountFull == null)
             {
-                return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Account));
+                return BadRequestResult(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Account));
             }
 
             if (newAccountFull.Account.Level == -1)
             {
-                return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Account));
+                return BadRequestResult(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.Account));
             }
 
             if (accountId > 0 && await _repository.IsUsedAccountAsync(accountId))
             {
                 var parent = await _repository.GetAccountAsync(accountId);
                 var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
-                return BadRequest(
+                return BadRequestResult(
                     _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.Account, parentInfo));
             }
 
@@ -264,7 +264,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(accountId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteAccountAsync(accountId);
@@ -340,36 +340,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (account.Level == 0 && !account.GroupId.HasValue)
             {
-                return BadRequest(_strings.Format(AppStrings.AccountGroupIsRequired));
+                return BadRequestResult(_strings.Format(AppStrings.AccountGroupIsRequired));
             }
 
             if (await _repository.IsAssociationChildAccountAsync(account))
             {
-                return BadRequest(_strings.Format(
+                return BadRequestResult(_strings.Format(
                     AppStrings.CantCreateAssociationChild, AppStrings.Account, account.Name));
             }
 
             if (await _repository.IsDuplicateFullCodeAsync(account))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
             }
 
             if (await _repository.IsDuplicateNameAsync(account))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateNameValue, AppStrings.Account, account.Name));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateNameValue, AppStrings.Account, account.Name));
             }
 
             if (account.ParentId.HasValue && await _repository.IsUsedAccountAsync(account.ParentId.Value))
             {
                 var parent = await _repository.GetAccountAsync(account.ParentId.Value);
                 var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
-                return BadRequest(
+                return BadRequestResult(
                     _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.Account, parentInfo));
             }
 
             if (account.ParentId.HasValue && !await _repository.CanHaveChildrenAsync(account.ParentId.Value))
             {
-                return BadRequest(_strings.Format(AppStrings.CantInsertLeafAccount));
+                return BadRequestResult(_strings.Format(AppStrings.CantInsertLeafAccount));
             }
 
             result = BranchValidationResult(account);

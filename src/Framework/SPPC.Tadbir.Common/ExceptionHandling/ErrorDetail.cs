@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.ExceptionHandling
         public static ErrorDetail CreateFromException(Exception exception, ErrorCode errorCode)
         {
             var targetSite = exception.TargetSite;
-            var methodName = (targetSite.DeclaringType != null)
+            var typeName = (targetSite.DeclaringType != null)
                 ? targetSite.DeclaringType.Name
                 : "[anonymous]";
             var errorDetail = new ErrorDetail()
@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.ExceptionHandling
                 TimestampUtc = DateTime.UtcNow.ToString(TimestampFormat),
                 ErrorCode = errorCode,
                 OriginalMessage = exception.Message,
-                FaultingMethod = String.Format("{0}.{1}", methodName, exception.TargetSite.Name),
+                FaultingMethod = String.Format("{0}.{1}", typeName, exception.TargetSite.Name),
                 FaultType = exception.GetType().Name,
                 ////StackTrace = exception.StackTrace
             };

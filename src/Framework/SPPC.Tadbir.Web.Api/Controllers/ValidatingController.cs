@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var currentContext = SecurityContext.User;
             if (item.BranchId != currentContext.BranchId)
             {
-                return BadRequest(_strings.Format(AppStrings.OtherBranchEditNotAllowed));
+                return BadRequestResult(_strings.Format(AppStrings.OtherBranchEditNotAllowed));
             }
 
             return Ok();
@@ -103,7 +103,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 string message = String.Format(_strings[AppStrings.TreeLevelsAreTooDeep],
                     treeConfig.MaxDepth, _strings[EntityNameKey]);
-                return BadRequest(message);
+                return BadRequestResult(message);
             }
 
             var levelConfig = treeConfig.Levels[item.Level];
@@ -112,7 +112,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 string message = String.Format(_strings[AppStrings.LevelCodeLengthIsIncorrect],
                     _strings[EntityNameKey], levelConfig.Name, levelConfig.CodeLength);
-                return BadRequest(message);
+                return BadRequestResult(message);
             }
 
             return Ok();
@@ -133,7 +133,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var lookupResult = await repository.LookupFullAccountAsync(fullAccount);
             if (!String.IsNullOrEmpty(lookupResult))
             {
-                return BadRequest(_strings.Format(lookupResult));
+                return BadRequestResult(_strings.Format(lookupResult));
             }
 
             return Ok();
@@ -167,7 +167,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             var validated = new List<int>();
@@ -251,18 +251,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (item == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, EntityNameKey));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, EntityNameKey));
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequestResult(ModelState);
             }
 
             int id = Int32.Parse(Reflector.GetProperty(item, "Id").ToString());
             if (itemId != id)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, EntityNameKey));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, EntityNameKey));
             }
 
             return Ok();

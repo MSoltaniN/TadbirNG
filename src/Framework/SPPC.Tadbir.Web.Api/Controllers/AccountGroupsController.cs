@@ -164,7 +164,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(groupId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteAccountGroupAsync(groupId);
@@ -223,7 +223,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool isDuplicate = await _repository.IsDuplicateGroupAsync(accountGroup);
             if (isDuplicate)
             {
-                return BadRequest(_strings.Format(
+                return BadRequestResult(_strings.Format(
                     AppStrings.DuplicateNameValue, AppStrings.AccountGroup, accountGroup.Name));
             }
 

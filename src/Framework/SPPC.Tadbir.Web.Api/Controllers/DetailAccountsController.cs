@@ -120,19 +120,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 faccountId > 0 ? faccountId : (int?)null);
             if (newDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.DetailAccount));
+                return BadRequestResult(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.DetailAccount));
             }
 
             if (newDetail.Level == -1)
             {
-                return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.DetailAccount));
+                return BadRequestResult(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.DetailAccount));
             }
 
             if (faccountId > 0 && await _repository.IsUsedDetailAccountAsync(faccountId))
             {
                 var parent = await _repository.GetDetailAccountAsync(faccountId);
                 var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
-                return BadRequest(
+                return BadRequestResult(
                     _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.DetailAccount, parentInfo));
             }
 
@@ -222,7 +222,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(faccountId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteDetailAccountAsync(faccountId);
@@ -297,13 +297,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateFullCodeAsync(detailAccount))
             {
-                return BadRequest(_strings.Format(
+                return BadRequestResult(_strings.Format(
                     AppStrings.DuplicateCodeValue, AppStrings.DetailAccount, detailAccount.FullCode));
             }
 
             if (await _repository.IsDuplicateNameAsync(detailAccount))
             {
-                return BadRequest(_strings.Format(
+                return BadRequestResult(_strings.Format(
                     AppStrings.DuplicateNameValue, AppStrings.DetailAccount, detailAccount.Name));
             }
 
@@ -312,7 +312,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 var parent = await _repository.GetDetailAccountAsync(detailAccount.ParentId.Value);
                 var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
-                return BadRequest(
+                return BadRequestResult(
                     _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.DetailAccount, parentInfo));
             }
 

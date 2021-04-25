@@ -130,7 +130,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(fpId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteFiscalPeriodAsync(fpId);
@@ -152,7 +152,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string result = await BasicValidateDeleteAsync(fpId);
             if (!String.IsNullOrEmpty(result))
             {
-                return BadRequest(result);
+                return BadRequestResult(result);
             }
 
             await _repository.DeleteFiscalPeriodWithDataAsync(fpId);
@@ -266,17 +266,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
+                return BadRequestResult(_strings.Format(AppStrings.InvalidDatePeriod, AppStrings.FiscalPeriod));
             }
 
             if (await _repository.IsOverlapFiscalPeriodAsync(fiscalPeriod))
             {
-                return BadRequest(_strings.Format(AppStrings.DateOverlap));
+                return BadRequestResult(_strings.Format(AppStrings.DateOverlap));
             }
 
             if (!await _repository.IsProgressiveFiscalPeriodAsync(fiscalPeriod))
             {
-                return BadRequest(_strings.Format(AppStrings.FiscalPeriodMustBeProgressive));
+                return BadRequestResult(_strings.Format(AppStrings.FiscalPeriodMustBeProgressive));
             }
 
             return Ok();

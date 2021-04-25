@@ -179,7 +179,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (userId == AppConstants.AdminUserId)
             {
-                return BadRequest(_strings.Format(AppStrings.AdminUserIsReadOnly));
+                return BadRequestResult(_strings.Format(AppStrings.AdminUserIsReadOnly));
             }
 
             var result = await ValidationResultAsync(user, userId);
@@ -228,27 +228,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (profile == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.User));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.User));
             }
 
             if (userName != profile.UserName)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserName));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserName));
             }
 
             if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(profile.UserName))
             {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.User));
+                return BadRequestResult(_strings.Format(AppStrings.ItemNotFound, AppStrings.User));
             }
 
             if (String.IsNullOrWhiteSpace(profile.NewPassword) || String.IsNullOrWhiteSpace(profile.RepeatPassword))
             {
-                return BadRequest(_strings.Format(AppStrings.MissingNewAndRepeatPasswords));
+                return BadRequestResult(_strings.Format(AppStrings.MissingNewAndRepeatPasswords));
             }
 
             if (profile.NewPassword != profile.RepeatPassword)
             {
-                return BadRequest(_strings.Format(AppStrings.NewAndRepeatPasswordsDontMatch));
+                return BadRequestResult(_strings.Format(AppStrings.NewAndRepeatPasswordsDontMatch));
             }
 
             //// NOTE: DO NOT check ModelState here, because plain-text passwords are replaced by hash values.
@@ -256,12 +256,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var user = await _repository.GetUserAsync(userName);
             if (user == null)
             {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.User));
+                return BadRequestResult(_strings.Format(AppStrings.ItemNotFound, AppStrings.User));
             }
 
             if (!CheckPassword(user.Password, profile.OldPassword))
             {
-                return BadRequest(_strings.Format(AppStrings.IncorrectOldPassword));
+                return BadRequestResult(_strings.Format(AppStrings.IncorrectOldPassword));
             }
 
             profile.NewPassword = _crypto.CreateHash(profile.NewPassword);
@@ -295,28 +295,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (login == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserAccount));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserAccount));
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequestResult(ModelState);
             }
 
             var user = await _repository.GetUserAsync(login);
             if (user == null)
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidUserNameMessage));
+                return BadRequestResult(_strings.Format(AppStrings.InvalidUserNameMessage));
             }
 
             if (!user.IsEnabled)
             {
-                return BadRequest(_strings.Format(AppStrings.DisabledUserMessage));
+                return BadRequestResult(_strings.Format(AppStrings.DisabledUserMessage));
             }
 
             if (!CheckPassword(user.Password, login.Password))
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidPasswordMessage));
+                return BadRequestResult(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
 
             await _repository.UpdateUserLastLoginAsync(user.Id);
@@ -337,12 +337,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (companyLogin == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.CompanyLogin));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.CompanyLogin));
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequestResult(ModelState);
             }
 
             var userContext = SecurityContext.User;
@@ -404,7 +404,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (specialPassword == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Password));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Password));
             }
 
             var userId = SecurityContext.User.Id;
@@ -416,14 +416,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (currentUser == null)
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidUserNameMessage));
+                return BadRequestResult(_strings.Format(AppStrings.InvalidUserNameMessage));
             }
 
             // SpecialPassword Hash--temporary
             // if (!CheckPassword(user.SepecialPassword, login.Password))
             if (!CheckPassword("b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576", specialPassword))
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidPasswordMessage));
+                return BadRequestResult(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
 
             return Ok();
@@ -465,7 +465,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateUserAsync(user))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.UserName));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.UserName));
             }
 
             return Ok();

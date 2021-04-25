@@ -142,7 +142,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (roleId == AppConstants.AdminRoleId)
             {
-                return BadRequest(_strings.Format(AppStrings.AdminRoleIsReadonly));
+                return BadRequestResult(_strings.Format(AppStrings.AdminRoleIsReadonly));
             }
 
             var result = BasicValidationResult(role, roleId);
@@ -170,7 +170,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(roleId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteRoleAsync(roleId);
@@ -366,22 +366,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (role == null || role.Role == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Role));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Role));
             }
 
             if (roleId != role.Role.Id)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Role));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Role));
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequestResult(ModelState);
             }
 
             if (role.Permissions.Any(perm => !_repository.IsPublicPermission(perm)))
             {
-                return BadRequest(_strings.Format(AppStrings.InvalidPermissionsInRole));
+                return BadRequestResult(_strings.Format(AppStrings.InvalidPermissionsInRole));
             }
 
             return Ok();
@@ -443,7 +443,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (messages.Any(msg => !String.IsNullOrEmpty(msg)))
             {
-                return BadRequest(messages.Where(msg => !String.IsNullOrEmpty(msg)).ToArray());
+                var error = new ErrorViewModel() { Type = ErrorType.ValidationError };
+                error.Messages.AddRange(messages.Where(msg => !String.IsNullOrEmpty(msg)));
+                return BadRequest(error);
             }
 
             return Ok();
@@ -511,7 +513,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private string GetLocalName(string nameKey)
         {
-            string name = nameKey;
+            string name;
             var items = nameKey.Split(',');
             if (items.Length == 1)
             {
@@ -525,6 +527,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return name;
         }
 
-        private IRoleRepository _repository;
+        private readonly IRoleRepository _repository;
     }
 }

@@ -91,19 +91,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ccenterId > 0 ? ccenterId : (int?)null);
             if (newCenter == null)
             {
-                return BadRequest(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.CostCenter));
+                return BadRequestResult(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.CostCenter));
             }
 
             if (newCenter.Level == -1)
             {
-                return BadRequest(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.CostCenter));
+                return BadRequestResult(_strings.Format(AppStrings.ChildItemsNotAllowed, AppStrings.CostCenter));
             }
 
             if (ccenterId > 0 && await _repository.IsUsedCostCenterAsync(ccenterId))
             {
                 var parent = await _repository.GetCostCenterAsync(ccenterId);
                 var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
-                return BadRequest(
+                return BadRequestResult(
                     _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.CostCenter, parentInfo));
             }
 
@@ -218,7 +218,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(ccenterId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteCostCenterAsync(ccenterId);
@@ -290,13 +290,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateFullCodeAsync(costCenter))
             {
-                return BadRequest(_strings.Format(
+                return BadRequestResult(_strings.Format(
                     AppStrings.DuplicateCodeValue, AppStrings.CostCenter, costCenter.FullCode));
             }
 
             if (await _repository.IsDuplicateNameAsync(costCenter))
             {
-                return BadRequest(_strings.Format(
+                return BadRequestResult(_strings.Format(
                     AppStrings.DuplicateNameValue, AppStrings.CostCenter, costCenter.Name));
             }
 
@@ -305,7 +305,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 var parent = await _repository.GetCostCenterAsync(costCenter.ParentId.Value);
                 var parentInfo = String.Format("{0} ({1})", parent.Name, parent.FullCode);
-                return BadRequest(
+                return BadRequestResult(
                     _strings.Format(AppStrings.CantCreateChildForUsedParent, AppStrings.CostCenter, parentInfo));
             }
 

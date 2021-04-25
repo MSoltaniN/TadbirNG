@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
@@ -12,6 +13,7 @@ using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -121,6 +123,37 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 : NotFound() as IActionResult;
 
             return result;
+        }
+
+        /// <summary>
+        /// پاسخ مورد نیاز برای یک درخواست نامعتبر را با توجه به مقادیر داده شده برمی گرداند
+        /// </summary>
+        /// <param name="message">متن محلی شده پیغام خطا</param>
+        /// <param name="type">نوع خطای ایجاد شده</param>
+        /// <returns>پاسخ مورد نیاز برای درخواست نامعتبر</returns>
+        protected IActionResult BadRequestResult(string message, ErrorType type = ErrorType.ValidationError)
+        {
+            var error = new ErrorViewModel(message, type);
+            return BadRequest(error);
+        }
+
+        /// <summary>
+        /// پاسخ مورد نیاز برای یک درخواست نامعتبر را با توجه به مقادیر داده شده برمی گرداند
+        /// </summary>
+        /// <param name="modelState">ساختار اطلاعاتی شامل ریز خطاهای اعتبارسنجی</param>
+        /// <returns>پاسخ مورد نیاز برای درخواست نامعتبر</returns>
+        protected IActionResult BadRequestResult(ModelStateDictionary modelState)
+        {
+            var error = new ErrorViewModel() { Type = ErrorType.ValidationError };
+            foreach (string field in modelState.Keys)
+            {
+                foreach (var modelError in modelState[field].Errors)
+                {
+                    error.Messages.Add(modelError.ErrorMessage);
+                }
+            }
+
+            return BadRequest(error);
         }
 
         /// <summary>

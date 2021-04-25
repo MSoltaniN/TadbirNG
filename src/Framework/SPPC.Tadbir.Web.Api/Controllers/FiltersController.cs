@@ -118,7 +118,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string message = await ValidateDeleteAsync(filterId);
             if (!String.IsNullOrEmpty(message))
             {
-                return BadRequest(message);
+                return BadRequestResult(message);
             }
 
             await _repository.DeleteFilterAsync(filterId);
@@ -152,7 +152,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateFilterAsync(filter))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.FilterName));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.FilterName));
             }
 
             return Ok();

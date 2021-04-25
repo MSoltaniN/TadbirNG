@@ -378,12 +378,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (labelConfig == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
 
             if (labelConfig.FormId != formId)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Settings));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Settings));
             }
 
             await _repository.SaveFormLabelConfigAsync(labelConfig);

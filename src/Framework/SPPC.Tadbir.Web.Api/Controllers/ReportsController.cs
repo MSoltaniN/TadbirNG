@@ -234,12 +234,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var summary = await _sysRepository.GetReportSummaryAsync(reportId);
             if (summary == null)
             {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
+                return BadRequestResult(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
             }
 
             if (summary.IsSystem)
             {
-                return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
+                return BadRequestResult(_strings.Format(AppStrings.CantModifySystemReport));
             }
 
             await _sysRepository.DeleteUserReportAsync(reportId);
@@ -1115,18 +1115,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (report == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.UserReport));
             }
 
             if (report.ReportId == 0)
             {
-                return BadRequest(_strings.Format(AppStrings.SourceReportIsRequired));
+                return BadRequestResult(_strings.Format(AppStrings.SourceReportIsRequired));
             }
 
             int localeId = await GetCurrentLocaleIdAsync();
             if (await _sysRepository.IsDuplicateReportCaptionAsync(localeId, report))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.ReportCaption));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.ReportCaption));
             }
 
             if (reportId == 0)
@@ -1136,18 +1136,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (report.ReportId != reportId)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserReport));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.UserReport));
             }
 
             var summary = await _sysRepository.GetReportSummaryAsync(reportId);
             if (summary == null)
             {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
+                return BadRequestResult(_strings.Format(AppStrings.ItemNotFound, AppStrings.UserReport));
             }
 
             if (summary.IsSystem)
             {
-                return BadRequest(_strings.Format(AppStrings.CantModifySystemReport));
+                return BadRequestResult(_strings.Format(AppStrings.CantModifySystemReport));
             }
 
             return Ok();

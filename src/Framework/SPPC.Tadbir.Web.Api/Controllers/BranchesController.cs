@@ -120,7 +120,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (!await _repository.IsValidBranchAsync(branch))
             {
-                return BadRequest(_strings.Format(AppStrings.RootBranchAlreadyDefined));
+                return BadRequestResult(_strings.Format(AppStrings.RootBranchAlreadyDefined));
             }
 
             var outputItem = await _repository.SaveBranchAsync(branch);
@@ -141,7 +141,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (!await _repository.IsValidBranchAsync(branch))
             {
-                return BadRequest(_strings.Format(AppStrings.RootBranchAlreadyDefined));
+                return BadRequestResult(_strings.Format(AppStrings.RootBranchAlreadyDefined));
             }
 
             return Ok();
@@ -185,7 +185,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = await ValidateDeleteResultAsync(branchId);
             if (result != null)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteBranchAsync(branchId);
@@ -207,7 +207,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string result = await BasicValidateDeleteAsync(branchId);
             if (!String.IsNullOrEmpty(result))
             {
-                return BadRequest(result);
+                return BadRequestResult(result);
             }
 
             await _repository.DeleteBranchWithDataAsync(branchId);

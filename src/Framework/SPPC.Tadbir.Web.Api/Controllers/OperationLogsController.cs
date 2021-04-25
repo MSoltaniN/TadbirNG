@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
             {
-                return BadRequest(_strings[AppStrings.InvalidArchiveRange]);
+                return BadRequestResult(_strings[AppStrings.InvalidArchiveRange]);
             }
 
             var gridOptions = GridOptions ?? new GridOptions();
@@ -116,7 +116,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             await _repository.MoveLogsToArchiveAsync(actionDetail.Items);
@@ -136,7 +136,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
             {
-                return BadRequest(_strings[AppStrings.InvalidArchiveRange]);
+                return BadRequestResult(_strings[AppStrings.InvalidArchiveRange]);
             }
 
             await _repository.RecoverLogsFromArchive(from, to);
@@ -157,7 +157,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             await _repository.DeleteArchivedLogsAsync(actionDetail.Items);
@@ -228,7 +228,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
             {
-                return BadRequest(_strings[AppStrings.InvalidArchiveRange]);
+                return BadRequestResult(_strings[AppStrings.InvalidArchiveRange]);
             }
 
             var gridOptions = GridOptions ?? new GridOptions();
@@ -250,7 +250,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             await _repository.MoveSystemLogsToArchiveAsync(actionDetail.Items);
@@ -270,7 +270,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (from == DateTime.MinValue || to == DateTime.MinValue)
             {
-                return BadRequest(_strings[AppStrings.InvalidArchiveRange]);
+                return BadRequestResult(_strings[AppStrings.InvalidArchiveRange]);
             }
 
             await _repository.RecoverSystemLogsFromArchive(from, to);
@@ -291,7 +291,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             await _repository.DeleteArchivedSystemLogsAsync(actionDetail.Items);
