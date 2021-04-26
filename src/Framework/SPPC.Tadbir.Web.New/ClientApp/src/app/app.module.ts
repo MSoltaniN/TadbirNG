@@ -25,6 +25,7 @@ import { OrganizationModule } from '@sppc/organization/organization.module';
 import { GeneralErrorHandler } from '@sppc/shared/class/error.handler';
 import { EnviromentComponent } from '@sppc/shared/class/enviroment.component';
 import { ServiceLocator } from './service.locator';
+import { ErrorHandlingService } from './shared/services';
 
 @NgModule({
   declarations: [
@@ -70,22 +71,12 @@ import { ServiceLocator } from './service.locator';
   providers: [ 
  
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: ErrorHandler, useClass: GeneralErrorHandler },
-    //{
-    //    provide: RTL,
-    //    useFactory: function () {
-    //        var lang = localStorage.getItem('lang');
-    //        if (lang == "en") {
-    //            return false;
-    //        } 
-    //        else 
-    //            return true;
-    //    }            
-    //},
+    { provide: ErrorHandler, useClass: GeneralErrorHandler },        
     Layout,
     EnviromentComponent,
     LZStringService,
-    ServiceLocator    
+    ServiceLocator,
+    ErrorHandlingService
   ],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]

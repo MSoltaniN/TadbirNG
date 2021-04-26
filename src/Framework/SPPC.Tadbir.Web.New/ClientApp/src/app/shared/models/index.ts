@@ -26,4 +26,5 @@ export * from './treeNodeInfo';
 export * from './userProfile';
 export * from './filterColumn';
 export * from './filterViewModel';
+export * from './error';
 

@@ -35,16 +35,14 @@ export class UserFormComponent extends DetailComponent {
 
   //create properties
   @Input() public active: boolean = false;
-  @Input() public isNew: boolean = false;
-  @Input() public errorMessage: string = "";
+  @Input() public isNew: boolean = false; 
 
 
   @Input() public set model(user: User) {
 
     //this.editForm.reset(user);
     this.editForm.reset(user);
-    this.active = user !== undefined || this.isNew;
-
+    this.active = user !== undefined || this.isNew;    
   }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -57,17 +55,19 @@ export class UserFormComponent extends DetailComponent {
     if (this.editForm.valid) {
       this.save.emit(this.editForm.value);
       this.active = true;
+      this.errorMessages = [];
     }
   }
 
   public onCancel(e: any): void {
     e.preventDefault();
-    this.closeForm();
+    this.closeForm();    
   }
 
   private closeForm(): void {
     this.isNew = false;
     this.active = false;
+    this.errorMessages = [];
     this.cancel.emit();
   }
 

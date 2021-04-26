@@ -1,5 +1,5 @@
 import { BaseComponent } from "./base.component";
-import { Injectable, Renderer2, Optional, Inject, Host } from "@angular/core";
+import { Injectable, Renderer2, Optional, Inject, Host, Input } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormControl, ValidatorFn, Validators } from "@angular/forms";
@@ -10,13 +10,15 @@ import { MetaDataService, BrowserStorageService, SessionKeys } from "../services
 
 
 @Injectable()
-export class DetailComponent extends BaseComponent {
+export class DetailComponent extends BaseComponent  {
 
   private form: FormGroup;
   public properties: Map<string, Array<Property>>;
 
   public metadataKey: string;
   public isEnableSaveBtn: boolean = true;
+
+  @Input() public errorMessages: string[];
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, private metadataService: MetaDataService,
@@ -35,6 +37,8 @@ export class DetailComponent extends BaseComponent {
         this.properties.set(this.metadataKey, result.columns);
       }
     }
+
+    this.errorMessages = [];    
   }
 
   public get editForm(): FormGroup {
