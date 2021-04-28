@@ -3,7 +3,8 @@
   <section class="sidebar">
     <ul class="sidebar-menu tree" id='main-menu' data-widget="tree">
       <!--(window:keypress)="doSomething($event)"-->
-      <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'active menu-open':this.expandedSubMenuId === cmd.id}">
+      <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'menu-open':searchActiveMenu(cmd.id) === true,'active':cmd.routeUrl === this.currentRoute}"
+          [ngStyle]="{'display':searchActiveMenu(cmd.id) === true ? 'block':'' }">
         <!-- <a id="a{{cmd.id}}" href="#/dashboard" (click)="clickMenu($event,cmd.id)"> -->
         <a id="a{{cmd.id}}" href="javascript:;" (click)="clickMenu($event,cmd.id)">
           <span class="pull-right-container none">
@@ -13,8 +14,9 @@
           <span class="menuitem">{{ cmd.title }}</span>
         </a>
 
-        <ul class="treeview-menu" id='menu{{cmd.id}}'>
-          <li *ngFor="let innerCmd of cmd.children;" [ngClass]="{'treeview' : innerCmd.routeUrl == null}">
+        <ul class="treeview-menu" id='menu{{cmd.id}}' [ngClass]="{'menu-open':searchActiveMenu(cmd.id) === true}"
+            [ngStyle]="{'display':searchActiveMenu(cmd.id) === true ? 'block':'none' }" >
+          <li *ngFor="let innerCmd of cmd.children;" [ngClass]="{'treeview' : innerCmd.routeUrl == null,'active':innerCmd.routeUrl === this.currentRoute}">
             <!--<a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : []">-->
             <a href="javascript:;" (click)="onClickMenu(innerCmd)">
               <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
@@ -24,11 +26,12 @@
                 }}
               </span>
               <span class="pull-right-container" *ngIf="innerCmd.children.length > 0">
-                <i class="fa pull-left angle" [ngClass]="{'fa-angle-left':this.currentlang === 'fa' , 'fa-angle-right': this.currentlang === 'en'}"></i>
+                <i class="fa pull-left angle" [ngClass]="{'fa-angle-left':this.currentlang === 'fa' , 'fa-angle-right': this.currentlang === 'en'}" ></i>
               </span>
             </a>
-            <ul class="treeview-menu" id='menu{{innerCmd.id}}' *ngIf="innerCmd.children.length > 0">
-              <li *ngFor="let cmd3 of innerCmd.children;" [ngClass]="{'treeview' : cmd3.routeUrl == null}">
+            <ul class="treeview-menu" id='menu{{innerCmd.id}}'  [ngClass]="{'menu-open':searchActiveMenu(innerCmd.id) === true}"
+                *ngIf="innerCmd.children.length > 0" [ngStyle]="{'display':searchActiveMenu(innerCmd.id) === true ? 'block':'none' }">
+              <li *ngFor="let cmd3 of innerCmd.children;" [ngClass]="{'treeview' : cmd3.routeUrl == null,'active':cmd3.routeUrl === this.currentRoute}">
                 <!--<a [routerLink]="cmd3.routeUrl ? [cmd3.routeUrl] : []">-->
                 <a href="javascript:;" (click)="onClickMenu(cmd3)">
                   <span class="glyphicon glyphicon-{{cmd3.iconName}}"></span>
@@ -39,8 +42,9 @@
                     <i class="fa pull-left angle" [ngClass]="{'fa-angle-left':this.currentlang === 'fa' , 'fa-angle-right': this.currentlang === 'en'}"></i>
                   </span>
                 </a>
-                <ul class="treeview-menu" *ngIf="cmd3.children.length > 0">
-                  <li *ngFor="let cmd4 of cmd3.children;">
+                <ul class="treeview-menu"  [ngClass]="{'menu-open':searchActiveMenu(cmd3.id) === true}"
+                    *ngIf="cmd3.children.length > 0" [ngStyle]="{'display':searchActiveMenu(cmd3.id) === true ? 'block':'none' }">
+                  <li *ngFor="let cmd4 of cmd3.children;" [ngClass]="{'active':cmd4.routeUrl === this.currentRoute,'active':cmd4.routeUrl === this.currentRoute}">
                     <!--<a [routerLink]="cmd4.routeUrl ? [cmd4.routeUrl] : []">-->
                     <a href="javascript:;" (click)="onClickMenu(cmd4)">
                       <span class="glyphicon glyphicon-{{cmd4.iconName}}"></span>

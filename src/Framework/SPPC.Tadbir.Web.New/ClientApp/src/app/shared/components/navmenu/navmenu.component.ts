@@ -26,6 +26,8 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   menuList: Array<Command> = new Array<Command>();
   public icons: { [id: string]: string; } = {};
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
+  paths: number[] = [];
+  currentRoute: string;
 
   constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService, public bStorageService: BrowserStorageService,
     public translate: TranslateService, public renderer2: Renderer2, public router: Router,
@@ -35,9 +37,11 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     super(toastrService, translate, bStorageService, renderer2, metadata, settingService, '', undefined);
     
     var menus = this.bStorageService.getMenu()
-
+        
     if (menus)
       this.menuList = JSON.parse(menus);
+
+    this.currentRoute = this.router.url;
   }
 
   public expandedSubMenuId: number = -1;
@@ -53,12 +57,19 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     if (this.CurrentLanguage == 'fa')
       this.rightAlign = false;
 
-    for (let parent of this.menuList) {
-      if (parent.children.findIndex(p => p.routeUrl != null && p.routeUrl.toLowerCase() == this.location.path().toLowerCase()) > -1) {
-        this.expandedSubMenuId = parent.id;
-        break;
+    //for (let parent of this.menuList) {
+    //  if (parent.children.findIndex(p => p.routeUrl != null && p.routeUrl.toLowerCase() == this.location.path().toLowerCase()) > -1) {
+    //    this.expandedSubMenuId = parent.id;
+    //    break;
+    //  }
+    //}     
+    var menu : Command = null;
+    this.menuList.forEach((element) => {
+      menu = this.searchTree(element, this.router.url);      
+      if (menu != null) {        
+        return;
       }
-    }
+    });    
 
     for (let parent of this.menuList) {
       if (parent.id == 15) {
@@ -70,6 +81,28 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     }
   }
 
+  searchTree(element: Command, route) {
+    if (element.routeUrl == route) {      
+      return element;
+    } else if (element.children != null) {
+      var i;
+      var result = null;
+      for (i = 0; result == null && i < element.children.length; i++) {
+        result = this.searchTree(element.children[i], route);
+        if (result != null) {
+          this.paths.push(element.id);
+          return result;
+        }
+      }
+      return result;
+    }
+    return null;
+  }
+
+  searchActiveMenu(id:number) {
+    return this.paths.findIndex(f => f === id) > -1 ? true : false;
+  }
+  
 
   onClickMenu(item: Command) {
     //for show report manager
