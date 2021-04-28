@@ -9,23 +9,18 @@ namespace SPPC.Tadbir.ViewModel.Core
     public enum ErrorType
     {
         /// <summary>
-        /// عدم بروز خطا - مورد استفاده برای پیغام های اطلاعاتی
+        /// عدم بروز خطا
         /// </summary>
-        Info = 0,
-
-        /// <summary>
-        /// عدم بروز خطا - مورد استفاده برای پیغام های هشداری
-        /// </summary>
-        Warning = 1,
+        NoError = 0,
 
         /// <summary>
         /// بروز خطای اعتبارسنجی
         /// </summary>
-        ValidationError = 2,
+        ValidationError = 1,
 
         /// <summary>
         /// بروز خطای زمان اجرا
         /// </summary>
-        RuntimeException = 3
+        RuntimeException = 2
     }
 }

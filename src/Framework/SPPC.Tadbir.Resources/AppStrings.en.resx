@@ -3483,4 +3483,10 @@
   <data name="ZeroDebitAndCreditNotAllowed" xml:space="preserve">
     <value>Zero amount in both debit and credit is not allowed.</value>
   </data>
+  <data name="ReportParameters" xml:space="preserve">
+    <value>Report parameters</value>
+  </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>Error occured during the operation. Please try again or contact system administrator.</value>
+  </data>
 </root>

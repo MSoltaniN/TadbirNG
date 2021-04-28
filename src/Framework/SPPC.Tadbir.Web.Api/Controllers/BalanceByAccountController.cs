@@ -9,6 +9,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -43,7 +44,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var parameters = GetParameters<BalanceByAccountParameters>();
             if (parameters == null)
             {
-                return BadRequest();
+                return BadRequestResult(
+                    _strings.Format(AppStrings.RequestFailedNoData, AppStrings.ReportParameters));
             }
 
             var gridOptions = GridOptions ?? new GridOptions();

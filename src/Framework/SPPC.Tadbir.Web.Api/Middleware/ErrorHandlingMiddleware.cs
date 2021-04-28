@@ -2,9 +2,12 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.ExceptionHandling;
+using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Web.Api.Middleware
 {
@@ -17,9 +20,11 @@ namespace SPPC.Tadbir.Web.Api.Middleware
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="next">درخواست جاری (بعدی) که باید توسط سرویس پردازش شود</param>
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        /// <param name="localizer">امکان ترجمه متن های چندزبانه را از روی کلید متنی فراهم می کند</param>
+        public ErrorHandlingMiddleware(RequestDelegate next, IStringLocalizer<AppStrings> localizer)
         {
             _next = next;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -38,34 +43,23 @@ namespace SPPC.Tadbir.Web.Api.Middleware
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var result = JsonHelper.From(ErrorFromException(exception), false, GetIgnoredPropertyNames());
+            TryLogException(context, exception);
+            string message = _localizer[AppStrings.ErrorOccured];
+            var error = new ErrorViewModel(message, ErrorType.RuntimeException);
+            var result = JsonHelper.From(error, false);
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)StatusCodeFromException();
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             return context.Response.WriteAsync(result);
         }
 
-        private static HttpStatusCode StatusCodeFromException()
+        private void TryLogException(HttpContext context, Exception exception)
         {
-            var code = HttpStatusCode.InternalServerError;
-            return code;
-        }
-
-        private static object ErrorFromException(Exception exception)
-        {
-            Verify.ArgumentNotNull(exception, "exception");
-            return ServiceExceptionFactory.FromException(exception);
-        }
-
-        private static string[] GetIgnoredPropertyNames()
-        {
-            return new string[]
-                {
-                    "TypeMap", "TargetSite", "ChangeTracker", "ModelBuilder"
-                };
+            // TODO: Log detail exception and context information to SystemError table in system database...
         }
 
         private readonly RequestDelegate _next;
+        private readonly IStringLocalizer<AppStrings> _localizer;
     }
 }

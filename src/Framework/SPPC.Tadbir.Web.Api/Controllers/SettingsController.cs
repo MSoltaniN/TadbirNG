@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (settings == null)
             {
-                return BadRequest();        // TODO: Add error message
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
 
             await _repository.SaveConfigAsync(settings);
@@ -143,7 +143,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (setting == null)
             {
-                return BadRequest();
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
 
             await _repository.SaveSystemConfigAsync(setting, _host.WebRootPath);
@@ -165,7 +165,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (settings == null)
             {
-                return BadRequest();        // TODO: Add error message
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
 
             await _systemRepository.SaveUserListConfigAsync(userId, settings);
@@ -202,7 +202,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (settings == null)
             {
-                return BadRequest();        // TODO: Add error message
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
 
             await _repository.SaveQuickSearchConfigAsync(userId, settings);
@@ -239,7 +239,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (settings == null)
             {
-                return BadRequest();        // TODO: Add error message
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
 
             await _systemRepository.SaveQuickReportConfigAsync(userId, settings);
@@ -275,7 +275,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (settings == null)
             {
-                return BadRequest();        // TODO: Add error message
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
 
             await _repository.SaveViewTreeConfigAsync(settings);

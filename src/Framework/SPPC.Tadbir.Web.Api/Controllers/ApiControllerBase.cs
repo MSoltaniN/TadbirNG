@@ -129,11 +129,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// پاسخ مورد نیاز برای یک درخواست نامعتبر را با توجه به مقادیر داده شده برمی گرداند
         /// </summary>
         /// <param name="message">متن محلی شده پیغام خطا</param>
-        /// <param name="type">نوع خطای ایجاد شده</param>
         /// <returns>پاسخ مورد نیاز برای درخواست نامعتبر</returns>
-        protected IActionResult BadRequestResult(string message, ErrorType type = ErrorType.ValidationError)
+        protected IActionResult BadRequestResult(string message)
         {
-            var error = new ErrorViewModel(message, type);
+            var error = new ErrorViewModel(message, ErrorType.ValidationError);
             return BadRequest(error);
         }
 

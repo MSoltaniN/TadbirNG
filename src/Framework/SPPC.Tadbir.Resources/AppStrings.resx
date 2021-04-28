@@ -3474,4 +3474,10 @@
   <data name="ZeroDebitAndCreditNotAllowed" xml:space="preserve">
     <value>مبلغ بدهکار و بستانکار صفر در آرتیکل نادرست است.</value>
   </data>
+  <data name="ReportParameters" xml:space="preserve">
+    <value>پارامترهای گزارش</value>
+  </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>بروز خطا در عملیات. لطفاً دوباره تلاش کنید یا با راهبر سیستم تماس بگیرید.</value>
+  </data>
 </root>

@@ -36,6 +36,24 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// نوع پیغام یا خطای ایجاد شده سمت سرویس
         /// </summary>
-        public ErrorType Type { get; set; }
+        public ErrorType Type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                _type = value;
+                StatusCode = (_type == ErrorType.ValidationError) ? 400 : 500;
+            }
+        }
+
+        /// <summary>
+        /// کد وضعیت مربوط به خطای ایجاد شده - با شماره استاندارد
+        /// </summary>
+        public int StatusCode { get; set; }
+
+        private ErrorType _type;
     }
 }
