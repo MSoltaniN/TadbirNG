@@ -81,7 +81,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   viewTreeDefaultConfig: ViewTreeConfig;
   finalViewTreeConfig: Array<ViewTreeConfig> = [];
 
-  public errorMessage = String.Empty;
+ // public errorMessage = String.Empty;
 
   @Input() public set reloadComponent(isReload: boolean) {
     if (isReload) {

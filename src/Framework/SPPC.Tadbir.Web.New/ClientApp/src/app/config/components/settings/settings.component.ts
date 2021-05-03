@@ -7,7 +7,7 @@ import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DefaultComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { SettingsFormComponent } from './settings-form.component';
-import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
+import { BrowserStorageService, MetaDataService, ErrorHandlingService } from '@sppc/shared/services';
 import { SettingBriefInfo, SettingTreeNodeInfo, SettingService } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
 import { SettingKey } from '@sppc/shared/enum';
@@ -36,7 +36,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
 
   @ViewChild(forwardRef(() => SettingsFormComponent)) private settingForm: SettingsFormComponent;
 
-  public errorMessage = String.Empty;
+  //public errorMessage = String.Empty;
   public expandedKeys: any[] = [-1];
   public lastSelectedType: string;
   public settingsCategories: any[];
@@ -45,7 +45,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
   public itemUpdatedModel: SettingBriefInfo;  
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    private settingsService: SettingService, public renderer: Renderer2, public metadata: MetaDataService) {
+    private settingsService: SettingService, public renderer: Renderer2, public metadata: MetaDataService, public errorHandlingService: ErrorHandlingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingsService, Entities.Setting, undefined);
   }
 
@@ -125,7 +125,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     this.settingsService.putSettingsCategories(SettingsApi.AllSettings, this.settingsCategories).subscribe(res => {
       this.showMessage(this.updateMsg, MessageType.Succes);
     }, (error => {
-      this.errorMessage = error;
+        this.errorMessages = this.errorHandlingService.handleError(error);
     }));
 
   }

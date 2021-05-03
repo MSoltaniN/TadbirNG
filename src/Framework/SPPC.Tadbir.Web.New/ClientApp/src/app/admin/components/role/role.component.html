@@ -112,23 +112,23 @@
   </kendo-grid>
 </div>
 
-<role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [active]="isActive" [isNew]="isNew" [errorMessage]="errorMessage"
+<role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [active]="isActive" [isNew]="isNew" [errorMessages]="errorMessages"
                      (save)="saveRole($event)"
                      (cancel)="cancelHandler()">
 </role-form-component>
-<role-user-form-component [usersList]="usersList" [roleUser]="roleUsersData" [errorMessage]="errorMessage" [roleName]="roleName"
+<role-user-form-component [usersList]="usersList" [roleUser]="roleUsersData" [errorMessages]="errorMessages" [roleName]="roleName"
                           (saveRoleUsers)="saveRoleUsersHandler($event)"
                           (cancelRoleUsers)="cancelRoleUsersHandler()">
 </role-user-form-component>
-<role-branch-form-component [inputRoleBranches]="roleBranches" [roleBranches]="roleBranchesData" [errorMessage]="errorMessage" [roleName]="roleName"
+<role-branch-form-component [inputRoleBranches]="roleBranches" [roleBranches]="roleBranchesData" [errorMessages]="errorMessages" [roleName]="roleName"
                             (saveRoleBranches)="saveRoleBranchesHandler($event)"
                             (cancelRoleBranches)="cancelRoleBranchesHandler()">
 </role-branch-form-component>
-<role-fiscalPeriod-form-component [fiscalPeriodList]="roleFiscalPeriod" [roleFiscalPeriod]="roleFiscalPeriodsData" [errorMessage]="errorMessage" [roleName]="roleName"
+<role-fiscalPeriod-form-component [fiscalPeriodList]="roleFiscalPeriod" [roleFiscalPeriod]="roleFiscalPeriodsData" [errorMessages]="errorMessages" [roleName]="roleName"
                                   (saveRoleFiscalPeriod)="saveRoleFiscalPeriodHandler($event)"
                                   (cancelRoleFiscalPeriod)="cancelRoleFiscalPeriodHandler()">
 </role-fiscalPeriod-form-component>
-<role-detail-form-component [roleDetail]="roleDetail" [roleDetails]="roleDetailData" [errorMessage]="errorMessage"
+<role-detail-form-component [roleDetail]="roleDetail" [roleDetails]="roleDetailData" [errorMessages]="errorMessages"
                             (cancelRoleDetail)="cancelRoleDetailHandler()">
 </role-detail-form-component>
 

@@ -1,10 +1,10 @@
 
 <div style="padding:15px;" class="sppc-dialog-xs" (keydown.esc)="escPress()">
 
-  <div *ngIf="errorMessage">
-    <div class="alert alert-danger">
+  <div *ngIf="errorMessages">
+    <div *ngFor="let err of errorMessages" class="alert alert-danger">
       <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-      {{ errorMessage }}
+      {{ err }}
     </div>
   </div>
 

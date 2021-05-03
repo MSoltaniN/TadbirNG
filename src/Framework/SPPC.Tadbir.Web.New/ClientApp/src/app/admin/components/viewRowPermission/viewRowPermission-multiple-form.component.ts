@@ -60,7 +60,7 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
 
   //create properties
   @Input() public active: boolean = false;
-  @Input() public errorMessage: string = '';
+  //@Input() public errorMessage: string = '';
 
   @Input() public set entity(item: ItemInfo) {
     if (item) {

@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
 import { String, FilterExpression, FilterExpressionBuilder, Filter, DefaultComponent } from '@sppc/shared/class';
 import { AccountItemBriefInfo, AccountRelationsService, AccountItemRelationsInfo } from '@sppc/finance/service';
 import { AccountRelationApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi } from '@sppc/finance/service/api';
@@ -76,14 +76,14 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
   public isEnableRelatedComponentSearchBtn: boolean = false;
   public relatedComponentApiUrl: string;
 
-  public errorMessage = String.Empty;
+  //public errorMessage = String.Empty;
 
   public ngOnInit(): void {
     this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+    private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public errorHandlingService: ErrorHandlingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.AccountRelations, undefined);
 
     this.mainComponent = [
@@ -349,7 +349,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     model.relatedItemIds = this.relatedComponentCheckedKeys;
 
 
-    this.errorMessage = String.Empty;
+    this.errorMessages = [];
 
     var apiUrl = this.relationUrl(model);
 
@@ -361,7 +361,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
       this.loadRelatedComponent();
 
     }, (error => {
-      this.errorMessage = error;
+        if (error)
+          this.errorMessages = this.errorHandlingService.handleError(error);
     }));
 
   }
@@ -393,7 +394,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
    * @param relationsModel
    */
   saveRelations(relationsModel: AccountItemRelationsInfo) {
-    this.errorMessage = String.Empty;
+    this.errorMessages = [];
 
     var apiUrl = this.relationUrl(relationsModel);
 
@@ -405,7 +406,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
       this.loadRelatedComponent();
 
     }, (error => {
-      this.errorMessage = error;
+        if (error)
+          this.errorMessages = this.errorHandlingService.handleError(error);
       ////this.sppcLoading.hide();
     }));
 
@@ -476,7 +478,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     this.mainComponentSelectedItem = 0;
     this.mainComponentDropdownSelected = 0;
     this.relatedComponentDropdownSelected = 0;
-    this.errorMessage = String.Empty;
+    this.errorMessages = [];
     this.isDisableRelatedComponnet = true;
     this.isEnableMainComponentSearchBtn = false;
     this.isEnableRelatedComponentSearchBtn = false;

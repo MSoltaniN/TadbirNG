@@ -4,10 +4,10 @@
         {{ 'FiscalPeriod.RolesTitle' | translate }}
     </kendo-dialog-titlebar>
 
-    <div *ngIf="errorMessage != ''">
-      <div class="alert alert-danger">
+    <div *ngIf="errorMessages">
+      <div *ngFor="let err of errorMessages" class="alert alert-danger">
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-        {{ errorMessage }}
+        {{ err }}
       </div>
     </div>
 

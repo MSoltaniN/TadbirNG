@@ -111,7 +111,7 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
         this.dialogModel.parent = this.parent;
         this.dialogModel.model = this.editDataItem;
         this.dialogModel.isNew = isNew;
-        this.dialogModel.errorMessage = undefined;
+        this.dialogModel.errorMessages = undefined;
 
 
         this.dialogRef.content.instance.save.subscribe((res) => {

@@ -113,7 +113,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   @Input() public parent: Account;
   @Input() public model: AccountFullData;
   @Input() public isNew: boolean = false;
-  @Input() public errorMessage: string = '';
+  //@Input() public errorMessage: string = '';
 
   @Output() save: EventEmitter<AccountFullData> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -366,7 +366,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
         this.uploadTab = true;
       }
 
-      if (!this.isNew && this.customerTaxModel.id > 0) {
+      if (!this.isNew && this.customerTaxModel && this.customerTaxModel.id > 0) {
         this.onChangeProvince(this.customerTaxModel.provinceCode, true);
       }
     })

@@ -35,7 +35,7 @@ export class RoleUserFormComponent extends DetailComponent {
 
 
   @Input() public usersList: boolean = false;
-  @Input() public errorMessage: string = '';
+  //@Input() public errorMessage: string = '';
   @Input() public roleName: string = '';
 
   @Input() public set roleUser(roleUser: RelatedItems) {

@@ -47,7 +47,7 @@ export class AccountRelationsFormComponent extends DetailComponent {
 
   //create properties
   @Input() public active: boolean = false;
-  @Input() public errorMessage: string = '';
+  //@Input() public errorMessage: string = '';
 
   @Input() public set model(item: AccountItemBriefInfo) {
     if (item) {

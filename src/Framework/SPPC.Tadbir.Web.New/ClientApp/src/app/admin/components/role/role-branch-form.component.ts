@@ -40,7 +40,7 @@ export class RoleBranchFormComponent extends DetailComponent {
 
 
   @Input() public inputRoleBranches: boolean = false;
-  @Input() public errorMessage: string = '';
+ // @Input() public errorMessage: string = '';
   @Input() public roleName: string = '';
 
   @Input() public set roleBranches(roleBranches: RelatedItems) {

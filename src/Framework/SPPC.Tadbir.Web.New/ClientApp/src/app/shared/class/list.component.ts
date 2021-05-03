@@ -25,6 +25,7 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   permission: Permissions;
   filterDialogRef: DialogRef;
   excelFileName: string;
+  
 
   /**این تابع قبل از نمایش تنظیمات گزارش فوری اجرا میشود*/
   public onBeforeQuickReportSetting() {

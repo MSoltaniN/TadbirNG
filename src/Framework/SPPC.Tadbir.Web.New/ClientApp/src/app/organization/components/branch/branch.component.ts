@@ -77,7 +77,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     this.dialogModel.parent = this.parent;
     this.dialogModel.model = this.editDataItem;
     this.dialogModel.isNew = isNew;
-    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.errorMessages = undefined;
 
     this.dialogRef.content.instance.save.subscribe((res) => {      
       this.saveHandler(res, isNew);
@@ -147,7 +147,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.branchId = branchId;
-    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.errorMessages = undefined;
 
     this.dialogRef.content.instance.saveBranchRoles.subscribe((res) => {
       this.saveBranchRolesHandler(res);
@@ -166,7 +166,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
         this.dialogModel.branchId = undefined;
         this.selectedRows = [];
       }, (error => {
-        this.dialogModel.errorMessage = error;
+        this.dialogModel.errorMessages = error;
       }));
   }
 

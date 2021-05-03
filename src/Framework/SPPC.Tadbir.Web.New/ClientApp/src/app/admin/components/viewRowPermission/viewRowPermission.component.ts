@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';
 import { RoleApi } from '@sppc/admin/service/api';
@@ -42,7 +42,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   public isActiveSingleForm: boolean = false;
   public isActiveMultipleForm: boolean = false;
   public isChangeMultipleForm: boolean = false;
-  public errorMessage = String.Empty;
+  //public errorMessage = String.Empty;
 
   public dataItem: RowPermissionsForRoleInfo;
   public dataRowPermission: ViewRowPermissionInfo | undefined;
@@ -74,7 +74,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private viewRowPermissionService: ViewRowPermissionService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    public renderer: Renderer2, public metadata: MetaDataService,
+    public settingService: SettingService, public bStorageService: BrowserStorageService,public errorHandlingService: ErrorHandlingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.RowAccess, undefined);
 
     this.getRoles();
@@ -123,13 +124,13 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   }
 
   openSingleForm() {
-    this.errorMessage = '';
+    this.errorMessages = undefined;
     this.updateDataItem();
     this.isActiveSingleForm = true;
   }
 
   cancelSingleFormHandler() {
-    this.errorMessage = '';
+    this.errorMessages = undefined;
     this.isActiveSingleForm = false;
   }
 
@@ -211,7 +212,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   }
 
   openMultipleForm() {
-    this.errorMessage = '';
+    this.errorMessages = undefined;
 
     this.entity = this.singleFormSelectedModel;
     var row = this.dataItem.rowPermissions.find(f => f.viewId == this.view_Id);
@@ -222,7 +223,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   }
 
   cancelMultipleFormHandler() {
-    this.errorMessage = '';
+    this.errorMessages = undefined;
     this.entity = undefined;
     this.dataRowPermission = undefined;
     this.multipleFormItemsSelected = [];
@@ -239,7 +240,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   }
 
   saveRowPermission() {    
-    this.errorMessage = '';
+    this.errorMessages = undefined;
     this.updateDataItem();
     this.viewRowPermissionService.edit<RowPermissionsForRoleInfo>(String.Format(RoleApi.RowAccessSettings, this.ddlSelectedRole), this.dataItem).subscribe(res => {
 
@@ -249,7 +250,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
       this.ddlPermissionTypeSelected = 0;
 
     }, (error => {
-      this.errorMessage = error;
+        if (error)
+          this.errorMessages = this.errorHandlingService.handleError(error);;
     }))
 
   }

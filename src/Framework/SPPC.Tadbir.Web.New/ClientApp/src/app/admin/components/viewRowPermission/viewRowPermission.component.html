@@ -3,10 +3,10 @@
 
   <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
 
-    <div *ngIf="errorMessage != ''">
-      <div class="alert alert-danger">
+    <div *ngIf="errorMessages">
+      <div *ngFor="let err of errorMessages" class="alert alert-danger">
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-        {{ errorMessage }}
+        {{ err }}
       </div>
     </div>
 
@@ -110,13 +110,13 @@
   </div>
   <div class="clearfix"></div>
 
-  <viewRowPermission-single-form-component [active]="isActiveSingleForm" [errorMessage]="errorMessage"
+  <viewRowPermission-single-form-component [active]="isActiveSingleForm" [errorMessages]="errorMessages"
                                            [model]="singleFormSelectedModel"
                                            (save)="saveSingleFormHandler($event)"
                                            (cancel)="cancelSingleFormHandler()">
   </viewRowPermission-single-form-component>
 
-  <viewRowPermission-multiple-form-component [active]="isActiveMultipleForm" [errorMessage]="errorMessage"
+  <viewRowPermission-multiple-form-component [active]="isActiveMultipleForm" [errorMessages]="errorMessages"
                                              [entity]="entity"
                                              [dataItem]="dataRowPermission"
                                              (save)="saveMultipleFormHandler($event)"

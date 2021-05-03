@@ -63,7 +63,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.model = dataitem;
     this.dialogModel.isNew = true;
-    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.errorMessages = undefined;
     this.dialogModel.isWizard = true;
 
     this.dialogRef.dialog.location.nativeElement.classList.add('dialog-wizard');
@@ -97,7 +97,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.model = dataItem;
     this.dialogModel.isNew = true;
-    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.errorMessages = undefined;
     this.dialogModel.isWizard = true;
 
     this.dialogRef.dialog.location.nativeElement.classList.add('dialog-wizard');
@@ -138,7 +138,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.model = new FiscalPeriodInfo();
     this.dialogModel.isNew = true;
-    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.errorMessages = undefined;
     this.dialogModel.isWizard = true;
 
     this.dialogRef.dialog.location.nativeElement.classList.add('dialog-wizard');
@@ -178,7 +178,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
     //  this.dialogRef.close();
     //  this.openBranchEditor(new BranchInfo());
     //}, error => {
-    //  this.dialogModel.errorMessage = error;
+    //  this.dialogModel.errorMessages = error;
     //})
   }
 
@@ -193,7 +193,7 @@ export class InitialWizardComponent extends DefaultComponent implements OnInit {
     //  this.insertCompany();
 
     //}, error => {
-    //  this.dialogModel.errorMessage = error;
+    //  this.dialogModel.errorMessages = error;
     //})
   }
 

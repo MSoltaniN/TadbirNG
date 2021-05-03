@@ -9,24 +9,20 @@ export class ErrorHandlingService  {
   constructor(public toastrService: ToastrService) { }
 
   public handleError(error: Error | any) {
-    if (error.type) {
-      switch (error.type) {
-        case ErrorType.Info:
-          this.toastrService.info(error.messages[0]);
-          break;
-        case ErrorType.Warning:
-          this.toastrService.warning(error.messages[0]);
-          break;
-        case ErrorType.RuntimeException:
-          this.toastrService.error(error.messages[0]);
-          break;
-        case ErrorType.ValidationError:
-          return error.messages;
+    if (error.statusCode == 400) {
+      if (error.type) {
+        switch (error.type) {
+          case ErrorType.RuntimeException:
+            this.toastrService.warning(error.messages[0]);
+            break;
+          case ErrorType.ValidationError:
+            return error.messages;                         
+        }
+        return;
       }
-      return;
     }
 
-    if (error.ClassName) {
+    if (error.statusCode == 500) {
       this.toastrService.error(error.Message);
     }
 

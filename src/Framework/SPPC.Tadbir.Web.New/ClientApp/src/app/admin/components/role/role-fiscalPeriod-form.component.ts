@@ -36,7 +36,7 @@ export class RoleFiscalPeriodFormComponent extends DetailComponent {
 
 
   @Input() public fiscalPeriodList: boolean = false;
-  @Input() public errorMessage: string = '';
+  //@Input() public errorMessage: string = '';
   @Input() public roleName: string = '';
 
   @Input() public set roleFiscalPeriod(roleFiscalPeriod: RelatedItems) {

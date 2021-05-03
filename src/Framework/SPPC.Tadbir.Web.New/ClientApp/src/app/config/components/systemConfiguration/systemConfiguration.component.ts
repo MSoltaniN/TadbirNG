@@ -7,7 +7,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { String, DefaultComponent } from '@sppc/shared/class';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
 import { ViewTreeLevelConfig, ViewTreeConfig } from '@sppc/config/models';
 import { SettingService, SettingBriefInfo } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
@@ -40,7 +40,7 @@ export function getLayoutModule(layout: Layout) {
 
 export class SystemConfigurationComponent extends DefaultComponent implements OnInit {
 
-  public errorMessage = String.Empty;
+  //public errorMessage = String.Empty;
 
   systemConfigModel: SettingBriefInfo;
 
@@ -74,7 +74,8 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private formBuilder: FormBuilder, public currencyService: CurrencyService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService) {
+    public renderer: Renderer2, public metadata: MetaDataService,
+    public settingService: SettingService, public bStorageService: BrowserStorageService, public errorHandlingService: ErrorHandlingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.Setting, undefined);
   }
 
@@ -160,7 +161,8 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
 
       localStorage.removeItem("viewTreeConfig");      
     }, (error => {
-      this.errorMessage = error;
+        if(error)
+          this.errorMessages = this.errorHandlingService.handleError(error);
     }));
   }
 }

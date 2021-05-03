@@ -3,7 +3,7 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { DetailComponent } from '@sppc/shared/class';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
 import { MessageType, Entities } from '@sppc/env/environment';
 import { UserService } from '@sppc/admin/service';
 import { UserProfile } from '@sppc/shared/models';
@@ -46,10 +46,11 @@ export class ChangePasswordComponent extends DetailComponent {
 
     this.userService.changePassword(this.model).subscribe(res => {
       this.editForm1.reset();
-      this.errorMessage = "";
+      this.errorMessages = undefined;
       this.showMessage(this.updateMsg, MessageType.Succes);
     }, (error => {
-      this.errorMessage = error;
+        if(error)
+          this.errorMessages = this.errorHandlingService.handleError(error);;
     }));
 
     //this.sppcLoading.hide();
@@ -58,7 +59,8 @@ export class ChangePasswordComponent extends DetailComponent {
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,
-    private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService) {
+    private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService,
+    public bStorageService: BrowserStorageService, public errorHandlingService:ErrorHandlingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Password, ViewName.User);
 
     if (localStorage.getItem('currentContext') != null) {

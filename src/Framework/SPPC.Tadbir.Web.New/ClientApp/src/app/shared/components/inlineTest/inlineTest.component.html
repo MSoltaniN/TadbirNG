@@ -1,9 +1,10 @@
 <app-bread-cumb *ngIf="!isChild"></app-bread-cumb>
 <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
 
-  <div *ngIf="errorMessage != ''">
-    <div class="alert alert-danger">
-      {{ errorMessage }}
+  <div *ngIf="errorMessages">
+    <div *ngFor="let err of errorMessages" class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{ err }}
     </div>
   </div>
 

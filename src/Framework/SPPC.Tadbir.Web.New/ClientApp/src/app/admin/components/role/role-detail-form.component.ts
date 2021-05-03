@@ -48,7 +48,7 @@ export class RoleDetailFormComponent extends DetailComponent {
 
 
   @Input() public roleDetail: boolean = false;
-  @Input() public errorMessage: string = '';
+  //@Input() public errorMessage: string = '';
 
 
   @Input() public set roleDetails(roleDetails: RoleDetails) {

@@ -37,7 +37,7 @@ export class UserRolesFormComponent extends DetailComponent implements OnInit {
 
 
     @Input() public rolesList: boolean = false;
-    @Input() public errorMessage: string = '';
+    //@Input() public errorMessage: string = '';
 
     @Input() public set userRoles(userRoles: RelatedItems) {
         this.model = userRoles;

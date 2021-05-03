@@ -500,7 +500,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
     //this.dialogModel.parent = this.parent;
     //this.dialogModel.model = this.editDataItem;
     //this.dialogModel.isNew = isNew;
-    //this.dialogModel.errorMessage = undefined;
+    //this.dialogModel.errorMessages = undefined;
 
 
     //this.dialogRef.content.instance.save.subscribe((res) => {
@@ -586,7 +586,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
 
           this.dialogRef.close();
           this.dialogModel.parent = undefined;
-          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.errorMessages = undefined;
           this.dialogModel.model = undefined;
 
           this.reloadGrid();
@@ -595,7 +595,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
 
         }, (error => {
           this.editDataItem = model;
-          this.dialogModel.errorMessage = error;
+          this.dialogModel.errorMessages = error;
         }));
     }
     else {
@@ -607,7 +607,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
 
           this.dialogRef.close();
           this.dialogModel.parent = undefined;
-          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.errorMessages = undefined;
           this.dialogModel.model = undefined;
 
           this.selectedRows = [];
@@ -618,7 +618,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
           this.refreshTreeNodes(insertedModel);
 
         }, (error => {
-          this.dialogModel.errorMessage = error;
+          this.dialogModel.errorMessages = error;
         }));
 
     }

@@ -25,6 +25,7 @@ export class DefaultComponent extends BaseComponent {
 
   /** array of property.this variable is a container for metadata */
   public properties: Map<string, any>;
+  public errorMessages: string[];
 
   public baseEntityName: string;
 

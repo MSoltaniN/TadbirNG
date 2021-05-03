@@ -7,7 +7,7 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { AccountFormComponent } from './account-form.component';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { Layout, Entities, MessageType } from '@sppc/env/environment';
-import { GridService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
+import { GridService, BrowserStorageService, MetaDataService, ErrorHandlingService } from '@sppc/shared/services';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { SettingService } from '@sppc/config/service';
@@ -122,7 +122,7 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
         this.dialogModel.parent = this.parent;
         this.dialogModel.model = this.editDataItem;
         this.dialogModel.isNew = isNew;
-        this.dialogModel.errorMessage = undefined;
+        this.dialogModel.errorMessages = undefined;
 
         this.dialogRef.content.instance.save.subscribe((res) => {
           this.saveHandler(res, isNew);
@@ -149,7 +149,7 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
 
           this.dialogRef.close();
           this.dialogModel.parent = undefined;
-          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.errorMessages = undefined;
           this.dialogModel.model = undefined;
           //log is off after update model
           this.listChanged = false;
@@ -160,7 +160,9 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
 
         }, (error => {
           this.editDataItem = model;
-          this.dialogModel.errorMessage = error;
+            //this.dialogModel.errorMessages = this.errorHandlingService.handleError(error);
+            if (error)
+              this.dialogModel.errorMessages = this.errorHandlingService.handleError(error);
         }));
     }
     else {
@@ -173,7 +175,7 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
 
           this.dialogRef.close();
           this.dialogModel.parent = undefined;
-          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.errorMessages = undefined;
           this.dialogModel.model = undefined;
 
           this.selectedRows = [];
@@ -187,7 +189,8 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
           this.refreshTreeNodes(insertedModel);
 
         }, (error => {
-          this.dialogModel.errorMessage = error;
+            if(error)
+              this.dialogModel.errorMessages = this.errorHandlingService.handleError(error);
         }));
 
     }

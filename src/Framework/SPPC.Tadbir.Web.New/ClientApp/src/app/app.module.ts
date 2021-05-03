@@ -25,7 +25,8 @@ import { OrganizationModule } from '@sppc/organization/organization.module';
 import { GeneralErrorHandler } from '@sppc/shared/class/error.handler';
 import { EnviromentComponent } from '@sppc/shared/class/enviroment.component';
 import { ServiceLocator } from './service.locator';
-import { ErrorHandlingService } from './shared/services';
+import { ErrorHandlingService } from '@sppc/shared/services';
+import { HttpErrorInterceptor } from '@sppc/shared/class/http-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,12 @@ import { ErrorHandlingService } from './shared/services';
   providers: [ 
  
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: ErrorHandler, useClass: GeneralErrorHandler },        
+    { provide: ErrorHandler, useClass: GeneralErrorHandler },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    },
     Layout,
     EnviromentComponent,
     LZStringService,

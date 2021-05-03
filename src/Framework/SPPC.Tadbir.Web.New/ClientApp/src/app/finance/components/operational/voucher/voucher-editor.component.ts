@@ -10,7 +10,7 @@ import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { VoucherService, VoucherInfo, InventoryBalanceInfo } from '@sppc/finance/service';
 import { VoucherApi } from '@sppc/finance/service/api';
 import { Voucher } from '@sppc/finance/models';
-import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, LookupService, ErrorHandlingService } from '@sppc/shared/services';
 import { DocumentStatusValue, VoucherOperations, VoucherSubjectTypes } from '@sppc/finance/enum';
 import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
@@ -112,7 +112,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
-    public bStorageService: BrowserStorageService) {
+    public bStorageService: BrowserStorageService, public errorHandlingService: ErrorHandlingService) {
 
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Voucher, ViewName.Voucher);
 
@@ -418,11 +418,14 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model).subscribe(res => {
         this.editForm.reset(res);
         this.voucherModel = res;
-        this.errorMessage = undefined;
+        this.errorMessages = undefined;
         this.showMessage(this.updateMsg, MessageType.Succes);
       }, (error => {
         if (e)
-          this.errorMessage = error;
+        {
+          if (error)
+            this.errorMessages = this.errorHandlingService.handleError(error);
+        }
         else
           this.showMessage(error, MessageType.Warning);
       }));
