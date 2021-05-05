@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
@@ -22,13 +23,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="security">امکان دسترسی به اطلاعات محیطی کاربر جاری برنامه را فراهم می کند</param>
         /// <param name="dbConsole">امکان اجرای مستقیم دستورات دیتابیسی را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را به زبان جاری برنامه فراهم می کند</param>
+        /// <param name="configuration"></param>
         public RepositoryContext(IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecurityContext security,
-            ISqlConsole dbConsole, IStringLocalizer<AppStrings> strings)
+            ISqlConsole dbConsole, IStringLocalizer<AppStrings> strings, IConfiguration configuration)
         {
             UnitOfWork = unitOfWork;
             Mapper = mapper;
             UserContext = security?.User;
             DbConsole = dbConsole;
+            SystemConnection = configuration.GetConnectionString("TadbirSysApi");
             _strings = strings;
         }
 
@@ -51,6 +54,11 @@ namespace SPPC.Tadbir.Persistence
         /// امکان دسترسی به اطلاعات محیطی کاربر جاری برنامه را فراهم می کند
         /// </summary>
         public UserContextViewModel UserContext { get; }
+
+        /// <summary>
+        /// رشته اتصال به دیتابیس سیستمی که از پیکربندی برنامه وب خوانده می شود
+        /// </summary>
+        public string SystemConnection { get; }
 
         /// <summary>
         /// یک رشته متنی شامل ترکیب دلخواهی از متن و کلید متنی چندزبانه را به زبان جاری برنامه ترجمه می کند

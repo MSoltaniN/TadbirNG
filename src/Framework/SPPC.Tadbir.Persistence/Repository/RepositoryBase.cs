@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -116,13 +117,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="company">اطلاعات شرکت مورد نظر برای ساختن رشته اتصال</param>
         /// <returns>رشته اتصال ساخته شده با اطلاعات شرکت</returns>
-        protected static string BuildConnectionString(CompanyDb company)
+        protected string BuildConnectionString(CompanyDb company)
         {
             if (company == null)
             {
                 return null;
             }
 
+            var csBuilder = new SqlConnectionStringBuilder(Context.SystemConnection);
             var builder = new StringBuilder();
             builder.AppendFormat("Server={0};Database={1};Connect Timeout=600;", company.Server, company.DbName);
             if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
@@ -133,7 +135,7 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
-                    AppConstants.SystemLoginName, GetDecodedValue(AppConstants.SystemLoginPassword));
+                    AppConstants.SystemLoginName, csBuilder.Password);
             }
 
             return builder.ToString();

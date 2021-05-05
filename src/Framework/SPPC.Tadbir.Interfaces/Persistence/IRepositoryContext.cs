@@ -32,6 +32,11 @@ namespace SPPC.Tadbir.Persistence
         UserContextViewModel UserContext { get; }
 
         /// <summary>
+        /// رشته اتصال به دیتابیس سیستمی که از پیکربندی برنامه وب خوانده می شود
+        /// </summary>
+        string SystemConnection { get; }
+
+        /// <summary>
         /// یک رشته متنی شامل ترکیب دلخواهی از متن و کلید متنی چندزبانه را به زبان جاری برنامه ترجمه می کند
         /// </summary>
         /// <param name="resourceKey">رشته متنی مورد نظر برای ترجمه</param>

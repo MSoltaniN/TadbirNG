@@ -103,11 +103,6 @@ namespace SPPC.Tadbir.Domain
         public const string SystemLoginName = "NgTadbirUser";
 
         /// <summary>
-        /// شکل کد شده رمز عبور برای لاگین سیستمی
-        /// </summary>
-        public const string SystemLoginPassword = "TmdUYWRiaXJVc2Vy";
-
-        /// <summary>
         /// حداکثر مجاز برای تعداد اقلام در گزارش های مقایسه ای
         /// </summary>
         public const int MaxCompareItems = 5;
