@@ -5,6 +5,6 @@ export enum SettingsType {
   NumberDisplayConfig = "NumberDisplayConfig",
   ViewTreeConfig = "ViewTreeConfig",
   EntityRowAccessConfig = "EntityRowAccessConfig",
-  TestBalanceConfig = "TestBalanceConfig"
+  FinanceReportConfig = "FinanceReportConfig"
 }
 

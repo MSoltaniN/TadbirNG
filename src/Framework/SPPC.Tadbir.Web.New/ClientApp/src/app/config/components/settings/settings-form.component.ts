@@ -70,7 +70,7 @@ export class SettingsFormComponent extends DetailComponent {
     separatorSymbol: new FormControl()
   });
 
-  public testBalanceForm = new FormGroup({
+  public financeReportForm = new FormGroup({
     addOpeningVoucherToInitBalance: new FormControl()    
   });
 
@@ -146,9 +146,9 @@ export class SettingsFormComponent extends DetailComponent {
           this.updateList.emit(this.selectedItemModel);
           break;
         }
-      case SettingsType.TestBalanceConfig:
+      case SettingsType.FinanceReportConfig:
         {
-          this.selectedItemModel.values = this.testBalanceForm.value;
+          this.selectedItemModel.values = this.financeReportForm.value;
           this.updateList.emit(this.selectedItemModel);
           break;
         }
@@ -188,9 +188,9 @@ export class SettingsFormComponent extends DetailComponent {
           this.numberDisplayForm.reset(objectValue);
           break;
         }
-      case SettingsType.TestBalanceConfig:
+      case SettingsType.FinanceReportConfig:
         {
-          this.testBalanceForm.reset(objectValue);
+          this.financeReportForm.reset(objectValue);
           break;
         }
       case SettingsType.RelationsConfig:

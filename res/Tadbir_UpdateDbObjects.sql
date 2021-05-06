@@ -1927,3 +1927,8 @@ SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF
 UPDATE [Config].[Setting]
 SET IsStandalone = 0
 WHERE TitleKey = 'QuickSearchSettings'
+
+-- 1.1.1128
+UPDATE [Config].[Setting]
+SET TitleKey = 'FinanceReportSettings', ModelType = 'FinanceReportConfig', DescriptionKey = 'FinanceReportSettingsDescription'
+WHERE ModelType = 'TestBalanceConfig'

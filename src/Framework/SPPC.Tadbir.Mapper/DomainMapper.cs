@@ -485,6 +485,8 @@ namespace SPPC.Tadbir.Mapper
                 .ConvertUsing(MapConfigType<EntityRowAccessConfig>);
             mapperConfig.CreateMap<Setting, SystemConfig>()
                 .ConvertUsing(MapConfigType<SystemConfig>);
+            mapperConfig.CreateMap<Setting, FinanceReportConfig>()
+                .ConvertUsing(MapConfigType<FinanceReportConfig>);
             mapperConfig.CreateMap<Column, ColumnViewConfig>()
                 .ConvertUsing(prop => GetDynamicColumnSettings(prop));
             mapperConfig.CreateMap<UserSetting, ListFormViewConfig>()

@@ -2607,11 +2607,11 @@
   <data name="SystemConfigurationSettings" xml:space="preserve">
     <value>پیکربندی سیستم</value>
   </data>
-  <data name="TestBalanceSettings" xml:space="preserve">
-    <value>تراز آزمایشی</value>
+  <data name="FinanceReportSettings" xml:space="preserve">
+    <value>گزارش های مالی</value>
   </data>
-  <data name="TestBalanceSettingsDescription" xml:space="preserve">
-    <value>گزینه های موجود برای محاسبه اطلاعات گزارش تراز آزمایشی</value>
+  <data name="FinanceReportSettingsDescription" xml:space="preserve">
+    <value>گزینه های موجود برای محاسبه اطلاعات گزارش های مالی</value>
   </data>
   <data name="InvalidEmptyVoucherAction" xml:space="preserve">
     <value>عمل {0} روی سند بدون آرتیکل امکان پذیر نیست.</value>

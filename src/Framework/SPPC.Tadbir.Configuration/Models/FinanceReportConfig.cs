@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SPPC.Tadbir.Configuration.Models
+﻿namespace SPPC.Tadbir.Configuration.Models
 {
     /// <summary>
     /// تنظیمات گزارش تراز آزمایشی را نگهداری می کند
     /// </summary>
-    public class TestBalanceConfig
+    public class FinanceReportConfig
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        public TestBalanceConfig()
+        public FinanceReportConfig()
         {
             AddOpeningVoucherToInitBalance = false;
         }

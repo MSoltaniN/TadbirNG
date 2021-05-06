@@ -834,7 +834,7 @@
       "UseDefault": "تنظیمات سیستم عامل",
       "UseCustom": "تنظیمات برنامه"
     },
-    "TestBalance": {
+    "FinanceReports": {
       "OpeningVoucherAsInitBalance": "انعکاس افتتاحیه در ستون مانده ابتدا"
     },
     "Description": "توضیحات",

@@ -1,6 +1,6 @@
 {
   "App": {
-    "Title": "Wellcome to Tabir New System",
+    "Title": "Welcome to Tabir New System",
     "SELECT": "Change language",
     "Loading": "loading ...",
     "RecordNotFound": "Record not found!",
@@ -716,7 +716,7 @@
       "UseDefault": "Operating system settings",
       "UseCustom": "Application settings"
     },
-    "TestBalance": {
+    "FinanceReports": {
       "OpeningVoucherAsInitBalance": "Opening Voucher As Init Balance"
     },
     "Description": "Description",
