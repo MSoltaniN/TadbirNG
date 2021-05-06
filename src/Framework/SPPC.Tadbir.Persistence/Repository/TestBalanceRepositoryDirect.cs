@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -47,28 +48,27 @@ namespace SPPC.Tadbir.Persistence
         {
             var balance = new TestBalanceViewModel();
             var items = new List<TestBalanceItemViewModel>();
-            int length = 0;
-            string filter = String.Empty;
-            var query = default(ReportQuery);
+            int length;
+            string filter;
             int index = 0;
-
+            ReportQuery query;
             while (index < level)
             {
                 length = _utility.GetLevelCodeLength(parameters.ViewId, index);
                 filter = String.Format("acc.Level == {0}", index);
-                query = GetLevelQuery(length, parameters, filter);
+                query = await GetLevelQueryAync(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
                 index++;
             }
 
             length = _utility.GetLevelCodeLength(parameters.ViewId, level);
             filter = String.Format("acc.Level >= {0}", level);
-            query = GetLevelQuery(length, parameters, filter);
+            query = await GetLevelQueryAync(length, parameters, filter);
             items.AddRange(GetQueryResult(query));
 
             if (parameters.Format >= TestBalanceFormat.SixColumn)
             {
-                AddInitialBalances(length, items, parameters);
+                await AddInitialBalancesAsync(length, items, parameters);
             }
 
             if (parameters.Format >= TestBalanceFormat.EightColumn)
@@ -103,12 +103,12 @@ namespace SPPC.Tadbir.Persistence
                 int level = accountItem.Level + 1;
                 var filter = String.Format("acc.Level >= {0} AND acc.FullCode LIKE '{1}%'", level, accountItem.FullCode);
                 int length = _utility.GetLevelCodeLength(parameters.ViewId, level);
-                var query = GetLevelQuery(length, parameters, filter);
+                var query = await GetLevelQueryAync(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
 
                 if (parameters.Format >= TestBalanceFormat.SixColumn)
                 {
-                    AddInitialBalances(length, items, parameters);
+                    await AddInitialBalancesAsync(length, items, parameters);
                 }
 
                 if (parameters.Format >= TestBalanceFormat.EightColumn)
@@ -192,7 +192,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (options.HasValue)
             {
-                parameters.Options = (TestBalanceOptions)options.Value;
+                parameters.Options = (FinanceReportOptions)options.Value;
             }
 
             return parameters;
@@ -301,7 +301,7 @@ namespace SPPC.Tadbir.Persistence
             IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters, int level)
         {
             IEnumerable<TestBalanceItemViewModel> newItems = null;
-            if ((parameters.Options & TestBalanceOptions.ShowZeroBalanceItems) > 0)
+            if ((parameters.Options & FinanceReportOptions.ShowZeroBalanceItems) > 0)
             {
                 newItems = items.Concat(
                     await _utility.GetZeroBalanceItemsAsync(parameters.ViewId, items, level));
@@ -337,18 +337,18 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddInitialBalances(
+        private async Task AddInitialBalancesAsync(
             int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
         {
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             if (parameters.IsByBranch)
             {
-                AddInitialBalanceByBranch(length, items, parameters);
+                await AddInitialBalanceByBranchAsync(length, items, parameters);
                 return;
             }
 
             var initMap = new Dictionary<string, decimal>();
-            var query = GetInitBalanceQuery(length, parameters);
+            var query = await GetInitBalanceQueryAsync(length, parameters);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
             {
@@ -356,35 +356,14 @@ namespace SPPC.Tadbir.Persistence
                     _utility.ValueOrDefault<decimal>(row, "Balance"));
             }
 
-            bool openingAsInitBalance =
-                (parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0;
-            if (openingAsInitBalance)
-            {
-                query = GetInitBalanceQuery(length, parameters, true);
-                result = DbConsole.ExecuteQuery(query.Query);
-                foreach (DataRow row in result.Rows)
-                {
-                    string fullCode = _utility.ValueOrDefault(row, "FullCode");
-                    decimal balance = _utility.ValueOrDefault<decimal>(row, "Balance");
-                    if (initMap.ContainsKey(fullCode))
-                    {
-                        initMap[fullCode] = initMap[fullCode] + balance;
-                    }
-                    else
-                    {
-                        initMap.Add(fullCode, balance);
-                    }
-                }
-            }
-
             MergeByCode(items, initMap);
         }
 
-        private void AddInitialBalanceByBranch(
+        private async Task AddInitialBalanceByBranchAsync(
             int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
         {
             var initMap = new Dictionary<FullCodeBranch, decimal>();
-            var query = GetInitBalanceQuery(length, parameters);
+            var query = await GetInitBalanceQueryAsync(length, parameters);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
             {
@@ -394,31 +373,6 @@ namespace SPPC.Tadbir.Persistence
                     BranchName = _utility.ValueOrDefault(row, "BranchName")
                 };
                 initMap.Add(codeBranch, _utility.ValueOrDefault<decimal>(row, "Balance"));
-            }
-
-            bool openingAsInitBalance =
-                (parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0;
-            if (openingAsInitBalance)
-            {
-                query = GetInitBalanceQuery(length, parameters, true);
-                result = DbConsole.ExecuteQuery(query.Query);
-                foreach (DataRow row in result.Rows)
-                {
-                    var codeBranch = new FullCodeBranch()
-                    {
-                        FullCode = _utility.ValueOrDefault(row, "FullCode"),
-                        BranchName = _utility.ValueOrDefault(row, "BranchName")
-                    };
-                    decimal balance = _utility.ValueOrDefault<decimal>(row, "Balance");
-                    if (initMap.ContainsKey(codeBranch))
-                    {
-                        initMap[codeBranch] = initMap[codeBranch] + balance;
-                    }
-                    else
-                    {
-                        initMap.Add(codeBranch, balance);
-                    }
-                }
             }
 
             MergeByCodeBranch(items, initMap);
@@ -573,15 +527,16 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private ReportQuery GetLevelQuery(
+        private async Task<ReportQuery> GetLevelQueryAync(
             int length, TestBalanceParameters parameters, string otherFilter = null)
         {
-            var query = default(ReportQuery);
+            ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
             string fieldName = parameters.ViewId == ViewId.DetailAccount
                 ? "Detail"
                 : componentName;
 
+            var openingVoucher = await _utility.GetOpeningVoucherAsync();
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 var fromDate = parameters.FromDate.Value;
@@ -625,76 +580,51 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            query.SetFilter(GetEnvironmentFilters(parameters, otherFilter));
+            query.SetFilter(GetEnvironmentFilters(parameters, otherFilter, openingVoucher));
             return query;
         }
 
-        private ReportQuery GetInitBalanceQuery(
-            int length, TestBalanceParameters parameters, bool isOpening = false)
+        private async Task<ReportQuery> GetInitBalanceQueryAsync(
+            int length, TestBalanceParameters parameters)
         {
-            var query = default(ReportQuery);
+            ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
             string fieldName = parameters.ViewId == ViewId.DetailAccount
                 ? "Detail"
                 : componentName;
-
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 var fromDate = parameters.FromDate.Value;
-                if (isOpening)
-                {
-                    query = parameters.IsByBranch
-                        ? new ReportQuery(String.Format(BalanceQuery.OpeningBalanceByDateByBranch, length, componentName,
-                            fieldName, fromDate.ToShortDateString(false)))
-                        : new ReportQuery(String.Format(BalanceQuery.OpeningBalanceByDate, length, componentName,
-                            fieldName, fromDate.ToShortDateString(false)));
-                }
-                else
-                {
-                    query = parameters.IsByBranch
-                        ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch, length, componentName,
-                            fieldName, fromDate.ToShortDateString(false)))
-                        : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate, length, componentName,
-                            fieldName, fromDate.ToShortDateString(false)));
-                }
+                query = parameters.IsByBranch
+                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch, length, componentName,
+                        fieldName, fromDate.ToShortDateString(false)))
+                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate, length, componentName,
+                        fieldName, fromDate.ToShortDateString(false)));
             }
             else
             {
                 var fromNo = parameters.FromNo.Value;
-                if (isOpening)
-                {
-                    query = parameters.IsByBranch
-                        ? new ReportQuery(String.Format(BalanceQuery.OpeningBalanceByNoByBranch, length, componentName,
-                            fieldName, fromNo))
-                        : new ReportQuery(String.Format(BalanceQuery.OpeningBalanceByNo, length, componentName,
-                            fieldName, fromNo));
-                }
-                else
-                {
-                    query = parameters.IsByBranch
-                        ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch, length, componentName,
-                            fieldName, fromNo))
-                        : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo, length, componentName,
-                            fieldName, fromNo));
-                }
+                query = parameters.IsByBranch
+                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch, length, componentName,
+                        fieldName, fromNo))
+                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo, length, componentName,
+                        fieldName, fromNo));
             }
 
-            var filterBuilder = new StringBuilder(GetEnvironmentFilters(parameters));
-            if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) <= 0)
-            {
-                filterBuilder.Append(" AND v.OriginID != 2");
-            }
-
-            query.SetFilter(filterBuilder.ToString());
+            var openingVoucher = await _utility.GetOpeningVoucherAsync();
+            query.SetFilter(GetEnvironmentFilters(parameters, openingVoucher));
             return query;
         }
 
-        private string GetEnvironmentFilters(TestBalanceParameters parameters, string otherFilters)
+        private string GetEnvironmentFilters(
+            TestBalanceParameters parameters, string otherFilters, Voucher openingVoucher)
         {
             var predicates = GetEnvironmentFilters(parameters.GridOptions, parameters.Options);
             predicates.Add(otherFilters);
 
-            if ((parameters.Options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+            bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
+            bool isInitBalance = (parameters.Options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
+            if (mustApply && isInitBalance)
             {
                 predicates.Add(String.Format("VoucherOriginID != 2"));
             }
@@ -702,26 +632,42 @@ namespace SPPC.Tadbir.Persistence
             return String.Join(" AND ", predicates);
         }
 
-        private string GetEnvironmentFilters(TestBalanceParameters parameters)
+        private string GetEnvironmentFilters(TestBalanceParameters parameters, Voucher openingVoucher)
         {
+            bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
+            bool isInitBalance = (parameters.Options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
             var predicates = GetEnvironmentFilters(parameters.GridOptions, parameters.Options);
+            var filterBuilder = new StringBuilder(String.Join(" AND ", predicates));
+            if (mustApply && isInitBalance)
+            {
+                if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
+                {
+                    filterBuilder.AppendFormat(" OR (v.Date >= '{0}' AND v.OriginID = 2)",
+                        parameters.FromDate.Value.ToShortDateString(false));
+                }
+                else
+                {
+                    filterBuilder.AppendFormat(" OR (v.No >= {0} AND v.OriginID = 2)",
+                        parameters.FromNo.Value);
+                }
+            }
 
-            return String.Join(" AND ", predicates);
+            return filterBuilder.ToString();
         }
 
-        private List<string> GetEnvironmentFilters(GridOptions gridOptions, TestBalanceOptions options)
+        private List<string> GetEnvironmentFilters(GridOptions gridOptions, FinanceReportOptions options)
         {
             var predicates = new List<string>
             {
                 _utility.GetEnvironmentFilters(gridOptions)
             };
 
-            if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
+            if ((options & FinanceReportOptions.UseClosingVoucher) == 0)
             {
                 predicates.Add(String.Format("VoucherOriginID != 4"));
             }
 
-            if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
+            if ((options & FinanceReportOptions.UseClosingTempVoucher) == 0)
             {
                 predicates.Add(String.Format("VoucherOriginID != 3"));
             }

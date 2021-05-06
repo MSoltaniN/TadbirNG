@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -201,5 +202,19 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="query"></param>
         /// <returns></returns>
         string TranslateQuery(string query);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        Task<Voucher> GetOpeningVoucherAsync();
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="openingVoucher"></param>
+        /// <returns></returns>
+        bool MustApplyOpeningOption(ReportParameters parameters, Voucher openingVoucher);
     }
 }

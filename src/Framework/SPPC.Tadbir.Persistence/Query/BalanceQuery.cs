@@ -122,43 +122,5 @@ FROM [Finance].[VoucherLine] vl
 WHERE v.No < '{3}' AND {{0}}
 GROUP BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID, br.Name
 ORDER BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID";
-
-        internal const string OpeningBalanceByDate = @"
-SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit - vl.Credit) AS Balance
-FROM [Finance].[VoucherLine] vl
-    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
-    INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
-WHERE v.Date >= '{3}' AND v.OriginId = 2 AND {{0}}
-GROUP BY SUBSTRING(acc.FullCode, 1, {0})
-ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
-
-        internal const string OpeningBalanceByDateByBranch = @"
-SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, br.Name AS BranchName, SUM(vl.Debit - vl.Credit) AS Balance
-FROM [Finance].[VoucherLine] vl
-    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
-    INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
-    INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-WHERE v.Date >= '{3}' AND v.OriginId = 2 AND {{0}}
-GROUP BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID, br.Name
-ORDER BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID";
-
-        internal const string OpeningBalanceByNo = @"
-SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit - vl.Credit) AS Balance
-FROM [Finance].[VoucherLine] vl
-    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
-    INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
-WHERE v.No >= '{3}' AND v.OriginId = 2 AND {{0}}
-GROUP BY SUBSTRING(acc.FullCode, 1, {0})
-ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
-
-        internal const string OpeningBalanceByNoByBranch = @"
-SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, br.Name AS BranchName, SUM(vl.Debit - vl.Credit) AS Balance
-FROM [Finance].[VoucherLine] vl
-    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
-    INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
-    INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-WHERE v.No >= '{3}' AND v.OriginId = 2 AND {{0}}
-GROUP BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID, br.Name
-ORDER BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID";
     }
 }

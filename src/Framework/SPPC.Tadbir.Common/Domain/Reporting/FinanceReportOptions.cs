@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Domain
 {
@@ -7,7 +6,7 @@ namespace SPPC.Tadbir.Domain
     /// داده نمایشی برای گزینه های عملیاتی در تراز آزمایشی
     /// </summary>
     [Flags]
-    public enum TestBalanceOptions
+    public enum FinanceReportOptions
     {
         /// <summary>
         /// عدم انتخاب همه گزینه ها

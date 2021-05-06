@@ -305,7 +305,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> SaveVoucherAsync(VoucherViewModel voucherView)
         {
             Verify.ArgumentNotNull(voucherView, "voucherView");
-            Voucher voucher = default(Voucher);
+            Voucher voucher;
             var displayName = await _userRepository.GetCurrentUserDisplayNameAsync();
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             if (voucherView.Id == 0)

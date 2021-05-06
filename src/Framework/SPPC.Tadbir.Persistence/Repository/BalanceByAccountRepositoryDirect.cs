@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -22,13 +23,12 @@ namespace SPPC.Tadbir.Persistence.Repository
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        /// <param name="report">امکانات عمومی مورد نیاز برای گزارشگیری را فراهم می کند</param>
+        /// <param name="utility">امکانات عمومی مورد نیاز برای گزارشگیری را فراهم می کند</param>
         public BalanceByAccountRepositoryDirect(IRepositoryContext context, ISystemRepository system,
-            IReportDirectUtility report)
+            IReportDirectUtility utility)
             : base(context, system.Logger)
         {
-            _system = system;
-            _utility = report;
+            _utility = utility;
         }
 
         /// <summary>
@@ -194,13 +194,15 @@ namespace SPPC.Tadbir.Persistence.Repository
             var queryBuilder = new StringBuilder();
             queryBuilder.AppendLine(GetSelectClause(parameters));
             queryBuilder.AppendLine(GetFromClause(parameters));
+
+            var openingVoucher = await _utility.GetOpeningVoucherAsync();
             if (isInit)
             {
-                queryBuilder.AppendLine(await GetInitWhereClauseAsync(parameters));
+                queryBuilder.AppendLine(await GetInitWhereClauseAsync(parameters, openingVoucher));
             }
             else
             {
-                queryBuilder.AppendLine(await GetWhereClauseAsync(parameters));
+                queryBuilder.AppendLine(await GetWhereClauseAsync(parameters, openingVoucher));
             }
 
             queryBuilder.AppendLine(GetGroupByClause(parameters));
@@ -336,11 +338,14 @@ namespace SPPC.Tadbir.Persistence.Repository
             return selectBuilder.ToString();
         }
 
-        private async Task<string> GetWhereClauseAsync(BalanceByAccountParameters parameters)
+        private async Task<string> GetWhereClauseAsync(
+            BalanceByAccountParameters parameters, Voucher openingVoucher)
         {
             var whereBuilder = new StringBuilder(await GetCommonWhereClauseAsync(parameters));
-            var options = (TestBalanceOptions)parameters.Options;
-            if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) > 0)
+            var options = (FinanceReportOptions)parameters.Options;
+            bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
+            bool isInitBalance = (options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
+            if (mustApply && isInitBalance)
             {
                 whereBuilder.AppendFormat(
                     " AND v.OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher);
@@ -349,26 +354,28 @@ namespace SPPC.Tadbir.Persistence.Repository
             return whereBuilder.ToString();
         }
 
-        private async Task<string> GetInitWhereClauseAsync(BalanceByAccountParameters parameters)
+        private async Task<string> GetInitWhereClauseAsync(
+            BalanceByAccountParameters parameters, Voucher openingVoucher)
         {
-            var options = (TestBalanceOptions)parameters.Options;
-            string newPredicate = String.Empty;
+            var options = (FinanceReportOptions)parameters.Options;
+            string newPredicate;
             string whereClause = await GetCommonWhereClauseAsync(parameters);
+            bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
+            bool isInitBalance = (options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 string predicate = String.Format("v.Date >= '{0}' AND v.Date <= '{1}'",
                     parameters.FromDate.Value.ToShortDateString(false),
                     parameters.ToDate.Value.ToShortDateString(false));
-                if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) == 0)
+                if (mustApply && isInitBalance)
                 {
                     newPredicate = String.Format(
-                        "(v.Date < '{0}' AND v.OriginID <> 2)",
+                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = 2))",
                         parameters.FromDate.Value.ToShortDateString(false));
                 }
                 else
                 {
-                    newPredicate = String.Format(
-                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = 2))",
+                    newPredicate = String.Format("v.Date < '{0}'",
                         parameters.FromDate.Value.ToShortDateString(false));
                 }
 
@@ -378,16 +385,15 @@ namespace SPPC.Tadbir.Persistence.Repository
             {
                 string predicate = String.Format("v.No >= {0} AND v.No <= {1}",
                     parameters.FromNo, parameters.ToNo);
-                if ((options & TestBalanceOptions.OpeningVoucherAsInitBalance) == 0)
-                {
-                    newPredicate = String.Format(
-                        "(v.No < {0} AND v.OriginID <> 2)", parameters.FromNo.Value);
-                }
-                else
+                if (mustApply && isInitBalance)
                 {
                     newPredicate = String.Format(
                         "(v.No < {0} OR (v.No >= {0} AND v.OriginID = 2))",
                         parameters.FromNo.Value);
+                }
+                else
+                {
+                    newPredicate = String.Format("v.No < {0}", parameters.FromNo.Value);
                 }
 
                 whereClause = whereClause.Replace(predicate, newPredicate);
@@ -414,14 +420,14 @@ namespace SPPC.Tadbir.Persistence.Repository
                     parameters.FromNo, parameters.ToNo);
             }
 
-            var options = (TestBalanceOptions)parameters.Options;
-            if ((options & TestBalanceOptions.UseClosingVoucher) == 0)
+            var options = (FinanceReportOptions)parameters.Options;
+            if ((options & FinanceReportOptions.UseClosingVoucher) == 0)
             {
                 whereBuilder.AppendFormat(
                     " AND v.OriginID <> {0}", (int)VoucherOriginId.ClosingVoucher);
             }
 
-            if ((options & TestBalanceOptions.UseClosingTempVoucher) == 0)
+            if ((options & FinanceReportOptions.UseClosingTempVoucher) == 0)
             {
                 whereBuilder.AppendFormat(
                     " AND v.OriginID <> {0}", (int)VoucherOriginId.ClosingTempAccounts);
@@ -538,7 +544,6 @@ namespace SPPC.Tadbir.Persistence.Repository
             return groupByBuilder.ToString();
         }
 
-        private readonly ISystemRepository _system;
         private readonly IReportDirectUtility _utility;
     }
 }

@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
@@ -103,7 +104,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <returns></returns>
         public string GetFieldName(int viewId)
         {
-            string fieldName = String.Empty;
+            string fieldName;
             if (viewId == ViewId.DetailAccount)
             {
                 fieldName = "Detail";
@@ -608,6 +609,46 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .Replace("==", "=")
                 .Replace("!=", "<>")
                 .Replace("BranchId", "v.BranchID");
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Voucher> GetOpeningVoucherAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var openingVoucher = await repository
+                .GetFirstByCriteriaAsync(v => v.OriginId == (int)VoucherOriginId.OpeningVoucher
+                    && v.FiscalPeriodId == UserContext.FiscalPeriodId);
+            return openingVoucher;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="openingVoucher"></param>
+        /// <returns></returns>
+        public bool MustApplyOpeningOption(ReportParameters parameters, Voucher openingVoucher)
+        {
+            bool mustApply = openingVoucher != null;
+            if (mustApply)
+            {
+                bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
+                if (isByDate)
+                {
+                    mustApply = openingVoucher.Date.IsBetween(
+                        parameters.FromDate.Value, parameters.ToDate.Value);
+                }
+                else
+                {
+                    mustApply = openingVoucher.No >= parameters.FromNo
+                        && openingVoucher.No <= parameters.ToNo;
+                }
+            }
+
+            return mustApply;
         }
 
         private static string TranslateFieldNames(string query)
