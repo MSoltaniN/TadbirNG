@@ -132,7 +132,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string message = await ValidateDeleteAsync(<#= _model.EntityName.ToLower() #>Id);
             if (!String.IsNullOrEmpty(message))
             {
-                return BadRequest(message);
+                return BadRequestResult(message);
             }
 
             await _repository.Delete<#= _model.EntityName #>Async(<#= _model.EntityName.ToLower() #>Id);
