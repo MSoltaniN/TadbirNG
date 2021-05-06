@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ExceptionHandling
 {
@@ -65,12 +66,12 @@ namespace SPPC.Tadbir.ExceptionHandling
                 : "[anonymous]";
             var errorDetail = new ErrorDetail()
             {
-                TimestampUtc = DateTime.UtcNow.ToString(TimestampFormat),
+                TimestampUtc = DateTime.UtcNow.ToString(AppConstants.TimestampFormat),
                 ErrorCode = errorCode,
                 OriginalMessage = exception.Message,
                 FaultingMethod = String.Format("{0}.{1}", typeName, exception.TargetSite.Name),
                 FaultType = exception.GetType().Name,
-                ////StackTrace = exception.StackTrace
+                StackTrace = GetBriefStackTrace(exception.StackTrace)
             };
 
             return errorDetail;
@@ -87,7 +88,14 @@ namespace SPPC.Tadbir.ExceptionHandling
             return display;
         }
 
-        private const string TimestampFormat = "yyyy-MM-dd HH:mm:ss";
+        private static string GetBriefStackTrace(string fullTrace)
+        {
+            var items = fullTrace.Split(
+                new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            return String.Join(Environment.NewLine, items
+                .Where(item => item.Contains("SPPC.Framework") || item.Contains("SPPC.Tadbir")));
+        }
+
         private const string DisplayTemplate =
             "Timestamp (UTC) : {1}{0}An exception of type '{2}' occured while executing method '{3}'.{0}" +
             "{4}{0}{0}Stack trace :{0}{5}{0}(metadata version : {6}){0}";

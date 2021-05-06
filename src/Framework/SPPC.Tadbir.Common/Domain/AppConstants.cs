@@ -106,5 +106,10 @@ namespace SPPC.Tadbir.Domain
         /// حداکثر مجاز برای تعداد اقلام در گزارش های مقایسه ای
         /// </summary>
         public const int MaxCompareItems = 5;
+
+        /// <summary>
+        /// قالب پیش فرض برای برچسب های زمانی
+        /// </summary>
+        public const string TimestampFormat = "yyyy-MM-dd HH:mm:ss";
     }
 }

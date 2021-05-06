@@ -53,6 +53,7 @@ namespace SPPC.Tadbir.Persistence
             SysLogSettingMap.BuildMapping(modelBuilder.Entity<SysLogSetting>());
             SysOperationLogMap.BuildMapping(modelBuilder.Entity<SysOperationLog>());
             SysOperationLogArchiveMap.BuildMapping(modelBuilder.Entity<SysOperationLogArchive>());
+            SystemErrorMap.BuildMapping(modelBuilder.Entity<SystemError>());
             SystemIssueMap.BuildMapping(modelBuilder.Entity<SystemIssue>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
