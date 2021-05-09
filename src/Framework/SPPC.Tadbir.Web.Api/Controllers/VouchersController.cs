@@ -1201,14 +1201,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var result = BranchValidationResult(voucher);
             if (result is BadRequestObjectResult branchError)
             {
-                message = branchError.Value.ToString();
+                if (branchError.Value is ErrorViewModel error)
+                {
+                    message = error.Messages[0];
+                }
+
                 return GetGroupActionResult(message, voucher);
             }
 
             result = CheckedValidationResult(voucher);
             if (result is BadRequestObjectResult statusError)
             {
-                message = statusError.Value.ToString();
+                if (statusError.Value is ErrorViewModel error)
+                {
+                    message = error.Messages[0];
+                }
             }
 
             return GetGroupActionResult(message, voucher);
