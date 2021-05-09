@@ -29,6 +29,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             this.toastrService.error(error.error.messages[0]);
             return Observable.throw(undefined);
           }
+          else if (!error.error && error) {
+            this.toastrService.error(error.message);
+            return Observable.throw(error);
+          }
           
           return Observable.throw(error.error);
         })
