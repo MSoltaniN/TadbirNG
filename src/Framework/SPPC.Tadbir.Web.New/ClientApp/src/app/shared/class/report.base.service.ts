@@ -37,11 +37,5 @@ export class ReportBaseService extends BaseService{
     return { headers: this.httpHeaders }
   }  
 
-  /**
-   * 
-   * @param error
-   */
-  public handleError(error: any) {
-    return Observable.throw(error.error);
-  }
+ 
 }

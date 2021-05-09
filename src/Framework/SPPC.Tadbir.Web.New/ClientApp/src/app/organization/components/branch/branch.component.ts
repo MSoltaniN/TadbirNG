@@ -11,7 +11,7 @@ import { Layout, Entities, MessageType } from '@sppc/env/environment';
 import { BranchService, BranchInfo } from '@sppc/organization/service';
 import { BranchApi, } from '@sppc/organization/service/api';
 import { Branch } from '@sppc/organization/models';
-import { GridService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
+import { GridService, BrowserStorageService, MetaDataService, ErrorHandlingService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ViewName, BranchPermissions } from '@sppc/shared/security';
 import { RelatedItems, Command } from '@sppc/shared/models';
@@ -50,7 +50,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
     public userService: UserService, private router: Router, private authenticationService: AuthenticationService, public branchService: BranchService,
-    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
+    public cdref: ChangeDetectorRef, public ngZone: NgZone, public errorHandlingService: ErrorHandlingService) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Branch,
       "Branch.LedgerBranch", "", "",
       BranchApi.Branches, BranchApi.RootBranches, BranchApi.Branch, BranchApi.BranchChildren,
@@ -131,7 +131,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
       this.editDataItem = new BranchInfo();
       this.openEditorDialog(true);
     }, (error => {
-        this.showMessage(error, MessageType.Warning);
+        this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
     }));  
   }
 

@@ -21,6 +21,8 @@ import { GridService } from "@sppc/shared/services/grid.service";
 import {  BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 import { Entities, MessageType } from "@sppc/env/environment";
 import { ReloadOption } from "./reload-option";
+import { ErrorHandlingService } from "../services";
+import { ServiceLocator } from "@sppc/service.locator";
 
 
 
@@ -79,8 +81,10 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
     @Optional() @Inject('empty') public editorNewTitlePattern: string, @Optional() @Inject('empty') public editorEditTitlePattern: string,
     @Optional() @Inject('empty') public environmentModelsUrl: string, @Optional() @Inject('empty') public environmentModelsLedgerUrl: string,
     @Optional() @Inject('empty') public modelUrl: string, @Optional() @Inject('empty') public modelChildrenUrl: string, @Optional() @Inject('empty') public modelNewChildUrl: string,
-    @Optional() @Inject('empty') public viewId: number) {
+    @Optional() @Inject('empty') public viewId: number, @Inject(ErrorHandlingService) public errorHandlingService?: ErrorHandlingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, entityName, viewId);
+
+    this.errorHandlingService = ServiceLocator.injector.get(ErrorHandlingService);  
   }
 
   ngOnInit() {
@@ -539,7 +543,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
       this.grid.loading = false;
     }, (error => {
       this.grid.loading = false;
-      this.showMessage(error.error, MessageType.Warning);
+        this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
     }));
   }
 
@@ -646,7 +650,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
 
         }, (error => {
           this.grid.loading = false;
-          this.showMessage(error, MessageType.Warning);
+            this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
         }));
 
       }

@@ -10,7 +10,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import { GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
 import { Layout, environment } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService, ReportingService, LocalReportInfo, ParameterInfo} from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, ReportingService, LocalReportInfo, ParameterInfo, ErrorHandlingService} from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ViewIdentifierComponent, ReportParametersComponent, ReportParamComponent, TabInfo } from '..';
 import { QuickReportSettingComponent } from './QuickReport-Setting.component';
@@ -20,6 +20,7 @@ import { QuickReportConfigInfo, PrintInfo, TreeItem, QuickReportColumnConfig, Qu
 import { ReportApi } from '@sppc/shared/services/api';
 import { OperationId } from '@sppc/shared/enum/operationId';
 import { QuickReportViewSetting } from './quickReportViewSetting';
+import { ServiceLocator } from '@sppc/service.locator';
 
 
 
@@ -103,6 +104,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   disableDeleteButton: boolean = false;
   disablePreviewButton: boolean = false;
 
+  errorHandlingService: ErrorHandlingService
+
   private reportForm = new FormGroup({
     reportName: new FormControl("", [Validators.required, Validators.maxLength(256)]),
   });
@@ -125,8 +128,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     public loc: Location,
     public settingService: SettingService,
     public metadataService: MetaDataService) {
-    super(toastrService, translate, bStorageService, renderer, metadataService, settingService, '', undefined);
-
+    super(toastrService, translate, bStorageService, renderer, metadataService, settingService, '', undefined);      
   }
 
   ngOnInit() {
@@ -434,6 +436,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   }
 
   okSaveAsClick() {
+
     var localReport = new LocalReportInfo();
     localReport.template = "";
     localReport.reportId = this.currentReportId;
@@ -459,7 +462,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
       this.showSaveAsDialog = false;
     }, (error => {
-      this.showMessage(error);
+        this.errorHandlingService = ServiceLocator.injector.get(ErrorHandlingService);
+        this.showMessage(this.errorHandlingService.handleError(error));
     }));
   }
 
@@ -749,7 +753,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
         thisComponent.showMessage(thisComponent.getText('Report.SaveIsOk'));
       }, (error => {
-        thisComponent.showMessage(error);
+          this.errorHandlingService = ServiceLocator.injector.get(ErrorHandlingService);
+          thisComponent.showMessage(this.errorHandlingService.handleError(error));
       }));
 
     }
@@ -782,7 +787,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
             this.treeData = <Array<TreeItem>>res.body;
           });
       }, (error => {
-        this.showMessage(error);
+          this.errorHandlingService = ServiceLocator.injector.get(ErrorHandlingService);
+          this.showMessage(this.errorHandlingService.handleError(error));
       }));
     }
   }

@@ -427,7 +427,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
             this.errorMessages = this.errorHandlingService.handleError(error);
         }
         else
-          this.showMessage(error, MessageType.Warning);
+          this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
       }));
 
     }
