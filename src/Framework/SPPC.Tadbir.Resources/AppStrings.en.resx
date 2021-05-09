@@ -3489,4 +3489,7 @@
   <data name="ErrorOccured" xml:space="preserve">
     <value>Error occured during the operation. Please try again or contact system administrator.</value>
   </data>
+  <data name="AdminRoleIsRequired" xml:space="preserve">
+    <value>Revoking administrator role for administrator user is not allowed.</value>
+  </data>
 </root>

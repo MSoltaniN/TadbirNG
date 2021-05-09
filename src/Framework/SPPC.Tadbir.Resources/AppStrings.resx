@@ -3480,4 +3480,7 @@
   <data name="ErrorOccured" xml:space="preserve">
     <value>بروز خطا در عملیات. لطفاً دوباره تلاش کنید یا با راهبر سیستم تماس بگیرید.</value>
   </data>
+  <data name="AdminRoleIsRequired" xml:space="preserve">
+    <value>حذف نقش راهبر سیستم برای کاربر راهبر سیستم امکانپذیر نیست.</value>
+  </data>
 </root>

@@ -108,7 +108,7 @@ namespace SPPC.Tadbir.Persistence
 
                 if (parameters.Format >= TestBalanceFormat.SixColumn)
                 {
-                    await AddInitialBalancesAsync(length, items, parameters);
+                    await AddInitialBalancesAsync(length, items, parameters, filter);
                 }
 
                 if (parameters.Format >= TestBalanceFormat.EightColumn)
@@ -338,7 +338,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task AddInitialBalancesAsync(
-            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
+            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters,
+            string filter = null)
         {
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             if (parameters.IsByBranch)
@@ -348,7 +349,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var initMap = new Dictionary<string, decimal>();
-            var query = await GetInitBalanceQueryAsync(length, parameters);
+            var query = await GetInitBalanceQueryAsync(length, parameters, filter);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
             {
@@ -585,7 +586,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<ReportQuery> GetInitBalanceQueryAsync(
-            int length, TestBalanceParameters parameters)
+            int length, TestBalanceParameters parameters, string filter = null)
         {
             ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
@@ -612,7 +613,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();
-            query.SetFilter(GetEnvironmentFilters(parameters, openingVoucher));
+            query.SetFilter(GetEnvironmentFilters(parameters, openingVoucher, filter));
             return query;
         }
 
@@ -632,11 +633,17 @@ namespace SPPC.Tadbir.Persistence
             return String.Join(" AND ", predicates);
         }
 
-        private string GetEnvironmentFilters(TestBalanceParameters parameters, Voucher openingVoucher)
+        private string GetEnvironmentFilters(
+            TestBalanceParameters parameters, Voucher openingVoucher, string filter = null)
         {
             bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
             bool isInitBalance = (parameters.Options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
             var predicates = GetEnvironmentFilters(parameters.GridOptions, parameters.Options);
+            if (filter != null)
+            {
+                predicates.Add(filter);
+            }
+
             var filterBuilder = new StringBuilder(String.Join(" AND ", predicates));
             if (mustApply && isInitBalance)
             {

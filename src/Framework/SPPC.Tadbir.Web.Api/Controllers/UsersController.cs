@@ -381,6 +381,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedUserRolesAsync(
             int userId, [FromBody] RelatedItemsViewModel userRoles)
         {
+            if (userRoles != null)
+            {
+                var roleItem = userRoles.RelatedItems
+                    .Where(item => item.Id == AppConstants.AdminRoleId)
+                    .FirstOrDefault();
+                if (userId == AppConstants.AdminUserId && roleItem != null && !roleItem.IsSelected)
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.AdminRoleIsRequired));
+                }
+            }
+
             var result = BasicValidationResult(userRoles, userId);
             if (result is BadRequestObjectResult)
             {
