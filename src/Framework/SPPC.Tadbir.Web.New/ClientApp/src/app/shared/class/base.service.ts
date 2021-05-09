@@ -6,12 +6,13 @@ import { BrowserStorageService } from "@sppc/shared/services/browserStorage.serv
 import { String } from '@sppc/shared/class/source';
 import { GridOrderBy } from "@sppc/shared/class/grid.orderby";
 import { FilterExpression } from "@sppc/shared/class/filterExpression";
+import { Injectable } from "@angular/core";
 
 
 
 
-
-export class BaseService extends EnviromentComponent{
+@Injectable()
+export class BaseService<T = void | any> extends EnviromentComponent{
 
   //option: any;
   //httpHeaders = new HttpHeaders();
@@ -32,7 +33,7 @@ export class BaseService extends EnviromentComponent{
   }
 
   public get httpHeaders() {
-    var header = new HttpHeaders();
+    var header = new HttpHeaders(); 
     header = header.append('Content-Type', 'application/json; charset=utf-8');
 
     header = header.append('X-Tadbir-AuthTicket', this.Ticket);

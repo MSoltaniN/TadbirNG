@@ -102,6 +102,7 @@ import { ClosingTmpComponent } from '@sppc/finance/components/operational/vouche
 import { ErrorListComponent } from './components/errorList/errorList.component';
 import { LeftActionToolbarComponent } from '@sppc/shared/components/toolbar/leftActionToolbar.component';
 import { QuickReportPageSettingComponent } from './components/reportManagement/quick-report-page-setting.component';
+import { BaseService } from './class';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
