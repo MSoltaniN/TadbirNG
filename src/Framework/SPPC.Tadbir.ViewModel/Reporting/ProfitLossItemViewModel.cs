@@ -13,6 +13,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// </summary>
         public ProfitLossItemViewModel()
         {
+            StartBalance = 0.0M;
         }
 
         /// <summary>
