@@ -515,8 +515,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       //this.reloadGrid.emit();
 
     }, (error => {
-      var message = error.message ? error.message : error;
-      this.showMessage(message, MessageType.Warning);
+        this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
     }));
 
   }
@@ -658,9 +657,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               }))
         }));
 
-        }, (error => {          
-          var message = error.message ? error.message : error;
-          this.showMessage(message, MessageType.Warning);
+        }, (error => {                    
+          this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
         }));      
     }
 

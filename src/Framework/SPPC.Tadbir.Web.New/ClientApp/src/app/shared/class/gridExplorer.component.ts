@@ -308,9 +308,8 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
       this.selectedContextmenu = undefined;
       this.grid.loading = false;
     }, (error => {
-      this.grid.loading = false;
-      var message = error.message ? error.message : error;
-      this.showMessage(message, MessageType.Warning);
+      this.grid.loading = false;      
+      this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
     }));
   }
 
@@ -672,8 +671,7 @@ export class GridExplorerComponent<T> extends DefaultComponent implements OnInit
 
           }, (error => {
             this.grid.loading = false;
-            var message = error.message ? error.message : error;
-            this.showMessage(message, MessageType.Warning);
+            this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
           }));
         }
         else {
