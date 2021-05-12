@@ -38,6 +38,11 @@ namespace SPPC.Tadbir.Domain
         public bool UseClosingTempVoucher { get; set; }
 
         /// <summary>
+        /// مشخص می کند که گردش های سند افتتاحیه باید در مانده ابتدا نمایش داده شوند یا نه
+        /// </summary>
+        public bool AddOpeningVoucherToInitBalance { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی مرکز هزینه مورد نظر برای فیلتر اطلاعات - اختیاری
         /// </summary>
         public int? CostCenterId { get; set; }
