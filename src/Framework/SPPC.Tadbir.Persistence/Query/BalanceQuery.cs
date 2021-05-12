@@ -15,8 +15,7 @@ GROUP BY SUBSTRING(acc.FullCode, 1, {0})
 ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
 
         internal const string FourColumnByDate = @"
-SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum,
-    SUM(vl.Debit - vl.Credit) AS Balance
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
@@ -35,8 +34,7 @@ GROUP BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID, br.Name
 ORDER BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID";
 
         internal const string FourColumnByDateByBranch = @"
-SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, br.Name AS BranchName, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum,
-    SUM(vl.Debit - vl.Credit) AS Balance
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, br.Name AS BranchName, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
@@ -55,8 +53,7 @@ GROUP BY SUBSTRING(acc.FullCode, 1, {0})
 ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
 
         internal const string FourColumnByNo = @"
-SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum,
-    SUM(vl.Debit - vl.Credit) AS Balance
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
@@ -75,8 +72,7 @@ GROUP BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID, br.Name
 ORDER BY SUBSTRING(acc.FullCode, 1, {0}), br.BranchID";
 
         internal const string FourColumnByNoByBranch = @"
-SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, br.Name AS BranchName, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum,
-    SUM(vl.Debit - vl.Credit) AS Balance
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, br.Name AS BranchName, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{1}] acc ON vl.{2}ID = acc.{1}ID
