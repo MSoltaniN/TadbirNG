@@ -323,7 +323,7 @@ namespace SPPC.Tadbir.Persistence
                 var updatedItem = mergeFunction(item, initMap, code);
                 if (!Object.ReferenceEquals(item, updatedItem))
                 {
-                    items.Add(item);
+                    items.Add(updatedItem);
                 }
             }
         }
@@ -350,7 +350,7 @@ namespace SPPC.Tadbir.Persistence
                 var updatedItem = mergeFunction(item, initMap, codeBranch);
                 if (!Object.ReferenceEquals(item, updatedItem))
                 {
-                    items.Add(item);
+                    items.Add(updatedItem);
                 }
             }
         }
@@ -681,23 +681,23 @@ namespace SPPC.Tadbir.Persistence
                 var fpStart = await _utility.GetFiscalPeriodStartAsync(UserContext.FiscalPeriodId);
                 var toDate = parameters.ToDate.Value;
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.TwoColumnByDateByBranch, length, componentName,
+                    ? new ReportQuery(String.Format(BalanceQuery.EndBalanceByDateByBranch, length, componentName,
                         fieldName, fpStart.ToShortDateString(false), toDate.ToShortDateString(false)))
-                    : new ReportQuery(String.Format(BalanceQuery.TwoColumnByDate, length, componentName,
+                    : new ReportQuery(String.Format(BalanceQuery.EndBalanceByDate, length, componentName,
                         fieldName, fpStart.ToShortDateString(false), toDate.ToShortDateString(false)));
             }
             else
             {
                 var toNo = parameters.ToNo.Value;
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.TwoColumnByNoByBranch, length, componentName,
+                    ? new ReportQuery(String.Format(BalanceQuery.EndBalanceByNoByBranch, length, componentName,
                         fieldName, 1, toNo))
-                    : new ReportQuery(String.Format(BalanceQuery.TwoColumnByNo, length, componentName,
+                    : new ReportQuery(String.Format(BalanceQuery.EndBalanceByNo, length, componentName,
                         fieldName, 1, toNo));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();
-            query.SetFilter(GetEnvironmentFilters(parameters, otherFilter, openingVoucher));
+            query.SetFilter(GetEnvironmentFilters(parameters, otherFilter, openingVoucher, false));
             return query;
         }
 
@@ -715,9 +715,9 @@ namespace SPPC.Tadbir.Persistence
                 var fromDate = parameters.FromDate.Value;
                 var toDate = parameters.ToDate.Value;
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.FourColumnByDateByBranch, length, componentName,
+                    ? new ReportQuery(String.Format(BalanceQuery.TurnoverByDateByBranch, length, componentName,
                         fieldName, fromDate.ToShortDateString(false), toDate.ToShortDateString(false)))
-                    : new ReportQuery(String.Format(BalanceQuery.FourColumnByDate, length, componentName,
+                    : new ReportQuery(String.Format(BalanceQuery.TurnoverByDate, length, componentName,
                         fieldName, fromDate.ToShortDateString(false), toDate.ToShortDateString(false)));
             }
             else
@@ -725,9 +725,9 @@ namespace SPPC.Tadbir.Persistence
                 var fromNo = parameters.FromNo.Value;
                 var toNo = parameters.ToNo.Value;
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.FourColumnByNoByBranch, length, componentName,
+                    ? new ReportQuery(String.Format(BalanceQuery.TurnoverByNoByBranch, length, componentName,
                         fieldName, fromNo, toNo))
-                    : new ReportQuery(String.Format(BalanceQuery.FourColumnByNo, length, componentName,
+                    : new ReportQuery(String.Format(BalanceQuery.TurnoverByNo, length, componentName,
                         fieldName, fromNo, toNo));
             }
 
@@ -746,21 +746,19 @@ namespace SPPC.Tadbir.Persistence
                 : componentName;
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
-                var fromDate = parameters.FromDate.Value;
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch, length, componentName,
-                        fieldName, fromDate.ToShortDateString(false)))
-                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate, length, componentName,
-                        fieldName, fromDate.ToShortDateString(false)));
+                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch,
+                        length, componentName, fieldName))
+                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate,
+                        length, componentName, fieldName));
             }
             else
             {
-                var fromNo = parameters.FromNo.Value;
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch, length, componentName,
-                        fieldName, fromNo))
-                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo, length, componentName,
-                        fieldName, fromNo));
+                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch,
+                        length, componentName, fieldName))
+                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo,
+                        length, componentName, fieldName));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();
@@ -769,7 +767,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private string GetEnvironmentFilters(
-            TestBalanceParameters parameters, string otherFilters, Voucher openingVoucher)
+            TestBalanceParameters parameters, string otherFilters, Voucher openingVoucher,
+            bool isTurnover = true)
         {
             var predicates = GetEnvironmentFilters(parameters.GridOptions, parameters.Options);
             if (!String.IsNullOrEmpty(otherFilters))
@@ -777,11 +776,10 @@ namespace SPPC.Tadbir.Persistence
                 predicates.Add(otherFilters);
             }
 
-            bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
-            bool isInitBalance = (parameters.Options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
-            if (mustApply && isInitBalance)
+            bool mustApply = _utility.MustApplyOpeningOption(parameters.Options, openingVoucher);
+            if (mustApply && isTurnover)
             {
-                predicates.Add(String.Format("VoucherOriginID != 2"));
+                predicates.Add(String.Format("v.OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher));
             }
 
             return String.Join(" AND ", predicates);
@@ -790,30 +788,32 @@ namespace SPPC.Tadbir.Persistence
         private string GetEnvironmentFilters(
             TestBalanceParameters parameters, Voucher openingVoucher, string filter = null)
         {
-            bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
-            bool isInitBalance = (parameters.Options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
             var predicates = GetEnvironmentFilters(parameters.GridOptions, parameters.Options);
+            bool mustApply = _utility.MustApplyOpeningOption(parameters.Options, openingVoucher);
+            bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
+
+            string datePredicate = isByDate
+                ? String.Format("v.Date < '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                : String.Format("v.No < {0}", parameters.FromNo.Value);
+            if (mustApply)
+            {
+                datePredicate = isByDate
+                    ? String.Format(
+                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = {1}))",
+                        parameters.FromDate.Value.ToShortDateString(false),
+                        (int)VoucherOriginId.OpeningVoucher)
+                    : String.Format(
+                        "(v.No < {0} OR (v.No >= {0} AND v.OriginID = {1}))",
+                        parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher);
+            }
+
+            predicates.Add(datePredicate);
             if (filter != null)
             {
                 predicates.Add(filter);
             }
 
-            var filterBuilder = new StringBuilder(String.Join(" AND ", predicates));
-            if (mustApply && isInitBalance)
-            {
-                if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
-                {
-                    filterBuilder.AppendFormat(" OR (v.Date >= '{0}' AND v.OriginID = 2)",
-                        parameters.FromDate.Value.ToShortDateString(false));
-                }
-                else
-                {
-                    filterBuilder.AppendFormat(" OR (v.No >= {0} AND v.OriginID = 2)",
-                        parameters.FromNo.Value);
-                }
-            }
-
-            return filterBuilder.ToString();
+            return String.Join(" AND ", predicates);
         }
 
         private List<string> GetEnvironmentFilters(GridOptions gridOptions, FinanceReportOptions options)
@@ -825,12 +825,12 @@ namespace SPPC.Tadbir.Persistence
 
             if ((options & FinanceReportOptions.UseClosingVoucher) == 0)
             {
-                predicates.Add(String.Format("v.OriginID != 4"));
+                predicates.Add(String.Format("v.OriginID <> {0}", (int)VoucherOriginId.ClosingVoucher));
             }
 
             if ((options & FinanceReportOptions.UseClosingTempVoucher) == 0)
             {
-                predicates.Add(String.Format("v.OriginID != 3"));
+                predicates.Add(String.Format("v.OriginID <> {0}", (int)VoucherOriginId.ClosingTempAccounts));
             }
 
             return predicates;

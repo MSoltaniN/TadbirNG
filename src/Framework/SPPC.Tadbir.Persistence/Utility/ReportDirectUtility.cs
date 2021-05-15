@@ -627,27 +627,13 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <param name="parameters"></param>
+        /// <param name="options"></param>
         /// <param name="openingVoucher"></param>
         /// <returns></returns>
-        public bool MustApplyOpeningOption(ReportParameters parameters, Voucher openingVoucher)
+        public bool MustApplyOpeningOption(FinanceReportOptions options, Voucher openingVoucher)
         {
-            bool mustApply = openingVoucher != null;
-            if (mustApply)
-            {
-                bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
-                if (isByDate)
-                {
-                    mustApply = openingVoucher.Date.IsBetween(
-                        parameters.FromDate.Value, parameters.ToDate.Value);
-                }
-                else
-                {
-                    mustApply = openingVoucher.No >= parameters.FromNo
-                        && openingVoucher.No <= parameters.ToNo;
-                }
-            }
-
+            bool mustApply = openingVoucher != null
+                && (options & FinanceReportOptions.OpeningAsFirstVoucher) > 0;
             return mustApply;
         }
 

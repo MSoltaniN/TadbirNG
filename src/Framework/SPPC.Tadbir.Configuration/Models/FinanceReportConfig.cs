@@ -10,12 +10,12 @@
         /// </summary>
         public FinanceReportConfig()
         {
-            AddOpeningVoucherToInitBalance = false;
+            OpeningAsFirstVoucher = false;
         }
 
         /// <summary>
-        /// گزینه انعکاس افتتاحیه در ستون مانده ابتدا
+        /// گزینه سند افتتاحیه به عنوان اولین سند
         /// </summary>
-        public bool AddOpeningVoucherToInitBalance { get; set; }
+        public bool OpeningAsFirstVoucher { get; set; }
     }
 }

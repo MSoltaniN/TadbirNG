@@ -99,9 +99,9 @@
 <div *ngIf="selectedItemType == 'FinanceReportConfig'" class="settings-form col-md-5" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
   <form novalidate [formGroup]="financeReportForm">
     <div class="form-group">
-      <label for="addOpeningVoucherToInitBalance" class="control-label">
-        <input type="checkbox" formControlName="addOpeningVoucherToInitBalance" />
-        {{ 'Settings.FinanceReports.OpeningVoucherAsInitBalance' | translate }}
+      <label for="openingAsFirstVoucher" class="control-label">
+        <input type="checkbox" formControlName="openingAsFirstVoucher" />
+        {{ 'Settings.FinanceReports.OpeningAsFirstVoucher' | translate }}
       </label>
     </div>
   </form>
@@ -110,7 +110,3 @@
 <div *ngIf="selectedItemType == 'SystemConfig'" class="settings-form">
   <system-configuration [model]="selectedItemModel"></system-configuration>
 </div>
-
-
-
-

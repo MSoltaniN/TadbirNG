@@ -212,9 +212,9 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <param name="parameters"></param>
+        /// <param name="options"></param>
         /// <param name="openingVoucher"></param>
         /// <returns></returns>
-        bool MustApplyOpeningOption(ReportParameters parameters, Voucher openingVoucher);
+        bool MustApplyOpeningOption(FinanceReportOptions options, Voucher openingVoucher);
     }
 }

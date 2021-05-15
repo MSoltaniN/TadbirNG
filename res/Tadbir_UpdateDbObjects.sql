@@ -1932,3 +1932,8 @@ WHERE TitleKey = 'QuickSearchSettings'
 UPDATE [Config].[Setting]
 SET TitleKey = 'FinanceReportSettings', ModelType = 'FinanceReportConfig', DescriptionKey = 'FinanceReportSettingsDescription'
 WHERE ModelType = 'TestBalanceConfig'
+
+-- 1.1.1133
+UPDATE [Config].[Setting]
+SET [Values] = '{"openingAsFirstVoucher":false}', DefaultValues = '{"openingAsFirstVoucher":false}'
+WHERE ModelType = 'FinanceReportConfig'

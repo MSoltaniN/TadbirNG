@@ -835,7 +835,7 @@
       "UseCustom": "تنظیمات برنامه"
     },
     "FinanceReports": {
-      "OpeningVoucherAsInitBalance": "انعکاس افتتاحیه در ستون مانده ابتدا"
+      "OpeningAsFirstVoucher": "سند افتتاحیه به عنوان اولین سند"
     },
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",

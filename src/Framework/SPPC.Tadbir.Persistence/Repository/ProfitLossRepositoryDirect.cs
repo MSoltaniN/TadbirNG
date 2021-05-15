@@ -245,14 +245,9 @@ namespace SPPC.Tadbir.Persistence
             return projected;
         }
 
-        private static bool MustApplyOpeningOption(ProfitLossParameters parameters, Voucher openingVoucher)
+        private static bool MustApplyOpeningOption(bool isInitBalance, Voucher openingVoucher)
         {
-            bool mustApply = openingVoucher != null;
-            if (mustApply)
-            {
-                mustApply = openingVoucher.Date.IsBetween(parameters.FromDate, parameters.ToDate);
-            }
-
+            bool mustApply = isInitBalance && openingVoucher != null;
             return mustApply;
         }
 
@@ -260,7 +255,7 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var option = await Config.GetConfigByTypeAsync<FinanceReportConfig>();
-            parameters.AddOpeningVoucherToInitBalance = option.AddOpeningVoucherToInitBalance;
+            parameters.OpeningAsFirstVoucher = option.OpeningAsFirstVoucher;
 
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var profitLoss = new ProfitLossViewModel();
@@ -307,8 +302,8 @@ namespace SPPC.Tadbir.Persistence
                 AccountCollectionId.SalesRefundDiscount, false, parameters.BranchId));
 
             string initEnd = ProfitLossQuery.InitBalanceTotalEnd;
-            bool mustApply = MustApplyOpeningOption(parameters, _openingVoucher);
-            if (mustApply && parameters.AddOpeningVoucherToInitBalance)
+            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
+            if (mustApply)
             {
                 initEnd = ProfitLossQuery.InitBalanceWithOptionTotalEnd;
             }
@@ -338,8 +333,8 @@ namespace SPPC.Tadbir.Persistence
                 AccountCollectionId.SoldProductCost, false, parameters.BranchId));
 
             string initEnd = ProfitLossQuery.InitBalanceTotalEnd;
-            bool mustApply = MustApplyOpeningOption(parameters, _openingVoucher);
-            if (mustApply && parameters.AddOpeningVoucherToInitBalance)
+            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
+            if (mustApply)
             {
                 initEnd = ProfitLossQuery.InitBalanceWithOptionTotalEnd;
             }
@@ -374,8 +369,8 @@ namespace SPPC.Tadbir.Persistence
             paramCopy.ToDate = startDate;
 
             string initEnd = ProfitLossQuery.InitBalanceTotalEnd;
-            bool mustApply = MustApplyOpeningOption(parameters, _openingVoucher);
-            if (mustApply && parameters.AddOpeningVoucherToInitBalance)
+            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
+            if (mustApply)
             {
                 initEnd = ProfitLossQuery.InitBalanceWithOptionTotalEnd;
             }
@@ -438,8 +433,8 @@ namespace SPPC.Tadbir.Persistence
             paramCopy.ToDate = date;
 
             string initEnd = ProfitLossQuery.InitBalanceTotalEnd;
-            bool mustApply = MustApplyOpeningOption(parameters, _openingVoucher);
-            if (mustApply && parameters.AddOpeningVoucherToInitBalance)
+            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
+            if (mustApply)
             {
                 initEnd = ProfitLossQuery.InitBalanceWithOptionTotalEnd;
             }
@@ -467,8 +462,8 @@ namespace SPPC.Tadbir.Persistence
                 AccountCollectionId.OperationalCosts, false, parameters.BranchId);
 
             string initEnd = ProfitLossQuery.InitBalanceByAccountEnd;
-            bool mustApply = MustApplyOpeningOption(parameters, _openingVoucher);
-            if (mustApply && parameters.AddOpeningVoucherToInitBalance)
+            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
+            if (mustApply)
             {
                 initEnd = ProfitLossQuery.InitBalanceWithOptionByAccountEnd;
             }
@@ -507,8 +502,8 @@ namespace SPPC.Tadbir.Persistence
                 AccountCollectionId.OtherCostRevenue, false, parameters.BranchId);
 
             string initEnd = ProfitLossQuery.InitBalanceByAccountEnd;
-            bool mustApply = MustApplyOpeningOption(parameters, _openingVoucher);
-            if (mustApply && parameters.AddOpeningVoucherToInitBalance)
+            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
+            if (mustApply)
             {
                 initEnd = ProfitLossQuery.InitBalanceWithOptionByAccountEnd;
             }

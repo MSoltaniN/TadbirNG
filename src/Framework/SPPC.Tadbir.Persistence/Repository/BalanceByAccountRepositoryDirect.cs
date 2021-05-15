@@ -142,7 +142,11 @@ namespace SPPC.Tadbir.Persistence.Repository
             var balanceItem = default(BalanceByAccountItemViewModel);
             var allKeys = initMap.Keys.Cast<FullAccountCodeBranch>()
                 .Concat(turnoverMap.Keys.Cast<FullAccountCodeBranch>())
-                .Distinct();
+                .Distinct()
+                .OrderBy(item => item.AccountFullCode)
+                    .ThenBy(item => item.DetailAccountFullCode)
+                    .ThenBy(item => item.CostCenterFullCode)
+                    .ThenBy(item => item.ProjectFullCode);
             foreach (var key in allKeys)
             {
                 if (initMap.ContainsKey(key) && turnoverMap.ContainsKey(key))
@@ -343,9 +347,8 @@ namespace SPPC.Tadbir.Persistence.Repository
         {
             var whereBuilder = new StringBuilder(await GetCommonWhereClauseAsync(parameters));
             var options = (FinanceReportOptions)parameters.Options;
-            bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
-            bool isInitBalance = (options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
-            if (mustApply && isInitBalance)
+            bool mustApply = _utility.MustApplyOpeningOption(options, openingVoucher);
+            if (mustApply)
             {
                 whereBuilder.AppendFormat(
                     " AND v.OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher);
@@ -360,18 +363,18 @@ namespace SPPC.Tadbir.Persistence.Repository
             var options = (FinanceReportOptions)parameters.Options;
             string newPredicate;
             string whereClause = await GetCommonWhereClauseAsync(parameters);
-            bool mustApply = _utility.MustApplyOpeningOption(parameters, openingVoucher);
-            bool isInitBalance = (options & FinanceReportOptions.OpeningVoucherAsInitBalance) > 0;
+            bool mustApply = _utility.MustApplyOpeningOption(options, openingVoucher);
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 string predicate = String.Format("v.Date >= '{0}' AND v.Date <= '{1}'",
                     parameters.FromDate.Value.ToShortDateString(false),
                     parameters.ToDate.Value.ToShortDateString(false));
-                if (mustApply && isInitBalance)
+                if (mustApply)
                 {
                     newPredicate = String.Format(
-                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = 2))",
-                        parameters.FromDate.Value.ToShortDateString(false));
+                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = {1}))",
+                        parameters.FromDate.Value.ToShortDateString(false),
+                        (int)VoucherOriginId.OpeningVoucher);
                 }
                 else
                 {
@@ -385,11 +388,11 @@ namespace SPPC.Tadbir.Persistence.Repository
             {
                 string predicate = String.Format("v.No >= {0} AND v.No <= {1}",
                     parameters.FromNo, parameters.ToNo);
-                if (mustApply && isInitBalance)
+                if (mustApply)
                 {
                     newPredicate = String.Format(
-                        "(v.No < {0} OR (v.No >= {0} AND v.OriginID = 2))",
-                        parameters.FromNo.Value);
+                        "(v.No < {0} OR (v.No >= {0} AND v.OriginID = {1}))",
+                        parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher);
                 }
                 else
                 {

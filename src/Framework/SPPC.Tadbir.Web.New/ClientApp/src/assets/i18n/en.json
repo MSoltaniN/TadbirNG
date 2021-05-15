@@ -717,7 +717,7 @@
       "UseCustom": "Application settings"
     },
     "FinanceReports": {
-      "OpeningVoucherAsInitBalance": "Opening Voucher As Init Balance"
+      "OpeningAsFirstVoucher": "Use opening voucher as first voucher"
     },
     "Description": "Description",
     "TitleText": "Settings List",

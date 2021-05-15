@@ -24,9 +24,9 @@ namespace SPPC.Tadbir.Domain
         UseClosingTempVoucher = 0x2,
 
         /// <summary>
-        /// گزینه انعکاس افتتاحیه در ستون مانده ابتدا
+        /// گزینه سند افتتاحیه به عنوان اولین سند
         /// </summary>
-        OpeningVoucherAsInitBalance = 0x4,
+        OpeningAsFirstVoucher = 0x4,
 
         /// <summary>
         /// گزینه نمایش سرفصل های با مانده صفر
