@@ -183,7 +183,7 @@
         </div>
         <div class="col-xs-12 col-sm-3 sppc-float">
           <label class="control-label">{{ 'Balance.FilterByRef' | translate }}</label>
-          <kendo-multiselect [data]="referenceValues" [(ngModel)]="selectedReferences"></kendo-multiselect>
+          <kendo-multiselect (ngModelChange)="onChangeFilterByRef($event)" [data]="referenceValues" [(ngModel)]="selectedReferences"></kendo-multiselect>
         </div>
 
         <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">

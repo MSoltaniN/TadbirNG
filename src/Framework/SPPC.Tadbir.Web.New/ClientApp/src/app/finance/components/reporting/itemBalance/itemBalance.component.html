@@ -328,7 +328,7 @@
     </div>-->
           <div class="col-xs-12 col-sm-3 sppc-float">
             <label class="control-label">{{ 'Balance.FilterByRef' | translate }}</label>
-            <kendo-multiselect [data]="referenceValues" [(ngModel)]="selectedReferences"></kendo-multiselect>
+            <kendo-multiselect [data]="referenceValues" [(ngModel)]="selectedReferences" (ngModelChange)="onChangeFilterByRef($event)"></kendo-multiselect>
           </div>
           <div class="col-xs-12 col-sm-3 form-group">
             <label class="control-label">{{ 'Journal.BranchSeparation' | translate }}</label>
