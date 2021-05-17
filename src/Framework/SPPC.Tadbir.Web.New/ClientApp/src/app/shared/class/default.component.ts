@@ -395,24 +395,27 @@ export class DefaultComponent extends BaseComponent {
   }
 
   addFilterToFilterExpression(filterExp: FilterExpression, filter: Filter, operator: string): FilterExpression {
-    var newFilter = new FilterExpression();
-    newFilter.filter = filter;
-    newFilter.operator = operator;
+    if (filter) {
+      var newFilter = new FilterExpression();
+      newFilter.filter = filter;
+      newFilter.operator = operator;
 
-    if (filterExp != null) {
-      filterExp.children.push(newFilter);
-      return filterExp;
-    }
-    else {
-      if (filter) {
-        var filterExpBuilder = new FilterExpressionBuilder();
-        return filterExpBuilder.New(filter).Build();
+      if (filterExp != null) {
+        filterExp.children.push(newFilter);
+        return filterExp;
       }
       else {
-        return undefined;
+        if (filter) {
+          var filterExpBuilder = new FilterExpressionBuilder();
+          return filterExpBuilder.New(filter).Build();
+        }
+        else {
+          return undefined;
+        }
       }
     }
-
+    else
+      return filterExp;
   }
 
   andFilterToFilterExpression(filterExp: FilterExpression, advanceFilter: FilterExpression): FilterExpression {
