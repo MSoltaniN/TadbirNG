@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -458,7 +459,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingCurrencyRatesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            return await GroupDeleteResultAsync(actionDetail, _rateRepository.DeleteCurrencyRatesAsync);
+            return await GroupDeleteRateResultAsync(actionDetail, _rateRepository.DeleteCurrencyRatesAsync);
         }
 
         /// <summary>
@@ -509,6 +510,37 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return GetGroupActionResult(message, currencyRate);
+        }
+
+        private async Task<IActionResult> GroupDeleteRateResultAsync(
+            ActionDetailViewModel actionDetail, GroupDeleteAsyncDelegate groupDelete)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var validated = new List<int>();
+            var notValidated = new List<GroupActionResultViewModel>();
+            foreach (int item in actionDetail.Items)
+            {
+                var result = await ValidateRateDeleteAsync(item);
+                if (result == null)
+                {
+                    validated.Add(item);
+                }
+                else
+                {
+                    notValidated.Add(result);
+                }
+            }
+
+            if (validated.Count > 0)
+            {
+                await groupDelete(validated);
+            }
+
+            return Ok(notValidated);
         }
 
         private async Task<IActionResult> ValidationResultAsync(CurrencyViewModel currency, int currencyId = 0)
