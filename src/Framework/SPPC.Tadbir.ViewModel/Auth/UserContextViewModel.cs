@@ -23,6 +23,11 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public int Id { get; set; }
 
         /// <summary>
+        /// نام کاربری مورد استفاده برای این کاربر
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
         /// نام این کاربر
         /// </summary>
         public string PersonFirstName { get; set; }

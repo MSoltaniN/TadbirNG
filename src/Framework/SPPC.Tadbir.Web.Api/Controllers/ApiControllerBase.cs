@@ -54,8 +54,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>اطلاعات محیطی و امنیتی به دست آمده از توکن</returns>
         protected static SecurityContext SecurityContextFromTicket(string ticket)
         {
-            var json = Encoding.UTF8.GetString(Transform.FromBase64String(ticket));
-            return JsonHelper.To<SecurityContext>(json);
+            // TODO: Inject token service into this base class and refactor all controllers later...
+            var tokenService = new JwtTokenService();
+            return tokenService.GetSecurityContext(ticket) as SecurityContext;
         }
 
         /// <summary>

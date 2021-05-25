@@ -28,8 +28,8 @@ namespace SPPC.Tadbir.Web.Api.Filters
         /// </summary>
         public AuthorizeRequestAttribute()
         {
-            _contextDecoder = new Base64Encoder<SecurityContext>();
             _utility = LicenseUtility.CreateDefault();
+            _tokenService = new JwtTokenService();
         }
 
         /// <summary>
@@ -84,6 +84,11 @@ namespace SPPC.Tadbir.Web.Api.Filters
                     "Authorization ticket header '{0}' could not be found.", AppConstants.ContextHeaderName);
                 actionContext.Result = new BadRequestObjectResult(reason);
             }
+            else if (!_tokenService.Validate(authTicket))
+            {
+                // If ticket is invalid or expired, return Unauthorized (401) response...
+                actionContext.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
+            }
             else if (!IsAuthorized(authTicket))
             {
                 // If caller is not authorized, return Unauthorized (401) response...
@@ -109,7 +114,8 @@ namespace SPPC.Tadbir.Web.Api.Filters
 
         private bool IsAuthorized(string authTicket)
         {
-            var securityContext = _contextDecoder.Decode(authTicket);
+            var securityContext = _tokenService.GetSecurityContext(authTicket);
+            ////var securityContext = _contextDecoder.Decode(authTicket);
             bool isAuthorized = securityContext.IsInRole(AppConstants.AdminRoleId);
             if (_requiredPermissions != null)
             {
@@ -137,8 +143,8 @@ namespace SPPC.Tadbir.Web.Api.Filters
         }
 
         private readonly PermissionBriefViewModel[] _requiredPermissions;
-        private readonly ITextEncoder<SecurityContext> _contextDecoder;
         private readonly ILicenseUtility _utility;
+        private readonly ITokenService _tokenService;
         private readonly string _licensePath = @"wwwroot\static\license";
         private readonly string _serverRoot = @"..\SPPC.Licensing.Local.Web\wwwroot";
     }

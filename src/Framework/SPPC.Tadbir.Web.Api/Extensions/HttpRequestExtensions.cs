@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Text;
 using Microsoft.AspNetCore.Http;
 using SPPC.Framework.Common;
-using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Service;
 
@@ -28,8 +26,8 @@ namespace SPPC.Tadbir.Web.Api.Extensions
                 return null;
             }
 
-            var json = Encoding.UTF8.GetString(Transform.FromBase64String(context));
-            return JsonHelper.To<SecurityContext>(json);
+            var tokenService = new JwtTokenService();
+            return tokenService.GetSecurityContext(context) as SecurityContext;
         }
     }
 }

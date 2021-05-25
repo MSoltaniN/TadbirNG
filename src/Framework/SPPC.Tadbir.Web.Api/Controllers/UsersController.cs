@@ -31,18 +31,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="crypto"></param>
-        /// <param name="encoder"></param>
+        /// <param name="tokenService"></param>
         /// <param name="strings"></param>
         public UsersController(
             IUserRepository repository,
             ICryptoService crypto,
-            ITextEncoder<SecurityContext> encoder,
+            ITokenService tokenService,
             IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
             _crypto = crypto;
-            _contextEncoder = encoder;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -345,6 +345,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(ModelState);
             }
 
+            string ticket = Request.Headers[AppConstants.ContextHeaderName];
+            if (!_tokenService.Validate(ticket))
+            {
+                return Unauthorized();
+            }
+
             var userContext = SecurityContext.User;
             await _repository.UpdateUserCompanyLoginAsync(companyLogin, userContext);
             userContext.Connection = _crypto.Encrypt(userContext.Connection);
@@ -504,7 +510,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private string GetEncodedTicket(UserContextViewModel userContext)
         {
             var securityContext = new SecurityContext(userContext);
-            return _contextEncoder.Encode(securityContext);
+            return _tokenService.Generate(securityContext);
         }
 
         private void Localize(RelatedItemsViewModel roles)
@@ -512,8 +518,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
 
-        private IUserRepository _repository;
-        private ICryptoService _crypto;
-        private ITextEncoder<SecurityContext> _contextEncoder;
+        private readonly IUserRepository _repository;
+        private readonly ICryptoService _crypto;
+        private readonly ITokenService _tokenService;
     }
 }

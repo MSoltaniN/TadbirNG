@@ -132,6 +132,7 @@ namespace SPPC.Tadbir.Web.Api
         private void AddServiceTypes()
         {
             _services.AddTransient<ICryptoService, CryptoService>();
+            _services.AddTransient<ITokenService, JwtTokenService>();
             _services.AddTransient<ISecurityContextManager, ServiceContextManager>();
         }
 
