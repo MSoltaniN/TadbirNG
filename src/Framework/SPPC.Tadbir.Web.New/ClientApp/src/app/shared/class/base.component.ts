@@ -2,6 +2,8 @@ import { ToastrService } from 'ngx-toastr';
 import { EnviromentComponent } from '@sppc/shared/class/enviroment.component';
 import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
 import { MessageType, MessagePosition } from '@sppc/env/environment';
+import { HostListener } from '@angular/core';
+import { ShortcutCommand } from '../models/shortcutCommand';
 
 
 
@@ -19,10 +21,10 @@ export class BaseComponent extends EnviromentComponent {
   /** this message show in confirm messagebox */
   public deleteConfirmMsg: string;
 
-  constructor(public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
-    super(bStorageService);
+  
 
-   
+  constructor(public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
+    super(bStorageService);    
   } 
 
 
@@ -65,6 +67,7 @@ export class BaseComponent extends EnviromentComponent {
   }
 
 
+  
 
 
 }

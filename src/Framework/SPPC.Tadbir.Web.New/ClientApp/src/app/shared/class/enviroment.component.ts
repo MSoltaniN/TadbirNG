@@ -67,9 +67,9 @@ export class EnviromentComponent {
     var userId = 0;
 
     if (currentContext) {
-      var jsonContext = atob(currentContext.ticket);
-      var context = JSON.parse(jsonContext);
-      userId = currentContext ? parseInt(context.user.id) : 0;
+      var context = this.parseJwt(currentContext.ticket);
+      //var context = JSON.parse(jsonContext);
+      userId = currentContext ? parseInt(context.TadbirContext.Id) : 0;
     }
     return userId;
   }
@@ -201,5 +201,16 @@ export class EnviromentComponent {
     }
     return size;
   }
+
+  parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  };
+
 
 }

@@ -114,10 +114,12 @@
     <None Remove="ClientApp\src\app\shared\models\filterViewModel.ts" />
     <None Remove="ClientApp\src\app\shared\models\index.ts" />
     <None Remove="ClientApp\src\app\shared\models\reportPageSetting.ts" />
+    <None Remove="ClientApp\src\app\shared\models\shortcutCommand.ts" />
     <None Remove="ClientApp\src\app\shared\services\advance-filter.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\api\index.ts" />
     <None Remove="ClientApp\src\app\shared\services\error.handling.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\index.ts" />
+    <None Remove="ClientApp\src\app\shared\services\shortcut.service.ts" />
     <None Remove="ClientApp\src\assets\i18n\en.json" />
     <None Remove="ClientApp\src\assets\i18n\fa.json" />
     <None Remove="ClientApp\src\assets\resources\all.css" />
@@ -899,10 +901,12 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\filterViewModel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\reportPageSetting.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\shortcutCommand.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\advance-filter.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\api\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\error.handling.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\shortcut.service.ts" />
   </ItemGroup>
 
   <ItemGroup>

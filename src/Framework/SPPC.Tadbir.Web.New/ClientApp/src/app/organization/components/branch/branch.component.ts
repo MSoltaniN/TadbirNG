@@ -207,12 +207,23 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
           currentUser.branchId = contextInfo.branchId;
           currentUser.companyId = contextInfo.companyId;
           currentUser.fpId = contextInfo.fiscalPeriodId;
-          currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
-          currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;
-          currentUser.branchName = contextInfo.branchName;
-          currentUser.companyName = contextInfo.companyName;
+
+          var context = this.authenticationService.parseJwt(this.Ticket);
+
+          //currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
+          //currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;
+          //currentUser.branchName = contextInfo.branchName;
+          //currentUser.companyName = contextInfo.companyName;
+          //currentUser.ticket = newTicket;
+          //currentUser.roles = contextInfo.roles;
+
+          currentUser.permissions = context.TadbirContext.User.Permissions;
+          currentUser.fiscalPeriodName = context.TadbirContext.FiscalPeriodName;
+          currentUser.branchName = context.TadbirContext.BranchName;
+          currentUser.companyName = context.TadbirContext.CompanyName;
           currentUser.ticket = newTicket;
-          currentUser.roles = contextInfo.roles;
+          currentUser.roles = context.TadbirContext.Roles;
+
           this.bStorageService.setCurrentContext(currentUser);
           this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.CompanyId.toString(), branchId.toString(), fpId.toString());
 

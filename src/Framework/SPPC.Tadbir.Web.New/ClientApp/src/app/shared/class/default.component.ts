@@ -5,7 +5,7 @@ import { State, SortDescriptor } from "@progress/kendo-data-query";
 import { BaseComponent } from "./base.component"
 import { Property } from "./metadata/property"
 import { Filter } from './filter';
-import { Renderer2, Injectable, Inject, Optional, ViewChild } from "@angular/core";
+import { Renderer2, Injectable, Inject, Optional, ViewChild, HostListener } from "@angular/core";
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
 import {  BrowserStorageService,SessionKeys } from '@sppc/shared/services/browserStorage.service';
@@ -587,4 +587,7 @@ export class DefaultComponent extends BaseComponent {
       this.bStorageService.setMetadata(metadataKey, (<any>response).columns);
     }
   }
+
+  
+
 }

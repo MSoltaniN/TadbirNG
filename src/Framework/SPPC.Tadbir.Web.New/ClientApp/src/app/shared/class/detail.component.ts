@@ -1,16 +1,21 @@
 import { BaseComponent } from "./base.component";
-import { Injectable, Renderer2, Optional, Inject, Host, Input } from "@angular/core";
+import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormControl, ValidatorFn, Validators } from "@angular/forms";
 import { Property } from "./metadata/property";
 import { String } from './source';
 import { MetaDataService, BrowserStorageService, SessionKeys } from "../services";
+import { ShortcutCommand } from "../models/shortcutCommand";
+import { ShortcutService } from "../services/shortcut.service";
+import { ServiceLocator } from "@sppc/service.locator";
 
 
 
 @Injectable()
 export class DetailComponent extends BaseComponent  {
+
+  shortcuts: ShortcutCommand[] = [new ShortcutCommand(1, "Ctrl+Shift+Y", "addNew()")];
 
   private form: FormGroup;
   public properties: Map<string, Array<Property>>;
@@ -22,7 +27,7 @@ export class DetailComponent extends BaseComponent  {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, private metadataService: MetaDataService,
-    @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number) {
+    @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number,public shortcutService?:ShortcutService) {
     super(toastrService, bStorageService);
 
     if (viewId > 0) {
@@ -38,7 +43,8 @@ export class DetailComponent extends BaseComponent  {
       }
     }
 
-    this.errorMessages = [];    
+    this.errorMessages = [];
+    this.shortcutService = ServiceLocator.injector.get(ShortcutService); 
   }
 
   public get editForm(): FormGroup {
@@ -146,4 +152,31 @@ export class DetailComponent extends BaseComponent  {
     });
     return msgText;
   }
+
+  /**
+   * برای هندل کردن شورکات های که به یک متد خاص متصل میباشند
+   * @param event
+   */
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {
+      console.log(event);
+
+      var ctrl = event.ctrlKey ? true : false;
+      var shift = event.shiftKey ? true : false;
+      var alt = event.altKey ? true : false;
+
+      var key = event.code.replace('Key', '').toLowerCase();
+
+      var shortcutCommand = this.shortcutService.searchShortcutCommand(ctrl, shift, alt, key, this.shortcuts);
+      if (shortcutCommand) {
+        if (this[shortcutCommand.method] != undefined)        
+          this[shortcutCommand.method]();
+      }
+
+    }
+  }
+
+  
+
 }

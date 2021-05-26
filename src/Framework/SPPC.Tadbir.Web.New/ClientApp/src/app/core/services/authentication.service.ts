@@ -56,20 +56,32 @@ export class AuthenticationService extends BaseService {
         if (response.headers != null) {
           let ticket = response.headers.get('X-Tadbir-AuthTicket');
 
-          var contextInfo = JSON.parse(atob(ticket));
+          //var contextInfo = JSON.parse(atob(ticket));
+          var contextInfo = this.parseJwt(ticket);
 
           if (response.status == 200 && ticket != null) {
             var user = new ContextInfo();
 
             user.ticket = ticket;
             user.userName = username;
-            user.roles = contextInfo.user.roles;
+            //user.roles = contextInfo.user.roles;
+            user.roles = contextInfo.TadbirContext.Roles;
             this.bStorageService.setContext(user, remember);
           }
         }
       })
 
   }
+
+  parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  };
 
   islogin() {
     return this.bStorageService.islogin();
@@ -98,9 +110,10 @@ export class AuthenticationService extends BaseService {
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
     if (ticket == '') return Observable.empty<Response>();
-    var jsonContext = atob(ticket);
-    var context = JSON.parse(jsonContext);
-    var userId = context.user.id;
+    //var jsonContext = atob(ticket);
+    //var context = JSON.parse(jsonContext);    
+    var contextInfo = this.parseJwt(ticket);
+    var userId = contextInfo.TadbirContext.Id;
     var url = String.Format(LookupApi.UserAccessibleCompanies, userId);
     var options = { headers: header };
     return this.http.get(url, { headers: header })
@@ -117,9 +130,11 @@ export class AuthenticationService extends BaseService {
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
     if (ticket == '') return Observable.empty<Response>();
-    var jsonContext = atob(ticket);
-    var context = JSON.parse(jsonContext);
-    var userId = context.user.id;
+    //var jsonContext = atob(ticket);
+    //var context = JSON.parse(jsonContext);
+    var contextInfo = this.parseJwt(ticket);
+
+    var userId = contextInfo.TadbirContext.Id;
     var url = String.Format(LookupApi.UserAccessibleCompanyBranches, companyId, userId);
     return this.http.get(url, { headers: header })
       .map(response => <any>(<Response>response));
@@ -134,9 +149,9 @@ export class AuthenticationService extends BaseService {
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
     if (ticket == '') return Observable.empty<Response>();
-    var jsonContext = atob(ticket);
-    var context = JSON.parse(jsonContext);
-    var userId = context.user.id;
+    var contextInfo = this.parseJwt(ticket);
+
+    var userId = contextInfo.TadbirContext.Id;
     var url = String.Format(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId, userId);
     return this.http.get(url, { headers: header })
       .map(response => <any>(<Response>response));

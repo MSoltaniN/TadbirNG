@@ -302,11 +302,13 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         var currentUser = this.bStorageService.getCurrentUser();
         if (currentUser != null) {
+          debugger;
           currentUser.branchId = contextInfo.branchId;
           currentUser.companyId = contextInfo.companyId;
           currentUser.inventoryMode = contextInfo.inventoryMode;
           currentUser.fpId = contextInfo.fiscalPeriodId;
-          currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
+          //currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
+          currentUser.permissions = contextInfo.permissions;
           currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;
           currentUser.branchName = contextInfo.branchName;
           currentUser.companyName = contextInfo.companyName;

@@ -1,4 +1,4 @@
-import { Component, Inject, AfterViewInit, OnInit } from '@angular/core';
+import { Component, Inject, AfterViewInit, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
@@ -6,6 +6,7 @@ import { Context, AuthenticationService } from '@sppc/core';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { UserService } from '@sppc/admin/service';
 import { Command } from '@sppc/shared/models';
+
 
 declare var $: any;
 declare var Stimulsoft: any;
@@ -18,6 +19,8 @@ declare var Stimulsoft: any;
 
 export class AppComponent implements AfterViewInit, OnInit {
 
+  
+      
 
   options = {
     min: 8,
@@ -195,57 +198,112 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.showErrorDialog = false;
   }
 
-  doSomething(event: any) {
-    // read keyCode or other properties 
-    // from event and execute a command
-    var ctrl = event.ctrlKey ? 'ctrl' : '';
-    var shift = event.shiftKey ? 'shift' : '';
-    var alt = event.altKey ? 'alt' : '';
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {
+      console.log(event);
 
-    var key = event.code.replace('Key', '').toLowerCase();
+      var ctrl = event.ctrlKey ? true : false;
+      var shift = event.shiftKey ? true : false;
+      var alt = event.altKey ? true : false;
 
-    var url = '';
+      var key = event.code.replace('Key', '').toLowerCase();
 
-    var menus = this.bStorageService.getMenu();
-    if (menus) {
-      this.menuList = JSON.parse(menus);
-
-      for (var m of this.menuList) {
-
-        var shortcutFound: boolean = true;
-        if (m.hotKey == null) continue;
-        var it = m.hotKey.toLowerCase();
-        if (it.indexOf('ctrl') >= 0) {
-          if (ctrl == '' || it.indexOf(ctrl) == -1) {
-            shortcutFound = false;
-          }
-        }
-
-        if (it.indexOf('alt') >= 0) {
-          if (alt == '' || it.indexOf(alt) == -1) {
-            shortcutFound = false;
-          }
-        }
-
-        if (it.indexOf('shift') >= 0) {
-          if (shift == '' || it.indexOf(shift) == -1) {
-            shortcutFound = false;
-          }
-        }
-
-        if (it.indexOf('+' + key) == -1)
-          shortcutFound = false;
-
-        if (shortcutFound) {
-          url = m.routeUrl;
+      var menus = this.bStorageService.getMenu();
+      if (menus) {
+        this.menuList = JSON.parse(menus);
+        var command = this.searchHotKey(ctrl, shift, alt, key, this.menuList);
+        if (command) {
+          var url = command.routeUrl;
           this.router.navigate([url]);
-          return;
-        }
+        }        
+      }
+    }
+  }  
 
+  /**
+   * برای جستجو در شورت کات های منو بکار میرود
+   * @param ctrl
+   * @param shift
+   * @param alt
+   * @param key
+   * @param commands
+   */
+  searchHotKey(ctrl: boolean,shift:boolean,alt :boolean , key:string, commands:Command[]) : Command {
+    for (let command of commands) {
+      if (command.hotKey != null) {
+        var result = this.hotkeyUsed(ctrl, alt, shift, key, command);
+        if (result) return result;        
+      }
+
+      if (command.children !== undefined && command.children.length > 0) {
+        let childsearch = this.searchHotKey(ctrl, shift, alt, key, command.children);
+        if (childsearch !== undefined) {
+          return childsearch
+        }
+      }
+    }
+    return undefined;
+  }
+
+  
+  /**
+   * در یک کامند جستجو میکند و تطابق شورت کات زا در کامند بررسی میکند
+   * @param ctrl
+   * @param alt
+   * @param shift
+   * @param key
+   * @param command
+   */
+  hotkeyUsed(ctrl: boolean, alt: boolean, shift: boolean, key: string, command: any) {
+    var ctrlFound: boolean = false;
+    var altFound: boolean = false;
+    var shiftFound: boolean = false;
+    var keyFound: boolean = false;
+
+    var it = command.hotKey.toLowerCase();
+    if (ctrl && it.indexOf('ctrl') >= 0) {
+      ctrlFound = true;
+    }
+
+    if (it.indexOf('alt') >= 0) {
+      if (alt) {
+        altFound = true;
       }
     }
 
+    if (it.indexOf('shift') >= 0) {
+      if (shift) {
+        shiftFound = true;
+      }
+    }
+
+    if (it.indexOf('+' + key) >= 0)
+      keyFound = true;
+
+
+    if (ctrl && shift && alt) {
+      if ((ctrlFound && shiftFound && altFound) && keyFound)
+        return command;
+    }
+    else if (ctrl && shift) {
+      if ((ctrlFound && shiftFound) && keyFound)
+        return command;
+    }
+    else if (ctrl && alt) {
+      if ((ctrlFound && altFound) && keyFound)
+        return command;
+    }
+    else if (shift && alt) {
+      if ((shiftFound && altFound) && keyFound)
+        return command;
+    }
+    else if (ctrl) {
+      if ((ctrlFound) && keyFound)
+        return command;
+    }
   }
+  
 
   initHotKeys() {
 

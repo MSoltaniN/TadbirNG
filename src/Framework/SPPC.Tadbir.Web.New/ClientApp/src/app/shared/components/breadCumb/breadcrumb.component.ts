@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, Input, ViewContainerRef, HostListener, Host } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
+import { ShortcutCommand } from "@sppc/shared/models/shortcutCommand";
 
 @Component({
   selector: 'app-bread-cumb',
@@ -7,6 +8,7 @@ import { TranslateService } from "@ngx-translate/core";
   styleUrls: ['./breadcrumb.component.css']
 })
 export class BreadCumbComponent implements OnInit {
+    
 
   @Input() public set entityTypeName(name: string) {
     if (name) {
@@ -131,4 +133,6 @@ export class BreadCumbComponent implements OnInit {
         break;
     }
   }
+
+  
 }
