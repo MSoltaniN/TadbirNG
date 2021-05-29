@@ -1937,3 +1937,30 @@ WHERE ModelType = 'TestBalanceConfig'
 UPDATE [Config].[Setting]
 SET [Values] = '{"openingAsFirstVoucher":false}', DefaultValues = '{"openingAsFirstVoucher":false}'
 WHERE ModelType = 'FinanceReportConfig'
+
+-- 1.1.1137
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name]) VALUES (13, N'SystemIssue')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
+
+SET IDENTITY_INSERT [Metadata].[OperationSourceList] ON
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (56, N'UnbalancedVouchers')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (57, N'VouchersWithNoArticle')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (58, N'ArticlesHavingZeroAmount')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (59, N'ArticlesWithMissingAccount')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (60, N'ArticlesWithInvalidAccountItems')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (61, N'MissingVoucherNumbers')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (62, N'AccountsWithInvalidBalance')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID], [Name]) VALUES (63, N'AccountsWithInvalidPeriodTurnover')
+SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (169, 1, 3, 13, NULL, 1, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (170, 1, 3, 13, NULL, 5, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (171, 1, 3, 13, NULL, 6, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (172, 1, 3, 13, NULL, 54, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

@@ -60,6 +60,14 @@ namespace SPPC.Tadbir.Persistence
         ProfitLossByProject = 52,
         ProfitLossByBranch = 53,
         ProfitLossByFiscalPeriod = 54,
-        BalanceSheet = 55
+        BalanceSheet = 55,
+        UnbalancedVouchers = 56,
+        VouchersWithNoArticle = 57,
+        ArticlesHavingZeroAmount = 58,
+        ArticlesWithMissingAccount = 59,
+        ArticlesWithInvalidAccountItems = 60,
+        MissingVoucherNumbers = 61,
+        AccountsWithInvalidBalance = 62,
+        AccountsWithInvalidPeriodTurnover = 63,
     }
 }

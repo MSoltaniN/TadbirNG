@@ -26,13 +26,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
-        public VoucherLineRepository(IRepositoryContext context, ISystemRepository system,
-            IRelationRepository relations)
+        public VoucherLineRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system?.Logger)
         {
             _system = system;
-            _relationRepository = relations;
         }
 
         /// <summary>
@@ -89,82 +86,6 @@ namespace SPPC.Tadbir.Persistence
                 .Select(line => Mapper.Map<TViewModel>(line))
                 .Apply(gridOptions, false)
                 .CountAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی سرفصل حسابداری مشخص شده
-        /// را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
-        /// <returns>مدل نمایشی سرفصل حسابداری مورد استفاده در آرتیکل</returns>
-        public async Task<AccountViewModel> GetArticleAccountAsync(int accountId)
-        {
-            var articleAccount = default(AccountViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
-            if (account != null)
-            {
-                articleAccount = Mapper.Map<AccountViewModel>(account);
-            }
-
-            return articleAccount;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی تفصیلی شناور مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="faccountId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
-        /// <returns>مدل نمایشی تفصیلی شناور مورد استفاده در آرتیکل</returns>
-        public async Task<DetailAccountViewModel> GetArticleDetailAccountAsync(int faccountId)
-        {
-            var articleDetailAccount = default(DetailAccountViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDAsync(faccountId, acc => acc.Children);
-            if (detailAccount != null)
-            {
-                articleDetailAccount = Mapper.Map<DetailAccountViewModel>(detailAccount);
-            }
-
-            return articleDetailAccount;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی مرکز هزینه مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
-        /// <returns>مدل نمایشی مرکز هزینه مورد استفاده در آرتیکل</returns>
-        public async Task<CostCenterViewModel> GetArticleCostCenterAsync(int costCenterId)
-        {
-            var articleCostCenter = default(CostCenterViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId, acc => acc.Children);
-            if (costCenter != null)
-            {
-                articleCostCenter = Mapper.Map<CostCenterViewModel>(costCenter);
-            }
-
-            return articleCostCenter;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی پروژه مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
-        /// <returns>مدل نمایشی پروژه مورد استفاده در آرتیکل</returns>
-        public async Task<ProjectViewModel> GetArticleProjectAsync(int projectId)
-        {
-            var articleProject = default(ProjectViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId, acc => acc.Children);
-            if (project != null)
-            {
-                articleProject = Mapper.Map<ProjectViewModel>(project);
-            }
-
-            return articleProject;
         }
 
         /// <summary>
@@ -269,69 +190,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، لیست و تعداد آرتیکل ها را بر اساس نوع کنترل سیستم برمیگرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <param name="issueType">نوع کنترل سیستم</param>
-        /// <param name="from">تاریخ شروع گزارش</param>
-        /// <param name="to">تاریخ پایان گزارش</param>
-        /// <returns>لیست و تعداد آرتیکل ها</returns>
-        public async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetSystemIssueArticlesAsync(
-            GridOptions gridOptions, string issueType, DateTime from, DateTime to)
-        {
-            (IList<VoucherLineDetailViewModel>, int) result;
-
-            switch (issueType)
-            {
-                case "miss-acc":
-                    {
-                        var lines = GetArticlesAsync(from, to);
-                        lines = GetArticlesWithMissingAccount(lines);
-                        result = await GetListAndCountAsync(gridOptions, lines);
-                        break;
-                    }
-
-                case "zero-amount":
-                    {
-                        var lines = GetArticlesAsync(from, to);
-                        lines = GetArticleHavingZeroAmount(lines);
-                        result = await GetListAndCountAsync(gridOptions, lines);
-                        break;
-                    }
-
-                case "invalid-acc":
-                    {
-                        var lines = GetArticlesAsync(from, to);
-                        var enumerableLines = GetArticleWithInvalidAccount(lines);
-                        result = GetListAndCount(gridOptions, enumerableLines);
-                        break;
-                    }
-
-                case "invalid-acc-balance":
-                    {
-                        result = await GetArticleWithInvalidBalance(gridOptions, to);
-                        break;
-                    }
-
-                case "invalid-acc-turnover":
-                    {
-                        var lines = GetArticleWithInvalidTurnover(from, to);
-                        result = await GetListAndCountAsync(gridOptions, lines);
-                        break;
-                    }
-
-                default:
-                    {
-                        result = new ValueTuple<IList<VoucherLineDetailViewModel>, int>(
-                            new List<VoucherLineDetailViewModel>(), 0);
-                        break;
-                    }
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// به روش آسنکرون، نوع مفهومی سند را با توجه به شناسه آرتیکل داده شده خوانده و برمی گرداند
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
@@ -398,158 +256,6 @@ namespace SPPC.Tadbir.Persistence
                     AppStrings.Account, account.FullCode, AppStrings.Debit, entity.Debit,
                     AppStrings.Credit, entity.Credit, AppStrings.Description, entity.Description)
                 : null;
-        }
-
-        private static IQueryable<VoucherLine> GetArticlesWithMissingAccount(IQueryable<VoucherLine> voucherLines)
-        {
-            var lines = voucherLines
-                 .Where(line => line.Account == null);
-
-            return lines;
-        }
-
-        private static IQueryable<VoucherLine> GetArticleHavingZeroAmount(IQueryable<VoucherLine> voucherLines)
-        {
-            var lines = voucherLines
-                 .Where(line => line.Debit == 0 && line.Credit == 0);
-
-            return lines;
-        }
-
-        private IQueryable<VoucherLine> GetArticleWithInvalidTurnover(DateTime from, DateTime to)
-        {
-            var lines = GetArticlesAsync(from, to);
-
-            lines = lines
-                .Where(line =>
-                (line.Account.TurnoverMode == (short)TurnoverMode.CreditorDuringPeriod && line.Debit != 0)
-                || (line.Account.TurnoverMode == (short)TurnoverMode.DebtorDuringPeriod && line.Credit != 0));
-
-            return lines;
-        }
-
-        private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetArticleWithInvalidBalance(
-            GridOptions gridOptions, DateTime to)
-        {
-            List<VoucherLine> result = new List<VoucherLine>();
-
-            var lines = await Repository.GetAllOperationQuery<VoucherLine>(
-                ViewId.VoucherLine,
-                line => line.Voucher,
-                line => line.Account,
-                line => line.DetailAccount,
-                line => line.CostCenter,
-                line => line.Project,
-                line => line.Currency)
-                .Where(line => line.Voucher.Date.Date <= to.Date
-                && (line.Account.TurnoverMode == (short)TurnoverMode.CreditorEndPeriod || line.Account.TurnoverMode == (short)TurnoverMode.DebtorEndPeriod))
-                .OrderBy(line => line.Voucher.Date)
-                .ThenBy(line => line.Voucher.No)
-                .ToListAsync();
-
-            var accountGroup = lines.GroupBy(line => line.Account);
-
-            foreach (var group in accountGroup)
-            {
-                decimal balancedValue = 0;
-
-                foreach (var line in group)
-                {
-                    balancedValue += line.Debit - line.Credit;
-                    if (line.Account.TurnoverMode == (short)TurnoverMode.CreditorEndPeriod && balancedValue > 0)
-                    {
-                        result.Add(line);
-                        break;
-                    }
-
-                    if (line.Account.TurnoverMode == (short)TurnoverMode.DebtorEndPeriod && balancedValue < 0)
-                    {
-                        result.Add(line);
-                        break;
-                    }
-                }
-            }
-
-            var voucherLines = result.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
-            voucherLines = voucherLines
-                .ApplyPaging(gridOptions);
-
-            return (voucherLines.ToList(), result.Count());
-        }
-
-        private IQueryable<VoucherLine> GetArticlesAsync(DateTime from, DateTime to)
-        {
-            var lines = Repository.GetAllOperationQuery<VoucherLine>(
-                ViewId.VoucherLine,
-                line => line.Voucher,
-                line => line.Account,
-                line => line.DetailAccount,
-                line => line.CostCenter,
-                line => line.Project,
-                line => line.Currency)
-                .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
-                    && line.Voucher.Date.IsBetween(from, to));
-            return lines;
-        }
-
-        private IEnumerable<VoucherLine> GetArticleWithInvalidAccount(IQueryable<VoucherLine> voucherLines)
-        {
-            var lines = voucherLines.ToList();
-
-            var lineList = lines.Where(
-                line => !_relationRepository.LookupFullAccount(
-                    Mapper.Map<AccountItemBriefViewModel>(line.Account),
-                    Mapper.Map<AccountItemBriefViewModel>(line.DetailAccount),
-                    Mapper.Map<AccountItemBriefViewModel>(line.CostCenter),
-                    Mapper.Map<AccountItemBriefViewModel>(line.Project)));
-
-            return lineList;
-        }
-
-        private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetListAndCountAsync(
-            GridOptions gridOptions, IQueryable<VoucherLine> lines)
-        {
-            var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
-
-            var filteredList = voucherLines
-                .Apply(gridOptions, false);
-
-            var vouchersList = await filteredList
-                .OrderBy(line => line.VoucherDate.Date)
-                .ThenBy(line => line.VoucherNo)
-                .ApplyPaging(gridOptions)
-                .ToListAsync();
-
-            return (vouchersList, await filteredList.CountAsync());
-        }
-
-        private ValueTuple<IList<VoucherLineDetailViewModel>, int> GetListAndCount(
-            GridOptions gridOptions, IEnumerable<VoucherLine> lines)
-        {
-            var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
-
-            var filteredList = voucherLines
-               .Apply(gridOptions, false);
-
-            var vouchersList = filteredList
-                .OrderBy(line => line.VoucherDate.Date)
-                .ThenBy(line => line.VoucherNo)
-                .ApplyPaging(gridOptions)
-                .ToList();
-
-            return (vouchersList, filteredList.Count());
-        }
-
-        private async Task<PagedList<VoucherLineDetailViewModel>> GetPagedListAsync(
-            GridOptions gridOptions, IQueryable<VoucherLine> lines)
-        {
-            var voucherLines = await lines
-                .Select(item => Mapper.Map<VoucherLineDetailViewModel>(item))
-                .OrderBy(line => line.VoucherDate.Date)
-                .ThenBy(line => line.VoucherNo)
-                .ToListAsync();
-
-            return new PagedList<VoucherLineDetailViewModel>(voucherLines, gridOptions);
         }
 
         private ISecureRepository Repository
@@ -641,6 +347,5 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISystemRepository _system;
-        private readonly IRelationRepository _relationRepository;
     }
 }

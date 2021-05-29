@@ -847,7 +847,8 @@ INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (6,
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (9, N'EnvironmentParams')
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (10, N'ProfitLoss')
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (11, N'AccountRelations')
-INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name]) VALUES (12, N'BalanceSheet')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (12, N'BalanceSheet')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (13, N'SystemIssue')
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSourceList] ON
@@ -906,6 +907,14 @@ INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VA
 INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (53, N'ProfitLossByBranch')
 INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (54, N'ProfitLossByFiscalPeriod')
 INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (55, N'BalanceSheet')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (56, N'UnbalancedVouchers')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (57, N'VouchersWithNoArticle')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (58, N'ArticlesHavingZeroAmount')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (59, N'ArticlesWithMissingAccount')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (60, N'ArticlesWithInvalidAccountItems')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (61, N'MissingVoucherNumbers')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (62, N'AccountsWithInvalidBalance')
+INSERT INTO [Metadata].[OperationSourceList] ([OperationSourceListID],[Name]) VALUES (63, N'AccountsWithInvalidPeriodTurnover')
 SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF
 
 SET IDENTITY_INSERT [Metadata].[Subsystem] ON
@@ -1409,6 +1418,14 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (167, 1, 3, 12, NULL, 6, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (168, 1, 3, 12, NULL, 54, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (169, 1, 3, 13, NULL, 1, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (170, 1, 3, 13, NULL, 5, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (171, 1, 3, 13, NULL, 6, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (172, 1, 3, 13, NULL, 54, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 
@@ -1494,4 +1511,4 @@ GO
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.1.1133')
+VALUES(1, '1.1.1137')

@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets the آدرس فراخوانی لیست این آیتم
+        /// آدرس فراخوانی لیست این آیتم
         /// </summary>
         [StringLength(128, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
         public string ApiUrl { get; set; }

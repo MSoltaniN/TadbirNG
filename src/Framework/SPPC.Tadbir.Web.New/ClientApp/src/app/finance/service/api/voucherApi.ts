@@ -146,18 +146,6 @@ export class VoucherApi {
     // vouchers/normalize
     public static NormalizeVouchers = environment.BaseUrl + "/vouchers/normalize";
 
-    // vouchers/no-article
-    public static VoucherWithNoArticle = environment.BaseUrl + "/vouchers/no-article";
-
-    // vouchers/unbalanced
-    public static UnbalancedVouchers = environment.BaseUrl + "/vouchers/unbalanced";
-
-    // vouchers/miss-number
-    public static MissingVoucherNumber = environment.BaseUrl + "/vouchers/miss-number";
-
-    // vouchers/articles/sys-issue/{issueType}
-    public static SystemIssueArticles = environment.BaseUrl + "/vouchers/articles/sys-issue/{0}";
-
     // vouchers/range
     public static EnvironmentItemRange = environment.BaseUrl + "/vouchers/range";
 

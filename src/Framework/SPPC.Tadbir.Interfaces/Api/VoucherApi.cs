@@ -472,50 +472,6 @@ namespace SPPC.Tadbir.Api
 
         #endregion
 
-        #region System Issue Resources
-
-        /// <summary>
-        /// API client URL for vouchers with no article
-        /// </summary>
-        public const string VoucherWithNoArticle = "vouchers/no-article";
-
-        /// <summary>
-        /// API server route URL for vouchers with no article
-        /// </summary>
-        public const string VoucherWithNoArticleUrl = "vouchers/no-article";
-
-        /// <summary>
-        /// API client URL for unbalanced vouchers
-        /// </summary>
-        public const string UnbalancedVouchers = "vouchers/unbalanced";
-
-        /// <summary>
-        /// API server route URL for unbalanced vouchers
-        /// </summary>
-        public const string UnbalancedVouchersUrl = "vouchers/unbalanced";
-
-        /// <summary>
-        /// API client URL for unbalanced vouchers
-        /// </summary>
-        public const string MissingVoucherNumber = "vouchers/miss-number";
-
-        /// <summary>
-        /// API server route URL for unbalanced vouchers
-        /// </summary>
-        public const string MissingVoucherNumberUrl = "vouchers/miss-number";
-
-        /// <summary>
-        /// API client URL for system issue articles
-        /// </summary>
-        public const string SystemIssueArticles = "vouchers/articles/sys-issue/{0}";
-
-        /// <summary>
-        /// API server route URL for system issue articles
-        /// </summary>
-        public const string SystemIssueArticlesUrl = "vouchers/articles/sys-issue/{issueType}";
-
-        #endregion
-
         /// <summary>
         /// API client URL for first and last voucher number accessible in current environment
         /// </summary>

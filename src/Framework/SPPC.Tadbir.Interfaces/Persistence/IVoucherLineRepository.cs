@@ -39,38 +39,6 @@ namespace SPPC.Tadbir.Persistence
             where TViewModel : class, new();
 
         /// <summary>
-        /// به روش آسنکرون، مدل نمایشی سرفصل حسابداری مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
-        /// <returns>مدل نمایشی سرفصل حسابداری مورد استفاده در آرتیکل</returns>
-        Task<AccountViewModel> GetArticleAccountAsync(int accountId);
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی تفصیلی شناور مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="faccountId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
-        /// <returns>مدل نمایشی تفصیلی شناور مورد استفاده در آرتیکل</returns>
-        Task<DetailAccountViewModel> GetArticleDetailAccountAsync(int faccountId);
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی مرکز هزینه مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
-        /// <returns>مدل نمایشی مرکز هزینه مورد استفاده در آرتیکل</returns>
-        Task<CostCenterViewModel> GetArticleCostCenterAsync(int costCenterId);
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی پروژه مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
-        /// <returns>مدل نمایشی پروژه مورد استفاده در آرتیکل</returns>
-        Task<ProjectViewModel> GetArticleProjectAsync(int projectId);
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
@@ -99,17 +67,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>تعداد کل آرتیکل ها</returns>
         Task<int> GetAllArticlesCountAsync();
-
-        /// <summary>
-        /// به روش آسنکرون، لیست و تعداد آرتیکل ها را بر اساس نوع کنترل سیستم برمیگرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <param name="issueType">نوع کنترل سیستم</param>
-        /// <param name="from">تاریخ شروع گزارش</param>
-        /// <param name="to">تاریخ پایان گزارش</param>
-        /// <returns>لیست و تعداد آرتیکل ها</returns>
-        Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetSystemIssueArticlesAsync(
-            GridOptions gridOptions, string issueType, DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، نوع مفهومی سند را با توجه به شناسه آرتیکل داده شده خوانده و برمی گرداند

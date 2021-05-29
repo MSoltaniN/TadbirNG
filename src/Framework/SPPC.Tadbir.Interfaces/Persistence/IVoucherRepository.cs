@@ -5,7 +5,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -197,36 +196,6 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در صورت مجاز بودن عمل، مقدار خالی و در غیر این صورت
         /// پیغام خطای عملیاتی را برمی گرداند</returns>
         Task<GroupActionResultViewModel> ValidateVoucherActionAsync(int voucherId, string action);
-
-        /// <summary>
-        /// به روش آسنکرون، لیست و تعداد اسناد فاقد آرتیکل را برمیگرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <param name="from">تاریخ شروع گزارش</param>
-        /// <param name="to">تاریخ پایان گزارش</param>
-        /// <returns>لیست و تعداد اسناد فاقد آرتیکل</returns>
-        Task<ValueTuple<IList<VoucherViewModel>, int>> GetVouchersWithNoArticleAsync(
-            GridOptions gridOptions, DateTime from, DateTime to);
-
-        /// <summary>
-        /// به روش آسنکرون، لیست و تعداد اسناد دارای نا تراز را برمیگرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <param name="from">تاریخ شروع گزارش</param>
-        /// <param name="to">تاریخ پایان گزارش</param>
-        /// <returns>لیست و تعداد اسناد نا تراز</returns>
-        Task<ValueTuple<IList<VoucherViewModel>, int>> GetUnbalancedVouchersAsync(
-            GridOptions gridOptions, DateTime from, DateTime to);
-
-        /// <summary>
-        /// به روش آسنکرون، لیست و تعداد شماره اسناد جا افتاده را برمیگرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <param name="from">تاریخ شروع گزارش</param>
-        /// <param name="to">تاریخ پایان گزارش</param>
-        /// <returns>لیست و تعداد شماره اسناد جا افتاده</returns>
-        Task<ValueTuple<IList<NumberListViewModel>, int>> GetMissingVoucherNumbersAsync(
-            GridOptions gridOptions, DateTime from, DateTime to);
 
         /// <summary>
         /// به روش آسنکرون، نوع مفهومی سند با شناسه داده شده را خوانده و برمی گرداند
