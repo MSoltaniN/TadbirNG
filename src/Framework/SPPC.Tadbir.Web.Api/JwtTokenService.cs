@@ -136,7 +136,7 @@ namespace SPPC.Tadbir.Web.Api
     {
         internal const string Audience = "tadbir-app";
         internal const string Issuer = "tadbir-api";
-        internal const string Expiration = "60";
+        internal const string Expiration = "1440";
         internal const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
     }
 }
