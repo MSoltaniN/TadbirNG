@@ -35,6 +35,12 @@ namespace SPPC.Tadbir.Persistence
         Task<ViewViewModel> GetViewMetadataByIdAsync(int viewId);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی تمام کلیدهای میانبر را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از کلیدهای میانبر</returns>
+        Task<IList<ShortcutCommandViewModel>> GetShortcutCommandsAsync();
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

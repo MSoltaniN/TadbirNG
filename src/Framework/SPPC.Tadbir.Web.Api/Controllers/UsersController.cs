@@ -134,6 +134,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <returns></returns>
+        // GET: api/users/current/hotkeys
+        [HttpGet]
+        [Route(UserApi.CurrentUserHotkeysUrl)]
+        public async Task<IActionResult> GetCurrentUserHotKeysAsync()
+        {
+            var shortcuts = await _repository.GetUserHotKeysAsync(SecurityContext.User.Id);
+            return Json(shortcuts);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         // GET: api/users/default/commands
         [HttpGet]
         [Route(UserApi.UserDefaultCommandsUrl)]
