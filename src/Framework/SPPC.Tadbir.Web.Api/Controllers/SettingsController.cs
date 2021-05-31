@@ -11,6 +11,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -30,10 +31,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="log"></param>
         /// <param name="system"></param>
         /// <param name="strings"></param>
+        /// <param name="tokenService"></param>
         /// <param name="host"></param>
         public SettingsController(IConfigRepository repository, ILogConfigRepository log,
-            ISystemConfigRepository system, IStringLocalizer<AppStrings> strings, IHostingEnvironment host)
-            : base(strings)
+            ISystemConfigRepository system, IHostingEnvironment host, IStringLocalizer<AppStrings> strings,
+            ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
             _logRepository = log;

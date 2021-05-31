@@ -14,6 +14,7 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -37,9 +38,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="sysRepository"></param>
         /// <param name="system"></param>
         /// <param name="strings"></param>
+        /// <param name="tokenService"></param>
         public ReportsController(IReportRepository repository, IReportSystemRepository sysRepository,
-            ISystemConfigRepository system, IStringLocalizer<AppStrings> strings)
-            : base(strings)
+            ISystemConfigRepository system, IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
             _sysRepository = sysRepository;

@@ -9,6 +9,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -29,10 +30,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="configRepository"></param>
         /// <param name="systemRepository"></param>
         /// <param name="strings"></param>
+        /// <param name="tokenService"></param>
         public ProfitLossController(
             IProfitLossRepository repository, IConfigRepository configRepository,
-            ISystemConfigRepository systemRepository, IStringLocalizer<AppStrings> strings = null)
-            : base(strings)
+            ISystemConfigRepository systemRepository, IStringLocalizer<AppStrings> strings,
+            ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
             _systemRepository = systemRepository;

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -22,8 +23,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="strings"></param>
-        public DashboardController(IDashboardRepository repository, IStringLocalizer<AppStrings> strings)
-            : base(strings)
+        /// <param name="tokenService"></param>
+        public DashboardController(IDashboardRepository repository,
+            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
         }

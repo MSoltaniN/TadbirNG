@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Domain;
@@ -21,9 +20,10 @@ namespace SPPC.Tadbir.Web.Api
         /// <summary>
         ///
         /// </summary>
-        public JwtTokenService()
+        /// <param name="configuration"></param>
+        public JwtTokenService(IConfiguration configuration)
         {
-            ////_config = configuration;
+            _config = configuration;
         }
 
         /// <summary>
@@ -47,15 +47,12 @@ namespace SPPC.Tadbir.Web.Api
             };
             var descriptor = new SecurityTokenDescriptor
             {
-                Audience = JwtConfig.Audience,
-                Issuer = JwtConfig.Issuer,
-                ////Audience = _config["Jwt:Audience"],
-                ////Issuer = _config["Jwt:Issuer"],
+                Audience = _config["Jwt:Audience"],
+                Issuer = _config["Jwt:Issuer"],
                 Subject = new ClaimsIdentity(claims),
                 IssuedAt = utcNow,
                 Claims = contextClaims,
-                ////Expires = utcNow.AddMinutes(Double.Parse(_config["Jwt:Expiration"])),
-                Expires = utcNow.AddMinutes(Double.Parse(JwtConfig.Expiration)),
+                Expires = utcNow.AddMinutes(Double.Parse(_config["Jwt:Expiration"])),
                 SigningCredentials = GetSigningCredentials()
             };
 
@@ -96,8 +93,7 @@ namespace SPPC.Tadbir.Web.Api
 
         private SigningCredentials GetSigningCredentials()
         {
-            var secretKey = Convert.FromBase64String(JwtConfig.Secret);
-            ////var secretKey = Convert.FromBase64String(_config["Jwt:Secret"]);
+            var secretKey = Convert.FromBase64String(_config["Jwt:Secret"]);
             var symmetricKey = new SymmetricSecurityKey(secretKey);
             return new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256Signature);
         }
@@ -120,23 +116,12 @@ namespace SPPC.Tadbir.Web.Api
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = JwtConfig.Issuer,
-                ValidAudience = JwtConfig.Audience,
-                ////ValidIssuer = _config["Jwt:Issuer"],
-                ////ValidAudience = _config["Jwt:Audience"],
+                ValidIssuer = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Audience"],
                 IssuerSigningKey = credentials.Key
             };
         }
 
         private readonly IConfiguration _config;
-    }
-
-    // TEMPORARY CLASS
-    internal static class JwtConfig
-    {
-        internal const string Audience = "tadbir-app";
-        internal const string Issuer = "tadbir-api";
-        internal const string Expiration = "60";
-        internal const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
     }
 }

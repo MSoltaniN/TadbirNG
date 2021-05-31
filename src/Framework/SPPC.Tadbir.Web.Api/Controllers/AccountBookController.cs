@@ -8,6 +8,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -25,9 +26,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository"></param>
         /// <param name="config"></param>
         /// <param name="strings"></param>
-        public AccountBookController(IAccountBookRepository repository,
-            IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
-            : base(strings)
+        /// <param name="tokenService"></param>
+        public AccountBookController(IAccountBookRepository repository, IConfigRepository config,
+            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
             _configRepository = config;

@@ -8,6 +8,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -26,9 +27,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="strings"></param>
+        /// <param name="tokenService"></param>
         public SystemIssuesController(
-            ISystemIssueRepository repository, IStringLocalizer<AppStrings> strings = null)
-            : base(strings)
+            ISystemIssueRepository repository, IStringLocalizer<AppStrings> strings,
+            ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
         }

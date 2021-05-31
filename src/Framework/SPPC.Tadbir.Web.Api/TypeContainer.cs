@@ -8,12 +8,12 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.CrossCutting;
 using SPPC.Tadbir.CrossCutting.Redis;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Repository;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Service;
-using SPPC.Tadbir.Web.Api.Extensions;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -44,6 +44,39 @@ namespace SPPC.Tadbir.Web.Api
             AddUtilityTypes();
         }
 
+        private static TadbirContext GetTadbirContext(IServiceProvider provider)
+        {
+            string companyConnection = null;
+            var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
+            string token = httpContext.Request.Headers[AppConstants.ContextHeaderName];
+            if (!String.IsNullOrEmpty(token))
+            {
+                var crypto = provider.GetService<ICryptoService>();
+                var tokenService = provider.GetService<ITokenService>();
+                var securityContext = tokenService.GetSecurityContext(token);
+                string connectionString = securityContext?.User.Connection;
+                companyConnection = String.IsNullOrEmpty(connectionString)
+                    ? connectionString
+                    : crypto.Decrypt(connectionString);
+            }
+
+            return new TadbirContext(companyConnection);
+        }
+
+        private static ISecurityContext GetSecurityContext(IServiceProvider provider)
+        {
+            ISecurityContext securityContext = null;
+            var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
+            string token = httpContext.Request.Headers[AppConstants.ContextHeaderName];
+            if (!String.IsNullOrEmpty(token))
+            {
+                var tokenService = provider.GetService<ITokenService>();
+                securityContext = tokenService.GetSecurityContext(token);
+            }
+
+            return securityContext;
+        }
+
         private void AddContextTypes()
         {
             _services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -53,21 +86,12 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddScoped<SystemContext>();
             _services.AddScoped(provider =>
             {
-                var crypto = new CryptoService();
-                var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
-                var securityContext = httpContext.Request.CurrentSecurityContext();
-                string connectionString = securityContext?.User.Connection;
-                var companyConnection = String.IsNullOrEmpty(connectionString)
-                    ? connectionString
-                    : crypto.Decrypt(connectionString);
-                return new TadbirContext(companyConnection);
+                return GetTadbirContext(provider);
             });
             _services.AddTransient<IDbContextAccessor, DbContextAccessor>();
             _services.AddScoped(provider =>
             {
-                var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
-                return httpContext.Request.CurrentSecurityContext()
-                    as ISecurityContext;
+                return GetSecurityContext(provider);
             });
             _services.AddTransient<IRepositoryContext, RepositoryContext>();
         }

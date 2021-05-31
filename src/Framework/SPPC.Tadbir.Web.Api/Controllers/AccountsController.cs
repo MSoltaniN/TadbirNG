@@ -11,6 +11,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
@@ -30,9 +31,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository">امکان مدیریت اطلاعات سرفصل های حسابداری در دیتابیس را فراهم می کند</param>
         /// <param name="config">امکان خواندن اطلاعات پیکربندی برنامه را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
+        /// <param name="tokenService"></param>
         public AccountsController(
-            IAccountRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings)
-            : base(strings)
+            IAccountRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings,
+            ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
             Verify.ArgumentNotNull(config, "config");

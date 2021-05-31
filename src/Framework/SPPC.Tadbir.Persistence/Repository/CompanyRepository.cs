@@ -142,7 +142,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مشخص میکند که نام وارد شده برای دیتابیس تکراری میباشد یا خیر
+        /// به روش آسنکرون، مشخص می کند که نام وارد شده برای دیتابیس تکراری است یا نه
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
         /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
@@ -167,11 +167,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مشخص میکند که نام کاربری وارد شده تکرای میباشد یا خیر
+        /// مشخص می کند که نام کاربری وارد شده تکراری است یا نه
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
-        /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
-        public bool IsDuplicateCompanyUserNameAsync(CompanyDbViewModel company)
+        /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
+        public bool IsDuplicateCompanyUserName(CompanyDbViewModel company)
         {
             Verify.ArgumentNotNull(company, "company");
             string userScript = @"SELECT name FROM sys.sql_logins";
