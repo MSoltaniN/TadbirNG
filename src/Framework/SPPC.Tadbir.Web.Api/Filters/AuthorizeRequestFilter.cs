@@ -24,7 +24,6 @@ namespace SPPC.Tadbir.Web.Api.Filters
         /// <summary>
         ///
         /// </summary>
-        /// <param name="license"></param>
         /// <param name="token"></param>
         public AuthorizeRequestFilter(ITokenService token)
         {

@@ -38,9 +38,9 @@ namespace SPPC.Tadbir.Domain
         public bool UseClosingTempVoucher { get; set; }
 
         /// <summary>
-        /// مشخص می کند که سند افتتاحیه باید به عنوان اولین سند در نظر گرفته شود یا نه
+        /// مشخص می کند که گردش ابتدای دوره باید در مانده ابتدا در نظر گرفته شود یا نه
         /// </summary>
-        public bool OpeningAsFirstVoucher { get; set; }
+        public bool StartTurnoverAsInitBalance { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مرکز هزینه مورد نظر برای فیلتر اطلاعات - اختیاری

@@ -212,6 +212,25 @@ namespace SPPC.Tadbir.Persistence
             Reflector.CopyProperty(source, "Balance", target, fieldName);
         }
 
+        private static void ApplyPeriodStartOption(
+            ProfitLossParameters parameters, StringBuilder queryBuilder)
+        {
+            if (parameters.StartTurnoverAsInitBalance)
+            {
+                string predicate = String.Format(
+                    "v.Date >= '{0}'", parameters.FromDate.ToShortDateString(false));
+                string newPredicate = String.Format(
+                    "v.Date > '{0}'", parameters.FromDate.ToShortDateString(false));
+                queryBuilder.Replace(predicate, newPredicate);
+
+                predicate = String.Format(
+                    "v.Date < '{0}'", parameters.FromDate.ToShortDateString(false));
+                newPredicate = String.Format(
+                    "v.Date <= '{0}'", parameters.FromDate.ToShortDateString(false));
+                queryBuilder.Replace(predicate, newPredicate);
+            }
+        }
+
         private static DateTime MapDateToYear(DateTime source, int year)
         {
             var projected = source.Date;
@@ -245,17 +264,11 @@ namespace SPPC.Tadbir.Persistence
             return projected;
         }
 
-        private static bool MustApplyOpeningOption(bool isInitBalance, Voucher openingVoucher)
-        {
-            bool mustApply = isInitBalance && openingVoucher != null;
-            return mustApply;
-        }
-
         private async Task<ProfitLossViewModel> CalculateProfitLossAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var option = await Config.GetConfigByTypeAsync<FinanceReportConfig>();
-            parameters.OpeningAsFirstVoucher = option.OpeningAsFirstVoucher;
+            parameters.StartTurnoverAsInitBalance = option.StartTurnoverAsInitBalance;
 
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var profitLoss = new ProfitLossViewModel();
@@ -301,16 +314,9 @@ namespace SPPC.Tadbir.Persistence
             accounts.AddRange(_utility.GetUsableAccounts(
                 AccountCollectionId.SalesRefundDiscount, false, parameters.BranchId));
 
-            string initEnd = ProfitLossQuery.InitBalanceTotalEnd;
-            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
-            if (mustApply)
-            {
-                initEnd = ProfitLossQuery.InitBalanceWithOptionTotalEnd;
-            }
-
             var items = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceTotalSelect,
-                ProfitLossQuery.BalanceTotalEnd, initEnd,
+                ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
                 CreditDebit, AppStrings.NetRevenue);
             var netRevenue = items.Count() > 0
                 ? items.First()
@@ -332,16 +338,9 @@ namespace SPPC.Tadbir.Persistence
             accounts.AddRange(_utility.GetUsableAccounts(
                 AccountCollectionId.SoldProductCost, false, parameters.BranchId));
 
-            string initEnd = ProfitLossQuery.InitBalanceTotalEnd;
-            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
-            if (mustApply)
-            {
-                initEnd = ProfitLossQuery.InitBalanceWithOptionTotalEnd;
-            }
-
             var items = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceTotalSelect,
-                ProfitLossQuery.BalanceTotalEnd, initEnd,
+                ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
                 DebitCredit, AppStrings.SoldProductCost);
             var productCost = items.Count() > 0
                 ? items.First()
@@ -368,16 +367,9 @@ namespace SPPC.Tadbir.Persistence
             paramCopy.FromDate = startDate;
             paramCopy.ToDate = startDate;
 
-            string initEnd = ProfitLossQuery.InitBalanceTotalEnd;
-            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
-            if (mustApply)
-            {
-                initEnd = ProfitLossQuery.InitBalanceWithOptionTotalEnd;
-            }
-
             var inventoryItems = await GetReportItemsAsync(
                 accounts, paramCopy, ProfitLossQuery.BalanceTotalSelect,
-                ProfitLossQuery.BalanceTotalEnd, initEnd,
+                ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
                 DebitCredit, AppStrings.NetRevenue);
 
             var inventoryItem = inventoryItems.FirstOrDefault();
@@ -432,16 +424,9 @@ namespace SPPC.Tadbir.Persistence
             paramCopy.FromDate = startDate;
             paramCopy.ToDate = date;
 
-            string initEnd = ProfitLossQuery.InitBalanceTotalEnd;
-            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
-            if (mustApply)
-            {
-                initEnd = ProfitLossQuery.InitBalanceWithOptionTotalEnd;
-            }
-
             var purchaseItems = await GetReportItemsAsync(
                 accounts, paramCopy, ProfitLossQuery.BalanceTotalSelect,
-                ProfitLossQuery.BalanceTotalEnd, initEnd,
+                ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
                 DebitCredit, AppStrings.NetRevenue);
 
             var purchaseItem = purchaseItems.FirstOrDefault();
@@ -461,16 +446,9 @@ namespace SPPC.Tadbir.Persistence
             var accounts = _utility.GetUsableAccounts(
                 AccountCollectionId.OperationalCosts, false, parameters.BranchId);
 
-            string initEnd = ProfitLossQuery.InitBalanceByAccountEnd;
-            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
-            if (mustApply)
-            {
-                initEnd = ProfitLossQuery.InitBalanceWithOptionByAccountEnd;
-            }
-
             var costItems = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceByAccountSelect,
-                ProfitLossQuery.BalanceByAccountEnd, initEnd,
+                ProfitLossQuery.BalanceByAccountEnd, ProfitLossQuery.InitBalanceByAccountEnd,
                 DebitCredit);
 
             items.AddRange(costItems);
@@ -501,16 +479,9 @@ namespace SPPC.Tadbir.Persistence
             var accounts = _utility.GetUsableAccounts(
                 AccountCollectionId.OtherCostRevenue, false, parameters.BranchId);
 
-            string initEnd = ProfitLossQuery.InitBalanceByAccountEnd;
-            bool mustApply = MustApplyOpeningOption(parameters.OpeningAsFirstVoucher, _openingVoucher);
-            if (mustApply)
-            {
-                initEnd = ProfitLossQuery.InitBalanceWithOptionByAccountEnd;
-            }
-
             var costItems = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceByAccountSelect,
-                ProfitLossQuery.BalanceByAccountEnd, initEnd,
+                ProfitLossQuery.BalanceByAccountEnd, ProfitLossQuery.InitBalanceByAccountEnd,
                 DebitCredit);
 
             items.AddRange(costItems);
@@ -669,6 +640,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             queryBuilder.AppendFormat(end, filterParams);
+            ApplyPeriodStartOption(parameters, queryBuilder);
             var reportQuery = new ReportQuery(queryBuilder.ToString());
             reportQuery.SetFilter(filterBuilder.ToString());
             return reportQuery;

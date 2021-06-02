@@ -18,7 +18,7 @@ WHERE v.Date >= '{0}' AND v.Date <= '{1}' AND ({2}) AND {{0}}";
 WHERE v.Date < '{0}' AND ({1}) AND {{0}}";
 
         internal const string InitBalanceWithOptionTotalEnd = @"
-WHERE (v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = 2)) AND ({1}) AND {{0}}";
+WHERE v.Date <= '{0}' AND ({1}) AND {{0}}";
 
         internal const string BalanceByAccountSelect = @"
 SELECT acc.FullCode, acc.Name, SUM({0}) AS Balance
@@ -37,7 +37,7 @@ GROUP BY acc.FullCode, acc.Name
 ORDER BY acc.FullCode, acc.Name";
 
         internal const string InitBalanceWithOptionByAccountEnd = @"
-WHERE (v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = 2)) AND ({1}) AND {{0}}
+WHERE v.Date <= '{0}' AND ({1}) AND {{0}}
 GROUP BY acc.FullCode, acc.Name
 ORDER BY acc.FullCode, acc.Name";
     }

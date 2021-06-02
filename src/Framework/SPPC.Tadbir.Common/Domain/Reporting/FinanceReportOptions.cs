@@ -31,6 +31,11 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// گزینه نمایش سرفصل های با مانده صفر
         /// </summary>
-        ShowZeroBalanceItems = 0x8
+        ShowZeroBalanceItems = 0x8,
+
+        /// <summary>
+        /// گزینه انعکاس گردش ابتدای دوره در مانده ابتدا
+        /// </summary>
+        StartTurnoverAsInitBalance = 0x10,
     }
 }

@@ -835,7 +835,8 @@
       "UseCustom": "تنظیمات برنامه"
     },
     "FinanceReports": {
-      "OpeningAsFirstVoucher": "سند افتتاحیه به عنوان اولین سند"
+      "OpeningAsFirstVoucher": "سند افتتاحیه به عنوان اولین سند",
+      "StartTurnoverAsInitBalance": "انعکاس گردش ابتدای دوره در مانده ابتدا"
     },
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",

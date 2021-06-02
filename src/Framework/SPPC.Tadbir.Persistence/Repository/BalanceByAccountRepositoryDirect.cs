@@ -354,6 +354,19 @@ namespace SPPC.Tadbir.Persistence.Repository
                     " AND v.OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher);
             }
 
+            bool startAsInit = (options & FinanceReportOptions.StartTurnoverAsInitBalance) > 0;
+            bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
+            if (startAsInit)
+            {
+                string startPredicate = isByDate
+                    ? String.Format("v.Date >= '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    : String.Format("v.No >= {0}", parameters.FromNo.Value);
+                string newPredicate = isByDate
+                    ? String.Format("v.Date > '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    : String.Format("v.No > {0}", parameters.FromNo.Value);
+                whereBuilder.Replace(startPredicate, newPredicate);
+            }
+
             return whereBuilder.ToString();
         }
 
@@ -364,6 +377,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             string newPredicate;
             string whereClause = await GetCommonWhereClauseAsync(parameters);
             bool mustApply = _utility.MustApplyOpeningOption(options, openingVoucher);
+            bool startAsInit = (options & FinanceReportOptions.StartTurnoverAsInitBalance) > 0;
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 string predicate = String.Format("v.Date >= '{0}' AND v.Date <= '{1}'",
@@ -371,15 +385,23 @@ namespace SPPC.Tadbir.Persistence.Repository
                     parameters.ToDate.Value.ToShortDateString(false));
                 if (mustApply)
                 {
-                    newPredicate = String.Format(
-                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = {1}))",
-                        parameters.FromDate.Value.ToShortDateString(false),
-                        (int)VoucherOriginId.OpeningVoucher);
+                    newPredicate = startAsInit
+                        ? String.Format(
+                            "(v.Date <= '{0}' OR (v.Date > '{0}' AND v.OriginID = {1}))",
+                            parameters.FromDate.Value.ToShortDateString(false),
+                            (int)VoucherOriginId.OpeningVoucher)
+                        : String.Format(
+                            "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = {1}))",
+                            parameters.FromDate.Value.ToShortDateString(false),
+                            (int)VoucherOriginId.OpeningVoucher);
                 }
                 else
                 {
-                    newPredicate = String.Format("v.Date < '{0}'",
-                        parameters.FromDate.Value.ToShortDateString(false));
+                    newPredicate = startAsInit
+                        ? String.Format("v.Date <= '{0}'",
+                            parameters.FromDate.Value.ToShortDateString(false))
+                        : String.Format("v.Date < '{0}'",
+                            parameters.FromDate.Value.ToShortDateString(false));
                 }
 
                 whereClause = whereClause.Replace(predicate, newPredicate);
@@ -390,13 +412,19 @@ namespace SPPC.Tadbir.Persistence.Repository
                     parameters.FromNo, parameters.ToNo);
                 if (mustApply)
                 {
-                    newPredicate = String.Format(
-                        "(v.No < {0} OR (v.No >= {0} AND v.OriginID = {1}))",
-                        parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher);
+                    newPredicate = startAsInit
+                        ? String.Format(
+                            "(v.No <= {0} OR (v.No > {0} AND v.OriginID = {1}))",
+                            parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher)
+                        : String.Format(
+                            "(v.No < {0} OR (v.No >= {0} AND v.OriginID = {1}))",
+                            parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher);
                 }
                 else
                 {
-                    newPredicate = String.Format("v.No < {0}", parameters.FromNo.Value);
+                    newPredicate = startAsInit
+                        ? String.Format("v.No <= {0}", parameters.FromNo.Value)
+                        : String.Format("v.No < {0}", parameters.FromNo.Value);
                 }
 
                 whereClause = whereClause.Replace(predicate, newPredicate);

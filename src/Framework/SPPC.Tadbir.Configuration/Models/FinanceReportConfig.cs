@@ -17,5 +17,10 @@
         /// گزینه سند افتتاحیه به عنوان اولین سند
         /// </summary>
         public bool OpeningAsFirstVoucher { get; set; }
+
+        /// <summary>
+        /// گزینه انعکاس گردش ابتدای دوره در مانده ابتدا
+        /// </summary>
+        public bool StartTurnoverAsInitBalance { get; set; }
     }
 }
