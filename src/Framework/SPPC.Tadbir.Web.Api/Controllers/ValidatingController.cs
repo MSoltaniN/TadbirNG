@@ -213,7 +213,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 object value = Reflector.GetSimpleProperty(model, AppStrings.Id, false);
                 result.Id = (value != null) ? Int32.Parse(value.ToString()) : 0;
                 value = Reflector.GetSimpleProperty(model, AppStrings.Name, false);
-                result.Name = value?.ToString();
+                result.Name = _strings[value?.ToString() ?? String.Empty];
                 value = Reflector.GetSimpleProperty(model, AppStrings.FullCode, false);
                 result.FullCode = value?.ToString();
                 value = Reflector.GetSimpleProperty(model, AppStrings.No, false);

@@ -45,7 +45,6 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از ارزها تعریف شده</returns>
         public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Currency>();
             var currencies = await Repository
                 .GetAllQuery<Currency>(ViewId.Currency, curr => curr.Branch)
                 .Select(item => Mapper.Map<CurrencyViewModel>(item))
@@ -267,7 +266,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CurrencyViewModel> InsertDefaultCurrencyAsync(CurrencyViewModel currency)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
-            CurrencyViewModel currencyViewModel = default(CurrencyViewModel);
+            var currencyViewModel = default(CurrencyViewModel);
             var existingDefaultCurrency = await repository.GetFirstByCriteriaAsync(
                 curr => curr.IsDefaultCurrency);
 
