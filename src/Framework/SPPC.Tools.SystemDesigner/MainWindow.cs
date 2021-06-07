@@ -35,6 +35,26 @@ namespace SPPC.Tools.SystemDesigner
             }
         }
 
+        private void GenerateFixDbScript_Click(object sender, EventArgs e)
+        {
+            var ofd = new SaveFileDialog()
+            {
+                AddExtension = true,
+                CheckPathExists = true,
+                DefaultExt = "sql",
+                Filter = "SQL Script Files (*.sql)|*.sql",
+                OverwritePrompt = true,
+                Title = "Select target script file",
+                InitialDirectory = "..\\..\\res"
+            };
+            if (ofd.ShowDialog(this) == DialogResult.OK)
+            {
+                var command = new GenerateFixScriptCommand(ofd.FileName);
+                command.Execute();
+                MessageBox.Show("Script file successfully generated.");
+            }
+        }
+
         private void WizardsCrudManager_Click(object sender, EventArgs e)
         {
             var form = new NewCrudEntityWizardForm();

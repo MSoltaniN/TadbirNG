@@ -76,6 +76,7 @@
     <Compile Include="EntityModel\Property.cs" />
     <Compile Include="PropertyMetadata.cs" />
     <Compile Include="StringExtensions.cs" />
+    <Compile Include="TextColumnModel.cs" />
     <Compile Include="TreeModel\Leaf.cs" />
     <Compile Include="TreeModel\ObjectMetadata.cs" />
     <Compile Include="TreeModel\ObjectNameProvider.cs" />

@@ -310,8 +310,8 @@ namespace SPPC.Tools.SystemDesigner.Utility
             return viewModel;
         }
 
-        private SqlDataLayer _dalFrom;
-        private SqlDataLayer _dalTo;
+        private readonly SqlDataLayer _dalFrom;
+        private readonly SqlDataLayer _dalTo;
         private Dictionary<string, int> _accountMap;
     }
 }

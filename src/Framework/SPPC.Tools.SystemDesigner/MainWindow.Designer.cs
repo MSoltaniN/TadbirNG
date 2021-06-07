@@ -43,6 +43,7 @@
             this.menuManage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuManageLogCatalog = new System.Windows.Forms.ToolStripMenuItem();
             this.menuManageSecurityTicket = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuGenerateFixDbScript = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,7 +114,8 @@
             // menuGenerate
             // 
             this.menuGenerate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuGenerateBlankController});
+            this.menuGenerateBlankController,
+            this.menuGenerateFixDbScript});
             this.menuGenerate.Name = "menuGenerate";
             this.menuGenerate.Size = new System.Drawing.Size(81, 24);
             this.menuGenerate.Text = "&Generate";
@@ -121,7 +123,7 @@
             // menuGenerateBlankController
             // 
             this.menuGenerateBlankController.Name = "menuGenerateBlankController";
-            this.menuGenerateBlankController.Size = new System.Drawing.Size(185, 26);
+            this.menuGenerateBlankController.Size = new System.Drawing.Size(216, 26);
             this.menuGenerateBlankController.Text = "API Controller...";
             this.menuGenerateBlankController.Click += new System.EventHandler(this.GenerateApiController_Click);
             // 
@@ -160,16 +162,23 @@
             // menuManageLogCatalog
             // 
             this.menuManageLogCatalog.Name = "menuManageLogCatalog";
-            this.menuManageLogCatalog.Size = new System.Drawing.Size(179, 26);
+            this.menuManageLogCatalog.Size = new System.Drawing.Size(216, 26);
             this.menuManageLogCatalog.Text = "Log Catalog";
             this.menuManageLogCatalog.Click += new System.EventHandler(this.ManageLogCatalog_Click);
             // 
             // menuManageSecurityTicket
             // 
             this.menuManageSecurityTicket.Name = "menuManageSecurityTicket";
-            this.menuManageSecurityTicket.Size = new System.Drawing.Size(179, 26);
+            this.menuManageSecurityTicket.Size = new System.Drawing.Size(216, 26);
             this.menuManageSecurityTicket.Text = "Security Ticket";
             this.menuManageSecurityTicket.Click += new System.EventHandler(this.ManageSecurityTicket_Click);
+            // 
+            // menuGenerateFixDbScript
+            // 
+            this.menuGenerateFixDbScript.Name = "menuGenerateFixDbScript";
+            this.menuGenerateFixDbScript.Size = new System.Drawing.Size(216, 26);
+            this.menuGenerateFixDbScript.Text = "Arabic Fix Script";
+            this.menuGenerateFixDbScript.Click += new System.EventHandler(this.GenerateFixDbScript_Click);
             // 
             // MainWindow
             // 
@@ -206,6 +215,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuEditPermissionGroup;
         private System.Windows.Forms.ToolStripMenuItem menuDesignersReport;
         private System.Windows.Forms.ToolStripMenuItem menuDesignersMetadata;
+        private System.Windows.Forms.ToolStripMenuItem menuGenerateFixDbScript;
     }
 }
 

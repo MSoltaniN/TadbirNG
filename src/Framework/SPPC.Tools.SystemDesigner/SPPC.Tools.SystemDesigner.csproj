@@ -76,6 +76,7 @@
     <Compile Include="Commands\GenerateCsApiCommand.cs" />
     <Compile Include="Commands\GenerateControllerCommand.cs" />
     <Compile Include="Commands\GenerateCsModelCommand.cs" />
+    <Compile Include="Commands\GenerateFixScriptCommand.cs" />
     <Compile Include="Commands\GenerateRepositoryCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Designers\ManageReportsForm.cs">
