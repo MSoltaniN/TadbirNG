@@ -7,6 +7,7 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -24,9 +25,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository"></param>
         /// <param name="configRepository"></param>
         /// <param name="strings"></param>
+        /// <param name="tokenService"></param>
         public AccountRelationsController(
-            IRelationRepository repository, IConfigRepository configRepository, IStringLocalizer<AppStrings> strings)
-            : base(strings)
+            IRelationRepository repository, IConfigRepository configRepository,
+            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            : base(strings, tokenService)
         {
             Verify.ArgumentNotNull(configRepository, "configRepository");
             _repository = repository;

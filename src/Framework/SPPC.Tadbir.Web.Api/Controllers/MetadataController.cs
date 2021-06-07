@@ -6,6 +6,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -21,8 +22,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="strings"></param>
-        public MetadataController(IMetadataRepository repository, IStringLocalizer<AppStrings> strings)
-            : base(strings)
+        /// <param name="tokenService"></param>
+        public MetadataController(IMetadataRepository repository,
+            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
         }

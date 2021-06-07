@@ -50,6 +50,7 @@ namespace SPPC.Tadbir.Persistence
             RoleCompanyMap.BuildMapping(modelBuilder.Entity<RoleCompany>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
+            ShortcutCommandMap.BuildMapping(modelBuilder.Entity<ShortcutCommand>());
             SysLogSettingMap.BuildMapping(modelBuilder.Entity<SysLogSetting>());
             SysOperationLogMap.BuildMapping(modelBuilder.Entity<SysOperationLog>());
             SysOperationLogArchiveMap.BuildMapping(modelBuilder.Entity<SysOperationLogArchive>());

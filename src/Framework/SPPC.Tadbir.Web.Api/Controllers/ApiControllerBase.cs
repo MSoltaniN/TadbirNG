@@ -26,9 +26,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
-        protected ApiControllerBase(IStringLocalizer<AppStrings> strings)
+        /// <param name="tokenService">امکان پردازش توکن امنیتی سرویس را فراهم می کند</param>
+        protected ApiControllerBase(IStringLocalizer<AppStrings> strings, ITokenService tokenService)
         {
             _strings = strings;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -52,11 +54,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="ticket">توکن امنیتی کدگذاری شده به صورت متنی</param>
         /// <returns>اطلاعات محیطی و امنیتی به دست آمده از توکن</returns>
-        protected static SecurityContext SecurityContextFromTicket(string ticket)
+        protected SecurityContext SecurityContextFromTicket(string ticket)
         {
-            // TODO: Inject token service into this base class and refactor all controllers later...
-            var tokenService = new JwtTokenService();
-            return tokenService.GetSecurityContext(ticket) as SecurityContext;
+            return _tokenService.GetSecurityContext(ticket) as SecurityContext;
         }
 
         /// <summary>
@@ -228,5 +228,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// امکان ترجمه متن های چندزبانه را فراهم می کند
         /// </summary>
         protected IStringLocalizer<AppStrings> _strings;
+
+        private readonly ITokenService _tokenService;
     }
 }

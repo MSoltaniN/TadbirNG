@@ -193,6 +193,27 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی تمام کلیدهای میانبر قابل دسترسی توسط کاربر مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه یکتای یکی از کاربران موجود</param>
+        /// <returns>مجموعه ای از کلیدهای میانبر قابل دسترسی توسط کاربر</returns>
+        public async Task<IList<ShortcutCommandViewModel>> GetUserHotKeysAsync(int userId)
+        {
+            var shortcuts = await Metadata.GetShortcutCommandsAsync();
+            bool isAdmin = UserContext.Roles.Contains(AppConstants.AdminRoleId);
+            if (!isAdmin)
+            {
+                var permissionIds = await GetUserPermissionIdsAsync(userId);
+                shortcuts = shortcuts
+                    .Where(sc => sc.PermissionId == null
+                        || permissionIds.Contains(sc.PermissionId.Value))
+                    .ToList();
+            }
+
+            return shortcuts;
+        }
+
+        /// <summary>
         /// اطلاعات نمایشی تمام دستورات قابل دسترسی توسط کاربر مشخص شده را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>

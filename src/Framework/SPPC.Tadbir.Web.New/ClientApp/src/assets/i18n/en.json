@@ -717,7 +717,8 @@
       "UseCustom": "Application settings"
     },
     "FinanceReports": {
-      "OpeningAsFirstVoucher": "Use opening voucher as first voucher"
+      "OpeningAsFirstVoucher": "Use opening voucher as first voucher",
+      "StartTurnoverAsInitBalance": "Start turnover as initial balance"
     },
     "Description": "Description",
     "TitleText": "Settings List",

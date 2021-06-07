@@ -71,7 +71,8 @@ export class SettingsFormComponent extends DetailComponent {
   });
 
   public financeReportForm = new FormGroup({
-    openingAsFirstVoucher: new FormControl()    
+    openingAsFirstVoucher: new FormControl(),
+    startTurnoverAsInitBalance: new FormControl()
   });
 
   public ddlNumberPrecision: Array<Item2>;

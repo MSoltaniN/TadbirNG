@@ -9,6 +9,7 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
@@ -26,8 +27,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
-        protected ValidatingController(IStringLocalizer<AppStrings> strings)
-            : base(strings)
+        /// <param name="tokenService"></param>
+        protected ValidatingController(IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            : base(strings, tokenService)
         {
         }
 
@@ -211,7 +213,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 object value = Reflector.GetSimpleProperty(model, AppStrings.Id, false);
                 result.Id = (value != null) ? Int32.Parse(value.ToString()) : 0;
                 value = Reflector.GetSimpleProperty(model, AppStrings.Name, false);
-                result.Name = value?.ToString();
+                result.Name = _strings[value?.ToString() ?? String.Empty];
                 value = Reflector.GetSimpleProperty(model, AppStrings.FullCode, false);
                 result.FullCode = value?.ToString();
                 value = Reflector.GetSimpleProperty(model, AppStrings.No, false);

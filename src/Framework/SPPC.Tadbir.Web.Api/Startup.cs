@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Middleware;
 using SPPC.Tadbir.Web.Api.Swagger;
 
@@ -36,7 +37,10 @@ namespace SPPC.Tadbir.Web.Api
         {
             services.AddSwagger();
             services.AddLocalization();
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(AuthorizeRequestFilter));
+            });
             services.AddCors();
 
             var container = new TypeContainer(services, Configuration);

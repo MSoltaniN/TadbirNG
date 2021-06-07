@@ -9,6 +9,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -26,8 +27,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="strings"></param>
-        public ItemBalanceController(ITestBalanceRepository repository, IStringLocalizer<AppStrings> strings)
-            : base(strings)
+        /// <param name="tokenService"></param>
+        public ItemBalanceController(ITestBalanceRepository repository,
+            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
         }

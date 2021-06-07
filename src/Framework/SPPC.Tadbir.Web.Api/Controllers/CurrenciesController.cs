@@ -14,6 +14,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
@@ -35,9 +36,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="host"></param>
         /// <param name="crypto"></param>
         /// <param name="strings"></param>
+        /// <param name="tokenService"></param>
         public CurrenciesController(ICurrencyRepository repository, ICurrencyRateRepository rateRepository,
-            IHostingEnvironment host, ICryptoService crypto, IStringLocalizer<AppStrings> strings = null)
-            : base(strings)
+            IHostingEnvironment host, ICryptoService crypto, IStringLocalizer<AppStrings> strings,
+            ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
             _rateRepository = rateRepository;
@@ -264,7 +267,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Currency));
             }
 
-            var result = ValidationResult(currencyRate);
+            var result = RateValidationResult(currencyRate);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -380,7 +383,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedCurrencyRateAsync(
             int rateId, [FromBody] CurrencyRateViewModel currencyRate)
         {
-            var result = ValidationResult(currencyRate, rateId);
+            var result = RateValidationResult(currencyRate, rateId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -566,7 +569,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private IActionResult ValidationResult(CurrencyRateViewModel rate, int rateId = 0)
+        private IActionResult RateValidationResult(CurrencyRateViewModel rate, int rateId = 0)
         {
             var result = BasicValidationResult(rate, rateId);
             if (result is BadRequestObjectResult)

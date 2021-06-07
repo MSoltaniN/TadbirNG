@@ -9133,3 +9133,18 @@ INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [
 INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 
     VALUES (11, 3, 45, 42, N'AccountsWithInvalidPeriodTurnover', N'/sys-issues/articles/invalid-turnover', NULL, 0)
 SET IDENTITY_INSERT [Reporting].[SystemIssue] OFF
+
+-- 1.1.1138
+CREATE TABLE [Metadata].[ShortcutCommand] (
+    [ShortcutCommandID]   INT              IDENTITY (1, 1) NOT NULL,
+    [PermissionID]        INT              NULL,
+    [Name]                VARCHAR(128)     NOT NULL,
+    [Scope]               VARCHAR(64)      NULL,
+    [HotKey]              VARCHAR(32)      NOT NULL,
+    [Method]              VARCHAR(128)     NOT NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_ShortcutCommand_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Metadata_ShortcutCommand_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_ShortcutCommand] PRIMARY KEY CLUSTERED ([ShortcutCommandID] ASC)
+    , CONSTRAINT [FK_Metadata_ShortcutCommand_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission]([PermissionID])
+)
+GO

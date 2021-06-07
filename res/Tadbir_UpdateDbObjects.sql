@@ -1964,3 +1964,9 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (172, 1, 3, 13, NULL, 54, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.1140
+UPDATE [Config].[Setting]
+SET [Values] = '{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}',
+  DefaultValues = '{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}'
+WHERE ModelType = 'FinanceReportConfig'

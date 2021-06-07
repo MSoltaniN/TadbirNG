@@ -88,6 +88,20 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی تمام کلیدهای میانبر را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از کلیدهای میانبر</returns>
+        public async Task<IList<ShortcutCommandViewModel>> GetShortcutCommandsAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<ShortcutCommand>();
+            var shortcuts = await repository
+                .GetEntityQuery()
+                .Select(sc => Mapper.Map<ShortcutCommandViewModel>(sc))
+                .ToListAsync();
+            return shortcuts;
+        }
+
+        /// <summary>
         /// اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>

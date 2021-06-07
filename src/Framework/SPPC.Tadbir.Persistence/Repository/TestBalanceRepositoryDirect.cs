@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
@@ -716,9 +715,9 @@ namespace SPPC.Tadbir.Persistence
                 var toDate = parameters.ToDate.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.TurnoverByDateByBranch, length, componentName,
-                        fieldName, fromDate.ToShortDateString(false), toDate.ToShortDateString(false)))
+                        fieldName, toDate.ToShortDateString(false)))
                     : new ReportQuery(String.Format(BalanceQuery.TurnoverByDate, length, componentName,
-                        fieldName, fromDate.ToShortDateString(false), toDate.ToShortDateString(false)));
+                        fieldName, toDate.ToShortDateString(false)));
             }
             else
             {
@@ -726,9 +725,9 @@ namespace SPPC.Tadbir.Persistence
                 var toNo = parameters.ToNo.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.TurnoverByNoByBranch, length, componentName,
-                        fieldName, fromNo, toNo))
+                        fieldName, toNo))
                     : new ReportQuery(String.Format(BalanceQuery.TurnoverByNo, length, componentName,
-                        fieldName, fromNo, toNo));
+                        fieldName, toNo));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();
@@ -782,6 +781,24 @@ namespace SPPC.Tadbir.Persistence
                 predicates.Add(String.Format("v.OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher));
             }
 
+            bool startAsInit = (parameters.Options & FinanceReportOptions.StartTurnoverAsInitBalance) > 0;
+            bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
+            string startPredicate;
+            if (startAsInit)
+            {
+                startPredicate = isByDate
+                    ? String.Format("v.Date > '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    : String.Format("v.No > {0}", parameters.FromNo.Value);
+            }
+            else
+            {
+                startPredicate = isByDate
+                    ? String.Format("v.Date >= '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    : String.Format("v.No >= {0}", parameters.FromNo.Value);
+            }
+
+            predicates.Add(startPredicate);
+
             return String.Join(" AND ", predicates);
         }
 
@@ -790,11 +807,19 @@ namespace SPPC.Tadbir.Persistence
         {
             var predicates = GetEnvironmentFilters(parameters.GridOptions, parameters.Options);
             bool mustApply = _utility.MustApplyOpeningOption(parameters.Options, openingVoucher);
+            bool startAsInit = (parameters.Options & FinanceReportOptions.StartTurnoverAsInitBalance) > 0;
             bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
 
             string datePredicate = isByDate
                 ? String.Format("v.Date < '{0}'", parameters.FromDate.Value.ToShortDateString(false))
                 : String.Format("v.No < {0}", parameters.FromNo.Value);
+            if (startAsInit)
+            {
+                datePredicate = isByDate
+                    ? String.Format("v.Date <= '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    : String.Format("v.No <= {0}", parameters.FromNo.Value);
+            }
+
             if (mustApply)
             {
                 datePredicate = isByDate
@@ -805,6 +830,17 @@ namespace SPPC.Tadbir.Persistence
                     : String.Format(
                         "(v.No < {0} OR (v.No >= {0} AND v.OriginID = {1}))",
                         parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher);
+                if (startAsInit)
+                {
+                    datePredicate = isByDate
+                        ? String.Format(
+                            "(v.Date <= '{0}' OR (v.Date > '{0}' AND v.OriginID = {1}))",
+                            parameters.FromDate.Value.ToShortDateString(false),
+                            (int)VoucherOriginId.OpeningVoucher)
+                        : String.Format(
+                            "(v.No <= {0} OR (v.No > {0} AND v.OriginID = {1}))",
+                            parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher);
+                }
             }
 
             predicates.Add(datePredicate);

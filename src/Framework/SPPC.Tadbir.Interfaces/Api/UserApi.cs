@@ -113,6 +113,16 @@ namespace SPPC.Tadbir.Api
         public const string CurrentUserCommandsUrl = "users/current/commands";
 
         /// <summary>
+        /// API client URL for hot keys accessible to current application user.
+        /// </summary>
+        public const string CurrentUserHotkeys = "users/current/hotkeys";
+
+        /// <summary>
+        /// API server route URL for hot keys accessible to current application user.
+        /// </summary>
+        public const string CurrentUserHotkeysUrl = "users/current/hotkeys";
+
+        /// <summary>
         /// API client URL for application environment set by current user.
         /// </summary>
         public const string CurrentUserEnvironment = "users/current/env";

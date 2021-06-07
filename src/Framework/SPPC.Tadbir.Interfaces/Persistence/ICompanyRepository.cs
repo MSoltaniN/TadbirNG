@@ -46,17 +46,17 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteCompaniesAsync(IEnumerable<int> items);
 
         /// <summary>
-        /// به روش آسنکرون، مشخص میکند که نام وارد شده برای دیتابیس تکرای میباشد یا خیر
+        /// به روش آسنکرون، مشخص می کند که نام وارد شده برای دیتابیس تکراری است یا نه
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
-        /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمیگرداند</returns>
+        /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
         Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company);
 
         /// <summary>
-        /// مشخص میکند که نام کاربری وارد شده تکراری میباشد یا خیر
+        /// مشخص می کند که نام کاربری وارد شده تکراری است یا نه
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
         /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
-        bool IsDuplicateCompanyUserNameAsync(CompanyDbViewModel company);
+        bool IsDuplicateCompanyUserName(CompanyDbViewModel company);
     }
 }

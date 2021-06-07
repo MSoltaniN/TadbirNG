@@ -36,7 +36,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر</param>
         /// <returns>مجموعه نرخ های ثبت شده برای ارز مورد نظر</returns>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        public async Task<PagedList<CurrencyRateViewModel>> GetCurrencyRatesAsync(int currencyId, GridOptions gridOptions)
+        public async Task<PagedList<CurrencyRateViewModel>> GetCurrencyRatesAsync(
+            int currencyId, GridOptions gridOptions)
         {
             var currency = await Repository
                 .GetAllQuery<Currency>(ViewId.Currency)
@@ -140,7 +141,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مشخص میکند که آیا برای ارز مشخص شده نرخ تعریف شده است یا خیر؟
+        /// به روش آسنکرون، مشخص می کند که آیا برای ارز مشخص شده نرخ تعریف شده است یا خیر؟
         /// </summary>
         /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر</param>
         /// <returns>اگر برای ارز مشخص شده نرخ تعریف شده باشد مقدار بولی "درست" و در غیر این صورت

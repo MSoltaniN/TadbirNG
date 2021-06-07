@@ -74,6 +74,13 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی تمام کلیدهای میانبر قابل دسترسی توسط کاربر مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه یکتای یکی از کاربران موجود</param>
+        /// <returns>مجموعه ای از کلیدهای میانبر قابل دسترسی توسط کاربر</returns>
+        Task<IList<ShortcutCommandViewModel>> GetUserHotKeysAsync(int userId);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی گزینه های منوی پیش فرض کاربران را خوانده و برمی گرداند
         /// </summary>
         /// <returns>گزینه های منوی پیش فرض کاربران</returns>

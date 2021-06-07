@@ -121,11 +121,16 @@ export enum BalanceOptions {
   /// <summary>
   /// گزینه انعکاس افتتاحیه در ستون مانده ابتدا
   /// </summary>
-  OpeningVoucherAsInitBalance = 0x4,
+  OpeningAsFirstVoucher = 0x4,
 
   /// <summary>
   /// گزینه نمایش سرفصل های با مانده صفر
   /// </summary>
-  ShowZeroBalanceItems = 0x8
+  ShowZeroBalanceItems = 0x8,
+
+  /// <summary>
+  /// گزینه انعکاس گردش ابتدای دوره در مانده ابتدا
+  /// </summary>
+  StartTurnoverAsInitBalance = 0x10
 }
 

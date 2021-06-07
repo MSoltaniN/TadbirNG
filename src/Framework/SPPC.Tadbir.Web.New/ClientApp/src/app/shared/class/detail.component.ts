@@ -15,7 +15,7 @@ import { ServiceLocator } from "@sppc/service.locator";
 @Injectable()
 export class DetailComponent extends BaseComponent  {
 
-  shortcuts: ShortcutCommand[] = [new ShortcutCommand(1, "Ctrl+Shift+Y", "addNew")];
+  shortcuts: ShortcutCommand[] = [new ShortcutCommand(1, 0, null, null, "Ctrl+Shift+Y", "addNew")];
 
   private form: FormGroup;
   public properties: Map<string, Array<Property>>;

@@ -12,6 +12,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Inventory;
@@ -35,14 +36,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="draftLineRepository">امکان مدیریت اطلاعات آرتیکل های پیش نویس را فراهم می کند</param>
         /// <param name="relationRepository">امکان خواندن ارتباطات موجود در  بردار حساب را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
+        /// <param name="tokenService"></param>
         public VouchersController(
             IVoucherRepository repository,
             IVoucherLineRepository lineRepository,
             IDraftVoucherRepository draftRepository,
             IDraftVoucherLineRepository draftLineRepository,
             IRelationRepository relationRepository,
-            IStringLocalizer<AppStrings> strings)
-            : base(strings)
+            IStringLocalizer<AppStrings> strings,
+            ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
             _lineRepository = lineRepository;

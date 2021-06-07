@@ -382,6 +382,20 @@ CREATE TABLE [Metadata].[Command] (
 )
 GO
 
+CREATE TABLE [Metadata].[ShortcutCommand] (
+    [ShortcutCommandID]   INT              IDENTITY (1, 1) NOT NULL,
+    [PermissionID]        INT              NULL,
+    [Name]                VARCHAR(128)     NOT NULL,
+    [Scope]               VARCHAR(64)      NULL,
+    [HotKey]              VARCHAR(32)      NOT NULL,
+    [Method]              VARCHAR(128)     NOT NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_ShortcutCommand_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Metadata_ShortcutCommand_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_ShortcutCommand] PRIMARY KEY CLUSTERED ([ShortcutCommandID] ASC)
+    , CONSTRAINT [FK_Metadata_ShortcutCommand_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission]([PermissionID])
+)
+GO
+
 CREATE TABLE [Config].[CompanyDb] (
     [CompanyID]      INT              IDENTITY (1, 1) NOT NULL,
     [Name]           NVARCHAR(128)    NOT NULL,

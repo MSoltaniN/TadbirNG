@@ -8,6 +8,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -28,9 +29,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository">امکان مدیریت اطلاعات شرکت ها را در دیتابیس سیستمی فراهم می کند</param>
         /// <param name="host">اطلاعات محیط میزبانی سرویس وب را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را در برنامه فراهم می کند</param>
+        /// <param name="tokenService"></param>
         public CompaniesController(
-            ICompanyRepository repository, IHostingEnvironment host, IStringLocalizer<AppStrings> strings = null)
-            : base(strings)
+            ICompanyRepository repository, IHostingEnvironment host,
+            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            : base(strings, tokenService)
         {
             _repository = repository;
             _host = host;
@@ -189,7 +192,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DbName));
             }
 
-            if (_repository.IsDuplicateCompanyUserNameAsync(company))
+            if (_repository.IsDuplicateCompanyUserName(company))
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidDatabaseUserName));
             }
@@ -198,6 +201,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IHostingEnvironment _host;
-        private ICompanyRepository _repository;
+        private readonly ICompanyRepository _repository;
     }
 }

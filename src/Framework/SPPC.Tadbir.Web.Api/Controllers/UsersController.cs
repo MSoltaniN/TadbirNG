@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             ICryptoService crypto,
             ITokenService tokenService,
             IStringLocalizer<AppStrings> strings)
-            : base(strings)
+            : base(strings, tokenService)
         {
             _repository = repository;
             _crypto = crypto;
@@ -128,6 +128,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 });
             });
             return JsonReadResult(commands);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/users/current/hotkeys
+        [HttpGet]
+        [Route(UserApi.CurrentUserHotkeysUrl)]
+        public async Task<IActionResult> GetCurrentUserHotKeysAsync()
+        {
+            var shortcuts = await _repository.GetUserHotKeysAsync(SecurityContext.User.Id);
+            return Json(shortcuts);
         }
 
         /// <summary>
@@ -444,32 +457,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        // GET: api/users/{userId:min(1)}/ticket
-        [HttpGet]
-        [Route("users/{userId:min(1)}/ticket")]
-        public IActionResult GetUserTicket(int userId)
-        {
-#if DEBUG
-            string ticket = null;
-            var userContext = _repository.GetUserContextAsync(userId).Result;
-            if (userContext != null)
-            {
-                var contextEncoder = new Base64Encoder<SecurityContext>();
-                var securityContext = new SecurityContext(userContext);
-                ticket = contextEncoder.Encode(securityContext);
-            }
-
-            return JsonReadResult(ticket);
-#else
-            return NotFound();
-#endif
         }
 
         private async Task<IActionResult> ValidationResultAsync(UserViewModel user, int userId = 0)
