@@ -28,10 +28,18 @@ namespace SPPC.Tools.SystemDesigner.Commands
                     InitialCatalog = "NGTadbir"
                 };
 
+                // Generate script for company databases...
                 _dal = new SqlDataLayer(connectionBuilder.ConnectionString);
                 var textColumns = GetTextColumns();
                 var clauses = GetUpdateClauses(textColumns);
                 File.WriteAllText(_path, String.Join(Environment.NewLine, clauses));
+
+                // Generate script for system database...
+                _dal = new SqlDataLayer(sysConnection);
+                textColumns = GetTextColumns();
+                clauses = GetUpdateClauses(textColumns);
+                string sysScriptPath = Path.Combine(Path.GetDirectoryName(_path), "TadbirSys_FixArabicLetters.sql");
+                File.WriteAllText(sysScriptPath, String.Join(Environment.NewLine, clauses));
             }
         }
 
@@ -66,6 +74,7 @@ namespace SPPC.Tools.SystemDesigner.Commands
             {
                 clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicKeh, FarsiKeh));
                 clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicYeh, FarsiYeh));
+                clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicYehAlt, FarsiYeh));
             }
 
             return clauses;
@@ -98,6 +107,7 @@ SET ", schema, table);
 
         private const int ArabicKeh = 1603;
         private const int FarsiKeh = 1705;
+        private const int ArabicYehAlt = 1609;
         private const int ArabicYeh = 1610;
         private const int FarsiYeh = 1740;
         private SqlDataLayer _dal;
