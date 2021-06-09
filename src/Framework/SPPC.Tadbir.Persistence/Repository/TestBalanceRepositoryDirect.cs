@@ -787,13 +787,13 @@ namespace SPPC.Tadbir.Persistence
             if (startAsInit)
             {
                 startPredicate = isByDate
-                    ? String.Format("v.Date > '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    ? String.Format("{0} > '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
                     : String.Format("v.No > {0}", parameters.FromNo.Value);
             }
             else
             {
                 startPredicate = isByDate
-                    ? String.Format("v.Date >= '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    ? String.Format("{0} >= '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
                     : String.Format("v.No >= {0}", parameters.FromNo.Value);
             }
 
@@ -811,12 +811,12 @@ namespace SPPC.Tadbir.Persistence
             bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
 
             string datePredicate = isByDate
-                ? String.Format("v.Date < '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                ? String.Format("{0} < '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
                 : String.Format("v.No < {0}", parameters.FromNo.Value);
             if (startAsInit)
             {
                 datePredicate = isByDate
-                    ? String.Format("v.Date <= '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    ? String.Format("{0} <= '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
                     : String.Format("v.No <= {0}", parameters.FromNo.Value);
             }
 
@@ -824,7 +824,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 datePredicate = isByDate
                     ? String.Format(
-                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = {1}))",
+                        "({0} < '{1}' OR ({0} >= '{1}' AND v.OriginID = {2}))", DateExp,
                         parameters.FromDate.Value.ToShortDateString(false),
                         (int)VoucherOriginId.OpeningVoucher)
                     : String.Format(
@@ -834,7 +834,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     datePredicate = isByDate
                         ? String.Format(
-                            "(v.Date <= '{0}' OR (v.Date > '{0}' AND v.OriginID = {1}))",
+                            "({0} <= '{1}' OR ({0} > '{1}' AND v.OriginID = {2}))", DateExp,
                             parameters.FromDate.Value.ToShortDateString(false),
                             (int)VoucherOriginId.OpeningVoucher)
                         : String.Format(
@@ -872,6 +872,7 @@ namespace SPPC.Tadbir.Persistence
             return predicates;
         }
 
+        private const string DateExp = "CAST(v.Date AS date)";
         private readonly IReportDirectUtility _utility;
         private delegate TestBalanceItemViewModel MergeByCodeFunction(
             TestBalanceItemViewModel item, Dictionary<string, VoucherLineAmountsViewModel> itemMap,

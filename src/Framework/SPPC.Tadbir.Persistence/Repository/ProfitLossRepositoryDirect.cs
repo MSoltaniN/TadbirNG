@@ -34,7 +34,6 @@ namespace SPPC.Tadbir.Persistence
         {
             _system = system;
             _utility = utility;
-            _openingVoucher = _utility.GetOpeningVoucherAsync().Result;
         }
 
         /// <summary>
@@ -218,15 +217,15 @@ namespace SPPC.Tadbir.Persistence
             if (parameters.StartTurnoverAsInitBalance)
             {
                 string predicate = String.Format(
-                    "v.Date >= '{0}'", parameters.FromDate.ToShortDateString(false));
+                    "{0} >= '{1}'", DateExp, parameters.FromDate.ToShortDateString(false));
                 string newPredicate = String.Format(
-                    "v.Date > '{0}'", parameters.FromDate.ToShortDateString(false));
+                    "{0} > '{1}'", DateExp, parameters.FromDate.ToShortDateString(false));
                 queryBuilder.Replace(predicate, newPredicate);
 
                 predicate = String.Format(
-                    "v.Date < '{0}'", parameters.FromDate.ToShortDateString(false));
+                    "{0} < '{1}'", DateExp, parameters.FromDate.ToShortDateString(false));
                 newPredicate = String.Format(
-                    "v.Date <= '{0}'", parameters.FromDate.ToShortDateString(false));
+                    "{0} <= '{1}'", DateExp, parameters.FromDate.ToShortDateString(false));
                 queryBuilder.Replace(predicate, newPredicate);
             }
         }
@@ -770,10 +769,10 @@ namespace SPPC.Tadbir.Persistence
             return adjusted;
         }
 
+        private const string DateExp = "CAST(v.Date AS date)";
         private const string CreditDebit = "vl.Credit - vl.Debit";
         private const string DebitCredit = "vl.Debit - vl.Credit";
         private readonly ISystemRepository _system;
         private readonly IReportDirectUtility _utility;
-        private readonly Voucher _openingVoucher;
     }
 }

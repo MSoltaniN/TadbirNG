@@ -359,10 +359,10 @@ namespace SPPC.Tadbir.Persistence.Repository
             if (startAsInit)
             {
                 string startPredicate = isByDate
-                    ? String.Format("v.Date >= '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    ? String.Format("{0} >= '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
                     : String.Format("v.No >= {0}", parameters.FromNo.Value);
                 string newPredicate = isByDate
-                    ? String.Format("v.Date > '{0}'", parameters.FromDate.Value.ToShortDateString(false))
+                    ? String.Format("{0} > '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
                     : String.Format("v.No > {0}", parameters.FromNo.Value);
                 whereBuilder.Replace(startPredicate, newPredicate);
             }
@@ -380,27 +380,27 @@ namespace SPPC.Tadbir.Persistence.Repository
             bool startAsInit = (options & FinanceReportOptions.StartTurnoverAsInitBalance) > 0;
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
-                string predicate = String.Format("v.Date >= '{0}' AND v.Date <= '{1}'",
+                string predicate = String.Format("{0} >= '{1}' AND {0} <= '{2}'", DateExp,
                     parameters.FromDate.Value.ToShortDateString(false),
                     parameters.ToDate.Value.ToShortDateString(false));
                 if (mustApply)
                 {
                     newPredicate = startAsInit
                         ? String.Format(
-                            "(v.Date <= '{0}' OR (v.Date > '{0}' AND v.OriginID = {1}))",
+                            "({0} <= '{1}' OR ({0} > '{1}' AND v.OriginID = {2}))", DateExp,
                             parameters.FromDate.Value.ToShortDateString(false),
                             (int)VoucherOriginId.OpeningVoucher)
                         : String.Format(
-                            "(v.Date < '{0}' OR (v.Date >= '{0}' AND v.OriginID = {1}))",
+                            "({0} < '{1}' OR ({0} >= '{1}' AND v.OriginID = {2}))", DateExp,
                             parameters.FromDate.Value.ToShortDateString(false),
                             (int)VoucherOriginId.OpeningVoucher);
                 }
                 else
                 {
                     newPredicate = startAsInit
-                        ? String.Format("v.Date <= '{0}'",
+                        ? String.Format("{0} <= '{1}'", DateExp,
                             parameters.FromDate.Value.ToShortDateString(false))
-                        : String.Format("v.Date < '{0}'",
+                        : String.Format("{0} < '{1}'", DateExp,
                             parameters.FromDate.Value.ToShortDateString(false));
                 }
 
@@ -441,7 +441,7 @@ namespace SPPC.Tadbir.Persistence.Repository
 
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
-                whereBuilder.AppendFormat(" AND v.Date >= '{0}' AND v.Date <= '{1}'",
+                whereBuilder.AppendFormat(" AND {0} >= '{1}' AND {0} <= '{2}'", DateExp,
                     parameters.FromDate.Value.ToShortDateString(false),
                     parameters.ToDate.Value.ToShortDateString(false));
             }
@@ -575,6 +575,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             return groupByBuilder.ToString();
         }
 
+        private const string DateExp = "CAST(v.Date AS date)";
         private readonly IReportDirectUtility _utility;
     }
 }
