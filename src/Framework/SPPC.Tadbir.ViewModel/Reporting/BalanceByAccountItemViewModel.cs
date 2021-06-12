@@ -15,16 +15,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         }
 
         /// <summary>
-        /// شماره سند آرتیکل
-        /// </summary>
-        public int VoucherNo { get; set; }
-
-        /// <summary>
-        /// تاریخ ایجاد آرتیکل
-        /// </summary>
-        public DateTime VoucherDate { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی حساب مورد استفاده در سطر گزارش
         /// </summary>
         public int AccountId { get; set; }
@@ -38,11 +28,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام حساب مورد استفاده در سطر گزارش
         /// </summary>
         public string AccountName { get; set; }
-
-        /// <summary>
-        /// شماره سطح که عمق حساب به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
-        /// </summary>
-        public short AccountLevel { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی تفصیلی شناور مورد استفاده در سطر گزارش
@@ -60,11 +45,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string DetailAccountName { get; set; }
 
         /// <summary>
-        /// شماره سطح که عمق تفصیلی شناور به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
-        /// </summary>
-        public short DetailAccountLevel { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی مرکز هزینه مورد استفاده در سطر گزارش
         /// </summary>
         public int CostCenterId { get; set; }
@@ -80,11 +60,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string CostCenterName { get; set; }
 
         /// <summary>
-        /// شماره سطح که عمق مرکز هزینه به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
-        /// </summary>
-        public short CostCenterLevel { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی پروژه مورد استفاده در سطر گزارش
         /// </summary>
         public int ProjectId { get; set; }
@@ -98,11 +73,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام پروژه مورد استفاده در سطر گزارش
         /// </summary>
         public string ProjectName { get; set; }
-
-        /// <summary>
-        /// شماره سطح که عمق پروژه به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
-        /// </summary>
-        public short ProjectLevel { get; set; }
 
         /// <summary>
         /// شرح حساب
@@ -133,30 +103,5 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام شعبه ایجادکننده آرتیکل
         /// </summary>
         public string BranchName { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی شعبه ایجادکننده آرتیکل
-        /// </summary>
-        public int BranchId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی وضعیت ثبتی سند مالی
-        /// </summary>
-        public int VoucherStatusId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی کاربر تاییدکننده سند مالی
-        /// </summary>
-        public int? VoucherConfirmedById { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی کاربر تصویب کننده سند مالی
-        /// </summary>
-        public int? VoucherApprovedById { get; set; }
-
-        /// <summary>
-        /// رفرنس سند مالی
-        /// </summary>
-        public string VoucherReference { get; set; }
     }
 }

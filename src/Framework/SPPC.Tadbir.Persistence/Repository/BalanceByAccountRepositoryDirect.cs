@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Persistence.Repository
                 EndBalance = balanaceByItem.Items.Sum(item => item.EndBalance)
             };
 
-            SetItemNames(parameters, balanaceByItem);
+            SetItemDetails(parameters, balanaceByItem);
             return balanaceByItem;
         }
 
@@ -213,7 +213,7 @@ namespace SPPC.Tadbir.Persistence.Repository
             return new ReportQuery(queryBuilder.ToString());
         }
 
-        private void SetItemNames(BalanceByAccountParameters parameters,
+        private void SetItemDetails(BalanceByAccountParameters parameters,
             BalanceByAccountViewModel balanceByAccount)
         {
             var accountLookup = new Dictionary<string, string>();
@@ -260,22 +260,31 @@ namespace SPPC.Tadbir.Persistence.Repository
             {
                 if (!String.IsNullOrEmpty(item.AccountFullCode))
                 {
-                    item.AccountName = accountLookup[item.AccountFullCode];
+                    var items = accountLookup[item.AccountFullCode].Split(',');
+                    item.AccountId = Int32.Parse(items[0]);
+                    item.AccountName = items[1];
+                    item.AccountDescription = items[2];
                 }
 
                 if (!String.IsNullOrEmpty(item.DetailAccountFullCode))
                 {
-                    item.DetailAccountName = detailAccountLookup[item.DetailAccountFullCode];
+                    var items = detailAccountLookup[item.DetailAccountFullCode].Split(',');
+                    item.DetailAccountId = Int32.Parse(items[0]);
+                    item.DetailAccountName = items[1];
                 }
 
                 if (!String.IsNullOrEmpty(item.CostCenterFullCode))
                 {
-                    item.CostCenterName = costCenterLookup[item.CostCenterFullCode];
+                    var items = costCenterLookup[item.CostCenterFullCode].Split(',');
+                    item.CostCenterId = Int32.Parse(items[0]);
+                    item.CostCenterName = items[1];
                 }
 
                 if (!String.IsNullOrEmpty(item.ProjectFullCode))
                 {
-                    item.ProjectName = projectLookup[item.ProjectFullCode];
+                    var items = projectLookup[item.ProjectFullCode].Split(',');
+                    item.ProjectId = Int32.Parse(items[0]);
+                    item.ProjectName = items[1];
                 }
             }
         }
@@ -299,8 +308,11 @@ namespace SPPC.Tadbir.Persistence.Repository
             var itemLookup = new Dictionary<string, string>(result.Rows.Count);
             foreach (var row in result.Rows.Cast<DataRow>())
             {
-                itemLookup.Add(_utility.ValueOrDefault(row, "FullCode"),
-                    _utility.ValueOrDefault(row, "Name"));
+                string details = String.Join(",",
+                    _utility.ValueOrDefault<int>(row, "Id"),
+                    _utility.ValueOrDefault(row, "Name"),
+                    _utility.ValueOrDefault(row, "Description"));
+                itemLookup.Add(_utility.ValueOrDefault(row, "FullCode"), details);
             }
 
             return itemLookup;

@@ -15,7 +15,8 @@ WHERE acc.FiscalPeriodID <= {2}";
         internal const string ItemLookupExact = @"
 SELECT DISTINCT(SUBSTRING(acc.FullCode, 1, {0})) AS FullCode,
     (SELECT {1}ID FROM [Finance].[{1}] WHERE FullCode = SUBSTRING(acc.FullCode, 1, {0})) AS Id,
-    (SELECT Name FROM [Finance].[{1}] WHERE FullCode = SUBSTRING(acc.FullCode, 1, {0})) AS Name
+    (SELECT Name FROM [Finance].[{1}] WHERE FullCode = SUBSTRING(acc.FullCode, 1, {0})) AS Name,
+    (SELECT Description FROM [Finance].[{1}] WHERE FullCode = SUBSTRING(acc.FullCode, 1, {0})) AS Description
 FROM [Finance].[{1}] acc
 WHERE acc.FiscalPeriodID <= {2} AND acc.FullCode IN({3})";
 
