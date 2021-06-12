@@ -110,7 +110,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedCompanyAsync(
             int companyId, [FromBody] CompanyDbViewModel company)
         {
-            var result = BasicValidationResult(company, companyId);
+            var result = await ValidationResultAsync(company, companyId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -192,9 +192,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DbName));
             }
 
-            if (_repository.IsDuplicateCompanyUserName(company))
+            if (companyId == 0 && _repository.IsDuplicateCompanyUserName(company))
             {
-                return BadRequestResult(_strings.Format(AppStrings.InvalidDatabaseUserName));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.UserName));
             }
 
             return Ok();

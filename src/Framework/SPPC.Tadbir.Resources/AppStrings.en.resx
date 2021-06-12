@@ -2631,9 +2631,6 @@
   <data name="FiscalPeriodMustBeProgressive" xml:space="preserve">
     <value>Date range of fiscal period must be after previous period's end and before next period's start.</value>
   </data>
-  <data name="InvalidDatabaseUserName" xml:space="preserve">
-    <value>Username is duplicate.</value>
-  </data>
   <data name="AppEnvironment" xml:space="preserve">
     <value>App environment</value>
   </data>

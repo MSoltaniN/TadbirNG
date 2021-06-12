@@ -2622,9 +2622,6 @@
   <data name="FiscalPeriodMustBeProgressive" xml:space="preserve">
     <value>محدوده تاریخی دوره مالی باید بعد از پایان دوره قبل و پیش از شروع دوره بعد قرار بگیرد.</value>
   </data>
-  <data name="InvalidDatabaseUserName" xml:space="preserve">
-    <value>نام کاربری تکراری میباشد.</value>
-  </data>
   <data name="AppEnvironment" xml:space="preserve">
     <value>محیط برنامه</value>
   </data>
