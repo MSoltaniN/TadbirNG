@@ -92,9 +92,17 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا دوره مالی مشخص شده قابل حذف است یا نه؟
         /// </summary>
-        /// <param name="fperiodId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <param name="fiscalPeriodId">شناسه دیتابیسی دوره مالی مورد نظر</param>
         /// <returns>اگر دوره مالی مورد نظر در برنامه به طور مستقیم استفاده شده باشد
         /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
-        Task<bool> CanDeleteFiscalPeriodAsync(int fperiodId);
+        Task<bool> CanDeleteFiscalPeriodAsync(int fiscalPeriodId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که دوره مالی با شناسه دیتابیسی داده شده
+        /// سندی با وضعیت ثبت، ثبت قطعی، تأییدشده یا تصویب شده دارد یا نه
+        /// </summary>
+        /// <param name="fiscalPeriodId"></param>
+        /// <returns></returns>
+        Task<bool> HasCommittedVouchersAsync(int fiscalPeriodId);
     }
 }

@@ -3489,4 +3489,7 @@
   <data name="AdminRoleIsRequired" xml:space="preserve">
     <value>Revoking administrator role for administrator user is not allowed.</value>
   </data>
+  <data name="CantDeleteCommittedVouchers" xml:space="preserve">
+    <value>To delete a fiscal period with data, all vouchers need to be unchecked.</value>
+  </data>
 </root>

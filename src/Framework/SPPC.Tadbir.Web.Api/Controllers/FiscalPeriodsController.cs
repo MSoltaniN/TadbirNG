@@ -149,12 +149,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // DELETE: api/fperiods/{fpId:min(1)}/data
         [HttpDelete]
         [Route(FiscalPeriodApi.FiscalPeriodDataUrl)]
-        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Delete)]
+        [AuthorizeRequest]
         public async Task<IActionResult> DeleteExistingFiscalPeriodWithDataAsync(int fpId)
         {
             string result = await BasicValidateDeleteAsync(fpId);
             if (!String.IsNullOrEmpty(result))
             {
+                return BadRequestResult(result);
+            }
+
+            if (await _repository.HasCommittedVouchersAsync(fpId))
+            {
+                result = _strings[AppStrings.CantDeleteCommittedVouchers];
                 return BadRequestResult(result);
             }
 

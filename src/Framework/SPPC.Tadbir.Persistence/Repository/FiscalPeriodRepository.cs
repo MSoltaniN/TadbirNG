@@ -279,16 +279,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا دوره مالی مشخص شده قابل حذف است یا نه؟
         /// </summary>
-        /// <param name="fperiodId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <param name="fiscalPeriodId">شناسه دیتابیسی دوره مالی مورد نظر</param>
         /// <returns>اگر دوره مالی مورد نظر در برنامه به طور مستقیم استفاده شده باشد
         /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
-        public async Task<bool> CanDeleteFiscalPeriodAsync(int fperiodId)
+        public async Task<bool> CanDeleteFiscalPeriodAsync(int fiscalPeriodId)
         {
             bool canDelete = true;
             var fiscalTypes = ModelCatalogue.GetAllOfType<FiscalEntity>();
             foreach (var type in fiscalTypes)
             {
-                if (HasFiscalPeriodReference(type, fperiodId))
+                if (HasFiscalPeriodReference(type, fiscalPeriodId))
                 {
                     canDelete = false;
                     break;
@@ -299,11 +299,27 @@ namespace SPPC.Tadbir.Persistence
             {
                 var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
                 int roleCount = await repository.GetCountByCriteriaAsync(
-                    rfp => rfp.FiscalPeriodId == fperiodId);
+                    rfp => rfp.FiscalPeriodId == fiscalPeriodId);
                 canDelete = (roleCount == 0);
             }
 
             return canDelete;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که دوره مالی با شناسه دیتابیسی داده شده
+        /// سندی با وضعیت ثبت، ثبت قطعی، تأییدشده یا تصویب شده دارد یا نه
+        /// </summary>
+        /// <param name="fiscalPeriodId"></param>
+        /// <returns></returns>
+        public async Task<bool> HasCommittedVouchersAsync(int fiscalPeriodId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            int committedCount = await repository.GetCountByCriteriaAsync(
+                voucher => voucher.FiscalPeriodId == fiscalPeriodId &&
+                (voucher.StatusId != (int)DocumentStatusId.NotChecked ||
+                voucher.ConfirmedById.HasValue || voucher.ApprovedById.HasValue));
+            return committedCount > 0;
         }
 
         internal override int? EntityType

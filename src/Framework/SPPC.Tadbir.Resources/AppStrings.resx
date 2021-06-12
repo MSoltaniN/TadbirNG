@@ -3480,4 +3480,7 @@
   <data name="AdminRoleIsRequired" xml:space="preserve">
     <value>حذف نقش راهبر سیستم برای کاربر راهبر سیستم امکانپذیر نیست.</value>
   </data>
+  <data name="CantDeleteCommittedVouchers" xml:space="preserve">
+    <value>برای حذف کامل دوره مالی، کلیه اسناد مالی باید در وضعیت ثبت نشده باشند.</value>
+  </data>
 </root>
