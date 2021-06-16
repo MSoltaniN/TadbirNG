@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class ShareDataService {
     
-  public sharingData : any;
+  public sharingData: any;  
   
   constructor() { } 
 

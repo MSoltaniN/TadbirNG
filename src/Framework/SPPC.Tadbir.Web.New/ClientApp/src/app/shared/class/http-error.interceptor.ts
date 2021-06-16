@@ -11,11 +11,12 @@ import { ToastrService } from "ngx-toastr";
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
-  component: any;
+  component: any;  
 
   constructor(public toastrService: ToastrService)
   {
     //this.component = hostElement.nativeElement.__component;
+    
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -29,10 +30,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             this.toastrService.error(error.error.messages[0]);
             return Observable.throw(undefined);
           }
-          else if (!error.error && error) {
-            this.toastrService.error(error.message);
-            return Observable.throw(error);
-          }
+          //else if (!error.error && error && !this.sharingDataService.supressShowError) {
+          //  this.toastrService.error(error.message);
+          //  return Observable.throw(error);
+          //}
           
           return Observable.throw(error.error);
         })
