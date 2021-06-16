@@ -14,6 +14,8 @@ import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { DefaultComponent } from '@sppc/shared/class';
 import { InitialWizardComponent } from '@sppc/organization/components/initialWizard/initialWizard.component';
 import { String } from '@sppc/shared/class/source';
+import { ShortcutCommand } from '@sppc/shared/models/shortcutCommand';
+import { debug } from 'util';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -236,6 +238,11 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.bStorageService.removeSelectedDateRange();
   }
 
+  loadShortcut() {
+    this.userService.getCurrentUserHotKeys().subscribe((res: Array<ShortcutCommand>) => {      
+      this.bStorageService.setShortcut(res);
+    });
+  }
 
   loadMenuAndRoute(currentUser: ContextInfo) {
     //#region load menu
@@ -254,8 +261,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         var url = this.route.snapshot.queryParams['returnUrl'];
         this.router.navigate([url]);
       }
-      else {
-        debugger
+      else {        
         var currentRoute = this.bStorageService.getCurrentRoute();
         if (currentRoute && currentRoute.lastIndexOf('?') > 0)
           currentRoute = currentRoute.substring(0, currentRoute.lastIndexOf('?'));
@@ -301,8 +307,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         let contextInfo = res.body;
 
         var currentUser = this.bStorageService.getCurrentUser();
-        if (currentUser != null) {
-          debugger;
+        if (currentUser != null) {          
           currentUser.branchId = contextInfo.branchId;
           currentUser.companyId = contextInfo.companyId;
           currentUser.inventoryMode = contextInfo.inventoryMode;
@@ -319,7 +324,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.companyId, this.branchId, this.fiscalPeriodId);
 
           this.loadMenuAndRoute(currentUser);
-
+          this.loadShortcut();
           this.loadAllSetting();
         }
 

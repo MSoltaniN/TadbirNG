@@ -39,8 +39,8 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   @Input() InitializeDate: boolean = true;
   @Input() ValidateFPDate: boolean = true;
 
-  public displayFromDate: any;
-  public displayToDate: any;
+  @Input() displayFromDate: any;
+  @Input() displayToDate: any;
 
   public fpStartDate: Date;
   public fpEndDate: Date;

@@ -15,7 +15,7 @@ import { ServiceLocator } from "@sppc/service.locator";
 @Injectable()
 export class DetailComponent extends BaseComponent  {
 
-  shortcuts: ShortcutCommand[] = [new ShortcutCommand(1, 0, null, null, "Ctrl+Shift+Y", "addNew")];
+  //shortcuts: ShortcutCommand[] = [new ShortcutCommand(1, 0, null, null, "Ctrl+Shift+Y", "addNew")];
 
   private form: FormGroup;
   public properties: Map<string, Array<Property>>;
@@ -165,10 +165,12 @@ export class DetailComponent extends BaseComponent  {
       var ctrl = event.ctrlKey ? true : false;
       var shift = event.shiftKey ? true : false;
       var alt = event.altKey ? true : false;
-
+      debugger;
       var key = event.code.replace('Key', '').toLowerCase();
+      var shortcuts: ShortcutCommand[];
+      shortcuts = JSON.parse(this.bStorageService.getShortcut())
 
-      var shortcutCommand = this.shortcutService.searchShortcutCommand(ctrl, shift, alt, key, this.shortcuts);
+      var shortcutCommand = this.shortcutService.searchShortcutCommand(ctrl, shift, alt, key, shortcuts);
       if (shortcutCommand) {
         if (this[shortcutCommand.method] != undefined)        
           this[shortcutCommand.method]();

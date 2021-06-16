@@ -262,44 +262,41 @@ export class AppComponent implements AfterViewInit, OnInit {
     var keyFound: boolean = false;
 
     var it = command.hotKey.toLowerCase();
-    if (ctrl && it.indexOf('ctrl') >= 0) {
+    if (it.indexOf('ctrl') >= 0) {
       ctrlFound = true;
     }
 
     if (it.indexOf('alt') >= 0) {
-      if (alt) {
-        altFound = true;
-      }
+      altFound = true;
     }
-
+       
     if (it.indexOf('shift') >= 0) {
-      if (shift) {
-        shiftFound = true;
-      }
+      shiftFound = true;
     }
+    
 
     if (it.indexOf('+' + key) >= 0)
       keyFound = true;
+       
 
-
-    if (ctrl && shift && alt) {
-      if ((ctrlFound && shiftFound && altFound) && keyFound)
+    if ((ctrlFound && shiftFound && altFound) && keyFound) {
+      if (ctrl && shift && alt)
         return command;
     }
-    else if (ctrl && shift) {
-      if ((ctrlFound && shiftFound) && keyFound)
+    else if ((ctrlFound && shiftFound) && keyFound) {
+      if (ctrl && shift)
         return command;
     }
-    else if (ctrl && alt) {
-      if ((ctrlFound && altFound) && keyFound)
+    else if ((ctrlFound && altFound) && keyFound)  {
+      if (ctrl && alt)
         return command;
     }
-    else if (shift && alt) {
-      if ((shiftFound && altFound) && keyFound)
+    else if ((shiftFound && altFound) && keyFound)  {
+      if (shift && alt)
         return command;
     }
-    else if (ctrl) {
-      if ((ctrlFound) && keyFound)
+    else if ((ctrlFound) && keyFound){
+      if (ctrl) 
         return command;
     }
   }

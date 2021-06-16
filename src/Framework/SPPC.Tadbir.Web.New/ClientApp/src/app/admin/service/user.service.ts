@@ -9,6 +9,7 @@ import { BaseService } from '@sppc/shared/class';
 import { User } from '../models';
 import { UserApi } from './api';
 import { UserProfile, Command, RelatedItems } from '@sppc/shared/models';
+import { ShortcutCommand } from '@sppc/shared/models/shortcutCommand';
 
 
 
@@ -59,6 +60,13 @@ export class UserService extends BaseService {
         var options = { headers: this.httpHeaders };
         return this.http.get(url, options)
             .map(response => <any>(<Response>response));
+    }
+
+    getCurrentUserHotKeys() {
+        var url = UserApi.CurrentUserHotKeys;
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<ShortcutCommand>response));
     }
 
     modifiedUserRoles(userRoles: RelatedItems) {

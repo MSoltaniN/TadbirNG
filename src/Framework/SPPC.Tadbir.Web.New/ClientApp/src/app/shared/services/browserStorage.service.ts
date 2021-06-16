@@ -32,6 +32,7 @@ export const SessionKeys = {
   ItemBalance: 'itemBalance',
   OperationLog: 'OperationLog',
   BalanceSheet: 'BalanceSheet',
+  Shortcut: 'shortcut',
 }
 
 
@@ -105,6 +106,14 @@ export class BrowserStorageService {
       localStorage.setItem(SessionKeys.Menu, JSON.stringify(item));
     else
       sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(item));
+  }
+
+  setShortcut(item: any) {    
+      localStorage.setItem(SessionKeys.Shortcut, JSON.stringify(item));    
+  }
+
+  getShortcut():string {
+    return localStorage.getItem(SessionKeys.Shortcut);
   }
 
   setCurrentRoute(currentUrl: string) {
