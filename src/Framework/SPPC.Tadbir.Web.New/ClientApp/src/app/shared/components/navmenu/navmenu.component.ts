@@ -56,13 +56,7 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   ngOnInit() {
     if (this.CurrentLanguage == 'fa')
       this.rightAlign = false;
-
-    //for (let parent of this.menuList) {
-    //  if (parent.children.findIndex(p => p.routeUrl != null && p.routeUrl.toLowerCase() == this.location.path().toLowerCase()) > -1) {
-    //    this.expandedSubMenuId = parent.id;
-    //    break;
-    //  }
-    //}     
+   
     var menu : Command = null;
     this.menuList.forEach((element) => {
       menu = this.searchTree(element, this.router.url);      
@@ -115,57 +109,11 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
       this.router.navigate([item.routeUrl])
   }
 
-  onMenuClick(event: any, id: number) {
-    // if(event)
-    //     if (event.srcElement.className == "menuitem child")
-    //         this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse'), 'in');
-
-    // for (let mnu of this.menuList) {
-    //     if (id != mnu.id)
-    //         this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse').querySelector('#div' + mnu.id.toString()), 'in');
-    // }
-
-    // event.srcElement.scrollIntoView();
+  onMenuClick(event: any, id: number) {   
 
   }
 
   clickMenu(event: any, id: number) {
-    /*if(event)
-         if (this.el.nativeElement.querySelector('#a' + id).parentElement.className.contains("parent treeview"))
-         {
-             if(this.el.nativeElement.querySelector('.menu-open1') !=null || this.el.nativeElement.querySelector('.menu-open') !=null)                  
-             {                    
-                 if(this.el.nativeElement.querySelector('.menu-open1 > ul.treeview-menu'))
-                 {
-                    this.renderer2.setStyle(this.el.nativeElement.querySelector('.menu-open1 > ul.treeview-menu'), 'display','none');
-                    this.renderer2.removeClass(this.el.nativeElement.querySelector('.menu-open1'), 'menu-open1');
-                    this.renderer2.removeClass(this.el.nativeElement.querySelector('.menu-open1'), 'menu-open');
-                 }
-                 if(this.el.nativeElement.querySelector('.menu-open > ul.treeview-menu'))
-                 {
-                    this.renderer2.setStyle(this.el.nativeElement.querySelector('.menu-open > ul.treeview-menu'), 'display','none');
-                    this.renderer2.removeClass(this.el.nativeElement.querySelector('.menu-open'), 'menu-open');
-                    this.renderer2.removeClass(this.el.nativeElement.querySelector('.menu-open'), 'menu-open1');
-                 }
-                
-             }                 
-            else if(this.el.nativeElement.querySelector('#menu' + id).display != 'block')
-            {
-                this.renderer2.addClass(this.el.nativeElement.querySelector('#a' + id).parentElement,"menu-open1");
-                this.renderer2.setStyle(this.el.nativeElement.querySelector('#menu' + id), 'display','block');
-            }
-         }
-        else if  (this.el.nativeElement.querySelector('#a' + id).parentElement.className.contains("menu-open")
-        || this.el.nativeElement.querySelector('#a' + id).parentElement.className.contains("menu-open1"))
-        //|| this.el.nativeElement.querySelector('#a' + id).parentElement.className == "parent treeview menu-open")
-        {                
-
-            this.renderer2.removeClass(this.el.nativeElement.querySelector('#a' + id).parentElement,"menu-open1");
-            this.renderer2.removeClass(this.el.nativeElement.querySelector('#a' + id).parentElement,"menu-open");
-            this.renderer2.setStyle(this.el.nativeElement.querySelector('#menu' + id), 'display','none');
-        }
-     
-    */
 
   }
 

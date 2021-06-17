@@ -1,6 +1,6 @@
 
 import { Directive, Host, Input } from "@angular/core";
-import { ColumnComponent } from "@progress/kendo-angular-grid";
+import { ColumnComponent, GridComponent } from "@progress/kendo-angular-grid";
 import { ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared/models";
 import { GridFilterComponent } from "./component/grid-filter.component";
 import { DefaultComponent, EnviromentComponent } from "@sppc/shared/class";
@@ -15,10 +15,11 @@ import { BrowserStorageService } from "@sppc/shared/services";
 
 export class SppcAutoGridColumn extends EnviromentComponent {
 
-  constructor(@Host() private hostColumn: ColumnComponent, public bStorageService: BrowserStorageService) {
+  constructor(@Host() private hostColumn: ColumnComponent, public bStorageService: BrowserStorageService, @Host() private grid: GridComponent) {
     super(bStorageService);
   }
 
+  columnsWidth: number;
 
   @Input('sppc-auto-grid-column') value: string;
 
@@ -27,6 +28,7 @@ export class SppcAutoGridColumn extends EnviromentComponent {
 
 
   ngOnChanges() {
+    
     let setting: ColumnViewConfig;
     setting = JSON.parse(this.value);
     var size = this.screenSize;
@@ -36,12 +38,13 @@ export class SppcAutoGridColumn extends EnviromentComponent {
     this.hostColumn.sortable = true;
     this.hostColumn.width = screenSetting.width;
     this.hostColumn.title = screenSetting.title;
+    
 
     var fieldName = setting.name.split('.');
     for (var i = 0; i < fieldName.length; i++) {
       fieldName[i] = fieldName[i].charAt(0).toLowerCase() + fieldName[i].slice(1);
     }
 
-    this.hostColumn.field = fieldName.join('.');
+    this.hostColumn.field = fieldName.join('.');    
   }
 }
