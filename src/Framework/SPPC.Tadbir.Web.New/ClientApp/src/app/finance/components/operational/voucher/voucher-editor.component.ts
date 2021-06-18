@@ -333,8 +333,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   byNoVoucher() {
-    var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
-    debugger;
+    var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');    
     if (!voucherNo) {
       if (this.subjectMode == 0)
         this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
@@ -623,7 +622,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   deleteModel(confirm: boolean) {
     if (confirm) {     
       this.voucherService.delete(String.Format(VoucherApi.Voucher, this.voucherModel.id)).subscribe(response => {
-        debugger;
+        
         this.showMessage(this.getText('Messages.DeleteOperationSuccessful'), MessageType.Info);
 
         var url = VoucherApi.NextVoucher;

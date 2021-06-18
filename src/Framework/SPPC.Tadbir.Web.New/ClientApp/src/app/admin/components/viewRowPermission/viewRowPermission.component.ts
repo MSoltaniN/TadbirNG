@@ -241,8 +241,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
   saveRowPermission() {    
     this.errorMessages = undefined;
-    this.updateDataItem();
-    debugger;
+    this.updateDataItem();    
     this.viewRowPermissionService.edit<RowPermissionsForRoleInfo>(String.Format(RoleApi.RowAccessSettings, this.ddlSelectedRole), this.dataItem).subscribe(res => {
 
       this.showMessage(this.updateMsg, MessageType.Succes);

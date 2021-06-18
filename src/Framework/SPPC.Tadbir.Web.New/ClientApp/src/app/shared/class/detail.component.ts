@@ -165,7 +165,7 @@ export class DetailComponent extends BaseComponent  {
       var ctrl = event.ctrlKey ? true : false;
       var shift = event.shiftKey ? true : false;
       var alt = event.altKey ? true : false;
-      debugger;
+      
       var key = event.code.replace('Key', '').toLowerCase();
       var shortcuts: ShortcutCommand[];
       shortcuts = JSON.parse(this.bStorageService.getShortcut())
