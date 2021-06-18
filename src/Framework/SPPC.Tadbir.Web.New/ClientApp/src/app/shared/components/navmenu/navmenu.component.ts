@@ -29,6 +29,8 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   paths: number[] = [];
   currentRoute: string;
 
+  @ViewChild('li') menuItems: Array<ElementRef>;
+
   constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService, public bStorageService: BrowserStorageService,
     public translate: TranslateService, public renderer2: Renderer2, public router: Router,
     public metadata: MetaDataService, public el: ElementRef, public settingService: SettingService,
@@ -105,8 +107,12 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
       return;
     }
 
-    if (item.routeUrl)
+    if (item.routeUrl) {
       this.router.navigate([item.routeUrl])
+            
+      document.querySelector('li.active').classList.remove('active')
+      document.querySelector('#cmd' + item.id).classList.add('active')
+    }
   }
 
   onMenuClick(event: any, id: number) {   

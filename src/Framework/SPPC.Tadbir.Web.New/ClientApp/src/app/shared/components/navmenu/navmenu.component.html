@@ -3,7 +3,7 @@
   <section class="sidebar">
     <ul class="sidebar-menu tree" id='main-menu' data-widget="tree">
       <!--(window:keypress)="doSomething($event)"-->
-      <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'menu-open':searchActiveMenu(cmd.id) === true,'active':cmd.routeUrl === this.currentRoute}"
+      <li id="cmd{{cmd.id}}" *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'menu-open':searchActiveMenu(cmd.id) === true,'active':cmd.routeUrl === this.currentRoute}"
           [ngStyle]="{'display':searchActiveMenu(cmd.id) === true ? 'block':'' }">
         <!-- <a id="a{{cmd.id}}" href="#/dashboard" (click)="clickMenu($event,cmd.id)"> -->
         <a id="a{{cmd.id}}" href="javascript:;" (click)="clickMenu($event,cmd.id)">
@@ -16,7 +16,7 @@
 
         <ul class="treeview-menu" id='menu{{cmd.id}}' [ngClass]="{'menu-open':searchActiveMenu(cmd.id) === true}"
             [ngStyle]="{'display':searchActiveMenu(cmd.id) === true ? 'block':'none' }" >
-          <li *ngFor="let innerCmd of cmd.children;" [ngClass]="{'treeview' : innerCmd.routeUrl == null,'active':innerCmd.routeUrl === this.currentRoute}">
+          <li id="cmd{{innerCmd.id}}" *ngFor="let innerCmd of cmd.children;" [ngClass]="{'treeview' : innerCmd.routeUrl == null,'active':innerCmd.routeUrl === this.currentRoute}">
             <!--<a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : []">-->
             <a href="javascript:;" (click)="onClickMenu(innerCmd)">
               <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
@@ -31,7 +31,7 @@
             </a>
             <ul class="treeview-menu" id='menu{{innerCmd.id}}'  [ngClass]="{'menu-open':searchActiveMenu(innerCmd.id) === true}"
                 *ngIf="innerCmd.children.length > 0" [ngStyle]="{'display':searchActiveMenu(innerCmd.id) === true ? 'block':'none' }">
-              <li *ngFor="let cmd3 of innerCmd.children;" [ngClass]="{'treeview' : cmd3.routeUrl == null,'active':cmd3.routeUrl === this.currentRoute}">
+              <li id="cmd{{cmd3.id}}" *ngFor="let cmd3 of innerCmd.children;" [ngClass]="{'treeview' : cmd3.routeUrl == null,'active':cmd3.routeUrl === this.currentRoute}">
                 <!--<a [routerLink]="cmd3.routeUrl ? [cmd3.routeUrl] : []">-->
                 <a href="javascript:;" (click)="onClickMenu(cmd3)">
                   <span class="glyphicon glyphicon-{{cmd3.iconName}}"></span>
