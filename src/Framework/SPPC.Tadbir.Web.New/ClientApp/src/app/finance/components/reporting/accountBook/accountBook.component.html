@@ -73,7 +73,7 @@
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true"
-                                width="50"
+                                [width]="45"
                                 [resizable]="false"
                                 [reorderable]="false">
       <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
