@@ -125,7 +125,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.normalTitle = this.getText("Voucher.DraftVoucher");
     this.voucherOperationsItem = VoucherOperations;
     this.entityNamePermission = "Voucher";
-    this.editForm.reset();
+    this.editForm.reset();    
 
     if (this.voucherItem) {
       this.initVoucherForm(this.voucherItem);
@@ -268,8 +268,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
       }
     }, err => {
-      if (err.status == 400) {
-        this.showMessage(this.getText(err.error.value), MessageType.Warning);        
+      if (err.statusCode == 400) {
+        this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);        
         this.router.navigate(['/finance/voucher']);
       }
 
@@ -296,8 +296,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       }
     },
       err => {       
-        if (err.status == 400) {
-          this.showMessage(this.getText(err.error.value), MessageType.Warning);
+        if (err.statusCode == 400) {
+          this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);
           this.router.navigate(['/finance/voucher']);
         }
       });
