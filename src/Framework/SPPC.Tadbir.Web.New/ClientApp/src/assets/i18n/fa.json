@@ -59,7 +59,8 @@
     "VoucherNumberByStatus": "<a class='tostrlink' href='{2}'>سیستم دارای {0} عدد سند {1} میباشد</a>",
     "OperationSuccessful": "عملیات با موفقیت انجام شد",
     "VoucherDeleteConfirm": "آیا برای حذف سند اطمینان دارید؟",
-    "DeleteOperationSuccessful": "عملیات حذف با موفقیت انجام شد"
+    "DeleteOperationSuccessful": "عملیات حذف با موفقیت انجام شد",
+    "GlobalErrorMessage": "خطایی در هنگام اجرای عملیات رخ داده است"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",

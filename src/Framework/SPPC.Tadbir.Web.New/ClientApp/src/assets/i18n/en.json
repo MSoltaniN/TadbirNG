@@ -55,11 +55,12 @@
     "SelectedItems": "selected items",
     "TreeLevelsAreTooDeep": "Tree levels deeper than {0} is not allowed.",
     "IncorrectFileFormat": "The file format is incorrect",
-    "UploadSuccessful": "Upload Successful",    
+    "UploadSuccessful": "Upload Successful",
     "VoucherNumberByStatus": "<a class='tostrlink' href='{2}'>The system has {0} {1} vouchers</a>",
     "OperationSuccessful": "Operation successful",
     "VoucherDeleteConfirm": "are you sure to delete voucher?",
-    "DeleteOperationSuccessful": "delete operation successful"
+    "DeleteOperationSuccessful": "delete operation successful",
+    "GlobalErrorMessage": "An error occurred while performing the operation"
   },
   "Report": {
     "ReportViewer": "View of",
