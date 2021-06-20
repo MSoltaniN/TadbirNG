@@ -60,6 +60,7 @@ kendo-pager {
   /deep/ .k-grid-table-wrap table,
   /deep/ .k-grid-footer-wrap table {
     width: min-content !important;
+    min-width:300px!important;
   }
 }
 
