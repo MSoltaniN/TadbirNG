@@ -201,22 +201,25 @@ export class AppComponent implements AfterViewInit, OnInit {
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {
-      console.log(event);
+      
 
       var ctrl = event.ctrlKey ? true : false;
       var shift = event.shiftKey ? true : false;
       var alt = event.altKey ? true : false;
 
-      var key = event.code.replace('Key', '').toLowerCase();
+      if (event.code) {
 
-      var menus = this.bStorageService.getMenu();
-      if (menus) {
-        this.menuList = JSON.parse(menus);
-        var command = this.searchHotKey(ctrl, shift, alt, key, this.menuList);
-        if (command) {
-          var url = command.routeUrl;
-          this.router.navigate([url]);
-        }        
+        var key = event.code.replace('Key', '').toLowerCase();
+
+        var menus = this.bStorageService.getMenu();
+        if (menus) {
+          this.menuList = JSON.parse(menus);
+          var command = this.searchHotKey(ctrl, shift, alt, key, this.menuList);
+          if (command) {
+            var url = command.routeUrl;
+            this.router.navigate([url]);
+          }
+        }
       }
     }
   }  

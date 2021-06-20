@@ -101,7 +101,7 @@
 
     </kendo-grid-column>
 
-    <kendo-grid-command-column media="(min-width: 450px)">
+    <kendo-grid-command-column media="(min-width: 450px)" [width]="300">
       <ng-template kendoGridCellTemplate let-role>
         <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
         <button kendoButton SppcPermissionCheck="AssignUsers" (sppcClick)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
