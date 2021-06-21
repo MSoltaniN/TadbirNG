@@ -57,13 +57,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   async ngOnInit() {
 
     if (this.InitializeDate) {
-      this.fpStartDate = this.FiscalPeriodStartDate;
-      this.fpEndDate = this.FiscalPeriodEndDate;
-      this.displayFromDate = await this.settingService.getDateConfigAsync("start");
-      this.displayToDate = await this.settingService.getDateConfigAsync("end");
-
-      this.getFromDate();
-      this.getToDate();
+      await this.initDate();
     }
 
     var lang: string = "fa";
@@ -85,7 +79,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(val => {
 
-      if (val.fromDate && val.toDate) {
+        if (val.fromDate && val.toDate && this.fpStartDate && this.fpEndDate) {
 
         if (this.compareDate(val.fromDate, val.toDate) != 1) {
           
@@ -123,6 +117,15 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     });
   }
 
+  async initDate() {    
+    this.fpStartDate = this.FiscalPeriodStartDate;
+    this.fpEndDate = this.FiscalPeriodEndDate;
+    this.displayFromDate = await this.settingService.getDateConfigAsync("start");
+    this.displayToDate = await this.settingService.getDateConfigAsync("end");
+
+    this.getFromDate();
+    this.getToDate();    
+  }
 
   getEmitDate(date: Date, isToDate: boolean): any {
     var dateValue = moment(date).format('YYYY/MM/DD');
