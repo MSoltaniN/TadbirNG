@@ -3483,4 +3483,13 @@
   <data name="CantDeleteCommittedVouchers" xml:space="preserve">
     <value>برای حذف کامل دوره مالی، کلیه اسناد مالی باید در وضعیت ثبت نشده باشند.</value>
   </data>
+  <data name="UncheckClosingVoucher" xml:space="preserve">
+    <value>برگشت سند اختتامیه</value>
+  </data>
+  <data name="SpecialVoucherOps" xml:space="preserve">
+    <value>عملیات ویژه اسناد مالی</value>
+  </data>
+  <data name="OperationNotAllowed" xml:space="preserve">
+    <value>کاربر جاری مجوز لازم برای {0} را ندارد.</value>
+  </data>
 </root>

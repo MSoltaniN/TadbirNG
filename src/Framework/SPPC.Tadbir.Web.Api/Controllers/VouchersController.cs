@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Inventory;
@@ -221,7 +221,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetOrIssueOpeningVoucherAsync(bool? isDefault)
         {
-            var result = await SpecialVoucherValidationResultAsync(AppStrings.OpeningVoucher);
+            var result = await SpecialVoucherValidationResultAsync(
+                AppStrings.OpeningVoucher, AppStrings.IssueOpeningVoucher, VoucherOriginId.OpeningVoucher);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -246,7 +247,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var closingAccountsVoucher = await _repository.GetClosingTempAccountsVoucherAsync(false);
             if (closingAccountsVoucher == null)
             {
-                var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
+                var result = await SpecialVoucherValidationResultAsync(
+                    AppStrings.ClosingTempAccounts, AppStrings.IssueClosingTempAccountsVoucher,
+                    VoucherOriginId.ClosingTempAccounts);
                 if (result is BadRequestObjectResult)
                 {
                     return result;
@@ -275,7 +278,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 balanceItems, false);
             if (closingAccountsVoucher == null)
             {
-                var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingTempAccounts);
+                var result = await SpecialVoucherValidationResultAsync(
+                    AppStrings.ClosingTempAccounts, AppStrings.IssueClosingTempAccountsVoucher,
+                    VoucherOriginId.ClosingTempAccounts);
                 if (result is BadRequestObjectResult)
                 {
                     return result;
@@ -302,7 +307,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var closingVoucher = await _repository.GetClosingVoucherAsync(false);
             if (closingVoucher == null)
             {
-                var result = await ClosingVoucherValidationResultAsync();
+                var result = await SpecialVoucherValidationResultAsync(
+                    AppStrings.ClosingVoucher, AppStrings.IssueClosingVoucher, VoucherOriginId.ClosingVoucher);
                 if (result is BadRequestObjectResult)
                 {
                     return result;
@@ -1159,7 +1165,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 var result = await _repository.ValidateVoucherActionAsync(item, action);
                 if (result == null)
                 {
-                    validated.Add(item);
+                    if (action == AppStrings.UndoCheck && !await CanUncheckVoucherAsync(item))
+                    {
+                        string message = _strings.Format(
+                            AppStrings.OperationNotAllowed, AppStrings.UncheckClosingVoucher);
+                        notValidated.Add(new GroupActionResultViewModel()
+                        {
+                            Id = item,
+                            ErrorMessage = message
+                        });
+                    }
+                    else
+                    {
+                        validated.Add(item);
+                    }
                 }
                 else
                 {
@@ -1276,26 +1295,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> ClosingVoucherValidationResultAsync()
+        private async Task<IActionResult> SpecialVoucherValidationResultAsync(
+            string typeKey, string operationKey, VoucherOriginId origin)
         {
-            var result = await SpecialVoucherValidationResultAsync(AppStrings.ClosingVoucher);
-            if (result is BadRequestObjectResult)
+            // Permission check (can't be done with attributes)...
+            if (!CanIssueSpecialVoucher(origin))
             {
-                return result;
+                string message = _strings.Format(AppStrings.OperationNotAllowed, operationKey);
+                return BadRequestResult(message);
             }
 
-            // Current fiscal period MUST have the closing temp accounts voucher
-            if (!await _repository.IsCurrentSpecialVoucherCheckedAsync(
-                VoucherOriginId.ClosingTempAccounts))
-            {
-                return BadRequestResult(_strings[AppStrings.ClosingAccountsVoucherNotIssuedOrChecked]);
-            }
-
-            return Ok();
-        }
-
-        private async Task<IActionResult> SpecialVoucherValidationResultAsync(string typeKey)
-        {
             // Rule 1 : Current branch MUST be the highest-level branch in hierarchy...
             if (!await _repository.CanIssueSpecialVoucherAsync(SecurityContext.User.BranchId))
             {
@@ -1311,6 +1320,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     return BadRequestResult(_strings[AppStrings.CantIssueClosingVoucherWithUncheckedVouchers]);
                 }
+            }
+
+            // Rule 3 : Current fiscal period MUST have the closing temp accounts voucher
+            if (typeKey == AppStrings.ClosingVoucher
+                && !await _repository.IsCurrentSpecialVoucherCheckedAsync(VoucherOriginId.ClosingTempAccounts))
+            {
+                return BadRequestResult(_strings[AppStrings.ClosingAccountsVoucherNotIssuedOrChecked]);
             }
 
             return Ok();
@@ -1364,7 +1380,63 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
+            if (action == AppStrings.UndoCheck && !await CanUncheckVoucherAsync(voucherId))
+            {
+                string message = _strings.Format(AppStrings.OperationNotAllowed, AppStrings.UncheckClosingVoucher);
+                return BadRequestResult(message);
+            }
+
             return Ok();
+        }
+
+        private async Task<bool> CanUncheckVoucherAsync(int voucherId)
+        {
+            bool canUncheck = SecurityContext.IsInRole(AppConstants.AdminRoleId);
+            if (!canUncheck)
+            {
+                var repository = GetVoucherRepository(SubjectType.Normal);
+                var voucher = await repository.GetVoucherAsync(voucherId);
+                if (voucher != null && voucher.OriginName == AppStrings.ClosingVoucher)
+                {
+                    var permission = new PermissionBriefViewModel(
+                        SecureEntity.SpecialVoucher, (int)SpecialVoucherPermissions.UncheckClosingVoucher);
+                    canUncheck = SecurityContext.HasPermissions(permission);
+                }
+                else
+                {
+                    canUncheck = true;
+                }
+            }
+
+            return canUncheck;
+        }
+
+        private bool CanIssueSpecialVoucher(VoucherOriginId origin)
+        {
+            int flags = 0;
+            switch (origin)
+            {
+                case VoucherOriginId.OpeningVoucher:
+                    flags = (int)SpecialVoucherPermissions.IssueOpeningVoucher;
+                    break;
+                case VoucherOriginId.ClosingTempAccounts:
+                    flags = (int)SpecialVoucherPermissions.IssueClosingTempAccountsVoucher;
+                    break;
+                case VoucherOriginId.ClosingVoucher:
+                    flags = (int)SpecialVoucherPermissions.IssueClosingVoucher;
+                    break;
+                default:
+                    break;
+            }
+
+            var permission = new PermissionBriefViewModel()
+            {
+                EntityName = SecureEntity.SpecialVoucher,
+                Flags = flags
+            };
+
+            return SecurityContext.IsInRole(AppConstants.AdminRoleId)
+                || SecurityContext.HasPermissions(permission);
         }
 
         private async Task<IActionResult> GroupDeleteLineResultAsync(

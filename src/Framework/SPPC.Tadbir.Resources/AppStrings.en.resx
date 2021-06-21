@@ -3492,4 +3492,13 @@
   <data name="CantDeleteCommittedVouchers" xml:space="preserve">
     <value>To delete a fiscal period with data, all vouchers need to be unchecked.</value>
   </data>
+  <data name="UncheckClosingVoucher" xml:space="preserve">
+    <value>Uncheck closing voucher</value>
+  </data>
+  <data name="SpecialVoucherOps" xml:space="preserve">
+    <value>Special voucher operations</value>
+  </data>
+  <data name="OperationNotAllowed" xml:space="preserve">
+    <value>Current user does not have permission to {0}.</value>
+  </data>
 </root>

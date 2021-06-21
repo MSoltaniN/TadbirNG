@@ -52,6 +52,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public bool IsApproved { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی مأخذ سند مالی
+        /// </summary>
+        public int OriginId { get; set; }
+
+        /// <summary>
         /// نام مأخذ سند مالی
         /// </summary>
         public string OriginName { get; set; }
