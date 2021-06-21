@@ -779,9 +779,9 @@
         </Property>
         <Property name="MinorUnit" type="String" isValidated="True" description="کلید متن چند زبانه برای نام ارز جزء مورد استفاده، که برای ارزهای خارجی معمولاً سنت است" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.1.1137.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtMinorUnit" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="MinorUnit" type="nvarchar(16)" nullable="False" />
+          <PropertyStorage name="MinorUnit" type="nvarchar(32)" nullable="False" />
           <ColumnView name="Minor Unit" visible="True" width="120" />
-          <ValidationRule name="MinorUnit_Validation" required="True" minimum="" maximum="16" format="" type="Length" />
+          <ValidationRule name="MinorUnit_Validation" required="True" minimum="" maximum="32" format="" type="Length" />
         </Property>
         <Property name="Multiplier" type="Int32" isValidated="True" description="ضریب تبدیل ارز اصلی به ارز جزء که برای ارزهای خارجی معمولاً 100 و گاهی 1000 است" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.1.1137.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnMultiplier" format="" type="SpinButton" bindingMember="Value" />
