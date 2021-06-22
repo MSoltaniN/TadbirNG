@@ -311,6 +311,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 log.OperationName = _strings[log.OperationName];
                 log.SourceListName = _strings[log.SourceListName ?? String.Empty];
                 log.SourceName = _strings[log.SourceName ?? String.Empty];
+                log.Description = _strings[log.Description ?? String.Empty];
             }
         }
 

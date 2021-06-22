@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// نام ارز جزء مورد استفاده، که برای ارزهای خارجی معمولاً سنت است
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string MinorUnit { get; set; }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string Description { get; set; }
 
         /// <summary>
-        /// آیا این ارز، ارز پایه میباشد؟
+        /// مشخص می کند که ارز مورد نظر ارز پایه است یا نه؟
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public virtual bool IsDefaultCurrency { get; set; }

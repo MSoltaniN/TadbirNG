@@ -88,6 +88,11 @@ namespace SPPC.Tadbir.Security
         public const string DraftVouchers = "DraftVouchers";
 
         /// <summary>
+        /// نام موجودیت سند عملیات ویژه
+        /// </summary>
+        public const string SpecialVoucher = "SpecialVoucher";
+
+        /// <summary>
         /// نام موجودیت کاربر برنامه
         /// </summary>
         public const string User = "User";

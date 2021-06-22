@@ -143,7 +143,7 @@ CREATE TABLE [Finance].[Currency] (
     [Name]           NVARCHAR(64)     NOT NULL,
     [Code]           NVARCHAR(8)      NOT NULL,
     [TaxCode]        INT              NOT NULL,
-    [MinorUnit]      NVARCHAR(16)     NOT NULL,
+    [MinorUnit]      NVARCHAR(32)     NOT NULL,
     [DecimalCount]   SMALLINT         NOT NULL,
     [IsActive]       BIT              NOT NULL,
 	[IsDefaultCurrency] BIT           NOT NULL,
@@ -1511,4 +1511,4 @@ GO
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.1.1140')
+VALUES(1, '1.1.1149')

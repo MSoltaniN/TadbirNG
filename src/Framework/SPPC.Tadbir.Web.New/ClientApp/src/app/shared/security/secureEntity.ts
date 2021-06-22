@@ -26,6 +26,7 @@ export const SecureEntity = {
     Vouchers: 'Vouchers',
     DraftVoucher: 'DraftVoucher',
     DraftVouchers: 'DraftVouchers',
+    SpecialVoucher: 'SpecialVoucher',
     User: 'User',
     Role: 'Role',
     Company: 'Company',

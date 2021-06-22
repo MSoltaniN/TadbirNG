@@ -595,7 +595,44 @@ namespace SPPC.Tadbir.Security
         /// <summary>
         /// کلیه دسترسی های تعریف شده برای فرم مدیریت اسناد حسابداری
         /// </summary>
-        All = 0x3f,
+        All = 0x3f
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به عملیات ویژه اسناد مالی را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum SpecialVoucherPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به عملیات ویژه اسناد مالی
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی به عملیات صدور سند افتتاحیه
+        /// </summary>
+        IssueOpeningVoucher = 0x1,
+
+        /// <summary>
+        /// دسترسی به عملیات صدور سند بستن حسابهای موقت
+        /// </summary>
+        IssueClosingTempAccountsVoucher = 0x2,
+
+        /// <summary>
+        /// دسترسی به عملیات صدور سند اختتامیه
+        /// </summary>
+        IssueClosingVoucher = 0x4,
+
+        /// <summary>
+        /// دسترسی به عملیات برگشت سند اختتامیه
+        /// </summary>
+        UncheckClosingVoucher = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات ویژه اسناد مالی
+        /// </summary>
+        All = 0xf
     }
 
     /// <summary>

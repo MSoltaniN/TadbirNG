@@ -154,6 +154,15 @@ export enum ManageDraftVouchersPermissions {
     All = 63
 }
 
+export enum SpecialVoucherPermissions {
+    None = 0,
+    IssueOpeningVoucher = 1,
+    IssueClosingTempAccountsVoucher = 2,
+    IssueClosingVoucher = 4,
+    UncheckClosingVoucher = 8,
+    All = 15
+}
+
 export enum BranchPermissions {
     None = 0,
     View = 1,
@@ -498,6 +507,9 @@ export class Permissions {
         break;
       case "managedraftvoucherspermissions":
         id = <any>ManageDraftVouchersPermissions[<any>premissionName];
+        break;
+      case "specialvoucherpermissions":
+        id = <any>SpecialVoucherPermissions[<any>premissionName];
         break;
     }
 

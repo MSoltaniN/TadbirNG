@@ -9148,3 +9148,28 @@ CREATE TABLE [Metadata].[ShortcutCommand] (
     , CONSTRAINT [FK_Metadata_ShortcutCommand_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission]([PermissionID])
 )
 GO
+
+
+-- 1.1.1148
+SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (35, N'SpecialVoucherOps', N'SpecialVoucher')
+SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
+
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (206, 35, N'IssueOpeningVoucher', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (207, 35, N'IssueClosingTempAccountsVoucher', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (208, 35, N'IssueClosingVoucher', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (209, 35, N'UncheckClosingVoucher', 8)
+SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+UPDATE [Metadata].[Command]
+SET PermissionID = 45
+WHERE TitleKey = 'IssueOpeningVoucher'
+
+UPDATE [Metadata].[Command]
+SET PermissionID = 45
+WHERE TitleKey = 'ClosingTempAccounts'
+
+UPDATE [Metadata].[Command]
+SET PermissionID = 45
+WHERE TitleKey = 'IssueClosingVoucher'
