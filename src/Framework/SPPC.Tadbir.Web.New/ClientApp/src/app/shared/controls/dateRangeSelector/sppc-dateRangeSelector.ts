@@ -92,7 +92,10 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
         .distinctUntilChanged()
         .subscribe(val => {
 
-          if (val.fromDate && val.toDate && this.fpStartDate && this.fpEndDate) {
+          this.fpStartDate = this.FiscalPeriodStartDate;
+          this.fpEndDate = this.FiscalPeriodEndDate;
+
+          if (val.fromDate && val.toDate) {
 
             if (this.compareDate(val.fromDate, val.toDate) != 1) {
 
@@ -138,7 +141,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   initDate() {    
 
     this.fpStartDate = this.FiscalPeriodStartDate;
-    this.fpEndDate = this.FiscalPeriodEndDate;      
+    this.fpEndDate = this.FiscalPeriodEndDate;
 
     this.getFromDate();
     this.getToDate();    
