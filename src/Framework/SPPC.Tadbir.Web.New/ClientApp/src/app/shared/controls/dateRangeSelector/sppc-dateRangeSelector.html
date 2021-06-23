@@ -4,7 +4,7 @@
         <div id="drs-content" class="sppc-width-100" [ngClass]="{'pull-right' : rtl ,'pull-left' : !rtl}">
             <div class="form-group col-sm-12 col-md-6" [ngClass]="{'float-right' : rtl}">
                 <label class="control-label">{{ 'Sppc-DateRange.FromDate' | translate }}</label>
-                <sppc-datepicker formControlName="fromDate" 
+                <sppc-datepicker #fromDate formControlName="fromDate" 
                                  [minDate]="minDate" 
                                  [maxDate]="maxDate"                                 
                                  [isDisplayDate]="isDisplayFromDate">
@@ -12,7 +12,7 @@
             </div>
             <div class="form-group col-sm-12 col-md-6">
                 <label class="control-label">{{ 'Sppc-DateRange.ToDate' | translate }}</label>
-                <sppc-datepicker formControlName="toDate"                                  
+                <sppc-datepicker #toDate formControlName="toDate"                                  
                                  [minDate]="minDate" 
                                  [maxDate]="maxDate" 
                                  [isDisplayDate]="isDisplayToDate">

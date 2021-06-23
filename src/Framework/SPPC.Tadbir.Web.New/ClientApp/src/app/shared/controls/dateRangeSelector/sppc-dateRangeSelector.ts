@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'jalali-moment';
@@ -6,6 +6,8 @@ import { BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { MessageType } from '@sppc/env/environment';
 import { BaseComponent } from '@sppc/shared/class';
+import { SppcDatepicker } from '../datepicker/sppc-datepicker';
+import { async } from '@angular/core/testing';
 
 
 
@@ -31,8 +33,8 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   @Input() viewName: string;
   @Input() minDate: any;
   @Input() maxDate: any;
-  @Input() isDisplayFromDate: boolean;
-  @Input() isDisplayToDate: boolean;
+  @Input() isDisplayFromDate: boolean = true;
+  @Input() isDisplayToDate: boolean = true;
 
   @Input() saveStates: boolean = true;
 
@@ -50,88 +52,107 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
   @Output() valueChange = new EventEmitter();
 
+  @ViewChild('fromDate') public fromDatePicker: SppcDatepicker;
+  @ViewChild('toDate') public toDatePicker: SppcDatepicker;
+
   constructor(public settingService: SettingService, public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
     super(toastrService, bStorageService);
 
-    this.isDisplayFromDate = true;
-    this.isDisplayToDate = true;
-  }
-
-  async ngOnInit() {
-
-    if (this.InitializeDate) {
-      await this.initDate();
-    }
-
-    var lang: string = "fa";
-    var item: string | null;
-    item = this.bStorageService.getLanguage();
-    if (item)
-      lang = item;
-
-    if (lang == "fa")
-      this.rtl = true;
-    else
-      this.rtl = false;
-
     
-
-    this.myForm.valueChanges
-      .debounceTime(800)
-      .distinctUntilChanged()
-      .subscribe(val => {
-
-        if (val.fromDate && val.toDate && this.fpStartDate && this.fpEndDate) {
-
-        if (this.compareDate(val.fromDate, val.toDate) != 1) {
-          
-          if (this.compareDate(val.fromDate, this.fpStartDate) == -1 && this.ValidateFPDate) {
-            this.showMessage("تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد", MessageType.Warning);
-            this.myForm.patchValue({ 'fromDate': this.fpStartDate });
-          }
-          else
-            if (this.compareDate(val.toDate, this.fpEndDate) == 1 && this.ValidateFPDate) {
-              this.showMessage("تاریخ انتها بزرگتر از انتهای دوره مالی میباشد", MessageType.Warning);
-              this.myForm.patchValue({ 'toDate': this.fpEndDate });
-            }
-            else {
-              if (val.fromDate != this.fromDate || val.toDate != this.toDate) {
-                this.fromDate = val.fromDate;
-                this.toDate = val.toDate;
-                this.valueChange.emit({
-                  fromDate: this.getEmitDate(val.fromDate, false),
-                  toDate: this.getEmitDate(val.toDate, true)
-                });
-
-                this.saveTemporarilyDate(val.fromDate, val.toDate);
-              }
-            }
-          
-          
-        }
-        else {
-          this.showMessage("محدوده تاریخی انتخابی معتبر نیست", MessageType.Warning);
-          this.myForm.patchValue({ 'fromDate': this.fpStartDate, 'toDate': this.fpEndDate });
-          this.saveTemporarilyDate(this.fpStartDate, this.fpEndDate);
-        }
-      }
-
-    });
   }
 
-  async initDate() {    
-    this.fpStartDate = this.FiscalPeriodStartDate;
-    this.fpEndDate = this.FiscalPeriodEndDate;
-    this.displayFromDate = await this.settingService.getDateConfigAsync("start");
-    this.displayToDate = await this.settingService.getDateConfigAsync("end");
+  
+  ngOnInit() {
 
-    this.getFromDate();
-    this.getToDate();
+    (async () => {
+      this.displayFromDate = await this.settingService.getDateConfigAsync("start");
+      this.displayToDate = await this.settingService.getDateConfigAsync("end");
+    }
+    )().then(() => {
+            
+      if (this.InitializeDate)
+        this.initDate();
 
-    if (this.displayFromDate && this.displayToDate) {
+      var lang: string = "fa";
+      var item: string | null;
+      item = this.bStorageService.getLanguage();
+      if (item)
+        lang = item;
+
+      if (lang == "fa")
+        this.rtl = true;
+      else
+        this.rtl = false;
+
       this.myForm.patchValue({ fromDate: this.displayFromDate, toDate: this.displayToDate });
       this.saveTemporarilyDate(this.displayFromDate, this.displayToDate);
-    }
+
+      this.myForm.valueChanges
+        .debounceTime(800)
+        .distinctUntilChanged()
+        .subscribe(val => {
+
+          if (val.fromDate && val.toDate && this.fpStartDate && this.fpEndDate) {
+
+            if (this.compareDate(val.fromDate, val.toDate) != 1) {
+
+              if (this.compareDate(val.fromDate, this.fpStartDate) == -1 && this.ValidateFPDate) {
+                this.showMessage("تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد", MessageType.Warning);
+                this.myForm.patchValue({ 'fromDate': this.fpStartDate });
+              }
+              else
+                if (this.compareDate(val.toDate, this.fpEndDate) == 1 && this.ValidateFPDate) {
+                  this.showMessage("تاریخ انتها بزرگتر از انتهای دوره مالی میباشد", MessageType.Warning);
+                  this.myForm.patchValue({ 'toDate': this.fpEndDate });
+                }
+                else {
+                  if (val.fromDate != this.fromDate || val.toDate != this.toDate) {
+                    this.fromDate = val.fromDate;
+                    this.toDate = val.toDate;
+                    this.valueChange.emit({
+                      fromDate: this.getEmitDate(val.fromDate, false),
+                      toDate: this.getEmitDate(val.toDate, true)
+                    });
+
+                    this.saveTemporarilyDate(val.fromDate, val.toDate);
+                  }
+                }
+
+
+            }
+            else {
+              this.showMessage("محدوده تاریخی انتخابی معتبر نیست", MessageType.Warning);
+              this.myForm.patchValue({ 'fromDate': this.fpStartDate, 'toDate': this.fpEndDate });
+              this.saveTemporarilyDate(this.fpStartDate, this.fpEndDate);
+            }
+          }
+
+        });
+    });
+
+    
+  }
+   
+  
+
+  initDate() {    
+
+    this.fpStartDate = this.FiscalPeriodStartDate;
+    this.fpEndDate = this.FiscalPeriodEndDate;      
+
+    this.getFromDate();
+    this.getToDate();    
+  }
+
+  setInitialDates(from: Date, to: Date) {
+    this.displayFromDate = from;
+    this.displayToDate = to;
+    this.myForm.patchValue({ fromDate: this.displayFromDate, toDate: this.displayToDate });
+
+    this.valueChange.emit({
+      fromDate: this.getEmitDate(from, false),
+      toDate: this.getEmitDate(to, true)
+    });
   }
 
   getEmitDate(date: Date, isToDate: boolean): any {
@@ -145,13 +166,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     return moment(myDate).format('YYYY/MM/DD HH:mm:ss');
   }
 
-  setDates(fromDate: Date, toDate: Date) {
-    this.displayFromDate = fromDate;
-    this.displayToDate = toDate;
-    this.fromDate = fromDate;
-    this.toDate = toDate;
-    this.myForm.patchValue({ fromDate: fromDate, toDate: toDate });
-  }       
+
 
   getFromDate() {
 

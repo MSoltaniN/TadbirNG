@@ -277,8 +277,8 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
   onDateChange() {
     this.i++;
-    if (/*!this.isDisplayDate &&*/ this.i <= 2) {
-      //this.dateObject = null;
+    if (!this.isDisplayDate && this.i <= 2) {
+      this.dateObject = null;
 
       if (this.editDateValue) {
         this.dateObject = this.editDateValue;
