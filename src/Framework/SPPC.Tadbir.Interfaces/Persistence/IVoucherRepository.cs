@@ -198,10 +198,10 @@ namespace SPPC.Tadbir.Persistence
         Task<GroupActionResultViewModel> ValidateVoucherActionAsync(int voucherId, string action);
 
         /// <summary>
-        /// به روش آسنکرون، نوع مفهومی سند با شناسه داده شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات خلاصه سند مالی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
-        /// <returns>نوع مفهومی سند با شناسه داده شده</returns>
-        Task<int> GetSubjectTypeAsync(int voucherId);
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر</param>
+        /// <returns>اطلاعات خلاصه سند مالی با شناسه دیتابیسی داده شده</returns>
+        Task<VoucherInfoViewModel> GetVoucherInfoAsync(int voucherId);
     }
 }

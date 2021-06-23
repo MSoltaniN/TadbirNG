@@ -3136,7 +3136,7 @@
     <value>صدور سند {0} از شعب زیرمجموعه امکان پذیر نیست.</value>
   </data>
   <data name="CurrentClosingVoucherIsChecked" xml:space="preserve">
-    <value>دوره مالی جاری دارای سند اختتامیه ثبت شده است و ثبت تراکنش مالی در آن امکان پذیر نیست.</value>
+    <value>دوره مالی جاری دارای سند اختتامیه ثبت شده است و ثبت یا تغییر تراکنش های مالی در آن امکان پذیر نیست.</value>
   </data>
   <data name="ClosingAccountsVoucherNotIssuedOrChecked" xml:space="preserve">
     <value>سند بستن حساب های موقت صادر نشده یا در وضعیت ثبت نشده است.</value>

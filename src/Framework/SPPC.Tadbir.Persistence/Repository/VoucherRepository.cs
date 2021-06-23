@@ -92,6 +92,7 @@ namespace SPPC.Tadbir.Persistence
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 Type = (short)VoucherType.NormalVoucher,
                 SubjectType = (short)subject,
+                OriginId = (int)VoucherOriginId.NormalVoucher,
                 SaveCount = 0
             };
 
@@ -552,17 +553,17 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، نوع مفهومی سند با شناسه داده شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات خلاصه سند مالی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مورد نظر</param>
-        /// <returns>نوع مفهومی سند با شناسه داده شده</returns>
-        public async Task<int> GetSubjectTypeAsync(int voucherId)
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر</param>
+        /// <returns>اطلاعات خلاصه سند مالی با شناسه دیتابیسی داده شده</returns>
+        public async Task<VoucherInfoViewModel> GetVoucherInfoAsync(int voucherId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             return await repository
                 .GetEntityQuery()
                 .Where(v => v.Id == voucherId)
-                .Select(v => v.SubjectType)
+                .Select(v => Mapper.Map<VoucherInfoViewModel>(v))
                 .FirstOrDefaultAsync();
         }
 

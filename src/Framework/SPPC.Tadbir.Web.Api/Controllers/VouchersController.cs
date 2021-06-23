@@ -1146,15 +1146,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return GetGroupActionResult(message, voucher);
         }
 
-        private static bool IsVoucherMainAction(string action)
-        {
-            return action == AppStrings.Check
-                || action == AppStrings.Confirm
-                || action == AppStrings.Approve
-                || action == AppStrings.Finalize
-                || action == AppStrings.UndoFinalize;
-        }
-
         private async Task<IActionResult> GroupStatusChangeResultAsync(
             IEnumerable<int> items, string action, DocumentStatusId status)
         {
@@ -1162,27 +1153,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var notValidated = new List<GroupActionResultViewModel>();
             foreach (int item in items)
             {
-                var result = await _repository.ValidateVoucherActionAsync(item, action);
-                if (result == null)
+                if (await VoucherActionValidationResultAsync(item, action) is BadRequestObjectResult result)
                 {
-                    if (action == AppStrings.UndoCheck && !await CanUncheckVoucherAsync(item))
+                    var error = result.Value as ErrorViewModel;
+                    notValidated.Add(new GroupActionResultViewModel()
                     {
-                        string message = _strings.Format(
-                            AppStrings.OperationNotAllowed, AppStrings.UncheckClosingVoucher);
-                        notValidated.Add(new GroupActionResultViewModel()
-                        {
-                            Id = item,
-                            ErrorMessage = message
-                        });
-                    }
-                    else
-                    {
-                        validated.Add(item);
-                    }
+                        Id = item,
+                        ErrorMessage = error.Messages[0]
+                    });
                 }
                 else
                 {
-                    notValidated.Add(result);
+                    validated.Add(item);
                 }
             }
 
@@ -1203,14 +1185,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             bool isConfirmed = (action == AppStrings.GroupConfirmApprove);
             foreach (int item in items)
             {
-                var result = await _repository.ValidateVoucherActionAsync(item, action);
-                if (result == null)
+                if (await VoucherActionValidationResultAsync(item, action) is BadRequestObjectResult result)
                 {
-                    validated.Add(item);
+                    var error = result.Value as ErrorViewModel;
+                    notValidated.Add(new GroupActionResultViewModel()
+                    {
+                        Id = item,
+                        ErrorMessage = error.Messages[0]
+                    });
                 }
                 else
                 {
-                    notValidated.Add(result);
+                    validated.Add(item);
                 }
             }
 
@@ -1371,7 +1357,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(error.ErrorMessage);
             }
 
-            if (IsVoucherMainAction(action))
+            if (action == AppStrings.Check)
             {
                 int lineCount = await _lineRepository.GetArticleCountAsync<VoucherLineViewModel>(voucherId);
                 if (lineCount == 0)
@@ -1380,32 +1366,41 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            if (action == AppStrings.UndoCheck && !await CanUncheckVoucherAsync(voucherId))
+            var voucherInfo = await _repository.GetVoucherInfoAsync(voucherId);
+            if (action == AppStrings.UndoCheck && voucherInfo.OriginId == (int)VoucherOriginId.ClosingVoucher)
             {
-                string message = _strings.Format(AppStrings.OperationNotAllowed, AppStrings.UncheckClosingVoucher);
-                return BadRequestResult(message);
+                bool canUndo = CanUncheckClosingVoucher();
+                if (canUndo)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    string message = _strings.Format(AppStrings.OperationNotAllowed, AppStrings.UncheckClosingVoucher);
+                    return BadRequestResult(message);
+                }
+            }
+            else
+            {
+                bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(
+                    VoucherOriginId.ClosingVoucher);
+                if (isChecked)
+                {
+                    return BadRequestResult(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
+                }
             }
 
             return Ok();
         }
 
-        private async Task<bool> CanUncheckVoucherAsync(int voucherId)
+        private bool CanUncheckClosingVoucher()
         {
             bool canUncheck = SecurityContext.IsInRole(AppConstants.AdminRoleId);
             if (!canUncheck)
             {
-                var repository = GetVoucherRepository(SubjectType.Normal);
-                var voucher = await repository.GetVoucherAsync(voucherId);
-                if (voucher != null && voucher.OriginName == AppStrings.ClosingVoucher)
-                {
-                    var permission = new PermissionBriefViewModel(
-                        SecureEntity.SpecialVoucher, (int)SpecialVoucherPermissions.UncheckClosingVoucher);
-                    canUncheck = SecurityContext.HasPermissions(permission);
-                }
-                else
-                {
-                    canUncheck = true;
-                }
+                var permission = new PermissionBriefViewModel(
+                    SecureEntity.SpecialVoucher, (int)SpecialVoucherPermissions.UncheckClosingVoucher);
+                canUncheck = SecurityContext.HasPermissions(permission);
             }
 
             return canUncheck;
@@ -1592,7 +1587,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IVoucherRepository> GetVoucherRepositoryAsync(int voucherId)
         {
-            SubjectType subject = (SubjectType)await _repository.GetSubjectTypeAsync(voucherId);
+            var voucherInfo = await _repository.GetVoucherInfoAsync(voucherId);
+            SubjectType subject = (SubjectType)voucherInfo.SubjectType;
             return GetVoucherRepository(subject);
         }
 
@@ -1603,7 +1599,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IVoucherLineRepository> GetLineRepositoryFromVoucherAsync(int voucherId)
         {
-            var subject = (SubjectType)await _repository.GetSubjectTypeAsync(voucherId);
+            var voucherInfo = await _repository.GetVoucherInfoAsync(voucherId);
+            var subject = (SubjectType)voucherInfo.SubjectType;
             return subject == SubjectType.Draft ? _draftLineRepository : _lineRepository;
         }
 
