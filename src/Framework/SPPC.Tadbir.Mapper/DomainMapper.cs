@@ -219,6 +219,9 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsApproved, opts => opts.MapFrom(src => src.ApprovedById != null))
                 .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null))
                 .ForMember(dest => dest.TypeName, opts => opts.MapFrom(src => VoucherHelper.GetTypeName(src)));
+            mapperConfig.CreateMap<Voucher, VoucherInfoViewModel>()
+                .ForMember(dest => dest.IsApproved, opts => opts.MapFrom(src => src.ApprovedById != null))
+                .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null));
             mapperConfig.CreateMap<Voucher, GroupActionResultViewModel>();
             mapperConfig.CreateMap<VoucherViewModel, Voucher>();
             mapperConfig.CreateMap<Voucher, KeyValue>()
