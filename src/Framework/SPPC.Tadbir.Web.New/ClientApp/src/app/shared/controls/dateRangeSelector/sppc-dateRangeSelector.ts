@@ -31,8 +31,8 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   @Input() viewName: string;
   @Input() minDate: any;
   @Input() maxDate: any;
-  @Input() isDisplayFromDate: boolean = true;
-  @Input() isDisplayToDate: boolean = true;
+  @Input() isDisplayFromDate: boolean;
+  @Input() isDisplayToDate: boolean;
 
   @Input() saveStates: boolean = true;
 
@@ -52,6 +52,9 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
   constructor(public settingService: SettingService, public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
     super(toastrService, bStorageService);
+
+    this.isDisplayFromDate = true;
+    this.isDisplayToDate = true;
   }
 
   async ngOnInit() {
@@ -71,8 +74,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     else
       this.rtl = false;
 
-    this.myForm.patchValue({ fromDate: this.displayFromDate, toDate: this.displayToDate });
-    this.saveTemporarilyDate(this.displayFromDate, this.displayToDate);
+    
 
     this.myForm.valueChanges
       .debounceTime(800)
@@ -124,7 +126,12 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     this.displayToDate = await this.settingService.getDateConfigAsync("end");
 
     this.getFromDate();
-    this.getToDate();    
+    this.getToDate();
+
+    if (this.displayFromDate && this.displayToDate) {
+      this.myForm.patchValue({ fromDate: this.displayFromDate, toDate: this.displayToDate });
+      this.saveTemporarilyDate(this.displayFromDate, this.displayToDate);
+    }
   }
 
   getEmitDate(date: Date, isToDate: boolean): any {
@@ -138,7 +145,13 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     return moment(myDate).format('YYYY/MM/DD HH:mm:ss');
   }
 
-
+  setDates(fromDate: Date, toDate: Date) {
+    this.displayFromDate = fromDate;
+    this.displayToDate = toDate;
+    this.fromDate = fromDate;
+    this.toDate = toDate;
+    this.myForm.patchValue({ fromDate: fromDate, toDate: toDate });
+  }       
 
   getFromDate() {
 

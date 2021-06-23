@@ -71,7 +71,7 @@
       <div class="sppc-float">
 
         <div *ngIf="reportType == '1'">
-          <sppc-dateRangeSelector [viewName]="'journal'" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+          <sppc-dateRangeSelector [InitializeDate]="initializeDate" [displayFromDate]="fromDate" [displayToDate]="toDate" [viewName]="'BalanceByAccount'" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
         </div>
 
         <div *ngIf="reportType == '2'">

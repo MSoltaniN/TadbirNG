@@ -65,7 +65,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   endDate: Date | null;
 
   @Input() date: any;
-  @Input() isDisplayDate: boolean = true;
+  @Input() isDisplayDate: boolean;
   @Input() displayDate: any;
 
   @Input() minDate: any;
@@ -80,7 +80,8 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
   @Input() formControlName: string;
   private control: AbstractControl | null;
-  constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) { }
+  constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {    
+  }
 
   ngOnInit() {
     if (this.controlContainer) {
@@ -276,8 +277,8 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
   onDateChange() {
     this.i++;
-    if (!this.isDisplayDate && this.i <= 2) {
-      this.dateObject = null;
+    if (/*!this.isDisplayDate &&*/ this.i <= 2) {
+      //this.dateObject = null;
 
       if (this.editDateValue) {
         this.dateObject = this.editDateValue;
