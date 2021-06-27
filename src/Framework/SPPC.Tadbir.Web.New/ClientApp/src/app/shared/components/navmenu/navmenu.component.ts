@@ -37,9 +37,9 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     public location: Location) {
 
     super(toastrService, translate, bStorageService, renderer2, metadata, settingService, '', undefined);
-    
+
     var menus = this.bStorageService.getMenu()
-        
+
     if (menus)
       this.menuList = JSON.parse(menus);
 
@@ -58,14 +58,14 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   ngOnInit() {
     if (this.CurrentLanguage == 'fa')
       this.rightAlign = false;
-   
-    var menu : Command = null;
+
+    var menu: Command = null;
     this.menuList.forEach((element) => {
-      menu = this.searchTree(element, this.router.url);      
-      if (menu != null) {        
+      menu = this.searchTree(element, this.router.url);
+      if (menu != null) {
         return;
       }
-    });    
+    });
 
     for (let parent of this.menuList) {
       if (parent.id == 15) {
@@ -78,7 +78,7 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   }
 
   searchTree(element: Command, route) {
-    if (element.routeUrl == route) {      
+    if (element.routeUrl == route) {
       return element;
     } else if (element.children != null) {
       var i;
@@ -95,10 +95,10 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     return null;
   }
 
-  searchActiveMenu(id:number) {
+  searchActiveMenu(id: number) {
     return this.paths.findIndex(f => f === id) > -1 ? true : false;
   }
-  
+
 
   onClickMenu(item: Command) {
     //for show report manager
@@ -109,7 +109,7 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
     if (item.routeUrl) {
       this.router.navigate([item.routeUrl])
-            
+
       document.querySelector('li.active').classList.remove('active')
       document.querySelector('#cmd' + item.id).classList.add('active')
     }

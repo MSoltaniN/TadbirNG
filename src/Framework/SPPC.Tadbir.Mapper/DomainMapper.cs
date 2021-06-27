@@ -110,7 +110,8 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => String.Format("{0} {1}", src.Person.FirstName, src.Person.LastName)));
 
-            mapperConfig.CreateMap<Role, RoleViewModel>();
+            mapperConfig.CreateMap<Role, RoleViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<RoleViewModel, Role>()
                 .ForMember(dest => dest.RolePermissions, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RelatedItemsViewModel>()
@@ -161,7 +162,8 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((model, viewModel) => viewModel.Level = model.Account.Level)
                 .AfterMap((model, viewModel) => viewModel.Description = model.Account.Description);
 
-            mapperConfig.CreateMap<AccountGroup, AccountGroupViewModel>();
+            mapperConfig.CreateMap<AccountGroup, AccountGroupViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<AccountGroupViewModel, AccountGroup>();
             mapperConfig.CreateMap<AccountGroup, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
@@ -170,7 +172,7 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<Account, AccountViewModel>()
                 .ForMember(dest => dest.TurnoverMode, opts => opts.MapFrom(src => ((TurnoverMode)src.TurnoverMode).ToString()))
-                .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.Description ?? String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<Account, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count))
@@ -184,7 +186,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<DefaultAccountViewModel, Account>();
 
             mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
-                .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.Description ?? String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<DetailAccount, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
@@ -194,7 +196,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
 
             mapperConfig.CreateMap<CostCenter, CostCenterViewModel>()
-                .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.Description ?? String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<CostCenter, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
@@ -204,7 +206,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
 
             mapperConfig.CreateMap<Project, ProjectViewModel>()
-                .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.Description ?? String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<Project, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
@@ -214,6 +216,11 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
 
             mapperConfig.CreateMap<Voucher, VoucherViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Reference, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Association, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.ConfirmerName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.ApproverName, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.DebitSum, opts => opts.MapFrom(src => VoucherHelper.GetDebitSum(src)))
                 .ForMember(dest => dest.CreditSum, opts => opts.MapFrom(src => VoucherHelper.GetCreditSum(src)))
                 .ForMember(dest => dest.IsApproved, opts => opts.MapFrom(src => src.ApprovedById != null))
@@ -232,6 +239,9 @@ namespace SPPC.Tadbir.Mapper
                         src => String.Join(",", new[] { "VoucherDisplay", src.No.ToString(), src.Date.ToShortDateString() })));
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.CurrencyName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.CurrencyValue, opts => opts.NullSubstitute(0.0M))
                 .ForMember(
                     dest => dest.LineTypeId,
                     opts => opts.MapFrom(src => src.TypeId))
@@ -259,6 +269,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<VoucherLine, VoucherLineAmountsViewModel>();
 
             mapperConfig.CreateMap<Currency, CurrencyViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.MinorUnitKey, opts => opts.MapFrom(src => src.MinorUnit));
             mapperConfig.CreateMap<CurrencyInfo, CurrencyViewModel>()
                 .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.Currency.Code))
@@ -273,7 +284,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Currency, CurrencyInfoViewModel>()
                 .ForMember(dest => dest.LastRate, opts => opts.Ignore());
 
-            mapperConfig.CreateMap<CurrencyRate, CurrencyRateViewModel>();
+            mapperConfig.CreateMap<CurrencyRate, CurrencyRateViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<CurrencyRateViewModel, CurrencyRate>();
 
             mapperConfig.CreateMap<FiscalPeriod, FiscalPeriodViewModel>();
@@ -402,9 +414,23 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<OperationLog, OperationLogViewModel>();
+            mapperConfig.CreateMap<OperationLog, OperationLogViewModel>()
+                .ForMember(dest => dest.EntityName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityCode, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityDescription, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityTypeName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.SourceName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.SourceListName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<OperationLogViewModel, OperationLog>();
             mapperConfig.CreateMap<SysOperationLog, OperationLogViewModel>()
+                .ForMember(dest => dest.EntityName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityCode, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityDescription, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityTypeName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.SourceName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.SourceListName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(
                     dest => dest.UserName,
                     opts => opts.MapFrom(src => (src.User != null) ? src.User.UserName : String.Empty))
@@ -413,11 +439,25 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(src => (src.Company != null) ? src.Company.Name : String.Empty));
             mapperConfig.CreateMap<OperationLogViewModel, SysOperationLog>();
             mapperConfig.CreateMap<OperationLog, OperationLogArchive>();
-            mapperConfig.CreateMap<OperationLogArchive, OperationLogViewModel>();
+            mapperConfig.CreateMap<OperationLogArchive, OperationLogViewModel>()
+                .ForMember(dest => dest.EntityName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityCode, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityDescription, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityTypeName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.SourceName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.SourceListName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<OperationLogArchive, OperationLog>();
             mapperConfig.CreateMap<SysOperationLog, SysOperationLogArchive>();
             mapperConfig.CreateMap<SysOperationLogArchive, SysOperationLog>();
             mapperConfig.CreateMap<SysOperationLogArchive, OperationLogViewModel>()
+                .ForMember(dest => dest.EntityName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityCode, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityDescription, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.EntityTypeName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.SourceName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.SourceListName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(
                     dest => dest.UserName,
                     opts => opts.MapFrom(src => (src.User != null) ? src.User.UserName : String.Empty))
@@ -615,6 +655,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.TurnoverDebit, opts => opts.MapFrom(src => src.Debit))
                 .ForMember(dest => dest.TurnoverCredit, opts => opts.MapFrom(src => src.Credit));
             mapperConfig.CreateMap<VoucherLine, CurrencyBookItemViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.VoucherReference, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.Credit, opts => opts.MapFrom(src => src.Credit > 0 ? src.CurrencyValue : 0))
                 .ForMember(dest => dest.Debit, opts => opts.MapFrom(src => src.Debit > 0 ? src.CurrencyValue : 0))
                 .ForMember(dest => dest.BaseCurrencyCredit, opts => opts.MapFrom(src => src.Credit))

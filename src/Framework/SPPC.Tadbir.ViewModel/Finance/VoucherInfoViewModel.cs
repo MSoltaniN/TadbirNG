@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
@@ -49,12 +48,24 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public int StatusId { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public int LineCount { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public bool IsApproved { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public bool IsConfirmed { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
         public int IsBalanced { get; set; }
     }
 }
