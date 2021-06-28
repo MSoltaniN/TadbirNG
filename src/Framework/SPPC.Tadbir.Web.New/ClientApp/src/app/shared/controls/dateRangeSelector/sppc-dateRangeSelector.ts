@@ -39,6 +39,8 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   @Input() saveStates: boolean = true;
 
   @Input() InitializeDate: boolean = true;
+  @Input() InitializeTodayDate: boolean = false;
+
   @Input() ValidateFPDate: boolean = true;
 
   @Input() displayFromDate: any;
@@ -73,6 +75,12 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       if (this.InitializeDate)
         this.initDate();
 
+      if (this.InitializeTodayDate)
+      {
+        this.displayFromDate = undefined;
+        this.displayToDate = undefined;
+      }
+
       var lang: string = "fa";
       var item: string | null;
       item = this.bStorageService.getLanguage();
@@ -99,12 +107,12 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
             if (this.compareDate(val.fromDate, val.toDate) != 1) {
 
-              if (this.compareDate(val.fromDate, this.fpStartDate) == -1 && this.ValidateFPDate) {
+              if (this.compareDate(val.fromDate, this.fpStartDate) == -1 && this.ValidateFPDate && !this.InitializeTodayDate) {
                 this.showMessage("تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد", MessageType.Warning);
                 this.myForm.patchValue({ 'fromDate': this.fpStartDate });
               }
               else
-                if (this.compareDate(val.toDate, this.fpEndDate) == 1 && this.ValidateFPDate) {
+                if (this.compareDate(val.toDate, this.fpEndDate) == 1 && this.ValidateFPDate && !this.InitializeTodayDate) {
                   this.showMessage("تاریخ انتها بزرگتر از انتهای دوره مالی میباشد", MessageType.Warning);
                   this.myForm.patchValue({ 'toDate': this.fpEndDate });
                 }

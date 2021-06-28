@@ -65,7 +65,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   endDate: Date | null;
 
   @Input() date: any;
-  @Input() isDisplayDate: boolean;
+  @Input() isDisplayDate: boolean = true;
   @Input() displayDate: any;
 
   @Input() minDate: any;
