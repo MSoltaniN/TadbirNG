@@ -378,7 +378,9 @@
     "AllDetailAccount": "کلیه تفصیلی های شناور",
     "AllCostCenter": "کلیه مراکز هزینه",
     "AllProject": "کلیه پروژه ها",
-    "SelectLevelErrorMsg": "امکان انتخاب سطح بالاتر از سطح {0} انتخابی وجود ندارد"
+    "SelectLevelErrorMsg": "امکان انتخاب سطح بالاتر از سطح {0} انتخابی وجود ندارد",
+    "Ledger": "کل",
+    "Level": "سطح"
   },
   "AccountBook": {
     "DisplayByRow": "مطابق رديف‌هاى سند",
