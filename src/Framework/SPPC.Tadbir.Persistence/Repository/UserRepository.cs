@@ -286,21 +286,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userRoles">اطلاعات نمایشی نقش ها</param>
         public async Task SaveUserRolesAsync(RelatedItemsViewModel userRoles)
         {
-            Verify.ArgumentNotNull(userRoles, "userRoles");
-            var repository = UnitOfWork.GetAsyncRepository<User>();
-            var existing = await repository.GetByIDWithTrackingAsync(userRoles.Id, r => r.UserRoles);
-            if (existing != null && AreRolesModified(existing, userRoles))
+            Verify.ArgumentNotNull(userRoles, nameof(userRoles));
+            var repository = UnitOfWork.GetAsyncRepository<UserRole>();
+            var existing = await repository.GetByCriteriaAsync(rc => rc.UserId == userRoles.Id);
+            if (AreRolesModified(existing, userRoles))
             {
-                if (existing.UserRoles.Count > 0)
+                if (existing.Count > 0)
                 {
-                    RemoveUnassignedRoles(existing, userRoles);
+                    RemoveUnassignedRoles(repository, existing, userRoles);
                 }
 
-                AddNewRoles(existing, userRoles);
-                repository.Update(existing);
+                AddNewRoles(repository, existing, userRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.AssignRole);
-                Log.Description = Context.Localize(await GetUserRoleDescriptionAsync(existing));
+                OnEntityAction(OperationId.CompanyAccess);
+                Log.Description = await GetUserRoleDescriptionAsync(userRoles.Id);
                 await TrySaveLogAsync();
             }
         }
@@ -312,7 +311,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<UserViewModel> SaveUserAsync(UserViewModel userView)
         {
             Verify.ArgumentNotNull(userView, "userView");
-            User user = default(User);
+            User user = default;
             var repository = UnitOfWork.GetAsyncRepository<User>();
             if (userView.Id == 0)
             {
@@ -480,32 +479,34 @@ namespace SPPC.Tadbir.Persistence
             get { return _system.Metadata; }
         }
 
-        private static bool AreRolesModified(User existing, RelatedItemsViewModel roleItems)
+        private static bool AreRolesModified(IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
-            var existingItems = existing.UserRoles
+            var existingItems = existing
                 .Select(ur => ur.RoleId)
                 .ToArray();
             var enabledItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
                 .Select(item => item.Id)
                 .ToArray();
-            return (!AreEqual(existingItems, enabledItems));
+            return !AreEqual(existingItems, enabledItems);
         }
 
-        private static void RemoveUnassignedRoles(User existing, RelatedItemsViewModel role)
+        private static void RemoveUnassignedRoles(
+            IRepository<UserRole> repository, IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
-            var currentItems = role.RelatedItems
+            var currentItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
                 .Select(item => item.Id);
-            var removedItems = existing.UserRoles
+            var removedItems = existing
                 .Select(ur => ur.RoleId)
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
             foreach (int id in removedItems)
             {
-                existing.UserRoles.Remove(existing.UserRoles
-                    .Where(ur => ur.RoleId == id)
-                    .Single());
+                var removed = existing
+                    .Where(rc => rc.RoleId == id)
+                    .Single();
+                repository.Delete(removed);
             }
         }
 
@@ -555,10 +556,10 @@ namespace SPPC.Tadbir.Persistence
                 && !permissions.Contains(command.PermissionId.Value);
         }
 
-        private void AddNewRoles(User existing, RelatedItemsViewModel roleItems)
+        private void AddNewRoles(
+            IRepository<UserRole> repository, IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
-            var repository = UnitOfWork.GetRepository<Role>();
-            var currentItems = existing.UserRoles.Select(ur => ur.RoleId);
+            var currentItems = existing.Select(rc => rc.RoleId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
                     && !currentItems.Contains(item.Id));
@@ -566,10 +567,10 @@ namespace SPPC.Tadbir.Persistence
             {
                 var userRole = new UserRole()
                 {
-                    UserId = existing.Id,
-                    RoleId = item.Id
+                    RoleId = item.Id,
+                    UserId = roleItems.Id
                 };
-                existing.UserRoles.Add(userRole);
+                repository.Insert(userRole);
             }
         }
 
@@ -682,24 +683,18 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<string> GetUserRoleDescriptionAsync(User user)
+        private async Task<string> GetUserRoleDescriptionAsync(int userId)
         {
-            var builder = new StringBuilder();
-            var repository = UnitOfWork.GetAsyncRepository<UserRole>();
-            var userRoles = await repository.GetByCriteriaAsync(
-                ur => ur.UserId == user.Id, ur => ur.Role);
-            builder.AppendFormat("{0} : {1} , {2} : ",
-                AppStrings.User, user.UserName, AppStrings.AssignedRoles);
-            if (userRoles.Count > 0)
+            string description = String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<User>();
+            var user = await repository.GetByIDAsync(userId);
+            if (user != null)
             {
-                builder.Append(String.Join(" , ", userRoles.Select(ur => ur.Role.Name)));
-            }
-            else
-            {
-                builder.Append(AppStrings.None);
+                string template = Context.Localize(AppStrings.RolesAssignedToUser);
+                description = String.Format(template, user.UserName);
             }
 
-            return builder.ToString();
+            return description;
         }
 
         private readonly ISystemRepository _system;

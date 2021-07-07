@@ -9173,3 +9173,9 @@ WHERE TitleKey = 'ClosingTempAccounts'
 UPDATE [Metadata].[Command]
 SET PermissionID = 45
 WHERE TitleKey = 'IssueClosingVoucher'
+
+-- 1.1.1152
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (35, N'RoleAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (57, N'CompanyAccess')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF

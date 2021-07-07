@@ -197,6 +197,45 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای شرکت های قابل دسترسی توسط نقش داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای شرکت های قابل دسترسی توسط نقش</returns>
+        // GET: api/roles/{roleId:min(1)}/companies
+        [HttpGet]
+        [Route(RoleApi.RoleCompaniesUrl)]
+        [AuthorizeRequest]
+        public async Task<IActionResult> GetRoleCompaniesAsync(int roleId)
+        {
+            var companies = await _repository.GetRoleCompaniesAsync(roleId);
+            return JsonReadResult(companies);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، شرکت های قابل دسترسی توسط نقش داده شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <param name="roleCompanies">اطلاعات جدید برای شرکت های قابل دسترسی توسط نقش</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
+        // PUT: api/roles/{roleId:min(1)}/companies
+        [HttpPut]
+        [Route(RoleApi.RoleCompaniesUrl)]
+        [AuthorizeRequest]
+        public async Task<IActionResult> PutModifiedRoleCompaniesAsync(
+            int roleId, [FromBody] RelatedItemsViewModel roleCompanies)
+        {
+            var result = BasicValidationResult(roleCompanies, roleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveRoleCompaniesAsync(roleCompanies);
+            return Ok();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات خلاصه برای شعبه های قابل دسترسی توسط نقش داده شده را برمی گرداند
         /// </summary>
         /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>

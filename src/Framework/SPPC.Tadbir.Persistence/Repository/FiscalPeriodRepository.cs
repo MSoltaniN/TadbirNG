@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
@@ -112,21 +113,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="periodRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
         public async Task SaveFiscalPeriodRolesAsync(RelatedItemsViewModel periodRoles)
         {
-            Verify.ArgumentNotNull(periodRoles, "periodRoles");
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var existing = await repository.GetByIDWithTrackingAsync(periodRoles.Id, r => r.RoleFiscalPeriods);
-            if (existing != null && AreRolesModified(existing, periodRoles))
+            Verify.ArgumentNotNull(periodRoles, nameof(periodRoles));
+            var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
+            var existing = await repository.GetByCriteriaAsync(rfp => rfp.FiscalPeriodId == periodRoles.Id);
+            if (AreRolesModified(existing, periodRoles))
             {
-                if (existing.RoleFiscalPeriods.Count > 0)
+                if (existing.Count > 0)
                 {
-                    RemoveInaccessibleRoles(existing, periodRoles);
+                    RemoveUnassignedRoles(repository, existing, periodRoles);
                 }
 
-                AddNewRoles(existing, periodRoles);
-                repository.Update(existing);
+                AddNewRoles(repository, existing, periodRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.RoleAccess);
-                Log.Description = Context.Localize(await GetFiscalPeriodRoleDescriptionAsync(existing));
+                OnEntityAction(OperationId.BranchAccess);
+                Log.Description = await GetFiscalPeriodRoleDescriptionAsync(periodRoles.Id);
                 await TrySaveLogAsync();
             }
         }
@@ -139,8 +139,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<FiscalPeriodViewModel> SaveFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriodView)
         {
             Verify.ArgumentNotNull(fiscalPeriodView, "fiscalPeriodView");
-            FiscalPeriod fiscalPeriod = default(FiscalPeriod);
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            FiscalPeriod fiscalPeriod;
             if (fiscalPeriodView.Id == 0)
             {
                 fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
@@ -362,38 +362,44 @@ namespace SPPC.Tadbir.Persistence
                 && left.All(value => right.Contains(value));
         }
 
-        private static bool AreRolesModified(FiscalPeriod existing, RelatedItemsViewModel roleItems)
+        private static bool AreRolesModified(
+            IList<RoleFiscalPeriod> existing, RelatedItemsViewModel roleItems)
         {
-            var existingItems = existing.RoleFiscalPeriods
+            var existingItems = existing
                 .Select(rfp => rfp.RoleId)
                 .ToArray();
             var enabledItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
                 .Select(item => item.Id)
                 .ToArray();
-            return (!AreEqual(existingItems, enabledItems));
+            return !AreEqual(existingItems, enabledItems);
         }
 
-        private static void RemoveInaccessibleRoles(FiscalPeriod existing, RelatedItemsViewModel roleItems)
+        private static void RemoveUnassignedRoles(
+            IRepository<RoleFiscalPeriod> repository, IList<RoleFiscalPeriod> existing,
+            RelatedItemsViewModel roleItems)
         {
             var currentItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
                 .Select(item => item.Id);
-            var removedItems = existing.RoleFiscalPeriods
+            var removedItems = existing
                 .Select(rfp => rfp.RoleId)
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
             foreach (int id in removedItems)
             {
-                existing.RoleFiscalPeriods.Remove(existing.RoleFiscalPeriods
+                var removed = existing
                     .Where(rfp => rfp.RoleId == id)
-                    .Single());
+                    .Single();
+                repository.Delete(removed);
             }
         }
 
-        private void AddNewRoles(FiscalPeriod existing, RelatedItemsViewModel roleItems)
+        private void AddNewRoles(
+            IRepository<RoleFiscalPeriod> repository, IList<RoleFiscalPeriod> existing,
+            RelatedItemsViewModel roleItems)
         {
-            var currentItems = existing.RoleFiscalPeriods.Select(rfp => rfp.RoleId);
+            var currentItems = existing.Select(rfp => rfp.RoleId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
                     && !currentItems.Contains(item.Id));
@@ -401,34 +407,26 @@ namespace SPPC.Tadbir.Persistence
             {
                 var roleFiscalPeriod = new RoleFiscalPeriod()
                 {
-                    FiscalPeriodId = existing.Id,
+                    FiscalPeriodId = roleItems.Id,
                     RoleId = item.Id
                 };
-                existing.RoleFiscalPeriods.Add(roleFiscalPeriod);
+                repository.Insert(roleFiscalPeriod);
             }
         }
 
-        private async Task<string> GetFiscalPeriodRoleDescriptionAsync(FiscalPeriod fiscalPeriod)
+        private async Task<string> GetFiscalPeriodRoleDescriptionAsync(int fiscalPeriodId)
         {
-            var builder = new StringBuilder();
-            builder.AppendFormat("{0} : {1} , {2} : ",
-                AppStrings.FiscalPeriod, fiscalPeriod.Name, AppStrings.RolesWithAccess);
-            if (fiscalPeriod.RoleFiscalPeriods.Count > 0)
+            string description = String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var fiscalPeriod = await repository.GetByIDAsync(fiscalPeriodId);
+            if (fiscalPeriod != null)
             {
-                UnitOfWork.UseSystemContext();
-                var repository = UnitOfWork.GetAsyncRepository<Role>();
-                var roles = await repository.GetByCriteriaAsync(r => fiscalPeriod.RoleFiscalPeriods
-                    .Select(rfp => rfp.RoleId)
-                    .Contains(r.Id));
-                builder.Append(String.Join(" , ", roles.Select(r => r.Name)));
-                UnitOfWork.UseCompanyContext();
-            }
-            else
-            {
-                builder.Append(AppStrings.None);
+                string template = Context.Localize(AppStrings.RolesWithAccessToResource);
+                string entity = Context.Localize(AppStrings.FiscalPeriod).ToLower();
+                description = String.Format(template, entity, fiscalPeriod.Name);
             }
 
-            return builder.ToString();
+            return description;
         }
 
         private async Task<Expression<Func<FiscalPeriod, bool>>> GetSecurityFilterAsync()

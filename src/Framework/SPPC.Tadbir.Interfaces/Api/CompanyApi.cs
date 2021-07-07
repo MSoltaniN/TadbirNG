@@ -37,5 +37,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a company specified by unique identifier
         /// </summary>
         public const string CompanyUrl = "companies/{companyId:min(1)}";
+
+        /// <summary>
+        /// API client URL for roles that can access a company specified by unique identifier
+        /// </summary>
+        public const string CompanyRoles = "companies/{0}/roles";
+
+        /// <summary>
+        /// API server route URL for roles that can access a company specified by unique identifier
+        /// </summary>
+        public const string CompanyRolesUrl = "companies/{companyId:min(1)}/roles";
     }
 }

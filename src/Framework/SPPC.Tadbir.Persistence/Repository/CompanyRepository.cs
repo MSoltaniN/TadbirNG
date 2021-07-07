@@ -10,12 +10,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SPPC.Framework.Common;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -81,8 +83,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView, string webRoot)
         {
             Verify.ArgumentNotNull(companyView, "companyView");
-            var company = default(CompanyDb);
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            CompanyDb company;
             if (companyView.Id == 0)
             {
                 CreateDatabase(companyView, webRoot);
@@ -187,6 +189,66 @@ namespace SPPC.Tadbir.Persistence
                     .Equals(userName));
         }
 
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به یک شرکت را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="companyId">شناسه یکی از شرکت های موجود</param>
+        /// <returns>اطلاعات نمایشی نقش های دارای دسترسی</returns>
+        public async Task<RelatedItemsViewModel> GetCompanyRolesAsync(int companyId)
+        {
+            RelatedItemsViewModel companyRoles = null;
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var existing = await repository.GetByIDAsync(companyId, co => co.RoleCompanies);
+            if (existing != null)
+            {
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+                var enabledRoleIds = existing.RoleCompanies.Select(rc => rc.RoleId);
+                var enabledRoles = await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => enabledRoleIds.Contains(r.Id))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
+                    .ToArrayAsync();
+                var disabledRoles = await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => !enabledRoleIds.Contains(r.Id))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
+                    .ToArrayAsync();
+                Array.ForEach(enabledRoles, item => item.IsSelected = true);
+
+                companyRoles = new RelatedItemsViewModel() { Id = companyId };
+                Array.ForEach(enabledRoles
+                    .Concat(disabledRoles)
+                    .OrderBy(item => item.Id)
+                    .ToArray(), item => companyRoles.RelatedItems.Add(item));
+            }
+
+            return companyRoles;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت نقش های دارای دسترسی به یک شرکت را ذخیره می کند
+        /// </summary>
+        /// <param name="companyRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
+        public async Task SaveCompanyRolesAsync(RelatedItemsViewModel companyRoles)
+        {
+            Verify.ArgumentNotNull(companyRoles, nameof(companyRoles));
+            var repository = UnitOfWork.GetAsyncRepository<RoleCompany>();
+            var existing = await repository.GetByCriteriaAsync(rc => rc.CompanyId == companyRoles.Id);
+            if (AreRolesModified(existing, companyRoles))
+            {
+                if (existing.Count > 0)
+                {
+                    RemoveUnassignedRoles(repository, existing, companyRoles);
+                }
+
+                AddNewRoles(repository, existing, companyRoles);
+                await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.CompanyAccess);
+                Log.Description = await GetCompanyRoleDescriptionAsync(companyRoles.Id);
+                await TrySaveLogAsync();
+            }
+        }
+
         internal override int? EntityType
         {
             get { return (int)SysEntityTypeId.CompanyDb; }
@@ -219,6 +281,61 @@ namespace SPPC.Tadbir.Persistence
                     AppStrings.UserName, entity.UserName, AppStrings.Password, entity.Password,
                     AppStrings.Description, entity.Description)
                 : null;
+        }
+
+        private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
+        {
+            return left.Count() == right.Count()
+                && left.All(value => right.Contains(value));
+        }
+
+        private static bool AreRolesModified(IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
+        {
+            var existingItems = existing
+                .Select(rc => rc.RoleId)
+                .ToArray();
+            var enabledItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id)
+                .ToArray();
+            return !AreEqual(existingItems, enabledItems);
+        }
+
+        private static void RemoveUnassignedRoles(
+            IRepository<RoleCompany> repository, IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
+        {
+            var currentItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id);
+            var removedItems = existing
+                .Select(rc => rc.RoleId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in removedItems)
+            {
+                var removed = existing
+                    .Where(rc => rc.RoleId == id)
+                    .Single();
+                repository.Delete(removed);
+            }
+        }
+
+        private void AddNewRoles(
+            IRepository<RoleCompany> repository, IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
+        {
+            var currentItems = existing.Select(rc => rc.RoleId);
+            var newItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected
+                    && !currentItems.Contains(item.Id));
+            foreach (var item in newItems)
+            {
+                var roleCompany = new RoleCompany()
+                {
+                    RoleId = item.Id,
+                    CompanyId = roleItems.Id
+                };
+                repository.Insert(roleCompany);
+            }
         }
 
         private void CreateDatabase(CompanyDbViewModel company, string webRoot)
@@ -306,6 +423,21 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return false;
+        }
+
+        private async Task<string> GetCompanyRoleDescriptionAsync(int companyId)
+        {
+            string description = String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync(companyId);
+            if (company != null)
+            {
+                string template = Context.Localize(AppStrings.RolesWithAccessToResource);
+                string entity = Context.Localize(AppStrings.Company).ToLower();
+                description = String.Format(template, entity, company.Name);
+            }
+
+            return description;
         }
 
         private async Task<Expression<Func<CompanyDb, bool>>> GetSecurityFilterAsync()

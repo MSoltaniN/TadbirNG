@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -58,5 +59,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="company">شرکت مورد نظر</param>
         /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
         bool IsDuplicateCompanyUserName(CompanyDbViewModel company);
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به یک شرکت را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="companyId">شناسه یکی از شرکت های موجود</param>
+        /// <returns>اطلاعات نمایشی نقش های دارای دسترسی</returns>
+        Task<RelatedItemsViewModel> GetCompanyRolesAsync(int companyId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت نقش های دارای دسترسی به یک شرکت را ذخیره می کند
+        /// </summary>
+        /// <param name="companyRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
+        Task SaveCompanyRolesAsync(RelatedItemsViewModel companyRoles);
     }
 }

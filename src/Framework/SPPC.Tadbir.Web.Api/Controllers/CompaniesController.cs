@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -159,6 +161,46 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای نقش های دارای دسترسی به شرکت داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای نقش های دارای دسترسی به شرکت</returns>
+        // GET: api/companies/{companyId:min(1)}/roles
+        [HttpGet]
+        [Route(CompanyApi.CompanyRolesUrl)]
+        [AuthorizeRequest]
+        public async Task<IActionResult> GetCompanyRolesAsync(int companyId)
+        {
+            var roles = await _repository.GetCompanyRolesAsync(companyId);
+            Localize(roles);
+            return JsonReadResult(roles);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به شرکت داده شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
+        /// <param name="companyRoles">اطلاعات جدید برای نقش های دارای دسترسی به شرکت</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
+        // PUT: api/companies/{companyId:min(1)}/roles
+        [HttpPut]
+        [Route(CompanyApi.CompanyRolesUrl)]
+        [AuthorizeRequest]
+        public async Task<IActionResult> PutModifiedCompanyRolesAsync(
+            int companyId, [FromBody] RelatedItemsViewModel companyRoles)
+        {
+            var result = BasicValidationResult(companyRoles, companyId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveCompanyRolesAsync(companyRoles);
+            return Ok();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
         /// </summary>
         /// <param name="item">شناسه دیتابیسی شرکت مورد نظر برای حذف</param>
@@ -198,6 +240,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private void Localize(RelatedItemsViewModel roles)
+        {
+            Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
 
         private readonly IHostingEnvironment _host;

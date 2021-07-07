@@ -554,6 +554,8 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (27, N'AssignUs
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (28, N'BranchAccess')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (29, N'FiscalPeriodAccess')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (30, N'ViewArchive')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (35, N'RoleAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (57, N'CompanyAccess')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
@@ -109,6 +108,19 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر برای نقش مورد نظر دسترسی سطری تعریف شده مقدار "درست" و
         /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> HasRowPermissions(int roleId);
+
+        /// <summary>
+        /// به روش آسنکرون، شرکت های قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه یکی از نقش های موجود</param>
+        /// <returns>اطلاعات نمایشی شرکت های قابل دسترسی</returns>
+        Task<RelatedItemsViewModel> GetRoleCompaniesAsync(int roleId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت شرکت های قابل دسترسی توسط یک نقش را ذخیره می کند
+        /// </summary>
+        /// <param name="roleCompanies">اطلاعات نمایشی شرکت های قابل دسترسی</param>
+        Task SaveRoleCompaniesAsync(RelatedItemsViewModel roleCompanies);
 
         /// <summary>
         /// به روش آسنکرون، شعبه های قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
