@@ -331,7 +331,9 @@
     "AllDetailAccount": "All DetailAccount",
     "AllCostCenter": "All CostCenter",
     "AllProject": "All Project",
-    "SelectLevelErrorMsg": "It is not possible to select a level above the level of the selected {0}"
+    "SelectLevelErrorMsg": "It is not possible to select a level above the level of the selected {0}",
+    "Ledger": "Ledger",
+    "Level": "Level"
   },
   "AccountBook": {
     "DisplayByRow": "By Row",

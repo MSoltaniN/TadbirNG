@@ -110,8 +110,11 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     if (item.routeUrl) {
       this.router.navigate([item.routeUrl])
 
-      document.querySelector('li.active').classList.remove('active')
-      document.querySelector('#cmd' + item.id).classList.add('active')
+      if (document.querySelector('li.active'))
+        document.querySelector('li.active').classList.remove('active');
+
+      if (document.querySelector('#cmd' + item.id))
+        document.querySelector('#cmd' + item.id).classList.add('active');
     }
   }
 
