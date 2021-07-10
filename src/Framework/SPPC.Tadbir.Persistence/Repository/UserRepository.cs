@@ -311,7 +311,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<UserViewModel> SaveUserAsync(UserViewModel userView)
         {
             Verify.ArgumentNotNull(userView, "userView");
-            User user = default;
+            User user = default(User);
             var repository = UnitOfWork.GetAsyncRepository<User>();
             if (userView.Id == 0)
             {
