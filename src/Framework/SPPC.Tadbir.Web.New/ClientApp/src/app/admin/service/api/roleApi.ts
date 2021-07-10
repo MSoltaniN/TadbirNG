@@ -42,4 +42,7 @@ export class RoleApi {
 
     // roles/{roleId:min(2)}/rowaccess
     public static RowAccessSettings = environment.BaseUrl + "/roles/{0}/rowaccess";
+
+    // roles/{roleId:min(1)}/companies
+    public static RoleCompanies = environment.BaseUrl + "/roles/{0}/companies";
 }

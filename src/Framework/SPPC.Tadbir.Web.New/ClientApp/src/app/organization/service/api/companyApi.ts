@@ -14,9 +14,6 @@ import { environment } from "@sppc/env/environment";
 
 export class CompanyApi {
 
-    // companies/company/{companyId:min(1)}
-    public static CompanyChildren = environment.BaseUrl + "/companies/company/{0}";
-
     // companies
     public static Companies = environment.BaseUrl + "/companies";
 
@@ -25,4 +22,7 @@ export class CompanyApi {
 
     // companies/metadata
     public static CompanyMetadata = environment.BaseUrl + "/companies/metadata";
+
+    // companies/{companyId:min(1)}/roles
+    public static CompanyRoles = environment.BaseUrl + "/companies/{0}/roles";
 }
