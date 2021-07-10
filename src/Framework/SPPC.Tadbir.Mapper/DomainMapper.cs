@@ -581,6 +581,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CompanyDb, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<CompanyDb, RelatedItemsViewModel>()
+                .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
+            mapperConfig.CreateMap<CompanyDb, RelatedItemViewModel>();
 
             mapperConfig.CreateMap<LogSetting, LogSettingViewModel>();
             mapperConfig.CreateMap<LogSetting, LogSettingItemViewModel>();

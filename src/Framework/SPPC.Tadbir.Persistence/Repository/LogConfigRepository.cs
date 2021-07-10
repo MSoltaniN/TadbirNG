@@ -250,13 +250,13 @@ namespace SPPC.Tadbir.Persistence
             Expression<Func<SysLogSetting, bool>> criteria = null;
             if (log.EntityTypeId != null)
             {
-                criteria = cfg => (cfg.Operation.Id == log.OperationId)
-                    && (cfg.EntityType.Id == log.EntityTypeId);
+                criteria = cfg => (cfg.OperationId == log.OperationId)
+                    && (cfg.EntityTypeId == log.EntityTypeId);
             }
             else
             {
-                criteria = cfg => (cfg.Operation.Id == log.OperationId)
-                    && (cfg.Source.Id == log.SourceId);
+                criteria = cfg => (cfg.OperationId == log.OperationId)
+                    && (cfg.SourceId == log.SourceId);
             }
 
             var configResult = default(LogSettingViewModel);

@@ -292,5 +292,10 @@ namespace SPPC.Tadbir.Persistence
         /// کد عملیاتی فیلتر پیشرفته نرخ های ارز
         /// </summary>
         FilterRates = 56,
+
+        /// <summary>
+        /// کد عملیاتی تعیین دسترسی به شرکت
+        /// </summary>
+        CompanyAccess = 57
     }
 }

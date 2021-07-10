@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
@@ -129,21 +130,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
         public async Task SaveBranchRolesAsync(RelatedItemsViewModel branchRoles)
         {
-            Verify.ArgumentNotNull(branchRoles, "branchRoles");
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var existing = await repository.GetByIDWithTrackingAsync(branchRoles.Id, br => br.RoleBranches);
-            if (existing != null && AreRolesModified(existing, branchRoles))
+            Verify.ArgumentNotNull(branchRoles, nameof(branchRoles));
+            var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+            var existing = await repository.GetByCriteriaAsync(rb => rb.BranchId == branchRoles.Id);
+            if (AreRolesModified(existing, branchRoles))
             {
-                if (existing.RoleBranches.Count > 0)
+                if (existing.Count > 0)
                 {
-                    RemoveInaccessibleRoles(existing, branchRoles);
+                    RemoveUnassignedRoles(repository, existing, branchRoles);
                 }
 
-                AddNewRoles(existing, branchRoles);
-                repository.Update(existing);
+                AddNewRoles(repository, existing, branchRoles);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.RoleAccess);
-                Log.Description = Context.Localize(await GetBranchRoleDescriptionAsync(existing));
+                Log.Description = await GetBranchRoleDescriptionAsync(branchRoles.Id);
                 await TrySaveLogAsync();
             }
         }
@@ -156,8 +156,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<BranchViewModel> SaveBranchAsync(BranchViewModel branchView)
         {
             Verify.ArgumentNotNull(branchView, "branchView");
-            Branch branch = default(Branch);
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            Branch branch;
             if (branchView.Id == 0)
             {
                 branch = Mapper.Map<Branch>(branchView);
@@ -315,38 +315,41 @@ namespace SPPC.Tadbir.Persistence
                 && left.All(value => right.Contains(value));
         }
 
-        private static bool AreRolesModified(Branch existing, RelatedItemsViewModel roleItems)
+        private static bool AreRolesModified(IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
-            var existingItems = existing.RoleBranches
+            var existingItems = existing
                 .Select(rb => rb.RoleId)
                 .ToArray();
             var enabledItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
                 .Select(item => item.Id)
                 .ToArray();
-            return (!AreEqual(existingItems, enabledItems));
+            return !AreEqual(existingItems, enabledItems);
         }
 
-        private static void RemoveInaccessibleRoles(Branch existing, RelatedItemsViewModel roleItems)
+        private static void RemoveUnassignedRoles(
+            IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
                 .Select(item => item.Id);
-            var removedItems = existing.RoleBranches
+            var removedItems = existing
                 .Select(rb => rb.RoleId)
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
             foreach (int id in removedItems)
             {
-                existing.RoleBranches.Remove(existing.RoleBranches
+                var removed = existing
                     .Where(rb => rb.RoleId == id)
-                    .Single());
+                    .Single();
+                repository.Delete(removed);
             }
         }
 
-        private void AddNewRoles(Branch existing, RelatedItemsViewModel roleItems)
+        private void AddNewRoles(
+            IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
-            var currentItems = existing.RoleBranches.Select(rb => rb.RoleId);
+            var currentItems = existing.Select(rb => rb.RoleId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
                     && !currentItems.Contains(item.Id));
@@ -354,34 +357,26 @@ namespace SPPC.Tadbir.Persistence
             {
                 var roleBranch = new RoleBranch()
                 {
-                    BranchId = existing.Id,
+                    BranchId = roleItems.Id,
                     RoleId = item.Id
                 };
-                existing.RoleBranches.Add(roleBranch);
+                repository.Insert(roleBranch);
             }
         }
 
-        private async Task<string> GetBranchRoleDescriptionAsync(Branch branch)
+        private async Task<string> GetBranchRoleDescriptionAsync(int branchId)
         {
-            var builder = new StringBuilder();
-            builder.AppendFormat("{0} : {1} , {2} : ",
-                AppStrings.Branch, branch.Name, AppStrings.RolesWithAccess);
-            if (branch.RoleBranches.Count > 0)
+            var description = String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            var branch = await repository.GetByIDAsync(branchId);
+            if (branch != null)
             {
-                UnitOfWork.UseSystemContext();
-                var repository = UnitOfWork.GetAsyncRepository<Role>();
-                var roles = await repository.GetByCriteriaAsync(r => branch.RoleBranches
-                    .Select(rb => rb.RoleId)
-                    .Contains(r.Id));
-                builder.Append(String.Join(" , ", roles.Select(r => r.Name)));
-                UnitOfWork.UseCompanyContext();
-            }
-            else
-            {
-                builder.Append(AppStrings.None);
+                string template = Context.Localize(AppStrings.RolesWithAccessToResource);
+                string entity = Context.Localize(AppStrings.Branch).ToLower();
+                description = String.Format(template, entity, branch.Name);
             }
 
-            return builder.ToString();
+            return description;
         }
 
         private async Task<Expression<Func<Branch, bool>>> GetSecurityFilterAsync()

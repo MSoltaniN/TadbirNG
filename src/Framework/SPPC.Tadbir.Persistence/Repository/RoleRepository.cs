@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -9,6 +8,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
@@ -324,6 +324,62 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، شرکت های قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه یکی از نقش های موجود</param>
+        /// <returns>اطلاعات نمایشی شرکت های قابل دسترسی</returns>
+        public async Task<RelatedItemsViewModel> GetRoleCompaniesAsync(int roleId)
+        {
+            RelatedItemsViewModel roleCompanies = null;
+            var relatedRepository = UnitOfWork.GetAsyncRepository<RoleCompany>();
+            var roleCompaniesModel = relatedRepository.GetByCriteria(
+                rc => rc.RoleId == roleId, rc => rc.Company);
+            var enabledCompanies = roleCompaniesModel
+                .Select(rc => rc.Company)
+                .Select(co => Mapper.Map<RelatedItemViewModel>(co))
+                .ToArray();
+            var companyRepository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var allCompanies = await companyRepository.GetAllAsync();
+            var disabledCompanies = allCompanies
+                .Select(co => Mapper.Map<RelatedItemViewModel>(co))
+                .Except(enabledCompanies, new EntityEqualityComparer<RelatedItemViewModel>())
+                .ToArray();
+            Array.ForEach(enabledCompanies, item => item.IsSelected = true);
+
+            roleCompanies = new RelatedItemsViewModel() { Id = roleId };
+            Array.ForEach(enabledCompanies
+                .Concat(disabledCompanies)
+                .OrderBy(item => item.Id)
+                .ToArray(), item => roleCompanies.RelatedItems.Add(item));
+
+            return roleCompanies;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت شرکت های قابل دسترسی توسط یک نقش را ذخیره می کند
+        /// </summary>
+        /// <param name="roleCompanies">اطلاعات نمایشی شرکت های قابل دسترسی</param>
+        public async Task SaveRoleCompaniesAsync(RelatedItemsViewModel roleCompanies)
+        {
+            Verify.ArgumentNotNull(roleCompanies, nameof(roleCompanies));
+            var repository = UnitOfWork.GetAsyncRepository<RoleCompany>();
+            var existing = await repository.GetByCriteriaAsync(rc => rc.RoleId == roleCompanies.Id);
+            if (AreCompaniesModified(existing, roleCompanies))
+            {
+                if (existing.Count > 0)
+                {
+                    RemoveInaccessibleCompanies(repository, existing, roleCompanies);
+                }
+
+                AddNewCompanies(repository, existing, roleCompanies);
+                await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.CompanyAccess);
+                Log.Description = await GetRoleAccessDescriptionAsync(roleCompanies.Id, AppStrings.Companies);
+                await TrySaveLogAsync();
+            }
+        }
+
+        /// <summary>
         /// به روش آسنکرون، شعبه های قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
         /// </summary>
         /// <param name="roleId">شناسه یکی از نقش های موجود</param>
@@ -364,10 +420,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="roleBranches">اطلاعات نمایشی شعبه های قابل دسترسی</param>
         public async Task SaveRoleBranchesAsync(RelatedItemsViewModel roleBranches)
         {
-            Verify.ArgumentNotNull(roleBranches, "roleBranches");
+            Verify.ArgumentNotNull(roleBranches, nameof(roleBranches));
             UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
-            var existing = await repository.GetByCriteriaAsync(rb => rb.RoleId == roleBranches.Id, rb => rb.Branch);
+            var existing = await repository.GetByCriteriaAsync(rb => rb.RoleId == roleBranches.Id);
             if (AreBranchesModified(existing, roleBranches))
             {
                 if (existing.Count > 0)
@@ -378,7 +434,9 @@ namespace SPPC.Tadbir.Persistence
                 AddNewBranches(repository, existing, roleBranches);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.BranchAccess);
-                Log.Description = Context.Localize(await GetRoleBranchDescriptionAsync(roleBranches.Id));
+                UnitOfWork.UseSystemContext();
+                Log.Description = await GetRoleAccessDescriptionAsync(roleBranches.Id, AppStrings.Branches);
+                UnitOfWork.UseCompanyContext();
                 await TrySaveLogAsync();
             }
 
@@ -432,21 +490,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="roleUsers">اطلاعات نمایشی کاربران</param>
         public async Task SaveRoleUsersAsync(RelatedItemsViewModel roleUsers)
         {
-            Verify.ArgumentNotNull(roleUsers, "roleUsers");
-            var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var existing = await repository.GetByIDWithTrackingAsync(roleUsers.Id, r => r.UserRoles);
-            if (existing != null && AreUsersModified(existing, roleUsers))
+            Verify.ArgumentNotNull(roleUsers, nameof(roleUsers));
+            var repository = UnitOfWork.GetAsyncRepository<UserRole>();
+            var existing = await repository.GetByCriteriaAsync(ur => ur.RoleId == roleUsers.Id);
+            if (AreUsersModified(existing, roleUsers))
             {
-                if (existing.UserRoles.Count > 0)
+                if (existing.Count > 0)
                 {
-                    RemoveUnassignedUsers(existing, roleUsers);
+                    RemoveUnassignedUsers(repository, existing, roleUsers);
                 }
 
-                AddNewUsers(existing, roleUsers);
-                repository.Update(existing);
+                AddNewUsers(repository, existing, roleUsers);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.AssignUser);
-                Log.Description = Context.Localize(await GetRoleUserDescriptionAsync(roleUsers.Id));
+                Log.Description = await GetRoleUserDescriptionAsync(roleUsers.Id);
                 await TrySaveLogAsync();
             }
         }
@@ -492,11 +549,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="rolePeriods">اطلاعات نمایشی دوره های مالی قابل دسترسی</param>
         public async Task SaveRoleFiscalPeriodsAsync(RelatedItemsViewModel rolePeriods)
         {
-            Verify.ArgumentNotNull(rolePeriods, "rolePeriods");
+            Verify.ArgumentNotNull(rolePeriods, nameof(rolePeriods));
             UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
-            var existing = await repository.GetByCriteriaAsync(
-                rfp => rfp.RoleId == rolePeriods.Id, rfp => rfp.FiscalPeriod);
+            var existing = await repository.GetByCriteriaAsync(rfp => rfp.RoleId == rolePeriods.Id);
             if (AreFiscalPeriodsModified(existing, rolePeriods))
             {
                 if (existing.Count > 0)
@@ -507,7 +563,9 @@ namespace SPPC.Tadbir.Persistence
                 AddNewFiscalPeriods(repository, existing, rolePeriods);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.FiscalPeriodAccess);
-                Log.Description = Context.Localize(await GetRoleFiscalPeriodDescriptionAsync(rolePeriods.Id));
+                UnitOfWork.UseSystemContext();
+                Log.Description = await GetRoleAccessDescriptionAsync(rolePeriods.Id, AppStrings.FiscalPeriods);
+                UnitOfWork.UseCompanyContext();
                 await TrySaveLogAsync();
             }
 
@@ -687,6 +745,18 @@ namespace SPPC.Tadbir.Persistence
             return (!AreEqual(existingItems, enabledItems));
         }
 
+        private static bool AreCompaniesModified(IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
+        {
+            var existingItems = existing
+                .Select(rc => rc.CompanyId)
+                .ToArray();
+            var enabledItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id)
+                .ToArray();
+            return !AreEqual(existingItems, enabledItems);
+        }
+
         private static bool AreBranchesModified(IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
             var existingItems = existing
@@ -699,16 +769,16 @@ namespace SPPC.Tadbir.Persistence
             return (!AreEqual(existingItems, enabledItems));
         }
 
-        private static bool AreUsersModified(Role existing, RelatedItemsViewModel roleItems)
+        private static bool AreUsersModified(IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
-            var existingItems = existing.UserRoles
+            var existingItems = existing
                 .Select(ur => ur.UserId)
                 .ToArray();
             var enabledItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
                 .Select(item => item.Id)
                 .ToArray();
-            return (!AreEqual(existingItems, enabledItems));
+            return !AreEqual(existingItems, enabledItems);
         }
 
         private static bool AreFiscalPeriodsModified(
@@ -724,16 +794,23 @@ namespace SPPC.Tadbir.Persistence
             return (!AreEqual(existingItems, enabledItems));
         }
 
-        private static bool AreRolesModified(User existing, RelatedItemsViewModel roleItems)
+        private static void RemoveInaccessibleCompanies(
+            IRepository<RoleCompany> repository, IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
         {
-            var existingItems = existing.UserRoles
-                .Select(ur => ur.RoleId)
-                .ToArray();
-            var enabledItems = roleItems.RelatedItems
+            var currentItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
-                .Select(item => item.Id)
+                .Select(item => item.Id);
+            var removedItems = existing
+                .Select(rc => rc.CompanyId)
+                .Where(id => !currentItems.Contains(id))
                 .ToArray();
-            return (!AreEqual(existingItems, enabledItems));
+            foreach (int id in removedItems)
+            {
+                var removed = existing
+                    .Where(rc => rc.CompanyId == id)
+                    .Single();
+                repository.Delete(removed);
+            }
         }
 
         private static void RemoveInaccessibleBranches(
@@ -755,20 +832,22 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static void RemoveUnassignedUsers(Role existing, RelatedItemsViewModel role)
+        private static void RemoveUnassignedUsers(
+            IRepository<UserRole> repository, IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
-            var currentItems = role.RelatedItems
+            var currentItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
                 .Select(item => item.Id);
-            var removedItems = existing.UserRoles
+            var removedItems = existing
                 .Select(ur => ur.UserId)
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
             foreach (int id in removedItems)
             {
-                existing.UserRoles.Remove(existing.UserRoles
-                    .Where(ur => ur.UserId == id)
-                    .Single());
+                var removed = existing
+                    .Where(rc => rc.UserId == id)
+                    .Single();
+                repository.Delete(removed);
             }
         }
 
@@ -788,23 +867,6 @@ namespace SPPC.Tadbir.Persistence
                     .Where(rfp => rfp.FiscalPeriodId == id)
                     .Single();
                 repository.Delete(removed);
-            }
-        }
-
-        private static void RemoveUnassignedRoles(User existing, RelatedItemsViewModel role)
-        {
-            var currentItems = role.RelatedItems
-                .Where(item => item.IsSelected)
-                .Select(item => item.Id);
-            var removedItems = existing.UserRoles
-                .Select(ur => ur.RoleId)
-                .Where(id => !currentItems.Contains(id))
-                .ToArray();
-            foreach (int id in removedItems)
-            {
-                existing.UserRoles.Remove(existing.UserRoles
-                    .Where(ur => ur.RoleId == id)
-                    .Single());
             }
         }
 
@@ -843,6 +905,24 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private void AddNewCompanies(
+            IRepository<RoleCompany> repository, IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
+        {
+            var currentItems = existing.Select(rc => rc.CompanyId);
+            var newItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected
+                    && !currentItems.Contains(item.Id));
+            foreach (var item in newItems)
+            {
+                var roleCompany = new RoleCompany()
+                {
+                    CompanyId = item.Id,
+                    RoleId = roleItems.Id
+                };
+                repository.Insert(roleCompany);
+            }
+        }
+
         private void AddNewBranches(
             IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
@@ -861,10 +941,10 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewUsers(Role existing, RelatedItemsViewModel roleItems)
+        private void AddNewUsers(
+            IRepository<UserRole> repository, IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
-            var repository = UnitOfWork.GetRepository<User>();
-            var currentItems = existing.UserRoles.Select(ur => ur.UserId);
+            var currentItems = existing.Select(ur => ur.UserId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
                     && !currentItems.Contains(item.Id));
@@ -873,9 +953,9 @@ namespace SPPC.Tadbir.Persistence
                 var userRole = new UserRole()
                 {
                     UserId = item.Id,
-                    RoleId = existing.Id
+                    RoleId = roleItems.Id
                 };
-                existing.UserRoles.Add(userRole);
+                repository.Insert(userRole);
             }
         }
 
@@ -894,24 +974,6 @@ namespace SPPC.Tadbir.Persistence
                     RoleId = roleItems.Id
                 };
                 repository.Insert(roleFiscalPeriod);
-            }
-        }
-
-        private void AddNewRoles(User existing, RelatedItemsViewModel roleItems)
-        {
-            var repository = UnitOfWork.GetRepository<Role>();
-            var currentItems = existing.UserRoles.Select(ur => ur.RoleId);
-            var newItems = roleItems.RelatedItems
-                .Where(item => item.IsSelected
-                    && !currentItems.Contains(item.Id));
-            foreach (var item in newItems)
-            {
-                var userRole = new UserRole()
-                {
-                    UserId = existing.Id,
-                    RoleId = item.Id
-                };
-                existing.UserRoles.Add(userRole);
             }
         }
 
@@ -962,83 +1024,32 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<string> GetRoleBranchDescriptionAsync(int roleId)
+        private async Task<string> GetRoleAccessDescriptionAsync(int roleId, string entityKey)
         {
-            var builder = new StringBuilder();
-            UnitOfWork.UseSystemContext();
-            var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
-            var role = await roleRepository.GetByIDAsync(roleId);
-            UnitOfWork.UseCompanyContext();
+            string description = String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
+            var role = await repository.GetByIDAsync(roleId);
             if (role != null)
             {
-                var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
-                var existing = await repository.GetByCriteriaAsync(
-                    rb => rb.RoleId == roleId, rb => rb.Branch);
-                builder.AppendFormat("{0} : {1} , {2} : ",
-                    AppStrings.Role, role.Name, AppStrings.AccessibleBranches);
-                if (existing.Count > 0)
-                {
-                    builder.Append(String.Join(" , ", existing.Select(rb => rb.Branch.Name)));
-                }
-                else
-                {
-                    builder.Append(AppStrings.None);
-                }
+                string template = Context.Localize(AppStrings.RoleAccessToResource);
+                description = Context.Localize(String.Format(template, role.Name, entityKey));
             }
 
-            return builder.ToString();
-        }
-
-        private async Task<string> GetRoleFiscalPeriodDescriptionAsync(int roleId)
-        {
-            var builder = new StringBuilder();
-            UnitOfWork.UseSystemContext();
-            var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
-            var role = await roleRepository.GetByIDAsync(roleId);
-            UnitOfWork.UseCompanyContext();
-            if (role != null)
-            {
-                var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
-                var existing = await repository.GetByCriteriaAsync(
-                    rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
-                builder.AppendFormat("{0} : {1} , {2} : ",
-                    AppStrings.Role, role.Name, AppStrings.AccessiblePeriods);
-                if (existing.Count > 0)
-                {
-                    builder.Append(String.Join(" , ", existing.Select(rfp => rfp.FiscalPeriod.Name)));
-                }
-                else
-                {
-                    builder.Append(AppStrings.None);
-                }
-            }
-
-            return builder.ToString();
+            return description;
         }
 
         private async Task<string> GetRoleUserDescriptionAsync(int roleId)
         {
-            var builder = new StringBuilder();
-            var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
-            var role = await roleRepository.GetByIDAsync(roleId);
+            string description = String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
+            var role = await repository.GetByIDAsync(roleId);
             if (role != null)
             {
-                var repository = UnitOfWork.GetAsyncRepository<UserRole>();
-                var existing = await repository.GetByCriteriaAsync(
-                    ur => ur.RoleId == roleId, ur => ur.User);
-                builder.AppendFormat("{0} : {1} , {2} : ",
-                    AppStrings.Role, role.Name, AppStrings.AssignedUsers);
-                if (existing.Count > 0)
-                {
-                    builder.Append(String.Join(" , ", existing.Select(ur => ur.User.UserName)));
-                }
-                else
-                {
-                    builder.Append(AppStrings.None);
-                }
+                string template = Context.Localize(AppStrings.AssignRoleToUsers);
+                description = Context.Localize(String.Format(template, role.Name));
             }
 
-            return builder.ToString();
+            return description;
         }
 
         private async Task LogRowPermissionOperationAsync(

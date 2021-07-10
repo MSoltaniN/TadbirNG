@@ -3021,8 +3021,8 @@
   <data name="None" xml:space="preserve">
     <value>(None)</value>
   </data>
-  <data name="RolesWithAccess" xml:space="preserve">
-    <value>Roles with access</value>
+  <data name="RolesWithAccessToResource" xml:space="preserve">
+    <value>Roles with access to {1} '{0}'</value>
   </data>
   <data name="AccountItemRelations" xml:space="preserve">
     <value>Relations between {0} '{1}' ({2}) and {3}</value>
@@ -3500,5 +3500,17 @@
   </data>
   <data name="OperationNotAllowed" xml:space="preserve">
     <value>Current user does not have permission to {0}.</value>
+  </data>
+  <data name="RoleAccessToResource" xml:space="preserve">
+    <value>{1} accessible to role {0}</value>
+  </data>
+  <data name="AssignRoleToUsers" xml:space="preserve">
+    <value>Assigning role {0} to users</value>
+  </data>
+  <data name="RolesAssignedToUser" xml:space="preserve">
+    <value>Roles assigned to user {0}</value>
+  </data>
+  <data name="CompanyAccess" xml:space="preserve">
+    <value>Company access</value>
   </data>
 </root>

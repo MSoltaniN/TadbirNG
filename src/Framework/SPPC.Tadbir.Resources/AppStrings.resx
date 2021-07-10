@@ -3012,8 +3012,8 @@
   <data name="None" xml:space="preserve">
     <value>(هیچکدام)</value>
   </data>
-  <data name="RolesWithAccess" xml:space="preserve">
-    <value>نقش های دارای دسترسی</value>
+  <data name="RolesWithAccessToResource" xml:space="preserve">
+    <value>نقش های دارای دسترسی به {0} {1}</value>
   </data>
   <data name="AccountItemRelations" xml:space="preserve">
     <value>ارتباط {0} '{1}' ({2}) با {3}</value>
@@ -3491,5 +3491,17 @@
   </data>
   <data name="OperationNotAllowed" xml:space="preserve">
     <value>کاربر جاری مجوز لازم برای {0} را ندارد.</value>
+  </data>
+  <data name="RoleAccessToResource" xml:space="preserve">
+    <value>دسترسی نقش {0} به {1}</value>
+  </data>
+  <data name="AssignRoleToUsers" xml:space="preserve">
+    <value>تخصیص نقش {0} به کاربران</value>
+  </data>
+  <data name="RolesAssignedToUser" xml:space="preserve">
+    <value>نقش های تخصیص داده شده به کاربر {0}</value>
+  </data>
+  <data name="CompanyAccess" xml:space="preserve">
+    <value>دسترسی به شرکت</value>
   </data>
 </root>
