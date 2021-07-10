@@ -433,7 +433,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewBranches(repository, existing, roleBranches);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.CompanyAccess);
+                OnEntityAction(OperationId.BranchAccess);
                 UnitOfWork.UseSystemContext();
                 Log.Description = await GetRoleAccessDescriptionAsync(roleBranches.Id, AppStrings.Branches);
                 UnitOfWork.UseCompanyContext();
