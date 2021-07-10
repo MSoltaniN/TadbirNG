@@ -433,7 +433,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewBranches(repository, existing, roleBranches);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.BranchAccess);
+                OnEntityAction(OperationId.CompanyAccess);
                 UnitOfWork.UseSystemContext();
                 Log.Description = await GetRoleAccessDescriptionAsync(roleBranches.Id, AppStrings.Branches);
                 UnitOfWork.UseCompanyContext();
@@ -502,7 +502,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewUsers(repository, existing, roleUsers);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.CompanyAccess);
+                OnEntityAction(OperationId.AssignUser);
                 Log.Description = await GetRoleUserDescriptionAsync(roleUsers.Id);
                 await TrySaveLogAsync();
             }

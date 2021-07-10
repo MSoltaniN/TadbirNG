@@ -3510,4 +3510,7 @@
   <data name="RolesAssignedToUser" xml:space="preserve">
     <value>Roles assigned to user {0}</value>
   </data>
+  <data name="CompanyAccess" xml:space="preserve">
+    <value>Company access</value>
+  </data>
 </root>

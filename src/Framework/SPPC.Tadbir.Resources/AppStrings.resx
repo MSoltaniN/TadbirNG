@@ -3501,4 +3501,7 @@
   <data name="RolesAssignedToUser" xml:space="preserve">
     <value>نقش های تخصیص داده شده به کاربر {0}</value>
   </data>
+  <data name="CompanyAccess" xml:space="preserve">
+    <value>دسترسی به شرکت</value>
+  </data>
 </root>

@@ -125,7 +125,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewRoles(repository, existing, periodRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.BranchAccess);
+                OnEntityAction(OperationId.RoleAccess);
                 Log.Description = await GetFiscalPeriodRoleDescriptionAsync(periodRoles.Id);
                 await TrySaveLogAsync();
             }

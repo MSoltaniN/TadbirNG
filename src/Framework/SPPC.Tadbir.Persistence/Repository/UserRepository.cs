@@ -298,7 +298,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewRoles(repository, existing, userRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.CompanyAccess);
+                OnEntityAction(OperationId.AssignRole);
                 Log.Description = await GetUserRoleDescriptionAsync(userRoles.Id);
                 await TrySaveLogAsync();
             }

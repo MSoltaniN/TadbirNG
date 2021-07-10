@@ -142,7 +142,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewRoles(repository, existing, branchRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.BranchAccess);
+                OnEntityAction(OperationId.RoleAccess);
                 Log.Description = await GetBranchRoleDescriptionAsync(branchRoles.Id);
                 await TrySaveLogAsync();
             }

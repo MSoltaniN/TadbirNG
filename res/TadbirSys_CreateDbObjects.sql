@@ -621,6 +621,10 @@ INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, O
     VALUES (27, 8, NULL, 25, 1)
 INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (28, NULL, 5, 30, 1)
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (29, NULL, 1, 35, 1)
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (30, NULL, 2, 57, 1)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
 
 
