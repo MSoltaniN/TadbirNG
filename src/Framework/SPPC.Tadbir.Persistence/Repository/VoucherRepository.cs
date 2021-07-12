@@ -788,7 +788,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var options = gridOptions ?? new GridOptions();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            string filters = _report.TranslateQuery(GetEnvironmentFilters(gridOptions));
+            string filters = _report.TranslateQuery(GetEnvironmentFilters(options));
             string listQuery = String.Format(VoucherQuery.EnvironmentVouchers, filters);
             var query = new ReportQuery(listQuery);
             var result = DbConsole.ExecuteQuery(query.Query);
@@ -835,6 +835,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchName = _report.ValueOrDefault(row, "BranchName"),
                 IssuerName = _report.ValueOrDefault(row, "IssuerName"),
                 OriginName = _report.ValueOrDefault(row, "OriginName"),
+                SubjectType = subjectType,
                 TypeName = GetTypeName(subjectType)
             };
             return voucherItem;

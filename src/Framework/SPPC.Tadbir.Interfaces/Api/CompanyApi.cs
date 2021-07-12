@@ -9,16 +9,6 @@ namespace SPPC.Tadbir.Api
     public sealed class CompanyApi
     {
         /// <summary>
-        /// API client URL for companies defined in a company
-        /// </summary>
-        public const string CompanyChildren = "companies/company/{0}";
-
-        /// <summary>
-        /// API server route URL for companies defined in a company
-        /// </summary>
-        public const string CompanyChildrenUrl = "companies/company/{companyId:min(1)}";
-
-        /// <summary>
         /// API client URL for all companies
         /// </summary>
         public const string Companies = "companies";

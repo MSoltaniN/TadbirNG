@@ -894,6 +894,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Normalize)]
         public async Task<IActionResult> PutExistingDraftVoucherAsNormalized(int voucherId)
         {
+            bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(
+                VoucherOriginId.ClosingVoucher);
+            if (isChecked)
+            {
+                return BadRequestResult(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
+            }
+
             await _draftRepository.NormalizeVoucherAsync(voucherId);
             return Ok();
         }
