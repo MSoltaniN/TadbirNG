@@ -15,6 +15,7 @@ import { KeyCode } from '@sppc/shared/enum';
     (onGoToCurrent)="onGoToCurrentDate()"
     [config]='dateConfig'
     theme="dp-material"
+    [disabled]="isReadOnly"
     (focusout)="onDateFocusOut()">
   </dp-date-picker>`,
   styles: [`
@@ -28,6 +29,7 @@ import { KeyCode } from '@sppc/shared/enum';
     border-radius: 2px;
     padding: 4px 8px;
     width: 12.4em;
+
     box-sizing: border-box;
     border-width: 1px;
     border-style: solid;
@@ -74,14 +76,14 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   public dateObject: moment.Moment | null;
   editDateValue: any;
   i: number = 0;
-
+  _isReadOnly: boolean = false;  
 
   propagateChange: any = () => { };
 
   @Input() formControlName: string;
   private control: AbstractControl | null;
   constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {    
-  }
+  }  
 
   ngOnInit() {
     if (this.controlContainer) {
@@ -159,6 +161,12 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     //    this.onDateFocusOut();
     //}
 
+    
+    this.initDateConfig();
+
+  }
+
+  initDateConfig() {
     this.dateConfig = {
       mode: "day",
       format: this.dateFormat,
@@ -168,8 +176,15 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
       showGoToCurrent: true,
       showMultipleYearsNavigation: true
     };
+  }
 
+  get isReadOnly(): boolean {
+    return this._isReadOnly;
+  }
 
+  @Input()
+  set isReadOnly(value: boolean) {        
+    this._isReadOnly = value;
   }
 
   ngOnDestroy() {

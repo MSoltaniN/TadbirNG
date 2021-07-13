@@ -675,6 +675,13 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     });
   }
 
+  get isVoucherConfirmed(): boolean {
+
+    if (this.voucherModel)
+      return this.voucherModel.statusId > 1;
+
+    return false;
+  }
 }
 
 

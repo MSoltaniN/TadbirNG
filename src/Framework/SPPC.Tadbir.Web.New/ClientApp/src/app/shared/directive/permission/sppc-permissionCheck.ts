@@ -58,7 +58,7 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
   }
 
   haveAccess(): boolean {        
-
+    debugger;
     var isAccess: boolean = true;
 
     if (!this.permissions || this.permissions == '') return isAccess;

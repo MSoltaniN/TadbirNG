@@ -99,8 +99,9 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
 
   showQuickReportSetting(viewId: number, parent: any, reportSetting: any, reportManager:any) {    
     (async () => {
+      debugger;
       var entityName = await this.getEntityName(viewId);
-      var code = <number>GlobalPermissions.Print
+      var code = <number>GlobalPermissions.Print;
       if (!this.isAccess(entityName, code)) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
