@@ -10,7 +10,7 @@ networks:
 services:
 
  sppcTadbirDB:
-  image: ${DOCKER_REGISTRY-}sppctadbirdb
+  image: msn1368/sppctadbirdb:dev
   user: root
   build:
    context: ../../res
@@ -21,7 +21,7 @@ services:
    - productdata:/var/opt/mssql/data
    
  sppc.tadbir.web.api:
-  image: ${DOCKER_REGISTRY-}sppctadbirwebapi
+  image: msn1368/sppctadbirwebapi:latest
   build:
    context: .
    dockerfile: sppc.tadbir.web.api/Dockerfile
@@ -46,7 +46,7 @@ services:
    - frontend
 
  sppcTadbirWebNew:
-  image: ${DOCKER_REGISTRY-}sppctadbirwebnew
+  image: msn1368/sppctadbirwebnew:dev
   build:
    context: ./SPPC.Tadbir.Web.New/ClientApp
    dockerfile: Dockerfile

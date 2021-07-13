@@ -10,7 +10,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-import { FullAccount } from "./fullAccount";
+import { FullAccount } from "./fullaccount";
 import { IEntity } from "@sppc/shared/models";
 
 export interface VoucherLine extends IEntity {

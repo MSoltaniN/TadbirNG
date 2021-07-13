@@ -9,15 +9,15 @@ ENV SA_PASSWORD=Pwd12345!
 WORKDIR /tmp
 COPY TadbirSys_CreateDbObjects.sql .
 COPY TadbirSys_UpdateDbObjects.sql .
-COPY Tadbir_CreateDbObjects.sql .
-COPY Tadbir_UpdateDbObjects.sql .
+#COPY Tadbir_CreateDbObjects.sql .
+#COPY Tadbir_UpdateDbObjects.sql .
 
 RUN /opt/mssql/bin/sqlservr --accept-eula & sleep 100 \
 	&& /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Pwd12345!" -i /tmp/TadbirSys_CreateDbObjects.sql \
-	&& /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Pwd12345!" -i /tmp/TadbirSys_UpdateDbObjects.sql\
+	#&& /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Pwd12345!" -i /tmp/TadbirSys_UpdateDbObjects.sql\
 	&& pkill sqlservr
 
 FROM mcr.microsoft.com/mssql/server:2019-latest AS release
 ENV ACCEPT_EULA=Y
-EXPOSE 1143
+EXPOSE 1433
 COPY --from=build /var/opt/mssql/data /var/opt/mssql/data

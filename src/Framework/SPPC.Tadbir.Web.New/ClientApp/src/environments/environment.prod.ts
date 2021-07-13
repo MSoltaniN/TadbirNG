@@ -180,5 +180,5 @@ export class Layout {
 
 export const environment = {
   production: true,
-  BaseUrl: 'http://130.185.76.7:9095'
+  BaseUrl: 'http://localhost:3000'//BaseUrl: '185.231.115.236:3000' BaseUrl: 'http://130.185.76.7:9095'
 };

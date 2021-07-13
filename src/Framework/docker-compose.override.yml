@@ -10,10 +10,12 @@ networks:
 services:
 
  sppcTadbirDB:
+  image: msn1368/sppctadbirdb:dev
   ports: 
     - 14433:1433
 
  sppc.tadbir.web.api:
+  image: msn1368/sppctadbirwebapi:latest
   environment:
    - ASPNETCORE_ENVIRONMENT=Development
    - ASPNETCORE_URLS=http://+:80
@@ -25,3 +27,4 @@ services:
    - donotstart
 
  sppcTadbirWebNew:
+  image: msn1368/sppctadbirwebnew:dev
