@@ -12,4 +12,4 @@ export * from './voucher-line.service';
 export * from './voucher.service';
 export * from './testBalance.service';
 export * from './systemIssue.service';
-export * from './itemBalance.service';
+export * from './ItemBalance.service';
