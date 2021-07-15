@@ -1,4 +1,4 @@
-import { Component, Inject, AfterViewInit, OnInit, HostListener } from '@angular/core';
+import { Component, Inject, AfterViewInit, OnInit, HostListener, ChangeDetectorRef, Renderer } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
@@ -10,6 +10,16 @@ import { Command } from '@sppc/shared/models';
 
 declare var $: any;
 declare var Stimulsoft: any;
+
+declare global {
+  interface StringConstructor {
+    replaceBadChars(s: string): string;
+  }
+}
+
+String.replaceBadChars = (s: string) => {  
+  return s;
+};
 
 @Component({
   selector: 'app',
@@ -93,7 +103,8 @@ export class AppComponent implements AfterViewInit, OnInit {
     public bStorageService: BrowserStorageService,
     public userService: UserService,
     @Inject(DOCUMENT) private document: Document,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer,
+    private renderer: Renderer) {
 
     //#region init Lang    
 
@@ -221,6 +232,32 @@ export class AppComponent implements AfterViewInit, OnInit {
           }
         }
       }
+    }
+
+    var element: any = event.target;
+    if ((event.key == 'ي') || (event.key == 'ك') && (element.parentNode.className == 'k-filtercell-wrapper')) {      
+
+      event.target.addEventListener('blur', function (evt) {        
+        this.value = this.value.toString().replaceBadChars(this.value.toString());
+      });     
+
+      //setTimeout(() => {
+      //  var element: any = event.target;
+      //  var replaceKey = (event.key == 'ك') ? 'ک' : 'ی';
+
+      //  var start = element.selectionStart;
+      //  var end = element.selectionEnd;
+      //  var oldValue = element.value;
+
+      //  var newValue = oldValue.slice(0, start) + replaceKey + oldValue.slice(end)
+      //  element.value = newValue;
+        
+      //  // replace cursor
+      //  element.selectionStart = element.selectionEnd = start + 1;        
+      //}, 500);
+
+      //event.preventDefault();
+
     }
   }  
 

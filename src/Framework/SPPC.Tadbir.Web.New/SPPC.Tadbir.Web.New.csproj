@@ -69,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\global.d.ts" />
     <None Remove="ClientApp\src\app\admin\components\operationLogs\operationLogs-setting.component.ts" />
     <None Remove="ClientApp\src\app\admin\models\entityType.ts" />
     <None Remove="ClientApp\src\app\config\models\formLabelConfig.ts" />
@@ -104,6 +105,7 @@
     <None Remove="ClientApp\src\app\finance\index.ts" />
     <None Remove="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
     <None Remove="ClientApp\src\app\shared\components\reportManagement\quickReportViewSetting.ts" />
+    <None Remove="ClientApp\src\app\shared\directive\input\input.ts" />
     <None Remove="ClientApp\src\app\shared\directive\persistState\PersistState.ts" />
     <None Remove="ClientApp\src\app\shared\enum\global.ts" />
     <None Remove="ClientApp\src\app\shared\enum\operationId.ts" />
@@ -117,6 +119,7 @@
     <None Remove="ClientApp\src\app\shared\models\shortcutCommand.ts" />
     <None Remove="ClientApp\src\app\shared\services\advance-filter.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\api\index.ts" />
+    <None Remove="ClientApp\src\app\shared\services\character.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\error.handling.service.ts" />
     <None Remove="ClientApp\src\app\shared\services\index.ts" />
     <None Remove="ClientApp\src\app\shared\services\share-data.service.ts" />
@@ -303,6 +306,7 @@
     <None Remove="ClientApp\src\assets\resources\themes\voclain\theme.scss" />
     <None Remove="ClientApp\src\assets\resources\themes\_theme.scss" />
     <None Remove="ClientApp\src\assets\resources\toastr.css" />
+    <None Remove="ClientApp\string.extensions.ts" />
     <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
 
@@ -858,6 +862,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\class\global.d.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\admin\components\operationLogs\operationLogs-setting.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\admin\models\entityType.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\config\models\formLabelConfig.ts" />
@@ -893,6 +898,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\finance\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\reportManagement\quickReportViewSetting.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\directive\input\input.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\directive\persistState\persistState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\enum\global.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\enum\operationId.ts" />
@@ -905,10 +911,12 @@
     <TypeScriptCompile Include="ClientApp\src\app\shared\models\shortcutCommand.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\advance-filter.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\api\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\services\character.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\share-data.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\error.handling.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\services\shortcut.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\class\string.extensions.ts" />
   </ItemGroup>
 
   <ItemGroup>
