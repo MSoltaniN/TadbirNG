@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;

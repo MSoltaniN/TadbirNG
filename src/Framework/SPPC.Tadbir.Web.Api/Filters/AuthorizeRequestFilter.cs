@@ -1,16 +1,20 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
+using SPPC.Framework.Presentation;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -75,7 +79,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
                 // If ticket is invalid or expired, return Unauthorized (401) response...
                 actionContext.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
             }
-            else if (!IsAuthorized(authTicket))
+            else if (!IsAuthorized(authTicket, actionContext))
             {
                 // If caller is not authorized, return Unauthorized (401) response...
                 actionContext.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
@@ -94,15 +98,22 @@ namespace SPPC.Tadbir.Web.Api.Filters
             return !String.IsNullOrEmpty(authTicket);
         }
 
-        private bool IsAuthorized(string authTicket)
+        private bool IsAuthorized(string authTicket, ActionExecutingContext actionContext)
         {
             var securityContext = _tokenService.GetSecurityContext(authTicket);
-            ////var securityContext = _contextDecoder.Decode(authTicket);
             bool isAuthorized = securityContext.IsInRole(AppConstants.AdminRoleId);
             if (_requiredPermissions != null)
             {
                 isAuthorized = isAuthorized ||
                     securityContext.HasPermissions(_requiredPermissions);
+
+                bool hasView = _requiredPermissions
+                    .Any(perm => (perm.Flags & (int)ViewPermissions.View) == (int)ViewPermissions.View);
+                if (isAuthorized && hasView)
+                {
+                    var gridOptions = GetGridOptions(actionContext);
+                    isAuthorized = isAuthorized && CheckViewPermissions(securityContext, gridOptions);
+                }
             }
 
             return isAuthorized;
@@ -122,6 +133,48 @@ namespace SPPC.Tadbir.Web.Api.Filters
             }
 
             return validated;
+        }
+
+        private bool CheckViewPermissions(ISecurityContext securityContext, GridOptions gridOptions)
+        {
+            bool isAuthorized = true;
+            var viewPermissions = _requiredPermissions
+                .Where(perm => (perm.Flags & (int)ViewPermissions.View) == (int)ViewPermissions.View)
+                .ToArray();
+            switch (gridOptions.Operation)
+            {
+                case (int)OperationId.Filter:
+                    Array.ForEach(viewPermissions, perm => perm.Flags |= (int)ViewPermissions.Filter);
+                    isAuthorized = securityContext.HasPermissions(viewPermissions);
+                    break;
+                case (int)OperationId.Print:
+                    Array.ForEach(viewPermissions, perm => perm.Flags |= (int)ViewPermissions.Print);
+                    isAuthorized = securityContext.HasPermissions(viewPermissions);
+                    break;
+                case (int)OperationId.Export:
+                    Array.ForEach(viewPermissions, perm => perm.Flags |= (int)ViewPermissions.Export);
+                    isAuthorized = securityContext.HasPermissions(viewPermissions);
+                    break;
+                case (int)OperationId.View:
+                default:
+                    break;
+            }
+
+            return isAuthorized;
+        }
+
+        private GridOptions GetGridOptions(ActionExecutingContext actionContext)
+        {
+            var request = actionContext.HttpContext.Request;
+            var options = request.Headers[AppConstants.GridOptionsHeaderName];
+            if (String.IsNullOrEmpty(options))
+            {
+                return new GridOptions();
+            }
+
+            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            var json = WebUtility.UrlDecode(urlEncoded);
+            return JsonHelper.To<GridOptions>(json);
         }
 
         private readonly ILicenseUtility _licenseUtility;

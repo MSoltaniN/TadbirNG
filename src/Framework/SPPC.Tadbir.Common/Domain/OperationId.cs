@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Persistence
+namespace SPPC.Tadbir.Domain
 {
     /// <summary>
     /// کد عملیاتی مورد استفاده در مدیریت رویدادها
